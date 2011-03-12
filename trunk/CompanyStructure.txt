@@ -28,3 +28,9 @@ Interested in   :    Database(ERDs & schemas), GUI
 
 -------------------------------------------------
 
+Name			:	Noha Sherif Khater
+Email			:	nohakhater@gmail.com
+Role			:	Team Leader
+Interested in	:	Constraint programming
+
+-------------------------------------------------
