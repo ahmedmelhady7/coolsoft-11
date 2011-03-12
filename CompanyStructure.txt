@@ -34,3 +34,9 @@ Role			:	Team Leader
 Interested in	:	Constraint programming
 
 -------------------------------------------------
+Name			:	Ahmed El-Hadi
+Email			:	elhadiahmed3@gmail.com
+Role			:	Developer
+Interested in	:	Software Development, AI
+
+-------------------------------------------------
