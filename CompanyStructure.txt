@@ -21,3 +21,10 @@ Interested in 	:	web developing , cp
 
 ------------------------------------------------
 
+Name            :    Monica Yousry Tawfik Awad
+Email           :    monica.yousry90@gmail.com
+Role            :    Developer
+Interested in   :    Database(ERDs & schemas), GUI
+
+-------------------------------------------------
+
