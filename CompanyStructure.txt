@@ -13,3 +13,11 @@ Role 			: 	Developer
 Interested in 	:	Programming
 
 ------------------------------------------------
+
+Name  			: 	Fadwa Maged Elhussini Sakr
+Email 			: 	fadwasakr@gmail.com
+Role 			: 	Developer
+Interested in 	:	web developing , cp
+
+------------------------------------------------
+
