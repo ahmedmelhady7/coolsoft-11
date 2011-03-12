@@ -40,3 +40,9 @@ Role			:	Developer
 Interested in	:	Software Development, AI
 
 -------------------------------------------------
+Name			:	Abdalrahman Ali Mursi
+Email			:	abdalrahman.mursi@gmail.com
+Role			:	Developer
+Interested in	:	web developing and AI
+
+-------------------------------------------------
