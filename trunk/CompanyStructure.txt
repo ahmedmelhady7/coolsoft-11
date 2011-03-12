@@ -6,3 +6,10 @@ Role 			: 	Scrum Master
 Interested in 	:	Constraint Programming, Databases
 
 ------------------------------------------------
+
+Name  			: 	Ibrahim Adel Ahmed Al-Khayat
+Email 			: 	ibrahim.al.khayat@gmail.com
+Role 			: 	Developer
+Interested in 	:	Programming
+
+------------------------------------------------
