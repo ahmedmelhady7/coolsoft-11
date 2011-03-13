@@ -1,85 +1,85 @@
 ------------------------------------------------
 
-Name  			: 	Mohamed Ahmed Mohamed Elmonayri
-Email 			: 	mohamed.monayri@gmail.com
-Role 			: 	Scrum Master
-Interested in 	:	Constraint Programming, Databases
+Name            :     Mohamed Ahmed Mohamed Elmonayri
+Email           :     mohamed.monayri@gmail.com
+Role     	:     Scrum Master
+Interested in 	:     Constraint Programming, Databases
 
 ------------------------------------------------
 
-Name  			: 	Ibrahim Adel Ahmed Al-Khayat
-Email 			: 	ibrahim.al.khayat@gmail.com
-Role 			: 	Developer
-Interested in 	:	Programming
+Name            :    Ibrahim Adel Ahmed Al-Khayat
+Email           :    ibrahim.al.khayat@gmail.com
+Role            :    Developer
+Interested in 	:    Programming
 
 ------------------------------------------------
 
-Name  			: 	Fadwa Maged Elhussini Sakr
-Email 			: 	fadwasakr@gmail.com
-Role 			: 	Developer
-Interested in 	:	web developing , cp
+Name  		:    Fadwa Maged Elhussini Sakr
+Email 	        :    fadwasakr@gmail.com
+Role 	        :    Developer
+Interested in 	:    web developing , cp
 
 ------------------------------------------------
 
 Name            :    Monica Yousry Tawfik Awad
 Email           :    monica.yousry90@gmail.com
-Role            :    Developer ==> C4
+Role            :    C4 Developer
 Interested in   :    Database(ERDs & schemas), GUI
 
 -------------------------------------------------
 
-Name			:	Noha Sherif Khater
-Email			:	nohakhater@gmail.com
-Role			:	Team Leader
-Interested in	:	Constraint programming
+Name	        :    Noha Sherif Khater
+Email	        :    nohakhater@gmail.com
+Role            :    Team Leader
+Interested in	:    Constraint programming
 
 -------------------------------------------------
 
-Name			:	Ahmed El-Hadi
-Email			:	elhadiahmed3@gmail.com
-Role			:	Developer
-Interested in	:	Software Development, AI
+Name            :    Ahmed El-Hadi
+Email           :    elhadiahmed3@gmail.com
+Role            :    Developer
+Interested in	:    Software Development, AI
 
 -------------------------------------------------
 
-Name			:	Abdalrahman Ali Mursi
-Email			:	abdalrahman.mursi@gmail.com
-Role			:	Developer
-Interested in	:	web developing and AI
+Name            :    Abdalrahman Ali Mursi
+Email           :    abdalrahman.mursi@gmail.com
+Role            :    Developer
+Interested in	:    web developing and AI
 
 -------------------------------------------------
 
-Name  			: 	Loaay Ahmed Alkherbawy
-Email 			: 	loaay.alkherbawy@gmail.com
-Role 			: 	Developer ==> C4
-Interested in 	:	Programming and web developing
+Name            :    Loaay Ahmed Alkherbawy
+Email           :    loaay.alkherbawy@gmail.com
+Role            :    C4 Developer
+Interested in 	:    Programming and web developing
 
 -------------------------------------------------
 
-Name  			: 	Alia El Bolock
-Email 			: 	aliaelbolock@gmail.com
-Role 			: 	Developer
-Interested in 	:	AI, VR & Life =D
+Name            :    Alia El Bolock
+Email 	        :    aliaelbolock@gmail.com
+Role 	        :    Developer
+Interested in 	:    AI, VR & Life =D
 
 -------------------------------------------------
 
-Name            :   Mohamed Gomaa Ghanem
-Email           :   mgmohamedganem@gmail.com
-Role            :   Team Leader ==> C4
-Interested in   :   (C,OO)Programming, Debugging and AI 
+Name            :    Mohamed Gomaa Ghanem
+Email           :    mgmohamedganem@gmail.com
+Role            :    C4 Team Leader
+Interested in   :    (C,OO)Programming, Debugging and AI 
 
 -------------------------------------------------
 
-Name  			: 	Salma Mohamed Osama
-Email 			: 	salma.qayed@gmail.com
-Role 			: 	C5 Team Leader 
-Interested in 	:	web developing 
+Name            :    Salma Mohamed Osama
+Email           :    salma.qayed@gmail.com
+Role            :    C5 Team Leader 
+Interested in 	:    web developing 
 
 ------------------------------------------------
 
-Name  			: 	Omar Mohamed Aref Faruki
-Email 			: 	omarmafaruki@gmail.com
-Role 			: 	C2 Developer 
-Interested in 	:	Game Developing and AI
+Name            :    Omar Mohamed Aref Faruki
+Email 	        :    omarmafaruki@gmail.com
+Role            :    C2 Developer 
+Interested in 	:    Game Developing and AI
 
 ------------------------------------------------
