@@ -23,7 +23,7 @@ Interested in 	:	web developing , cp
 
 Name            :    Monica Yousry Tawfik Awad
 Email           :    monica.yousry90@gmail.com
-Role            :    Developer
+Role            :    Developer ==> C4
 Interested in   :    Database(ERDs & schemas), GUI
 
 -------------------------------------------------
@@ -34,12 +34,14 @@ Role			:	Team Leader
 Interested in	:	Constraint programming
 
 -------------------------------------------------
+
 Name			:	Ahmed El-Hadi
 Email			:	elhadiahmed3@gmail.com
 Role			:	Developer
 Interested in	:	Software Development, AI
 
 -------------------------------------------------
+
 Name			:	Abdalrahman Ali Mursi
 Email			:	abdalrahman.mursi@gmail.com
 Role			:	Developer
@@ -49,7 +51,7 @@ Interested in	:	web developing and AI
 
 Name  			: 	Loaay Ahmed Alkherbawy
 Email 			: 	loaay.alkherbawy@gmail.com
-Role 			: 	Developer
+Role 			: 	Developer ==> C4
 Interested in 	:	Programming and web developing
 
 -------------------------------------------------
@@ -58,5 +60,12 @@ Name  			: 	Alia El Bolock
 Email 			: 	aliaelbolock@gmail.com
 Role 			: 	Developer
 Interested in 	:	AI, VR & Life =D
+
+-------------------------------------------------
+
+Name            :   Mohamed Gomaa Ghanem
+Email           :   mgmohamedganem@gmail.com
+Role            :   Team Leader ==> C4
+Interested in   :   (C,OO)Programming and AI
 
 -------------------------------------------------
