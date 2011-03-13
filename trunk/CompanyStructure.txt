@@ -69,3 +69,10 @@ Role            :   Team Leader ==> C4
 Interested in   :   (C,OO)Programming and AI
 
 -------------------------------------------------
+
+Name  			: 	Salma Mohamed Osama
+Email 			: 	salma.qayed@gmail.com
+Role 			: 	C5 Team Leader 
+Interested in 	:	web developing 
+
+------------------------------------------------
