@@ -46,3 +46,10 @@ Role			:	Developer
 Interested in	:	web developing and AI
 
 -------------------------------------------------
+
+Name  			: 	Loaay Ahmed Alkherbawy
+Email 			: 	loaay.alkherbawy@gmail.com
+Role 			: 	Developer
+Interested in 	:	Programming and web developing
+
+-------------------------------------------------
