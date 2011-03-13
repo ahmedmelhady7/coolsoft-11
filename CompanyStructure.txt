@@ -83,3 +83,10 @@ Role            :    C2 Developer
 Interested in 	:    Game Developing and AI
 
 ------------------------------------------------
+
+Name  			: 	Mostafa Ali Said
+Email 			: 	mostafa.aly0@gmail.com
+Role 			: 	C1 Developer 
+Interested in 	:	Sports
+
+------------------------------------------------
