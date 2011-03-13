@@ -53,3 +53,10 @@ Role 			: 	Developer
 Interested in 	:	Programming and web developing
 
 -------------------------------------------------
+
+Name  			: 	Alia El Bolock
+Email 			: 	aliaelbolock@gmail.com
+Role 			: 	Developer
+Interested in 	:	AI, VR & Life =D
+
+-------------------------------------------------
