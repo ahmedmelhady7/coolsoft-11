@@ -66,7 +66,7 @@ Interested in 	:	AI, VR & Life =D
 Name            :   Mohamed Gomaa Ghanem
 Email           :   mgmohamedganem@gmail.com
 Role            :   Team Leader ==> C4
-Interested in   :   (C,OO)Programming and AI
+Interested in   :   (C,OO)Programming, Debugging and AI 
 
 -------------------------------------------------
 
