@@ -76,3 +76,10 @@ Role 			: 	C5 Team Leader
 Interested in 	:	web developing 
 
 ------------------------------------------------
+
+Name  			: 	Omar Mohamed Aref Faruki
+Email 			: 	omarmafaruki@gmail.com
+Role 			: 	C2 Developer 
+Interested in 	:	Game Developing and AI
+
+------------------------------------------------
