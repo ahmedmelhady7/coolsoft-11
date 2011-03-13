@@ -2,7 +2,7 @@
 
 Name            :     Mohamed Ahmed Mohamed Elmonayri
 Email           :     mohamed.monayri@gmail.com
-Role     	:     Scrum Master
+Role            :     Scrum Master
 Interested in 	:     Constraint Programming, Databases
 
 ------------------------------------------------
@@ -14,7 +14,7 @@ Interested in 	:    Programming
 
 ------------------------------------------------
 
-Name  		:    Fadwa Maged Elhussini Sakr
+Name  	        :    Fadwa Maged Elhussini Sakr
 Email 	        :    fadwasakr@gmail.com
 Role 	        :    Developer
 Interested in 	:    web developing , cp
@@ -84,9 +84,9 @@ Interested in 	:    Game Developing and AI
 
 ------------------------------------------------
 
-Name  			: 	Mostafa Ali Said
-Email 			: 	mostafa.aly0@gmail.com
-Role 			: 	C1 Developer 
-Interested in 	:	Sports
+Name            :    Mostafa Ali Said
+Email           :    mostafa.aly0@gmail.com
+Role            :    C1 Developer 
+Interested in 	:    Sports
 
 ------------------------------------------------
