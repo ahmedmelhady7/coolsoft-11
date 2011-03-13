@@ -37,7 +37,7 @@ Interested in	:    Constraint programming
 
 Name            :    Ahmed El-Hadi
 Email           :    elhadiahmed3@gmail.com
-Role            :    Developer
+Role            :    C3 Developer
 Interested in	:    Software Development, AI
 
 -------------------------------------------------
