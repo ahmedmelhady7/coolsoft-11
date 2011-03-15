@@ -115,3 +115,8 @@ Role            :     C2 Developer
 Interested in   :     Software & Web development
 
 ------------------------------------------------
+
+Name            :     Ahmed Maged Youssef
+Email           :	  aymaestro@gmail.com
+Role            :     C1 Team Leader
+Interested in   :     Programming, Databases, AI and Tennis
