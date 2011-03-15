@@ -108,3 +108,10 @@ Role            :     C5 Developer
 Interested in   :     Software & Web development
 
 ------------------------------------------------
+
+Name            :     Mohamed Hisham Soliman
+Email           :     m.hisham.sa@gmail.com
+Role            :     C2 Developer
+Interested in   :     Software & Web development
+
+------------------------------------------------
