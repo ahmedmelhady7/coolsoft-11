@@ -120,3 +120,12 @@ Name            :     Ahmed Maged Youssef
 Email           :	  aymaestro@gmail.com
 Role            :     C1 Team Leader
 Interested in   :     Programming, Databases, AI and Tennis
+
+-------------------------------------------------
+
+Name			:	  Mostafa Aboul Atta
+Email			:     m.aboulatta@gmail.com
+Role			:     C3 Developer 
+Interested in	:     Algorithms, Kickboxing, Squash
+
+--------------------------------------------------
