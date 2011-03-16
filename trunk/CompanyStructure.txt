@@ -129,3 +129,10 @@ Role			:     C3 Developer
 Interested in	:     Algorithms, Kickboxing, Squash
 
 --------------------------------------------------
+
+Name  	        :    Mai Magdy Soliman
+Email 	        :    mai.jt4@gmail.com
+Role 	        :    C1 Developer
+Interested in 	:    web developing
+
+------------------------------------------------
