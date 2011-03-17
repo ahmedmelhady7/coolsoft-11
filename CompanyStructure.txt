@@ -148,3 +148,9 @@ Role            :    C5 Developer
 Interested in   :    programming , music production, art, sports
 
 -------------------------------------------------
+Name              :    Fady Amir Habib
+Email             :    fadzy.amir@gmail.com
+Role             :    C4 Developer
+Interested in     :    AI,Fuzzy logic,Computer vision 
+
+--------------------------------------------------
