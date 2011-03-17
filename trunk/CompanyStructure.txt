@@ -136,3 +136,9 @@ Role 	        :    C1 Developer
 Interested in 	:    web developing
 
 ------------------------------------------------
+Name            :    Nada Ossama Mohammad Kamal
+Email           :    nada.ossama.kamal@gmail.com
+Role            :    C1 Developer
+Interested in   :    programming , music, sports
+
+-------------------------------------------------
