@@ -142,3 +142,9 @@ Role            :    C1 Developer
 Interested in   :    programming , music, sports
 
 -------------------------------------------------
+Name            :    Alaa Samer Mohamed
+Email           :    alaasamer.90@gmail.com
+Role            :    C5 Developer
+Interested in   :    programming , music production, art, sports
+
+-------------------------------------------------
