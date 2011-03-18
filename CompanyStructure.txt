@@ -166,3 +166,9 @@ Role              :    C5 Developer
 Interested in     :    AI and Embedded Systems
 
 ---------------------------------------------------
+Name              :    Hassan Othman Ali Ziko
+Email             :    hassan.ziko1@gmail.com
+Role              :    C5 Developer
+Interested in     :    Database Systems, Web Develping, Srtudents Activities
+
+---------------------------------------------------
