@@ -160,3 +160,9 @@ Role              :    C3 Leader and Company Manager
 Interested in     :    Computer Architecture, Software & Web Developing, Sports, Photography and Interpersonal Skills
 
 ---------------------------------------------------
+Name              :    Yasmine Hussein Elsayed
+Email             :    yassmeen.hussein@gmail.com
+Role              :    C5 Developer
+Interested in     :    AI and Embedded Systems
+
+---------------------------------------------------
