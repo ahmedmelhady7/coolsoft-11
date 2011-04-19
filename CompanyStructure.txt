@@ -151,7 +151,7 @@ Interested in   :    programming , art, sports
 Name              :    Fady Amir Habib
 Email             :    fadzy.amir@gmail.com
 Role              :    C4 Developer
-Interested in     :    AI,Fuzzy logic,Computer vision 
+Interested in     :    AI,Fuzzy logic,Computer vision, nural networks 
 
 ---------------------------------------------------
 Name              :    Mostafa Mohamed Yasser El Monayer
