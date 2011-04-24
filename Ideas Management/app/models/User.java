@@ -1,4 +1,3 @@
-
 package models;
 
 import java.util.ArrayList;
@@ -22,8 +21,8 @@ public class User extends Model {
 	public Date dateofBirth;
 	public int communityContributionCounter;
 	public ArrayList<Role> roles;
-		
-    @OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
+
+	@OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
 	public ArrayList<Topic> topicsCreated;
 	@ManyToMany(mappedBy = "organizers", cascade = CascadeType.PERSIST)
 	public ArrayList<Topic> topicsIOrganize;
@@ -32,11 +31,12 @@ public class User extends Model {
 	@ManyToMany(mappedBy = "assignee", cascade = CascadeType.PERSIST)
 	public ArrayList<Item> itemsAssigned;
 
-	// ArrayList<AssignRequest> assignRequests;
-	// @OneToMany (mappedBy = user)
-	// ArrayList<NotificationProfile> noficationProfiles;
-	// @OneToMany (mappedBy = directedTo)
-	// ArrayList<Notification> notifications ;
+	public ArrayList<AssignRequest> assignRequests;
+
+	@OneToMany(mappedBy = "user")
+	ArrayList<NotificationProfile> notificationProfiles;
+	@OneToMany(mappedBy = "directedTo")
+	ArrayList<Notification> notifications;
 	// ArrayList<Request> requests;
 	// ArrayList<Comment> commentsPosted;
 	// ArrayList<LinkDuplicates> linkDuplicates;
@@ -45,7 +45,6 @@ public class User extends Model {
 	// ArrayList<RequestOfRelationship> requestRelationship;
 	// ArrayList<TopicInvitation> topicInvitations;
 
-	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	public ArrayList<VolunteerRequest> volunteerRequests;
 
@@ -54,8 +53,6 @@ public class User extends Model {
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	public ArrayList<AssignRequest> receivedAssignRequests;
-
-	
 
 	public User(String email, String password, String firstName,
 			String lastName, String username, int communityContributionCounter,
@@ -72,13 +69,11 @@ public class User extends Model {
 		this.ideasCreated = new ArrayList<Idea>();
 		this.topicsIOrganize = new ArrayList<Topic>();
 		this.topicsCreated = new ArrayList<Topic>();
-		
 		this.volunteerRequests = new ArrayList<VolunteerRequest>();
 		this.sentAssignRequests = new ArrayList<AssignRequest>();
 		this.receivedAssignRequests = new ArrayList<AssignRequest>();
-		
-		
-		// notification= new ArrayList<NotificationProfile>();
+		notificationProfiles = new ArrayList<NotificationProfile>();
+		notifications = new ArrayList<Notification>();
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
 		// linkDuplicates = new ArrayList<LinkDuplicates>();
@@ -89,4 +84,3 @@ public class User extends Model {
 
 	}
 }
-
