@@ -20,11 +20,11 @@ public class User extends Model {
 	public String country;
 	public Date dateofBirth;
 	public int communityContributionCounter;
-
-	ArrayList<Role> roles;
-	@OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+    ArrayList<Role> roles;
+	
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
 	public ArrayList<Topic> topicsCreated;
-	@ManyToMany(mappedBy = "organizers", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "organizers", cascade = CascadeType.PERSIST)
 	public ArrayList<Topic> topicsIOrganize;
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
 	public ArrayList<Idea> ideasCreated;
