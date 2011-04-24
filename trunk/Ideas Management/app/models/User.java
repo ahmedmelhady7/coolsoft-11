@@ -1,3 +1,4 @@
+
 package models;
 
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ public class User extends Model {
 	public String country;
 	public Date dateofBirth;
 	public int communityContributionCounter;
-    ArrayList<Role> roles;
-	
+	public ArrayList<Role> roles;
+		
     @OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
 	public ArrayList<Topic> topicsCreated;
 	@ManyToMany(mappedBy = "organizers", cascade = CascadeType.PERSIST)
@@ -39,11 +40,22 @@ public class User extends Model {
 	// ArrayList<Request> requests;
 	// ArrayList<Comment> commentsPosted;
 	// ArrayList<LinkDuplicates> linkDuplicates;
-	// ArrayList<volunteerRequests> volunteerRequests;
 	// ArrayList<Invitation> invitations;
 	// ArrayList<RequestToJoin> requestsToJoin;
 	// ArrayList<RequestOfRelationship> requestRelationship;
 	// ArrayList<TopicInvitation> topicInvitations;
+
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	public ArrayList<VolunteerRequest> volunteerRequests;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	public ArrayList<AssignRequest> sentAssignRequests;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	public ArrayList<AssignRequest> receivedAssignRequests;
+
+	
 
 	public User(String email, String password, String firstName,
 			String lastName, String username, int communityContributionCounter,
@@ -56,21 +68,25 @@ public class User extends Model {
 		this.dateofBirth = dateofBirth;
 		this.country = country;
 		this.lastName = lastName;
-		roles = new ArrayList<Role>();
-		ideasCreated = new ArrayList<Idea>();
-		topicsIOrganize = new ArrayList<Topic>();
-		topicsCreated = new ArrayList<Topic>();
+		this.roles = new ArrayList<Role>();
+		this.ideasCreated = new ArrayList<Idea>();
+		this.topicsIOrganize = new ArrayList<Topic>();
+		this.topicsCreated = new ArrayList<Topic>();
+		
+		this.volunteerRequests = new ArrayList<VolunteerRequest>();
+		this.sentAssignRequests = new ArrayList<AssignRequest>();
+		this.receivedAssignRequests = new ArrayList<AssignRequest>();
+		
+		
 		// notification= new ArrayList<NotificationProfile>();
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
 		// linkDuplicates = new ArrayList<LinkDuplicates>();
-		// assignRequests = new ArrayList<AssignRequests>();
-		// volunteerRequests = new ArrayList<volunteerRequests>();
 		// invitations = new ArrayList<Invitation>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
 		// requestRelationship = new ArrayList<RequestOfRelationship>();
 		// topicInvitations = new ArrayList<TopicInvitation>() ;
 
 	}
-
 }
+
