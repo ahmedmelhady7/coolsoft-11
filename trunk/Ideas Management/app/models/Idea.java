@@ -15,19 +15,19 @@ import play.db.jpa.Model;
 @Entity
 public class Idea extends Model {
 	@Required
-	String title;
+	public String title;
 	@Required
-	String description;
+	public String description;
 	int spamCounter;
 	@Required
-	int privacyLevel;
+	public int privacyLevel;
 	@ManyToMany(cascade = CascadeType.PERSIST)
-	ArrayList<Tag> tagsList;
+	public ArrayList<Tag> tagsList;
 	// @OneToMany(cascade = CascadeType.PERSIST)
 	// ArrayList<Comment> commentsList;
 	@Required
 	@ManyToOne
-	Topic belongsToTopic;
+	public Topic belongsToTopic;
 	Boolean Active;
 
 	public boolean isDraft;
@@ -35,7 +35,7 @@ public class Idea extends Model {
 	@Required
 	@ManyToOne
 	public User author;
-	
+
 	@ManyToOne
 	public Plan plan;
 
