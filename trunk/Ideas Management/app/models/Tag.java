@@ -21,8 +21,14 @@ public class Tag extends Model{
 	public Tag(String name) {
 		this.name = name;
 	}
+	
 	public Tag(String name, ArrayList<Tag> tags) {
 		this.name = name;
 		this.relatedTags = tags;
 	}
+	/*
+	public void unfollow(User user) {
+		followers.remove(user);
+	}
+	*/
 }
