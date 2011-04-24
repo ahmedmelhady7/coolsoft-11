@@ -11,6 +11,7 @@ import play.db.jpa.Model;
  * @author ${Ahmed El-Hadi}
  * 
  */
+
 @Entity
 public class Idea extends Model {
 	@Required
@@ -22,7 +23,7 @@ public class Idea extends Model {
 	int privacyLevel;
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	ArrayList<Tag> tagsList;
-	@OneToMany(cascade = CascadeType.PERSIST)
+	// @OneToMany(cascade = CascadeType.PERSIST)
 	// ArrayList<Comment> commentsList;
 	@Required
 	@ManyToOne
