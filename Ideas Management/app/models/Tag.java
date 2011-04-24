@@ -14,9 +14,9 @@ public class Tag extends Model{
 	String name;
 	ArrayList<Tag> relatedTags;
 	//String creator;	We might still need this attribute;
-	@ManyToMany
+	@ManyToMany(mappedBy = "username")
 	public ArrayList<User> followers;
-	@ManyToMany
+	@ManyToMany(mappedBy = "name")
 	public ArrayList<Organization> organizations;
 	
 	public Tag(String name) {
