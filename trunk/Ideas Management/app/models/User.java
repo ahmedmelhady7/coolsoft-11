@@ -24,10 +24,13 @@ public class User extends Model {
 
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
 	public ArrayList<Topic> topicsCreated;
+	
 	@ManyToMany(mappedBy = "organizers", cascade = CascadeType.PERSIST)
 	public ArrayList<Topic> topicsIOrganize;
+	
 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
 	public ArrayList<Idea> ideasCreated;
+	
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	public ArrayList<Item> itemsAssigned;
 
@@ -45,13 +48,13 @@ public class User extends Model {
 	// ArrayList<RequestOfRelationship> requestRelationship;
 	// ArrayList<TopicInvitation> topicInvitations;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
 	public ArrayList<VolunteerRequest> volunteerRequests;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
 	public ArrayList<AssignRequest> sentAssignRequests;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "destination", cascade = CascadeType.ALL)
 	public ArrayList<AssignRequest> receivedAssignRequests;
 
 	public User(String email, String password, String firstName,
