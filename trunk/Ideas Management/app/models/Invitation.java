@@ -2,9 +2,10 @@ package models;
 
 import java.util.*;
 import javax.persistence.*;
+
 import play.db.jpa.*;
  import javax.persistence.Entity;
- import play.db.jpa.Model;
+import play.db.jpa.Model;
 
 
 
@@ -16,17 +17,17 @@ public class Invitation extends Model{
     public Date sendingdate;
     String role;
     
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne(mappedBy="source", cascade=CascadeType.ALL)
     public User source;
     
     @Lob
     public String comment;
     
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     public Organization organization;
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     public MainEntity entity;
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     public Topic topic;
 	
    
