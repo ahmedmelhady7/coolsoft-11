@@ -11,7 +11,7 @@ public class Topic extends Model {
 	public String name;
 	public String description;
 	public short privacyLevel;// I don't know the type of this attribute
-	// public ArrayList<Tag> tags;
+	public ArrayList<Tag> tags;
 	// public ArrayList<Relationship> relationships;
 
 	@ManyToOne
