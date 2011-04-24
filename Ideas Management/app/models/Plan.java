@@ -12,7 +12,9 @@ public class Plan extends Model {
 	//public User user;
 	public int rate;
 	public String status;
+	public float progress;
 	public Date startDate;
+	public ArrayList<String> requirements;
 	public Date endDate;
 	//public Topic topic;
 	
@@ -30,10 +32,12 @@ public class Plan extends Model {
     public Plan(String title, int rate, String status, Date startDate, Date endDate, String description) {
     	this.title = title;
     	this.rate = rate;
-    	this.status = status;
+    	this.status = "new";
+    	this.progress = 0;
     	this.startDate = startDate;
     	this.endDate = endDate;
     	this.description = description;
+    	this.requirements = new ArrayList<String>();
 //    	still need to add topic and user
 //    	this.tags = new ArrayList<Tag>();
 //    	this.comments = new ArrayList<Comment>();
