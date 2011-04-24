@@ -15,17 +15,15 @@ public class Item extends Model {
 	@Lob
 	public String description;
 
-	// @OneToMany(mappedBy="Item", cascade=CascadeType.ALL)
-	// public ArrayList<Tag> tags;
-	// @OneToMany(mappedBy="Item", cascade=CascadeType.ALL)
-	// public ArrayList<Item> items;
+	@OneToMany(mappedBy="Item", cascade=CascadeType.ALL)
+	public ArrayList<Tag> tags;
 
-	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "destination", cascade = CascadeType.ALL)
 	public ArrayList<VolunteerRequest> volunteerRequests;
 
-	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "source", cascade = CascadeType.ALL)
 	public ArrayList<AssignRequest> assignRequests;
-	
+
 	@ManyToMany(mappedBy = "itemsAssigned", cascade = CascadeType.PERSIST)
 	public ArrayList<User> assignees;
 
@@ -41,10 +39,8 @@ public class Item extends Model {
 		this.volunteerRequests = new ArrayList<VolunteerRequest>();
 		this.assignRequests = new ArrayList<AssignRequest>();
 		this.plan = plan;
-		this.assignees = new ArrayList<User> ();
-		// this.tags = new ArrayList<Tag>();
-		// this.items = new ArrayList<Item>();
-
+		this.assignees = new ArrayList<User>();
+		this.tags = new ArrayList<Tag>();
 	}
-    
+
 }
