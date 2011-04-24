@@ -60,7 +60,7 @@ public class Idea extends Model {
 		this.author = user;
 		user.ideasCreated.add(this);
 		this.isDraft = isDraft;
-		// this.tagsList = new ArrayList<Tag>();
+		this.tagsList = new ArrayList<Tag>();
 		// this.commentsList = new ArrayList<Comment>();
 
 	}
