@@ -28,7 +28,7 @@ public class User extends Model {
 	public ArrayList<Topic> topicsIOrganize;
 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
 	public ArrayList<Idea> ideasCreated;
-	@ManyToMany(mappedBy = "assignee", cascade = CascadeType.PERSIST)
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	public ArrayList<Item> itemsAssigned;
 
 	public ArrayList<AssignRequest> assignRequests;
