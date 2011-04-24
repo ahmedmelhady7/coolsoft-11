@@ -30,16 +30,19 @@ public class Idea extends Model {
 	Boolean Active;
 
 	// @Required
-	// @ManyToOne
-	// public User author;
+	@ManyToOne
+	public User author;
 
-	public Idea(String t, String d) {
+	public Idea(String t, String d, User user) {
 		this.title = t;
 		this.description = d;
 		this.Active = false;
+		this.author = user;
 		// this.tagsList = new ArrayList<Tag>();
 		// this.commentsList = new ArrayList<Comment>();
 
 	}
+	
+	
 
 }
