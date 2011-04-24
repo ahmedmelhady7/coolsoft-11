@@ -13,8 +13,9 @@ public class Action extends Model {
     @ManyToMany 
     ArrayList<Role> roles;
     
-public Action (String description){
+public Action (String description, ArrayList<Role> roles){
 	this.description = description;
+	this.roles = roles;
 }
 
 }
