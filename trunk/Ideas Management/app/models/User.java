@@ -13,6 +13,6 @@ public class User {
 
 
 	@OneToMany(mappedBy="creator", cascade=CascadeType.ALL)
-	public ArrayList<Idea> IdeasCreated;
+	public ArrayList<Idea> ideasCreated;
 	
 }
