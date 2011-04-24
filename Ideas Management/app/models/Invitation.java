@@ -4,7 +4,7 @@ import java.util.*;
 import javax.persistence.*;
 import play.db.jpa.*;
  import javax.persistence.Entity;
-
+ import play.db.jpa.Model;
 
 
 
@@ -24,7 +24,9 @@ public class Invitation extends Model{
     
     @ManyToOne(cascade=CascadeType.ALL)
     public Organization organization;
+    @ManyToOne(cascade=CascadeType.ALL)
     public MainEntity entity;
+    @ManyToOne(cascade=CascadeType.ALL)
     public Topic topic;
 	
    
