@@ -21,32 +21,34 @@ public class Idea extends Model {
 	@Required
 	int privacyLevel;
 	@ManyToMany(cascade = CascadeType.PERSIST)
-	// ArrayList<Tag> tagsList;
+	ArrayList<Tag> tagsList;
 	@OneToMany(cascade = CascadeType.PERSIST)
 	// ArrayList<Comment> commentsList;
 	@Required
 	@ManyToOne
-	// Topic belongsTo;
+	Topic belongsToTopic;
 	Boolean Active;
-	
+
 	public boolean isDraft;
 
-	// @Required
+	@Required
 	@ManyToOne
 	public User author;
 
-	public Idea(String t, String d, User user) {
+	public Idea(String t, String d, User user, Topic topic) {
 		this.title = t;
 		this.description = d;
 		this.Active = false;
 		this.author = user;
 		user.ideasCreated.add(this);
+		this.belongsToTopic = topic;
+		user.ideasCreated.add(this);
 		this.isDraft = false;
-		// this.tagsList = new ArrayList<Tag>();
+		this.tagsList = new ArrayList<Tag>();
 		// this.commentsList = new ArrayList<Comment>();
 
 	}
-	
+
 	public Idea(String t, String d, User user, boolean isDraft) {
 		this.title = t;
 		this.description = d;
@@ -58,7 +60,5 @@ public class Idea extends Model {
 		// this.commentsList = new ArrayList<Comment>();
 
 	}
-	
-	
 
 }
