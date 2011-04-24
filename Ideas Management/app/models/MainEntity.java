@@ -2,14 +2,20 @@ package models;
 
 import java.util.ArrayList;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
 import play.db.jpa.Model;
 
+
+@Entity
 public class MainEntity extends Model{
 	String name;
 	MainEntity parent;
 	int privacyLevel;
 	String description;
 	ArrayList<MainEntity> subentities;
+	ArrayList<User> followers;
 	
 	//Organization organization;
 	//ArrayList<User> organizer;
@@ -19,6 +25,7 @@ public class MainEntity extends Model{
 	//ArrayList<Request> requestList;
 	//ArrayList<Invitation> invitationList;	
 	//Arraylist<RequestOfRelationship>
+	
 	
 	public MainEntity (String n, String d, int p) {
 		this.name = n;
