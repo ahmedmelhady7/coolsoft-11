@@ -11,11 +11,11 @@ import play.db.jpa.*;
 public class Action extends Model {
 	String description;
     @ManyToOne
-    ArrayList<Role> roles;
+     Role role;
     
-public Action (String description, ArrayList<Role> roles){
+public Action (String description,Role role){
 	this.description = description;
-	this.roles = roles;
+	this.role = role;
 }
 
 }
