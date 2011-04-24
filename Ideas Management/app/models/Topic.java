@@ -44,6 +44,9 @@ public class Topic extends Model {
 		//commentsOn = new ArrayList<Comment>();
 		//requestsToJoin = new ArrayList<RequestToJoin>();
 	}
-	
+	 public ArrayList<User> getOrganizer() {
+		 return organizers;
+		 
+	 }
 
 }
