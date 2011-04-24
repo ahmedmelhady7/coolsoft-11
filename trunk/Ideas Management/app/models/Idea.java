@@ -38,6 +38,7 @@ public class Idea extends Model {
 		this.description = d;
 		this.Active = false;
 		this.author = user;
+		user.ideasCreated.add(this);
 		// this.tagsList = new ArrayList<Tag>();
 		// this.commentsList = new ArrayList<Comment>();
 
