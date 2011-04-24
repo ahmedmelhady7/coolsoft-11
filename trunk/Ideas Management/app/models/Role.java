@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.persistence.*;
  
@@ -11,9 +12,9 @@ public class Role extends Model {
  String roleName;
  
  @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
- ArrayList  <Action> actions;
+ Set  <Action> actions;
 
-public Role (String role , ArrayList<Action> actions){
+public Role (String role , Set<Action> actions){
 	this.roleName = role;
 	this.actions = actions; 
 }
