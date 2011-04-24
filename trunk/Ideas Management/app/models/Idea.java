@@ -11,7 +11,7 @@ import play.db.jpa.Model;
  * @author ${Ahmed El-Hadi}
  * 
  */
-
+@Entity
 public class Idea extends Model {
 	@Required
 	String title;
