@@ -28,6 +28,8 @@ public class Idea extends Model {
 	@ManyToOne
 	// Topic belongsTo;
 	Boolean Active;
+	
+	public boolean isDraft;
 
 	// @Required
 	@ManyToOne
@@ -39,6 +41,19 @@ public class Idea extends Model {
 		this.Active = false;
 		this.author = user;
 		user.ideasCreated.add(this);
+		this.isDraft = false;
+		// this.tagsList = new ArrayList<Tag>();
+		// this.commentsList = new ArrayList<Comment>();
+
+	}
+	
+	public Idea(String t, String d, User user, boolean isDraft) {
+		this.title = t;
+		this.description = d;
+		this.Active = false;
+		this.author = user;
+		user.ideasCreated.add(this);
+		this.isDraft = isDraft;
 		// this.tagsList = new ArrayList<Tag>();
 		// this.commentsList = new ArrayList<Comment>();
 
