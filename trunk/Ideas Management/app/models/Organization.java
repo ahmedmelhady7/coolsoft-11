@@ -20,7 +20,7 @@ public class Organization {
 	@ManyToMany
 	public ArrayList<Tag> relatedTags;
 	
-	//privacy level??
+	short privacyLevel;
 	
 	
 	//Request_to_Join??
@@ -33,11 +33,11 @@ public class Organization {
 	public Organization(String name, User creator) {
 		this.name = name;
 		this.creator = creator;
-		//default privacy level
+		this.privacyLevel = 2;	//default privacylevel is public
 	}
-	public Organization(String name, User creator, String privacyLevel) {
+	public Organization(String name, User creator, short privacyLevel) {
 		this.name = name;
 		this.creator = creator;
-		//default privacy level
+		this.privacyLevel = privacyLevel;
 	}
 }
