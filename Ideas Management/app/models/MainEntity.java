@@ -41,4 +41,8 @@ public class MainEntity extends Model{
 		this.parent = parent;
 		parent.subentities.add(this);
 	}
+	
+	public void unfollow(User user) {
+		followers.remove(user);
+	}
 }

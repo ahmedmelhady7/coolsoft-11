@@ -25,10 +25,10 @@ public class Organization {
 	
 	//Request_to_Join??
 	
-	@OneToMany//(mappedBy = Pending class creation) 
-	public ArrayList<Invitation> invitations;
-	@OneToMany//(mappedBy = Pending class creation)
-	public ArrayList<Log> logsList;
+	//@OneToMany//(mappedBy = Pending class creation) 
+	//public ArrayList<Invitation> invitations;
+	//@OneToMany//(mappedBy = Pending class creation)
+	//public ArrayList<Log> logsList;
 	
 	public Organization(String name, User creator) {
 		this.name = name;

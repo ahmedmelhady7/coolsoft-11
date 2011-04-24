@@ -48,5 +48,11 @@ public class Topic extends Model {
 		 return organizers;
 		 
 	 }
+	/*
+	public void unfollow(User user) {
+		followers.remove(user);
+	}
+	*/
+	
 
 }
