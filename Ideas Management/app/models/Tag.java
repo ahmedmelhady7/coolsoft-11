@@ -10,6 +10,7 @@ import play.db.jpa.Model;
 @Entity
 public class Tag extends Model{
 	@Required
+	private
 	String name;
 	ArrayList<Tag> relatedTags;
 	//String creator;	We might still need this attribute;
@@ -19,11 +20,11 @@ public class Tag extends Model{
 	public ArrayList<Organization> organizations;
 	
 	public Tag(String name) {
-		this.name = name;
+		this.setName(name);
 	}
 	
 	public Tag(String name, ArrayList<Tag> tags) {
-		this.name = name;
+		this.setName(name);
 		this.relatedTags = tags;
 	}
 	/*
@@ -31,4 +32,12 @@ public class Tag extends Model{
 		followers.remove(user);
 	}
 	*/
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
 }
