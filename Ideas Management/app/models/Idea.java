@@ -35,6 +35,9 @@ public class Idea extends Model {
 	@Required
 	@ManyToOne
 	public User author;
+	
+	@ManyToOne
+	public Plan plan;
 
 	public Idea(String t, String d, User user, Topic topic) {
 		this.title = t;
