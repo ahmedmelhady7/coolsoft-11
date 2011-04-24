@@ -26,7 +26,7 @@ public class Item extends Model {
 	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
 	public ArrayList<AssignRequest> assignRequests;
 	
-	@ManyToMany(mappedBy = "assignedItem", cascade = CascadeType.PERSIST)
+	@ManyToMany(mappedBy = "itemsAssigned", cascade = CascadeType.PERSIST)
 	public ArrayList<User> assignees;
 
 	@ManyToOne
