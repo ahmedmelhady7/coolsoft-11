@@ -25,7 +25,7 @@ public class Item extends Model {
     public Item(Date starDate, Date endDate,String status, String description) {
     	this.startDate = startDate;
     	this.endDate = endDate;
-    	this.status = status;
+    	this.status = "new";
     	this.description = description;
 //    	this.tags = new ArrayList<Tag>();
 //    	this.items = new ArrayList<Item>();
