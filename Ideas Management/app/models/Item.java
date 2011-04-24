@@ -17,7 +17,7 @@ public class Item extends Model {
     public String description;
     
     @ManyToMany(mappedBy = "assignedItem", cascade = CascadeType.PERSIST)
-	public ArrayList<Item> assignees;
+	public ArrayList<User> assignees;
     
 //    @OneToMany(mappedBy="plan", cascade=CascadeType.ALL)
 //    public List<Tag> tags;
