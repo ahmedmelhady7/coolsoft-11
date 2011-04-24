@@ -10,7 +10,7 @@ import play.db.jpa.*;
 public class Role extends Model {
  String role;
  
- @ManyToMany
+ @OneToMany(mappedBy = "actions", cascade = CascadeType.ALL)
  ArrayList  <Action> actions;
 
 public Role (String role , ArrayList<Action> actions){
