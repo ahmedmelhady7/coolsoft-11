@@ -6,8 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import play.db.jpa.Model;
 @Entity
-public class Organization {
+public class Organization extends Model{
 	String name;
 	@OneToMany(mappedBy = "name")
 	public ArrayList<MainEntity> entitiesList;
