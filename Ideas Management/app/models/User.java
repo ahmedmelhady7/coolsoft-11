@@ -12,6 +12,7 @@ public class User {
 	public ArrayList<Topic> topicsIOrganize;
 
 
-	
+	@OneToMany(mappedBy="creator", cascade=CascadeType.ALL)
+	public ArrayList<Idea> IdeasCreated;
 	
 }
