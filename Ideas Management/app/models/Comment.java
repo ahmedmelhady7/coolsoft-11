@@ -4,6 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import play.db.jpa.Model;
 
+/**
+ * @author ${Ibrahim Safwat}
+ * 
+ */
+
+/**
+* Comments to be posted on ideas/plans/requests
+*/
+
 @Entity
 public class Comment extends Model {
 	
