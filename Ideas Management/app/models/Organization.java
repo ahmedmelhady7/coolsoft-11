@@ -36,19 +36,27 @@ public class Organization extends Model{
 	
 	//Request_to_Join??
 	
-	//@OneToMany//(mappedBy = Pending class creation)
-	//public ArrayList<Log> logsList;
+	@OneToMany (mappedBy = "organization", cascade = CascadeType.PERSIST)
+	public List<Log> logsList;
+	//to which constructor should the logList, bannedUser and UserRoleInOrganazation be added.
 	
 	public Organization(String name, User creator) {
 		this.name = name;
 		this.creator = creator;
 		this.privacyLevel = 2;	//default privacylevel is public
+		bannedUsers = new ArrayList<BannedUser>();
+		userRoleInOrg =  new ArrayList<UserRoleInOrganization>();
+		logsList = new ArrayList<Log>();
+		
 	}
 	public Organization(String name, User creator, short privacyLevel) {
 		this.name = name;
 		this.creator = creator;
 		this.privacyLevel = privacyLevel;
 		invitation = new ArrayList<Invitation>();
+		bannedUsers = new ArrayList<BannedUser>();
+		userRoleInOrg =  new ArrayList<UserRoleInOrganization>();
+		logsList = new ArrayList<Log>();
 	}
 	
 	/**
