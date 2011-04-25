@@ -12,37 +12,78 @@ import play.db.jpa.Model;
  * 
  */
 
+/**
+ * Ideas to be posted to Topics
+ */
+
 @Entity
 public class Idea extends Model {
+	/**
+	 * Idea's Tittle Required for creating an idea
+	 */
 	@Required
 	public String title;
+	/**
+	 * Idea's description Required for creating an idea
+	 */
 	@Required
 	public String description;
+	/**
+	 * Counter for how many times the idea got reported as a spam
+	 */
 	int spamCounter;
-	@Required
+	/**
+	 * The level of privacy of the idea (public,private,secret)
+	 */
 	public int privacyLevel;
+	/**
+	 * the list of tags that the idea is tagged with
+	 */
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	public List<Tag> tagsList;
+	// /**
+	// * the list of comments to an idea
+	// */
 	// @OneToMany(cascade = CascadeType.PERSIST)
 	// List<Comment> commentsList;
+	/**
+	 * the topic that the idea belongs to
+	 */
 	@Required
 	@ManyToOne
 	public Topic belongsToTopic;
-	Boolean Active;
-
-	public boolean isDraft;
-
+	/**
+	 * the Author of the idea
+	 */
 	@Required
 	@ManyToOne
 	public User author;
-
+	/**
+	 * the plan that the idea is marked in
+	 */
 	@ManyToOne
 	public Plan plan;
+
+	public boolean isDraft;
+
+	/**
+	 * Default constructor
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @param T
+	 *            title of the idea
+	 * @param d
+	 *            description of the idea
+	 * @param user
+	 *            Author of the idea
+	 * @param topic
+	 *            Topic that the idea belongs/added to
+	 */
 
 	public Idea(String t, String d, User user, Topic topic) {
 		this.title = t;
 		this.description = d;
-		this.Active = false;
 		this.author = user;
 		user.ideasCreated.add(this);
 		this.belongsToTopic = topic;
@@ -56,7 +97,6 @@ public class Idea extends Model {
 	public Idea(String t, String d, User user, boolean isDraft) {
 		this.title = t;
 		this.description = d;
-		this.Active = false;
 		this.author = user;
 		user.ideasCreated.add(this);
 		this.isDraft = isDraft;
