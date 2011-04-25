@@ -29,9 +29,8 @@ public class Topic extends Model {
 	//public List<TopicInvitation> topicInvitations;
 	@ManyToOne
 	public MainEntity entity;
-	
 	@OneToOne
-	Plan plan;
+	public Plan plan;
 
 	@OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
 	 List<Invitation> invitation;
@@ -82,7 +81,9 @@ public class Topic extends Model {
 	 * @return	void
 	 */
 	
+	/*
 	public void unfollow(User user) {
 		followers.remove(user);
 	}
+	*/
 }
