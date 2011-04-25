@@ -59,8 +59,8 @@ public class User extends Model {
 	List<MainEntity> followingEntities;
 	
 // related to sprint 2
-//	@ManyToMany
-//	public List<Tag> followingTags;
+	@ManyToMany
+	public List<Tag> followingTags;
 	
 	@ManyToMany
 	public List<Organization> followingOrganizations;
