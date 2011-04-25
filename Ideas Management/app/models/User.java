@@ -37,6 +37,13 @@ public class User extends Model {
 	
 	@ManyToMany(mappedBy = "organizers", cascade = CascadeType.PERSIST)
 	public List<Topic> topicsIOrganize;
+	
+	/** 
+	 * Added by Alia, but whoever is responsible for it please check the cascade etc.
+	 */
+	
+	@ManyToMany(mappedBy = "followers", cascade = CascadeType.PERSIST)
+	public List<Topic> topicsIFollow;
 
 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
 	public List<Idea> ideasCreated;
