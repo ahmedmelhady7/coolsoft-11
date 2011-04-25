@@ -25,7 +25,7 @@ public class Tag extends Model{
 	 * Added by Alia, but whoever is responsible for it please check the cascade etc.
 	 */
 	@ManyToMany(mappedBy = "tags")
-	public List<User> taggedTopics;
+	public List<Topic> taggedTopics;
 	
 	@ManyToMany
 	public List<Organization> organizations;
