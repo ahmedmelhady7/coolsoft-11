@@ -21,6 +21,12 @@ public class Tag extends Model{
 	@ManyToMany(mappedBy = "followingTags", cascade = CascadeType.ALL)
 	public List<User> followers;
 	
+	/**
+	 * Added by Alia, but whoever is responsible for it please check the cascade etc.
+	 */
+	@ManyToMany(mappedBy = "tags")
+	public List<User> taggedTopics;
+	
 	@ManyToMany
 	public List<Organization> organizations;
 	
