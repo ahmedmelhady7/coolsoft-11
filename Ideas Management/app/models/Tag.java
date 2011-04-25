@@ -21,7 +21,7 @@ public class Tag extends Model{
 	@ManyToMany(mappedBy = "followingTags", cascade = CascadeType.ALL)
 	public List<User> followers;
 	
-	@ManyToMany(mappedBy = "relatedTags", cascade = CascadeType.ALL)
+	@ManyToMany
 	public List<Organization> organizations;
 	
 	@ManyToMany
