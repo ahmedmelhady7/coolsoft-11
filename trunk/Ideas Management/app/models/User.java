@@ -23,35 +23,33 @@ public class User extends Model {
 	public Date dateofBirth;
 	public int communityContributionCounter;
 	public List<Role> roles;
-	//added to know whether a user is an Admin or not
+	// added to know whether a user is an Admin or not
 	boolean isAdmin;
 
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
 	public List<Topic> topicsCreated;
-	
+
 	@ManyToMany(mappedBy = "organizers", cascade = CascadeType.PERSIST)
 	public List<Topic> topicsIOrganize;
-	
+
 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
 	public List<Idea> ideasCreated;
-	
+
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	public List<Item> itemsAssigned;
-
-	public List<AssignRequest> assignRequests;
 
 	@OneToMany(mappedBy = "user")
 	List<NotificationProfile> notificationProfiles;
 	@OneToMany(mappedBy = "directedTo")
 	List<Notification> notifications;
-	 
-//	 List<Request> requests;
-//	 List<Comment> commentsPosted;
-//	 List<LinkDuplicates> linkDuplicates;
-//	 List<Invitation> invitations;
-//	 List<RequestToJoin> requestsToJoin;
-//	 List<RequestOfRelationship> requestRelationship;
-//	 List<TopicInvitation> topicInvitations;
+
+	// List<Request> requests;
+	// List<Comment> commentsPosted;
+	// List<LinkDuplicates> linkDuplicates;
+	List<Invitation> invitations;
+	// List<RequestToJoin> requestsToJoin;
+	// List<RequestOfRelationship> requestRelationship;
+	// List<TopicInvitation> topicInvitations;
 
 	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
 	public List<VolunteerRequest> volunteerRequests;
@@ -61,11 +59,11 @@ public class User extends Model {
 
 	@OneToMany(mappedBy = "destination", cascade = CascadeType.ALL)
 	public List<AssignRequest> receivedAssignRequests;
-	
+
 	@OneToMany(mappedBy = "bannedUser", cascade = CascadeType.ALL)
-	public List<BannedUser> bannedUsers; 
-	
-	@OneToMany(mappedBy ="enrolled",cascade = CascadeType.ALL )
+	public List<BannedUser> bannedUsers;
+
+	@OneToMany(mappedBy = "enrolled", cascade = CascadeType.ALL)
 	public List<UserRoleInOrganization> userRolesInOrganization;
 
 	public User(String email, String password, String firstName,
@@ -93,7 +91,7 @@ public class User extends Model {
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
 		// linkDuplicates = new ArrayList<LinkDuplicates>();
-		// invitations = new ArrayList<Invitation>();
+		invitations = new ArrayList<Invitation>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
 		// requestRelationship = new ArrayList<RequestOfRelationship>();
 		// topicInvitations = new ArrayList<TopicInvitation>();
