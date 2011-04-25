@@ -28,8 +28,10 @@ public class MainEntity extends Model{
 	ArrayList<Topic> topicList;	
 	@ManyToMany (mappedBy = "relatedTags", cascade = CascadeType.ALL)
 	ArrayList<Tag> tagList;	
+	
 	@OneToMany (mappedBy = "entity", cascade = CascadeType.ALL)
-	ArrayList<Invitation> invitationList;
+	ArrayList<Invitation> invitation;
+	
 	//ArrayList<User> organizer;
 	//ArrayList<Relationship> relationshipList;
 	//ArrayList<Request> requestList;	
@@ -41,6 +43,7 @@ public class MainEntity extends Model{
 		this.description = d;
 		this.privacyLevel = p;
 		this.parent = null;
+		invitation = new ArrayList<Invitation>();
 	}
 	
 	public MainEntity (String n, String d, int p, MainEntity parent) {
@@ -49,6 +52,7 @@ public class MainEntity extends Model{
 		this.privacyLevel = p;
 		this.parent = parent;
 		parent.subentities.add(this);
+		invitation = new ArrayList<Invitation>();
 	}
 	
 	/**
