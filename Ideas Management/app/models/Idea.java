@@ -1,6 +1,6 @@
 package models;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -22,9 +22,9 @@ public class Idea extends Model {
 	@Required
 	public int privacyLevel;
 	@ManyToMany(cascade = CascadeType.PERSIST)
-	public ArrayList<Tag> tagsList;
+	public List<Tag> tagsList;
 	// @OneToMany(cascade = CascadeType.PERSIST)
-	// ArrayList<Comment> commentsList;
+	// List<Comment> commentsList;
 	@Required
 	@ManyToOne
 	public Topic belongsToTopic;
