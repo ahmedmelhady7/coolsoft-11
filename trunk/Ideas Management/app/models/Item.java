@@ -16,7 +16,7 @@ public class Item extends Model {
 	@Lob
 	public String description;
 
-	@OneToMany(mappedBy="Item", cascade=CascadeType.ALL)
+	@ManyToMany(mappedBy="taggedItems", cascade=CascadeType.ALL)
 	public List<Tag> tags;
 
 	@OneToMany(mappedBy = "destination", cascade = CascadeType.ALL)

@@ -10,7 +10,6 @@ import play.db.jpa.*;
 public class Plan extends Model {
 
 	public String title;
-	public User user;
 	public int rate;
 	public String status;
 	public float progress;
@@ -20,9 +19,6 @@ public class Plan extends Model {
 	
 	@OneToOne
 	public Topic topic;
-
-	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
-	public List<Tag> tags;
 	
 	// @OneToMany(mappedBy="plan", cascade=CascadeType.ALL)
 	// public List<Comment> comments;
@@ -35,12 +31,15 @@ public class Plan extends Model {
 
 	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
 	public List<Item> items;
+	
+	@ManyToOne
+	public User madeBy;
 
-	public Plan(String title, User user, int rate, String status, Date startDate,
+	public Plan(String title, User user, String status, Date startDate,
 			Date endDate, String description, Topic topic) {
 		this.title = title;
-		this.user = user;
-		this.rate = rate;
+		this.madeBy = user;
+		this.rate = 0;
 		this.status = "new";
 		this.progress = 0;
 		this.startDate = startDate;
@@ -48,7 +47,6 @@ public class Plan extends Model {
 		this.description = description;
 		this.requirements = new ArrayList<String>();
 		this.items = new ArrayList<Item>();
-		this.tags = new ArrayList<Tag>();
 		//this.comments = new ArrayList<Comment>();
 		this.ideas = new ArrayList<Idea>();
 		this.topic = topic;
