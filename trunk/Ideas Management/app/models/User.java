@@ -81,6 +81,7 @@ public class User extends Model {
 		this.lastName = lastName;
 		this.roles = new ArrayList<Role>();
 		this.ideasCreated = new ArrayList<Idea>();
+		this.itemsAssigned = new ArrayList<Item>();
 		this.topicsIOrganize = new ArrayList<Topic>();
 		this.topicsCreated = new ArrayList<Topic>();
 		this.volunteerRequests = new ArrayList<VolunteerRequest>();
