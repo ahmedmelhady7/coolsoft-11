@@ -83,7 +83,7 @@ public class Topics extends CRUD {
 	 *            : the description of the idea
 	 * 
 	 * @param privacyLevel
-	 *            : the level of privacy the idea
+	 *            : the level of privacy of the idea
 	 * 
 	 * @return void
 	 */
