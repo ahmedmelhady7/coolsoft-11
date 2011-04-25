@@ -48,4 +48,20 @@ public class Organization extends Model{
 		this.creator = creator;
 		this.privacyLevel = privacyLevel;
 	}
+	
+	/**
+	 * This Method removes a user from the list of followers
+	 * 
+	 * @author 	Ibrahim.al.khayat
+	 * 
+	 * @story 	C2S12
+	 * 
+	 * @param  	user 	: the user who follows
+	 * 
+	 * @return	void
+	 */
+	
+	public void unfollow(User user) {
+		followers.remove(user);
+	}
 }

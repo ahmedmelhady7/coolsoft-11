@@ -28,11 +28,22 @@ public class Tag extends Model{
 		this.setName(name);
 		this.relatedTags = tags;
 	}
-	/*
+	
+	/**
+	 * This Method removes a user from the list of followers
+	 * 
+	 * @author 	Ibrahim.al.khayat
+	 * 
+	 * @story 	C2S12
+	 * 
+	 * @param  	user 	: the user who follows
+	 * 
+	 * @return	void
+	 */
 	public void unfollow(User user) {
 		followers.remove(user);
 	}
-	*/
+	
 
 	public void setName(String name) {
 		this.name = name;
