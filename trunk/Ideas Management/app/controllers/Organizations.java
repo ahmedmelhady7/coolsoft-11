@@ -23,4 +23,23 @@ public class Organizations extends CRUD{
 	public static void unfollow(Organization org, User user) {
 		org.unfollow(user);
 	}
+	/**
+	 * 
+	 * This Method returns the Privacy level of an organization given the organization Id
+	 * 
+	 * @author 	Fadwa
+	 * 
+	 * @story 	C2S34
+	 * 
+	 * @param 	organizationId 	: the id of the organization for which the privacy level is needed
+	 *
+	 * @return	short
+	 */
+
+	 public short getPrivacyLevel(Long id){
+		 Organization organization = Organization.findById(id);
+		 if(organization!=null)
+			 return organization.privacyLevel;
+		return -1;
+	 }
 }
