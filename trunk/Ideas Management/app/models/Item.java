@@ -10,7 +10,8 @@ public class Item extends Model {
 
 	public Date startDate;
 	public Date endDate;
-	public String status;
+	public short status;
+	public String summary;
 
 	@Lob
 	public String description;
@@ -30,11 +31,12 @@ public class Item extends Model {
 	@ManyToOne
 	public Plan plan;
 
-	public Item(Date startDate, Date endDate, String status,
-			String description, Plan plan) {
+	public Item(Date startDate, Date endDate, short status,
+			String description, Plan plan, String summary) {
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.status = "new";
+		this.status = 0;
+		this.summary = summary;
 		this.description = description;
 		this.volunteerRequests = new ArrayList<VolunteerRequest>();
 		this.assignRequests = new ArrayList<AssignRequest>();
