@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,23 +12,22 @@ import play.db.jpa.Model;
 @Entity
 public class Tag extends Model{
 	@Required
-	private
-	String name;
-	@ManyToMany
-	ArrayList<Tag> relatedTags;
+	public String name;
+//	@ManyToMany(mappedBy = "relatedTags") 	Still waiting for the Relationship Class
+//	public List<Tag> relatedTags; 		  	Sprint 2
+	
 	//String creator;	We might still need this attribute;
+	
 	@ManyToMany(mappedBy = "followingTags", cascade = CascadeType.ALL)
-	public ArrayList<User> followers;
-	@ManyToMany(mappedBy = "name")
-	public ArrayList<Organization> organizations;
+	public List<User> followers;
+	@ManyToMany(mappedBy = "relatedTags", cascade = CascadeType.ALL)
+	public List<Organization> organizations;
 	
 	public Tag(String name) {
 		this.setName(name);
-	}
-	
-	public Tag(String name, ArrayList<Tag> tags) {
-		this.setName(name);
-		this.relatedTags = tags;
+		this.followers = new ArrayList<User>();
+		this.organizations = new ArrayList<Organization>();
+		//this.relatedTags = new ArrayList<Tag>();
 	}
 	
 	/**
