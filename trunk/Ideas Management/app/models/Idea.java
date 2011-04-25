@@ -64,8 +64,9 @@ public class Idea extends Model {
 	@ManyToOne
 	public Plan plan;
 	/*
-	 * true if the idea is not to be posted (saved as a draft)
-	 * , false if it's to be posted normally*/
+	 * true if the idea is not to be posted (saved as a draft) , false if it's
+	 * to be posted normally
+	 */
 
 	public boolean isDraft;
 
@@ -74,9 +75,9 @@ public class Idea extends Model {
 	 * 
 	 * @author ${Ahmed El-Hadi}
 	 * 
-	 * @param T
+	 * @param title
 	 *            title of the idea
-	 * @param d
+	 * @param description
 	 *            description of the idea
 	 * @param user
 	 *            Author of the idea
@@ -84,9 +85,9 @@ public class Idea extends Model {
 	 *            Topic that the idea belongs/added to
 	 */
 
-	public Idea(String t, String d, User user, Topic topic) {
-		this.title = t;
-		this.description = d;
+	public Idea(String title, String description, User user, Topic topic) {
+		this.title = title;
+		this.description = description;
 		this.author = user;
 		user.ideasCreated.add(this);
 		this.belongsToTopic = topic;
@@ -95,30 +96,27 @@ public class Idea extends Model {
 		// this.commentsList = new ArrayList<Comment>();
 
 	}
-	
+
 	/**
 	 * 
 	 * @author ${Abdalrahman Ali}
 	 * 
-	 * this constructor is used to differentiate draft ideas from 
-	 * normally posted ideas
-	 * 
-	 * @param title
+	 * @param t
 	 *            title of the idea
-	 * @param body
+	 * @param d
 	 *            description of the idea
 	 * @param user
 	 *            Author of the idea
 	 * @param topic
 	 *            Topic that the idea belongs/added to
 	 * @param isDraft
-	 * 			  True if this idea will be saved as a draft           
+	 *            True if this idea will be saved as a draft
 	 * 
 	 */
-	
-	public Idea(String title, String body, User user,Topic topic, boolean isDraft){
-		this.title = title;
-		this.description = body;
+
+	public Idea(String t, String d, User user, Topic topic, boolean isDraft) {
+		this.title = t;
+		this.description = d;
 		this.belongsToTopic = topic;
 		this.author = user;
 		user.ideasCreated.add(this);
