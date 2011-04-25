@@ -39,20 +39,23 @@ public class User extends Model {
 	public List<Item> itemsAssigned;
 
 	@OneToMany(mappedBy = "user")
-	List<NotificationProfile> notificationProfiles;
+	public List<NotificationProfile> notificationProfiles;
 	@OneToMany(mappedBy = "directedTo")
-	List<Notification> notifications;
+	public List<Notification> notifications;
 	@ManyToMany
 	List<MainEntity> following;
 
 	// List<Request> requests;
 	// List<Comment> commentsPosted;
 	// List<LinkDuplicates> linkDuplicates;
-	List<Invitation> invitations;
+	
 	// List<RequestToJoin> requestsToJoin;
 	// List<RequestOfRelationship> requestRelationship;
 	// List<TopicInvitation> topicInvitations;
-
+	
+	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+	public List<Invitation> invitation;
+	
 	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
 	public List<VolunteerRequest> volunteerRequests;
 
@@ -90,10 +93,12 @@ public class User extends Model {
 		notificationProfiles = new ArrayList<NotificationProfile>();
 		notifications = new ArrayList<Notification>();
 		bannedUsers = new ArrayList<BannedUser>();
+		invitation = new ArrayList<Invitation>();
+		
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
 		// linkDuplicates = new ArrayList<LinkDuplicates>();
-		invitations = new ArrayList<Invitation>();
+		
 		// requestsToJoin = new ArrayList<RequestToJoin>();
 		// requestRelationship = new ArrayList<RequestOfRelationship>();
 		// topicInvitations = new ArrayList<TopicInvitation>();
