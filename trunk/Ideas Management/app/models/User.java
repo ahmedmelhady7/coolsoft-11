@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 import java.util.List;
 
@@ -21,44 +22,45 @@ public class User extends Model {
 	public String country;
 	public Date dateofBirth;
 	public int communityContributionCounter;
-	public ArrayList<Role> roles;
+	public List<Role> roles;
 	//added to know whether a user is an Admin or not
 	boolean isAdmin;
 
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
-	public ArrayList<Topic> topicsCreated;
+	public List<Topic> topicsCreated;
 	
 	@ManyToMany(mappedBy = "organizers", cascade = CascadeType.PERSIST)
-	public ArrayList<Topic> topicsIOrganize;
+	public List<Topic> topicsIOrganize;
 	
 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
-	public ArrayList<Idea> ideasCreated;
+	public List<Idea> ideasCreated;
 	
 	@ManyToMany(cascade = CascadeType.PERSIST)
-	public ArrayList<Item> itemsAssigned;
+	public List<Item> itemsAssigned;
 
-	public ArrayList<AssignRequest> assignRequests;
+	public List<AssignRequest> assignRequests;
 
 	@OneToMany(mappedBy = "user")
-	ArrayList<NotificationProfile> notificationProfiles;
+	List<NotificationProfile> notificationProfiles;
 	@OneToMany(mappedBy = "directedTo")
-	ArrayList<Notification> notifications;
-	// ArrayList<Request> requests;
-	// ArrayList<Comment> commentsPosted;
-	// ArrayList<LinkDuplicates> linkDuplicates;
-	// ArrayList<Invitation> invitations;
-	// ArrayList<RequestToJoin> requestsToJoin;
-	// ArrayList<RequestOfRelationship> requestRelationship;
-	// ArrayList<TopicInvitation> topicInvitations;
+	List<Notification> notifications;
+	 
+//	 List<Request> requests;
+//	 List<Comment> commentsPosted;
+//	 List<LinkDuplicates> linkDuplicates;
+//	 List<Invitation> invitations;
+//	 List<RequestToJoin> requestsToJoin;
+//	 List<RequestOfRelationship> requestRelationship;
+//	 List<TopicInvitation> topicInvitations;
 
 	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-	public ArrayList<VolunteerRequest> volunteerRequests;
+	public List<VolunteerRequest> volunteerRequests;
 
 	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-	public ArrayList<AssignRequest> sentAssignRequests;
+	public List<AssignRequest> sentAssignRequests;
 
 	@OneToMany(mappedBy = "destination", cascade = CascadeType.ALL)
-	public ArrayList<AssignRequest> receivedAssignRequests;
+	public List<AssignRequest> receivedAssignRequests;
 	
 	@OneToMany(mappedBy = "bannedUser", cascade = CascadeType.ALL)
 	public List<BannedUser> bannedUsers; 
@@ -93,7 +95,7 @@ public class User extends Model {
 		// invitations = new ArrayList<Invitation>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
 		// requestRelationship = new ArrayList<RequestOfRelationship>();
-		// topicInvitations = new ArrayList<TopicInvitation>() ;
+		// topicInvitations = new ArrayList<TopicInvitation>();
 
 	}
 }
