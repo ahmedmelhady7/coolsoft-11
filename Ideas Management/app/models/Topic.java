@@ -15,6 +15,8 @@ public class Topic extends Model {
 	@Lob
 	public String description;
 	public short privacyLevel;
+	
+	@ManyToMany
 	public List<Tag> tags;
 	//public List<Relationship> relationships;
 
