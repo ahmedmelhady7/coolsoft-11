@@ -23,6 +23,9 @@ public class Topic extends Model {
 	// the list of its organizers
 	@OneToMany(mappedBy = "belongsToTopic", cascade = CascadeType.ALL)
 	public ArrayList<Idea> ideas;
+	
+	@ManyToOne
+	public MainEntity entity;
 	// public ArrayList<Comment> commentsOn;
 	// public ArrayList<RequestToJoin> requestsToJoin;
 	// public ArrayList<RequestOfRelationship> relationshipRequests;
