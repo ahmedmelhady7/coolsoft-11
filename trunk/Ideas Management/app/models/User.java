@@ -42,6 +42,8 @@ public class User extends Model {
 	List<NotificationProfile> notificationProfiles;
 	@OneToMany(mappedBy = "directedTo")
 	List<Notification> notifications;
+	@ManyToMany
+	List<MainEntity> following;
 
 	// List<Request> requests;
 	// List<Comment> commentsPosted;
