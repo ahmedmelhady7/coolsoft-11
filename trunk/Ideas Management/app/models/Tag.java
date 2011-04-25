@@ -12,6 +12,7 @@ public class Tag extends Model{
 	@Required
 	private
 	String name;
+	@ManyToMany
 	ArrayList<Tag> relatedTags;
 	//String creator;	We might still need this attribute;
 	@ManyToMany(mappedBy = "username")
