@@ -26,10 +26,9 @@ public class Topics extends CRUD {
 	 * 
 	 * @return void
 	 */
-	/*
-	 * public static void unfollow(Topic topic, User user) {
-	 * topic.unfollow(user); }
-	 */
+	public static void unfollow(Topic topic, User user) {
+		topic.unfollow(user);
+	}
 
 	/**
 	 * This Method returns true if the tag has been successfully added to the
