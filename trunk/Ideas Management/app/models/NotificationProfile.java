@@ -5,6 +5,11 @@ import javax.persistence.ManyToOne;
 
 import play.db.jpa.Model;
 
+/**
+ * @author ${Ahmed Maged}
+ * 
+ */
+
 @Entity
 public class NotificationProfile extends Model {
 
