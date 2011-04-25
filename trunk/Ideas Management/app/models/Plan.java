@@ -1,6 +1,7 @@
 package models;
 
 import java.util.*;
+
 import javax.persistence.*;
 
 import play.db.jpa.*;
@@ -61,11 +62,26 @@ public class Plan extends Model {
 	 * 
 	 * @story 	C5S14  
 	 * 
-	 * @return	List<Idea>    : the ideas promoted to excecution in the plan
+	 * @return	List<Idea>    : the ideas promoted to execution in the plan
 	 */
-
+	
 	public List<Idea> listOfIdeas(){
 		return this.ideas;
 	}
+	/**
+	 * This Method adds an Item to the list of Items of a Plan
+	 * 
+	 * @author 	hassan.ziko1
+	 * 
+	 * @story 	C5S1  
+	 * 
+	 * @return	void
+	 */
 
+	public void addItem(Date startDate, Date endDate, short status,
+			String description, Plan plan, String summary) {
+		Item x = new Item(startDate,endDate, status, description, plan, summary);
+		this.items.add(x);
+	}
+	
 }
