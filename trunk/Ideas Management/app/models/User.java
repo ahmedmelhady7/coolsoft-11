@@ -102,6 +102,7 @@ public class User extends Model {
 		bannedUsers = new ArrayList<BannedUser>();
 		invitation = new ArrayList<Invitation>();
 		this.enrolled = new ArrayList<Organization>();
+		followingOrganizations= new ArrayList<Organization>();
 		
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
