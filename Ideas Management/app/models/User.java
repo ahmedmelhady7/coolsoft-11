@@ -29,7 +29,7 @@ public class User extends Model {
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
 	public List<Topic> topicsCreated;
 	
-	@ManyToMany(mappedBy = "enrolledUsers", cascade = CascadeType.ALL)
+	@ManyToMany
 	public List<Organization> enrolled;
 	
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
