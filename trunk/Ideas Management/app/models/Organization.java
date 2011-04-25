@@ -12,7 +12,7 @@ import play.db.jpa.Model;
 @Entity
 public class Organization extends Model{
 	String name;
-	boolean createTag;
+	public boolean createTag;
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
 	public List<MainEntity> entitiesList;
 	@ManyToOne
