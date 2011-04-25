@@ -13,23 +13,19 @@
             <br/>
             End Date:  ${assignedItem.endtDate.format('dd MMM yy')}
             <br/>
-            Assigned Users: <ul>
-            	 #{list users:${assignedItem.assignees}, as:'assignedUser'}
-				 <li>
-				 	<a href="#">${assignedUser.username}</a>
-				 </li>
-				  #{/list}
+            Assigned Users: 
+            <ul>
+                #{list users:${assignedItem.assignees}, as:'assignedUser'}
+                <li>
+                    <a href="#">${assignedUser.username}</a>
+                </li>
+                #{/list}
             </ul>
         </fieldset>
-        ${oldPost.comments.size() ?: 'no'} 
-        comment${oldPost.comments.size().pluralize()}
-        #{if oldPost.comments}
-        - latest by ${oldPost.comments[0].author}
-        #{/if}
     </li>
     #{/list}
 </ul>
 #{/if}
 #{else}
-There is currently nothing to read here.
+You are not assigned to any to-do Item
 #{/else}
