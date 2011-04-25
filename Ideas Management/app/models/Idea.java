@@ -90,7 +90,6 @@ public class Idea extends Model {
 		this.author = user;
 		user.ideasCreated.add(this);
 		this.belongsToTopic = topic;
-		user.ideasCreated.add(this);
 		this.isDraft = false;
 		this.tagsList = new ArrayList<Tag>();
 		// this.commentsList = new ArrayList<Comment>();
