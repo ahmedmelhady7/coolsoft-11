@@ -2,6 +2,7 @@ package models;
 
 import java.nio.MappedByteBuffer;
 import java.util.*;
+
 import javax.persistence.*;
 
 import play.db.jpa.*;
@@ -38,6 +39,10 @@ public class Topic extends Model {
 	// add this attribute
 	public ArrayList<Plan> plans;// add this attribute
 
+	@OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
+	 List<Invitation> invitation;
+	
+	
 	public Topic(String n, String d, short p, User c) {
 		name = n;
 		description = d;
@@ -47,6 +52,7 @@ public class Topic extends Model {
 		// relationships = new ArrayList<Relationship>();
 		organizers = new ArrayList<User>();
 		ideas = new ArrayList<Idea>();
+		invitation = new ArrayList<Invitation>();
 		// commentsOn = new ArrayList<Comment>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
 	}
