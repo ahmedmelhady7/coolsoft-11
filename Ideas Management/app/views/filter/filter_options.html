@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<style type="text/css">
+body {
+	font-family: arial, helvetica;
+	font-size: 11px;
+	color: #123456;
+}
+
+#text1 {
+	font-size: 20px;
+	color: #654321;
+}
+</style>
+
+<center>
+
+	<body bgcolor="LightBlue">
+
+		<img src="Picture1.jpg"></img>
+
+		<form action="form_action.asp" method="get">
+			<table width="75%" border="2" cellpadding="10" cellspacing="20%"
+				bordercolor="blue" bgcolor="#123456">
+				<tr>
+					<td bgcolor="LightGreen">
+				<tr>
+					<td bgcolor="LightGreen"><h bgcolor="#123456">
+						<center>
+							<big><u><big> <big><big><u><i>
+														<b> Filter Options: 
+						</h>
+						</center>
+						</big></big></big></u></td>
+				</tr>
+				<tr>
+					<td bgcolor="LightGreen">
+						<p>
+							<big> <u><i> <b>I would like to view only
+											...... in my search results:
+							</big></i></u></b>
+						</p> <input type="checkbox" name="vote" value="+ve" /> Plans <br />
+						<input type="checkbox" name="vote" value="+ve" /> Ideas</br> <input
+						type="checkbox" name="vote" value="+ve" /> Entities</br> <input
+						type="checkbox" name="vote" value="+ve" /> Topics</br> <input
+						type="checkbox" name="vote" value="+ve" /> Organisations</br></td>
+				</tr>
+
+
+				<tr>
+					<td bgcolor="LightGreen">
+						<p>
+							<big><b><big><u><i><center>with
+													the following name!!</center>
+							</b></u>
+							</big></i>
+						</p>
+						<p>
+							<input type="radio" name="scale" value="ORn" />OR <input
+								type="radio" name="scale" value="ANDn" /> AND
+						</p> Name: <input type="text" name="name" /><br /> </big></td>
+				</tr>
+
+
+
+				<tr>
+					<td bgcolor="LightGreen">
+						<p>
+							<big> <input type="radio" name="scale" value="ORd" />OR <input
+								type="radio" name="scale" value="ANDd" /> AND </big>
+						</p>
+
+						<p>
+							<big> <u><i> <b>the description contains the
+											following!!
+								</i>
+						</p>
+						<center>
+							<textarea name="comment" rows="10" cols="60"></textarea>
+						</center></td>
+				</tr>
+
+
+				</i>
+			</table>
+			<center>
+
+				<input type="submit" value="filter!!" /> <input type="reset"
+					value="clear" />
+		</form>
+</center>
+</html>
