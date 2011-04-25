@@ -97,7 +97,6 @@ public class Idea extends Model {
 	}
 	
 	/**
-	 * Default constructor
 	 * 
 	 * @author ${Abdalrahman Ali}
 	 * 
