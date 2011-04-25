@@ -23,7 +23,7 @@ public class Topic extends Model {
 	// the list of its organizers
 	@OneToMany(mappedBy = "belongsToTopic", cascade = CascadeType.ALL)
 	public ArrayList<Idea> ideas;
-	
+
 	@ManyToOne
 	public MainEntity entity;
 	// public ArrayList<Comment> commentsOn;
@@ -55,8 +55,22 @@ public class Topic extends Model {
 		return organizers;
 
 	}
-	/*
-	 * public void unfollow(User user) { followers.remove(user); }
+	
+	/**
+	 * This Method removes a user from the list of followers
+	 * 
+	 * @author 	Ibrahim.al.khayat
+	 * 
+	 * @story 	C2S12
+	 * 
+	 * @param  	user 	: the user who follows
+	 * 
+	 * @return	void
 	 */
-
+	
+	/*
+	public void unfollow(User user) {
+		followers.remove(user);
+	}
+*/
 }
