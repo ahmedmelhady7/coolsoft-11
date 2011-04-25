@@ -100,9 +100,12 @@ public class Idea extends Model {
 	 * 
 	 * @author ${Abdalrahman Ali}
 	 * 
-	 * @param T
+	 * this constructor is used to differentiate draft ideas from 
+	 * normally posted ideas
+	 * 
+	 * @param title
 	 *            title of the idea
-	 * @param d
+	 * @param body
 	 *            description of the idea
 	 * @param user
 	 *            Author of the idea
@@ -113,9 +116,9 @@ public class Idea extends Model {
 	 * 
 	 */
 	
-	public Idea(String t, String d, User user,Topic topic, boolean isDraft){
-		this.title = t;
-		this.description = d;
+	public Idea(String title, String body, User user,Topic topic, boolean isDraft){
+		this.title = title;
+		this.description = body;
 		this.belongsToTopic = topic;
 		this.author = user;
 		user.ideasCreated.add(this);
