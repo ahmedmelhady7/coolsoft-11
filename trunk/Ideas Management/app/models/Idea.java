@@ -63,6 +63,9 @@ public class Idea extends Model {
 	 */
 	@ManyToOne
 	public Plan plan;
+	/*
+	 * true if the idea is not to be posted (saved as a draft)
+	 * , false if it's to be posted normally*/
 
 	public boolean isDraft;
 
@@ -93,16 +96,34 @@ public class Idea extends Model {
 		// this.commentsList = new ArrayList<Comment>();
 
 	}
-
-	public Idea(String t, String d, User user, boolean isDraft) {
+	
+	/**
+	 * Default constructor
+	 * 
+	 * @author ${Abdalrahman Ali}
+	 * 
+	 * @param T
+	 *            title of the idea
+	 * @param d
+	 *            description of the idea
+	 * @param user
+	 *            Author of the idea
+	 * @param topic
+	 *            Topic that the idea belongs/added to
+	 * @param isDraft
+	 * 			  True if this idea will be saved as a draft           
+	 * 
+	 */
+	
+	public Idea(String t, String d, User user,Topic topic, boolean isDraft){
 		this.title = t;
 		this.description = d;
+		this.belongsToTopic = topic;
 		this.author = user;
 		user.ideasCreated.add(this);
 		this.isDraft = isDraft;
 		this.tagsList = new ArrayList<Tag>();
 		// this.commentsList = new ArrayList<Comment>();
-
 	}
 
 }
