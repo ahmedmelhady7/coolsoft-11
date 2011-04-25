@@ -47,7 +47,7 @@ public class User extends Model {
 	@ManyToMany
 	public List<Tag> followingTags;
 	@ManyToMany
-	public List<Tag> followingOrganizations;
+	public List<Organization> followingOrganizations;
 
 	// List<Request> requests;
 	// List<Comment> commentsPosted;
