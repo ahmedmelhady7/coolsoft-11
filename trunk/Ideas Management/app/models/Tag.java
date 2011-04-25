@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
@@ -15,7 +16,7 @@ public class Tag extends Model{
 	@ManyToMany
 	ArrayList<Tag> relatedTags;
 	//String creator;	We might still need this attribute;
-	@ManyToMany(mappedBy = "username")
+	@ManyToMany(mappedBy = "followingTags", cascade = CascadeType.ALL)
 	public ArrayList<User> followers;
 	@ManyToMany(mappedBy = "name")
 	public ArrayList<Organization> organizations;
