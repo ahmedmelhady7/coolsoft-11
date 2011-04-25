@@ -25,6 +25,9 @@ public class Tag extends Model{
 	public List<Organization> organizations;
 	
 	@ManyToMany
+	public List<MainEntity> entities;
+	
+	@ManyToMany
 	public List<Item> taggedItems;
 	
 	public Tag(String name) {
