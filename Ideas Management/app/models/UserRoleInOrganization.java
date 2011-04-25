@@ -3,7 +3,9 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import play.db.jpa.Model;
@@ -11,30 +13,27 @@ import play.db.jpa.Model;
 @Entity
 public class UserRoleInOrganization extends Model {
 
-	@OneToMany
-	List<User> enrolled;
+	@ManyToOne
+	User enrolled;
 
-	@OneToMany
-	List<Organization> organization;
+	@ManyToOne
+	Organization organization;
 
-	@OneToMany
-	List<Role> roles;
+	@ManyToOne
+	Role role;
 	// this represents the ID of the entity or the topic that an organizer
 	// manages
-	int entityTopicID;
+    int  entityTopicID;
 
 	boolean blocked;
 
-	public UserRoleInOrganization(List<User> enrolled,
-			List<Organization> organization, List<Role> role, int eTID,
-			boolean blocked) {
-		this.enrolled = enrolled;
-		this.organization = organization;
-		this.roles = role;
-		entityTopicID = eTID;
-		this.blocked = blocked;
+	public UserRoleInOrganization() {
+//		this.enrolled = new Aray;
+//		this.organization = organization;
+//		this.roles = role;
+//		entityTopicID = eTID;
+//		this.blocked = blocked;
 
 	}
-	
 
 }
