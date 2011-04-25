@@ -32,6 +32,9 @@ public class User extends Model {
 	@ManyToMany(mappedBy = "enrolledUsers", cascade = CascadeType.ALL)
 	public List<Organization> enrolled;
 	
+	@OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+	public List<Organization> createdOrganization;
+	
 	@ManyToMany(mappedBy = "organizers", cascade = CascadeType.PERSIST)
 	public List<Topic> topicsIOrganize;
 
@@ -104,6 +107,7 @@ public class User extends Model {
 		bannedUsers = new ArrayList<BannedUser>();
 		invitation = new ArrayList<Invitation>();
 		this.enrolled = new ArrayList<Organization>();
+		this.createdOrganization = new ArrayList<Organization>();
 		followingOrganizations= new ArrayList<Organization>();
 		
 		// requests=new ArrayList<Request>();
