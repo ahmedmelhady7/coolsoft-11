@@ -1,12 +1,13 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
 import play.db.jpa.Model;
 @Entity
 public class Organization extends Model{
@@ -21,6 +22,11 @@ public class Organization extends Model{
 	public ArrayList<User> enrolledUsers;
 	@ManyToMany
 	public ArrayList<Tag> relatedTags;
+	
+	@OneToMany (mappedBy = "Organization" , cascade = CascadeType.ALL)
+	public List<BannedUser> bannedUsers;
+	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+	public List<UserRoleInOrganization> userRoleInOrg ; 
 	
 	short privacyLevel;
 	
