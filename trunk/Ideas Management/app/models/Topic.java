@@ -84,9 +84,7 @@ public class Topic extends Model {
 	 * @return	void
 	 */
 	
-	/*
 	public void unfollow(User user) {
 		followers.remove(user);
 	}
-	*/
 }
