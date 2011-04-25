@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -21,6 +22,8 @@ public class User extends Model {
 	public Date dateofBirth;
 	public int communityContributionCounter;
 	public ArrayList<Role> roles;
+	//added to know whether a user is an Admin or not
+	boolean isAdmin;
 
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
 	public ArrayList<Topic> topicsCreated;
@@ -56,6 +59,12 @@ public class User extends Model {
 
 	@OneToMany(mappedBy = "destination", cascade = CascadeType.ALL)
 	public ArrayList<AssignRequest> receivedAssignRequests;
+	
+	@OneToMany(mappedBy = "bannedUser", cascade = CascadeType.ALL)
+	public List<BannedUser> bannedUsers; 
+	
+	@OneToMany(mappedBy ="enrolled",cascade = CascadeType.ALL )
+	public List<UserRoleInOrganization> userRolesInOrganization;
 
 	public User(String email, String password, String firstName,
 			String lastName, String username, int communityContributionCounter,
@@ -77,6 +86,7 @@ public class User extends Model {
 		this.receivedAssignRequests = new ArrayList<AssignRequest>();
 		notificationProfiles = new ArrayList<NotificationProfile>();
 		notifications = new ArrayList<Notification>();
+		bannedUsers = new ArrayList<BannedUser>();
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
 		// linkDuplicates = new ArrayList<LinkDuplicates>();
