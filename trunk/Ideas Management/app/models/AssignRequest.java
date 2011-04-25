@@ -7,25 +7,26 @@ import javax.persistence.ManyToOne;
 import play.db.jpa.Model;
 
 @Entity
-public class AssignRequest extends Model{
-	
-@ManyToOne
-public Item source;
+public class AssignRequest extends Model {
 
-@ManyToOne
-public User destination;
+	@ManyToOne
+	public Item source;
 
-@ManyToOne
-public User sender;
+	@ManyToOne
+	public User destination;
 
-@Lob
-public String content;
+	@ManyToOne
+	public User sender;
 
-public AssignRequest(Item source, User destination, User sender, String content) {
-	this.source = source;
-	this.destination = destination;
-	this.sender = sender;
-	this.content = content;
-}
+	@Lob
+	public String content;
+
+	public AssignRequest(Item source, User destination, User sender,
+			String content) {
+		this.source = source;
+		this.destination = destination;
+		this.sender = sender;
+		this.content = content;
+	}
 
 }

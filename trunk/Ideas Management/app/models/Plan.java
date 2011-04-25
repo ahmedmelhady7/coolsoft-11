@@ -16,6 +16,8 @@ public class Plan extends Model {
 	public Date startDate;
 	public ArrayList<String> requirements;
 	public Date endDate;
+	
+	@OneToOne
 	public Topic topic;
 
 	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
@@ -31,7 +33,7 @@ public class Plan extends Model {
 	public String description;
 
 	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
-	public ArrayList<Item> items;
+	public List<Item> items;
 
 	public Plan(String title, User user, int rate, String status, Date startDate,
 			Date endDate, String description, Topic topic) {
@@ -61,7 +63,7 @@ public class Plan extends Model {
 	 * 
 	 * @return	List<Idea>    : the ideas promoted to excecution in the plan
 	 */
-	 
+
 	public List<Idea> listOfIdeas(){
 		return this.ideas;
 	}

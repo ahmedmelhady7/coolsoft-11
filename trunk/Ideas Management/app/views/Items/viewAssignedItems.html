@@ -1,0 +1,35 @@
+#{extends 'main.html' /}
+#{if assignedItems.size() > 1}<h3>Assigned Items </h3>
+<ul>
+    #{list items:assignedItems, as:'assignedItem'}
+    <li>
+        <fieldset>
+            <legend>
+                <h2><a href="#">${assignedItem.plan.title}</a></h2>
+            </legend>
+            Item Description: ${assignedItem.description}
+            <br/>
+            Start Date:  ${assignedItem.startDate.format('dd MMM yy')}
+            <br/>
+            End Date:  ${assignedItem.endtDate.format('dd MMM yy')}
+            <br/>
+            Assigned Users: <ul>
+            	 #{list users:${assignedItem.assignees}, as:'assignedUser'}
+				 <li>
+				 	<a href="#">${assignedUser.username}</a>
+				 </li>
+				  #{/list}
+            </ul>
+        </fieldset>
+        ${oldPost.comments.size() ?: 'no'} 
+        comment${oldPost.comments.size().pluralize()}
+        #{if oldPost.comments}
+        - latest by ${oldPost.comments[0].author}
+        #{/if}
+    </li>
+    #{/list}
+</ul>
+#{/if}
+#{else}
+There is currently nothing to read here.
+#{/else}
