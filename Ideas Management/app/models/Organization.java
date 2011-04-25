@@ -23,7 +23,7 @@ public class Organization extends Model{
 	@ManyToMany
 	public ArrayList<Tag> relatedTags;
 	
-	@OneToMany (mappedBy = "Organization" , cascade = CascadeType.ALL)
+	@OneToMany (mappedBy = "organization" , cascade = CascadeType.ALL)
 	public List<BannedUser> bannedUsers;
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
 	public List<UserRoleInOrganization> userRoleInOrg ; 
