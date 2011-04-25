@@ -14,26 +14,26 @@ import play.db.jpa.Model;
 
 @Entity
 public class MainEntity extends Model{
-	String name;
+	public String name;
 	
 	@ManyToOne
-	MainEntity parent;	
-	short privacyLevel;
-	String description;	
+	public MainEntity parent;	
+	public short privacyLevel;
+	public String description;	
 	@OneToMany (mappedBy = "parent", cascade = CascadeType.ALL)
-	List<MainEntity> subentities;	
+	public List<MainEntity> subentities;	
 	@ManyToMany(mappedBy = "followingEntities", cascade = CascadeType.ALL)
-	List<User> followers;	
+	public List<User> followers;	
 	@ManyToOne
-	Organization organization;	
+	public Organization organization;	
 	@OneToMany (mappedBy = "entity", cascade = CascadeType.ALL)
-	List<Topic> topicList;	
+	public List<Topic> topicList;	
 	@ManyToMany (mappedBy = "entities", cascade = CascadeType.ALL)
-	List<Tag> tagList;		
+	public List<Tag> tagList;		
 	@OneToMany (mappedBy = "entity", cascade = CascadeType.ALL)
-	List<Invitation> invitationList;
+	public List<Invitation> invitationList;
 
-	//ArrayList<User> organizer;
+	//User organizer;
 	//ArrayList<Relationship> relationshipList;
 	//ArrayList<Request> requestList;	
 	//Arraylist<RequestOfRelationship>
