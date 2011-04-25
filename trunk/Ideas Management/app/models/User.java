@@ -51,6 +51,8 @@ public class User extends Model {
 	public List<Tag> followingTags;
 	@ManyToMany
 	public List<Organization> followingOrganizations;
+	@ManyToMany
+	public List<MainEntity> entitiesIOrganize;
 
 	// List<Request> requests;
 	// List<Comment> commentsPosted;
