@@ -29,7 +29,9 @@ public class Topic extends Model {
 	//public List<TopicInvitation> topicInvitations;
 	@ManyToOne
 	public MainEntity entity;
-	public List<Plan> plans;
+	
+	@OneToOne
+	Plan plan;
 
 	@OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
 	 List<Invitation> invitation;
