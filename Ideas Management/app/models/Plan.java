@@ -51,5 +51,8 @@ public class Plan extends Model {
 		this.topic = topic;
 
 	}
+	public List<Idea> listOfIdeas(){
+		return this.ideas;
+	}
 
 }
