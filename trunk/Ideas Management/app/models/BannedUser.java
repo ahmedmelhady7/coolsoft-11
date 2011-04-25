@@ -13,23 +13,50 @@ import play.db.jpa.Model;
 public class BannedUser extends Model {
 
 	@ManyToOne
-	 User bannedUser;
-	
-
-	// @OneToMany
-	// List<Organization> organizations;
+	public User bannedUser;
 
 	@ManyToOne
-	Action action;
-  
-	@ManyToOne
-	Organization organization;
-	
-	String resourceType;
-	int resourceID;
+	public Action action;
 
-	public BannedUser() {
-		
+	@ManyToOne
+	public Organization organization;
+
+	public String resourceType;
+	public int resourceID;
+
+	// this constructor will be used if the action the user is banned from is
+	// related to a certain object
+
+	// @parm banned : The banned user
+	// @parm action : The action he will be banned from
+	// @parm org : The organization at which this user will be banned from that
+	// action
+	// @parm rSrcType: the type of the object the action is related to
+	//@parm rSrcId : the Id of the Object of that type
+	
+	public BannedUser(User banned, Action action, Organization org,
+			String rSrcType, int rSrcID) {
+		this.bannedUser = banned;
+		this.action = action;
+		organization = org;
+		resourceType = rSrcType;
+		resourceID = rSrcID;
+
+	}
+
+	// this constructor will be used if the action the user is banned from is
+	// related to a certain object
+
+	// @parm banned : The banned user
+	// @parm action : The action he will be banned from
+	// @parm org : The organization at which this user will be banned from that
+	// action
+	
+	
+	public BannedUser(User banned, Action action, Organization org) {
+		this.bannedUser = banned;
+		this.action = action;
+		organization = org;
 	}
 
 }
