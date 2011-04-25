@@ -17,6 +17,8 @@ public class Action extends Model {
 
 	@OneToMany
 	List<BannedUser> bannedUsers;
+	
+	
 
 	public Action(String description, Role role) {
 		this.description = description;
