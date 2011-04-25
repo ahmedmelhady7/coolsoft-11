@@ -22,15 +22,14 @@ public class MainEntity extends Model{
 	String description;	
 	@OneToMany (mappedBy = "parent", cascade = CascadeType.ALL)
 	List<MainEntity> subentities;	
-	@ManyToMany(mappedBy = "following", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "followingEntities", cascade = CascadeType.ALL)
 	List<User> followers;	
-	//@ManyToOne
+	@ManyToOne
 	Organization organization;	
 	@OneToMany (mappedBy = "entity", cascade = CascadeType.ALL)
 	List<Topic> topicList;	
-	@ManyToMany (mappedBy = "relatedTags", cascade = CascadeType.ALL)
-	List<Tag> tagList;	
-	
+	@ManyToMany (mappedBy = "entities", cascade = CascadeType.ALL)
+	List<Tag> tagList;		
 	@OneToMany (mappedBy = "entity", cascade = CascadeType.ALL)
 	List<Invitation> invitationList;
 
