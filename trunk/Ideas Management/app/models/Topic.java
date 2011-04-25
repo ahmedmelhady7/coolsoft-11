@@ -69,6 +69,15 @@ public class Topic extends Model {
 		//requestsToJoin = new ArrayList<RequestToJoin>();
 	}
 	 
+	/**
+	 * This Method returns a list of organizers in a certain topic
+	 *
+	 * @author 	lama.ashraf
+	 *
+	 * @story 	C1S12
+	 *
+	 * @return	ArrayList<User>
+	 */
 	public List<User> getOrganizer(){
 		 return organizers;
 	}
