@@ -1,5 +1,6 @@
 #{extends 'main.html' /}
-#{if assignedItems.size() > 1}<h3>Assigned Items </h3>
+#{if assignedItems.size() > 0}
+<h3>Assigned Items </h3>
 <ul>
     #{list items:assignedItems, as:'assignedItem'}
     <li>

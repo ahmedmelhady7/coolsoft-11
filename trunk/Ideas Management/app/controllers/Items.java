@@ -9,6 +9,7 @@ public class Items extends CRUD {
 
 	public static void viewAssignedItems(long userid) {
 		User user = User.findById(userid);
-		render(user.itemsAssigned);
+		List<Item> assignedItems = user.itemsAssigned;
+		render(assignedItems);
 	}
 }
