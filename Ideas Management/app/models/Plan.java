@@ -51,6 +51,18 @@ public class Plan extends Model {
 		this.topic = topic;
 
 	}
+	/*
+	 * 
+	/**
+	 * This Method returns a List of type Idea
+	 * 
+	 * @author 	yassmeen.hussein
+	 * 
+	 * @story 	C5S14  
+	 * 
+	 * @return	List<Idea>    : the ideas promoted to excecution in the plan
+	 */
+	 */
 	public List<Idea> listOfIdeas(){
 		return this.ideas;
 	}
