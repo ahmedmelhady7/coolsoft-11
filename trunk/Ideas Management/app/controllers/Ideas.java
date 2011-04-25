@@ -38,4 +38,21 @@ public class Ideas extends CRUD {
 	{
 		Idea idea = new Idea(title,body,user,topic,true);
 	}
+	
+	/*
+	 * @author Abdalrahman Ali
+	 * 
+	 * this method posts an idea that was saved as a draft
+	 * 
+	 * @param idea
+	 * 		the saved idea
+	 * 
+	 * @return void
+	 * 
+	 * */
+	
+	public static void postDraft(Idea idea)
+	{
+		idea.isDraft = false;
+	}
 }
