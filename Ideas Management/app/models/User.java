@@ -82,6 +82,9 @@ public class User extends Model {
 
 	@OneToMany(mappedBy = "enrolled", cascade = CascadeType.ALL)
 	public List<UserRoleInOrganization> userRolesInOrganization;
+	
+	@OneToMany(mappedBy = "madeBy", cascade = CascadeType.PERSIST)
+	public List<Plan> planscreated;
 
 	public User(String email, String password, String firstName,
 			String lastName, String username, int communityContributionCounter,
@@ -109,7 +112,8 @@ public class User extends Model {
 		this.enrolled = new ArrayList<Organization>();
 		this.createdOrganization = new ArrayList<Organization>();
 		followingOrganizations= new ArrayList<Organization>();
-		
+		planscreated = new  ArrayList<Plan> ();
+
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
 		// linkDuplicates = new ArrayList<LinkDuplicates>();

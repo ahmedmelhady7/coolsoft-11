@@ -20,13 +20,18 @@ public class Tag extends Model{
 	
 	@ManyToMany(mappedBy = "followingTags", cascade = CascadeType.ALL)
 	public List<User> followers;
+	
 	@ManyToMany(mappedBy = "relatedTags", cascade = CascadeType.ALL)
 	public List<Organization> organizations;
+	
+	@ManyToMany
+	public List<Item> taggedItems;
 	
 	public Tag(String name) {
 		this.setName(name);
 		this.followers = new ArrayList<User>();
 		this.organizations = new ArrayList<Organization>();
+		this.taggedItems = new ArrayList<Item>();
 		//this.relatedTags = new ArrayList<Tag>();
 	}
 	
