@@ -1,0 +1,45 @@
+#{extends 'main.html' /}
+#{set title:'View Plan as List' /}
+
+<h3>${p.title</h3> 
+#{if itemsList.size() > 0}
+<ul>
+    #{list items:itemsList, as:'item'}
+    <li>
+        <fieldset>
+            <legend>
+                <h2>${item.summary}</a></h2>
+            </legend>
+            Item Description: ${item.description}
+            <br/>
+            Start Date:  ${item.startDate.format('dd MMM yy')}
+            <br/>
+            End Date:  ${item.endtDate.format('dd MMM yy')}
+            <br/>
+            Assigned Users: 
+            <ul>
+                #{list users:${item.assignees}, as:'assignedUser'}
+                <li>
+                    <a href="#">${assignedUser.username}</a>
+                </li>
+                #{/list}
+            </ul>
+        </fieldset>
+    </li>
+    #{/list}
+</ul>
+#{/if}
+#{else}
+No items exist in plan. Please contact #{if p.topic.organizers.size() > 1} <ul>
+                #{list users:${p.topics.organizers}, as:'organizer'}
+                <li>
+                    <a href="#">${organizer.username}</a>
+                </li>
+                #{/list}
+            </ul>
+			#{else}
+			${p.topics.organizers.get(0).username}
+			#{/else}.
+			
+#{/else}
+ 
