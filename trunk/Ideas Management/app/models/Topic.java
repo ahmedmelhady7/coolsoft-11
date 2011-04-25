@@ -4,12 +4,15 @@ package models;
 import java.nio.MappedByteBuffer;
 import java.util.*;
 import javax.persistence.*;
+import play.data.validation.*;
 
 import play.db.jpa.*;
 
 @Entity
 public class Topic extends Model {
+	@Required
 	public String name;
+	@Lob
 	public String description;
 	public short privacyLevel;
 	public List<Tag> tags;
