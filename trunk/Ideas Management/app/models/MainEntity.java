@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -17,42 +18,42 @@ public class MainEntity extends Model{
 	
 	@ManyToOne
 	MainEntity parent;	
-	int privacyLevel;
+	short privacyLevel;
 	String description;	
 	@OneToMany (mappedBy = "parent", cascade = CascadeType.ALL)
-	ArrayList<MainEntity> subentities;	
-	ArrayList<User> followers;	
+	List<MainEntity> subentities;	
+	@ManyToMany(mappedBy = "following", cascade = CascadeType.ALL)
+	List<User> followers;	
 	//@ManyToOne
 	Organization organization;	
 	@OneToMany (mappedBy = "entity", cascade = CascadeType.ALL)
-	ArrayList<Topic> topicList;	
+	List<Topic> topicList;	
 	@ManyToMany (mappedBy = "relatedTags", cascade = CascadeType.ALL)
-	ArrayList<Tag> tagList;	
+	List<Tag> tagList;	
 	
 	@OneToMany (mappedBy = "entity", cascade = CascadeType.ALL)
-	ArrayList<Invitation> invitation;
-	
+	List<Invitation> invitationList;
+
 	//ArrayList<User> organizer;
 	//ArrayList<Relationship> relationshipList;
 	//ArrayList<Request> requestList;	
 	//Arraylist<RequestOfRelationship>
-	
-	
-	public MainEntity (String n, String d, int p) {
+
+	public MainEntity (String n, String d, short p) {
 		this.name = n;
 		this.description = d;
 		this.privacyLevel = p;
 		this.parent = null;
-		invitation = new ArrayList<Invitation>();
+		invitationList = new ArrayList<Invitation>();
 	}
 	
-	public MainEntity (String n, String d, int p, MainEntity parent) {
+	public MainEntity (String n, String d, short p, MainEntity parent) {
 		this.name = n;
 		this.description = d;
 		this.privacyLevel = p;
 		this.parent = parent;
 		parent.subentities.add(this);
-		invitation = new ArrayList<Invitation>();
+		invitationList = new ArrayList<Invitation>();
 	}
 	
 	/**
