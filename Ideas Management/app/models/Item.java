@@ -16,16 +16,16 @@ public class Item extends Model {
 	public String description;
 
 	@OneToMany(mappedBy="Item", cascade=CascadeType.ALL)
-	public ArrayList<Tag> tags;
+	public List<Tag> tags;
 
 	@OneToMany(mappedBy = "destination", cascade = CascadeType.ALL)
-	public ArrayList<VolunteerRequest> volunteerRequests;
+	public List<VolunteerRequest> volunteerRequests;
 
 	@OneToMany(mappedBy = "source", cascade = CascadeType.ALL)
-	public ArrayList<AssignRequest> assignRequests;
+	public List<AssignRequest> assignRequests;
 
 	@ManyToMany(mappedBy = "itemsAssigned", cascade = CascadeType.PERSIST)
-	public ArrayList<User> assignees;
+	public List<User> assignees;
 
 	@ManyToOne
 	public Plan plan;
@@ -38,6 +38,7 @@ public class Item extends Model {
 		this.description = description;
 		this.volunteerRequests = new ArrayList<VolunteerRequest>();
 		this.assignRequests = new ArrayList<AssignRequest>();
+		this.assignees = new ArrayList<User>();
 		this.plan = plan;
 		this.assignees = new ArrayList<User>();
 		this.tags = new ArrayList<Tag>();
