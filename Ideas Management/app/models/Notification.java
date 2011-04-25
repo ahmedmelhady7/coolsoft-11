@@ -5,17 +5,22 @@ import javax.persistence.ManyToOne;
 
 import play.db.jpa.Model;
 
+/**
+ * @author ${Ahmed Maged}
+ * 
+ */
+
 @Entity
 public class Notification extends Model {
 	
 	public String type;
 	@ManyToOne
-	public User directed_to;
+	public User directedTo;
 	public boolean seen;
 	
 	public Notification(String t, User u) {
 		type = t;
-		directed_to = u;
+		directedTo = u;
 		seen = false;
 	}
 
