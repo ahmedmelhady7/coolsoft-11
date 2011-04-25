@@ -2,6 +2,8 @@ package models;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
 import play.db.jpa.Model;
 
 /**
@@ -18,20 +20,20 @@ public class Comment extends Model {
 	
 	String comment;
 	
-	public int ID;
+	//public int ID;
 		
-	@OneToMany
+	//@OneToMany
 	String postedOn;
 	
-	@OneToMany
-	User commenter;
+	//@OneToOne
+	//User commenter;
 	
 	public Comment(String comment, int ID, String postedOn, User commenter)
 	{
 		this.comment=comment;
-		this.ID=ID;
+		//this.ID=ID;
 		this.postedOn=postedOn;
-		this.commenter=commenter;
+		//this.commenter=commenter;
 	}
 
 }
