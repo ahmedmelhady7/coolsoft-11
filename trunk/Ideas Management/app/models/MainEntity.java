@@ -14,6 +14,7 @@ import play.db.jpa.Model;
 
 @Entity
 public class MainEntity extends Model{
+	
 	public String name;
 	
 	@ManyToOne
@@ -32,8 +33,9 @@ public class MainEntity extends Model{
 	public List<Tag> tagList;		
 	@OneToMany (mappedBy = "entity", cascade = CascadeType.ALL)
 	public List<Invitation> invitationList;
-
-	//User organizer;
+	@ManyToMany(mappedBy = "entitiesIOrganize", cascade = CascadeType.ALL)
+	public List<User> organizers;
+	
 	//ArrayList<Relationship> relationshipList;
 	//ArrayList<Request> requestList;	
 	//Arraylist<RequestOfRelationship>
@@ -44,6 +46,12 @@ public class MainEntity extends Model{
 		this.privacyLevel = p;
 		this.parent = null;
 		invitationList = new ArrayList<Invitation>();
+		subentities = new ArrayList<MainEntity>();
+		followers = new ArrayList<User>();
+		topicList = new ArrayList<Topic>();
+		tagList = new ArrayList<Tag>();
+		organizers = new ArrayList<User>();
+		
 	}
 	
 	public MainEntity (String n, String d, short p, MainEntity parent) {
@@ -53,6 +61,11 @@ public class MainEntity extends Model{
 		this.parent = parent;
 		parent.subentities.add(this);
 		invitationList = new ArrayList<Invitation>();
+		subentities = new ArrayList<MainEntity>();
+		followers = new ArrayList<User>();
+		topicList = new ArrayList<Topic>();
+		tagList = new ArrayList<Tag>();
+		organizers = new ArrayList<User>();
 	}
 	
 	/**
