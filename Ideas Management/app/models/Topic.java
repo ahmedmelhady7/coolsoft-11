@@ -23,6 +23,7 @@ public class Topic extends Model {
 
 	@ManyToMany
 	public List<User> organizers;
+	@ManyToMany
 	public List<User> followers;
 	@OneToMany(mappedBy = "belongsToTopic", cascade = CascadeType.ALL)
 	public List<Idea> ideas;
