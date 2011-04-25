@@ -28,7 +28,7 @@ public class Organization extends Model{
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
 	public List<UserRoleInOrganization> userRoleInOrg ; 
 	
-	short privacyLevel;
+	public short privacyLevel;
 	
 	
 	//Request_to_Join??
@@ -65,23 +65,6 @@ public class Organization extends Model{
 		followers.remove(user);
 	}
 	
-	/**
-	 * 
-	 * This Method returns the Privacy level of an organization given the organization Id
-	 * 
-	 * @author 	Fadwa
-	 * 
-	 * @story 	C2S34
-	 * 
-	 * @param 	organizationId 	: the id of the organization for which the privacy level is needed
-	 *
-	 * @return	short
-	 */
-
-	 public short getPrivacyLevel(Long id){
-		 if(this.id ==id)
-			 return privacyLevel;
-		return -1;
-	 }
+	
 
 }
