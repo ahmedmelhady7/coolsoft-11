@@ -22,7 +22,7 @@ public class User extends Model {
 	public String country;
 	public Date dateofBirth;
 	public int communityContributionCounter;
-	public List<Role> roles;
+	//public List<Role> roles;
 	// added to know whether a user is an Admin or not
 	boolean isAdmin;
 
@@ -104,7 +104,7 @@ public class User extends Model {
 		this.dateofBirth = dateofBirth;
 		this.country = country;
 		this.lastName = lastName;
-		this.roles = new ArrayList<Role>();
+		//this.roles = new ArrayList<Role>();
 		this.ideasCreated = new ArrayList<Idea>();
 		this.itemsAssigned = new ArrayList<Item>();
 		this.topicsIOrganize = new ArrayList<Topic>();
