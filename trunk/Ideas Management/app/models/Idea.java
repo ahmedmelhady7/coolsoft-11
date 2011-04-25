@@ -101,10 +101,10 @@ public class Idea extends Model {
 	 * 
 	 * @author ${Abdalrahman Ali}
 	 * 
-	 * @param t
+	 * @param title
 	 *            title of the idea
-	 * @param d
-	 *            description of the idea
+	 * @param body
+	 *            the body of the idea
 	 * @param user
 	 *            Author of the idea
 	 * @param topic
@@ -114,9 +114,9 @@ public class Idea extends Model {
 	 * 
 	 */
 
-	public Idea(String t, String d, User user, Topic topic, boolean isDraft) {
-		this.title = t;
-		this.description = d;
+	public Idea(String title, String body, User user, Topic topic, boolean isDraft) {
+		this.title = title;
+		this.description = body;
 		this.belongsToTopic = topic;
 		this.author = user;
 		user.ideasCreated.add(this);
