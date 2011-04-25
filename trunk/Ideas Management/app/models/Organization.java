@@ -12,30 +12,35 @@ import play.db.jpa.Model;
 @Entity
 public class Organization extends Model{
 	String name;
-	@OneToMany(mappedBy = "name")
-	public ArrayList<MainEntity> entitiesList;
+	boolean createTag;
+	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+	public List<MainEntity> entitiesList;
 	@ManyToOne
 	public User creator;
-	@ManyToMany
-	public ArrayList<User> followers;
-	@ManyToMany
-	public ArrayList<User> enrolledUsers;
-	@ManyToMany
-	public ArrayList<Tag> relatedTags;
+	@ManyToMany(mappedBy = "followingOrganizations", cascade = CascadeType.ALL)
+	public List<User> followers;
+	@ManyToMany(mappedBy = "enrolled", cascade = CascadeType.ALL)
+	public List<User> enrolledUsers;
+	@ManyToMany(mappedBy = "relatedTags", cascade = CascadeType.ALL)
+	public List<Tag> relatedTags;
 	
 	@OneToMany (mappedBy = "organization" , cascade = CascadeType.ALL)
 	public List<BannedUser> bannedUsers;
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
 	public List<UserRoleInOrganization> userRoleInOrg ; 
 	
+
+//	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL) commented until issue is resolved
+//	public ArrayList<RequestToJoin> joinRequests;
+
 	public short privacyLevel;
+
 	
+
 	
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
-	 List<Invitation> invitation;
-	
-	//Request_to_Join??
-	
+	public List<Invitation> invitation;
+
 	@OneToMany (mappedBy = "organization", cascade = CascadeType.PERSIST)
 	public List<Log> logsList;
 	//to which constructor should the logList, bannedUser and UserRoleInOrganazation be added.
@@ -44,16 +49,28 @@ public class Organization extends Model{
 		this.name = name;
 		this.creator = creator;
 		this.privacyLevel = 2;	//default privacylevel is public
+		this.createTag = true;  //default users are allowed to create tags
+		invitation = new ArrayList<Invitation>();
+		this.entitiesList = new ArrayList<MainEntity>();
+		this.followers = new ArrayList<User>();
+		this.relatedTags = new ArrayList<Tag>();
+		this.enrolledUsers = new ArrayList<User>();
 		bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg =  new ArrayList<UserRoleInOrganization>();
 		logsList = new ArrayList<Log>();
 		
+
 	}
-	public Organization(String name, User creator, short privacyLevel) {
+	public Organization(String name, User creator, short privacyLevel ,boolean createTag) {
 		this.name = name;
 		this.creator = creator;
 		this.privacyLevel = privacyLevel;
+		this.createTag = createTag;
 		invitation = new ArrayList<Invitation>();
+		this.entitiesList = new ArrayList<MainEntity>();
+		this.followers = new ArrayList<User>();
+		this.relatedTags = new ArrayList<Tag>();
+		this.enrolledUsers = new ArrayList<User>();
 		bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg =  new ArrayList<UserRoleInOrganization>();
 		logsList = new ArrayList<Log>();
