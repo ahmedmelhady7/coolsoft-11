@@ -13,16 +13,17 @@ import play.db.jpa.Model;
 @Entity
 public class Invitation extends Model{
 
-	public String dest;
-    public Date sendingdate;
+	public String destination;
+    public Date date_of_sending;
     String role;
     
-    @OneToOne(mappedBy="source", cascade=CascadeType.ALL)
-    public User source;
+    
     
     @Lob
     public String comment;
     
+    @ManyToOne
+    public User sender;
     @ManyToOne
     public Organization organization;
     @ManyToOne
@@ -31,15 +32,14 @@ public class Invitation extends Model{
     public Topic topic;
 	
    
-    public Invitation(String dest,Date sendingdate,String role,Organization organization,
-    		MainEntity entity,Topic topic,User source,String comment){
-        this.dest=dest;
-        this.sendingdate=sendingdate;
-        this.role=role;
+    public Invitation(String comment,Date date_of_sending,String destination,MainEntity entity,Organization organization,String role,
+    		User sender,Topic topic){
+        this.destination=destination;
+        this.date_of_sending=date_of_sending;
         this.organization = organization;
         this.entity=entity;
         this.topic=topic;
-        this.source = source;
+        this.sender = sender;
         this.comment=comment;
         
     }
