@@ -31,10 +31,11 @@ public class Organization extends Model{
 	public short privacyLevel;
 	
 	
+	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+	 List<Invitation> invitation;
+	
 	//Request_to_Join??
 	
-	//@OneToMany//(mappedBy = Pending class creation) 
-	//public ArrayList<Invitation> invitations;
 	//@OneToMany//(mappedBy = Pending class creation)
 	//public ArrayList<Log> logsList;
 	
@@ -47,6 +48,7 @@ public class Organization extends Model{
 		this.name = name;
 		this.creator = creator;
 		this.privacyLevel = privacyLevel;
+		invitation = new ArrayList<Invitation>();
 	}
 	
 	/**
