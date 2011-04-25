@@ -31,8 +31,9 @@ public class Topics extends CRUD {
 	}
 
 	/**
-	 * This Method returns true if the tag has been successfully added to the
-	 * topic, false otherwise
+	 * This Method returns true if the tag exists in the global list of tags
+	 * and checks if it the topic is already tagged with the same tag (returns true also),
+	 * false if the tag needs to be created.
 	 * 
 	 * @author Mostafayasser.1991
 	 * 
@@ -44,20 +45,33 @@ public class Topics extends CRUD {
 	 * @param user
 	 *            : the user who is tagging the topic
 	 * 
-	 * @return boolean
+	 * @param  	topicID 
+	 *			  : the topic that is being tagged
+	 * 
+	 * @return	boolean
 	 */
-	// public static boolean addTag(Tag tag, User user){
-	//
-	// }
 
-	public static void tagTopic(int topicID, String tag, User user) {
+	public static boolean tagTopic(int topicID, String tag, User user) {
+		boolean tagAlreadyExists;
 		ArrayList<Tag> listOfTags = (ArrayList) Tag.findAll();
 		for (int i = 0; i < listOfTags.size(); i++) {
-			if (listOfTags.get(i).getName() == tag) {
+			if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
 				Topic topic = Topic.findById(topicID);
-				topic.tags.add(listOfTags.get(i));
+
+				if(!topic.tags.contains(listOfTags.get(i))){
+					topic.tags.add(listOfTags.get(i));
+					// send notification to followers of the topic
+					// send notification to topic organizers
+					// send notification to organization lead
+				} else {
+					// error message
+					tagAlreadyExists = true; 
+				}
+				return true;
+
 			}
 		}
+		return false;
 	}
 
 	/**
