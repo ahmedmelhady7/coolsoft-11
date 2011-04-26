@@ -31,9 +31,9 @@ public class Topics extends CRUD {
 	}
 
 	/**
-	 * This Method returns true if the tag exists in the global list of tags
-	 * and checks if it the topic is already tagged with the same tag (returns true also),
-	 * false if the tag needs to be created.
+	 * This Method returns true if the tag exists in the global list of tags and
+	 * checks if it the topic is already tagged with the same tag (returns true
+	 * also), false if the tag needs to be created.
 	 * 
 	 * @author Mostafayasser.1991
 	 * 
@@ -45,10 +45,10 @@ public class Topics extends CRUD {
 	 * @param user
 	 *            : the user who is tagging the topic
 	 * 
-	 * @param  	topicID 
-	 *			  : the topic that is being tagged
+	 * @param topicID
+	 *            : the topic that is being tagged
 	 * 
-	 * @return	boolean
+	 * @return boolean
 	 */
 
 	public static boolean tagTopic(int topicID, String tag, User user) {
@@ -58,14 +58,14 @@ public class Topics extends CRUD {
 			if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
 				Topic topic = Topic.findById(topicID);
 
-				if(!topic.tags.contains(listOfTags.get(i))){
+				if (!topic.tags.contains(listOfTags.get(i))) {
 					topic.tags.add(listOfTags.get(i));
 					// send notification to followers of the topic
 					// send notification to topic organizers
 					// send notification to organization lead
 				} else {
 					// error message
-					tagAlreadyExists = true; 
+					tagAlreadyExists = true;
 				}
 				return true;
 
@@ -102,7 +102,7 @@ public class Topics extends CRUD {
 	 */
 	public static void postIdea(User user, Topic topic, String title,
 			String description, int privacyLevel) {
-		Idea i = new Idea(title, description, user, topic);
-		i.privacyLevel = privacyLevel;
+		Idea idea = new Idea(title, description, user, topic);
+		idea.privacyLevel = privacyLevel;
 	}
 }
