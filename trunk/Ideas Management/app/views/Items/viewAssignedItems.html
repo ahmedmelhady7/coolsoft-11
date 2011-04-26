@@ -1,13 +1,17 @@
 #{extends 'main.html' /}
-#{if assignedItems.size() > 0}
-<h3>Assigned Items </h3>
+#{set title:'View list of assigned items' /}
+#{if assignedItems.size() > 0}<h3>Assigned Items </h3>
 <ul>
     #{list items:assignedItems, as:'assignedItem'}
     <li>
         <fieldset>
             <legend>
-                <h2><a href="#">${assignedItem.plan.title}</a></h2>
+                <h2>
+                ${item.summary}</a>
+            </h2>
             </legend>
+            <h2>Plan: <a href="#">${assignedItem.plan.title}</a></h2>
+            <br/>
             Item Description: ${assignedItem.description}
             <br/>
             Start Date:  ${assignedItem.startDate.format('dd MMM yy')}

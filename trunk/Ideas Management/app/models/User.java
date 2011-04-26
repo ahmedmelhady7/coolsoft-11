@@ -134,6 +134,55 @@ public class User extends Model {
 		// topicInvitations = new ArrayList<TopicInvitation>();
 
 	}
+	/**
+	 * 
+	 * This Method adds a volunteer request sent by the user to work on a certain item in a plan to the list of volunteer requests sent by the user given the volunteer request
+	 * 
+	 * @author 	salma.qayed
+	 * 
+	 * @story 	C5S10
+	 * 
+	 * @param 	volunteerRequest 	: the VolunteerRequest that needs to be added to the list of volunteer requests of the user
+	 * 
+	 * @return	void
+	 */
+	
+	public void addVolunteerRequest(VolunteerRequest volunteerRequest){
+		volunteerRequests.add(volunteerRequest);
+		
+	}
+	
+	/**
+	 * 
+	 * This Method adds an assign request sent by the user to another user assigning him to a certain item in a plan to the list of assign requests sent by the user given the assign request
+	 * 
+	 * @author 	salma.qayed
+	 * 
+	 * @story 	C5S4
+	 * 
+	 * @param 	sentAssignRequest 	: the AssignRequest that needs to be added to the list of assign requests sent by the user
+	 * 
+	 * @return	void
+	 */
+	public void addSentAssignRequest(AssignRequest sentAssignRequest) {
+		sentAssignRequests.add(sentAssignRequest);
+	}
+	
+	/**
+	 * 
+	 * This Method adds an assign request received by the user to work on a certain item in a plan to the list of assign requests received by the user given the assign request
+	 * 
+	 * @author 	salma.qayed
+	 * 
+	 * @story 	C5S4
+	 * 
+	 * @param 	receivedAssignRequest 	: the AssignRequest that needs to be added to the list of assign requests received by the user
+	 * 
+	 * @return	void
+	 */
+	public void addReceivedAssignRequest(AssignRequest receivedAssignRequest) {
+		sentAssignRequests.add(receivedAssignRequest);
+	}
 
 	/**
 	 * This Method removes a tag from the followers list

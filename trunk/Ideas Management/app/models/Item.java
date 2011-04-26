@@ -45,5 +45,39 @@ public class Item extends Model {
 		this.assignees = new ArrayList<User>();
 		this.tags = new ArrayList<Tag>();
 	}
+	
+	/**
+	 * 
+	 * This Method adds a volunteer request to work on this item to the list of volunteer requests of this item given the volunteer request
+	 * 
+	 * @author 	salma.qayed
+	 * 
+	 * @story 	C5S10
+	 * 
+	 * @param 	volunteerRequest 	: the VolunteerRequest that needs to be added to the list of volunteer requests of this item
+	 * 
+	 * @return	void
+	 */
+	
+	public void addVolunteerRequest(VolunteerRequest volunteerRequest){
+		volunteerRequests.add(volunteerRequest);
+		
+	}
+	
+	/**
+	 * 
+	 * This Method adds an assign request to work on this item to the list of assign requests of this item given the assign request
+	 * 
+	 * @author 	salma.qayed
+	 * 
+	 * @story 	C5S4
+	 * 
+	 * @param 	assignRequest 	: the AssignRequest that needs to be added to the list of assign requests of this Item
+	 * 
+	 * @return	void
+	 */
+	public void addAssignRequest(AssignRequest assignRequest) {
+		assignRequests.add(assignRequest);
+	}
 
 }

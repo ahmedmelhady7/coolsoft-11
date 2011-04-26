@@ -11,6 +11,13 @@ public class Plans extends CRUD {
 		List<Item> itemsList = p.items;
 		render(p, itemsList);
 	}
-	
-	
+
+	public static void volunteer(long itemid) {
+
+	}
+
+	public static void assign(long itemid) {
+
+	}
+
 }
