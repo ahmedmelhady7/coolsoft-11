@@ -45,6 +45,7 @@ public class Topic extends Model {
 	/**
 	 * the creator of the topic
 	 */
+	@Required
 	@ManyToOne
 	public User creator;
 	
@@ -219,5 +220,19 @@ public class Topic extends Model {
 	 */
 	public ArrayList<User> getFollowers() {
 		return (ArrayList<User>) this.followers;
+	}
+	
+	
+	/**
+	 * This Method overrides the toString method
+	 * 
+	 * @author 	aliaelbolock
+	 * 
+	 * @story 	C3S1
+	 * 
+	 * @return	String
+	 */
+	public String toString(){
+		return title;
 	}
 }
