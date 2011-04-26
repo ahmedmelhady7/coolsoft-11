@@ -11,5 +11,7 @@ public class VolunteerRequests extends CRUD{
 	User sender = User.findById(senderid);
 	Item dest = Item.findById(itemid);
 	VolunteerRequest volunteerRequest = new VolunteerRequest(sender, dest, justification).save();
+	dest.addVolunteerRequest(volunteerRequest);
+	sender.addVolunteerRequest(volunteerRequest);
 	}
 }

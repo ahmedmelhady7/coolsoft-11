@@ -1,14 +1,14 @@
 #{extends 'main.html' /}
-#{set title:'View Plan as List' /}
-
-<h3>${p.title</h3> 
+#{set title:'View Plan as List' /}<h3>${p.title</h3>
 #{if itemsList.size() > 0}
 <ul>
     #{list items:itemsList, as:'item'}
     <li>
         <fieldset>
             <legend>
-                <h2>${item.summary}</a></h2>
+                <h2>
+                ${item.summary}</a>
+            </h2>
             </legend>
             Item Description: ${item.description}
             <br/>
@@ -24,22 +24,34 @@
                 </li>
                 #{/list}
             </ul>
+			<input type = "button" value = "Volunteer" onclick="volunteer($(item.id))">
+			<<div id="justify">
+				
+			</div>
         </fieldset>
     </li>
     #{/list}
 </ul>
-#{/if}
+#{/if} 
+#{else}  
+No items exist in plan. Please contact 
+#{if p.topic.organizers.size() > 1} 
+<ul>
+    #{list users:${p.topics.organizers}, as:'organizer'}
+    <li>
+        <a href="#">${organizer.username}</a>
+    </li>
+    #{/list}
+</ul>
+#{/if} 
 #{else}
-No items exist in plan. Please contact #{if p.topic.organizers.size() > 1} <ul>
-                #{list users:${p.topics.organizers}, as:'organizer'}
-                <li>
-                    <a href="#">${organizer.username}</a>
-                </li>
-                #{/list}
-            </ul>
-			#{else}
-			${p.topics.organizers.get(0).username}
-			#{/else}.
-			
+${p.topics.organizers.get(0).username}
 #{/else}
+#{/else}
+<script type="text/javascript">
+function volunteer( id )
+  {
+	//$.post( '@{volunteer()}' , {itemId: id}  );	
+  }
  
+</script>
