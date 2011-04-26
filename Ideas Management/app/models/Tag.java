@@ -11,6 +11,10 @@ import play.data.validation.Required;
 import play.db.jpa.Model;
 @Entity
 public class Tag extends Model{
+	
+	/**
+	 * Tag name
+	 */
 	@Required
 	public String name;
 //	@ManyToMany(mappedBy = "relatedTags") 	Still waiting for the Relationship Class
@@ -18,6 +22,9 @@ public class Tag extends Model{
 	
 	//String creator;	We might still need this attribute;
 	
+	/**
+	 * List of users following the tag
+	 */
 	@ManyToMany(mappedBy = "followingTags", cascade = CascadeType.ALL)
 	public List<User> followers;
 	
@@ -27,15 +34,29 @@ public class Tag extends Model{
 	@ManyToMany(mappedBy = "tags")
 	public List<Topic> taggedTopics;
 	
+	/**
+	 * List of organizations tagged by the tag
+	 */
 	@ManyToMany
 	public List<Organization> organizations;
 	
+	/**
+	 * List of entities tagged by the tag
+	 */
 	@ManyToMany
 	public List<MainEntity> entities;
 	
+	/**
+	 * List of items tagged by the tag
+	 */
 	@ManyToMany
 	public List<Item> taggedItems;
 	
+	/**
+	 * Tag attributes
+	 * 
+	 * @param name
+	 **/
 	public Tag(String name) {
 		this.setName(name);
 		this.followers = new ArrayList<User>();
