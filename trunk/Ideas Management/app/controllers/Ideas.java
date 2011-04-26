@@ -55,4 +55,27 @@ public class Ideas extends CRUD {
 	{
 		idea.isDraft = false;
 	}
+	
+	/*
+	 * @author Abdalrahman Ali
+	 * 
+	 * this method returns all the ideas the user saved as draft in order to enable the user to choose one of them and post it.
+	 * 
+	 * @param user
+	 * 		the user who saved the ideas
+	 * 
+	 * @return ArrayList<Idea>
+	 * 		all the draft ideas saved by the user
+	 * */
+	
+	public static ArrayList<Idea> getDrafts(User user)
+	{
+		ArrayList<Idea> drafts = new ArrayList<Idea>();
+		
+		for(Idea idea : user.ideasCreated)
+			if(idea.isDraft)
+				drafts.add(idea);
+		
+		return drafts;
+	}
 }
