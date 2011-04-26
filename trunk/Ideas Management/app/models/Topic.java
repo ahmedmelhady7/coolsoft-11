@@ -207,4 +207,17 @@ public class Topic extends Model {
 	public void unfollow(User user) {
 		followers.remove(user);
 	}
+	
+	/**
+	 * This Method returns the list of followers in a certain topic
+	 * 
+	 * @author 	Omar Faruki
+	 * 
+	 * @story 	C2S29
+	 * 
+	 * @return	ArrayList<User>
+	 */
+	public ArrayList<User> getFollowers() {
+		return (ArrayList<User>) this.followers;
+	}
 }
