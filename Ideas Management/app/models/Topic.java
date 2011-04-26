@@ -69,7 +69,7 @@ public class Topic extends Model {
 	/**
 	 * the list of comments on the topic
 	 */
-	@OneToMany(mappedBy = "commentedTopics" , cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "commentedTopic" , cascade = CascadeType.ALL)
 	public List<Comment> commentsOn;
 	
 	/**
