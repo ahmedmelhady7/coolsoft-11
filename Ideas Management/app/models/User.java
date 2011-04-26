@@ -11,15 +11,27 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import play.data.validation.Email;
+import play.data.validation.MaxSize;
+import play.data.validation.MinSize;
+import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
 public class User extends Model {
+	@Required
+	@Email
 	public String email;
+	@Required
+	@MaxSize(10)
+	public String username;
+	@Required
+	@MaxSize(25)
+	@MinSize(4)
 	public String password;
+	@Required
 	public String firstName;
 	public String lastName;
-	public String username;
 	public String country;
 	public Date dateofBirth;
 	public int communityContributionCounter;
