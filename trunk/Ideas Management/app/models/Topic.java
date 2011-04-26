@@ -5,6 +5,7 @@ import java.nio.MappedByteBuffer;
 import java.util.*;
 
 import javax.persistence.*;
+
 import play.data.validation.*;
 
 import play.db.jpa.*;
@@ -68,7 +69,7 @@ public class Topic extends Model {
 	/**
 	 * the list of comments on the topic
 	 */
-	@OneToMany
+	@OneToMany(mappedBy = "commentedTopics" , cascade = CascadeType.ALL)
 	public List<Comment> commentsOn;
 	
 	/**
@@ -129,6 +130,7 @@ public class Topic extends Model {
 		tags = new ArrayList<Tag>();
 		//relationships = new ArrayList<Relationship>();
 		organizers = new ArrayList<User>();
+		followers = new ArrayList<User>();
 		ideas = new ArrayList<Idea>();
 		invitation = new ArrayList<Invitation>();
 		commentsOn = new ArrayList<Comment>();
@@ -157,6 +159,7 @@ public class Topic extends Model {
 		tags = new ArrayList<Tag>();
 		//relationships = new ArrayList<Relationship>();
 		organizers = new ArrayList<User>();
+		followers = new ArrayList<User>();
 		ideas = new ArrayList<Idea>();
 		invitation = new ArrayList<Invitation>();
 		commentsOn = new ArrayList<Comment>();
