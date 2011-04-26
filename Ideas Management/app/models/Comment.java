@@ -1,8 +1,6 @@
 package models;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import play.db.jpa.Model;
 
@@ -21,6 +19,9 @@ public class Comment extends Model {
 	String comment;
 	
 	//public int ID;
+	
+	@ManyToOne 
+	public Topic commentedTopic;
 		
 	//@OneToMany
 	String postedOn;
