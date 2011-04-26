@@ -69,6 +69,10 @@ public class Idea extends Model {
 	 */
 
 	public boolean isDraft;
+	
+	public int rating;
+	
+	public String priority; // priority could equal "Critical"/"High"/"Medium"/"Low
 
 	/**
 	 * Default constructor

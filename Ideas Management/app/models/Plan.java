@@ -34,6 +34,8 @@ public class Plan extends Model {
 	
 	@ManyToOne
 	public User madeBy;
+	
+	public int rating;
 
 	public Plan(String title, User user, String status, Date startDate,
 			Date endDate, String description, Topic topic) {
