@@ -6,9 +6,13 @@
     <li>
         <fieldset>
             <legend>
+                #{if assignedItem.status == 0}
+                <input type=button onclick="startItem(${assignedItem.id});" value="Start">
+                #{/if}
+				#{else}
                 <h2>
-                ${item.summary}</a>
-            </h2>
+				<input type="checkbox" ${assignedItem.status ? 'checked':''} onClick="toggle_task(${assignedItem.id});"/>${item.summary}
+            </h2>#{/else}
             </legend>
             <h2>Plan: <a href="#">${assignedItem.plan.title}</a></h2>
             <br/>
@@ -32,5 +36,5 @@
 </ul>
 #{/if}
 #{else}
-You are not assigned to any to-do Item
+You are not assigned to any to-do item.
 #{/else}
