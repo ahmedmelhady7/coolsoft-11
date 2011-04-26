@@ -1,5 +1,6 @@
 package models;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -24,7 +25,8 @@ public class User extends Model {
 	public int communityContributionCounter;
 	// public List<Role> roles;
 	// added to know whether a user is an Admin or not
-	boolean isAdmin;
+	public boolean isAdmin;
+	//public boolean isDeleted;
 
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
 	public List<Topic> topicsCreated;
@@ -119,6 +121,8 @@ public class User extends Model {
 		notificationProfiles = new ArrayList<NotificationProfile>();
 		notifications = new ArrayList<Notification>();
 		bannedUsers = new ArrayList<BannedUser>();
+		//added
+		userRolesInOrganization = new ArrayList<UserRoleInOrganization>();
 		invitation = new ArrayList<Invitation>();
 		this.enrolled = new ArrayList<Organization>();
 		this.createdOrganization = new ArrayList<Organization>();
