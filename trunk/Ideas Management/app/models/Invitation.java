@@ -15,7 +15,7 @@ public class Invitation extends Model{
 
 	public String destination;
     public Date date_of_sending;
-    String role;
+    public String role;
     
     
     
