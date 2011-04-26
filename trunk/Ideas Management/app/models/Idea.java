@@ -31,7 +31,7 @@ public class Idea extends Model {
 	/**
 	 * Counter for how many times the idea got reported as a spam
 	 */
-	int spamCounter;
+	public int spamCounter;
 	/**
 	 * The level of privacy of the idea (public,private,secret)
 	 */
@@ -41,11 +41,11 @@ public class Idea extends Model {
 	 */
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	public List<Tag> tagsList;
-	// /**
-	// * the list of comments to an idea
-	// */
-	// @OneToMany(cascade = CascadeType.PERSIST)
-	// List<Comment> commentsList;
+	/**
+	 * the list of comments to an idea
+	 */
+	@OneToMany(cascade = CascadeType.PERSIST)
+	public List<Comment> commentsList;
 	/**
 	 * the topic that the idea belongs to
 	 */
@@ -69,10 +69,11 @@ public class Idea extends Model {
 	 */
 
 	public boolean isDraft;
-	
+
 	public int rating;
-	
-	public String priority; // priority could equal "Critical"/"High"/"Medium"/"Low
+
+	public String priority; // priority could equal
+							// "Critical"/"High"/"Medium"/"Low
 
 	/**
 	 * Default constructor
@@ -118,7 +119,8 @@ public class Idea extends Model {
 	 * 
 	 */
 
-	public Idea(String title, String body, User user, Topic topic, boolean isDraft) {
+	public Idea(String title, String body, User user, Topic topic,
+			boolean isDraft) {
 		this.title = title;
 		this.description = body;
 		this.belongsToTopic = topic;
