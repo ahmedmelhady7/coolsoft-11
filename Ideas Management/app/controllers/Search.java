@@ -1,5 +1,7 @@
 package controllers;
 
+import play.mvc.Controller;
+
 /**
  *  
  * @author Mohamed Ghanem
@@ -7,7 +9,7 @@ package controllers;
  * @story C4SXX
  * 
  */
-public class Search {
+public class Search extends Controller{
 	
 	public static void advancedSearch(){
 		
