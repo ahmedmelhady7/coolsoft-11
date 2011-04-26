@@ -18,7 +18,7 @@ public class Topic extends Model {
 	 * the name of the topic
 	 */
 	@Required
-	public String name;
+	public String title;
 	
 	/**
 	 * the description of the topic
@@ -110,7 +110,7 @@ public class Topic extends Model {
 	 * 
 	 * @author ${aliaelbolock}
 	 * 
-	 * @param name
+	 * @param title
 	 *            title of the topic
 	 * @param description
 	 *            description of the topic
@@ -121,12 +121,12 @@ public class Topic extends Model {
 	 * @param entity
 	 *            Entity that the topic belongs/added to
 	 */
-	public Topic(String n, String d, short p, User c, MainEntity m) {
-		name = n;
-		description = d;
-		privacyLevel = p;
-		creator = c;
-		entity = m;
+	public Topic(String title, String description, short privacyLevel, User creator, MainEntity entity) {
+		this.title = title;
+		this.description = description;
+		this.privacyLevel = privacyLevel;
+		this.creator = creator;
+		this.entity = entity;
 		tags = new ArrayList<Tag>();
 		//relationships = new ArrayList<Relationship>();
 		organizers = new ArrayList<User>();
@@ -142,7 +142,7 @@ public class Topic extends Model {
 	 * 
 	 * @author ${aliaelbolock}
 	 * 
-	 * @param name
+	 * @param title
 	 *            title of the topic
 	 * @param description
 	 *            description of the topic
@@ -151,11 +151,11 @@ public class Topic extends Model {
 	 * @param creator
 	 *            Author of the topic
 	 */
-	public Topic(String n, String d, short p, User c) {
-		name = n;
-		description = d;
-		privacyLevel = p;
-		creator = c;
+	public Topic(String title, String description, short privacyLevel, User creator) {
+		this.title = title;
+		this.description = description;
+		this.privacyLevel = privacyLevel;
+		this.creator = creator;
 		tags = new ArrayList<Tag>();
 		//relationships = new ArrayList<Relationship>();
 		organizers = new ArrayList<User>();
