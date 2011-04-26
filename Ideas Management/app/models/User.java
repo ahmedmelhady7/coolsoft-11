@@ -134,6 +134,20 @@ public class User extends Model {
 		// topicInvitations = new ArrayList<TopicInvitation>();
 
 	}
+	
+	
+	
+	
+	public void addInvitation(String email,String role,Organization organization,
+	        MainEntity entity,Topic topic,User sender,String comment) {
+	    	 
+	    	Invitation invite = new Invitation(comment,email,entity,organization,role,
+	        		sender,topic).save();
+	          this.save();
+	    }
+	
+	
+	
 	/**
 	 * 
 	 * This Method adds a volunteer request sent by the user to work on a certain item in a plan to the list of volunteer requests sent by the user given the volunteer request
