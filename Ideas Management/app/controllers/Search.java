@@ -140,7 +140,7 @@ public class Search extends Controller {
 			for (int i = 0; i < listOfTopics.size(); i++) { // Looping on the
 															// list of
 															// organization
-				if (listOfTopics.get(i).name.equalsIgnoreCase(keywords[s])) {
+				if (listOfTopics.get(i).title.equalsIgnoreCase(keywords[s])) {
 					listOfResults.add(listOfTopics.get(i));
 				} else {
 					for (int j = 0; j < listOfTopics.get(i).tags.size(); j++) { // Looping
