@@ -32,15 +32,16 @@ public class Invitation extends Model{
     public Topic topic;
 	
    
-    public Invitation(String comment,Date date_of_sending,String destination,MainEntity entity,Organization organization,String role,
+    public Invitation(String comment,String destination,MainEntity entity,Organization organization,String role,
     		User sender,Topic topic){
         this.destination=destination;
-        this.date_of_sending=date_of_sending;
         this.organization = organization;
         this.entity=entity;
         this.topic=topic;
         this.sender = sender;
         this.comment=comment;
+        this.role=role;
+        this.date_of_sending=new Date();
         
     }
 
