@@ -1,5 +1,8 @@
 package models;
 
+//blocked --> isBlocked
+//public to all attributes
+//added constructor
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,25 +17,35 @@ import play.db.jpa.Model;
 public class UserRoleInOrganization extends Model {
 
 	@ManyToOne
-	User enrolled;
+	public User enrolled;
 
 	@ManyToOne
-	Organization organization;
+	public Organization organization;
 
 	@ManyToOne
-	Role role;
+	public Role role;
 	// this represents the ID of the entity or the topic that an organizer
 	// manages
-    int  entityTopicID;
+	public int entityTopicID;
+	// modified
+	public boolean isBlocked;
 
-	boolean blocked;
+	public UserRoleInOrganization(User user, Organization org, Role role,
+			int eTId, boolean isBlocked) {
+		this.enrolled = user;
+		this.organization = org;
+		this.role = role;
+		this.entityTopicID = eTId;
+		this.isBlocked = isBlocked;
+
+	}
 
 	public UserRoleInOrganization() {
-//		this.enrolled = new Aray;
-//		this.organization = organization;
-//		this.roles = role;
-//		entityTopicID = eTID;
-//		this.blocked = blocked;
+		// this.enrolled = new Aray;
+		// this.organization = organization;
+		// this.roles = role;
+		// entityTopicID = eTID;
+		// this.blocked = blocked;
 
 	}
 
