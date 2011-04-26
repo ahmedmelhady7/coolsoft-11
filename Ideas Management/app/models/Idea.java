@@ -67,6 +67,8 @@ public class Idea extends Model {
 	 * true if the idea is not to be posted (saved as a draft) , false if it's
 	 * to be posted normally
 	 */
+	@ManyToMany
+	public List <User> canAccess; 
 
 	public boolean isDraft;
 
@@ -98,6 +100,7 @@ public class Idea extends Model {
 		this.belongsToTopic = topic;
 		this.isDraft = false;
 		this.tagsList = new ArrayList<Tag>();
+		this.canAccess = new ArrayList<User>();
 		// this.commentsList = new ArrayList<Comment>();
 
 	}
