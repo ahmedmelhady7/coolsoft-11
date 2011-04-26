@@ -61,6 +61,12 @@ public class Topic extends Model {
 	@ManyToMany
 	public List<User> followers;
 	
+	/*
+	 * the list of users that can access the topic
+	 */
+	@ManyToMany
+	public List<User> canAccess;
+	
 	/**
 	 * the list of ideas in the topic
 	 */
@@ -135,6 +141,7 @@ public class Topic extends Model {
 		ideas = new ArrayList<Idea>();
 		invitation = new ArrayList<Invitation>();
 		commentsOn = new ArrayList<Comment>();
+		canAccess = new ArrayList<User>();
 		//requestsToJoin = new ArrayList<RequestToJoin>();
 	}
 	
