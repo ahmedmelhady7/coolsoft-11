@@ -17,10 +17,10 @@ import play.mvc.Controller;
  * @story C4SXX
  * 
  */
-public class Search extends Controller {
-
-	public static void advancedSearch() {
-
+public class Search extends Controller{
+	
+	public static void advancedSearch(){
+		render();
 	}
 
 	public static Object quickSearch(String keyword, String userEmail) {
