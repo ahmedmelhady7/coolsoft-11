@@ -11,24 +11,7 @@ import models.User;
 
 public class Topics extends CRUD {
 
-	/**
-	 * This Method removes a user from the list of followers in a given Topic
-	 * 
-	 * @author Ibrahim.al.khayat
-	 * 
-	 * @story C2S12
-	 * 
-	 * @param topic
-	 *            : the topic that the user is following
-	 * 
-	 * @param user
-	 *            : the user who follows
-	 * 
-	 * @return void
-	 */
-	public static void unfollow(Topic topic, User user) {
-		topic.unfollow(user);
-	}
+	
 
 	/**
 	 * This Method returns true if the tag exists in the global list of tags and
