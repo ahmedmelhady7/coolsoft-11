@@ -12,13 +12,14 @@ import models.MainEntity;
 import models.Organization;
 import models.Topic;
 
+import play.db.Model;
 import play.mvc.Controller;
 
 /**
  * 
  * @author Mohamed Ghanem
  * 
- * @story C4SXX
+ * @story C4S02
  * 
  */
 public class Search extends Controller {
@@ -37,8 +38,10 @@ public class Search extends Controller {
 	// gom3a i need the list of result of the search to be like the filter
 	// result so that i can use it directly in other places
 
-	static private ArrayList<Object> filterResult; // array list for the result after
-											// filtering the search
+	static private ArrayList<Object> filterResult; // array list for the result
+													// after
+
+	// filtering the search
 
 	public static Object quickSearch(String keyword, String userEmail) {
 		String[] keywords = keyword.split(" ");
@@ -195,6 +198,26 @@ public class Search extends Controller {
 	// filter method by monica yousry
 	// filtering on type (organisation,topic,idea,plan,entity,...etc)
 
+	// this commented method with the static parametar will help in defining
+	// which list to pass for the filter method accrding to the user's choice
+	// (and or or )
+
+	// it is commented for i am waiting for a parameter from other user so that
+	// it won't produce an error
+
+	/*
+	static ArrayList<Object> tobepassed;
+
+	public static void handelingOrAnd(char AndOr) {
+		if (AndOr == 'a') {
+			tobepassed = filterResult;
+		}
+		if (AndOr == 'o') {
+			tobepassed = resultlist;
+		}
+	} 
+	*/	
+
 	public static ArrayList<Object> filterSearchResults(
 			ArrayList<Object> resultList, String filterOn) {
 		filterResult = new ArrayList<Object>();
@@ -227,9 +250,8 @@ public class Search extends Controller {
 		}
 		if (filterOn.equalsIgnoreCase("e")) { // filter on entity
 			for (int i = 0; i < resultList.size(); i++) {
-				if (resultList.get(i) instanceof Entity) {// shall i write here
-															// entity or main
-															// entity ????
+				if (resultList.get(i) instanceof MainEntity) {
+
 					filterResult.add(resultList.get(i));
 				}
 			}
@@ -243,28 +265,107 @@ public class Search extends Controller {
 			}
 		}
 
-		if(filterOn.equalsIgnoreCase("a")){
-			filterResult=resultList;
+		if (filterOn.equalsIgnoreCase("a")) {
+			filterResult = resultList;
 		}
 		return filterResult;
 	}
 
-	//this commented method with the static parametar will help in defining which list to pass for the filter method accrding to the user's choice (and or or )
-	//it is commented for i am waiting for a parameter from other user so that it won't produce an error 
-	
-/*	static ArrayList<Object> tobepassed;
+	// this method takes the criteria and input from user to filter on
+	public static ArrayList<Object> filterSearchResults(
+			ArrayList<Object> resultList, String filterOn, String input) {
 
-	public static void handelingOrAnd(char AndOr){
-		if(AndOr=='a'){
-		tobepassed=filterResult;
+		filterResult = new ArrayList<Object>();
+
+		if (filterOn.equalsIgnoreCase("name")
+				|| filterOn.equalsIgnoreCase("title")) {
+			for (int i = 0; i < resultList.size(); i++) {
+
+				if (resultList.get(i) instanceof models.Idea) {
+					models.Idea temp = (models.Idea) resultList.get(i);
+					if (temp.title.equalsIgnoreCase(input)) {
+						filterResult.add(resultList.get(i));
+					}
+
+				}
+
+				if (resultList.get(i) instanceof models.Plan) {
+					models.Plan temp = (models.Plan) resultList.get(i);
+					if (temp.title.equalsIgnoreCase(input)) {
+						filterResult.add(resultList.get(i));
+					}
+
+				}
+
+				if (resultList.get(i) instanceof models.Organization) {
+					models.Organization temp = (models.Organization) resultList
+							.get(i);
+					if (temp.name.equalsIgnoreCase(input)) {
+						filterResult.add(resultList.get(i));
+					}
+
+				}
+
+				if (resultList.get(i) instanceof models.Topic) {
+					models.Topic temp = (models.Topic) resultList.get(i);
+					if (temp.title.equalsIgnoreCase(input)) {
+						filterResult.add(resultList.get(i));
+					}
+
+				}
+
+				if (resultList.get(i) instanceof models.MainEntity) {
+					models.MainEntity temp = (models.MainEntity) resultList
+							.get(i);
+					if (temp.name.equalsIgnoreCase(input)) {
+						filterResult.add(resultList.get(i));
+					}
+
+				}
+
+			}
 		}
-		if(AndOr=='o'){
-			tobepassed=resultlist;
+
+		if (filterOn.equalsIgnoreCase("description")) {
+			for (int i = 0; i < resultList.size(); i++) {
+
+				if (resultList.get(i) instanceof models.Idea) {
+					models.Idea temp = (models.Idea) resultList.get(i);
+					if (temp.description.contains(input)) {
+						filterResult.add(resultList.get(i));
+					}
+
+				}
+
+				if (resultList.get(i) instanceof models.Plan) {
+					models.Plan temp = (models.Plan) resultList.get(i);
+					if (temp.description.contains(input)) {
+						filterResult.add(resultList.get(i));
+					}
+
+				}
+
+				if (resultList.get(i) instanceof models.Topic) {
+					models.Topic temp = (models.Topic) resultList.get(i);
+					if (temp.description.contains(input)) {
+						filterResult.add(resultList.get(i));
+					}
+
+				}
+
+				if (resultList.get(i) instanceof models.MainEntity) {
+					models.MainEntity temp = (models.MainEntity) resultList
+							.get(i);
+					if (temp.description.contains(input)) {
+						filterResult.add(resultList.get(i));
+					}
+
+				}
+
+			}
 		}
+
+		return filterResult;
 	}
-*/
-	
-	
-	
-	
+
 }
