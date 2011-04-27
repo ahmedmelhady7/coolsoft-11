@@ -17,10 +17,7 @@ public class Invitation extends Model{
     public Date date_of_sending;
     public String role;
     
-    
-    
-    @Lob
-    public String comment;
+ 
     
     @ManyToOne
     public User sender;
@@ -39,7 +36,6 @@ public class Invitation extends Model{
         this.entity=entity;
         this.topic=topic;
         this.sender = sender;
-        this.comment=comment;
         this.role=role;
         this.date_of_sending=new Date();
         
