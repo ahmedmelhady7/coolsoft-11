@@ -75,6 +75,7 @@ public class User extends Model {
 	@OneToMany(mappedBy = "directedTo")
 	public List<Notification> notifications;
 	@ManyToMany
+	public
 	List<MainEntity> followingEntities;
 
 	// related to sprint 2

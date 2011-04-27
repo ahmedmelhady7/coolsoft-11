@@ -1,5 +1,15 @@
 package controllers;
 
+import java.util.List;
+
+import play.data.validation.Validation;
+
+import models.MainEntity;
+import models.Organization;
+import models.Tag;
+import models.Topic;
+import models.User;
+
 import models.*;
 
 public class Users extends CRUD {
@@ -83,6 +93,18 @@ public class Users extends CRUD {
 	public static void unfollow(MainEntity entity, User user) {
 		entity.unfollow(user);
 		user.unfollow(entity);
+	}
+
+	public static void listFollows(User user) {
+
+		try {
+			List<Organization> organizations = user.followingOrganizations;
+			List<Tag> tags = user.followingTags;
+			List<MainEntity> entities = user.followingEntities;
+			List<Topic> topics = user.topicsIFollow;
+			render(organizations, tags, entities, topics, user);
+		} catch (Exception e) {
+		}
 	}
 
 	public static void reportIdeaAsSpam(Idea idea, Organization organization,
