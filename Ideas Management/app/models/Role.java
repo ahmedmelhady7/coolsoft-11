@@ -13,7 +13,7 @@ public class Role extends Model {
 	
 	public String roleName;
 	
-	public List<String> actions;
+	public ArrayList<String> actions;
 
 //	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
 //	public List<Action> actions;
