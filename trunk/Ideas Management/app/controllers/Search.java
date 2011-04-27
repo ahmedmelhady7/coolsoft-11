@@ -24,14 +24,16 @@ import play.mvc.Controller;
  */
 public class Search extends Controller {
 
-	public static void advancedSearch() {
-		render();
-	}
+	static private List<Object> listOfResults;
+	
 	static private List<Object> filterResult; // array list for the resultafter filtering the search
 	
-	static private List<Object> listOfResults; 
-
-
+	public static void advancedSearch(String k) {
+		List orgList = Organization.find("order by id desc").fetch(); 
+		
+		renderJSON(orgList);
+	}
+	
 	public static Object quickSearch(String keyword, String userEmail) {
 		String[] keywords = keyword.split(" ");
 		listOfResults = new ArrayList<Object>();
