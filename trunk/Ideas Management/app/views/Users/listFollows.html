@@ -1,0 +1,74 @@
+#{extends 'main.html' /}
+
+Organizations
+#{ifnot organizations}
+<p>
+    No organizations 
+</p>
+#{/ifnot}
+
+<ul>
+    #{list items:organizations, as:'organization'}
+    #{form @Users.unfollow(organization, ${user})}
+    <li> 
+        <input type="submit" value="unfollow" />
+		${organization.name}
+    </li>
+	#{/form}
+	#{/list}
+</ul>
+
+Topics
+#{ifnot tags}
+<p>
+    No topics 
+</p>
+#{/ifnot}
+
+<ul>
+    #{list items:tags, as:'topic'}
+    #{form @Users.unfollow(topic, ${user})}
+    <li> 
+        <input type="submit" value="unfollow" />
+		${topic.title}
+    </li>
+	#{/form}
+	#{/list}
+</ul>
+
+Entities
+#{ifnot entities}
+<p>
+    No entities 
+</p>
+#{/ifnot}
+
+<ul>
+    #{list items:entities, as:'entity'}
+    #{form @Users.unfollow(entity, ${user})}
+    <li> 
+        <input type="submit" value="unfollow" />
+		${entity.name}
+    </li>
+	#{/form}
+	#{/list}
+</ul>
+
+Tags
+#{ifnot tags}
+<p>
+    No tags 
+</p>
+#{/ifnot}
+
+<ul>
+    #{list items:tags, as:'tag'}
+    #{form @Users.unfollow(tag, ${user})}
+    <li> 
+        <input type="submit" value="unfollow" />
+		${tag.name}
+    </li>
+	#{/form}
+	#{/list}
+</ul>
+
