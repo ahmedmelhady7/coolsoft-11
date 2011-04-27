@@ -1,6 +1,6 @@
 package models;
 
-
+// isdelete , state , access plan , topic , idea 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -38,7 +38,11 @@ public class User extends Model {
 	// public List<Role> roles;
 	// added to know whether a user is an Admin or not
 	public boolean isAdmin;
-	//public boolean isDeleted;
+	/*
+	 * state represents the state of the user whether he is active, deleted, not active
+	 * a -> active , d -> deleted ,  n -> not active
+	 */
+	public char state;
 
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
 	public List<Topic> topicsCreated;
@@ -81,6 +85,15 @@ public class User extends Model {
 	public List<Organization> followingOrganizations;
 	@ManyToMany
 	public List<MainEntity> entitiesIOrganize;
+	
+	@ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
+	public List<Topic> accessedTopics;
+	
+	@ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
+	public List<Topic> accessedIdeas;
+	
+	@ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
+	public List<Topic> accessedPlans;
 
 	// List<Request> requests;
 	// List<Comment> commentsPosted;
@@ -130,6 +143,9 @@ public class User extends Model {
 		this.volunteerRequests = new ArrayList<VolunteerRequest>();
 		this.sentAssignRequests = new ArrayList<AssignRequest>();
 		this.receivedAssignRequests = new ArrayList<AssignRequest>();
+		this.accessedTopics = new ArrayList<Topic>();
+		this.accessedPlans = new ArrayList<Topic>();
+		this.accessedIdeas = new ArrayList<Topic>();
 		notificationProfiles = new ArrayList<NotificationProfile>();
 		notifications = new ArrayList<Notification>();
 		bannedUsers = new ArrayList<BannedUser>();
@@ -140,6 +156,7 @@ public class User extends Model {
 		this.createdOrganization = new ArrayList<Organization>();
 		followingOrganizations = new ArrayList<Organization>();
 		planscreated = new ArrayList<Plan>();
+		this.state = 'a';
 
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
