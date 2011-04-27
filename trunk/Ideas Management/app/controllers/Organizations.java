@@ -27,16 +27,16 @@ public class Organizations extends CRUD{
 		return -1;
 	 }
 	 /**
-		 * 
-		 * This Method enables the ability of creation of tags in a certain organization
-		 * 
-		 * @author 	Fadwa sakr
-		 * 
-		 * @story 	C2S4
-		 * 
-		 * @param 	id 	: the id of the organization for which the preferences is being enabled
-		 *
-		 */
+	  * 
+      * This Method enables the ability of creation of tags in a certain organization
+	  * 
+	  * @author 	Fadwa sakr
+      * 
+	  * @story 	C2S4
+	  * 
+	  *  @param id 	: the id of the organization for which the preferences is being enabled
+	  *
+	  */
 
 	 public static void enableTags(Long id){
 		 Organization organization = Organization.findById(id);
@@ -44,17 +44,17 @@ public class Organizations extends CRUD{
 			 organization.createTag=true;
 	 }
 	 /**
-		 * 
-		 * This Method disables the ability of creation of tags in a certain organization
-		 * 
-		 * @author 	Fadwa sakr
-		 * 
-		 * @story 	C2S4
-		 * 
-		 * @param 	id 	: the id of the organization for which the preferences is being disabled
-		 *
-		 */
-	 public static void disableTags(Long id){
+	  * 
+      * This Method disables the ability of creation of tags in a certain organization
+	  * 
+	  * @author Fadwa sakr
+      * 
+	  * @story 	C2S4
+	  * 
+	  * @param 	id 	: the id of the organization for which the preferences is being disabled
+	  *
+	  */
+     public static void disableTags(Long id){
 		 Organization organization = Organization.findById(id);
 		    notFoundIfNull(organization);
 			 organization.createTag=false;
