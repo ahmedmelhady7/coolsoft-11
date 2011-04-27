@@ -43,7 +43,7 @@ public class User extends Model {
 	 * active a -> active , d -> deleted , n -> not active
 	 */
 	public char state;
-	public String profession; //lama
+	public String profession; 
 
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
 	public List<Topic> topicsCreated;
@@ -129,7 +129,7 @@ public class User extends Model {
 
 	public User(String email, String password, String firstName,
 			String lastName, String username, int communityContributionCounter,
-			Date dateofBirth, String country) {
+			Date dateofBirth, String country, String profession) {
 		this.email = email;
 		this.username = username;
 		this.password = password;
@@ -158,6 +158,7 @@ public class User extends Model {
 		followingOrganizations = new ArrayList<Organization>();
 		planscreated = new ArrayList<Plan>();
 		this.state = 'a';
+		this.profession = profession;
 
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
