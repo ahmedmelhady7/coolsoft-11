@@ -111,6 +111,12 @@ public class Topic extends Model {
 	 */
 	@OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
 	List<Invitation> invitation;
+	
+	/*
+	 * boolean flag to determine if the topic is closed or not
+	 * @author Mostafa Aboul Atta
+	 */
+	public boolean openToEdit;
 
 	/**
 	 * Default constructor that creates a topic with name, description,privacy
@@ -145,6 +151,8 @@ public class Topic extends Model {
 		commentsOn = new ArrayList<Comment>();
 		// canAccess = new ArrayList<User>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
+		
+		openToEdit = true;
 	}
 
 	/**
@@ -175,6 +183,8 @@ public class Topic extends Model {
 		invitation = new ArrayList<Invitation>();
 		commentsOn = new ArrayList<Comment>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
+		
+		openToEdit = true;
 	}
 
 	/**
