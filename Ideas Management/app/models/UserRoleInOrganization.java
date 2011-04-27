@@ -1,8 +1,6 @@
 package models;
 
-//blocked --> isBlocked
-//public to all attributes
-//added constructor
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +26,7 @@ public class UserRoleInOrganization extends Model {
 	// manages
 	public int entityTopicID;
 	// modified
-	public boolean isBlocked;
+	//public boolean isBlocked;
 
 	public UserRoleInOrganization(User user, Organization org, Role role,
 			int eTId, boolean isBlocked) {
@@ -36,7 +34,7 @@ public class UserRoleInOrganization extends Model {
 		this.organization = org;
 		this.role = role;
 		this.entityTopicID = eTId;
-		this.isBlocked = isBlocked;
+		//this.isBlocked = isBlocked;
 
 	}
 
