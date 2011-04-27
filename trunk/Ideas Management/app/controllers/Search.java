@@ -27,25 +27,14 @@ public class Search extends Controller {
 	public static void advancedSearch() {
 		render();
 	}
+	static private List<Object> filterResult; // array list for the resultafter filtering the search
+	
+	static private List<Object> listOfResults; 
 
-	/**
-	 * 
-	 * @auther Monica Yousry
-	 * 
-	 * @story c4s03(filter)
-	 */
-
-	// gom3a i need the list of result of the search to be like the filter
-	// result so that i can use it directly in other places
-
-	static private ArrayList<Object> filterResult; // array list for the result
-													// after
-
-	// filtering the search
 
 	public static Object quickSearch(String keyword, String userEmail) {
 		String[] keywords = keyword.split(" ");
-		List<Object> listOfResults = new ArrayList<Object>();
+		listOfResults = new ArrayList<Object>();
 		for (int s = 0; s < keywords.length; s++) {
 			List<Organization> listOfOrganizations = Organization.findAll();
 			for (int i = 0; i < listOfOrganizations.size(); i++) { // Looping on
@@ -194,6 +183,13 @@ public class Search extends Controller {
 		return listOfResults;
 	}
 
+	/**
+	 * 
+	 * @auther Monica Yousry
+	 * 
+	 * @story c4s03(filter)
+	 */
+
 	// //////////////////////////////////////////////////////////////////
 	// filter method by monica yousry
 	// filtering on type (organisation,topic,idea,plan,entity,...etc)
@@ -202,24 +198,20 @@ public class Search extends Controller {
 	// which list to pass for the filter method accrding to the user's choice
 	// (and or or )
 
-	// it is commented for i am waiting for a parameter from other user so that
-	// it won't produce an error
-
-	/*
-	static ArrayList<Object> tobepassed;
+	static List<Object> tobepassed;
 
 	public static void handelingOrAnd(char AndOr) {
 		if (AndOr == 'a') {
 			tobepassed = filterResult;
 		}
 		if (AndOr == 'o') {
-			tobepassed = resultlist;
+			tobepassed = listOfResults;
 		}
-	} 
-	*/	
+	}
 
-	public static ArrayList<Object> filterSearchResults(
-			ArrayList<Object> resultList, String filterOn) {
+	// this filter method filters on type and takes only the type wanted
+	public static List<Object> filterSearchResults(List<Object> resultList,
+			String filterOn) {
 		filterResult = new ArrayList<Object>();
 		if (filterOn.equalsIgnoreCase("o")) {// filtering on organizations
 			for (int i = 0; i < resultList.size(); i++) {// loop on the whole
@@ -272,8 +264,8 @@ public class Search extends Controller {
 	}
 
 	// this method takes the criteria and input from user to filter on
-	public static ArrayList<Object> filterSearchResults(
-			ArrayList<Object> resultList, String filterOn, String input) {
+	public static List<Object> filterSearchResults(List<Object> resultList,
+			String filterOn, String input) {
 
 		filterResult = new ArrayList<Object>();
 
