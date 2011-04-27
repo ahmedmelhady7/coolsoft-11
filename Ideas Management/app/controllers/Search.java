@@ -3,6 +3,10 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.h2.table.Plan;
+
+import com.sun.xml.internal.stream.Entity;
+
 import models.Idea;
 import models.MainEntity;
 import models.Organization;
@@ -17,11 +21,24 @@ import play.mvc.Controller;
  * @story C4SXX
  * 
  */
-public class Search extends Controller{
-	
-	public static void advancedSearch(){
+public class Search extends Controller {
+
+	public static void advancedSearch() {
 		render();
 	}
+
+	/**
+	 * 
+	 * @auther Monica Yousry
+	 * 
+	 * @story c4s03(filter)
+	 */
+
+	// gom3a i need the list of result of the search to be like the filter
+	// result so that i can use it directly in other places
+
+	static ArrayList<Object> filterResult; // array list for the result after
+											// filtering the search
 
 	public static Object quickSearch(String keyword, String userEmail) {
 		String[] keywords = keyword.split(" ");
@@ -174,4 +191,67 @@ public class Search extends Controller{
 		return listOfResults;
 	}
 
+	// //////////////////////////////////////////////////////////////////
+	// filter method by monica yousry
+	// filtering on type (organisation,topic,idea,plan,entity,...etc)
+
+	public static ArrayList<Object> filterSearchResults(
+			ArrayList<Object> resultList, String filterOn) {
+		filterResult = new ArrayList<Object>();
+		if (filterOn.equalsIgnoreCase("o")) {// filtering on organizations
+			for (int i = 0; i < resultList.size(); i++) {// loop on the whole
+															// search result
+				if (resultList.get(i) instanceof Organization) {// if found an
+																// organization
+					filterResult.add(resultList.get(i));// add it to the list
+				}
+			}
+		}
+
+		// similar to the previous part
+
+		if (filterOn.equalsIgnoreCase("i")) {// filtering on ideas
+			for (int i = 0; i < resultList.size(); i++) {
+				if (resultList.get(i) instanceof Idea) {
+					filterResult.add(resultList.get(i));
+				}
+			}
+		}
+
+		if (filterOn.equalsIgnoreCase("t")) { // filter on topic
+			for (int i = 0; i < resultList.size(); i++) {
+				if (resultList.get(i) instanceof Topic) {
+					filterResult.add(resultList.get(i));
+				}
+			}
+		}
+		if (filterOn.equalsIgnoreCase("e")) { // filter on entity
+			for (int i = 0; i < resultList.size(); i++) {
+				if (resultList.get(i) instanceof Entity) {// shall i write here
+															// entity or main
+															// entity ????
+					filterResult.add(resultList.get(i));
+				}
+			}
+		}
+
+		if (filterOn.equalsIgnoreCase("p")) { // filter on plan
+			for (int i = 0; i < resultList.size(); i++) {
+				if (resultList.get(i) instanceof Plan) {
+					filterResult.add(resultList.get(i));
+				}
+			}
+		}
+
+		if(filterOn.equalsIgnoreCase("a")){
+			filterResult=resultList;
+		}
+		return filterResult;
+	}
+
+	
+	
+	
+	
+	
 }
