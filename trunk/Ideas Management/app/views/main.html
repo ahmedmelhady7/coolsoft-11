@@ -3,38 +3,46 @@
 
 <html>
 
+<head>
+<title>#{get 'title' /}</title>
+<meta charset="utf-8">
+<link rel="stylesheet" media="screen"
+	href="@{'/public/stylesheets/main.css'}">
+#{get 'moreStyles' /}
+<link rel="shortcut icon" type="image/png"
+	href="@{'/public/images/favicon.png'}">
+<script src="@{'/public/javascripts/jquery-1.5.2.min.js'}"
+	type="text/javascript" charset="utf-8"></script>
+#{get 'moreScripts' /}
+</head>
+
+
 <style type="text/css">
+
 body {
 	font-family: arial, helvetica;
-	font-size: 11px;
+	font-size: 20px;
 	color: #123456;
+	background-color: #A3D5E4;
 }
 
 #text1 {
-	font-size: 20px;
+	font-size: 500px;
 	color: #654321;
 }
+
+
 </style>
-<body bgcolor="LightBlue">
+<div>
 <center>
-		<img src="Picture1.jpg"></img>
-    </center>
-    <head>
-        <title>#{get 'title' /}</title>
-        <meta charset="utf-8">
-        <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
-        #{get 'moreStyles' /}
-        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
-        <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8"></script>
-        #{get 'moreScripts' /}
-    </head>
-    
-    <form action="@{Search.quickSearch}" method="GET">
-    <input type="text" name="searchKey"/>
-    <input type="submit" value="Search"/>
-    </form>
-    
-    <body>
-        #{doLayout /}
-    </body>
+	<img src="Picture1.jpg"></img>
+</center>
+</div>
+<form action="@{Search.quickSearch}" method="GET">
+	<input type="text" name="searchKey" /> <input type="submit"
+		value="Search" />
+</form>
+
+<body>#{doLayout /}
+</body>
 </html>
