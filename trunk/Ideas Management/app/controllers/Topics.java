@@ -80,9 +80,29 @@ public class Topics extends CRUD {
 	 *            : the level of privacy of the idea
 	 * 
 	 */
+	
 	public static void postIdea(User user, Topic topic, String title,
 			String description) {
 		Idea idea = new Idea(title, description, user, topic);
 		idea.privacyLevel = topic.privacyLevel;
+	}
+	
+	/**
+	 * 
+	 * This method reopens a closed topic, used after its plan gets deleted
+	 * 
+	 * @author 	Mostafa Aboul Atta
+	 * 
+	 * @story 	C3S22
+	 * 
+	 * @param 	topicId 	: the id of the topic that to be reopened
+	 * 
+	 * @return	void
+	 */
+	public static void reopen(long topicId) {
+		Topic targetTopic = Topic.findById(topicId);
+		targetTopic.openToEdit = true;
+		/* TODO: buttons to be adjusted in view */
+
 	}
 }
