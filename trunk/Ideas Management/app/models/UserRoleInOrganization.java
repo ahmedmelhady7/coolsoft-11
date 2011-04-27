@@ -24,27 +24,24 @@ public class UserRoleInOrganization extends Model {
 	public Role role;
 	// this represents the ID of the entity or the topic that an organizer
 	// manages
-	public int entityTopicID;
-	// modified
-	//public boolean isBlocked;
+	public long entityTopicID;
+	
 
 	public UserRoleInOrganization(User user, Organization org, Role role,
-			int eTId, boolean isBlocked) {
+			long eTId) {
 		this.enrolled = user;
 		this.organization = org;
 		this.role = role;
 		this.entityTopicID = eTId;
-		//this.isBlocked = isBlocked;
-
+		
 	}
 
-	public UserRoleInOrganization() {
-		// this.enrolled = new Aray;
-		// this.organization = organization;
-		// this.roles = role;
-		// entityTopicID = eTID;
-		// this.blocked = blocked;
-
+	public UserRoleInOrganization(User user, Organization org, Role role) {
+		this.enrolled = user;
+		this.organization = org;
+		this.role = role;
+		this.entityTopicID = -1;
+		
 	}
-
+	
 }
