@@ -32,6 +32,8 @@ public class MainEntity extends Model {
 	public List<Tag> tagList;
 	@OneToMany(mappedBy = "entity", cascade = CascadeType.ALL)
 	public List<Invitation> invitationList;
+	
+	//to be removed
 	@ManyToMany(mappedBy = "entitiesIOrganize", cascade = CascadeType.ALL)
 	public List<User> organizers;
 
@@ -49,7 +51,7 @@ public class MainEntity extends Model {
 		followers = new ArrayList<User>();
 		topicList = new ArrayList<Topic>();
 		tagList = new ArrayList<Tag>();
-		organizers = new ArrayList<User>();
+		 organizers = new ArrayList<User>();
 
 	}
 
