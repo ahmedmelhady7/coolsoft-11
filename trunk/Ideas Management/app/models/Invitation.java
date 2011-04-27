@@ -29,7 +29,7 @@ public class Invitation extends Model{
     public Topic topic;
 	
    
-    public Invitation(String comment,String destination,MainEntity entity,Organization organization,String role,
+    public Invitation(String destination,MainEntity entity,Organization organization,String role,
     		User sender,Topic topic){
         this.destination=destination;
         this.organization = organization;
