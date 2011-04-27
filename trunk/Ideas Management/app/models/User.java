@@ -177,6 +177,11 @@ public class User extends Model {
 	    	 
 	    	Invitation invite = new Invitation(comment,email,entity,organization,role,
 	        		sender,topic).save();
+	    	this.invitation.add(invite);
+	    	organization.invitation.add(invite);
+	    	entity.invitationList.add(invite);
+	    	if(topic!=null)
+	    		topic.invitation.add(invite);
 	          this.save();
 	    }
 	
