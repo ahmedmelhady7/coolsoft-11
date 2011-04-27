@@ -37,7 +37,7 @@ public class Search extends Controller {
 	// gom3a i need the list of result of the search to be like the filter
 	// result so that i can use it directly in other places
 
-	static ArrayList<Object> filterResult; // array list for the result after
+	static private ArrayList<Object> filterResult; // array list for the result after
 											// filtering the search
 
 	public static Object quickSearch(String keyword, String userEmail) {
@@ -249,7 +249,20 @@ public class Search extends Controller {
 		return filterResult;
 	}
 
+	//this commented method with the static parametar will help in defining which list to pass for the filter method accrding to the user's choice (and or or )
+	//it is commented for i am waiting for a parameter from other user so that it won't produce an error 
 	
+/*	static ArrayList<Object> tobepassed;
+
+	public static void handelingOrAnd(char AndOr){
+		if(AndOr=='a'){
+		tobepassed=filterResult;
+		}
+		if(AndOr=='o'){
+			tobepassed=resultlist;
+		}
+	}
+*/
 	
 	
 	
