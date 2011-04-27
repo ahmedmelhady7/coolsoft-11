@@ -1,0 +1,11 @@
+<html>
+<body>
+<table border="0" bgcolor="#ececec" cellspacing="5">
+<tr><td>Dear ${user.name ?: 'Guest'} ,</td><td>
+<tr><td>CoolSoft would like to invite you to join our Organization' team As : </td><td>
+<tr><td> "${role}" to#{if topic} "${topic}" Topic 
+Details :"${topic}" Topic is related to "${entity}" Entity in "${organization}" Organization#{/if}#{else}"${entity}" Entity
+Details : "${entity}" Entity is related to "${organization}" Organization </td><td>e}#{/else}
+</table>
+</body>
+</html>
