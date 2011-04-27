@@ -37,8 +37,7 @@ public class Plan extends Model {
 	/*
 	 * list of users that can access the plan
 	 */
-	@ManyToMany
-	public List<User> canAccess;  
+	  
 	
 	public int rating;
 
@@ -57,7 +56,7 @@ public class Plan extends Model {
 		//this.comments = new ArrayList<Comment>();
 		this.ideas = new ArrayList<Idea>();
 		this.topic = topic;
-		canAccess = new ArrayList<User>();
+		
 
 	}
 	
