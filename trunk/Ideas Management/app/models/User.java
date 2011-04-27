@@ -173,10 +173,9 @@ public class User extends Model {
 	
 	
 	public void addInvitation(String email,String role,Organization organization,
-	        MainEntity entity,Topic topic,User sender,String comment) {
+	        MainEntity entity,Topic topic) {
 	    	 
-	    	Invitation invite = new Invitation(comment,email,entity,organization,role,
-	        		sender,topic).save();
+	    	Invitation invite = new Invitation(email,entity,organization,role,this,topic).save();
 	    	this.invitation.add(invite);
 	    	organization.invitation.add(invite);
 	    	entity.invitationList.add(invite);
