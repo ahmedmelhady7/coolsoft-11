@@ -24,6 +24,8 @@ public class Topic extends Model {
 	 * the description of the topic
 	 */
 	@Lob
+	@Required
+	@MaxSize(10000)
 	public String description;
 	
 	/**
