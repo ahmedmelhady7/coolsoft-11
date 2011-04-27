@@ -99,7 +99,8 @@ public class User extends Model {
 	// List<Comment> commentsPosted;
 	// List<LinkDuplicates> linkDuplicates;
 
-	// List<RequestToJoin> requestsToJoin;
+	@OneToMany(mappedBy = "source", cascade = CascadeType.ALL)
+	public List<RequestToJoin> requestsToJoin;
 	// List<RequestOfRelationship> requestRelationship;
 	// List<TopicInvitation> topicInvitations;
 
