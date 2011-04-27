@@ -1,7 +1,10 @@
 package controllers;
 
 
+import java.util.List;
+
 import play.mvc.Controller;
+import models.Invitation;
 import models.MainEntity;
 import models.Organization;
 import models.Topic;
@@ -32,7 +35,40 @@ public class Invitations extends Controller {
 		  //render(email,role,organization,entity,topic);
 		    render(email);
 	  }
-	
+	 
+	 
+	 public static void view(){
+			
+		   //**User user=get user from session
+	       //<Invitation> inv = Invitation.find("byEmail", user.email).fetch();
+	       //render(user,inv);
+
+		}
+
+	public static void respond(int id,int i){
+		
+		 /**User user=get user from session
+		  List<Invitation> inv = Invitation.find("byEmail", user.email).fetch();
+		  String role=inv.get(i).role;
+		  Organization org=inv.get(i).organization;
+		  MainEntity ent=inv.get(i).entity;
+		  Topic top=inv.get(i).topic;
+		  User sender=inv.get(i).sender;
+		 
+		 
+		   top.invitation.get(i).delete;
+		    org.invitation.get(i).delete;
+		    ent.invitation.get(i).delete;
+		    sender.invitation.get(i).delete;
+		   
+		// flash.success("Invitation(s) sent successfully!");
+		 inv.get(i).delete();
+		 
+		 render(id,inv,i);**/
+		
+		
+		
+	}
         
 
 	 
