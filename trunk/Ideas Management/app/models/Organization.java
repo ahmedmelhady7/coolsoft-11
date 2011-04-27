@@ -17,75 +17,74 @@ public class Organization extends Model {
 
 	/**
 	 * Organization name
-	 **/
+	 */
 	@Required
 	public String name;
 
 	/**
 	 * Whether or not the users enrolled have the ability to create tags
-	 **/
+	 */
 	public boolean createTag;
 
 	/**
 	 * List of entities belonging to an organization
-	 **/
+	 */
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
 	public List<MainEntity> entitiesList;
 
 	/**
 	 * Creator of that organization
-	 **/
+	 */
 	@ManyToOne
 	public User creator;
 
 	/**
 	 * List of followers for the organization
-	 **/
+	 */
 	@ManyToMany(mappedBy = "followingOrganizations", cascade = CascadeType.ALL)
 	public List<User> followers;
 
 	/**
 	 * List of enrolled users in that organization
-	 **/
+	 */
 	@ManyToMany(mappedBy = "enrolled", cascade = CascadeType.ALL)
 	public List<User> enrolledUsers;
 
 	/**
 	 * List of tags related to that organization
-	 **/
+	 */
 	@ManyToMany(mappedBy = "organizations", cascade = CascadeType.ALL)
 	public List<Tag> relatedTags;
 
 	/**
 	 * List of banned users from the organization
-	 **/
+	 */
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
 	public List<BannedUser> bannedUsers;
 
 	/**
 	 * ***********
-	 **/
+	 */
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
 	public List<UserRoleInOrganization> userRoleInOrg;
 
-	// @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
-	// commented until issue is resolved
-	// public ArrayList<RequestToJoin> joinRequests;
+	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+	public ArrayList<RequestToJoin> joinRequests;
 
 	/**
 	 * Privacy Level for organization (0 = secret, 1 = private, 2 = public)
-	 **/
+	 */
 	public short privacyLevel;
 
 	/**
 	 * *********
-	 **/
+	 */
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
 	public List<Invitation> invitation;
 
 	/**
 	 * **********
-	 **/
+	 */
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.PERSIST)
 	public List<Log> logsList;
 
@@ -93,13 +92,15 @@ public class Organization extends Model {
 	// UserRoleInOrganazation be added.
 
 	/**
-	 * Organization attributes
+	 * Organization Class Constructor
+	 * 
+	 * @author Omar Faruki
 	 * 
 	 * @param name
 	 * @param creator
 	 * @param privacyLevel
 	 * @param createTag
-	 **/
+	 */
 	public Organization(String name, User creator) {
 		this.name = name;
 		this.creator = creator;

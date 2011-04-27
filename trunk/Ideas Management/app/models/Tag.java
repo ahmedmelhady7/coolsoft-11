@@ -59,7 +59,7 @@ public class Tag extends Model {
 	 * Tag attributes
 	 * 
 	 * @param name
-	 **/
+	 */
 	public Tag(String name) {
 		this.setName(name);
 		this.followers = new ArrayList<User>();

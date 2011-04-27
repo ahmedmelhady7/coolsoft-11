@@ -82,7 +82,8 @@ public class Topic extends Model {
 	/**
 	 * the list of requests to join the topic
 	 */
-	// public List<RequestToJoin> requestsToJoin;
+	@OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
+	public List<RequestToJoin> requestsToJoin;
 
 	/**
 	 * the list of relationship requests with the topic
