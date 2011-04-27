@@ -46,13 +46,15 @@ public class User extends Model {
 
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
 	public List<Topic> topicsCreated;
-
+	
+  // to be removed
 	@ManyToMany
 	public List<Organization> enrolled;
 
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
 	public List<Organization> createdOrganization;
-
+	
+// to be removed
 	@ManyToMany(mappedBy = "organizers", cascade = CascadeType.PERSIST)
 	public List<Topic> topicsIOrganize;
 
@@ -83,17 +85,16 @@ public class User extends Model {
 
 	@ManyToMany
 	public List<Organization> followingOrganizations;
+	
+	// to be removed
 	@ManyToMany
 	public List<MainEntity> entitiesIOrganize;
 
-	@ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
-	public List<Topic> accessedTopics;
+//	@ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
+//	public List<Topic> accessedTopics;
 
-	@ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
-	public List<Topic> accessedIdeas;
+	
 
-	@ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
-	public List<Topic> accessedPlans;
 
 	// List<Request> requests;
 	// List<Comment> commentsPosted;
@@ -144,9 +145,7 @@ public class User extends Model {
 		this.volunteerRequests = new ArrayList<VolunteerRequest>();
 		this.sentAssignRequests = new ArrayList<AssignRequest>();
 		this.receivedAssignRequests = new ArrayList<AssignRequest>();
-		this.accessedTopics = new ArrayList<Topic>();
-		this.accessedPlans = new ArrayList<Topic>();
-		this.accessedIdeas = new ArrayList<Topic>();
+		//this.accessedTopics = new ArrayList<Topic>();
 		notificationProfiles = new ArrayList<NotificationProfile>();
 		notifications = new ArrayList<Notification>();
 		bannedUsers = new ArrayList<BannedUser>();
