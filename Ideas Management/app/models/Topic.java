@@ -52,8 +52,10 @@ public class Topic extends Model {
 	/**
 	 * the list of topic organizers
 	 */
-//	@ManyToMany
-//	public List<User> organizers;
+	
+	//to be removed
+	@ManyToMany
+	public List<User> organizers;
 
 	/**
 	 * the list of followers of the topic
