@@ -43,6 +43,7 @@ public class User extends Model {
 	 * active a -> active , d -> deleted , n -> not active
 	 */
 	public char state;
+	public String profession; //lama
 
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
 	public List<Topic> topicsCreated;
