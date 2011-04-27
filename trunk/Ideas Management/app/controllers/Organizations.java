@@ -11,11 +11,11 @@ public class Organizations extends CRUD{
 	 * 
 	 * This Method returns the Privacy level of an organization given the organization Id
 	 * 
-	 * @author 	Fadwa
+	 * @author 	Fadwa sakr
 	 * 
 	 * @story 	C2S34
 	 * 
-	 * @param 	organizationId 	: the id of the organization for which the privacy level is needed
+	 * @param 	id 	: the id of the organization for which the privacy level is needed
 	 *
 	 * @return	short
 	 */
