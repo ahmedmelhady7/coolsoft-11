@@ -47,6 +47,8 @@ public class Organization extends Model {
 	/**
 	 * List of enrolled users in that organization
 	 */
+	
+	//to be removed
 	@ManyToMany(mappedBy = "enrolled", cascade = CascadeType.ALL)
 	public List<User> enrolledUsers;
 
