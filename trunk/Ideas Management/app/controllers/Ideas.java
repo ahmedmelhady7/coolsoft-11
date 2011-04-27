@@ -36,7 +36,7 @@ public class Ideas extends CRUD {
 	
 	public static void saveDraft(String title,String body,Topic topic,User user )
 	{
-		Idea idea = new Idea(title,body,user,topic,true);
+		Idea idea = new Idea(title,body,user,topic,true).save();
 	}
 	
 	/*
@@ -54,6 +54,7 @@ public class Ideas extends CRUD {
 	public static void postDraft(Idea idea)
 	{
 		idea.isDraft = false;
+		idea.save();
 	}
 	
 	/*
