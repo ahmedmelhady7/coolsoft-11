@@ -28,15 +28,14 @@ public class Organizations extends CRUD{
 	 }
 	 /**
 		 * 
-		 * This Method returns the Privacy level of an organization given the organization Id
+		 * This Method enables the ability of creation of tags in a certain organization
 		 * 
-		 * @author 	Fadwa
+		 * @author 	Fadwa sakr
 		 * 
 		 * @story 	C2S4
 		 * 
-		 * @param 	organizationId 	: the id of the organization for which the preferences is being enabled
+		 * @param 	id 	: the id of the organization for which the preferences is being enabled
 		 *
-		 * @return	void
 		 */
 
 	 public static void enableTags(Long id){
@@ -46,15 +45,14 @@ public class Organizations extends CRUD{
 	 }
 	 /**
 		 * 
-		 * This Method returns the Privacy level of an organization given the organization Id
+		 * This Method disables the ability of creation of tags in a certain organization
 		 * 
-		 * @author 	Fadwa
+		 * @author 	Fadwa sakr
 		 * 
 		 * @story 	C2S4
 		 * 
-		 * @param 	organizationId 	: the id of the organization for which the preferences is being disabled
+		 * @param 	id 	: the id of the organization for which the preferences is being disabled
 		 *
-		 * @return	void
 		 */
 	 public static void disableTags(Long id){
 		 Organization organization = Organization.findById(id);
