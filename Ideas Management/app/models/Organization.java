@@ -71,7 +71,7 @@ public class Organization extends Model {
 	public List<UserRoleInOrganization> userRoleInOrg;
 
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
-	public ArrayList<RequestToJoin> joinRequests;
+	public List<RequestToJoin> joinRequests;
 
 	/**
 	 * Privacy Level for organization (0 = secret, 1 = private, 2 = public)
@@ -116,7 +116,7 @@ public class Organization extends Model {
 		bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
 		logsList = new ArrayList<Log>();
-
+		joinRequests = new ArrayList<RequestToJoin>();
 	}
 
 	public Organization(String name, User creator, short privacyLevel,
@@ -133,6 +133,7 @@ public class Organization extends Model {
 		bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
 		logsList = new ArrayList<Log>();
+		joinRequests = new ArrayList<RequestToJoin>();
 	}
 
 	/**
