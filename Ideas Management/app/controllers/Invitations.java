@@ -14,25 +14,26 @@ public class Invitations extends Controller {
 	 public static void invite(){
 		 
 		      /*get user n list of organization&entity&topic tht he organizes*/
-	    	//render(user,org,ent,top);
+	    	//render(org,ent,top);
 	  }
 	 
 	
-	 public static void send(String email,User sender,String Roles,
-			  String organization,String entity,String topic, 
-			  String Comments){
+	 public static void send(String email,String role,String organization,
+			 String entity,String topic, String Comments){
 		  
-		 Mail.invite(email,Roles,organization,entity,topic,Comments);
+		 Mail.invite(email,role,organization,entity,topic);
 		    
 	    	Organization org= Organization.find("byName", organization).first();
 	    	MainEntity ent=MainEntity.find("byName", entity).first();
 	    	Topic top=Topic.find("byName", topic).first();
+	    	 //**sender=the user from the session 
+	        //**sender.addInvitation(email,role,org,ent,top);
 	    	
-	        sender.addInvitation(email,Roles,org,
-	    	        ent,top,sender,Comments);
-		  render(email,Roles,organization,entity,topic,Comments);
-		  
+		  //render(email,role,organization,entity,topic);
+		    render(email);
 	  }
 	
+        
 
+	 
 }
