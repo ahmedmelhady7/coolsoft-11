@@ -1,5 +1,6 @@
 package controllers;
 
+
 import java.util.ArrayList;
 
 import antlr.collections.List;
@@ -103,6 +104,22 @@ public class Topics extends CRUD {
 		Topic targetTopic = Topic.findById(topicId);
 		targetTopic.openToEdit = true;
 		/* TODO: buttons to be adjusted in view */
-
 	}
+	
+ 
+   /**
+    * This Method returns a list of all closed topics
+    *
+    * @author aliaelbolock
+    *
+    * @story C3S1
+    *
+    * @return ArrayList<Topics>
+    */
+   public static ArrayList<Topic> closedTopics(){
+        List closedtopics = (List) new ArrayList<Topic>();
+        closedtopics = (List) Topic.find("openToEdit", false).fetch();
+        return (ArrayList<Topic>) closedtopics;
+   }
+
 }
