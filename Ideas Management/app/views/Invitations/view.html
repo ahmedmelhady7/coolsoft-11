@@ -1,0 +1,26 @@
+<a href="@{Application.index()}">Back to Home</a>
+<hr>          </hr>
+<u><font size ="5" color ="blue">Invitations</font></u>
+<br/>
+<br/>
+<table border="0" bgcolor="#ececec" cellspacing="5">
+#{if inv.isEmpty()}
+<tr><td><i><b><font size ="4" color ="black">No New Invitations</font></b></i></td><td>
+</table>
+#{/if}
+#{else}
+#{list items:0..inv.size()-1, as:'i'} 
+<table border="0" bgcolor="#ececec" cellspacing="5">
+<tr><td><font size ="3" color ="red">From : ${inv.get(i).organization.name} Organization</font></td><td>
+
+<tr><td><font size ="3" color ="black">You have been invited to join ${inv.get(i).organization.name} Organization As ${inv.get(i).role}</font></td><td>
+<tr><td><font size ="3" color ="black">to #{if inv.get(i).topic!=nul}${inv.get(i).topic.name} Topic that belongs to #{/if}${inv.get(i).entity.name} Entity</font></td><td> 
+
+<tr><td>&nbsp;</td><td><a href="@{Display.respond(1)}"><font size ="3" color ="green">Accept</font</a>
+<a href="@{Display.respond(0)}"><font size ="3" color ="red">Reject</font</a><tr><td>
+
+</table>
+<br/>
+<br/>
+#{/list}
+#{/else}
