@@ -1,0 +1,38 @@
+
+ <form action="@{Invitation.send()}" method="GET">
+<table border="0" bgcolor="#ececec" cellspacing="5">
+<tr><td>Email</td><td><input type="text" size="30" name="email"></td></tr>
+
+
+<tr><td>Roles</td><td>
+#{select 'role', value:1, id:'select2'}
+   #{option value="none"}none#{/option}
+   #{option value="Idea Developer"}Idea Developer#{/option}
+   #{option value="Organizer"}Organizer#{/option}
+#{/select}
+</td></tr>
+
+<tr><td>Organization</td><td>
+#{select 'organization', value:1, id:'select2'}
+   #{option value="none"}none#{/option}
+      #{option org.name}${org.name}#{/option}
+#{/select}
+</td></tr>
+
+<tr><td>Entity</td><td>
+#{select 'entity', value:1, id:'select3'}
+    #{option value="none"}none#{/option}
+      #{option ent.name}${ent.name}#{/option}
+#{/select}
+</td></tr>
+
+<tr><td>Topic</td><td>
+#{select 'topic', value:1, id:'select4'}
+    #{option value="none"}none#{/option}
+      #{option top.name}${top.name}#{/option}
+#{/select}
+</td></tr>
+<tr><td>&nbsp;</td><td><input type="submit" value="Send">
+</table>
+</form>
+ 
