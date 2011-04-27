@@ -67,6 +67,21 @@ public class Tag extends Model {
 		this.taggedItems = new ArrayList<Item>();
 		// this.relatedTags = new ArrayList<Tag>();
 	}
+	/**
+	 * This Method adds a user to the list of followers
+	 * 
+	 * @author m.hisham.sa
+	 * 
+	 * @story C2S11
+	 * 
+	 * @param user
+	 *            : the user who follows
+	 * 
+	 * @return void
+	 */
+	public void follow(User user) {
+		followers.add(user);
+	}
 
 	/**
 	 * This Method removes a user from the list of followers
