@@ -121,9 +121,9 @@ public class Users extends CRUD {
 		}
 	}
 
-	public static void reportIdeaAsSpam(Idea idea, Organization organization,
-			User reporter) {
+	public static void reportIdeaAsSpam(Idea idea, User reporter) {
 		idea.spamCounter++;
+		// idea.belongsToTopic.getOrganizer();
 	}
 
 	/**

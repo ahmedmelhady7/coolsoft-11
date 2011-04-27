@@ -11,8 +11,6 @@ import models.User;
 
 public class Topics extends CRUD {
 
-	
-
 	/**
 	 * This Method returns true if the tag exists in the global list of tags and
 	 * checks if it the topic is already tagged with the same tag (returns true
@@ -81,11 +79,10 @@ public class Topics extends CRUD {
 	 * @param privacyLevel
 	 *            : the level of privacy of the idea
 	 * 
-	 * @return void
 	 */
 	public static void postIdea(User user, Topic topic, String title,
-			String description, int privacyLevel) {
+			String description) {
 		Idea idea = new Idea(title, description, user, topic);
-		idea.privacyLevel = privacyLevel;
+		idea.privacyLevel = topic.privacyLevel;
 	}
 }
