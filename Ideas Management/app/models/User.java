@@ -39,8 +39,8 @@ public class User extends Model {
 	// added to know whether a user is an Admin or not
 	public boolean isAdmin;
 	/*
-	 * state represents the state of the user whether he is active, deleted, not active
-	 * a -> active , d -> deleted ,  n -> not active
+	 * state represents the state of the user whether he is active, deleted, not
+	 * active a -> active , d -> deleted , n -> not active
 	 */
 	public char state;
 
@@ -75,8 +75,7 @@ public class User extends Model {
 	@OneToMany(mappedBy = "directedTo")
 	public List<Notification> notifications;
 	@ManyToMany
-	public
-	List<MainEntity> followingEntities;
+	public List<MainEntity> followingEntities;
 
 	// related to sprint 2
 	@ManyToMany
@@ -86,13 +85,13 @@ public class User extends Model {
 	public List<Organization> followingOrganizations;
 	@ManyToMany
 	public List<MainEntity> entitiesIOrganize;
-	
+
 	@ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
 	public List<Topic> accessedTopics;
-	
+
 	@ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
 	public List<Topic> accessedIdeas;
-	
+
 	@ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
 	public List<Topic> accessedPlans;
 
@@ -150,7 +149,7 @@ public class User extends Model {
 		notificationProfiles = new ArrayList<NotificationProfile>();
 		notifications = new ArrayList<Notification>();
 		bannedUsers = new ArrayList<BannedUser>();
-		//added
+		// added
 		userRolesInOrganization = new ArrayList<UserRoleInOrganization>();
 		invitation = new ArrayList<Invitation>();
 		this.enrolled = new ArrayList<Organization>();
@@ -168,69 +167,77 @@ public class User extends Model {
 		// topicInvitations = new ArrayList<TopicInvitation>();
 
 	}
-	
-	
-	
-	
-	public void addInvitation(String email,String role,Organization organization,
-	        MainEntity entity,Topic topic) {
-	    	 
-	    	Invitation invite = new Invitation(email,entity,organization,role,this,topic).save();
-	    	this.invitation.add(invite);
-	    	organization.invitation.add(invite);
-	    	entity.invitationList.add(invite);
-	    	if(topic!=null)
-	    		topic.invitation.add(invite);
-	          this.save();
-	    }
-	
-	
-	
-	/**
-	 * 
-	 * This Method adds a volunteer request sent by the user to work on a certain item in a plan to the list of volunteer requests sent by the user given the volunteer request
-	 * 
-	 * @author 	salma.qayed
-	 * 
-	 * @story 	C5S10
-	 * 
-	 * @param 	volunteerRequest 	: the VolunteerRequest that needs to be added to the list of volunteer requests of the user
-	 * 
-	 * @return	void
-	 */
-	
-	public void addVolunteerRequest(VolunteerRequest volunteerRequest){
-		volunteerRequests.add(volunteerRequest);
-		
+
+	public void addInvitation(String email, String role,
+			Organization organization, MainEntity entity, Topic topic) {
+
+		Invitation invite = new Invitation(email, entity, organization, role,
+				this, topic).save();
+		this.invitation.add(invite);
+		organization.invitation.add(invite);
+		entity.invitationList.add(invite);
+		if (topic != null)
+			topic.invitation.add(invite);
+		this.save();
 	}
-	
+
 	/**
 	 * 
-	 * This Method adds an assign request sent by the user to another user assigning him to a certain item in a plan to the list of assign requests sent by the user given the assign request
+	 * This Method adds a volunteer request sent by the user to work on a
+	 * certain item in a plan to the list of volunteer requests sent by the user
+	 * given the volunteer request
 	 * 
-	 * @author 	salma.qayed
+	 * @author salma.qayed
 	 * 
-	 * @story 	C5S4
+	 * @story C5S10
 	 * 
-	 * @param 	sentAssignRequest 	: the AssignRequest that needs to be added to the list of assign requests sent by the user
+	 * @param volunteerRequest
+	 *            : the VolunteerRequest that needs to be added to the list of
+	 *            volunteer requests of the user
 	 * 
-	 * @return	void
+	 * @return void
+	 */
+
+	public void addVolunteerRequest(VolunteerRequest volunteerRequest) {
+		volunteerRequests.add(volunteerRequest);
+
+	}
+
+	/**
+	 * 
+	 * This Method adds an assign request sent by the user to another user
+	 * assigning him to a certain item in a plan to the list of assign requests
+	 * sent by the user given the assign request
+	 * 
+	 * @author salma.qayed
+	 * 
+	 * @story C5S4
+	 * 
+	 * @param sentAssignRequest
+	 *            : the AssignRequest that needs to be added to the list of
+	 *            assign requests sent by the user
+	 * 
+	 * @return void
 	 */
 	public void addSentAssignRequest(AssignRequest sentAssignRequest) {
 		sentAssignRequests.add(sentAssignRequest);
 	}
-	
+
 	/**
 	 * 
-	 * This Method adds an assign request received by the user to work on a certain item in a plan to the list of assign requests received by the user given the assign request
+	 * This Method adds an assign request received by the user to work on a
+	 * certain item in a plan to the list of assign requests received by the
+	 * user given the assign request
 	 * 
-	 * @author 	salma.qayed
+	 * @author salma.qayed
 	 * 
-	 * @story 	C5S4
+	 * @story C5S4
 	 * 
-	 * @param 	receivedAssignRequest 	: the AssignRequest that needs to be added to the list of assign requests received by the user
+	 * @param receivedAssignRequest
+	 *            : the AssignRequest that needs to be added to the list of
+	 *            assign requests received by the user
 	 * 
-	 * @return	void
+	 * @return void
 	 */
 	public void addReceivedAssignRequest(AssignRequest receivedAssignRequest) {
 		sentAssignRequests.add(receivedAssignRequest);
@@ -251,6 +258,7 @@ public class User extends Model {
 
 	public void unfollow(Tag t) {
 		followingTags.remove(t);
+		_save();
 	}
 
 	/**
@@ -268,6 +276,7 @@ public class User extends Model {
 
 	public void unfollow(Topic t) {
 		topicsIFollow.remove(t);
+		_save();
 	}
 
 	/**
@@ -284,6 +293,7 @@ public class User extends Model {
 	 */
 	public void unfollow(MainEntity m) {
 		followingEntities.remove(m);
+		_save();
 	}
 
 	/**
@@ -300,5 +310,6 @@ public class User extends Model {
 	 */
 	public void unfollow(Organization o) {
 		followingOrganizations.remove(o);
+		_save();
 	}
 }

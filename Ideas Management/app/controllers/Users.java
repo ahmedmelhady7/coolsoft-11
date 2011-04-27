@@ -28,6 +28,7 @@ public class Users extends CRUD {
 	 * 
 	 * @return void
 	 */
+
 	public static void unfollow(Topic topic, User user) {
 		topic.unfollow(user);
 		user.unfollow(topic);
@@ -95,6 +96,19 @@ public class Users extends CRUD {
 		user.unfollow(entity);
 	}
 
+	/**
+	 * This Method renders a page of all objects followed by a user
+	 * 
+	 * @author Ibrahim.al.khayat
+	 * 
+	 * @story C2S12
+	 * 
+	 * @param user
+	 *            : the user who follows
+	 * 
+	 * @return void
+	 */
+
 	public static void listFollows(User user) {
 
 		try {
@@ -112,10 +126,10 @@ public class Users extends CRUD {
 		idea.spamCounter++;
 	}
 
-	
 	/**
 	 * 
-	 * This method is responsible for posting a topic in a certain entity by a certain user
+	 * This method is responsible for posting a topic in a certain entity by a
+	 * certain user
 	 * 
 	 * @author ${aliaelbolock}
 	 * 
@@ -145,9 +159,15 @@ public class Users extends CRUD {
 					creator, entity).save();
 			creator.topicsCreated.add(newTopic);
 			creator.topicsIOrganize.add(newTopic);
-			for(int i = 0; i<entity.organizers.size(); i++){
+			for (int i = 0; i < entity.organizers.size(); i++) {
 				entity.organizers.get(i).topicsIOrganize.add(newTopic);
 			}
 		}
+	}
+
+	public static void r(long i) {
+		Topic t = Topic.findById(i);
+		t.title = "done";
+		t._save();
 	}
 }
