@@ -52,8 +52,8 @@ public class Topic extends Model {
 	/**
 	 * the list of topic organizers
 	 */
-	@ManyToMany
-	public List<User> organizers;
+//	@ManyToMany
+//	public List<User> organizers;
 
 	/**
 	 * the list of followers of the topic
@@ -64,8 +64,8 @@ public class Topic extends Model {
 	/*
 	 * the list of users that can access the topic
 	 */
-	@ManyToMany
-	public List<User> canAccess;
+//	@ManyToMany
+//	public List<User> canAccess;
 
 	/**
 	 * the list of ideas in the topic
@@ -138,12 +138,12 @@ public class Topic extends Model {
 		this.entity = entity;
 		tags = new ArrayList<Tag>();
 		// relationships = new ArrayList<Relationship>();
-		organizers = new ArrayList<User>();
+		// organizers = new ArrayList<User>();
 		followers = new ArrayList<User>();
 		ideas = new ArrayList<Idea>();
 		invitation = new ArrayList<Invitation>();
 		commentsOn = new ArrayList<Comment>();
-		canAccess = new ArrayList<User>();
+		// canAccess = new ArrayList<User>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
 	}
 
@@ -169,7 +169,7 @@ public class Topic extends Model {
 		this.creator = creator;
 		tags = new ArrayList<Tag>();
 		// relationships = new ArrayList<Relationship>();
-		organizers = new ArrayList<User>();
+		// organizers = new ArrayList<User>();
 		followers = new ArrayList<User>();
 		ideas = new ArrayList<Idea>();
 		invitation = new ArrayList<Invitation>();
@@ -186,9 +186,10 @@ public class Topic extends Model {
 	 * 
 	 * @return ArrayList<User>
 	 */
-	public List<User> getOrganizer() {
-		return organizers;
-	}
+	
+//	public List<User> getOrganizer() {
+//		return organizers;
+//	}
 
 	/**
 	 * This Method returns the list of ideas in a certain topic
