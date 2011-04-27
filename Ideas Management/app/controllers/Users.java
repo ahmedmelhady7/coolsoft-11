@@ -1,5 +1,9 @@
 package controllers;
 
+
+import java.util.List;
+
+
 import java.util.List;
 
 import play.data.validation.Validation;
@@ -9,6 +13,7 @@ import models.Organization;
 import models.Tag;
 import models.Topic;
 import models.User;
+
 
 import models.*;
 
@@ -165,9 +170,74 @@ public class Users extends CRUD {
 		}
 	}
 
+	/**
+	 * 
+	 * This method is responsible for searching for users using specific criteria
+	 * 
+	 * @author ${lama.ashraf}
+	 * 
+	 * @story C1S13
+	 * 
+	 * @param username
+	 *            : the username of the user
+	 * 
+	 * @param profession
+	 * 
+	 * @param email
+	 * 
+	 * @param id
+	 *            : the id of the topic
+	 * 
+	 * @return void
+	 */
+	public static void searchUser(String username, String profession,
+			String email, Topic id) {
+
+		List<User> searchResult = User.findAll();
+
+		if (username != null) {
+			searchResult = User.find("username like ? ", "name%").fetch();
+		}
+
+		if (profession != null) {
+			for (int i = 0; i < searchResult.size(); i++) {
+				if (!(searchResult.get(i).profession).equals(profession)) {
+					searchResult.remove(i);
+				}
+
+			}
+		}
+		if (email != null) {
+			for (int i = 0; i < searchResult.size(); i++) {
+				if (!(searchResult.get(i).email).equals(email)) {
+					searchResult.remove(i);
+				}
+
+			}
+
+		}
+		
+		render(searchResult);
+	}
+	
+	public static List<User> searchOrganizer(Organization o){
+		List<User> organizers = null;
+		if(o != null) {
+		organizers = (List<User>) UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = o and uro.Role.name like ? ", "organizer");
+		
+		}
+		return organizers;
+	}
+	/*public List<User> searchByTopic(Topic id) {	
+		
+		
+	}*/
+
+
 	public static void r(long i) {
 		Topic t = Topic.findById(i);
 		t.title = "done";
 		t._save();
 	}
 }
+
