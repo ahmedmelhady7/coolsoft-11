@@ -60,6 +60,11 @@ public class Idea extends Model {
 	@ManyToOne
 	public User author;
 	/**
+	 * the Repoters of the idea
+	 */
+	@ManyToMany
+	public List<User> reporters;
+	/**
 	 * the plan that the idea is marked in
 	 */
 	@ManyToOne

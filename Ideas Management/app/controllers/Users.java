@@ -128,9 +128,30 @@ public class Users extends CRUD {
 		}
 	}
 
+	/**
+	 * this Method is responsible for reporting an idea as a spam
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @param idea
+	 *            : the idea to be reported
+	 * 
+	 * @param reporter
+	 *            : the user who wants to report the idea
+	 * 
+	 */
 	public static void reportIdeaAsSpam(Idea idea, User reporter) {
-		idea.spamCounter++;
-		// idea.belongsToTopic.getOrganizer();
+		boolean alreadyReported = false;
+		for (int i = 0; i < reporter.ideasReported.size(); i++) {
+			if (idea == reporter.ideasReported) {
+				alreadyReported = true;
+			}
+		}
+		if (!alreadyReported) {
+			idea.spamCounter++;
+			reporter.ideasReported.add(idea);
+			// idea.belongsToTopic.getOrganizer();
+		}
 	}
 
 	/**
@@ -161,23 +182,21 @@ public class Users extends CRUD {
 	 */
 	public void postTopic(String name, String description, short privacyLevel,
 			User creator, MainEntity entity) {
-		
+
 		if (entity.organizers.contains(creator)) {
 			Topic newTopic = new Topic(name, description, privacyLevel,
 					creator, entity).save();
 			creator.topicsCreated.add(newTopic);
-			List usr = getEntityOrganizers(entity); 
-//			UserRoleInOrganization.addEnrolledUser(creator,
-//					newTopic.entity.organization,
-//					Role.getRoleByName("Organizer"), newTopic.getId(), "topic");
+			List usr = getEntityOrganizers(entity);
+			// UserRoleInOrganization.addEnrolledUser(creator,
+			// newTopic.entity.organization,
+			// Role.getRoleByName("Organizer"), newTopic.getId(), "topic");
 			creator.topicsIOrganize.add(newTopic);
 			for (int i = 0; i < entity.organizers.size(); i++) {
 				entity.organizers.get(i).topicsIOrganize.add(newTopic);
 			}
 		}
 	}
-
-	
 
 	/**
 	 * 
@@ -230,44 +249,44 @@ public class Users extends CRUD {
 
 	/**
 	 * 
-	 * This method is responsible for searching for organizers in a certain organization
+	 * This method is responsible for searching for organizers in a certain
+	 * organization
 	 * 
 	 * @author ${lama.ashraf}
 	 * 
 	 * @story C1S13
 	 * 
 	 * @param o
-	 *            : the organization 
+	 *            : the organization
 	 * 
 	 * @return List<User>
 	 */
-	public static List<User> searchOrganizer(Organization o){
-		  List<UserRoleInOrganization> organizers = null;
-		  if(o != null) {
-		  organizers = (List<UserRoleInOrganization>) UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
-		          o,"organizer");
-		  
-		  }
-		  List<User> finalOrganizers =  new ArrayList<User>();
-		  for(int i =0; i< organizers.size(); i++) {
-			  finalOrganizers.add((organizers.get(i)).enrolled);
-		  }
-		  return finalOrganizers;
-		 }
+	public static List<User> searchOrganizer(Organization o) {
+		List<UserRoleInOrganization> organizers = null;
+		if (o != null) {
+			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
+					.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
+							o, "organizer");
+
+		}
+		List<User> finalOrganizers = new ArrayList<User>();
+		for (int i = 0; i < organizers.size(); i++) {
+			finalOrganizers.add((organizers.get(i)).enrolled);
+		}
+		return finalOrganizers;
+	}
 
 	/*
 	 * public List<User> searchByTopic(Topic id) {
 	 * 
 	 * 
 	 * }
-	 */	
+	 */
 
-
-	
 	/**
 	 * 
-	 * This method is responsible for telling whether a user is allowed to do a specific action
-	 * in an organization/entity/topic/plan
+	 * This method is responsible for telling whether a user is allowed to do a
+	 * specific action in an organization/entity/topic/plan
 	 * 
 	 * @author ${lama.ashraf}
 	 * 
@@ -275,89 +294,97 @@ public class Users extends CRUD {
 	 * 
 	 * @param user
 	 *            : the user who is going to perfom the action
-	 *            
+	 * 
 	 * @param action
-	 *        :the action performed
-	 *        
-	 * @param placeId          
-	 *        : the id of the organization/ entity/ topic/ plan
-	 *    
+	 *            :the action performed
+	 * 
+	 * @param placeId
+	 *            : the id of the organization/ entity/ topic/ plan
+	 * 
 	 * @param placeType
-	 * 		  : the type whether an organization/ entity/ topic/ plan
+	 *            : the type whether an organization/ entity/ topic/ plan
 	 * 
 	 * @return boolean
 	 */
-	 public static boolean isPermitted(User user, String action, long placeId, String placeType) {
-		// User banned =  BannedUser.find("select b.bannedUser from BannedUser b where b.bannedUser = ? and b.resourceID = ? and b.resourceType = ? and b.action =  ", user);
-		 JPAQuery banned = BannedUser.find("byBannedUserAndActionAndResourceTypeAndResourceID",user, action, placeType, placeId).first();
-		
-		 if(user.isAdmin) {
-			 return true;
-		 }
-		 else{
-			 if(banned != null){
-				 return false;
-			 }
-			 else{
-				 if(placeType == "organization") {
-					 Organization org = Organization.findById(placeId);
-					 if(org.privacyLevel == 0 || org.privacyLevel == 1) {
-						 List<UserRoleInOrganization> allowed = UserRoleInOrganization.find("byEnrolledAndbyOrganization", user,org).fetch();
-						 if(allowed == null){
-							 return false;
-						 }
-						 else{return true;}
-					 }
-					 else{return true;}
-					 
-				 }
-				 else {
-					 if(placeType == "topic"){
-						 Topic topic = Topic.findById(placeId);
-						 if(topic.privacyLevel == 0 || topic.privacyLevel == 1) {
-							 List<UserRoleInOrganization> allowed = UserRoleInOrganization.find("byEnrolledAndbyEntityTopicIDAndType", user,topic, "topic").fetch();
-							 if(allowed == null){
-								 return false;
-							 }
-							 else{return true;}
-						 }
-						 else{return true;}
-					 }
-					 else {
-						 if(placeType == "plan"){
-							 Plan plan = Plan.findById(placeId);
-							 Topic topic = plan.topic;
-							 if(topic.privacyLevel == 0 || topic.privacyLevel == 1) {
-								 List<UserRoleInOrganization> allowed = UserRoleInOrganization.find("byEnrolledAndbyEntityTopicIDAndType", user,topic, "topic").fetch();
-								 if(allowed == null){
-									 return false;
-								 }
-								 else{return true;}
-							 }
-							 else{return true;}
-						 }
-					 }
-					 
-				 }
-			 }
-		 }
-		 System.out.println("you entered an invalid type");
-		 return false;
-		 
-		 
-		 
-	 }
+	public static boolean isPermitted(User user, String action, long placeId,
+			String placeType) {
+		// User banned =
+		// BannedUser.find("select b.bannedUser from BannedUser b where b.bannedUser = ? and b.resourceID = ? and b.resourceType = ? and b.action =  ",
+		// user);
+		JPAQuery banned = BannedUser.find(
+				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
+				action, placeType, placeId).first();
 
+		if (user.isAdmin) {
+			return true;
+		} else {
+			if (banned != null) {
+				return false;
+			} else {
+				if (placeType == "organization") {
+					Organization org = Organization.findById(placeId);
+					if (org.privacyLevel == 0 || org.privacyLevel == 1) {
+						List<UserRoleInOrganization> allowed = UserRoleInOrganization
+								.find("byEnrolledAndbyOrganization", user, org)
+								.fetch();
+						if (allowed == null) {
+							return false;
+						} else {
+							return true;
+						}
+					} else {
+						return true;
+					}
 
-	
+				} else {
+					if (placeType == "topic") {
+						Topic topic = Topic.findById(placeId);
+						if (topic.privacyLevel == 0 || topic.privacyLevel == 1) {
+							List<UserRoleInOrganization> allowed = UserRoleInOrganization
+									.find("byEnrolledAndbyEntityTopicIDAndType",
+											user, topic, "topic").fetch();
+							if (allowed == null) {
+								return false;
+							} else {
+								return true;
+							}
+						} else {
+							return true;
+						}
+					} else {
+						if (placeType == "plan") {
+							Plan plan = Plan.findById(placeId);
+							Topic topic = plan.topic;
+							if (topic.privacyLevel == 0
+									|| topic.privacyLevel == 1) {
+								List<UserRoleInOrganization> allowed = UserRoleInOrganization
+										.find("byEnrolledAndbyEntityTopicIDAndType",
+												user, topic, "topic").fetch();
+								if (allowed == null) {
+									return false;
+								} else {
+									return true;
+								}
+							} else {
+								return true;
+							}
+						}
+					}
 
-	
+				}
+			}
+		}
+		System.out.println("you entered an invalid type");
+		return false;
+
+	}
+
 	public static void r(long i) {
 		Topic t = Topic.findById(i);
 		t.title = "done";
 		t._save();
 	}
-	
+
 	/*
 	 * gets the list of organizers of a certain entity
 	 * 
@@ -369,7 +396,7 @@ public class Users extends CRUD {
 	 * @return List of Organizers in that entity
 	 */
 	public static List getEntityOrganizers(MainEntity e) {
-		
+
 		List<User> organizers = null;
 		if (e != null) {
 			Organization o = e.organization;
@@ -381,9 +408,9 @@ public class Users extends CRUD {
 							"entity");
 
 		}
-		return  organizers;
+		return organizers;
 	}
-	
+
 	/*
 	 * gets all the users enrolled in an organization these users are: 1- the
 	 * Organization lead 2- the organizers (even if blocked) 3- Idea Developers
@@ -406,10 +433,5 @@ public class Users extends CRUD {
 		}
 		return enrolled;
 	}
-	
-
-
-		
-
 
 }
