@@ -106,6 +106,9 @@ public class Organization extends Model {
 	public Organization(String name, User creator) {
 		this.name = name;
 		this.creator = creator;
+		// added by nada ossama
+		UserRoleInOrganization.addEnrolledUser(this.creator, this, Role.getRoleByName("Organization Lead"));
+		
 		this.privacyLevel = 2; // default privacylevel is public
 		this.createTag = true; // default users are allowed to create tags
 		invitation = new ArrayList<Invitation>();
@@ -123,6 +126,8 @@ public class Organization extends Model {
 			boolean createTag) {
 		this.name = name;
 		this.creator = creator;
+		// added by nada ossama
+		UserRoleInOrganization.addEnrolledUser(this.creator, this, Role.getRoleByName("Organization Lead"));
 		this.privacyLevel = privacyLevel;
 		this.createTag = createTag;
 		invitation = new ArrayList<Invitation>();
