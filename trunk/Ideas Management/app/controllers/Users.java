@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.List;
 
 import play.data.validation.Validation;
+import play.db.jpa.GenericModel.JPAQuery;
 
 import models.MainEntity;
 import models.Organization;
@@ -227,14 +228,31 @@ public class Users extends CRUD {
 				searchResultByEmail);
 	}
 
+	/**
+	 * 
+	 * This method is responsible for searching for organizers in a certain organization
+	 * 
+	 * @author ${lama.ashraf}
+	 * 
+	 * @story C1S13
+	 * 
+	 * @param o
+	 *            : the organization 
+	 * 
+	 * @return List<User>
+	 */
 	public static List<User> searchOrganizer(Organization o){
-		  List<User> organizers = null;
+		  List<UserRoleInOrganization> organizers = null;
 		  if(o != null) {
-		  organizers = (List<User>) UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
+		  organizers = (List<UserRoleInOrganization>) UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
 		          o,"organizer");
 		  
 		  }
-		  return organizers;
+		  List<User> finalOrganizers =  new ArrayList<User>();
+		  for(int i =0; i< organizers.size(); i++) {
+			  finalOrganizers.add((organizers.get(i)).enrolled);
+		  }
+		  return finalOrganizers;
 		 }
 
 	/*
@@ -243,6 +261,92 @@ public class Users extends CRUD {
 	 * 
 	 * }
 	 */	
+
+
+	
+	/**
+	 * 
+	 * This method is responsible for telling whether a user is allowed to do a specific action
+	 * in an organization/entity/topic/plan
+	 * 
+	 * @author ${lama.ashraf}
+	 * 
+	 * @story C1S15
+	 * 
+	 * @param user
+	 *            : the user who is going to perfom the action
+	 *            
+	 * @param action
+	 *        :the action performed
+	 *        
+	 * @param placeId          
+	 *        : the id of the organization/ entity/ topic/ plan
+	 *    
+	 * @param placeType
+	 * 		  : the type whether an organization/ entity/ topic/ plan
+	 * 
+	 * @return boolean
+	 */
+	 public static boolean isPermitted(User user, String action, long placeId, String placeType) {
+		// User banned =  BannedUser.find("select b.bannedUser from BannedUser b where b.bannedUser = ? and b.resourceID = ? and b.resourceType = ? and b.action =  ", user);
+		 JPAQuery banned = BannedUser.find("byBannedUserAndActionAndResourceTypeAndResourceID",user, action, placeType, placeId).first();
+		
+		 if(user.isAdmin) {
+			 return true;
+		 }
+		 else{
+			 if(banned != null){
+				 return false;
+			 }
+			 else{
+				 if(placeType == "organization") {
+					 Organization org = Organization.findById(placeId);
+					 if(org.privacyLevel == 0 || org.privacyLevel == 1) {
+						 List<UserRoleInOrganization> allowed = UserRoleInOrganization.find("byEnrolledAndbyOrganization", user,org).fetch();
+						 if(allowed == null){
+							 return false;
+						 }
+						 else{return true;}
+					 }
+					 else{return true;}
+					 
+				 }
+				 else {
+					 if(placeType == "topic"){
+						 Topic topic = Topic.findById(placeId);
+						 if(topic.privacyLevel == 0 || topic.privacyLevel == 1) {
+							 List<UserRoleInOrganization> allowed = UserRoleInOrganization.find("byEnrolledAndbyEntityTopicIDAndType", user,topic, "topic").fetch();
+							 if(allowed == null){
+								 return false;
+							 }
+							 else{return true;}
+						 }
+						 else{return true;}
+					 }
+					 else {
+						 if(placeType == "plan"){
+							 Plan plan = Plan.findById(placeId);
+							 Topic topic = plan.topic;
+							 if(topic.privacyLevel == 0 || topic.privacyLevel == 1) {
+								 List<UserRoleInOrganization> allowed = UserRoleInOrganization.find("byEnrolledAndbyEntityTopicIDAndType", user,topic, "topic").fetch();
+								 if(allowed == null){
+									 return false;
+								 }
+								 else{return true;}
+							 }
+							 else{return true;}
+						 }
+					 }
+					 
+				 }
+			 }
+		 }
+		 System.out.println("you entered an invalid type");
+		 return false;
+		 
+		 
+		 
+	 }
 
 
 	
