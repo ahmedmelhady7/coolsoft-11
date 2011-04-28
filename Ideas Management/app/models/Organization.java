@@ -98,10 +98,9 @@ public class Organization extends Model {
 	 * 
 	 * @author Omar Faruki
 	 * 
-	 * @param name
-	 * @param creator
-	 * @param privacyLevel
-	 * @param createTag
+	 * @param name : Name of the organization of type String
+	 * 
+	 * @param creator : Creator of the organization of type User
 	 */
 	public Organization(String name, User creator) {
 		this.name = name;
@@ -122,6 +121,19 @@ public class Organization extends Model {
 		joinRequests = new ArrayList<RequestToJoin>();
 	}
 
+	/**
+	 * Organization Class Constructor
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @param name : Name of the organization of type String
+	 * 
+	 * @param creator : Creator of the organization of type User
+	 * 
+	 * @param privacyLevel : privacy level of the organization of type short
+	 * 
+	 * @param createTag : enable or disable ability of user to create tags of type boolean
+	 */
 	public Organization(String name, User creator, short privacyLevel,
 			boolean createTag) {
 		this.name = name;
