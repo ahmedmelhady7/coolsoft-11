@@ -20,6 +20,27 @@ import models.UserRoleInOrganization;
 import models.*;
 
 public class Users extends CRUD {
+	
+	/**
+	 * This Method adds a user to the list of followers in a given tag
+	 * 
+	 * @author m.hisham.sa
+	 * 
+	 * @story C2S11
+	 * 
+	 * @param tag
+	 *            : the tag that the user is following
+	 * 
+	 * @param user
+	 *            : the user who follows
+	 * 
+	 * @return void
+	 */
+	public static void follow(Tag tag, User user){
+		tag.follow(user);
+		user.follow(tag);
+	}
+	
 	/**
 	 * This Method removes a user from the list of followers in a given Topic
 	 * 
