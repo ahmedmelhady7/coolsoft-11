@@ -1,8 +1,63 @@
-# @author Mohamed Ghanem
-# @story  C4S02
-  
+<!--
+@author Mohamed Ghanem
+@story  C4S02
+--> 
+<!DOCTYPE html>
 <html>
-    
-    
-    
+	${k}
+    <form action="@{Search.advancedSearch}" id="advancedSearchForm" name="max">
+        Search in&nbsp;&nbsp;&nbsp;::
+        <select name="orgPriv" style="width:90%" >
+            <option disabled="disabled">Search in:</option>
+            <option value="1">&nbsp;Public  organizations only</option>
+            <option value="2">&nbsp;Private organizations only</option>
+            <option value="3">&nbsp;Secrete organizations only</option>
+            <option value="4">&nbsp;Public  & private only</option>
+            <option value="5">&nbsp;Public  & secrete only</option>
+            <option value="6">&nbsp;Private & secrete only</option>
+            <option value="7">&nbsp;&nbsp; ALL </option>
+        </select>
+        <br/>
+        Search key   ::<input type="text" name="keyWords"/>
+        <br/>
+        UnWanted Key ::<input type="text" name="unKeyWords"/>
+        <br/>
+        Search With  ::
+        <br/>
+        <input type="checkbox" name="searchWith" value="1" />Organization 
+        <br/>
+        <input type="checkbox" name="searchWith" value="2" />Entity 
+        <br/>
+        <input type="checkbox" name="searchWith" value="3" />Topic 
+        <br/>
+        <input type="checkbox" name="searchWith" value="4" />Plan 
+        <br/>
+        <input type="checkbox" name="searchWith" value="5" />Idea 
+        <br/>
+        <input type="checkbox" name="searchWith" value="6" />Item 
+        <br/>
+        Before Date  ::<input type="date" name="beforeDate"/>
+        <br/>
+        After  Date  ::<input type="date" name="afterDate"/>
+        <br/>
+        Exact Date/Time ::<input type="datetime" name="dateTime"/>
+        <br/>
+        <input type="submit" name="ok" value="Start Advanced Search" onclick="advSearchScript(this.form)"/>
+    </form>
+    <!--script type="text/javascript">
+        // function advSearchScript(frm){
+        //    $.post('@{Search.advancedSearch()}', {searchIn: frm.keyWords.value}, {
+        //        wantKey: frm.keyWords.value
+        //    }, {
+        //        unwantKey: frm.unkeyWords.value
+        //    },{
+        //        searchIn2: frm.keyWords.value
+        //    }, {
+        //        wantKey2: frm.keyWords.value
+        //    }, {
+        //        unwantKey2: frm.unkeyWords.value
+        //    });
+        // }
+    </script-->
+	
 </html>

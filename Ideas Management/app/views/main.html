@@ -30,16 +30,15 @@
             </img>
         </center>
     </div>
-    <form action="@{Search.advancedSearch}" method="POST">
-        <script type="text/javascript">
-            $('#advancedSearch').click(function(){
-                $.post('@{Search.advancedSearch()}', {
-                    searchKey: prompt('Search k ?')
-                })
-            })
-        </script>
-        <input type="text" name="searchKey" /><input type="submit" value="Search" /><a href="@{Search.advancedSearch}">Advanced Search</a>
+	
+	
+    <form name="Search" action="Search.advancedSearch">
+        <input type="text" name="searchKey" />
+		<input type="submit" value="Search" />
+		<!--input type="submit" value="AdvancedSearch" onclick="advSearchScript(this.form)"/-->
+		<a href="AdvancedSearch">Advanced Search</a>
     </form>
+    
     <body>
         #{doLayout /}
     </body>
