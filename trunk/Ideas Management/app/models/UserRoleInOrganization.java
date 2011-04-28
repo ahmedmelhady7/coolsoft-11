@@ -102,5 +102,19 @@ public class UserRoleInOrganization extends Model {
 
 		return true;
 	}
+	
+	public static List<User> getEntityOrganizers(MainEntity e) {
+		List<User> organizers = null;
+		if (e != null) {
+			Organization o = e.organization;
+			organizers = (List<User>) UserRoleInOrganization
+					.find("select uro.enrolled from UserRoleInOrganization uro and Role r " +
+							"where uro.organization = ? and" +
+							" uro.Role = r and r.roleName like ? and uro.entityTopicID = ? " +
+							"and uro.type like ?",
+							o,"organizer", e.getId(),"entity");
 
+		}
+		return organizers;
+	}
 }
