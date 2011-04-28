@@ -1,10 +1,17 @@
 package controllers;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import controllers.CRUD.ObjectType;
+
 import models.MainEntity;
 import models.Organization;
+import models.Topic;
 import models.User;
 
 public class Organizations extends CRUD{
@@ -23,7 +30,9 @@ public class Organizations extends CRUD{
 	 * @return	short
 	 */
 
+
 	 public static short getPrivacyLevel(long id){
+
 		 Organization organization = Organization.findById(id);
 		 if(organization!=null)
 			 return organization.privacyLevel;
@@ -62,5 +71,32 @@ public class Organizations extends CRUD{
 		    notFoundIfNull(organization);
 			 organization.createTag=false;
 	 }
+
+     
+     /**
+      * This method gets the list of topics of a certain organization
+      * 
+      * @author Omar Faruki
+      * 
+      * @story C2S28
+      * 
+      * @param orgId : ID of an organization of type long
+      */
+     
+     public static void getTopics(long id) {
+    	 Organization org = Organization.findById(id);
+    	 notFoundIfNull(org);
+    	 List<Topic> topics = new ArrayList<Topic>();
+    	 int i = 0;
+    	 while (i < org.entitiesList.size()) {
+    		 int j = 0;
+    		 while (j < org.entitiesList.get(i).topicList.size()) {
+    			 topics.set(j,org.entitiesList.get(i).topicList.get(j));
+    			 j++;
+    		 }
+    		 i++;
+    	 }
+    	 render(topics);
+     }
 
 }
