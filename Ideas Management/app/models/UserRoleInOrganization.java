@@ -114,41 +114,41 @@ public class UserRoleInOrganization extends Model {
 	 * @return List of Organizers in that entity
 	 */
 
-	public static List<User> getEntityOrganizers(MainEntity e) {
-		List<User> organizers = null;
-		if (e != null) {
-			Organization o = e.organization;
-			organizers = (List<User>) UserRoleInOrganization
-					.find("select uro.enrolled from UserRoleInOrganization uro and Role r "
-							+ "where uro.organization = ? and"
-							+ " uro.Role = r and r.roleName like ? and uro.entityTopicID = ? "
-							+ "and uro.type like ?", o, "organizer", e.getId(),
-							"entity");
+//	public static List getEntityOrganizers(MainEntity e) {
+//		List<User> organizers = null;
+//		if (e != null) {
+//			Organization o = e.organization;
+//			organizers = (List<User>) UserRoleInOrganization
+//					.find("select uro.enrolled from UserRoleInOrganization uro and Role r "
+//							+ "where uro.organization = ? and"
+//							+ " uro.Role = r and r.roleName like ? and uro.entityTopicID = ? "
+//							+ "and uro.type like ?", o, "organizer", e.getId(),
+//							"entity");
+//
+//		}
+//		return organizers;
+//	}
 
-		}
-		return organizers;
-	}
-
-	/*
-	 * gets all the users enrolled in an organization these users are: 1- the
-	 * Organization lead 2- the organizers (even if blocked) 3- Idea Developers
-	 * in secret or private topics
-	 * 
-	 * @author : Nada Ossama
-	 * 
-	 * @param: the organization that the users are enrolled in
-	 * 
-	 * @return :List of enrolled users
-	 */
-	public static List<User> getEnrolledUsers(Organization o) {
-		List<User> enrolled = null;
-		if (o != null) {
-
-			enrolled = (List<User>) UserRoleInOrganization.find(
-					"select uro.enrolled from UserRoleInOrganization uro "
-							+ "where uro.organization = ? ", o);
-
-		}
-		return enrolled;
-	}
+//	/*
+//	 * gets all the users enrolled in an organization these users are: 1- the
+//	 * Organization lead 2- the organizers (even if blocked) 3- Idea Developers
+//	 * in secret or private topics
+//	 * 
+//	 * @author : Nada Ossama
+//	 * 
+//	 * @param: the organization that the users are enrolled in
+//	 * 
+//	 * @return :List of enrolled users
+//	 */
+//	public static List<User> getEnrolledUsers(Organization o) {
+//		List<User> enrolled = null;
+//		if (o != null) {
+//
+//			enrolled = (List<User>) UserRoleInOrganization.find(
+//					"select uro.enrolled from UserRoleInOrganization uro "
+//							+ "where uro.organization = ? ", o);
+//
+//		}
+//		return enrolled;
+//	}
 }
