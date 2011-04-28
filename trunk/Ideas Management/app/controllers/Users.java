@@ -1,9 +1,9 @@
 package controllers;
 
+// list of organizers in entity 
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 import java.util.List;
 
@@ -14,7 +14,6 @@ import models.Organization;
 import models.Tag;
 import models.Topic;
 import models.User;
-
 
 import models.*;
 
@@ -164,6 +163,10 @@ public class Users extends CRUD {
 			Topic newTopic = new Topic(name, description, privacyLevel,
 					creator, entity).save();
 			creator.topicsCreated.add(newTopic);
+			
+//			UserRoleInOrganization.addEnrolledUser(creator,
+//					newTopic.entity.organization,
+//					Role.getRoleByName("Organizer"), newTopic.getId(), "topic");
 			creator.topicsIOrganize.add(newTopic);
 			for (int i = 0; i < entity.organizers.size(); i++) {
 				entity.organizers.get(i).topicsIOrganize.add(newTopic);
@@ -173,7 +176,8 @@ public class Users extends CRUD {
 
 	/**
 	 * 
-	 * This method is responsible for searching for users using specific criteria
+	 * This method is responsible for searching for users using specific
+	 * criteria
 	 * 
 	 * @author ${lama.ashraf}
 	 * 
@@ -191,39 +195,57 @@ public class Users extends CRUD {
 		List<User> searchResultByEmail = new ArrayList<User>();
 
 		if (keyword != null) {
-			searchResultByName = User.find("username like ? ", "keyword%").fetch();
-			searchResultByProfession = User.find("profession like ? ", "keyword").fetch();
+			searchResultByName = User.find("username like ? ", "keyword%")
+					.fetch();
+			searchResultByProfession = User.find("profession like ? ",
+					"keyword").fetch();
 			searchResultByEmail = User.find("email like ? ", "keyword").fetch();
 		}
-		
-		for(int i = 0; i < searchResultByName.size(); i++){
-			if (searchResultByName.get(i).state == 'd'){
+
+		for (int i = 0; i < searchResultByName.size(); i++) {
+			if (searchResultByName.get(i).state == 'd') {
 				searchResultByName.remove(i);
 			}
 		}
-		for(int i = 0; i < searchResultByProfession.size(); i++){
-			if (searchResultByProfession.get(i).state == 'd'){
+		for (int i = 0; i < searchResultByProfession.size(); i++) {
+			if (searchResultByProfession.get(i).state == 'd') {
 				searchResultByProfession.remove(i);
 			}
 		}
-		
-		for(int i = 0; i < searchResultByEmail.size(); i++){
-			if (searchResultByEmail.get(i).state == 'd'){
+
+		for (int i = 0; i < searchResultByEmail.size(); i++) {
+			if (searchResultByEmail.get(i).state == 'd') {
 				searchResultByEmail.remove(i);
 			}
 		}
-		
-		render(searchResultByName, searchResultByProfession, searchResultByEmail);
-	}
-	
-	public static List<User> searchOrganizer(Organization o){
-		List<User> organizers = null;
-		if(o != null) {
-		organizers = (List<User>) UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
-			       o,"organizer");
-		
-		}
-		return organizers;
-	}
-}
 
+		render(searchResultByName, searchResultByProfession,
+				searchResultByEmail);
+	}
+
+	public static List<User> searchOrganizer(Organization o){
+		  List<User> organizers = null;
+		  if(o != null) {
+		  organizers = (List<User>) UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
+		          o,"organizer");
+		  
+		  }
+		  return organizers;
+		 }
+
+	/*
+	 * public List<User> searchByTopic(Topic id) {
+	 * 
+	 * 
+	 * }
+	 */
+
+	public static void r(long i) {
+		Topic t = Topic.findById(i);
+		t.title = "done";
+		t._save();
+	}
+
+		
+
+}
