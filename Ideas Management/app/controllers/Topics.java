@@ -100,10 +100,18 @@ public class Topics extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void reopen(long topicId) {
+	public static boolean reopen(long topicId, User actor) {
+		
 		Topic targetTopic = Topic.findById(topicId);
+		
+		if(!targetTopic.organizers.contains(actor)) {
+			return false;
+		}
+	
 		targetTopic.openToEdit = true;
 		/* TODO: buttons to be adjusted in view */
+		
+		return true;
 	}
 
 	/**
@@ -208,10 +216,12 @@ public class Topics extends CRUD {
 	 * 
 	 * @return boolean
 	 */
-	public static boolean closeTopic(long topicId) {
+	public static boolean closeTopic(long topicId, User actor) {
 		Topic targetTopic = Topic.findById(topicId);
 		
-		if(targetTopic.ideas.size() == 0) {
+		//checks if topic is empty or the user is not an organizer
+		if(targetTopic.ideas.size() == 0 ||
+				!targetTopic.organizers.contains(actor)) {
 			return false;
 		}
 		
