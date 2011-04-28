@@ -34,9 +34,6 @@ public class Plan extends Model {
 	
 	@ManyToOne
 	public User madeBy;
-	/*
-	 * list of users that can access the plan
-	 */
 	
 	/**
 	 * @author ${Ibrahim Safwat}
@@ -156,6 +153,10 @@ public class Plan extends Model {
 //		}
 		
 		
+	}
+	
+	public void addIdea(Idea idea) {
+		this.ideas.add(idea);
 	}
 	
 }

@@ -6,16 +6,24 @@
     <li>
         <fieldset>
             <legend>
-                #{if assignedItem.status == 0}
-                <input type="button" onclick="startItem('${assignedItem.id}');" value="Start">
-                #{/if}
-				#{else}
-                <h2>
-				<input type="checkbox" ${assignedItem.status == 1 ? 'inProgress':'done'} onClick="toggle_task('${assignedItem.id}');"/>${item.summary}
-            </h2>#{/else}
+            	
+				<h2>Plan: <a href="#">${assignedItem.plan.title}</a></h2>
+               
             </legend>
-            <h2>Plan: <a href="#">${assignedItem.plan.title}</a></h2>
-            <br/>
+            Title: ${item.summary} &nbsp; &nbsp; &nbsp;
+            #{if assignedItem.status == 0} 
+			<input type = "button" value="Start" onClick ="startItem('${assignedItem.id}');"/> 
+			#{/if}
+            #{else}
+			<input type="checkbox" onClick="toggle_task('${assignedItem.id}');" ${assingnedItem.status == 1 ? '':'checked'} />
+			#{if assignedItem.status == 1}
+			in progress
+			#{/if}
+			#{else}
+			done
+			#{/else}
+			#{/else}
+			<br/>
             Item Description: ${assignedItem.description}
             <br/>
             Start Date:  ${assignedItem.startDate.format('dd MMM yy')}
