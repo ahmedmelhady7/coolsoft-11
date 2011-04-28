@@ -287,6 +287,7 @@ public class Topic extends Model {
 			RequestToJoin r = new RequestToJoin(u, this, null, o.email);
 			// send the request
 			requestsToJoin.add(r);
+			_save();
 		}
 	}
 }
