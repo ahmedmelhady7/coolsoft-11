@@ -87,9 +87,22 @@ public class Plan extends Model {
 	/**
 	 * This Method adds an Item to the list of Items of a Plan
 	 * 
+	 * @story 	C5S1  
+	 * 
 	 * @author 	hassan.ziko1
 	 * 
-	 * @story 	C5S1  
+	 * @param startDate
+	 * 			The start date of working on the item
+	 * @param enDate
+	 * 			The end date of working on the item
+	 * @param status 
+	 * 			The status of the item
+	 * @param description
+	 * 			The description of the task
+	 * @param plan 
+	 * 			The plan that contains the item
+	 * @param summary
+	 * 			The summary of the description of the item
 	 * 
 	 * @return	void
 	 */
