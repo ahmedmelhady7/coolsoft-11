@@ -1,6 +1,7 @@
 package controllers;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -178,46 +179,41 @@ public class Users extends CRUD {
 	 * 
 	 * @story C1S13
 	 * 
-	 * @param username
-	 *            : the username of the user
-	 * 
-	 * @param profession
-	 * 
-	 * @param email
-	 * 
-	 * @param id
-	 *            : the id of the topic
+	 * @param keyword
+	 *            : the keyword the user enters for searching
 	 * 
 	 * @return void
 	 */
-	public static void searchUser(String username, String profession,
-			String email, Topic id) {
+	public static void searchUser(String keyword) {
 
-		List<User> searchResult = User.findAll();
+		List<User> searchResultByName = new ArrayList<User>();
+		List<User> searchResultByProfession = new ArrayList<User>();
+		List<User> searchResultByEmail = new ArrayList<User>();
 
-		if (username != null) {
-			searchResult = User.find("username like ? ", "name%").fetch();
-		}
-
-		if (profession != null) {
-			for (int i = 0; i < searchResult.size(); i++) {
-				if (!(searchResult.get(i).profession).equals(profession)) {
-					searchResult.remove(i);
-				}
-
-			}
-		}
-		if (email != null) {
-			for (int i = 0; i < searchResult.size(); i++) {
-				if (!(searchResult.get(i).email).equals(email)) {
-					searchResult.remove(i);
-				}
-
-			}
-
+		if (keyword != null) {
+			searchResultByName = User.find("username like ? ", "keyword%").fetch();
+			searchResultByProfession = User.find("profession like ? ", "keyword").fetch();
+			searchResultByEmail = User.find("email like ? ", "keyword").fetch();
 		}
 		
-		render(searchResult);
+		for(int i = 0; i < searchResultByName.size(); i++){
+			if (searchResultByName.get(i).state == 'd'){
+				searchResultByName.remove(i);
+			}
+		}
+		for(int i = 0; i < searchResultByProfession.size(); i++){
+			if (searchResultByProfession.get(i).state == 'd'){
+				searchResultByProfession.remove(i);
+			}
+		}
+		
+		for(int i = 0; i < searchResultByEmail.size(); i++){
+			if (searchResultByEmail.get(i).state == 'd'){
+				searchResultByEmail.remove(i);
+			}
+		}
+		
+		render(searchResultByName, searchResultByProfession, searchResultByEmail);
 	}
 	
 	public static List<User> searchOrganizer(Organization o){
@@ -228,10 +224,7 @@ public class Users extends CRUD {
 		}
 		return organizers;
 	}
-	/*public List<User> searchByTopic(Topic id) {	
-		
-		
-	}*/
+	
 
 
 	public static void r(long i) {
