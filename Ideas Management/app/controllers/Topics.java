@@ -1,11 +1,10 @@
 package controllers;
 
-
 import java.util.ArrayList;
-
-import antlr.collections.List;
+import java.util.List;
 import models.Idea;
 import models.MainEntity;
+import models.Organization;
 import models.Tag;
 import models.Topic;
 import models.User;
@@ -81,45 +80,99 @@ public class Topics extends CRUD {
 	 *            : the level of privacy of the idea
 	 * 
 	 */
-	
+
 	public static void postIdea(User user, Topic topic, String title,
 			String description) {
 		Idea idea = new Idea(title, description, user, topic);
 		idea.privacyLevel = topic.privacyLevel;
 	}
-	
+
 	/**
 	 * 
 	 * This method reopens a closed topic, used after its plan gets deleted
 	 * 
-	 * @author 	Mostafa Aboul Atta
+	 * @author Mostafa Aboul Atta
 	 * 
-	 * @story 	C3S22
+	 * @story C3S22
 	 * 
-	 * @param 	topicId 	: the id of the topic that to be reopened
+	 * @param topicId
+	 *            : the id of the topic that to be reopened
 	 * 
-	 * @return	void
+	 * @return void
 	 */
 	public static void reopen(long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
 		targetTopic.openToEdit = true;
 		/* TODO: buttons to be adjusted in view */
 	}
-	
- 
-   /**
-    * This Method returns a list of all closed topics
-    *
-    * @author aliaelbolock
-    *
-    * @story C3S1
-    *
-    * @return ArrayList<Topics>
-    */
-   public static ArrayList<Topic> closedTopics(){
-        List closedtopics = (List) new ArrayList<Topic>();
-        closedtopics = (List) Topic.find("openToEdit", false).fetch();
-        return (ArrayList<Topic>) closedtopics;
-   }
 
+	/**
+	 * This Method returns a list of all closed topics
+	 * 
+	 * @author aliaelbolock
+	 * 
+	 * @story C3S1
+	 * 
+	 * @return ArrayList<Topics>
+	 */
+	public static ArrayList<Topic> closedTopics() {
+		List closedtopics = (List) new ArrayList<Topic>();
+		closedtopics = (List) Topic.find("openToEdit", false).fetch();
+		return (ArrayList<Topic>) closedtopics;
+	}
+
+	/**
+	 * This Method sends a request to post on a topic for a user to the
+	 * organizer
+	 * 
+	 * @author ibrahim.al.khayat
+	 * 
+	 * @story C2S13
+	 * 
+	 * @param topicId
+	 *            : the id of the topic
+	 * 
+	 * @param user
+	 *            : the user who request to post
+	 * 
+	 * @return void
+	 */
+
+	public static void requestToBost(long topicId, User user) {
+		Topic t = Topic.findById(topicId);
+		t.requestFromUserToPost(user);
+	}
+
+	/**
+	 * This renders the RequestToPost.html to show the list of all topics where
+	 * the user is not allowed to post within an organization
+	 * 
+	 * @author ibrahim.al.khayat
+	 * 
+	 * @story C2S13
+	 * 
+	 * @param org
+	 *            : The organization where the topics are
+	 * 
+	 * @param user
+	 *            : the user who wants to request
+	 * 
+	 * @return void
+	 */
+	/* w8ting for canAccess
+	public static void requestTopicList(User user, Organization org) {
+		List<MainEntity> e = org.entitiesList;
+		List<Topic> topics = new ArrayList<Topic>();
+		List<Topic> temp;
+		for (int i = 0; i < e.size(); i++) {
+			temp = e.get(i).topicList;
+			for (int j = 0; j < temp.size(); j++) {
+				if (((Topic) temp.get(j)).canAccess.indixOf(user) < 0) {
+					topics.add(temp.get(j));
+				}
+			}
+		}
+		render(topics, user);
+	}
+	*/
 }

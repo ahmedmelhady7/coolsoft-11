@@ -52,8 +52,8 @@ public class Topic extends Model {
 	/**
 	 * the list of topic organizers
 	 */
-	
-	//to be removed
+
+	// to be removed
 	@ManyToMany
 	public List<User> organizers;
 
@@ -66,8 +66,8 @@ public class Topic extends Model {
 	/*
 	 * the list of users that can access the topic
 	 */
-//	@ManyToMany
-//	public List<User> canAccess;
+	// @ManyToMany
+	// public List<User> canAccess;
 
 	/**
 	 * the list of ideas in the topic
@@ -114,9 +114,10 @@ public class Topic extends Model {
 	 */
 	@OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
 	List<Invitation> invitation;
-	
+
 	/*
 	 * boolean flag to determine if the topic is closed or not
+	 * 
 	 * @author Mostafa Aboul Atta
 	 */
 	public boolean openToEdit;
@@ -154,7 +155,7 @@ public class Topic extends Model {
 		commentsOn = new ArrayList<Comment>();
 		// canAccess = new ArrayList<User>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
-		
+
 		openToEdit = true;
 	}
 
@@ -186,7 +187,7 @@ public class Topic extends Model {
 		invitation = new ArrayList<Invitation>();
 		commentsOn = new ArrayList<Comment>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
-		
+
 		openToEdit = true;
 	}
 
@@ -199,10 +200,10 @@ public class Topic extends Model {
 	 * 
 	 * @return ArrayList<User>
 	 */
-	
-//	public List<User> getOrganizer() {
-//		return organizers;
-//	}
+
+	// public List<User> getOrganizer() {
+	// return organizers;
+	// }
 
 	/**
 	 * This Method returns the list of ideas in a certain topic
@@ -213,8 +214,8 @@ public class Topic extends Model {
 	 * 
 	 * @return ArrayList<Idea>
 	 */
-	public ArrayList<Idea> getIdeas() {
-		return (ArrayList<Idea>) ideas;
+	public List<Idea> getIdeas() {
+		return (List<Idea>) ideas;
 	}
 
 	/**
@@ -244,8 +245,8 @@ public class Topic extends Model {
 	 * 
 	 * @return ArrayList<User>
 	 */
-	public ArrayList<User> getFollowers() {
-		return (ArrayList<User>) this.followers;
+	public List<User> getFollowers() {
+		return (List<User>) this.followers;
 	}
 
 	/**
@@ -259,5 +260,28 @@ public class Topic extends Model {
 	 */
 	public String toString() {
 		return title;
+	}
+
+	/**
+	 * This Method sends a request to the topic organizer and add the request to
+	 * the list of requests
+	 * 
+	 * @author ibrahim.al.khayat
+	 * 
+	 * @story C2S13
+	 * 
+	 * @param u
+	 *            : the user who request to post
+	 * 
+	 * @return void
+	 */
+
+	public void requestFromUserToPost(User u) {
+		if (requestsToJoin.indexOf(u) < 0) {
+			User o = organizers.get(0);
+			RequestToJoin r = new RequestToJoin(u, this, null, o.email);
+			// send the request
+			requestsToJoin.add(r);
+		}
 	}
 }
