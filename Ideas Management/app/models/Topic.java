@@ -201,9 +201,14 @@ public class Topic extends Model {
 	 * @return ArrayList<User>
 	 */
 
-	// public List<User> getOrganizer() {
-	// return organizers;
-	// }
+	
+	public List<User> getOrganizer() {
+		return (List<User>) UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.resourceID = ? and r.roleName like ? and uro.resourceType = ? ",
+			      this.id,"organizer", "topic");
+ }
+
+
+	
 
 	/**
 	 * This Method returns the list of ideas in a certain topic
