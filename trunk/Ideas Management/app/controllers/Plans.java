@@ -11,14 +11,23 @@ import java.util.List;
 
 public class Plans extends CRUD {
 
-	public static void viewAsList(long id) {
+	public static void viewAsList(long planId) {
 		long userid = 0;
 		User user = User.findById(userid);
-		Plan p = Plan.findById(id);
+		Plan p = Plan.findById(planId);
 		List<Item> itemsList = p.items;
 
 		render(p, itemsList, user);
 	}
+
+	
+	public static void associateIdeaToPlan(long planId, long ideaId) {
+		Idea idea = Idea.findById(ideaId);
+		Plan plan = Plan.findById(planId);
+		plan.addIdea(idea);
+		idea.plan = plan;
+	}
+
 	public static void planCreate(Topic t, long id){
 		Idea i  = Idea.findById(id);
 		long userid = 0;
@@ -34,6 +43,7 @@ public class Plans extends CRUD {
 		
 		render(p, user);
 	}
+
 
 //	public static void volunteer(long itemid) {
 //		long userid = 0;
