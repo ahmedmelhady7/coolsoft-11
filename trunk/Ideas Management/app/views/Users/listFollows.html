@@ -9,12 +9,10 @@ Organizations
 
 <ul>
     #{list items:organizations, as:'organization'}
-    #{form @Users.unfollow(organization, ${user})}
     <li> 
-        <input type="submit" value="unfollow" />
+        <input type="submit" value="unfollow" onclick="org(organization,'${user}');" />
 		${organization.name}
     </li>
-	#{/form}
 	#{/list}
 </ul>
 
@@ -26,13 +24,11 @@ Topics
 #{/ifnot}
 
 <ul>
-    #{list items:tags, as:'topic'}
-    #{form @Users.unfollow(topic, ${user})}
+    #{list items:topics, as:'topic'}
     <li> 
-        <input type="submit" value="unfollow" />
+        <input type="submit" value="unfollow" onclick="topic(topic,'${user}');" />
 		${topic.title}
     </li>
-	#{/form}
 	#{/list}
 </ul>
 
@@ -45,12 +41,10 @@ Entities
 
 <ul>
     #{list items:entities, as:'entity'}
-    #{form @Users.unfollow(entity, ${user})}
     <li> 
-        <input type="submit" value="unfollow" />
+        <input type="submit" value="unfollow" onclick="entity(entity,'${user}');" />
 		${entity.name}
     </li>
-	#{/form}
 	#{/list}
 </ul>
 
@@ -63,12 +57,33 @@ Tags
 
 <ul>
     #{list items:tags, as:'tag'}
-    #{form @Users.unfollow(tag, ${user})}
     <li> 
-        <input type="submit" value="unfollow" />
+        <input type="submit" value="unfollow" onclick="tag(tag,'${user}');"/>
 		${tag.name}
     </li>
-	#{/form}
 	#{/list}
 </ul>
+
+<script type="text/javascript">
+	function tag(tag, user){
+		$.post('@{unfollow()}', {tag:tag, user:user});
+		alert("done!");
+		location.reload(true);
+	}
+	function topic(topic, user){
+		$.post('@{unfollow()}', {topic:topic, user:user});
+		alert("done!");
+		location.reload(true);
+	}
+	function org(org, user){
+		$.post('@{unfollow()}', {org:org, user:user});
+		alert("done!");
+		location.reload(true);
+	}
+	function entity(entity, user){
+		$.post('@{unfollow()}', {entity:entity, user:user});
+		alert("done!");
+		location.reload(true);
+	}
+</script>
 

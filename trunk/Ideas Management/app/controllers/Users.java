@@ -238,14 +238,6 @@ public class Users extends CRUD {
 	 * 
 	 * 
 	 * }
-	 */
-
-	public static void r(long i) {
-		Topic t = Topic.findById(i);
-		t.title = "done";
-		t._save();
-	}
-
-		
+	 */	
 
 }
