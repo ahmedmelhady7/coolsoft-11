@@ -25,16 +25,13 @@ public class Invitation extends Model{
     public Organization organization;
     @ManyToOne
     public MainEntity entity;
-    @ManyToOne
-    public Topic topic;
 	
    
     public Invitation(String destination,MainEntity entity,Organization organization,String role,
-    		User sender,Topic topic){
+    		User sender){
         this.destination=destination;
         this.organization = organization;
         this.entity=entity;
-        this.topic=topic;
         this.sender = sender;
         this.role=role;
         this.date_of_sending=new Date();
