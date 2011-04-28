@@ -24,7 +24,7 @@
 <tr><td><font size ="3" color ="black"><u>From : ${inv.get(i).organization.name} Organization</u></font></td><td>
 
 <tr><td><font size ="3" color ="black">You have been invited to join ${inv.get(i).organization.name} Organization As ${inv.get(i).role}</font></td><td>
-<tr><td><font size ="3" color ="black">to #{if inv.get(i).topic==nul}${inv.get(i).topic.name} Topic that belongs to #{/if}${inv.get(i).entity.name} Entity</font></td><td> 
+<tr><td><font size ="3" color ="black">to ${inv.get(i).entity.name} Entity</font></td><td> 
 
 <tr><td>&nbsp;</td><td><a href="@{Initations.respond(1)}"><font size ="3" color ="green">Accept</font</a>
          <p>            </p><a href="@{Invitations.respond(0)}"><font size ="3" color ="red">Reject</font</a><tr><td>
