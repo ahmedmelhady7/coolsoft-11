@@ -9,6 +9,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import controllers.Roles;
+
 import play.data.validation.*;
 import play.db.jpa.Model;
 
@@ -106,7 +108,7 @@ public class Organization extends Model {
 		this.name = name;
 		this.creator = creator;
 		// added by nada ossama
-		UserRoleInOrganization.addEnrolledUser(this.creator, this, Role.getRoleByName("Organization Lead"));
+		UserRoleInOrganization.addEnrolledUser(this.creator, this, Roles.getRoleByName("Organization Lead"));
 		
 		this.privacyLevel = 2; // default privacylevel is public
 		this.createTag = true; // default users are allowed to create tags
@@ -139,7 +141,7 @@ public class Organization extends Model {
 		this.name = name;
 		this.creator = creator;
 		// added by nada ossama
-		UserRoleInOrganization.addEnrolledUser(this.creator, this, Role.getRoleByName("Organization Lead"));
+		UserRoleInOrganization.addEnrolledUser(this.creator, this, Roles.getRoleByName("Organization Lead"));
 		this.privacyLevel = privacyLevel;
 		this.createTag = createTag;
 		invitation = new ArrayList<Invitation>();
