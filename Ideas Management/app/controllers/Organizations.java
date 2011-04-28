@@ -1,5 +1,8 @@
 package controllers;
 
+import play.db.Model;
+import play.exceptions.TemplateNotFoundException;
+import controllers.CRUD.ObjectType;
 import models.MainEntity;
 import models.Organization;
 import models.User;
@@ -20,7 +23,7 @@ public class Organizations extends CRUD{
 	 * @return	short
 	 */
 
-	 public static short getPrivacyLevel(Long id){
+	 public static short getPrivacyLevel(long id){
 		 Organization organization = Organization.findById(id);
 		 if(organization!=null)
 			 return organization.privacyLevel;
@@ -38,7 +41,7 @@ public class Organizations extends CRUD{
 	  *
 	  */
 
-	 public static void enableTags(Long id){
+	 public static void enableTags(long id){
 		 Organization organization = Organization.findById(id);
 		    notFoundIfNull(organization);
 			 organization.createTag=true;
@@ -59,4 +62,5 @@ public class Organizations extends CRUD{
 		    notFoundIfNull(organization);
 			 organization.createTag=false;
 	 }
+
 }
