@@ -41,6 +41,21 @@ public class MainEntity extends Model {
 	// ArrayList<Request> requestList;
 	// Arraylist<RequestOfRelationship>
 
+	/**
+	 * The constructor for an entity within an organization
+	 * 
+	 * @author Noha Khater
+	 * 
+	 * @stroy  C2S2
+	 * 
+	 * @param  n: the name of the entity being created
+	 * 
+	 * @param  d: the description of the entity 
+	 * 
+	 * @param  p: the privacy level of the entity
+	 * 
+	 */
+	
 	public MainEntity(String n, String d, short p) {
 		this.name = n;
 		this.description = d;
@@ -55,6 +70,23 @@ public class MainEntity extends Model {
 
 	}
 
+	/**
+	 * The constructor for a sub-entity for an entity within an organization
+	 * 
+	 * @author Noha Khater
+	 * 
+	 * @stroy  C2S20
+	 * 
+	 * @param  n: the name of the entity being created
+	 * 
+	 * @param  d: the description of the entity 
+	 * 
+	 * @param  p: the privacy level of the entity
+	 * 
+	 * @param parent: the parent entity of the sub-entity being created
+	 * 
+	 */
+	
 	public MainEntity(String n, String d, short p, MainEntity parent) {
 		this.name = n;
 		this.description = d;
