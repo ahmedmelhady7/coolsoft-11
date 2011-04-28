@@ -1,0 +1,30 @@
+#{extends 'main.html' /}
+#{set title:'Volunteer request' /}
+Title: ${item.summary}
+<br/>
+Please state why you want to work on this item.
+<br/>
+<label id = "stringError"></label>
+<br/>
+<textarea id="justification" rows="7" cols="50">
+</textarea>
+<br/>
+<input type="button" value="send" onclick="javascript: volunteer('${item.id}');"/>
+<br/>
+<a href="@{Plans.viewAsList(planId)}">Go back to plan</a>
+
+<script type="text/javascript">
+    function volunteer(id){
+        var just = document.getElementById("justification").value;
+        if (just == null || just == "") {
+            document.getElementById("stringError").innerHTML = "This is a required field";
+        }
+        else {
+            $.post('@{sendVolunteerRequest()}', {
+                itemId: id,
+                justification: just
+            });
+            
+        }
+    }
+</script>

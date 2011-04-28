@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
+import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
@@ -16,6 +17,7 @@ public class VolunteerRequest extends Model {
 	public Item destination;
 
 	@Lob
+	@Required
 	public String justification;
 
 	public VolunteerRequest(User sender, Item destination, String justification) {

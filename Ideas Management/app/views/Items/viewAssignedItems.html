@@ -1,20 +1,16 @@
 #{extends 'main.html' /}
 #{set title:'View list of assigned items' /}
 #{if assignedItems.size() > 0}<h3>Assigned Items </h3>
-<ul>
+<ul style="list-style: none; ">
     #{list items:assignedItems, as:'assignedItem'}
-    <li>
+    <li >
         <fieldset>
             <legend>
-                #{if assignedItem.status == 0}
-                <input type=button onclick="startItem(${assignedItem.id});" value="Start">
-                #{/if}
-				#{else}
-                <h2>
-				<input type="checkbox" ${assignedItem.status ? 'checked':''} onClick="toggle_task(${assignedItem.id});"/>${item.summary}
-            </h2>#{/else}
+                Title: ${item.summary}
             </legend>
-            <h2>Plan: <a href="#">${assignedItem.plan.title}</a></h2>
+            #{if assignedItem.status == 0} 
+			<input type = "button" value="Start" onClick ="startItem('${assignedItem.id}');"/> #{/if}
+            #{else}<h2><input type="checkbox" ${assingnedItem.status == 1  ? 'checked':''}  onClick="toggle_task(${assignedItem.id});"/></h2>#{/else}<h2>Plan: <a href="#">${assignedItem.plan.title}</a></h2>
             <br/>
             Item Description: ${assignedItem.description}
             <br/>
@@ -23,7 +19,7 @@
             End Date:  ${assignedItem.endtDate.format('dd MMM yy')}
             <br/>
             Assigned Users: 
-            <ul>
+            <ul style="list-style: none; ">
                 #{list users:${assignedItem.assignees}, as:'assignedUser'}
                 <li>
                     <a href="#">${assignedUser.username}</a>
