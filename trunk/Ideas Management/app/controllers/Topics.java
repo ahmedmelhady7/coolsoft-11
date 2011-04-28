@@ -194,5 +194,34 @@ public class Topics extends CRUD {
 		}
 		render(topics, user);
 	}
+	
+	/**
+	 * This method closes a topic, return true if was 
+	 * successful, returns false if the there was ideas and doesn't 
+	 * close the topic
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @story C3S4
+	 * 
+	 * @param topicId		: the id of the topic to be closed
+	 * 
+	 * @return boolean
+	 */
+	public static boolean closeTopic(long topicId) {
+		Topic targetTopic = Topic.findById(topicId);
+		
+		if(targetTopic.ideas.size() == 0) {
+			return false;
+		}
+		
+		targetTopic.openToEdit = false;
+		
+		//TODO: edit buttons in view
+		//TODO: send notifications to followers and organizers
+		
+		return true;
+		
+	}
 
 }
