@@ -203,8 +203,14 @@ public class Topic extends Model {
 
 	
 	public List<User> getOrganizer() {
-		return (List<User>) UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.resourceID = ? and r.roleName like ? and uro.resourceType = ? ",
+		List<UserRoleInOrganization> o =  (List<UserRoleInOrganization>) UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.resourceID = ? and r.roleName like ? and uro.resourceType = ? ",
 			      this.id,"organizer", "topic");
+		
+		List<User> organizer =  new ArrayList<User>();
+		for(int i = 0; i<o.size(); i++) {
+			organizer.add((o.get(i).enrolled));
+		}
+		return organizer;
  }
 
 
