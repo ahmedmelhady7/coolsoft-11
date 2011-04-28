@@ -246,6 +246,23 @@ public class User extends Model {
 	public void addReceivedAssignRequest(AssignRequest receivedAssignRequest) {
 		sentAssignRequests.add(receivedAssignRequest);
 	}
+	
+	/**
+	 * This Method adds a tag to the list of tags followed
+	 * 
+	 * @author m.hisham.sa
+	 * 
+	 * @story C2S11
+	 * 
+	 * @param tag
+	 *            : the tag that the user wants to follow
+	 * 
+	 * @return void
+	 */
+	
+	public void follow(Tag tag){
+		followingTags.add(tag);
+	}
 
 	/**
 	 * This Method removes a tag from the followers list
