@@ -51,7 +51,7 @@ public class Invitations extends CRUD {
 	 /**
 		 * 
 		 * This method is responsible for sending an invitation
-		 *
+		 * It renders the email
 		 * 
 		 * @author ${Mai.Magdy}
 		 * 
@@ -70,7 +70,7 @@ public class Invitations extends CRUD {
 		 *@param  entity
 		 *               entity that sends the invitation
 		 *                                
-		 * @return
+		 * @return void
 		 */
 	 
 	 public static void send(String email,String role,String organization,
@@ -91,7 +91,7 @@ public class Invitations extends CRUD {
 	 /**
 		 * 
 		 * This method is responsible for viewing the received invitations
-		 *
+		 * It renders the invitation list
 		 * 
 		 * @author ${Mai.Magdy}
 		 * 
@@ -100,7 +100,7 @@ public class Invitations extends CRUD {
 		 * @param  
 		 *       
 		 * 
-		 * @return
+		 * @return void
 		 */
 	 
 	 public static void view(){
@@ -116,6 +116,7 @@ public class Invitations extends CRUD {
 		 * 
 		 * This method is responsible for responding to the user (accept/reject)
 		 * to the invitation
+		 * It renders the invitation list and the id (0/1) and the number of the invitation
 		 *
 		 * 
 		 * @author ${Mai.Magdy}
@@ -129,7 +130,7 @@ public class Invitations extends CRUD {
 		 *              the number of the invitation in the list
 		 *            
 		 * 
-		 * @return
+		 * @return void
 		 */
 
 	public static void respond(int id,int i,User user){
