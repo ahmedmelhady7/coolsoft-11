@@ -72,8 +72,8 @@ public class UserRoleInOrganization extends Model {
 	 * return boolean indicating the successfulness of the operation
 	 */
 
-	public static boolean addEnrolledUser(User user, Organization org, Role role,
-			long entityOrTopicId, String type) {
+	public static boolean addEnrolledUser(User user, Organization org,
+			Role role, long entityOrTopicId, String type) {
 		new UserRoleInOrganization(user, org, role, entityOrTopicId, type)
 				.save();
 
@@ -88,11 +88,11 @@ public class UserRoleInOrganization extends Model {
 	 * 
 	 * @story :C1S7
 	 * 
-	 * @parm user: is the enrolled user
+	 * @param user: is the enrolled user
 	 * 
-	 * @parm org: is the organization the User user is enrolled in
+	 * @param org: is the organization the User user is enrolled in
 	 * 
-	 * @parm role: the role of that user in this organization
+	 * @param role: the role of that user in this organization
 	 * 
 	 * return boolean indicating the successfulness of the operation
 	 */
@@ -102,19 +102,53 @@ public class UserRoleInOrganization extends Model {
 
 		return true;
 	}
-	
+
+	/*
+	 * gets the list of organizers of a certain entity
+	 * 
+	 * @author: Nada Ossama
+	 * 
+	 * @param e: is the entity that i want to retrieve all the organizers that
+	 * are enrolled in it
+	 * 
+	 * @return List of Organizers in that entity
+	 */
+
 	public static List<User> getEntityOrganizers(MainEntity e) {
 		List<User> organizers = null;
 		if (e != null) {
 			Organization o = e.organization;
 			organizers = (List<User>) UserRoleInOrganization
-					.find("select uro.enrolled from UserRoleInOrganization uro and Role r " +
-							"where uro.organization = ? and" +
-							" uro.Role = r and r.roleName like ? and uro.entityTopicID = ? " +
-							"and uro.type like ?",
-							o,"organizer", e.getId(),"entity");
+					.find("select uro.enrolled from UserRoleInOrganization uro and Role r "
+							+ "where uro.organization = ? and"
+							+ " uro.Role = r and r.roleName like ? and uro.entityTopicID = ? "
+							+ "and uro.type like ?", o, "organizer", e.getId(),
+							"entity");
 
 		}
 		return organizers;
+	}
+
+	/*
+	 * gets all the users enrolled in an organization these users are: 1- the
+	 * Organization lead 2- the organizers (even if blocked) 3- Idea Developers
+	 * in secret or private topics
+	 * 
+	 * @author : Nada Ossama
+	 * 
+	 * @param: the organization that the users are enrolled in
+	 * 
+	 * @return :List of enrolled users
+	 */
+	public static List<User> getEnrolledUsers(Organization o) {
+		List<User> enrolled = null;
+		if (o != null) {
+
+			enrolled = (List<User>) UserRoleInOrganization.find(
+					"select uro.enrolled from UserRoleInOrganization uro "
+							+ "where uro.organization = ? ", o);
+
+		}
+		return enrolled;
 	}
 }
