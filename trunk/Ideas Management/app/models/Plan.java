@@ -48,7 +48,9 @@ public class Plan extends Model {
 //	@OneToOne (mappedBy = "idea", cascade = CascadeType.ALL)
 //	public List<String> commentList;
 	
-
+	public Plan(){
+		
+	}
 	public Plan(String title, User user, String status, Date startDate,
 			Date endDate, String description, Topic topic) {
 		this.title = title;
