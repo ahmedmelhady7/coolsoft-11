@@ -11,6 +11,8 @@ import play.data.validation.Validation;
 import play.db.jpa.GenericModel.JPAQuery;
 
 import models.MainEntity;
+import models.Notification;
+import models.NotificationProfile;
 import models.Organization;
 import models.Tag;
 import models.Topic;
@@ -459,5 +461,44 @@ public class Users extends CRUD {
 		}
 		return enrolled;
 	}
-
+	
+	/**
+	 * This method renders the list of notifications of the user, to the view to display
+	 * the notifications.
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S14
+	 * 
+	 * @param userId
+	 * 			the ID of the user required to get his notifications
+	 * 
+	 * @return void
+	 */
+	
+	 public static void viewNotifications(long userId) {
+	    	User u = User.findById(userId);	    
+	    	List<Notification> nList = u.openNotifications();	    	
+			render(nList);
+	    }
+	
+	/**
+	 * This method renders the list of notification profiles for the user to view
+	 * and edit his preferences.
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S14
+	 * 
+	 * @param userId
+	 * 			the ID of the user to view his/her profile
+	 * 
+	 * @return void
+	 */
+	
+	public static void viewNotificationProfile(long userId) {
+    	User u = User.findById(userId);    	
+    	List<NotificationProfile> npList = u.openNotificationProfile();
+    	render(npList);
+    }
 }
