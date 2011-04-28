@@ -175,15 +175,13 @@ public class User extends Model {
 	}
 
 	public void addInvitation(String email, String role,
-			Organization organization, MainEntity entity, Topic topic) {
+			Organization organization, MainEntity entity) {
 
 		Invitation invite = new Invitation(email, entity, organization, role,
-				this, topic).save();
+				this).save();
 		this.invitation.add(invite);
 		organization.invitation.add(invite);
 		entity.invitationList.add(invite);
-		if (topic != null)
-			topic.invitation.add(invite);
 		this.save();
 	}
 
