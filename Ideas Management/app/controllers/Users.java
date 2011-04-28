@@ -14,6 +14,7 @@ import models.Organization;
 import models.Tag;
 import models.Topic;
 import models.User;
+import models.UserRoleInOrganization;
 
 import models.*;
 
@@ -159,11 +160,12 @@ public class Users extends CRUD {
 	 */
 	public void postTopic(String name, String description, short privacyLevel,
 			User creator, MainEntity entity) {
+		
 		if (entity.organizers.contains(creator)) {
 			Topic newTopic = new Topic(name, description, privacyLevel,
 					creator, entity).save();
 			creator.topicsCreated.add(newTopic);
-			
+			List usr = getEntityOrganizers(entity); 
 //			UserRoleInOrganization.addEnrolledUser(creator,
 //					newTopic.entity.organization,
 //					Role.getRoleByName("Organizer"), newTopic.getId(), "topic");
@@ -173,6 +175,8 @@ public class Users extends CRUD {
 			}
 		}
 	}
+
+	
 
 	/**
 	 * 
@@ -239,5 +243,69 @@ public class Users extends CRUD {
 	 * 
 	 * }
 	 */	
+
+
+	
+
+	
+	public static void r(long i) {
+		Topic t = Topic.findById(i);
+		t.title = "done";
+		t._save();
+	}
+	
+	/*
+	 * gets the list of organizers of a certain entity
+	 * 
+	 * @author: Nada Ossama
+	 * 
+	 * @param e: is the entity that i want to retrieve all the organizers that
+	 * are enrolled in it
+	 * 
+	 * @return List of Organizers in that entity
+	 */
+	public static List getEntityOrganizers(MainEntity e) {
+		
+		List<User> organizers = null;
+		if (e != null) {
+			Organization o = e.organization;
+			organizers = (List<User>) UserRoleInOrganization
+					.find("select uro.enrolled from UserRoleInOrganization uro and Role r "
+							+ "where uro.organization = ? and"
+							+ " uro.Role = r and r.roleName like ? and uro.entityTopicID = ? "
+							+ "and uro.type like ?", o, "organizer", e.getId(),
+							"entity");
+
+		}
+		return  organizers;
+	}
+	
+	/*
+	 * gets all the users enrolled in an organization these users are: 1- the
+	 * Organization lead 2- the organizers (even if blocked) 3- Idea Developers
+	 * in secret or private topics
+	 * 
+	 * @author : Nada Ossama
+	 * 
+	 * @param: the organization that the users are enrolled in
+	 * 
+	 * @return :List of enrolled users
+	 */
+	public static List<User> getEnrolledUsers(Organization o) {
+		List<User> enrolled = null;
+		if (o != null) {
+
+			enrolled = (List<User>) UserRoleInOrganization.find(
+					"select uro.enrolled from UserRoleInOrganization uro "
+							+ "where uro.organization = ? ", o);
+
+		}
+		return enrolled;
+	}
+	
+
+
+		
+
 
 }
