@@ -121,6 +121,26 @@ public class Topics extends CRUD {
 		return (ArrayList<Topic>) closedtopics;
 	}
 
+	
+	/**
+	 * 
+	 * This method gets a list of followers for a certain topic
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S29
+	 * 
+	 * @param id	: id of the topic
+	 * 
+	 * @return void
+	 */
+	public static void viewFollowers(long id) {
+		Topic topic = Topic.findById(id);
+		List<User> follow = topic.followers;
+		render(follow);
+	}
+
+
 	/**
 	 * This Method sends a request to post on a topic for a user to the
 	 * organizer
@@ -174,4 +194,5 @@ public class Topics extends CRUD {
 		}
 		render(topics, user);
 	}
+
 }
