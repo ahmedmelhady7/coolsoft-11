@@ -109,12 +109,8 @@ public class Topic extends Model {
 	@OneToOne
 	public Plan plan;
 
-	/**
-	 * the list of invitations to the topic?
-	 */
-	@OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
-	List<Invitation> invitation;
 
+	
 	/*
 	 * boolean flag to determine if the topic is closed or not
 	 * 
@@ -151,7 +147,6 @@ public class Topic extends Model {
 		// organizers = new ArrayList<User>();
 		followers = new ArrayList<User>();
 		ideas = new ArrayList<Idea>();
-		invitation = new ArrayList<Invitation>();
 		commentsOn = new ArrayList<Comment>();
 		// canAccess = new ArrayList<User>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
@@ -184,7 +179,6 @@ public class Topic extends Model {
 		// organizers = new ArrayList<User>();
 		followers = new ArrayList<User>();
 		ideas = new ArrayList<Idea>();
-		invitation = new ArrayList<Invitation>();
 		commentsOn = new ArrayList<Comment>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
 
