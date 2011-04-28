@@ -1,0 +1,23 @@
+#{extends 'main.html' /}
+Topics
+#{ifnot tags}
+<p>
+    No topics in this Organization 
+</p>
+#{/ifnot}
+
+<ul>
+    #{list items:topics, as:'topic'}
+    <li> 
+    <a onclick="requestToPost('${topic.id}', '${user}');" href="#">${topic.title}</a>
+    </li>
+	#{/list}
+</ul>
+
+<script type="text/javascript">
+	function requestToPost(id, user){
+		$.post('@{requestToPost()}', {topicId:id, user:user});
+		alert("done!");
+		location.reload(true);
+	}
+</script>
