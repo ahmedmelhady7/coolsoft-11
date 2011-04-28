@@ -1,0 +1,19 @@
+#{extends 'main.html' /}
+#{set title:'View Plan as List' /}<h3>${p.title}</h3>
+<br/>
+<p>Insert title</p>
+<input name = "title" type="text" size="30" value="Enter title here here!">
+<p>Insert start date</p>
+<input name = "startday" type="text" size="30" value="Enter day">
+<input name = "startmonth" type="text" size="30" value="Enter month">
+<input name = "startyear" type="text" size="30" value="Enter year">
+<p>Insert end date</p>
+<input name = "endday" type="text" size="30" value="Enter day">
+<input name = "endmonth" type="text" size="30" value="Enter month">
+<input name = "endyear" type="text" size="30" value="Enter year">
+<p>Insert description</p>
+<input type="description" size="1000" value="Enter description">
+<p>Insert requirement</p>
+<input name = "requirement" type="requirement" size="100" value="Enter requirement">
+${p.requirements.add(p)}
+
