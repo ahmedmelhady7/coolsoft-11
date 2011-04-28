@@ -5,31 +5,74 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import play.data.validation.MaxSize;
+import play.data.validation.Required;
 import play.db.jpa.Model;
+
+/**
+ * @author Noha Khater
+ * 
+ * The entities and sub-entities in an organization
+ */
 
 @Entity
 public class MainEntity extends Model {
 
+	/**
+	 * Name of the Entity
+	 */
+	@Required
 	public String name;
 
+	/**
+	 * The parent entity in case of a sub-entity
+	 */
 	@ManyToOne
 	public MainEntity parent;
-	public short privacyLevel;
+	
+	/**
+	 * The description of the entity
+	 */
+	@Lob
+	@Required
 	public String description;
+	
+	/**
+	 * A list of sub-entities of this entity 
+	 */
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
 	public List<MainEntity> subentities;
+	
+	/**
+	 * The followers of the entity
+	 */
 	@ManyToMany(mappedBy = "followingEntities", cascade = CascadeType.ALL)
 	public List<User> followers;
+	
+	/**
+	 * The organization of the entity
+	 */
 	@ManyToOne
 	public Organization organization;
+	
+	/**
+	 * The list of topics available in that entity
+	 */
 	@OneToMany(mappedBy = "entity", cascade = CascadeType.ALL)
 	public List<Topic> topicList;
+	
+	/**
+	 * The list of tags that the entity is tagged by
+	 */
 	@ManyToMany(mappedBy = "entities", cascade = CascadeType.ALL)
 	public List<Tag> tagList;
+	
+	//Entity does not need an invitation!! Should be removed (Noha)
 	@OneToMany(mappedBy = "entity", cascade = CascadeType.ALL)
 	public List<Invitation> invitationList;
 	
@@ -42,7 +85,7 @@ public class MainEntity extends Model {
 	// Arraylist<RequestOfRelationship>
 
 	/**
-	 * The constructor for an entity within an organization
+	 * Default constructor for an entity within an organization
 	 * 
 	 * @author Noha Khater
 	 * 
@@ -52,26 +95,23 @@ public class MainEntity extends Model {
 	 * 
 	 * @param  d: the description of the entity 
 	 * 
-	 * @param  p: the privacy level of the entity
-	 * 
 	 */
 	
-	public MainEntity(String n, String d, short p) {
+	public MainEntity(String n, String d) {
 		this.name = n;
 		this.description = d;
-		this.privacyLevel = p;
 		this.parent = null;
 		invitationList = new ArrayList<Invitation>();
 		subentities = new ArrayList<MainEntity>();
 		followers = new ArrayList<User>();
 		topicList = new ArrayList<Topic>();
 		tagList = new ArrayList<Tag>();
-		 organizers = new ArrayList<User>();
+		organizers = new ArrayList<User>();
 
 	}
 
 	/**
-	 * The constructor for a sub-entity for an entity within an organization
+	 * Default constructor for a sub-entity for an entity within an organization
 	 * 
 	 * @author Noha Khater
 	 * 
@@ -80,17 +120,14 @@ public class MainEntity extends Model {
 	 * @param  n: the name of the entity being created
 	 * 
 	 * @param  d: the description of the entity 
-	 * 
-	 * @param  p: the privacy level of the entity
-	 * 
+	 *  
 	 * @param parent: the parent entity of the sub-entity being created
 	 * 
 	 */
 	
-	public MainEntity(String n, String d, short p, MainEntity parent) {
+	public MainEntity(String n, String d, MainEntity parent) {
 		this.name = n;
 		this.description = d;
-		this.privacyLevel = p;
 		this.parent = parent;
 		parent.subentities.add(this);
 		invitationList = new ArrayList<Invitation>();
