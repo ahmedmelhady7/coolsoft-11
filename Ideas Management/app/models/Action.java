@@ -5,6 +5,8 @@
 //
 //import javax.persistence.*;
 //
+//import javax.persistence.Entity;
+
 //import play.db.jpa.*;
 //
 //@Entity
