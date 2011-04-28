@@ -144,6 +144,7 @@ public class Topics extends CRUD {
 	 */
 	public static void viewFollowers(long id) {
 		Topic topic = Topic.findById(id);
+		notFoundIfNull(topic);
 		List<User> follow = topic.followers;
 		render(follow);
 	}
