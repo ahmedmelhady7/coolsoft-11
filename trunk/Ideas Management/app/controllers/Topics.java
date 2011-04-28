@@ -159,7 +159,7 @@ public class Topics extends CRUD {
 	 * 
 	 * @return void
 	 */
-	/* w8ting for canAccess
+
 	public static void requestTopicList(User user, Organization org) {
 		List<MainEntity> e = org.entitiesList;
 		List<Topic> topics = new ArrayList<Topic>();
@@ -167,12 +167,11 @@ public class Topics extends CRUD {
 		for (int i = 0; i < e.size(); i++) {
 			temp = e.get(i).topicList;
 			for (int j = 0; j < temp.size(); j++) {
-				if (((Topic) temp.get(j)).canAccess.indixOf(user) < 0) {
+				if (user.topicsIOrganize.indexOf(temp.get(j)) < 0) {
 					topics.add(temp.get(j));
 				}
 			}
 		}
 		render(topics, user);
 	}
-	*/
 }
