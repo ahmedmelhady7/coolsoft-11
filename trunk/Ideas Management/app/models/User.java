@@ -69,6 +69,9 @@ public class User extends Model {
 
 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
 	public List<Idea> ideasCreated;
+	
+	@ManyToMany(mappedBy = "reporters", cascade = CascadeType.ALL)
+	public List<Idea> ideasReported;
 
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	public List<Item> itemsAssigned;
