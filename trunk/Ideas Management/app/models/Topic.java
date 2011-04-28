@@ -267,6 +267,30 @@ public class Topic extends Model {
 	public String toString() {
 		return title;
 	}
+	
+	/**
+	 * This method posts an Idea in a certain topic
+	 * 
+	 * @author m.hisham.sa
+	 * 
+	 * @story C2S14
+	 * 
+	 * @param user
+	 *              : the user who posts the idea
+	 * @param title
+	 * 				: the title of the idea
+	 * @param description
+	 * 				: description/content of the idea
+	 * 
+	 * @return void
+	 */
+	
+	public void postIdea(User user, String title, String description){
+		Idea idea = new Idea(title, description, user, this);
+		idea.privacyLevel = this.privacyLevel;
+		this.ideas.add(idea);
+		
+	}
 
 	/**
 	 * This Method sends a request to the topic organizer and add the request to
