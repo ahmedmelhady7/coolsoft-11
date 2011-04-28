@@ -1,38 +1,354 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import models.Idea;
+import models.Item;
+import models.MainEntity;
+import models.Organization;
+import models.Tag;
+import models.Topic;
 
 import org.h2.table.Plan;
 
-import com.sun.xml.internal.stream.Entity;
-
-import models.Idea;
-import models.MainEntity;
-import models.Organization;
-import models.Topic;
-
-import play.db.Model;
 import play.mvc.Controller;
 
 /**
  * 
  * @author Mohamed Ghanem
  * 
- * @story C4S02
+ * @story C4SXX : Search Structure
  * 
  */
 public class Search extends Controller {
 
-	static private List<Object> listOfResults;
-	
-	static private List<Object> filterResult; // array list for the resultafter filtering the search
-	
-	public static void advancedSearch(String k) {
-		List orgList = Organization.find("order by id desc").fetch(); 
-		
-		renderJSON(orgList);
+	public static List listOfResults;
+
+	public static List<Object> filterResult; // array list for the resultafter
+												// filtering the search
+
+	/**
+	 * 
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 :: Advanced Search V1.0
+	 * 
+	 * 
+	 * 
+	 */
+
+	// Main
+	public static void advancedSearch(int searchIn, String wantKey,
+			String unwantKey, String searchWith) {
+//
+//		List orgs = Organization.findAll();
+//
+//		switch (searchIn) {
+//		case 1: {
+//			for (int i = 0; i < orgs.size(); i++) {
+//				if (((Organization) orgs.get(i)).privacyLevel != 2) {
+//					orgs.remove(i);
+//				}
+//			}
+//			break;
+//		}
+//		case 2: {
+//			for (int i = 0; i < orgs.size(); i++) {
+//				if (((Organization) orgs.get(i)).privacyLevel != 1) {
+//					orgs.remove(i);
+//				}
+//			}
+//			break;
+//		}
+//		case 3: {
+//			for (int i = 0; i < orgs.size(); i++) {
+//				if (((Organization) orgs.get(i)).privacyLevel != 0) {
+//					orgs.remove(i);
+//				}
+//			}
+//			break;
+//		}
+//		case 4: {
+//			for (int i = 0; i < orgs.size(); i++) {
+//				if (((Organization) orgs.get(i)).privacyLevel == 0) {
+//					orgs.remove(i);
+//				}
+//			}
+//			break;
+//		}
+//		case 5: {
+//			for (int i = 0; i < orgs.size(); i++) {
+//				if (((Organization) orgs.get(i)).privacyLevel == 1) {
+//					orgs.remove(i);
+//				}
+//			}
+//			break;
+//		}
+//		case 6: {
+//			for (int i = 0; i < orgs.size(); i++) {
+//				if (((Organization) orgs.get(i)).privacyLevel == 2) {
+//					orgs.remove(i);
+//				}
+//			}
+//			break;
+//		}
+//		default: {
+//
+//			break;
+//		}
+//		}
+//
+//		// Organization
+//		if (searchWith.charAt(0) == '1') {
+//			for (int i = 0; i < orgs.size(); i++) {
+//				if (!((Organization) orgs.get(i)).name.contains(unwantKey)) {
+//					if (((Organization) orgs.get(i)).name.contains(wantKey)) {
+//						listOfResults.add(orgs.get(i));
+//					} else {
+//						boolean add = true;
+//						List<Tag> x = ((Organization) orgs.get(i)).relatedTags;
+//						for (int j = 0; j < x.size(); j++) {
+//							if (x.get(j).name.contains(unwantKey)) {
+//								add = false;
+//							}
+//						}
+//						if (add) {
+//							for (int j = 0; j < x.size(); j++) {
+//								if (x.get(j).name.contains(wantKey)) {
+//									listOfResults.add(orgs.get(i));
+//									break;
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//
+//		// Entity
+//		if (searchWith.charAt(1) == '1') {
+//			for (int i = 0; i < orgs.size(); i++) {
+//				searchWithEntities(((Organization) orgs.get(i)).entitiesList,
+//						unwantKey, wantKey);
+//			}
+//		}
+//
+//		// Topic
+//		List topic = null;
+//		if (searchWith.charAt(2) == '1') {
+//			topic = new ArrayList<Topic>();
+//			for (int i = 0; i < orgs.size(); i++) {
+//				for (int j = 0; j < ((Organization) orgs.get(i)).entitiesList
+//						.size(); j++) {
+//					topic.add(((MainEntity) ((Organization) orgs.get(i)).entitiesList
+//							.get(j)).topicList);
+//				}
+//			}
+//			searchWithTopic(topic, unwantKey, wantKey);
+//		}
+//
+//		// Plans
+//		List plans = null;
+//		if (searchWith.charAt(3) == '1') {
+//			plans = new ArrayList<Plan>();
+//			for (int i = 0; i < topic.size(); i++) {
+//				plans.add(((Topic) topic.get(i)).plan);
+//			}
+//			searchWithPlan(plans, unwantKey, wantKey);
+//		}
+//
+//		// Ideas
+//		if (searchWith.charAt(4) == '1') {
+//			List ideas = new ArrayList<Idea>();
+//			for (int i = 0; i < topic.size(); i++) {
+//				for (int j = 0; j < ((Topic) topic.get(i)).ideas.size(); j++) {
+//					ideas.add(((Idea) ((Topic) topic.get(i)).ideas.get(j)));
+//				}
+//			}
+//			searchWithIdea(ideas, unwantKey, wantKey);
+//		}
+//
+//		// Item
+//		if (searchWith.charAt(5) == '1') {
+//			List items = new ArrayList<Idea>();
+//			for (int i = 0; i < plans.size(); i++) {
+//				for (int j = 0; j < ((models.Plan) plans.get(i)).items.size(); j++) {
+//					items.add((((models.Plan) plans.get(i)).ideas.get(j)));
+//				}
+//			}
+//			searchWithItem(items, unwantKey, wantKey);
+//		}
+//
+//		// Comments
+//		
+		render();
 	}
+
+	
+	
+	// Item
+	public static void searchWithItem(List items, String unwantKey,
+			String wantKey) {
+		for (int i = 0; i < items.size(); i++) {
+			if (!((Item) items.get(i)).summary.contains(unwantKey)
+					&& !((Item) items.get(i)).description.contains(unwantKey)) {
+				if (((Item) items.get(i)).summary.contains(wantKey)) {
+					listOfResults.add(items.get(i));
+				} else {
+					if (((Item) items.get(i)).description.contains(wantKey)) {
+						listOfResults.add(items.get(i));
+					} else {
+						boolean add = true;
+						List<Tag> x = ((Item) items.get(i)).tags;
+						for (int j = 0; j < x.size(); j++) {
+							if (x.get(j).name.contains(unwantKey)) {
+								add = false;
+							}
+						}
+						if (add) {
+							for (int j = 0; j < x.size(); j++) {
+								if (x.get(j).name.contains(wantKey)) {
+									listOfResults.add(items.get(i));
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	// Idea
+	public static void searchWithIdea(List ideas, String unwantKey,
+			String wantKey) {
+		for (int i = 0; i < ideas.size(); i++) {
+			if (!((Idea) ideas.get(i)).title.contains(unwantKey)
+					&& !((Idea) ideas.get(i)).description.contains(unwantKey)) {
+				if (((Idea) ideas.get(i)).title.contains(wantKey)) {
+					listOfResults.add(ideas.get(i));
+				} else {
+					if (((Idea) ideas.get(i)).description.contains(wantKey)) {
+						listOfResults.add(ideas.get(i));
+					} else {
+						boolean add = true;
+						List<Tag> x = ((Idea) ideas.get(i)).tagsList;
+						for (int j = 0; j < x.size(); j++) {
+							if (x.get(j).name.contains(unwantKey)) {
+								add = false;
+							}
+						}
+						if (add) {
+							for (int j = 0; j < x.size(); j++) {
+								if (x.get(j).name.contains(wantKey)) {
+									listOfResults.add(ideas.get(i));
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	// Plan
+	public static void searchWithPlan(List plans, String unwantKey,
+			String wantKey) {
+		for (int i = 0; i < plans.size(); i++) {
+			if (!((models.Plan) plans.get(i)).title.contains(unwantKey)) {
+				if (((models.Plan) plans.get(i)).title.contains(wantKey)) {
+					listOfResults.add(plans.get(i));
+				}
+			}
+		}
+
+	}
+
+	// Topic
+	public static void searchWithTopic(List<Topic> topics, String unwantKey,
+			String wantKey) {
+		for (int i = 0; i < topics.size(); i++) {
+			if (!((Topic) topics.get(i)).title.contains(unwantKey)
+					&& !((Topic) topics.get(i)).description.contains(unwantKey)) {
+				if (((Topic) topics.get(i)).title.contains(wantKey)) {
+					listOfResults.add(topics.get(i));
+				} else {
+					if (((Topic) topics.get(i)).description.contains(wantKey)) {
+						listOfResults.add(topics.get(i));
+					} else {
+						boolean add = true;
+						List<Tag> x = ((Topic) topics.get(i)).tags;
+						for (int j = 0; j < x.size(); j++) {
+							if (x.get(j).name.contains(unwantKey)) {
+								add = false;
+							}
+						}
+						if (add) {
+							for (int j = 0; j < x.size(); j++) {
+								if (x.get(j).name.contains(wantKey)) {
+									listOfResults.add(topics.get(i));
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// DFS Entity and Sub-Entity
+	public static void searchWithEntities(List<MainEntity> entity, String unwantKey,
+			String wantKey) {
+		for (int i = 0; i < entity.size(); i++) {
+			List subentity = ((MainEntity) entity.get(i)).subentities;
+			if (!((MainEntity) entity.get(i)).name.contains(unwantKey)
+					&& !((MainEntity) entity.get(i)).description
+							.contains(unwantKey)) {
+				if (((MainEntity) entity.get(i)).name.contains(wantKey)) {
+					listOfResults.add(entity.get(i));
+				} else {
+					if (((MainEntity) entity.get(i)).description
+							.contains(wantKey)) {
+						listOfResults.add(entity.get(i));
+					} else {
+						boolean add = true;
+						List<Tag> x = ((MainEntity) entity.get(i)).tagList;
+						for (int j = 0; j < x.size(); j++) {
+							if (x.get(j).name.contains(unwantKey)) {
+								add = false;
+							}
+						}
+						if (add) {
+							for (int j = 0; j < x.size(); j++) {
+								if (x.get(j).name.contains(wantKey)) {
+									listOfResults.add(entity.get(i));
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+			if (subentity != null) {
+				searchWithEntities(subentity, unwantKey, wantKey);
+			}
+		}
+	}
+
+	
+	/**
+	 * 
+	 * @author Loaay
+	 * 
+	 * @story 
+	 * 
+	 */
 	
 	public static Object quickSearch(String keyword, String userEmail) {
 		String[] keywords = keyword.split(" ");
@@ -195,7 +511,7 @@ public class Search extends Controller {
 	// //////////////////////////////////////////////////////////////////
 	// filter method by monica yousry
 	// filtering on type (organisation,topic,idea,plan,entity,...etc)
-
+	//
 	// this commented method with the static parametar will help in defining
 	// which list to pass for the filter method accrding to the user's choice
 	// (and or or )

@@ -25,3 +25,6 @@ GET     /public/                                staticDir:public
 
 # Import requestToPost routes
 *      /topicpostrequest                		Topicss.requestTopicList
+
+# Import AdvancedSearch routes
+*      /AdvancedSearch                  		Search.advancedSearch

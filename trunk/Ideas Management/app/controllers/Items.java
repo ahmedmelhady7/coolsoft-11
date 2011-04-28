@@ -22,17 +22,17 @@ public class Items extends CRUD {
 		}
 	}
 
-	public static void toggleItem(long id) {
-		Item item = Item.findById(id);
-		switch (item.status) {
-		case 1:
-			item.status = 2;
-			break;
-		case 2:
-			item.status = 1;
-			break;
-		default:
-			break;
-		}
-	}
+//	public static void toggleItem(long id) {
+//		Item item = Item.findById(id);
+//		switch (item.status) {
+//		case 1:
+//			item.status = 2;
+//			break;
+//		case 2:
+//			item.status = 1;
+//			break;
+//		default:
+//			break;
+//		}
+//	}
 }
