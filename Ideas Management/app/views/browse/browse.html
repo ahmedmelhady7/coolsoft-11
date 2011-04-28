@@ -1,19 +1,28 @@
+<!--
+@author Fady Amir
+@story  C4S05
+--> 
 <!DOCTYPE html>
-#{extends 'main.html' /}
-#{set title:'Home' /}
+<html>
+<!-- <form action="@{Search.advancedSearch}" id="advancedSearchForm" name="max"> -->
 
+<h1>Hello</h1>
+ 
+<a href="@{Application.index()}">Main Page</a>
 
-<form action="org" method="GET">
+<form action="@{Browse.browse}" name="test">
 <select>
   <option>organization</option>
   <option>1</option>
   <option>2</option>
+  <option>3</option>
 </select>
-
+</form>
 
 #{if flash.error}
     <p style="color:#c00">
         ${flash.error}
     </p>
 #{/if}
-  
+
+</html>
