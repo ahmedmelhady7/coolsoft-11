@@ -219,7 +219,8 @@ public class Users extends CRUD {
 	public static List<User> searchOrganizer(Organization o){
 		List<User> organizers = null;
 		if(o != null) {
-		organizers = (List<User>) UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = o and uro.Role.name like ? ", "organizer");
+		organizers = (List<User>) UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
+			       o,"organizer");
 		
 		}
 		return organizers;
