@@ -176,6 +176,29 @@ public class User extends Model {
 		// topicInvitations = new ArrayList<TopicInvitation>();
 
 	}
+	/**
+	 * 
+	 * this method posts an Idea in a certain topic
+	 * 
+	 * @author m.hisham.sa
+	 * 
+	 * @story C2S14
+	 * 
+	 * @param topic
+	 *            : the topic which the idea is being post under
+	 * @param title
+	 * 			  : the title of the idea
+	 * @param description
+	 * 			  : description/content of the idea
+	 * 
+	 * @return void
+	 */
+	
+	public void postIdea(Topic topic, String title, String description){
+		Idea idea = new Idea(title, description, this, topic);
+		idea.privacyLevel = topic.privacyLevel;
+		ideasCreated.add(idea);
+	}
 
 	public void addInvitation(String email, String role,
 			Organization organization, MainEntity entity) {
