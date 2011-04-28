@@ -157,8 +157,12 @@ public class User extends Model {
 		this.createdOrganization = new ArrayList<Organization>();
 		followingOrganizations = new ArrayList<Organization>();
 		planscreated = new ArrayList<Plan>();
+
+		followingEntities = new ArrayList<MainEntity>();
+
 		this.state = 'a';
 		this.profession = profession;
+
 
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
