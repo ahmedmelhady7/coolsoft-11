@@ -37,9 +37,20 @@ public class Plan extends Model {
 	/*
 	 * list of users that can access the plan
 	 */
-	  
 	
+	/**
+	 * @author ${Ibrahim Safwat}
+	 * Every plan can have a rating
+	 */
 	public int rating;
+	
+	/**
+	 * @author ${Ibrahim Safwat}
+	 * List of comments in that plan
+	 */
+//	@OneToOne (mappedBy = "idea", cascade = CascadeType.ALL)
+//	public List<String> commentList;
+	
 
 	public Plan(String title, User user, String status, Date startDate,
 			Date endDate, String description, Topic topic) {
@@ -87,6 +98,51 @@ public class Plan extends Model {
 			String description, Plan plan, String summary) {
 		Item x = new Item(startDate,endDate, status, description, plan, summary);
 		this.items.add(x);
+	}
+	
+	/**
+	 * @author ${Ibrahim safwat}
+	 * 
+	 * @param UserToShare
+	 * 				User that wants to share the plan
+	 * @param UserToShareWith
+	 * 				User the will be sent the notification with the planID
+	 * @param planID
+	 * 				ID of the plan to be shared
+	 */
+	public void sharePlan(User UserToShare, User UserToShareWith, int planID)
+	{
+		// send a notification to UserToShareWith with the planID from UserToShare
+	}
+	
+	
+	/**
+	 * @author ${Ibrahim Safwat}
+	 * 
+	 * @param rate
+	 * 			the user given rating for the specified plan
+	 * @param planID
+	 * 			ID of the plan wished to rate
+	 */
+	
+	public void rate(int rate, int planID)
+	{
+		//organization must be public or user must be enrolled in organization to rate
+		//if user already rated -> error "already rated"
+		
+//		if(rate>=0 && rate<=5)
+//		{
+//			float oldRating;
+//			float tempRating;
+//			tempRating = (oldRating + rate)/2;
+//			planID.rating = tempRating;
+//		}
+//		else
+//		{
+//			error"Number must be between 0 and 5"
+//		}
+		
+		
 	}
 	
 }
