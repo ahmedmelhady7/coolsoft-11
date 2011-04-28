@@ -208,6 +208,11 @@ public class Users extends CRUD {
 			Topic newTopic = new Topic(name, description, privacyLevel,
 					creator, entity).save();
 			creator.topicsCreated.add(newTopic);
+
+//			List usr = getEntityOrganizers(entity); 
+//			UserRoleInOrganization.addEnrolledUser(creator,
+//					newTopic.entity.organization,
+//					Roles.getRoleByName("Organizer"), newTopic.getId(), "topic");
 			List usr = getEntityOrganizers(entity);
 			// UserRoleInOrganization.addEnrolledUser(creator,
 			// newTopic.entity.organization,
