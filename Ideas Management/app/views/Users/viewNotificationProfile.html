@@ -1,0 +1,20 @@
+#{extends 'main.html' /}
+#{set title:'Notification Profile' /}
+<body>
+<ul>
+#{list items:npList, as:'notifi'}
+    <li>
+    	<fieldset>
+    		<b>User: </b> ${x}
+    		<b>Type: </b> ${notifi.notifiableType} &nbsp; Enabled: ${notifi.enabled}
+    	</fieldset>
+    </li>
+#{/list}
+</ul>
+</body>
+
+<form action="@{NotificationProfiles.alterPreferences()}" method="post">
+Change Preferences: <input type="submit" value="Alter">
+</form>
+
+<a href="@{Users.userIndex()}">Back to user form</a>

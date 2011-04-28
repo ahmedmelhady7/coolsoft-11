@@ -336,4 +336,34 @@ public class User extends Model {
 		followingOrganizations.remove(o);
 		_save();
 	}
+	
+	/**
+	 * This Method is to return all the users notifications
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @Story C1S14
+	 * 
+	 * @return 
+	 * 		List of notifications
+	 */
+	
+	public List<Notification> openNotifications() {
+		return notifications;
+	}
+	
+	/**
+	 * This Method is to return all the users notification profiles
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @Story C1S14
+	 * 
+	 * @return 
+	 * 		List of notification profiles
+	 */
+	
+	public List<NotificationProfile> openNotificationProfile() {
+		return notificationProfiles;
+	}
 }

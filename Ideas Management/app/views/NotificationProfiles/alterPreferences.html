@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Change Preferences</title>
+<script type="text/javascript">
+	var ids = new Array();
+	function markAll(){
+		$('.x').attr('checked',true);
+	}
+	function unmarkAll(){
+		$('.x').attr('checked',false);
+	}
+	function submit(){
+		$.post('@{changePreferences()}' ,{a:ids},function(){
+			window.location.reload();
+		});
+	}
+</script>
+</head>
+
+<a onclick="markAll();" href="#"> Check All </a>&nbsp;&nbsp;
+&nbsp;&nbsp;<a onclick="unmarkAll();" href="#"> Uncheck All</a><br /> <br />
+
+<ul>
+#{list items:npList, as:'npro'}
+    <li>
+    	<fieldset>
+    		<b>Notifiable Type: </b> ${npro.notifiableType}
+    		&nbsp;
+    		<input type="checkbox" id="${npro.id}" onclick="ids.push(id)" class="x"> 
+    		&nbsp; <b>Disable</b>
+    	</fieldset>
+    </li>
+#{/list}
+</ul>
+
+<input type="button" value="check" onclick="submit()"/>
+<br>
+<a href="@{Users.userIndex()}">Back to user form</a>
+
+<body>
+
+</body>
+</html>
