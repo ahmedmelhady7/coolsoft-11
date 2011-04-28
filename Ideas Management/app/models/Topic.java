@@ -241,18 +241,19 @@ public class Topic extends Model {
 		_save();
 	}
 
-	/**
-	 * This Method returns the list of followers in a certain topic
-	 * 
-	 * @author Omar Faruki
-	 * 
-	 * @story C2S29
-	 * 
-	 * @return ArrayList<User>
-	 */
-	public List<User> getFollowers() {
-		return (List<User>) this.followers;
-	}
+//	/**
+//	 * This Method returns the list of followers in a certain topic
+//	 * 
+//	 * @author Omar Faruki
+//	 * 
+//	 * @story C2S29
+//	 * 
+//	 * @return ArrayList<User>
+//	 */
+//	public List<User> getFollowers() {
+//		return (List<User>) this.followers;
+//	}
+
 
 	/**
 	 * This Method overrides the toString method
