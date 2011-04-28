@@ -1,0 +1,17 @@
+#{extends 'main.html' /}
+#{set title:'Notifications' /}
+<ul>
+#{list items:nList, as:'notifi'}
+    <li>
+    	<fieldset>
+    		<b>User: </b> ${x}
+    		<br>
+    		<b>Type: </b> ${notifi.type}
+    		<br>
+    		<b>Message: </b> ${notifi.description}
+    	</fieldset>
+    </li>
+#{/list}
+</ul>
+
+<a href="@{Users.userIndex()}">Back to user form</a>
