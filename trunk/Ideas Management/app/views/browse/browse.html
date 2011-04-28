@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+
+<form action="org" method="GET">
+<select>
+  <option>organization</option>
+  <option>1</option>
+  <option>2</option>
+</select>
+
+
+#{if flash.error}
+    <p style="color:#c00">
+        ${flash.error}
+    </p>
+#{/if}
+  
