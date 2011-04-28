@@ -3,14 +3,18 @@
 #{if assignedItems.size() > 0}<h3>Assigned Items </h3>
 <ul style="list-style: none; ">
     #{list items:assignedItems, as:'assignedItem'}
-    <li >
+    <li>
         <fieldset>
             <legend>
-                Title: ${item.summary}
+                #{if assignedItem.status == 0}
+                <input type="button" onclick="startItem('${assignedItem.id}');" value="Start">
+                #{/if}
+				#{else}
+                <h2>
+				<input type="checkbox" ${assignedItem.status == 1 ? 'inProgress':'done'} onClick="toggle_task('${assignedItem.id}');"/>${item.summary}
+            </h2>#{/else}
             </legend>
-            #{if assignedItem.status == 0} 
-			<input type = "button" value="Start" onClick ="startItem('${assignedItem.id}');"/> #{/if}
-            #{else}<h2><input type="checkbox" ${assingnedItem.status == 1  ? 'checked':''}  onClick="toggle_task(${assignedItem.id});"/></h2>#{/else}<h2>Plan: <a href="#">${assignedItem.plan.title}</a></h2>
+            <h2>Plan: <a href="#">${assignedItem.plan.title}</a></h2>
             <br/>
             Item Description: ${assignedItem.description}
             <br/>
@@ -34,3 +38,19 @@
 #{else}
 You are not assigned to any to-do item.
 #{/else}
+
+<script type="text/javascript">
+
+function start_task(id)
+  {
+	$.post('@{startItem()}' , {id: id});
+	alert("Task is now in progress. Good luck!");
+	window.location.reload();
+  }
+
+function toggle_task(id)
+  {
+	$.post( '@{toggleItem()}' , {id: id});
+  }
+
+</script>
