@@ -10,8 +10,7 @@
     </form>
     <script type="text/javascript">
          function quickSearchScript(frm){
-            //$.post('@{Search.quickSearch()}',{keyword: frm.keyWords.value},{userEmail: decodeURIComponent.toString()});
-         	alert("Sorry! quick search is still under construction");
+            $.post('@{Search.quickSearch()}',{keyword: frm.keyWords.value},{userId: userId});
 		 }
     </script>
 	

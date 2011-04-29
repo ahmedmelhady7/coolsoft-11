@@ -380,7 +380,12 @@ public class Search extends Controller {
 
 	// method that searches for organizations
 	public static List<Object> searchForOrganization(String keyword, int userId) {
-		String[] keywords = keyword.split(" ");
+		String[] keywords = {keyword};
+		try{
+			keywords = keyword.split("\\s+");
+		}
+		catch(NullPointerException e){
+		}
 		listOfResults = new ArrayList<Object>();
 		for (int s = 0; s < keywords.length; s++) {
 			List<Organization> listOfOrganizations = Organization.findAll();
@@ -428,7 +433,12 @@ public class Search extends Controller {
 
 	// method that searches for entities
 	public static List<Object> searchForEntity(String keyword, int userId) {
-		String[] keywords = keyword.split(" ");
+		String[] keywords = {keyword};
+		try{
+			keywords = keyword.split("\\s+");
+		}
+		catch(NullPointerException e){
+		}
 		listOfResults = new ArrayList<Object>();
 		List<MainEntity> listOfEntities = MainEntity.findAll();
 		for (int s = 0; s < keywords.length; s++) {
@@ -479,7 +489,12 @@ public class Search extends Controller {
 
 	// method that searches for ideas
 	public static List<Object> searchForIdea(String keyword, int userId) {
-		String[] keywords = keyword.split(" ");
+		String[] keywords = {keyword};
+		try{
+			keywords = keyword.split("\\s+");
+		}
+		catch(NullPointerException e){
+		}
 		listOfResults = new ArrayList<Object>();
 		List<Idea> listOfIdeas = Idea.findAll();
 		for (int s = 0; s < keywords.length; s++) {
@@ -529,7 +544,12 @@ public class Search extends Controller {
 
 	// method that searches for topics
 	public static List<Object> searchForTopic(String keyword, int userId) {
-		String[] keywords = keyword.split(" ");
+		String[] keywords = {keyword};
+		try{
+			keywords = keyword.split("\\s+");
+		}
+		catch(NullPointerException e){
+		}
 		listOfResults = new ArrayList<Object>();
 		List<Topic> listOfTopics = Topic.findAll();
 		for (int s = 0; s < keywords.length; s++) {
@@ -550,21 +570,20 @@ public class Search extends Controller {
 					}
 				}
 				for (int k = 0; k < listOfTopics.get(i).entity.organization.enrolledUsers
-				.size(); k++) { // Looping on the list of users
-			if (userId != listOfTopics.get(i).followers
-					.get(k).id) {
-				switch (listOfTopics.get(i).entity.organization.privacyLevel) {
-				case 3:
-					listOfTopics.remove(listOfTopics.get(i));
-					break;
-				case 4:
-					listOfTopics.remove(listOfTopics.get(i));
-					break;
-				default:
-					break;
+						.size(); k++) { // Looping on the list of users
+					if (userId != listOfTopics.get(i).followers.get(k).id) {
+						switch (listOfTopics.get(i).entity.organization.privacyLevel) {
+						case 3:
+							listOfTopics.remove(listOfTopics.get(i));
+							break;
+						case 4:
+							listOfTopics.remove(listOfTopics.get(i));
+							break;
+						default:
+							break;
+						}
+					}
 				}
-			}
-		}
 
 			}
 		}
