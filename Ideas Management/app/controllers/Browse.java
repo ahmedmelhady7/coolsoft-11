@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import models.Idea;
 import models.Item;
@@ -21,12 +22,29 @@ import play.mvc.Controller;
  */
 public class Browse extends Controller 
 {
-	public static void main() {
+	
+	public static List<Organization> listOfOrganizations = Organization.findAll();
+	static Organization x ;
+	
+	public static void index() 
+	{
         render();
     }
     
-    public static void browse() {
-        render();
+    public static void browse() 
+    { 
+    	
+        //List<Organization> listOfOrganizations = Organization.findAll();
+        
+        
+        //listOfOrganizations = Organization.findAll();
+        render(listOfOrganizations);
+        
+        
+        /*find by id
+        x = Organization.findById(0);
+        render(x);
+        */
     }
 }
 
