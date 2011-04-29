@@ -2,62 +2,64 @@
 @author Loaay Alkherbawy
 @story  C4S01
 The Search Results Viewer
--->
-<!DOCTYPE html >
+--> 
+<!DOCTYPE html>
 <html>
-<head>
-<title></title>
-<meta charset="utf-8">
-<script src="@{'/public/javascripts/jquery-1.5.2.min.js'}"
-	type="text/javascript" charset="utf-8">
+    <head>
+        <meta charset="utf-8">
+        <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
         </script>
-</head>
-<style type="text/css">
-body {
-	font-family: arial, helvetica;
-	font-size: 20px;
-	color: #123456;
-	background-color: #A3D5E4;
-}
-
-#text1 {
-	font-size: 500px;
-	color: #654321;
-}
-</style>
-<div>
-	<center>
-		<img src="Picture1.jpg"> </img>
-	</center>
-</div>
-
-
-<body onLoad="step1()">
-	<a href="/Ideas Management/app/views/Application/index.html">Home</a>
-	<br /> <center><b><big> <u>Search Results:</u></big></b>
-	</br><i></br>
-	<a href="filter_options.html"><b>for filtering your results:</br>
-click here to chose your criteria</b> </a></i>
-	</center>
-	
-	<div align="right">
-		<u><b> Sort by: 
-		</u> </b> <input type="radio" name="scale" value="vote" />Vote <input
-			type="radio" name="scale" value="rate" /> Rate </br></br>
-			
-	</div>
-
-	<div id='div1'></div>
-	<script type="text/javascript">
-		function step1() {
-			document.getElementById('div1').innerHTML = '<center><img src="Loading.gif" alt=""/></center>';
-			setTimeout(function() {
-				step2();
-			}, 3000);
-		}
-		function step2() {
-			document.getElementById('div1').innerHTML = "<center>Site Still Under Construction</center>";
-		}
-	</script>
-</body>
+    </head>
+    <style type="text/css">
+        
+        body {
+            font-family: arial, helvetica;
+            font-size: 20px;
+            color: #123456;
+            background-color: #A3D5E4;
+        }
+        
+        #text1 {
+            font-size: 500px;
+            color: #654321;
+        }
+    </style>
+    <div>
+        <center>
+            <img src="/Ideas Management/app/views/Picture1.jpg">
+            </img>
+        </center>
+    </div>
+    <body onLoad ="step1()">
+        <a href="/Ideas Management/app/views/Application/index.html">Home</a>
+        <br/>
+        <form action="@{Search.quickSearch}" method= "GET" id="quckSearchForm" name="qS">
+            <input type="text" name="keyWords"/><input type="submit" name="Search" value="Search" onclick="quickSearchScript(this.form)"/>
+        <a href="AdvancedSearch">Advanced Search</a>
+		</form>
+        <script type="text/javascript">
+            function quickSearchScript(frm){
+                $.post('@{Search.quickSearch()}', {
+                    keyword: frm.keyWords.value,
+                    userId: userId
+                });
+            }
+        </script>
+        <br/>
+        Search Results 
+        <div id='div1'>
+        </div>
+        <script type="text/javascript">
+            function step1(){
+                document.getElementById('div1').innerHTML = '<center><img src="Loading.gif" alt=""/></center>';
+                setTimeout(function(){
+                    step2();
+                }, 3000);
+            }
+            
+            function step2(){
+                document.getElementById('div1').innerHTML = "<center>Site Still Under Construction</center>";
+            }
+        </script>
+    </body>
 </html>
