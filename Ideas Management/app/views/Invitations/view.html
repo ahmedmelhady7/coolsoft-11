@@ -1,26 +1,51 @@
 <a href="@{Application.index()}">Back to Home</a>
 <hr>          </hr>
+
 <u><font size ="5" color ="blue">Invitations</font></u>
 <br/>
 <br/>
 <table border="0" bgcolor="#ececec" cellspacing="5">
 #{if inv.isEmpty()}
-<tr><td><i><b><font size ="4" color ="black">No New Invitations</font></b></i></td><td>
 </table>
+<tr><td>No new invitations</td><td>
 #{/if}
 #{else}
 #{list items:0..inv.size()-1, as:'i'} 
-<table border="0" bgcolor="#ececec" cellspacing="5">
-<tr><td><font size ="3" color ="black"><u>From : ${inv.get(i).organization.name} Organization</u></font></td><td>
+<html>
+<table border="0" bgcolor="#ececec" cellspacing="5" id=i>
 
-<tr><td><font size ="3" color ="black">You have been invited to join ${inv.get(i).organization.name} Organization As ${inv.get(i).role}</font></td><td>
-<tr><td><font size ="3" color ="black">to ${inv.get(i).entity.name} Entity</font></td><td> 
+<tr><td><font size ="3" color ="red">From : ${inv.get(i).organization.name} Organization</font></td><td>
 
-<tr><td>&nbsp;</td><td><a href="@{Invitations.respond(1)}"><font size ="3" color ="green">Accept</font</a>
-<a href="@{Invitations.respond(0)}"><font size ="3" color ="red">Reject</font</a><tr><td>
+<tr><td><font size ="3" color ="black">You have been invited to join ${inv.get(i).organization.name} Organization</font></td><td>
+<tr><td><font size ="3" color ="black">as ${inv.get(i).role} to ${inv.get(i).entity.name} Entity</font></td><td> 
+
+<input type="button" onclick="show(1)" value="Accept" />
+<input type="button" onclick="show(0)" value="Reject" />
 
 </table>
+</html>
 <br/>
 <br/>
 #{/list}
 #{/else}
+
+
+
+<script type="text/javascript">
+function show(k){
+	if (k == 1) {
+		$.post('@{respond()}', {id:1,i:i},
+			 function()
+			 {
+			document.getElementById("i").innerHTML = "Invitation has been accepted"
+			});
+	}
+	else {
+		$.post('@{respond()}', {id:0,i:i},
+			 function()
+			 {
+			document.getElementById("i").innerHTML = "Invitation has been rejected"
+			});
+	}
+}
+</script>
