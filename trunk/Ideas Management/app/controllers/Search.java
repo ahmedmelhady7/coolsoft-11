@@ -621,7 +621,7 @@ public class Search extends Controller {
 	}
 
 	// this filter method filters on type and takes only the type wanted
-	public static List<Object> filterSearchResults(List<Object> resultList,
+	public static void filterSearchResults(List<Object> resultList,
 			String filterOn) {
 		filterResult = new ArrayList<Object>();
 		if (filterOn.equalsIgnoreCase("o")) {// filtering on organizations
@@ -671,11 +671,11 @@ public class Search extends Controller {
 		if (filterOn.equalsIgnoreCase("a")) {
 			filterResult = resultList;
 		}
-		return filterResult;
+		
 	}
 
 	// this method takes the criteria and input from user to filter on
-	public static List<Object> filterSearchResults(List<Object> resultList,
+	public static void filterSearchResults(List<Object> resultList,
 			String filterOn, String input) {
 
 		filterResult = new ArrayList<Object>();
@@ -768,7 +768,7 @@ public class Search extends Controller {
 			}
 		}
 
-		return filterResult;
 	}
 
+	
 }
