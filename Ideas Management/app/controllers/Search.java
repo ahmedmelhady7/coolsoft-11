@@ -182,7 +182,8 @@ public class Search extends Controller {
 		//
 		// // Comments
 		//
-		render();
+		
+		render(searchIn);
 	}
 
 	// Item
