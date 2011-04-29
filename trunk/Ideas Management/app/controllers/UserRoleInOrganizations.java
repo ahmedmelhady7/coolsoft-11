@@ -6,6 +6,7 @@ import java.util.List;
 import models.MainEntity;
 import models.Organization;
 import models.Role;
+import models.Topic;
 import models.User;
 import models.UserRoleInOrganization;
 
@@ -59,11 +60,43 @@ public class UserRoleInOrganizations extends CRUD {
 
 	public static boolean addEnrolledUser(User user, Organization org,
 			Role role, long entityOrTopicId, String type) {
+		
 		new UserRoleInOrganization(user, org, role, entityOrTopicId, type)
 				.save();
 
 		return true;
 	}
+	
+	
+	public  boolean isOrganizer(User user, long sourceID , String sourceType){
+			
+			if(sourceType.equalsIgnoreCase("Organization")){
+				Organization o  = Organization.findById(sourceID);
+				
+				if ((Users.searchOrganizer(o)).contains(user)){
+					return true;
+				}
+			}
+			if(sourceType.equalsIgnoreCase("entity")){
+				MainEntity e = MainEntity.findById(sourceID);
+				
+				if ((Users.getEntityOrganizers(e)).contains(user)){
+					return true;
+				}
+			}
+			if(sourceType.equalsIgnoreCase("topic")){
+				Topic e = Topic.findById(sourceID);
+				//if(Users.ge)
+				
+			
+			}
+			return false;
+			
+		}
+		
+		
+	
+
 
 	
 
