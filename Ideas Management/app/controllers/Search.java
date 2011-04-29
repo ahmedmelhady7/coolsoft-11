@@ -23,6 +23,14 @@ import play.mvc.Controller;
  */
 public class Search extends Controller {
 
+	/**
+	 * 
+	 * @author M Ghanem
+	 * 
+	 * @story C4S02 :: Advanced Search; list of results that will be displayed
+	 *        in the html page searchResult.
+	 * 
+	 */
 	public static List listOfResults;
 
 	public static List<Object> filterResult;
@@ -228,8 +236,8 @@ public class Search extends Controller {
 	 * 
 	 * @author M Ghanem
 	 * 
-	 * @story C4S02 Advanced Search Result; search for Items according
-	 *        to the given parameters.
+	 * @story C4S02 Advanced Search Result; search for Items according to the
+	 *        given parameters.
 	 * 
 	 * @param items
 	 *            :: "List"; of Item that we need to search in.
@@ -286,7 +294,35 @@ public class Search extends Controller {
 
 	}
 
-	// Idea
+	/**
+	 * 
+	 * @author M Ghanem
+	 * 
+	 * @story C4S02 Advanced Search Result; search for Ideas according to the
+	 *        given parameters.
+	 * 
+	 * @param items
+	 *            :: "List"; of Idea that we need to search in.
+	 * 
+	 * @param wantKey
+	 *            :: "String"; of the keyword that the user is searching for.
+	 * 
+	 * @param unWantKey
+	 *            :: "String"; of the word where user want to avoid it within
+	 *            the result of searching.
+	 * 
+	 * @param befor
+	 *            :: "Date"; where the search result is before this date.
+	 * 
+	 * @param after
+	 *            :: "Date"; where the search result is after this date.
+	 * 
+	 * @param exact
+	 *            :: "Date"; where the search result is in this date.
+	 * 
+	 * @return void.
+	 * 
+	 */
 	public static void searchWithIdea(List ideas, String unwantKey,
 			String wantKey) {
 		for (int i = 0; i < ideas.size(); i++) {
@@ -320,7 +356,35 @@ public class Search extends Controller {
 
 	}
 
-	// Plan
+	/**
+	 * 
+	 * @author M Ghanem
+	 * 
+	 * @story C4S02 Advanced Search Result; search for Plan according to the
+	 *        given parameters.
+	 * 
+	 * @param items
+	 *            :: "List"; of Plan that we need to search in.
+	 * 
+	 * @param wantKey
+	 *            :: "String"; of the keyword that the user is searching for.
+	 * 
+	 * @param unWantKey
+	 *            :: "String"; of the word where user want to avoid it within
+	 *            the result of searching.
+	 * 
+	 * @param befor
+	 *            :: "Date"; where the search result is before this date.
+	 * 
+	 * @param after
+	 *            :: "Date"; where the search result is after this date.
+	 * 
+	 * @param exact
+	 *            :: "Date"; where the search result is in this date.
+	 * 
+	 * @return void.
+	 * 
+	 */
 	public static void searchWithPlan(List plans, String unwantKey,
 			String wantKey) {
 		for (int i = 0; i < plans.size(); i++) {
@@ -333,7 +397,35 @@ public class Search extends Controller {
 
 	}
 
-	// Topic
+	/**
+	 * 
+	 * @author M Ghanem
+	 * 
+	 * @story C4S02 Advanced Search Result; search for Topic according to the
+	 *        given parameters.
+	 * 
+	 * @param items
+	 *            :: "List"; of Topic that we need to search in.
+	 * 
+	 * @param wantKey
+	 *            :: "String"; of the keyword that the user is searching for.
+	 * 
+	 * @param unWantKey
+	 *            :: "String"; of the word where user want to avoid it within
+	 *            the result of searching.
+	 * 
+	 * @param befor
+	 *            :: "Date"; where the search result is before this date.
+	 * 
+	 * @param after
+	 *            :: "Date"; where the search result is after this date.
+	 * 
+	 * @param exact
+	 *            :: "Date"; where the search result is in this date.
+	 * 
+	 * @return void.
+	 * 
+	 */
 	public static void searchWithTopic(List<Topic> topics, String unwantKey,
 			String wantKey) {
 		for (int i = 0; i < topics.size(); i++) {
@@ -366,7 +458,35 @@ public class Search extends Controller {
 		}
 	}
 
-	// DFS Entity and Sub-Entity
+	/**
+	 * 
+	 * @author M Ghanem
+	 * 
+	 * @story C4S02 Advanced Search Result; search for Entities and sub-entities
+	 *        according to the given parameters.
+	 * 
+	 * @param items
+	 *            :: "List"; of MainEntity that we need to search in.
+	 * 
+	 * @param wantKey
+	 *            :: "String"; of the keyword that the user is searching for.
+	 * 
+	 * @param unWantKey
+	 *            :: "String"; of the word where user want to avoid it within
+	 *            the result of searching.
+	 * 
+	 * @param befor
+	 *            :: "Date"; where the search result is before this date.
+	 * 
+	 * @param after
+	 *            :: "Date"; where the search result is after this date.
+	 * 
+	 * @param exact
+	 *            :: "Date"; where the search result is in this date.
+	 * 
+	 * @return void.
+	 * 
+	 */
 	public static void searchWithEntities(List<MainEntity> entity,
 			String unwantKey, String wantKey) {
 		for (int i = 0; i < entity.size(); i++) {
@@ -412,13 +532,11 @@ public class Search extends Controller {
 	 * @story C4S1
 	 * 
 	 */
-
 	/*
 	 * quickSearch method by Loaay Alkherbawy searching for entities,
 	 * organizations, entities, topics and ideas using a keyword and the
 	 * userEmail to define how the result will appear to him
 	 */
-
 	public static List<Object> quickSearch(String keyword, int userId) {
 		listOfResults = new ArrayList<Object>();
 		// Adding Organizations to search result
@@ -446,11 +564,10 @@ public class Search extends Controller {
 
 	// method that searches for organizations
 	public static List<Object> searchForOrganization(String keyword, int userId) {
-		String[] keywords = {keyword};
-		try{
+		String[] keywords = { keyword };
+		try {
 			keywords = keyword.split("\\s+");
-		}
-		catch(NullPointerException e){
+		} catch (NullPointerException e) {
 		}
 		listOfResults = new ArrayList<Object>();
 		for (int s = 0; s < keywords.length; s++) {
@@ -499,11 +616,10 @@ public class Search extends Controller {
 
 	// method that searches for entities
 	public static List<Object> searchForEntity(String keyword, int userId) {
-		String[] keywords = {keyword};
-		try{
+		String[] keywords = { keyword };
+		try {
 			keywords = keyword.split("\\s+");
-		}
-		catch(NullPointerException e){
+		} catch (NullPointerException e) {
 		}
 		listOfResults = new ArrayList<Object>();
 		List<MainEntity> listOfEntities = MainEntity.findAll();
@@ -555,11 +671,10 @@ public class Search extends Controller {
 
 	// method that searches for ideas
 	public static List<Object> searchForIdea(String keyword, int userId) {
-		String[] keywords = {keyword};
-		try{
+		String[] keywords = { keyword };
+		try {
 			keywords = keyword.split("\\s+");
-		}
-		catch(NullPointerException e){
+		} catch (NullPointerException e) {
 		}
 		listOfResults = new ArrayList<Object>();
 		List<Idea> listOfIdeas = Idea.findAll();
@@ -610,11 +725,10 @@ public class Search extends Controller {
 
 	// method that searches for topics
 	public static List<Object> searchForTopic(String keyword, int userId) {
-		String[] keywords = {keyword};
-		try{
+		String[] keywords = { keyword };
+		try {
 			keywords = keyword.split("\\s+");
-		}
-		catch(NullPointerException e){
+		} catch (NullPointerException e) {
 		}
 		listOfResults = new ArrayList<Object>();
 		List<Topic> listOfTopics = Topic.findAll();
@@ -666,7 +780,6 @@ public class Search extends Controller {
 	 * 
 	 * @story c4s03(filter)
 	 */
-
 	// //////////////////////////////////////////////////////////////////
 	// filter method by monica yousry
 	// filtering on type (organisation,topic,idea,plan,entity,...etc)
@@ -674,7 +787,6 @@ public class Search extends Controller {
 	// this commented method with the static parametar will help in defining
 	// which list to pass for the filter method accrding to the user's choice
 	// (and or or )
-
 	static List<Object> tobepassed;
 
 	public static void handelingOrAnd(char AndOr) {
@@ -737,7 +849,7 @@ public class Search extends Controller {
 		if (filterOn.equalsIgnoreCase("a")) {
 			filterResult = resultList;
 		}
-		
+
 	}
 
 	// this method takes the criteria and input from user to filter on
@@ -836,5 +948,4 @@ public class Search extends Controller {
 
 	}
 
-	
 }
