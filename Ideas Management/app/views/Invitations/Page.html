@@ -1,0 +1,25 @@
+
+<form action="@{Invitations.Send()}" method="GET">
+<table border="0" bgcolor="#ececec" cellspacing="5">
+
+#{if id==-1}
+<tr><td>Email</td><td><input type="text" size="30" name="email"></td></tr>
+#{/if}
+#{else}
+<tr><td>Name : ${user.name}</td><td>
+<tr><td>Email: ${user.email}</td><td>
+<input type = "hidden" name ="email" value = ${user.email}>
+#{/else}
+
+<tr><td>Roles</td><td>
+#{select 'role', value:1, id:'select2'}
+   #{option value="none"}none#{/option}
+   #{option value="Idea Developer"}Idea Developer#{/option}
+   #{option value="Organizer"}Organizer#{/option}
+#{/select}
+</td></tr>
+
+
+<tr><td>&nbsp;</td><td><input type="submit" value="send">
+</table>
+</form>
