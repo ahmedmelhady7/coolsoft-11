@@ -30,10 +30,12 @@ public class RequestToJoins extends CRUD{
 		List<RequestToJoin> requests;
 		if(type==1){
 			Topic topic = Topic.findById(id);
+			notFoundIfNull(topic);
 			requests = topic.requestsToJoin;
 		}
 		else{
 			Organization organization = Organization.findById(id);
+			notFoundIfNull(organization);
 			 requests = organization.joinRequests;
 		}
 		
@@ -61,7 +63,6 @@ public class RequestToJoins extends CRUD{
 		RequestToJoin request = RequestToJoin.findById(reqId);
 		notFoundIfNull(request);
 		User user = request.source;
-		notFoundIfNull(user);
 		if(status==1){
 			if(type==0){
 				 
