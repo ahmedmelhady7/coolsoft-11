@@ -316,4 +316,21 @@ public class Topic extends Model {
 			_save();
 		}
 	}
+
+	public boolean isDeletable() {
+		// TODO Auto-generated method stub
+		if(openToEdit == false)
+		return false;
+		if(ideas.size()>0)
+			return false;
+		return true;
+	}
+	
+	public boolean isHideable() {
+		// TODO Auto-generated method stub
+		if(openToEdit == false)
+		return false;
+
+		return true;
+	}
 }
