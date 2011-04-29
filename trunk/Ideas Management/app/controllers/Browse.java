@@ -9,7 +9,6 @@ import models.Organization;
 import models.Tag;
 import models.Topic;
 
-import org.h2.table.Plan;
 
 import play.mvc.Controller;
 
