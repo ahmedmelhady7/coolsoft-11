@@ -110,11 +110,11 @@ public class Invitations extends CRUD {
 		 * @return void
 		 */
 	 
-	 public static void view(){
+	 public static void view(User user){
 			
 		   //**User user=get user from session
-	       //<Invitation> inv = Invitation.find("byEmail", user.email).fetch();
-	       //render(inv);
+	       List <Invitation> inv = Invitation.find("byEmail", user.email).fetch();
+	       render(inv);
 
 		}
 	 
@@ -130,11 +130,11 @@ public class Invitations extends CRUD {
 		 * 
 		 * @story C1S4
 		 * 
-		 * @param id  
+		 * @param choice  
 		 *              0 if reject or 1 if accept
 		 * 
 		 * @param id  
-		 *              the number of the invitation in the list
+		 *              the invitation id
 		 *            
 		 * 
 		 * @return void
@@ -160,6 +160,8 @@ public class Invitations extends CRUD {
 		  if(!flag){
 		  UserRoleInOrganizations.addEnrolledUser(user,org,role);
 		  UserRoleInOrganizations.addEnrolledUser(user,org,role,ent.id,"entity");
+		  
+		  
 		       }
 	     }
 		  
