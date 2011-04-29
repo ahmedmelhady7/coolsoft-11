@@ -123,7 +123,7 @@ public class Organizations extends CRUD {
 	 * @return void
 	 */
 
-	public static void inviteUser(long orgId, long userId) {
+	public static void InviteMember(long orgId, long userId) {
 		render(orgId, userId);
 	}
 

@@ -669,7 +669,7 @@ public class Users extends CRUD {
 	 * @return void
 	 */
 
-	public static void viewInvToJoinOrg(long userId) {
+	public static void ViewOrgInv(long userId) {
 		User u = User.findById(userId);
 		List<Invitation> invs = u.invitation;
 		List<Organization> organizations = new ArrayList<Organization>();

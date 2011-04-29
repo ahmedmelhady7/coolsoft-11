@@ -31,3 +31,9 @@ GET     /public/                                staticDir:public
 
 # Import ViewSearchResults routes
 *      /ViewSearchResults                  		Search.viewResult
+
+# Import InviteMember routes
+*	   /InviteMember							Organizations.InviteMember
+
+# Import InviteMember routes
+*	   /ViewOrgInv  							Users.ViewOrgInv.html
