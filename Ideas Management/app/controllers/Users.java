@@ -659,4 +659,75 @@ public class Users extends CRUD {
     	List<NotificationProfile> npList = u.openNotificationProfile();
     	render(npList);
     }
+	
+
+	/**
+	 * This method renders the list of invitations to join an organization for a
+	 * user.
+	 * 
+	 * @author ibrahim.al.khayat
+	 * 
+	 * @story C2S16
+	 * 
+	 * @param userId
+	 *            the id of the user
+	 * 
+	 * @return void
+	 */
+
+	public static void viewInvToJoinOrg(long userId) {
+		User u = User.findById(userId);
+		List<Invitation> invs = u.invitation;
+		List<Organization> organizations = new ArrayList<Organization>();
+		for (int i = 0; i < invs.size(); i++) {
+			if (invs.get(i).organization != null) {
+				organizations.add(invs.get(i).organization);
+			}
+		}
+		render(organizations, userId);
+	}
+
+	/**
+	 * This method accepts or rejects an invitation to a user to join an
+	 * organization.
+	 * 
+	 * @author ibrahim.al.khayat
+	 * 
+	 * @story C2S16
+	 * 
+	 * @param invId
+	 *            the id of the invitation
+	 * 
+	 * @param userId
+	 *            the id of the user
+	 * 
+	 * @param r
+	 *            a boolean to indicate acceptance (true for accepted)
+	 * 
+	 * @return void
+	 */
+
+	public static void acceptToJoinOrg(long invId, long userId, boolean r) {
+		Invitation inv = Invitation.findById(invId);
+		Organization org = inv.organization;
+		User user = User.findById(userId);
+		if (r) {
+			Role role = Role.find("byRoleName", "member").first();
+			if (role == null) {
+				// role ???
+				role = new Role("member", new String[0]);
+				role._save();
+			}
+			UserRoleInOrganization roleInOrg = new UserRoleInOrganization(user,
+					org, role);
+			roleInOrg._save();
+			user.userRolesInOrganization.add(roleInOrg);
+			// any other insertions?
+		}
+
+		org.invitation.remove(inv);
+		org._save();
+		user.invitation.remove(inv);
+		user._save();
+	}
 }

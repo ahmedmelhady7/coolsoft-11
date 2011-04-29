@@ -1,0 +1,14 @@
+#{extends 'main.html' /}
+
+<p>Please enter the email of the user.</p>
+
+Email: <input type="text" id="email" name="email" /><br />
+<input type="submit" value="Submit" onclick="send(email.value,'${orgId}', '${userId}');"/>
+
+<script type="text/jscript">
+	function send(e, id, u){
+		$.post('@{sendInvitation()}', {orgId:id ,email:e, userId:u});
+		alert("done!");
+		location.reload(true);
+	}
+</script>
