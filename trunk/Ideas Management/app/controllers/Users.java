@@ -499,36 +499,7 @@ public class Users extends CRUD {
 	}
 	
 	
-	
-	
-	
-	
-	
-    /**
-     * 
-     * This method checks whether a user is an organizer to a specifi entity or not
-     * 
-     * @author  {Mai Magdy}
-     * 
-     * @param entity
-     *               entity that we want to check if the user is enrolled 
-     *               in as organizer
-     * 
-     * @return  boolean
-     */
-	
-	public static boolean isOrganizer(MainEntity entity,User user){
-		
-		List <User> organizers= Users.getEntityOrganizers(entity);
-		  
-		  boolean flag=false;
-		  
-		  for(int j=0;j<organizers.size();j++){
-			  if(organizers.get(j).equals(user))
-				  flag=true;
-		  }
-		  return flag;
-	}
+
 	
 	
 	   /**
@@ -551,7 +522,7 @@ public class Users extends CRUD {
 		     List<MainEntity> list=new ArrayList <MainEntity>();
 		     
 		     for(int i=0;i<org.entitiesList.size();i++){
-		     if(isOrganizer(org.entitiesList.get(i),user)&&
+		     if(UserRoleInOrganizations.isOrganizer(user,org.entitiesList.get(i).id,"entity")&&
 		    		 isPermitted(user,"invite",org.entitiesList.get(i).id,"entity"))
 		    		 list.add(org.entitiesList.get(i));
 		    	 
