@@ -7,6 +7,8 @@ import java.util.List;
 
 import java.util.List;
 
+import notifiers.Mail;
+
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel.JPAQuery;
 
@@ -26,7 +28,7 @@ public class Users extends CRUD {
 	/**
 	 * This Method adds a user to the list of followers in a given tag
 	 * 
-	 * @author m.hisham.sa
+	 * @author m.hism.sa
 	 * 
 	 * @story C2S11
 	 * 
@@ -156,6 +158,8 @@ public class Users extends CRUD {
 	 * 
 	 * @author ${Ahmed El-Hadi}
 	 * 
+	 * @story C3S12
+	 * 
 	 * @param idea
 	 *            : the idea to be reported
 	 * 
@@ -173,13 +177,18 @@ public class Users extends CRUD {
 		if (!alreadyReported) {
 			idea.spamCounter++;
 			reporter.ideasReported.add(idea);
-			// idea.belongsToTopic.getOrganizer();
 		}
+		for (int j = 0; j < idea.belongsToTopic.organizers.size(); j++) {
+			Mail.ReportAsSpamMail(idea.belongsToTopic.organizers.get(j),
+					reporter, idea);
+		}
+
 	}
+
 	/**
 	 * 
-	 * this method checks if the user is allowed to post an idea under a certain topic, 
-	 * if yes then an idea is posted under the topic
+	 * this method checks if the user is allowed to post an idea under a certain
+	 * topic, if yes then an idea is posted under the topic
 	 * 
 	 * @author m.hisham.sa
 	 * 
@@ -222,16 +231,16 @@ public class Users extends CRUD {
 			}
 		}
 	}
-	
-	public void postIdea(User user, Topic topic, String title, String description){
-		if(isPermitted(user, "post", topic.id, "topic")){
-				user.postIdea(topic, title, description);
-				topic.postIdea(user, title, description);
-		}else
+
+	public void postIdea(User user, Topic topic, String title,
+			String description) {
+		if (isPermitted(user, "post", topic.id, "topic")) {
+			user.postIdea(topic, title, description);
+			topic.postIdea(user, title, description);
+		} else
 			return;
 
 	}
-	
 
 	/**
 	 * 
@@ -278,8 +287,8 @@ public class Users extends CRUD {
 			}
 		}
 
-//		render(searchResultByName, searchResultByProfession,
-//				searchResultByEmail);
+		// render(searchResultByName, searchResultByProfession,
+		// searchResultByEmail);
 		return searchResultByName;
 	}
 
@@ -498,169 +507,153 @@ public class Users extends CRUD {
 		}
 		return enrolled;
 	}
-	
+
 	/**
-	 * This method is responsible for deleting a user by the system admin 
-	 * after specifying that user's id, and then it renders a message confirming
+	 * This method is responsible for deleting a user by the system admin after
+	 * specifying that user's id, and then it renders a message confirming
 	 * whether the delete was successful or not
 	 * 
 	 * @author ${mostafa.aly0}
 	 * 
 	 * @story C1S9
 	 * 
-	 * @param id:
-	 * 			the user's id
+	 * @param id
+	 *            : the user's id
 	 * 
 	 * @return void
 	 * 
 	 * */
 	public static void deleteUser(Long id) {
-	     User user = User.findById(id);
-	     String x="";
-	  try
-	  {
-		  
-	   if (user.state!='n')
-	   {
-	    user.state='d';
-	    x="deletion successful";
-	   }
-	   else
-	   {
-		   x="You can not delete a user who's deactivated his account !";
-	   }
-	   render(x);
-	  }
-	  catch(NullPointerException e)
-	  {
-		  x="No such User !!";
-		  render(x);
-	  }
+		User user = User.findById(id);
+		String x = "";
+		try {
 
-	 }
-	
-	
-	
-	
-	
+			if (user.state != 'n') {
+				user.state = 'd';
+				x = "deletion successful";
+			} else {
+				x = "You can not delete a user who's deactivated his account !";
+			}
+			render(x);
+		} catch (NullPointerException e) {
+			x = "No such User !!";
+			render(x);
+		}
 
-	   /**
-  * 
-  * This method returns list of entities within a specific organization
-  *  that a user is enrolled in as organizer or organization lead (or admin)
-  * 
-  * @author  {Mai Magdy}
-  * 
-  * @param org
-  *              the organization that we want to search within its entities 
-  *               
-  * 
-  * @return  list<MainEntity>
-  */
-	
-	
-	public static List<MainEntity> getOrganizerEntities(Organization org,User user){
-		    
-		     List<MainEntity> list=new ArrayList <MainEntity>();
-		     if(org.creator.equals(user) || user.isAdmin)
-	    		 return org.entitiesList;
-		     
-		     else{
-		     for(int i=0;i<org.entitiesList.size();i++){
-		     if(UserRoleInOrganizations.isOrganizer(user,org.entitiesList.get(i).id,"entity")&&
-		    		 isPermitted(user,"invite",org.entitiesList.get(i).id,"entity"))
-		    		 list.add(org.entitiesList.get(i));
-		    	 
-		     }
-		     }
-		
-		  return list;
 	}
-	
-	
-	
-	 /**
-  * 
-  * This method returns list of organizations that a user is enrolled in 
-  * as organizer or organization lead (or admin)
-  * 
-  * @author  {Mai Magdy}
-  * 
-  * @param user
-  *               
-  * 
-  * @return  list<Organization>
-  */
-	
-	public static List<Organization> getOrganizerOrganization(User user){
-	    
-	     List<Organization> list= new ArrayList<Organization>();
-	     List<Organization> org=Organization.findAll();
-	    
-	     for(int i=0;i<org.size();i++){
-	    	 List<User> organizer=new ArrayList<User>();
-	    	  
-	    	 if(org.get(i).creator.equals(user) || user.isAdmin)
-	    		 list.add(org.get(i));
-	    	 else{ 
-	    	   organizer=searchOrganizer(org.get(i));
-	    	   
-	    	 for(int j=0;j<organizer.size();j++){
-	    	if( organizer.get(j).equals(user)&&
-	           isPermitted(user,"invite",org.get(i).id,"organization"))
-		    		 list.add(org.get(i));
-	    	  }
-	    	 }
-	     }
-	     
-	
-	  return list;
-}
-	
-	
 
-	
-	
 	/**
-	 * This method renders the list of notifications of the user, to the view to display
-	 * the notifications.
+	 * 
+	 * This method returns list of entities within a specific organization that
+	 * a user is enrolled in as organizer or organization lead (or admin)
+	 * 
+	 * @author {Mai Magdy}
+	 * 
+	 * @param org
+	 *            the organization that we want to search within its entities
+	 * 
+	 * 
+	 * @return list<MainEntity>
+	 */
+
+	public static List<MainEntity> getOrganizerEntities(Organization org,
+			User user) {
+
+		List<MainEntity> list = new ArrayList<MainEntity>();
+		if (org.creator.equals(user) || user.isAdmin)
+			return org.entitiesList;
+
+		else {
+			for (int i = 0; i < org.entitiesList.size(); i++) {
+				if (UserRoleInOrganizations.isOrganizer(user,
+						org.entitiesList.get(i).id, "entity")
+						&& isPermitted(user, "invite",
+								org.entitiesList.get(i).id, "entity"))
+					list.add(org.entitiesList.get(i));
+
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * 
+	 * This method returns list of organizations that a user is enrolled in as
+	 * organizer or organization lead (or admin)
+	 * 
+	 * @author {Mai Magdy}
+	 * 
+	 * @param user
+	 * 
+	 * 
+	 * @return list<Organization>
+	 */
+
+	public static List<Organization> getOrganizerOrganization(User user) {
+
+		List<Organization> list = new ArrayList<Organization>();
+		List<Organization> org = Organization.findAll();
+
+		for (int i = 0; i < org.size(); i++) {
+			List<User> organizer = new ArrayList<User>();
+
+			if (org.get(i).creator.equals(user) || user.isAdmin)
+				list.add(org.get(i));
+			else {
+				organizer = searchOrganizer(org.get(i));
+
+				for (int j = 0; j < organizer.size(); j++) {
+					if (organizer.get(j).equals(user)
+							&& isPermitted(user, "invite", org.get(i).id,
+									"organization"))
+						list.add(org.get(i));
+				}
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * This method renders the list of notifications of the user, to the view to
+	 * display the notifications.
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S14
 	 * 
 	 * @param userId
-	 * 			the ID of the user required to get his notifications
+	 *            the ID of the user required to get his notifications
 	 * 
 	 * @return void
 	 */
-	
-	 public static void viewNotifications(long userId) {
-	    	User u = User.findById(userId);	    
-	    	List<Notification> nList = u.openNotifications();	    	
-			render(nList);
-	    }
-	
+
+	public static void viewNotifications(long userId) {
+		User u = User.findById(userId);
+		List<Notification> nList = u.openNotifications();
+		render(nList);
+	}
+
 	/**
-	 * This method renders the list of notification profiles for the user to view
-	 * and edit his preferences.
+	 * This method renders the list of notification profiles for the user to
+	 * view and edit his preferences.
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S14
 	 * 
 	 * @param userId
-	 * 			the ID of the user to view his/her profile
+	 *            the ID of the user to view his/her profile
 	 * 
 	 * @return void
 	 */
-	
+
 	public static void viewNotificationProfile(long userId) {
-    	User u = User.findById(userId);    	
-    	List<NotificationProfile> npList = u.openNotificationProfile();
-    	render(npList);
-    }
-	
+		User u = User.findById(userId);
+		List<NotificationProfile> npList = u.openNotificationProfile();
+		render(npList);
+	}
 
 	/**
 	 * This method renders the list of invitations to join an organization for a
