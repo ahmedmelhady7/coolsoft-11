@@ -61,5 +61,11 @@ public class Plans extends CRUD {
 //	public static void assign(long itemid) {
 //
 //	}
+	
+	public static void viewAsTimeline(long planid ){
+		Plan p = Plan.findById(planid);
+		List<Item> itemsList = p.items;
+		render(p, itemsList);
+	}
 
 }
