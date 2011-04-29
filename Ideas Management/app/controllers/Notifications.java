@@ -12,7 +12,7 @@ public class Notifications extends Controller {
 		render();
 	}
 	
-	public static void sendNotification(List<User> list, int notId, String type, String desc) {
+	public static void sendNotification(List<User> list, long notId, String type, String desc) {
 		for(int i = 0; i < list.size(); i++) {
 			User r = User.findById(list.get(i).id);
 			// First check his notification Profile
