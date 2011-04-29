@@ -140,21 +140,22 @@ public class Invitations extends CRUD {
 		 * @return void
 		 */
 
-	public static void respond(int id,int i,User user){
+	public static void respond(int choice,int id,User user){
 		  
 		//User user=get user from session
-		  List<Invitation> inv = Invitation.find("byEmail", user.email).fetch();
+		 // List<Invitation> inv = Invitation.find("byEmail", user.email).fetch();
 		  
-		  if(id==1){
-		  String rolename=inv.get(i).role;
-		  Organization org=inv.get(i).organization;
-		  MainEntity ent=inv.get(i).entity;
+		  Invitation invite=Invitation.findById(id);
+		  if(choice==1){
+		  String rolename=invite.role;
+		  Organization org=invite.organization;
+		  MainEntity ent=invite.entity;
 		  Role role=Role.find("byName", rolename).first();
 		  
 		  
 		  if(rolename.equalsIgnoreCase("organzier")){
 		  
-		  boolean flag=Users.isOrganizer(ent,user);
+		  boolean flag=UserRoleInOrganizations.isOrganizer(user,ent.id,"entity");
 		  
 		  if(!flag){
 		  UserRoleInOrganizations.addEnrolledUser(user,org,role);
@@ -163,10 +164,13 @@ public class Invitations extends CRUD {
 	     }
 		  
 		}
-			 Invitation invite=Invitation.findById(inv.get(i).id);
-			 invite.delete();
+		  
+		  invite.delete();
+		  
+			// Invitation invite=Invitation.findById(inv.get(i).id);
 			 
-			 render(id,inv,i);
+			 
+			// render(choice,inv,i);
 		  
 			 
 		  /*
