@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import controllers.Roles;
+import controllers.UserRoleInOrganizations;
 
 import play.data.validation.*;
 import play.db.jpa.Model;
@@ -105,6 +106,27 @@ public class Organization extends Model {
 	 * @param creator : Creator of the organization of type User
 	 */
 
+	public Organization(String name, User creator) {
+		this.name = name;
+		this.creator = creator;
+		// added by nada ossama
+		UserRoleInOrganizations.addEnrolledUser(this.creator, this, Roles.getRoleByName("Organization Lead"));
+		
+		this.privacyLevel = 2; // default privacylevel is public
+		this.createTag = true; // default users are allowed to create tags
+		invitation = new ArrayList<Invitation>();
+		this.entitiesList = new ArrayList<MainEntity>();
+		this.followers = new ArrayList<User>();
+		this.relatedTags = new ArrayList<Tag>();
+		this.enrolledUsers = new ArrayList<User>();
+		bannedUsers = new ArrayList<BannedUser>();
+		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
+		logsList = new ArrayList<Log>();
+		joinRequests = new ArrayList<RequestToJoin>();
+	}
+
+
+
 //	public Organization(String name, User creator) {
 //		this.name = name;
 //		this.creator = creator;
@@ -143,7 +165,7 @@ public class Organization extends Model {
 		this.name = name;
 		this.creator = creator;
 		// added by nada ossama
-		UserRoleInOrganization.addEnrolledUser(this.creator, this, Roles.getRoleByName("Organization Lead"));
+		UserRoleInOrganizations.addEnrolledUser(this.creator, this, Roles.getRoleByName("Organization Lead"));
 		this.privacyLevel = privacyLevel;
 		this.createTag = createTag;
 		invitation = new ArrayList<Invitation>();
