@@ -182,7 +182,7 @@ public class Search extends Controller {
 		//
 		// // Comments
 		//
-		
+
 		render(searchIn);
 	}
 
@@ -353,26 +353,25 @@ public class Search extends Controller {
 	 * userEmail to define how the result will appear to him
 	 */
 
-	public static List<Object> quickSearch(String keyword, String userEmail) {
+	public static List<Object> quickSearch(String keyword, int userId) {
 		listOfResults = new ArrayList<Object>();
 		// Adding Organizations to search result
-		List<Object> organizationsList = searchForOrganization(keyword,
-				userEmail);
+		List<Object> organizationsList = searchForOrganization(keyword, userId);
 		for (int i = 0; i < organizationsList.size(); i++) {
 			listOfResults.add(organizationsList.get(i));
 		}
 		// Adding Entities to search result
-		List<Object> EntitiesList = searchForEntity(keyword, userEmail);
+		List<Object> EntitiesList = searchForEntity(keyword, userId);
 		for (int i = 0; i < EntitiesList.size(); i++) {
 			listOfResults.add(EntitiesList.get(i));
 		}
 		// Adding Ideas to search result
-		List<Object> IdeasList = searchForIdea(keyword, userEmail);
+		List<Object> IdeasList = searchForIdea(keyword, userId);
 		for (int i = 0; i < IdeasList.size(); i++) {
 			listOfResults.add(IdeasList.get(i));
 		}
 		// Adding Topics to search result
-		List<Object> TopicsList = searchForTopic(keyword, userEmail);
+		List<Object> TopicsList = searchForTopic(keyword, userId);
 		for (int i = 0; i < TopicsList.size(); i++) {
 			listOfResults.add(TopicsList.get(i));
 		}
@@ -380,8 +379,7 @@ public class Search extends Controller {
 	}
 
 	// method that searches for organizations
-	public static List<Object> searchForOrganization(String keyword,
-			String userEmail) {
+	public static List<Object> searchForOrganization(String keyword, int userId) {
 		String[] keywords = keyword.split(" ");
 		listOfResults = new ArrayList<Object>();
 		for (int s = 0; s < keywords.length; s++) {
@@ -407,9 +405,8 @@ public class Search extends Controller {
 				}
 				for (int k = 0; k < listOfOrganizations.get(i).enrolledUsers
 						.size(); k++) { // Looping on the list of users
-					if (!userEmail
-							.equalsIgnoreCase(listOfOrganizations.get(i).enrolledUsers
-									.get(k).email)) {
+					if (userId != listOfOrganizations.get(i).enrolledUsers
+							.get(k).id) {
 						switch (listOfOrganizations.get(i).privacyLevel) {
 						case 3:
 							listOfOrganizations.remove(listOfOrganizations
@@ -430,7 +427,7 @@ public class Search extends Controller {
 	}
 
 	// method that searches for entities
-	public static List<Object> searchForEntity(String keyword, String userEmail) {
+	public static List<Object> searchForEntity(String keyword, int userId) {
 		String[] keywords = keyword.split(" ");
 		listOfResults = new ArrayList<Object>();
 		List<MainEntity> listOfEntities = MainEntity.findAll();
@@ -456,15 +453,24 @@ public class Search extends Controller {
 						}
 					}
 				}
-				switch (listOfEntities.get(i).organization.privacyLevel) {
-				case 3:
-					listOfEntities.remove(listOfEntities.get(i));
-					break;
-				case 4:
-					listOfEntities.remove(listOfEntities.get(i));
-					break;
-				default:
-					break;
+				for (int k = 0; k < listOfEntities.get(i).followers.size(); k++) { // Looping
+																					// on
+																					// the
+																					// list
+																					// of
+																					// users
+					if (userId != listOfEntities.get(i).followers.get(k).id) {
+						switch (listOfEntities.get(i).organization.privacyLevel) {
+						case 3:
+							listOfEntities.remove(listOfEntities.get(i));
+							break;
+						case 4:
+							listOfEntities.remove(listOfEntities.get(i));
+							break;
+						default:
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -472,7 +478,7 @@ public class Search extends Controller {
 	}
 
 	// method that searches for ideas
-	public static List<Object> searchForIdea(String keyword, String userEmail) {
+	public static List<Object> searchForIdea(String keyword, int userId) {
 		String[] keywords = keyword.split(" ");
 		listOfResults = new ArrayList<Object>();
 		List<Idea> listOfIdeas = Idea.findAll();
@@ -499,15 +505,21 @@ public class Search extends Controller {
 						}
 					}
 				}
-				switch (listOfIdeas.get(i).privacyLevel) {
-				case 3:
-					listOfIdeas.remove(listOfIdeas.get(i));
-					break;
-				case 4:
-					listOfIdeas.remove(listOfIdeas.get(i));
-					break;
-				default:
-					break;
+				for (int k = 0; k < listOfIdeas.get(i).belongsToTopic.entity.organization.enrolledUsers
+						.size(); k++) { // Looping on the list of users
+					if (userId != listOfIdeas.get(i).belongsToTopic.entity.organization.enrolledUsers
+							.get(k).id) {
+						switch (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel) {
+						case 3:
+							listOfIdeas.remove(listOfIdeas.get(i));
+							break;
+						case 4:
+							listOfIdeas.remove(listOfIdeas.get(i));
+							break;
+						default:
+							break;
+						}
+					}
 				}
 
 			}
@@ -516,7 +528,7 @@ public class Search extends Controller {
 	}
 
 	// method that searches for topics
-	public static List<Object> searchForTopic(String keyword, String userEmail) {
+	public static List<Object> searchForTopic(String keyword, int userId) {
 		String[] keywords = keyword.split(" ");
 		listOfResults = new ArrayList<Object>();
 		List<Topic> listOfTopics = Topic.findAll();
@@ -537,7 +549,11 @@ public class Search extends Controller {
 						}
 					}
 				}
-				switch (listOfTopics.get(i).privacyLevel) {
+				for (int k = 0; k < listOfTopics.get(i).entity.organization.enrolledUsers
+				.size(); k++) { // Looping on the list of users
+			if (userId != listOfTopics.get(i).followers
+					.get(k).id) {
+				switch (listOfTopics.get(i).entity.organization.privacyLevel) {
 				case 3:
 					listOfTopics.remove(listOfTopics.get(i));
 					break;
@@ -547,10 +563,16 @@ public class Search extends Controller {
 				default:
 					break;
 				}
+			}
+		}
 
 			}
 		}
 		return listOfResults;
+	}
+
+	public static void viewResult() {
+		render(listOfResults);
 	}
 
 	/**
