@@ -168,12 +168,29 @@ public class Idea extends Model {
 		// send a notification to UserToShareWith with the ideaID from UserToShare
 	}
 	
+	/**
+	 * @author ${Ibrahim Safwat}
+	 * 
+	 * @param priority
+	 * 			the priority to be set
+	 * @param ideaID
+	 * 			the ID of the idea to prioritize 
+	 */
 	public void setPriority(String priority, int ideaID)
 	{
 		//user must be organizer
 		//ideaID.priority = priority
 	}
 	
+	
+	/**
+	 * @author ${Ibrahim Safwat}
+	 * 
+	 * @param rate
+	 * 			rating taken from the user
+	 * @param ideaID
+	 * 			idea that the user wants to rate
+	 */
 	public void rate(int rate, int ideaID)
 	{
 		//user must be organizer in the organization to rate an idea
