@@ -3,28 +3,36 @@
 Title: ${item.summary}
 <br/>
 Please state why you want to work on this item.
-<br/>
-<label id = "stringError"></label>
-<br/>
-<textarea id="justification" rows="7" cols="50">
+#{form @VolunteerRequests.sendVolunteerRequest(), method:'POST', id:'creationForm', onsubmit: 'return validate()' enctype:'multipart/form-data' }
+<textarea id="just" name = "justification" rows="7" cols="50">
 </textarea>
+<input type = "hidden" name = "itemId" value = ${item.id} >
 <br/>
-<input type="button" value="send" onclick="javascript: volunteer('${item.id}');"/>
+<input type="submit" value="send" />
 <br/>
+#{/form}
+
 <a href="@{Plans.viewAsList(planId)}">Go back to plan</a>
 
 <script type="text/javascript">
-    function volunteer(id){
-        var just = document.getElementById("justification").value;
-        if (just == null || just == "") {
-            document.getElementById("stringError").innerHTML = "This is a required field";
-        }
-        else {
-            $.post('@{sendVolunteerRequest()}', {
-                itemId: id,
-                justification: just
-            });
-            
-        }
-    }
+	
+	function validate(){
+		if (document.getElementById("just").value == null|| document.getElementById("just").value == "" ) {
+			alert("This is a required field");
+			return false;
+		}
+	}
+//    function volunteer(id){
+//        var just = document.getElementById("justification").value;
+//        if (just == null || just == "") {
+//            document.getElementById("stringError").innerHTML = "This is a required field";
+//        }
+//        else {
+//            $.post('@{sendVolunteerRequest()}', {
+//                itemId: id,
+//                justification: just
+//            });
+//            
+//        }
+//    }
 </script>

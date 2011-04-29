@@ -247,7 +247,7 @@ public class Users extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void searchUser(String keyword) {
+	public static List<User> searchUser(String keyword) {
 
 		List<User> searchResultByName = new ArrayList<User>();
 		List<User> searchResultByProfession = new ArrayList<User>();
@@ -278,8 +278,9 @@ public class Users extends CRUD {
 			}
 		}
 
-		render(searchResultByName, searchResultByProfession,
-				searchResultByEmail);
+//		render(searchResultByName, searchResultByProfession,
+//				searchResultByEmail);
+		return searchResultByName;
 	}
 
 	/**

@@ -4,19 +4,25 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import play.data.validation.Required;
 import play.db.jpa.*;
 
 @Entity
 public class Plan extends Model {
 
+	@Required
 	public String title;
-	public int rate;
+	
 	public String status;
 	public float progress;
+	@Required
 	public Date startDate;
+	@Required
 	public ArrayList<String> requirements;
+	@Required
 	public Date endDate;
 	
+	@Required
 	@OneToOne
 	public Topic topic;
 	
@@ -26,12 +32,14 @@ public class Plan extends Model {
 	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
 	public List<Idea> ideas;
 	
+	@Required
 	@Lob
 	public String description;
 
 	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
 	public List<Item> items;
 	
+	@Required
 	@ManyToOne
 	public User madeBy;
 	
@@ -55,7 +63,6 @@ public class Plan extends Model {
 			Date endDate, String description, Topic topic) {
 		this.title = title;
 		this.madeBy = user;
-		this.rate = 0;
 		this.status = "new";
 		this.progress = 0;
 		this.startDate = startDate;
