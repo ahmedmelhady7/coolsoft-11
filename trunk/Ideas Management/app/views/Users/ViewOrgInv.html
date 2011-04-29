@@ -1,0 +1,25 @@
+#{extends 'main.html' /}
+
+#{ifnot organizations}
+<p>
+    No organization invitation was found. 
+</p>
+#{/ifnot}
+
+<ul>
+    #{list items:organizations, as:'organization'}
+    <li> 
+		${organization.name}
+        <input type="submit" value="accept" onclick="org('${organization.id}','${user.id}', true);" />
+		<input type="submit" value="reject" onclick="org('${organization.id}','${user.id}', false);" />
+    </li>
+	#{/list}
+</ul>
+
+<script type="text/javascript">
+	function responce(oId , uId, r){
+		$.post('@{acceptToJoinOrg()}', {orgId:oId, userId:uId, r:r});
+		alert("done!");
+		location.reload(true);
+	}
+</script>
