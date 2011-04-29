@@ -230,6 +230,7 @@ public class User extends Model {
 
 	public void addVolunteerRequest(VolunteerRequest volunteerRequest) {
 		volunteerRequests.add(volunteerRequest);
+		this.save();
 
 	}
 
@@ -251,6 +252,7 @@ public class User extends Model {
 	 */
 	public void addSentAssignRequest(AssignRequest sentAssignRequest) {
 		sentAssignRequests.add(sentAssignRequest);
+		this.save();
 	}
 
 	/**
@@ -271,6 +273,7 @@ public class User extends Model {
 	 */
 	public void addReceivedAssignRequest(AssignRequest receivedAssignRequest) {
 		sentAssignRequests.add(receivedAssignRequest);
+		this.save();
 	}
 	
 	/**

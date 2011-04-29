@@ -44,19 +44,58 @@ public class AssignRequests extends CRUD {
 		destination.addReceivedAssignRequest(assignRequest);
 	}
 	
-	public static void assign(long itemId, long planId) {
-		
-		Plan plan = Plan.findById(planId);
-		List<User> nonBlockedUsers = Topics.searchByTopic(plan.topic.id);
-		viewUsers(nonBlockedUsers, itemId, planId);
+	public static void sendRequests(long itemId, long [] userIds) {
+		long senderId = 0;
+		for (int i = 0; i<userIds.length; i++) {
+			sendAssignRequest(senderId, itemId, userIds[i]);
+		}
 		
 	}
 	
-	public static void search (String keyword, String item, String plan) {
-		int planId = Integer.parseInt(plan);
-		int itemId = Integer.parseInt(item);
-		Plan plann = Plan.findById((long)planId);
-		List<User> nonBlockedUsers = Topics.searchByTopic(plann.topic.id);
+	public static List<User> filter (long itemId, long planId){
+		Plan plan = Plan.findById(planId);
+		List<User> nonBlockedUsers = Topics.searchByTopic(plan.topic.id);
+		Item item = Item.findById(itemId);
+		int size = nonBlockedUsers.size();
+		List<User> finalResult = new ArrayList<User> ();
+		boolean flag = false;
+		User user;
+		for(int i = 0; i<size; i++) {
+			user = nonBlockedUsers.get(i);
+			if(item.assignees.contains(user)) {
+				flag = true;
+			} else {
+				
+			for (int j = 0; j < item.volunteerRequests.size(); j++) {
+				if (user.id == item.volunteerRequests.get(j).sender.id) {
+					flag = true;
+					break;
+				}
+			}
+
+			for (int k = 0; k < item.assignRequests.size(); k++) {
+				if (user.id == item.assignRequests.get(k).destination.id) {
+				flag = true;
+				break;
+				}
+			}
+		}
+			if(!flag) {
+				finalResult.add(user);
+			}
+			flag = false;
+		}
+		return finalResult;
+	}
+	
+	public static void assign(long itemId, long planId) {
+		viewUsers(filter(itemId, planId), itemId, planId);
+		
+	}
+	
+	public static void search (String keyword, long itemId, long planId) {
+
+		List<User> nonBlockedUsers = filter(itemId, planId);
 		List<User> searchResult = Users.searchUser(keyword);
 		List<User> finalResult = new ArrayList<User> ();
 		for(int i = 0; i < nonBlockedUsers.size(); i++) {
@@ -64,11 +103,12 @@ public class AssignRequests extends CRUD {
 				finalResult.add(nonBlockedUsers.get(i));
 			}
 		}
-		viewUsers(finalResult, (long) itemId, (long) planId);
+		viewUsers(finalResult, itemId, planId);
+	
 	}
 	
-	public static void viewUsers(List<User> users, long itemId, long planID) {
-		render(users);
+	public static void viewUsers(List<User> users, long itemId, long planId) {
+		render(users, itemId, planId);
 	}
 	
 	

@@ -20,7 +20,7 @@
             <br/>
             Assigned Users: 
             <ul style="list-style: none; ">
-                #{list items:{${item.assignees}}, as:'assignedUser'}
+                #{list items:${item.assignees}, as:'assignedUser'}
                 <li>
                     <a href="#">${assignedUser.username}</a>
                 </li>

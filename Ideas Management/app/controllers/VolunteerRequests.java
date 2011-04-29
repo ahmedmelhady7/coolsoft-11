@@ -24,11 +24,10 @@ public class VolunteerRequests extends CRUD {
 	 * @return	void
 	 */
 	
-	public static void sendVolunteerRequest(long senderId, String itemId,
+	public static void sendVolunteerRequest(long senderId, long itemId,
 			@Required String justification) {
-			int itemID = Integer.parseInt(itemId);
 			User sender = User.findById(senderId);
-			Item dest = Item.findById((long)itemID);
+			Item dest = Item.findById(itemId);
 			VolunteerRequest volunteerRequest = new VolunteerRequest(sender,
 					dest, justification).save();
 			dest.addVolunteerRequest(volunteerRequest);
