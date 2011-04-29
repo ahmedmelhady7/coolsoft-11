@@ -54,11 +54,15 @@ public class Organizations extends CRUD {
 	 * 
 	 */
 
+
+     
+     
 	public static void enableTags(long id) {
 		Organization organization = Organization.findById(id);
 		notFoundIfNull(organization);
 		organization.createTag = true;
 	}
+
 
 	/**
 	 * 
@@ -74,6 +78,7 @@ public class Organizations extends CRUD {
 	 *            being disabled
 	 * 
 	 */
+	
 	public static void disableTags(Long id) {
 		Organization organization = Organization.findById(id);
 		notFoundIfNull(organization);
@@ -81,31 +86,31 @@ public class Organizations extends CRUD {
 	}
 
 	/**
-	 * This method gets the list of topics of a certain organization
-	 * 
-	 * @author Omar Faruki
-	 * 
-	 * @story C2S28
-	 * 
-	 * @param orgId
-	 *            : ID of an organization of type long
-	 */
+     * This method gets the list of topics of a certain organization
+     * 
+     * @author Omar Faruki
+     * 
+     * @story C2S28
+     * 
+     * @param orgId : ID of an organization of type long
+     */
+    
+    public static void getTopics(long id) {
+   	 Organization org = Organization.findById(id);
+   	 notFoundIfNull(org);
+   	 ArrayList<Topic> topics = new ArrayList<Topic>();
+   	 int i = 0;
+   	 while (i < org.entitiesList.size()) {
+   		 int j = 0;
+   		 while (j < org.entitiesList.get(i).topicList.size()) {
+   			 topics.add(org.entitiesList.get(i).topicList.get(j));
+   			 j++;
+   		 }
+   		 i++;
+   	 }
+   	 render(topics);
+    }
 
-	public static void getTopics(long id) {
-		Organization org = Organization.findById(id);
-		notFoundIfNull(org);
-		List<Topic> topics = new ArrayList<Topic>();
-		int i = 0;
-		while (i < org.entitiesList.size()) {
-			int j = 0;
-			while (j < org.entitiesList.get(i).topicList.size()) {
-				topics.set(j, org.entitiesList.get(i).topicList.get(j));
-				j++;
-			}
-			i++;
-		}
-		render(topics);
-	}
 
 	/**
 	 * This method renders the page for inviting a user to organization
