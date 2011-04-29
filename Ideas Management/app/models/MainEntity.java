@@ -57,6 +57,7 @@ public class MainEntity extends Model {
 	/**
 	 * The organization of the entity
 	 */
+	@Required
 	@ManyToOne
 	public Organization organization;
 	
