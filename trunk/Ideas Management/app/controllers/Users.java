@@ -445,6 +445,107 @@ public class Users extends CRUD {
 		return enrolled;
 	}
 	
+	
+	
+	
+	
+	
+	
+    /**
+     * 
+     * This method checks whether a user is an organizer to a specifi entity or not
+     * 
+     * @author  {Mai Magdy}
+     * 
+     * @param entity
+     *               entity that we want to check if the user is enrolled 
+     *               in as organizer
+     * 
+     * @return  boolean
+     */
+	
+	public static boolean isOrganizer(MainEntity entity,User user){
+		
+		List <User> organizers= Users.getEntityOrganizers(entity);
+		  
+		  boolean flag=false;
+		  
+		  for(int j=0;j<organizers.size();j++){
+			  if(organizers.get(j).equals(user))
+				  flag=true;
+		  }
+		  return flag;
+	}
+	
+	
+	   /**
+  * 
+  * This method returns list of entities within a specific organization
+  *  that a user is enrolled in as organizer
+  * 
+  * @author  {Mai Magdy}
+  * 
+  * @param org
+  *              the organization that we want to search within its entities 
+  *               
+  * 
+  * @return  list<MainEntity>
+  */
+	
+	
+	public static List<MainEntity> getOrganizerEntities(Organization org,User user){
+		    
+		     List<MainEntity> list=new ArrayList <MainEntity>();
+		     
+		     for(int i=0;i<org.entitiesList.size();i++){
+		     if(isOrganizer(org.entitiesList.get(i),user)&&
+		    		 isPermitted(user,"invite",org.entitiesList.get(i).id,"entity"))
+		    		 list.add(org.entitiesList.get(i));
+		    	 
+		     }
+		
+		  return list;
+	}
+	
+	
+	
+	 /**
+  * 
+  * This method returns list of organizations that a user is enrolled in as organizer
+  * 
+  * @author  {Mai Magdy}
+  * 
+  * @param user
+  *               
+  * 
+  * @return  list<Organization>
+  */
+	
+	public static List<Organization> getOrganizerOrganization(User user){
+	    
+	     List<Organization> list= new ArrayList<Organization>();
+	     List<Organization> org=Organization.findAll();
+	    
+	     for(int i=0;i<org.size();i++){
+	    	 List<User> organizer=new ArrayList<User>();
+	    	   organizer=searchOrganizer(org.get(i));
+	    	   
+	    	 for(int j=0;j<organizer.size();j++){
+	    	   if( organizer.get(j).equals(user)&&
+	           isPermitted(user,"invite",org.get(i).id,"organization"))
+	    		   
+		    		 list.add(org.get(i));
+	    	  }
+	     }
+	     
+	
+	  return list;
+}
+	
+	
+
+	
+	
 	/**
 	 * This method renders the list of notifications of the user, to the view to display
 	 * the notifications.
