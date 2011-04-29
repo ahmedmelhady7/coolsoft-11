@@ -30,25 +30,19 @@
             </img>
         </center>
     </div>
-	
-	
     <form name="Search">
-        <input type="text" name="searchKey" />
-		<input type="submit" value="Search" onclick= "quickSearchScript(this.form);" />
-		    <script type="text/javascript">
-         function quickSearchScript(frm){
-            //$.post('@{Search.quickSearch()}',{keyword: frm.keyWords.value},{userEmail: decodeURIComponent.toString()});
-         	alert("Sorry! quick search is still under construction");
-		 }
-    </script>
-		<!--input type="submit" value="AdvancedSearch" onclick="advSearchScript(this.form)"/-->
+        <input type="text" name="searchKey" /><input type="submit" value="Search" onclick="quickSearchScript();"/>
+        <script type="text/javascript">
+            function quickSearchScript(){
+                alert("Sorry! quick search is still under construction");
+            }
+        </script>
+        <!--input type="submit" value="AdvancedSearch" onclick="advSearchScript(this.form)"/-->
 		<a href="AdvancedSearch">Advanced Search</a>
     </form>
-    
-    <form action="@{Browse.browse()}" method="GET"> 
-      	<input type="submit" value="Browse" />
-    </form> 
-    
+    <form action="@{Browse.browse()}" method="GET">
+        <input type="submit" value="Browse" />
+    </form>
     <body>
         #{doLayout /}
     </body>
