@@ -1,0 +1,44 @@
+#{extends 'main.html' /}
+#{set title:user.username " - View Assignment Requests /}
+#{if assignRequests.size() > 0}<h3>Assignment Requests </h3>
+<ul>
+    #{list items:assignRequests, as:'assignRequest'}
+    <li>
+        <fieldset>
+            <legend>
+            <h2>
+                ${assignRequest.source}</a>
+            </h2>
+            </legend>
+            Sender: ${assignRequest.sender}
+            <br/>
+            Content:  ${assignRequest.content}
+            <br/>
+			<input type = "button" value = "Accept" onclick="accept_request('${user.id}', '${assignRequest.source.id}')">
+			<input type = "button" value = "Reject" onclick="reject_request('${user.id}', '${assignRequest.source.id}')">
+        </fieldset>
+    </li>
+    #{/list}
+</ul>
+#{/if}
+#{else}
+You have no assignment requests.
+#{/else}
+
+<script type="text/javascript">
+
+function accept_request(id)
+  {
+	$.post('@{accept()}' , {userId: id, id: id});
+	alert("Task accepted!");
+	window.location.reload();
+  }
+
+function reject_request(id)
+  {
+	$.post( '@{reject()}' , {userId: id, id: id});
+	alert("Task rejected!");
+	window.location.reload();
+  }
+
+</script>
