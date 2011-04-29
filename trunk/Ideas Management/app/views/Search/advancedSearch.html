@@ -1,13 +1,12 @@
 <!--
 @author Mohamed Ghanem
 @story  C4S02
---> 
-<!DOCTYPE html>
+--> <!DOCTYPE html>
 <html>
-	${k}
+    ${k}
     <form action="@{Search.advancedSearch}" id="advancedSearchForm" name="max">
         Search in&nbsp;&nbsp;&nbsp;::
-        <select name="orgPriv" style="width:90%" >
+        <select name="orgPriv" style="width:90%">
             <option disabled="disabled">Search in:</option>
             <option value="1">&nbsp;Public  organizations only</option>
             <option value="2">&nbsp;Private organizations only</option>
@@ -44,20 +43,16 @@
         <br/>
         <input type="submit" name="ok" value="Start Advanced Search" onclick="advSearchScript(this.form)"/>
     </form>
-    <!--script type="text/javascript">
-         // function advSearchScript(frm){
-         //   $.post('@{Search.advancedSearch()}', {searchIn: frm.keyWords.value}, {
-         //       wantKey: frm.keyWords.value
-         //   }, {
-         //       unwantKey: frm.unkeyWords.value
-         //   },{
-                searchIn2: frm.keyWords.value
-         //   }, {
-                wantKey2: frm.keyWords.value
-         //   }, {
+    <script type="text/javascript">
+        function advSearchScript(frm){
+            $.post('@{Search.advancedSearch()}', {
+                searchIn: frm.keyWords.value,
+                wantKey: frm.keyWords.value,
+                unwantKey: frm.unkeyWords.value,
+                searchIn2: frm.keyWords.value,
+                wantKey2: frm.keyWords.value,
                 unwantKey2: frm.unkeyWords.value
-         //   });
-        // }
-    </script-->
-	
+            });
+        }
+    </script>
 </html>
