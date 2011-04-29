@@ -67,5 +67,26 @@ public class Plans extends CRUD {
 		List<Item> itemsList = p.items;
 		render(p, itemsList);
 	}
+	/*
+	 * @author yassmeen.hussein
+	 * 
+	 * this method renders the Calendar view of a plan
+	 * 
+	 * @param planId 
+	 *       the id of the plan
+	 * 
+	 * @return void
+	 * 
+	 * */
+	
+	public static void viewAsCalendar(long planId) {
+
+		Plan p = Plan.findById(planId);
+		List<Item> itemsList = p.items;
+		long userid = 0;
+		User user = User.findById(userid);
+		render(p, itemsList, user);
+	}
+
 
 }
