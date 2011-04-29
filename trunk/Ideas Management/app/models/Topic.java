@@ -100,6 +100,7 @@ public class Topic extends Model {
 	/**
 	 * the entity the topic is in
 	 */
+	@Required
 	@ManyToOne
 	public MainEntity entity;
 
