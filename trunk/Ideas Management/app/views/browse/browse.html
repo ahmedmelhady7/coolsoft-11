@@ -4,20 +4,19 @@
 --> 
 <!DOCTYPE html>
 <html>
-<!-- <form action="@{Search.advancedSearch}" id="advancedSearchForm" name="max"> -->
 
 <h1>Hello</h1>
- 
-<a href="@{Application.index()}">Main Page</a>
 
 <form action="@{Browse.browse}" name="test">
 <select>
   <option>organization</option>
-  <option>1</option>
+  <option>${listOfOrganizations}</option>
   <option>2</option>
   <option>3</option>
 </select>
 </form>
+
+
 
 #{if flash.error}
     <p style="color:#c00">
