@@ -55,7 +55,7 @@ public class Plans extends CRUD {
 		if (y == "") {
 			VolunteerRequests.justify(itemId, planId);
 		} else {
-			Plans.viewAsList(planId, y);
+			viewAsList(planId, y);
 		}
 	}
 
