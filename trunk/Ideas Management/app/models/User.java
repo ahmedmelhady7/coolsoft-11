@@ -389,4 +389,22 @@ public class User extends Model {
 	public List<NotificationProfile> openNotificationProfile() {
 		return notificationProfiles;
 	}
+	/**
+	 * This Method overrides method equals that compares two users by comparing ther ids
+	 * 
+	 * @author fadwa sakr
+	 * 
+	 * @param o : the object to be compared with
+	 */
+	
+		public boolean equals(Object o) {
+			if (o instanceof User) {
+				User user = (User) o;
+				return id ==user.id;
+				}
+			
+			return false;
+
+		
+	}
 }
