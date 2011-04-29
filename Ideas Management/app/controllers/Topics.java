@@ -220,7 +220,7 @@ public class Topics extends CRUD {
 	 * 
 	 * @return List<User>
 	 */
-	public static List<User> searchByTopic(Topic id) {
+	public static List<User> searchByTopic(long id) {
 
 		Topic topic = Topic.findById(id);
 		MainEntity entity = topic.entity;
