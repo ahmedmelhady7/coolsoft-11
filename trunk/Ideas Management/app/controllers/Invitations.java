@@ -1,6 +1,7 @@
 package controllers;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import play.mvc.Controller;
@@ -42,10 +43,16 @@ public class Invitations extends CRUD {
 	 */
  
 	
-	 public static void invite(){
-		 
-		      /*get user n list of organization&entity&topic tht he organizes*/
-	    	//render(org,ent,top);
+	 public static void invite(User user){
+		      
+		    List <Organization> org = new ArrayList<Organization>();
+		    	org=Users.getOrganizerOrganization(user);
+		     
+		  
+		    	List <MainEntity> ent = new ArrayList<MainEntity>();
+		    // ent=Users.getOrganizerEntities(org.get(0), user);
+		     
+	    	//render(org,ent);
 	  }
 	 
 	 /**
@@ -134,30 +141,36 @@ public class Invitations extends CRUD {
 		 */
 
 	public static void respond(int id,int i,User user){
-		
-		  //User user=get user from session
+		  
+		//User user=get user from session
 		  List<Invitation> inv = Invitation.find("byEmail", user.email).fetch();
+		  
+		  if(id==1){
 		  String rolename=inv.get(i).role;
 		  Organization org=inv.get(i).organization;
 		  MainEntity ent=inv.get(i).entity;
-		  
 		  Role role=Role.find("byName", rolename).first();
 		  
-		  List <User> organizers= Users.getEntityOrganizers(ent);
-		  List <User> enrolled =Users.getEnrolledUsers(org);
 		  
+		  if(rolename.equalsIgnoreCase("organzier")){
 		  
-		  boolean flag=false;
-		  for(int j=0;j<organizers.size();j++){
-			  if(organizers.get(j).equals(user))
-				  flag=true;
-		  }
+		  boolean flag=Users.isOrganizer(ent,user);
 		  
 		  if(!flag){
 		  UserRoleInOrganizations.addEnrolledUser(user,org,role);
 		  UserRoleInOrganizations.addEnrolledUser(user,org,role,ent.id,"entity");
-		  }
+		       }
+	     }
+		  
+		}
+			 Invitation invite=Invitation.findById(inv.get(i).id);
+			 invite.delete();
+			 
+			 render(id,inv,i);
+		  
+			 
 		  /*
+		   *  List <User> enrolled =Users.getEnrolledUsers(org);
 		  flag=false;
 		  for(int j=0;j<enrolled.size();j++){
 			  if(enrolled.get(j).equals(user))
@@ -169,15 +182,6 @@ public class Invitations extends CRUD {
 			  UserRoleInOrganizations.addEnrolledUser(user,org,rol);
 		  }*/
 		 
-		 
-		 Invitation invite=Invitation.findById(inv.get(i).id);
-		 invite.delete();
-		 
-		 render(id,inv,i);
-		 
-		 
-		
-		
 		
 	}
         
