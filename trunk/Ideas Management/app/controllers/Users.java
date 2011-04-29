@@ -498,9 +498,31 @@ public class Users extends CRUD {
 		return enrolled;
 	}
 	
-	
 
-	
+	public static void deleteUser(Long id) {
+	     User user = User.findById(id);
+	     String x="";
+	  try
+	  {
+		  
+	   if (user.state!='n')
+	   {
+	    user.state='d';
+	    x="deletion successful";
+	   }
+	   else
+	   {
+		   x="You can not delete a user who's deactivated his account !";
+	   }
+	   render(x);
+	  }
+	  catch(NullPointerException e)
+	  {
+		  x="No such User !!";
+		  render(x);
+	  }
+
+	 }
 	
 	
 	
