@@ -498,7 +498,21 @@ public class Users extends CRUD {
 		return enrolled;
 	}
 	
-
+	/**
+	 * This method is responsible for deleting a user by the system admin 
+	 * after specifying that user's id, and then it renders a message confirming
+	 * whether the delete was successful or not
+	 * 
+	 * @author ${mostafa.aly0}
+	 * 
+	 * @story C1S9
+	 * 
+	 * @param id:
+	 * 			the user's id
+	 * 
+	 * @return void
+	 * 
+	 * */
 	public static void deleteUser(Long id) {
 	     User user = User.findById(id);
 	     String x="";
