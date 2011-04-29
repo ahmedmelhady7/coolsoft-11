@@ -505,7 +505,7 @@ public class Users extends CRUD {
 	   /**
   * 
   * This method returns list of entities within a specific organization
-  *  that a user is enrolled in as organizer
+  *  that a user is enrolled in as organizer or organization lead (or admin)
   * 
   * @author  {Mai Magdy}
   * 
@@ -520,12 +520,16 @@ public class Users extends CRUD {
 	public static List<MainEntity> getOrganizerEntities(Organization org,User user){
 		    
 		     List<MainEntity> list=new ArrayList <MainEntity>();
+		     if(org.creator.equals(user) || user.isAdmin)
+	    		 return org.entitiesList;
 		     
+		     else{
 		     for(int i=0;i<org.entitiesList.size();i++){
 		     if(UserRoleInOrganizations.isOrganizer(user,org.entitiesList.get(i).id,"entity")&&
 		    		 isPermitted(user,"invite",org.entitiesList.get(i).id,"entity"))
 		    		 list.add(org.entitiesList.get(i));
 		    	 
+		     }
 		     }
 		
 		  return list;
@@ -535,7 +539,8 @@ public class Users extends CRUD {
 	
 	 /**
   * 
-  * This method returns list of organizations that a user is enrolled in as organizer
+  * This method returns list of organizations that a user is enrolled in 
+  * as organizer or organization lead (or admin)
   * 
   * @author  {Mai Magdy}
   * 
@@ -552,14 +557,18 @@ public class Users extends CRUD {
 	    
 	     for(int i=0;i<org.size();i++){
 	    	 List<User> organizer=new ArrayList<User>();
+	    	  
+	    	 if(org.get(i).creator.equals(user) || user.isAdmin)
+	    		 list.add(org.get(i));
+	    	 else{ 
 	    	   organizer=searchOrganizer(org.get(i));
 	    	   
 	    	 for(int j=0;j<organizer.size();j++){
-	    	   if( organizer.get(j).equals(user)&&
+	    	if( organizer.get(j).equals(user)&&
 	           isPermitted(user,"invite",org.get(i).id,"organization"))
-	    		   
 		    		 list.add(org.get(i));
 	    	  }
+	    	 }
 	     }
 	     
 	
