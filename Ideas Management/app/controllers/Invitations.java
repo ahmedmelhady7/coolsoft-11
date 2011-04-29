@@ -15,100 +15,103 @@ import notifiers.Mail;
 
 public class Invitations extends CRUD {
 
-	/**
+
+	
+	
+	
+    //invitation first page ,it has search or button 'invite by mail'
+ public static void invite(Organization org,MainEntity ent){
+	   
+	 render(org,ent);
+	   
+ }
+   
+    //Go to search page
+ public static void SearchUsers(Organization org,MainEntity ent,String name){
+	 List<User> filter=new ArrayList<User>();
+	   filter=Users.searchUser(name);
+	 List<User> organizers=Users.getEntityOrganizers(ent);
+	 organizers.add(org.creator);
+	 
+	 List <User> users=new ArrayList<User>();
+	  for(int i=0;i<filter.size();i++){
+		  if(!organizers.contains(filter.get(i)))
+			  users.add(filter.get(i));
+	  }
+	  
+	    render(users,ent,org);
+ }
+ 
+ 
+    // page of invitation
+   public static void Page(Organization org,MainEntity ent,long id){
+	  // long num=id;
+	     if(id==-1)
+	          render(org,ent);
+	  else
+		  render(org,ent,User.findById(id));
+ }
+   
+
+ 
+ /**
 	 * 
-	 * This method is responsible for
-	 * 
+	 * This method is responsible for sending an invitation
+	 * It renders the email
 	 * 
 	 * @author ${Mai.Magdy}
 	 * 
 	 * @story C1S6
+	 *
 	 * 
-	 * @param
-	 * 
-	 * 
-	 * @param
-	 * 
-	 * 
-	 * @param
-	 * 
-	 * 
-	 * @param
-	 * 
-	 * 
-	 * @return
-	 */
-
-	public static void invite(User user) {
-
-		List<Organization> org = new ArrayList<Organization>();
-		org = Users.getOrganizerOrganization(user);
-
-		List<MainEntity> ent = new ArrayList<MainEntity>();
-		// ent=Users.getOrganizerEntities(org.get(0), user);
-
-		// render(org,ent);
-	}
-
-	/**
-	 * 
-	 * This method is responsible for sending an invitation It renders the email
-	 * 
-	 * @author ${Mai.Magdy}
-	 * 
-	 * @story C1S6
-	 * 
-	 * 
-	 * @param email
-	 *            destination of the invitation
-	 * 
-	 * @param role
-	 *            role that ll be assigned to the user in case accepted
-	 * 
-	 * @param organization
-	 *            organization that sends the invitation
-	 * 
-	 * @param entity
-	 *            entity that sends the invitation
-	 * 
+	 * @param  email
+	 *                 destination of the invitation
+	 *                 
+	 * @param  role
+	 *               role that ll be assigned to the user in case accepted
+	 *               
+	 *@param  organization
+	 *                organization that sends the invitation
+	 *               
+	 *@param  entity
+	 *               entity that sends the invitation
+	 *                                
 	 * @return void
 	 */
-
-	public static void send(String email, String role, String organization,
-			String entity) {
-
-		Mail.invite(email, role, organization, entity);
-
-		Organization org = Organization.find("byName", organization).first();
-		MainEntity ent = MainEntity.find("byName", entity).first();
-
-		// sender=the user from the session
-		// sender.addInvitation(email,role,org,ent,top);
-
-		// render(email,role,organization,entity,topic);
-		render(email);
-	}
-
-	/**
+ 
+ public static void send(String email,String role,Organization org,
+		 MainEntity ent){
+	  
+	 Mail.invite(email,role,org.name,ent.name);
+	    
+    	 
+    	//sender=the user from the session 
+        //sender.addInvitation(email,role,org,ent,top);
+    	
+	  //render(email,role,organization,entity,topic);
+	    render(email);
+  }
+ 
+ /**
 	 * 
-	 * This method is responsible for viewing the received invitations It
-	 * renders the invitation list
+	 * This method is responsible for viewing the received invitations
+	 * It renders the invitation list
 	 * 
 	 * @author ${Mai.Magdy}
 	 * 
 	 * @story C1S4
 	 * 
-	 * @param
-	 * 
+	 * @param  
+	 *       
 	 * 
 	 * @return void
 	 */
-
-	public static void view(User user) {
-
-		// **User user=get user from session
-		List<Invitation> inv = Invitation.find("byEmail", user.email).fetch();
-		render(inv);
+ 
+ public static void view(User user){
+		
+	   //**User user=get user from session
+       List <Invitation> inv = Invitation.find("byEmail", user.email).fetch();
+       render(inv);
 
 	}
 
