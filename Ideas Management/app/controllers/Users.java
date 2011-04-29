@@ -22,7 +22,7 @@ import models.UserRoleInOrganization;
 import models.*;
 
 public class Users extends CRUD {
-	
+
 	/**
 	 * This Method adds a user to the list of followers in a given tag
 	 * 
@@ -38,11 +38,11 @@ public class Users extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void follow(Tag tag, User user){
+	public static void follow(Tag tag, User user) {
 		tag.follow(user);
 		user.follow(tag);
 	}
-	
+
 	/**
 	 * This Method removes a user from the list of followers in a given Topic
 	 * 
@@ -199,6 +199,29 @@ public class Users extends CRUD {
 	 * 
 	 * @return void
 	 */
+
+	public void postTopic(String name, String description, short privacyLevel,
+			User creator, MainEntity entity) {
+
+		if (entity.organizers.contains(creator)) {
+			Topic newTopic = new Topic(name, description, privacyLevel,
+					creator, entity).save();
+			creator.topicsCreated.add(newTopic);
+
+			// List usr = getEntityOrganizers(entity);
+			// UserRoleInOrganization.addEnrolledUser(creator,
+			// newTopic.entity.organization,
+			// Roles.getRoleByName("Organizer"), newTopic.getId(), "topic");
+			List usr = getEntityOrganizers(entity);
+			// UserRoleInOrganization.addEnrolledUser(creator,
+			// newTopic.entity.organization,
+			// Role.getRoleByName("Organizer"), newTopic.getId(), "topic");
+			creator.topicsIOrganize.add(newTopic);
+			for (int i = 0; i < entity.organizers.size(); i++) {
+				entity.organizers.get(i).topicsIOrganize.add(newTopic);
+			}
+		}
+	}
 	
 	public void postIdea(User user, Topic topic, String title, String description){
 		if(isPermitted(user, "post", topic.id, "topic")){
@@ -206,6 +229,7 @@ public class Users extends CRUD {
 				topic.postIdea(user, title, description);
 		}else
 			return;
+
 	}
 	
 
@@ -396,13 +420,41 @@ public class Users extends CRUD {
 		t._save();
 	}
 
-	/*
+	/**
+	 * gets the list of organizers of a certain topic
+	 * 
+	 * @author: Nada Ossama
+	 * 
+	 * @param e
+	 *            : is the topic that i want to retrieve all the organizers that
+	 *            are enrolled in it
+	 * 
+	 * @return List of Organizers in that topic
+	 */
+	public List<User> getTopicOrganizers(Topic t) {
+
+		List<User> organizers = null;
+		if (t != null) {
+			Organization o = t.entity.organization;
+			organizers = (List<User>) UserRoleInOrganization
+					.find("select uro.enrolled from UserRoleInOrganization uro and Role r "
+							+ "where uro.organization = ? and"
+							+ " uro.Role = r and r.roleName like ? and uro.entityTopicID = ? "
+							+ "and uro.type like ?", o, "organizer", t.getId(),
+							"topic");
+
+		}
+		return organizers;
+	}
+
+	/**
 	 * gets the list of organizers of a certain entity
 	 * 
 	 * @author: Nada Ossama
 	 * 
-	 * @param e: is the entity that i want to retrieve all the organizers that
-	 * are enrolled in it
+	 * @param e
+	 *            : is the entity that i want to retrieve all the organizers
+	 *            that are enrolled in it
 	 * 
 	 * @return List of Organizers in that entity
 	 */
@@ -422,7 +474,7 @@ public class Users extends CRUD {
 		return organizers;
 	}
 
-	/*
+	/**
 	 * gets all the users enrolled in an organization these users are: 1- the
 	 * Organization lead 2- the organizers (even if blocked) 3- Idea Developers
 	 * in secret or private topics
@@ -433,6 +485,7 @@ public class Users extends CRUD {
 	 * 
 	 * @return :List of enrolled users
 	 */
+
 	public static List<User> getEnrolledUsers(Organization o) {
 		List<User> enrolled = null;
 		if (o != null) {
