@@ -10,17 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Plans extends CRUD {
-
-	public static void viewAsList(long planId) {
+	public static void viewAsList(long planId, String y) {
 		long userid = 0;
 		User user = User.findById(userid);
 		Plan p = Plan.findById(planId);
 		List<Item> itemsList = p.items;
 
-		render(p, itemsList, user);
+		render(p, itemsList, user, y);
 	}
 
-	
 	public static void associateIdeaToPlan(long planId, long ideaId) {
 		Idea idea = Idea.findById(ideaId);
 		Plan plan = Plan.findById(planId);
@@ -28,44 +26,49 @@ public class Plans extends CRUD {
 		idea.plan = plan;
 	}
 
-	public static void planCreate(Topic t, long id){
-		Idea i  = Idea.findById(id);
-		long userid = 0;
-		User user = User.findById(userid);
-		Plan p = new Plan();
-		p.topic = t;
-		p.items = new ArrayList<Item>();
-		p.ideas = new ArrayList<Idea>();
-		p.ideas.add(i);
-		p.requirements = new ArrayList<String>();
-		p.madeBy = user;
-		p.status = "new";
-		
-		render(p, user);
+	public static void planCreate(long topicId, long id) {
+
 	}
 
+	public static void volunteer(long itemId, long planId) {
+		long userid = 0;
+		User user = User.findById(userid);
+		Item item = Item.findById(itemId);
+		String y = "";
+		if (item.assignees.contains(user)) {
 
-//	public static void volunteer(long itemid) {
-//		long userid = 0;
-//		User user = User.findById(userid);
-//		Item item = Item.findById(itemid);
-//		int y = 0;
-//		if (item.assignees.contains(user)) {
-//			y = 1;
-//			render();
-//		} 
-//		
-//
-//	}
-//
-//	public static void assign(long itemid) {
-//
-//	}
-	
-	public static void viewAsTimeline(long planid ){
-		Plan p = Plan.findById(planid);
-		List<Item> itemsList = p.items;
-		render(p, itemsList);
+			y = "You are already assigned to this item";
+		} else {
+
+			for (int i = 0; i < item.volunteerRequests.size(); i = i + 1) {
+				if (user.id == item.volunteerRequests.get(i).sender.id) {
+					y = "You already sent a volunteer request to work on this item";
+				}
+			}
+
+			for (int i = 0; i < item.assignRequests.size(); i = i + 1) {
+				if (user.id == item.assignRequests.get(i).destination.id) {
+					y = "You already received an assignment request to work on this item";
+				}
+			}
+		}
+		if (y == "") {
+			VolunteerRequests.justify(itemId, planId);
+		} else {
+			Plans.viewAsList(planId, y);
+		}
+	}
+
+	//
+	// public static void assign(long itemid) {
+	//
+	// }
+
+	public static void viewAsTimeline(long planid) {
+		// Plan p = Plan.findById(planid);
+		// List<Item> itemsList = p.items;
+		// render(p, itemsList);
+		render();
 	}
 	/*
 	 * @author yassmeen.hussein

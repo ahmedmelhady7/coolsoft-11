@@ -1,9 +1,11 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import models.AssignRequest;
 import models.Item;
+import models.Plan;
 import models.User;
 
 public class AssignRequests extends CRUD {
@@ -39,8 +41,37 @@ public class AssignRequests extends CRUD {
 				sender, content).save();
 		source.addAssignRequest(assignRequest);
 		sender.addSentAssignRequest(assignRequest);
-		sender.addReceivedAssignRequest(assignRequest);
+		destination.addReceivedAssignRequest(assignRequest);
 	}
+	
+	public static void assign(long itemId, long planId) {
+		
+		Plan plan = Plan.findById(planId);
+		List<User> nonBlockedUsers = Topics.searchByTopic(plan.topic.id);
+		viewUsers(nonBlockedUsers, itemId, planId);
+		
+	}
+	
+	public static void search (String keyword, String item, String plan) {
+		int planId = Integer.parseInt(plan);
+		int itemId = Integer.parseInt(item);
+		Plan plann = Plan.findById((long)planId);
+		List<User> nonBlockedUsers = Topics.searchByTopic(plann.topic.id);
+		List<User> searchResult = Users.searchUser(keyword);
+		List<User> finalResult = new ArrayList<User> ();
+		for(int i = 0; i < nonBlockedUsers.size(); i++) {
+			if(searchResult.contains(nonBlockedUsers.get(i))) {
+				finalResult.add(nonBlockedUsers.get(i));
+			}
+		}
+		viewUsers(finalResult, (long) itemId, (long) planId);
+	}
+	
+	public static void viewUsers(List<User> users, long itemId, long planID) {
+		render(users);
+	}
+	
+	
 
 	public static void view(long userId) {
 		User user = User.findById(userId);

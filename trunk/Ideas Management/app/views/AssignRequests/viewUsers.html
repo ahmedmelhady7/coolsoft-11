@@ -1,0 +1,30 @@
+#{extends 'main.html' /}
+You can search for a certain user by name, email or profession
+
+#{form @AssignRequests.search(), method:'POST', id:'creationForm', onsubmit: 'return validate()' enctype:'multipart/form-data' }
+<input type = "text" id = "keyword" name = "keyword"> &nbsp; &nbsp; &nbsp;
+<input type = "hidden" name = "item" value = ${itemId} >
+<input type = "hidden" name = "plan" value = ${planId} >
+<input type = "submit" value ="search" >
+#{/form}
+
+
+<script type="text/javascript">
+    
+	function validate() {
+		var keyword = document.getElementById("keyword").value;
+    	if (keyword = null || keyword == "") {
+		alert("you didn't enter any search criteria");
+		return false;
+		}
+	}
+//    function validate()
+//      {
+//    	var keyword = document.getElementById("keyword").value;
+//    	if(keyword = null || keyword == ""){
+//    	document.getElementById("searchError").innerHTML = "you didn't enter any search criteria";
+//    	}
+//    	$.post('@{startItem()}' , {id: id});
+//    
+//      }
+</script>

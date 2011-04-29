@@ -1,7 +1,7 @@
 #{extends 'main.html' /}
 #{set title:'View Plan as List' /}<h3>${p.title}</h3>
 <br/>
-<label id = "volunteerError" /> 
+<label id = "volunteerError" > ${y} </label> 
 #{if itemsList.size() > 0}
 <ul style="list-style: none; ">
     #{list items:itemsList, as:'item'}
@@ -26,10 +26,10 @@
                 </li>
                 #{/list}
             </ul>
-            <input type="button" value="volunteer" onclick="javascript: volunteer('${item}');"/><a href="@{VolunteerRequests.justify(item.id, p.id)}">volunteer to work on this item</a>
+           <a href="@{Plans.volunteer(item.id, p.id)}">Volunteer to work on this item</a>
             <br/>
             #{if p.topic.getOrganizer().contains(user)}
-			<a href="@{AssignRequests.search(item.id)}">Assign a user to this item</a>
+			<a href="@{AssignRequests.assign(item.id, p.id)}">Assign a user to this item</a>
             #{/if}
         </fieldset>
     </li>
@@ -52,25 +52,7 @@ ${p.topics.organizers.get(0).username}
 #{/else}
 #{/else}
 <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
-    function volunteer(item){
-        if (item.assignees.contains(user)) {
-        
-            document.getElementById("volunteerError").innerHTML = "You are already assigned to this item";
-        }
-        else {
-            var i;
-            for (i = 0; i < item.volunteerRequests.length; i = i + 1) {
-                if (user.id == item.volunteerRequests.get(i).user.id) {
-                    document.getElementById("volunteerError").innerHTML = "You already sent a volunteer request to work on this item";
-                }
-            }
-            
-            for (i = 0; i < item.assignRequests.length; i = i + 1) {
-                if (user.id == item.assignRequests.get(i).user.id) {
-                    document.getElementById("volunteerError").innerHTML = "You already received an assignment request to work on this item";
-                }
-            }   
-        } 
-    }
-    
+    function volunteer(){
+	
+	}  
 </script>
