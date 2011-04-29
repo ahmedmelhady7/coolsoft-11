@@ -2,12 +2,15 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import models.BannedUser;
 import models.Idea;
 import models.MainEntity;
 import models.Organization;
 import models.Tag;
 import models.Topic;
 import models.User;
+import models.UserRoleInOrganization;
 
 public class Topics extends CRUD {
 
@@ -101,16 +104,16 @@ public class Topics extends CRUD {
 	 * @return void
 	 */
 	public static boolean reopen(long topicId, User actor) {
-		
+
 		Topic targetTopic = Topic.findById(topicId);
-		
-		if(!targetTopic.organizers.contains(actor)) {
+
+		if (!targetTopic.organizers.contains(actor)) {
 			return false;
 		}
-	
+
 		targetTopic.openToEdit = true;
 		/* TODO: buttons to be adjusted in view */
-		
+
 		return true;
 	}
 
@@ -129,7 +132,6 @@ public class Topics extends CRUD {
 		return (ArrayList<Topic>) closedtopics;
 	}
 
-	
 	/**
 	 * 
 	 * This method gets a list of followers for a certain topic
@@ -138,7 +140,8 @@ public class Topics extends CRUD {
 	 * 
 	 * @story C2S29
 	 * 
-	 * @param id	: id of the topic
+	 * @param id
+	 *            : id of the topic
 	 * 
 	 * @return void
 	 */
@@ -148,7 +151,6 @@ public class Topics extends CRUD {
 		List<User> follow = topic.followers;
 		render(follow);
 	}
-
 
 	/**
 	 * This Method sends a request to post on a topic for a user to the
@@ -203,36 +205,165 @@ public class Topics extends CRUD {
 		}
 		render(topics, user);
 	}
+
 	
 	/**
-	 * This method closes a topic, return true if was 
-	 * successful, returns false if the there was ideas and doesn't 
-	 * close the topic
+	 * This method searches for unblocked users who are allowed to post
+	 * in a certain topic
+	 * 
+	 * @author lama.ashraf
+	 * 
+	 * @story C1S13
+	 * 
+	 * @param topicId
+	 *            : the id of the topic to search in
+	 * 
+	 * @return List<User>
+	 */
+	public static List<User> searchByTopic(Topic id) {
+
+		Topic topic = Topic.findById(id);
+		MainEntity entity = topic.entity;
+		Organization org = entity.organization;
+		ArrayList<User> searchList = (ArrayList) User.find("byIsAdmin", true)
+				.fetch();
+		searchList.add(org.creator);
+		// searchList.add(topic.creator);
+		
+		ArrayList<User> organizer = (ArrayList) Users
+				.getEntityOrganizers(entity);
+		searchList.addAll(organizer);
+		
+		List<BannedUser> bannedUserT = BannedUser.find(
+				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
+				"all", "topic", id).fetch();                                  // List of blocked users from a topic
+		List<BannedUser> bannedUserE = BannedUser.find(
+				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
+				"all", "entity", entity.id).fetch();                          // list of blocked users from an entity
+		List<BannedUser> bannedUserO = BannedUser.find(
+				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
+				"all", "organization", org.id).fetch();                      // list of blocked user from an organization
+		List<BannedUser> bannedUserP = BannedUser.find(
+				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
+				"post idea", "topic", id).fetch();                           // list of users banned from posting ideas in the topic
+		
+		List<User> bUser = new ArrayList<User>();
+		List<User> user = new ArrayList<User>();
+		List<BannedUser> bannedUser = new ArrayList<BannedUser>();        // list appending all the previous banneduser lists
+		bannedUser.addAll(bannedUserT);
+		bannedUser.addAll(bannedUserE);
+		bannedUser.addAll(bannedUserO);
+		bannedUser.addAll(bannedUserP);
+
+		for (int i = 0; i < bannedUser.size(); i++) {
+			bUser.add((bannedUser.get(i)).bannedUser);
+		}
+
+		List<UserRoleInOrganization> allUser = new ArrayList<UserRoleInOrganization>();
+
+		if ((org.privacyLevel == 0 || org.privacyLevel == 1)
+				&& (topic.privacyLevel == 0 || topic.privacyLevel == 1)) {
+			allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
+					.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
+							org, id, "idea developer", "topic");
+
+			for (int i = 0; i < allUser.size(); i++) {
+				user.add((allUser.get(i)).enrolled);
+			}
+
+			for (int i = 0; i < bUser.size(); i++) {
+				if (user.contains(bUser.get(i))) {
+					user.remove(bUser.get(i));
+
+				}
+			}
+		} else {
+
+			if ((org.privacyLevel == 0 || org.privacyLevel == 1)
+					&& (topic.privacyLevel == 2)) {
+				allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
+						.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
+								org, -1, "idea developer", "none");
+				
+				for (int i = 0; i < allUser.size(); i++) {
+					user.add((allUser.get(i)).enrolled);
+				}
+
+				for (int i = 0; i < bUser.size(); i++) {
+					if (user.contains(bUser.get(i))) {
+						user.remove(bUser.get(i));
+
+					}
+				}
+			}
+
+			else {
+				if ((org.privacyLevel == 2)
+						&& (topic.privacyLevel == 0 || topic.privacyLevel == 1)) {
+					allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
+							.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
+									org, id, "idea developer", "topic");
+					
+
+					for (int i = 0; i < allUser.size(); i++) {
+						user.add((allUser.get(i)).enrolled);
+					}
+
+					for (int i = 0; i < bUser.size(); i++) {
+						if (user.contains(bUser.get(i))) {
+							user.remove(bUser.get(i));
+
+						}
+					}
+				} else {
+					if ((org.privacyLevel == 2) && (topic.privacyLevel == 2)) {
+
+						user = User.findAll();
+
+						for (int i = 0; i < bUser.size(); i++) {
+							if (user.contains(bUser.get(i))) {
+								user.remove(bUser.get(i));
+
+							}
+						}
+					}
+				}
+			}
+		}
+		searchList.addAll(user);
+		return searchList;
+
+	}
+
+	/**
+	 * This method closes a topic, return true if was successful, returns false
+	 * if the there was ideas and doesn't close the topic
 	 * 
 	 * @author Mostafa Aboul Atta
 	 * 
 	 * @story C3S4
 	 * 
-	 * @param topicId		: the id of the topic to be closed
+	 * @param topicId
+	 *            : the id of the topic to be closed
 	 * 
 	 * @return boolean
 	 */
 	public static boolean closeTopic(long topicId, User actor) {
 		Topic targetTopic = Topic.findById(topicId);
-		
-		//checks if topic is empty or the user is not an organizer
-		if(targetTopic.ideas.size() == 0 ||
-				!targetTopic.organizers.contains(actor)) {
+
+		// checks if topic is empty or the user is not an organizer
+		if (targetTopic.ideas.size() == 0
+				|| !targetTopic.organizers.contains(actor)) {
 			return false;
 		}
-		
+
 		targetTopic.openToEdit = false;
-		
-		//TODO: edit buttons in view
-		//TODO: send notifications to followers and organizers
-		
+
+		// TODO: edit buttons in view
+		// TODO: send notifications to followers and organizers
+
 		return true;
-		
+
 	}
 
 }
