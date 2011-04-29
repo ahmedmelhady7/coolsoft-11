@@ -68,7 +68,7 @@ public class UserRoleInOrganizations extends CRUD {
  }
  
  
- public  boolean isOrganizer(User user, long sourceID , String sourceType){
+ public static  boolean isOrganizer(User user, long sourceID , String sourceType){
    
    if(sourceType.equalsIgnoreCase("Organization")){
     Organization o  = Organization.findById(sourceID);
