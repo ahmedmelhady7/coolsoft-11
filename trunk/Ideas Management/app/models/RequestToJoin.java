@@ -3,6 +3,7 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
@@ -11,18 +12,21 @@ public class RequestToJoin extends Model{
 	/**
 	 * The user requesting to join a specific organization or posting in a topic
 	 */
+	@Required
 	@ManyToOne
 	public User source;
 	
 	/**
 	 * The topic that the user is requesting to post in
 	 */
+	@Required
 	@ManyToOne
 	public Topic topic;
 	
 	/**
 	 * The organization that the user is requesting to join
 	 */
+	@Required
 	@ManyToOne
 	public Organization organization;
 	
