@@ -16,7 +16,7 @@ import play.mvc.Controller;
 
 /**
  * 
- * @author Mohamed Ghanem
+ * @author M Ghanem
  * 
  * @story C4SXX : Search Structure
  * 
@@ -25,170 +25,236 @@ public class Search extends Controller {
 
 	public static List listOfResults;
 
-	public static List<Object> filterResult; // array list for the resultafter
-												// filtering the search
+	public static List<Object> filterResult;
 
 	/**
 	 * 
-	 * @author Mohamed Ghanem
+	 * @author M Ghanem
 	 * 
-	 * @story C4S02 :: Advanced Search V1.0
+	 * @story C4S02 :: Advanced Search; display html page to take input and that
+	 *        goes to advSR(...) method.
 	 * 
-	 * 
+	 * @return void
 	 * 
 	 */
-
-	// Main
-	public static void advancedSearch(int searchIn, String wantKey,
-			String unwantKey, String searchWith) {
-		//
-		// List orgs = Organization.findAll();
-		//
-		// switch (searchIn) {
-		// case 1: {
-		// for (int i = 0; i < orgs.size(); i++) {
-		// if (((Organization) orgs.get(i)).privacyLevel != 2) {
-		// orgs.remove(i);
-		// }
-		// }
-		// break;
-		// }
-		// case 2: {
-		// for (int i = 0; i < orgs.size(); i++) {
-		// if (((Organization) orgs.get(i)).privacyLevel != 1) {
-		// orgs.remove(i);
-		// }
-		// }
-		// break;
-		// }
-		// case 3: {
-		// for (int i = 0; i < orgs.size(); i++) {
-		// if (((Organization) orgs.get(i)).privacyLevel != 0) {
-		// orgs.remove(i);
-		// }
-		// }
-		// break;
-		// }
-		// case 4: {
-		// for (int i = 0; i < orgs.size(); i++) {
-		// if (((Organization) orgs.get(i)).privacyLevel == 0) {
-		// orgs.remove(i);
-		// }
-		// }
-		// break;
-		// }
-		// case 5: {
-		// for (int i = 0; i < orgs.size(); i++) {
-		// if (((Organization) orgs.get(i)).privacyLevel == 1) {
-		// orgs.remove(i);
-		// }
-		// }
-		// break;
-		// }
-		// case 6: {
-		// for (int i = 0; i < orgs.size(); i++) {
-		// if (((Organization) orgs.get(i)).privacyLevel == 2) {
-		// orgs.remove(i);
-		// }
-		// }
-		// break;
-		// }
-		// default: {
-		//
-		// break;
-		// }
-		// }
-		//
-		// // Organization
-		// if (searchWith.charAt(0) == '1') {
-		// for (int i = 0; i < orgs.size(); i++) {
-		// if (!((Organization) orgs.get(i)).name.contains(unwantKey)) {
-		// if (((Organization) orgs.get(i)).name.contains(wantKey)) {
-		// listOfResults.add(orgs.get(i));
-		// } else {
-		// boolean add = true;
-		// List<Tag> x = ((Organization) orgs.get(i)).relatedTags;
-		// for (int j = 0; j < x.size(); j++) {
-		// if (x.get(j).name.contains(unwantKey)) {
-		// add = false;
-		// }
-		// }
-		// if (add) {
-		// for (int j = 0; j < x.size(); j++) {
-		// if (x.get(j).name.contains(wantKey)) {
-		// listOfResults.add(orgs.get(i));
-		// break;
-		// }
-		// }
-		// }
-		// }
-		// }
-		// }
-		// }
-		//
-		// // Entity
-		// if (searchWith.charAt(1) == '1') {
-		// for (int i = 0; i < orgs.size(); i++) {
-		// searchWithEntities(((Organization) orgs.get(i)).entitiesList,
-		// unwantKey, wantKey);
-		// }
-		// }
-		//
-		// // Topic
-		// List topic = null;
-		// if (searchWith.charAt(2) == '1') {
-		// topic = new ArrayList<Topic>();
-		// for (int i = 0; i < orgs.size(); i++) {
-		// for (int j = 0; j < ((Organization) orgs.get(i)).entitiesList
-		// .size(); j++) {
-		// topic.add(((MainEntity) ((Organization) orgs.get(i)).entitiesList
-		// .get(j)).topicList);
-		// }
-		// }
-		// searchWithTopic(topic, unwantKey, wantKey);
-		// }
-		//
-		// // Plans
-		// List plans = null;
-		// if (searchWith.charAt(3) == '1') {
-		// plans = new ArrayList<Plan>();
-		// for (int i = 0; i < topic.size(); i++) {
-		// plans.add(((Topic) topic.get(i)).plan);
-		// }
-		// searchWithPlan(plans, unwantKey, wantKey);
-		// }
-		//
-		// // Ideas
-		// if (searchWith.charAt(4) == '1') {
-		// List ideas = new ArrayList<Idea>();
-		// for (int i = 0; i < topic.size(); i++) {
-		// for (int j = 0; j < ((Topic) topic.get(i)).ideas.size(); j++) {
-		// ideas.add(((Idea) ((Topic) topic.get(i)).ideas.get(j)));
-		// }
-		// }
-		// searchWithIdea(ideas, unwantKey, wantKey);
-		// }
-		//
-		// // Item
-		// if (searchWith.charAt(5) == '1') {
-		// List items = new ArrayList<Idea>();
-		// for (int i = 0; i < plans.size(); i++) {
-		// for (int j = 0; j < ((models.Plan) plans.get(i)).items.size(); j++) {
-		// items.add((((models.Plan) plans.get(i)).ideas.get(j)));
-		// }
-		// }
-		// searchWithItem(items, unwantKey, wantKey);
-		// }
-		//
-		// // Comments
-		//
-
-		render(searchIn);
+	public static void advancedSearch() {
+		render();
 	}
 
-	// Item
+	/**
+	 * 
+	 * @author M Ghanem
+	 * 
+	 * @story C4S02 Advanced Search Result; search for any Entity in the DB
+	 *        according to the given parameters.
+	 * 
+	 * @param searchIn
+	 *            :: "int"; that determines what privacy level of the
+	 *            organizations does the user care about.
+	 * 
+	 * @param wantKey
+	 *            :: "String"; of the keyword that the user is searching for.
+	 * 
+	 * @param unWantKey
+	 *            :: "String"; of the word where user want to avoid it within
+	 *            the result of searching.
+	 * 
+	 * @param searchWith
+	 *            :: "String"; of 0s & 1s of length 6 each bit represents a
+	 *            choice either to result ~>'1' or not~>'0' each of the
+	 *            following 1st bit represents Organization, 2nd->MainEntity,
+	 *            3rd->Topic, 4th->Plan, 5th->Idea, 6th->Tag.
+	 * 
+	 * @param before
+	 *            :: "Date"; where the user needs all the result initialized
+	 *            before this date.
+	 * 
+	 * @param after
+	 *            :: "Date"; where the user needs all the result initialized
+	 *            after this date.
+	 * 
+	 * @param exact
+	 *            :: "Date"; where the user needs all the result initialized in
+	 *            this date.
+	 * 
+	 * @return void.
+	 * 
+	 */
+	public static void advSR(int searchIn, String wantKey, String unWantKey,
+			String searchWith, Date before, Date after, Date exact) {
+
+		List orgs = Organization.findAll();
+
+		switch (searchIn) {
+		case 1: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel != 2) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		case 2: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel != 1) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		case 3: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel != 0) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		case 4: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel == 0) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		case 5: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel == 1) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		case 6: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel == 2) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		default: {
+
+			break;
+		}
+		}
+
+		// Organization
+		if (searchWith.charAt(0) == '1') {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (!((Organization) orgs.get(i)).name.contains(unWantKey)) {
+					if (((Organization) orgs.get(i)).name.contains(wantKey)) {
+						listOfResults.add(orgs.get(i));
+					} else {
+						boolean add = true;
+						List<Tag> x = ((Organization) orgs.get(i)).relatedTags;
+						for (int j = 0; j < x.size(); j++) {
+							if (x.get(j).name.contains(unWantKey)) {
+								add = false;
+							}
+						}
+						if (add) {
+							for (int j = 0; j < x.size(); j++) {
+								if (x.get(j).name.contains(wantKey)) {
+									listOfResults.add(orgs.get(i));
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// Entity
+		if (searchWith.charAt(1) == '1') {
+			for (int i = 0; i < orgs.size(); i++) {
+				searchWithEntities(((Organization) orgs.get(i)).entitiesList,
+						unWantKey, wantKey);
+			}
+		}
+
+		// Topic
+		List topic = null;
+		if (searchWith.charAt(2) == '1') {
+			topic = new ArrayList<Topic>();
+			for (int i = 0; i < orgs.size(); i++) {
+				for (int j = 0; j < ((Organization) orgs.get(i)).entitiesList
+						.size(); j++) {
+					topic.add(((MainEntity) ((Organization) orgs.get(i)).entitiesList
+							.get(j)).topicList);
+				}
+			}
+			searchWithTopic(topic, unWantKey, wantKey);
+		}
+
+		// Plans
+		List plans = null;
+		if (searchWith.charAt(3) == '1') {
+			plans = new ArrayList<Plan>();
+			for (int i = 0; i < topic.size(); i++) {
+				plans.add(((Topic) topic.get(i)).plan);
+			}
+			searchWithPlan(plans, unWantKey, wantKey);
+		}
+
+		// Ideas
+		if (searchWith.charAt(4) == '1') {
+			List ideas = new ArrayList<Idea>();
+			for (int i = 0; i < topic.size(); i++) {
+				for (int j = 0; j < ((Topic) topic.get(i)).ideas.size(); j++) {
+					ideas.add(((Idea) ((Topic) topic.get(i)).ideas.get(j)));
+				}
+			}
+			searchWithIdea(ideas, unWantKey, wantKey);
+		}
+
+		// Item
+		if (searchWith.charAt(5) == '1') {
+			List items = new ArrayList<Idea>();
+			for (int i = 0; i < plans.size(); i++) {
+				for (int j = 0; j < ((models.Plan) plans.get(i)).items.size(); j++) {
+					items.add((((models.Plan) plans.get(i)).ideas.get(j)));
+				}
+			}
+			searchWithItem(items, unWantKey, wantKey, before, after, exact);
+		}
+
+		// Comments
+	}
+
+	/**
+	 * 
+	 * @author M Ghanem
+	 * 
+	 * @story C4S02 Advanced Search Result; search for Items according
+	 *        to the given parameters.
+	 * 
+	 * @param items
+	 *            :: "List"; of Item that we need to search in.
+	 * 
+	 * @param wantKey
+	 *            :: "String"; of the keyword that the user is searching for.
+	 * 
+	 * @param unWantKey
+	 *            :: "String"; of the word where user want to avoid it within
+	 *            the result of searching.
+	 * 
+	 * @param befor
+	 *            :: "Date"; where the search result is before this date.
+	 * 
+	 * @param after
+	 *            :: "Date"; where the search result is after this date.
+	 * 
+	 * @param exact
+	 *            :: "Date"; where the search result is in this date.
+	 * 
+	 * @return void.
+	 * 
+	 */
 	public static void searchWithItem(List items, String unwantKey,
-			String wantKey) {
+			String wantKey, Date before, Date after, Date exact) {
 		for (int i = 0; i < items.size(); i++) {
 			if (!((Item) items.get(i)).summary.contains(unwantKey)
 					&& !((Item) items.get(i)).description.contains(unwantKey)) {
@@ -343,7 +409,7 @@ public class Search extends Controller {
 	 * 
 	 * @author Loaay
 	 * 
-	 * @C4S1
+	 * @story C4S1
 	 * 
 	 */
 
