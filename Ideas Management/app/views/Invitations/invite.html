@@ -1,33 +1,10 @@
 
- <form action="@{Invitation.send()}" method="GET">
+<form action="@{Invitations.Page(-1)}" method="link">
+	<input type="submit" value="Invite by mail">
+	</form>
+
+<form action="@{Invitations.SearchUsers()}" method="GET">
 <table border="0" bgcolor="#ececec" cellspacing="5">
-<tr><td>Email</td><td><input type="text" size="30" name="email"></td></tr>
-
-
-<tr><td>Role</td><td>
-#{select 'role', value:1, id:'select2'}
-   #{option value="none"}none#{/option}
-   #{option value="Idea Developer"}Idea Developer#{/option}
-   #{option value="Organizer"}Organizer#{/option}
-#{/select}
-</td></tr>
-
-<tr><td>Organization</td><td>
-#{select 'organization', value:1, id:'select2'}
-   #{option value="none"}none#{/option}
-      #{option org.name}${org.name}#{/option}
-#{/select}
-</td></tr>
-
-<tr><td>Entity</td><td>
-#{select 'entity', value:1, id:'select3'}
-    #{option value="none"}none#{/option}
-      #{option ent.name}${ent.name}#{/option}
-#{/select}
-</td></tr>
-
-
-<tr><td>&nbsp;</td><td><input type="submit" value="Send">
-</table>
-</form>
- 
+<tr><td>Name</td><td><input type="text" size="20" name="name"></td></tr>
+<tr><td>&nbsp;</td><td><input type="submit" value="Next">
+</table> 
