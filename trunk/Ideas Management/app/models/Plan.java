@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.persistence.*;
 
+
 import controllers.Notifications;
 
 import play.data.validation.Required;
@@ -12,17 +13,15 @@ import play.db.jpa.*;
 @Entity
 public class Plan extends Model {
 
-	@Required
-	public String title;
+	@Required public String title;
+	@Required public String status;
 	
-	public String status;
 	public float progress;
-	@Required
-	public Date startDate;
-	@Required
-	public ArrayList<String> requirements;
-	@Required
-	public Date endDate;
+	
+	@Required public Date startDate;
+	@Required public Date endDate;
+
+	
 	
 	@Required
 	@OneToOne
@@ -37,6 +36,8 @@ public class Plan extends Model {
 	@Required
 	@Lob
 	public String description;
+	@Lob
+	@Required public String requirement;
 
 	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
 	public List<Item> items;
@@ -55,12 +56,9 @@ public class Plan extends Model {
 	 * @author ${Ibrahim Safwat}
 	 * List of comments in that plan
 	 */
-	
-	public Plan(){
-		
-	}
-	public Plan(String title, User user, String status, Date startDate,
-			Date endDate, String description, Topic topic) {
+
+	public Plan(String title, User user, Date startDate,
+			Date endDate, String description, Topic topic, String requirement) {
 		this.title = title;
 		this.madeBy = user;
 		this.status = "new";
@@ -68,7 +66,7 @@ public class Plan extends Model {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.description = description;
-		this.requirements = new ArrayList<String>();
+		this.requirement = requirement;
 		this.items = new ArrayList<Item>();
 		this.ideas = new ArrayList<Idea>();
 		this.topic = topic;
@@ -113,9 +111,9 @@ public class Plan extends Model {
 	 * @return	void
 	 */
 
-	public void addItem(Date startDate, Date endDate, short status,
+	public void addItem(Date startDate, Date endDate,
 			String description, Plan plan, String summary) {
-		Item x = new Item(startDate,endDate, status, description, plan, summary);
+		Item x = new Item(startDate,endDate,description, plan, summary);
 		this.items.add(x);
 		this.save();
 	}

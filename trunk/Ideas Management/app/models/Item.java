@@ -31,8 +31,9 @@ public class Item extends Model {
 	@ManyToOne
 	public Plan plan;
 
-	public Item(Date startDate, Date endDate, short status, String description,
-			Plan plan, String summary) {
+
+	public Item(Date startDate, Date endDate,
+			String description, Plan plan, String summary){
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = 0;
