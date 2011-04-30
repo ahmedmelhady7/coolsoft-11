@@ -5,6 +5,8 @@ import java.util.Date;
 import models.MainEntity;
 import models.NotificationProfile;
 import models.Organization;
+import models.RequestToJoin;
+import models.Tag;
 import models.Topic;
 import models.User;
 import play.jobs.Job;
@@ -28,5 +30,9 @@ public class BootStrapper extends Job {
 		Topic t1 = new Topic("What to do?", "Help me please", (short) 0, u1,
 				me1);
 		t1._save();
+		Tag tag = new Tag("Sports");
+		tag._save();
+		RequestToJoin request = new RequestToJoin(u1, t1, org1, "I would like to join your organization..");
+		request._save();
 	}
 }
