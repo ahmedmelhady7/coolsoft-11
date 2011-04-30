@@ -140,14 +140,16 @@ public class Invitations extends CRUD {
 	public static void respond(int choice, long id, User user) {
 
 		// User user=get user from session
-		// List<Invitation> inv = Invitation.find("byEmail",user.email).fetch();
-
+		
 		Invitation invite = Invitation.findById(id);
 		if (choice == 1) {
 			String rolename = invite.role;
 			Organization org = invite.organization;
 			MainEntity ent = invite.entity;
 			Role role = Role.find("byName", rolename).first();
+		
+			
+			//*fadwa
 			List<User> organizers = Users.getEntityOrganizers(ent);
 			if (!invite.sender.equals(org.creator)) {
 				organizers.remove(invite.sender);
@@ -156,18 +158,17 @@ public class Invitations extends CRUD {
 			Notifications.sendNotification(organizers, ent.id, "entity",
 					"New organizer has been added as an organizer to entity  "
 							+ ent.name);
+			//*
+			
 
 			if (rolename.equalsIgnoreCase("organzier")) {
 
-				boolean flag = UserRoleInOrganizations.isOrganizer(user,
-						ent.id, "entity");
-
-				if (!flag) {
-					UserRoleInOrganizations.addEnrolledUser(user, org, role);
-					UserRoleInOrganizations.addEnrolledUser(user, org, role,
+			   UserRoleInOrganizations.addEnrolledUser(user, org, role);
+			   UserRoleInOrganizations.addEnrolledUser(user, org, role,
 							ent.id, "entity");
 
-				}
+				
+					
 			} else {
 				// idea devoloper by ibrahim adel
 				Role role2 = Role.find("byRoleName", "Idea Developer").first();
