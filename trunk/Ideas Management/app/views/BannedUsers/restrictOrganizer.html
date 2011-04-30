@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Restrict Organizer</title>
+</head>
+<body>
+
+<script type="text/javascript">
+
+
+ for( var i=0; i<users.length; i++ ) {
+	 document.write( '<input type="radio" name="users" id="' + i + '" />' + users[i]);
+document.write('<br />');
+ } // for </script>
+
+
+
+
+
+
+
+<form name="input" action="html_form_action.asp" method="get">
+
+
+<script type="text/javascript">
+
+var hotels = ['best western','hilton','super 8'];
+ for( var i=0; i<hotels.length; i++ ) {     document.write( '<input type="radio" name="hotels" id="' + i + '" />' + hotels[i]);
+document.write('<br />');
+ } // for </script>
+
+
+
+<input type="submit" value="Submit" />
+</form> 
+
+<p>If you click the "Submit" button, the form-data will be sent to a page called "html_form_action.asp".</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+function displaymessage()
+{
+alert("Changes have been saved!");
+}
+
+
+
+
+
+
+
+</script>
+
+#{if inv.isEmpty()}
+</table>
+<tr><td>No new invitations</td><td>
+#{/if}
+#{else}
+#{list items:0..inv.size()-1, as:'i'} 
+<html>
+<table border="0" bgcolor="#ececec" cellspacing="5" id=inv.get(i).id>
+
+<tr><td><font size ="3" color ="red">From : ${inv.get(i).organization.name} Organization</font></td><td>
+
+<tr><td><font size ="3" color ="black">You have been invited to join ${inv.get(i).organization.name} Organization</font></td><td>
+<tr><td><font size ="3" color ="black">as ${inv.get(i).role} to ${inv.get(i).entity.name} Entity</font></td><td> 
+
+<input type="button" onclick="show(1)" value="Accept" />
+<input type="button" onclick="show(0)" value="Reject" />
+
+</table>
+</html>
+<br/>
+<br/>
+#{/list}
+#{/else}
+
+
+
+<form>
+<input type="button" value="Commit!" onclick="displaymessage()" />
+</form>
+
+</body>
+</html>
