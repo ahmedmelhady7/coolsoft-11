@@ -75,7 +75,7 @@ public class Plan extends Model {
 		//this.comments = new ArrayList<Comment>();
 		this.ideas = new ArrayList<Idea>();
 		this.topic = topic;
-		
+		this.rating = 0;
 
 	}
 	
