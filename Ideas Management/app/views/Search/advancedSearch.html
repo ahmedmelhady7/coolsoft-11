@@ -1,11 +1,12 @@
 <!--
 @author Mohamed Ghanem
 @story  C4S02
---> <!DOCTYPE html>
+--> 
+<!DOCTYPE html>
 <html>
-			
-#{form @controllers.Search.advSR(), method:'POST', searchIn:'searchIn',wantKey:'wantKey',unWantKey:'unWantKey', searchWith : 'searchWith', before : 'before' , after : 'after', exact : 'exact' }
-    <form id="inPuts">
+	
+    <!--form id="inPuts" -->
+	
         Search in&nbsp;&nbsp;&nbsp;::
         <select name="searchIn" id="searchIn" style="width:90%">
             <option disabled="disabled">Search in:</option>
@@ -18,7 +19,9 @@
             <option value="7">&nbsp;&nbsp; ALL </option>
         </select>
         <br/>
+		
         Search key   ::<input type="text" id = "wantKey" name="wantKey"/>
+		
         <br/>
         UnWanted Key ::<input type="text" id= "unWantKey" name="unWantKey"/>
         <br/>
@@ -36,8 +39,10 @@
         <br/>
         <input type="checkbox" name="searchWith" id="searchWith" value="6" />Item 
         <br/>
-        Before Date  ::
 		<input type="date" name="before" id="before"/>
+		#{form @Search.searchResult2()}
+        Before Date  ::
+		
         <select name=day>
             <option disabled="disabled" selected>Day
 			<option value="1">1</option>
@@ -103,6 +108,7 @@
 			<option value="12">2011</option>
 			<option value="12">2012</option>
 			</select>
+			#{/form}
             <br/>
             After  Date  ::
 			<input type="date" name="after" id="after"/>
@@ -240,8 +246,9 @@
 			<option value="13">2012</option>
 			</select>
             <br/>
-            <input type="submit" name="ok" value="Start Advanced Search" />
-        </form>
-#{/form}		
-
+            <input type="submit" name="ok" value="Start Advanced Search"/>
+			
+        <!--/form-->		
+		
+		
 </html>

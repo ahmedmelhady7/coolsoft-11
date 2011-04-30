@@ -26,12 +26,13 @@
     </style>
     <div>
         <center>
-            <img src="/public/images/Picture1.jpg">
+            <img src="@{'/public/images/Picture1.jpg'}">
             </img>
         </center>
     </div>
     <form name="Search">
-        <input type="text" name="searchKey" /><input type="Button" value="Search" onclick="quickSearchScript();"/>
+        <input type="text" name="searchKey" />
+		<input type="submit" value="Search" onclick="quickSearchScript();"/>
         <script type="text/javascript">
             function quickSearchScript(){
 				window.location.href = "/ViewSearchResults";
