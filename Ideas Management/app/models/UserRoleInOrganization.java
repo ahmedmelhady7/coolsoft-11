@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import controllers.Roles;
+
 import play.db.jpa.Model;
 
 @Entity
@@ -49,12 +51,24 @@ public class UserRoleInOrganization extends Model {
 		this.type = "none";
 
 	}
+	/**
+	 * returns the role of a user in the organization
+	 * @author Nada Osama
+	 * @param user the user i need to know hos role
+	 * @param org the organization i need to know the user's role in it 
+	 * @return the role of the user in that organization
+	 */
 
 	public Role userRoleInOrganization(User user, Organization org) {
 
-		return ((UserRoleInOrganization
+		Role r = UserRoleInOrganization
 				.find("select uro.role from UserRoleInOrganization uro where uro.enrolled = ? and uro.organization = ?",
-						user, org).first()));
+						user, org).first();
+	    if (r == null ){
+	    	return (Roles.getRoleByName("Idea developer"));
+	    }
+	    return r;
+						
 	}
 	//
 	//
