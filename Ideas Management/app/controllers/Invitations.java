@@ -137,11 +137,10 @@ public class Invitations extends CRUD {
 	 * @return void
 	 */
 
-	public static void respond(int choice, int id, User user) {
+	public static void respond(int choice, long id, User user) {
 
 		// User user=get user from session
-		// List<Invitation> inv = Invitation.find("byEmail",
-		// user.email).fetch();
+		// List<Invitation> inv = Invitation.find("byEmail",user.email).fetch();
 
 		Invitation invite = Invitation.findById(id);
 		if (choice == 1) {
@@ -196,20 +195,6 @@ public class Invitations extends CRUD {
 		}
 
 		invite.delete();
-
-		// Invitation invite=Invitation.findById(inv.get(i).id);
-
-		// render(choice,inv,i);
-
-		/*
-		 * List <User> enrolled =Users.getEnrolledUsers(org); flag=false;
-		 * for(int j=0;j<enrolled.size();j++){ if(enrolled.get(j).equals(user))
-		 * flag=true; }
-		 * 
-		 * if(org.privacyLevel!=2&&flag){ Role rol=Role.find("byName",
-		 * "Idea Developer").first();
-		 * UserRoleInOrganizations.addEnrolledUser(user,org,rol); }
-		 */
 
 	}
 
