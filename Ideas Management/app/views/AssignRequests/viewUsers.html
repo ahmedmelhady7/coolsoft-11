@@ -12,7 +12,7 @@
 		
 	}
 	
-	function submit(itemId){
+	function submit(itemId, planId){
 		if (ids.length == 0) {
 			alert("you haven't selected any users");
 		}
@@ -20,17 +20,25 @@
 		
 			$.post('@{sendRequests()}', {
 				itemId: itemId,
-				userIds: ids
+				userIds: ids,
+				planId:planId
 			}, function(){
 				var i;
 				
 				for (i = 0; i < ids.length; i = i + 1) {
 					$('#user_' + ids[i]).remove();
 				}
-				window.location.reload();
+				
+				//window.location.reload();
 			});
+			if(ids.length == users.size()) {
+					document.getElementById("userLabel").innerHTML = "There are no more users to display";
+				}
+				
+			
+			alert("Requests sent successfully");
 		}
-		alert("Requests sent successfully");
+		
 	}
 	
 	function validate() {
@@ -50,7 +58,10 @@ You can search for a certain user by name, email or profession
 <input type = "submit" value ="search" >
 #{/form}
 
-#{if itemsList.size() > 0}
+
+#{if users.size() > 0}
+<label id = "userLabel"> </label>
+<br/>
 <ul style="list-style: none; ">
 #{list items:users, as:'user'}
 <li id = "user_${user.id}">
@@ -58,11 +69,10 @@ You can search for a certain user by name, email or profession
 <a href="#">${user.username}</a>
 <br/>
 </li>
-</ul>
 #{/list}
 </ul>
 <br/>
-<input type="button" value="send requests" onclick="submit(itemId)"/>
+<input type="button" value="send requests" onclick="submit(${itemId}, ${planId})"/>
 #{/if}
 #{else}
 There are no users that match your criteria
