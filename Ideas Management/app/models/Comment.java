@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.*;
 
+import play.data.validation.Required;
 import play.db.jpa.Model;
 
 /**
@@ -16,25 +17,40 @@ import play.db.jpa.Model;
 @Entity
 public class Comment extends Model {
 	
+	@Required
 	String comment;
-	
-	//public int ID;
 	
 	@ManyToOne 
 	public Topic commentedTopic;
-		
-	//@OneToMany
-	String postedOn;
 	
-	//@OneToOne
-	//User commenter;
+	@ManyToOne
+	public Idea commentedIdea;
+
+	@ManyToOne
+	public Plan commentedPlan;
 	
-	public Comment(String comment, int ID, String postedOn, User commenter)
+	@OneToOne
+	public User commenter;
+	
+	public Comment(String comment, Topic commentedTopic, User commenter)
 	{
 		this.comment=comment;
-		//this.ID=ID;
-		this.postedOn=postedOn;
-		//this.commenter=commenter;
+		this.commentedTopic = commentedTopic;
+		this.commenter = commenter;
+	}
+	
+	public Comment(String comment, Plan commentedPlan, User commenter)
+	{
+		this.comment=comment;
+		this.commentedPlan = commentedPlan;
+		this.commenter = commenter;
+	}
+	
+	public Comment(String comment, Idea commentedIdea, User commenter)
+	{
+		this.comment=comment;
+		this.commentedIdea = commentedIdea;
+		this.commenter = commenter;
 	}
 	
 	/**
@@ -45,9 +61,9 @@ public class Comment extends Model {
 	 * @param comment
 	 * 			Comment to be added to list of comments of the idea
 	 */
-	public void addCommentToIdea(int ideaID, String comment)
+	public void addCommentToIdea(int ideaID, Comment comment)
 	{
-		
+		//ideaID.commentsList.add(comment);
 	}
 	
 	/**
@@ -58,9 +74,11 @@ public class Comment extends Model {
 	 * @param comment
 	 * 			Comment to be added to list of comments of the plan
 	 */
-	public void addCommentToPlan(int planID, String comment)
+	public void addCommentToPlan(int planID, Comment comment)
 	{
 		
+//		comment = new Comment(comment, ID, postedOn, commenter);
+//		commentedPlan.comments.add(comment);
 	}
 
 }
