@@ -150,12 +150,12 @@ public class Invitations extends CRUD {
 	 */
  
  public static void send(String email,String role,Organization org,
-		 MainEntity ent,User user){
+		 MainEntity ent){
 	  
 	     Mail.invite(email,role,org.name,ent.name);
 	    
     	 
-    	//user=the user from the session 
+    	User user=Security.getConnected();
           user.addInvitation(email,role,org,ent);
         
          User receiver=User.find("byEmail", email).first();
@@ -187,9 +187,9 @@ public class Invitations extends CRUD {
 	 * @return void
 	 */
  
- public static void view(User user){
+ public static void view(){
 		
-	   //**User user=get user from session
+	   User user=Security.getConnected();
        List <Invitation> inv = Invitation.find("byEmail", user.email).fetch();
        render(inv);
 
@@ -216,17 +216,18 @@ public class Invitations extends CRUD {
 	 * @return void
 	 */
 
-	public static void respond(int choice, long id, User user) {
+	public static void respond(int choice, long id) {
 
-		// User user=get user from session
+		
 		
 		Invitation invite = Invitation.findById(id);
 		if (choice == 1) {
 			String rolename = invite.role;
 			Organization org = invite.organization;
 			MainEntity ent = invite.entity;
+			User user=User.find("byEmail",invite.destination).first();
 			Role role = Role.find("byName", rolename).first();
-		
+		     
 			
 			//*fadwa
 			List<User> organizers = Users.getEntityOrganizers(ent);
@@ -241,7 +242,7 @@ public class Invitations extends CRUD {
 			
 
 			if (rolename.equalsIgnoreCase("organzier")) {
-
+               
 			   UserRoleInOrganizations.addEnrolledUser(user, org, role);
 			   UserRoleInOrganizations.addEnrolledUser(user, org, role,
 							ent.id, "entity");
