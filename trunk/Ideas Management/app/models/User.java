@@ -43,19 +43,19 @@ public class User extends Model {
 	 * active a -> active , d -> deleted , n -> not active
 	 */
 	public char state;
-	public String profession; 
+	public String profession;
 
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
 	public List<Topic> topicsCreated;
-	
-  // to be removed
+
+	// to be removed
 	@ManyToMany
 	public List<Organization> enrolled;
 
 	@OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
 	public List<Organization> createdOrganization;
-	
-// to be removed
+
+	// to be removed
 	@ManyToMany(mappedBy = "organizers", cascade = CascadeType.PERSIST)
 	public List<Topic> topicsIOrganize;
 
@@ -69,7 +69,7 @@ public class User extends Model {
 
 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
 	public List<Idea> ideasCreated;
-	
+
 	@ManyToMany(mappedBy = "reporters", cascade = CascadeType.ALL)
 	public List<Idea> ideasReported;
 
@@ -89,16 +89,13 @@ public class User extends Model {
 
 	@ManyToMany
 	public List<Organization> followingOrganizations;
-	
+
 	// to be removed
 	@ManyToMany
 	public List<MainEntity> entitiesIOrganize;
 
-//	@ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
-//	public List<Topic> accessedTopics;
-
-	
-
+	// @ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
+	// public List<Topic> accessedTopics;
 
 	// List<Request> requests;
 	// List<Comment> commentsPosted;
@@ -149,7 +146,7 @@ public class User extends Model {
 		this.volunteerRequests = new ArrayList<VolunteerRequest>();
 		this.sentAssignRequests = new ArrayList<AssignRequest>();
 		this.receivedAssignRequests = new ArrayList<AssignRequest>();
-		//this.accessedTopics = new ArrayList<Topic>();
+		// this.accessedTopics = new ArrayList<Topic>();
 		notificationProfiles = new ArrayList<NotificationProfile>();
 		notifications = new ArrayList<Notification>();
 		bannedUsers = new ArrayList<BannedUser>();
@@ -166,7 +163,6 @@ public class User extends Model {
 		this.state = 'a';
 		this.profession = profession;
 
-
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
 		// linkDuplicates = new ArrayList<LinkDuplicates>();
@@ -176,6 +172,7 @@ public class User extends Model {
 		// topicInvitations = new ArrayList<TopicInvitation>();
 
 	}
+
 	/**
 	 * 
 	 * this method posts an Idea in a certain topic
@@ -187,14 +184,14 @@ public class User extends Model {
 	 * @param topic
 	 *            : the topic which the idea is being post under
 	 * @param title
-	 * 			  : the title of the idea
+	 *            : the title of the idea
 	 * @param description
-	 * 			  : description/content of the idea
+	 *            : description/content of the idea
 	 * 
 	 * @return void
 	 */
-	
-	public void postIdea(Topic topic, String title, String description){
+
+	public void postIdea(Topic topic, String title, String description) {
 		Idea idea = new Idea(title, description, this, topic);
 		idea.privacyLevel = topic.privacyLevel;
 		ideasCreated.add(idea);
@@ -275,7 +272,7 @@ public class User extends Model {
 		sentAssignRequests.add(receivedAssignRequest);
 		this.save();
 	}
-	
+
 	/**
 	 * This Method adds a tag to the list of tags followed
 	 * 
@@ -288,8 +285,8 @@ public class User extends Model {
 	 * 
 	 * @return void
 	 */
-	
-	public void follow(Tag tag){
+
+	public void follow(Tag tag) {
 		followingTags.add(tag);
 	}
 
@@ -362,7 +359,7 @@ public class User extends Model {
 		followingOrganizations.remove(o);
 		_save();
 	}
-	
+
 	/**
 	 * This Method is to return all the users notifications
 	 * 
@@ -370,14 +367,13 @@ public class User extends Model {
 	 * 
 	 * @Story C1S14
 	 * 
-	 * @return 
-	 * 		List of notifications
+	 * @return List of notifications
 	 */
-	
+
 	public List<Notification> openNotifications() {
 		return notifications;
 	}
-	
+
 	/**
 	 * This Method is to return all the users notification profiles
 	 * 
@@ -385,29 +381,36 @@ public class User extends Model {
 	 * 
 	 * @Story C1S14
 	 * 
-	 * @return 
-	 * 		List of notification profiles
+	 * @return List of notification profiles
 	 */
-	
+
 	public List<NotificationProfile> openNotificationProfile() {
 		return notificationProfiles;
 	}
+
 	/**
-	 * This Method overrides method equals that compares two users by comparing ther ids
+	 * This Method overrides method equals that compares two users by comparing
+	 * ther ids
 	 * 
 	 * @author fadwa sakr
 	 * 
-	 * @param o : the object to be compared with
+	 * @param o
+	 *            : the object to be compared with
 	 */
-	
-		public boolean equals(Object o) {
-			if (o instanceof User) {
-				User user = (User) o;
-				return id ==user.id;
-				}
-			
-			return false;
 
-		
+	public boolean equals(Object o) {
+		if (o instanceof User) {
+			User user = (User) o;
+			return id == user.id;
+		}
+
+		return false;
+
 	}
+	
+	public String toString()
+	{
+		return this.firstName + " " + this.lastName + "\t" + "username " + this.username;
+	}
+
 }
