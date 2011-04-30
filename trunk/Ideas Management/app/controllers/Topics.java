@@ -369,11 +369,23 @@ public class Topics extends CRUD {
 				|| !targetTopic.organizers.contains(actor)) {
 			return false;
 		}
-
+		
+		//closing the topic to editing
 		targetTopic.openToEdit = false;
 
+		// Sending Notifications
+		String notificationDescription = "Topic " + targetTopic.title + 
+			" has been closed and promoted to execution.";
+		
+		//send notification to organizers
+		Notifications.sendNotification(targetTopic.organizers, 
+				targetTopic.id, "Topic", notificationDescription);
+		
+		//send notification to followers
+		Notifications.sendNotification(targetTopic.followers, 
+				targetTopic.id, "Topic", notificationDescription);
+		
 		// TODO: edit buttons in view
-		// TODO: send notifications to followers and organizers
 
 		return true;
 
