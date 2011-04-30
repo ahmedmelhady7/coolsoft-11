@@ -1,0 +1,44 @@
+#{extends 'main.html' /}
+#{set title:plan.title " - View Volunteer Requests" /}
+#{if assignRequests.size() > 0}<h3>Volunteer Requests </h3>
+<ul>
+    #{list items:planVolunteerRequests, as:'request'}
+    <li>
+        <fieldset>
+            <legend>
+            <h2>
+                ${request.destination}
+            </h2>
+            </legend>
+            Sender: ${request.sender}
+            <br/>
+            Justification:  ${request.justification}
+            <br/>
+			<input type = "button" value = "Accept" onclick="accept_request('${request.id}')">
+			<input type = "button" value = "Reject" onclick="reject_request('${request.id}')">
+        </fieldset>
+    </li>
+    #{/list}
+</ul>
+#{/if}
+#{else}
+No volunteer requests for this plan exist.
+#{/else}
+
+<script type="text/javascript">
+
+function accept_request(id)
+  {
+	$.post('@{accept()}' , {requestId: id});
+	alert("Request accepted!");
+	window.location.reload();
+  }
+
+function reject_request(id)
+  {
+	$.post( '@{reject()}' , {requestId: id});
+	alert("Request rejected!");
+	window.location.reload();
+  }
+
+</script>
