@@ -35,6 +35,7 @@ public class Search extends Controller {
 
 	public static List<Object> filterResult;
 
+	public static List sorted;
 	/**
 	 * 
 	 * @author M Ghanem
@@ -952,5 +953,266 @@ public class Search extends Controller {
 		}
 
 	}
+
+	// //////
+	// sort method by monica :D
+
+	public static void sortA(char voteOrRate, List<Object> searchresult) {//ascending
+		List<Object> tosort = new ArrayList<Object>();
+		List<Object> nottosort = new ArrayList<Object>();
+
+		if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
+
+			/*
+			 * a for loop to find all objects having attribute rate and add them
+			 * to a list called to sort and the rest of the search results are
+			 * to be in a list not to be sorted
+			 */
+
+			for (int i = 0; i < searchresult.size(); i++) {
+				if (searchresult.get(i) instanceof Idea
+						|| searchresult.get(i) instanceof Plan) {
+					tosort.add(searchresult.get(i));
+				} else {
+					nottosort.add(searchresult.get(i));
+				}
+			}
+
+			for (int j = 0; j < tosort.size(); j++) {
+				int rate1 = 0;
+				int rate2 = 0;
+				if (tosort.get(j) instanceof Idea) {
+					Idea temp1 = (Idea) tosort.get(j);
+					rate1 = temp1.rating;
+				} else {
+					Plan temp1 = (Plan) tosort.get(j);
+					rate1 = temp1.rating;
+				}
+				for (int k = 0; k < tosort.size(); k++) {
+					if (tosort.get(k) instanceof Idea) {
+						Idea temp2 = (Idea) tosort.get(k);
+						rate2 = temp2.rating;
+					} else {
+						Plan temp2 = (Plan) tosort.get(k);
+						rate2 = temp2.rating;
+					}
+
+					if (rate1 > rate2) {  //sorting 
+						
+						Object temp = (Object) tosort.get(k);
+						tosort.set(k, tosort.get(j));
+						tosort.set(j, temp);
+
+					}
+
+				}
+
+			}
+
+		sorted= new ArrayList<Object>();//final sorted list
+		for(int m=0;m<tosort.size();m++){
+			sorted.add(tosort.get(m));
+		}
+		for (int m=0;m<nottosort.size();m++){
+			sorted.add(nottosort.get(m));
+		}
+		//the previous too loops is to append to lists in one 
+		}
+
+		// waiting for the vote to be done in order to sort by voting 
+		/*
+if (voteOrRate == 'v' || voteOrRate == 'v') { // sorting by rate
+
+			
+			 // a for loop to find all objects having attribute rate and add them
+			 // to a list called to sort and the rest of the search results are
+			 // to be in a list not to be sorted
+			 
+
+			for (int i = 0; i < searchresult.size(); i++) {
+				if (searchresult.get(i) instanceof Idea
+						|| searchresult.get(i) instanceof Plan) {
+					tosort.add(searchresult.get(i));
+				} else {
+					nottosort.add(searchresult.get(i));
+				}
+			}
+
+			for (int j = 0; j < tosort.size(); j++) {
+				int vote1 = 0;
+				int vote2 = 0;
+				if (tosort.get(j) instanceof Idea) {
+					Idea temp1 = (Idea) tosort.get(j);
+					vote1 = temp1.voting;
+				} else {
+					Plan temp1 = (Plan) tosort.get(j);
+					vote1 = temp1.voting;
+				}
+				for (int k = 0; k < tosort.size(); k++) {
+					if (tosort.get(k) instanceof Idea) {
+						Idea temp2 = (Idea) tosort.get(k);
+						vote2 = temp2.voting;
+					} else {
+						Plan temp2 = (Plan) tosort.get(k);
+						vote2 = temp2.voting;
+					}
+
+					if (vote1 > vote2) {  //sorting 
+						
+						Object temp = (Object) tosort.get(k);
+						tosort.set(k, tosort.get(j));
+						tosort.set(j, temp);
+
+					}
+
+				}
+
+			}
+
+		sorted= new ArrayList<Object>();//final sorted list
+		for(int m=0;m<tosort.size();m++){
+			sorted.add(tosort.get(m));
+		}
+		for (int m=0;m<nottosort.size();m++){
+			sorted.add(nottosort.get(m));
+		}
+		//the previous too loops is to append to lists in one 
+		}
+		 
+		 */
+		
+		
+	}
+	
+	
+
+	public static void sortD(char voteOrRate, List<Object> searchresult) {//descending
+		List<Object> tosort = new ArrayList<Object>();
+		List<Object> nottosort = new ArrayList<Object>();
+
+		if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
+
+			/*
+			 * a for loop to find all objects having attribute rate and add them
+			 * to a list called to sort and the rest of the search results are
+			 * to be in a list not to be sorted
+			 */
+
+			for (int i = 0; i < searchresult.size(); i++) {
+				if (searchresult.get(i) instanceof Idea
+						|| searchresult.get(i) instanceof Plan) {
+					tosort.add(searchresult.get(i));
+				} else {
+					nottosort.add(searchresult.get(i));
+				}
+			}
+
+			for (int j = 0; j < tosort.size(); j++) {
+				int rate1 = 0;
+				int rate2 = 0;
+				if (tosort.get(j) instanceof Idea) {
+					Idea temp1 = (Idea) tosort.get(j);
+					rate1 = temp1.rating;
+				} else {
+					Plan temp1 = (Plan) tosort.get(j);
+					rate1 = temp1.rating;
+				}
+				for (int k = 0; k < tosort.size(); k++) {
+					if (tosort.get(k) instanceof Idea) {
+						Idea temp2 = (Idea) tosort.get(k);
+						rate2 = temp2.rating;
+					} else {
+						Plan temp2 = (Plan) tosort.get(k);
+						rate2 = temp2.rating;
+					}
+
+					if (rate1 < rate2) {  //sorting 
+						
+						Object temp = (Object) tosort.get(k);
+						tosort.set(k, tosort.get(j));
+						tosort.set(j, temp);
+
+					}
+
+				}
+
+			}
+
+		sorted= new ArrayList<Object>();//final sorted list
+		for(int m=0;m<tosort.size();m++){
+			sorted.add(tosort.get(m));
+		}
+		for (int m=0;m<nottosort.size();m++){
+			sorted.add(nottosort.get(m));
+		}
+		//the previous too loops is to append to lists in one 
+		}
+
+		// waiting for the vote to be done in order to sort by voting 
+		/*
+if (voteOrRate == 'v' || voteOrRate == 'v') { // sorting by rate
+
+			
+			 // a for loop to find all objects having attribute rate and add them
+			 // to a list called to sort and the rest of the search results are
+			 // to be in a list not to be sorted
+			 
+
+			for (int i = 0; i < searchresult.size(); i++) {
+				if (searchresult.get(i) instanceof Idea
+						|| searchresult.get(i) instanceof Plan) {
+					tosort.add(searchresult.get(i));
+				} else {
+					nottosort.add(searchresult.get(i));
+				}
+			}
+
+			for (int j = 0; j < tosort.size(); j++) {
+				int vote1 = 0;
+				int vote2 = 0;
+				if (tosort.get(j) instanceof Idea) {
+					Idea temp1 = (Idea) tosort.get(j);
+					vote1 = temp1.voting;
+				} else {
+					Plan temp1 = (Plan) tosort.get(j);
+					vote1 = temp1.voting;
+				}
+				for (int k = 0; k < tosort.size(); k++) {
+					if (tosort.get(k) instanceof Idea) {
+						Idea temp2 = (Idea) tosort.get(k);
+						vote2 = temp2.voting;
+					} else {
+						Plan temp2 = (Plan) tosort.get(k);
+						vote2 = temp2.voting;
+					}
+
+					if (vote1 < vote2) {  //sorting 
+						
+						Object temp = (Object) tosort.get(k);
+						tosort.set(k, tosort.get(j));
+						tosort.set(j, temp);
+
+					}
+
+				}
+
+			}
+
+		sorted= new ArrayList<Object>();//final sorted list
+		for(int m=0;m<tosort.size();m++){
+			sorted.add(tosort.get(m));
+		}
+		for (int m=0;m<nottosort.size();m++){
+			sorted.add(nottosort.get(m));
+		}
+		//the previous too loops is to append to lists in one 
+		}
+		 
+		 */
+		
+		
+	}
+	
+	
 
 }
