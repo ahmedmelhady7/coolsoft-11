@@ -1,9 +1,8 @@
 <!--
 @author Loaay Alkherbawy
-@story  C4SXX
+@story  C4S01
 The Search Results Viewer
---> 
-<!DOCTYPE html>
+--> <!DOCTYPE html>
 <html>
     <head>
         <title></title>
@@ -27,31 +26,52 @@ The Search Results Viewer
     <div>
         <center>
             <img src="/public/images/Picture1.jpg">
-
             </img>
         </center>
     </div>
     <body onLoad="step1()">
-        <form action="@{Search.quickSearch()}" method="GET">
-            <input type="text" id="search" name="search" /><input type="submit" id="submit" name="submit" value="Search" />
-        </form><a href="/Ideas Management/app/views/Application/index.html">Home</a>
-        <br/>
-        <center>
-        <b>
-            <big>
-                <u>
-                    Search Results:
-                </u>
-            </big>
-        </b>
+        <form action="@{quickSearch()}" method="GET">
+        <font size="+3" color="993300">
+            Welcome ${connected}!
+        </font>
         </br>
-        <i>
+        <input type="text" id="search" name="search" value= "enter a keyword here" />
+		<input type="button" id="submit" name="submit" value="Search" onclick="quickSearch(this.form)"/>
+        <script type="text/javascript">
+            function step1(){
+                document.getElementById('div1').innerHTML = '<center><img src="/public/images/Loading.gif"/></center>';
+				setTimeout(function(){},2000);
+				document.getElementById('div1').innerHTML = "<center>#{if listOfResults} Found ${listOfResults.size()} item${listOfResults.pluralize()} matching <ul> #{list items:listOfResults, as:'item'} <li>${item.toString()}</li> #{/list} </ul> #{/if} #{else} Sorry! We did not find any results matching #{/else}</center>";
+            }
+            
+            function quickSearch(frm){
+                $.post('@{quickSearch}', {
+                    keyword: frm.search.value
+                }, function(){
+					window.location.reload(true);
+                    //document.getElementById('div1').innerHTML = "<center>#{if listOfResults} Found ${listOfResults.size()} item${listOfResults.pluralize()} matching <ul> #{list items:listOfResults, as:'item'} <li>${item.toString()}</li> #{/list} </ul> #{/if} #{else} Sorry! We did not find any results matching #{/else}</center>";
+                });
+            }
+        </script>
+    </form>
+    <a href="/Ideas Management/app/views/Application/index.html">Home</a>
+    <br/>
+    <center>
+    <b>
+        <big>
+            <u>
+                Search Results:
+            </u>
+        </big>
+    </b>
+    </br>
+    <i>
+    </br>
+    <a href="filter_options.html"><b>for filtering your results:
         </br>
-        <a href="filter_options.html"><b>for filtering your results:
-            </br>
-            click here to chose your criteria</b>
-        </a>
-    </i>
+        click here to chose your criteria</b>
+</a>
+</i>
 </center>
 <div align="right">
     <u>
@@ -60,32 +80,13 @@ The Search Results Viewer
     </u>
 </b>
 <div>
-
 <input type="radio" name="scale" value="sortA" checked/>Ascending order
 <br>
 <input type="radio" name="scale" value="sortD" />descending order
+</br><input type="radio" name="scale" value="vote" />Vote <input type="radio" name="scale" value="rate" />Rate 
 </br>
-<input type="radio" name="scale" value="vote" />Vote <input type="radio" name="scale" value="rate" />Rate 
-</br>
-
-
-
 </div>
 <div id='div1'>
 </div>
-<script type="text/javascript">
-    function step1(){
-
-        document.getElementById('div1').innerHTML = '<center><img src="/public/images/Loading.gif"/></center>';
-
-        setTimeout(function(){
-            quickSearch();
-        }, 3000);
-    }
-    
-    function quickSearch(){
-        document.getElementById('div1').innerHTML = "<center>#{if results} Found ${results.size()} item${results.pluralize()} matching '${search}' <ul> #{list items:results, as:'item'} <li>${item.title}</li> #{/list} </ul> #{/if} #{else} Sorry! We did not find any results matching '${search}' #{/else}</center>";
-    }
-</script>
 </body>
 </html>
