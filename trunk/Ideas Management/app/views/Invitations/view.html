@@ -10,17 +10,17 @@
 <tr><td>No new invitations</td><td>
 #{/if}
 #{else}
-#{list items:0..inv.size()-1, as:'i'} 
+#{list items:inv, as:'inn'} 
 <html>
-<table border="0" bgcolor="#ececec" cellspacing="5" id=inv.get(i).id>
+<table border="0" bgcolor="#ececec" cellspacing="5" id = ${inn.id}>
 
-<tr><td><font size ="3" color ="red">From : ${inv.get(i).organization.name} Organization</font></td><td>
+<tr><td><font size ="3" color ="black">From : ${inn.organization.name} Organization</font></td><td>
 
-<tr><td><font size ="3" color ="black">You have been invited to join ${inv.get(i).organization.name} Organization</font></td><td>
-<tr><td><font size ="3" color ="black">as ${inv.get(i).role} to ${inv.get(i).entity.name} Entity</font></td><td> 
+<tr><td><font size ="3" color ="black">You have been invited to join ${inn.organization.name} Organization</font></td><td>
+<tr><td><font size ="3" color ="black"> As ${inn.role} to ${inn.entity.name} Entity</font></td><td> 
 
-<input type="button" onclick="show(1)" value="Accept" />
-<input type="button" onclick="show(0)" value="Reject" />
+<input type="button" onclick="javascript: show(1,'${inn.id}');" value="Accept" />
+<input type="button" onclick="javascript: show(0,'${inn.id}');" value="Reject" />
 
 </table>
 </html>
@@ -30,25 +30,25 @@
 #{/else}
 
 
-
-<script type="text/javascript">
-function show(choice){
-	if (choice == 1) {
-		$.post('@{respond()}', {choice:1,id:inv.get(i).id},
+<script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
+function show(choice,id){
+	
+	if (choice ==1 ) {
+		$.post('@{respond()}', {choice:1,id:id},
 			 function()
 			 {
-			document.getElementById("inv.get(i).id").innerHTML = "Invitation has been accepted";
-			window.location.reload();
+			document.getElementById("${inn.id}").innerHTML = "Invitation has been accepted";
 			});
-		
 	}
 	else {
-		$.post('@{respond()}', {choice:0,id:inv.get(i).id},
+		$.post('@{respond()}', {choice:0,id:id},
 			 function()
 			 {
-			document.getElementById("inv.get(i).id").innerHTML = "Invitation has been rejected";
-			window.location.reload();
+			 	
+			document.getElementById("${inn.id}").innerHTML = "Invitation has been rejected";
+			
 			});
 	}
 }
 </script>
+
