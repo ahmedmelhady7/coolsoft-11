@@ -166,7 +166,19 @@ public class Invitations extends CRUD {
         	 Notifications.sendNotification(u, org.id, "organization",
  					"You have received a new invitation from "
  							+ org.name);
-            }	 
+            }
+         
+
+			//*fadwa
+			List<User> organizers = Users.getEntityOrganizers(ent);
+			if (!user.equals(org.creator)) {
+				organizers.remove(user);
+				organizers.add(org.creator);
+			}
+			Notifications.sendNotification(organizers, ent.id, "entity",
+					"Invitation has been sent from entity "
+							+ ent.name);
+			//*
     	
 	  //render(email,role,organization,entity,topic);
 	    render(email);
