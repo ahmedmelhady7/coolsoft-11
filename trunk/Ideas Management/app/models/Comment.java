@@ -63,6 +63,7 @@ public class Comment extends Model {
 	 */
 	public void addCommentToIdea(int ideaID, Comment comment)
 	{
+		//get from HTML comment as string, Idea to be commented on, user that commented
 		//ideaID.commentsList.add(comment);
 	}
 	
@@ -76,9 +77,8 @@ public class Comment extends Model {
 	 */
 	public void addCommentToPlan(int planID, Comment comment)
 	{
-		
-//		comment = new Comment(comment, ID, postedOn, commenter);
-//		commentedPlan.comments.add(comment);
+		//get from HTML comment as string, Idea to be commented on, user that commented
+		//plaID.commentsList.add(comment);
 	}
 
 }
