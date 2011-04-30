@@ -27,16 +27,16 @@ You have no assignment requests.
 
 <script type="text/javascript">
 
-function accept_request(id)
+function accept_request(user_Id, id)
   {
-	$.post('@{accept()}' , {userId: id, id: id});
+	$.post('@{accept()}' , {userId: user_id, id: id});
 	alert("Task accepted!");
 	window.location.reload();
   }
 
-function reject_request(id)
+function reject_request(user_Id, id)
   {
-	$.post( '@{reject()}' , {userId: id, id: id});
+	$.post( '@{reject()}' , {userId: user_id, id: id});
 	alert("Task rejected!");
 	window.location.reload();
   }
