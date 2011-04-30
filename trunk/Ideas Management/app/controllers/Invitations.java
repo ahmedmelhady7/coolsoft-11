@@ -21,6 +21,27 @@ public class Invitations extends CRUD {
 	
 	
     //invitation first page ,it has search or button 'invite by mail'
+	 /**
+	 * 
+	 * This method is responsible for rendering the organization,
+	 * the entity to the invitation home page, that contains search for user
+	 * to invite or invite by mail
+	 * 
+	 * @author ${Mai.Magdy}
+	 * 
+	 * @story C1S6
+	 *
+	 * 
+	 * @param  org
+	 *                 the organization that sends the invitation
+	 *                 
+	 * @param  role
+	 *               the entity that sends the invitation
+	 *               
+	 *  
+	 *                                
+	 * @return void
+	 */
  public static void invite(Organization org,MainEntity ent){
 	   
 	 render(org,ent);
@@ -28,6 +49,29 @@ public class Invitations extends CRUD {
  }
    
     //Go to search page
+ /**
+	 * 
+	 * This method is responsible for searching for a user to invite
+	 * the result is a list not containing the organizers of this entity
+	 * 
+	 * @author ${Mai.Magdy}
+	 * 
+	 * @story C1S6
+	 *
+	 * 
+	 * @param  org
+	 *                 the organization that sends the invitation
+	 *                 
+	 * @param  role
+	 *               the entity that sends the invitation
+	 *               
+	 *@param  name
+	 *               the entered user name
+	 *               
+	 
+	 *                                
+	 * @return void
+	 */
  public static void SearchUsers(Organization org,MainEntity ent,String name){
 	 List<User> filter=new ArrayList<User>();
 	   filter=Users.searchUser(name);
@@ -44,7 +88,31 @@ public class Invitations extends CRUD {
  }
  
  
-    // page of invitation
+    
+ /**
+	 * 
+	 * This method is responsible for rendering the organization,
+	 * the entity and the user to the invitation page , if no user selected 
+	 * the view will enable a text box to enter the email
+	 * 
+	 * @author ${Mai.Magdy}
+	 * 
+	 * @story C1S6
+	 *
+	 * 
+	 * @param  org
+	 *                 the organization that sends the invitation
+	 *                 
+	 * @param  role
+	 *               the entity that sends the invitation
+	 *               
+	 *@param  id
+	 *               the id of the selected user , 0 if inviting by mail
+	 *               
+	 
+	 *                                
+	 * @return void
+	 */
    public static void Page(Organization org,MainEntity ent,long id){
 	  // long num=id;
 	    // if(id==0)
@@ -57,8 +125,9 @@ public class Invitations extends CRUD {
  
  /**
 	 * 
-	 * This method is responsible for sending an invitation
-	 * It renders the email
+	 * This method is responsible for adding a new invitation and rendering 
+	 * the email then the Mail class sends the email, if sending to registered 
+	 * user he ll be notified with a notification
 	 * 
 	 * @author ${Mai.Magdy}
 	 * 
@@ -72,7 +141,7 @@ public class Invitations extends CRUD {
 	 *               role that ll be assigned to the user in case accepted
 	 *               
 	 *@param  organization
-	 *                organization that sends the invitation
+	 *                    organization that sends the invitation
 	 *               
 	 *@param  entity
 	 *               entity that sends the invitation
@@ -81,13 +150,23 @@ public class Invitations extends CRUD {
 	 */
  
  public static void send(String email,String role,Organization org,
-		 MainEntity ent){
+		 MainEntity ent,User user){
 	  
-	 Mail.invite(email,role,org.name,ent.name);
+	     Mail.invite(email,role,org.name,ent.name);
 	    
     	 
-    	//sender=the user from the session 
-        //sender.addInvitation(email,role,org,ent,top);
+    	//user=the user from the session 
+          user.addInvitation(email,role,org,ent);
+        
+         User receiver=User.find("byEmail", email).first();
+         if(!receiver.equals(null)){
+        	 List<User> u=new ArrayList<User>();
+        	  u.add(receiver);
+        	//if(role.equalsIgnoreCase("organizer"))
+        	 Notifications.sendNotification(u, org.id, "organization",
+ 					"You have received a new invitation from "
+ 							+ org.name);
+            }	 
     	
 	  //render(email,role,organization,entity,topic);
 	    render(email);
@@ -120,10 +199,10 @@ public class Invitations extends CRUD {
 	 * 
 	 * This method is responsible for responding to the user (accept/reject) to
 	 * the invitation It renders the invitation list and the id (0/1) and the
-	 * number of the invitation
+	 * invitation id
 	 * 
 	 * 
-	 * @author ${Mai.Magdy}
+	 * @author ${Mai.Magdy}  >  if role is organizer
 	 * 
 	 * @story C1S4
 	 * 
