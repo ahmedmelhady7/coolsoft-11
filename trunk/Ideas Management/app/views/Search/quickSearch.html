@@ -10,7 +10,7 @@
     </form>
     <script type="text/javascript">
          function quickSearchScript(frm){
-            $.post('@{Search.quickSearch()}',{keyword: frm.keyWords.value},{userId: userId});
+            $.post('@{Search.quickSearch()}',{keyword: frm.keyWords.value});
 		 }
     </script>
 	
