@@ -25,12 +25,14 @@ The Search Results Viewer
     </style>
     <div>
         <center>
-            <img src="Picture1.jpg">
+            <img src="/public/images/Picture1.jpg">
             </img>
         </center>
     </div>
     <body onLoad="step1()">
-        <a href="/Ideas Management/app/views/Application/index.html">Home</a>
+        <form action="@{Search.quickSearch()}" method="GET">
+            <input type="text" id="search" name="search" /><input type="submit" id="submit" name="submit" value="Search" />
+        </form><a href="/Ideas Management/app/views/Application/index.html">Home</a>
         <br/>
         <center>
         <b>
@@ -63,14 +65,14 @@ The Search Results Viewer
 </div>
 <script type="text/javascript">
     function step1(){
-        document.getElementById('div1').innerHTML = '<center><img src="Loading.gif" alt=""/></center>';
+        document.getElementById('div1').innerHTML = '<center><img src="/public/images/Loading.gif"/></center>';
         setTimeout(function(){
-            step2();
+            quickSearch();
         }, 3000);
     }
     
-    function step2(){
-        document.getElementById('div1').innerHTML = "<center>Site Still Under Construction</center>";
+    function quickSearch(){
+        document.getElementById('div1').innerHTML = "<center>#{if results} Found ${results.size()} item${results.pluralize()} matching '${search}' <ul> #{list items:results, as:'item'} <li>${item.title}</li> #{/list} </ul> #{/if} #{else} Sorry! We did not find any results matching '${search}' #{/else}</center>";
     }
 </script>
 </body>
