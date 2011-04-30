@@ -95,7 +95,7 @@ public class BannedUser extends Model {
 		User myBannedUser = User.findById(action);
 		Organization myOrganization = Organization.findById(organizationID);
 		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
-				"All", "MainEntity", entityID);
+				"All", "entity", entityID);
 		newBannedUser.save();
 		return true;
 	}
@@ -123,7 +123,7 @@ public class BannedUser extends Model {
 		User myBannedUser = User.findById(action);
 		Organization myOrganization = Organization.findById(organizationID);
 		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
-				action, "MainEntity", entityID);
+				action, "entity", entityID);
 		newBannedUser.save();
 		return true;
 	}
@@ -151,7 +151,7 @@ public class BannedUser extends Model {
 		User myBannedUser = User.findById(action);
 		Organization myOrganization = Organization.findById(organizationID);
 		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
-				action, "Topic", topicID);
+				action, "topic", topicID);
 		newBannedUser.save();
 		return true;
 	}
