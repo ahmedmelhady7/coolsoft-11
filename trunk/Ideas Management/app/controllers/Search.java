@@ -31,7 +31,7 @@ public class Search extends Controller {
 	 *        in the html page searchResult.
 	 * 
 	 */
-	public static List listOfResults;
+	public static List<Object> listOfResults = new ArrayList<Object>();
 
 	public static List<Object> filterResult;
 
@@ -537,6 +537,7 @@ public class Search extends Controller {
 	 * organizations, entities, topics and ideas using a keyword and the
 	 * userEmail to define how the result will appear to him
 	 */
+
 	public static List<Object> quickSearch(String keyword, int userId) {
 		listOfResults = new ArrayList<Object>();
 		// Adding Organizations to search result
@@ -770,8 +771,12 @@ public class Search extends Controller {
 		return listOfResults;
 	}
 
-	public static void viewResult() {
-		render(listOfResults);
+	public static void searchResult() {
+		String searchResult = listOfResults.toString();
+		for (int i = 0; i < listOfResults.size(); i++) {
+			searchResult += listOfResults.get(i).toString() + "</br>";
+		}
+		render(searchResult);
 	}
 
 	/**
