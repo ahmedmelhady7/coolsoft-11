@@ -10,13 +10,15 @@ import models.User;
 public class BannedUsers extends CRUD{
 
 	
-	  public void restrictOrganizer(long organizationID , User user ){
+	  public void restrictOrganizer(long organizationID){
 		  Organization o =Organization.findById(organizationID); 
 		  List<User> users = Users.searchOrganizer(o); 
 		  render( users ); 
 		  }
 	  
-	  
+	  public void restrictOrganizer(long orhanizationID, long UserId , int flag){
+		  
+	  }
 
 	
 	
