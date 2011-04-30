@@ -253,7 +253,7 @@ public class Invitations extends CRUD {
 				Role role2 = Role.find("byRoleName", "Idea Developer").first();
 				if (role2 == null) {
 					// role ???
-					role2 = new Role("Idea Developer", new ArrayList());
+					role2 = new Role("Idea Developer", "");
 					role2._save();
 				}
 				UserRoleInOrganization roleInOrg = new UserRoleInOrganization(user,
