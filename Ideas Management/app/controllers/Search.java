@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import controllers.Secure.Security;
+
 import javax.mail.search.SearchTerm;
 
 import com.sun.mail.handlers.text_html;
@@ -17,6 +19,7 @@ import models.Tag;
 import models.Topic;
 
 import play.mvc.Controller;
+import play.test.Fixtures;
 
 /**
  * 
@@ -557,33 +560,34 @@ public class Search extends Controller {
 	 * userEmail to define how the result will appear to him
 	 */
 
-	public static List<Object> quickSearch(String keyword, int userId) {
+	public static void quickSearch(String keyword) {
+		System.out.println(keyword);
 		listOfResults = new ArrayList<Object>();
 		// Adding Organizations to search result
-		List<Object> organizationsList = searchForOrganization(keyword, userId);
+		List<Object> organizationsList = searchForOrganization(keyword);
 		for (int i = 0; i < organizationsList.size(); i++) {
 			listOfResults.add(organizationsList.get(i));
 		}
 		// Adding Entities to search result
-		List<Object> EntitiesList = searchForEntity(keyword, userId);
+		List<Object> EntitiesList = searchForEntity(keyword);
 		for (int i = 0; i < EntitiesList.size(); i++) {
 			listOfResults.add(EntitiesList.get(i));
 		}
 		// Adding Ideas to search result
-		List<Object> IdeasList = searchForIdea(keyword, userId);
+		List<Object> IdeasList = searchForIdea(keyword);
 		for (int i = 0; i < IdeasList.size(); i++) {
 			listOfResults.add(IdeasList.get(i));
 		}
 		// Adding Topics to search result
-		List<Object> TopicsList = searchForTopic(keyword, userId);
+		List<Object> TopicsList = searchForTopic(keyword);
 		for (int i = 0; i < TopicsList.size(); i++) {
 			listOfResults.add(TopicsList.get(i));
 		}
-		return listOfResults;
 	}
 
 	// method that searches for organizations
-	public static List<Object> searchForOrganization(String keyword, int userId) {
+	public static List<Object> searchForOrganization(String keyword) {
+		String userId = Security.connected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
@@ -613,8 +617,9 @@ public class Search extends Controller {
 				}
 				for (int k = 0; k < listOfOrganizations.get(i).enrolledUsers
 						.size(); k++) { // Looping on the list of users
-					if (userId != listOfOrganizations.get(i).enrolledUsers
-							.get(k).id) {
+					if (userId
+							.compareTo(listOfOrganizations.get(i).enrolledUsers
+									.get(k).username) != 0) {
 						switch (listOfOrganizations.get(i).privacyLevel) {
 						case 3:
 							listOfOrganizations.remove(listOfOrganizations
@@ -635,7 +640,8 @@ public class Search extends Controller {
 	}
 
 	// method that searches for entities
-	public static List<Object> searchForEntity(String keyword, int userId) {
+	public static List<Object> searchForEntity(String keyword) {
+		String userId = Security.connected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
@@ -671,7 +677,8 @@ public class Search extends Controller {
 																					// list
 																					// of
 																					// users
-					if (userId != listOfEntities.get(i).followers.get(k).id) {
+					if (userId
+							.compareTo(listOfEntities.get(i).followers.get(k).username) != 0) {
 						switch (listOfEntities.get(i).organization.privacyLevel) {
 						case 3:
 							listOfEntities.remove(listOfEntities.get(i));
@@ -690,7 +697,8 @@ public class Search extends Controller {
 	}
 
 	// method that searches for ideas
-	public static List<Object> searchForIdea(String keyword, int userId) {
+	public static List<Object> searchForIdea(String keyword) {
+		String userId = Security.connected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
@@ -723,8 +731,9 @@ public class Search extends Controller {
 				}
 				for (int k = 0; k < listOfIdeas.get(i).belongsToTopic.entity.organization.enrolledUsers
 						.size(); k++) { // Looping on the list of users
-					if (userId != listOfIdeas.get(i).belongsToTopic.entity.organization.enrolledUsers
-							.get(k).id) {
+					if (userId
+							.compareTo(listOfIdeas.get(i).belongsToTopic.entity.organization.enrolledUsers
+									.get(k).username) != 0) {
 						switch (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel) {
 						case 3:
 							listOfIdeas.remove(listOfIdeas.get(i));
@@ -744,7 +753,8 @@ public class Search extends Controller {
 	}
 
 	// method that searches for topics
-	public static List<Object> searchForTopic(String keyword, int userId) {
+	public static List<Object> searchForTopic(String keyword) {
+		String userId = Security.connected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
@@ -771,7 +781,8 @@ public class Search extends Controller {
 				}
 				for (int k = 0; k < listOfTopics.get(i).entity.organization.enrolledUsers
 						.size(); k++) { // Looping on the list of users
-					if (userId != listOfTopics.get(i).followers.get(k).id) {
+					if (userId
+							.compareTo(listOfTopics.get(i).followers.get(k).username) != 0) {
 						switch (listOfTopics.get(i).entity.organization.privacyLevel) {
 						case 3:
 							listOfTopics.remove(listOfTopics.get(i));
@@ -791,11 +802,8 @@ public class Search extends Controller {
 	}
 
 	public static void searchResult() {
-		String searchResult = listOfResults.toString();
-		for (int i = 0; i < listOfResults.size(); i++) {
-			searchResult += listOfResults.get(i).toString() + "</br>";
-		}
-		render(searchResult);
+		String connected = Security.connected();
+		render(listOfResults,connected);
 	}
 
 	/**
