@@ -1,0 +1,43 @@
+#{extends 'main.html' /}
+#{set title:'Add Item' /}
+<h1> Add Item </h1>
+Start Date:<input type = "text" id = "startdate" size ="30" value = "Enter Start Date e.g. DD/MM/YYYY">
+End Date:<input type = "text" id = "enddate" size ="30" value = "Enter Start Date e.g. DD/MM/YYYY">
+<p><b>Insert the description of the plan</b></p>
+<textarea id="description" rows="7" cols="50" value = "Insert the description of the item here!">
+</textarea>
+<p><b>Insert a summary for the description</b></p>
+<input id = "summary" type = "text" size = "30" value = "Enter Summary here!"/>
+<input type = "submit" value = "Add Item" onclick = "javascript:addItem();"/>
+<!input type = "button" value = "Add another item" onclick "page reload"?>
+<script type ="text/javascript">
+	function addItem(){
+		var sd = document.getElementById("startdate").value;
+		var ed = document.getElementById("enddate").value;
+		var desc = document.getElementById("description").value;
+		var sum = document.getElementById("summamry").value;
+		if(sd == null || sd == ""){
+			alert("Please insert start date!");
+		}else{
+			if(ed == null || ed == ""){
+				alert("Please insert end date!");
+			}else{
+				if(desc == null || desc == ""){
+					alert("Please inser a description");
+				}else{
+					if(sum == null || sum == "" ){
+						alert("Please insert summary");
+					}else{
+						$.post('{add()}',{
+							startDate: sd,
+							endDate: ed,
+							description: desc,
+							plan: '${p}',
+							summary: sum
+						});
+					}
+				}
+			}
+		}
+	}
+</script>
