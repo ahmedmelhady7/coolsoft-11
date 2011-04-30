@@ -79,6 +79,15 @@ public class Role extends Model {
 
 	}
 	
+	/**
+	 * the toString method that prints the role name
+	 * @author Nada Ossama
+	 * @return String which is the role Name
+	 */
+	public String toString(){
+		return this.roleName;
+	}
+	
 	
 	
 
