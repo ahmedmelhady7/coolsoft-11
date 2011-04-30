@@ -185,6 +185,17 @@ public class Users extends CRUD {
 
 	}
 
+	
+
+	public static List<User> getBannedUser(Organization o , String action , long sourceID , String type){
+		List <User> user = (List<User>) BannedUser.find("select bu.bannedUser from BannedUser where bu.organization = ? and bu.action = ? and bu.resourceType = ? and bu.resourceID = ? ", o, action ,type, sourceID );
+		return (user);
+	}
+	
+	
+	
+
+
 	/**
 	 * 
 	 * this method checks if the user is allowed to post an idea under a certain
@@ -527,7 +538,7 @@ public class Users extends CRUD {
 		User user = User.findById(id);
 		String x = "";
 		try {
-
+			
 			if (user.state != 'n') {
 				user.state = 'd';
 				x = "deletion successful";
@@ -541,7 +552,7 @@ public class Users extends CRUD {
 		}
 
 	}
-
+	  
 	/**
 	 * 
 	 * This method returns list of entities within a specific organization that
@@ -709,7 +720,7 @@ public class Users extends CRUD {
 			Role role = Role.find("byRoleName", "Idea Developer").first();
 			if (role == null) {
 				// role ???
-				role = new Role("Idea Developer", new String[0]);
+				role = new Role("Idea Developer", new ArrayList());
 				role._save();
 			}
 			UserRoleInOrganization roleInOrg = new UserRoleInOrganization(user,
