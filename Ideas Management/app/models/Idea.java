@@ -123,6 +123,8 @@ public class Idea extends Model {
 		this.isDraft = false;
 		this.tagsList = new ArrayList<Tag>();
 		this.commentsList = new ArrayList<Comment>();
+		this.rating = 0;
+		this.priority = null;
 
 	}
 
