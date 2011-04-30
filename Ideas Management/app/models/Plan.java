@@ -28,8 +28,8 @@ public class Plan extends Model {
 	@OneToOne
 	public Topic topic;
 	
-//	 @OneToMany(mappedBy="plan", cascade=CascadeType.ALL)
-//	 public List<Comment> comments;
+	@OneToMany(cascade = CascadeType.PERSIST)
+	public List<Comment> commentsList;
 	
 	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
 	public List<Idea> ideas;
@@ -55,8 +55,6 @@ public class Plan extends Model {
 	 * @author ${Ibrahim Safwat}
 	 * List of comments in that plan
 	 */
-//	@OneToOne (mappedBy = "idea", cascade = CascadeType.ALL)
-//	public List<String> commentList;
 	
 	public Plan(){
 		
@@ -72,10 +70,10 @@ public class Plan extends Model {
 		this.description = description;
 		this.requirements = new ArrayList<String>();
 		this.items = new ArrayList<Item>();
-		//this.comments = new ArrayList<Comment>();
 		this.ideas = new ArrayList<Idea>();
 		this.topic = topic;
 		this.rating = 0;
+		this.commentsList = new ArrayList<Comment>();
 
 	}
 	
