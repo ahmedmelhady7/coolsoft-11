@@ -1,16 +1,17 @@
 #{extends 'main.html' /}
-#{set title:'Plan Creation' /}
+#{set title:'Edit Plan' /}
+<h1> Edit Action plan </h1>
 <h1> Create Plan </h1>
-Plan title:<input type= "text" id= "plantitle" size= "30" value = "Enter title here!">
-Start Date:<input type = "text" id = "startdate" size ="30" value ="Enter Start Date e.g. DD/MM/YYYY">
-End Date:<input type = "text" id = "enddate" size ="30" value ="Enter Start Date e.g. DD/MM/YYYY">
-<p><b>Insert the description of the plan</b></p>
-<textarea id="description" rows="7" cols="50" value = "Insert the description of a plan here!">
+Plan title:<input type= "text" id= "plantitle" size= "30" value = ""+'${plan.title}'>
+Start Date:<input type = "text" id = "startdate" size ="30" value =""+'$Plan.startDate'>
+End Date:<input type = "text" id = "enddate" size ="30" value =""+'$Plan.startDate'>
+<p><b>Plan Description</b></p>
+<textarea id="description" rows="7" cols="50" value = ""+'$Plan.description'>
 </textarea>
-<p><b>Insert the requirements of the plan</b></p>
-<textarea id="requirements" rows="7" cols="50" value = "Insert the requirements of the plan here!">
+<p><b>Requirements of the plan</b></p>
+<textarea id="requirements" rows="7" cols="50" value = ""+'$Plan.requirement'>
 </textarea>
-<input type ="submit" value = "Create" onclick="javascript:checkall();"/>
+<input type ="submit" value = "Edit" onclick="javascript:checkall();"/>
 <!a href = ""> Go to add items<!/a>
 <script type ="text/javascript">
 	function checkall(){
@@ -34,13 +35,11 @@ End Date:<input type = "text" id = "enddate" size ="30" value ="Enter Start Date
 						if(req == null || req == ""){
 							alert("Please insert requirements for the plan");
 						}else{
-							$.post('@{create()}',{
+							$.post('@{edit()}',{
 								title: t,
-								user:'${user}',
 								startDate: sd,
 								endDate: ed,
 								description: desc,
-								topic:'${topic}',
 								requirement:req
 							});
 						}
@@ -50,4 +49,3 @@ End Date:<input type = "text" id = "enddate" size ="30" value ="Enter Start Date
 		}
 	}
 </script>
-
