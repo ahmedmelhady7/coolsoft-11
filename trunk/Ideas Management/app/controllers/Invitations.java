@@ -6,6 +6,7 @@ import java.util.List;
 import play.mvc.Controller;
 import models.Invitation;
 import models.MainEntity;
+import models.Notification;
 import models.Organization;
 import models.Role;
 import models.Topic;
@@ -168,6 +169,28 @@ public class Invitations extends CRUD {
 							ent.id, "entity");
 
 				}
+			} else {
+				// idea devoloper by ibrahim adel
+				Role role2 = Role.find("byRoleName", "Idea Developer").first();
+				if (role2 == null) {
+					// role ???
+					role2 = new Role("Idea Developer", new String[0]);
+					role2._save();
+				}
+				UserRoleInOrganization roleInOrg = new UserRoleInOrganization(user,
+						org, role2);
+				roleInOrg._save();
+				user.userRolesInOrganization.add(roleInOrg);
+				Notification n1 = new Notification("Invitation accepted",
+						invite.sender, user.username + " accepted th invitation");
+				n1._save();
+				User orgLead = org.creator;
+				if (orgLead.id != invite.sender.id) {
+					Notification n2 = new Notification("Invitation accepted",
+							orgLead, user.username + " accepted th invitation");
+					n2._save();
+				}
+				
 			}
 
 		}

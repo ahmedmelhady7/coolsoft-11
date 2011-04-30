@@ -3,6 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import notifiers.Mail;
+
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import controllers.CRUD.ObjectType;
@@ -161,7 +163,7 @@ public class Organizations extends CRUD {
 		if (rec != null) {
 			rec.invitation.add(inv);
 		}
-		// send the invitation
+		Mail.invite(email, "Idea Devoloper", org.name, "");
 
 	}
 

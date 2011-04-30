@@ -706,16 +706,25 @@ public class Users extends CRUD {
 		Organization org = inv.organization;
 		User user = User.findById(userId);
 		if (r) {
-			Role role = Role.find("byRoleName", "member").first();
+			Role role = Role.find("byRoleName", "Idea Developer").first();
 			if (role == null) {
 				// role ???
-				role = new Role("member", new String[0]);
+				role = new Role("Idea Developer", new String[0]);
 				role._save();
 			}
 			UserRoleInOrganization roleInOrg = new UserRoleInOrganization(user,
 					org, role);
 			roleInOrg._save();
 			user.userRolesInOrganization.add(roleInOrg);
+			Notification n1 = new Notification("Invitation accepted",
+					inv.sender, user.username + " accepted th invitation");
+			n1._save();
+			User orgLead = org.creator;
+			if (orgLead.id != inv.sender.id) {
+				Notification n2 = new Notification("Invitation accepted",
+						orgLead, user.username + " accepted th invitation");
+				n2._save();
+			}
 			// any other insertions?
 		}
 
