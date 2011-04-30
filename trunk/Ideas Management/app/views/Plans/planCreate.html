@@ -1,19 +1,53 @@
 #{extends 'main.html' /}
-#{set title:'View Plan as List' /}<h3>${p.title}</h3>
-<br/>
-<p>Insert title</p>
-<input name = "title" type="text" size="30" value="Enter title here here!">
-<p>Insert start date</p>
-<input name = "startday" type="text" size="30" value="Enter day">
-<input name = "startmonth" type="text" size="30" value="Enter month">
-<input name = "startyear" type="text" size="30" value="Enter year">
-<p>Insert end date</p>
-<input name = "endday" type="text" size="30" value="Enter day">
-<input name = "endmonth" type="text" size="30" value="Enter month">
-<input name = "endyear" type="text" size="30" value="Enter year">
-<p>Insert description</p>
-<input type="description" size="1000" value="Enter description">
-<p>Insert requirement</p>
-<input name = "requirement" type="requirement" size="100" value="Enter requirement">
-${p.requirements.add(p)}
+#{set title:'Plan Creation' /}
+<h1> Create Plan </h1>
+Plan title:<input type= "text" id= "plantitle" size= "30" value = "Enter title here!">
+Start Date:<input type = "text" id = "startdate" size ="30" value ="Enter Start Date e.g. DD/MM/YYYY">
+End Date:<input type = "text" id = "enddate" size ="30" value ="Enter Start Date e.g. DD/MM/YYYY">
+<p><b>Insert the description of the plan</b></p>
+<textarea id="description" rows="7" cols="50" value = "Insert the description of a plan here!">
+</textarea>
+<p><b>Insert the requirements of the plan</b></p>
+<textarea id="requirements" rows="7" cols="50" value = "Insert the requirements of the plan here!">
+</textarea>
+<input type ="submit" value = "Create" onclick="javascript:create();"/>
+<!a href = ""> Go to add items<!/a>
+<script type ="text/javascript">
+	function checkall(){
+		var t = document.getElementById("plantitle").value;
+		var sd = document.getElementById("startdate").value;
+		var ed = document.getElementById("enddate").value;
+		var desc = document.getElementById("description").value;
+		var req = document.getElementById("requirements").value;
+		if(t == null || t== ""){
+			alert("Please insert Plan title");
+		}else{
+			if(sd == null|| sd == ""){
+				alert("Please insert Start Date");
+			}else{
+				if(ed == null || ed == ""){
+					alert("Please insert End Date");
+				}else{
+					if(desc == null || desc == ""){
+						alert("Please insert a description for the plan");
+					}else{
+						if(req == null || req == ""){
+							alert("Please insert requirements for the plan");
+						}else{
+							$.post('@{create()}',{
+								title: t,
+								user:'${user}',
+								startDate: sd,
+								endDate: ed,
+								description: desc,
+								topic:'${topic}',
+								requirement:req
+							});
+						}
+					}
+				}
+			}
+		}
+	}
+</script>
 
