@@ -4,6 +4,9 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import controllers.Notifications;
+import controllers.Users;
+
 import play.data.validation.*;
 import play.db.jpa.Model;
 
@@ -86,8 +89,8 @@ public class Idea extends Model {
 	 * @author ${Ibrahim Safwat}
 	 * Must keep track of which users rated
 	 */
-	//@OneToOne (mappedBy = "idea", cascade = CascadeType.ALL)
-	//public List<User> usersRated;
+	@OneToMany
+	public List<User> usersRated;
 
 	/**
 	 * @author ${Ibrahim Safwat}
@@ -119,8 +122,7 @@ public class Idea extends Model {
 		this.belongsToTopic = topic;
 		this.isDraft = false;
 		this.tagsList = new ArrayList<Tag>();
-
-		// this.commentsList = new ArrayList<Comment>();
+		this.commentsList = new ArrayList<Comment>();
 
 	}
 
@@ -132,7 +134,7 @@ public class Idea extends Model {
 	 *            title of the idea
 	 * @param body
 	 *            the body of the idea
-	 * @param user
+	 * @param user//user must be organizer
 	 *            Author of the idea
 	 * @param topic
 	 *            Topic that the idea belongs/added to
@@ -150,6 +152,7 @@ public class Idea extends Model {
 		user.ideasCreated.add(this);
 		this.isDraft = isDraft;
 		this.tagsList = new ArrayList<Tag>();
+		this.usersRated = new ArrayList<User>();
 		// this.commentsList = new ArrayList<Comment>();
 	}
 	
@@ -163,9 +166,13 @@ public class Idea extends Model {
 	 * @param ideaID
 	 * 				ID of the idea to be shared
 	 */
-	public void shareIdea(User UserToShare, User UserToShareWith, int ideaID)
+	public void shareIdea(ArrayList<User> UserToShare, User UserToShareWith, long ideaID)
 	{
-		// send a notification to UserToShareWith with the ideaID from UserToShare
+		String type = "idea";
+		String desc = "userLoggedIn shared an Idea with you";
+		UserToShare = new ArrayList<User>();
+		long notId = ideaID;
+		Notifications.sendNotification(UserToShare, notId, type, desc);
 	}
 	
 	/**
@@ -178,8 +185,24 @@ public class Idea extends Model {
 	 */
 	public void setPriority(String priority, int ideaID)
 	{
-		//user must be organizer
 		//ideaID.priority = priority
+	}
+	
+	/**
+	 * @author ${Ibrahim Safwat}
+	 * 
+	 * @param userToCheck
+	 * 				User to be checked if he/she is in the list usersRated
+	 * @return
+	 */
+	public boolean checkRated(User userToCheck)
+	{
+		for(int i = 0;i<usersRated.size();i++)
+		{
+			if(userToCheck == usersRated.get(i))
+			return true;
+		}
+		return false;
 	}
 	
 	
@@ -193,20 +216,18 @@ public class Idea extends Model {
 	 */
 	public void rate(int rate, int ideaID)
 	{
-		//user must be organizer in the organization to rate an idea
-		//if user already rated -> error "already rated"
-		
-//		if(rate>=0 && rate<=5)
+//		User userLoggedIn = new User();
+//		
+//		if(!checkRated(userLoggedIn))
 //		{
-//			float oldRating;
-//			float tempRating;
-//			tempRating = (oldRating + rate)/2;
-//			ideaID.rating = tempRating;
-//		}
-//		else
-//		{
-//			error"Number must be between 0 and 5"
-//		}
+//			if(rate>=0 && rate<=5)
+//			{
+//				float oldRating;
+//				float tempRating;
+//				tempRating = (oldRating + rate)/2;
+//				ideaID.rating = tempRating;
+//			}
+//		}	
 	}
 
 }
