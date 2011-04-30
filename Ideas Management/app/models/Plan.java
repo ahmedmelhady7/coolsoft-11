@@ -4,6 +4,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import controllers.Notifications;
+
 import play.data.validation.Required;
 import play.db.jpa.*;
 
@@ -26,8 +28,8 @@ public class Plan extends Model {
 	@OneToOne
 	public Topic topic;
 	
-	// @OneToMany(mappedBy="plan", cascade=CascadeType.ALL)
-	// public List<Comment> comments;
+//	 @OneToMany(mappedBy="plan", cascade=CascadeType.ALL)
+//	 public List<Comment> comments;
 	
 	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
 	public List<Idea> ideas;
@@ -130,9 +132,13 @@ public class Plan extends Model {
 	 * @param planID
 	 * 				ID of the plan to be shared
 	 */
-	public void sharePlan(User UserToShare, User UserToShareWith, int planID)
+	public void sharePlan(ArrayList<User> UserToShare, User UserToShareWith, long planID)
 	{
-		// send a notification to UserToShareWith with the planID from UserToShare
+		String type = "plan";
+		String desc = "userLoggedIn shared a plan with you";
+		UserToShare = new ArrayList<User>();
+		long notId = planID;
+		Notifications.sendNotification(UserToShare, notId, type, desc);
 	}
 	
 	
@@ -147,20 +153,19 @@ public class Plan extends Model {
 	
 	public void rate(int rate, int planID)
 	{
-		//organization must be public or user must be enrolled in organization to rate
-		//if user already rated -> error "already rated"
 		
-//		if(rate>=0 && rate<=5)
+//		User userLoggedIn = new User();
+//		
+//		if(!checkRated(userLoggedIn))
 //		{
-//			float oldRating;
-//			float tempRating;
-//			tempRating = (oldRating + rate)/2;
-//			planID.rating = tempRating;
-//		}
-//		else
-//		{
-//			error"Number must be between 0 and 5"
-//		}
+//			if(rate>=0 && rate<=5)
+//			{
+//				float oldRating;
+//				float tempRating;
+//				tempRating = (oldRating + rate)/2;
+//				planID.rating = tempRating;
+//			}
+//		}	
 		
 		
 	}
