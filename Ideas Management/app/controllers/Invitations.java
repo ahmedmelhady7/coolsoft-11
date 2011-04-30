@@ -47,7 +47,7 @@ public class Invitations extends CRUD {
     // page of invitation
    public static void Page(Organization org,MainEntity ent,long id){
 	  // long num=id;
-	     if(id==-1)
+	     if(id==0)
 	          render(org,ent);
 	  else
 		  render(org,ent,User.findById(id));
