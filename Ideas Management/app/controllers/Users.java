@@ -720,7 +720,7 @@ public class Users extends CRUD {
 			Role role = Role.find("byRoleName", "Idea Developer").first();
 			if (role == null) {
 				// role ???
-				role = new Role("Idea Developer", new ArrayList());
+				role = new Role("Idea Developer", "");
 				role._save();
 			}
 			UserRoleInOrganization roleInOrg = new UserRoleInOrganization(user,
