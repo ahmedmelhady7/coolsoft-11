@@ -366,11 +366,11 @@ public class User extends Model {
 	}
 
 	/**
-	 * This Method is to return all the users notifications
+	 * This Method returns all the users notifications
 	 * 
 	 * @author Ahmed Maged
 	 * 
-	 * @Story C1S14
+	 * @story C1S14
 	 * 
 	 * @return List of notifications
 	 */
@@ -380,11 +380,11 @@ public class User extends Model {
 	}
 
 	/**
-	 * This Method is to return all the users notification profiles
+	 * This Method returns all the users notification profiles
 	 * 
 	 * @author Ahmed Maged
 	 * 
-	 * @Story C1S14
+	 * @story C1S14
 	 * 
 	 * @return List of notification profiles
 	 */
