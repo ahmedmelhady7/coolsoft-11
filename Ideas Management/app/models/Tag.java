@@ -71,7 +71,7 @@ public class Tag extends Model {
 	/**
 	 * This Method adds a user to the list of followers
 	 * 
-	 * @author m.hisham.sa
+	 * @author Mohamed Hisham
 	 * 
 	 * @story C2S11
 	 * 
@@ -82,6 +82,7 @@ public class Tag extends Model {
 	 */
 	public void follow(User user) {
 		followers.add(user);
+		_save();
 	}
 
 	/**
