@@ -549,15 +549,12 @@ public class Search extends Controller {
 
 	/**
 	 * 
-	 * @author Loaay
+	 * @author Loaay Alkherbawy
 	 * 
-	 * @story C4S1
+	 * @story C4S01 Searching for organizations, entities, ideas and topics using a given keyword
 	 * 
-	 */
-	/*
-	 * quickSearch method by Loaay Alkherbawy searching for entities,
-	 * organizations, entities, topics and ideas using a keyword and the
-	 * userEmail to define how the result will appear to him
+	 * @param keyword: the keyword the user enters to search for
+	 * 
 	 */
 
 	public static void quickSearch(String keyword) {
@@ -585,7 +582,16 @@ public class Search extends Controller {
 		}
 	}
 
-	// method that searches for organizations
+	/**
+	 * 
+	 * @author Loaay Alkherbawy
+	 * 
+	 * @story C4S01 Searching for organizations using a given keyword
+	 * 
+	 * @param keyword: the keyword the user enters to search for
+	 * 
+	 * @return List<Object> 
+	 */
 	public static List<Object> searchForOrganization(String keyword) {
 		String userId = Security.connected();
 		String[] keywords = { keyword };
@@ -639,7 +645,16 @@ public class Search extends Controller {
 		return listOfResults;
 	}
 
-	// method that searches for entities
+	/**
+	 * 
+	 * @author Loaay Alkherbawy
+	 * 
+	 * @story C4S01 Searching for entities using a given keyword
+	 * 
+	 * @param keyword: the keyword the user enters to search for
+	 * 
+	 * @return List<Object>
+	 */
 	public static List<Object> searchForEntity(String keyword) {
 		String userId = Security.connected();
 		String[] keywords = { keyword };
@@ -696,7 +711,16 @@ public class Search extends Controller {
 		return listOfResults;
 	}
 
-	// method that searches for ideas
+	/**
+	 * 
+	 * @author Loaay Alkherbawy
+	 * 
+	 * @story C4S01 Searching for ideas using a given keyword
+	 * 
+	 * @param keyword: the keyword the user enters to search for
+	 * 
+	 * @return List<Object>
+	 */
 	public static List<Object> searchForIdea(String keyword) {
 		String userId = Security.connected();
 		String[] keywords = { keyword };
@@ -752,7 +776,16 @@ public class Search extends Controller {
 		return listOfResults;
 	}
 
-	// method that searches for topics
+	/**
+	 * 
+	 * @author Loaay Alkherbawy
+	 * 
+	 * @story C4S01 Searching for topics using a given keyword
+	 * 
+	 * @param keyword: the keyword the user enters to search for
+	 * 
+	 * @return List<Object>
+	 */
 	public static List<Object> searchForTopic(String keyword) {
 		String userId = Security.connected();
 		String[] keywords = { keyword };
@@ -801,6 +834,15 @@ public class Search extends Controller {
 		return listOfResults;
 	}
 
+	/**
+	 * 
+	 * @author Loaay Alkherbawy
+	 * 
+	 * @story C4S01 Searching for organizations using a given keyword
+	 * 
+	 * this method renders the searchResult view
+	 * 
+	 */
 	public static void searchResult() {
 		String connected = Security.connected();
 		render(listOfResults,connected);
