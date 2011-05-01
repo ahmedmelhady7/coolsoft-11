@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
+
+        <title>Create Organization</title>
+    </head>
+
+    <body>
+        #{extends 'main.html' /} 
+
+        <p>Please fill the required information.</p>
+        Organization Name: <input type="text" id="name" name=
+        "name"> <br /><br />
+        Privacy Level:<br />
+         <input type="radio" name="privacy" value="Public" checked>
+        Public<br>
+        <input type="radio" name="privacy" value="Private">
+        Private<br>
+        <input type="radio" name="privacy" value="Secret">
+        Secret<br />
+		<br />
+		Allow users to create tags?<br>
+		<input type="radio" name="tag" value="Yes" checked>Yes<br>
+		<input type="radio" name="tag" value="No">No<br>
+		<input type="submit" value="Create" onclick = "submit(name.value,privacy.value,tag.value,'${creator}');" />
+		
+		<script type="text/javascript">
+			function submit(n,p,t,u){
+				var pp = 0;
+				if(privacy.value=="Public"){
+					pp = 2;
+				}
+				else if(privacy.value=="Private"){
+						pp = 1;
+					}
+				var b = true;
+				if(createTag.value=="No"){
+					b = false;
+				}
+				$.post('@{createOrganization()}', {name:n, creator:u, privacyLevel:pp, createTag:b});
+				alert("Your new organization has been created!");
+			}
+		</script> 
+    </body>
+</html>
+
