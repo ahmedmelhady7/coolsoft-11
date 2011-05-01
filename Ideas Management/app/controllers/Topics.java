@@ -43,18 +43,15 @@ public class Topics extends CRUD {
 	 * @param tag
 	 *            : the tag that is being added
 	 * 
-	 * @param userID
-	 *            : the user who is tagging the topic
-	 * 
 	 */
 
-	public static void tagTopic(long topicID, String tag, long userID) {
+	public static void tagTopic(long topicID, String tag) {
 
 		boolean tagAlreadyExists = false;
 		boolean userNotAllowed = false;
 		boolean tagExists = false;
 		List<Tag> listOfTags = Tag.findAll();
-		User user = (User) User.findById(userID);
+		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicID);
 
 		if (!topic.organizers.contains(user)) {
