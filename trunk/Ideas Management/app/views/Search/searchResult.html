@@ -35,20 +35,22 @@ The Search Results Viewer
             Welcome ${connected}!
         </font>
         </br>
-        <input type="text" id="search" name="search" value= "enter a keyword here" />
-		<input type="button" id="submit" name="submit" value="Search" onclick="quickSearch(this.form)"/>
+        <input type="text" id="search" name="search" value= "enter a keyword here" /><input type="button" id="submit" name="submit" value="Search" onclick="quickSearch(this.form)"/>
         <script type="text/javascript">
             function step1(){
-                document.getElementById('div1').innerHTML = '<center><img src="/public/images/Loading.gif"/></center>';
-				setTimeout(function(){},2000);
-				document.getElementById('div1').innerHTML = "<center>#{if listOfResults} Found ${listOfResults.size()} item${listOfResults.pluralize()} matching <ul> #{list items:listOfResults, as:'item'} <li><a href='@{Plans.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if} #{else} Sorry! We did not find any results matching #{/else}</center>";
+                document.getElementById('div1').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
+                setTimeout('viewResult()', 2000);
+            }
+            
+            function viewResult(){
+                document.getElementById('div1').innerHTML = "<center>#{if listOfResults} #{if organizationsFound} Found ${organizationsFound.size()} result${organizationsFound.pluralize()}<ul> #{list items:organizationsFound, as:'item'} <li><a href='@{Organization.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} result${entitiesFound.pluralize()}<ul> #{list items:entitiesFound, as:'item'} <li><a href='@{MainEntity.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if} #{if topicsFound} Found ${topicsFound.size()} result${topicsFound.pluralize()}<ul> #{list items:topicsFound, as:'item'} <li><a href='@{Topic.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if} #{if ideasFound} Found ${ideasFound.size()} result${ideasFound.pluralize()}<ul> #{list items:ideasFound, as:'item'} <li><a href='@{Idea.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if} #{/if} #{else} Sorry! We did not find any results matching #{/else}</center>";
             }
             
             function quickSearch(frm){
                 $.post('@{quickSearch}', {
                     keyword: frm.search.value
                 }, function(){
-					window.location.reload(true);
+                    window.location.reload(true);
                 });
             }
         </script>
