@@ -1,7 +1,6 @@
 #{extends 'planLayout.html' /}
 #{set title:'View Plan as List' /}<h3>${p.title}</h3>
 <br/>
-<label id = "volunteerError" > ${y} </label> 
 #{if itemsList.size() > 0}
 <ul style="list-style: none; ">
     #{list items:itemsList, as:'item'}
@@ -26,9 +25,11 @@
                 </li>
                 #{/list}
             </ul>
-           <a href="@{Plans.volunteer(item.id, p.id)}">Volunteer to work on this item</a>
+			#{if user.canVolunteer(item.id)}
+           <a href="@{VolunteerRequests.justify(item.id, p.id, 0)}">Volunteer to work on this item</a>
             <br/>
-            #{if p.topic.getOrganizer().contains(user)}
+			#{/if}
+            #{if canAssign == 1)}
 			<a href="@{AssignRequests.assign(item.id, p.id)}">Assign a user to this item</a>
             #{/if}
         </fieldset>
@@ -51,7 +52,7 @@ No items exist in plan. Please contact
 ${p.topics.organizers.get(0).username}
 #{/else}
 #{/else}
-<script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
+<script type="text/javascript">
     function volunteer(){
 	
 	}  

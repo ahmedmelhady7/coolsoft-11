@@ -2,6 +2,7 @@
 #{set title:'Volunteer request' /}
 Title: ${item.summary}
 <br/>
+#{if success == 0}
 Please state why you want to work on this item.
 #{form @VolunteerRequests.sendVolunteerRequest(), method:'POST', id:'creationForm', onsubmit: 'return validate()' enctype:'multipart/form-data' }
 <textarea id="just" name = "justification" rows="7" cols="50">
@@ -11,14 +12,18 @@ Please state why you want to work on this item.
 <input type="submit" value="send" />
 <br/>
 #{/form}
-
+#{if}
+#{else}
+Request not sent successfuly for one of the following reasons:
+You might have been blocked from the plan's topic or an assign request might have been sent to you to work on this item
+#{/else}
 <a href="@{Plans.viewAsList(planId)}">Go back to plan</a>
 
 <script type="text/javascript">
 	
 	function validate(){
 		if (document.getElementById("just").value == null|| document.getElementById("just").value == "" ) {
-			alert("This is a required field");
+			alert("you must enter a valid justification");
 			return false;
 		}
 	}
