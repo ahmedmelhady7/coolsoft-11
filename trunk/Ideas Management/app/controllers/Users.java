@@ -9,8 +9,11 @@ import java.util.List;
 
 import notifiers.Mail;
 
+import play.data.binding.Binder;
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel.JPAQuery;
+import play.exceptions.TemplateNotFoundException;
+import play.i18n.Messages;
 
 import models.MainEntity;
 import models.Notification;
@@ -758,6 +761,31 @@ public class Users extends CRUD {
 
 		return list;
 	}
+	
+	public static void save(long id) throws Exception {
+		//Security.check(Security.getConnected().isAdmin||);
+		ObjectType type = ObjectType.get(Users.class);
+		notFoundIfNull(type);
+		//Model object = type.findById(id);
+		User object = User.findById(id);
+		Binder.bind(object, "object", params.all());
+		validation.valid(object);
+		if (validation.hasErrors()) {
+			renderArgs.put("error", Messages.get("crud.hasErrors"));
+			try {
+				render(request.controller.replace(".", "/") + "/show.html", type, object);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/show.html", type, object);
+			}
+		}
+		object._save();
+		flash.success(Messages.get("crud.saved", type.modelName));
+		if (params.get("_save") != null) {
+			redirect(request.controller + ".list");
+		}
+		redirect(request.controller + ".show", object._key());
+	}
+
 
 	/**
 	 * This method renders the list of notifications of the user, to the view to
