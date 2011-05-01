@@ -55,10 +55,8 @@ public class Plans extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void planCreate(long topicId, long userId) {
-		User user = User.findById(userId);
-		Topic topic = Topic.findById(topicId);
-		render(user, topic);
+	public static void planCreate(long topicId) {
+		render(topicId);
 	}
 
 	/**
@@ -85,12 +83,23 @@ public class Plans extends CRUD {
 	 *            The requirements needed for executing this plan
 	 * @return void
 	 */
-	public static void create(String title, User user, Date startDate,
-			Date endDate, String description, Topic topic, String requirement) {
+
+	public static void create(String title,Date startDate,
+			Date endDate, String description, long topicId, String requirement,Date istartdate, Date ienddate, String idescription,
+		String isummary, String check) {
+		User user = Security.getConnected();
+		Topic topic = Topic.findById(topicId);
 		Plan p = new Plan(title, user, startDate, endDate, description, topic,
 				requirement);
 		p.save();
-
+		p.addItem(istartdate, ienddate, idescription, p, isummary);
+		p.save();
+		if(check.equals("checked")){
+			addItem(p.id);
+		}else{
+			//associateitem(p.id);
+		}
+		
 	}
 
 	/**
@@ -104,6 +113,7 @@ public class Plans extends CRUD {
 	 *            The ID of the plan where the items will be added
 	 * @return void
 	 */
+
 	public static void addItem(long planId) {
 		Plan p = Plan.findById(planId);
 		render(p);
