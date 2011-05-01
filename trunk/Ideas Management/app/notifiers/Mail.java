@@ -35,13 +35,9 @@ public class Mail extends Mailer {
 
 	public static void ReportAsSpamMail(User topicOrganizer, User reporter,
 			Idea reportedIdea) {
-		String email = "The idea with this title " + reportedIdea.title
-				+ " and with this description " + reportedIdea.description
-				+ " has been reported as a spam by this user "
-				+ reporter.username;
-		addRecipient(email);
+		addRecipient(topicOrganizer.email);
 		setFrom("coolsoft-11@gmail.com");
 		setSubject("An Idea is Reported as a Spam");
-		send(topicOrganizer);
+		send(topicOrganizer, reporter, reportedIdea);
 	}
 }
