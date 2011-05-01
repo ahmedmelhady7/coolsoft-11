@@ -185,16 +185,13 @@ public class Users extends CRUD {
 
 	}
 
-	
-
-	public static List<User> getBannedUser(Organization o , String action , long sourceID , String type){
-		List <User> user = (List<User>) BannedUser.find("select bu.bannedUser from BannedUser where bu.organization = ? and bu.action = ? and bu.resourceType = ? and bu.resourceID = ? ", o, action ,type, sourceID );
+	public static List<User> getBannedUser(Organization o, String action,
+			long sourceID, String type) {
+		List<User> user = (List<User>) BannedUser
+				.find("select bu.bannedUser from BannedUser where bu.organization = ? and bu.action = ? and bu.resourceType = ? and bu.resourceID = ? ",
+						o, action, type, sourceID);
 		return (user);
 	}
-	
-	
-	
-
 
 	
 
@@ -258,14 +255,13 @@ public class Users extends CRUD {
 	 * This method is responsible for searching for users using specific
 	 * criteria
 	 * 
-	 * @author ${lama.ashraf}
+	 * @author ${lama ashraf}
 	 * 
 	 * @story C1S13
 	 * 
 	 * @param keyword
 	 *            : the keyword the user enters for searching
 	 * 
-	 * @return void
 	 */
 	public static List<User> searchUser(String keyword) {
 
@@ -298,9 +294,12 @@ public class Users extends CRUD {
 			}
 		}
 
+		searchResultByName.addAll(searchResultByProfession);
+		searchResultByName.addAll(searchResultByEmail);
 		// render(searchResultByName, searchResultByProfession,
 		// searchResultByEmail);
 		return searchResultByName;
+
 	}
 
 	/**
@@ -308,7 +307,7 @@ public class Users extends CRUD {
 	 * This method is responsible for searching for organizers in a certain
 	 * organization
 	 * 
-	 * @author ${lama.ashraf}
+	 * @author ${lama ashraf}
 	 * 
 	 * @story C1S13
 	 * 
@@ -332,33 +331,26 @@ public class Users extends CRUD {
 		return finalOrganizers;
 	}
 
-	/*
-	 * public List<User> searchByTopic(Topic id) {
-	 * 
-	 * 
-	 * }
-	 */
-
 	/**
 	 * 
 	 * This method is responsible for telling whether a user is allowed to do a
-	 * specific action in an organization/entity/topic/plan
+	 * specific action in an organization/entity/topic
 	 * 
-	 * @author ${lama.ashraf}
+	 * @author ${lama ashraf}
 	 * 
 	 * @story C1S15
 	 * 
 	 * @param user
-	 *            : the user who is going to perfom the action
+	 *            : the user who is going to perform the action
 	 * 
 	 * @param action
 	 *            :the action performed
 	 * 
 	 * @param placeId
-	 *            : the id of the organization/ entity/ topic/ plan
+	 *            : the id of the organization/ entity/ topic
 	 * 
 	 * @param placeType
-	 *            : the type whether an organization/ entity/ topic/ plan
+	 *            : the type whether an organization/ entity/ topic
 	 * 
 	 * @return boolean
 	 */
@@ -370,66 +362,130 @@ public class Users extends CRUD {
 		JPAQuery banned = BannedUser.find(
 				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 				action, placeType, placeId).first();
-
+		String role;
 		if (user.isAdmin) {
 			return true;
-		} else {
-			if (banned != null) {
-				return false;
+		}
+
+		if (banned != null) {
+			return false;
+		}
+		if (UserRoleInOrganizations.isOrganizer(user, placeId, placeType)) {
+			List<String> r = Roles.getRoleActions("organizer");
+			if (r.contains(action)) {
+				return true;
 			} else {
-				if (placeType == "organization") {
-					Organization org = Organization.findById(placeId);
-					if (org.privacyLevel == 0 || org.privacyLevel == 1) {
-						List<UserRoleInOrganization> allowed = UserRoleInOrganization
-								.find("byEnrolledAndbyOrganization", user, org)
-								.fetch();
-						if (allowed == null) {
-							return false;
-						} else {
-							return true;
-						}
-					} else {
-						return true;
-					}
+				return false;
+			}
+		}
 
+		if (placeType == "organization") {
+			Organization org = Organization.findById(placeId);
+			// List<UserRoleInOrganization> l =
+			// UserRoleInOrganization.find("byOrganizationAnd")
+			if (user.equals(org.creator)) {
+				if (Roles.getRoleActions("organization lead").contains(action)) {
+					return true;
 				} else {
-					if (placeType == "topic") {
-						Topic topic = Topic.findById(placeId);
-						if (topic.privacyLevel == 0 || topic.privacyLevel == 1) {
-							List<UserRoleInOrganization> allowed = UserRoleInOrganization
-									.find("byEnrolledAndbyEntityTopicIDAndType",
-											user, topic, "topic").fetch();
-							if (allowed == null) {
-								return false;
-							} else {
-								return true;
-							}
-						} else {
-							return true;
-						}
+					return false;
+				}
+
+			}
+
+			if (org.privacyLevel == 0 || org.privacyLevel == 1) {
+
+				List<UserRoleInOrganization> allowed = UserRoleInOrganization
+						.find("byEnrolledAndbyOrganization", user, org).fetch();
+				if (allowed == null) {
+					return false;
+				} else {
+					if (Roles.getRoleActions("idea developer").contains(action)) {
+						return true;
 					} else {
-						if (placeType == "plan") {
-							Plan plan = Plan.findById(placeId);
-							Topic topic = plan.topic;
-							if (topic.privacyLevel == 0
-									|| topic.privacyLevel == 1) {
-								List<UserRoleInOrganization> allowed = UserRoleInOrganization
-										.find("byEnrolledAndbyEntityTopicIDAndType",
-												user, topic, "topic").fetch();
-								if (allowed == null) {
-									return false;
-								} else {
-									return true;
-								}
-							} else {
-								return true;
-							}
+						return false;
+					}
+				}
+			} else {
+				if (Roles.getRoleActions("idea developer").contains(action)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+
+		}
+		if (placeType == "topic") {
+			Topic topic = Topic.findById(placeId);
+			MainEntity m = topic.entity;
+			Organization org = m.organization;
+			if (user.equals(org.creator)) {
+				if (Roles.getRoleActions("organization lead").contains(action)) {
+					return true;
+				} else {
+					return false;
+				}
+
+			}
+			if (topic.privacyLevel == 0 || topic.privacyLevel == 1) {
+				List<UserRoleInOrganization> allowed = UserRoleInOrganization
+						.find("byEnrolledAndbyEntityTopicIDAndType", user,
+								topic, "topic").fetch();
+				if (allowed == null) {
+					return false;
+				} else {
+					if (Roles.getRoleActions("idea developer").contains(action)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			} else {
+				if (org.privacyLevel == 0 || org.privacyLevel == 1) {
+
+					List<UserRoleInOrganization> allowed = UserRoleInOrganization
+							.find("byEnrolledAndbyOrganization", user, org)
+							.fetch();
+					if (allowed == null) {
+						return false;
+					} else {
+						if (Roles.getRoleActions("idea developer").contains(
+								action)) {
+							return true;
+						} else {
+							return false;
 						}
 					}
-
 				}
 			}
 		}
+
+		if (placeType == "entity") {
+			MainEntity entity = MainEntity.findById(placeId);
+			Organization org = entity.organization;
+			if (user.equals(org.creator)) {
+				if (Roles.getRoleActions("organization lead").contains(action)) {
+					return true;
+				} else {
+					return false;
+				}
+
+			}
+			if (org.privacyLevel == 0 || org.privacyLevel == 1) {
+
+				List<UserRoleInOrganization> allowed = UserRoleInOrganization
+						.find("byEnrolledAndbyOrganization", user, org).fetch();
+				if (allowed == null) {
+					return false;
+				} else {
+					if (Roles.getRoleActions("idea developer").contains(action)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+		}
+
 		System.out.println("you entered an invalid type");
 		return false;
 
@@ -538,7 +594,7 @@ public class Users extends CRUD {
 		User user = User.findById(id);
 		String x = "";
 		try {
-			
+
 			if (user.state != 'n') {
 				user.state = 'd';
 				x = "deletion successful";
@@ -552,7 +608,7 @@ public class Users extends CRUD {
 		}
 
 	}
-	  
+
 	/**
 	 * 
 	 * This method returns list of entities within a specific organization that
