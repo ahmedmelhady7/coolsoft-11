@@ -132,7 +132,7 @@ public class Users extends CRUD {
 
 	public static void unfollowEntity(long entityId, long userId) {
 		MainEntity entity = MainEntity.findById(entityId);
-		User user = User.findById(userId);	
+		User user = User.findById(userId);
 		entity.unfollow(user);
 		user.unfollow(entity);
 	}
@@ -150,7 +150,7 @@ public class Users extends CRUD {
 	 * @return void
 	 */
 
-	public static void listFollows(long userId){
+	public static void listFollows(long userId) {
 		User user = User.findById(userId);
 		try {
 			List<Organization> organizations = user.followingOrganizations;
@@ -224,7 +224,7 @@ public class Users extends CRUD {
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * This method is for a user to create a Topic in an Entity he manages
@@ -238,7 +238,7 @@ public class Users extends CRUD {
 	 * 
 	 * @param title
 	 *            : the title of the topic being created
-	 *            
+	 * 
 	 * @param description
 	 *            : the description/content of the topic being created
 	 * 
@@ -248,16 +248,18 @@ public class Users extends CRUD {
 	 * @param user
 	 *            : the user trying to create the topic
 	 */
-	
-	public void createTopic(long entityId, String title, String description, short privacyLevel, User user){
+
+	public void createTopic(long entityId, String title, String description,
+			short privacyLevel, User user) {
 		Topic topic = new Topic(title, description, privacyLevel, user);
 		MainEntity entity = MainEntity.findById(entityId);
-		
-		if(Users.isPermitted(user, "create topic", entityId, "entity") && user.entitiesIOrganize.contains(entity)){
+
+		if (Users.isPermitted(user, "create topic", entityId, "entity")
+				&& user.entitiesIOrganize.contains(entity)) {
 			entity.topicList.add(topic);
 			user.topicsCreated.add(topic);
 			user.topicsIOrganize.add(topic);
-		}else {
+		} else {
 			System.out.println("action cannot be performed in this entity");
 		}
 	}
@@ -438,7 +440,8 @@ public class Users extends CRUD {
 					if (Roles.getRoleActions("organizer").contains(action)) {
 						return true;
 					} else {
-						if (Roles.getRoleActions("idea developer").contains(action)) {
+						if (Roles.getRoleActions("idea developer").contains(
+								action)) {
 							return true;
 						} else {
 							return false;
@@ -481,7 +484,8 @@ public class Users extends CRUD {
 					if (Roles.getRoleActions("organizer").contains(action)) {
 						return true;
 					} else {
-						if (Roles.getRoleActions("idea developer").contains(action)) {
+						if (Roles.getRoleActions("idea developer").contains(
+								action)) {
 							return true;
 						} else {
 							return false;
@@ -533,7 +537,8 @@ public class Users extends CRUD {
 					if (Roles.getRoleActions("organizer").contains(action)) {
 						return true;
 					} else {
-						if (Roles.getRoleActions("idea developer").contains(action)) {
+						if (Roles.getRoleActions("idea developer").contains(
+								action)) {
 							return true;
 						} else {
 							return false;
@@ -809,15 +814,18 @@ public class Users extends CRUD {
 	 */
 
 	public static void ViewOrgInv(long userId) {
-		User u = User.findById(userId);
-		List<Invitation> invs = u.invitation;
-		List<Organization> organizations = new ArrayList<Organization>();
-		for (int i = 0; i < invs.size(); i++) {
-			if (invs.get(i).organization != null) {
-				organizations.add(invs.get(i).organization);
+		// User u = User.findById(userId);
+		User u = (User) User.findAll().get(1);
+		List<Invitation> invitations = new ArrayList<Invitation>();
+		List<Invitation> invs1 = Invitation.findAll();
+		for (int j = 0; j < invs1.size(); j++) {
+			if (invs1.get(j).destination.equalsIgnoreCase(u.email)
+					&& invs1.get(j).organization != null) {
+				invitations.add(invs1.get(j));
 			}
+
 		}
-		render(organizations, userId);
+		render(invitations, userId);
 	}
 
 	/**
@@ -845,16 +853,18 @@ public class Users extends CRUD {
 		Organization org = inv.organization;
 		User user = User.findById(userId);
 		if (r) {
+			// System.out.println("@@@@@");
 			Role role = Role.find("byRoleName", "Idea Developer").first();
 			if (role == null) {
 				// role ???
-				role = new Role("Idea Developer", "");
+				role = new Role("Idea Developer", "view");
 				role._save();
 			}
 			UserRoleInOrganization roleInOrg = new UserRoleInOrganization(user,
 					org, role);
 			roleInOrg._save();
 			user.userRolesInOrganization.add(roleInOrg);
+			// user.
 			Notification n1 = new Notification("Invitation accepted",
 					inv.sender, user.username + " accepted th invitation");
 			n1._save();
@@ -871,5 +881,7 @@ public class Users extends CRUD {
 		org._save();
 		user.invitation.remove(inv);
 		user._save();
+		inv._delete();
 	}
+
 }

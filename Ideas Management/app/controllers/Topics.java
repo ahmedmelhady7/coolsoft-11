@@ -214,7 +214,10 @@ public class Topics extends CRUD {
 	 * @return void
 	 */
 
-	public static void requestToBost(long topicId, User user) {
+	public static void addRequest(long topicId, long userId) {
+		//System.out.println("kkk");
+		User user = User.findById(userId);
+		//Organization org = Organization.findById(orgId);
 		Topic t = Topic.findById(topicId);
 		t.requestFromUserToPost(user);
 	}
@@ -227,22 +230,25 @@ public class Topics extends CRUD {
 	 * 
 	 * @story C2S13
 	 * 
-	 * @param org
-	 *            : The organization where the topics are
+	 * @param orgId
+	 *            : The organization id where the topics are
 	 * 
-	 * @param user
-	 *            : the user who wants to request
+	 * @param userId
+	 *            : the user id who wants to request
 	 * 
 	 * @return void
 	 */
 
-	public static void requestTopicList(User user, Organization org) {
+	public static void requestToPost(long orgId, long userId) {
+		User user = (User) User.findAll().get(0);
+		Organization org = (Organization) Organization.findAll().get(0);
 		List<MainEntity> e = org.entitiesList;
 		List<Topic> topics = new ArrayList<Topic>();
 		List<Topic> temp;
 		for (int i = 0; i < e.size(); i++) {
 			temp = e.get(i).topicList;
 			for (int j = 0; j < temp.size(); j++) {
+//				??
 				if (user.topicsIOrganize.indexOf(temp.get(j)) < 0) {
 					topics.add(temp.get(j));
 				}
