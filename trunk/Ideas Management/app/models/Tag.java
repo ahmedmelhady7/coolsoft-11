@@ -65,6 +65,7 @@ public class Tag extends Model {
 		this.followers = new ArrayList<User>();
 		this.organizations = new ArrayList<Organization>();
 		this.taggedItems = new ArrayList<Item>();
+		this.taggedTopics = new ArrayList<Topic>();
 		// this.relatedTags = new ArrayList<Tag>();
 	}
 	/**
@@ -106,5 +107,11 @@ public class Tag extends Model {
 
 	public String getName() {
 		return name;
+	}
+	/**
+	 * Overrides the method toString to return the name of the tag
+	 */
+	public String toString() {
+		return this.name;
 	}
 }
