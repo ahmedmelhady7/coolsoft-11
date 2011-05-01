@@ -381,7 +381,11 @@ public class Users extends CRUD {
 			if (r.contains(action)) {
 				return true;
 			} else {
-				return false;
+				if (Roles.getRoleActions("idea developer").contains(action)) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 		}
 
@@ -393,7 +397,15 @@ public class Users extends CRUD {
 				if (Roles.getRoleActions("organization lead").contains(action)) {
 					return true;
 				} else {
-					return false;
+					if (Roles.getRoleActions("organizer").contains(action)) {
+						return true;
+					} else {
+						if (Roles.getRoleActions("idea developer").contains(action)) {
+							return true;
+						} else {
+							return false;
+						}
+					}
 				}
 
 			}
@@ -428,7 +440,15 @@ public class Users extends CRUD {
 				if (Roles.getRoleActions("organization lead").contains(action)) {
 					return true;
 				} else {
-					return false;
+					if (Roles.getRoleActions("organizer").contains(action)) {
+						return true;
+					} else {
+						if (Roles.getRoleActions("idea developer").contains(action)) {
+							return true;
+						} else {
+							return false;
+						}
+					}
 				}
 
 			}
@@ -472,7 +492,15 @@ public class Users extends CRUD {
 				if (Roles.getRoleActions("organization lead").contains(action)) {
 					return true;
 				} else {
-					return false;
+					if (Roles.getRoleActions("organizer").contains(action)) {
+						return true;
+					} else {
+						if (Roles.getRoleActions("idea developer").contains(action)) {
+							return true;
+						} else {
+							return false;
+						}
+					}
 				}
 
 			}
