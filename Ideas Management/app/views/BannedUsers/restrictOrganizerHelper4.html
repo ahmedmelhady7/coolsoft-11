@@ -1,0 +1,28 @@
+
+#{extends 'main.html' /}
+#{set title:'Choose action to restrict from' /}
+
+
+
+#{if flash.error}
+    <p style="color:#c00">
+        ${flash.error}
+    </p>
+#{/if}
+
+#{if topicActions.isEmpty() || topicActions == null}
+  <p style="color:#c00"> Sorry No Actions found !! </p>
+#{/if}
+#{else}
+#{form @BannedUsers.restrictOrganizerHelper5(), method:'POST', id:'creationForm',
+       enctype:'multipart/form-data' }
+  #{list items:topicActions, as:'action'}
+<input id = "1" type="radio" name="action" value = ${action}> ${action}
+#{/list}
+<input type = "hidden" name = "type" value = "topic" >
+<input type = "hidden" name = "entityTopicId" value = ${topicId} >
+<input type = "hidden" name = "userId" value = ${userId} >
+
+<input type="submit" value="Restrict">
+#{/form}
+#{/else}

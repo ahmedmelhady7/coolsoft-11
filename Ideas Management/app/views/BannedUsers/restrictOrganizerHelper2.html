@@ -1,0 +1,27 @@
+
+#{extends 'main.html' /}
+#{set title:'Restrict Organizer from a certain topic' /}
+
+
+
+#{if flash.error}
+    <p style="color:#c00">
+        ${flash.error}
+    </p>
+#{/if}
+
+#{if entityTopics.isEmpty()}
+  <p style="color:#c00"> No Topics Found </p>
+#{/if}
+#{else}
+#{form @BannedUsers.restrictOrganizerHelper4(), method:'POST', id:'creationForm',
+       enctype:'multipart/form-data' }
+  #{list items:entityTopics, as:'topic'}
+<input id = "1" type="radio" name="topicId" value = ${topic.id}> ${topic.title} <br />
+#{/list}
+ <br /><br />
+ 
+<input type = "hidden" name = "userId" value = ${userId} >
+<input type="submit" value="Submit">
+#{/form}
+#{/else}

@@ -1,0 +1,28 @@
+
+#{extends 'main.html' /}
+#{set title:'Entities to restrict the Organizer from' /}
+
+
+
+#{if flash.error}
+    <p style="color:#c00">
+        ${flash.error}
+    </p>
+#{/if}
+
+#{if users.isEmpty()}
+  <p style="color:#c00"> This Organizers is not enrolled in any Entity !!! </p>
+#{/if}
+#{else}
+#{form @BannedUsers.restrictOrganizerHelper2(), method:'POST', id:'creationForm',
+       enctype:'multipart/form-data' }
+  #{list items:entities, as:'entity'}
+<input id = "1" type="radio" name="entityId" value = ${entity.id}> ${entity.name}
+#{/list}
+<hr> 
+<input type="checkbox" name="topic" value="true" /> Restrict that organizer from a specific topic <br />
+<input type = "hidden" name = "organizationId" value = ${organizationId} >
+<input type = "hidden" name = "userId" value = ${user.id} >
+<input type="submit" value="Submit">
+#{/form}
+#{/else}
