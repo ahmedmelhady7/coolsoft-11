@@ -35,7 +35,7 @@ public class Organizations extends Controller {
 	 * @return short
 	 */
 
-	public static short getPrivacyLevel(long id) {
+	public static int getPrivacyLevel(long id) {
 
 		Organization organization = Organization.findById(id);
 		if (organization != null)
@@ -189,7 +189,7 @@ public class Organizations extends Controller {
 	 *            tags
 	 */
 	public static void createOrganization(@Required String name, User creator,
-			short privacyLevel, boolean createTag) {
+			int privacyLevel, boolean createTag) {
 		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
