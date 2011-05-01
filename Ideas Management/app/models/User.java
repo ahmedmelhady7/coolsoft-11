@@ -11,6 +11,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import controllers.Topics;
+import controllers.VolunteerRequests;
+
 import play.data.validation.Email;
 import play.data.validation.MaxSize;
 import play.data.validation.MinSize;
@@ -407,10 +410,50 @@ public class User extends Model {
 		return false;
 
 	}
-	
-	public String toString()
-	{
-		return this.firstName + " " + this.lastName + "\t" + "username " + this.username;
+
+	public String toString() {
+		return this.firstName + " " + this.lastName + "\t" + "username "
+				+ this.username;
+	}
+
+	/**
+	 * 
+	 * This Method checks if the user can send a volunteer request to work on
+	 * the item given the item id
+	 * 
+	 * @author salma.qayed
+	 * 
+	 * @story C5S10
+	 * 
+	 * @param itemId
+	 *            : the id of the item that the user is checking if he can volunteer to work on
+	 * @return boolean
+	 */
+	public boolean canVolunteer(long itemId) {
+
+		Item item = Item.findById(itemId);
+		if (!Topics.searchByTopic(item.plan.topic.id).contains(this)) {
+			return false;
+		}
+		if (item.assignees.contains(this)) {
+
+			return false;
+		} else {
+
+			for (int i = 0; i < item.volunteerRequests.size(); i++) {
+				if (this.id == item.volunteerRequests.get(i).sender.id) {
+					return false;
+				}
+			}
+
+			for (int i = 0; i < item.assignRequests.size(); i++) {
+				if (this.id == item.assignRequests.get(i).destination.id) {
+					return false;
+				}
+			}
+		}
+		return true;
+
 	}
 
 }

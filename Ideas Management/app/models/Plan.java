@@ -16,7 +16,9 @@ public class Plan extends Model {
 	@Required public String title;
 	@Required public String status;
 	
+	
 	public float progress;
+
 	
 	@Required public Date startDate;
 	@Required public Date endDate;
@@ -59,6 +61,7 @@ public class Plan extends Model {
 
 	public Plan(String title, User user, Date startDate,
 			Date endDate, String description, Topic topic, String requirement) {
+
 		this.title = title;
 		this.madeBy = user;
 		this.status = "new";
@@ -67,6 +70,7 @@ public class Plan extends Model {
 		this.endDate = endDate;
 		this.description = description;
 		this.requirement = requirement;
+
 		this.items = new ArrayList<Item>();
 		this.ideas = new ArrayList<Idea>();
 		this.topic = topic;
