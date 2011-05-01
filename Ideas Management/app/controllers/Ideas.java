@@ -41,11 +41,11 @@ public class Ideas extends CRUD {
 	 * @return void
 	 */
 
-	public static void saveDraft(String title, String body, Topic topic,
-			User user) {
-		Idea idea = new Idea(title, body, user, topic, true).save();
+	public static void saveDraft(String title,String body,Topic topic )
+	{
+		User user = Security.getConnected();
+		Idea idea = new Idea(title,body,user,topic,true).save();
 	}
-
 	/*
 	 * @author Abdalrahman Ali
 	 * 
