@@ -764,7 +764,19 @@ public class Users extends CRUD {
 		return list;
 	}
 	
-	
+	/**
+	 * This method overrides the CRUD create method that is used to create 
+	 * a new user and make sure that this user is valid, and then it renders
+	 * a message mentioning whether the operation was successful or not.
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * 
+	 * @return void
+	 */
+
 	public static void create() throws Exception {
 		//Security.check(Security.getConnected().isAdmin);
 		ObjectType type = ObjectType.get(Users.class);
