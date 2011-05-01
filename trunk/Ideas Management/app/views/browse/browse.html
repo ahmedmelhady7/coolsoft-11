@@ -22,29 +22,31 @@
   
   	<li>
     		${Organization.name}
-  	</li>
-  	<li>
-  		#{list items:${Organization.enrolledUsers}, as: 'user'
-  			<li>
-    		   ${user.name}
-    		   ${user.id}
-  	        </li>
-  		 #{/list}
-  	</li>
-
-  		${Organization.followers}
+    			 <ul> privacy level
+    		${Organization.privacyLevel}
+    			 
+    			 
+    			 <ul> Creator
+    			 
+    		<li>
+    			${Organization.creator}
+    			<ul> users
+    			
+    		</li>
+    		#{list items:listOfOrganizations.enrolledUsers, as: 'Organization'}
+    		<li>
+    			${Organization.enrolledUsers}
+    		</li>
+    		
+    		#{/list}
+    		
   	</li>
   	
-  	</li>
-
-  		${Organization.ID}
-  	</li>
-  			
-  			
+		
     #{/list}
    
    </ul>
-
+ 
   </ul>
 	
   <script type="text/javascript">
