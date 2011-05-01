@@ -110,7 +110,7 @@ public class Ideas extends CRUD {
 		Idea i = (Idea) object;
 		i.belongsToTopic = topic;
 		i.author = author;
-		i.privacyLevel = topic.privacyLevel;
+		i.privacyLevel = i.privacyLevel;
 		// ArrayList<Comment> ideaComments = (ArrayList<Comment>)
 		// i.commentsList;
 		// ArrayList<Tag> ideaTags = (ArrayList<Tag>) i.tagsList;
