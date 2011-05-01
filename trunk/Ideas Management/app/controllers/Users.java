@@ -193,8 +193,6 @@ public class Users extends CRUD {
 		return (user);
 	}
 
-	
-
 	public void postTopic(String name, String description, short privacyLevel,
 			User creator, MainEntity entity) {
 
@@ -217,7 +215,7 @@ public class Users extends CRUD {
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * this method checks if the user is allowed to post an idea under a certain

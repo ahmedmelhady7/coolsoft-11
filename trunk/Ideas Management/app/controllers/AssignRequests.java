@@ -124,11 +124,17 @@ public class AssignRequests extends CRUD {
 		source.addAssignRequest(assignRequest);
 		sender.addSentAssignRequest(assignRequest);
 		destination.addReceivedAssignRequest(assignRequest);
-		List <User> user = new ArrayList <User> (); 
+		List<User> user = new ArrayList<User>();
 		user.add(destination);
-		String description = "You have been sent a request to work on this item " + source.summary + "\n " + " In the plan " + source.plan.title + "\n" + "by " + sender.username;  
-		Notifications.sendNotification(user, source.plan.id, "plan", description);
-		
+		String description = "You have been sent a request to work on this item "
+				+ source.summary
+				+ "\n "
+				+ " In the plan "
+				+ source.plan.title
+				+ "\n" + "by " + sender.username;
+		Notifications.sendNotification(user, source.plan.id, "plan",
+				description);
+
 	}
 
 	/**

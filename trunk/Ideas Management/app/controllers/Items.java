@@ -7,20 +7,22 @@ import models.User;
 
 public class Items extends CRUD {
 
-	
 	/**
 	 * 
-	 * This Method renders the view of the list of items the user is assigned to, given the user id
+	 * This Method renders the view of the list of items the user is assigned
+	 * to, given the user id
 	 * 
-	 * @author 	salma.qayed
+	 * @author salma.qayed
 	 * 
-	 * @story 	C5S11
+	 * @story C5S11
 	 * 
-	 * @param 	userid 	: the id of the user whose list of assigned items will be viewed
+	 * @param userid
+	 *            : the id of the user whose list of assigned items will be
+	 *            viewed
 	 * 
-	 * @return	void
+	 * @return void
 	 */
-	
+
 	public static void viewAssignedItems(long userId) {
 		User user = User.findById(userId);
 		List<Item> assignedItems = user.itemsAssigned;

@@ -17,18 +17,21 @@ import play.mvc.Controller;
  */
 
 public class MarkingRequest extends Controller {
-	
+
 	/**
 	 * @author Loaay Alkherbawy
 	 * 
 	 * @Story C4S10: marking to ideas as duplicate
 	 * 
-	 * @param idea1: Idea one
-	 * @param idea2: Idea relevant to Idea one
-	 * @param des: description of where the duplication is
+	 * @param idea1
+	 *            : Idea one
+	 * @param idea2
+	 *            : Idea relevant to Idea one
+	 * @param des
+	 *            : description of where the duplication is
 	 */
 
-	public static void markDuplicate(Idea idea1, Idea idea2,String des) {
+	public static void markDuplicate(Idea idea1, Idea idea2, String des) {
 		Long ideaOrg1 = idea1.belongsToTopic.entity.id;
 		Long ideaOrg2 = idea2.belongsToTopic.entity.id;
 		if (ideaOrg1 == ideaOrg2) {
@@ -36,8 +39,8 @@ public class MarkingRequest extends Controller {
 			duplicateIdeas.add(idea1);
 			duplicateIdeas.add(idea2);
 			MainEntity ent = MainEntity.findById(ideaOrg1);
-			new LinkDuplicatesRequest(ent.organizers.get(0), idea1, idea2 , des);
+			new LinkDuplicatesRequest(ent.organizers.get(0), idea1, idea2, des);
 		}
-		render(idea1,idea2,des);
+		render(idea1, idea2, des);
 	}
 }

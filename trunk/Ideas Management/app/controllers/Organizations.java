@@ -56,15 +56,11 @@ public class Organizations extends CRUD {
 	 * 
 	 */
 
-
-     
-     
 	public static void enableTags(long id) {
 		Organization organization = Organization.findById(id);
 		notFoundIfNull(organization);
 		organization.createTag = true;
 	}
-
 
 	/**
 	 * 
@@ -80,7 +76,7 @@ public class Organizations extends CRUD {
 	 *            being disabled
 	 * 
 	 */
-	
+
 	public static void disableTags(Long id) {
 		Organization organization = Organization.findById(id);
 		notFoundIfNull(organization);
@@ -88,31 +84,31 @@ public class Organizations extends CRUD {
 	}
 
 	/**
-     * This method gets the list of topics of a certain organization
-     * 
-     * @author Omar Faruki
-     * 
-     * @story C2S28
-     * 
-     * @param orgId : ID of an organization of type long
-     */
-    
-    public static void getTopics(long id) {
-   	 Organization org = Organization.findById(id);
-   	 notFoundIfNull(org);
-   	 ArrayList<Topic> topics = new ArrayList<Topic>();
-   	 int i = 0;
-   	 while (i < org.entitiesList.size()) {
-   		 int j = 0;
-   		 while (j < org.entitiesList.get(i).topicList.size()) {
-   			 topics.add(org.entitiesList.get(i).topicList.get(j));
-   			 j++;
-   		 }
-   		 i++;
-   	 }
-   	 render(topics);
-    }
+	 * This method gets the list of topics of a certain organization
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S28
+	 * 
+	 * @param orgId
+	 *            : ID of an organization of type long
+	 */
 
+	public static void getTopics(long id) {
+		Organization org = Organization.findById(id);
+		notFoundIfNull(org);
+		ArrayList<Topic> topics = new ArrayList<Topic>();
+		int i = 0;
+		while (i < org.entitiesList.size()) {
+			int j = 0;
+			while (j < org.entitiesList.get(i).topicList.size()) {
+				topics.add(org.entitiesList.get(i).topicList.get(j));
+				j++;
+			}
+			i++;
+		}
+		render(topics);
+	}
 
 	/**
 	 * This method renders the page for inviting a user to organization
@@ -146,7 +142,7 @@ public class Organizations extends CRUD {
 	 *            the id of the organization
 	 * 
 	 * @param email
-	 * 			  the email of the receiver
+	 *            the email of the receiver
 	 * 
 	 * @param userId
 	 *            the id of the user
@@ -166,24 +162,24 @@ public class Organizations extends CRUD {
 		Mail.invite(email, "Idea Devoloper", org.name, "");
 
 	}
-	
+
 	/**
 	 * The method that allows a user to follow a certain organization
 	 * 
 	 * @author Noha Khater
 	 * 
-	 * @Stroy  C2S10
+	 * @Stroy C2S10
 	 * 
 	 * @param organizationId
-	 * 				: The id of the organization that the user wants to follow 
+	 *            : The id of the organization that the user wants to follow
 	 * 
 	 * @param user
-	 * 				: The user who wants to follow an organization
+	 *            : The user who wants to follow an organization
 	 */
-	
-	public void followOrganization(long organizationId ,User user) {
+
+	public void followOrganization(long organizationId, User user) {
 		Organization org = Organization.findById(organizationId);
-		if(Users.isPermitted(user, "follow", organizationId, "organization")){
+		if (Users.isPermitted(user, "follow", organizationId, "organization")) {
 			org.followers.add(user);
 			user.followingOrganizations.add(org);
 		} else {

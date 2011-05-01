@@ -98,164 +98,164 @@ public class Search extends Controller {
 	 * @return void.
 	 * 
 	 */
-//	public static void searchResult(byte searchIn, String wantKey,
-//			String unWantKey, byte org, byte entity, byte topic, byte plan,
-//			byte idea, byte item, byte comm, byte dayB, byte monthB,
-//			byte yearB, byte dayA, byte monthA, byte yearA, byte dayE,
-//			byte monthE, byte yearE) {
-//
-//		if (wantKey.trim().compareTo("") == 0) {
-//			// back;
-//		} else {
-//
-//			Date before = new Date(yearB, monthB, dayB);
-//			Date after = new Date(yearA, monthA, dayA);
-//			Date exact = new Date(yearE, monthE, dayE);
-//
-//			List orgs = Organization.findAll();
-//
-//			switch (searchIn) {
-//			case 1: {
-//				for (int i = 0; i < orgs.size(); i++) {
-//					if (((Organization) orgs.get(i)).privacyLevel != 2) {
-//						orgs.remove(i);
-//					}
-//				}
-//				break;
-//			}
-//			case 2: {
-//				for (int i = 0; i < orgs.size(); i++) {
-//					if (((Organization) orgs.get(i)).privacyLevel != 1) {
-//						orgs.remove(i);
-//					}
-//				}
-//				break;
-//			}
-//			case 3: {
-//				for (int i = 0; i < orgs.size(); i++) {
-//					if (((Organization) orgs.get(i)).privacyLevel != 0) {
-//						orgs.remove(i);
-//					}
-//				}
-//				break;
-//			}
-//			case 4: {
-//				for (int i = 0; i < orgs.size(); i++) {
-//					if (((Organization) orgs.get(i)).privacyLevel == 0) {
-//						orgs.remove(i);
-//					}
-//				}
-//				break;
-//			}
-//			case 5: {
-//				for (int i = 0; i < orgs.size(); i++) {
-//					if (((Organization) orgs.get(i)).privacyLevel == 1) {
-//						orgs.remove(i);
-//					}
-//				}
-//				break;
-//			}
-//			case 6: {
-//				for (int i = 0; i < orgs.size(); i++) {
-//					if (((Organization) orgs.get(i)).privacyLevel == 2) {
-//						orgs.remove(i);
-//					}
-//				}
-//				break;
-//			}
-//			default: {
-//
-//				break;
-//			}
-//			}
-//
-//			// Organization
-//			if (org == 0) {
-//				for (int i = 0; i < orgs.size(); i++) {
-//					if (!((Organization) orgs.get(i)).name.contains(unWantKey)) {
-//						if (((Organization) orgs.get(i)).name.contains(wantKey)) {
-//							listOfResults.add(orgs.get(i));
-//						} else {
-//							boolean add = true;
-//							List<Tag> x = ((Organization) orgs.get(i)).relatedTags;
-//							for (int j = 0; j < x.size(); j++) {
-//								if (x.get(j).name.contains(unWantKey)) {
-//									add = false;
-//								}
-//							}
-//							if (add) {
-//								for (int j = 0; j < x.size(); j++) {
-//									if (x.get(j).name.contains(wantKey)) {
-//										listOfResults.add(orgs.get(i));
-//										break;
-//									}
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
-//
-//			// Entity
-//			if (entity == 0) {
-//				for (int i = 0; i < orgs.size(); i++) {
-//					searchWithEntities(
-//							((Organization) orgs.get(i)).entitiesList,
-//							unWantKey, wantKey);
-//				}
-//			}
-//
-//			// Topic
-//			List topics = null;
-//			if (topic == 0) {
-//				topics = new ArrayList<Topic>();
-//				for (int i = 0; i < orgs.size(); i++) {
-//					for (int j = 0; j < ((Organization) orgs.get(i)).entitiesList
-//							.size(); j++) {
-//						topics.add(((MainEntity) ((Organization) orgs.get(i)).entitiesList
-//								.get(j)).topicList);
-//					}
-//				}
-//				searchWithTopic(topics, unWantKey, wantKey);
-//			}
-//
-//			// Plans
-//			List plans = null;
-//			if (plan == 0) {
-//				plans = new ArrayList<Plan>();
-//				for (int i = 0; i < topics.size(); i++) {
-//					plans.add(((Topic) topics.get(i)).plan);
-//				}
-//				searchWithPlan(plans, unWantKey, wantKey);
-//			}
-//
-//			// Ideas
-//			if (idea == 0) {
-//				List ideas = new ArrayList<Idea>();
-//				for (int i = 0; i < topics.size(); i++) {
-//					for (int j = 0; j < ((Topic) topics.get(i)).ideas.size(); j++) {
-//						ideas.add(((Idea) ((Topic) topics.get(i)).ideas.get(j)));
-//					}
-//				}
-//				searchWithIdea(ideas, unWantKey, wantKey);
-//			}
-//
-//			// Item
-//			if (item == 0) {
-//				List items = new ArrayList<Idea>();
-//				for (int i = 0; i < plans.size(); i++) {
-//					for (int j = 0; j < ((models.Plan) plans.get(i)).items
-//							.size(); j++) {
-//						items.add((((models.Plan) plans.get(i)).ideas.get(j)));
-//					}
-//				}
-//				searchWithItem(items, unWantKey, wantKey, before, after, exact);
-//			}
-//
-//			// Comments
-//		}
-//		render();
-//	}
+	// public static void searchResult(byte searchIn, String wantKey,
+	// String unWantKey, byte org, byte entity, byte topic, byte plan,
+	// byte idea, byte item, byte comm, byte dayB, byte monthB,
+	// byte yearB, byte dayA, byte monthA, byte yearA, byte dayE,
+	// byte monthE, byte yearE) {
+	//
+	// if (wantKey.trim().compareTo("") == 0) {
+	// // back;
+	// } else {
+	//
+	// Date before = new Date(yearB, monthB, dayB);
+	// Date after = new Date(yearA, monthA, dayA);
+	// Date exact = new Date(yearE, monthE, dayE);
+	//
+	// List orgs = Organization.findAll();
+	//
+	// switch (searchIn) {
+	// case 1: {
+	// for (int i = 0; i < orgs.size(); i++) {
+	// if (((Organization) orgs.get(i)).privacyLevel != 2) {
+	// orgs.remove(i);
+	// }
+	// }
+	// break;
+	// }
+	// case 2: {
+	// for (int i = 0; i < orgs.size(); i++) {
+	// if (((Organization) orgs.get(i)).privacyLevel != 1) {
+	// orgs.remove(i);
+	// }
+	// }
+	// break;
+	// }
+	// case 3: {
+	// for (int i = 0; i < orgs.size(); i++) {
+	// if (((Organization) orgs.get(i)).privacyLevel != 0) {
+	// orgs.remove(i);
+	// }
+	// }
+	// break;
+	// }
+	// case 4: {
+	// for (int i = 0; i < orgs.size(); i++) {
+	// if (((Organization) orgs.get(i)).privacyLevel == 0) {
+	// orgs.remove(i);
+	// }
+	// }
+	// break;
+	// }
+	// case 5: {
+	// for (int i = 0; i < orgs.size(); i++) {
+	// if (((Organization) orgs.get(i)).privacyLevel == 1) {
+	// orgs.remove(i);
+	// }
+	// }
+	// break;
+	// }
+	// case 6: {
+	// for (int i = 0; i < orgs.size(); i++) {
+	// if (((Organization) orgs.get(i)).privacyLevel == 2) {
+	// orgs.remove(i);
+	// }
+	// }
+	// break;
+	// }
+	// default: {
+	//
+	// break;
+	// }
+	// }
+	//
+	// // Organization
+	// if (org == 0) {
+	// for (int i = 0; i < orgs.size(); i++) {
+	// if (!((Organization) orgs.get(i)).name.contains(unWantKey)) {
+	// if (((Organization) orgs.get(i)).name.contains(wantKey)) {
+	// listOfResults.add(orgs.get(i));
+	// } else {
+	// boolean add = true;
+	// List<Tag> x = ((Organization) orgs.get(i)).relatedTags;
+	// for (int j = 0; j < x.size(); j++) {
+	// if (x.get(j).name.contains(unWantKey)) {
+	// add = false;
+	// }
+	// }
+	// if (add) {
+	// for (int j = 0; j < x.size(); j++) {
+	// if (x.get(j).name.contains(wantKey)) {
+	// listOfResults.add(orgs.get(i));
+	// break;
+	// }
+	// }
+	// }
+	// }
+	// }
+	// }
+	// }
+	//
+	// // Entity
+	// if (entity == 0) {
+	// for (int i = 0; i < orgs.size(); i++) {
+	// searchWithEntities(
+	// ((Organization) orgs.get(i)).entitiesList,
+	// unWantKey, wantKey);
+	// }
+	// }
+	//
+	// // Topic
+	// List topics = null;
+	// if (topic == 0) {
+	// topics = new ArrayList<Topic>();
+	// for (int i = 0; i < orgs.size(); i++) {
+	// for (int j = 0; j < ((Organization) orgs.get(i)).entitiesList
+	// .size(); j++) {
+	// topics.add(((MainEntity) ((Organization) orgs.get(i)).entitiesList
+	// .get(j)).topicList);
+	// }
+	// }
+	// searchWithTopic(topics, unWantKey, wantKey);
+	// }
+	//
+	// // Plans
+	// List plans = null;
+	// if (plan == 0) {
+	// plans = new ArrayList<Plan>();
+	// for (int i = 0; i < topics.size(); i++) {
+	// plans.add(((Topic) topics.get(i)).plan);
+	// }
+	// searchWithPlan(plans, unWantKey, wantKey);
+	// }
+	//
+	// // Ideas
+	// if (idea == 0) {
+	// List ideas = new ArrayList<Idea>();
+	// for (int i = 0; i < topics.size(); i++) {
+	// for (int j = 0; j < ((Topic) topics.get(i)).ideas.size(); j++) {
+	// ideas.add(((Idea) ((Topic) topics.get(i)).ideas.get(j)));
+	// }
+	// }
+	// searchWithIdea(ideas, unWantKey, wantKey);
+	// }
+	//
+	// // Item
+	// if (item == 0) {
+	// List items = new ArrayList<Idea>();
+	// for (int i = 0; i < plans.size(); i++) {
+	// for (int j = 0; j < ((models.Plan) plans.get(i)).items
+	// .size(); j++) {
+	// items.add((((models.Plan) plans.get(i)).ideas.get(j)));
+	// }
+	// }
+	// searchWithItem(items, unWantKey, wantKey, before, after, exact);
+	// }
+	//
+	// // Comments
+	// }
+	// render();
+	// }
 
 	/**
 	 * 

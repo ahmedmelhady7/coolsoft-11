@@ -11,7 +11,6 @@ import models.Tag;
 import models.Topic;
 import models.User;
 
-
 import play.mvc.Controller;
 
 /**
@@ -21,25 +20,20 @@ import play.mvc.Controller;
  * @story C4S05 : browse
  * 
  */
-public class Browse extends Controller 
-{
-	
-	//public static List<Organization> listOfOrganizations = Organization.findAll();
-	
-	
-	
-	public static void index() 
-	{
-        render();
-    }
-    
-    public static void browse() 
-    { 
-    	
-        List<Organization> listOfOrganizations = Organization.findAll();
-        render(listOfOrganizations);
+public class Browse extends Controller {
 
-    }
-    
+	// public static List<Organization> listOfOrganizations =
+	// Organization.findAll();
+
+	public static void index() {
+		render();
+	}
+
+	public static void browse() {
+
+		List<Organization> listOfOrganizations = Organization.findAll();
+		render(listOfOrganizations);
+
+	}
+
 }
-
