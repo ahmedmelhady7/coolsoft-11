@@ -28,7 +28,7 @@ public class Users extends CRUD {
 	/**
 	 * This Method adds a user to the list of followers in a given tag
 	 * 
-	 * @author m.hism.sa
+	 * @author Mohamed Hisham
 	 * 
 	 * @story C2S11
 	 * 
@@ -221,7 +221,7 @@ public class Users extends CRUD {
 	 * this method checks if the user is allowed to post an idea under a certain
 	 * topic, if yes then an idea is posted under the topic
 	 * 
-	 * @author m.hisham.sa
+	 * @author Mohamed Hisham
 	 * 
 	 * @story C2S14
 	 * 
@@ -246,6 +246,43 @@ public class Users extends CRUD {
 		} else
 			return;
 
+	}
+	
+	/**
+	 * 
+	 * This method is for a user to create a Topic in an Entity he manages
+	 * 
+	 * @author Mohamed Hisham
+	 * 
+	 * @story C2S24
+	 * 
+	 * @param entityId
+	 *            : the id of the entity desired to create topic in
+	 * 
+	 * @param title
+	 *            : the title of the topic being created
+	 *            
+	 * @param description
+	 *            : the description/content of the topic being created
+	 * 
+	 * @param privacyLevel
+	 *            : the privacy level of the topic being created
+	 * 
+	 * @param user
+	 *            : the user trying to create the topic
+	 */
+	
+	public void createTopic(long entityId, String title, String description, short privacyLevel, User user){
+		Topic topic = new Topic(title, description, privacyLevel, user);
+		MainEntity entity = MainEntity.findById(entityId);
+		
+		if(Users.isPermitted(user, "create topic", entityId, "entity") && user.entitiesIOrganize.contains(entity)){
+			entity.topicList.add(topic);
+			user.topicsCreated.add(topic);
+			user.topicsIOrganize.add(topic);
+		}else {
+			System.out.println("action cannot be performed in this entity");
+		}
 	}
 
 	/**
