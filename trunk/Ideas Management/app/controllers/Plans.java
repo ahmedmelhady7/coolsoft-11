@@ -96,6 +96,42 @@ public class Plans extends CRUD {
 	public static void planCreate(long topicId, String ideas) {
 		render(topicId, ideas);
 	}
+	/**
+	 * @author ${Ibrahim Safwat}
+	 * 
+	 * @param rate
+	 * 			the user given rating for the specified plan
+	 * @param planID
+	 * 			ID of the plan wished to rate
+	 */
+	
+	public void rate(int rating, long planID)
+	{
+		User user=Security.getConnected();
+		if(!checkRated(user,planID))
+		{
+			Plan p = Plan.findById(planID);
+			int oldRating =p.rating;
+			int newRating = (oldRating + rating)/2;
+			render(newRating);
+		}		
+		
+	}
+	/**
+	 * @author ${Ibrahim Safwat}
+	 * 
+	 * @param userToCheck
+	 *            User to be checked if he/she is in the list usersRated
+	 * @return
+	 */
+	public boolean checkRated(User userToCheck, long planID) {
+		Plan p = Plan.findById(planID);
+		for (int i = 0; i < p.usersRated.size(); i++) {
+			if (userToCheck == p.usersRated.get(i))
+				return true;
+		}
+		return false;
+	}
 
 	/**
 	 * This method takes the parameters from the web page of the plan creation
@@ -164,6 +200,25 @@ public class Plans extends CRUD {
 		}
 		Notifications.sendNotification(p.topic.getOrganizer(), p.id, "plan", "A new plan has been created");
 
+	}
+	/**
+	 * @author ${Ibrahim safwat}
+	 * 
+	 * @param UserToShare
+	 * 				User that wants to share the plan
+	 * @param UserToShareWith
+	 * 				User the will be sent the notification with the planID
+	 * @param planID
+	 * 				ID of the plan to be shared
+	 */
+	public void sharePlan(ArrayList<User> UserToShare, User UserToShareWith, long planID)
+	{
+		//Plan p = Plan.findById(planID);
+		String type = "plan";
+		String desc = "userLoggedIn shared a plan with you";
+		UserToShare = new ArrayList<User>();
+		long notId = planID;
+		Notifications.sendNotification(UserToShare, notId, type, desc);
 	}
 
 	/**
