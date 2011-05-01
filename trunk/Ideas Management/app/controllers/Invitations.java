@@ -3,6 +3,7 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import play.data.validation.Required;
 import play.mvc.Controller;
 import models.Invitation;
 import models.MainEntity;
@@ -72,7 +73,14 @@ public class Invitations extends CRUD {
 	 *                                
 	 * @return void
 	 */
- public static void SearchUsers(Organization org,MainEntity ent,String name){
+ public static void SearchUsers(Organization org,MainEntity ent,@Required String name){
+	 
+	 if(validation.hasErrors()) {
+	        flash.error("Please enter a name first!");
+	             invite(org,ent);
+	    }
+	 
+	 
 	 List<User> filter=new ArrayList<User>();
 	   filter=Users.searchUser(name);
 	 List<User> organizers=Users.getEntityOrganizers(ent);
@@ -150,8 +158,12 @@ public class Invitations extends CRUD {
 	 */
  
  public static void send(String email,String role,Organization org,
-		 MainEntity ent){
-	  
+		 MainEntity ent,long id){
+	     
+	 if(role.equalsIgnoreCase("select")) {
+	        flash.error("Please choose a Role");
+	        Page(org,ent,id);
+	    }
 	     Mail.invite(email,role,org.name,ent.name);
 	    
     	 
