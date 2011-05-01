@@ -151,6 +151,30 @@ public class Idea extends Model {
 		}
 		
 	}
+	/*
+	public void getAllIdeas()
+	{
+		List<Organization> listOfOrganizations = Organization.findAll();
+			
+			for(int i=0; i< listOfOrganizations.size();i++)
+			{
+				Organization org = listOfOrganizations.get(i);
+				List<Users> users = org.users;
+				
+				for(int j=0; j<users.size(); j++)
+				{
+					User user = users.get(j);
+				    List<Ideas> ideas = user.ideas;
+					
+					for(int k=0;k<ideas.size(); k++)
+					{
+						Idea idea = ideas.get(k);
+						checkDate(idea);
+					}
+				}
+			}
+		
+	} */
 	
 
 	/**
