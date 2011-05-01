@@ -45,7 +45,7 @@ public class Topic extends Model {
 	/**
 	 * the creator of the topic
 	 */
-	@Required
+	//@Required
 	@ManyToOne
 	public User creator;
 
@@ -100,7 +100,7 @@ public class Topic extends Model {
 	/**
 	 * the entity the topic is in
 	 */
-	@Required
+	//@Required
 	@ManyToOne
 	public MainEntity entity;
 
