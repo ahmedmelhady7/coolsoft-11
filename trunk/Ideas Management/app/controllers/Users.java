@@ -28,7 +28,7 @@ public class Users extends CRUD {
 	/**
 	 * This Method adds a user to the list of followers in a given tag
 	 * 
-	 * @author Mohamed Hisham
+	 * @author m.hism.sa
 	 * 
 	 * @story C2S11
 	 * 
@@ -52,16 +52,18 @@ public class Users extends CRUD {
 	 * 
 	 * @story C2S12
 	 * 
-	 * @param topic
-	 *            : the topic that the user is following
+	 * @param topicId
+	 *            : the topic id that the user is following
 	 * 
-	 * @param user
-	 *            : the user who follows
+	 * @param userId
+	 *            : the user id who follows
 	 * 
 	 * @return void
 	 */
 
-	public static void unfollow(Topic topic, User user) {
+	public static void unfollowTopic(long topicId, long userId) {
+		Topic topic = Topic.findById(topicId);
+		User user = User.findById(userId);
 		topic.unfollow(user);
 		user.unfollow(topic);
 	}
@@ -73,15 +75,17 @@ public class Users extends CRUD {
 	 * 
 	 * @story C2S12
 	 * 
-	 * @param tag
-	 *            : the tag that the user is following
+	 * @param tagId
+	 *            : the tag id that the user is following
 	 * 
-	 * @param user
-	 *            : the user who follows
+	 * @param userId
+	 *            : the user id who follows
 	 * 
 	 * @return void
 	 */
-	public static void unfollow(Tag tag, User user) {
+	public static void unfollowTag(long tagId, long userId) {
+		Tag tag = Tag.findById(tagId);
+		User user = User.findById(userId);
 		tag.unfollow(user);
 		user.unfollow(tag);
 	}
@@ -93,16 +97,18 @@ public class Users extends CRUD {
 	 * 
 	 * @story C2S12
 	 * 
-	 * @param org
-	 *            : the organization the user is following
+	 * @param orgId
+	 *            : the organization id the user is following
 	 * 
-	 * @param user
-	 *            : the user who follows
+	 * @param userId
+	 *            : the user id who follows
 	 * 
 	 * @return void
 	 */
 
-	public static void unfollow(Organization org, User user) {
+	public static void unfollowOrganization(long orgId, long userId) {
+		Organization org = Organization.findById(orgId);
+		User user = User.findById(userId);
 		org.unfollow(user);
 		user.unfollow(org);
 	}
@@ -123,7 +129,9 @@ public class Users extends CRUD {
 	 * @return void
 	 */
 
-	public static void unfollow(MainEntity entity, User user) {
+	public static void unfollowEntity(long entityId, long userId) {
+		MainEntity entity = MainEntity.findById(entityId);
+		User user = User.findById(userId);	
 		entity.unfollow(user);
 		user.unfollow(entity);
 	}
@@ -135,14 +143,14 @@ public class Users extends CRUD {
 	 * 
 	 * @story C2S12
 	 * 
-	 * @param user
-	 *            : the user who follows
+	 * @param userId
+	 *            : the user id who follows
 	 * 
 	 * @return void
 	 */
 
-	public static void listFollows(User user) {
-
+	public static void listFollows(long userId){
+		User user = User.findById(userId);
 		try {
 			List<Organization> organizations = user.followingOrganizations;
 			List<Tag> tags = user.followingTags;
@@ -221,7 +229,7 @@ public class Users extends CRUD {
 	 * this method checks if the user is allowed to post an idea under a certain
 	 * topic, if yes then an idea is posted under the topic
 	 * 
-	 * @author Mohamed Hisham
+	 * @author m.hisham.sa
 	 * 
 	 * @story C2S14
 	 * 
@@ -246,43 +254,6 @@ public class Users extends CRUD {
 		} else
 			return;
 
-	}
-	
-	/**
-	 * 
-	 * This method is for a user to create a Topic in an Entity he manages
-	 * 
-	 * @author Mohamed Hisham
-	 * 
-	 * @story C2S24
-	 * 
-	 * @param entityId
-	 *            : the id of the entity desired to create topic in
-	 * 
-	 * @param title
-	 *            : the title of the topic being created
-	 *            
-	 * @param description
-	 *            : the description/content of the topic being created
-	 * 
-	 * @param privacyLevel
-	 *            : the privacy level of the topic being created
-	 * 
-	 * @param user
-	 *            : the user trying to create the topic
-	 */
-	
-	public void createTopic(long entityId, String title, String description, short privacyLevel, User user){
-		Topic topic = new Topic(title, description, privacyLevel, user);
-		MainEntity entity = MainEntity.findById(entityId);
-		
-		if(Users.isPermitted(user, "create topic", entityId, "entity") && user.entitiesIOrganize.contains(entity)){
-			entity.topicList.add(topic);
-			user.topicsCreated.add(topic);
-			user.topicsIOrganize.add(topic);
-		}else {
-			System.out.println("action cannot be performed in this entity");
-		}
 	}
 
 	/**
