@@ -40,9 +40,11 @@ public class Invitations extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void invite(Organization org, MainEntity ent) {
-
-		render(org, ent);
+	public static void invite(long org,long ent) {
+         
+         Organization organization=Organization.findById(org);
+         MainEntity entity= MainEntity.findById(ent);
+		render(organization, entity);
 
 	}
 
@@ -70,18 +72,20 @@ public class Invitations extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void SearchUsers(Organization org, MainEntity ent,
+	public static void SearchUsers(long org,long ent,
 			@Required String name) {
 
 		if (validation.hasErrors()) {
 			flash.error("Please enter a name first!");
 			invite(org, ent);
 		}
-
+         
+		Organization organization=Organization.findById(org);
+        MainEntity entity= MainEntity.findById(ent);
 		List<User> filter = new ArrayList<User>();
 		filter = Users.searchUser(name);
-		List<User> organizers = Users.getEntityOrganizers(ent);
-		organizers.add(org.creator);
+		List<User> organizers = Users.getEntityOrganizers(entity);
+		organizers.add(organization.creator);
 
 		List<User> users = new ArrayList<User>();
 		for (int i = 0; i < filter.size(); i++) {
@@ -89,7 +93,7 @@ public class Invitations extends CRUD {
 				users.add(filter.get(i));
 		}
 
-		render(users, ent, org);
+		render(users, entity, organization);
 	}
 
 	/**
@@ -116,12 +120,14 @@ public class Invitations extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void Page(Organization org, MainEntity ent, long id) {
+	public static void Page(long org, long ent, long id) {
 		// long num=id;
 		// if(id==0)
 		// render(org,ent);
 		// else
-		render(org, ent, User.findById(id));
+		Organization organization=Organization.findById(org);
+        MainEntity entity= MainEntity.findById(ent);
+		render(organization, entity, User.findById(id));
 	}
 
 	/**
@@ -151,8 +157,8 @@ public class Invitations extends CRUD {
 	 */
 
 
-	 public static void send(@Required String email,String role,Organization org,
-			 MainEntity ent,long id){
+	 public static void send(@Required String email,String role,long org,
+			 long ent,long id){
 		 
 		    if (!rfc2822.matcher(email).matches()) {
 			    flash.error("Invalid address");
@@ -162,31 +168,33 @@ public class Invitations extends CRUD {
 			        flash.error("Please choose a Role");
 			        Page(org,ent,id);
 			    }
-			
-		     Mail.invite(email,role,org.name,ent.name);
+			Organization organization=Organization.findById(org);
+	         MainEntity entity= MainEntity.findById(ent);
+	         
+		     Mail.invite(email,role,organization.name,entity.name);
 		    
 	    	 
-	    	User user=Security.getConnected();
-	          user.addInvitation(email,role,org,ent);
+	    	 User user=Security.getConnected();
+	          user.addInvitation(email,role,organization,entity);
 	        
 	         User receiver=User.find("byEmail", email).first();
 	         if(!receiver.equals(null)){
 	        	 List<User> u=new ArrayList<User>();
 	        	  u.add(receiver);
 	        	//if(role.equalsIgnoreCase("organizer"))
-	        	 Notifications.sendNotification(u, org.id, "organization",
+	        	 Notifications.sendNotification(u, organization.id, "organization",
 	 					"You have received a new invitation from "
-	 							+ org.name);
+	 							+ organization.name);
 	            }
 
 				//**fadwa
-				List<User> organizers = Users.getEntityOrganizers(ent);
-				if (!user.equals(org.creator)) {
+				List<User> organizers = Users.getEntityOrganizers(entity);
+				if (!user.equals(organization.creator)) {
 					organizers.remove(user);
-					organizers.add(org.creator);
+					organizers.add(organization.creator);
 				}
-				Notifications.sendNotification(organizers, ent.id, "entity",
-						"Invitation has been sent from entity "+ ent.name);
+				Notifications.sendNotification(organizers, entity.id, "entity",
+						"Invitation has been sent from entity "+ entity.name);
 		                
 		        //**
 				
