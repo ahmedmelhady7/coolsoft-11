@@ -71,17 +71,17 @@ Tags
 		location.reload(true);
 	}
 	function topic(topic, user){
-		$.post('@{unfollowTopic()}', {topicId:topic, user:user});
+		$.post('@{unfollowTopic()}', {topicId:topic, userId:user});
 		alert("done!");
 		location.reload(true);
 	}
 	function org(org, user){
-		$.post('@{unfollowOrganization()}', {orgId:org, user:user});
+		$.post('@{unfollowOrganization()}', {orgId:org, userId:user});
 		alert("done!");
 		location.reload(true);
 	}
 	function entity(entity, user){
-		$.post('@{unfollowEntity()}', {entityId:entity, user:user});
+		$.post('@{unfollowEntity()}', {entityId:entity, userId:user});
 		alert("done!");
 		location.reload(true);
 	}

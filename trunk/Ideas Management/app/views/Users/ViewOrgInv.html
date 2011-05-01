@@ -1,24 +1,23 @@
 #{extends 'main.html' /}
-
-#{ifnot organizations}
+#{ifnot invitations}
 <p>
-    No organization invitation was found. 
+    No invitations to join an organization was found. 
 </p>
 #{/ifnot}
 
 <ul>
-    #{list items:organizations, as:'organization'}
+    #{list items:invitations, as:'invitation'}
     <li> 
-		${organization.name}
-        <input type="submit" value="accept" onclick="org('${organization.id}','${user.id}', true);" />
-		<input type="submit" value="reject" onclick="org('${organization.id}','${user.id}', false);" />
+		${invitation.organization.name}
+        <input type="submit" value="accept" onclick="responce('${invitation.id}','${userId}', true);" />
+		<input type="submit" value="reject" onclick="responce('${invitation.id}','${userId}', false);" />
     </li>
 	#{/list}
 </ul>
 
 <script type="text/javascript">
-	function responce(oId , uId, r){
-		$.post('@{acceptToJoinOrg()}', {orgId:oId, userId:uId, r:r});
+	function responce(iId , uId, r){
+		$.post('@{acceptToJoinOrg()}', {invId:iId, userId:uId, r:r});
 		alert("done!");
 		location.reload(true);
 	}

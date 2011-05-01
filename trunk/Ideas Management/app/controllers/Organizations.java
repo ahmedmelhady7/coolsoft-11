@@ -121,7 +121,7 @@ public class Organizations extends CRUD {
 	 *            the id of the organization
 	 * 
 	 * @param userId
-	 *            the id of the user
+	 *            the id of the user who will invite
 	 * 
 	 * @return void
 	 */
@@ -153,11 +153,13 @@ public class Organizations extends CRUD {
 	public static void sendInvitation(long orgId, String email, long userId) {
 		Organization org = Organization.findById(orgId);
 		User sender = User.findById(userId);
-		Invitation inv = new Invitation(email, null, org, "member", sender);
+		Invitation inv = new Invitation(email, null, org, "Idea Developer",
+				sender);
 		inv._save();
 		User rec = User.find("byEmail", email).first();
 		if (rec != null) {
 			rec.invitation.add(inv);
+			rec._save();
 		}
 		Mail.invite(email, "Idea Devoloper", org.name, "");
 
