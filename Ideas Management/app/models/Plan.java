@@ -25,7 +25,7 @@ public class Plan extends Model {
 
 	
 	
-	@Required
+//	@Required
 	@OneToOne
 	public Topic topic;
 	
@@ -44,7 +44,7 @@ public class Plan extends Model {
 	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
 	public List<Item> items;
 	
-	@Required
+//	@Required
 	@ManyToOne
 	public User madeBy;
 	
@@ -53,6 +53,11 @@ public class Plan extends Model {
 	 * Every plan can have a rating
 	 */
 	public int rating;
+	/**
+	 * @author ${Ibrahim Safwat} Must keep track of which users rated
+	 */
+	@OneToMany
+	public List<User> usersRated;
 	
 	/**
 	 * @author ${Ibrahim Safwat}
