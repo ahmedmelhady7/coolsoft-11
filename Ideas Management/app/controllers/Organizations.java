@@ -166,5 +166,29 @@ public class Organizations extends CRUD {
 		Mail.invite(email, "Idea Devoloper", org.name, "");
 
 	}
+	
+	/**
+	 * The method that allows a user to follow a certain organization
+	 * 
+	 * @author Noha Khater
+	 * 
+	 * @Stroy  C2S10
+	 * 
+	 * @param organizationId
+	 * 				: The id of the organization that the user wants to follow 
+	 * 
+	 * @param user
+	 * 				: The user who wants to follow an organization
+	 */
+	
+	public void followOrganization(long organizationId ,User user) {
+		Organization org = Organization.findById(organizationId);
+		if(Users.isPermitted(user, "follow", organizationId, "organization")){
+			org.followers.add(user);
+			user.followingOrganizations.add(org);
+		} else {
+			System.out.println("Sorry! Action cannot be performed");
+		}
+	}
 
 }
