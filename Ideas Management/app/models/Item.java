@@ -9,8 +9,13 @@ import play.db.jpa.*;
 public class Item extends Model {
 
 	public Date startDate;
+	
 	public Date endDate;
+	
+	
 	public short status;
+	//0 for new, 1 for in progress and 2 for done
+	
 	public String summary;
 
 	@Lob
@@ -52,15 +57,13 @@ public class Item extends Model {
 	 * This Method adds a volunteer request to work on this item to the list of
 	 * volunteer requests of this item given the volunteer request
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S10
 	 * 
 	 * @param volunteerRequest
 	 *            : the VolunteerRequest that needs to be added to the list of
 	 *            volunteer requests of this item
-	 * 
-	 * @return void
 	 */
 
 	public void addVolunteerRequest(VolunteerRequest volunteerRequest) {
@@ -74,15 +77,13 @@ public class Item extends Model {
 	 * This Method adds an assign request to work on this item to the list of
 	 * assign requests of this item given the assign request
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S4
 	 * 
 	 * @param assignRequest
 	 *            : the AssignRequest that needs to be added to the list of
 	 *            assign requests of this Item
-	 * 
-	 * @return void
 	 */
 	public void addAssignRequest(AssignRequest assignRequest) {
 		assignRequests.add(assignRequest);

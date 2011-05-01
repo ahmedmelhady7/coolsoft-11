@@ -431,7 +431,7 @@ public class User extends Model {
 	 * This Method checks if the user can send a volunteer request to work on
 	 * the item given the item id
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S10
 	 * 

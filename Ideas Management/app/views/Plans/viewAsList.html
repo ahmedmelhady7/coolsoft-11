@@ -36,11 +36,11 @@ This plan is now rated: ${newRating}
                 </li>
                 #{/list}
             </ul>
-			#{if user.canVolunteer(item.id)}
+			#{if user.canVolunteer(item.id) && !(item.status == 2)}
            <a href="@{VolunteerRequests.justify(item.id, p.id, 0)}">Volunteer to work on this item</a>
             <br/>
 			#{/if}
-            #{if canAssign == 1)}
+            #{if canAssign == 1 && !(item.status == 2))}
 			<a href="@{AssignRequests.assign(item.id, p.id)}">Assign a user to this item</a>
             #{/if}
 			 #{if canEdit == 1)}
