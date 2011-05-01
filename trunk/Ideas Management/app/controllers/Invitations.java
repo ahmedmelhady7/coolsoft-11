@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import play.data.validation.Required;
 import play.mvc.Controller;
@@ -149,40 +150,53 @@ public class Invitations extends CRUD {
 	 * @return void
 	 */
 
-	public static void send(String email, String role, Organization org,
-			MainEntity ent, long id) {
 
-		if (role.equalsIgnoreCase("select")) {
-			flash.error("Please choose a Role");
-			Page(org, ent, id);
-		}
-		Mail.invite(email, role, org.name, ent.name);
+	 public static void send(@Required String email,String role,Organization org,
+			 MainEntity ent,long id){
+		 
+		    if (!rfc2822.matcher(email).matches()) {
+			    flash.error("Invalid address");
+			    Page(org,ent,id);
+		    }
+			if(role.equalsIgnoreCase("select")) {
+			        flash.error("Please choose a Role");
+			        Page(org,ent,id);
+			    }
+			
+		     Mail.invite(email,role,org.name,ent.name);
+		    
+	    	 
+	    	User user=Security.getConnected();
+	          user.addInvitation(email,role,org,ent);
+	        
+	         User receiver=User.find("byEmail", email).first();
+	         if(!receiver.equals(null)){
+	        	 List<User> u=new ArrayList<User>();
+	        	  u.add(receiver);
+	        	//if(role.equalsIgnoreCase("organizer"))
+	        	 Notifications.sendNotification(u, org.id, "organization",
+	 					"You have received a new invitation from "
+	 							+ org.name);
+	            }
 
-		User user = Security.getConnected();
-		user.addInvitation(email, role, org, ent);
-
-		User receiver = User.find("byEmail", email).first();
-		if (!receiver.equals(null)) {
-			List<User> u = new ArrayList<User>();
-			u.add(receiver);
-			// if(role.equalsIgnoreCase("organizer"))
-			Notifications.sendNotification(u, org.id, "organization",
-					"You have received a new invitation from " + org.name);
-		}
-
-		// *fadwa
-		List<User> organizers = Users.getEntityOrganizers(ent);
-		if (!user.equals(org.creator)) {
-			organizers.remove(user);
-			organizers.add(org.creator);
-		}
-		Notifications.sendNotification(organizers, ent.id, "entity",
-				"Invitation has been sent from entity " + ent.name);
-		// *
-
-		// render(email,role,organization,entity,topic);
-		render(email);
-	}
+				//**fadwa
+				List<User> organizers = Users.getEntityOrganizers(ent);
+				if (!user.equals(org.creator)) {
+					organizers.remove(user);
+					organizers.add(org.creator);
+				}
+				Notifications.sendNotification(organizers, ent.id, "entity",
+						"Invitation has been sent from entity "+ ent.name);
+		                
+		        //**
+				
+			 render(email);
+		                 
+	  }
+	 private static final Pattern rfc2822 = Pattern.compile(
+		        "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+		);
+	 
 
 	/**
 	 * 
