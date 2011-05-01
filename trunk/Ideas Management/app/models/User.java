@@ -181,7 +181,7 @@ public class User extends Model {
 	 * 
 	 * this method posts an Idea in a certain topic
 	 * 
-	 * @author m.hisham.sa
+	 * @author Mohamed Hisham
 	 * 
 	 * @story C2S14
 	 * 
@@ -199,6 +199,7 @@ public class User extends Model {
 		Idea idea = new Idea(title, description, this, topic);
 		idea.privacyLevel = topic.privacyLevel;
 		ideasCreated.add(idea);
+		_save();
 	}
 
 	public void addInvitation(String email, String role,
@@ -280,7 +281,7 @@ public class User extends Model {
 	/**
 	 * This Method adds a tag to the list of tags followed
 	 * 
-	 * @author m.hisham.sa
+	 * @author Mohamed Hisham
 	 * 
 	 * @story C2S11
 	 * 
@@ -292,6 +293,7 @@ public class User extends Model {
 
 	public void follow(Tag tag) {
 		followingTags.add(tag);
+		_save();
 	}
 
 	/**
