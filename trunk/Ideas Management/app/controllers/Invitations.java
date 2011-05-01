@@ -88,7 +88,7 @@ public class Invitations extends CRUD {
 				users.add(filter.get(i));
 		}
 
-		render(users, ent, org);
+		render(users, ent);
 	}
 
 	/**
