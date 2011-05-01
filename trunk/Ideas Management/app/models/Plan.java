@@ -25,7 +25,7 @@ public class Plan extends Model {
 
 	
 	
-//	@Required
+	@Required
 	@OneToOne
 	public Topic topic;
 	
@@ -44,7 +44,7 @@ public class Plan extends Model {
 	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
 	public List<Item> items;
 	
-//	@Required
+	@Required
 	@ManyToOne
 	public User madeBy;
 	
