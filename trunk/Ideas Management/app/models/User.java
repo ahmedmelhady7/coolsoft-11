@@ -40,10 +40,9 @@ public class User extends Model {
 	public String country;
 	public Date dateofBirth;
 	public int communityContributionCounter;
-	// public List<Role> roles;
 	// added to know whether a user is an Admin or not
 	public boolean isAdmin;
-	/*
+	/**
 	 * state represents the state of the user whether he is active, deleted, not
 	 * active a -> active , d -> deleted , n -> not active
 	 */
@@ -413,6 +412,13 @@ public class User extends Model {
 
 	}
 
+	/**
+	 * Override the toString method to see the name & the username
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @return String
+	 */
 	public String toString() {
 		return this.firstName + " " + this.lastName + "\t" + "username "
 				+ this.username;
