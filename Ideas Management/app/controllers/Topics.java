@@ -165,9 +165,9 @@ public class Topics extends CRUD {
 	/**
 	 * This Method returns a list of all closed topics
 	 * 
-	 * @author aliaelbolock
+	 * @author Alia el Bolock
 	 * 
-	 * @story C3S1
+	 * @story C3S21
 	 * 
 	 * @return ArrayList<Topics>
 	 */
@@ -440,7 +440,7 @@ public class Topics extends CRUD {
 	/**
 	 * Overriding the CRUD method create.
 	 * 
-	 * @author aliaelbolock
+	 * @author Alia el Bolock
 	 * 
 	 * @story C3S1
 	 * 
@@ -450,7 +450,6 @@ public class Topics extends CRUD {
 	 *              is created and saved.
 	 * @throws Exception
 	 * 
-	 * @return void
 	 */
 	public static void create(/*int entityid*/) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -524,10 +523,10 @@ public class Topics extends CRUD {
 		// tmp.entity.organization, cal.getTime() );
 		String message2 = tmp.creator.username + " has Created the topic "
 				+ tmp.title + " in " + tmp.entity;
-		List users = Users.getEntityOrganizers(tmp.entity);
+		/*List users = Users.getEntityOrganizers(tmp.entity);
 		users.add(tmp.entity.organization.creator);
 		Notifications.sendNotification(users, tmp.id, "Topic", "A new Topic "
-				+ tmp.title + " has been added in entity" + tmp.entity.name);
+				+ tmp.title + " has been added in entity" + tmp.entity.name);*/
 
 		// tmp.init();
 		flash.success(Messages.get("crud.created", type.modelName,
@@ -559,7 +558,7 @@ public class Topics extends CRUD {
 	/**
 	 * Overriding the CRUD method blank.
 	 * 
-	 * @author aliaelbolock
+	 * @author Alia el Bolock
 	 * 
 	 * @story C3S1
 	 * 
@@ -574,7 +573,6 @@ public class Topics extends CRUD {
 	 * 
 	 * @throws Exception
 	 * 
-	 * @return void
 	 */
 	public static void blank(long entityid, long userid) {
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -606,7 +604,7 @@ public class Topics extends CRUD {
 	/**
 	 * Overriding the CRUD method show.
 	 * 
-	 * @author aliaelbolock
+	 * @author Alia el Bolock
 	 * 
 	 * @story C3S1
 	 * 
@@ -617,7 +615,6 @@ public class Topics extends CRUD {
 	 * 
 	 * @throws Exception
 	 * 
-	 * @return void
 	 */
 	public static void show(String topicid) {
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -656,7 +653,7 @@ public class Topics extends CRUD {
 	/**
 	 * Topic view method
 	 * 
-	 * @author aliaelbolock
+	 * @author Alia el Bolock
 	 * 
 	 * @story C3S1
 	 * 
@@ -667,7 +664,6 @@ public class Topics extends CRUD {
 	 * 
 	 * @throws Exception
 	 * 
-	 * @return void
 	 */
 	public static void view(String topicid) {
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -721,7 +717,7 @@ public class Topics extends CRUD {
 	/**
 	 * Overriding the CRUD method list.
 	 * 
-	 * @author aliaelbolock
+	 * @author Alia el Bolock
 	 * 
 	 * @story C3S1
 	 * 
@@ -745,7 +741,6 @@ public class Topics extends CRUD {
 	 * 
 	 * @throws Exception
 	 * 
-	 * @return void
 	 */
 	public static void list(int page, String search, String searchFields,
 			String orderBy, String order) {
@@ -775,7 +770,7 @@ public class Topics extends CRUD {
 	/**
 	 * closedTopicsList
 	 * 
-	 * @author aliaelbolock
+	 * @author Alia el Bolock
 	 * 
 	 * @story C3S21
 	 * 
@@ -799,7 +794,6 @@ public class Topics extends CRUD {
 	 * 
 	 * @throws Exception
 	 * 
-	 * @return void
 	 */
 	public static void closedTopicslist(int page, String search,
 			String searchFields, String orderBy, String order) {
@@ -822,7 +816,7 @@ public class Topics extends CRUD {
 	/**
 	 * Overriding the CRUD method save.
 	 * 
-	 * @author aliaelbolock
+	 * @author Alia el Bolock
 	 * 
 	 * @story C3S1
 	 * 
@@ -834,7 +828,6 @@ public class Topics extends CRUD {
 	 * 
 	 * @throws Exception
 	 * 
-	 * @return void
 	 */
 	public static void save(String topicid) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -893,10 +886,10 @@ public class Topics extends CRUD {
 		// Logs.addLog( myUser, "add", "Task", tmp.id, tmp.entity.organization,
 		// cal.getTime() );
 		// String message3 = myUser.username + " has editted the topic " +
-		List users = Users.getEntityOrganizers(tmp.entity);
+		/*List users = Users.getEntityOrganizers(tmp.entity);
 		users.add(tmp.entity.organization.creator);
 		Notifications.sendNotification(users, tmp.id, "Topic", "User "
-				+ myUser.firstName + " has edited topic  " + tmp.title);
+				+ myUser.firstName + " has edited topic  " + tmp.title);*/
 		System.out.println("save() done, not redirected yet");
 
 		flash.success(Messages.get("crud.saved", type.modelName,
