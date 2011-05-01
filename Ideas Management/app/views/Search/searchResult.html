@@ -35,10 +35,9 @@ The Search Results Viewer
             Welcome ${connected}!
         </font>
         </br>
-		<a href="/Ideas Management/app/views/Application/index.html">Home</a>
-		</br>
-        <input type="text" id="search" name="search" value= "enter a keyword here" /><input type="button" id="submit" name="submit" value="Search" onclick="quickSearch(this.form)"/>
-		<a href="AdvancedSearch">Advanced Search</a>
+        <a href="/Ideas Management/app/views/Application/index.html">Home</a>
+        </br>
+        <input type="text" id="search" name="search" value= "enter a keyword here" /><input type="button" id="submit" name="submit" value="Search" onclick="quickSearch(this.form)"/><a href="AdvancedSearch">Advanced Search</a>
         <script type="text/javascript">
             function step1(){
                 document.getElementById('div1').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
@@ -57,23 +56,23 @@ The Search Results Viewer
                 });
             }
         </script>
-    </form>
-    <br/>
-    <center>
-    <b>
-        <big>
-            <u>
-                Search Results:
-            </u>
-        </big>
-    </b>
-    </br>
-    <i>
-    </br>
-    <a href="filter_options.html"><b>for filtering your results:
+        </form>
+        <br/>
+        <center>
+        <b>
+            <big>
+                <u>
+                    Search Results:
+                </u>
+            </big>
+        </b>
         </br>
-        click here to chose your criteria</b>
-</a>
+        <i>
+        </br>
+        <a href="filter_options.html"><b>for filtering your results:
+            </br>
+            click here to chose your criteria</b>
+    </a>
 </i>
 </center>
 <div align="right">
@@ -82,13 +81,59 @@ The Search Results Viewer
     Sort by: 
     </u>
 </b>
-<div>
-<input type="radio" name="scale" value="sortA" checked/>Ascending order
+<form action="@{sortD()}" method = "GET">
+<input type="radio" name="s" id = "s" value="sortA" />Ascending order
 <br>
-<input type="radio" name="scale" value="sortD" />descending order
-</br><input type="radio" name="scale" value="vote" />Vote <input type="radio" name="scale" value="rate" />Rate 
+<input type="radio" name="s1" value="sortD" />descending order
+</br><input type="radio" name="v" value="v" onchange="whichsortmethod(this.form)"/>Vote 
+<input type="radio" name="r"value="r" onchange="whichsortmethod(this.form)"/>Rate 
 </br>
-</div>
+</form>
+<script type="text/javascript">
+    function whichsortmethod(frm){
+        if (frm.s1.checked) {   
+            if (frm.v.checked) {
+    var c = 'v'
+                $.post('@{sortD}', {
+                    voteOrRate: c,
+                    searchresult: $listOfResults
+                }, function(){
+                    window.location.reload(true);
+                });
+            }
+            else 
+                if (frm.r.checked) {
+                    $.post('@{sortD}', {
+                        voteOrRate: 'r',
+                        searchresult: $listOfResults
+                    }, function(){
+                        window.location.reload(true);
+                    });
+                }
+            
+        }
+        else {
+   document.write("else");
+            if (frm.v.checked) {
+                $.post('@{sortA}', {
+                    voteOrRate: 'v',
+                    searchresult: $listOfResults
+                }, function(){
+                    window.location.reload(true);
+                });
+            }
+            else 
+                if (frm.r.checked) {
+                    $.post('@{sortA}', {
+                        voteOrRate: 'r',
+                        searchresult: $listOfResults
+                    }, function(){
+                        window.location.reload(true);
+                    });
+                }
+        }
+    }
+</script>
 <div id='div1'>
 </div>
 </body>
