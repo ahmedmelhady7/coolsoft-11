@@ -116,4 +116,23 @@ public class RequestToJoins extends CRUD {
 		}
 
 	}
+	/**
+	 * This method allows the user to request to join a specific organization only if the organization is a private one
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S15
+	 * 
+	 * @param requester : The user sending the request
+	 * 
+	 * @param organization : The organization that the user is requesting to join
+	 * 
+	 * @param description : A text message that will be sent along with the request
+	 */
+	public static void requestToJoinOrganization(User requester, Organization organization, String description) {
+		if (!organization.enrolledUsers.contains(requester) && (organization.privacyLevel == 1)) {
+		RequestToJoin r = new RequestToJoin(requester, null, organization, description).save();
+		organization.joinRequests.add(r);
+		}
+	}
 }
