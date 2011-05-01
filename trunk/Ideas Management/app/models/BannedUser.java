@@ -146,7 +146,7 @@ public class BannedUser extends Model {
 	 * 
 	 * returns boolean to indicates the successfulness of the operation
 	 */
-	public boolean banFromActionInTopic(long userID, long organizationID,
+	public static boolean banFromActionInTopic(long userID, long organizationID,
 			String action, long topicID) {
 		User myBannedUser = User.findById(action);
 		Organization myOrganization = Organization.findById(organizationID);
