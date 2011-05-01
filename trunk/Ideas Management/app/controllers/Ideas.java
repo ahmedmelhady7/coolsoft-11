@@ -368,18 +368,15 @@ public class Ideas extends CRUD {
 	 * @param tag
 	 *            : the tag that is being added
 	 * 
-	 * @param userID
-	 *            : the user who is tagging the idea
-	 * 
 	 */
 
-	public static void tagIdea(long ideaID, String tag, long userID) {
+	public static void tagIdea(long ideaID, String tag) {
 
 		boolean tagAlreadyExists = false;
 		boolean userNotAllowed = false;
 		boolean tagExists = false;
 		List<Tag> listOfTags = Tag.findAll();
-		User user = (User) User.findById(userID);
+		User user = Security.getConnected();
 		Idea idea = Idea.findById(ideaID);
 
 		if (!idea.belongsToTopic.organizers.contains(user) || !user.equals(idea.author)) {
