@@ -528,6 +528,30 @@ public class Topics extends CRUD {
 		System.out.println( "create() done will redirect to show.html to show created" + message2  );
 		redirect( request.controller + ".show",  ((Topic) object).getId(), message2) ;
 	}
+	
+	/**
+	 * The method that allows a user to follow a certain topic
+	 * 
+	 * @author Noha Khater
+	 * 
+	 * @Stroy  C2S10
+	 * 
+	 * @param topicId
+	 * 				: The id of the topic that the user wants to follow 
+	 * 
+	 * @param user
+	 * 				: The user who wants to follow a topic
+	 */
+	
+	public void followTopic(long topicId ,User user) {
+		Topic t = Topic.findById(topicId);
+		if(Users.isPermitted(user, "follow", topicId, "topic")){
+			t.followers.add(user);
+			user.topicsIFollow.add(t);
+		} else {
+			System.out.println("Sorry! Action cannot be performed");
+		}
+	}
 
 	/**
 	 * Overriding the CRUD method blank.
