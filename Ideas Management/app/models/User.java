@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -26,6 +27,7 @@ public class User extends Model {
 	@Email
 	public String email;
 	@Required
+	@Column(unique = true)
 	@MaxSize(10)
 	public String username;
 	@Required
@@ -426,7 +428,8 @@ public class User extends Model {
 	 * @story C5S10
 	 * 
 	 * @param itemId
-	 *            : the id of the item that the user is checking if he can volunteer to work on
+	 *            : the id of the item that the user is checking if he can
+	 *            volunteer to work on
 	 * @return boolean
 	 */
 	public boolean canVolunteer(long itemId) {
