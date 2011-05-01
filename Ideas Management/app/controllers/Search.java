@@ -9,6 +9,7 @@ import controllers.Secure.Security;
 import javax.mail.search.SearchTerm;
 
 import com.sun.mail.handlers.text_html;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import models.Idea;
 import models.Item;
@@ -40,9 +41,9 @@ public class Search extends Controller {
 	 */
 	public static List<Object> listOfResults = new ArrayList<Object>();
 
-	public static List<Object> filterResult;
+	public static List<Object> filterResult= new ArrayList<Object>();
 
-	public static List sorted;
+	public static List<Object> sorted= new ArrayList<Object>();
 
 	/**
 	 * 
@@ -1333,3 +1334,4 @@ public class Search extends Controller {
 	}
 
 }
+
