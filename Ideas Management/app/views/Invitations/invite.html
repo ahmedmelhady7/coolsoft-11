@@ -1,11 +1,23 @@
 
-<form action="@{Invitations.Page(0)}" method="link">
+<form action="@{Invitations.Page(0)}" method="GET">
 	<input type="submit" value="Invite by mail">
 	</form>
 
-<form action="@{Invitations.SearchUsers()}" method="GET">
+<form action="@{Invitations.SearchUsers()}" method="GET" name="myform">
 <table border="0" bgcolor="#ececec" cellspacing="5">
-<tr><td><u> You search for users to invite </u></td></tr>
+<tr><td><u> You can search by name for users to invite </u></td></tr>
 <tr><td>Name</td><td><input type="text" size="20" name="name"></td></tr>
 <tr><td>&nbsp;</td><td><input type="submit" value="Next">
-</table> 
+</table>
+</form>
+
+
+#{if flash.error}
+   <b> <p style="color:#c00">
+               ${flash.error}
+    </p></b>
+#{/if}
+
+
+
+ 
