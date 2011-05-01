@@ -127,6 +127,38 @@ public class Idea extends Model {
 	
 	/**
 	 * 
+	 * @author ${Abdalrahman Ali}
+	 * 
+	 * @param title
+	 *            title of the idea
+	 * @param body
+	 *            the body of the idea
+	 * @param user
+	 *            //user must be organizer Author of the idea
+	 * @param topic
+	 *            Topic that the idea belongs/added to
+	 * @param isDraft
+	 *            True if this idea will be saved as a draft
+	 * 
+	 */
+
+	public Idea(String title, String body, User user, Topic topic,
+			boolean isDraft) {
+		this.title = title;
+		this.description = body;
+		this.belongsToTopic = topic;
+		this.author = user;
+		user.ideasCreated.add(this);
+		this.isDraft = isDraft;
+		this.tagsList = new ArrayList<Tag>();
+		this.usersRated = new ArrayList<User>();
+		this.commentsList = new ArrayList<Comment>();
+		this.rating = 0;
+		this.priority = null;
+		}
+	
+	/**
+	 * 
 	 * @author ${Fady Amir}
 	 * 
 	 * @param commentsList
@@ -181,36 +213,6 @@ public class Idea extends Model {
 		
 	} 
 	
-
-	/**
-	 * 
-	 * @author ${Abdalrahman Ali}
-	 * 
-	 * @param title
-	 *            title of the idea
-	 * @param body
-	 *            the body of the idea
-	 * @param user
-	 *            //user must be organizer Author of the idea
-	 * @param topic
-	 *            Topic that the idea belongs/added to
-	 * @param isDraft
-	 *            True if this idea will be saved as a draft
-	 * 
-	 */
-
-	public Idea(String title, String body, User user, Topic topic,
-			boolean isDraft) {
-		this.title = title;
-		this.description = body;
-		this.belongsToTopic = topic;
-		this.author = user;
-		user.ideasCreated.add(this);
-		this.isDraft = isDraft;
-		this.tagsList = new ArrayList<Tag>();
-		this.usersRated = new ArrayList<User>();
-		// this.commentsList = new ArrayList<Comment>();
-	}
 
 	public String toString() {
 		return this.title;
