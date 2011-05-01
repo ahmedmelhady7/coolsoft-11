@@ -83,6 +83,40 @@ public class Ideas extends CRUD {
 	}
 
 	/**
+	 * Overriding the CRUD method blank.
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S10
+	 * 
+	 * @param topicId
+	 *            : id of the topic the idea belongs to
+	 * 
+	 * @param userId
+	 *            : id of the user who wants to post an idea
+	 * 
+	 * @description This method renders the form for creating an idea
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	public static void blank(long topicId, long userId) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Topic topic = Topic.findById(topicId);
+		User user = User.findById(userId);
+		System.out.println("blank() entered entity " + topicId + " and user "
+				+ userId);
+		try {
+			render(type, topic, user);
+
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/blank.html", type);
+		}
+
+	}
+
+	/**
 	 * Overriding the CRUD method create.
 	 * 
 	 * @author ${Ahmed El-Hadi}
@@ -156,40 +190,6 @@ public class Ideas extends CRUD {
 					anothermessage);
 
 		}
-	}
-
-	/**
-	 * Overriding the CRUD method blank.
-	 * 
-	 * @author ${Ahmed El-Hadi}
-	 * 
-	 * @story C3S10
-	 * 
-	 * @param topicId
-	 *            : id of the topic the idea belongs to
-	 * 
-	 * @param userId
-	 *            : id of the user who wants to post an idea
-	 * 
-	 * @description This method renders the form for creating an idea
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	public static void blank(long topicId, long userId) {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		Topic topic = Topic.findById(topicId);
-		User user = User.findById(userId);
-		System.out.println("blank() entered entity " + topicId + " and user "
-				+ userId);
-		try {
-			render(type, topic, user);
-
-		} catch (TemplateNotFoundException e) {
-			render("CRUD/blank.html", type);
-		}
-
 	}
 
 	/**
@@ -351,4 +351,70 @@ public class Ideas extends CRUD {
 		}
 	}
 
+	/**
+	 *This method first checks if the user is allowed to tag the idea,
+	 *searches for the tag in the global list of tags,
+	 *if found => check if it already the idea had the same tag already or add the new one to the list
+	 *if not => create a new tag, save it to db, add it to the list
+	 *send notifications to followers of the tag and the creator of the idea
+	 * 
+	 * @author Mostafa Yasser El Monayer
+	 * 
+	 * @story C3S3, C3S11
+	 * 
+	 * @param ideaID
+	 *            : the idea that is being tagged
+	 *            
+	 * @param tag
+	 *            : the tag that is being added
+	 * 
+	 * @param userID
+	 *            : the user who is tagging the idea
+	 * 
+	 */
+
+	public static void tagIdea(long ideaID, String tag, long userID) {
+
+		boolean tagAlreadyExists = false;
+		boolean userNotAllowed = false;
+		boolean tagExists = false;
+		List<Tag> listOfTags = Tag.findAll();
+		User user = (User) User.findById(userID);
+		Idea idea = Idea.findById(ideaID);
+
+		if (!idea.belongsToTopic.organizers.contains(user) || !user.equals(idea.author)) {
+			// user not allowed
+			userNotAllowed = true;
+		} else {
+			for (int i = 0; i < listOfTags.size(); i++) {
+				if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
+					if (!idea.tagsList.contains(listOfTags.get(i))) {
+						idea.tagsList.add(listOfTags.get(i));
+						Notifications.sendNotification(listOfTags.get(i).followers, idea.tagsList.get(i).getId(), "tag", "This idea has been tagged as " + tag);
+					} else {
+						// tag already exists error message
+						tagAlreadyExists = true;
+					}
+					tagExists = true;
+				}
+			}
+			
+			if (!tagExists) {
+				Tag temp = new Tag(tag);
+				temp.save();
+				idea.tagsList.add(temp);
+			}
+			
+			if (!tagAlreadyExists) {
+				if (user.equals(idea.author)){
+				List<User> list1 = new ArrayList<User>();
+				list1.add(idea.author);
+				Notifications.sendNotification(list1, ideaID, "idea", "This idea has been tagged as " + tag);
+			}
+				}
+		}
+		render(tagAlreadyExists, tagExists, userNotAllowed, idea.tagsList);
+	}
+
+	
 }

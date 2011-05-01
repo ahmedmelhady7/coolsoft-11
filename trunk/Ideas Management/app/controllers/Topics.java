@@ -27,47 +27,69 @@ import models.*;
 public class Topics extends CRUD {
 
 	/**
-	 * This Method returns true if the tag exists in the global list of tags and
-	 * checks if it the topic is already tagged with the same tag (returns true
-	 * also), false if the tag needs to be created.
+	 *This method first checks if the user is allowed to tag the topic,
+	 *searches for the tag in the global list of tags,
+	 *if found => check if it already the topic had the same tag already or add the new one to the list
+	 *if not => create a new tag, save it to db, add it to the list
+	 *send notifications to followers, organizers and organization lead of the tagged topic
 	 * 
-	 * @author Mostafayasser.1991
+	 * @author Mostafa Yasser El Monayer
 	 * 
 	 * @story C3S2
 	 * 
+	 * @param topicID
+	 *            : the topic that is being tagged
+	 *            
 	 * @param tag
 	 *            : the tag that is being added
 	 * 
-	 * @param user
+	 * @param userID
 	 *            : the user who is tagging the topic
 	 * 
-	 * @param topicID
-	 *            : the topic that is being tagged
-	 * 
-	 * @return boolean
 	 */
 
-	public static boolean tagTopic(int topicID, String tag, User user) {
-		boolean tagAlreadyExists;
-		ArrayList<Tag> listOfTags = (ArrayList) Tag.findAll();
-		for (int i = 0; i < listOfTags.size(); i++) {
-			if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
-				Topic topic = Topic.findById(topicID);
+	public static void tagTopic(long topicID, String tag, long userID) {
 
-				if (!topic.tags.contains(listOfTags.get(i))) {
-					topic.tags.add(listOfTags.get(i));
-					// send notification to followers of the topic
-					// send notification to topic organizers
-					// send notification to organization lead
-				} else {
-					// error message
-					tagAlreadyExists = true;
+		boolean tagAlreadyExists = false;
+		boolean userNotAllowed = false;
+		boolean tagExists = false;
+		List<Tag> listOfTags = Tag.findAll();
+		User user = (User) User.findById(userID);
+		Topic topic = Topic.findById(topicID);
+
+		if (!topic.organizers.contains(user)) {
+			// user not allowed
+			userNotAllowed = true;
+		} else {
+			for (int i = 0; i < listOfTags.size(); i++) {
+				if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
+					if (!topic.tags.contains(listOfTags.get(i))) {
+						topic.tags.add(listOfTags.get(i));
+						Notifications.sendNotification(listOfTags.get(i).followers, topic.tags.get(i).getId(), "tag", "This topic has been tagged as " + tag);
+					} else {
+						// tag already exists error message
+						tagAlreadyExists = true;
+					}
+					tagExists = true;
 				}
-				return true;
-
 			}
+			
+			if (!tagExists) {
+				Tag temp = new Tag(tag);
+				temp.save();
+				topic.tags.add(temp);
+			}
+			
+			if (!tagAlreadyExists) {
+				Notifications.sendNotification(topic.followers, topicID, "topic", "This topic has been tagged as " + tag);
+				Notifications.sendNotification(topic.organizers, topicID, "topic", "This topic has been tagged as " + tag);
+				List<User> list1 = new ArrayList<User>();
+				list1.add(topic.entity.organization.creator);
+				Notifications.sendNotification(list1, topicID, "topic", "This topic has been tagged as " + tag);
+			
+				}
 		}
-		return false;
+		render(tagAlreadyExists, tagExists, userNotAllowed, topic.tags);
 	}
 
 	/**
