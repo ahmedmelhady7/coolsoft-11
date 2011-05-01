@@ -123,7 +123,7 @@ public class Topic extends Model {
 	 * Default constructor that creates a topic with name, description,privacy
 	 * level, creator and entity
 	 * 
-	 * @author ${aliaelbolock}
+	 * @author Alia el Bolock
 	 * 
 	 * @param title
 	 *            title of the topic
@@ -158,7 +158,7 @@ public class Topic extends Model {
 	/**
 	 * Creates a topic with name, description,privacy level and creator
 	 * 
-	 * @author ${aliaelbolock}
+	 * @author Alia el Bolock
 	 * 
 	 * @param title
 	 *            title of the topic
@@ -214,7 +214,7 @@ public class Topic extends Model {
 	/**
 	 * This Method returns the list of ideas in a certain topic
 	 * 
-	 * @author aliaelbolock
+	 * @author Alia el Bolock
 	 * 
 	 * @story C3S20
 	 * 
