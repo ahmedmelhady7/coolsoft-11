@@ -36,7 +36,7 @@ End Date:<input type = "text" id = "ienddate" name = "ienddate" size = "30" onbl
 <input id = "isummary" name = "isummary"type = "text" size = "30"><label id = "isummaryerror"> </label>
 </br>
 To add another item check here <input type="checkbox" name = "check" value = "checked">
-<input type = "submit" value ="search" >
+<input type = "submit" value ="Create" >
 #{/form}
 <textarea id = "datesupported" name = "datesupported" rows="7" cols = "2000">escriptionerror">
 The following date formats are accepted:
@@ -246,7 +246,7 @@ return false;
 				flag = 1;
 			}
 		}
-		if(Date.parse(document.getElementById("istartdare").value)< Date.parse(document.getElementById("startdate").value)|| Date.parse(document.getElementById("ienddate").value) > Date.parse(document.getElementById("enddate").value)){
+		if(Date.parse(document.getElementById("istartdate").value)< Date.parse(document.getElementById("startdate").value)|| Date.parse(document.getElementById("ienddate").value) > Date.parse(document.getElementById("enddate").value)){
 			alert("Item dates must be within the plans dates");
 			flag = 1;
 		}
