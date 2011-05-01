@@ -3,6 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import play.Play;
+
 import models.BannedUser;
 import models.Idea;
 import models.MainEntity;
@@ -28,47 +30,72 @@ import models.*;
 public class Topics extends CRUD {
 
 	/**
-	 * This Method returns true if the tag exists in the global list of tags and
-	 * checks if it the topic is already tagged with the same tag (returns true
-	 * also), false if the tag needs to be created.
+	 *This method first checks if the user is allowed to tag the topic,
+	 *searches for the tag in the global list of tags,
+	 *if found => check if it already the topic had the same tag already or add the new one to the list
+	 *if not => create a new tag, save it to db, add it to the list
+	 *send notifications to followers, organizers and organization lead of the tagged topic
 	 * 
-	 * @author Mostafayasser.1991
+	 * @author mostafayasser.1991
 	 * 
 	 * @story C3S2
 	 * 
+	 * @param topicID
+	 *            : the topic that is being tagged
+	 *            
 	 * @param tag
 	 *            : the tag that is being added
 	 * 
-	 * @param user
+	 * @param userID
 	 *            : the user who is tagging the topic
 	 * 
-	 * @param topicID
-	 *            : the topic that is being tagged
 	 * 
 	 * @return boolean
 	 */
 
-	public static boolean tagTopic(int topicID, String tag, User user) {
-		boolean tagAlreadyExists;
-		ArrayList<Tag> listOfTags = (ArrayList) Tag.findAll();
-		for (int i = 0; i < listOfTags.size(); i++) {
-			if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
-				Topic topic = Topic.findById(topicID);
+	public static void tagTopic(long topicID, String tag, long userID) {
 
-				if (!topic.tags.contains(listOfTags.get(i))) {
-					topic.tags.add(listOfTags.get(i));
-					// send notification to followers of the topic
-					// send notification to topic organizers
-					// send notification to organization lead
-				} else {
-					// error message
-					tagAlreadyExists = true;
+		boolean tagAlreadyExists = false;
+		boolean userNotAllowed = false;
+		boolean tagExists = false;
+		List<Tag> listOfTags = Tag.findAll();
+		User user = (User) User.findById(userID);
+		Topic topic = Topic.findById(topicID);
+
+		if (!topic.organizers.contains(user)) {
+			// user not allowed
+			userNotAllowed = true;
+		} else {
+			for (int i = 0; i < listOfTags.size(); i++) {
+				if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
+					if (!topic.tags.contains(listOfTags.get(i))) {
+						topic.tags.add(listOfTags.get(i));
+					} else {
+						// tag already exists error message
+						tagAlreadyExists = true;
+					}
+					tagExists = true;
 				}
-				return true;
-
+			}
+			
+			if (!tagExists) {
+				Tag temp = new Tag(tag);
+				temp.save();
+				topic.tags.add(temp);
+			}
+			
+			if (!tagAlreadyExists) {
+				// send notification to followers of the topic
+				Notifications.sendNotification(topic.followers, topicID, "topic", "This topic has been tagged as " + tag);
+				// send notification to topic organizers
+				Notifications.sendNotification(topic.organizers, topicID, "topic", "This topic has been tagged as " + tag);
+				// send notification to organization lead
+				List<User> list1 = new ArrayList<User>();
+				list1.add(topic.entity.organization.creator);
+				Notifications.sendNotification(list1, topicID, "topic", "This topic has been tagged as " + tag);
 			}
 		}
-		return false;
+		render(tagAlreadyExists, tagExists, userNotAllowed, topic.tags);
 	}
 
 	/**
@@ -219,10 +246,9 @@ public class Topics extends CRUD {
 		render(topics, user);
 	}
 
-	
 	/**
-	 * This method searches for unblocked users who are allowed to post
-	 * in a certain topic
+	 * This method searches for unblocked users who are allowed to post in a
+	 * certain topic
 	 * 
 	 * @author lama.ashraf
 	 * 
@@ -242,27 +268,37 @@ public class Topics extends CRUD {
 				.fetch();
 		searchList.add(org.creator);
 		// searchList.add(topic.creator);
-		
+
 		ArrayList<User> organizer = (ArrayList) Users
 				.getEntityOrganizers(entity);
 		searchList.addAll(organizer);
-		
+
 		List<BannedUser> bannedUserT = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"all", "topic", id).fetch();                                  // List of blocked users from a topic
+				"all", "topic", id).fetch(); // List of blocked users from a
+												// topic
 		List<BannedUser> bannedUserE = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"all", "entity", entity.id).fetch();                          // list of blocked users from an entity
+				"all", "entity", entity.id).fetch(); // list of blocked users
+														// from an entity
 		List<BannedUser> bannedUserO = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"all", "organization", org.id).fetch();                      // list of blocked user from an organization
+				"all", "organization", org.id).fetch(); // list of blocked user
+														// from an organization
 		List<BannedUser> bannedUserP = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"post idea", "topic", id).fetch();                           // list of users banned from posting ideas in the topic
-		
+				"post idea", "topic", id).fetch(); // list of users banned from
+													// posting ideas in the
+													// topic
+
 		List<User> bUser = new ArrayList<User>();
 		List<User> user = new ArrayList<User>();
-		List<BannedUser> bannedUser = new ArrayList<BannedUser>();        // list appending all the previous banneduser lists
+		List<BannedUser> bannedUser = new ArrayList<BannedUser>(); // list
+																	// appending
+																	// all the
+																	// previous
+																	// banneduser
+																	// lists
 		bannedUser.addAll(bannedUserT);
 		bannedUser.addAll(bannedUserE);
 		bannedUser.addAll(bannedUserO);
@@ -297,7 +333,7 @@ public class Topics extends CRUD {
 				allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
 						.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
 								org, -1, "idea developer", "none");
-				
+
 				for (int i = 0; i < allUser.size(); i++) {
 					user.add((allUser.get(i)).enrolled);
 				}
@@ -316,7 +352,6 @@ public class Topics extends CRUD {
 					allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
 							.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
 									org, id, "idea developer", "topic");
-					
 
 					for (int i = 0; i < allUser.size(); i++) {
 						user.add((allUser.get(i)).enrolled);
@@ -378,12 +413,10 @@ public class Topics extends CRUD {
 			" has been closed and promoted to execution.";
 		
 		//send notification to organizers
-		Notifications.sendNotification(targetTopic.organizers, 
-				targetTopic.id, "Topic", notificationDescription);
+		Notifications.sendNotification(targetTopic.organizers, targetTopic.id, "Topic", notificationDescription);
 		
 		//send notification to followers
-		Notifications.sendNotification(targetTopic.followers, 
-				targetTopic.id, "Topic", notificationDescription);
+		Notifications.sendNotification(targetTopic.followers, targetTopic.id, "Topic", notificationDescription);
 		
 		// TODO: edit buttons in view
 
