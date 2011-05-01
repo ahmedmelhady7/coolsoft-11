@@ -4,6 +4,6 @@ import models.MainEntity;
 import models.Tag;
 import models.User;
 
-public class Tags {
+public class Tags extends CRUD{
 
 }

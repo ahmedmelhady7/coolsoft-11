@@ -901,8 +901,8 @@ public class Users extends CRUD {
 	 */
 
 	public static void ViewOrgInv(long userId) {
-		// User u = User.findById(userId);
-		User u = (User) User.findAll().get(1);
+		User u = User.findById(userId);
+		//User u = (User) User.findAll().get(1);
 		List<Invitation> invitations = new ArrayList<Invitation>();
 		List<Invitation> invs1 = Invitation.findAll();
 		for (int j = 0; j < invs1.size(); j++) {
