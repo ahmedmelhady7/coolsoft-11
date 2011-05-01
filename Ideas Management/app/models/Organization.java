@@ -34,6 +34,12 @@ public class Organization extends Model {
 	 */
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
 	public List<MainEntity> entitiesList;
+	
+	/**
+	 * List of organizers managing the organization
+	 */
+	@ManyToMany(mappedBy = "createdOrganization", cascade = CascadeType.ALL)
+	public List<User> organizers;
 
 	/**
 	 * Creator of that organization
