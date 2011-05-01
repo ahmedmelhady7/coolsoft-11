@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import models.AssignRequest;
@@ -77,11 +78,16 @@ public class AssignRequests extends CRUD {
 	 */
 	public static void sendRequests(long itemId, long[] userIds, long planId) {
 		User user;
+		Date d = new Date();
+		Item item = Item.findById(itemId);
 		for (int i = 0; i < userIds.length; i++) {
 			user = User.findById(userIds[i]);
-			if (filter(itemId, planId).contains(user))
-				sendAssignRequest(itemId, userIds[i]);
-
+			if (filter(itemId, planId).contains(user)){
+				if(!(item.status == 2) && item.endDate.compareTo(d)>0) {
+					sendAssignRequest(itemId, userIds[i]);
+				}
+				
+			}
 		}
 
 	}

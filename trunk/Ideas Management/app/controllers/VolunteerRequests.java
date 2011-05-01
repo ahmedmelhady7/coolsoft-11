@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import play.data.validation.MinSize;
@@ -35,7 +36,9 @@ public class VolunteerRequests extends CRUD {
 			@Required String justification) {
 		User sender = Security.getConnected();
 		Item dest = Item.findById(itemId);
+		Date d = new Date();
 		if (sender.canVolunteer(itemId)) {
+			if(!(dest.status == 2) && dest.endDate.compareTo(d)>0) {
 			VolunteerRequest volunteerRequest = new VolunteerRequest(sender,
 					dest, justification).save();
 			dest.addVolunteerRequest(volunteerRequest);
@@ -47,6 +50,7 @@ public class VolunteerRequests extends CRUD {
 			Notifications.sendNotification(dest.plan.topic.getOrganizer(),
 					dest.plan.id, "plan", description);
 			Plans.viewAsList(dest.plan.id);
+			}
 		} else {
 			justify(itemId, dest.plan.id, 1);
 		}
