@@ -124,6 +124,34 @@ public class Idea extends Model {
 		this.priority = null;
 
 	}
+	
+	/**
+	 * 
+	 * @author ${Fady Amir}
+	 * 
+	 * @param commentsList
+	 * 					The list of comments of an idea
+	 * 
+	 */
+	public void checkDate(Notifications inActiveNotification)
+	{
+		Comment lastComment= commentsList.get(commentsList.size()-1);
+		
+		Date now = new Date();
+		
+		Date lastCommentDate = lastComment.commentDate;
+		
+	    lastCommentDate.setDate(lastCommentDate.getDate()+14);
+		
+		if(lastCommentDate.after(now))
+		{
+			List <Users> user = new ArrayList<Users>();
+			//Send notification 
+			//inActiveNotification.sendNotification();
+		}
+		
+	}
+	
 
 	/**
 	 * 
