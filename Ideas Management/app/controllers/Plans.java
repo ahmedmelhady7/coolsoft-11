@@ -88,10 +88,8 @@ public class Plans extends CRUD {
 	 * 
 	 * @param topicId
 	 *            The ID of the topic that this action plan is based upon
-	 * @param userId
-	 *            The ID of the user that is creating the plan
 	 * 
-	 * @return void
+	 * 
 	 */
 	public static void planCreate(long topicId, String ideas) {
 		render(topicId, ideas);
@@ -151,10 +149,20 @@ public class Plans extends CRUD {
 	 *            The date when the plan will end
 	 * @param description
 	 *            The description of the plan
-	 * @param topic
-	 *            The topic which this plan is based upon
+	 * @param topicId
+	 *            The id of the topic which this plan is based upon
 	 * @param requirement
 	 *            The requirements needed for executing this plan
+	 * @param istartdate
+	 * 			  The start date of the first item added
+	 * @param ienddate
+	 * 			  The end date of the first item added
+	 * @param idescription
+	 * 			  The description of the first item added
+	 * @param isummary
+	 * 			  The summary of the first item added
+	 * @param check
+	 * 			  The value of the checkbox that indicates whether the user wants to add more items or not
 	 * @param ideaString
 	 *            : the String containing all the ideas ids that should be
 	 *            associated to the plan
@@ -230,7 +238,7 @@ public class Plans extends CRUD {
 	 * 
 	 * @param planId
 	 *            The ID of the plan where the items will be added
-	 * @return void
+	 * 
 	 */
 
 	public static void addItem(long planId) {
@@ -252,12 +260,13 @@ public class Plans extends CRUD {
 	 *            The date when the item(task) should be done
 	 * @param descriprtion
 	 *            The description of the item
-	 * @param plan
-	 *            The plan that contains this item in its items list
+	 * @param planId
+	 *            The id of the plan that contains this item in its items list
 	 * @param summary
 	 *            The summary of the description of the item (for vewing
 	 *            purposes)
-	 * @return void
+	 * @param check
+	 * 			  The checkbox value that checks whether the user wants to add another item or not
 	 */
 	public static void add(Date startDate, Date endDate, String description,
 			long planId, String summary, String check) {
@@ -280,12 +289,24 @@ public class Plans extends CRUD {
 	 * 
 	 * @param planId
 	 *            The ID of the plan that will be edited
-	 * @return void
+	 * 
 	 */
 	public static void editPlan(long planId) {
 		Plan plan = Plan.findById(planId);
 		render(plan);
 	}
+	/**
+	 * This method renders the page for editing a plan
+	 * 
+	 * @story C5S3
+	 * 
+	 * @author hassan.ziko1
+	 * 
+	 * @param itemId
+	 *            The ID of the item that will be edited
+	 * 
+	 */
+
 	public static void editItem(long itemId){
 		Item item = Item.findById(itemId);
 		render(item);
@@ -295,7 +316,7 @@ public class Plans extends CRUD {
 	 * This method takes the parameters from the web page of the plan editing to
 	 * edit in a certain plan
 	 * 
-	 * @story C5S1
+	 * @story C5S3
 	 * 
 	 * @author hassan.ziko1
 	 * 
@@ -307,10 +328,10 @@ public class Plans extends CRUD {
 	 *            The date when the plan will end
 	 * @param description
 	 *            The description of the plan
-	 * @param topic
 	 * @param requirement
 	 *            The requirements needed for executing this plan
-	 * @return void
+	 * @param planId
+	 * 			  The id of the plan being edit
 	 */
 	public static void edit(String title, Date startDate,
 			Date endDate, String description, String requirement, long planId) {
@@ -329,6 +350,28 @@ public class Plans extends CRUD {
 		}
 		viewAsList(p.id);
 	}
+	/**
+	 * This method takes the parameters from the web page of the item editing to
+	 * edit in a certain item
+	 * 
+	 * @story C5S3
+	 * 
+	 * @author hassan.ziko1
+	 * 
+	 * @param startDate
+	 *            The start date of an item
+	 * @param endDate
+	 *            The end date of an item
+	 * @param description
+	 *            The description of the item
+	 * @param planId
+	 * 			  The id of the plan that will be viewed
+	 * @param requirement
+	 *            The requirements needed for executing this plan
+	 * @param itemId
+	 * 			  The id of the item being edit
+	 */
+
 	public static void edit2(Date startDate, Date endDate, String description,
 			long planId, String summary, long itemId){
 		Item i = Item.findById(itemId);
