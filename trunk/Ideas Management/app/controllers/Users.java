@@ -28,19 +28,20 @@ public class Users extends CRUD {
 	/**
 	 * This Method adds a user to the list of followers in a given tag
 	 * 
-	 * @author m.hism.sa
+	 * @author Mohamed Hisham
 	 * 
 	 * @story C2S11
 	 * 
-	 * @param tag
-	 *            : the tag that the user is following
+	 * @param tagId
+	 *            : the id of the tag that the user is following
 	 * 
-	 * @param user
-	 *            : the user who follows
+	 * @param userId
+	 *            : the id of the user who follows
 	 * 
-	 * @return void
 	 */
-	public static void follow(Tag tag, User user) {
+	public static void follow(long tagId, long userId) {
+		Tag tag = Tag.findById(tagId);
+		User user = User.findById(userId);
 		tag.follow(user);
 		user.follow(tag);
 	}
@@ -229,7 +230,7 @@ public class Users extends CRUD {
 	 * this method checks if the user is allowed to post an idea under a certain
 	 * topic, if yes then an idea is posted under the topic
 	 * 
-	 * @author m.hisham.sa
+	 * @author Mohamed Hisham
 	 * 
 	 * @story C2S14
 	 * 
@@ -252,7 +253,7 @@ public class Users extends CRUD {
 			user.postIdea(topic, title, description);
 			topic.postIdea(user, title, description);
 		} else
-			return;
+			System.out.println("Action can't be performed");
 
 	}
 
