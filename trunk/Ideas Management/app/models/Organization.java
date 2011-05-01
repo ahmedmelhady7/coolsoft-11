@@ -38,7 +38,7 @@ public class Organization extends Model {
 	/**
 	 * List of organizers managing the organization
 	 */
-	@ManyToMany(mappedBy = "createdOrganization", cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL)
 	public List<User> organizers;
 
 	/**
