@@ -248,7 +248,7 @@ public class Topics extends CRUD {
 		for (int i = 0; i < e.size(); i++) {
 			temp = e.get(i).topicList;
 			for (int j = 0; j < temp.size(); j++) {
-//				??
+//				???
 				if (user.topicsIOrganize.indexOf(temp.get(j)) < 0) {
 					topics.add(temp.get(j));
 				}

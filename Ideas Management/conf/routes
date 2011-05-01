@@ -24,7 +24,7 @@ GET     /public/                                staticDir:public
 *      /unfollow                				Users.listFollows
 
 # Import requestToPost routes
-*      /topicpostrequest                		Topicss.requestTopicList
+*      /topicpostrequest                		Topics.requestToPost
 
 # Import AdvancedSearch routes
 *      /AdvancedSearch                          Search.advancedSearch
@@ -36,4 +36,4 @@ GET     /public/                                staticDir:public
 *	   /InviteMember							Organizations.InviteMember
 
 # Import InviteMember routes
-*	   /ViewOrgInv  							Users.ViewOrgInv.html
+*	   /ViewOrgInv  							Users.ViewOrgInv
