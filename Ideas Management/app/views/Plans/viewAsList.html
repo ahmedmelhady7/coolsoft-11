@@ -1,6 +1,12 @@
 #{extends 'planLayout.html' /}
 #{set title:'View Plan as List' /}<h3>${p.title}</h3>
 <br/>
+This plan is now rated: ${newRating}
+<form action="@{Application.rate()}" method="GET">
+    <input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/> 
+    <input type="submit" value="Submit rating"/>
+</form> 
+<br />
 #{if itemsList.size() > 0}
 <ul style="list-style: none; ">
     #{list items:itemsList, as:'item'}
@@ -8,11 +14,9 @@
         <fieldset>
             <legend>
                 <h2>
-               Item details:
+                ${item.summary}</a>
             </h2>
             </legend>
-			Item title:  ${item.summary}
-			<br/>
             Item Description: ${item.description}
             <br/>
             Start Date:  ${item.startDate.format('dd MMM yy')}
@@ -57,5 +61,21 @@ ${p.topics.organizers.get(0).username}
 <script type="text/javascript">
     function volunteer(){
 	
-	}  
+	}
+   	function isNumberKey(evt)
+    {
+       var charCode = (evt.which) ? evt.which : event.keyCode
+       if (charCode > 31 && (charCode < 48 || charCode > 53))
+          return false;
+
+       return true;
+    }
+    function isSingleDigit()
+    {
+    	var txt = document.getElementById('rating').value;
+    	if(txt.length > 0)
+    	{
+    		document.getElementById('rating').value = document.getElementById('rating').value.substring(0, 0);
+    	}
+    }
 </script>
