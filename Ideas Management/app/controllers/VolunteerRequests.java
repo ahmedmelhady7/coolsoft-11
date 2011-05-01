@@ -19,7 +19,7 @@ public class VolunteerRequests extends CRUD {
 	 * of the user and to the list of volunteer requests in the item given the
 	 * user id, the item id and the required justification string
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S10
 	 * 
@@ -29,8 +29,6 @@ public class VolunteerRequests extends CRUD {
 	 *            : the id of the item the user wishes to volunteer to work on
 	 * @param justification
 	 *            : the reason why the user would like to volunteer in this item
-	 * 
-	 * @return void
 	 */
 
 	public static void sendVolunteerRequest(long itemId,
@@ -59,7 +57,7 @@ public class VolunteerRequests extends CRUD {
 	 * This Method renders the view where the user enters the justification of
 	 * his volunteer request given the item id and the plan id
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S10
 	 * 
@@ -68,8 +66,6 @@ public class VolunteerRequests extends CRUD {
 	 *            work on
 	 * @param itemId
 	 *            : the id of the item the user wishes to volunteer to work on
-	 * 
-	 * @return void
 	 */
 
 	public static void justify(long itemId, long planId, int success) {

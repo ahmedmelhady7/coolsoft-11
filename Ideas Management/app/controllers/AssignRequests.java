@@ -15,7 +15,7 @@ public class AssignRequests extends CRUD {
 	 * This Method calls the method viewUsers with the itemId that users will
 	 * receive assignRequests to work on and its planId
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S5
 	 * 
@@ -25,8 +25,6 @@ public class AssignRequests extends CRUD {
 	 * @param planId
 	 *            : the id of the plan containing the item that will be assigned
 	 *            to the list of users selected
-	 * 
-	 * @return void
 	 */
 
 	public static void assign(long itemId, long planId) {
@@ -40,7 +38,7 @@ public class AssignRequests extends CRUD {
 	 * the organizer will choose from, the itemId that users will be assigned to
 	 * and its planId
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S5
 	 * 
@@ -53,8 +51,6 @@ public class AssignRequests extends CRUD {
 	 * @param planId
 	 *            : the id of the plan containing the item that will be assigned
 	 *            to the list of users selected
-	 * 
-	 * @return void
 	 */
 	public static void viewUsers(List<User> users, long itemId, long planId) {
 		render(users, itemId, planId);
@@ -65,7 +61,7 @@ public class AssignRequests extends CRUD {
 	 * This Method calls the method sendAssignRequest with each user id in the
 	 * given list of userIds and the item the user is being assigned to
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S5
 	 * 
@@ -78,8 +74,6 @@ public class AssignRequests extends CRUD {
 	 * @param planId
 	 *            : the id of the plan containing the item that will be assigned
 	 *            to the list of users selected
-	 * 
-	 * @return void
 	 */
 	public static void sendRequests(long itemId, long[] userIds, long planId) {
 		User user;
@@ -99,7 +93,7 @@ public class AssignRequests extends CRUD {
 	 * requests of the receiver and to the list of assign requests in the item
 	 * given the sender id, the item id, the destination id
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S5
 	 * 
@@ -110,8 +104,6 @@ public class AssignRequests extends CRUD {
 	 *            work on
 	 * @param destId
 	 *            : the id of the user the assign request is sent to
-	 * 
-	 * @return void
 	 */
 	public static void sendAssignRequest(long itemId, long destId) {
 
@@ -143,7 +135,7 @@ public class AssignRequests extends CRUD {
 	 * plan who aren't assigned to the given item nor have pending
 	 * assignRequests or volunteerRequests to work on this item
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S5
 	 * 
@@ -199,7 +191,7 @@ public class AssignRequests extends CRUD {
 	 * assignRequests or volunteerRequests to work on this item and who matched
 	 * the search result of the entered keyword
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S5
 	 * 
