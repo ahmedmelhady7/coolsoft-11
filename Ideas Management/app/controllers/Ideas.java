@@ -3,12 +3,21 @@
  */
 package controllers;
 
-import java.util.ArrayList;
+import java.util.*;
+import java.lang.reflect.*;
+import java.lang.annotation.*;
 
-import models.Idea;
-import models.Tag;
-import models.Topic;
-import models.User;
+import javax.persistence.Id;
+
+import play.*;
+import play.data.binding.*;
+import play.mvc.*;
+import play.utils.Java;
+import play.db.Model;
+import play.data.validation.*;
+import play.exceptions.*;
+import play.i18n.*;
+import models.*;
 
 /**
  * @author ${Ahmed El-Hadi}
@@ -71,6 +80,275 @@ public class Ideas extends CRUD {
 				drafts.add(idea);
 
 		return drafts;
+	}
+
+	/**
+	 * Overriding the CRUD method create.
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S10
+	 * 
+	 * 
+	 * @description This method checks for the Validation of the information
+	 *              inserted in the Add form of an Idea and if they are valid
+	 *              the Idea is created and saved.
+	 * @throws Exception
+	 * 
+	 */
+
+	public static void create(long topicId, long userId) throws Exception {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		Model object = (Model) constructor.newInstance();
+		Binder.bind(object, "object", params.all());
+		validation.valid(object);
+		Topic topic = Topic.findById(topicId);
+		User author = User.findById(userId);
+		Idea i = (Idea) object;
+		i.belongsToTopic = topic;
+		i.author = author;
+		i.privacyLevel = topic.privacyLevel;
+		// ArrayList<Comment> ideaComments = (ArrayList<Comment>)
+		// i.commentsList;
+		// ArrayList<Tag> ideaTags = (ArrayList<Tag>) i.tagsList;
+		String message = "";
+		if (i.belongsToTopic == null) {
+			message = "An Idea must belong to a Topic";
+			try {
+				render(request.controller.replace(".", "/") + "/blank.html",
+						type, message);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type, message);
+			}
+		}
+
+		if (validation.hasErrors()) {
+			if (i.title.equals("")) {
+				message = "An Idea must have a title";
+			} else if (i.description.equals("")) {
+				message = "An Idea must have a description";
+
+			}
+
+			try {
+				render(request.controller.replace(".", "/") + "/blank.html",
+						type, i.title, i.belongsToTopic, i.description,
+						i.commentsList, i.tagsList, message);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type);
+			}
+		}
+
+		object._save();
+		String anothermessage = "you have created a new idea with title "
+				+ i.title + " and with description " + i.description;
+		flash.success(Messages.get("crud.created", type.modelName,
+				((Idea) object).getId()));
+		if (params.get("_save") != null) {
+			redirect("/ideas/view?ideaid=" + ((Idea) object).getId());
+			if (params.get("_saveAndAddAnother") != null) {
+				redirect(request.controller + ".blank", anothermessage);
+			}
+			redirect(request.controller + ".show", ((Idea) object).getId(),
+					anothermessage);
+
+		}
+	}
+
+	/**
+	 * Overriding the CRUD method blank.
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S10
+	 * 
+	 * @param topicId
+	 *            : id of the topic the idea belongs to
+	 * 
+	 * @param userId
+	 *            : id of the user who wants to post an idea
+	 * 
+	 * @description This method renders the form for creating an idea
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	public static void blank(long topicId, long userId) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Topic topic = Topic.findById(topicId);
+		User user = User.findById(userId);
+		System.out.println("blank() entered entity " + topicId + " and user "
+				+ userId);
+		try {
+			render(type, topic, user);
+
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/blank.html", type);
+		}
+
+	}
+
+	/**
+	 * Overriding the CRUD method show.
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S10
+	 * 
+	 * @param Ideaid
+	 *            : id of the idea to be show
+	 * 
+	 * @description This method renders the form for editing and viewing an idea
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	public static void show(long ideaId) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(ideaId);
+		notFoundIfNull(object);
+		Idea i = (Idea) object;
+		List<Tag> tags = i.tagsList;
+		User author = i.author;
+		List<Comment> comments = i.commentsList;
+		Plan plan = i.plan;
+		Topic topic = i.belongsToTopic;
+		// boolean openToEdit = i.openToEdit;
+		int privacyLevel = i.privacyLevel;
+		String deletemessage = "Are you Sure you want to delete the task ?!";
+		// boolean deletable = i.isDeletable();
+
+		try {
+			System.out.println("show() done, about to render");
+			render(type, object, tags, author, comments, topic, plan,
+			/* openToEdit, */privacyLevel, deletemessage, /* deletable, */ideaId);
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/show.html", type, object);
+		}
+	}
+
+	/**
+	 * Overriding the CRUD method edit.
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S10
+	 * 
+	 * @param Ideaid
+	 *            : id of the idea to be show
+	 * 
+	 * @description This method is resposible for editing an idea
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+
+	public static void edit(long ideaId) {
+
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(ideaId);
+		notFoundIfNull(object);
+		Idea i = (Idea) object;
+		flash.success(Messages.get("crud.edit", type.modelName,
+				((Idea) object).getId()));
+		redirect("/ideas/show?ideaId=" + ((Idea) object).getId(), i);
+	}
+
+	/**
+	 * Overriding the CRUD method view.
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S10
+	 * 
+	 * @param Ideaid
+	 *            : id of the idea to be show
+	 * 
+	 * @description This method is resposible for viewing an idea
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	public static void view(long ideaId) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(ideaId);
+		notFoundIfNull(object);
+		Idea i = (Idea) object;
+		List<Tag> tags = i.tagsList;
+		User author = i.author;
+		List<Comment> comments = i.commentsList;
+		Plan plan = i.plan;
+		Topic topic = i.belongsToTopic;
+		// boolean openToEdit = i.openToEdit;
+		int privacyLevel = i.privacyLevel;
+		String deletemessage = "Are you Sure you want to delete the task ?!";
+		// boolean deletable = i.isDeletable();
+
+		try {
+			render(type, object, tags, author, comments, topic, plan,
+			/* openToEdit, */privacyLevel, deletemessage, /* deletable, */ideaId);
+		} catch (TemplateNotFoundException e) {
+			render("/ideas/view.html", type, object, tags, comments, topic,
+					plan, /* openToEdit, */privacyLevel, deletemessage, /*
+																	 * deletable,
+																	 */ideaId);
+		}
+	}
+
+	/**
+	 * Overriding the CRUD method list.
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S10
+	 * 
+	 * @param page
+	 *            : page of the list we are in
+	 * 
+	 * @param search
+	 *            : search string
+	 * 
+	 * @param searchFields
+	 *            : the fields we want to search
+	 * 
+	 * @param orderBy
+	 *            : criteria to order list by
+	 * 
+	 * @param order
+	 *            : the order of the list
+	 * 
+	 * @description This method renders the list of topics, with search and sort
+	 *              options
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	public static void list(int page, String search, String searchFields,
+			String orderBy, String order) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		if (page < 1) {
+			page = 1;
+		}
+		List<Model> objects = type.findPage(page, search, searchFields,
+				orderBy, order, (String) request.args.get("where"));
+		Long count = type.count(search, searchFields,
+				(String) request.args.get("where"));
+		Long totalCount = type.count(null, null,
+				(String) request.args.get("where"));
+		try {
+			render(type, objects, count, totalCount, page, orderBy, order);
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/list.html", type, objects, count, totalCount, page,
+					orderBy, order);
+		}
 	}
 
 }

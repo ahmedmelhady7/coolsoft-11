@@ -25,12 +25,11 @@ public class Plans extends CRUD {
 		List<Item> itemsList = p.items;
 		int canAssign = 0;
 		if (Users.isPermitted(user,
-				"assign one or many users to a to-do item in a plan", p.topic.id,
-				"topic")) {
+				"assign one or many users to a to-do item in a plan",
+				p.topic.id, "topic")) {
 
 			canAssign = 1;
 		}
-		
 
 		render(p, itemsList, user, canAssign);
 	}

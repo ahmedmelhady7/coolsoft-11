@@ -105,5 +105,5 @@ public class UserRoleInOrganizations extends CRUD {
 		return false;
 
 	}
-	
+
 }

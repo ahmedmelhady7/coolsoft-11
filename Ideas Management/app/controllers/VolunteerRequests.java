@@ -42,8 +42,12 @@ public class VolunteerRequests extends CRUD {
 					dest, justification).save();
 			dest.addVolunteerRequest(volunteerRequest);
 			sender.addVolunteerRequest(volunteerRequest);
-			String description = sender.username + " has requested to volunteer to work on the following item " + dest.summary + "in the plan " + dest.plan.title + "of the topic" + dest.plan.topic.title;
-			Notifications.sendNotification(dest.plan.topic.getOrganizer(), dest.plan.id, "plan", description);
+			String description = sender.username
+					+ " has requested to volunteer to work on the following item "
+					+ dest.summary + "in the plan " + dest.plan.title
+					+ "of the topic" + dest.plan.topic.title;
+			Notifications.sendNotification(dest.plan.topic.getOrganizer(),
+					dest.plan.id, "plan", description);
 			Plans.viewAsList(dest.plan.id);
 		} else {
 			justify(itemId, dest.plan.id, 1);
