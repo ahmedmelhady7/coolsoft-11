@@ -7,12 +7,12 @@
 <table border="0" bgcolor="#ececec" cellspacing="5">
 #{if inv.isEmpty()}
 </table>
-<tr><td>No new invitations</td><td>
+<tr><td><i>No new invitations</i></td><td>
 #{/if}
 #{else}
 #{list items:inv, as:'inn'} 
 <html>
-<table border="0" bgcolor="#ececec" cellspacing="5" id = ${inn.id}>
+<table border="0" bgcolor="#ececec" cellspacing="5" id ="view_${inn.id}">
 
 <tr><td><font size ="3" color ="black">From : ${inn.organization.name} Organization</font></td><td>
 
@@ -37,16 +37,15 @@ function show(choice,id){
 		$.post('@{respond()}', {choice:1,id:id},
 			 function()
 			 {
-			document.getElementById("${inn.id}").innerHTML = "Invitation has been accepted";
-			});
+			$('#view_'+id).html('<i>Invitation has been accepted<\i>');}
+			);
 	}
 	else {
 		$.post('@{respond()}', {choice:0,id:id},
 			 function()
 			 {
 			 	
-			document.getElementById("${inn.id}").innerHTML = "Invitation has been rejected";
-			
+			$('#view_'+id).html('<i>Invitation has been rejected<\i>');
 			});
 	}
 }
