@@ -196,29 +196,7 @@ public class Users extends CRUD {
 	
 
 
-	/**
-	 * 
-	 * this method checks if the user is allowed to post an idea under a certain
-	 * topic, if yes then an idea is posted under the topic
-	 * 
-	 * @author m.hisham.sa
-	 * 
-	 * @story C2S14
-	 * 
-	 * @param user
-	 *            : the user trying to post the idea
-	 * 
-	 * @param topic
-	 *            : the topic that the idea is being posted under
-	 * @param title
-	 *            : the title of the idea
-	 * 
-	 * @param description
-	 *            : the description/content of the idea
-	 * 
-	 * 
-	 * @return void
-	 */
+	
 
 	public void postTopic(String name, String description, short privacyLevel,
 			User creator, MainEntity entity) {
@@ -242,6 +220,28 @@ public class Users extends CRUD {
 			}
 		}
 	}
+	
+	/**
+	 * 
+	 * this method checks if the user is allowed to post an idea under a certain
+	 * topic, if yes then an idea is posted under the topic
+	 * 
+	 * @author m.hisham.sa
+	 * 
+	 * @story C2S14
+	 * 
+	 * @param user
+	 *            : the user trying to post the idea
+	 * 
+	 * @param topic
+	 *            : the topic that the idea is being posted under
+	 * @param title
+	 *            : the title of the idea
+	 * 
+	 * @param description
+	 *            : the description/content of the idea
+	 * 
+	 */
 
 	public void postIdea(User user, Topic topic, String title,
 			String description) {
