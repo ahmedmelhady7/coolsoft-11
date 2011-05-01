@@ -8,7 +8,25 @@ import models.LinkDuplicatesRequest;
 import models.MainEntity;
 import play.mvc.Controller;
 
+/**
+ * 
+ * @author Loaay Alkherbawy
+ * 
+ * @story C4S10 : Marking two Ideas as a duplicate
+ * 
+ */
+
 public class MarkingRequest extends Controller {
+	
+	/**
+	 * @author Loaay Alkherbawy
+	 * 
+	 * @Story C4S10: marking to ideas as duplicate
+	 * 
+	 * @param idea1: Idea one
+	 * @param idea2: Idea relevant to Idea one
+	 * @param des: description of where the duplication is
+	 */
 
 	public static void markDuplicate(Idea idea1, Idea idea2,String des) {
 		Long ideaOrg1 = idea1.belongsToTopic.entity.id;
