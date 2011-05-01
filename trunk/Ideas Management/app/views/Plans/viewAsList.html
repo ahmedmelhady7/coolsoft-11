@@ -1,6 +1,11 @@
 #{extends 'planLayout.html' /}
 #{set title:'View Plan as List' /}<h3>${p.title}</h3>
 <br/>
+
+ #{if canEdit == 1)}
+			<a href="@{Plans.editPlan(p.id)}">Edit General info about the plan</a>
+ #{/if}
+ <br/>
 This plan is now rated: ${newRating}
 <form action="@{Application.rate()}" method="GET">
     <input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/> 
@@ -38,6 +43,9 @@ This plan is now rated: ${newRating}
             #{if canAssign == 1)}
 			<a href="@{AssignRequests.assign(item.id, p.id)}">Assign a user to this item</a>
             #{/if}
+			 #{if canEdit == 1)}
+			<a href="@{Plans.editItem(item.id)}">Edit this item</a>
+            #{/if}
         </fieldset>
     </li>
     #{/list}
@@ -59,9 +67,7 @@ ${p.topics.organizers.get(0).username}
 #{/else}
 #{/else}
 <script type="text/javascript">
-    function volunteer(){
-	
-	}
+
    	function isNumberKey(evt)
     {
        var charCode = (evt.which) ? evt.which : event.keyCode
