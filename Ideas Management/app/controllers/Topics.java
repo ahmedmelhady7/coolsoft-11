@@ -98,8 +98,22 @@ public class Topics extends CRUD {
 
 	public static void postIdea(User user, Topic topic, String title,
 			String description) {
-		Idea idea = new Idea(title, description, user, topic);
-		idea.privacyLevel = topic.privacyLevel;
+		// Idea idea = new Idea(title, description, user, topic);
+		// idea.privacyLevel = topic.privacyLevel;
+		render(title, description);
+	}
+
+	/*
+	 * This method is used for rendering the user and the topic from the
+	 * postIdea(User user, Topic topic, String title,String description)
+	 */
+	public static void postI() {
+		User u = new User("a@gmail.com", "1234", "ah", "had", "hadi.18", 0,
+				null, "", "");
+		u._save();
+		Topic t = new Topic("a", "s", (short) 0, u);
+		t._save();
+		render(u, t);
 	}
 
 	/**

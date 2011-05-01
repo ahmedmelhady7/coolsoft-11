@@ -1,0 +1,45 @@
+<html>
+    <center>
+        <p>
+            <big>
+                <b>
+                    <big><i>
+                    <center>
+                        Title
+                    </center>
+                </b>
+            </big>
+            </i>
+        </p>
+        <p>
+            <input type="text" name="title"style="width:300px;"/>
+        </p>
+        <p>
+            <big>
+                <b>
+                    <big><i>
+                    <center>
+                        Description
+                    </center>
+                </b>
+            </big>
+            </i>
+        </p>
+        <p>
+            <input type="text" name="description"style="width:500px; height:140px;" size="50" />
+        </p>
+        <p>
+            <input type="submit" value = "Post Idea" onclick="hadi('${u}','${t}',title.value, description.value);">
+        </p>
+    </center>
+    <script type="text/javascript">
+        function hadi(user, topic, title, description){
+            $.post("@{postIdea()}", {
+                user: user,
+                topic: topic,
+                title: title,
+                description: description
+            });
+        }
+    </script>
+</html>
