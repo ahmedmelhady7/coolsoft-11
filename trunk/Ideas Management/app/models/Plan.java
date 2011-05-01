@@ -64,14 +64,36 @@ public class Plan extends Model {
 	 * @author ${Ibrahim Safwat}
 	 * List of comments in that plan
 	 */
-
+	/**
+	 * This is a constructor for the plan
+	 * 
+	 * @story C5S1
+	 * 
+	 * @author hassan.ziko1
+	 * 
+	 * @param title
+	 *          The title of the plan
+	 * @param user
+	 * 			The user that created the plan
+	 * @param startDate
+	 * 			The start date of the plan
+	 * @param endDate
+	 * 			The end date of the plan
+	 * @param description
+	 * 			The description of the plan
+	 * @param topic
+	 * 			The topic that this plan belongs to
+	 * @param requiremen
+	 * 			The requirements of the plan
+	 * 
+	 */
 	public Plan(String title, User user, Date startDate,
 			Date endDate, String description, Topic topic, String requirement) {
 
 		this.title = title;
 		this.madeBy = user;
 		this.status = "new";
-		this.progress = 0;
+		this.progress = 0; //@author: hassan.ziko1 this means that the plan is new
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.description = description;
@@ -118,7 +140,6 @@ public class Plan extends Model {
 	 * @param summary
 	 * 			The summary of the description of the item
 	 * 
-	 * @return	void
 	 */
 
 	public void addItem(Date startDate, Date endDate,
