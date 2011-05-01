@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Date;
 import javax.persistence.*;
 
 import play.data.validation.Required;
@@ -20,6 +21,9 @@ public class Comment extends Model {
 	@Required
 	String comment;
 	
+	@OneToOne
+	public Date commentDate;
+	
 	@ManyToOne 
 	public Topic commentedTopic;
 	
@@ -32,25 +36,28 @@ public class Comment extends Model {
 	@OneToOne
 	public User commenter;
 	
-	public Comment(String comment, Topic commentedTopic, User commenter)
+	public Comment(String comment, Topic commentedTopic, User commenter,Date commentDate )
 	{
 		this.comment=comment;
 		this.commentedTopic = commentedTopic;
 		this.commenter = commenter;
+		this.commentDate = new Date();
 	}
 	
-	public Comment(String comment, Plan commentedPlan, User commenter)
+	public Comment(String comment, Plan commentedPlan, User commenter,Date commentDate)
 	{
 		this.comment=comment;
 		this.commentedPlan = commentedPlan;
 		this.commenter = commenter;
+		this.commentDate = new Date();
 	}
 	
-	public Comment(String comment, Idea commentedIdea, User commenter)
+	public Comment(String comment, Idea commentedIdea, User commenter,Date commentDate)
 	{
 		this.comment=comment;
 		this.commentedIdea = commentedIdea;
 		this.commenter = commenter;
+		this.commentDate = new Date();
 	}
 	
 	/**
