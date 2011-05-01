@@ -1,5 +1,9 @@
 #{extends 'main.html' /}
 #{set title:plan.title " - View Volunteer Requests" /}
+#{if error == true}
+<h3>You do not have enough permissions to view volunteer requests for this plan.</h3>
+#{/if}
+#{else}
 #{if assignRequests.size() > 0}<h3>Volunteer Requests </h3>
 <ul>
     #{list items:planVolunteerRequests, as:'request'}
@@ -23,6 +27,7 @@
 #{/if}
 #{else}
 No volunteer requests for this plan exist.
+#{/else}
 #{/else}
 
 <script type="text/javascript">
