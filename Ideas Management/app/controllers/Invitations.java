@@ -65,8 +65,7 @@ public class Invitations extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void SearchUsers(long entt,
-			@Required String name) {
+	public static void SearchUsers(long entt,@Required String name) {
 
 		MainEntity ent= MainEntity.findById(entt);
         Organization org=Organization.findById(ent.organization);
@@ -116,7 +115,9 @@ public class Invitations extends CRUD {
 	public static void Page(long entt, long id) {
 		MainEntity ent= MainEntity.findById(entt);
         //Organization org=Organization.findById(ent.organization);
-		render(ent, User.findById(id));
+		System.out.println(id);
+		User user=User.findById(id);
+		render(ent,id,user);
 	}
 
 	/**
