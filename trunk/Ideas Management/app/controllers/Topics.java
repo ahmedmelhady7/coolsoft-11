@@ -499,8 +499,10 @@ public class Topics extends CRUD {
 		// tmp.entity.organization, cal.getTime() );
 		String message2 = tmp.creator.username + " has Created the topic "
 				+ tmp.title + " in " + tmp.entity;
-		// Notifications.notifyUsers( Users.getEntityOrganizers(tmp.entity),
-		// "Topic Created", message2, (byte) 1 );
+		List users = Users.getEntityOrganizers(tmp.entity);
+		users.add(tmp.entity.organization.creator);
+		Notifications.sendNotification(users, tmp.id, "Topic", "A new Topic "
+				+ tmp.title + " has been added in entity" + tmp.entity.name);
 
 		// tmp.init();
 		flash.success(Messages.get("crud.created", type.modelName,
@@ -849,9 +851,10 @@ public class Topics extends CRUD {
 		// Logs.addLog( myUser, "add", "Task", tmp.id, tmp.entity.organization,
 		// cal.getTime() );
 		// String message3 = myUser.username + " has editted the topic " +
-		// tmp.title + " in " + tmp.entity;
-		// Notifications.notifyUsers( Users.getEntityOrganizers(tmp.entity),
-		// "Topic Created", message3, (byte) 1 );
+		List users = Users.getEntityOrganizers(tmp.entity);
+		users.add(tmp.entity.organization.creator);
+		Notifications.sendNotification(users, tmp.id, "Topic", "User "
+				+ myUser.firstName + " has edited topic  " + tmp.title);
 		System.out.println("save() done, not redirected yet");
 
 		flash.success(Messages.get("crud.saved", type.modelName,
