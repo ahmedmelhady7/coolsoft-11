@@ -80,21 +80,18 @@ public class Idea extends Model {
 	public boolean isDraft;
 
 	/**
-	 * @author ${Ibrahim Safwat}
-	 * Each idea can have a rating
+	 * @author ${Ibrahim Safwat} Each idea can have a rating
 	 */
 	public int rating;
-	
+
 	/**
-	 * @author ${Ibrahim Safwat}
-	 * Must keep track of which users rated
+	 * @author ${Ibrahim Safwat} Must keep track of which users rated
 	 */
 	@OneToMany
 	public List<User> usersRated;
 
 	/**
-	 * @author ${Ibrahim Safwat}
-	 * The organizer can prioritize ideas
+	 * @author ${Ibrahim Safwat} The organizer can prioritize ideas
 	 */
 	public String priority; // priority could equal
 							// "Critical"/"High"/"Medium"/"Low
@@ -136,8 +133,8 @@ public class Idea extends Model {
 	 *            title of the idea
 	 * @param body
 	 *            the body of the idea
-	 * @param user//user must be organizer
-	 *            Author of the idea
+	 * @param user
+	 *            //user must be organizer Author of the idea
 	 * @param topic
 	 *            Topic that the idea belongs/added to
 	 * @param isDraft
@@ -157,79 +154,78 @@ public class Idea extends Model {
 		this.usersRated = new ArrayList<User>();
 		// this.commentsList = new ArrayList<Comment>();
 	}
-	
+
+	public String toString() {
+		return this.title;
+	}
+
 	/**
 	 * @author ${Ibrahim safwat}
 	 * 
 	 * @param UserToShare
-	 * 				User that wants to share the idea
+	 *            User that wants to share the idea
 	 * @param UserToShareWith
-	 * 				User the will be sent the notification with the ideaID
+	 *            User the will be sent the notification with the ideaID
 	 * @param ideaID
-	 * 				ID of the idea to be shared
+	 *            ID of the idea to be shared
 	 */
-	public void shareIdea(ArrayList<User> UserToShare, User UserToShareWith, long ideaID)
-	{
+	public void shareIdea(ArrayList<User> UserToShare, User UserToShareWith,
+			long ideaID) {
 		String type = "idea";
 		String desc = "userLoggedIn shared an Idea with you";
 		UserToShare = new ArrayList<User>();
 		long notId = ideaID;
 		Notifications.sendNotification(UserToShare, notId, type, desc);
 	}
-	
+
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
 	 * @param priority
-	 * 			the priority to be set
+	 *            the priority to be set
 	 * @param ideaID
-	 * 			the ID of the idea to prioritize 
+	 *            the ID of the idea to prioritize
 	 */
-	public void setPriority(String priority, int ideaID)
-	{
-		//ideaID.priority = priority
+	public void setPriority(String priority, int ideaID) {
+		// ideaID.priority = priority
 	}
-	
+
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
 	 * @param userToCheck
-	 * 				User to be checked if he/she is in the list usersRated
+	 *            User to be checked if he/she is in the list usersRated
 	 * @return
 	 */
-	public boolean checkRated(User userToCheck)
-	{
-		for(int i = 0;i<usersRated.size();i++)
-		{
-			if(userToCheck == usersRated.get(i))
-			return true;
+	public boolean checkRated(User userToCheck) {
+		for (int i = 0; i < usersRated.size(); i++) {
+			if (userToCheck == usersRated.get(i))
+				return true;
 		}
 		return false;
 	}
-	
-	
+
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
 	 * @param rate
-	 * 			rating taken from the user
+	 *            rating taken from the user
 	 * @param ideaID
-	 * 			idea that the user wants to rate
+	 *            idea that the user wants to rate
 	 */
-	public void rate(int rate, int ideaID)
-	{
-//		User userLoggedIn = new User();
-//		
-//		if(!checkRated(userLoggedIn))
-//		{
-//			if(rate>=0 && rate<=5)
-//			{
-//				float oldRating;
-//				float tempRating;
-//				tempRating = (oldRating + rate)/2;
-//				ideaID.rating = tempRating;
-//			}
-//		}	
+	public void rate(int rate, int ideaID) {
+		// User userLoggedIn = new User();
+		//
+		// if(!checkRated(userLoggedIn))
+		// {
+		// if(rate>=0 && rate<=5)
+		// {
+		// float oldRating;
+		// float tempRating;
+		// tempRating = (oldRating + rate)/2;
+		// ideaID.rating = tempRating;
+		// }
+		// }
 	}
 
 }
