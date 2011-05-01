@@ -17,7 +17,7 @@ End Date:<input type = "text" id = "endDate" name = "endDate" size ="30" onblur=
 <input type = "text" id = "summary" name = "summary" type = "text" size = "30"><label id = "summaryerror"> </label>
 </br>
 To add another item check here <input type="checkbox" name = "check" value = "checked">
-<input type = "submit" value ="search" >
+<input type = "submit" value ="Add" >
 #{/form}
 <textarea id = "datesupported" name = "datesupported" rows="7" cols = "2000">escriptionerror">
 The following date formats are accepted:
@@ -196,7 +196,7 @@ return false;
 				flag = 1;
 			}
 		}
-		if(Date.parse(document.getElementById("istartdare").value)< '${plan.startDate}' || Date.parse(document.getElementById("ienddate").value) > '${plan.endDate}'){
+		if(Date.parse(document.getElementById("startDate").value)< '${plan.startDate}' || Date.parse(document.getElementById("endDate").value) > '${plan.endDate}'){
 			alert("Item dates must be within the plans dates");
 			flag = 1;
 		}
