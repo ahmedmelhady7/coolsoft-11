@@ -60,22 +60,18 @@ public class RequestToJoins extends CRUD {
 	 *            : to show whether the respond taken was accept (1) or rejected
 	 *            (0)
 	 * 
-	 * @param type
-	 *            : to specify whether the request belongs to a topic or an
-	 *            organization
-	 * 
 	 * @param reqId
 	 *            : the id of the request to be responded to
 	 */
 
-	public static void respond(short status, short type, long reqId) {
+	public static void respond(short status, long reqId) {
 		RequestToJoin request = RequestToJoin.findById(reqId);
 		notFoundIfNull(request);
 		User user = request.source;
 		List<User> users = new ArrayList<User>();
 		users.add(user);
 		if (status == 1) {
-			if (type == 0) {
+			if (request.organization!= null) {
 
 				Organization organization = request.organization;
 				Role role = Roles.getRoleByName("idea developer");
@@ -103,7 +99,7 @@ public class RequestToJoins extends CRUD {
 			}
 
 		} else {
-			if (type == 0) {
+			if (request.organization!=null) {
 
 				Organization organization = request.organization;
 				organization.joinRequests.remove(request);
