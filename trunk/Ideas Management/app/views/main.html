@@ -30,19 +30,9 @@
             </img>
         </center>
     </div>
-    <form action="@{Search.quickSearch()}" method="GET">
-        <input type="text" name="searchKey" /><input type="button" value="Search" onclick="quickSearchScript(this.form)"/>
-        <script type="text/javascript">
-            function quickSearchScript(frm){
-                $.post('@{Search.quickSearch}', {
-                    keyword: frm.searchKey.value
-                }, function(){
-                    window.location.href = "/ViewSearchResults";
-                });
-            }
-        </script>
-        <!--input type="submit" value="AdvancedSearch" onclick="advSearchScript(this.form)"/--><a href="AdvancedSearch">Advanced Search</a>
-    </form>
+    
+	<a href="AdvancedSearch">Advanced Search</a>
+	
     <form action="@{Browse.browse()}" method="GET">
         <input type="submit" value="Browse" />
     </form>

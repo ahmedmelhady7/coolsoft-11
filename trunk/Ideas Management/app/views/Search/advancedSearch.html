@@ -5,6 +5,8 @@
 <!DOCTYPE html>
 <html>
 	
+	<script src="http://code.jquery.com/jquery-git.js"></script>
+	
     <form name="inPuts" id="inPuts" >
 	
 	
@@ -244,25 +246,23 @@
 		</select>
         <br/>
 		
-        <input type="submit" name="ok" value="Start Advanced Search" onclick="doo(this.inPuts);"/>
+        <input type="submit" name="ok" value="Start Advanced Search" onclick="doo(searchIn, wantKey,unWantKey, org, entity, topic, plan,idea, item, comm, dayB, monthB, yearB,dayA, monthA, yearA, dayE, monthE, yearE);"/>
 			
         </form>		
 		
 		
 		<script type="text/javascript">
 
-		function doo(frm)
+		function doo(searchIn, wantKey,unWantKey, org, entity, topic, plan,idea, item, comm, dayB, monthB, yearB,dayA, monthA, yearA, dayE, monthE, yearE)
 		  {
 		  	alert("Task here!");
 		  	
-			$.post('@{Search.searchResult()}' , {searchIn:frm.searchIn, wantKey:frm.wantKey,
-			unWantKey:frm.unWantKey, org:frm.org, entity:frm.entity, topic:frm.topic, plan:frm.plan,
-			idea:frm.idea, item:frm.item, comm:frm.comm, dayB:frm.dayB, monthB:frm.monthB, yearB:frm.yearB,
-			dayA:frm.dayA, monthA:frm.monthA, yearA:frm.yearA, dayE:frm.dayE, monthE:frm.monthE, yearE:frm.yearE});
+			$.post('@{Search.searchResult()}' , {searchIn:searchIn.value, wantKey:wantKey.value,
+			unWantKey:unWantKey.value, org:org.value, entity:entity.value, topic:topic.value, plan:plan.value,
+			idea:idea.value, item:item.value, comm:comm.value, dayB:dayB.value, monthB:monthB.value, yearB:yearB.value,
+			dayA:dayA.value, monthA:monthA.value, yearA:yearA.value, dayE:dayE.value, monthE:monthE.value, yearE:yearE.value});
 			
 			alert("Task accepted!");
-			
-			window.location.reload();
 		  }
 
 		</script>

@@ -27,10 +27,10 @@ GET     /public/                                staticDir:public
 *      /topicpostrequest                		Topicss.requestTopicList
 
 # Import AdvancedSearch routes
-*      /AdvancedSearch                  		Search.advancedSearch
-
+*      /AdvancedSearch                          Search.advancedSearch
+  
 # Import ViewSearchResults routes
-*      /ViewSearchResults                  		Search.searchResult
+*      /searchResult                    		Search.searchResult
 
 # Import InviteMember routes
 *	   /InviteMember							Organizations.InviteMember
