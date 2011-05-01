@@ -18,25 +18,24 @@ public class BannedUser extends Model {
 	@ManyToOne
 	public User bannedUser;
 
-	// @ManyToOne
-	// public Action action;
-
 	String action;
 	public String resourceType;
 	public long resourceID;
 
-	/*
+	/**
 	 * constructor will be used if the action the user is banned from is related
 	 * to a certain object
 	 * 
 	 * @autor:Nada Ossama
+	 * 
+	 * @story :C1S7
 	 * 
 	 * @parm banned : The banned user
 	 * 
 	 * @parm action : The action he will be banned from
 	 * 
 	 * @parm org : The organization at which this user will be banned from that
-	 * action
+	 *       action
 	 * 
 	 * @parm rSrcType: the type of the object the action is related to
 	 * 
@@ -88,12 +87,25 @@ public class BannedUser extends Model {
 	 * 
 	 * @parm entityID : id the ID of that entity
 	 * 
-	 * returns boolean to indicates the successfulness of the operation
+	 * returns boolean false if found banned otherwise return true
 	 */
 	public boolean blockFromEntity(long userID, long organizationID,
 			long entityID) {
-		User myBannedUser = User.findById(action);
+
+		User myBannedUser = User.findById(userID);
 		Organization myOrganization = Organization.findById(organizationID);
+
+		BannedUser test = BannedUser.find(
+				"select * from BannedUser bu where bu.bannedUser = ?"
+						+ " and bu.organization = ? and bu.action like ?"
+						+ "and bu.resourceType like ? and bu.resourceID = ?",
+				myBannedUser, myOrganization, "All", "entity", entityID)
+				.first();
+
+		if (test != null) {
+			return false;
+		}
+
 		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
 				"All", "entity", entityID);
 		newBannedUser.save();
@@ -116,12 +128,24 @@ public class BannedUser extends Model {
 	 * 
 	 * @parm entityID : id the ID of that entity
 	 * 
-	 * returns boolean to indicates the successfulness of the operation
+	 * returns boolean false if found banned otherwise return true
 	 */
 	public boolean banFromActionInEntity(long userID, long organizationID,
 			String action, long entityID) {
-		User myBannedUser = User.findById(action);
+		User myBannedUser = User.findById(userID);
 		Organization myOrganization = Organization.findById(organizationID);
+
+		BannedUser test = BannedUser.find(
+				"select * from BannedUser bu where bu.bannedUser = ?"
+						+ " and bu.organization = ? and bu.action like ?"
+						+ "and bu.resourceType like ? and bu.resourceID = ?",
+				myBannedUser, myOrganization, action, "entity", entityID)
+				.first();
+
+		if (test != null) {
+			return false;
+		}
+
 		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
 				action, "entity", entityID);
 		newBannedUser.save();
@@ -146,10 +170,22 @@ public class BannedUser extends Model {
 	 * 
 	 * returns boolean to indicates the successfulness of the operation
 	 */
-	public static boolean banFromActionInTopic(long userID, long organizationID,
-			String action, long topicID) {
-		User myBannedUser = User.findById(action);
+	public static boolean banFromActionInTopic(long userID,
+			long organizationID, String action, long topicID) {
+		User myBannedUser = User.findById(userID);
 		Organization myOrganization = Organization.findById(organizationID);
+		BannedUser test = BannedUser.find(
+				"select * from BannedUser bu where bu.bannedUser = ?"
+						+ " and bu.organization = ? and bu.action like ?"
+						+ "and bu.resourceType like ? and bu.resourceID = ?",
+				myBannedUser, myOrganization, action, "topic", topicID)
+				.first();
+
+		if (test != null) {
+			return false;
+		}
+		
+		
 		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
 				action, "topic", topicID);
 		newBannedUser.save();
@@ -173,8 +209,19 @@ public class BannedUser extends Model {
 	 */
 
 	public boolean blockFromTopic(long userID, long organizationID, long topicID) {
-		User myBannedUser = User.findById(action);
+		User myBannedUser = User.findById(userID);
 		Organization myOrganization = Organization.findById(organizationID);
+		
+		BannedUser test = BannedUser.find(
+				"select * from BannedUser bu where bu.bannedUser = ?"
+						+ " and bu.organization = ? and bu.action like ?"
+						+ "and bu.resourceType like ? and bu.resourceID = ?",
+				myBannedUser, myOrganization, "All", "Topic", topicID)
+				.first();
+
+		if (test != null) {
+			return false;
+		}
 		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
 				"All", "Topic", topicID);
 		newBannedUser.save();
