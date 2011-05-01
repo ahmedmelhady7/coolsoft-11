@@ -660,7 +660,7 @@ public class Users extends CRUD {
 	 * specifying that user's id, and then it renders a message confirming
 	 * whether the delete was successful or not
 	 * 
-	 * @author ${mostafa.aly0}
+	 * @author Mostafa Ali
 	 * 
 	 * @story C1S9
 	 * 
@@ -761,19 +761,35 @@ public class Users extends CRUD {
 
 		return list;
 	}
-	
+
+	/**
+	 * This method is used to submit the edit, to make sure that the edits
+	 * are acceptable, and then it renders a message mentioning whether 
+	 * the operation was successful or not.
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * @param id
+	 *            : the user's id
+	 * 
+	 * @return void
+	 */
+
 	public static void save(long id) throws Exception {
-		//Security.check(Security.getConnected().isAdmin||);
+		// Security.check(Security.getConnected().isAdmin||);
 		ObjectType type = ObjectType.get(Users.class);
 		notFoundIfNull(type);
-		//Model object = type.findById(id);
+		// Model object = type.findById(id);
 		User object = User.findById(id);
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
 			try {
-				render(request.controller.replace(".", "/") + "/show.html", type, object);
+				render(request.controller.replace(".", "/") + "/show.html",
+						type, object);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/show.html", type, object);
 			}
@@ -785,7 +801,6 @@ public class Users extends CRUD {
 		}
 		redirect(request.controller + ".show", object._key());
 	}
-
 
 	/**
 	 * This method renders the list of notifications of the user, to the view to
