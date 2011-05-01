@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
+
+        <title>Create Tag</title>
+    </head>
+
+    <body>
+        #{extends 'main.html' /} 
+
+        <p>Please fill the required information.</p>
+        Tag Name: <input type="text" id="name" name=
+        "name"> <br /><br />
+  		<input type="submit" value="Create" onclick = "check(name.value,'${createTag}');" />
+		
+		<script type="text/javascript">
+			function submit(n){
+				$.post('@{createTag()}', {name: n});
+				alert("Your new tag has been created!");
+			}
+			function check(nn,create){
+				if (create == true) {
+					submit(nn);
+				}
+				else {
+					alert("You are not allowed to create tags!!");
+				}
+			}
+		</script> 
+    </body>
+</html>
+
