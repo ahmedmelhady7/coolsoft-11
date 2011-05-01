@@ -1,53 +1,97 @@
 #{extends 'main.html' /}
 #{set title:'Plan Creation' /}
 <h1> Create Plan </h1>
-Plan title:<input type= "text" id= "plantitle" size= "30" value = "Enter title here!">
-Start Date:<input type = "text" id = "startdate" size ="30" value ="Enter Start Date e.g. DD/MM/YYYY">
-End Date:<input type = "text" id = "enddate" size ="30" value ="Enter Start Date e.g. DD/MM/YYYY">
+#{form @Plans.add(), method:'POST', id:'plancreationForm', onsubmit: 'return checkall()' enctype:'multipart/form-data' }
+Plan title:<input type= "text" id = "title" name = "title" size= "30"><label id = "titleerror"> </label>
+</br>
+Start Date:<input type = "text" id = "startDate" name = "startDate" size ="30"><label id = "starterror"> </label>
+</br>
+End Date:<input type = "text" id = "endDate" name = "endDate"size ="30"><label id = "enderror"> </label>
+</br>
 <p><b>Insert the description of the plan</b></p>
-<textarea id="description" rows="7" cols="50" value = "Insert the description of a plan here!">
-</textarea>
+</br>
+<input type = "hidden" name = "topicId" value = ${topicId} >
+<textarea id = "description" name = "description" rows= "7" cols = "50">
+</textarea><label id = "descriptionerror"> </label>
+</br>
 <p><b>Insert the requirements of the plan</b></p>
-<textarea id="requirements" rows="7" cols="50" value = "Insert the requirements of the plan here!">
-</textarea>
+</br>
+<textarea id = "requirement" name = "requirement" rows = "7" cols = "50">
+</textarea><label id = "requirementerror"> </label>
+</br>
+<p><b>Insert an item</b></p>
+</br>
+Start Date:<input type = "text" id = "istartdate" name = "istartdate" size = "30"><label id = "istartdateerror"> </label>
+</br>
+End Date:<input type = "text" id = "ienddate" name = "ienddate" size = "30"><label id = "ienddateerror"> </label>
+</br>
+<p><b>Insert the description of the plan</b></p>
+</br>
+<textarea id = "idescription" name = "idescription" rows="7" cols = "50"><label id = "idescriptionerror"> </label>
+</textarea><label id = "idescriptionerror"> </label>
+</br>
+<p><b>Insert a summary for the description</b></p>
+</br>
+<input id = "isummary" name = "isummary"type = "text" size = "30"><label id = "isummaryerror"> </label>
+</br>
+<input type="checkbox" name = "check" value = "checked">
+<input type = "submit" value ="search" >
+#{/form}
 <input type ="submit" value = "Create" onclick="javascript:checkall();"/>
 <!a href = ""> Go to add items<!/a>
 <script type ="text/javascript">
 	function checkall(){
-		var t = document.getElementById("plantitle").value;
-		var sd = document.getElementById("startdate").value;
-		var ed = document.getElementById("enddate").value;
+		var t = document.getElementById("title").value;
+		var sd = document.getElementById("startDate").value;
+		var ed = document.getElementById("endDate").value;
 		var desc = document.getElementById("description").value;
-		var req = document.getElementById("requirements").value;
-		if(t == null || t== ""){
-			alert("Please insert Plan title");
-		}else{
-			if(sd == null|| sd == ""){
-				alert("Please insert Start Date");
-			}else{
-				if(ed == null || ed == ""){
-					alert("Please insert End Date");
-				}else{
-					if(desc == null || desc == ""){
-						alert("Please insert a description for the plan");
-					}else{
-						if(req == null || req == ""){
-							alert("Please insert requirements for the plan");
-						}else{
-							$.post('@{create()}',{
-								title: t,
-								user:'${user}',
-								startDate: sd,
-								endDate: ed,
-								description: desc,
-								topic:'${topic}',
-								requirement:req
-							});
-						}
-					}
-				}
-			}
+		var req = document.getElementById("requirement").value;
+		var isd = document.getElementById("istartdate").value;
+		var ied = document.getElementById("ienddate").value;
+		var idesc = document.getElementById("idescription").value;
+		var isum = document.getElementById("isummary").value;
+		if (t == null || t == "") {
+			document.getElementById("titleerror").innerHTML = "Please insert a title for your plan";
+			return false;
 		}
+		if (sd == null || sd == "") {
+			document.getElementById("starterror").innerHTML = "Please insert Start Date";
+			return false;
+		}
+		if (ed == null || ed == "") {
+			document.getElementById("enderror").innerHTML = "Please insert End Date";
+			return false;
+		}
+		if (desc == null || desc == "") {
+			document.getElementById("descriptionerror").innerHTML = "Please insert a description";
+			return false;
+		}
+					
+		if (req == null || req == "") {
+			document.getElementById("requirementerror").innerHTML = "Please insert the requirements";
+			return false;
+		}
+		if (isd == null || isd == ""){
+			document.getElementById("istartdateerror").innerHTML = "Please insert a start date";
+			return false;
+		}					
+		if (ied == null || ied == ""){
+			document.getElementById("ienddateerror").innerHTML = "Please insert an end date";
+			return false;
+		}	
+		if (idesc == null || idesc == ""){
+			document.getElementById("idescriptionerror").innerHTML = "Please insert a description";
+			return false;
+		}
+		if (isum == null || isum == ""){
+			document.getElementById("isummaryerror").innerHTML = "Please insert summary";
+			return false;
+		}
+						
+					
+				
+			
+		
 	}
 </script>
 
