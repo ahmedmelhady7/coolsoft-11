@@ -21,7 +21,7 @@ public class Comment extends Model {
 	@Required
 	String comment;
 	
-	@OneToOne
+	@Required
 	public Date commentDate;
 	
 	@ManyToOne 
