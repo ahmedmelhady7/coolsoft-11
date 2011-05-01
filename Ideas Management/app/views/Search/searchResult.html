@@ -41,7 +41,7 @@ The Search Results Viewer
             function step1(){
                 document.getElementById('div1').innerHTML = '<center><img src="/public/images/Loading.gif"/></center>';
 				setTimeout(function(){},2000);
-				document.getElementById('div1').innerHTML = "<center>#{if listOfResults} Found ${listOfResults.size()} item${listOfResults.pluralize()} matching <ul> #{list items:listOfResults, as:'item'} <li>${item.toString()}</li> #{/list} </ul> #{/if} #{else} Sorry! We did not find any results matching #{/else}</center>";
+				document.getElementById('div1').innerHTML = "<center>#{if listOfResults} Found ${listOfResults.size()} item${listOfResults.pluralize()} matching <ul> #{list items:listOfResults, as:'item'} <li><a href='@{Plans.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if} #{else} Sorry! We did not find any results matching #{/else}</center>";
             }
             
             function quickSearch(frm){
