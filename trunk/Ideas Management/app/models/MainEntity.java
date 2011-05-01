@@ -96,12 +96,15 @@ public class MainEntity extends Model {
 	 * 
 	 * @param  d: the description of the entity 
 	 * 
+	 * @param  org: the organization that the entity is created in
+	 * 
 	 */
 	
-	public MainEntity(String n, String d) {
+	public MainEntity(String n, String d, Organization org) {
 		this.name = n;
 		this.description = d;
 		this.parent = null;
+		this.organization = org;
 		invitationList = new ArrayList<Invitation>();
 		subentities = new ArrayList<MainEntity>();
 		followers = new ArrayList<User>();
@@ -122,15 +125,19 @@ public class MainEntity extends Model {
 	 * 
 	 * @param  d: the description of the entity 
 	 *  
-	 * @param parent: the parent entity of the sub-entity being created
+	 * @param  parent: the parent entity of the sub-entity being created
+	 * 
+	 * @param  org: the organization that the entity is created in
 	 * 
 	 */
 	
-	public MainEntity(String n, String d, MainEntity parent) {
+	public MainEntity(String n, String d, 
+			MainEntity parent, Organization org) {
 		this.name = n;
 		this.description = d;
 		this.parent = parent;
 		parent.subentities.add(this);
+		this.organization = org;
 		invitationList = new ArrayList<Invitation>();
 		subentities = new ArrayList<MainEntity>();
 		followers = new ArrayList<User>();
