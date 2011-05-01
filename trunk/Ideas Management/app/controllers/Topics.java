@@ -3,8 +3,6 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import play.Play;
-
 import models.BannedUser;
 import models.Idea;
 import models.MainEntity;
@@ -19,7 +17,6 @@ import java.lang.reflect.*;
 import java.util.*;
 
 import controllers.CRUD.ObjectType;
-import controllers.Secure.Security;
 
 import play.data.binding.*;
 import play.db.*;
@@ -30,72 +27,47 @@ import models.*;
 public class Topics extends CRUD {
 
 	/**
-	 *This method first checks if the user is allowed to tag the topic,
-	 *searches for the tag in the global list of tags,
-	 *if found => check if it already the topic had the same tag already or add the new one to the list
-	 *if not => create a new tag, save it to db, add it to the list
-	 *send notifications to followers, organizers and organization lead of the tagged topic
+	 * This Method returns true if the tag exists in the global list of tags and
+	 * checks if it the topic is already tagged with the same tag (returns true
+	 * also), false if the tag needs to be created.
 	 * 
-	 * @author mostafayasser.1991
+	 * @author Mostafayasser.1991
 	 * 
 	 * @story C3S2
 	 * 
-	 * @param topicID
-	 *            : the topic that is being tagged
-	 *            
 	 * @param tag
 	 *            : the tag that is being added
 	 * 
-	 * @param userID
+	 * @param user
 	 *            : the user who is tagging the topic
 	 * 
+	 * @param topicID
+	 *            : the topic that is being tagged
 	 * 
 	 * @return boolean
 	 */
 
-	public static void tagTopic(long topicID, String tag, long userID) {
+	public static boolean tagTopic(int topicID, String tag, User user) {
+		boolean tagAlreadyExists;
+		ArrayList<Tag> listOfTags = (ArrayList) Tag.findAll();
+		for (int i = 0; i < listOfTags.size(); i++) {
+			if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
+				Topic topic = Topic.findById(topicID);
 
-		boolean tagAlreadyExists = false;
-		boolean userNotAllowed = false;
-		boolean tagExists = false;
-		List<Tag> listOfTags = Tag.findAll();
-		User user = (User) User.findById(userID);
-		Topic topic = Topic.findById(topicID);
-
-		if (!topic.organizers.contains(user)) {
-			// user not allowed
-			userNotAllowed = true;
-		} else {
-			for (int i = 0; i < listOfTags.size(); i++) {
-				if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
-					if (!topic.tags.contains(listOfTags.get(i))) {
-						topic.tags.add(listOfTags.get(i));
-					} else {
-						// tag already exists error message
-						tagAlreadyExists = true;
-					}
-					tagExists = true;
+				if (!topic.tags.contains(listOfTags.get(i))) {
+					topic.tags.add(listOfTags.get(i));
+					// send notification to followers of the topic
+					// send notification to topic organizers
+					// send notification to organization lead
+				} else {
+					// error message
+					tagAlreadyExists = true;
 				}
-			}
-			
-			if (!tagExists) {
-				Tag temp = new Tag(tag);
-				temp.save();
-				topic.tags.add(temp);
-			}
-			
-			if (!tagAlreadyExists) {
-				// send notification to followers of the topic
-				Notifications.sendNotification(topic.followers, topicID, "topic", "This topic has been tagged as " + tag);
-				// send notification to topic organizers
-				Notifications.sendNotification(topic.organizers, topicID, "topic", "This topic has been tagged as " + tag);
-				// send notification to organization lead
-				List<User> list1 = new ArrayList<User>();
-				list1.add(topic.entity.organization.creator);
-				Notifications.sendNotification(list1, topicID, "topic", "This topic has been tagged as " + tag);
+				return true;
+
 			}
 		}
-		render(tagAlreadyExists, tagExists, userNotAllowed, topic.tags);
+		return false;
 	}
 
 	/**
@@ -404,186 +376,143 @@ public class Topics extends CRUD {
 				|| !targetTopic.organizers.contains(actor)) {
 			return false;
 		}
-		
-		//closing the topic to editing
+
+		// closing the topic to editing
 		targetTopic.openToEdit = false;
 
 		// Sending Notifications
-		String notificationDescription = "Topic " + targetTopic.title + 
-			" has been closed and promoted to execution.";
-		
-		//send notification to organizers
-		Notifications.sendNotification(targetTopic.organizers, targetTopic.id, "Topic", notificationDescription);
-		
-		//send notification to followers
-		Notifications.sendNotification(targetTopic.followers, targetTopic.id, "Topic", notificationDescription);
-		
+		String notificationDescription = "Topic " + targetTopic.title
+				+ " has been closed and promoted to execution.";
+
+		// send notification to organizers
+		Notifications.sendNotification(targetTopic.organizers, targetTopic.id,
+				"Topic", notificationDescription);
+
+		// send notification to followers
+		Notifications.sendNotification(targetTopic.followers, targetTopic.id,
+				"Topic", notificationDescription);
+
 		// TODO: edit buttons in view
 
 		return true;
 
 	}
 
-	
 	/**
 	 * Overriding the CRUD method create.
 	 * 
 	 * @author aliaelbolock
 	 * 
 	 * @story C3S1
-	 *
 	 * 
-	 * @description This method checks for the Validation of the info inserted in the Add
-	 *              form of a Topic and if they are valid the object is
-	 *              created and saved.
+	 * 
+	 * @description This method checks for the Validation of the info inserted
+	 *              in the Add form of a Topic and if they are valid the object
+	 *              is created and saved.
 	 * @throws Exception
 	 * 
 	 * @return void
 	 */
-	public static void create() throws Exception {
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
+	public static void create(int entityid) throws Exception {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		Model object = (Model) constructor.newInstance();
 		Binder.bind(object, "object", params.all());
-		validation.valid( object);
+		validation.valid(object);
 		String message = "";
 		Topic tmp = (Topic) object;
-		System.out.println( "create() entered");
-		MainEntity topicEntity = tmp.entity;
-		
-		if( tmp.entity == null )
-		{
+		System.out.println("create() entered");
+		// MainEntity topicEntity = to get connected aw kda
+		MainEntity topicEntity = MainEntity.findById((long) 1);
+		tmp.entity = topicEntity;
+		// User myUser = Security.getConnected();
+		User myUser = User.findById((long) 1);
+		tmp.creator = myUser;
+
+		/*
+		 * if( !Users.isPermitted(tmp.creator , "post topics",
+		 * topicEntity.getId(), "entity")) { message =
+		 * "Sorry but you are not allowed to post topics in this entity"; } try
+		 * { render( request.controller.replace( ".", "/" ) + "/blank.html",
+		 * topicEntity , type, tmp.title, tmp.entity, tmp.description, message);
+		 * } catch( TemplateNotFoundException e ) { render( "CRUD/blank.html",
+		 * type ); }
+		 */
+
+		if (tmp.entity == null) {
 			message = "A Topic must belong to an entity";
-			try
-			{
-				render( request.controller.replace( ".", "/" ) + "/blank.html", type, message );
-			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/blank.html", type, message );
+			try {
+				render(request.controller.replace(".", "/") + "/blank.html",
+						type, message);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type, message);
 			}
 		}
-		
-		Organization topicOrganization = topicEntity.organization;
-		//ArrayList<Tag> topicTags = (ArrayList<Tag>) tmp.tags;
-		if(!(topicEntity.followers.size() == 0 ||topicOrganization.followers.size() == 0))
-		tmp.followers =User.find("byFollowingEntitiesAndFollowingOrganizations", topicEntity,topicOrganization).fetch();
-		 
 
-		if( validation.hasErrors() )
-		{
-			if( tmp.title.equals( "" ) )
-			{
+		Organization topicOrganization = topicEntity.organization;
+		// ArrayList<Tag> topicTags = (ArrayList<Tag>) tmp.tags;
+		if (!(topicEntity.followers.size() == 0 || topicOrganization.followers
+				.size() == 0))
+			tmp.followers = User.find(
+					"byFollowingEntitiesAndFollowingOrganizations",
+					topicEntity, topicOrganization).fetch();
+
+		if (validation.hasErrors()) {
+			if (tmp.title.equals("")) {
 				message = "A Topic must have a title";
-			}
-			else if( tmp.description.equals("") )
-			{
+			} else if (tmp.description.equals("")) {
 				message = "A Topic must have a description";
 
 			}
-			else if( tmp.creator == null)
-			{
-				message = "A task must have a creator";
-				try
-				{
-					render( request.controller.replace( ".", "/" ) + "/blank.html", topicEntity , type, tmp.title, tmp.entity, tmp.description, tmp.followers, tmp.tags, message);
-				}
-				catch( TemplateNotFoundException e )
-				{
-					render( "CRUD/blank.html", type );
-				}
-			}
-			else if(tmp.creator != User.find( "byEmail", Security.connected() ).first())
-			{
-				message = "You must be the creator of the topic";
-				try
-				{
-					render( request.controller.replace( ".", "/" ) + "/blank.html", topicEntity , type, tmp.title, tmp.entity, tmp.description, tmp.followers, tmp.tags, message);
-				}
-				catch( TemplateNotFoundException e )
-				{
-					render( "CRUD/blank.html", type );
-				}
-			}
-			else if( !Users.isPermitted(tmp.creator , "post", topicEntity.getId(), "entity"))
-			{
-				message = "Sorry but you are not allowed to post topics in this entity";
-			}
-			try
-			{
-				render( request.controller.replace( ".", "/" ) + "/blank.html", topicEntity , type, tmp.title, tmp.entity, tmp.description, tmp.followers, tmp.tags, message);
-			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/blank.html", type );
-			}
-		}
-		if( tmp.plan != null )
-		{
-			message = "The topic can't be assigned to a plan yet, as it is in the process of being created";
-			try
-			{
-				render( request.controller.replace( ".", "/" ) + "/blank.html", topicEntity , type, tmp.title, tmp.entity, tmp.description, tmp.followers, tmp.tags, message);
-			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/blank.html", type );
+
+			try {
+				render(request.controller.replace(".", "/") + "/blank.html",
+						topicEntity, type, tmp.title, tmp.entity,
+						tmp.description, tmp.followers, tmp.tags, message);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type);
 			}
 		}
 
-		
-		System.out.println( "create() about to save object" );
+		System.out.println("create() about to save object");
 		object._save();
-		System.out.println( "create() object saved" );
+		System.out.println("create() object saved");
 		tmp = (Topic) object;
 		Calendar cal = new GregorianCalendar();
-		//Logs.addLog( tmp.creator, "add", "Task", tmp.id, tmp.entity.organization, cal.getTime() );
-		String message2 = tmp.creator.username + " has Created the topic " + tmp.title + " in " + tmp.entity;
-		//Notifications.notifyUsers( Users.getEntityOrganizers(tmp.entity), "Topic Created", message2, (byte) 1 );
+		// Logs.addLog( tmp.creator, "add", "Task", tmp.id,
+		// tmp.entity.organization, cal.getTime() );
+		String message2 = tmp.creator.username + " has Created the topic "
+				+ tmp.title + " in " + tmp.entity;
+		// Notifications.notifyUsers( Users.getEntityOrganizers(tmp.entity),
+		// "Topic Created", message2, (byte) 1 );
 
 		// tmp.init();
-		flash.success( Messages.get( "crud.created", type.modelName, ((Topic) object).getId()) );
-		if( params.get( "_save" ) != null )
-		{
-			System.out.println( "create() done will redirect to topics/show?topicid " + message2  );
-			redirect("/topics/show?topicid=" + ((Topic) object).getId());
-			
-			//redirect("/topics/show?" + ((Topic) object).getId(), message2);
-			//redirect( "/storys/liststoriesinproject?projectId=" + tmp.taskStory.componentID.project.id + "&storyId=" + tmp.taskStory.id );
+		flash.success(Messages.get("crud.created", type.modelName,
+				((Topic) object).getId()));
+		if (params.get("_save") != null) {
+			System.out
+					.println("create() done will redirect to topics/view?topicid "
+							+ message2);
+			redirect("/topics/view?topicid=" + ((Topic) object).getId());
+
+			// redirect("/topics/show?" + ((Topic) object).getId(), message2);
+			// redirect( "/storys/liststoriesinproject?projectId=" +
+			// tmp.taskStory.componentID.project.id + "&storyId=" +
+			// tmp.taskStory.id );
 		}
-		if( params.get( "_saveAndAddAnother" ) != null )
-		{
-			System.out.println( "create() done will redirect to blank.html to add another " + message2  );
-			redirect( request.controller + ".blank", message2 );
+		if (params.get("_saveAndAddAnother") != null) {
+			System.out
+					.println("create() done will redirect to blank.html to add another "
+							+ message2);
+			redirect(request.controller + ".blank", message2);
 		}
-		System.out.println( "create() done will redirect to show.html to show created" + message2  );
-		redirect( request.controller + ".show",  ((Topic) object).getId(), message2) ;
-	}
-	
-	/**
-	 * The method that allows a user to follow a certain topic
-	 * 
-	 * @author Noha Khater
-	 * 
-	 * @Stroy  C2S10
-	 * 
-	 * @param topicId
-	 * 				: The id of the topic that the user wants to follow 
-	 * 
-	 * @param user
-	 * 				: The user who wants to follow a topic
-	 */
-	
-	public void followTopic(long topicId ,User user) {
-		Topic t = Topic.findById(topicId);
-		if(Users.isPermitted(user, "follow", topicId, "topic")){
-			t.followers.add(user);
-			user.topicsIFollow.add(t);
-		} else {
-			System.out.println("Sorry! Action cannot be performed");
-		}
+		System.out
+				.println("create() done will redirect to show.html to show created"
+						+ message2);
+		redirect(request.controller + ".show", ((Topic) object).getId(),
+				message2);
 	}
 
 	/**
@@ -592,40 +521,43 @@ public class Topics extends CRUD {
 	 * @author aliaelbolock
 	 * 
 	 * @story C3S1
-	 *
+	 * 
 	 * @param entityid
 	 *            : id of the entity the topic is in
-	 *            
+	 * 
 	 * @param userid
 	 *            : id of the current user
 	 * 
-	 * @description This method renders the form for creating a topic in the entity
+	 * @description This method renders the form for creating a topic in the
+	 *              entity
 	 * 
 	 * @throws Exception
 	 * 
 	 * @return void
 	 */
-	public static void blank( long entityid, long userid )
-	{
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
-		MainEntity entity = MainEntity.findById( entityid );
-		User user = User.findById( userid);
-		System.out.println( "blank() entered entity " + entityid + " and user " + userid );
-		//List<User> followers = entity.followers;
-		//ArrayList<MainEntity> entitiesFollowed = (ArrayList<MainEntity>) user.followingEntities;//display some of them on the side for quick navigation
-		
-		//handle permissions, depending on the privacyLevel the user will be directed to a different page 
+	public static void blank(long entityid, long userid) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		MainEntity entity = MainEntity.findById(entityid);
+		User user = User.findById(userid);
+		System.out.println("blank() entered entity " + entityid + " and user "
+				+ userid);
+		// List<User> followers = entity.followers;
+		// ArrayList<MainEntity> entitiesFollowed = (ArrayList<MainEntity>)
+		// user.followingEntities;//display some of them on the side for quick
+		// navigation
 
-		try
-		{   System.out.println( "blank() done about to render" );
-			render( type, entity, user/*, followers, entitiesFollowed*/ );
+		// handle permissions, depending on the privacyLevel the user will be
+		// directed to a different page
 
-		}
-		catch( TemplateNotFoundException e )
-		{
-			System.out.println( "blank() done with exception about to render CRUD/blank.html" );
-			render( "CRUD/blank.html", type );
+		try {
+			System.out.println("blank() done about to render");
+			render(type, entity, user /* , followers, entitiesFollowed */);
+
+		} catch (TemplateNotFoundException e) {
+			System.out
+					.println("blank() done with exception about to render CRUD/blank.html");
+			render("CRUD/blank.html", type);
 		}
 
 	}
@@ -636,9 +568,9 @@ public class Topics extends CRUD {
 	 * @author aliaelbolock
 	 * 
 	 * @story C3S1
-	 *
-	 *@param topicid
-	 *         : id of the topic we want to show
+	 * 
+	 * @param topicid
+	 *            : id of the topic we want to show
 	 * 
 	 * @description This method renders the form for editing and viewing a topic
 	 * 
@@ -646,16 +578,15 @@ public class Topics extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void show( String topicid )
-	{
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
+	public static void show(String topicid) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
 		Model object = type.findById(topicid);
 		notFoundIfNull(object);
-		System.out.println( "entered show() for topic " + topicid );
+		System.out.println("entered show() for topic " + topicid);
 		Topic tmp = (Topic) object;
-		System.out.println( tmp.title );
-		System.out.println( tmp.description );
+		System.out.println(tmp.title);
+		System.out.println(tmp.description);
 		List<Tag> tags = tmp.tags;
 		User creator = tmp.creator;
 		List<User> followers = tmp.followers;
@@ -667,21 +598,68 @@ public class Topics extends CRUD {
 		short privacyLevel = tmp.privacyLevel;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		boolean deletable = tmp.isDeletable();
-        
-		
 
-		try
-		{
-			System.out.println( "show() done, about to render" );
-			render( type, object, tags, creator, followers, ideas, comments, entity, plan, openToEdit, privacyLevel, deletemessage, deletable);
-		}
-		catch( TemplateNotFoundException e )
-		{
-			System.out.println( "show() done with exception, rendering to CRUD/show.html" );
-			render( "CRUD/show.html", type, object );
+		try {
+			System.out.println("show() done, about to render");
+			render(type, object, tags, creator, followers, ideas, comments,
+					entity, plan, openToEdit, privacyLevel, deletemessage,
+					deletable, topicid);
+		} catch (TemplateNotFoundException e) {
+			System.out
+					.println("show() done with exception, rendering to CRUD/show.html");
+			render("CRUD/show.html", type, object);
 		}
 	}
-	
+
+	public static void view(String topicid) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(topicid);
+		notFoundIfNull(object);
+		System.out.println("entered view() for topic " + topicid);
+		Topic tmp = (Topic) object;
+		System.out.println(tmp.title);
+		System.out.println(tmp.description);
+		List<Tag> tags = tmp.tags;
+		User creator = tmp.creator;
+		List<User> followers = tmp.followers;
+		List<Idea> ideas = tmp.ideas;
+		List<Comment> comments = tmp.commentsOn;
+		MainEntity entity = tmp.entity;
+		Plan plan = tmp.plan;
+		boolean openToEdit = tmp.openToEdit;
+		short privacyLevel = tmp.privacyLevel;
+		String deletemessage = "Are you Sure you want to delete the task ?!";
+		boolean deletable = tmp.isDeletable();
+
+		try {
+			System.out.println("view() done, about to render");
+			render(type, object, tags, creator, followers, ideas, comments,
+					entity, plan, openToEdit, privacyLevel, deletemessage,
+					deletable, topicid);
+		} catch (TemplateNotFoundException e) {
+			System.out
+					.println("view() done with exception, rendering to CRUD/show.html");
+			render("/topics/view.html", type, object, tags, creator, followers,
+					ideas, comments, entity, plan, openToEdit, privacyLevel,
+					deletemessage, deletable, topicid);
+		}
+	}
+
+	public static void edit(String topicid) {
+
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(topicid);
+		notFoundIfNull(object);
+		System.out.println("entered edit() for topic " + topicid);
+		Topic tmp = (Topic) object;
+		flash.success(Messages.get("crud.edit", type.modelName,
+				((Topic) object).getId()));
+		System.out.println("About to redirect from edit()");
+		redirect("/topics/show?topicid=" + ((Topic) object).getId(), tmp);
+	}
+
 	/**
 	 * Overriding the CRUD method list.
 	 * 
@@ -690,21 +668,22 @@ public class Topics extends CRUD {
 	 * @story C3S1
 	 * 
 	 * @param page
-	 *         : page of the list we are in
+	 *            : page of the list we are in
 	 * 
 	 * @param search
-	 *         : search string
-	 *         
-	 * @param searchFields
-	 *        : the fields we want to search
-	 *        
-	 * @param orderBy
-	 *        : criteria to order list by
-	 *        
-	 * @param order
-	 *        : the order of the list
+	 *            : search string
 	 * 
-	 * @description This method renders the list of topics, with search and sort options
+	 * @param searchFields
+	 *            : the fields we want to search
+	 * 
+	 * @param orderBy
+	 *            : criteria to order list by
+	 * 
+	 * @param order
+	 *            : the order of the list
+	 * 
+	 * @description This method renders the list of topics, with search and sort
+	 *              options
 	 * 
 	 * @throws Exception
 	 * 
@@ -717,7 +696,7 @@ public class Topics extends CRUD {
 		if (page < 1) {
 			page = 1;
 		}
-		System.out.println( "list() entered ");
+		System.out.println("list() entered ");
 		List<Model> objects = type.findPage(page, search, searchFields,
 				orderBy, order, (String) request.args.get("where"));
 		Long count = type.count(search, searchFields,
@@ -725,61 +704,62 @@ public class Topics extends CRUD {
 		Long totalCount = type.count(null, null,
 				(String) request.args.get("where"));
 		try {
-			System.out.println( "list() done, will render ");
+			System.out.println("list() done, will render ");
 			render(type, objects, count, totalCount, page, orderBy, order);
 		} catch (TemplateNotFoundException e) {
-			System.out.println( "list() done with exceptions, will render CRUD/list.html ");
+			System.out
+					.println("list() done with exceptions, will render CRUD/list.html ");
 			render("CRUD/list.html", type, objects, count, totalCount, page,
 					orderBy, order);
 		}
 	}
-	
+
 	/**
 	 * closedTopicsList
 	 * 
 	 * @author aliaelbolock
 	 * 
 	 * @story C3S1
-	 *
+	 * 
 	 * @param page
-	 *         : page of the list we are in
+	 *            : page of the list we are in
 	 * 
 	 * @param search
-	 *         : search string
-	 *         
-	 * @param searchFields
-	 *        : the fields we want to search
-	 *        
-	 * @param orderBy
-	 *        : criteria to order list by
-	 *        
-	 * @param order
-	 *        : the order of the list
+	 *            : search string
 	 * 
-	 * @description This method renders the list of closed topics, with search and sort options
+	 * @param searchFields
+	 *            : the fields we want to search
+	 * 
+	 * @param orderBy
+	 *            : criteria to order list by
+	 * 
+	 * @param order
+	 *            : the order of the list
+	 * 
+	 * @description This method renders the list of closed topics, with search
+	 *              and sort options
 	 * 
 	 * @throws Exception
 	 * 
 	 * @return void
 	 */
-	public static void closedTopicslist(int page, String search, String searchFields,
-			String orderBy, String order) {
-			ObjectType type = ObjectType.get(getControllerClass());
-			notFoundIfNull(type);
-			if (page < 1) {
+	public static void closedTopicslist(int page, String search,
+			String searchFields, String orderBy, String order) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		if (page < 1) {
 			page = 1;
-			}
-			List<Topic> opentopics = Topic.find("openToEdit", false).fetch();
-			Long totalCount = (long)  opentopics.size();
-			Long count = (long) opentopics.size();
-			try {
+		}
+		List<Topic> opentopics = Topic.find("openToEdit", false).fetch();
+		Long totalCount = (long) opentopics.size();
+		Long count = (long) opentopics.size();
+		try {
 			render(type, opentopics, count, totalCount, page, orderBy, order);
-			} catch (TemplateNotFoundException e) {
+		} catch (TemplateNotFoundException e) {
 			render("CRUD/list.html", type, opentopics, count, totalCount, page,
-			orderBy, order);
-			}
-			}
-	
+					orderBy, order);
+		}
+	}
 
 	/**
 	 * Overriding the CRUD method save.
@@ -787,102 +767,91 @@ public class Topics extends CRUD {
 	 * @author aliaelbolock
 	 * 
 	 * @story C3S1
-	 *
-	 * @param topicid
-	 *          : id of the topic we're in
 	 * 
-	 * @description This method renders the form for editing a topic and saving it
+	 * @param topicid
+	 *            : id of the topic we're in
+	 * 
+	 * @description This method renders the form for editing a topic and saving
+	 *              it
 	 * 
 	 * @throws Exception
 	 * 
 	 * @return void
 	 */
-	public static void save( String topicid) throws Exception
-	{
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
-		Model object = type.findById(topicid);
+	public static void save(String topicid) throws Exception {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		System.out.println(topicid);
+		Model object = Topic.findById(Long.parseLong(topicid));
 		notFoundIfNull(object);
-		System.out.println( "entered save() for " + topicid );
+		System.out.println("entered save() for " + topicid);
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
 		Topic tmp = (Topic) object;
-		User myUser = User.find( "byEmail", Security.connected() ).first();
-		MainEntity topicEntity = tmp.entity;
-		ArrayList<Tag> topicTags = (ArrayList<Tag>) tmp.tags;
+		// MainEntity topicEntity = to get connected aw kda
+		MainEntity topicEntity = MainEntity.findById((long) 1);
+		tmp.entity = topicEntity;
+		// User myUser = Security.getConnected();
+		User myUser = User.findById((long) 1);
+		tmp.creator = myUser;
+		// ArrayList<Tag> topicTags = (ArrayList<Tag>) tmp.tags;
 		Organization topicOrganization = topicEntity.organization;
-		if(!(topicEntity.followers.size() == 0 ||topicOrganization.followers.size() == 0))
-			tmp.followers =User.find("byFollowingEntitiesAndFollowingOrganizations", topicEntity,topicOrganization).fetch();
+		if (!(topicEntity.followers.size() == 0 || topicOrganization.followers
+				.size() == 0))
+			tmp.followers = User.find(
+					"byFollowingEntitiesAndFollowingOrganizations",
+					topicEntity, topicOrganization).fetch();
 		String message = "";
 
-		if( validation.hasErrors() )
-		{
-			if( tmp.title.equals( "" ) )
-			{
-				message ="A Topic must have a title";
-			}
-			else if( tmp.description.equals("") )
-			{
+		if (validation.hasErrors()) {
+			if (tmp.description.equals("")) {
 				message = "A Topic must have a description";
 
 			}
-			else if( tmp.creator == null)
-			{
-				message = "A task must have a creator";
-				try
-				{
-					render( request.controller.replace( ".", "/" ) + "/show.html", topicEntity , type, tmp.title, tmp.entity, tmp.description, tmp.followers, tmp.tags, message);
-				}
-				catch( TemplateNotFoundException e )
-				{
-					render( "CRUD/show.html", type );
-				}
+
+			else if (tmp.privacyLevel < 0 || tmp.privacyLevel > 10) {
+				message = "The privary level must be within 0 and 10";
+
 			}
-			
-			else if( !Users.isPermitted(myUser, "edit", topicEntity.getId(), "entity"))
-			{
-				message = "Sorry but you are not allowed to edit topics in this entity";
-			}
-			try
-			{
-				render( request.controller.replace( ".", "/" ) + "/show.html", topicEntity , type, tmp.title, tmp.entity, tmp.description, tmp.followers, tmp.tags, message);
-			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/show.html", type );
+
+			/*
+			 * else if( !Users.isPermitted(myUser, "edit topics",
+			 * topicEntity.getId(), "entity")) { message =
+			 * "Sorry but you are not allowed to edit topics in this entity"; }
+			 */
+			try {
+				render(request.controller.replace(".", "/") + "/show.html",
+						topicEntity, type, tmp.title, tmp.entity,
+						tmp.description, tmp.followers, tmp.tags, message,
+						object, topicid);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/show.html", type);
 			}
 		}
-		if( tmp.plan != null )
-		{
-			message = "The topic can't be assigned to a plan yet, as it is in the process of being created";
-			try
-			{
-				render( request.controller.replace( ".", "/" ) + "/blank.html", topicEntity , type, tmp.title, tmp.entity, tmp.description, tmp.followers, tmp.tags, message);
-			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/blank.html", type );
-			}
-		}
-		
-		System.out.println( "about to save() topic" );
+
+		System.out.println("about to save() topic");
 		object._save();
 		Calendar cal = new GregorianCalendar();
-		//Logs.addLog( myUser, "add", "Task", tmp.id, tmp.entity.organization, cal.getTime() );
-		//String message3 = myUser.username + " has editted the topic " + tmp.title + " in " + tmp.entity;
-		//Notifications.notifyUsers( Users.getEntityOrganizers(tmp.entity), "Topic Created", message3, (byte) 1 );
-		System.out.println( "save() done, not redirected yet" );
-		
-		flash.success( Messages.get( "crud.saved", type.modelName, ((Topic) object).getId()) );
-		if( params.get( "_save" ) != null )
-		{
-			redirect("/topics/show?topicid=" + ((Topic) object).getId());
-			System.out.println( "save() done, redirected to topics/show?topicid" );
-			//redirect( "/storys/liststoriesinproject?projectId=" + tmp.taskStory.componentID.project.id + "&storyId=" + tmp.taskStory.id );
-		}
-		redirect( request.controller + ".show",  ((Topic) object).getId()) ;
-		System.out.println( "save() done, redirected to default show.html" );
-	}
+		// Logs.addLog( myUser, "add", "Task", tmp.id, tmp.entity.organization,
+		// cal.getTime() );
+		// String message3 = myUser.username + " has editted the topic " +
+		// tmp.title + " in " + tmp.entity;
+		// Notifications.notifyUsers( Users.getEntityOrganizers(tmp.entity),
+		// "Topic Created", message3, (byte) 1 );
+		System.out.println("save() done, not redirected yet");
 
+		flash.success(Messages.get("crud.saved", type.modelName,
+				((Topic) object).getId()));
+		if (params.get("_save") != null) {
+			redirect("/topics/view?topicid=" + ((Topic) object).getId());
+			System.out
+					.println("save() done, redirected to topics/view?topicid");
+			// redirect( "/storys/liststoriesinproject?projectId=" +
+			// tmp.taskStory.componentID.project.id + "&storyId=" +
+			// tmp.taskStory.id );
+		}
+		redirect(request.controller + ".show", ((Topic) object).getId());
+		System.out.println("save() done, redirected to default show.html");
+	}
 
 }
