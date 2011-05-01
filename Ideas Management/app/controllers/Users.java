@@ -2,6 +2,7 @@ package controllers;
 
 // list of organizers in entity 
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import notifiers.Mail;
 
 import play.data.binding.Binder;
 import play.data.validation.Validation;
+import play.db.Model;
 import play.db.jpa.GenericModel.JPAQuery;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -761,6 +763,36 @@ public class Users extends CRUD {
 
 		return list;
 	}
+	
+	
+	public static void create() throws Exception {
+		//Security.check(Security.getConnected().isAdmin);
+		ObjectType type = ObjectType.get(Users.class);
+		notFoundIfNull(type);
+		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+        constructor.setAccessible(true);
+		Model object = type.entityClass.newInstance();
+		Binder.bind(object, "object", params.all());
+		validation.valid(object);
+		if (validation.hasErrors()) {
+			renderArgs.put("error", Messages.get("crud.hasErrors"));
+			try {
+				render(request.controller.replace(".", "/") + "/blank.html", type,object);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type,object);
+			}
+		}
+		object._save();
+		flash.success(Messages.get("crud.created", type.modelName));
+		if (params.get("_save") != null) {
+			redirect(request.controller + ".list");
+		}
+		if (params.get("_saveAndAddAnother") != null) {
+			redirect(request.controller + ".blank");
+		}
+		redirect(request.controller + ".show", object._key());
+	}
+
 
 	/**
 	 * This method is used to submit the edit, to make sure that the edits
