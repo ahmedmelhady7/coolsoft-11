@@ -50,7 +50,7 @@ public class Organization extends Model {
 	/**
 	 * Privacy Level for organization (0 = secret, 1 = private, 2 = public)
 	 */
-	public short privacyLevel;
+	public int privacyLevel;
 
 	/**
 	 * List of followers for the organization
@@ -166,7 +166,7 @@ public class Organization extends Model {
 	 * 
 	 * @param createTag : enable or disable ability of user to create tags of type boolean
 	 */
-	public Organization(String name, User creator, short privacyLevel,
+	public Organization(String name, User creator, int privacyLevel,
 			boolean createTag) {
 		this.name = name;
 		this.creator = creator;
