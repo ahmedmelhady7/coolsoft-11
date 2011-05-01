@@ -23,6 +23,7 @@ public class Items extends CRUD {
 	 * @return void
 	 */
 
+	/*
 	public static void viewAssignedItems(long userId) {
 		User user = User.findById(userId);
 		List<Item> assignedItems = user.itemsAssigned;
@@ -49,4 +50,5 @@ public class Items extends CRUD {
 			break;
 		}
 	}
+	*/
 }
