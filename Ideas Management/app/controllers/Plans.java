@@ -24,14 +24,20 @@ public class Plans extends CRUD {
 		Plan p = Plan.findById(planId);
 		List<Item> itemsList = p.items;
 		int canAssign = 0;
+		int canEdit = 0;
+		if (Users.isPermitted(user,
+				"edit an action plan",
+				p.topic.id, "topic")) {
+
+			canAssign = 1;
+		}
 		if (Users.isPermitted(user,
 				"assign one or many users to a to-do item in a plan",
 				p.topic.id, "topic")) {
 
 			canAssign = 1;
 		}
-
-		render(p, itemsList, user, canAssign);
+		render(p, itemsList, user, canAssign,canEdit);
 	}
 
 	/**
@@ -122,6 +128,7 @@ public class Plans extends CRUD {
 			String description, long topicId, String requirement,
 			Date istartdate, Date ienddate, String idescription,
 			String isummary, String check, String ideaString) {
+
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
 		Plan p = new Plan(title, user, startDate, endDate, description, topic,
@@ -152,9 +159,10 @@ public class Plans extends CRUD {
 		}
 		if (check.equals("checked")) {
 			addItem(p.id);
-		} else {
-			// associateitem(p.id);
+		}else{
+			viewAsList(p.id);
 		}
+		Notifications.sendNotification(p.topic.getOrganizer(), p.id, "plan", "A new plan has been created");
 
 	}
 
@@ -171,8 +179,8 @@ public class Plans extends CRUD {
 	 */
 
 	public static void addItem(long planId) {
-		Plan p = Plan.findById(planId);
-		render(p);
+		Plan plan = Plan.findById(planId);
+		render(plan);
 	}
 
 	/**
@@ -197,8 +205,15 @@ public class Plans extends CRUD {
 	 * @return void
 	 */
 	public static void add(Date startDate, Date endDate, String description,
-			Plan plan, String summary) {
+			long planId, String summary, String check) {
+		Plan plan = Plan.findById(planId);
 		plan.addItem(startDate, endDate, description, plan, summary);
+		if(check.equals("checked")){
+			addItem(plan.id);
+		}else{
+			viewAsList(plan.id);
+		}
+		Notifications.sendNotification(plan.topic.getOrganizer(), plan.id, "plan", "A new item has been added");
 	}
 
 	/**
@@ -215,6 +230,10 @@ public class Plans extends CRUD {
 	public static void editPlan(long planId) {
 		Plan plan = Plan.findById(planId);
 		render(plan);
+	}
+	public static void editItem(long itemId){
+		Item item = Item.findById(itemId);
+		render(item);
 	}
 
 	/**
@@ -238,7 +257,7 @@ public class Plans extends CRUD {
 	 *            The requirements needed for executing this plan
 	 * @return void
 	 */
-	public static void edit(String title, User user, Date startDate,
+	public static void edit(String title, Date startDate,
 			Date endDate, String description, String requirement, long planId) {
 		Plan p = Plan.findById(planId);
 		p.title = title;
@@ -247,6 +266,25 @@ public class Plans extends CRUD {
 		p.description = description;
 		p.requirement = requirement;
 		p.save();
+		Notifications.sendNotification(p.topic.getOrganizer(), p.id, "plan", "This action plan has been edited");
+		
+		for(int i = 0; i < p.items.size()-1;i++){
+			
+			Notifications.sendNotification(p.items.get(i).assignees, p.id, "plan", "This action plan has been edited");
+		}
+		viewAsList(p.id);
+	}
+	public static void edit2(Date startDate, Date endDate, String description,
+			long planId, String summary, long itemId){
+		Item i = Item.findById(itemId);
+		i.startDate = startDate;
+		i.endDate = endDate;
+		i.description = description;
+		i.summary = summary;
+		i.save();
+		Notifications.sendNotification(i.plan.topic.getOrganizer(), i.plan.id, "plan", "This item has been edited");
+		Notifications.sendNotification(i.assignees, i.plan.id, "plan", "This item has been edited");
+		viewAsList(i.plan.id);
 	}
 
 	public static void viewAsTimeline(long planid) {
