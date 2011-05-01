@@ -48,6 +48,7 @@ public class Plan extends Model {
 	@ManyToOne
 	public User madeBy;
 	
+	
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * Every plan can have a rating
@@ -127,53 +128,8 @@ public class Plan extends Model {
 		this.save();
 	}
 	
-	/**
-	 * @author ${Ibrahim safwat}
-	 * 
-	 * @param UserToShare
-	 * 				User that wants to share the plan
-	 * @param UserToShareWith
-	 * 				User the will be sent the notification with the planID
-	 * @param planID
-	 * 				ID of the plan to be shared
-	 */
-	public void sharePlan(ArrayList<User> UserToShare, User UserToShareWith, long planID)
-	{
-		String type = "plan";
-		String desc = "userLoggedIn shared a plan with you";
-		UserToShare = new ArrayList<User>();
-		long notId = planID;
-		Notifications.sendNotification(UserToShare, notId, type, desc);
-	}
+
 	
-	
-	/**
-	 * @author ${Ibrahim Safwat}
-	 * 
-	 * @param rate
-	 * 			the user given rating for the specified plan
-	 * @param planID
-	 * 			ID of the plan wished to rate
-	 */
-	
-	public void rate(int rate, int planID)
-	{
-		
-//		User userLoggedIn = new User();
-//		
-//		if(!checkRated(userLoggedIn))
-//		{
-//			if(rate>=0 && rate<=5)
-//			{
-//				float oldRating;
-//				float tempRating;
-//				tempRating = (oldRating + rate)/2;
-//				planID.rating = tempRating;
-//			}
-//		}	
-		
-		
-	}
 	
 	/**
 	 * 
