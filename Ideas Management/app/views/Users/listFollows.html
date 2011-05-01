@@ -10,7 +10,7 @@ Organizations
 <ul>
     #{list items:organizations, as:'organization'}
     <li> 
-        <input type="submit" value="unfollow" onclick="org(organization,'${user}');" />
+        <input type="submit" value="unfollow" onclick="org('${organization.id}', '${user.id}');" />
 		${organization.name}
     </li>
 	#{/list}
@@ -26,7 +26,7 @@ Topics
 <ul>
     #{list items:topics, as:'topic'}
     <li> 
-        <input type="submit" value="unfollow" onclick="topic(topic,'${user}');" />
+        <input type="submit" value="unfollow" onclick="topic('${topic.id}', '${user.id}');" />
 		${topic.title}
     </li>
 	#{/list}
@@ -42,7 +42,7 @@ Entities
 <ul>
     #{list items:entities, as:'entity'}
     <li> 
-        <input type="submit" value="unfollow" onclick="entity(entity,'${user}');" />
+        <input type="submit" value="unfollow" onclick="entity('${entity.id}', '${user.id}');" />
 		${entity.name}
     </li>
 	#{/list}
@@ -58,30 +58,30 @@ Tags
 <ul>
     #{list items:tags, as:'tag'}
     <li> 
-        <input type="submit" value="unfollow" onclick="tag(tag,'${user}');"/>
+        <input type="submit" value="unfollow" onclick="tag('${tag.id}', '${user.id}');" />
 		${tag.name}
     </li>
 	#{/list}
 </ul>
 
 <script type="text/javascript">
-	function tag(tag, user){
-		$.post('@{unfollow()}', {tag:tag, user:user});
+	function tag(t, u){
+		$.post('@{Users.unfollowTag()}', {tagId:t, userId:u});
 		alert("done!");
 		location.reload(true);
 	}
 	function topic(topic, user){
-		$.post('@{unfollow()}', {topic:topic, user:user});
+		$.post('@{unfollowTopic()}', {topicId:topic, user:user});
 		alert("done!");
 		location.reload(true);
 	}
 	function org(org, user){
-		$.post('@{unfollow()}', {org:org, user:user});
+		$.post('@{unfollowOrganization()}', {orgId:org, user:user});
 		alert("done!");
 		location.reload(true);
 	}
 	function entity(entity, user){
-		$.post('@{unfollow()}', {entity:entity, user:user});
+		$.post('@{unfollowEntity()}', {entityId:entity, user:user});
 		alert("done!");
 		location.reload(true);
 	}
