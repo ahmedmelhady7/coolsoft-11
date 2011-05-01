@@ -60,6 +60,34 @@ public class Search extends Controller {
 	}
 
 	/**
+ * @author Loaay Alkherbawy
+	 * 
+	 *         Method that renders the searchResult View
+	 */
+	public static void SearchResult() {
+		String connected = Security.connected();
+		List<Idea> ideasFound = new ArrayList<Idea>();
+		List<Organization> organizationsFound = new ArrayList<Organization>();
+		List<Topic> topicsFound = new ArrayList<Topic>();
+		List<MainEntity> entitiesFound = new ArrayList<MainEntity>();
+		for (int i = 0; i < listOfResults.size(); i++) {
+			if (listOfResults.get(i) instanceof Idea) {
+				ideasFound.add((Idea) listOfResults.get(i));
+			}
+			if (listOfResults.get(i) instanceof Topic) {
+				topicsFound.add((Topic) listOfResults.get(i));
+			}
+			if (listOfResults.get(i) instanceof MainEntity) {
+				entitiesFound.add((MainEntity) listOfResults.get(i));
+			}
+			if (listOfResults.get(i) instanceof Organization) {
+				organizationsFound.add((Organization) listOfResults.get(i));
+			}
+		}
+		render(connected, ideasFound, organizationsFound, entitiesFound,
+				topicsFound);
+	}
+	/**
 	 * 
 	 * @author M Ghanem
 	 * 
@@ -604,20 +632,18 @@ public class Search extends Controller {
 		try {
 			keywords = keyword.split("\\s+");
 		} catch (NullPointerException e) {
+
 		}
 		listOfResults = new ArrayList<Object>();
 		for (int s = 0; s < keywords.length; s++) {
 			List<Organization> listOfOrganizations = Organization.findAll();
-			for (int i = 0; i < listOfOrganizations.size(); i++) { // Looping on
-																	// the list
-																	// of
-																	// organization
+			for (int i = 0; i < listOfOrganizations.size(); i++) {
 				if (listOfOrganizations.get(i).name
 						.equalsIgnoreCase(keywords[s])) {
 					listOfResults.add(listOfOrganizations.get(i));
 				} else {
 					for (int j = 0; j < listOfOrganizations.get(i).relatedTags
-							.size(); j++) { // Looping on the list of Tags
+							.size(); j++) {
 						if (keywords[s].equalsIgnoreCase(listOfOrganizations
 								.get(i).relatedTags.get(j).name)) {
 							if (!listOfResults.contains(listOfOrganizations
@@ -628,16 +654,12 @@ public class Search extends Controller {
 					}
 				}
 				for (int k = 0; k < listOfOrganizations.get(i).enrolledUsers
-						.size(); k++) { // Looping on the list of users
+						.size(); k++) {
 					if (userId
 							.compareTo(listOfOrganizations.get(i).enrolledUsers
 									.get(k).username) != 0) {
 						switch (listOfOrganizations.get(i).privacyLevel) {
-						case 3:
-							listOfOrganizations.remove(listOfOrganizations
-									.get(i));
-							break;
-						case 4:
+						case 0:
 							listOfOrganizations.remove(listOfOrganizations
 									.get(i));
 							break;
@@ -672,18 +694,11 @@ public class Search extends Controller {
 		listOfResults = new ArrayList<Object>();
 		List<MainEntity> listOfEntities = MainEntity.findAll();
 		for (int s = 0; s < keywords.length; s++) {
-			for (int i = 0; i < listOfEntities.size(); i++) { // Looping on the
-																// list of
-																// organization
+			for (int i = 0; i < listOfEntities.size(); i++) {
 				if (listOfEntities.get(i).name.equalsIgnoreCase(keywords[s])) {
 					listOfResults.add(listOfEntities.get(i));
 				} else {
-					for (int j = 0; j < listOfEntities.get(i).tagList.size(); j++) { // Looping
-																						// on
-																						// the
-																						// list
-																						// of
-																						// Tags
+					for (int j = 0; j < listOfEntities.get(i).tagList.size(); j++) {
 						if (keywords[s]
 								.equalsIgnoreCase(listOfEntities.get(i).tagList
 										.get(j).name)) {
@@ -693,19 +708,11 @@ public class Search extends Controller {
 						}
 					}
 				}
-				for (int k = 0; k < listOfEntities.get(i).followers.size(); k++) { // Looping
-																					// on
-																					// the
-																					// list
-																					// of
-																					// users
+				for (int k = 0; k < listOfEntities.get(i).followers.size(); k++) {
 					if (userId
 							.compareTo(listOfEntities.get(i).followers.get(k).username) != 0) {
 						switch (listOfEntities.get(i).organization.privacyLevel) {
-						case 3:
-							listOfEntities.remove(listOfEntities.get(i));
-							break;
-						case 4:
+						case 0:
 							listOfEntities.remove(listOfEntities.get(i));
 							break;
 						default:
@@ -739,19 +746,12 @@ public class Search extends Controller {
 		listOfResults = new ArrayList<Object>();
 		List<Idea> listOfIdeas = Idea.findAll();
 		for (int s = 0; s < keywords.length; s++) {
-			for (int i = 0; i < listOfIdeas.size(); i++) { // Looping on the
-															// list of
-															// organization
+			for (int i = 0; i < listOfIdeas.size(); i++) {
 				if (listOfIdeas.get(i).title.equalsIgnoreCase(keywords[s])
 						|| listOfIdeas.get(i).description.contains(keywords[s])) {
 					listOfResults.add(listOfIdeas.get(i));
 				} else {
-					for (int j = 0; j < listOfIdeas.get(i).tagsList.size(); j++) { // Looping
-																					// on
-																					// the
-																					// list
-																					// of
-																					// Tags
+					for (int j = 0; j < listOfIdeas.get(i).tagsList.size(); j++) {
 						if (keywords[s]
 								.equalsIgnoreCase(listOfIdeas.get(i).tagsList
 										.get(j).name)) {
@@ -762,15 +762,12 @@ public class Search extends Controller {
 					}
 				}
 				for (int k = 0; k < listOfIdeas.get(i).belongsToTopic.entity.organization.enrolledUsers
-						.size(); k++) { // Looping on the list of users
+						.size(); k++) {
 					if (userId
 							.compareTo(listOfIdeas.get(i).belongsToTopic.entity.organization.enrolledUsers
 									.get(k).username) != 0) {
 						switch (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel) {
-						case 3:
-							listOfIdeas.remove(listOfIdeas.get(i));
-							break;
-						case 4:
+						case 0:
 							listOfIdeas.remove(listOfIdeas.get(i));
 							break;
 						default:
@@ -821,15 +818,12 @@ public class Search extends Controller {
 						}
 					}
 				}
-				for (int k = 0; k < listOfTopics.get(i).entity.organization.enrolledUsers
-						.size(); k++) { // Looping on the list of users
+				for (int k = 0; k < listOfTopics.get(i).followers
+						.size(); k++) {
 					if (userId
 							.compareTo(listOfTopics.get(i).followers.get(k).username) != 0) {
-						switch (listOfTopics.get(i).entity.organization.privacyLevel) {
-						case 3:
-							listOfTopics.remove(listOfTopics.get(i));
-							break;
-						case 4:
+						switch (listOfTopics.get(i).privacyLevel) {
+						case 0:
 							listOfTopics.remove(listOfTopics.get(i));
 							break;
 						default:
@@ -842,6 +836,7 @@ public class Search extends Controller {
 		}
 		return listOfResults;
 	}
+
 
 	// public static void searchResult() {
 	// String connected = Security.connected();
