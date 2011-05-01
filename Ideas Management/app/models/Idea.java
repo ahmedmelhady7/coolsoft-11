@@ -133,38 +133,43 @@ public class Idea extends Model {
 	 * 					The list of comments of an idea
 	 * 
 	 */
-	public void checkDate(Notifications inActiveNotification)
+	public static void checkDate(Idea idea)
 	{
-		Comment lastComment= commentsList.get(commentsList.size()-1);
+		
+		Comment lastComment= idea.commentsList.get(idea.commentsList.size()-1);
 		
 		Date now = new Date();
 		
 		Date lastCommentDate = lastComment.commentDate;
 		
-	    lastCommentDate.setDate(lastCommentDate.getDate()+14);
-		
+	    lastCommentDate.setDate (lastCommentDate.getDate()+14);
+		 
 		if(lastCommentDate.after(now))
 		{
-			List <Users> user = new ArrayList<Users>();
+			List <User> user = new ArrayList<User>();
+			user.add(idea.author);
+			
+			String type="idea ";
+			String desc="This idea is inactive" ;
 			//Send notification 
-			//inActiveNotification.sendNotification();
+			Notifications.sendNotification(user,idea.id,type,desc);
 		}
 		
 	}
-	/*
-	public void getAllIdeas()
+	
+	public static void getAllIdeas()
 	{
 		List<Organization> listOfOrganizations = Organization.findAll();
 			
 			for(int i=0; i< listOfOrganizations.size();i++)
 			{
 				Organization org = listOfOrganizations.get(i);
-				List<Users> users = org.users;
+				List<User> users = org.enrolledUsers;
 				
 				for(int j=0; j<users.size(); j++)
 				{
 					User user = users.get(j);
-				    List<Ideas> ideas = user.ideas;
+				    List<Idea> ideas = user.ideasCreated;
 					
 					for(int k=0;k<ideas.size(); k++)
 					{
@@ -174,7 +179,7 @@ public class Idea extends Model {
 				}
 			}
 		
-	} */
+	} 
 	
 
 	/**
