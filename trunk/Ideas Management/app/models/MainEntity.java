@@ -105,6 +105,7 @@ public class MainEntity extends Model {
 		this.description = d;
 		this.parent = null;
 		this.organization = org;
+		org.entitiesList.add(this);
 		invitationList = new ArrayList<Invitation>();
 		subentities = new ArrayList<MainEntity>();
 		followers = new ArrayList<User>();
@@ -138,6 +139,7 @@ public class MainEntity extends Model {
 		this.parent = parent;
 		parent.subentities.add(this);
 		this.organization = org;
+		org.entitiesList.add(this);
 		invitationList = new ArrayList<Invitation>();
 		subentities = new ArrayList<MainEntity>();
 		followers = new ArrayList<User>();
