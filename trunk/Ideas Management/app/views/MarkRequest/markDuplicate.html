@@ -1,0 +1,34 @@
+<!--
+@author Loaay Alkherbawy
+@story  C4S10
+The marking request
+-->
+<!DOCTYPE>
+
+#{extends 
+ 'main.html' 
+/}
+
+<html>
+    <body>
+        <form action="@{markDuplicate()}" name="frm" method="get">
+            <input type="checkbox" name="idea1" id="i1" value="1" /> Assume the first Idea is here
+			</br>
+			<input type="checkbox" name="idea2" id="i2" value="2" /> Assume the second Idea is here
+			</br>
+			<input type="text" name="des" id="i"/>
+			<input type="button" name = "marking" value="Mark" onclick = 'mark(this.form)'/>
+			<script type="text/javascript">
+				function mark(frm){
+                $.post('@{markDuplicate}', {
+                    idea1: frm.i1.value,
+					idea2: frm.i2.value,
+					des: frm.i.value
+                }, function(){
+					window.location.reload(true);
+                });
+            }
+			</script>
+        </form>
+    </body>
+</html>
