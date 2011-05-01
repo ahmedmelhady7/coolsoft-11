@@ -392,7 +392,7 @@ public class Plans extends CRUD {
 		render();
 	}
 
-	/*
+	/**
 	 * @author Yasmine Elsayed
 	 * 
 	 * this method renders the Calendar view of a plan
@@ -400,7 +400,7 @@ public class Plans extends CRUD {
 	 * @param planId the id of the plan
 	 * 
 	 *  Omit @return 
-	 */
+	 **/
 
 	public static void viewAsCalendar(long planId) {
 
