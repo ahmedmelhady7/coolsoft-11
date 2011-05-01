@@ -240,8 +240,8 @@ public class Topics extends CRUD {
 	 */
 
 	public static void requestToPost(long orgId, long userId) {
-		User user = (User) User.findAll().get(0);
-		Organization org = (Organization) Organization.findAll().get(0);
+		User user = User.findById(userId);
+		Organization org = Organization.findById(orgId);
 		List<MainEntity> e = org.entitiesList;
 		List<Topic> topics = new ArrayList<Topic>();
 		List<Topic> temp;
