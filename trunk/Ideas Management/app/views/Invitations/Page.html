@@ -11,14 +11,28 @@
 <input type = "hidden" name ="email" value = ${user.email}>
 #{/else}
 
+
 <tr><td>Roles</td><td>
-#{select 'role', value:1, id:'select2'}
-   #{option value="none"}none#{/option}
+#{if {org.privacyLevel} !=2}
+#{select 'role', value:0, id:'select2'}
+   #{option value="select"}select#{/option} 
    #{option value="Idea Developer"}Idea Developer#{/option}
    #{option value="Organizer"}Organizer#{/option}
+  #{/select}
+#{/if}
+#{else}
+#{select 'role', value:0, id:'select2'}
+   #{option value="select"}select#{/option}
+   #{option value="Organizer"}Organizer#{/option}
 #{/select}
+#{/else}
+<input type = "hidden" name ="id" value = ${user.id}>
 </td></tr>
-
+#{if flash.error}
+   <b><p style="color:#c00">
+               ${flash.error}
+    </p></b> 
+#{/if}
 
 <tr><td>&nbsp;</td><td><input type="submit" value="send">
 </table>
