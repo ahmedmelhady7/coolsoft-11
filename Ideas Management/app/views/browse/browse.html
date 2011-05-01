@@ -5,23 +5,52 @@
 <!DOCTYPE html>
 <html>
 
-<h1>Hello</h1>
+<head>
+	<script type="text/javascript" src="simpletreemenu.js">
+    </script>
+    <link rel="stylesheet" type="text/css" href="simpletree.css" />
+</head>
 
-<form action="@{Browse.browse}" name="test">
-<select>
-  <option>organization</option>
-  <option>${listOfOrganizations}</option>
-  <option>2</option>
-  <option>3</option>
-</select>
-</form>
+<body>
 
+  <form action="@{Browse.browse}" name="test">
 
+  <ul id="treemenu1" class="treeview">
+   <ul> Organizations
+  
+    #{list items:listOfOrganizations, as: 'Organization'}
+  
+  	<li>
+    		${Organization.name}
+  	</li>
+  	<li>
+  		#{list items:${Organization.enrolledUsers}, as: 'user'
+  			<li>
+    		   ${user.name}
+    		   ${user.id}
+  	        </li>
+  		 #{/list}
+  	</li>
 
-#{if flash.error}
-    <p style="color:#c00">
-        ${flash.error}
-    </p>
-#{/if}
+  		${Organization.followers}
+  	</li>
+  	
+  	</li>
 
+  		${Organization.ID}
+  	</li>
+  			
+  			
+    #{/list}
+   
+   </ul>
+
+  </ul>
+	
+  <script type="text/javascript">
+    	ddtreemenu.createTree("treemenu1", true)
+  </script>
+
+ </body>
+ 
 </html>
