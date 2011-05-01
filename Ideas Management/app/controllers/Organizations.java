@@ -5,8 +5,10 @@ import java.util.List;
 
 import notifiers.Mail;
 
+import play.data.validation.Required;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
+import play.mvc.Controller;
 import controllers.CRUD.ObjectType;
 
 import models.Invitation;
@@ -15,7 +17,7 @@ import models.Organization;
 import models.Topic;
 import models.User;
 
-public class Organizations extends CRUD {
+public class Organizations extends Controller {
 
 	/**
 	 * 
@@ -164,6 +166,49 @@ public class Organizations extends CRUD {
 		//Mail.invite(email, "Idea Devoloper", org.name, "");
 
 	}
+
+
+	/**
+	 * This method creates a new Organization
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S1
+	 * 
+	 * @param name
+	 *            : name of the organization
+	 * 
+	 * @param creator
+	 *            : creator of the organization
+	 * 
+	 * @param privacyLevel
+	 *            : whether the organization is public, private or secret
+	 * 
+	 * @param createTag
+	 *            : whether the users in that organization are allowed to create
+	 *            tags
+	 */
+	public static void createOrganization(@Required String name, User creator,
+			short privacyLevel, boolean createTag) {
+		if (validation.hasErrors()) {
+			params.flash();
+			validation.keep();
+			render(creator);
+		}
+		Organization existing_organization = Organization.find(
+				"name like '" + name + "'").first();
+		if (existing_organization != null) {
+			flash.error("Organization already exists!" + "\n\t\t"
+					+ "Please choose another organization name.");
+			render(creator);
+		}
+		Organization org = new Organization(name, creator, privacyLevel,
+				createTag).save();
+		MainEntity m = new MainEntity("Default","",org);
+		m.save();
+		flash.success("Your organization has been created.");
+	}
+
 
 	/**
 	 * The method that allows a user to follow a certain organization
