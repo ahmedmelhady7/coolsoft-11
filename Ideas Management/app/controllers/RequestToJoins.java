@@ -79,7 +79,7 @@ public class RequestToJoins extends CRUD {
 						role);
 				organization.joinRequests.remove(request);
 				Notifications.sendNotification(users, organization.id,
-						"organization", "Your Request has been approved");
+						"Organization", "Your Request has been approved");
 
 			} else {
 				Topic topic = request.topic;
@@ -91,10 +91,10 @@ public class RequestToJoins extends CRUD {
 				UserRoleInOrganizations.addEnrolledUser(user, organization,
 						role, topic.id, "Topic");
 				topic.requestsToJoin.remove(request);
-				Notifications.sendNotification(organizers, topic.id, "topic",
+				Notifications.sendNotification(organizers, topic.id, "Topic",
 						" A new User has joined topic " + topic.title);
 
-				Notifications.sendNotification(users, topic.id, "topic",
+				Notifications.sendNotification(users, topic.id, "Topic",
 						"Your Request has been approved");
 			}
 
@@ -104,12 +104,12 @@ public class RequestToJoins extends CRUD {
 				Organization organization = request.organization;
 				organization.joinRequests.remove(request);
 				Notifications.sendNotification(users, organization.id,
-						"organization", "Your Request has been rejected");
+						"Organization", "Your Request has been rejected");
 
 			} else {
 				Topic topic = request.topic;
 				topic.requestsToJoin.remove(request);
-				Notifications.sendNotification(users, topic.id, "topic",
+				Notifications.sendNotification(users, topic.id, "Topic",
 						"Your Request has been rejected");
 			}
 
