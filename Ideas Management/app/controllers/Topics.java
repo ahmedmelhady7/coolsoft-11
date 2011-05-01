@@ -446,7 +446,7 @@ public class Topics extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void create(int entityid) throws Exception {
+	public static void create(/*int entityid*/) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
@@ -458,10 +458,10 @@ public class Topics extends CRUD {
 		Topic tmp = (Topic) object;
 		System.out.println("create() entered");
 		// MainEntity topicEntity = to get connected aw kda
-		MainEntity topicEntity = MainEntity.findById((long) 1);
+		MainEntity topicEntity = MainEntity.findById((long) 1);//temporary; for testing purposes
 		tmp.entity = topicEntity;
 		// User myUser = Security.getConnected();
-		User myUser = User.findById((long) 1);
+		User myUser = User.findById((long) 1);//temporary; for testing purposes
 		tmp.creator = myUser;
 
 		/*
@@ -645,7 +645,24 @@ public class Topics extends CRUD {
 			render("CRUD/show.html", type, object);
 		}
 	}
-
+	
+	
+	/**
+	 * Topic view method
+	 * 
+	 * @author aliaelbolock
+	 * 
+	 * @story C3S1
+	 * 
+	 * @param topicid
+	 *            : id of the topic we want to show
+	 * 
+	 * @description This method renders the form for viewing a topic
+	 * 
+	 * @throws Exception
+	 * 
+	 * @return void
+	 */
 	public static void view(String topicid) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -681,7 +698,7 @@ public class Topics extends CRUD {
 		}
 	}
 
-	public static void edit(String topicid) {
+	/*public static void edit(String topicid) {
 
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -693,7 +710,7 @@ public class Topics extends CRUD {
 				((Topic) object).getId()));
 		System.out.println("About to redirect from edit()");
 		redirect("/topics/show?topicid=" + ((Topic) object).getId(), tmp);
-	}
+	}*/
 
 	/**
 	 * Overriding the CRUD method list.
@@ -754,7 +771,7 @@ public class Topics extends CRUD {
 	 * 
 	 * @author aliaelbolock
 	 * 
-	 * @story C3S1
+	 * @story C3S21
 	 * 
 	 * @param page
 	 *            : page of the list we are in
@@ -824,10 +841,10 @@ public class Topics extends CRUD {
 		validation.valid(object);
 		Topic tmp = (Topic) object;
 		// MainEntity topicEntity = to get connected aw kda
-		MainEntity topicEntity = MainEntity.findById((long) 1);
+		MainEntity topicEntity = MainEntity.findById((long) 1); //temporary; for testing purposes
 		tmp.entity = topicEntity;
 		// User myUser = Security.getConnected();
-		User myUser = User.findById((long) 1);
+		User myUser = User.findById((long) 1);// temporary; for testing purposes
 		tmp.creator = myUser;
 		// ArrayList<Tag> topicTags = (ArrayList<Tag>) tmp.tags;
 		Organization topicOrganization = topicEntity.organization;
