@@ -25,7 +25,7 @@ public class BootStrapper extends Job {
 		Organization org1 = new Organization("HamedSoft", u1, (short) 0, true);
 		org1._save();
 		MainEntity me1 = new MainEntity("Hamed yntlek",
-				"ideas to help hamed become like billgates");
+				"ideas to help hamed become like billgates", org1);
 		me1._save();
 		Topic t1 = new Topic("What to do?", "Help me please", (short) 0, u1,
 				me1);
