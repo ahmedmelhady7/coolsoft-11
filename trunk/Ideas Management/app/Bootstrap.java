@@ -36,14 +36,14 @@ public class Bootstrap extends Job {
 		
 		//Calling Thread that will run when the application start to check
 		//For Ideas every day
-		ActionListener listener = new TimerCall();
+//		ActionListener listener = new TimerCall();
 
 	       // construct a timer that calls the listener
 	       // once every 24 hours = 24*60*60 = 86400 seconds
 	       // The timer thread takes milli seconds so 86400000
-	    Timer t = new Timer(86400000, listener);
-	    t.start();
-	    System.exit(0);
+//	    Timer t = new Timer(86400000, listener);
+//	    t.start();
+//	    System.exit(0);
 	}
 }
 
