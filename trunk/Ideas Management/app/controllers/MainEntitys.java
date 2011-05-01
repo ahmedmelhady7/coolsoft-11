@@ -20,7 +20,7 @@ public class MainEntitys extends CRUD {
 	 *            : The user who wants to follow an entity
 	 */
 
-	public void followEntity(long entityId, User user) {
+	public static void followEntity(long entityId, User user) {
 		MainEntity e = MainEntity.findById(entityId);
 		if (Users.isPermitted(user, "follow", entityId, "entity")) {
 			e.followers.add(user);
