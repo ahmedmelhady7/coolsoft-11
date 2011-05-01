@@ -4,11 +4,13 @@
 
 #{if id==0}
 <tr><td>Email</td><td><input type="text" size="30" name="email"></td></tr>
+<input type = "hidden" name ="id" value =0>
 #{/if}
 #{else}
 <tr><td>Name : ${user.name}</td><td>
 <tr><td>Email: ${user.email}</td><td>
 <input type = "hidden" name ="email" value = ${user.email}>
+<input type = "hidden" name ="id" value = ${user.id}>
 #{/else}
 
 
@@ -26,7 +28,6 @@
    #{option value="Organizer"}Organizer#{/option}
 #{/select}
 #{/else}
-<input type = "hidden" name ="id" value = ${user.id}>
 </td></tr>
 #{if flash.error}
    <b><p style="color:#c00">
