@@ -1,0 +1,45 @@
+#{extends 'main.html' /}
+<script type="text/javascript" >
+	var ids = new Array();
+	
+	function toggleCheck () {
+		if(ids.indexOf(id) == -1) {
+			ids.push(id);
+		}else {
+			ids.pop(id);
+		}
+	}
+	
+	
+	function validate() {
+		if (ids.length == 0){
+			alert("You haven't selected any ideas");
+			return false;
+		}
+	}
+	
+	</script>
+Topic: ${topic.title}
+<br/>
+Ideas posted in this topic:
+<br/>
+#{form @Plans.selectedIdeas(), method:'POST', id:'creationForm', onsubmit: 'return validate()',
+       enctype:'multipart/form-data' }
+#{list items:ideas, as:'idea'}
+ <fieldset>
+        <legend>
+            Title: ${idea.title}
+        </legend>
+		Description: ${idea.description}
+		<br/>
+		Author:  <a href="#">${idea.author.username}</a>
+		<br/>
+		Rating: ${idea.rating}
+		<br/>
+<input  type="checkbox" name="checkedIdeas" value = ${idea.id} onclick = "toggleCheck(${idea.id})"> add to plan
+ </fieldset>
+#{/list}
+<input type = "hidden" name = "topicId" value = ${topic.id} >
+<input type="submit" value="Create the plan">
+#{/form}
+

@@ -1,7 +1,7 @@
 #{extends 'main.html' /}
 #{set title:'Plan Creation' /}
 <h1> Create Plan </h1>
-#{form @Plans.create(), method:'POST', id:'plancreationForm', onsubmit: 'return checkall()' enctype:'multipart/form-data' }
+#{form @Plans.myCreate(), method:'POST', id:'plancreationForm', onsubmit: 'return checkall()' enctype:'multipart/form-data' }
 Plan title:<input type= "text" id = "title" name = "title" size= "30"><label id = "titleerror"> </label>
 </br>
 Start Date:<input type = "text" id = "startDate" name = "startDate" size ="30" onblur= "checkdate(this)"><label id = "starterror"> </label>
@@ -11,6 +11,7 @@ End Date:<input type = "text" id = "endDate" name = "endDate"size ="30" onblur= 
 <p><b>Insert the description of the plan</b></p>
 </br>
 <input type = "hidden" name = "topicId" value = ${topicId} >
+<input type = "hidden" name = "ideaString" value = ${ideas} >
 <textarea id = "description" name = "description" rows= "7" cols = "50">
 </textarea><label id = "descriptionerror"> </label>
 </br>

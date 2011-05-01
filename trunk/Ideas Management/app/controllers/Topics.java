@@ -523,10 +523,12 @@ public class Topics extends CRUD {
 		// tmp.entity.organization, cal.getTime() );
 		String message2 = tmp.creator.username + " has Created the topic "
 				+ tmp.title + " in " + tmp.entity;
+
 		/*List users = Users.getEntityOrganizers(tmp.entity);
 		users.add(tmp.entity.organization.creator);
 		Notifications.sendNotification(users, tmp.id, "Topic", "A new Topic "
 				+ tmp.title + " has been added in entity" + tmp.entity.name);*/
+
 
 		// tmp.init();
 		flash.success(Messages.get("crud.created", type.modelName,

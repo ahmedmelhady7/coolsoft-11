@@ -34,11 +34,43 @@ public class Plans extends CRUD {
 		render(p, itemsList, user, canAssign);
 	}
 
-	public static void associateIdeaToPlan(long planId, long ideaId) {
-		Idea idea = Idea.findById(ideaId);
-		Plan plan = Plan.findById(planId);
-		plan.addIdea(idea);
-		idea.plan = plan;
+	/**
+	 * This Method renders the page addItem where the user selects the ideas
+	 * that will be promoted to execution in the topic's plan
+	 * 
+	 * @story C5S4
+	 * 
+	 * @author Salma Osama
+	 * 
+	 * @param topicId
+	 *            The ID of the topic that this action plan is based upon
+	 */
+	public static void addIdea(long topicId) {
+		Topic topic = Topic.findById(topicId);
+		List<Idea> ideas = topic.ideas;
+		render(ideas, topic);
+	}
+
+	/**
+	 * This Method passes the selected items to the planCreate page so that they
+	 * will be associated to the plan once it's created
+	 * 
+	 * @story C5S4
+	 * 
+	 * @author Salma Osama
+	 * 
+	 * @param topicId
+	 *            The ID of the topic that this action plan is based upon
+	 * @param checkedIdeas
+	 *            The list of ideas selected to be associated to the plan
+	 */
+	public static void selectedIdeas(long[] checkedIdeas, long topicId) {
+		String s = "";
+		for (int i = 0; i < checkedIdeas.length; i++) {
+			s = s + checkedIdeas + ",";
+		}
+		planCreate(topicId, s);
+
 	}
 
 	/**
@@ -55,8 +87,8 @@ public class Plans extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void planCreate(long topicId) {
-		render(topicId);
+	public static void planCreate(long topicId, String ideas) {
+		render(topicId, ideas);
 	}
 
 	/**
@@ -81,12 +113,15 @@ public class Plans extends CRUD {
 	 *            The topic which this plan is based upon
 	 * @param requirement
 	 *            The requirements needed for executing this plan
-	 * @return void
+	 * @param ideaString
+	 *            : the String containing all the ideas ids that should be
+	 *            associated to the plan
 	 */
 
-	public static void create(String title,Date startDate,
-			Date endDate, String description, long topicId, String requirement,Date istartdate, Date ienddate, String idescription,
-		String isummary, String check) {
+	public static void myCreate(String title, Date startDate, Date endDate,
+			String description, long topicId, String requirement,
+			Date istartdate, Date ienddate, String idescription,
+			String isummary, String check, String ideaString) {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
 		Plan p = new Plan(title, user, startDate, endDate, description, topic,
@@ -94,12 +129,33 @@ public class Plans extends CRUD {
 		p.save();
 		p.addItem(istartdate, ienddate, idescription, p, isummary);
 		p.save();
-		if(check.equals("checked")){
-			addItem(p.id);
-		}else{
-			//associateitem(p.id);
+		String[] list2 = ideaString.split(",");
+		int[] list = new int[list2.length];
+		for (int i = 0; i < list2.length; i++) {
+			list[i] = Integer.parseInt(list2[i]);
 		}
-		
+		Idea idea;
+		String notificationContent = "";
+		ArrayList<User> ideaAuthor = new ArrayList<User>();
+		for (int i = 0; i < list.length; i++) {
+			idea = Idea.findById((long) list[i]);
+			idea.plan = p;
+			p.ideas.add(idea);
+			ideaAuthor.add(idea.author);
+			notificationContent = "your idea: " + idea.title
+					+ "have been promoted to execution in the following plan "
+					+ p.title + " in the topic: " + topic.title;
+			Notifications.sendNotification(ideaAuthor, p.id, "plan",
+					notificationContent);
+			ideaAuthor.remove(idea.author);
+
+		}
+		if (check.equals("checked")) {
+			addItem(p.id);
+		} else {
+			// associateitem(p.id);
+		}
+
 	}
 
 	/**

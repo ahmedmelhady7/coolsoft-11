@@ -7,7 +7,7 @@
         <fieldset>
             <legend>
             	
-				<h2>Plan: <a href="#">${assignedItem.plan.title}</a></h2>
+				<h2>Plan: <a href="@{Plans.viewAsList(assignedItem.plan.id)}">${assignedItem.plan.title}</a></h2>
                
             </legend>
             Title: ${item.summary} &nbsp; &nbsp; &nbsp;
@@ -15,7 +15,7 @@
 			<input type = "button" value="Start" onClick ="startItem('${assignedItem.id}');"/> 
 			#{/if}
             #{else}
-			<input type="checkbox" onClick="toggle_task('${assignedItem.id}');" ${assingnedItem.status == 1 ? '':'checked'} />
+			<input type="checkbox" onClick="toggle_task(${assignedItem.id});" ${assingnedItem.status == 1 ? '':'checked'} />
 			#{if assignedItem.status == 1}
 			in progress
 			#{/if}
