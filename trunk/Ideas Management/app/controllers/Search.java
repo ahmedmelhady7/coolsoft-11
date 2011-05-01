@@ -84,7 +84,7 @@ public class Search extends Controller {
 				organizationsFound.add((Organization) listOfResults.get(i));
 			}
 		}
-		render(connected, ideasFound, organizationsFound, entitiesFound,
+		render(connected, listOfResults, ideasFound, organizationsFound, entitiesFound,
 				topicsFound);
 	}
 
