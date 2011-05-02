@@ -35,10 +35,35 @@
         #{/crud.form }
         <p class="crudButtons">
             <input type="submit" name="_save" value="&{'crud.save', type.modelName}" /><input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
-        </p>#{/form}
+        #{if ${canClose} == 1 && ${openToEdit} == true}
+			<input type="submit" value="Close Topic" onclick="closeTopic('${topicid}', '${userId}');" />
+		#{/if}
+		#{if ${canClose} == 1 && ${openToEdit} == false}
+			<input type="submit" value="Reopen" onclick="reopen('${topicid}', '${userId}');" />
+		#{/if}
+		
+		<!--#{if ${canPlan} == 1 && ${openToEdit} == false}
+			<input type="submit" value="Create A plan" onclick="org('${organization.id}', '${user.id}');" />
+		#{/if}-->
+
+		</p>#{/form}
     </div><!--#{form @delete(object._key())}
     <p class="crudDelete">
     <input type="submit" value="&{'crud.delete', type.modelName}" />
     </p>
     #{/form}-->
 </div>
+
+<script type="text/javascript">
+	function closeTopic(topicid, userId){
+		$.post('@{Topics.closeTopic()}', {topicId:topicid, userId:userId});
+		alert("done!");
+		location.reload(true);
+	}
+	function reopen(topicid,userId) {
+		$.post('@{Topics.reopen()}', {topicId:topicid, userId:userId});
+		alert("done!");
+		location.reload(true);
+	}
+
+</script>
