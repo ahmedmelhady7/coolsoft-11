@@ -101,7 +101,7 @@ public class VolunteerRequests extends CRUD {
 	public static void viewVolunteerRequests(long planId) {
 		User user = Security.getConnected();
 		Plan plan = Plan.findById(planId);
-		List<List<VolunteerRequest>> planVolunteerRequests = null;
+		List<VolunteerRequest> planVolunteerRequests = new ArrayList<VolunteerRequest>();
 		boolean error = false;
 		if (Users
 				.isPermitted(
@@ -109,32 +109,27 @@ public class VolunteerRequests extends CRUD {
 						"accept/Reject user request to volunteer to work on action item in a plan",
 						plan.topic.id, "topic")) {
 			for (int i = 0; i < plan.items.size(); i++) {
-				planVolunteerRequests.add(plan.items.get(i).volunteerRequests);
+				planVolunteerRequests
+						.addAll(plan.items.get(i).volunteerRequests);
 			}
-			if (planVolunteerRequests != null) {
+			if (planVolunteerRequests.size() > 0) {
 				for (int i = 0; i < planVolunteerRequests.size(); i++) {
-					for (int j = 0; i < planVolunteerRequests.get(i).size(); j++) {
-						User sender = planVolunteerRequests.get(i).get(j).sender;
-						for (int k = 0; k < planVolunteerRequests.get(i).get(j).destination.assignees
-								.size(); k++) {
-							if (sender == planVolunteerRequests.get(i).get(j).destination.assignees
-									.get(k)) {
-								VolunteerRequest request = VolunteerRequest
-										.findById(planVolunteerRequests.get(i)
-												.get(j).id);
-								sender.volunteerRequests.remove(request);
-								Item item = request.destination;
-								item.volunteerRequests.remove(request);
-							}
-						}
-					}
-				}
-			}
-			for (int i = 0; i < planVolunteerRequests.size(); i++) {
-				for (int j = 0; j < planVolunteerRequests.get(j).size(); j++) {
+					User sender = planVolunteerRequests.get(i).sender;
 					Date d = new Date();
-					if (planVolunteerRequests.get(i).get(j).destination.endDate.compareTo(d) < 0) {
-						planVolunteerRequests.get(i).remove(j);
+					if (planVolunteerRequests.get(i).destination.endDate
+							.compareTo(d) < 0) {
+						planVolunteerRequests.remove(i);
+					} else {
+						if (planVolunteerRequests.get(i).destination.assignees
+								.contains(sender)
+								|| Topics.searchByTopic(plan.topic.id)
+										.contains(user)) {
+							VolunteerRequest request = VolunteerRequest
+									.findById(planVolunteerRequests.get(i).id);
+							sender.volunteerRequests.remove(request);
+							Item item = request.destination;
+							item.volunteerRequests.remove(request);
+						}
 					}
 				}
 			}
@@ -153,8 +148,9 @@ public class VolunteerRequests extends CRUD {
 	 * @param requestId
 	 *            : ID of the volunteer request to be accepted.
 	 */
-	public static void accept(long requestId) {
-		VolunteerRequest request = VolunteerRequest.findById(requestId);
+	public static void accept(String requestId) {
+		long reqId = Long.parseLong(requestId);
+		VolunteerRequest request = VolunteerRequest.findById(reqId);
 		User org = Security.getConnected();
 		User user = request.sender;
 		user.volunteerRequests.remove(request);
@@ -185,8 +181,9 @@ public class VolunteerRequests extends CRUD {
 	 * @param requestId
 	 *            : ID of the volunteer request to be rejected.
 	 */
-	public static void reject(long requestId) {
-		VolunteerRequest request = VolunteerRequest.findById(requestId);
+	public static void reject(String requestId) {
+		long reqId = Long.parseLong(requestId);
+		VolunteerRequest request = VolunteerRequest.findById(reqId);
 		User org = Security.getConnected();
 		User user = request.sender;
 		user.volunteerRequests.remove(request);

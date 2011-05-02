@@ -42,9 +42,10 @@ public class Items extends CRUD {
 	 * @param id
 	 *            : the id of the item to be started
 	 */
-	public static void startItem(long id) {
+	public static void startItem(String id) {
 		User user = Security.getConnected();
-		Item item = Item.findById(id);
+		long itemId = Long.parseLong(id);
+		Item item = Item.findById(itemId);
 		List<User> list = item.plan.topic.organizers;
 		for (int i = 0; i < item.assignees.size(); i++) {
 			if (item.assignees.get(i) != user)
@@ -70,9 +71,10 @@ public class Items extends CRUD {
 	 * @param id
 	 *            : the id of the item to be marked as done or in progress.
 	 */
-	public static void toggleItem(long id) {
+	public static void toggleItem(String id) {
 		User user = Security.getConnected();
-		Item item = Item.findById(id);
+		long itemId = Long.parseLong(id);
+		Item item = Item.findById(itemId);
 		List<User> list = item.plan.topic.organizers;
 		for (int i = 0; i < item.assignees.size(); i++) {
 			if (item.assignees.get(i) != user)
