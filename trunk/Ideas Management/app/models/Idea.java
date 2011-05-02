@@ -243,42 +243,4 @@ public class Idea extends Model {
 		// ideaID.priority = priority
 	}
 
-	/**
-	 * @author ${Ibrahim Safwat}
-	 * 
-	 * @param userToCheck
-	 *            User to be checked if he/she is in the list usersRated
-	 * @return
-	 */
-	public boolean checkRated(User userToCheck) {
-		for (int i = 0; i < usersRated.size(); i++) {
-			if (userToCheck == usersRated.get(i))
-				return true;
-		}
-		return false;
-	}
-
-	/**
-	 * @author ${Ibrahim Safwat}
-	 * 
-	 * @param rate
-	 *            rating taken from the user
-	 * @param ideaID
-	 *            idea that the user wants to rate
-	 */
-	public void rate(int rate, int ideaID) {
-		// User userLoggedIn = new User();
-		//
-		// if(!checkRated(userLoggedIn))
-		// {
-		// if(rate>=0 && rate<=5)
-		// {
-		// float oldRating;
-		// float tempRating;
-		// tempRating = (oldRating + rate)/2;
-		// ideaID.rating = tempRating;
-		// }
-		// }
-	}
-
 }
