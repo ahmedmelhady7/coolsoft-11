@@ -41,11 +41,11 @@ public class Ideas extends CRUD {
 	 * @return void
 	 */
 
-	public static void saveDraft(String title,String body,Topic topic )
-	{
+	public static void saveDraft(String title, String body, Topic topic) {
 		User user = Security.getConnected();
-		Idea idea = new Idea(title,body,user,topic,true).save();
+		Idea idea = new Idea(title, body, user, topic, true).save();
 	}
+
 	/*
 	 * @author Abdalrahman Ali
 	 * 
@@ -131,7 +131,7 @@ public class Ideas extends CRUD {
 	 * 
 	 */
 
-	public static void create(long topicId, long userId) throws Exception {
+	public static void create() throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
@@ -139,12 +139,12 @@ public class Ideas extends CRUD {
 		Model object = (Model) constructor.newInstance();
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
-		Topic topic = Topic.findById(topicId);
-		User author = User.findById(userId);
+		Topic topic = Topic.findById((long) 1);
+		User author = User.findById((long) 1);
 		Idea i = (Idea) object;
 		i.belongsToTopic = topic;
 		i.author = author;
-		i.privacyLevel = i.privacyLevel;
+		i.privacyLevel = topic.privacyLevel;
 		// ArrayList<Comment> ideaComments = (ArrayList<Comment>)
 		// i.commentsList;
 		// ArrayList<Tag> ideaTags = (ArrayList<Tag>) i.tagsList;
@@ -168,21 +168,30 @@ public class Ideas extends CRUD {
 			}
 
 			try {
+				System.out.println("foo2 Render");
 				render(request.controller.replace(".", "/") + "/blank.html",
 						type, i.title, i.belongsToTopic, i.description,
-						i.commentsList, i.tagsList, message);
+						i.commentsList, /* i.tagsList, */message);
+				System.out.println("rendered 5alas");
 			} catch (TemplateNotFoundException e) {
+				System.out.println("fel catch templatenotfound");
 				render("CRUD/blank.html", type);
 			}
 		}
 
 		object._save();
+		System.out.println("3ada el save");
 		String anothermessage = "you have created a new idea with title "
 				+ i.title + " and with description " + i.description;
 		flash.success(Messages.get("crud.created", type.modelName,
 				((Idea) object).getId()));
+		System.out.println("foo2 el if");
 		if (params.get("_save") != null) {
-			redirect("/ideas/view?ideaid=" + ((Idea) object).getId());
+			System.out.println("gowa el if");
+			System.out
+					.println("/ideas/view?ideasid=" + ((Idea) object).getId());
+
+			redirect("/ideas/view?ideaId=" + ((Idea) object).getId());
 			if (params.get("_saveAndAddAnother") != null) {
 				redirect(request.controller + ".blank", anothermessage);
 			}
@@ -213,7 +222,7 @@ public class Ideas extends CRUD {
 		Model object = type.findById(ideaId);
 		notFoundIfNull(object);
 		Idea i = (Idea) object;
-		List<Tag> tags = i.tagsList;
+		// List<Tag> tags = i.tagsList;
 		User author = i.author;
 		List<Comment> comments = i.commentsList;
 		Plan plan = i.plan;
@@ -225,7 +234,7 @@ public class Ideas extends CRUD {
 
 		try {
 			System.out.println("show() done, about to render");
-			render(type, object, tags, author, comments, topic, plan,
+			render(type, object, /* tags, */author, comments, topic, plan,
 			/* openToEdit, */privacyLevel, deletemessage, /* deletable, */ideaId);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
@@ -281,7 +290,7 @@ public class Ideas extends CRUD {
 		Model object = type.findById(ideaId);
 		notFoundIfNull(object);
 		Idea i = (Idea) object;
-		List<Tag> tags = i.tagsList;
+		// List<Tag> tags = i.tagsList;
 		User author = i.author;
 		List<Comment> comments = i.commentsList;
 		Plan plan = i.plan;
@@ -292,10 +301,10 @@ public class Ideas extends CRUD {
 		// boolean deletable = i.isDeletable();
 
 		try {
-			render(type, object, tags, author, comments, topic, plan,
+			render(type, object, /* tags, */author, comments, topic, plan,
 			/* openToEdit, */privacyLevel, deletemessage, /* deletable, */ideaId);
 		} catch (TemplateNotFoundException e) {
-			render("/ideas/view.html", type, object, tags, comments, topic,
+			render("/ideas/view.html", type, object, /* tags, */comments, topic,
 					plan, /* openToEdit, */privacyLevel, deletemessage, /*
 																	 * deletable,
 																	 */ideaId);
@@ -352,11 +361,96 @@ public class Ideas extends CRUD {
 	}
 
 	/**
-	 *This method first checks if the user is allowed to tag the idea,
-	 *searches for the tag in the global list of tags,
-	 *if found => check if it already the idea had the same tag already or add the new one to the list
-	 *if not => create a new tag, save it to db, add it to the list
-	 *send notifications to followers of the tag and the creator of the idea
+	 * Overriding the CRUD method save.
+	 * 
+	 * @author ${Ahmed EL-Hadi}
+	 * 
+	 * @story C3S10
+	 * 
+	 * @param ideaId
+	 *            : id of the idea we are inside
+	 * 
+	 * @description This method renders the form for editing an Idea and saving
+	 *              it
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	public static void save(String ideaid) throws Exception {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		System.out.println(ideaid);
+		Model object = Idea.findById(Long.parseLong(ideaid));
+		notFoundIfNull(object);
+		Binder.bind(object, "object", params.all());
+		validation.valid(object);
+		Idea i = (Idea) object;
+		Topic topic = Topic.findById((long) 1); // temporary; for testing
+		String message = ""; // purposes
+		i.belongsToTopic = topic;
+		// User myUser = Security.getConnected();
+		User myUser = User.findById((long) 1);// temporary; for testing purposes
+		i.author = myUser;
+		// ArrayList<Tag> topicTags = (ArrayList<Tag>) tmp.tags;
+		// Organization topicOrganization = topic.organization;
+		if (validation.hasErrors()) {
+			if (i.description.equals("")) {
+				message = "A Topic must have a description";
+
+			}
+
+			else if (i.privacyLevel < 0 || i.privacyLevel > 10) {
+				message = "The privary level must be within 0 and 10";
+
+			}
+
+			/*
+			 * else if( !Users.isPermitted(myUser, "edit topics",
+			 * topicEntity.getId(), "entity")) { message =
+			 * "Sorry but you are not allowed to edit topics in this entity"; }
+			 */
+			try {
+				render(request.controller.replace(".", "/") + "/show.html",
+						topic, type, i.title, i.belongsToTopic, i.description,
+						i.tagsList, message, object, ideaid);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/show.html", type);
+			}
+		}
+
+		System.out.println("about to save() topic");
+		object._save();
+		Calendar cal = new GregorianCalendar();
+		// Logs.addLog( myUser, "add", "Task", tmp.id, tmp.entity.organization,
+		// cal.getTime() );
+		// String message3 = myUser.username + " has editted the topic " +
+		/*
+		 * List users = Users.getEntityOrganizers(tmp.entity);
+		 * users.add(tmp.entity.organization.creator);
+		 * Notifications.sendNotification(users, tmp.id, "Topic", "User " +
+		 * myUser.firstName + " has edited topic  " + tmp.title);
+		 */
+		System.out.println("save() done, not redirected yet");
+
+		flash.success(Messages.get("crud.saved", type.modelName,
+				((Idea) object).getId()));
+		if (params.get("_save") != null) {
+			redirect("/ideas/view?ideaId=" + ((Idea) object).getId());
+			System.out.println("save() done, redirected to ideas/view?topicid");
+			// redirect( "/storys/liststoriesinproject?projectId=" +
+			// tmp.taskStory.componentID.project.id + "&storyId=" +
+			// tmp.taskStory.id );
+		}
+		redirect(request.controller + ".show", ((Idea) object).getId());
+		System.out.println("save() done, redirected to default show.html");
+	}
+
+	/**
+	 * This method first checks if the user is allowed to tag the idea, searches
+	 * for the tag in the global list of tags, if found => check if it already
+	 * the idea had the same tag already or add the new one to the list if not
+	 * => create a new tag, save it to db, add it to the list send notifications
+	 * to followers of the tag and the creator of the idea
 	 * 
 	 * @author Mostafa Yasser El Monayer
 	 * 
@@ -364,7 +458,7 @@ public class Ideas extends CRUD {
 	 * 
 	 * @param ideaID
 	 *            : the idea that is being tagged
-	 *            
+	 * 
 	 * @param tag
 	 *            : the tag that is being added
 	 * 
@@ -379,7 +473,8 @@ public class Ideas extends CRUD {
 		User user = Security.getConnected();
 		Idea idea = Idea.findById(ideaID);
 
-		if (!idea.belongsToTopic.organizers.contains(user) || !user.equals(idea.author)) {
+		if (!idea.belongsToTopic.organizers.contains(user)
+				|| !user.equals(idea.author)) {
 			// user not allowed
 			userNotAllowed = true;
 		} else {
@@ -387,7 +482,10 @@ public class Ideas extends CRUD {
 				if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
 					if (!idea.tagsList.contains(listOfTags.get(i))) {
 						idea.tagsList.add(listOfTags.get(i));
-						Notifications.sendNotification(listOfTags.get(i).followers, idea.tagsList.get(i).getId(), "tag", "This idea has been tagged as " + tag);
+						Notifications.sendNotification(
+								listOfTags.get(i).followers,
+								idea.tagsList.get(i).getId(), "tag",
+								"This idea has been tagged as " + tag);
 					} else {
 						// tag already exists error message
 						tagAlreadyExists = true;
@@ -395,23 +493,23 @@ public class Ideas extends CRUD {
 					tagExists = true;
 				}
 			}
-			
+
 			if (!tagExists) {
 				Tag temp = new Tag(tag);
 				temp.save();
 				idea.tagsList.add(temp);
 			}
-			
+
 			if (!tagAlreadyExists) {
-				if (user.equals(idea.author)){
-				List<User> list1 = new ArrayList<User>();
-				list1.add(idea.author);
-				Notifications.sendNotification(list1, ideaID, "idea", "This idea has been tagged as " + tag);
-			}
+				if (user.equals(idea.author)) {
+					List<User> list1 = new ArrayList<User>();
+					list1.add(idea.author);
+					Notifications.sendNotification(list1, ideaID, "idea",
+							"This idea has been tagged as " + tag);
 				}
+			}
 		}
 		render(tagAlreadyExists, tagExists, userNotAllowed, idea.tagsList);
 	}
 
-	
 }

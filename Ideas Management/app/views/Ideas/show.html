@@ -1,0 +1,44 @@
+#{extends '/topics/layout.html' /}
+<div id="crudShow" class="${type.name}">
+    <h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
+    <font color="Red">
+        ${message}
+    </font>
+    <div class="objectForm">
+        #{form action:@save(object._key()), enctype:'multipart/form-data'}
+        #{crud.form fields: ['title', 'description']}
+        #{crud.custom 'title'}
+        <p>
+            <label for="object_title">
+                Title
+            </label>
+            <textarea disabled= true id="object_title" cols="30" rows="1" class="" name="object.title">
+                ${object.title}
+            </textarea>
+        </p>
+        #{/crud.custom}
+        #{crud.custom 'description'}
+        <p>
+            <label for="object_description">
+                Description
+            </label>
+            <textarea id="object_description" cols="50" rows="5" class="" name="object.description">
+                ${object.description}
+            </textarea>
+            <span class="crudHelp">
+                <font color="Red">
+                    *
+                </font>Required
+            </span>
+        </p>
+        #{/crud.custom}
+        #{/crud.form }
+        <p class="crudButtons">
+            <input type="submit" name="_save" value="&{'crud.save', type.modelName}" /><input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+        </p>#{/form}
+    </div><!--#{form @delete(object._key())}
+    <p class="crudDelete">
+    <input type="submit" value="&{'crud.delete', type.modelName}" />
+    </p>
+    #{/form}-->
+</div>
