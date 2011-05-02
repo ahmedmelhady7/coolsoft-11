@@ -32,21 +32,23 @@ public class Organization extends Model {
 	/**
 	 * List of entities belonging to an organization
 	 */
-	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "organization")
+	// , cascade = CascadeType.ALL)
 	public List<MainEntity> entitiesList;
-	
-//	/**
-//	 * List of organizers managing the organization
-//	 */
-//	@ManyToMany(cascade = CascadeType.ALL)
-//	public List<User> organizers;
+
+	// /**
+	// * List of organizers managing the organization
+	// */
+	@ManyToMany(mappedBy = "entitiesIOrganize")
+	// (cascade = CascadeType.ALL)
+	public List<User> organizers;
 
 	/**
 	 * Creator of that organization
 	 */
 	@ManyToOne
 	public User creator;
-	
+
 	/**
 	 * Privacy Level for organization (0 = secret, 1 = private, 2 = public)
 	 */
@@ -55,48 +57,53 @@ public class Organization extends Model {
 	/**
 	 * List of followers for the organization
 	 */
-	@ManyToMany(mappedBy = "followingOrganizations", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "followingOrganizations")
+	// , cascade = CascadeType.ALL)
 	public List<User> followers;
 
 	/**
 	 * List of enrolled users in that organization
 	 */
-	
-	//to be removed
-	@ManyToMany(mappedBy = "enrolled", cascade = CascadeType.ALL)
+
+	// to be removed
+	@ManyToMany
+	// , cascade = CascadeType.ALL)
 	public List<User> enrolledUsers;
 
 	/**
 	 * List of tags related to that organization
 	 */
-	@ManyToMany(mappedBy = "organizations", cascade = CascadeType.ALL)
+	@ManyToMany
 	public List<Tag> relatedTags;
 
 	/**
 	 * List of banned users from the organization
 	 */
-	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "organization")
 	public List<BannedUser> bannedUsers;
 
 	/**
 	 * ***********
 	 */
-	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "organization")
 	public List<UserRoleInOrganization> userRoleInOrg;
 
-	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "organization")
+	// , cascade = CascadeType.ALL)
 	public List<RequestToJoin> joinRequests;
 
 	/**
 	 * *********
 	 */
-	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "organization")
+	// , cascade = CascadeType.ALL)
 	public List<Invitation> invitation;
 
 	/**
 	 * **********
 	 */
-	@OneToMany(mappedBy = "organization", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "organization")
+	// , cascade = CascadeType.PERSIST)
 	public List<Log> logsList;
 
 	// to which constructor should the logList, bannedUser and
@@ -107,17 +114,20 @@ public class Organization extends Model {
 	 * 
 	 * @author Omar Faruki
 	 * 
-	 * @param name : Name of the organization of type String
+	 * @param name
+	 *            : Name of the organization of type String
 	 * 
-	 * @param creator : Creator of the organization of type User
+	 * @param creator
+	 *            : Creator of the organization of type User
 	 */
 
 	public Organization(String name, User creator) {
 		this.name = name;
 		this.creator = creator;
 		// added by nada ossama
-		UserRoleInOrganizations.addEnrolledUser(this.creator, this, Roles.getRoleByName("Organization Lead"));
-		
+		// UserRoleInOrganizations.addEnrolledUser(this.creator, this,
+		// Roles.getRoleByName("Organization Lead"));
+
 		this.privacyLevel = 2; // default privacylevel is public
 		this.createTag = true; // default users are allowed to create tags
 		invitation = new ArrayList<Invitation>();
@@ -125,53 +135,57 @@ public class Organization extends Model {
 		this.followers = new ArrayList<User>();
 		this.relatedTags = new ArrayList<Tag>();
 		this.enrolledUsers = new ArrayList<User>();
-		bannedUsers = new ArrayList<BannedUser>();
+		 bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
 		logsList = new ArrayList<Log>();
 		joinRequests = new ArrayList<RequestToJoin>();
 	}
 
-
-
-//	public Organization(String name, User creator) {
-//		this.name = name;
-//		this.creator = creator;
-//		// added by nada ossama
-//		UserRoleInOrganization.addEnrolledUser(this.creator, this, Roles.getRoleByName("Organization Lead"));
-//		
-//		this.privacyLevel = 2; // default privacylevel is public
-//		this.createTag = true; // default users are allowed to create tags
-//		invitation = new ArrayList<Invitation>();
-//		this.entitiesList = new ArrayList<MainEntity>();
-//		this.followers = new ArrayList<User>();
-//		this.relatedTags = new ArrayList<Tag>();
-//		this.enrolledUsers = new ArrayList<User>();
-//		bannedUsers = new ArrayList<BannedUser>();
-//		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
-//		logsList = new ArrayList<Log>();
-//		joinRequests = new ArrayList<RequestToJoin>();
-//	}
-
+	// public Organization(String name, User creator) {
+	// this.name = name;
+	// this.creator = creator;
+	// // added by nada ossama
+	// UserRoleInOrganization.addEnrolledUser(this.creator, this,
+	// Roles.getRoleByName("Organization Lead"));
+	//
+	// this.privacyLevel = 2; // default privacylevel is public
+	// this.createTag = true; // default users are allowed to create tags
+	// invitation = new ArrayList<Invitation>();
+	// this.entitiesList = new ArrayList<MainEntity>();
+	// this.followers = new ArrayList<User>();
+	// this.relatedTags = new ArrayList<Tag>();
+	// this.enrolledUsers = new ArrayList<User>();
+	// bannedUsers = new ArrayList<BannedUser>();
+	// userRoleInOrg = new ArrayList<UserRoleInOrganization>();
+	// logsList = new ArrayList<Log>();
+	// joinRequests = new ArrayList<RequestToJoin>();
+	// }
 
 	/**
 	 * Organization Class Constructor
 	 * 
 	 * @author Omar Faruki
 	 * 
-	 * @param name : Name of the organization of type String
+	 * @param name
+	 *            : Name of the organization of type String
 	 * 
-	 * @param creator : Creator of the organization of type User
+	 * @param creator
+	 *            : Creator of the organization of type User
 	 * 
-	 * @param privacyLevel : privacy level of the organization of type short
+	 * @param privacyLevel
+	 *            : privacy level of the organization of type short
 	 * 
-	 * @param createTag : enable or disable ability of user to create tags of type boolean
+	 * @param createTag
+	 *            : enable or disable ability of user to create tags of type
+	 *            boolean
 	 */
 	public Organization(String name, User creator, int privacyLevel,
 			boolean createTag) {
 		this.name = name;
 		this.creator = creator;
 		// added by nada ossama
-		UserRoleInOrganizations.addEnrolledUser(this.creator, this, Roles.getRoleByName("Organization Lead"));
+		// UserRoleInOrganizations.addEnrolledUser(this.creator, this,
+		// Roles.getRoleByName("Organization Lead"));
 		this.privacyLevel = privacyLevel;
 		this.createTag = createTag;
 		invitation = new ArrayList<Invitation>();
@@ -179,7 +193,7 @@ public class Organization extends Model {
 		this.followers = new ArrayList<User>();
 		this.relatedTags = new ArrayList<Tag>();
 		this.enrolledUsers = new ArrayList<User>();
-		bannedUsers = new ArrayList<BannedUser>();
+		// bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
 		logsList = new ArrayList<Log>();
 		joinRequests = new ArrayList<RequestToJoin>();

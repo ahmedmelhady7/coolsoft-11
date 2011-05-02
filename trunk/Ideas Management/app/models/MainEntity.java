@@ -17,7 +17,7 @@ import play.db.jpa.Model;
 /**
  * @author Noha Khater
  * 
- * The entities and sub-entities in an organization
+ *         The entities and sub-entities in an organization
  */
 
 @Entity
@@ -34,51 +34,52 @@ public class MainEntity extends Model {
 	 */
 	@ManyToOne
 	public MainEntity parent;
-	
+
 	/**
 	 * The description of the entity
 	 */
 	@Lob
 	@Required
 	public String description;
-	
+
 	/**
-	 * A list of sub-entities of this entity 
+	 * A list of sub-entities of this entity
 	 */
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "parent")
 	public List<MainEntity> subentities;
-	
+
 	/**
 	 * The followers of the entity
 	 */
-	@ManyToMany(mappedBy = "followingEntities", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "followingEntities")
 	public List<User> followers;
-	
+
 	/**
 	 * The organization of the entity
 	 */
 	@Required
 	@ManyToOne
 	public Organization organization;
-	
+
 	/**
 	 * The list of topics available in that entity
 	 */
-	@OneToMany(mappedBy = "entity", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "entity")
 	public List<Topic> topicList;
-	
+
 	/**
 	 * The list of tags that the entity is tagged by
 	 */
-	@ManyToMany(mappedBy = "entities", cascade = CascadeType.ALL)
+	@ManyToMany
 	public List<Tag> tagList;
-	
-	//Entity does not need an invitation!! Should be removed (Noha)
-	@OneToMany(mappedBy = "entity", cascade = CascadeType.ALL)
+
+	// Entity does not need an invitation!! Should be removed (Noha)
+	@OneToMany(mappedBy = "entity")
 	public List<Invitation> invitationList;
-	
-	//to be removed
-	@ManyToMany(mappedBy = "entitiesIOrganize", cascade = CascadeType.ALL)
+
+	// to be removed
+	@ManyToMany
+	// , cascade = CascadeType.ALL)
 	public List<User> organizers;
 
 	// ArrayList<Relationship> relationshipList;
@@ -90,16 +91,19 @@ public class MainEntity extends Model {
 	 * 
 	 * @author Noha Khater
 	 * 
-	 * @stroy  C2S2
+	 * @stroy C2S2
 	 * 
-	 * @param  n: the name of the entity being created
+	 * @param n
+	 *            : the name of the entity being created
 	 * 
-	 * @param  d: the description of the entity 
+	 * @param d
+	 *            : the description of the entity
 	 * 
-	 * @param  org: the organization that the entity is created in
+	 * @param org
+	 *            : the organization that the entity is created in
 	 * 
 	 */
-	
+
 	public MainEntity(String n, String d, Organization org) {
 		this.name = n;
 		this.description = d;
@@ -120,20 +124,23 @@ public class MainEntity extends Model {
 	 * 
 	 * @author Noha Khater
 	 * 
-	 * @stroy  C2S20
+	 * @stroy C2S20
 	 * 
-	 * @param  n: the name of the entity being created
+	 * @param n
+	 *            : the name of the entity being created
 	 * 
-	 * @param  d: the description of the entity 
-	 *  
-	 * @param  parent: the parent entity of the sub-entity being created
+	 * @param d
+	 *            : the description of the entity
 	 * 
-	 * @param  org: the organization that the entity is created in
+	 * @param parent
+	 *            : the parent entity of the sub-entity being created
+	 * 
+	 * @param org
+	 *            : the organization that the entity is created in
 	 * 
 	 */
-	
-	public MainEntity(String n, String d, 
-			MainEntity parent, Organization org) {
+
+	public MainEntity(String n, String d, MainEntity parent, Organization org) {
 		this.name = n;
 		this.description = d;
 		this.parent = parent;

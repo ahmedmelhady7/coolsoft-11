@@ -631,7 +631,7 @@ public class Topics extends CRUD {
 		MainEntity entity = tmp.entity;
 		Plan plan = tmp.plan;
 		boolean openToEdit = tmp.openToEdit;
-		short privacyLevel = tmp.privacyLevel;
+		int privacyLevel = tmp.privacyLevel;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		boolean deletable = tmp.isDeletable();
 		int canClose = 0;
@@ -696,7 +696,7 @@ public class Topics extends CRUD {
 		MainEntity entity = tmp.entity;
 		Plan plan = tmp.plan;
 		boolean openToEdit = tmp.openToEdit;
-		short privacyLevel = tmp.privacyLevel;
+		int privacyLevel = tmp.privacyLevel;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		boolean deletable = tmp.isDeletable();
 

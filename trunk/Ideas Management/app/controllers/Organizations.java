@@ -17,7 +17,7 @@ import models.Organization;
 import models.Topic;
 import models.User;
 
-public class Organizations extends Controller {
+public class Organizations extends CRUD {
 
 	/**
 	 * 

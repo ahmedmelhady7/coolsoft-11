@@ -9,36 +9,38 @@ import play.db.jpa.*;
 public class Item extends Model {
 
 	public Date startDate;
-	
+
 	public Date endDate;
-	
-	
-	public short status;
-	//0 for new, 1 for in progress and 2 for done
-	
+
+	public int status;
+	// 0 for new, 1 for in progress and 2 for done
+
 	public String summary;
 
 	@Lob
 	public String description;
 
-	@ManyToMany(mappedBy = "taggedItems", cascade = CascadeType.ALL)
+	@ManyToMany
+	// , cascade = CascadeType.ALL)
 	public List<Tag> tags;
 
-	@OneToMany(mappedBy = "destination", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "destination")
+	// , cascade = CascadeType.ALL)
 	public List<VolunteerRequest> volunteerRequests;
 
-	@OneToMany(mappedBy = "source", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "source")
+	// , cascade = CascadeType.ALL)
 	public List<AssignRequest> assignRequests;
 
-	@ManyToMany(mappedBy = "itemsAssigned", cascade = CascadeType.PERSIST)
+	@ManyToMany(mappedBy = "itemsAssigned")
+	// , cascade = CascadeType.PERSIST)
 	public List<User> assignees;
 
 	@ManyToOne
 	public Plan plan;
 
-
-	public Item(Date startDate, Date endDate,
-			String description, Plan plan, String summary){
+	public Item(Date startDate, Date endDate, String description, Plan plan,
+			String summary) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = 0;

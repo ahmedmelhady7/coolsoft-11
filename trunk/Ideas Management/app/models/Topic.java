@@ -29,7 +29,7 @@ public class Topic extends Model {
 	/**
 	 * the privacy level of the topic, restricts who can do what with it
 	 */
-	public short privacyLevel;
+	public int privacyLevel;
 
 	/**
 	 * the list of tags the topic is tagged with
@@ -45,7 +45,7 @@ public class Topic extends Model {
 	/**
 	 * the creator of the topic
 	 */
-	//@Required
+	// @Required
 	@ManyToOne
 	public User creator;
 
@@ -60,7 +60,7 @@ public class Topic extends Model {
 	/**
 	 * the list of followers of the topic
 	 */
-	@ManyToMany
+	@ManyToMany(mappedBy = "topicsIFollow")
 	public List<User> followers;
 
 	/*
@@ -72,19 +72,22 @@ public class Topic extends Model {
 	/**
 	 * the list of ideas in the topic
 	 */
-	@OneToMany(mappedBy = "belongsToTopic", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "belongsToTopic")
+	// , cascade = CascadeType.ALL)
 	public List<Idea> ideas;
 
 	/**
 	 * the list of comments on the topic
 	 */
-	@OneToMany(mappedBy = "commentedTopic", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "commentedTopic")
+	// , cascade = CascadeType.ALL)
 	public List<Comment> commentsOn;
 
 	/**
 	 * the list of requests to join the topic
 	 */
-	@OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "topic")
+	// , cascade = CascadeType.ALL)
 	public List<RequestToJoin> requestsToJoin;
 
 	/**
@@ -100,7 +103,7 @@ public class Topic extends Model {
 	/**
 	 * the entity the topic is in
 	 */
-	//@Required
+	// @Required
 	@ManyToOne
 	public MainEntity entity;
 
@@ -110,8 +113,6 @@ public class Topic extends Model {
 	@OneToOne
 	public Plan plan;
 
-
-	
 	/*
 	 * boolean flag to determine if the topic is closed or not
 	 * 
@@ -129,28 +130,28 @@ public class Topic extends Model {
 	 *            title of the topic
 	 * @param description
 	 *            description of the topic
-	 * @param privacyLevel
+	 * @param i
 	 *            the privacy level of the topic
 	 * @param creator
 	 *            Author of the topic
 	 * @param entity
 	 *            Entity that the topic belongs/added to
 	 */
-	public Topic(String title, String description, short privacyLevel,
+	public Topic(String title, String description, int i,
 			User creator, MainEntity entity) {
 		this.title = title;
 		this.description = description;
-		this.privacyLevel = privacyLevel;
+		this.privacyLevel = i;
 		this.creator = creator;
 		this.entity = entity;
 		tags = new ArrayList<Tag>();
 		// relationships = new ArrayList<Relationship>();
-		// organizers = new ArrayList<User>();
+		organizers = new ArrayList<User>();
 		followers = new ArrayList<User>();
 		ideas = new ArrayList<Idea>();
 		commentsOn = new ArrayList<Comment>();
 		// canAccess = new ArrayList<User>();
-		// requestsToJoin = new ArrayList<RequestToJoin>();
+		requestsToJoin = new ArrayList<RequestToJoin>();
 
 		openToEdit = true;
 	}
@@ -196,20 +197,17 @@ public class Topic extends Model {
 	 * @return ArrayList<User>
 	 */
 
-	
 	public List<User> getOrganizer() {
-		List<UserRoleInOrganization> o =  (List<UserRoleInOrganization>) UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.resourceID = ? and r.roleName like ? and uro.resourceType = ? ",
-			      this.id,"organizer", "topic");
-		
-		List<User> organizer =  new ArrayList<User>();
-		for(int i = 0; i<o.size(); i++) {
+		List<UserRoleInOrganization> o = (List<UserRoleInOrganization>) UserRoleInOrganization
+				.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.resourceID = ? and r.roleName like ? and uro.resourceType = ? ",
+						this.id, "organizer", "topic");
+
+		List<User> organizer = new ArrayList<User>();
+		for (int i = 0; i < o.size(); i++) {
 			organizer.add((o.get(i).enrolled));
 		}
 		return organizer;
- }
-
-
-	
+	}
 
 	/**
 	 * This Method returns the list of ideas in a certain topic
@@ -242,19 +240,18 @@ public class Topic extends Model {
 		_save();
 	}
 
-//	/**
-//	 * This Method returns the list of followers in a certain topic
-//	 * 
-//	 * @author Omar Faruki
-//	 * 
-//	 * @story C2S29
-//	 * 
-//	 * @return ArrayList<User>
-//	 */
-//	public List<User> getFollowers() {
-//		return (List<User>) this.followers;
-//	}
-
+	// /**
+	// * This Method returns the list of followers in a certain topic
+	// *
+	// * @author Omar Faruki
+	// *
+	// * @story C2S29
+	// *
+	// * @return ArrayList<User>
+	// */
+	// public List<User> getFollowers() {
+	// return (List<User>) this.followers;
+	// }
 
 	/**
 	 * This Method overrides the toString method
@@ -268,7 +265,7 @@ public class Topic extends Model {
 	public String toString() {
 		return title;
 	}
-	
+
 	/**
 	 * This method posts an Idea in a certain topic
 	 * 
@@ -277,20 +274,20 @@ public class Topic extends Model {
 	 * @story C2S14
 	 * 
 	 * @param user
-	 *              : the user who posts the idea
+	 *            : the user who posts the idea
 	 * @param title
-	 * 				: the title of the idea
+	 *            : the title of the idea
 	 * @param description
-	 * 				: description/content of the idea
+	 *            : description/content of the idea
 	 * 
 	 * @return void
 	 */
-	
-	public void postIdea(User user, String title, String description){
+
+	public void postIdea(User user, String title, String description) {
 		Idea idea = new Idea(title, description, user, this);
 		idea.privacyLevel = this.privacyLevel;
 		this.ideas.add(idea);
-		
+
 	}
 
 	/**
@@ -319,17 +316,17 @@ public class Topic extends Model {
 
 	public boolean isDeletable() {
 		// TODO Auto-generated method stub
-		if(openToEdit == false)
-		return false;
-		if(ideas.size()>0)
+		if (openToEdit == false)
+			return false;
+		if (ideas.size() > 0)
 			return false;
 		return true;
 	}
-	
+
 	public boolean isHideable() {
 		// TODO Auto-generated method stub
-		if(openToEdit == false)
-		return false;
+		if (openToEdit == false)
+			return false;
 
 		return true;
 	}

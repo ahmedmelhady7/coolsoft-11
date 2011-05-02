@@ -12,7 +12,7 @@ import javax.swing.Timer;
 
 import models.*;
 
-public class Application extends Controller {
+public class Application extends CRUD {
 
 	public static void index() {
 		render();
