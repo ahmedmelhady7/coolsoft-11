@@ -511,5 +511,39 @@ public class Ideas extends CRUD {
 		}
 		render(tagAlreadyExists, tagExists, userNotAllowed, idea.tagsList);
 	}
+	/**
+	 * @author ${Ibrahim Safwat}
+	 * 
+	 * @param userToCheck
+	 *            User to be checked if he/she is in the list usersRated
+	 * @return
+	 */
+	public boolean checkRated(User userToCheck,long ideaID) {
+		Idea idea = Idea.findById(ideaID);
+		for (int i = 0; i < idea.usersRated.size(); i++) {
+			if (userToCheck == idea.usersRated.get(i))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @author ${Ibrahim Safwat}
+	 * 
+	 * @param rate
+	 *            rating taken from the user
+	 * @param ideaID
+	 *            idea that the user wants to rate
+	 */
+	public void rate(int rating, int ideaID) {
+		
+		User user = Security.getConnected();
+		if (!checkRated(user, ideaID)) {
+			Idea idea = Idea.findById(ideaID);
+			int oldRating = idea.rating;
+			int newRating = (oldRating + rating) / 2;
+			render(newRating);
+		}
+	}
 
 }
