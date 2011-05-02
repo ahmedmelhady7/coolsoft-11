@@ -156,14 +156,12 @@ public class Plan extends Model {
 	 * This Method adds an idea to the list of ideas being executed in the plan
 	 * given the idea
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S4
 	 * 
 	 * @param idea
 	 *            : the idea that will executed in the plan
-	 * 
-	 * @return void
 	 */
 	public void addIdea(Idea idea) {
 		this.ideas.add(idea);

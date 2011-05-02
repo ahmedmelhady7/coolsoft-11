@@ -10,22 +10,16 @@ public class Items extends CRUD {
 
 	/**
 	 * 
-	 * This Method renders the view of the list of items the user is assigned
-	 * to, given the user id
-	 * 
-	 * @author salma.qayed
+	 * This Method renders the view of the list of assigned items of  the logged in user
+	 * @author Salma Osama
 	 * 
 	 * @story C5S11
 	 * 
-	 * @param userid
-	 *            : the id of the user whose list of assigned items will be
-	 *            viewed
-	 * 
-	 * @return void
 	 */
 
-	public static void viewAssignedItems(long userId) {
-		User user = User.findById(userId);
+	public static void viewAssignedItems() {
+		User user = Security.getConnected();
+		long userId = user.id;
 		List<Item> assignedItems = user.itemsAssigned;
 		render(assignedItems, userId);
 	}

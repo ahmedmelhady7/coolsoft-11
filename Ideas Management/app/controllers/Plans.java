@@ -40,7 +40,7 @@ public class Plans extends CRUD {
 			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
 					"topic")) {
 
-				canAssign = 1;
+				canEdit = 1;
 			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
@@ -103,7 +103,9 @@ public class Plans extends CRUD {
 	 * 
 	 * @param topicId
 	 *            The ID of the topic that this action plan is based upon
-	 * 
+	 * @param ideas
+	 *            : the String containing the ids of the ideas to be associated
+	 *            to the plan separated by ","
 	 * 
 	 */
 	public static void planCreate(long topicId, String ideas) {
@@ -197,15 +199,15 @@ public class Plans extends CRUD {
 		p.addItem(istartdate, ienddate, idescription, p, isummary);
 		p.save();
 		String[] list2 = ideaString.split(",");
-		int[] list = new int[list2.length];
+		long [] list = new long [list2.length];
 		for (int i = 0; i < list2.length; i++) {
-			list[i] = Integer.parseInt(list2[i]);
+			list[i] = Long.parseLong(list2[i]);
 		}
 		Idea idea;
 		String notificationContent = "";
 		ArrayList<User> ideaAuthor = new ArrayList<User>();
 		for (int i = 0; i < list.length; i++) {
-			idea = Idea.findById((long) list[i]);
+			idea = Idea.findById(list[i]);
 			idea.plan = p;
 			p.ideas.add(idea);
 			ideaAuthor.add(idea.author);
@@ -217,13 +219,15 @@ public class Plans extends CRUD {
 			ideaAuthor.remove(idea.author);
 
 		}
+		Notifications.sendNotification(p.topic.getOrganizer(), p.id, "plan",
+		"A new plan has been created");
+		
 		if (check.equals("checked")) {
 			addItem(p.id);
 		} else {
 			viewAsList(p.id);
 		}
-		Notifications.sendNotification(p.topic.getOrganizer(), p.id, "plan",
-				"A new plan has been created");
+	
 
 	}
 
