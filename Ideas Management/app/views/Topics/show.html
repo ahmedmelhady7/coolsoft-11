@@ -54,6 +54,19 @@
 		<!--<a href="/show?topicid=object._key()">Edit</a>-->
 		<button type="submit" onclick= > Edit </button>
 		
+		#{if ${canPlan} == 1 && ${openToEdit} == false && plan == null}
+		#{form @Plans.addIdea(), method:'POST', enctype:'multipart/form-data' }
+			<input type = "hidden" name = "topicId" value = ${topicid} >
+			<input type="submit" value="Create A plan" />
+		#{/form}
+		#{/if}
+		#{if ${openToEdit} == false && plan != null}
+			#{form @Plans.viewAsList(), method:'POST', enctype:'multipart/form-data' }
+			<input type = "hidden" name = "planId" value = ${plan.id} >
+			<input type="submit" value="View the plan" />
+		#{/form}
+		#{/if}
+		
 	#{/form}
 	</div>
 	
