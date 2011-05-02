@@ -246,17 +246,17 @@ public class AssignRequests extends CRUD {
 								.isPermitted(
 										user,
 										"accept/Reject assignments to work on an item in an action plan",
-										assignRequests.get(i).source.plan.id,
-										"plan")
-						|| Topics.searchByTopic(
+										assignRequests.get(i).source.plan.topic.id,
+										"topic")
+						|| !Topics.searchByTopic(
 								assignRequests.get(i).source.plan.topic.id)
 								.contains(user)) {
 					assignRequests.remove(i);
 				} else {
 					for (int j = 0; j < assignRequests.get(i).sender.itemsAssigned
 							.size(); j++) {
-						if (assignRequests.get(i).source == assignRequests
-								.get(i).sender.itemsAssigned.get(j))
+						if (user.itemsAssigned
+								.contains(assignRequests.get(i).source))
 							assignRequests.remove(assignRequests.get(i));
 					}
 				}
