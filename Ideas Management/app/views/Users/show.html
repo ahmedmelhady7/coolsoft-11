@@ -1,0 +1,88 @@
+#{extends '/Users/layout.html' /}
+<h3> <label> View User</label></h3>
+	
+
+<div id="crudShow" class="${type.name}">
+	
+	
+	
+	 <font color="Red">${message}</font>	
+	
+	<div class="objectForm">
+	#{form action:@view(object._key()), enctype:'multipart/form-data'}
+	
+		#{crud.form fields: ['email', 'password', 'firstName',
+			 'lastName', 'username', 'communityContributionCounter',
+			'dateofBirth',  'country', 'profession']}
+		
+		   #{crud.custom 'email'}
+			<p> 
+ 			<!--<label for="object_email">Email</label>--> 
+			<textarea disabled= true id="object_email" cols="30" rows="1" class="" name="object.email">${object.email}</textarea>
+ 			</p> 
+			#{/crud.custom}
+			
+			#{crud.custom 'firstName'}
+			<p> 
+ 			<label for="object_firstName">First Name</label> 
+			<textarea disabled= true id="object_firstName" cols="30" rows="1" class="" name="object.firstName">${object.creator}</textarea> 
+ 			</p> 
+			#{/crud.custom }
+			
+			#{crud.custom 'lastName'}
+			<p> 
+ 			<label for="object_lastName">Last Name</label> 
+			<textarea disabled= true id="object_lastName" cols="30" rows="1" class="" name="object.lastName">${object.entity}</textarea> 
+ 			</p> 
+			#{/crud.custom }
+		
+			#{crud.custom 'username'}
+			<p> 
+ 			<label for="object_username">Username</label> 
+			<textarea disabled= true id="object_username" cols="50" rows="5" class="" name="object.username">${object.username}</textarea> 
+			<!--<span class="crudHelp" ><font color="Red">*</font>Required</span>--> 
+ 			</p> 
+			#{/crud.custom}
+			
+			#{crud.custom 'communityContributionCounter'}
+			<p> 
+ 			<label for="object_communityContributionCounter"> Community Contribution Counter </label> 
+			<textarea disabled= true id="object_communityContributionCounter" cols="3" rows="1" class="" name="object.communityContributionCounter">${object.communityContributionCounter}</textarea> 
+ 			</p> 
+			#{/crud.custom }
+			
+			#{crud.custom 'dateofBirth'}
+			<p>
+ 			<label for="object_dateofBirth">Date Of Birth</label> 
+			<textarea disabled= true id="object_dateofBirth" cols="30" rows="1" class="" name="object.dateofBirth">${object.dateofBirth}</textarea> 
+ 			</p> 
+			#{/crud.custom }
+			
+			#{crud.custom 'country'}
+			<p>
+ 			<label for="object_country">country</label> 
+			<textarea disabled= true id="object_country" cols="30" rows="1" class="" name="object.dateofBirth">${object.country}</textarea> 
+ 			</p> 
+			#{/crud.custom }
+			
+			#{crud.custom 'profession'}
+			<p> 
+ 			<label for="object_profession">Profession</label> 
+			<textarea disabled= true id="object_profession" cols="30" rows="1" class="" name="object.profession">${object.profession}</textarea> 
+ 			</p> 
+			#{/crud.custom }
+		
+		
+		#{/crud.form }
+		<button type="submit" onclick= > Edit </button>
+		
+	#{/form}
+	</div>
+	
+	<!--#{form @delete(object._key())}
+		<p class="crudDelete">
+			<input type="submit" value="&{'crud.delete', type.modelName}" />
+		</p>
+	#{/form}-->
+
+</div>

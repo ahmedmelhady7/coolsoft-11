@@ -1,0 +1,92 @@
+
+#{extends '/Users/layout.html' /}
+
+<div id="crudBlank" class="${type.name}">
+	
+	<h2 id="crudBlankTitle">&amp;{'crud.blank.title', type.modelName}</h2>
+	
+	<font color="Red">${message}</font>	
+	
+	<div class="objectForm">
+	#{form action:@create(), enctype:'multipart/form-data'}
+	#{crud.form fields: ['email', 'password', 'firstName',
+			 'lastName', 'username', 'communityContributionCounter',
+			'dateofBirth',  'country', 'profession']}
+		
+			#{crud.custom 'email'}
+	  		<p> 
+ 			<label for="object_title">E-mail</label> 
+			<textarea id="object_email" cols="25" rows="2" class="" name="object.email"></textarea> 
+ 			<span class="crudHelp" ><font color="Red">*</font>Required</span>
+			</p> 
+			#{/crud.custom}
+		
+			#{crud.custom 'username'}
+			<p> 
+ 			<label for="object_username"> username</label> 
+			<textarea id="object_username" cols="15" rows="1" class="" name="object.username"></textarea> 
+			<span class="crudHelp" ><font color="Red">*</font>Required</span> 
+ 			</p> 
+			#{/crud.custom}
+			
+			#{crud.custom 'firstName'}
+			<p> 
+ 			<label for="object_firstName">firstName</label> 
+			<textarea id="object_firstName" cols="15" rows="2" class="" name="object.firstName"></textarea> 
+			<span class="crudHelp" ><font color="Red">*</font>Required</span> 
+ 			</p> 
+			#{/crud.custom}
+			
+			#{crud.custom 'password'}
+			<p> 
+ 			<label for="object_password">Password</label> 
+			<textarea id="object_password" cols="15" rows="2" class="" name="object.password"></textarea> 
+ 			</p> 
+			#{/crud.custom }
+			
+			#{crud.custom 'lastName'}
+			<p> 
+ 			<label for="object_lastName">Last Name</label> 
+			<textarea id="object_lastName" cols="15" rows="2" class="" name="object.lastName"></textarea> 
+ 			</p> 
+			#{/crud.custom }
+			
+			#{crud.custom 'communityContributionCounter'}
+			<p> 
+ 			<label for="object_communityContributionCounter"> Community Contribution Counter</label> 
+			<textarea id="object_communityContributionCounter" cols="15" rows="2" class="" name="object.communityContributionCounter"></textarea> 
+ 			</p> 
+			#{/crud.custom }
+			
+			#{crud.custom 'dateofBirth'}
+			<p> 
+ 			<label for="object_dateofBirth">Date of Birth</label> 
+			<textarea id="object_dateofBirth" cols="15" rows="2" class="" name="object.dateofBirth"></textarea> 
+ 			</p> 
+			#{/crud.custom }
+			
+			#{crud.custom 'country'}
+			<p> 
+ 			<label for="object_country"> Country </label> 
+			<textarea id="object_country" cols="15" rows="2" class="" name="object.country"></textarea> 
+ 			</p> 
+			#{/crud.custom }
+			
+			#{crud.custom 'profession'}
+			<p> 
+ 			<label for="object_profession">Profession</label> 
+			<textarea id="object_profession" cols="15" rows="2" class="" name="object.profession"></textarea> 
+ 			</p> 
+			#{/crud.custom }
+		
+		
+		#{/crud.form }
+		<p class="crudButtons">
+			<input t  id = "save" type="submit" name="_save" value="&amp;{'crud.save', type.modelName}" />
+			<input type="submit" name="_saveAndContinue" value="&amp;{'crud.saveAndContinue', type.modelName}" />
+			<input type="submit" name="_saveAndAddAnother" value="&amp;{'crud.saveAndAddAnother', type.modelName}" />
+		</p>
+	#{/form}
+	</div>
+
+</div>
