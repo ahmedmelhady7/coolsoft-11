@@ -104,6 +104,7 @@ public class Plan extends Model {
 		this.topic = topic;
 		this.rating = 0;
 		this.commentsList = new ArrayList<Comment>();
+		this.usersRated = new ArrayList<User>();
 
 	}
 
