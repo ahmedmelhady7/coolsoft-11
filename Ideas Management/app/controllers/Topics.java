@@ -385,6 +385,12 @@ public class Topics extends CRUD {
 			}
 		}
 		searchList.addAll(user);
+		int size = searchList.size();
+		for(int i =0; i< size; i++){
+			if(searchList.get(i).state.endsWith("d") || searchList.get(i).state.endsWith("n") ){
+				searchList.remove(i);
+			}
+		}
 		return searchList;
 
 	}
