@@ -6,7 +6,7 @@
     </font>
     <div class="objectForm">
         #{form action:@create(), enctype:'multipart/form-data'}
-        #{crud.form fields: ['title', 'description']}
+        #{crud.form fields: ['title', 'description','isDraft']}
         #{crud.custom 'title'}
         <p>
             <label for="object_title">

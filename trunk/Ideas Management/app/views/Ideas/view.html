@@ -51,16 +51,16 @@
 <!-- 		<br/>
 		This idea is now rated: ${newRating}
 		<form action="@{Ideas.rate(rating,idea.id)}" method="GET">
-    		<input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/> 
+    		<!--<input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/>--> 
     		<input type="submit" value="Submit rating"/>
 		</form> 
 		<br /> -->
         #{/crud.custom }
         #{/crud.form }
         <!--<a href="/show?topicid=object._key()">Edit</a>-->
-        <button type="submit" onclick="ideas/show.html">
+        <!--<button type="submit" onclick="ideas/show.html">
             Edit
-        </button>
+        </button>-->
         #{/form}
     </div>
     <!--#{form @delete(object._key())}
