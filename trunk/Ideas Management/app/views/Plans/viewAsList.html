@@ -1,14 +1,17 @@
 #{extends 'planLayout.html' /}
-#{set title:'View Plan as List' /}<h3>${p.title}</h3>
+#{set title:'View Plan as List' /}
 <br/>
-#{if error == true)}
+#{if error == true}
 <h3>You do not have enough permissions to view this plan.</h3>
 #{/if}
 #{else}
- #{if canEdit == 1)}
+#{if canEdit == 1}
 			<a href="@{Plans.editPlan(p.id)}">Edit General info about the plan</a>
- #{/if}
+#{/if}
+<br/>
+
 <!--  <br/>
+>>>>>>> .r691
 This plan is now rated: ${newRating}
 <form action="@{Plans.rate(rating,p.id)}" method="GET">
     <input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/> 
@@ -56,9 +59,9 @@ This plan is now rated: ${newRating}
 #{/if} 
 #{else}  
 No items exist in plan. Please contact 
-#{if p.topic.organizers.size() > 1} 
+#{if p.topic.getOrganizer.size() > 1} 
 <ul>
-    #{list users:${p.topics.organizers}, as:'organizer'}
+    #{list users:${p.topics.getOrganizer}, as:'organizer'}
     <li>
         <a href="#">${organizer.username}</a>
     </li>
@@ -66,7 +69,7 @@ No items exist in plan. Please contact
 </ul>
 #{/if} 
 #{else}
-${p.topics.organizers.get(0).username}
+${p.topics.getOrganizer.get(0).username}
 #{/else}
 #{/else}
 #{/else}
@@ -75,9 +78,10 @@ ${p.topics.organizers.get(0).username}
    	function isNumberKey(evt)
     {
        var charCode = (evt.which) ? evt.which : event.keyCode
-       if (charCode > 31 && (charCode < 48 || charCode > 53))
-          return false;
-
+       if (charCode > 31 && (charCode < 48 || charCode > 53)){
+	   	return false;
+	   }
+          
        return true;
     }
     function isSingleDigit()

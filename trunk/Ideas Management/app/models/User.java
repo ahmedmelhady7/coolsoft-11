@@ -243,15 +243,13 @@ public class User extends Model {
 	 * certain item in a plan to the list of volunteer requests sent by the user
 	 * given the volunteer request
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S10
 	 * 
 	 * @param volunteerRequest
 	 *            : the VolunteerRequest that needs to be added to the list of
 	 *            volunteer requests of the user
-	 * 
-	 * @return void
 	 */
 
 	public void addVolunteerRequest(VolunteerRequest volunteerRequest) {
@@ -266,15 +264,13 @@ public class User extends Model {
 	 * assigning him to a certain item in a plan to the list of assign requests
 	 * sent by the user given the assign request
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S4
 	 * 
 	 * @param sentAssignRequest
 	 *            : the AssignRequest that needs to be added to the list of
 	 *            assign requests sent by the user
-	 * 
-	 * @return void
 	 */
 	public void addSentAssignRequest(AssignRequest sentAssignRequest) {
 		sentAssignRequests.add(sentAssignRequest);
@@ -287,15 +283,13 @@ public class User extends Model {
 	 * certain item in a plan to the list of assign requests received by the
 	 * user given the assign request
 	 * 
-	 * @author salma.qayed
+	 * @author Salma Osama
 	 * 
 	 * @story C5S4
 	 * 
 	 * @param receivedAssignRequest
 	 *            : the AssignRequest that needs to be added to the list of
 	 *            assign requests received by the user
-	 * 
-	 * @return void
 	 */
 	public void addReceivedAssignRequest(AssignRequest receivedAssignRequest) {
 		sentAssignRequests.add(receivedAssignRequest);

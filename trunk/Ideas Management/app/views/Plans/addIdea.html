@@ -36,7 +36,7 @@ Ideas posted in this topic:
 		<br/>
 		Rating: ${idea.rating}
 		<br/>
-<input  type="checkbox" name="checkedIdeas" value = ${idea.id} onclick = "toggleCheck(${idea.id})"> add to plan
+<input  type="checkbox" name="checkedIdeas" value = ${idea.id} onclick = "toggleCheck('${idea.id}')"> add to plan
  </fieldset>
 #{/list}
 <input type = "hidden" name = "topicId" value = ${topic.id} >

@@ -18,14 +18,12 @@ public class VolunteerRequests extends CRUD {
 	 * This Method creates an instance of VolunteerRequest if the user is
 	 * allowed to volunteer and adds it to the list of sent volunteer requests
 	 * of the user and to the list of volunteer requests in the item given the
-	 * user id, the item id and the required justification string
+	 * the item id and the required justification string
 	 * 
 	 * @author Salma Osama
 	 * 
 	 * @story C5S10
 	 * 
-	 * @param senderId
-	 *            : the id of the user sending the volunteer request
 	 * @param itemId
 	 *            : the id of the item the user wishes to volunteer to work on
 	 * @param justification
@@ -59,7 +57,8 @@ public class VolunteerRequests extends CRUD {
 	/**
 	 * 
 	 * This Method renders the view where the user enters the justification of
-	 * his volunteer request given the item id and the plan id
+	 * his volunteer request given the item id, the plan id and the success
+	 * indicator
 	 * 
 	 * @author Salma Osama
 	 * 
@@ -70,6 +69,13 @@ public class VolunteerRequests extends CRUD {
 	 *            work on
 	 * @param itemId
 	 *            : the id of the item the user wishes to volunteer to work on
+	 * @param success
+	 *            : an integer that controls how the justify will be rendered if
+	 *            it's 0 then the user is asked to enter his justification to
+	 *            send the volunteer request, if it's 1 then sending the
+	 *            volunteer request has failed and the user gets an error
+	 *            message
+	 * 
 	 */
 
 	public static void justify(long itemId, long planId, int success) {
@@ -91,9 +97,6 @@ public class VolunteerRequests extends CRUD {
 	 * 
 	 * @author Mohamed Mohie
 	 * 
-	 * @param userId
-	 *            : ID of the organizer viewing the requests.
-	 * 
 	 * @param planId
 	 *            : ID of the plan whose items' volunteer requests are to be
 	 *            viewed.
@@ -111,6 +114,7 @@ public class VolunteerRequests extends CRUD {
 			for (int i = 0; i < plan.items.size(); i++) {
 				planVolunteerRequests
 						.addAll(plan.items.get(i).volunteerRequests);
+
 			}
 			if (planVolunteerRequests.size() > 0) {
 				for (int i = 0; i < planVolunteerRequests.size(); i++) {
@@ -122,7 +126,7 @@ public class VolunteerRequests extends CRUD {
 					} else {
 						if (planVolunteerRequests.get(i).destination.assignees
 								.contains(sender)
-								|| Topics.searchByTopic(plan.topic.id)
+								|| !Topics.searchByTopic(plan.topic.id)
 										.contains(user)) {
 							VolunteerRequest request = VolunteerRequest
 									.findById(planVolunteerRequests.get(i).id);

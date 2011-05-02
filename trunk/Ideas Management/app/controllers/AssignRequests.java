@@ -76,15 +76,15 @@ public class AssignRequests extends CRUD {
 	 *            : the id of the plan containing the item that will be assigned
 	 *            to the list of users selected
 	 */
-	public static void sendRequests(long itemId, long[] userIds, long planId) {
+	public static void sendRequests(String itemId, String [] userIds, String planId) {
 		User user;
 		Date d = new Date();
 		Item item = Item.findById(itemId);
 		for (int i = 0; i < userIds.length; i++) {
 			user = User.findById(userIds[i]);
-			if (filter(itemId, planId).contains(user)) {
+			if (filter(Long.parseLong(itemId), Long.parseLong(planId)).contains(user)) {
 				if (!(item.status == 2) && item.endDate.compareTo(d) > 0) {
-					sendAssignRequest(itemId, userIds[i]);
+					sendAssignRequest(Long.parseLong(itemId), Long.parseLong(userIds[i]));
 				}
 
 			}
@@ -97,14 +97,12 @@ public class AssignRequests extends CRUD {
 	 * This Method creates an instance of AssignRequest and adds it to the list
 	 * of sent assign requests of the sender and to the list of received assign
 	 * requests of the receiver and to the list of assign requests in the item
-	 * given the sender id, the item id, the destination id
+	 * given the item id, the destination id
 	 * 
 	 * @author Salma Osama
 	 * 
 	 * @story C5S5
 	 * 
-	 * @param senderId
-	 *            : the id of the user sending the assign request
 	 * @param itemId
 	 *            : the id of the item the user is requested to be assigned to
 	 *            work on
