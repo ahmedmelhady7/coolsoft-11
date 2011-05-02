@@ -2,3 +2,24 @@
 #{set title:'Home' /}
 
 <b>Welcome </b>${u.username} &nbsp; ${u.email}
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<b><i>Welcome to COOLSOFT!</i></b>
+<br>
+<b>Username: </b> ${u.username}
+<br>
+<b>E-Mail </b> ${u.email}
+<br>
+
+<form action="@{Users.viewNotifications()}" method="post" >
+	Show Notifications list: <input type="submit" value="Notification list">
+</form>
+&nbsp;
+<form action="@{Users.viewNotificationProfile()}" method="post" >
+	Show Notification Profile: <input type="submit" value="Notification Profile">
+</form>
+&nbsp;
+<form action="@{Notifications.notificationIndex()}" method="post">
+	Send Notification: <input type="submit" value="Notify">
+</form>

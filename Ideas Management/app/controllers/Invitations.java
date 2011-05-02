@@ -285,6 +285,11 @@ public class Invitations extends CRUD {
 				n1._save();
 				User orgLead = org.creator;
 				if (orgLead.id != invite.sender.id) {
+					/**
+					 * please use the method sendNotification 
+					 * there is no need for this part.because I need to add this notification 
+					 * to the user's notification profile
+					 */
 					Notification n2 = new Notification("Invitation accepted",
 							orgLead, user.username + " accepted th invitation");
 					n2._save();
