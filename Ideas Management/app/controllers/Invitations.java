@@ -215,6 +215,7 @@ public class Invitations extends CRUD {
 
 		User user = Security.getConnected();
 		List<Invitation> inv = Invitation.find("byEmail", user.email).fetch();
+		
 		render(inv);
 
 	}
@@ -243,11 +244,12 @@ public class Invitations extends CRUD {
 	public static void respond(int choice, long id) {
 
 		Invitation invite = Invitation.findById(id);
+		 //  System.out.println(id);
 		if (choice == 1) {
 			String rolename = invite.role;
 			Organization org = invite.organization;
 			MainEntity ent = invite.entity;
-			User user = User.find("byEmail", invite.destination).first();
+			User user = User.find("byEmail", invite.email).first();
 			Role role = Role.find("byName", rolename).first();
 
 			// *fadwa
