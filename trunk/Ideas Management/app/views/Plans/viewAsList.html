@@ -1,7 +1,10 @@
 #{extends 'planLayout.html' /}
 #{set title:'View Plan as List' /}<h3>${p.title}</h3>
 <br/>
-
+#{if error == true)}
+<h3>You do not have enough permissions to view this plan.</h3>
+#{/if}
+#{else}
  #{if canEdit == 1)}
 			<a href="@{Plans.editPlan(p.id)}">Edit General info about the plan</a>
  #{/if}
@@ -64,6 +67,7 @@ No items exist in plan. Please contact
 #{/if} 
 #{else}
 ${p.topics.organizers.get(0).username}
+#{/else}
 #{/else}
 #{/else}
 <script type="text/javascript">
