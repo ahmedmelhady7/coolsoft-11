@@ -1,59 +1,44 @@
 #{extends '/topics/layout.html' /}
-<h3> <label> View Topic</label></h3>
-	
 
 <div id="crudShow" class="${type.name}">
 	
-	
+	<h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
 	
 	 <font color="Red">${message}</font>	
 	
 	<div class="objectForm">
-	#{form action:@view(object._key()), enctype:'multipart/form-data'}
+	#{form action:@save(object._key()), enctype:'multipart/form-data'}
 	
-		#{crud.form fields: ['title', 'creator', 'entity', 'description', 'privacyLevel']}
+		#{crud.form fields: ['title', 'description', 'privacyLevel']}
 		
 		   #{crud.custom 'title'}
 			<p> 
- 			<!--<label for="object_title">Title</label>--> 
+ 			<label for="object_title">Title</label> 
 			<textarea disabled= true id="object_title" cols="30" rows="1" class="" name="object.title">${object.title}</textarea>
  			</p> 
 			#{/crud.custom}
-			
-			#{crud.custom 'creator'}
-			<p> 
- 			<label for="object_creator">by</label> 
-			<textarea disabled= true id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">${object.creator}</textarea> 
- 			</p> 
-			#{/crud.custom }
-			
-			#{crud.custom 'entity'}
-			<p> 
- 			<label for="object_entity">in</label> 
-			<textarea disabled= true id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">${object.entity}</textarea> 
- 			</p> 
-			#{/crud.custom }
 		
 			#{crud.custom 'description'}
 			<p> 
  			<label for="object_description">Description</label> 
-			<textarea disabled= true id="object_description" cols="50" rows="5" class="" name="object.description">${object.description}</textarea> 
-			<!--<span class="crudHelp" ><font color="Red">*</font>Required</span>--> 
+			<textarea id="object_description" cols="50" rows="5" class="" name="object.description">${object.description}</textarea> 
+			<span class="crudHelp" ><font color="Red">*</font>Required</span> 
  			</p> 
 			#{/crud.custom}
 			
 			#{crud.custom 'privacyLevel'}
 			<p> 
  			<label for="object_privacyLevel">Privacy Level</label> 
-			<textarea disabled= true id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">${object.privacyLevel}</textarea> 
+			<textarea id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">${object.privacyLevel}</textarea> 
  			</p> 
 			#{/crud.custom }
 		
 		
 		#{/crud.form }
-		<!--<a href="/show?topicid=object._key()">Edit</a>-->
-		<button type="submit" onclick= > Edit </button>
-		
+		<p class="crudButtons">
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+		</p>
 	#{/form}
 	</div>
 	
