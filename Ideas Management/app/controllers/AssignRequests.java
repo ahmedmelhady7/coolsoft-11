@@ -213,19 +213,19 @@ public class AssignRequests extends CRUD {
          * @return List<User>
          */
 
-        public static void search(String keyword, long itemId, long planId) {
-
-                List<User> nonBlockedUsers = filter(itemId, planId);
-                List<User> searchResult = Users.searchUser(keyword);
-                List<User> finalResult = new ArrayList<User>();
-                for (int i = 0; i < nonBlockedUsers.size(); i++) {
-                        if (searchResult.contains(nonBlockedUsers.get(i))) {
-                                finalResult.add(nonBlockedUsers.get(i));
-                        }
-                }
-                viewUsers(finalResult, itemId, planId);
-
-        }
+//        public static void search(String keyword, long itemId, long planId) {
+//
+//                List<User> nonBlockedUsers = filter(itemId, planId);
+//                List<User> searchResult = Users.searchUser(keyword);
+//                List<User> finalResult = new ArrayList<User>();
+//                for (int i = 0; i < nonBlockedUsers.size(); i++) {
+//                        if (searchResult.contains(nonBlockedUsers.get(i))) {
+//                                finalResult.add(nonBlockedUsers.get(i));
+//                        }
+//                }
+//                viewUsers(finalResult, itemId, planId);
+//
+//        }
 
 	public static void view() {
 		User user = Security.getConnected();

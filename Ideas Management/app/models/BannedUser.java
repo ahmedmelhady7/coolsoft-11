@@ -18,7 +18,7 @@ public class BannedUser extends Model {
 	@ManyToOne
 	public User bannedUser;
 
-	String action;
+	public String action;
 	public String resourceType;
 	public long resourceID;
 

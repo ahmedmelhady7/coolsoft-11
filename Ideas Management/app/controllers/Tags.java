@@ -7,7 +7,7 @@ import models.Organization;
 import models.Tag;
 import models.User;
 
-public class Tags extends Controller {
+public class Tags extends CRUD {
 	/**
 	 * This method creates a new tag
 	 * 

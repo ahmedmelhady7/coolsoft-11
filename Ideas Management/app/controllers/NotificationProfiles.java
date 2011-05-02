@@ -13,7 +13,7 @@ import play.mvc.Controller;
  *
  */
 
-public class NotificationProfiles extends Controller {
+public class NotificationProfiles extends CRUD {
 	
 	/**
 	 * This method renders the view were the user can change his preferences.

@@ -134,75 +134,75 @@ public class Ideas extends CRUD {
 	 * 
 	 */
 
-	public static void create() throws Exception {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
-		constructor.setAccessible(true);
-		Model object = (Model) constructor.newInstance();
-		Binder.bind(object, "object", params.all());
-		validation.valid(object);
-		Topic topic = Topic.findById((long) 1);
-		User author = User.findById((long) 1);
-		Idea i = (Idea) object;
-		i.belongsToTopic = topic;
-		i.author = author;
-		i.privacyLevel = topic.privacyLevel;
-		// ArrayList<Comment> ideaComments = (ArrayList<Comment>)
-		// i.commentsList;
-		// ArrayList<Tag> ideaTags = (ArrayList<Tag>) i.tagsList;
-		String message = "";
-		if (i.belongsToTopic == null) {
-			message = "An Idea must belong to a Topic";
-			try {
-				render(request.controller.replace(".", "/") + "/blank.html",
-						type, message);
-			} catch (TemplateNotFoundException e) {
-				render("CRUD/blank.html", type, message);
-			}
-		}
-
-		if (validation.hasErrors()) {
-			if (i.title.equals("")) {
-				message = "An Idea must have a title";
-			} else if (i.description.equals("")) {
-				message = "An Idea must have a description";
-
-			}
-
-			try {
-				System.out.println("foo2 Render");
-				render(request.controller.replace(".", "/") + "/blank.html",
-						type, i.title, i.belongsToTopic, i.description,
-						i.commentsList, /* i.tagsList, */message);
-				System.out.println("rendered 5alas");
-			} catch (TemplateNotFoundException e) {
-				System.out.println("fel catch templatenotfound");
-				render("CRUD/blank.html", type);
-			}
-		}
-
-		object._save();
-		System.out.println("3ada el save");
-		String anothermessage = "you have created a new idea with title "
-				+ i.title + " and with description " + i.description;
-		flash.success(Messages.get("crud.created", type.modelName,
-				((Idea) object).getId()));
-		System.out.println("foo2 el if");
-		if (params.get("_save") != null) {
-			System.out.println("gowa el if");
-			System.out
-					.println("/ideas/view?ideasid=" + ((Idea) object).getId());
-
-			redirect("/ideas/view?ideaId=" + ((Idea) object).getId());
-			if (params.get("_saveAndAddAnother") != null) {
-				redirect(request.controller + ".blank", anothermessage);
-			}
-			redirect(request.controller + ".show", ((Idea) object).getId(),
-					anothermessage);
-
-		}
-	}
+//	public static void create() throws Exception {
+//		ObjectType type = ObjectType.get(getControllerClass());
+//		notFoundIfNull(type);
+//		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+//		constructor.setAccessible(true);
+//		Model object = (Model) constructor.newInstance();
+//		Binder.bind(object, "object", params.all());
+//		validation.valid(object);
+//		Topic topic = Topic.findById((long) 1);
+//		User author = User.findById((long) 1);
+//		Idea i = (Idea) object;
+//		i.belongsToTopic = topic;
+//		i.author = author;
+//		i.privacyLevel = topic.privacyLevel;
+//		// ArrayList<Comment> ideaComments = (ArrayList<Comment>)
+//		// i.commentsList;
+//		// ArrayList<Tag> ideaTags = (ArrayList<Tag>) i.tagsList;
+//		String message = "";
+//		if (i.belongsToTopic == null) {
+//			message = "An Idea must belong to a Topic";
+//			try {
+//				render(request.controller.replace(".", "/") + "/blank.html",
+//						type, message);
+//			} catch (TemplateNotFoundException e) {
+//				render("CRUD/blank.html", type, message);
+//			}
+//		}
+//
+//		if (validation.hasErrors()) {
+//			if (i.title.equals("")) {
+//				message = "An Idea must have a title";
+//			} else if (i.description.equals("")) {
+//				message = "An Idea must have a description";
+//
+//			}
+//
+//			try {
+//				System.out.println("foo2 Render");
+//				render(request.controller.replace(".", "/") + "/blank.html",
+//						type, i.title, i.belongsToTopic, i.description,
+//						i.commentsList, /* i.tagsList, */message);
+//				System.out.println("rendered 5alas");
+//			} catch (TemplateNotFoundException e) {
+//				System.out.println("fel catch templatenotfound");
+//				render("CRUD/blank.html", type);
+//			}
+//		}
+//
+//		object._save();
+//		System.out.println("3ada el save");
+//		String anothermessage = "you have created a new idea with title "
+//				+ i.title + " and with description " + i.description;
+//		flash.success(Messages.get("crud.created", type.modelName,
+//				((Idea) object).getId()));
+//		System.out.println("foo2 el if");
+//		if (params.get("_save") != null) {
+//			System.out.println("gowa el if");
+//			System.out
+//					.println("/ideas/view?ideasid=" + ((Idea) object).getId());
+//
+//			redirect("/ideas/view?ideaId=" + ((Idea) object).getId());
+//			if (params.get("_saveAndAddAnother") != null) {
+//				redirect(request.controller + ".blank", anothermessage);
+//			}
+//			redirect(request.controller + ".show", ((Idea) object).getId(),
+//					anothermessage);
+//
+//		}
+//	}
 
 	/**
 	 * Overriding the CRUD method show.

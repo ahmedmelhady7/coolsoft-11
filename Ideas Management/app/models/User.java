@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import controllers.Topics;
@@ -46,45 +47,58 @@ public class User extends Model {
 	 * state represents the state of the user whether he is active, deleted, not
 	 * active a -> active , d -> deleted , n -> not active
 	 */
-	public char state;
+	public String state;
 	public String profession;
 
-	@OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "creator")
+	// , cascade = CascadeType.PERSIST)
 	public List<Topic> topicsCreated;
 
 	// to be removed
-	@ManyToMany
+	@ManyToMany(mappedBy = "enrolledUsers")
 	public List<Organization> enrolled;
 
-	@OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "creator")
+	// , cascade = CascadeType.ALL)
 	public List<Organization> createdOrganization;
 
 	// to be removed
-	@ManyToMany(mappedBy = "organizers", cascade = CascadeType.PERSIST)
+	@ManyToMany(mappedBy = "organizers")
+	// , cascade = CascadeType.PERSIST)
 	public List<Topic> topicsIOrganize;
 
+	@ManyToMany(mappedBy = "usersRated")
+	public List<Plan> ratedPlans;
 	/**
 	 * Added by Alia, but whoever is responsible for it please check the cascade
 	 * etc.
 	 */
 
-	@ManyToMany(mappedBy = "followers", cascade = CascadeType.PERSIST)
+	@ManyToMany
+	// , cascade = CascadeType.PERSIST)
 	public List<Topic> topicsIFollow;
 
-	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "author")
+	// , cascade = CascadeType.ALL)
 	public List<Idea> ideasCreated;
 
-	@ManyToMany(mappedBy = "reporters", cascade = CascadeType.ALL)
+	@ManyToMany//(mappedBy = "reporters")
+	// , cascade = CascadeType.ALL)
 	public List<Idea> ideasReported;
-
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	
+	@ManyToMany(mappedBy ="usersRated")
+	public List<Idea> ideasRated;
+	
+	@ManyToMany
+	// (cascade = CascadeType.PERSIST)
 	public List<Item> itemsAssigned;
 
 	@OneToMany(mappedBy = "user")
 	public List<NotificationProfile> notificationProfiles;
 	@OneToMany(mappedBy = "directedTo")
 	public List<Notification> notifications;
-	@ManyToMany
+
+	@ManyToMany(mappedBy = "organizers")
 	public List<MainEntity> followingEntities;
 
 	// related to sprint 2
@@ -92,10 +106,12 @@ public class User extends Model {
 	public List<Tag> followingTags;
 
 	@ManyToMany
+	// (mappedBy = "followers")
 	public List<Organization> followingOrganizations;
 
 	// to be removed
 	@ManyToMany
+	// (mappedBy = "organizers")
 	public List<MainEntity> entitiesIOrganize;
 
 	// @ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
@@ -105,30 +121,37 @@ public class User extends Model {
 	// List<Comment> commentsPosted;
 	// List<LinkDuplicates> linkDuplicates;
 
-	@OneToMany(mappedBy = "source", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "source")
+	// , cascade = CascadeType.ALL)
 	public List<RequestToJoin> requestsToJoin;
 	// List<RequestOfRelationship> requestRelationship;
 	// List<TopicInvitation> topicInvitations;
 
-	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "sender")
+	// , cascade = CascadeType.ALL)
 	public List<Invitation> invitation;
 
-	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "sender")
+	// , cascade = CascadeType.ALL)
 	public List<VolunteerRequest> volunteerRequests;
 
-	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "sender")
+	// , cascade = CascadeType.ALL)
 	public List<AssignRequest> sentAssignRequests;
 
-	@OneToMany(mappedBy = "destination", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "destination")
+	// , cascade = CascadeType.ALL)
 	public List<AssignRequest> receivedAssignRequests;
 
-	@OneToMany(mappedBy = "bannedUser", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "bannedUser")
+	// , cascade = CascadeType.ALL)
 	public List<BannedUser> bannedUsers;
 
-	@OneToMany(mappedBy = "enrolled", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "enrolled")
+	// , cascade = CascadeType.ALL)
 	public List<UserRoleInOrganization> userRolesInOrganization;
 
-	@OneToMany(mappedBy = "madeBy", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "madeBy")// , cascade = CascadeType.PERSIST)
 	public List<Plan> planscreated;
 
 	public User(String email, String password, String firstName,
@@ -161,10 +184,11 @@ public class User extends Model {
 		this.createdOrganization = new ArrayList<Organization>();
 		followingOrganizations = new ArrayList<Organization>();
 		planscreated = new ArrayList<Plan>();
-
+		this.ideasReported = new ArrayList<Idea>();
 		followingEntities = new ArrayList<MainEntity>();
-
-		this.state = 'a';
+		topicsIFollow = new ArrayList<Topic>();
+		this.ideasRated = new ArrayList<Idea>();
+		this.state = "a";
 		this.profession = profession;
 
 		// requests=new ArrayList<Request>();

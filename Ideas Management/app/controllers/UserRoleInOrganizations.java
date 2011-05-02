@@ -31,7 +31,7 @@ public class UserRoleInOrganizations extends CRUD {
 
 	public static boolean addEnrolledUser(User user, Organization org, Role role) {
 
-		UserRoleInOrganization o = new UserRoleInOrganization(user, org, role);
+		UserRoleInOrganization o = new UserRoleInOrganization(user, org, role, 1, "");
 		o.save();
 		return true;
 	}

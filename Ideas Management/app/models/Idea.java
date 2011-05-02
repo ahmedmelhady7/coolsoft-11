@@ -43,12 +43,12 @@ public class Idea extends Model {
 	/**
 	 * the list of tags that the idea is tagged with
 	 */
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany//(cascade = CascadeType.PERSIST)
 	public List<Tag> tagsList;
 	/**
 	 * the list of comments to an idea
 	 */
-	@OneToMany(cascade = CascadeType.PERSIST)
+	@OneToMany//(cascade = CascadeType.PERSIST)
 	public List<Comment> commentsList;
 	/**
 	 * the topic that the idea belongs to
@@ -65,7 +65,7 @@ public class Idea extends Model {
 	/**
 	 * the Repoters of the idea
 	 */
-	@ManyToMany
+	@ManyToMany(mappedBy ="ideasReported")
 	public List<User> reporters;
 	/**
 	 * the plan that the idea is marked in
@@ -87,7 +87,7 @@ public class Idea extends Model {
 	/**
 	 * @author ${Ibrahim Safwat} Must keep track of which users rated
 	 */
-	@OneToMany
+	@ManyToMany
 	public List<User> usersRated;
 
 	/**
@@ -120,6 +120,8 @@ public class Idea extends Model {
 		this.isDraft = false;
 		this.tagsList = new ArrayList<Tag>();
 		this.commentsList = new ArrayList<Comment>();
+		this.reporters = new ArrayList<User>();
+		this.usersRated = new ArrayList<User>();
 		this.rating = 0;
 		this.priority = null;
 
@@ -151,8 +153,9 @@ public class Idea extends Model {
 		user.ideasCreated.add(this);
 		this.isDraft = isDraft;
 		this.tagsList = new ArrayList<Tag>();
-		this.usersRated = new ArrayList<User>();
 		this.commentsList = new ArrayList<Comment>();
+		this.reporters = new ArrayList<User>();
+		this.usersRated = new ArrayList<User>();
 		this.rating = 0;
 		this.priority = null;
 	}

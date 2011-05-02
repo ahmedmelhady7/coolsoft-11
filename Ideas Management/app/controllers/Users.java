@@ -315,42 +315,42 @@ public class Users extends CRUD {
 	 * 
 	 */
 	public static List<User> searchUser(String keyword) {
-
+//
 		List<User> searchResultByName = new ArrayList<User>();
-		List<User> searchResultByProfession = new ArrayList<User>();
-		List<User> searchResultByEmail = new ArrayList<User>();
-
-		if (keyword != null) {
-			searchResultByName = User.find("username like ? ", "keyword%")
-					.fetch();
-			searchResultByProfession = User.find("profession like ? ",
-					"keyword").fetch();
-			searchResultByEmail = User.find("email like ? ", "keyword").fetch();
-		}
-
-		for (int i = 0; i < searchResultByName.size(); i++) {
-			if (searchResultByName.get(i).state == 'd') {
-				searchResultByName.remove(i);
-			}
-		}
-		for (int i = 0; i < searchResultByProfession.size(); i++) {
-			if (searchResultByProfession.get(i).state == 'd') {
-				searchResultByProfession.remove(i);
-			}
-		}
-
-		for (int i = 0; i < searchResultByEmail.size(); i++) {
-			if (searchResultByEmail.get(i).state == 'd') {
-				searchResultByEmail.remove(i);
-			}
-		}
-
-		searchResultByName.addAll(searchResultByProfession);
-		searchResultByName.addAll(searchResultByEmail);
-		// render(searchResultByName, searchResultByProfession,
-		// searchResultByEmail);
+//		List<User> searchResultByProfession = new ArrayList<User>();
+//		List<User> searchResultByEmail = new ArrayList<User>();
+//
+//		if (keyword != null) {
+//			searchResultByName = User.find("username like ? ", "keyword%")
+//					.fetch();
+//			searchResultByProfession = User.find("profession like ? ",
+//					"keyword").fetch();
+//			searchResultByEmail = User.find("email like ? ", "keyword").fetch();
+//		}
+//
+//		for (int i = 0; i < searchResultByName.size(); i++) {
+//			if (searchResultByName.get(i).state == 'd') {
+//				searchResultByName.remove(i);
+//			}
+//		}
+//		for (int i = 0; i < searchResultByProfession.size(); i++) {
+//			if (searchResultByProfession.get(i).state == 'd') {
+//				searchResultByProfession.remove(i);
+//			}
+//		}
+//
+//		for (int i = 0; i < searchResultByEmail.size(); i++) {
+//			if (searchResultByEmail.get(i).state == 'd') {
+//				searchResultByEmail.remove(i);
+//			}
+//		}
+//
+//		searchResultByName.addAll(searchResultByProfession);
+//		searchResultByName.addAll(searchResultByEmail);
+//		// render(searchResultByName, searchResultByProfession,
+//		// searchResultByEmail);
 		return searchResultByName;
-
+//
 	}
 
 	/**
@@ -672,24 +672,24 @@ public class Users extends CRUD {
 	 * @return void
 	 * 
 	 * */
-	public static void deleteUser(Long id) {
-		User user = User.findById(id);
-		String x = "";
-		try {
-
-			if (user.state != 'n') {
-				user.state = 'd';
-				x = "deletion successful";
-			} else {
-				x = "You can not delete a user who's deactivated his account !";
-			}
-			render(x);
-		} catch (NullPointerException e) {
-			x = "No such User !!";
-			render(x);
-		}
-
-	}
+//	public static void deleteUser(Long id) {
+//		User user = User.findById(id);
+//		String x = "";
+//		try {
+//
+//			if (user.state != 'n') {
+//				user.state = 'd';
+//				x = "deletion successful";
+//			} else {
+//				x = "You can not delete a user who's deactivated his account !";
+//			}
+//			render(x);
+//		} catch (NullPointerException e) {
+//			x = "No such User !!";
+//			render(x);
+//		}
+//
+//	}
 
 	/**
 	 * 

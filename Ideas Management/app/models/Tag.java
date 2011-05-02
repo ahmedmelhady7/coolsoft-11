@@ -27,7 +27,8 @@ public class Tag extends Model {
 	/**
 	 * List of users following the tag
 	 */
-	@ManyToMany(mappedBy = "followingTags", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "followingTags")
+	// , cascade = CascadeType.ALL)
 	public List<User> followers;
 
 	/**
@@ -40,21 +41,23 @@ public class Tag extends Model {
 	/**
 	 * List of organizations tagged by the tag
 	 */
-	@ManyToMany
+	@ManyToMany(mappedBy = "relatedTags")
 	public List<Organization> organizations;
 
 	/**
 	 * List of entities tagged by the tag
 	 */
-	@ManyToMany
+	@ManyToMany(mappedBy = "tagList")
 	public List<MainEntity> entities;
 
 	/**
 	 * List of items tagged by the tag
 	 */
-	@ManyToMany
+	@ManyToMany(mappedBy = "tags")
 	public List<Item> taggedItems;
 
+	@ManyToMany(mappedBy = "tagsList")
+	public List<Idea> taggedIdeas;
 	/**
 	 * Tag attributes
 	 * 
@@ -66,8 +69,10 @@ public class Tag extends Model {
 		this.organizations = new ArrayList<Organization>();
 		this.taggedItems = new ArrayList<Item>();
 		this.taggedTopics = new ArrayList<Topic>();
+		this.taggedIdeas = new ArrayList<Idea>();
 		// this.relatedTags = new ArrayList<Tag>();
 	}
+
 	/**
 	 * This Method adds a user to the list of followers
 	 * 
@@ -109,6 +114,7 @@ public class Tag extends Model {
 	public String getName() {
 		return name;
 	}
+
 	/**
 	 * Overrides the method toString to return the name of the tag
 	 */

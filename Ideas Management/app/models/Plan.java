@@ -4,7 +4,6 @@ import java.util.*;
 
 import javax.persistence.*;
 
-
 import controllers.Notifications;
 
 import play.data.validation.Required;
@@ -13,56 +12,56 @@ import play.db.jpa.*;
 @Entity
 public class Plan extends Model {
 
-	@Required public String title;
-	@Required public String status;
-	
-	
-	public float progress;
+	@Required
+	public String title;
+	@Required
+	public String status;
 
-	
-	@Required public Date startDate;
-	@Required public Date endDate;
+	public double progress;
 
-	
-	
+	@Required
+	public Date startDate;
+	@Required
+	public Date endDate;
+
 	@Required
 	@OneToOne
 	public Topic topic;
-	
-	@OneToMany(cascade = CascadeType.PERSIST)
+
+	@OneToMany(mappedBy = "commentedPlan")
 	public List<Comment> commentsList;
-	
-	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "plan")
+	// , cascade = CascadeType.ALL)
 	public List<Idea> ideas;
-	
+
 	@Required
 	@Lob
 	public String description;
 	@Lob
-	@Required public String requirement;
+	@Required
+	public String requirement;
 
-	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "plan")
+	// , cascade = CascadeType.ALL)
 	public List<Item> items;
-	
+
 	@Required
 	@ManyToOne
 	public User madeBy;
-	
-	
+
 	/**
-	 * @author ${Ibrahim Safwat}
-	 * Every plan can have a rating
+	 * @author ${Ibrahim Safwat} Every plan can have a rating
 	 */
 	public int rating;
 	/**
 	 * @author ${Ibrahim Safwat} Must keep track of which users rated
 	 */
-	@OneToMany
+	@ManyToMany
 	public List<User> usersRated;
-	
+
 	/**
-	 * @author ${Ibrahim Safwat}
-	 * List of comments in that plan
+	 * @author ${Ibrahim Safwat} List of comments in that plan
 	 */
 	/**
 	 * This is a constructor for the plan
@@ -72,28 +71,29 @@ public class Plan extends Model {
 	 * @author hassan.ziko1
 	 * 
 	 * @param title
-	 *          The title of the plan
+	 *            The title of the plan
 	 * @param user
-	 * 			The user that created the plan
+	 *            The user that created the plan
 	 * @param startDate
-	 * 			The start date of the plan
+	 *            The start date of the plan
 	 * @param endDate
-	 * 			The end date of the plan
+	 *            The end date of the plan
 	 * @param description
-	 * 			The description of the plan
+	 *            The description of the plan
 	 * @param topic
-	 * 			The topic that this plan belongs to
+	 *            The topic that this plan belongs to
 	 * @param requiremen
-	 * 			The requirements of the plan
+	 *            The requirements of the plan
 	 * 
 	 */
-	public Plan(String title, User user, Date startDate,
-			Date endDate, String description, Topic topic, String requirement) {
+	public Plan(String title, User user, Date startDate, Date endDate,
+			String description, Topic topic, String requirement) {
 
 		this.title = title;
 		this.madeBy = user;
 		this.status = "new";
-		this.progress = 0; //@author: hassan.ziko1 this means that the plan is new
+		this.progress = 0; // @author: hassan.ziko1 this means that the plan is
+							// new
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.description = description;
@@ -106,67 +106,67 @@ public class Plan extends Model {
 		this.commentsList = new ArrayList<Comment>();
 
 	}
-	
+
 	/**
 	 * This Method returns a List of type Idea
 	 * 
-	 * @author 	yassmeen.hussein
+	 * @author yassmeen.hussein
 	 * 
-	 * @story 	C5S14  
+	 * @story C5S14
 	 * 
-	 * @return	List<Idea>    : the ideas promoted to execution in the plan
+	 * @return List<Idea> : the ideas promoted to execution in the plan
 	 */
-	
-	public List<Idea> listOfIdeas(){
+
+	public List<Idea> listOfIdeas() {
 		return this.ideas;
 	}
+
 	/**
 	 * This Method adds an Item to the list of Items of a Plan
 	 * 
-	 * @story 	C5S1  
+	 * @story C5S1
 	 * 
-	 * @author 	hassan.ziko1
+	 * @author hassan.ziko1
 	 * 
 	 * @param startDate
-	 * 			The start date of working on the item
+	 *            The start date of working on the item
 	 * @param enDate
-	 * 			The end date of working on the item
-	 * @param status 
-	 * 			The status of the item
+	 *            The end date of working on the item
+	 * @param status
+	 *            The status of the item
 	 * @param description
-	 * 			The description of the task
-	 * @param plan 
-	 * 			The plan that contains the item
+	 *            The description of the task
+	 * @param plan
+	 *            The plan that contains the item
 	 * @param summary
-	 * 			The summary of the description of the item
+	 *            The summary of the description of the item
 	 * 
 	 */
 
-	public void addItem(Date startDate, Date endDate,
-			String description, Plan plan, String summary) {
-		Item x = new Item(startDate,endDate,description, plan, summary);
+	public void addItem(Date startDate, Date endDate, String description,
+			Plan plan, String summary) {
+		Item x = new Item(startDate, endDate, description, plan, summary);
 		this.items.add(x);
 		this.save();
 	}
-	
 
-	
-	
 	/**
 	 * 
-	 * This Method adds an idea to the list of ideas being executed in the plan given the idea
+	 * This Method adds an idea to the list of ideas being executed in the plan
+	 * given the idea
 	 * 
-	 * @author 	salma.qayed
+	 * @author salma.qayed
 	 * 
-	 * @story 	C5S4
+	 * @story C5S4
 	 * 
-	 * @param 	idea 	: the idea that will executed in the plan
+	 * @param idea
+	 *            : the idea that will executed in the plan
 	 * 
-	 * @return	void
+	 * @return void
 	 */
 	public void addIdea(Idea idea) {
 		this.ideas.add(idea);
 		this.save();
 	}
-	
+
 }

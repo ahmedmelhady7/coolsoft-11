@@ -13,7 +13,7 @@ import models.Notification;
 import models.User;
 import play.mvc.Controller;
 
-public class Notifications extends Controller {
+public class Notifications extends CRUD {
 	
 	/**
 	 * This method renders the view sending a notification to the user
