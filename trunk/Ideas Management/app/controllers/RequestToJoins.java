@@ -29,8 +29,8 @@ public class RequestToJoins extends CRUD {
 	 *            : the id of the organization or topic the requests belong to
 	 */
 
-	public static void viewRequests(short type, long id) {
-
+	public static void viewRequests(int type, long id) {
+             type=1;
 		List<RequestToJoin> requests;
 		if (type == 1) {
 			Topic topic = Topic.findById(id);
@@ -64,7 +64,7 @@ public class RequestToJoins extends CRUD {
 	 *            : the id of the request to be responded to
 	 */
 
-	public static void respond(short status, long reqId) {
+	public static void respond(int status, long reqId) {
 		RequestToJoin request = RequestToJoin.findById(reqId);
 		notFoundIfNull(request);
 		User user = request.source;
@@ -114,6 +114,7 @@ public class RequestToJoins extends CRUD {
 			}
 
 		}
+		request.delete();
 
 	}
 	/**
