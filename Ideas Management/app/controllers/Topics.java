@@ -142,18 +142,19 @@ public class Topics extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static boolean reopen(long topicId, long userId) {
+	public static void reopen(long topicId, long userId) {
 
 		Topic targetTopic = Topic.findById(topicId);
 		User actor = User.findById(userId);
-		
-		if (!targetTopic.organizers.contains(actor)) {
-			return false;
+		String action = "close a topic and promote it to execution";
+		if (!targetTopic.organizers.contains(actor)
+				&& Users.isPermitted(actor, action, topicId, "Topic")) {
+			System.out.println("User does not have requiered permission");
+			return;
 		}
 
 		targetTopic.openToEdit = true;
 	
-		return true;
 	}
 
 	/**
@@ -401,7 +402,7 @@ public class Topics extends CRUD {
 	 * 
 	 * @return boolean
 	 */
-	public static boolean closeTopic(long topicId, long userId) {
+	public static void closeTopic(long topicId, long userId) {
 		Topic targetTopic = Topic.findById(topicId);
 		User actor = User.findById(userId);
 		
@@ -410,8 +411,8 @@ public class Topics extends CRUD {
 		if (targetTopic.ideas.size() == 0
 				|| !targetTopic.organizers.contains(actor)
 				&& Users.isPermitted(actor, action, topicId, "Topic")) {
-		
-			return false;
+			System.out.println("User does not have required permission");
+			return;
 		}
 
 		// closing the topic to editing
@@ -429,9 +430,6 @@ public class Topics extends CRUD {
 		Notifications.sendNotification(targetTopic.followers, targetTopic.id,
 				"Topic", notificationDescription);
 
-
-
-		return true;
 
 	}
 
