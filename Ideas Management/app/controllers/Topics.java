@@ -142,17 +142,17 @@ public class Topics extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static boolean reopen(long topicId, User actor) {
+	public static boolean reopen(long topicId, long userId) {
 
 		Topic targetTopic = Topic.findById(topicId);
-
+		User actor = User.findById(userId);
+		
 		if (!targetTopic.organizers.contains(actor)) {
 			return false;
 		}
 
 		targetTopic.openToEdit = true;
-		/* TODO: buttons to be adjusted in view */
-
+	
 		return true;
 	}
 
@@ -401,12 +401,16 @@ public class Topics extends CRUD {
 	 * 
 	 * @return boolean
 	 */
-	public static boolean closeTopic(long topicId, User actor) {
+	public static boolean closeTopic(long topicId, long userId) {
 		Topic targetTopic = Topic.findById(topicId);
-
+		User actor = User.findById(userId);
+		
 		// checks if topic is empty or the user is not an organizer
+		String action = "close a topic and promote it to execution";
 		if (targetTopic.ideas.size() == 0
-				|| !targetTopic.organizers.contains(actor)) {
+				|| !targetTopic.organizers.contains(actor)
+				&& Users.isPermitted(actor, action, topicId, "Topic")) {
+		
 			return false;
 		}
 
@@ -425,7 +429,7 @@ public class Topics extends CRUD {
 		Notifications.sendNotification(targetTopic.followers, targetTopic.id,
 				"Topic", notificationDescription);
 
-		// TODO: edit buttons in view
+
 
 		return true;
 
@@ -632,12 +636,28 @@ public class Topics extends CRUD {
 		short privacyLevel = tmp.privacyLevel;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		boolean deletable = tmp.isDeletable();
-
+		int canClose = 0;
+		int canPlan = 0;
+		
+		User actor = Security.getConnected();
+		String actionClose = "close a topic and promote it to execution";
+		String actionPlan = "create an action plan to execute an idea";
+		Topic targetTopic = Topic.findById(topicid);
+		long topicId = Long.parseLong(topicid);
+		if(targetTopic.organizers.contains(actor)) {
+			if(Users.isPermitted(actor, actionClose, topicId, "Topic")){
+				canClose = 1;
+			}
+			
+			if(Users.isPermitted(actor, actionPlan, topicId, "Topic")) {
+				canPlan = 1;
+			}
+		}
 		try {
 			System.out.println("show() done, about to render");
 			render(type, object, tags, creator, followers, ideas, comments,
 					entity, plan, openToEdit, privacyLevel, deletemessage,
-					deletable, topicid);
+					deletable, topicid, canClose, canPlan);
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("show() done with exception, rendering to CRUD/show.html");
