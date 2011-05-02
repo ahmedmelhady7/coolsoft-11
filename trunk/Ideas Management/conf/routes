@@ -32,8 +32,15 @@ GET     /public/                                staticDir:public
 # Import ViewSearchResults routes
 *      /searchResult                    		Search.searchResult
 
-# Import InviteMember routes
-*	   /InviteMember							Organizations.InviteMember
+# Import filter options form routes
+*      /filter_options                  		Search.filter_options
+
 
 # Import InviteMember routes
 *	   /ViewOrgInv  							Users.ViewOrgInv
+
+# Import InviteMember routes
+*	   /InviteMember							Organizations.InviteMember
+
+
+
