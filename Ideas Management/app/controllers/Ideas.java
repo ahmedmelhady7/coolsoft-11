@@ -34,31 +34,29 @@ public class Ideas extends CRUD {
 	 * 
 	 * @param body the body of the idea
 	 * 
-	 * @param topic the topic that the idea belongs to
+	 * @param topicId the topic that the idea belongs to
 	 * 
-	 * @param user the user saving this idea
-	 * 
-	 * @return void
 	 */
 
-	public static void saveDraft(String title, String body, Long topicId) {
+	public static void saveDraft(String title, String body, Long topicId) 
+	{
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
 		Idea idea = new Idea(title, body, user, topic, true).save();
-		//String message = "you have saved the idea with tile"+ idea.title + "successfully";
-		//redirect(request.controller + ".show", (idea).getId(),message);
+		//String message = "you have saved the idea with title successfully";
+		//redirect(request.controller + ".show", idea.getId(),message);
 	}
 	/*
 	 * @author Abdalrahman Ali
 	 * 
 	 * this method posts an idea that was saved as a draft
 	 * 
-	 * @param idea the saved idea
+	 * @param ideaId the saved idea
 	 * 
-	 * @return void
 	 */
 
-	public static void postDraft(long ideaId) {
+	public static void postDraft(long ideaId) 
+	{
 		Idea idea = Idea.findById(ideaId);
 		idea.isDraft = false;
 		idea.save();
@@ -74,8 +72,9 @@ public class Ideas extends CRUD {
 	 * 
 	 * @return ArrayList<Idea> all the draft ideas saved by the user
 	 */
-
-	public static ArrayList<Idea> getDrafts(User user) {
+	
+	public static ArrayList<Idea> getDrafts(User user)
+	{
 		ArrayList<Idea> drafts = new ArrayList<Idea>();
 
 		for (Idea idea : user.ideasCreated)
@@ -514,6 +513,7 @@ public class Ideas extends CRUD {
 		}
 		render(tagAlreadyExists, tagExists, userNotAllowed, idea.tagsList);
 	}
+	
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
@@ -521,6 +521,7 @@ public class Ideas extends CRUD {
 	 *            User to be checked if he/she is in the list usersRated
 	 * @return
 	 */
+	
 	public boolean checkRated(User userToCheck,long ideaID) {
 		Idea idea = Idea.findById(ideaID);
 		for (int i = 0; i < idea.usersRated.size(); i++) {
@@ -538,6 +539,7 @@ public class Ideas extends CRUD {
 	 * @param ideaID
 	 *            idea that the user wants to rate
 	 */
+	
 	public void rate(int rating, int ideaID) {
 		
 		User user = Security.getConnected();
