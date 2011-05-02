@@ -41,11 +41,13 @@ public class Ideas extends CRUD {
 	 * @return void
 	 */
 
-	public static void saveDraft(String title, String body, Topic topic) {
+	public static void saveDraft(String title, String body, Long topicId) {
 		User user = Security.getConnected();
+		Topic topic = Topic.findById(topicId);
 		Idea idea = new Idea(title, body, user, topic, true).save();
+		//String message = "you have saved the idea with tile"+ idea.title + "successfully";
+		//redirect(request.controller + ".show", (idea).getId(),message);
 	}
-
 	/*
 	 * @author Abdalrahman Ali
 	 * 
@@ -56,7 +58,8 @@ public class Ideas extends CRUD {
 	 * @return void
 	 */
 
-	public static void postDraft(Idea idea) {
+	public static void postDraft(long ideaId) {
+		Idea idea = Idea.findById(ideaId);
 		idea.isDraft = false;
 		idea.save();
 	}
