@@ -7,27 +7,29 @@
 <input type = "hidden" name ="id" value =0>
 #{/if}
 #{else}
-<tr><td>Name : ${user.name}</td><td>
-<tr><td>Email: ${user.email}</td><td>
 <input type = "hidden" name ="email" value = ${user.email}>
 <input type = "hidden" name ="id" value = ${user.id}>
+<tr><td>Name : ${user.firstName}</td><td>
+<tr><td>Email: ${user.email}</td><td>
 #{/else}
 
-
+<!--
+#{if {org.privacyLevel} !=2} -->
 <tr><td>Roles</td><td>
-#{if {org.privacyLevel} !=2}
 #{select 'role', value:0, id:'select2'}
    #{option value="select"}select#{/option} 
    #{option value="Idea Developer"}Idea Developer#{/option}
    #{option value="Organizer"}Organizer#{/option}
   #{/select}
-#{/if}
-#{else}
+<!--#{/if}
+#{else}  
+<tr><td>Roles</td><td>
 #{select 'role', value:0, id:'select2'}
    #{option value="select"}select#{/option}
    #{option value="Organizer"}Organizer#{/option}
 #{/select}
-#{/else}
+ #{/else}  -->
+
 </td></tr>
 #{if flash.error}
    <b><p style="color:#c00">
@@ -35,7 +37,7 @@
     </p></b> 
 #{/if}
 
-<tr><td>&nbsp;</td><td><input type="submit" value="send">
+<tr><td>&nbsp;</td><td><input type="submit" value=" Send Invitation ">
 </table>
 </form>
 
