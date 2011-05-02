@@ -16,7 +16,7 @@ import play.db.jpa.Model;
 public class NotificationProfile extends Model {
 
 	// The ID of the source
-	public int notifiableId;
+	public long notifiableId;
 	
 	// The type of the source
 	public String notifiableType;
@@ -27,9 +27,10 @@ public class NotificationProfile extends Model {
 	// The preference of the user
 	public boolean enabled;
 	
-	public NotificationProfile(int nId, String nType) {
+	public NotificationProfile(long nId, String nType, User u) {
 		notifiableId = nId;
 		notifiableType = nType;
+		user = u;
 		enabled = true;
 	}
 	
