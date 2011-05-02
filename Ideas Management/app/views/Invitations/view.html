@@ -31,13 +31,14 @@
 #{/else}
 
 
-<script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
-function show(choice,id){
-	
+<script type="text/javascript">
+	function show(choice,id){
+	   
 	if (choice ==1 ) {
 		$.post('@{respond()}', {choice:1,id:id},
 			 function()
 			 {
+			 	alert("hey");
 			$('#view_'+id).html('<i>Invitation has been accepted<\i>');}
 			);
 	}
