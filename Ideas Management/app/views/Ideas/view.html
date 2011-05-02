@@ -48,13 +48,13 @@
                 ${object.privacyLevel}
             </textarea>
         </p>
-		<br/>
-		This plan is now rated: ${newRating}
-		<form action="@{Plans.rate(rating,p.id)}" method="GET">
+<!-- 		<br/>
+		This idea is now rated: ${newRating}
+		<form action="@{Ideas.rate(rating,idea.id)}" method="GET">
     		<input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/> 
     		<input type="submit" value="Submit rating"/>
 		</form> 
-		<br />
+		<br /> -->
         #{/crud.custom }
         #{/crud.form }
         <!--<a href="/show?topicid=object._key()">Edit</a>-->
@@ -69,3 +69,23 @@
     </p>
     #{/form}-->
 </div>
+
+<!-- <script type="text/javascript">
+
+   	function isNumberKey(evt)
+    {
+       var charCode = (evt.which) ? evt.which : event.keyCode
+       if (charCode > 31 && (charCode < 48 || charCode > 53))
+          return false;
+
+       return true;
+    }
+    function isSingleDigit()
+    {
+    	var txt = document.getElementById('rating').value;
+    	if(txt.length > 0)
+    	{
+    		document.getElementById('rating').value = document.getElementById('rating').value.substring(0, 0);
+    	}
+    }
+</script> -->
