@@ -906,7 +906,7 @@ public class Users extends CRUD {
 		List<Invitation> invitations = new ArrayList<Invitation>();
 		List<Invitation> invs1 = Invitation.findAll();
 		for (int j = 0; j < invs1.size(); j++) {
-			if (invs1.get(j).destination.equalsIgnoreCase(u.email)
+			if (invs1.get(j).email.equalsIgnoreCase(u.email)
 					&& invs1.get(j).organization != null) {
 				invitations.add(invs1.get(j));
 			}
