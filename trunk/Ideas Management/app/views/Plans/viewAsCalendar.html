@@ -25,10 +25,10 @@ labelHeight: 25,
 onMonthChanging: function(dateIn) {
 $.getJSON("http://localhost:9000/controller/Plans",function(data) {
 
-//Array of my events                    
+                 
 var events = new Array();
 
-//Loop and load all the events and load them into the array
+
                     $.each(data, function(i, item) {
 
 var oResultData = eval('(' + item + ')');
@@ -40,7 +40,7 @@ events.push(event);
 
 });
 
-//Load the events into the calendar
+
                     $.jMonthCalendar.ReplaceEventCollection(events);
 $.jMonthCalendar.DrawCalendar(dateIn);
 });
