@@ -18,7 +18,7 @@ public class Security extends Secure.Security {
 	}
 
 	/**
-	 * This method is needed to check that the logining user has access to the
+	 * This method is needed to check that the loging user has access to the
 	 * website
 	 * 
 	 * @param username
@@ -32,8 +32,8 @@ public class Security extends Secure.Security {
 		User u = User.find(
 				"select u from User u where (u.username=? and u.password = ?)",
 				username, password).first();
-		session.put("user_id", u.id);
 		if (u != null) {
+			session.put("user_id", u.id);
 			return true;
 		}
 		return false;
