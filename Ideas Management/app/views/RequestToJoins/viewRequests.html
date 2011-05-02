@@ -1,0 +1,47 @@
+
+<a href="@{Application.index()}">Back to home</a>
+<br />
+<br />
+<u><font size ="5" color ="blue"> Requests </font></u>
+<br />
+<br />
+#{if requests.isEmpty()}
+<tr><td><i>No new Requests</i></td><td>
+#{/if}
+#{else}
+ #{list items:requests, as:'request'}
+    <li>
+        <fieldset>
+        	
+            <legend>
+            <h2>
+              A new user  Wants to join Organization ${request.organization.name}
+            </h2>
+            </legend>
+			
+			<input type = "button" value = "Accept" onclick="javascript: respondGalal(1,'${request.id}');">
+			<input type = "button" value = "Reject" onclick="javascript: respondGalal(0,'${request.id}')">
+        </fieldset>
+    </li>
+    #{/list}
+#{/else}
+
+<script type="text/javascript">
+function respondGalal(stat, id){
+	if (stat == 1) {
+		//id = id + 1;
+		$.post('@{RequestToJoins.respond()}',{status:stat,reqId:id});
+		alert("Request Accepted!");
+		window.location.reload();
+	}
+	else {
+		$.post('@{RequestToJoins.respond()}', {
+		status:stat, reqId: id
+		});
+		alert("Request rejected!");
+		window.location.reload();	
+	}
+}
+
+
+</script>
