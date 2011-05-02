@@ -68,16 +68,19 @@ public class Invitations extends CRUD {
 	 */
 	public static void SearchUsers(long orgId,long entId,@Required String name) {
 
-		Organization org=Organization.findById(orgId);
-        MainEntity ent= MainEntity.findById(entId);
+		//Organization org=Organization.findById(orgId);
+        //MainEntity ent= MainEntity.findById(entId);
+        
+        Organization org=Organization.findById(((long)1));
+        MainEntity ent= MainEntity.findById(((long)1));
 		
 		if (validation.hasErrors()) {
 			flash.error("Please enter a name first!");
 			invite(orgId,entId);
 		}
          
-		
-		List<User> filter = new ArrayList<User>();
+	    List <User> users=User.findAll();	
+	/*	List<User> filter = new ArrayList<User>();
 		filter = Users.searchUser(name);
 		List<User> organizers = Users.getEntityOrganizers(ent);
 		organizers.add(org.creator);
@@ -86,7 +89,7 @@ public class Invitations extends CRUD {
 		for (int i = 0; i < filter.size(); i++) {
 			if (!organizers.contains(filter.get(i)))
 				users.add(filter.get(i));
-		}
+		}*/
 
 		render(users, ent,org);
 	}
@@ -151,8 +154,11 @@ public class Invitations extends CRUD {
 	 public static void send(@Required String email,String role,
 			 long orgId,long entId,long id){
 		  
-		   Organization org=Organization.findById(orgId);
-	        MainEntity ent= MainEntity.findById(entId);
+		//   Organization org=Organization.findById(orgId);
+	      //  MainEntity ent= MainEntity.findById(entId);
+	        
+	        Organization org=Organization.findById(((long)1));
+	        MainEntity ent= MainEntity.findById(((long)1));
          
 		    if (!rfc2822.matcher(email).matches()) {
 			    flash.error("Invalid address");
@@ -169,7 +175,7 @@ public class Invitations extends CRUD {
 	    	 
 	    	 User user=Security.getConnected();
 	          user.addInvitation(email,role,org,ent);
-	        
+	      /*  
 	         User receiver=User.find("byEmail", email).first();
 	         if(!receiver.equals(null)){
 	        	 List<User> u=new ArrayList<User>();
@@ -190,7 +196,7 @@ public class Invitations extends CRUD {
 						"Invitation has been sent from entity "+ ent.name);
 		                
 		        //**
-				
+				*/
 			 render(email);
 		                 
 	  }
@@ -244,7 +250,8 @@ public class Invitations extends CRUD {
 	 * @return void
 	 */
 
-	public static void respond(int choice, String id) {
+	public static void respond(int choice, int id) {
+		System.out.println("HERE");
          long invId=Long.parseLong("id");
 		Invitation invite = Invitation.findById(invId);
 		 //  System.out.println(id);
