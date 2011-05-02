@@ -10,6 +10,7 @@ package controllers;
 import java.util.List;
 
 import models.Notification;
+import models.NotificationProfile;
 import models.User;
 import play.mvc.Controller;
 
@@ -50,20 +51,32 @@ public class Notifications extends CRUD {
 
 	public static void sendNotification(List<User> list, long notId,
 			String type, String desc) {
-		for (int i = 0; i < list.size(); i++) {
-			User r = User.findById(list.get(i).id);
-			// First check his notification Profile
-			for (int j = 0; j < r.notificationProfiles.size(); j++) {
-				if (r.notificationProfiles.get(j).notifiableId == notId
-						&& r.notificationProfiles.get(j).notifiableType
-								.equals(type)) {
-					if (r.notificationProfiles.get(j).enabled) {
-						// profile enabled
-						Notification n = new Notification(type, r, desc);
-						n.save();
-						break;
-					}
+		for(int j = 0; j < list.size(); j++) {
+			List<NotificationProfile> np = list.get(j).notificationProfiles;
+			boolean contains = false;
+			boolean isenabled = false;
+			/**
+			 * check that the notification profile has the sending source
+			 * if not then add it, if present the check if enabled or not.
+			 */
+			for (int i = 0; i < np.size(); i++) {
+				if(np.get(i).notifiableId == notId && np.get(i).notifiableType.equals(type)) {
+					isenabled = np.get(i).enabled;
+					contains = true;
+					break;
 				}
+			}
+			// Adding the NP if not there
+			if(!contains) {
+				NotificationProfile np2 = new NotificationProfile(notId, type, list.get(j));
+				np2.save();
+				//u.notificationProfiles.add(np2);
+				isenabled = true;
+			}
+			// Send the notification if enabled
+			if(isenabled) {
+				Notification n = new Notification(type, list.get(j), desc);
+				n.save();
 			}
 		}
 	}

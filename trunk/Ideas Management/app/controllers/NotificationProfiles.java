@@ -27,8 +27,9 @@ public class NotificationProfiles extends CRUD {
 	 */
 
 	public static void alterPreferences() {
-		List<User> ul = User.findAll();
-		User u = ul.get(0);
+		//List<User> ul = User.findAll();
+		//User u = ul.get(0);
+		User u = Security.getConnected();
 		List<NotificationProfile> npList = u.openNotificationProfile();
 		// String x = u.username;
 		render(npList);
@@ -50,9 +51,10 @@ public class NotificationProfiles extends CRUD {
 	 */
 
 	public static void changePreferences(long[] a) {
-		for (int i = 0; i < a.length; i++) {
-			NotificationProfile np = NotificationProfile.findById(a[i]);
-			np.disableNotification();
+		User u = Security.getConnected();
+		//List<NotificationProfile> npList = u.notificationProfiles;
+		for(int i = 0; i < a.length; i++) {
+			u.notificationProfiles.get((int) a[i]).enabled = false;
 		}
 	}
 }
