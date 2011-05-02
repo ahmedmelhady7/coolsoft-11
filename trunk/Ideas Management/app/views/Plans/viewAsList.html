@@ -8,13 +8,13 @@
  #{if canEdit == 1)}
 			<a href="@{Plans.editPlan(p.id)}">Edit General info about the plan</a>
  #{/if}
- <br/>
+<!--  <br/>
 This plan is now rated: ${newRating}
 <form action="@{Plans.rate(rating,p.id)}" method="GET">
     <input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/> 
     <input type="submit" value="Submit rating"/>
 </form> 
-<br />
+<br /> -->
 #{if itemsList.size() > 0}
 <ul style="list-style: none; ">
     #{list items:itemsList, as:'item'}
@@ -70,7 +70,7 @@ ${p.topics.organizers.get(0).username}
 #{/else}
 #{/else}
 #{/else}
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 
    	function isNumberKey(evt)
     {
@@ -88,4 +88,4 @@ ${p.topics.organizers.get(0).username}
     		document.getElementById('rating').value = document.getElementById('rating').value.substring(0, 0);
     	}
     }
-</script>
+</script> -->
