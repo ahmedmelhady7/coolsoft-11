@@ -53,13 +53,13 @@ public class Idea extends Model {
 	/**
 	 * the topic that the idea belongs to
 	 */
-	@Required
+	// @Required
 	@ManyToOne
 	public Topic belongsToTopic;
 	/**
 	 * the Author of the idea
 	 */
-	@Required
+	// @Required
 	@ManyToOne
 	public User author;
 	/**
@@ -124,7 +124,7 @@ public class Idea extends Model {
 		this.priority = null;
 
 	}
-	
+
 	/**
 	 * 
 	 * @author ${Abdalrahman Ali}
@@ -155,64 +155,58 @@ public class Idea extends Model {
 		this.commentsList = new ArrayList<Comment>();
 		this.rating = 0;
 		this.priority = null;
-		}
-	
+	}
+
 	/**
 	 * 
 	 * @author ${Fady Amir}
 	 * 
 	 * @param commentsList
-	 * 					The list of comments of an idea
+	 *            The list of comments of an idea
 	 * 
 	 */
-	public static void checkDate(Idea idea)
-	{
-		
-		Comment lastComment= idea.commentsList.get(idea.commentsList.size()-1);
-		
+	public static void checkDate(Idea idea) {
+
+		Comment lastComment = idea.commentsList
+				.get(idea.commentsList.size() - 1);
+
 		Date now = new Date();
-		
+
 		Date lastCommentDate = lastComment.commentDate;
-		
-	    lastCommentDate.setDate (lastCommentDate.getDate()+14);
-		 
-		if(lastCommentDate.after(now))
-		{
-			List <User> user = new ArrayList<User>();
+
+		lastCommentDate.setDate(lastCommentDate.getDate() + 14);
+
+		if (lastCommentDate.after(now)) {
+			List<User> user = new ArrayList<User>();
 			user.add(idea.author);
-			
-			String type="idea ";
-			String desc="This idea is inactive" ;
-			//Send notification 
-			Notifications.sendNotification(user,idea.id,type,desc);
+
+			String type = "idea ";
+			String desc = "This idea is inactive";
+			// Send notification
+			Notifications.sendNotification(user, idea.id, type, desc);
 		}
-		
+
 	}
-	
-	public static void getAllIdeas()
-	{
+
+	public static void getAllIdeas() {
 		List<Organization> listOfOrganizations = Organization.findAll();
-			
-			for(int i=0; i< listOfOrganizations.size();i++)
-			{
-				Organization org = listOfOrganizations.get(i);
-				List<User> users = org.enrolledUsers;
-				
-				for(int j=0; j<users.size(); j++)
-				{
-					User user = users.get(j);
-				    List<Idea> ideas = user.ideasCreated;
-					
-					for(int k=0;k<ideas.size(); k++)
-					{
-						Idea idea = ideas.get(k);
-						checkDate(idea);
-					}
+
+		for (int i = 0; i < listOfOrganizations.size(); i++) {
+			Organization org = listOfOrganizations.get(i);
+			List<User> users = org.enrolledUsers;
+
+			for (int j = 0; j < users.size(); j++) {
+				User user = users.get(j);
+				List<Idea> ideas = user.ideasCreated;
+
+				for (int k = 0; k < ideas.size(); k++) {
+					Idea idea = ideas.get(k);
+					checkDate(idea);
 				}
 			}
-		
-	} 
-	
+		}
+
+	}
 
 	public String toString() {
 		return this.title;

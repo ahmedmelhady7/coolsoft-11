@@ -7,7 +7,7 @@ import models.Organization;
 import models.Tag;
 import models.User;
 
-public class Tags extends Controller{
+public class Tags extends Controller {
 	/**
 	 * This method creates a new tag
 	 * 
@@ -15,21 +15,20 @@ public class Tags extends Controller{
 	 * 
 	 * @story C2S9
 	 * 
-	 * @param name 
-	 * 				: name of the tag that is going to be created
+	 * @param name
+	 *            : name of the tag that is going to be created
 	 * 
-	 * @param org 
-	 * 				: the current organization that the user is in
+	 * @param org
+	 *            : the current organization that the user is in
 	 */
 
-	public static void createTag(@Required String name,Organization org) {
+	public static void createTag(@Required String name, Organization org) {
 		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
 			render(org.createTag);
 		}
-		Tag existing_tag = Tag.find(
-				"name like '" + name + "'").first();
+		Tag existing_tag = Tag.find("name like '" + name + "'").first();
 		if (existing_tag != null) {
 			flash.error("Tag already exists!" + "\n\t\t"
 					+ "Please choose another tag name.");

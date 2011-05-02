@@ -27,11 +27,12 @@ import models.*;
 public class Topics extends CRUD {
 
 	/**
-	 *This method first checks if the user is allowed to tag the topic,
-	 *searches for the tag in the global list of tags,
-	 *if found => check if it already the topic had the same tag already or add the new one to the list
-	 *if not => create a new tag, save it to db, add it to the list
-	 *send notifications to followers, organizers and organization lead of the tagged topic
+	 * This method first checks if the user is allowed to tag the topic,
+	 * searches for the tag in the global list of tags, if found => check if it
+	 * already the topic had the same tag already or add the new one to the list
+	 * if not => create a new tag, save it to db, add it to the list send
+	 * notifications to followers, organizers and organization lead of the
+	 * tagged topic
 	 * 
 	 * @author Mostafa Yasser El Monayer
 	 * 
@@ -39,7 +40,7 @@ public class Topics extends CRUD {
 	 * 
 	 * @param topicID
 	 *            : the topic that is being tagged
-	 *            
+	 * 
 	 * @param tag
 	 *            : the tag that is being added
 	 * 
@@ -62,7 +63,10 @@ public class Topics extends CRUD {
 				if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
 					if (!topic.tags.contains(listOfTags.get(i))) {
 						topic.tags.add(listOfTags.get(i));
-						Notifications.sendNotification(listOfTags.get(i).followers, topic.tags.get(i).getId(), "tag", "This topic has been tagged as " + tag);
+						Notifications.sendNotification(
+								listOfTags.get(i).followers, topic.tags.get(i)
+										.getId(), "tag",
+								"This topic has been tagged as " + tag);
 					} else {
 						// tag already exists error message
 						tagAlreadyExists = true;
@@ -70,21 +74,24 @@ public class Topics extends CRUD {
 					tagExists = true;
 				}
 			}
-			
+
 			if (!tagExists) {
 				Tag temp = new Tag(tag);
 				temp.save();
 				topic.tags.add(temp);
 			}
-			
+
 			if (!tagAlreadyExists) {
-				Notifications.sendNotification(topic.followers, topicID, "topic", "This topic has been tagged as " + tag);
-				Notifications.sendNotification(topic.organizers, topicID, "topic", "This topic has been tagged as " + tag);
+				Notifications.sendNotification(topic.followers, topicID,
+						"topic", "This topic has been tagged as " + tag);
+				Notifications.sendNotification(topic.organizers, topicID,
+						"topic", "This topic has been tagged as " + tag);
 				List<User> list1 = new ArrayList<User>();
 				list1.add(topic.entity.organization.creator);
-				Notifications.sendNotification(list1, topicID, "topic", "This topic has been tagged as " + tag);
-			
-				}
+				Notifications.sendNotification(list1, topicID, "topic",
+						"This topic has been tagged as " + tag);
+
+			}
 		}
 		render(tagAlreadyExists, tagExists, userNotAllowed, topic.tags);
 	}
@@ -115,24 +122,11 @@ public class Topics extends CRUD {
 	 * 
 	 */
 
-	public static void postIdea(User user, Topic topic, String title,
-			String description) {
-		// Idea idea = new Idea(title, description, user, topic);
-		// idea.privacyLevel = topic.privacyLevel;
+	public static void postIdea(Topic topic, String title, String description) {
+		User user = Security.getConnected();
+		Idea idea = new Idea(title, description, user, topic);
+		idea.privacyLevel = topic.privacyLevel;
 		render(title, description);
-	}
-
-	/*
-	 * This method is used for rendering the user and the topic from the
-	 * postIdea(User user, Topic topic, String title,String description)
-	 */
-	public static void postI() {
-		User u = new User("a@gmail.com", "1234", "ah", "had", "hadi.18", 0,
-				null, "", "");
-		u._save();
-		Topic t = new Topic("a", "s", (short) 0, u);
-		t._save();
-		render(u, t);
 	}
 
 	/**
@@ -537,7 +531,7 @@ public class Topics extends CRUD {
 			System.out
 					.println("create() done will redirect to topics/view?topicid "
 							+ message2);
-			redirect("/topics/view?topicid=" + ((Topic) object).getId());
+			redirect("/topics/show?topicid=" + ((Topic) object).getId());
 
 			// redirect("/topics/show?" + ((Topic) object).getId(), message2);
 			// redirect( "/storys/liststoriesinproject?projectId=" +
