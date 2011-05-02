@@ -48,6 +48,13 @@
                 ${object.privacyLevel}
             </textarea>
         </p>
+		<br/>
+		This plan is now rated: ${newRating}
+		<form action="@{Plans.rate(rating,p.id)}" method="GET">
+    		<input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/> 
+    		<input type="submit" value="Submit rating"/>
+		</form> 
+		<br />
         #{/crud.custom }
         #{/crud.form }
         <!--<a href="/show?topicid=object._key()">Edit</a>-->
