@@ -1,7 +1,7 @@
-<!--C1S4  @author : Mai Magdy -->
-<a href="@{Application.index()}">Back to Home</a>
-<hr>          </hr>
 
+ 
+<a href="@{Invitations.invite()}">Back to Home</a>
+<hr>          </hr>
 <u><font size ="5" color ="blue">Invitations</font></u>
 <br/>
 <br/>
@@ -13,9 +13,9 @@
 #{else}
 #{list items:inv, as:'inn'} 
 <html>
-<table border="0" bgcolor="#ececec" cellspacing="5" id ="view_${inn.id}">
+<table border="0" bgcolor="#ececec" cellspacing="5" id ="inv_${inn.id}">
 
-<tr><td><font size ="3" color ="black">From : ${inn.organization.name} Organization</font></td><td>
+<tr><td><font size ="3" color ="black"><u>From : ${inn.organization.name} Organization</u></font></td><td>
 
 <tr><td><font size ="3" color ="black">You have been invited to join ${inn.organization.name} Organization</font></td><td>
 <tr><td><font size ="3" color ="black"> As ${inn.role} to ${inn.entity.name} Entity</font></td><td> 
@@ -31,23 +31,28 @@
 #{/else}
 
 
+<script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
+	</script>
+	
 <script type="text/javascript">
-	function show(choice,id){
-	   
-	if (choice ==1 ) {
-		$.post('@{respond()}', {choice:1,id:id},
+function show(k,i){
+	
+	if ( k ==1 ) {
+		 //alert("hell");
+		$.post('@{respond()}', {id:1,i:i},
 			 function()
 			 {
-			 	alert("hey");
-			$('#view_'+id).html('<i>Invitation has been accepted<\i>');}
-			);
+			 alert("hell");
+			$('#inv_'+i).html('<i>Invitation has been accepted<\i>');
+			});
 	}
 	else {
-		$.post('@{respond()}', {choice:0,id:id},
+		  //alert("hello");
+		$.post('@{respond()}', {id:0,i:i},
 			 function()
 			 {
-			 	
-			$('#view_'+id).html('<i>Invitation has been rejected<\i>');
+			 	alert("hello");
+			$('#inv_'+i).html('<i>Invitation has been rejected<\i>');
 			});
 	}
 }
