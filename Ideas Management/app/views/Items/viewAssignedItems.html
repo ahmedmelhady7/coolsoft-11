@@ -11,11 +11,13 @@
                
             </legend>
             Title: ${item.summary} &nbsp; &nbsp; &nbsp;
+			#{if assignedItem.endDate.compareTo(new Date()) >= 0}
             #{if assignedItem.status == 0} 
 			<input type = "button" value="Start" onClick ="startItem('${assignedItem.id}');"/> 
 			#{/if}
             #{else}
-			<input type="checkbox" onClick="toggle_task(${assignedItem.id});" ${assingnedItem.status == 1 ? '':'checked'} />
+			<input type="checkbox" onClick="toggle_task('${assignedItem.id}');" ${assignedItem.status == 1 ? '':'checked'} />
+			#{/if}
 			#{if assignedItem.status == 1}
 			in progress
 			#{/if}
