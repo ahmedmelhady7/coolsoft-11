@@ -675,24 +675,24 @@ public class Users extends CRUD {
 	 * @return void
 	 * 
 	 * */
-//	public static void deleteUser(Long id) {
-//		User user = User.findById(id);
-//		String x = "";
-//		try {
-//
-//			if (user.state != 'n') {
-//				user.state = 'd';
-//				x = "deletion successful";
-//			} else {
-//				x = "You can not delete a user who's deactivated his account !";
-//			}
-//			render(x);
-//		} catch (NullPointerException e) {
-//			x = "No such User !!";
-//			render(x);
-//		}
-//
-//	}
+	public static void delete(long id) {
+		User user = User.findById(id);
+		String x = "";
+		try {
+
+			if (user.state.equals("n")) {
+				user.state = "d";
+				x = "deletion successful";
+			} else {
+				x = "You can not delete a user who's deactivated his account !";
+			}
+			render(x);
+		} catch (NullPointerException e) {
+			x = "No such User !!";
+			render(x);
+		}
+
+	}
 
 	/**
 	 * 
@@ -824,7 +824,7 @@ public class Users extends CRUD {
 	 * @return void
 	 */
 
-	public static void save(long id) throws Exception {
+	public static void save(String id) throws Exception {
 		// Security.check(Security.getConnected().isAdmin||);
 		ObjectType type = ObjectType.get(Users.class);
 		notFoundIfNull(type);
