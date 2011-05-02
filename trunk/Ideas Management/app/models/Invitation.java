@@ -13,7 +13,7 @@ import play.db.jpa.Model;
 @Entity
 public class Invitation extends Model{
 
-	public String destination;
+	public String email;
     public Date date_of_sending;
     public String role;
     
@@ -27,9 +27,9 @@ public class Invitation extends Model{
     public MainEntity entity;
 	
    
-    public Invitation(String destination,MainEntity entity,Organization organization,String role,
+    public Invitation(String email,MainEntity entity,Organization organization,String role,
     		User sender){
-        this.destination=destination;
+        this.email=email;
         this.organization = organization;
         this.entity=entity;
         this.sender = sender;
