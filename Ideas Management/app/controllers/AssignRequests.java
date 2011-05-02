@@ -240,6 +240,12 @@ public class AssignRequests extends CRUD {
 				}
 			}
 		}
+		for(int i = 0; i < assignRequests.size(); i++){
+			Date d = new Date();
+			if(assignRequests.get(i).source.endDate.compareTo(d) < 0 ){
+				assignRequests.remove(i);
+			}
+		}
 		render(user, assignRequests);
 	}
 

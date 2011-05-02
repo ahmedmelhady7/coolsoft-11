@@ -19,25 +19,40 @@ import controllers.CRUD.ObjectType;
 
 public class Plans extends CRUD {
 
+	/**
+	 * This method renders the page for viewing the plan as a to-do list.
+	 * 
+	 * @story C5S7
+	 * 
+	 * @author Mohamed Mohie
+	 * 
+	 * @param planId
+	 *            ID of the plan to be viewed as a to-do list.
+	 */
 	public static void viewAsList(long planId) {
 		User user = Security.getConnected();
+		boolean error = false;
 		Plan p = Plan.findById(planId);
-		List<Item> itemsList = p.items;
-		int canAssign = 0;
-		int canEdit = 0;
-		if (Users.isPermitted(user,
-				"edit an action plan",
-				p.topic.id, "topic")) {
+		if (Users.isPermitted(user, "all", p.topic.id, "topic")) {
+			List<Item> itemsList = p.items;
+			int canAssign = 0;
+			int canEdit = 0;
+			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+					"topic")) {
 
-			canAssign = 1;
-		}
-		if (Users.isPermitted(user,
-				"assign one or many users to a to-do item in a plan",
-				p.topic.id, "topic")) {
+				canAssign = 1;
+			}
+			if (Users.isPermitted(user,
+					"assign one or many users to a to-do item in a plan",
+					p.topic.id, "topic")) {
 
-			canAssign = 1;
+				canAssign = 1;
+			}
+			render(p, itemsList, user, canAssign, canEdit, error);
+		} else {
+			error = true;
+			render(error);
 		}
-		render(p, itemsList, user, canAssign,canEdit);
 	}
 
 	/**
@@ -94,27 +109,27 @@ public class Plans extends CRUD {
 	public static void planCreate(long topicId, String ideas) {
 		render(topicId, ideas);
 	}
+
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
 	 * @param rate
-	 * 			the user given rating for the specified plan
+	 *            the user given rating for the specified plan
 	 * @param planID
-	 * 			ID of the plan wished to rate
+	 *            ID of the plan wished to rate
 	 */
-	
-	public void rate(int rating, long planID)
-	{
-		User user=Security.getConnected();
-		if(!checkRated(user,planID))
-		{
+
+	public void rate(int rating, long planID) {
+		User user = Security.getConnected();
+		if (!checkRated(user, planID)) {
 			Plan p = Plan.findById(planID);
-			int oldRating =p.rating;
-			int newRating = (oldRating + rating)/2;
+			int oldRating = p.rating;
+			int newRating = (oldRating + rating) / 2;
 			render(newRating);
-		}		
-		
+		}
+
 	}
+
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
@@ -154,15 +169,16 @@ public class Plans extends CRUD {
 	 * @param requirement
 	 *            The requirements needed for executing this plan
 	 * @param istartdate
-	 * 			  The start date of the first item added
+	 *            The start date of the first item added
 	 * @param ienddate
-	 * 			  The end date of the first item added
+	 *            The end date of the first item added
 	 * @param idescription
-	 * 			  The description of the first item added
+	 *            The description of the first item added
 	 * @param isummary
-	 * 			  The summary of the first item added
+	 *            The summary of the first item added
 	 * @param check
-	 * 			  The value of the checkbox that indicates whether the user wants to add more items or not
+	 *            The value of the checkbox that indicates whether the user
+	 *            wants to add more items or not
 	 * @param ideaString
 	 *            : the String containing all the ideas ids that should be
 	 *            associated to the plan
@@ -203,25 +219,27 @@ public class Plans extends CRUD {
 		}
 		if (check.equals("checked")) {
 			addItem(p.id);
-		}else{
+		} else {
 			viewAsList(p.id);
 		}
-		Notifications.sendNotification(p.topic.getOrganizer(), p.id, "plan", "A new plan has been created");
+		Notifications.sendNotification(p.topic.getOrganizer(), p.id, "plan",
+				"A new plan has been created");
 
 	}
+
 	/**
 	 * @author ${Ibrahim safwat}
 	 * 
 	 * @param UserToShare
-	 * 				User that wants to share the plan
+	 *            User that wants to share the plan
 	 * @param UserToShareWith
-	 * 				User the will be sent the notification with the planID
+	 *            User the will be sent the notification with the planID
 	 * @param planID
-	 * 				ID of the plan to be shared
+	 *            ID of the plan to be shared
 	 */
-	public void sharePlan(ArrayList<User> UserToShare, User UserToShareWith, long planID)
-	{
-		//Plan p = Plan.findById(planID);
+	public void sharePlan(ArrayList<User> UserToShare, User UserToShareWith,
+			long planID) {
+		// Plan p = Plan.findById(planID);
 		String type = "plan";
 		String desc = "userLoggedIn shared a plan with you";
 		UserToShare = new ArrayList<User>();
@@ -266,18 +284,20 @@ public class Plans extends CRUD {
 	 *            The summary of the description of the item (for vewing
 	 *            purposes)
 	 * @param check
-	 * 			  The checkbox value that checks whether the user wants to add another item or not
+	 *            The checkbox value that checks whether the user wants to add
+	 *            another item or not
 	 */
 	public static void add(Date startDate, Date endDate, String description,
 			long planId, String summary, String check) {
 		Plan plan = Plan.findById(planId);
 		plan.addItem(startDate, endDate, description, plan, summary);
-		if(check.equals("checked")){
+		if (check.equals("checked")) {
 			addItem(plan.id);
-		}else{
+		} else {
 			viewAsList(plan.id);
 		}
-		Notifications.sendNotification(plan.topic.getOrganizer(), plan.id, "plan", "A new item has been added");
+		Notifications.sendNotification(plan.topic.getOrganizer(), plan.id,
+				"plan", "A new item has been added");
 	}
 
 	/**
@@ -295,6 +315,7 @@ public class Plans extends CRUD {
 		Plan plan = Plan.findById(planId);
 		render(plan);
 	}
+
 	/**
 	 * This method renders the page for editing a plan
 	 * 
@@ -307,7 +328,7 @@ public class Plans extends CRUD {
 	 * 
 	 */
 
-	public static void editItem(long itemId){
+	public static void editItem(long itemId) {
 		Item item = Item.findById(itemId);
 		render(item);
 	}
@@ -331,10 +352,10 @@ public class Plans extends CRUD {
 	 * @param requirement
 	 *            The requirements needed for executing this plan
 	 * @param planId
-	 * 			  The id of the plan being edit
+	 *            The id of the plan being edit
 	 */
-	public static void edit(String title, Date startDate,
-			Date endDate, String description, String requirement, long planId) {
+	public static void edit(String title, Date startDate, Date endDate,
+			String description, String requirement, long planId) {
 		Plan p = Plan.findById(planId);
 		p.title = title;
 		p.startDate = startDate;
@@ -342,14 +363,17 @@ public class Plans extends CRUD {
 		p.description = description;
 		p.requirement = requirement;
 		p.save();
-		Notifications.sendNotification(p.topic.getOrganizer(), p.id, "plan", "This action plan has been edited");
-		
-		for(int i = 0; i < p.items.size()-1;i++){
-			
-			Notifications.sendNotification(p.items.get(i).assignees, p.id, "plan", "This action plan has been edited");
+		Notifications.sendNotification(p.topic.getOrganizer(), p.id, "plan",
+				"This action plan has been edited");
+
+		for (int i = 0; i < p.items.size() - 1; i++) {
+
+			Notifications.sendNotification(p.items.get(i).assignees, p.id,
+					"plan", "This action plan has been edited");
 		}
 		viewAsList(p.id);
 	}
+
 	/**
 	 * This method takes the parameters from the web page of the item editing to
 	 * edit in a certain item
@@ -365,23 +389,25 @@ public class Plans extends CRUD {
 	 * @param description
 	 *            The description of the item
 	 * @param planId
-	 * 			  The id of the plan that will be viewed
+	 *            The id of the plan that will be viewed
 	 * @param requirement
 	 *            The requirements needed for executing this plan
 	 * @param itemId
-	 * 			  The id of the item being edit
+	 *            The id of the item being edit
 	 */
 
 	public static void edit2(Date startDate, Date endDate, String description,
-			long planId, String summary, long itemId){
+			long planId, String summary, long itemId) {
 		Item i = Item.findById(itemId);
 		i.startDate = startDate;
 		i.endDate = endDate;
 		i.description = description;
 		i.summary = summary;
 		i.save();
-		Notifications.sendNotification(i.plan.topic.getOrganizer(), i.plan.id, "plan", "This item has been edited");
-		Notifications.sendNotification(i.assignees, i.plan.id, "plan", "This item has been edited");
+		Notifications.sendNotification(i.plan.topic.getOrganizer(), i.plan.id,
+				"plan", "This item has been edited");
+		Notifications.sendNotification(i.assignees, i.plan.id, "plan",
+				"This item has been edited");
 		viewAsList(i.plan.id);
 	}
 
@@ -395,18 +421,19 @@ public class Plans extends CRUD {
 	/**
 	 * @author Yasmine Elsayed
 	 * 
-	 * this method renders the Calendar view of a plan
+	 *         this method renders the Calendar view of a plan
 	 * 
-	 * @param planId the id of the plan
+	 * @param planId
+	 *            the id of the plan
 	 * 
-	 *  Omit @return 
+	 *            Omit @return
 	 **/
 
 	public static void viewAsCalendar(long planId) {
 
 		Plan p = Plan.findById(planId);
 		List<Item> itemsList = p.items;
-		
+
 		render(p, itemsList);
 	}
 
