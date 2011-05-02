@@ -37,10 +37,11 @@ public class Invitations extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void invite(long entt) {
+	public static void invite(long orgId,long entId) {
          
-         MainEntity ent= MainEntity.findById(entt);
-		render(ent);
+		Organization org=Organization.findById(orgId);
+        MainEntity ent= MainEntity.findById(entId);
+		render(ent,org);
 
 	}
 
@@ -65,14 +66,14 @@ public class Invitations extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void SearchUsers(long entt,@Required String name) {
+	public static void SearchUsers(long orgId,long entId,@Required String name) {
 
-		MainEntity ent= MainEntity.findById(entt);
-        Organization org=Organization.findById(ent.organization);
+		Organization org=Organization.findById(orgId);
+        MainEntity ent= MainEntity.findById(entId);
 		
 		if (validation.hasErrors()) {
 			flash.error("Please enter a name first!");
-			invite(entt);
+			invite(orgId,entId);
 		}
          
 		
@@ -87,7 +88,7 @@ public class Invitations extends CRUD {
 				users.add(filter.get(i));
 		}
 
-		render(users, ent);
+		render(users, ent,org);
 	}
 
 	/**
@@ -112,12 +113,14 @@ public class Invitations extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void Page(long entt, long id) {
-		MainEntity ent= MainEntity.findById(entt);
+	public static void Page(long orgId,long entId, long id) {
+		
+		Organization org=Organization.findById(orgId);
+        MainEntity ent= MainEntity.findById(entId);
         //Organization org=Organization.findById(ent.organization);
 		System.out.println(id);
 		User user=User.findById(id);
-		render(ent,id,user);
+		render(ent,org,id,user);
 	}
 
 	/**
@@ -146,18 +149,18 @@ public class Invitations extends CRUD {
 
 
 	 public static void send(@Required String email,String role,
-			 long entt,long id){
+			 long orgId,long entId,long id){
 		  
-		 MainEntity ent= MainEntity.findById(entt);
-         Organization org=Organization.findById(ent.organization);
+		   Organization org=Organization.findById(orgId);
+	        MainEntity ent= MainEntity.findById(entId);
          
 		    if (!rfc2822.matcher(email).matches()) {
 			    flash.error("Invalid address");
-			    Page(entt,id);
+			    Page(orgId,entId,id);
 		    }
 			if(role.equalsIgnoreCase("select")) {
 			        flash.error("Please choose a Role");
-			        Page(entt,id);
+			        Page(orgId,entId,id);
 			    }
 			
 	         
@@ -241,9 +244,9 @@ public class Invitations extends CRUD {
 	 * @return void
 	 */
 
-	public static void respond(int choice, long id) {
-
-		Invitation invite = Invitation.findById(id);
+	public static void respond(int choice, String id) {
+         long invId=Long.parseLong("id");
+		Invitation invite = Invitation.findById(invId);
 		 //  System.out.println(id);
 		if (choice == 1) {
 			String rolename = invite.role;
