@@ -250,10 +250,11 @@ public class Invitations extends CRUD {
 	 * @return void
 	 */
 
-	public static void respond(int choice, int id) {
+	public static void respond(int id,long i) {
 		System.out.println("HERE");
-         long invId=Long.parseLong("id");
-		Invitation invite = Invitation.findById(invId);
+		  Invitation invite=Invitation.findById(i);
+		  invite.delete();
+		/*Invitation invite = Invitation.findById(invId);
 		 //  System.out.println(id);
 		if (choice == 1) {
 			String rolename = invite.role;
@@ -302,7 +303,7 @@ public class Invitations extends CRUD {
 					 * there is no need for this part.because I need to add this notification 
 					 * to the user's notification profile
 					 */
-					Notification n2 = new Notification("Invitation accepted",
+	/*				Notification n2 = new Notification("Invitation accepted",
 							orgLead, user.username + " accepted th invitation");
 					n2._save();
 				}
@@ -311,7 +312,7 @@ public class Invitations extends CRUD {
 
 		}
 
-		invite.delete();
+		invite.delete(); */
 
 	}
 
