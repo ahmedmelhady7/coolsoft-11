@@ -34,7 +34,7 @@ public class Mail extends Mailer {
 		addRecipient(email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Invitation");
-		 String url = "http://localhost:9008/invitations/login" ;
+		 String url = "http://localhost:9008/login" ;
 		User user = User.find("byEmail", email).first();
 		int id=1;
 		if(user==null)
