@@ -529,7 +529,7 @@ public class Topics extends CRUD {
 				((Topic) object).getId()));
 		if (params.get("_save") != null) {
 			System.out
-					.println("create() done will redirect to topics/view?topicid "
+					.println("create() done will redirect to topics/show?topicid "
 							+ message2);
 			redirect("/topics/show?topicid=" + ((Topic) object).getId());
 
@@ -547,7 +547,7 @@ public class Topics extends CRUD {
 		System.out
 				.println("create() done will redirect to show.html to show created"
 						+ message2);
-		redirect(request.controller + ".show", ((Topic) object).getId(),
+		redirect(request.controller + ".view", ((Topic) object).getId(),
 				message2);
 	}
 
@@ -891,15 +891,15 @@ public class Topics extends CRUD {
 		flash.success(Messages.get("crud.saved", type.modelName,
 				((Topic) object).getId()));
 		if (params.get("_save") != null) {
-			redirect("/topics/view?topicid=" + ((Topic) object).getId());
+			redirect("/topics/show?topicid=" + ((Topic) object).getId());
 			System.out
-					.println("save() done, redirected to topics/view?topicid");
+					.println("save() done, redirected to topics/show?topicid");
 			// redirect( "/storys/liststoriesinproject?projectId=" +
 			// tmp.taskStory.componentID.project.id + "&storyId=" +
 			// tmp.taskStory.id );
 		}
-		redirect(request.controller + ".show", ((Topic) object).getId());
-		System.out.println("save() done, redirected to default show.html");
+		redirect(request.controller + ".view", ((Topic) object).getId());
+		System.out.println("save() done, redirected to default view.html");
 	}
 	
 	/**
