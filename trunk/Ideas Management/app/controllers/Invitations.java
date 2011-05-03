@@ -79,10 +79,8 @@ public class Invitations extends CRUD {
 			invite(orgId,entId);
 		}
          
-	   // List <User> users=User.findAll();	
+	 
 		List<User> users = new ArrayList<User>();
-	//	User u=User.find("byEmail", name).first();
-	//	users.add(u);
 		users = Users.searchUser(name);
 	/*	List<User> organizers = Users.getEntityOrganizers(ent);
 		organizers.add(org.creator);
@@ -122,7 +120,6 @@ public class Invitations extends CRUD {
 		
 		Organization org=Organization.findById(orgId);
         MainEntity ent= MainEntity.findById(entId);
-        //Organization org=Organization.findById(ent.organization);
 		System.out.println(id);
 		User user=User.findById(id);
 		render(ent,org,id,user);
@@ -156,8 +153,6 @@ public class Invitations extends CRUD {
 	 public static void send(@Required String email,String role,
 			 long orgId,long entId,long id){
 		  
-		//   Organization org=Organization.findById(orgId);
-	      //  MainEntity ent= MainEntity.findById(entId);
 	        
 	        Organization org=Organization.findById(((long)1));
 	        MainEntity ent= MainEntity.findById(((long)1));
@@ -176,7 +171,7 @@ public class Invitations extends CRUD {
 		    
 	    	 
 	    	 User user=Security.getConnected();
-	          user.addInvitation(email,role,org,null);
+	          user.addInvitation(email,role,org,ent);
 	      /*  
 	         User receiver=User.find("byEmail", email).first();
 	         if(!receiver.equals(null)){
@@ -254,7 +249,7 @@ public class Invitations extends CRUD {
 
 	public static void respond(int id,long i) {
 		System.out.println("HERE");
-		  Invitation invite=Invitation.findById(i);
+		 /* Invitation invite=Invitation.findById(i);
 	      Organization org=invite.organization;
 	      org.invitation.remove(invite);
 	      
@@ -264,17 +259,22 @@ public class Invitations extends CRUD {
 	      }
 	      User u=invite.sender;
 	      u.invitation.remove(invite);
-	      invite.delete();
-		/*Invitation invite = Invitation.findById(invId);
-		 //  System.out.println(id);
-		if (choice == 1) {
-			String rolename = invite.role;
-			Organization org = invite.organization;
-			MainEntity ent = invite.entity;
+	      invite.delete();*/
+		
+		Invitation invite = Invitation.findById(i);
+		String rolename = invite.role.toLowerCase();
+		System.out.println(rolename);
+		Organization org = invite.organization;
+		MainEntity ent = invite.entity;
+		System.out.println(ent.name);
+		
+		if (id == 1) {
+			
 			User user = User.find("byEmail", invite.email).first();
-			Role role = Role.find("byName", rolename).first();
+			Role role = Role.find("byRoleName", rolename).first();
+			System.out.println("here"+role.roleName);
 
-			// *fadwa
+		/*	// *fadwa
 			List<User> organizers = Users.getEntityOrganizers(ent);
 			if (!invite.sender.equals(org.creator)) {
 				organizers.remove(invite.sender);
@@ -283,15 +283,15 @@ public class Invitations extends CRUD {
 			Notifications.sendNotification(organizers, ent.id, "entity",
 					"New organizer has been added as an organizer to entity  "
 							+ ent.name);
-			// *
-
+			// * */
+                     
 			if (rolename.equalsIgnoreCase("organzier")) {
 
-				UserRoleInOrganizations.addEnrolledUser(user, org, role);
 				UserRoleInOrganizations.addEnrolledUser(user, org, role,
 						ent.id, "entity");
 
-			} else {
+			} 
+			else {
 				// idea devoloper by ibrahim adel
 				Role role2 = Role.find("byRoleName", "Idea Developer").first();
 //				if (role2 == null) {
@@ -316,14 +316,23 @@ public class Invitations extends CRUD {
 					 */
 	/*				Notification n2 = new Notification("Invitation accepted",
 							orgLead, user.username + " accepted th invitation");
-					n2._save();
+					n2._save();*/
 				}
 
 			}
 
 		}
 
-		invite.delete(); */
+		//invite.delete(); 
+					
+				      
+				     org.invitation.remove(invite);
+				     if(ent!=null){
+				      ent.invitationList.remove(invite);
+				      }
+				      User u=invite.sender;
+				      u.invitation.remove(invite);
+				      invite.delete();
 
 	}
 
