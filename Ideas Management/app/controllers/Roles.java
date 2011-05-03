@@ -37,9 +37,9 @@ public class Roles extends CRUD {
 
 	public static List<String> getRoleActions(String roleName) {
 
-		String actionsString = (Role.find(
+		String actionsString = Role.find(
 				"select r.actions from Role r where r.roleName like ? ",
-				roleName).first());
+				roleName).first();
 		String[] actionsArray = actionsString.split(";");
 		List<String> actionsList = new ArrayList();
 		for (int i = 0; i < actionsArray.length; i++) {
