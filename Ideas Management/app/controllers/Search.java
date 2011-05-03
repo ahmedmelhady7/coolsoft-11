@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import controllers.Secure.Security;
-
 import javax.mail.search.SearchTerm;
 
 import com.sun.mail.handlers.text_html;
@@ -20,6 +18,7 @@ import models.Tag;
 import models.Topic;
 import models.User;
 
+import play.db.jpa.Model;
 import play.mvc.Controller;
 import play.test.Fixtures;
 
@@ -40,11 +39,11 @@ public class Search extends Controller {
 	 *        in the html page searchResult.
 	 * 
 	 */
-	public static List<Object> listOfResults = new ArrayList<Object>();
+	public static List<Model> listOfResults = new ArrayList<Model>();
 
-	public static List<Object> filterResult= new ArrayList<Object>();
+	public static List<Model> filterResult= new ArrayList<Model>();
 
-	public static List<Object> sorted= new ArrayList<Object>();
+	public static List<Model> sorted= new ArrayList<Model>();
 
 	/**
 	 * 
@@ -68,6 +67,7 @@ public class Search extends Controller {
 	 */
 	public static void SearchResult() {
 		String connected = Security.connected();
+		User u = Security.getConnected();
 		List<Idea> ideasFound = new ArrayList<Idea>();
 		List<Organization> organizationsFound = new ArrayList<Organization>();
 		List<Topic> topicsFound = new ArrayList<Topic>();
@@ -86,7 +86,11 @@ public class Search extends Controller {
 				organizationsFound.add((Organization) listOfResults.get(i));
 			}
 		}
-		render(connected, listOfResults, ideasFound, organizationsFound, entitiesFound,
+		for(int i = 0;i<listOfResults.size();i++){
+			System.out.println(listOfResults.get(i).toString());
+		}
+		List<Model> lof = listOfResults;
+		render(u,connected, lof, ideasFound, organizationsFound, entitiesFound,
 				topicsFound);
 	}
 
@@ -129,11 +133,11 @@ public class Search extends Controller {
 	 * @return void.
 	 * 
 	 */
-	public static void searchResult(byte searchIn, String wantKey,
-			String unWantKey, byte org, byte entity, byte topic, byte plan,
-			byte idea, byte item, byte comm, byte dayB, byte monthB,
-			byte yearB, byte dayA, byte monthA, byte yearA, byte dayE,
-			byte monthE, byte yearE) {
+	public static void advSearch(int searchIn, String wantKey,
+			String unWantKey, int org, int entity, int topic, byte plan,
+			int idea, int item, int comm, int dayB, int monthB,
+			int yearB, int dayA, int monthA, int yearA, int dayE,
+			int monthE, int yearE) {
 
 		if (wantKey.trim().compareTo("") == 0) {
 			// back;
@@ -143,7 +147,7 @@ public class Search extends Controller {
 			Date after = new Date(yearA, monthA, dayA);
 			Date exact = new Date(yearE, monthE, dayE);
 
-			List orgs = Organization.findAll();
+			List<Model> orgs = Organization.findAll();
 
 			switch (searchIn) {
 			case 1: {
@@ -200,91 +204,91 @@ public class Search extends Controller {
 			}
 			}
 
-			// // Organization
-			// if (org == 0) {
-			// for (int i = 0; i < orgs.size(); i++) {
-			// if (!((Organization) orgs.get(i)).name.contains(unWantKey)) {
-			// if (((Organization) orgs.get(i)).name.contains(wantKey)) {
-			// listOfResults.add(orgs.get(i));
-			// } else {
-			// boolean add = true;
-			// List<Tag> x = ((Organization) orgs.get(i)).relatedTags;
-			// for (int j = 0; j < x.size(); j++) {
-			// if (x.get(j).name.contains(unWantKey)) {
-			// add = false;
-			// }
-			// }
-			// if (add) {
-			// for (int j = 0; j < x.size(); j++) {
-			// if (x.get(j).name.contains(wantKey)) {
-			// listOfResults.add(orgs.get(i));
-			// break;
-			// }
-			// }
-			// }
-			// }
-			// }
-			// }
-			// }
-			//
-			// // Entity
-			// if (entity == 0) {
-			// for (int i = 0; i < orgs.size(); i++) {
-			// searchWithEntities(
-			// ((Organization) orgs.get(i)).entitiesList,
-			// unWantKey, wantKey);
-			// }
-			// }
-			//
-			// // Topic
-			// List topics = null;
-			// if (topic == 0) {
-			// topics = new ArrayList<Topic>();
-			// for (int i = 0; i < orgs.size(); i++) {
-			// for (int j = 0; j < ((Organization) orgs.get(i)).entitiesList
-			// .size(); j++) {
-			// topics.add(((MainEntity) ((Organization)
-			// orgs.get(i)).entitiesList
-			// .get(j)).topicList);
-			// }
-			// }
-			// searchWithTopic(topics, unWantKey, wantKey);
-			// }
-			//
-			// // Plans
-			// List plans = null;
-			// if (plan == 0) {
-			// plans = new ArrayList<Plan>();
-			// for (int i = 0; i < topics.size(); i++) {
-			// plans.add(((Topic) topics.get(i)).plan);
-			// }
-			// searchWithPlan(plans, unWantKey, wantKey);
-			// }
-			//
-			// // Ideas
-			// if (idea == 0) {
-			// List ideas = new ArrayList<Idea>();
-			// for (int i = 0; i < topics.size(); i++) {
-			// for (int j = 0; j < ((Topic) topics.get(i)).ideas.size(); j++) {
-			// ideas.add(((Idea) ((Topic) topics.get(i)).ideas.get(j)));
-			// }
-			// }
-			// searchWithIdea(ideas, unWantKey, wantKey);
-			// }
-			//
-			// // Item
-			// if (item == 0) {
-			// List items = new ArrayList<Idea>();
-			// for (int i = 0; i < plans.size(); i++) {
-			// for (int j = 0; j < ((models.Plan) plans.get(i)).items
-			// .size(); j++) {
-			// items.add((((models.Plan) plans.get(i)).ideas.get(j)));
-			// }
-			// }
-			// searchWithItem(items, unWantKey, wantKey, before, after, exact);
-			// }
-			//
-			// // Comments
+			 // Organization
+			 if (org == 0) {
+			 for (int i = 0; i < orgs.size(); i++) {
+			 if (!((Organization) orgs.get(i)).name.contains(unWantKey)) {
+			 if (((Organization) orgs.get(i)).name.contains(wantKey)) {
+			 listOfResults.add(orgs.get(i));
+			 } else {
+			 boolean add = true;
+			 List<Tag> x = ((Organization) orgs.get(i)).relatedTags;
+			 for (int j = 0; j < x.size(); j++) {
+			 if (x.get(j).name.contains(unWantKey)) {
+			 add = false;
+			 }
+			 }
+			 if (add) {
+			 for (int j = 0; j < x.size(); j++) {
+			 if (x.get(j).name.contains(wantKey)) {
+			 listOfResults.add(orgs.get(i));
+			 break;
+			 }
+			 }
+			 }
+			 }
+			 }
+			 }
+			 }
+			
+			 // Entity
+			 if (entity == 0) {
+			 for (int i = 0; i < orgs.size(); i++) {
+			 searchWithEntities(
+			 ((Organization) orgs.get(i)).entitiesList,
+			 unWantKey, wantKey);
+			 }
+			 }
+			
+			 // Topic
+			 List topics = null;
+			 if (topic == 0) {
+			 topics = new ArrayList<Topic>();
+			 for (int i = 0; i < orgs.size(); i++) {
+			 for (int j = 0; j < ((Organization) orgs.get(i)).entitiesList
+			 .size(); j++) {
+			 topics.add(((MainEntity) ((Organization)
+			 orgs.get(i)).entitiesList
+			 .get(j)).topicList);
+			 }
+			 }
+			 searchWithTopic(topics, unWantKey, wantKey);
+			 }
+			
+			 // Plans
+			 List plans = null;
+			 if (plan == 0) {
+			 plans = new ArrayList<Plan>();
+			 for (int i = 0; i < topics.size(); i++) {
+			 plans.add(((Topic) topics.get(i)).plan);
+			 }
+			 searchWithPlan(plans, unWantKey, wantKey);
+			 }
+			
+			 // Ideas
+			 if (idea == 0) {
+			 List ideas = new ArrayList<Idea>();
+			 for (int i = 0; i < topics.size(); i++) {
+			 for (int j = 0; j < ((Topic) topics.get(i)).ideas.size(); j++) {
+			 ideas.add(((Idea) ((Topic) topics.get(i)).ideas.get(j)));
+			 }
+			 }
+			 searchWithIdea(ideas, unWantKey, wantKey);
+			 }
+			
+			 // Item
+			 if (item == 0) {
+			 List items = new ArrayList<Idea>();
+			 for (int i = 0; i < plans.size(); i++) {
+			 for (int j = 0; j < ((models.Plan) plans.get(i)).items
+			 .size(); j++) {
+			 items.add((((models.Plan) plans.get(i)).ideas.get(j)));
+			 }
+			 }
+			 searchWithItem(items, unWantKey, wantKey, before, after, exact);
+			 }
+			
+			 // Comments
 		}
 		render();
 	}
@@ -318,7 +322,7 @@ public class Search extends Controller {
 	 * @return void.
 	 * 
 	 */
-	public static void searchWithItem(List items, String unwantKey,
+	public static void searchWithItem(List<Model> items, String unwantKey,
 			String wantKey, Date before, Date after, Date exact) {
 		for (int i = 0; i < items.size(); i++) {
 			if (!((Item) items.get(i)).summary.contains(unwantKey)
@@ -380,7 +384,7 @@ public class Search extends Controller {
 	 * @return void.
 	 * 
 	 */
-	public static void searchWithIdea(List ideas, String unwantKey,
+	public static void searchWithIdea(List<Model> ideas, String unwantKey,
 			String wantKey) {
 		for (int i = 0; i < ideas.size(); i++) {
 			if (!((Idea) ideas.get(i)).title.contains(unwantKey)
@@ -442,7 +446,7 @@ public class Search extends Controller {
 	 * @return void.
 	 * 
 	 */
-	public static void searchWithPlan(List plans, String unwantKey,
+	public static void searchWithPlan(List<Model> plans, String unwantKey,
 			String wantKey) {
 		for (int i = 0; i < plans.size(); i++) {
 			if (!((models.Plan) plans.get(i)).title.contains(unwantKey)) {
@@ -596,24 +600,24 @@ public class Search extends Controller {
 
 	public static void quickSearch(String keyword) {
 		System.out.println(keyword);
-		listOfResults = new ArrayList<Object>();
+		listOfResults = new ArrayList<Model>();
 		// Adding Organizations to search result
-		List<Object> organizationsList = searchForOrganization(keyword);
+		List<Organization> organizationsList = searchForOrganization(keyword);
 		for (int i = 0; i < organizationsList.size(); i++) {
 			listOfResults.add(organizationsList.get(i));
 		}
 		// Adding Entities to search result
-		List<Object> EntitiesList = searchForEntity(keyword);
+		List<MainEntity> EntitiesList = searchForEntity(keyword);
 		for (int i = 0; i < EntitiesList.size(); i++) {
 			listOfResults.add(EntitiesList.get(i));
 		}
 		// Adding Ideas to search result
-		List<Object> IdeasList = searchForIdea(keyword);
+		List<Idea> IdeasList = searchForIdea(keyword);
 		for (int i = 0; i < IdeasList.size(); i++) {
 			listOfResults.add(IdeasList.get(i));
 		}
 		// Adding Topics to search result
-		List<Object> TopicsList = searchForTopic(keyword);
+		List<Topic> TopicsList = searchForTopic(keyword);
 		for (int i = 0; i < TopicsList.size(); i++) {
 			listOfResults.add(TopicsList.get(i));
 		}
@@ -631,7 +635,7 @@ public class Search extends Controller {
 	 * 
 	 * @return List<Object>
 	 */
-	public static List<Object> searchForOrganization(String keyword) {
+	public static List<Organization> searchForOrganization(String keyword) {
 		String userId = Security.connected();
 		String[] keywords = { keyword };
 		try {
@@ -639,7 +643,7 @@ public class Search extends Controller {
 		} catch (NullPointerException e) {
 
 		}
-		List<Object>listOfOrgs = new ArrayList<Object>();
+		List<Organization>listOfOrgs = new ArrayList<Organization>();
 		for (int s = 0; s < keywords.length; s++) {
 			List<Organization> listOfOrganizations = Organization.findAll();
 			for (int i = 0; i < listOfOrganizations.size(); i++) {
@@ -690,14 +694,14 @@ public class Search extends Controller {
 	 * 
 	 * @return List<Object>
 	 */
-	public static List<Object> searchForEntity(String keyword) {
+	public static List<MainEntity> searchForEntity(String keyword) {
 		String userId = Security.connected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
 		} catch (NullPointerException e) {
 		}
-		List<Object> listOfEnts = new ArrayList<Object>();
+		List<MainEntity> listOfEnts = new ArrayList<MainEntity>();
 		List<MainEntity> listOfEntities = MainEntity.findAll();
 		for (int s = 0; s < keywords.length; s++) {
 			for (int i = 0; i < listOfEntities.size(); i++) {
@@ -742,14 +746,14 @@ public class Search extends Controller {
 	 * 
 	 * @return List<Object>
 	 */
-	public static List<Object> searchForIdea(String keyword) {
+	public static List<Idea> searchForIdea(String keyword) {
 		String userId = Security.connected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
 		} catch (NullPointerException e) {
 		}
-		List<Object> listOfIdss = new ArrayList<Object>();
+		List<Idea> listOfIdss = new ArrayList<Idea>();
 		List<Idea> listOfIdeas = Idea.findAll();
 		for (int s = 0; s < keywords.length; s++) {
 			for (int i = 0; i < listOfIdeas.size(); i++) {
@@ -799,14 +803,14 @@ public class Search extends Controller {
 	 * 
 	 * @return List<Object>
 	 */
-	public static List<Object> searchForTopic(String keyword) {
+	public static List<Topic> searchForTopic(String keyword) {
 		String userId = Security.connected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
 		} catch (NullPointerException e) {
 		}
-		List<Object> listOfTopis = new ArrayList<Object>();
+		List<Topic> listOfTopis = new ArrayList<Topic>();
 		List<Topic> listOfTopics = Topic.findAll();
 		for (int s = 0; s < keywords.length; s++) {
 			for (int i = 0; i < listOfTopics.size(); i++) { // Looping on the
@@ -878,7 +882,7 @@ public class Search extends Controller {
 	// this commented method with the static parametar will help in defining
 	// which list to pass for the filter method accrding to the user's choice
 	// (and or or )
-	static List<Object> tobepassed;
+	static List<Model> tobepassed;
 
 	public static void handelingOrAnd(char AndOr) {
 		if (AndOr == 'a') {
@@ -907,9 +911,9 @@ public class Search extends Controller {
 	 * 
 	 */
 
-	public static void filterSearchResults(List<Object> resultList,
+	public static void filterSearchResults(List<Model> resultList,
 			String filterOn) {
-		filterResult = new ArrayList<Object>();
+		filterResult = new ArrayList<Model>();
 		if (filterOn.equalsIgnoreCase("o")) {// filtering on organizations
 			for (int i = 0; i < resultList.size(); i++) {// loop on the whole
 															// search result
@@ -980,10 +984,10 @@ public class Search extends Controller {
 	 * @return void.
 	 * 
 	 */
-	public static void filterSearchResults(List<Object> resultList,
+	public static void filterSearchResults(List<Model> resultList,
 			String filterOn, String input) {
 
-		filterResult = new ArrayList<Object>();
+		filterResult = new ArrayList<Model>();
 
 		if (filterOn.equalsIgnoreCase("name")
 				|| filterOn.equalsIgnoreCase("title")) {
@@ -1101,9 +1105,9 @@ public class Search extends Controller {
 	 * 
 	 */
 
-	public static void sortA(char voteOrRate, List<Object> searchresult) {// ascending
-		List<Object> tosort = new ArrayList<Object>();
-		List<Object> nottosort = new ArrayList<Object>();
+	public static void sortA(char voteOrRate, List<Model> searchresult) {// ascending
+		List<Model> tosort = new ArrayList<Model>();
+		List<Model> nottosort = new ArrayList<Model>();
 
 		if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
 
@@ -1143,7 +1147,7 @@ public class Search extends Controller {
 
 					if (rate1 > rate2) { // sorting
 
-						Object temp = (Object) tosort.get(k);
+						Model temp = (Model) tosort.get(k);
 						tosort.set(k, tosort.get(j));
 						tosort.set(j, temp);
 
@@ -1153,7 +1157,7 @@ public class Search extends Controller {
 
 			}
 
-			sorted = new ArrayList<Object>();// final sorted list
+			sorted = new ArrayList<Model>();// final sorted list
 			for (int m = 0; m < tosort.size(); m++) {
 				sorted.add(tosort.get(m));
 			}
@@ -1232,10 +1236,10 @@ public class Search extends Controller {
 	 * 
 	 */
 
-	public static void sortD(char voteOrRate, List<Object> searchresult) {// descending
+	public static void sortD(char voteOrRate, List<Model> searchresult) {// descending
 
-		List<Object> tosort = new ArrayList<Object>();
-		List<Object> nottosort = new ArrayList<Object>();
+		List<Model> tosort = new ArrayList<Model>();
+		List<Model> nottosort = new ArrayList<Model>();
 
 		if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
 
@@ -1275,7 +1279,7 @@ public class Search extends Controller {
 
 					if (rate1 < rate2) { // sorting
 
-						Object temp = (Object) tosort.get(k);
+						Model temp = (Model) tosort.get(k);
 						tosort.set(k, tosort.get(j));
 						tosort.set(j, temp);
 
@@ -1285,7 +1289,7 @@ public class Search extends Controller {
 
 			}
 
-			sorted = new ArrayList<Object>();// final sorted list
+			sorted = new ArrayList<Model>();// final sorted list
 			for (int m = 0; m < tosort.size(); m++) {
 				sorted.add(tosort.get(m));
 			}

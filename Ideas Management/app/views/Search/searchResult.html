@@ -32,7 +32,7 @@ The Search Results Viewer
     <body onLoad="step1()">
         <form action="@{quickSearch()}" method="GET">
         <font size="+3" color="993300">
-            Welcome ${connected}!
+            Welcome ${u.username}!
         </font>
         </br>
         <a href="/Ideas Management/app/views/Application/index.html">Home</a>
@@ -45,7 +45,7 @@ The Search Results Viewer
             }
             
             function viewResult(){
-                document.getElementById('div1').innerHTML = "<center>#{if listOfResults} #{if organizationsFound} Found ${organizationsFound.size()} result${organizationsFound.pluralize()}<ul> #{list items:organizationsFound, as:'item'} <li><a href='@{Organization.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} result${entitiesFound.pluralize()}<ul> #{list items:entitiesFound, as:'item'} <li><a href='@{MainEntity.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if} #{if topicsFound} Found ${topicsFound.size()} result${topicsFound.pluralize()}<ul> #{list items:topicsFound, as:'item'} <li><a href='@{Topic.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if} #{if ideasFound} Found ${ideasFound.size()} result${ideasFound.pluralize()}<ul> #{list items:ideasFound, as:'item'} <li><a href='@{Idea.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if} #{/if} #{else} Sorry! We did not find any results matching #{/else}</center>";
+                document.getElementById('div1').innerHTML = "<center>#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:organizationsFound, as:'item'} <li>${item.toString()}</a></li> #{/list} </ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:entitiesFound, as:'item'} <li>${item.toString()}</li> #{/list} </ul> #{/if} #{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:topicsFound, as:'item'} <li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if} #{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:ideasFound, as:'item'} <li><a href='@{Ideas.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if}#{/if} #{else} Sorry! My dog might be sick he can't smell anything :@ #{/else}</center>";
             }
             
             function quickSearch(frm){
