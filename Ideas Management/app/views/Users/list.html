@@ -1,25 +1,18 @@
 #{extends '/users/layout.html' /}
- 
+
 <div id="crudList" class="${type.name}">
-	
+
 	<h2 id="crudListTitle"> &amp; {'crud.list.title', type.name}</h2>
- 
 	<div id="crudListSearch">
 		#{crud.search /}
 	</div>
- 
 	<div id="crudListTable">
-		#{crud.table fields:['email', 'password', 'firstName',
-			 'lastName', 'username', 'communityContributionCounter',
-			'dateofBirth',  'country', 'profession'] /}
+		#{crud.table fields:['email', 'password', 'firstName','lastName', 'username', 'communityContributionCounter','dateofBirth',  'country', 'profession'] /}
 	</div>
-	
 	<div id="crudListPagination">
 		#{crud.pagination /}
 	</div>
-	
 	<p id="crudListAdd">
 		<a href="@{blank()}"> &amp; {'crud.add', type.modelName}</a>
 	</p>
- 
 </div>
