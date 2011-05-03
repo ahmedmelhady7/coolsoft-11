@@ -98,9 +98,10 @@ public class User extends Model {
 	public List<NotificationProfile> notificationProfiles;
 	@OneToMany(mappedBy = "directedTo")
 	public List<Notification> notifications;
-	
+
 	// code 3'lt
-	//@ManyToMany(mappedBy = "followers")
+	@ManyToMany
+	// (mappedBy = "followers")
 	public List<MainEntity> followingEntities;
 
 	// related to sprint 2
@@ -202,31 +203,6 @@ public class User extends Model {
 		// requestRelationship = new ArrayList<RequestOfRelationship>();
 		// topicInvitations = new ArrayList<TopicInvitation>();
 
-	}
-
-	/**
-	 * 
-	 * this method posts an Idea in a certain topic
-	 * 
-	 * @author Mohamed Hisham
-	 * 
-	 * @story C2S14
-	 * 
-	 * @param topic
-	 *            : the topic which the idea is being post under
-	 * @param title
-	 *            : the title of the idea
-	 * @param description
-	 *            : description/content of the idea
-	 * 
-	 * @return void
-	 */
-
-	public void postIdea(Topic topic, String title, String description) {
-		Idea idea = new Idea(title, description, this, topic);
-		idea.privacyLevel = topic.privacyLevel;
-		ideasCreated.add(idea);
-		_save();
 	}
 
 	public void addInvitation(String email, String role,

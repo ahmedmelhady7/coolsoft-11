@@ -3,6 +3,7 @@ import java.util.Date;
 
 import javax.swing.Timer;
 
+import controllers.Roles;
 import controllers.TimerCall;
 
 import play.*;
@@ -18,6 +19,9 @@ public class Bootstrap extends Job {
 		System.out.println("DOJOB");
 		// if (Topic.count() == 0) {
 		System.out.println("in");
+		Role.createIdeaDeveloperRole();
+		Role.createOrganizerRole();
+		// add all roles and map them to users in org1
 		User u1 = new User("h@gmail.com", "1234", "Hamed", "EL-Akhdar",
 				"hamedcool", 0, new Date(), "egypt", "student");
 		u1._save();
@@ -100,37 +104,71 @@ public class Bootstrap extends Job {
 		i2.save();
 		u2.ideasReported.add(i2);
 		u2.save();
-		
-		Idea i3 = new Idea("Windows 7", "Install windows 7", u5,
-				to2);
-		
+
+		Idea i3 = new Idea("Windows 7", "Install windows 7", u5, to2);
+
 		i3.tagsList.add(t4);
 		i3.usersRated.add(u4);
 		i3.save();
 		u3.ideasReported.add(i3);
 		u3.save();
 
-		Plan p1 = new Plan("Improving Labs", u1, new Date(2011,07,01),
-				new Date(2012,07,01), "Plan for improving the CS labs", to2,
+		Plan p1 = new Plan("Improving Labs", u1, new Date(2011, 07, 01),
+				new Date(2012, 07, 01), "Plan for improving the CS labs", to2,
 				"new software").save();
-		
+
 		i3.plan = p1;
 		i3._save();
-		
+
 		p1.usersRated.add(u2);
 		p1.rating = 1;
-		
-		p1._save();
-		
-		Comment c1 = new Comment("i prefer new Computers ", i1, u1, new Date()).save();
+		i2.plan = p1;
+		i2._save();
+		i1.plan = p1;
+		i1._save();
+		p1.addIdea(i3);
+		p1.addIdea(i2);
+		p1.addIdea(i1);
+		p1.save();
+		// p1._save();
+
+		Comment c1 = new Comment("i prefer new Computers ", i1, u1, new Date())
+				.save();
 		c1.commentedIdea = i2;
 		c1._save();
-		
-		
+
 		Comment c2 = new Comment("good idea", p1, u2, new Date()).save();
 		c2.commentedPlan = p1;
 		c2._save();
-		
+
+		Item item1 = new Item(new Date(2011, 01, 01), new Date(2011, 05, 10),
+				"this is the second item in the plan", p1, "item2");
+		Item item2 = new Item(new Date(2011, 02, 01), new Date(2011, 06, 10),
+				"this is the third item in the plan", p1, "item3");
+		Item item3 = new Item(new Date(2011, 03, 01), new Date(2011, 07, 10),
+				"this is the first item in the plan", p1, "item1");
+		item1.save();
+		item2.save();
+		item3.save();
+		p1.items.add(item1);
+		p1.items.add(item2);
+		p1.items.add(item3);
+		p1.save();
+		p1.usersRated.add(u2);
+		p1.rating = 1;
+
+		p1._save();
+		u1.itemsAssigned.add(item1);
+		u1.itemsAssigned.add(item2);
+		u1.save();
+		u2.itemsAssigned.add(item1);
+		u2.save();
+		item1.assignees.add(u1);
+		item1.assignees.add(u2);
+		item1.save();
+		System.out.println(item1.assignees.get(0).email);
+		item2.assignees.add(u2);
+		item2.save();
 
 		RequestToJoin request = new RequestToJoin(u1, to1, org1,
 				"I would like to join your organization..");

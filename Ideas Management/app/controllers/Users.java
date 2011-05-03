@@ -293,40 +293,6 @@ public class Users extends CRUD {
 
 	/**
 	 * 
-	 * this method checks if the user is allowed to post an idea under a certain
-	 * topic, if yes then an idea is posted under the topic
-	 * 
-	 * @author Mohamed Hisham
-	 * 
-	 * @story C2S14
-	 * 
-	 * @param user
-	 *            : the user trying to post the idea
-	 * 
-	 * @param topic
-	 *            : the topic that the idea is being posted under
-	 * @param title
-	 *            : the title of the idea
-	 * 
-	 * @param description
-	 *            : the description/content of the idea
-	 * 
-	 */
-
-	public void postIdea(long userId, long topicId, String title,
-			String description) {
-		User user = User.findById(userId);
-		Topic topic = Topic.findById(topicId);
-		if (isPermitted(user, "post", topic.id, "topic")) {
-			user.postIdea(topic, title, description);
-			topic.postIdea(user, title, description);
-		} else
-			System.out.println("Action can't be performed");
-
-	}
-
-	/**
-	 * 
 	 * This method is responsible for searching for users using specific
 	 * criteria
 	 * 
@@ -971,12 +937,12 @@ public class Users extends CRUD {
 		User user = User.findById(userId);
 		if (r) {
 			// System.out.println("@@@@@");
-//			Role role = Role.find("byRoleName", "Idea Developer").first();
-//			if (role == null) {
-//				// role ???
-//				role = new Role("Idea Developer", "view");
-//				role._save();
-//			}
+			// Role role = Role.find("byRoleName", "Idea Developer").first();
+			// if (role == null) {
+			// // role ???
+			// role = new Role("Idea Developer", "view");
+			// role._save();
+			// }
 			Role role = Roles.getRoleByName("idea developer");
 			UserRoleInOrganization roleInOrg = new UserRoleInOrganization(user,
 					org, role);
