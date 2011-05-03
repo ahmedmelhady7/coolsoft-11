@@ -1,6 +1,6 @@
 #{extends 'planLayout.html' /}
 #{set title:'View Plan as List' /}
-<br/>
+<br/> 
 #{if error == true}
 <h3>You do not have enough permissions to view this plan.</h3>
 #{/if}
@@ -11,7 +11,6 @@
 <br/>
 
 <!--  <br/>
->>>>>>> .r691
 This plan is now rated: ${newRating}
 <form action="@{Plans.rate(rating,p.id)}" method="GET">
     <input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/> 
@@ -36,22 +35,23 @@ This plan is now rated: ${newRating}
             <br/>
             Assigned Users: 
             <ul style="list-style: none; ">
-                #{list items:${item.assignees}, as:'assignedUser'}
+                #{list items:item.assignees, as:'assignedUser'}
                 <li>
                     <a href="#">${assignedUser.username}</a>
                 </li>
                 #{/list}
             </ul>
-			#{if user.canVolunteer(item.id) && !(item.status == 2)}
-           <a href="@{VolunteerRequests.justify(item.id, p.id, 0)}">Volunteer to work on this item</a>
-            <br/>
-			#{/if}
-            #{if canAssign == 1 && !(item.status == 2))}
-			<a href="@{AssignRequests.assign(item.id, p.id)}">Assign a user to this item</a>
-            #{/if}
-			 #{if canEdit == 1)}
-			<a href="@{Plans.editItem(item.id)}">Edit this item</a>
-            #{/if}
+   		 #{if user.canVolunteer(item.id) && !(item.status == 2)}
+   		<a href="@{VolunteerRequests.justify(item.id, p.id, 0)}">Volunteer to work on this item</a>
+     	<br/>
+  		#{/if} &nbsp; &nbsp;
+		
+		<a href="@{AssignRequests.assign(item.id, p.id)}">Assign a user to this item</a>
+      
+		 #{if canEdit == 1}
+		<a href="@{Plans.editItem(item.id)}">Edit this item</a>
+      #{/if}
+         
         </fieldset>
     </li>
     #{/list}
@@ -59,18 +59,18 @@ This plan is now rated: ${newRating}
 #{/if} 
 #{else}  
 No items exist in plan. Please contact 
-#{if p.topic.getOrganizer.size() > 1} 
-<ul>
-    #{list users:${p.topics.getOrganizer}, as:'organizer'}
-    <li>
-        <a href="#">${organizer.username}</a>
-    </li>
-    #{/list}
-</ul>
-#{/if} 
-#{else}
-${p.topics.getOrganizer.get(0).username}
-#{/else}
+#{if p.topic.getOrganizer().size() > 1} 
+<ul style="list-style: none; ">
+	    #{list items:p.topic.getOrganizer(), as:'organizer'}
+	    <li>
+	        <a href="#">${organizer.username}</a>
+	    </li>
+	    #{/list}
+	</ul>
+	#{/if} 
+	#{else}
+	${p.topic.getOrganizer().get(0).username}
+	#{/else}
 #{/else}
 #{/else}
 <!-- <script type="text/javascript">

@@ -1,8 +1,39 @@
-#{extends 'main.html' /}
+
+Topic: ${topic.title}
+<br/>
+#{if ideas.size() > 0}
+Ideas posted in this topic:
+<br/>
+#{form @Plans.planCreate(), method:'POST', id:'creationForm', onsubmit: 'return validate()',
+       enctype:'multipart/form-data' }
+#{list items:ideas, as:'idea'}
+ <fieldset>
+        <legend>
+            Title: ${idea.title}
+        </legend>
+		Description: ${idea.description}
+		<br/>
+		Author:  <a href="#">${idea.author.username}</a>
+		<br/>
+		Rating: ${idea.rating}
+		<br/>
+<input  type="checkbox" name="checkedIdeas" value = ${idea.id} onclick = "javascript: toggleCheck('${idea.id}')"> add to plan
+ </fieldset>
+#{/list}
+<input type = "hidden" name = "topicId" value = ${topic.id} >
+<input type="submit" value="Create the plan">
+#{/form}
+#{/if}
+#{else}
+The topic has no ideas to be promoted to execution
+#{/else}
+
+<script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
+</script>
 <script type="text/javascript" >
 	var ids = new Array();
 	
-	function toggleCheck () {
+	function toggleCheck (id) {
 		if(ids.indexOf(id) == -1) {
 			ids.push(id);
 		}else {
@@ -19,27 +50,4 @@
 	}
 	
 	</script>
-Topic: ${topic.title}
-<br/>
-Ideas posted in this topic:
-<br/>
-#{form @Plans.selectedIdeas(), method:'POST', id:'creationForm', onsubmit: 'return validate()',
-       enctype:'multipart/form-data' }
-#{list items:ideas, as:'idea'}
- <fieldset>
-        <legend>
-            Title: ${idea.title}
-        </legend>
-		Description: ${idea.description}
-		<br/>
-		Author:  <a href="#">${idea.author.username}</a>
-		<br/>
-		Rating: ${idea.rating}
-		<br/>
-<input  type="checkbox" name="checkedIdeas" value = ${idea.id} onclick = "toggleCheck('${idea.id}')"> add to plan
- </fieldset>
-#{/list}
-<input type = "hidden" name = "topicId" value = ${topic.id} >
-<input type="submit" value="Create the plan">
-#{/form}
 

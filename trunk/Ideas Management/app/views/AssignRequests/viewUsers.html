@@ -1,4 +1,4 @@
-#{extends 'main.html' /}
+
 
 <script type="text/javascript">
 	var ids = new Array();
@@ -51,7 +51,7 @@
 </script>
 You can search for a certain user by name, email or profession
 
-#{form @AssignRequests.search(), method:'POST', id:'creationForm', onsubmit: 'return validate()' enctype:'multipart/form-data' }
+#{form @AssignRequests.search(), method:'POST', id:'creationForm', onsubmit: 'return validate()', enctype:'multipart/form-data' }
 <input type = "text" id = "keyword" name = "keyword"> &nbsp; &nbsp; &nbsp;
 <input type = "hidden" name = "itemId" value = ${itemId} >
 <input type = "hidden" name = "planId" value = ${planId} >

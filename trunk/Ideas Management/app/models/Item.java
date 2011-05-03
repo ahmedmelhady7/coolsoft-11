@@ -32,7 +32,7 @@ public class Item extends Model {
 	// , cascade = CascadeType.ALL)
 	public List<AssignRequest> assignRequests;
 
-	@ManyToMany(mappedBy = "itemsAssigned")
+	@ManyToMany(mappedBy = "itemsAssigned" )
 	// , cascade = CascadeType.PERSIST)
 	public List<User> assignees;
 
@@ -90,6 +90,10 @@ public class Item extends Model {
 	public void addAssignRequest(AssignRequest assignRequest) {
 		assignRequests.add(assignRequest);
 		this.save();
+	}
+	
+	public List <User> getAssignees() {
+		return assignees;
 	}
 
 }

@@ -1,25 +1,28 @@
 #{extends 'main.html' /}
 #{set title:'Add Item' /}
 <h1> Add Item </h1>
-#{form @Plans.add(), method:'POST', id:'additemForm', onsubmit: 'return addItem()' enctype:'multipart/form-data' }
+#{form @Plans.add(), method:'POST', id:'additemForm', onsubmit: 'return addItem()', enctype:'multipart/form-data' }
 Start Date:<input type = "text" id = "startDate" name = "startDate" size ="30" onblur= "checkdate(this)" >
 </br>
 End Date:<input type = "text" id = "endDate" name = "endDate" size ="30" onblur= "checkdate(this)">
 </br>
-<p><b>Insert the description of the plan</b></p>
+<p><b>Insert the description of the item</b></p>
 </br>
-<textarea id="description" name="description" rows="7" cols="50"><label id = "descriptionerror"> </label>
-</textarea>
+<textarea id="description" name="description" rows="7" cols="50">
+	</textarea>
+<label id = "descriptionerror"> </label>
+
 </br>
 <p><b>Insert a summary for the description</b></p>
 </br>
 <input type = "hidden" name = "planId" value = ${plan.id} >
-<input type = "text" id = "summary" name = "summary" type = "text" size = "30"><label id = "summaryerror"> </label>
+<input type = "text" id = "summary" name = "summary" type = "text" size = "30">
+<label id = "summaryerror"> </label>
 </br>
 To add another item check here <input type="checkbox" name = "check" value = "checked">
 <input type = "submit" value ="Add" >
 #{/form}
-<textarea id = "datesupported" name = "datesupported" rows="7" cols = "2000">escriptionerror">
+<textarea disabled = true id = "datesupported" name = "datesupported" rows="7" cols = "2000">escriptionerror">
 The following date formats are accepted:
 mm-dd-yyyy, mm/dd/yyyy, mm.dd.yyyy, mm dd yyyy, 
 mmm dd yyyy, mmddyyyy, m-d-yyyy, m/d/yyyy, m.d.yyyy, 
