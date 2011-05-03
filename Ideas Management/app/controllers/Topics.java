@@ -74,13 +74,13 @@ public class Topics extends CRUD {
 					tagExists = true;
 				}
 			}
-
+			
 			if (!tagExists) {
 				// Tag temp = new Tag(tag);
 				// temp.save();
 				// topic.tags.add(temp);
 			}
-
+		
 			if (!tagAlreadyExists) {
 				Notifications.sendNotification(topic.followers, topicID,
 						"topic", "This topic has been tagged as " + tag);
@@ -645,18 +645,18 @@ public class Topics extends CRUD {
 		boolean deletable = tmp.isDeletable();
 		int canClose = 0;
 		int canPlan = 0;
-
+		long topicIdLong = Long.parseLong(topicid);
 		User actor = Security.getConnected();
 		String actionClose = "close a topic and promote it to execution";
 		String actionPlan = "create an action plan to execute an idea";
-		Topic targetTopic = Topic.findById(topicid);
-		long topicId = Long.parseLong(topicid);
+		Topic targetTopic = Topic.findById(topicIdLong);
+		
 		if (targetTopic.getOrganizer().contains(actor)) {
-			if (Users.isPermitted(actor, actionClose, topicId, "Topic")) {
+			if (Users.isPermitted(actor, actionClose, topicIdLong, "Topic")) {
 				canClose = 1;
 			}
 
-			if (Users.isPermitted(actor, actionPlan, topicId, "Topic")) {
+			if (Users.isPermitted(actor, actionPlan, topicIdLong, "Topic")) {
 				canPlan = 1;
 			}
 		}
@@ -664,7 +664,7 @@ public class Topics extends CRUD {
 			System.out.println("show() done, about to render");
 			render(type, object, tags, creator, followers, ideas, comments,
 					entity, plan, openToEdit, privacyLevel, deletemessage,
-					deletable, topicid, canClose, canPlan);
+					deletable, topicIdLong, canClose, canPlan);
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("show() done with exception, rendering to CRUD/show.html");

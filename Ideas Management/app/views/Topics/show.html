@@ -69,10 +69,10 @@
 		
 		<!-- closing topic and reopen buttons -->
 		 #{if ${canClose} == 1 && ${openToEdit} == true}
-			<input type="submit" value="Close Topic" onclick="closeTopic('${topicid}', '${userId}');" />
+			<input type="submit" value="Close Topic" onclick="closeTopic('${topicIdLong}', '${userId}');" />
 		#{/if}
 		#{if ${canClose} == 1 && ${openToEdit} == false}
-			<input type="submit" value="Reopen" onclick="reopen('${topicid}', '${userId}');" />
+			<input type="submit" value="Reopen" onclick="reopen('${topicIdLong}', '${userId}');" />
 		#{/if}
 	
 		
@@ -89,13 +89,13 @@
 
 <!--functions to call after clicking reopen and close buttons --> 
 <script type="text/javascript">
-	function closeTopic(topicid, userId){
-		$.post('@{Topics.closeTopic()}', {topicId:topicid, userId:userId});
+	function closeTopic(viewTopicId, viewUserId){
+		$.post('@{Topics.closeTopic()}', {topicId:viewTopicId, userId:viewUserId});
 		alert("done!");
 		location.reload(true);
 	}
-	function reopen(topicid,userId) {
-		$.post('@{Topics.reopen()}', {topicId:topicid, userId:userId});
+	function reopen(viewTopicId,viewUserId) {
+		$.post('@{Topics.reopen()}', {topicId:viewTopicId, userId:viewUserId});
 		alert("done!");
 		location.reload(true);
 	}
