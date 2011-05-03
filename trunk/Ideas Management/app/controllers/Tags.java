@@ -18,11 +18,13 @@ public class Tags extends CRUD {
 	 * @param name
 	 *            : name of the tag that is going to be created
 	 * 
-	 * @param org
-	 *            : the current organization that the user is in
+	 * @param orgId 
+	 * 				: the current organization that the user is enrolled in
 	 */
 
-	public static void createTag(@Required String name, Organization org) {
+
+	public static void createTag(@Required String name, long orgId) {
+		Organization org = Organization.findById(orgId);
 		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
@@ -34,8 +36,9 @@ public class Tags extends CRUD {
 					+ "Please choose another tag name.");
 			render(org.createTag);
 		}
-		Tag tag = new Tag(name);
+		Tag tag = new Tag(name,org);
 		tag.save();
+		
 		flash.success("Your tag has been created.");
 	}
 }
