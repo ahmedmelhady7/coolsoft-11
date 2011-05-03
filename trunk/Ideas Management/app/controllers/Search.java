@@ -22,14 +22,14 @@ import models.User;
 
 import play.mvc.Controller;
 import play.test.Fixtures;
-//
-///**
-// * 
-// * @author M Ghanem
-// * 
-// * @story C4SXX : Search Structure
-// * 
-// */
+
+/**
+ * 
+ * @author M Ghanem
+ * 
+ * @story C4SXX : Search Structure
+ * 
+ */
 public class Search extends Controller {
 
 	/**
@@ -678,18 +678,18 @@ public class Search extends Controller {
 		}
 		return listOfOrgs;
 	}
-//
-//	/**
-//	 * 
-//	 * @author Loaay Alkherbawy
-//	 * 
-//	 * @story C4S01 Searching for entities using a given keyword
-//	 * 
-//	 * @param keyword
-//	 *            : the keyword the user enters to search for
-//	 * 
-//	 * @return List<Object>
-//	 */
+
+	/**
+	 * 
+	 * @author Loaay Alkherbawy
+	 * 
+	 * @story C4S01 Searching for entities using a given keyword
+	 * 
+	 * @param keyword
+	 *            : the keyword the user enters to search for
+	 * 
+	 * @return List<Object>
+	 */
 	public static List<Object> searchForEntity(String keyword) {
 		String userId = Security.connected();
 		String[] keywords = { keyword };
