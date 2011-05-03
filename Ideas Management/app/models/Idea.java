@@ -215,24 +215,7 @@ public class Idea extends Model {
 		return this.title;
 	}
 
-	/**
-	 * @author ${Ibrahim safwat}
-	 * 
-	 * @param UserToShare
-	 *            User that wants to share the idea
-	 * @param UserToShareWith
-	 *            User the will be sent the notification with the ideaID
-	 * @param ideaID
-	 *            ID of the idea to be shared
-	 */
-	public void shareIdea(ArrayList<User> UserToShare, User UserToShareWith,
-			long ideaID) {
-		String type = "idea";
-		String desc = "userLoggedIn shared an Idea with you";
-		UserToShare = new ArrayList<User>();
-		long notId = ideaID;
-		Notifications.sendNotification(UserToShare, notId, type, desc);
-	}
+
 
 	/**
 	 * @author ${Ibrahim Safwat}
