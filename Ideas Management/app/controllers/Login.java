@@ -1,5 +1,10 @@
 package controllers;
 
+import java.util.Date;
+
+import models.MainEntity;
+import models.Organization;
+import models.Topic;
 import models.User;
 import play.mvc.Before;
 import play.mvc.Controller;
@@ -23,9 +28,9 @@ public class Login extends Controller {
 	 * 
 	 * @reurn void
 	 */
-	//@Before
+	@Before
 	public static void createUser() {
-		// User u = new User("ahmed", "1234", "email@hotmail.com");
+		
 		// u.save();
 	}
 	
