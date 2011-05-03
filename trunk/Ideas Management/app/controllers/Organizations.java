@@ -234,4 +234,14 @@ public class Organizations extends CRUD {
 		}
 	}
 
+	public static void mainPage(){
+		List<Organization> organizations = Organization.findAll();
+		render(organizations);
+	}
+	
+	public static void viewProfile(long orgId) {
+		Organization org = Organization.findById(orgId);
+		notFoundIfNull(org);
+		render(org);
+	}
 }
