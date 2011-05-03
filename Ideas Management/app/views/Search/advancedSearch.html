@@ -7,12 +7,12 @@
 	
 	<script src="http://code.jquery.com/jquery-git.js"></script>
 	
-    <form name="inPuts" id="inPuts" action = "searchResult">
+    <form name="inPuts" id="inPuts" >
 	
 	
         Search in&nbsp;&nbsp;&nbsp;::
         <select name="searchIn" id="searchIn" style="width:90%">
-            <option disabled="disabled">Search in:</option>
+            <option disabled="disabled" selected>Search in:</option>
             <option value="1">&nbsp;Public  organizations only</option>
             <option value="2">&nbsp;Private organizations only</option>
             <option value="3">&nbsp;Secrete organizations only</option>
@@ -248,21 +248,17 @@
 		
         <input type="submit" name="ok" value="Start Advanced Search" onclick="doo(searchIn, wantKey,unWantKey, org, entity, topic, plan,idea, item, comm, dayB, monthB, yearB,dayA, monthA, yearA, dayE, monthE, yearE);"/>
 			
-        </form>		
-		
+        </form>
 		
 		<script type="text/javascript">
 
 		function doo(searchIn, wantKey,unWantKey, org, entity, topic, plan,idea, item, comm, dayB, monthB, yearB,dayA, monthA, yearA, dayE, monthE, yearE)
 		  {
-		  	alert("Task here!");
-		  	
-			$.post('@{Search.searchResult()}' , {searchIn:searchIn.value, wantKey:wantKey.value,
+			$.post('@{Search.search()}' , {searchIn:searchIn.value, wantKey:wantKey.value,
 			unWantKey:unWantKey.value, org:org.value, entity:entity.value, topic:topic.value, plan:plan.value,
 			idea:idea.value, item:item.value, comm:comm.value, dayB:dayB.value, monthB:monthB.value, yearB:yearB.value,
 			dayA:dayA.value, monthA:monthA.value, yearA:yearA.value, dayE:dayE.value, monthE:monthE.value, yearE:yearE.value});
 			
-			alert("Task accepted!");
 			window.location.href = "/searchResult";
 		  }
 
