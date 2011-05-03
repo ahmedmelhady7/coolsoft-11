@@ -304,50 +304,54 @@ public class Users extends CRUD {
 	 *            : the keyword the user enters for searching
 	 * 
 	 */
-	public static List<User> searchUser(String keyword) {
+	public static ArrayList<User> searchUser(String keyword) {
 
-		List<User> searchResultByName = new ArrayList<User>();
-		List<User> searchResultByProfession = new ArrayList<User>();
-		List<User> searchResultByEmail = new ArrayList<User>();
+	     List<User> searchResultByName = new ArrayList<User>();
+	     List<User> searchResultByProfession = new ArrayList<User>();
+	     List<User> searchResultByEmail = new ArrayList<User>();
 
-		if (keyword != null) {
-			searchResultByName = User.find("username like ? ", "keyword%")
-					.fetch();
-			searchResultByProfession = User.find("profession like ? ",
-					"keyword").fetch();
-			searchResultByEmail = User.find("email like ? ", "keyword").fetch();
-		}
+	     if (keyword != null) {
+	      searchResultByName = User.find("username like ? ", keyword)
+	        .fetch();
+	      searchResultByProfession = User.find("profession like ? ",
+	        keyword).fetch();
+	      searchResultByEmail = User.find("email like ? ", keyword).fetch();
+	     }
 
-		int nameSize = searchResultByName.size();
-		int professionSize = searchResultByProfession.size();
-		int emailSize = searchResultByEmail.size();
-		for (int i = 0; i < nameSize; i++) {
-			if (searchResultByName.get(i).state == "d"
-					|| searchResultByName.get(i).state == "n") {
-				searchResultByName.remove(i);
-			}
-		}
-		for (int i = 0; i < professionSize; i++) {
-			if (searchResultByProfession.get(i).state == "d"
-					|| searchResultByName.get(i).state == "n") {
-				searchResultByProfession.remove(i);
-			}
-		}
+	     int nameSize = searchResultByName.size();
+	     int professionSize = searchResultByProfession.size();
+	     int emailSize = searchResultByEmail.size();
+	     for (int i = 0; i < nameSize; i++) {
+	      if (searchResultByName.get(i).state == "d"
+	        || searchResultByName.get(i).state == "n") {
+	       searchResultByName.remove(i);
+	      }
+	     }
+	     for (int i = 0; i < professionSize; i++) {
+	      if (searchResultByProfession.get(i).state == "d"
+	        || searchResultByProfession.get(i).state == "n") {
+	       searchResultByProfession.remove(i);
+	      }
+	     }
 
-		for (int i = 0; i < emailSize; i++) {
-			if (searchResultByEmail.get(i).state == "d"
-					|| searchResultByName.get(i).state == "n") {
-				searchResultByEmail.remove(i);
-			}
-		}
+	     for (int i = 0; i < emailSize; i++) {
+	      if (searchResultByEmail.get(i).state == "d"
+	        || searchResultByEmail.get(i).state == "n") {
+	       searchResultByEmail.remove(i);
+	      }
+	     }
+	     ArrayList<User> search = new ArrayList<User>();
+	     search.addAll(searchResultByEmail);
+	     search.addAll(searchResultByName);
+	     search.addAll(searchResultByProfession);
+	     
+	     //searchResultByName.addAll(searchResultByProfession);
+	     //searchResultByName.addAll(searchResultByEmail);
+	     // render(searchResultByName, searchResultByProfession,
+	     // searchResultByEmail);
+	     return search;
 
-		searchResultByName.addAll(searchResultByProfession);
-		searchResultByName.addAll(searchResultByEmail);
-		// render(searchResultByName, searchResultByProfession,
-		// searchResultByEmail);
-		return searchResultByName;
-
-	}
+	    }
 
 	/**
 	 * 
@@ -374,6 +378,11 @@ public class Users extends CRUD {
 		List<User> finalOrganizers = new ArrayList<User>();
 		for (int i = 0; i < organizers.size(); i++) {
 			finalOrganizers.add((organizers.get(i)).enrolled);
+		}
+		for (int i = 0; i < organizers.size(); i++) {
+			if(finalOrganizers.get(i).state == "d" || finalOrganizers.get(i).state == "n"){
+				finalOrganizers.remove(i);
+			}
 		}
 		return finalOrganizers;
 	}
