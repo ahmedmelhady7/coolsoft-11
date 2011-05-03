@@ -283,11 +283,11 @@ public class Invitations extends CRUD {
 			} else {
 				// idea devoloper by ibrahim adel
 				Role role2 = Role.find("byRoleName", "Idea Developer").first();
-				if (role2 == null) {
-					// role ???
-					role2 = new Role("Idea Developer", "");
-					role2._save();
-				}
+//				if (role2 == null) {
+//					// role ???
+//					role2 = new Role("Idea Developer", "");
+//					role2._save();
+//				}
 				UserRoleInOrganization roleInOrg = new UserRoleInOrganization(
 						user, org, role2);
 				roleInOrg._save();
