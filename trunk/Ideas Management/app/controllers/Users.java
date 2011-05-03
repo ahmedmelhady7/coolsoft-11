@@ -368,23 +368,31 @@ public class Users extends CRUD {
 	 * @return List<User>
 	 */
 	public static List<User> searchOrganizer(Organization o) {
-		List<UserRoleInOrganization> organizers = null;
+		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization> ();
+		List<User> user = new ArrayList<User> ();
 		if (o != null) {
-			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
-					.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
-							o, "organizer");
+//			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
+//					.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
+//							o, "organizer");
+			organizers = UserRoleInOrganization.find("byOrganization", o).fetch();
+			for(int i= 0; i <organizers.size(); i++) {
+				if((organizers.get(i).role).equals("organizer")){
+					user.add(organizers.get(i).enrolled);
+				}
+			}
 
 		}
-		List<User> finalOrganizers = new ArrayList<User>();
-		for (int i = 0; i < organizers.size(); i++) {
-			finalOrganizers.add((organizers.get(i)).enrolled);
-		}
-		for (int i = 0; i < organizers.size(); i++) {
-			if(finalOrganizers.get(i).state == "d" || finalOrganizers.get(i).state == "n"){
-				finalOrganizers.remove(i);
+//		List<User> finalOrganizers = new ArrayList<User>();
+//		for (int i = 0; i < organizers.size(); i++) {
+//			finalOrganizers.add((organizers.get(i)).enrolled);
+//		}
+		int size = organizers.size();
+		for (int i = 0; i < size; i++) {
+			if(user.get(i).state == "d" || user.get(i).state == "n"){
+				user.remove(i);
 			}
 		}
-		return finalOrganizers;
+		return user;
 	}
 
 	/**
