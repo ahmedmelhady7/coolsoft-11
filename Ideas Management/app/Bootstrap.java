@@ -38,19 +38,23 @@ public class Bootstrap extends Job {
 		u6._save();
 		System.out.println("in2");
 
-		Tag t1 = new Tag("Education").save();
-		Tag t2 = new Tag("GUC").save();
-		Tag t3 = new Tag("Egypt").save();
-		Tag t4 = new Tag("Sports").save();
+		
 		Organization org1 = new Organization("GUC", u1, (short) 0, true);
 		org1.enrolledUsers.add(u1);
 		org1.enrolledUsers.add(u2);
 		org1.enrolledUsers.add(u3);
 		org1.enrolledUsers.add(u4);
-		org1.relatedTags.add(t2);
-		org1.relatedTags.add(t3);
+		
 		System.out.println("in3");
 		org1._save();
+		
+		Tag t1 = new Tag("Education",org1).save();
+		Tag t2 = new Tag("GUC",org1).save();
+		Tag t3 = new Tag("Egypt",org1).save();
+		Tag t4 = new Tag("Sports",org1).save();
+		
+		org1.relatedTags.add(t2);
+		org1.relatedTags.add(t3);
 
 		MainEntity me1 = new MainEntity("MET",
 				"Media Engineering and technology", org1);
