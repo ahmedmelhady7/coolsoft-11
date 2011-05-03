@@ -44,11 +44,11 @@ public class Users extends CRUD {
 	 *            : the id of the user who follows
 	 * 
 	 */
-	public static void follow(long tagId, long userId) {
+	public static void followTag(long tagId, long userId) {
 		Tag tag = Tag.findById(tagId);
 		User user = User.findById(userId);
 		tag.follow(user);
-		user.follow(tag);
+		user.followTag(tag);
 	}
 
 	/**
@@ -192,8 +192,8 @@ public class Users extends CRUD {
 			idea.spamCounter++;
 			reporter.ideasReported.add(idea);
 		}
-		for (int j = 0; j < idea.belongsToTopic.organizers.size(); j++) {
-			Mail.ReportAsSpamMail(idea.belongsToTopic.organizers.get(j),
+		for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
+			Mail.ReportAsSpamMail(idea.belongsToTopic.getOrganizer().get(j),
 					reporter, idea);
 		}
 
@@ -291,8 +291,10 @@ public class Users extends CRUD {
 	 * 
 	 */
 
-	public void postIdea(User user, Topic topic, String title,
+	public void postIdea(long userId, long topicId, String title,
 			String description) {
+		User user = User.findById(userId);
+		Topic topic = Topic.findById(topicId);
 		if (isPermitted(user, "post", topic.id, "topic")) {
 			user.postIdea(topic, title, description);
 			topic.postIdea(user, title, description);

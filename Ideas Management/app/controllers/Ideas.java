@@ -475,7 +475,7 @@ public class Ideas extends CRUD {
 		User user = Security.getConnected();
 		Idea idea = Idea.findById(ideaID);
 
-		if (!idea.belongsToTopic.organizers.contains(user)
+		if (!idea.belongsToTopic.getOrganizer().contains(user)
 				|| !user.equals(idea.author)) {
 			// user not allowed
 			userNotAllowed = true;
