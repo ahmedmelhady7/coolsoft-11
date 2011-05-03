@@ -17,6 +17,7 @@ public class Role extends Model {
 	@Required
 	public String roleName;
 
+
 	@Required
 	@Lob
 	public String actions;
@@ -24,9 +25,17 @@ public class Role extends Model {
 	// @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
 	// public List<Action> actions;
 
+
 	@OneToMany(mappedBy = "role")
 	// , cascade = CascadeType.ALL)
 	public List<UserRoleInOrganization> userRoleInOrganization;
+    /** 
+     * this constructor creates a new role given it's name and action string
+     * @author Nada Ossama
+     * @story C1S7
+     * @param role is the role name
+     * @param actions is the actions steing
+     */
 
 	public Role(String role, String actions) {
 		this.roleName = role;
@@ -128,6 +137,39 @@ public class Role extends Model {
 		ideaDeveloper.save();
 	}
 
+	/**
+	 * this method creates the organization lead role
+	 * @story C1S7
+	 * @author Nada Ossama
+	 */
+	
+	public static void createOrganizationLeadRole(){
+		  String action = "restrict the permission of an organizer;view the logs;create an organization and specify it's type;create organization profile;create entities;" +
+		    "accept/reject join requests from users to join a private organization;" +
+		    "enable/disable the user to create their own tags within an organization; " +
+		    "rename any relationship within the organization;" +
+		    "create relationships between entities/sub-entities/topics/tags;" +
+		    "end a relationship between entities/sub-entities/topics/tags;";
+		  Role OrganizationLead  = new Role("organizationLead" , action);
+		     OrganizationLead.save();
+		 }
+	/**
+	 * this method creates the admine role
+	 * @story C1S7
+	 * @author Nada Ossama
+	 */
+		 
+		 public static void createAdminRole(){
+		  String action = "add a user;edit a user;delete a user;edit ideas/rates/requests/marks;" +
+		    "Use all browsing and searching kinds;";
+		  Role admin  = new Role("admin" , action);
+		  admin.save();
+		 }
+	
+	
+	
+	
+	
 	/**
 	 * the toString method that prints the role name
 	 * 
