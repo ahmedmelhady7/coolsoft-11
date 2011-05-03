@@ -19,10 +19,10 @@
 			<input type="checkbox"  onclick=" javascript: toggle_task('${assignedItem.id}');" ${assignedItem.status == 1 ? '':'checked'} />
 		    <label>
 			#{if assignedItem.status == 1}
-			<label id = "label1_${assignedItem.id}" > in progress </label>
+			<label id = "label1_${assignedItem.id}" > Your item is in progress. Mark it as done. </label>
 			#{/if}
 			#{else}
-			<label id = "label2_${assignedItem.id}" > done</label>
+			<label id = "label2_${assignedItem.id}" > Your item is done. Mark it as in progress</label>
 			#{/else}
 			#{/else}
 			</label>
@@ -37,7 +37,8 @@
             <br/>
             Assigned Users: 
             <ul style="list-style: none; ">
-                #{list users:assignedItem.assignees, as:'assignedUser'}
+                #{list items:assignedItem.getAssignees(), as:'assignedUser'}
+				${assignedItem.getAssignees().size()}
                 <li>
                     <a href="#">${assignedUser.username}</a>
                 </li>
@@ -66,7 +67,7 @@ function start_task(id)
 function toggle_task(id)
   {
 	$.post( '@{toggleItem()}' , {id: id});
-	//window.location.reload();
+	window.location.reload();
   }
 
 </script>

@@ -17,6 +17,8 @@ import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import controllers.CRUD.ObjectType;
 
+//#{if canAssign == 1 && !(item.status == 2)}
+// #{/if}
 public class Plans extends CRUD {
 
 	/**
@@ -33,26 +35,28 @@ public class Plans extends CRUD {
 		User user = Security.getConnected();
 		boolean error = false;
 		Plan p = Plan.findById(planId);
-		if (Users.isPermitted(user, "all", p.topic.id, "topic")) {
-			List<Item> itemsList = p.items;
-			int canAssign = 0;
-			int canEdit = 0;
-			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
-					"topic")) {
-
-				canEdit = 1;
-			}
-			if (Users.isPermitted(user,
-					"assign one or many users to a to-do item in a plan",
-					p.topic.id, "topic")) {
-
-				canAssign = 1;
-			}
-			render(p, itemsList, user, canAssign, canEdit, error);
-		} else {
-			error = true;
-			render(error);
-		}
+		List<Item> itemsList = p.items;
+		int canAssign = 0;
+		int canEdit = 0;
+//		if (Users.isPermitted(user, "all", p.topic.id, "topic")) {
+//		
+//			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+//					"topic")) {
+//
+//				canEdit = 1;
+//			}
+//			if (Users.isPermitted(user,
+//					"assign one or many users to a to-do item in a plan",
+//					p.topic.id, "topic")) {
+//
+//				canAssign = 1;
+//			}
+//			render(p, itemsList, user, canAssign, canEdit, error);
+//		} else {
+//			error = true;
+//			render(error);
+//		}
+		render(p, itemsList, user, canAssign, canEdit, error);
 	}
 
 	/**
@@ -72,27 +76,27 @@ public class Plans extends CRUD {
 		render(ideas, topic);
 	}
 
-	/**
-	 * This Method passes the selected items to the planCreate page so that they
-	 * will be associated to the plan once it's created
-	 * 
-	 * @story C5S4
-	 * 
-	 * @author Salma Osama
-	 * 
-	 * @param topicId
-	 *            The ID of the topic that this action plan is based upon
-	 * @param checkedIdeas
-	 *            The list of ideas selected to be associated to the plan
-	 */
-	public static void selectedIdeas(long[] checkedIdeas, long topicId) {
-		String s = "";
-		for (int i = 0; i < checkedIdeas.length; i++) {
-			s = s + checkedIdeas + ",";
-		}
-		planCreate(topicId, s);
-
-	}
+//	/**
+//	 * This Method passes the selected items to the planCreate page so that they
+//	 * will be associated to the plan once it's created
+//	 * 
+//	 * @story C5S4
+//	 * 
+//	 * @author Salma Osama
+//	 * 
+//	 * @param topicId
+//	 *            The ID of the topic that this action plan is based upon
+//	 * @param checkedIdeas
+//	 *            The list of ideas selected to be associated to the plan
+//	 */
+//	public static void selectedIdeas(long[] checkedIdeas, long topicId) {
+//		String s = "";
+//		for (int i = 0; i < checkedIdeas.length; i++) {
+//			s = s + checkedIdeas + "a";
+//		}
+//		//planCreate(topicId, s);
+//
+//	}
 
 	/**
 	 * This Method renders the page for the plan creation
@@ -103,12 +107,15 @@ public class Plans extends CRUD {
 	 * 
 	 * @param topicId
 	 *            The ID of the topic that this action plan is based upon
-	 * @param ideas
-	 *            : the String containing the ids of the ideas to be associated
-	 *            to the plan separated by ","
+	 * @param checkedIdeas
+	 *            The list of ideas ids selected to be associated to the plan
 	 * 
 	 */
-	public static void planCreate(long topicId, String ideas) {
+	public static void planCreate(long[] checkedIdeas, long topicId) {
+		String ideas = "";
+		for (int i = 0; i < checkedIdeas.length; i++) {
+			ideas = ideas + checkedIdeas[i] + ",";
+		}
 		render(topicId, ideas);
 	}
 
@@ -196,7 +203,7 @@ public class Plans extends CRUD {
 		Plan p = new Plan(title, user, startDate, endDate, description, topic,
 				requirement);
 		p.save();
-		p.addItem(istartdate, ienddate, idescription, p, isummary);
+		p.addItem(istartdate, ienddate, idescription, isummary);
 		p.save();
 		String[] list2 = ideaString.split(",");
 		long [] list = new long [list2.length];
@@ -206,11 +213,13 @@ public class Plans extends CRUD {
 		Idea idea;
 		String notificationContent = "";
 		ArrayList<User> ideaAuthor = new ArrayList<User>();
+		
 		for (int i = 0; i < list.length; i++) {
 			idea = Idea.findById(list[i]);
 			idea.plan = p;
 			p.ideas.add(idea);
 			ideaAuthor.add(idea.author);
+			System.out.println(idea.author.username );
 			notificationContent = "your idea: " + idea.title
 					+ "have been promoted to execution in the following plan "
 					+ p.title + " in the topic: " + topic.title;
@@ -222,7 +231,7 @@ public class Plans extends CRUD {
 		Notifications.sendNotification(p.topic.getOrganizer(), p.id, "plan",
 		"A new plan has been created");
 		
-		if (check.equals("checked")) {
+		if (check != null && check.equals("checked")) {
 			addItem(p.id);
 		} else {
 			viewAsList(p.id);
@@ -294,7 +303,7 @@ public class Plans extends CRUD {
 	public static void add(Date startDate, Date endDate, String description,
 			long planId, String summary, String check) {
 		Plan plan = Plan.findById(planId);
-		plan.addItem(startDate, endDate, description, plan, summary);
+		plan.addItem(startDate, endDate, description, summary);
 		if (check.equals("checked")) {
 			addItem(plan.id);
 		} else {
@@ -480,5 +489,31 @@ public class Plans extends CRUD {
 	// viewAsList(planId, y);
 	// }
 	// }
+	
+//	<!--
+//	#{if p.topic.getOrganizer().size() > 1} 
+//	<ul>
+//	    #{list items:${p.topics.getOrganizer}, as:'organizer'}
+//	    <li>
+//	        <a href="#">${organizer.username}</a>
+//	    </li>
+//	    #{/list}
+//	</ul>
+//	#{/if} 
+//	#{else}
+//	${p.topics.getOrganizer.get(0).username}
+//	#{/else}
+//	-->
+//	<!--#{if user.canVolunteer(item.id) && !(item.status == 2)}
+//    <a href="@{VolunteerRequests.justify(item.id, p.id, 0)}">Volunteer to work on this item</a>
+//     <br/>
+//		#{/if} -->
+	
+//	   #{if canAssign == 1 && !(item.status == 2)}
+//		<a href="@{AssignRequests.assign(item.id, p.id)}">Assign a user to this item</a>
+//       #{/if}
+//		 #{if canEdit == 1}
+//		<a href="@{Plans.editItem(item.id)}">Edit this item</a>
+//       #{/if}
 
 }

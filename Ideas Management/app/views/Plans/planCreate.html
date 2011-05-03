@@ -1,7 +1,7 @@
-#{extends 'main.html' /}
+
 #{set title:'Plan Creation' /}
 <h1> Create Plan </h1>
-#{form @Plans.myCreate(), method:'POST', id:'plancreationForm', onsubmit: 'return checkall()' enctype:'multipart/form-data' }
+#{form @Plans.myCreate(), method:'POST', id:'plancreationForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
 Plan title:<input type= "text" id = "title" name = "title" size= "30"><label id = "titleerror"> </label>
 </br>
 Start Date:<input type = "text" id = "startDate" name = "startDate" size ="30" onblur= "checkdate(this)"><label id = "starterror"> </label>
@@ -38,7 +38,7 @@ End Date:<input type = "text" id = "ienddate" name = "ienddate" size = "30" onbl
 To add another item check here <input type="checkbox" name = "check" value = "checked">
 <input type = "submit" value ="Create" >
 #{/form}
-<textarea id = "datesupported" name = "datesupported" rows="7" cols = "2000">escriptionerror">
+<textarea disabled = true id = "datesupported" name = "datesupported" rows="7" cols = "2000">escriptionerror">
 The following date formats are accepted:
 mm-dd-yyyy, mm/dd/yyyy, mm.dd.yyyy, mm dd yyyy, 
 mmm dd yyyy, mmddyyyy, m-d-yyyy, m/d/yyyy, m.d.yyyy, 

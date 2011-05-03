@@ -4,7 +4,7 @@ Title: ${item.summary}
 <br/>
 #{if success == 0}
 Please state why you want to work on this item.
-#{form @VolunteerRequests.sendVolunteerRequest(), method:'POST', id:'creationForm', onsubmit: 'return validate()' enctype:'multipart/form-data' }
+#{form @VolunteerRequests.sendVolunteerRequest(), method:'POST', id:'creationForm', onsubmit: 'return validate()', enctype:'multipart/form-data' }
 <textarea id="just" name = "justification" rows="7" cols="50">
 </textarea>
 <input type = "hidden" name = "itemId" value = ${item.id} >
@@ -12,7 +12,7 @@ Please state why you want to work on this item.
 <input type="submit" value="send" />
 <br/>
 #{/form}
-#{if}
+#{/if}
 #{else}
 Request not sent successfuly for one of the following reasons:
 You might have been blocked from the plan's topic or an assign request might have been sent to you to work on this item

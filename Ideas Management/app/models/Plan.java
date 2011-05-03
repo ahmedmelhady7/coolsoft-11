@@ -145,8 +145,9 @@ public class Plan extends Model {
 	 */
 
 	public void addItem(Date startDate, Date endDate, String description,
-			Plan plan, String summary) {
-		Item x = new Item(startDate, endDate, description, plan, summary);
+			String summary) {
+		Item x = new Item(startDate, endDate, description, this, summary);
+		x.save();
 		this.items.add(x);
 		this.save();
 	}
