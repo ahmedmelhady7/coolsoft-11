@@ -31,8 +31,20 @@ public class UserRoleInOrganizations extends CRUD {
 
 	public static boolean addEnrolledUser(User user, Organization org, Role role) {
 
+		UserRoleInOrganization uro = 
+		new UserRoleInOrganization(user, org, role).save();
+		user.userRolesInOrganization.add(uro);
+		org.userRoleInOrg.add(uro);
+		role.userRoleInOrganization.add(uro);
+		user.save();
+		org.save();
+		role.save();
+
+
+         /*
 		UserRoleInOrganization o = new UserRoleInOrganization(user, org, role, 1, "");
 		o.save();
+		*/
 		return true;
 	}
 
@@ -61,8 +73,14 @@ public class UserRoleInOrganizations extends CRUD {
 	public static boolean addEnrolledUser(User user, Organization org,
 			Role role, long entityOrTopicId, String type) {
 
-		new UserRoleInOrganization(user, org, role, entityOrTopicId, type)
+		UserRoleInOrganization uro = new UserRoleInOrganization(user, org, role, entityOrTopicId, type)
 				.save();
+		user.userRolesInOrganization.add(uro);
+		org.userRoleInOrg.add(uro);
+		role.userRoleInOrganization.add(uro);
+		user.save();
+		org.save();
+		role.save();
 
 		return true;
 	}
