@@ -265,158 +265,162 @@ public class Topics extends CRUD {
 	 * 
 	 * @return List<User>
 	 */
+	
+	
 	public static List<User> searchByTopic(long id) {
 
-		Topic topic = Topic.findById(id);
-		MainEntity entity = topic.entity;
-		Organization org = entity.organization;
-		ArrayList<User> searchList = (ArrayList) User.find("byIsAdmin", true)
-				.fetch();
-		searchList.add(org.creator);
-		// searchList.add(topic.creator);
+		  Topic topic = Topic.findById(id);
+		  MainEntity entity = topic.entity;
+		  Organization org = entity.organization;
+		  ArrayList<User> searchList = (ArrayList) User.find("byIsAdmin", true)
+		    .fetch();
+		  searchList.add(org.creator);
+		  // searchList.add(topic.creator);
 
 		ArrayList<User> organizer = (ArrayList) topic.getOrganizer();
 		searchList.addAll(organizer);
 
-		List<BannedUser> bannedUserT = BannedUser.find(
-				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"all", "topic", id).fetch(); // List of blocked users from a
-												// topic
-		List<BannedUser> bannedUserE = BannedUser.find(
-				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"all", "entity", entity.id).fetch(); // list of blocked users
-														// from an entity
-		List<BannedUser> bannedUserO = BannedUser.find(
-				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"all", "organization", org.id).fetch(); // list of blocked user
-														// from an organization
-		List<BannedUser> bannedUserP = BannedUser.find(
-				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"post idea", "topic", id).fetch(); // list of users banned from
-													// posting ideas in the
-													// topic
 
-		List<User> bUser = new ArrayList<User>();
-		List<User> user = new ArrayList<User>();
-		List<BannedUser> bannedUser = new ArrayList<BannedUser>(); // list
-																	// appending
-																	// all the
-																	// previous
-																	// banneduser
-																	// lists
-		bannedUser.addAll(bannedUserT);
-		bannedUser.addAll(bannedUserE);
-		bannedUser.addAll(bannedUserO);
-		bannedUser.addAll(bannedUserP);
+		  List<BannedUser> bannedUserT = BannedUser.find(
+		    "byOrganizationAndActionAndResourceTypeAndResourceID", org,
+		    "all", "topic", id).fetch(); // List of blocked users from a
+		            // topic
+		  List<BannedUser> bannedUserE = BannedUser.find(
+		    "byOrganizationAndActionAndResourceTypeAndResourceID", org,
+		    "all", "entity", entity.id).fetch(); // list of blocked users
+		              // from an entity
+		  List<BannedUser> bannedUserO = BannedUser.find(
+		    "byOrganizationAndActionAndResourceTypeAndResourceID", org,
+		    "all", "organization", org.id).fetch(); // list of blocked user
+		              // from an organization
+		  List<BannedUser> bannedUserP = BannedUser.find(
+		    "byOrganizationAndActionAndResourceTypeAndResourceID", org,
+		    "post idea", "topic", id).fetch(); // list of users banned from
+		             // posting ideas in the
+		             // topic
 
-		for (int i = 0; i < bannedUser.size(); i++) {
-			bUser.add((bannedUser.get(i)).bannedUser);
-		}
+		  List<User> bUser = new ArrayList<User>();
+		  List<User> user = new ArrayList<User>();
+		  List<BannedUser> bannedUser = new ArrayList<BannedUser>(); // list
+		                 // appending
+		                 // all the
+		                 // previous
+		                 // banneduser
+		                 // lists
+		  bannedUser.addAll(bannedUserT);
+		  bannedUser.addAll(bannedUserE);
+		  bannedUser.addAll(bannedUserO);
+		  bannedUser.addAll(bannedUserP);
 
-		List<UserRoleInOrganization> allUser = new ArrayList<UserRoleInOrganization>();
-		//List<User> u = new ArrayList<User>();
-		if ((org.privacyLevel == 0 || org.privacyLevel == 1)
-				&& (topic.privacyLevel == 0 || topic.privacyLevel == 1)) {
-			
-			
-		//	allUser =  (List<UserRoleInOrganization>) UserRoleInOrganization
-					//.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
-						//	org, id, "idea developer", "topic");
-			allUser = UserRoleInOrganization.find("byEntityTopicIDAndType", id,"topic").fetch();
-			for(int i= 0; i <allUser.size(); i++) {
-				if((allUser.get(i).role.roleName).equals("idea developer") && (allUser.get(i).organization).equals(org)){
-					user.add(allUser.get(i).enrolled);
-				}
-			}
+		  for (int i = 0; i < bannedUser.size(); i++) {
+		   bUser.add((bannedUser.get(i)).bannedUser);
+		  }
 
-//			for (int i = 0; i < allUser.size(); i++) {
-//				user.add((allUser.get(i)).enrolled);
-//			}
+		  List<UserRoleInOrganization> allUser = new ArrayList<UserRoleInOrganization>();
+		  //List<User> u = new ArrayList<User>();
+		  if ((org.privacyLevel == 0 || org.privacyLevel == 1)
+		    && (topic.privacyLevel == 0 || topic.privacyLevel == 1)) {
+		   
+		   
+		  // allUser =  (List<UserRoleInOrganization>) UserRoleInOrganization
+		     //.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
+		      // org, id, "idea developer", "topic");
+		   allUser = UserRoleInOrganization.find("byEntityTopicIDAndType", id,"topic").fetch();
+		   for(int i= 0; i <allUser.size(); i++) {
+		    if((allUser.get(i).role.roleName).equals("idea developer") && (allUser.get(i).organization).equals(org)){
+		     user.add(allUser.get(i).enrolled);
+		    }
+		   }
 
-			for (int i = 0; i < bUser.size(); i++) {
-				if (user.contains(bUser.get(i))) {
-					user.remove(bUser.get(i));
+		//   for (int i = 0; i < allUser.size(); i++) {
+//		    user.add((allUser.get(i)).enrolled);
+		//   }
 
-				}
-			}
-		} else {
+		   for (int i = 0; i < bUser.size(); i++) {
+		    if (user.contains(bUser.get(i))) {
+		     user.remove(bUser.get(i));
 
-			if ((org.privacyLevel == 0 || org.privacyLevel == 1)
-					&& (topic.privacyLevel == 2)) {
-//				allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
-//						.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
-//								org, -1, "idea developer", "none");
-				allUser = UserRoleInOrganization.find("byOrganization", org).fetch();
-				for(int i= 0; i <allUser.size(); i++) {
-					if((allUser.get(i).role.roleName).equals("idea developer")){
-						user.add(allUser.get(i).enrolled);
-					}
-				}
-				
+		    }
+		   }
+		  } else {
 
-//				for (int i = 0; i < allUser.size(); i++) {
-//					user.add((allUser.get(i)).enrolled);
-//				}
+		   if ((org.privacyLevel == 0 || org.privacyLevel == 1)
+		     && (topic.privacyLevel == 2)) {
+//		    allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
+//		      .find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
+//		        org, -1, "idea developer", "none");
+		    allUser = UserRoleInOrganization.find("byOrganization", org).fetch();
+		    for(int i= 0; i <allUser.size(); i++) {
+		     if((allUser.get(i).role.roleName).equals("idea developer")){
+		      user.add(allUser.get(i).enrolled);
+		     }
+		    }
+		    
 
-				for (int i = 0; i < bUser.size(); i++) {
-					if (user.contains(bUser.get(i))) {
-						user.remove(bUser.get(i));
+//		    for (int i = 0; i < allUser.size(); i++) {
+//		     user.add((allUser.get(i)).enrolled);
+//		    }
 
-					}
-				}
-			}
+		    for (int i = 0; i < bUser.size(); i++) {
+		     if (user.contains(bUser.get(i))) {
+		      user.remove(bUser.get(i));
 
-			else {
-				if ((org.privacyLevel == 2)
-						&& (topic.privacyLevel == 0 || topic.privacyLevel == 1)) {
-//					allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
-//							.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
-//									org, id, "idea developer", "topic");
+		     }
+		    }
+		   }
 
-//					for (int i = 0; i < allUser.size(); i++) {
-//						user.add((allUser.get(i)).enrolled);
-//					}
+		   else {
+		    if ((org.privacyLevel == 2)
+		      && (topic.privacyLevel == 0 || topic.privacyLevel == 1)) {
+//		     allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
+//		       .find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
+//		         org, id, "idea developer", "topic");
 
-					
-					allUser = UserRoleInOrganization.find("byEntityTopicIDAndType", id,"topic").fetch();
-					for(int i= 0; i <allUser.size(); i++) {
-						if((allUser.get(i).role.roleName).equals("idea developer") && (allUser.get(i).organization).equals(org)){
-							user.add(allUser.get(i).enrolled);
-						}
-					}
-					
-					for (int i = 0; i < bUser.size(); i++) {
-						if (user.contains(bUser.get(i))) {
-							user.remove(bUser.get(i));
+//		     for (int i = 0; i < allUser.size(); i++) {
+//		      user.add((allUser.get(i)).enrolled);
+//		     }
 
-						}
-					}
-				} else {
-					if ((org.privacyLevel == 2) && (topic.privacyLevel == 2)) {
+		     
+		     allUser = UserRoleInOrganization.find("byEntityTopicIDAndType", id,"topic").fetch();
+		     for(int i= 0; i <allUser.size(); i++) {
+		      if((allUser.get(i).role.roleName).equals("idea developer") && (allUser.get(i).organization).equals(org)){
+		       user.add(allUser.get(i).enrolled);
+		      }
+		     }
+		     
+		     for (int i = 0; i < bUser.size(); i++) {
+		      if (user.contains(bUser.get(i))) {
+		       user.remove(bUser.get(i));
 
-						user = User.findAll();
+		      }
+		     }
+		    } else {
+		     if ((org.privacyLevel == 2) && (topic.privacyLevel == 2)) {
 
-						for (int i = 0; i < bUser.size(); i++) {
-							if (user.contains(bUser.get(i))) {
-								user.remove(bUser.get(i));
+		      user = User.findAll();
 
-							}
-						}
-					}
-				}
-			}
-		}
-		searchList.addAll(user);
-		int size = searchList.size();
-		for (int i = 0; i < size; i++) {
-			if (searchList.get(i).state.endsWith("d")
-					|| searchList.get(i).state.endsWith("n")) {
-				searchList.remove(i);
-			}
-		}
-		return searchList;
+		      for (int i = 0; i < bUser.size(); i++) {
+		       if (user.contains(bUser.get(i))) {
+		        user.remove(bUser.get(i));
 
-	}
+		       }
+		      }
+		     }
+		    }
+		   }
+		  }
+		  searchList.addAll(user);
+		  int size = searchList.size();
+		  for (int i = 0; i < size; i++) {
+		   if (searchList.get(i).state.endsWith("d")
+		     || searchList.get(i).state.endsWith("n")) {
+		    searchList.remove(i);
+		   }
+		  }
+		  return searchList;
+
+		 }
+	
 
 	/**
 	 * This method closes a topic, return true if was successful, returns false
