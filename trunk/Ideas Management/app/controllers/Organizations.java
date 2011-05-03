@@ -239,9 +239,7 @@ public class Organizations extends CRUD {
 		render(organizations);
 	}
 	
-	public static void viewProfile(long orgId) {
-		Organization org = Organization.findById(orgId);
-		notFoundIfNull(org);
+	public static void viewProfile(User user, Organization org) {
 		render(org);
 	}
 }
