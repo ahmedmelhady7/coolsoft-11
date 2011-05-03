@@ -2,8 +2,6 @@
 #{set title:'Home' /}
 
 <b>Welcome </b>${u.username} &nbsp; ${u.email}
-#{extends 'main.html' /}
-#{set title:'Home' /}
 
 <b><i>Welcome to COOLSOFT!</i></b>
 <br>
@@ -24,7 +22,7 @@
 	Send Notification: <input type="submit" value="Notify">
 </form>
 <form action="@{Items.viewAssignedItems()}" method="post">
-	Send Notification: <input type="submit" value="View my assigned to-do items">
+	My assigned to-do items: <input type="submit" value="View">
 </form>
 <form action="@{Users.ViewOrgInv()}">
 <input type="hidden" name="userId" value="${u.id}">
