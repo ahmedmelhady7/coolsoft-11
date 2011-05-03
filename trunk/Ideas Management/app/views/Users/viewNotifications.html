@@ -1,12 +1,16 @@
 #{extends 'main.html' /}
 #{set title:'Notifications' /}
+
+<big><u>Notifications List</u></big>
+<br>
 <ul>
 #{list items:nList, as:'notifi'}
+	#{if npList.size() == 0}
+    <li>You have no notifications!!</li>
+    #{/if}
     <li>
     	<fieldset>
-    		<b>User: </b> ${x}
-    		<br>
-    		<b>Type: </b> ${notifi.type}
+    		<b>Source Type: </b> ${notifi.type}
     		<br>
     		<b>Message: </b> ${notifi.description}
     	</fieldset>
@@ -14,4 +18,4 @@
 #{/list}
 </ul>
 
-<a href="@{Login.index()}">Back to user form</a>
+<a href="@{Login.index()}">Home Page</a>
