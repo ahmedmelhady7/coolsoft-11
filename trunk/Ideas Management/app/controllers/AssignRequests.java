@@ -282,7 +282,7 @@ public class AssignRequests extends CRUD {
 		Item item = request.source;
 		List<User> list = new ArrayList<User>();
 		list = item.assignees;
-		list.addAll(item.plan.topic.organizers);
+		list.addAll(item.plan.topic.getOrganizer());
 		user.itemsAssigned.add(item);
 		item.assignees.add(user);
 		String s = "User " + user.username
@@ -309,7 +309,7 @@ public class AssignRequests extends CRUD {
 		assignRequests.remove(request);
 		List<User> list = new ArrayList<User>();
 		list = request.source.assignees;
-		list.addAll(request.source.plan.topic.organizers);
+		list.addAll(request.source.plan.topic.getOrganizer());
 		String s = "User " + user.username
 				+ " has rejected the assignment to work on item"
 				+ request.source.summary + ".";
