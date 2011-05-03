@@ -18,7 +18,7 @@
 <tr><td><font size ="3" color ="black"><u>From : ${inn.organization.name} Organization</u></font></td><td>
 
 <tr><td><font size ="3" color ="black">You have been invited to join ${inn.organization.name} Organization</font></td><td>
-<tr><td><font size ="3" color ="black"> As ${inn.role} to ${inn.entity.name} Entity</font></td><td> 
+<tr><td><font size ="3" color ="black"> As ${inn.role} #{if entity!=null}to ${inn.entity.name} Entity#{/if}</font></td><td> 
 
 <input type="button" onclick="javascript: show(1,'${inn.id}');" value="Accept" />
 <input type="button" onclick="javascript: show(0,'${inn.id}');" value="Reject" />
