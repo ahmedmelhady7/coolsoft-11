@@ -48,7 +48,7 @@ public class Users extends CRUD {
 		Tag tag = Tag.findById(tagId);
 		User user = User.findById(userId);
 		tag.follow(user);
-		user.followTag(tag);
+		user.follow(tag);
 	}
 
 	/**
