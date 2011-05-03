@@ -53,9 +53,9 @@ public class Topic extends Model {
 	 * the list of topic organizers
 	 */
 
-	// to be removed
-	@ManyToMany
-	public List<User> organizers;
+//	// to be removed
+//	@ManyToMany
+//	public List<User> organizers;
 
 	/**
 	 * the list of followers of the topic
@@ -146,7 +146,7 @@ public class Topic extends Model {
 		this.entity = entity;
 		tags = new ArrayList<Tag>();
 		// relationships = new ArrayList<Relationship>();
-		organizers = new ArrayList<User>();
+//		organizers = new ArrayList<User>();
 		followers = new ArrayList<User>();
 		ideas = new ArrayList<Idea>();
 		commentsOn = new ArrayList<Comment>();
@@ -306,7 +306,7 @@ public class Topic extends Model {
 
 	public void requestFromUserToPost(User u) {
 		if (requestsToJoin.indexOf(u) < 0) {
-			User o = organizers.get(0);
+			User o = getOrganizer().get(0);
 			RequestToJoin r = new RequestToJoin(u, this, null, o.email);
 			// send the request
 			requestsToJoin.add(r);
