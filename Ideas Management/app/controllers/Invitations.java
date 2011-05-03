@@ -79,10 +79,12 @@ public class Invitations extends CRUD {
 			invite(orgId,entId);
 		}
          
-	    List <User> users=User.findAll();	
-	/*	List<User> filter = new ArrayList<User>();
-		filter = Users.searchUser(name);
-		List<User> organizers = Users.getEntityOrganizers(ent);
+	   // List <User> users=User.findAll();	
+		List<User> users = new ArrayList<User>();
+	//	User u=User.find("byEmail", name).first();
+	//	users.add(u);
+		users = Users.searchUser(name);
+	/*	List<User> organizers = Users.getEntityOrganizers(ent);
 		organizers.add(org.creator);
 
 		List<User> users = new ArrayList<User>();
@@ -174,7 +176,7 @@ public class Invitations extends CRUD {
 		    
 	    	 
 	    	 User user=Security.getConnected();
-	          user.addInvitation(email,role,org,ent);
+	          user.addInvitation(email,role,org,null);
 	      /*  
 	         User receiver=User.find("byEmail", email).first();
 	         if(!receiver.equals(null)){
@@ -253,7 +255,16 @@ public class Invitations extends CRUD {
 	public static void respond(int id,long i) {
 		System.out.println("HERE");
 		  Invitation invite=Invitation.findById(i);
-		  invite.delete();
+	      Organization org=invite.organization;
+	      org.invitation.remove(invite);
+	      
+	     MainEntity ent=invite.entity;
+	     if(ent!=null){
+	      ent.invitationList.remove(invite);
+	      }
+	      User u=invite.sender;
+	      u.invitation.remove(invite);
+	      invite.delete();
 		/*Invitation invite = Invitation.findById(invId);
 		 //  System.out.println(id);
 		if (choice == 1) {
