@@ -275,8 +275,7 @@ public class Topics extends CRUD {
 		searchList.add(org.creator);
 		// searchList.add(topic.creator);
 
-		ArrayList<User> organizer = (ArrayList) Users
-				.getEntityOrganizers(entity);
+		ArrayList<User> organizer = (ArrayList) topic.getOrganizer();
 		searchList.addAll(organizer);
 
 		List<BannedUser> bannedUserT = BannedUser.find(
