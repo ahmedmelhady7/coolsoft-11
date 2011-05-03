@@ -8,12 +8,15 @@ import java.util.List;
 
 import java.util.List;
 
+import javax.persistence.Query;
+
 import notifiers.Mail;
 
 import play.data.binding.Binder;
 import play.data.validation.Validation;
 import play.db.Model;
 import play.db.jpa.GenericModel.JPAQuery;
+import play.db.jpa.JPA;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 
@@ -394,7 +397,6 @@ public class Users extends CRUD {
 		}
 		return user;
 	}
-
 	/**
 	 * 
 	 * This method is responsible for telling whether a user is allowed to do a
@@ -603,21 +605,38 @@ public class Users extends CRUD {
 	 * 
 	 * @return List of Organizers in that topic
 	 */
+	///to be modefied
 	public List<User> getTopicOrganizers(Topic t) {
-
-		List<User> organizers = null;
+        List <User> enrolled = new ArrayList<User>();
+		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
 		if (t != null) {
 			Organization o = t.entity.organization;
-			organizers = (List<User>) UserRoleInOrganization
-					.find("select uro.enrolled from UserRoleInOrganization uro and Role r "
+			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
+					.find("select uro from UserRoleInOrganization uro "
 							+ "where uro.organization = ? and"
-							+ " uro.Role = r and r.roleName like ? and uro.entityTopicID = ? "
-							+ "and uro.type like ?", o, "organizer", t.getId(),
+							+ " uro.entityTopicID = ? "
+							+ "and uro.type like ?", o, t.getId(),
 							"topic");
+			for(int i= 0 ; i<organizers.size(); i++){
+				if(!(organizers.get(i).role.roleName.equals("organizer"))){
+					organizers.remove(i);
+				}
+				else{
+					enrolled.add(organizers.get(i).enrolled);
+				}
+			}
+		
+			
 
 		}
-		return organizers;
+		return enrolled;
 	}
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * gets the list of organizers of a certain entity
@@ -630,20 +649,28 @@ public class Users extends CRUD {
 	 * 
 	 * @return List of Organizers in that entity
 	 */
-	public static List getEntityOrganizers(MainEntity e) {
-
-		List<User> organizers = null;
+	public static List<User> getEntityOrganizers(MainEntity e) {
+       List <User> enrolled = new ArrayList<User>();
+		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
 		if (e != null) {
 			Organization o = e.organization;
-			organizers = (List<User>) UserRoleInOrganization
-					.find("select uro.enrolled from UserRoleInOrganization uro and Role r "
-							+ "where uro.organization = ? and"
-							+ " uro.Role = r and r.roleName like ? and uro.entityTopicID = ? "
-							+ "and uro.type like ?", o, "organizer", e.getId(),
+			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
+					.find("select uro from UserRoleInOrganization uro"
+							+ "where uro.organization = ? "
+							+ " and uro.entityTopicID = ? "
+							+ "and uro.type like ?", o, e.getId(),
 							"entity");
+			for(int i = 0 ; i< organizers.size() ;  i++){
+				if(!((organizers.get(i).role).equals("organizer"))){
+					organizers.remove(i);
+				}
+				else{
+					enrolled.add(organizers.get(i).enrolled);
+				}
+			}
 
 		}
-		return organizers;
+		return enrolled;
 	}
 
 	/**
