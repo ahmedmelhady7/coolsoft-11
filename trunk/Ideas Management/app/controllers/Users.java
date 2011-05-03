@@ -376,7 +376,7 @@ public class Users extends CRUD {
 //							o, "organizer");
 			organizers = UserRoleInOrganization.find("byOrganization", o).fetch();
 			for(int i= 0; i <organizers.size(); i++) {
-				if((organizers.get(i).role).equals("organizer")){
+				if((organizers.get(i).role.roleName).equals("organizer")){
 					user.add(organizers.get(i).enrolled);
 				}
 			}

@@ -210,7 +210,7 @@ public class Topic extends Model {
 		
 		List<UserRoleInOrganization> o = UserRoleInOrganization.find("byEntityTopicIDAndType", this.entity.id,"entity").fetch();
 		for(int i= 0; i <o.size(); i++) {
-			if((o.get(i).role).equals("organizer")){
+			if((o.get(i).role.roleName).equals("organizer")){
 				organizer.add(o.get(i).enrolled);
 			}
 		}

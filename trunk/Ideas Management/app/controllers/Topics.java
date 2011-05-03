@@ -325,7 +325,7 @@ public class Topics extends CRUD {
 						//	org, id, "idea developer", "topic");
 			allUser = UserRoleInOrganization.find("byEntityTopicIDAndType", id,"topic").fetch();
 			for(int i= 0; i <allUser.size(); i++) {
-				if((allUser.get(i).role).equals("idea developer") && (allUser.get(i).organization).equals(org)){
+				if((allUser.get(i).role.roleName).equals("idea developer") && (allUser.get(i).organization).equals(org)){
 					user.add(allUser.get(i).enrolled);
 				}
 			}
@@ -349,7 +349,7 @@ public class Topics extends CRUD {
 //								org, -1, "idea developer", "none");
 				allUser = UserRoleInOrganization.find("byOrganization", org).fetch();
 				for(int i= 0; i <allUser.size(); i++) {
-					if((allUser.get(i).role).equals("idea developer")){
+					if((allUser.get(i).role.roleName).equals("idea developer")){
 						user.add(allUser.get(i).enrolled);
 					}
 				}
@@ -381,7 +381,7 @@ public class Topics extends CRUD {
 					
 					allUser = UserRoleInOrganization.find("byEntityTopicIDAndType", id,"topic").fetch();
 					for(int i= 0; i <allUser.size(); i++) {
-						if((allUser.get(i).role).equals("idea developer") && (allUser.get(i).organization).equals(org)){
+						if((allUser.get(i).role.roleName).equals("idea developer") && (allUser.get(i).organization).equals(org)){
 							user.add(allUser.get(i).enrolled);
 						}
 					}
