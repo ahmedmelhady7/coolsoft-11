@@ -196,6 +196,28 @@ public class Users extends CRUD {
 			Mail.ReportAsSpamMail(idea.belongsToTopic.getOrganizer().get(j),
 					reporter, idea);
 		}
+		ideaSpamView(idea, reporter);
+
+	}
+
+	/**
+	 * this Method is responsible for the view of reporting the idea as spam
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S12
+	 * 
+	 */
+
+	public static void ideaSpamView(Idea idea, User reporter) {
+		int alreadyReported = -1;
+		for (int i = 0; i < idea.reporters.size(); i++) {
+			if (reporter == idea.reporters.get(i))
+				alreadyReported = 1;
+			else
+				alreadyReported = 0;
+		}
+		render(alreadyReported);
 
 	}
 
@@ -334,22 +356,25 @@ public class Users extends CRUD {
 		int professionSize = searchResultByProfession.size();
 		int emailSize = searchResultByEmail.size();
 		for (int i = 0; i < nameSize; i++) {
-			if (searchResultByName.get(i).state == "d" || searchResultByName.get(i).state == "n") {
+			if (searchResultByName.get(i).state == "d"
+					|| searchResultByName.get(i).state == "n") {
 				searchResultByName.remove(i);
 			}
 		}
 		for (int i = 0; i < professionSize; i++) {
-			if (searchResultByProfession.get(i).state == "d" || searchResultByName.get(i).state == "n") {
+			if (searchResultByProfession.get(i).state == "d"
+					|| searchResultByName.get(i).state == "n") {
 				searchResultByProfession.remove(i);
 			}
 		}
 
-	for (int i = 0; i < emailSize; i++) {
-			if (searchResultByEmail.get(i).state =="d" || searchResultByName.get(i).state == "n" ) {
+		for (int i = 0; i < emailSize; i++) {
+			if (searchResultByEmail.get(i).state == "d"
+					|| searchResultByName.get(i).state == "n") {
 				searchResultByEmail.remove(i);
 			}
 		}
-			
+
 		searchResultByName.addAll(searchResultByProfession);
 		searchResultByName.addAll(searchResultByEmail);
 		// render(searchResultByName, searchResultByProfession,
@@ -768,11 +793,11 @@ public class Users extends CRUD {
 
 		return list;
 	}
-	
+
 	/**
-	 * This method overrides the CRUD create method that is used to create 
-	 * a new user and make sure that this user is valid, and then it renders
-	 * a message mentioning whether the operation was successful or not.
+	 * This method overrides the CRUD create method that is used to create a new
+	 * user and make sure that this user is valid, and then it renders a message
+	 * mentioning whether the operation was successful or not.
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -783,20 +808,21 @@ public class Users extends CRUD {
 	 */
 
 	public static void create() throws Exception {
-		//Security.check(Security.getConnected().isAdmin);
+		// Security.check(Security.getConnected().isAdmin);
 		ObjectType type = ObjectType.get(Users.class);
 		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
-        constructor.setAccessible(true);
+		constructor.setAccessible(true);
 		Model object = type.entityClass.newInstance();
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
 			try {
-				render(request.controller.replace(".", "/") + "/blank.html", type,object);
+				render(request.controller.replace(".", "/") + "/blank.html",
+						type, object);
 			} catch (TemplateNotFoundException e) {
-				render("CRUD/blank.html", type,object);
+				render("CRUD/blank.html", type, object);
 			}
 		}
 		object._save();
@@ -810,11 +836,10 @@ public class Users extends CRUD {
 		redirect(request.controller + ".show", object._key());
 	}
 
-
 	/**
-	 * This method is used to submit the edit, to make sure that the edits
-	 * are acceptable, and then it renders a message mentioning whether 
-	 * the operation was successful or not.
+	 * This method is used to submit the edit, to make sure that the edits are
+	 * acceptable, and then it renders a message mentioning whether the
+	 * operation was successful or not.
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -907,7 +932,7 @@ public class Users extends CRUD {
 
 	public static void ViewOrgInv(long userId) {
 		User u = User.findById(userId);
-		//User u = (User) User.findAll().get(1);
+		// User u = (User) User.findAll().get(1);
 		List<Invitation> invitations = new ArrayList<Invitation>();
 		List<Invitation> invs1 = Invitation.findAll();
 		for (int j = 0; j < invs1.size(); j++) {
@@ -946,19 +971,20 @@ public class Users extends CRUD {
 		User user = User.findById(userId);
 		if (r) {
 			// System.out.println("@@@@@");
-			Role role = Role.find("byRoleName", "Idea Developer").first();
-			if (role == null) {
-				// role ???
-				role = new Role("Idea Developer", "view");
-				role._save();
-			}
+//			Role role = Role.find("byRoleName", "Idea Developer").first();
+//			if (role == null) {
+//				// role ???
+//				role = new Role("Idea Developer", "view");
+//				role._save();
+//			}
+			Role role = Roles.getRoleByName("idea developer");
 			UserRoleInOrganization roleInOrg = new UserRoleInOrganization(user,
 					org, role);
 			roleInOrg._save();
 			user.userRolesInOrganization.add(roleInOrg);
-			// user.
+			user.save();
 			Notification n1 = new Notification("Invitation accepted",
-					inv.sender, user.username + " accepted th invitation");
+					inv.sender, user.username + " accepted the invitation.");
 			n1._save();
 			User orgLead = org.creator;
 			if (orgLead.id != inv.sender.id) {

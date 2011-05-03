@@ -163,7 +163,7 @@ public class Organizations extends CRUD {
 			rec.invitation.add(inv);
 			rec._save();
 		}
-		//Mail.invite(email, "Idea Devoloper", org.name, "");
+		Mail.invite(email, "Idea Devoloper", org.name, "");
 
 	}
 

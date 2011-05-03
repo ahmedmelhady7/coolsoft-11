@@ -82,13 +82,14 @@ public class User extends Model {
 	// , cascade = CascadeType.ALL)
 	public List<Idea> ideasCreated;
 
-	@ManyToMany//(mappedBy = "reporters")
+	@ManyToMany
+	// (mappedBy = "reporters")
 	// , cascade = CascadeType.ALL)
 	public List<Idea> ideasReported;
-	
-	@ManyToMany(mappedBy ="usersRated")
+
+	@ManyToMany(mappedBy = "usersRated")
 	public List<Idea> ideasRated;
-	
+
 	@ManyToMany
 	// (cascade = CascadeType.PERSIST)
 	public List<Item> itemsAssigned;
@@ -97,8 +98,9 @@ public class User extends Model {
 	public List<NotificationProfile> notificationProfiles;
 	@OneToMany(mappedBy = "directedTo")
 	public List<Notification> notifications;
-
-	@ManyToMany(mappedBy = "organizers")
+	
+	// code 3'lt
+	//@ManyToMany(mappedBy = "followers")
 	public List<MainEntity> followingEntities;
 
 	// related to sprint 2
@@ -151,7 +153,8 @@ public class User extends Model {
 	// , cascade = CascadeType.ALL)
 	public List<UserRoleInOrganization> userRolesInOrganization;
 
-	@OneToMany(mappedBy = "madeBy")// , cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "madeBy")
+	// , cascade = CascadeType.PERSIST)
 	public List<Plan> planscreated;
 
 	public User(String email, String password, String firstName,
