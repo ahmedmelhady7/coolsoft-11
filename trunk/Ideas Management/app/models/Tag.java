@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import play.data.validation.Required;
 import play.db.jpa.Model;
@@ -58,12 +60,21 @@ public class Tag extends Model {
 
 	@ManyToMany(mappedBy = "tagsList")
 	public List<Idea> taggedIdeas;
+	
+	//ERD change : organization can create many tags, a tag can be created in a single org
+	/**
+	 * The Organization in which the tag was created
+	 */
+	@ManyToOne
+	public Organization createdInOrganization;
 	/**
 	 * Tag attributes
 	 * 
-	 * @param name
+	 * @param name : The name of the created tag
+	 * 
+	 * @param org : The organization in which the tag was created
 	 */
-	public Tag(String name) {
+	public Tag(String name, Organization org) {
 		this.setName(name);
 		this.followers = new ArrayList<User>();
 		this.organizations = new ArrayList<Organization>();
@@ -71,6 +82,8 @@ public class Tag extends Model {
 		this.taggedTopics = new ArrayList<Topic>();
 		this.taggedIdeas = new ArrayList<Idea>();
 		// this.relatedTags = new ArrayList<Tag>();
+		//ERD change
+		this.createdInOrganization = org;
 	}
 
 	/**

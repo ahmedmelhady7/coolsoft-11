@@ -75,6 +75,13 @@ public class Organization extends Model {
 	 */
 	@ManyToMany
 	public List<Tag> relatedTags;
+	
+	//ERD change
+	/**
+	 * The list of tags that were created in this organization
+	 */
+	@OneToMany(mappedBy = "createdInOrganization")
+	public List<Tag> createdTags;
 
 	/**
 	 * List of banned users from the organization
@@ -139,6 +146,8 @@ public class Organization extends Model {
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
 		logsList = new ArrayList<Log>();
 		joinRequests = new ArrayList<RequestToJoin>();
+		//ERD change
+		this.createdTags = new ArrayList<Tag>();
 	}
 
 	// public Organization(String name, User creator) {
