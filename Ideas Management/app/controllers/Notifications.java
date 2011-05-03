@@ -18,6 +18,7 @@ public class Notifications extends CRUD {
 	
 	/**
 	 * This method renders the view sending a notification to the user
+	 * This method is only there for testing the notification API
 	 * 
 	 *  @author Ahmed Maged
 	 *  
@@ -49,12 +50,12 @@ public class Notifications extends CRUD {
 	 * @return void
 	 */
 
-	public static void sendNotification(List<User> list, long notId,
+	public static boolean sendNotification(List<User> list, long notId,
 			String type, String desc) {
 		for(int j = 0; j < list.size(); j++) {
 			List<NotificationProfile> np = list.get(j).notificationProfiles;
 			boolean contains = false;
-			boolean isenabled = false;
+			boolean isenabled = true;
 			/**
 			 * check that the notification profile has the sending source
 			 * if not then add it, if present the check if enabled or not.
@@ -62,7 +63,6 @@ public class Notifications extends CRUD {
 			for (int i = 0; i < np.size(); i++) {
 				if(np.get(i).notifiableId == notId && np.get(i).notifiableType.equals(type)) {
 					isenabled = np.get(i).enabled;
-					contains = true;
 					break;
 				}
 			}
@@ -77,7 +77,9 @@ public class Notifications extends CRUD {
 			if(isenabled) {
 				Notification n = new Notification(type, list.get(j), desc);
 				n.save();
+				return true;
 			}
 		}
+		return false;
 	}
 }

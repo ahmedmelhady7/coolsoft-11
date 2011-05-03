@@ -1,20 +1,25 @@
 #{extends 'main.html' /}
 #{set title:'Notification Profile' /}
-<body>
+
+<big><u>Notification Profile</u></big>
+<br>
 <ul>
 #{list items:npList, as:'notifi'}
+    #{if npList.size() == 0}
+    <li>You have no notification profiles!!</li>
+    #{/if}
     <li>
     	<fieldset>
-    		<b>User: </b> ${x}
-    		<b>Type: </b> ${notifi.notifiableType} &nbsp; Enabled: ${notifi.enabled}
+    		<b>Source ID: </b> ${notifi.notifiableId} 
+    		&nbsp; <b>Type: </b> ${notifi.notifiableType} 
+    		&nbsp; <b>Enabled: </b> ${notifi.enabled}
     	</fieldset>
     </li>
 #{/list}
 </ul>
-</body>
 
 <form action="@{NotificationProfiles.alterPreferences()}" method="post">
 Change Preferences: <input type="submit" value="Alter">
 </form>
 
-<a href="@{Login.index()}">Back to user form</a>
+<a href="@{Login.index()}">Home Page</a>

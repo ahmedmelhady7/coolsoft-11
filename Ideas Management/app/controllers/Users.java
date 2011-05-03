@@ -894,15 +894,12 @@ public class Users extends CRUD {
 	 * 
 	 * @story C1S14
 	 * 
-	 * @param userId
-	 *            the ID of the user required to get his notifications
-	 * 
 	 * @return void
 	 */
 
-	public static void viewNotifications(long userId) {
-		User u = User.findById(userId);
-		List<Notification> nList = u.openNotifications();
+	public static void viewNotifications() {
+		User u = Security.getConnected();
+		List<Notification> nList = u.notifications;
 		render(nList);
 	}
 
@@ -920,9 +917,9 @@ public class Users extends CRUD {
 	 * @return void
 	 */
 
-	public static void viewNotificationProfile(long userId) {
-		User u = User.findById(userId);
-		List<NotificationProfile> npList = u.openNotificationProfile();
+	public static void viewNotificationProfile() {
+		User u = Security.getConnected();
+		List<NotificationProfile> npList = u.notificationProfiles;
 		render(npList);
 	}
 

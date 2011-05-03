@@ -1,23 +1,46 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Change Preferences</title>
+#{extends 'main.html' /}
+
 <script type="text/javascript">
-	var ids = new Array();
-	function markAll(){
-		$('.x').attr('checked',true);
-	}
-	function unmarkAll(){
-		$('.x').attr('checked',false);
-	}
-	function submit(){
-		$.post('@{changePreferences()}' ,{a:ids},function(){
-			window.location.reload();
-		});
-	}
+		var en_ids = new Array();
+		var dis_ids = new Array();
+		function markAll(){
+			$('.x').attr('checked',true);
+		}
+		function unmarkAll(){
+			$('.x').attr('checked',false);
+		}
+		function submit() {
+			if(en_ids.length == 0 && dis_ids.length == 0) {
+				alert('No preferences to edit!!');
+			} else {
+				var r=confirm("Are You sure you want to edit?");
+				if (r == true) {
+					$.post('@{disablePreferences()}', {a:dis_ids});
+					$.post('@{enablePreferences()}', {b:en_ids});
+					//document.write('Done <br> <a href="@{Login.index()}">Back to home page</a>');
+					//window.location ='http://localhost:9000/';
+				}
+				
+			}
+		}
+		function redirectNow() {
+			window.location ='http://localhost:9000/';
+		}
+		function checkD(id) {			
+			if(dis_ids.indexOf(id) == -1) {
+				dis_ids.push(id);
+			}else {
+				dis_ids.pop(id);
+			}			
+		}
+		function checkE(id) {			
+			if(en_ids.indexOf(id) == -1) {
+				en_ids.push(id);
+			}else {
+				en_ids.pop(id);
+			}
+		}
 </script>
-</head>
 
 <a onclick="markAll();" href="#"> Check All </a>&nbsp;&nbsp;
 &nbsp;&nbsp;<a onclick="unmarkAll();" href="#"> Uncheck All</a><br /> <br />
@@ -26,20 +49,26 @@
 #{list items:npList, as:'npro'}
     <li>
     	<fieldset>
+    	<legend>
+           Notification Profile
+        </legend>
     		<b>Notifiable Type: </b> ${npro.notifiableType}
     		&nbsp;
-    		<input type="checkbox" id="${npro.id}" onclick="ids.push(id)" class="x"> 
-    		&nbsp; <b>Disable</b>
+    		<b>Receive Notification: </b> ${npro.enabled}
+    		&nbsp;
+    		#{if npro.enabled}
+    		<b><i>Disable</i></b> &nbsp; 
+    		<input type="checkbox" id="${npro.id}" onclick="checkD(${npro.id})" class="enabled"> 
+    		#{/if}
+    		#{else}
+    		 <b><i>Enable</i></b> &nbsp; 
+    		 <input type="checkbox" id="${npro.id}" onclick="checkE(${npro.id})" class="disabled">
+    		#{/else} 
     	</fieldset>
     </li>
 #{/list}
 </ul>
-
-<input type="button" value="check" onclick="submit()"/>
 <br>
-<a href="@{Users.userIndex()}">Back to user form</a>
-
-<body>
-
-</body>
-</html>
+Edit Preferences <input type="submit" value="Done" onclick="submit()"/>
+<br>
+<a href="@{Login.index()}">Home Page</a>
