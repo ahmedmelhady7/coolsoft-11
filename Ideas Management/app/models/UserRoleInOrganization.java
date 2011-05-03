@@ -32,16 +32,37 @@ public class UserRoleInOrganization extends Model {
 	 * represents the type (entity or Topic)
 	 */
 	public String type;
+	/**
+	 * this organizer creates enrolls a user in a certain organization
+	 * @story C1S7 
+	 * @author Nada Ossama
+	 * @param user is the user to be enrolled
+	 * @param org is the organization that the user will be enrolled in
+	 * @param role is the role of that user in the organization org
+	 * @param entityTopicId  is the ID of the entity or the topic the user will be inrolled in if any
+	 * 
+	 * @param type is entity or topic 
+	 * 
+	 */
 
 	public UserRoleInOrganization(User user, Organization org, Role role,
-			long eTId, String type) {
+			long entityTopicId, String type) {
 		this.enrolled = user;
 		this.organization = org;
 		this.role = role;
-		this.entityTopicID = eTId;
+		this.entityTopicID = entityTopicId;
 		this.type = type;
 
 	}
+	/**
+	 * this organizer creates enrolls a user in a certain organization
+	 * @story C1S7 
+	 * @author Nada Ossama
+	 * @param user is the user to be enrolled
+	 * @param org is the organization that the user will be enrolled in
+	 * @param role is the role of that user in the organization org
+	 * 
+	 */
 
 	public UserRoleInOrganization(User user, Organization org, Role role) {
 		this.enrolled = user;
@@ -54,20 +75,22 @@ public class UserRoleInOrganization extends Model {
 	/**
 	 * returns the role of a user in the organization
 	 * @author Nada Osama
-	 * @param user the user i need to know hos role
+	 * @param user the user i need to know has role
 	 * @param org the organization i need to know the user's role in it 
 	 * @return the role of the user in that organization
 	 */
 
 	public Role userRoleInOrganization(User user, Organization org) {
 
-		Role r = UserRoleInOrganization
-				.find("select uro.role from UserRoleInOrganization uro where uro.enrolled = ? and uro.organization = ?",
+		UserRoleInOrganization r = UserRoleInOrganization
+				.find("select uro from UserRoleInOrganization uro where uro.enrolled = ? and uro.organization = ?",
 						user, org).first();
+		
 	    if (r == null ){
-	    	return (Roles.getRoleByName("Idea developer"));
+	    	return (Roles.getRoleByName("idea developer"));
 	    }
-	    return r;
+	    else
+	    return r.role;
 						
 	}
 	//
