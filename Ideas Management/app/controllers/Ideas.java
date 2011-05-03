@@ -550,5 +550,23 @@ public class Ideas extends CRUD {
 			render(newRating);
 		}
 	}
+	/**
+	 * @author ${Ibrahim safwat}
+	 * 
+	 * @param userId
+	 *            User that wants to share the idea
+	 * @param ideaID
+	 *            ID of the idea to be shared
+	 */
+	public void shareIdea(long userId, long ideaID) {
+		ArrayList<User> UserToShare = new ArrayList<User>(1);
+		User U = User.findById(userId);
+		UserToShare.add(U);
+		String type = "idea";
+		User user = Security.getConnected();
+		String desc = user.firstName + user.lastName + " shared an Idea with you";
+		long notId = ideaID;
+		Notifications.sendNotification(UserToShare, notId, type, desc);
+	}
 
 }
