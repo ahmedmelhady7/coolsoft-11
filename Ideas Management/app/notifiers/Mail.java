@@ -36,10 +36,14 @@ public class Mail extends Mailer {
 		setSubject("Invitation");
 		 String url = "http://localhost:9008/login" ;
 		User user = User.find("byEmail", email).first();
+		entity="";
 		int id=1;
+		int check=1;
 		if(user==null)
 			id=0;
-		send(user, role,url ,organization, entity,id);
+		if(entity.equals(""));
+		  check=0;
+		send(user, role,url ,organization, entity,id,check);
 
 	}
 
