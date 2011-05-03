@@ -55,7 +55,7 @@ public class Topics extends CRUD {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicID);
 
-		if (!topic.organizers.contains(user)) {
+		if (!topic.getOrganizer().contains(user)) {
 			// user not allowed
 			userNotAllowed = true;
 		} else {
@@ -84,7 +84,7 @@ public class Topics extends CRUD {
 			if (!tagAlreadyExists) {
 				Notifications.sendNotification(topic.followers, topicID,
 						"topic", "This topic has been tagged as " + tag);
-				Notifications.sendNotification(topic.organizers, topicID,
+				Notifications.sendNotification(topic.getOrganizer(), topicID,
 						"topic", "This topic has been tagged as " + tag);
 				List<User> list1 = new ArrayList<User>();
 				list1.add(topic.entity.organization.creator);
@@ -147,7 +147,7 @@ public class Topics extends CRUD {
 		Topic targetTopic = Topic.findById(topicId);
 		User actor = User.findById(userId);
 		String action = "close a topic and promote it to execution";
-		if (!targetTopic.organizers.contains(actor)
+		if (!targetTopic.getOrganizer().contains(actor)
 				&& Users.isPermitted(actor, action, topicId, "Topic")) {
 			System.out.println("User does not have requiered permission");
 			return;
@@ -415,7 +415,7 @@ public class Topics extends CRUD {
 		// checks if topic is empty or the user is not an organizer
 		String action = "close a topic and promote it to execution";
 		if (targetTopic.ideas.size() == 0
-				|| !targetTopic.organizers.contains(actor)
+				|| !targetTopic.getOrganizer().contains(actor)
 				&& Users.isPermitted(actor, action, topicId, "Topic")) {
 			System.out.println("User does not have required permission");
 			return;
@@ -429,7 +429,7 @@ public class Topics extends CRUD {
 				+ " has been closed and promoted to execution.";
 
 		// send notification to organizers
-		Notifications.sendNotification(targetTopic.organizers, targetTopic.id,
+		Notifications.sendNotification(targetTopic.getOrganizer(), targetTopic.id,
 				"Topic", notificationDescription);
 
 		// send notification to followers
@@ -648,7 +648,7 @@ public class Topics extends CRUD {
 		String actionPlan = "create an action plan to execute an idea";
 		Topic targetTopic = Topic.findById(topicid);
 		long topicId = Long.parseLong(topicid);
-		if(targetTopic.organizers.contains(actor)) {
+		if(targetTopic.getOrganizer().contains(actor)) {
 			if(Users.isPermitted(actor, actionClose, topicId, "Topic")){
 				canClose = 1;
 			}

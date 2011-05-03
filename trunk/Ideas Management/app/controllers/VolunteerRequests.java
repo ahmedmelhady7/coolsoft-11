@@ -168,9 +168,9 @@ public class VolunteerRequests extends CRUD {
 		String s = "Your request to volunteer on item: " + item.summary
 				+ " has been accepted.";
 		list.add(user);
-		for (int i = 0; i < item.plan.topic.organizers.size(); i++) {
-			if (org != item.plan.topic.organizers.get(i))
-				list.add(item.plan.topic.organizers.get(i));
+		for (int i = 0; i < item.plan.topic.getOrganizer().size(); i++) {
+			if (org != item.plan.topic.getOrganizer().get(i))
+				list.add(item.plan.topic.getOrganizer().get(i));
 		}
 		Notifications.sendNotification(list, item.plan.id, "plan", s);
 	}
@@ -197,9 +197,9 @@ public class VolunteerRequests extends CRUD {
 				+ " has been rejected.";
 		List<User> list = new ArrayList<User>();
 		list.add(user);
-		for (int i = 0; i < item.plan.topic.organizers.size(); i++) {
-			if (org != item.plan.topic.organizers.get(i))
-				list.add(item.plan.topic.organizers.get(i));
+		for (int i = 0; i < item.plan.topic.getOrganizer().size(); i++) {
+			if (org != item.plan.topic.getOrganizer().get(i))
+				list.add(item.plan.topic.getOrganizer().get(i));
 		}
 		Notifications.sendNotification(list, item.plan.id, "plan", s);
 	}
