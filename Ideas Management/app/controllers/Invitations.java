@@ -68,8 +68,6 @@ public class Invitations extends CRUD {
 	 */
 	public static void SearchUsers(long orgId,long entId,@Required String name) {
 
-		//Organization org=Organization.findById(orgId);
-        //MainEntity ent= MainEntity.findById(entId);
         
         Organization org=Organization.findById(((long)1));
         MainEntity ent= MainEntity.findById(((long)1));
@@ -248,18 +246,8 @@ public class Invitations extends CRUD {
 	 */
 
 	public static void respond(int id,long i) {
+		
 		System.out.println("HERE");
-		 /* Invitation invite=Invitation.findById(i);
-	      Organization org=invite.organization;
-	      org.invitation.remove(invite);
-	      
-	     MainEntity ent=invite.entity;
-	     if(ent!=null){
-	      ent.invitationList.remove(invite);
-	      }
-	      User u=invite.sender;
-	      u.invitation.remove(invite);
-	      invite.delete();*/
 		
 		Invitation invite = Invitation.findById(i);
 		String rolename = invite.role.toLowerCase();
@@ -322,10 +310,6 @@ public class Invitations extends CRUD {
 			}
 
 		}
-
-		//invite.delete(); 
-					
-				      
 				     org.invitation.remove(invite);
 				     if(ent!=null){
 				      ent.invitationList.remove(invite);
@@ -334,6 +318,6 @@ public class Invitations extends CRUD {
 				      u.invitation.remove(invite);
 				      invite.delete();
 
-	}
+ 	}
 
 }
