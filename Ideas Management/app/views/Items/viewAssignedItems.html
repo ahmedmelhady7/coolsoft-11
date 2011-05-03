@@ -1,4 +1,4 @@
-#{extends 'main.html' /}
+
 #{set title:'View list of assigned items' /}
 #{if assignedItems.size() > 0}<h3>Assigned Items </h3>
 <ul style="list-style: none; ">
@@ -10,31 +10,34 @@
 				<h2>Plan: <a href="@{Plans.viewAsList(assignedItem.plan.id)}">${assignedItem.plan.title}</a></h2>
                
             </legend>
-            Title: ${item.summary} &nbsp; &nbsp; &nbsp;
+            Title: ${assignedItem.summary} &nbsp; &nbsp; &nbsp;
 			#{if assignedItem.endDate.compareTo(new Date()) >= 0}
             #{if assignedItem.status == 0} 
-			<input type = "button" value="Start" onClick ="startItem('${assignedItem.id}');"/> 
+			<input type = "button" value="Start" onclick ="javascript: start_task('${assignedItem.id}');"/> 
 			#{/if}
             #{else}
-			<input type="checkbox" onClick="toggle_task('${assignedItem.id}');" ${assignedItem.status == 1 ? '':'checked'} />
-			#{/if}
+			<input type="checkbox"  onclick=" javascript: toggle_task('${assignedItem.id}');" ${assignedItem.status == 1 ? '':'checked'} />
+		    <label>
 			#{if assignedItem.status == 1}
-			in progress
+			<label id = "label1_${assignedItem.id}" > in progress </label>
 			#{/if}
 			#{else}
-			done
+			<label id = "label2_${assignedItem.id}" > done</label>
 			#{/else}
 			#{/else}
+			</label>
 			<br/>
             Item Description: ${assignedItem.description}
             <br/>
             Start Date:  ${assignedItem.startDate.format('dd MMM yy')}
             <br/>
-            End Date:  ${assignedItem.endtDate.format('dd MMM yy')}
+				#{/if}
+			
+            End Date:  ${assignedItem.endDate.format('dd MMM yy')}
             <br/>
             Assigned Users: 
             <ul style="list-style: none; ">
-                #{list users:${assignedItem.assignees}, as:'assignedUser'}
+                #{list users:assignedItem.assignees, as:'assignedUser'}
                 <li>
                     <a href="#">${assignedUser.username}</a>
                 </li>
@@ -49,6 +52,8 @@
 You are not assigned to any to-do item.
 #{/else}
 
+<script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
+</script>
 <script type="text/javascript">
 
 function start_task(id)
@@ -61,6 +66,7 @@ function start_task(id)
 function toggle_task(id)
   {
 	$.post( '@{toggleItem()}' , {id: id});
+	//window.location.reload();
   }
 
 </script>
