@@ -315,16 +315,24 @@ public class Topics extends CRUD {
 		}
 
 		List<UserRoleInOrganization> allUser = new ArrayList<UserRoleInOrganization>();
-
+		//List<User> u = new ArrayList<User>();
 		if ((org.privacyLevel == 0 || org.privacyLevel == 1)
 				&& (topic.privacyLevel == 0 || topic.privacyLevel == 1)) {
-			allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
-					.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
-							org, id, "idea developer", "topic");
-
-			for (int i = 0; i < allUser.size(); i++) {
-				user.add((allUser.get(i)).enrolled);
+			
+			
+		//	allUser =  (List<UserRoleInOrganization>) UserRoleInOrganization
+					//.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
+						//	org, id, "idea developer", "topic");
+			allUser = UserRoleInOrganization.find("byEntityTopicIDAndType", id,"topic").fetch();
+			for(int i= 0; i <allUser.size(); i++) {
+				if((allUser.get(i).role).equals("idea developer") && (allUser.get(i).organization).equals(org)){
+					user.add(allUser.get(i).enrolled);
+				}
 			}
+
+//			for (int i = 0; i < allUser.size(); i++) {
+//				user.add((allUser.get(i)).enrolled);
+//			}
 
 			for (int i = 0; i < bUser.size(); i++) {
 				if (user.contains(bUser.get(i))) {
@@ -336,13 +344,20 @@ public class Topics extends CRUD {
 
 			if ((org.privacyLevel == 0 || org.privacyLevel == 1)
 					&& (topic.privacyLevel == 2)) {
-				allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
-						.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
-								org, -1, "idea developer", "none");
-
-				for (int i = 0; i < allUser.size(); i++) {
-					user.add((allUser.get(i)).enrolled);
+//				allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
+//						.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
+//								org, -1, "idea developer", "none");
+				allUser = UserRoleInOrganization.find("byOrganization", org).fetch();
+				for(int i= 0; i <allUser.size(); i++) {
+					if((allUser.get(i).role).equals("idea developer")){
+						user.add(allUser.get(i).enrolled);
+					}
 				}
+				
+
+//				for (int i = 0; i < allUser.size(); i++) {
+//					user.add((allUser.get(i)).enrolled);
+//				}
 
 				for (int i = 0; i < bUser.size(); i++) {
 					if (user.contains(bUser.get(i))) {
@@ -355,14 +370,22 @@ public class Topics extends CRUD {
 			else {
 				if ((org.privacyLevel == 2)
 						&& (topic.privacyLevel == 0 || topic.privacyLevel == 1)) {
-					allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
-							.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
-									org, id, "idea developer", "topic");
+//					allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
+//							.find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
+//									org, id, "idea developer", "topic");
 
-					for (int i = 0; i < allUser.size(); i++) {
-						user.add((allUser.get(i)).enrolled);
+//					for (int i = 0; i < allUser.size(); i++) {
+//						user.add((allUser.get(i)).enrolled);
+//					}
+
+					
+					allUser = UserRoleInOrganization.find("byEntityTopicIDAndType", id,"topic").fetch();
+					for(int i= 0; i <allUser.size(); i++) {
+						if((allUser.get(i).role).equals("idea developer") && (allUser.get(i).organization).equals(org)){
+							user.add(allUser.get(i).enrolled);
+						}
 					}
-
+					
 					for (int i = 0; i < bUser.size(); i++) {
 						if (user.contains(bUser.get(i))) {
 							user.remove(bUser.get(i));

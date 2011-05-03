@@ -198,15 +198,25 @@ public class Topic extends Model {
 	 */
 
 	public List<User> getOrganizer() {
-		List<UserRoleInOrganization> o = (List<UserRoleInOrganization>) UserRoleInOrganization
-				.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.resourceID = ? and r.roleName like ? and uro.resourceType = ? ",
-						this.id, "organizer", "topic");
-
+//		List<UserRoleInOrganization> o = (List<UserRoleInOrganization>) UserRoleInOrganization
+//				.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.resourceID = ? and r.roleName like ? and uro.resourceType = ? ",
+//						this.id, "organizer", "topic");
+//
 		List<User> organizer = new ArrayList<User>();
-		for (int i = 0; i < o.size(); i++) {
-			organizer.add((o.get(i).enrolled));
+//		for (int i = 0; i < o.size(); i++) {
+//			organizer.add((o.get(i).enrolled));
+//		}
+//		return organizer;
+		
+		List<UserRoleInOrganization> o = UserRoleInOrganization.find("byEntityTopicIDAndType", this.entity.id,"entity").fetch();
+		for(int i= 0; i <o.size(); i++) {
+			if((o.get(i).role).equals("organizer")){
+				organizer.add(o.get(i).enrolled);
+			}
 		}
 		return organizer;
+		
+		
 	}
 
 	/**
