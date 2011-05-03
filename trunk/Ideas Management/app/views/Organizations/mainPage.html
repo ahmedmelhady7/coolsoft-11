@@ -14,7 +14,7 @@
 		<ul style="list-style: none;">
 			#{list items:organizations, as:'organization'}
 			<li>
-				<a href="@{Organizations.viewProfile(orgId)}">${organization.name}</a>
+				<a href="@{Organizations.viewProfile(${organization})}">${organization.name}</a>
 			</li>
 			#{/list}
 		</ul> 
