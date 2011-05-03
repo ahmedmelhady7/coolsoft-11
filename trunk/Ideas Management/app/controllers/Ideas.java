@@ -35,28 +35,25 @@ public class Ideas extends CRUD {
 	 * @param body the body of the idea
 	 * 
 	 * @param topicId the topic that the idea belongs to
-	 * 
 	 */
 
-	public static void saveDraft(String title, String body, Long topicId) 
-	{
+	public static void saveDraft(String title, String body, Long topicId) {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
 		Idea idea = new Idea(title, body, user, topic, true).save();
-		//String message = "you have saved the idea with title successfully";
-		//redirect(request.controller + ".show", idea.getId(),message);
+		// String message = "you have saved the idea with title successfully";
+		// redirect(request.controller + ".show", idea.getId(),message);
 	}
+
 	/*
 	 * @author Abdalrahman Ali
 	 * 
 	 * this method posts an idea that was saved as a draft
 	 * 
 	 * @param ideaId the saved idea
-	 * 
 	 */
 
-	public static void postDraft(long ideaId) 
-	{
+	public static void postDraft(long ideaId) {
 		Idea idea = Idea.findById(ideaId);
 		idea.isDraft = false;
 		idea.save();
@@ -72,9 +69,8 @@ public class Ideas extends CRUD {
 	 * 
 	 * @return ArrayList<Idea> all the draft ideas saved by the user
 	 */
-	
-	public static ArrayList<Idea> getDrafts(User user)
-	{
+
+	public static ArrayList<Idea> getDrafts(User user) {
 		ArrayList<Idea> drafts = new ArrayList<Idea>();
 
 		for (Idea idea : user.ideasCreated)
@@ -133,75 +129,75 @@ public class Ideas extends CRUD {
 	 * 
 	 */
 
-//	public static void create() throws Exception {
-//		ObjectType type = ObjectType.get(getControllerClass());
-//		notFoundIfNull(type);
-//		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
-//		constructor.setAccessible(true);
-//		Model object = (Model) constructor.newInstance();
-//		Binder.bind(object, "object", params.all());
-//		validation.valid(object);
-//		Topic topic = Topic.findById((long) 1);
-//		User author = User.findById((long) 1);
-//		Idea i = (Idea) object;
-//		i.belongsToTopic = topic;
-//		i.author = author;
-//		i.privacyLevel = topic.privacyLevel;
-//		// ArrayList<Comment> ideaComments = (ArrayList<Comment>)
-//		// i.commentsList;
-//		// ArrayList<Tag> ideaTags = (ArrayList<Tag>) i.tagsList;
-//		String message = "";
-//		if (i.belongsToTopic == null) {
-//			message = "An Idea must belong to a Topic";
-//			try {
-//				render(request.controller.replace(".", "/") + "/blank.html",
-//						type, message);
-//			} catch (TemplateNotFoundException e) {
-//				render("CRUD/blank.html", type, message);
-//			}
-//		}
-//
-//		if (validation.hasErrors()) {
-//			if (i.title.equals("")) {
-//				message = "An Idea must have a title";
-//			} else if (i.description.equals("")) {
-//				message = "An Idea must have a description";
-//
-//			}
-//
-//			try {
-//				System.out.println("foo2 Render");
-//				render(request.controller.replace(".", "/") + "/blank.html",
-//						type, i.title, i.belongsToTopic, i.description,
-//						i.commentsList, /* i.tagsList, */message);
-//				System.out.println("rendered 5alas");
-//			} catch (TemplateNotFoundException e) {
-//				System.out.println("fel catch templatenotfound");
-//				render("CRUD/blank.html", type);
-//			}
-//		}
-//
-//		object._save();
-//		System.out.println("3ada el save");
-//		String anothermessage = "you have created a new idea with title "
-//				+ i.title + " and with description " + i.description;
-//		flash.success(Messages.get("crud.created", type.modelName,
-//				((Idea) object).getId()));
-//		System.out.println("foo2 el if");
-//		if (params.get("_save") != null) {
-//			System.out.println("gowa el if");
-//			System.out
-//					.println("/ideas/view?ideasid=" + ((Idea) object).getId());
-//
-//			redirect("/ideas/view?ideaId=" + ((Idea) object).getId());
-//			if (params.get("_saveAndAddAnother") != null) {
-//				redirect(request.controller + ".blank", anothermessage);
-//			}
-//			redirect(request.controller + ".show", ((Idea) object).getId(),
-//					anothermessage);
-//
-//		}
-//	}
+	// public static void create() throws Exception {
+	// ObjectType type = ObjectType.get(getControllerClass());
+	// notFoundIfNull(type);
+	// Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+	// constructor.setAccessible(true);
+	// Model object = (Model) constructor.newInstance();
+	// Binder.bind(object, "object", params.all());
+	// validation.valid(object);
+	// Topic topic = Topic.findById((long) 1);
+	// User author = User.findById((long) 1);
+	// Idea i = (Idea) object;
+	// i.belongsToTopic = topic;
+	// i.author = author;
+	// i.privacyLevel = topic.privacyLevel;
+	// // ArrayList<Comment> ideaComments = (ArrayList<Comment>)
+	// // i.commentsList;
+	// // ArrayList<Tag> ideaTags = (ArrayList<Tag>) i.tagsList;
+	// String message = "";
+	// if (i.belongsToTopic == null) {
+	// message = "An Idea must belong to a Topic";
+	// try {
+	// render(request.controller.replace(".", "/") + "/blank.html",
+	// type, message);
+	// } catch (TemplateNotFoundException e) {
+	// render("CRUD/blank.html", type, message);
+	// }
+	// }
+	//
+	// if (validation.hasErrors()) {
+	// if (i.title.equals("")) {
+	// message = "An Idea must have a title";
+	// } else if (i.description.equals("")) {
+	// message = "An Idea must have a description";
+	//
+	// }
+	//
+	// try {
+	// System.out.println("foo2 Render");
+	// render(request.controller.replace(".", "/") + "/blank.html",
+	// type, i.title, i.belongsToTopic, i.description,
+	// i.commentsList, /* i.tagsList, */message);
+	// System.out.println("rendered 5alas");
+	// } catch (TemplateNotFoundException e) {
+	// System.out.println("fel catch templatenotfound");
+	// render("CRUD/blank.html", type);
+	// }
+	// }
+	//
+	// object._save();
+	// System.out.println("3ada el save");
+	// String anothermessage = "you have created a new idea with title "
+	// + i.title + " and with description " + i.description;
+	// flash.success(Messages.get("crud.created", type.modelName,
+	// ((Idea) object).getId()));
+	// System.out.println("foo2 el if");
+	// if (params.get("_save") != null) {
+	// System.out.println("gowa el if");
+	// System.out
+	// .println("/ideas/view?ideasid=" + ((Idea) object).getId());
+	//
+	// redirect("/ideas/view?ideaId=" + ((Idea) object).getId());
+	// if (params.get("_saveAndAddAnother") != null) {
+	// redirect(request.controller + ".blank", anothermessage);
+	// }
+	// redirect(request.controller + ".show", ((Idea) object).getId(),
+	// anothermessage);
+	//
+	// }
+	// }
 
 	/**
 	 * Overriding the CRUD method show.
@@ -497,9 +493,9 @@ public class Ideas extends CRUD {
 			}
 
 			if (!tagExists) {
-				Tag temp = new Tag(tag);
-				temp.save();
-				idea.tagsList.add(temp);
+				// Tag temp = new Tag(tag);
+				// temp.save();
+				// idea.tagsList.add(temp);
 			}
 
 			if (!tagAlreadyExists) {
@@ -513,7 +509,7 @@ public class Ideas extends CRUD {
 		}
 		render(tagAlreadyExists, tagExists, userNotAllowed, idea.tagsList);
 	}
-	
+
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
@@ -521,8 +517,8 @@ public class Ideas extends CRUD {
 	 *            User to be checked if he/she is in the list usersRated
 	 * @return
 	 */
-	
-	public boolean checkRated(User userToCheck,long ideaID) {
+
+	public boolean checkRated(User userToCheck, long ideaID) {
 		Idea idea = Idea.findById(ideaID);
 		for (int i = 0; i < idea.usersRated.size(); i++) {
 			if (userToCheck == idea.usersRated.get(i))
@@ -539,9 +535,9 @@ public class Ideas extends CRUD {
 	 * @param ideaID
 	 *            idea that the user wants to rate
 	 */
-	
+
 	public void rate(int rating, int ideaID) {
-		
+
 		User user = Security.getConnected();
 		if (!checkRated(user, ideaID)) {
 			Idea idea = Idea.findById(ideaID);
@@ -550,6 +546,7 @@ public class Ideas extends CRUD {
 			render(newRating);
 		}
 	}
+
 	/**
 	 * @author ${Ibrahim safwat}
 	 * 
@@ -564,7 +561,8 @@ public class Ideas extends CRUD {
 		UserToShare.add(U);
 		String type = "idea";
 		User user = Security.getConnected();
-		String desc = user.firstName + user.lastName + " shared an Idea with you";
+		String desc = user.firstName + user.lastName
+				+ " shared an Idea with you";
 		long notId = ideaID;
 		Notifications.sendNotification(UserToShare, notId, type, desc);
 	}

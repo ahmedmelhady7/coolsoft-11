@@ -76,9 +76,9 @@ public class Topics extends CRUD {
 			}
 
 			if (!tagExists) {
-				Tag temp = new Tag(tag);
-				temp.save();
-				topic.tags.add(temp);
+				// Tag temp = new Tag(tag);
+				// temp.save();
+				// topic.tags.add(temp);
 			}
 
 			if (!tagAlreadyExists) {
@@ -154,7 +154,7 @@ public class Topics extends CRUD {
 		}
 
 		targetTopic.openToEdit = true;
-	
+
 	}
 
 	/**
@@ -210,9 +210,9 @@ public class Topics extends CRUD {
 	 */
 
 	public static void addRequest(long topicId, long userId) {
-		//System.out.println("kkk");
+		// System.out.println("kkk");
 		User user = User.findById(userId);
-		//Organization org = Organization.findById(orgId);
+		// Organization org = Organization.findById(orgId);
 		Topic t = Topic.findById(topicId);
 		t.requestFromUserToPost(user);
 	}
@@ -243,7 +243,7 @@ public class Topics extends CRUD {
 		for (int i = 0; i < e.size(); i++) {
 			temp = e.get(i).topicList;
 			for (int j = 0; j < temp.size(); j++) {
-//				???
+				// ???
 				if (user.topicsIOrganize.indexOf(temp.get(j)) < 0) {
 					topics.add(temp.get(j));
 				}
@@ -386,8 +386,9 @@ public class Topics extends CRUD {
 		}
 		searchList.addAll(user);
 		int size = searchList.size();
-		for(int i =0; i< size; i++){
-			if(searchList.get(i).state.endsWith("d") || searchList.get(i).state.endsWith("n") ){
+		for (int i = 0; i < size; i++) {
+			if (searchList.get(i).state.endsWith("d")
+					|| searchList.get(i).state.endsWith("n")) {
 				searchList.remove(i);
 			}
 		}
@@ -411,7 +412,7 @@ public class Topics extends CRUD {
 	public static void closeTopic(long topicId, long userId) {
 		Topic targetTopic = Topic.findById(topicId);
 		User actor = User.findById(userId);
-		
+
 		// checks if topic is empty or the user is not an organizer
 		String action = "close a topic and promote it to execution";
 		if (targetTopic.ideas.size() == 0
@@ -429,13 +430,12 @@ public class Topics extends CRUD {
 				+ " has been closed and promoted to execution.";
 
 		// send notification to organizers
-		Notifications.sendNotification(targetTopic.getOrganizer(), targetTopic.id,
-				"Topic", notificationDescription);
+		Notifications.sendNotification(targetTopic.getOrganizer(),
+				targetTopic.id, "Topic", notificationDescription);
 
 		// send notification to followers
 		Notifications.sendNotification(targetTopic.followers, targetTopic.id,
 				"Topic", notificationDescription);
-
 
 	}
 
@@ -453,7 +453,7 @@ public class Topics extends CRUD {
 	 * @throws Exception
 	 * 
 	 */
-	public static void create(/*int entityid*/) throws Exception {
+	public static void create(/* int entityid */) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
@@ -465,10 +465,12 @@ public class Topics extends CRUD {
 		Topic tmp = (Topic) object;
 		System.out.println("create() entered");
 		// MainEntity topicEntity = to get connected aw kda
-		MainEntity topicEntity = MainEntity.findById((long) 1);//temporary; for testing purposes
+		MainEntity topicEntity = MainEntity.findById((long) 1);// temporary; for
+																// testing
+																// purposes
 		tmp.entity = topicEntity;
 		// User myUser = Security.getConnected();
-		User myUser = User.findById((long) 1);//temporary; for testing purposes
+		User myUser = User.findById((long) 1);// temporary; for testing purposes
 		tmp.creator = myUser;
 
 		/*
@@ -526,11 +528,12 @@ public class Topics extends CRUD {
 		String message2 = tmp.creator.username + " has Created the topic "
 				+ tmp.title + " in " + tmp.entity;
 
-		/*List users = Users.getEntityOrganizers(tmp.entity);
-		users.add(tmp.entity.organization.creator);
-		Notifications.sendNotification(users, tmp.id, "Topic", "A new Topic "
-				+ tmp.title + " has been added in entity" + tmp.entity.name);*/
-
+		/*
+		 * List users = Users.getEntityOrganizers(tmp.entity);
+		 * users.add(tmp.entity.organization.creator);
+		 * Notifications.sendNotification(users, tmp.id, "Topic", "A new Topic "
+		 * + tmp.title + " has been added in entity" + tmp.entity.name);
+		 */
 
 		// tmp.init();
 		flash.success(Messages.get("crud.created", type.modelName,
@@ -642,18 +645,18 @@ public class Topics extends CRUD {
 		boolean deletable = tmp.isDeletable();
 		int canClose = 0;
 		int canPlan = 0;
-		
+
 		User actor = Security.getConnected();
 		String actionClose = "close a topic and promote it to execution";
 		String actionPlan = "create an action plan to execute an idea";
 		Topic targetTopic = Topic.findById(topicid);
 		long topicId = Long.parseLong(topicid);
-		if(targetTopic.getOrganizer().contains(actor)) {
-			if(Users.isPermitted(actor, actionClose, topicId, "Topic")){
+		if (targetTopic.getOrganizer().contains(actor)) {
+			if (Users.isPermitted(actor, actionClose, topicId, "Topic")) {
 				canClose = 1;
 			}
-			
-			if(Users.isPermitted(actor, actionPlan, topicId, "Topic")) {
+
+			if (Users.isPermitted(actor, actionPlan, topicId, "Topic")) {
 				canPlan = 1;
 			}
 		}
@@ -668,8 +671,7 @@ public class Topics extends CRUD {
 			render("CRUD/show.html", type, object);
 		}
 	}
-	
-	
+
 	/**
 	 * Topic view method
 	 * 
@@ -720,19 +722,17 @@ public class Topics extends CRUD {
 		}
 	}
 
-	/*public static void edit(String topicid) {
-
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		Model object = type.findById(topicid);
-		notFoundIfNull(object);
-		System.out.println("entered edit() for topic " + topicid);
-		Topic tmp = (Topic) object;
-		flash.success(Messages.get("crud.edit", type.modelName,
-				((Topic) object).getId()));
-		System.out.println("About to redirect from edit()");
-		redirect("/topics/show?topicid=" + ((Topic) object).getId(), tmp);
-	}*/
+	/*
+	 * public static void edit(String topicid) {
+	 * 
+	 * ObjectType type = ObjectType.get(getControllerClass());
+	 * notFoundIfNull(type); Model object = type.findById(topicid);
+	 * notFoundIfNull(object); System.out.println("entered edit() for topic " +
+	 * topicid); Topic tmp = (Topic) object;
+	 * flash.success(Messages.get("crud.edit", type.modelName, ((Topic)
+	 * object).getId())); System.out.println("About to redirect from edit()");
+	 * redirect("/topics/show?topicid=" + ((Topic) object).getId(), tmp); }
+	 */
 
 	/**
 	 * Overriding the CRUD method list.
@@ -860,7 +860,9 @@ public class Topics extends CRUD {
 		validation.valid(object);
 		Topic tmp = (Topic) object;
 		// MainEntity topicEntity = to get connected aw kda
-		MainEntity topicEntity = MainEntity.findById((long) 1); //temporary; for testing purposes
+		MainEntity topicEntity = MainEntity.findById((long) 1); // temporary;
+																// for testing
+																// purposes
 		tmp.entity = topicEntity;
 		// User myUser = Security.getConnected();
 		User myUser = User.findById((long) 1);// temporary; for testing purposes
@@ -906,10 +908,12 @@ public class Topics extends CRUD {
 		// Logs.addLog( myUser, "add", "Task", tmp.id, tmp.entity.organization,
 		// cal.getTime() );
 		// String message3 = myUser.username + " has editted the topic " +
-		/*List users = Users.getEntityOrganizers(tmp.entity);
-		users.add(tmp.entity.organization.creator);
-		Notifications.sendNotification(users, tmp.id, "Topic", "User "
-				+ myUser.firstName + " has edited topic  " + tmp.title);*/
+		/*
+		 * List users = Users.getEntityOrganizers(tmp.entity);
+		 * users.add(tmp.entity.organization.creator);
+		 * Notifications.sendNotification(users, tmp.id, "Topic", "User " +
+		 * myUser.firstName + " has edited topic  " + tmp.title);
+		 */
 		System.out.println("save() done, not redirected yet");
 
 		flash.success(Messages.get("crud.saved", type.modelName,
@@ -925,24 +929,24 @@ public class Topics extends CRUD {
 		redirect(request.controller + ".view", ((Topic) object).getId());
 		System.out.println("save() done, redirected to default view.html");
 	}
-	
+
 	/**
 	 * The method that allows a user to follow a certain topic
 	 * 
 	 * @author Noha Khater
 	 * 
-	 * @Stroy  C2S10
+	 * @Stroy C2S10
 	 * 
 	 * @param topicId
-	 * 				: The id of the topic that the user wants to follow 
+	 *            : The id of the topic that the user wants to follow
 	 * 
 	 * @param user
-	 * 				: The user who wants to follow a topic
+	 *            : The user who wants to follow a topic
 	 */
-	
-	public static void followTopic(long topicId ,User user) {
+
+	public static void followTopic(long topicId, User user) {
 		Topic t = Topic.findById(topicId);
-		if(Users.isPermitted(user, "follow", topicId, "topic")){
+		if (Users.isPermitted(user, "follow", topicId, "topic")) {
 			t.followers.add(user);
 			user.topicsIFollow.add(t);
 		} else {
