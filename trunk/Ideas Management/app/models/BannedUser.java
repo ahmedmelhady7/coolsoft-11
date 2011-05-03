@@ -89,14 +89,14 @@ public class BannedUser extends Model {
 	 * 
 	 * returns boolean false if found banned otherwise return true
 	 */
-	public boolean blockFromEntity(long userID, long organizationID,
+	public static boolean blockFromEntity(long userID, long organizationID,
 			long entityID) {
 
 		User myBannedUser = User.findById(userID);
 		Organization myOrganization = Organization.findById(organizationID);
-
+                     
 		BannedUser test = BannedUser.find(
-				"select * from BannedUser bu where bu.bannedUser = ?"
+				"select bu from BannedUser bu where bu.bannedUser = ?"
 						+ " and bu.organization = ? and bu.action like ?"
 						+ "and bu.resourceType like ? and bu.resourceID = ?",
 				myBannedUser, myOrganization, "All", "entity", entityID)
@@ -108,7 +108,10 @@ public class BannedUser extends Model {
 
 		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
 				"All", "entity", entityID);
+		
 		newBannedUser.save();
+    	myBannedUser.bannedUsers.add(newBannedUser);
+		myOrganization.bannedUsers.add(newBannedUser);
 		return true;
 	}
 
@@ -136,7 +139,7 @@ public class BannedUser extends Model {
 		Organization myOrganization = Organization.findById(organizationID);
 
 		BannedUser test = BannedUser.find(
-				"select * from BannedUser bu where bu.bannedUser = ?"
+				"select bu from BannedUser bu where bu.bannedUser = ?"
 						+ " and bu.organization = ? and bu.action like ?"
 						+ "and bu.resourceType like ? and bu.resourceID = ?",
 				myBannedUser, myOrganization, action, "entity", entityID)
@@ -149,6 +152,8 @@ public class BannedUser extends Model {
 		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
 				action, "entity", entityID);
 		newBannedUser.save();
+    	myBannedUser.bannedUsers.add(newBannedUser);
+		myOrganization.bannedUsers.add(newBannedUser);
 		return true;
 	}
 
@@ -175,7 +180,7 @@ public class BannedUser extends Model {
 		User myBannedUser = User.findById(userID);
 		Organization myOrganization = Organization.findById(organizationID);
 		BannedUser test = BannedUser.find(
-				"select * from BannedUser bu where bu.bannedUser = ?"
+				"select bu from BannedUser bu where bu.bannedUser = ?"
 						+ " and bu.organization = ? and bu.action like ?"
 						+ "and bu.resourceType like ? and bu.resourceID = ?",
 				myBannedUser, myOrganization, action, "topic", topicID)
@@ -189,6 +194,8 @@ public class BannedUser extends Model {
 		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
 				action, "topic", topicID);
 		newBannedUser.save();
+    	myBannedUser.bannedUsers.add(newBannedUser);
+		myOrganization.bannedUsers.add(newBannedUser);
 		return true;
 	}
 
@@ -213,7 +220,7 @@ public class BannedUser extends Model {
 		Organization myOrganization = Organization.findById(organizationID);
 		
 		BannedUser test = BannedUser.find(
-				"select * from BannedUser bu where bu.bannedUser = ?"
+				"select bu from BannedUser bu where bu.bannedUser = ?"
 						+ " and bu.organization = ? and bu.action like ?"
 						+ "and bu.resourceType like ? and bu.resourceID = ?",
 				myBannedUser, myOrganization, "All", "Topic", topicID)
@@ -225,6 +232,8 @@ public class BannedUser extends Model {
 		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
 				"All", "Topic", topicID);
 		newBannedUser.save();
+		myBannedUser.bannedUsers.add(newBannedUser);
+		myOrganization.bannedUsers.add(newBannedUser);
 		return true;
 	}
 
