@@ -38,20 +38,20 @@
 function show(k,i){
 	
 	if ( k ==1 ) {
-		 //alert("hell");
+		 
 		$.post('@{respond()}', {id:1,i:i},
 			 function()
 			 {
-			 alert("hell");
+			 alert("Accepted");
 			$('#inv_'+i).html('<i>Invitation has been accepted<\i>');
 			});
 	}
 	else {
-		  //alert("hello");
+		  
 		$.post('@{respond()}', {id:0,i:i},
 			 function()
 			 {
-			 	alert("hello");
+			 	alert("Rejected");
 			$('#inv_'+i).html('<i>Invitation has been rejected<\i>');
 			});
 	}
