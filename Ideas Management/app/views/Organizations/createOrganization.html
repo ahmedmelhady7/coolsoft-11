@@ -10,6 +10,7 @@
         #{extends 'main.html' /} 
 
         <p>Please fill the required information.</p>
+		<form name="orderform">
         Organization Name: <input type="text" id="name" name=
         "name"> <br /><br />
         Privacy Level:<br />
@@ -24,18 +25,18 @@
 		<input type="radio" name="tag" value="Yes" checked>Yes<br>
 		<input type="radio" name="tag" value="No">No<br>
 		<input type="submit" value="Create" onclick = "submit(name.value,privacy.value,tag.value,'${creator}');" />
-		
+		</form>
 		<script type="text/javascript">
 			function submit(n,p,t,u){
 				var pp = 0;
-				if(privacy.value=="Public"){
+				if(document.orderform.privacy[0].checked){
 					pp = 2;
 				}
-				else if(privacy.value=="Private"){
+				else if(document.orderform.privacy[1].checked){
 						pp = 1;
 					}
 				var b = true;
-				if(createTag.value=="No"){
+				if(document.orderform.tag[1].checked){
 					b = false;
 				}
 				$.post('@{createOrganization()}', {name:n, creator:u, privacyLevel:pp, createTag:b});
