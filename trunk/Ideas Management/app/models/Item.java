@@ -38,7 +38,25 @@ public class Item extends Model {
 
 	@ManyToOne
 	public Plan plan;
-
+	/**
+	 * This is the constructor for Item
+	 * 
+	 * @story C5S1
+	 * 
+	 * @author Hassan Ziko
+	 * 
+	 * @param startDate
+	 *            The date when the item should be started
+	 * @param endDate 
+	 *            The date when the item should be done
+	 * @param description
+	 * 			  The description of the item
+	 * @param plan
+	 * 			  The plan that this item is in
+	 * @param summary
+	 * 			  The summary of the description
+	 * 
+	 */
 	public Item(Date startDate, Date endDate, String description, Plan plan,
 			String summary) {
 		this.startDate = startDate;
