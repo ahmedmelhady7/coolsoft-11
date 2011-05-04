@@ -30,16 +30,16 @@ function test(){
 	
 	//var v = document.getElementById('selec').selectedIndex;
 	var a = document.getElementById('selec').value;
-	alert("function" +  a);
+	//alert("function" +  a);
 	if(a!='Tags')
 	if(a == 0){
-		alert("function2" +  ${org.id});
+		//alert("function2" +  ${org.id});
 	$.post('@{Organizations.enableTags()}',{id:${org.id}});
 		alert("Options is enabled");
 	}
 	else{
 		
-		alert("function2" +  ${org.id});
+		//alert("function2" +  ${org.id});
 	$.post('@{Organizations.disableTags()}',{id:${org.id}});
 		alert("Options is disabled");
 	
