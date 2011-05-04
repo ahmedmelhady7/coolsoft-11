@@ -377,8 +377,7 @@ public class Users extends CRUD {
 	public static List<User> getBannedUser(Organization o, String action,
 			long sourceID, String type) {
 		List<User> user = (List<User>) BannedUser
-				.find("select bu.bannedUser from BannedUser where bu.organization = ? and bu.action = ? and bu.resourceType = ? and bu.resourceID = ? ",
-						o, action, type, sourceID);
+				.find("select bu.bannedUser from BannedUser where bu.organization = ? and bu.action = ? and bu.resourceType = ? and bu.resourceID = ? ", o, action, type, sourceID);
 		return (user);
 	}
 
@@ -764,12 +763,18 @@ public class Users extends CRUD {
 		if (t != null) {
 			Organization o = t.entity.organization;
 			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
-					.find("select uro from UserRoleInOrganization uro "
-							+ "where uro.organization = ? and"
-							+ " uro.entityTopicID = ? " + "and uro.type like ?",
-							o, t.getId(), "topic");
-			for (int i = 0; i < organizers.size(); i++) {
-				if (!(organizers.get(i).role.roleName.equals("organizer"))) {
+
+					.find("select uro from UserRoleInOrganization uro  where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?", o, t.getId(),"topic");
+			for(int i= 0 ; i<organizers.size(); i++){
+				if(!(organizers.get(i).role.roleName.equals("organizer"))){
+//=======
+//					.find("select uro from UserRoleInOrganization uro "
+//							+ "where uro.organization = ? and"
+//							+ " uro.entityTopicID = ? " + "and uro.type like ?",
+//							o, t.getId(), "topic");
+//			for (int i = 0; i < organizers.size(); i++) {
+//				if (!(organizers.get(i).role.roleName.equals("organizer"))) {
+//>>>>>>> .r797
 					organizers.remove(i);
 				} else {
 					enrolled.add(organizers.get(i).enrolled);
@@ -796,13 +801,21 @@ public class Users extends CRUD {
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
 		if (e != null) {
 			Organization o = e.organization;
-			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
-					.find("select uro from UserRoleInOrganization uro"
-							+ "where uro.organization = ? "
-							+ " and uro.entityTopicID = ? "
-							+ "and uro.type like ?", o, e.getId(), "entity");
-			for (int i = 0; i < organizers.size(); i++) {
-				if (!((organizers.get(i).role).equals("organizer"))) {
+
+			long eID = e.getId();
+			organizers =  UserRoleInOrganization
+					.find("select uro from UserRoleInOrganization uro where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?", o, eID,"entity").fetch();
+			for(int i = 0 ; i< organizers.size() ;  i++){
+				if(!((organizers.get(i).role.roleName).equals("organizer"))){
+//=======
+//			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
+//					.find("select uro from UserRoleInOrganization uro"
+//							+ "where uro.organization = ? "
+//							+ " and uro.entityTopicID = ? "
+//							+ "and uro.type like ?", o, e.getId(), "entity");
+//			for (int i = 0; i < organizers.size(); i++) {
+//				if (!((organizers.get(i).role).equals("organizer"))) {
+//>>>>>>> .r797
 					organizers.remove(i);
 				} else {
 					enrolled.add(organizers.get(i).enrolled);
@@ -830,8 +843,7 @@ public class Users extends CRUD {
 		if (o != null) {
 
 			enrolled = (List<User>) UserRoleInOrganization.find(
-					"select uro.enrolled from UserRoleInOrganization uro "
-							+ "where uro.organization = ? ", o);
+					"select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? ", o);
 
 		}
 		return enrolled;
@@ -839,6 +851,55 @@ public class Users extends CRUD {
 
 	/**
 	 * 
+<<<<<<< .mine
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * @param id
+	 *            : the user's id
+	 * 
+	 * @return void
+	 * 
+	 * */
+	public static void delete(long id) {
+		User user = User.findById(id);
+		String x = "";
+		try {
+
+			if (user.state.equals("n")) {
+				user.state = "d";
+				x = "deletion successful";
+			} else {
+				x = "You can not delete a user who's deactivated his account !";
+			}
+			render(x);
+		} catch (NullPointerException e) {
+			x = "No such User !!";
+			render(x);
+		}
+
+	}
+	
+	/**
+	 * 
+	 */
+	public static List<MainEntity> getEntitiesOfOrganizer(Organization org , User user){
+		List<MainEntity> entities = new ArrayList<MainEntity>();
+		
+		List<UserRoleInOrganization> uro =  UserRoleInOrganization.find("byOrganizationAndEnrolled", org,user).fetch();
+		for(int  i = 0; i<uro.size(); i++){
+			if(uro.get(i).role.roleName.equals("organizer")){
+				entities.add((MainEntity) MainEntity.findById(uro.get(i).entityTopicID));
+			}
+		}
+		return entities;
+	}
+
+	/**
+	 * 
+=======
+>>>>>>> .r797
 	 * This method returns list of entities within a specific organization that
 	 * a user is enrolled in as organizer or organization lead (or admin)
 	 * 
@@ -855,8 +916,10 @@ public class Users extends CRUD {
 			User user) {
 
 		List<MainEntity> list = new ArrayList<MainEntity>();
-		if (org.creator.equals(user) || user.isAdmin)
+		if (org.creator.equals(user) || user.isAdmin){
 			return org.entitiesList;
+		}
+			
 
 		else {
 			for (int i = 0; i < org.entitiesList.size(); i++) {
