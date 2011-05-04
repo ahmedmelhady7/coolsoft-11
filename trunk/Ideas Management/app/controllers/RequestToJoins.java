@@ -30,10 +30,10 @@ public class RequestToJoins extends CRUD {
 	 */
 
 	public static void viewRequests(int type, long id) {
-             type=1;
+             type=0;
 		List<RequestToJoin> requests;
 		if (type == 1) {
-			Topic topic = Topic.findById(id);
+			Topic topic = Topic.findById((long)1);
 			notFoundIfNull(topic);
 			requests = topic.requestsToJoin;
 		} else {
@@ -42,7 +42,7 @@ public class RequestToJoins extends CRUD {
 			requests = organization.joinRequests;
 		}
 
-		render(requests);
+		render(requests,type);
 	}
 
 	/**
@@ -64,22 +64,29 @@ public class RequestToJoins extends CRUD {
 	 *            : the id of the request to be responded to
 	 */
 
-	public static void respond(int status, long reqId) {
+	public static void respondToRequest(int status, long reqId) {
+		System.out.println("da5alt");
 		RequestToJoin request = RequestToJoin.findById(reqId);
+		System.out.println(status + "" + reqId);
+		System.out.println(request);
 		notFoundIfNull(request);
 		User user = request.source;
 		List<User> users = new ArrayList<User>();
 		users.add(user);
+		System.out.println(users);
 		if (status == 1) {
+			System.out.println("request will be accepeted");
 			if (request.organization!= null) {
 
 				Organization organization = request.organization;
-				Role role = Roles.getRoleByName("idea developer");
-				UserRoleInOrganizations.addEnrolledUser(user, organization,
-						role);
+				//Role role = Roles.getRoleByName("idea developer");
+				//UserRoleInOrganizations.addEnrolledUser(user, organization,
+					//	role);
 				organization.joinRequests.remove(request);
-				Notifications.sendNotification(users, organization.id,
-						"Organization", "Your Request has been approved");
+				System.out.println(organization.joinRequests);
+				System.out.println(users);
+			//	Notifications.sendNotification(users, organization.id,
+				//		"Organization", "Your Request has been approved");
 
 			} else {
 				Topic topic = request.topic;
@@ -100,11 +107,11 @@ public class RequestToJoins extends CRUD {
 
 		} else {
 			if (request.organization!=null) {
-
+                   System.out.println("request will be rejected");
 				Organization organization = request.organization;
 				organization.joinRequests.remove(request);
-				Notifications.sendNotification(users, organization.id,
-						"Organization", "Your Request has been rejected");
+				//Notifications.sendNotification(users, organization.id,
+				//		"Organization", "Your Request has been rejected");
 
 			} else {
 				Topic topic = request.topic;
@@ -115,6 +122,7 @@ public class RequestToJoins extends CRUD {
 
 		}
 		request.delete();
+		System.out.println("request will be deleted");
 
 	}
 	/**
