@@ -26,5 +26,5 @@ GET     /public/                                staticDir:public
 # Import ViewSearchResults routes
 *      /searchResult                    		Search.searchResult
 
-# Import filter options form routes
+# Import filter_options form routes
 *      /filter_options                  		Search.filter_options
