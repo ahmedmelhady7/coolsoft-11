@@ -32,16 +32,16 @@ public class MainEntitys extends CRUD {
 			System.out.println("Sorry! Action cannot be performed");
 		}
 	}
-	
-	public static void createEntity(@Required String name, @Required String desc,
-			Organization org) {
-		if(validation.hasErrors()) {
+
+	public static void createEntity(@Required String name,
+			@Required String desc, Organization org) {
+		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
 			render(name, desc);
 		}
-		MainEntity existing = MainEntity.find(
-				"name like '" + name + "'").first();
+		MainEntity existing = MainEntity.find("name like '" + name + "'")
+				.first();
 		if (existing != null) {
 			flash.error("Entity already exists!" + "\n\t\t"
 					+ "Please choose another organization name.");
@@ -51,15 +51,30 @@ public class MainEntitys extends CRUD {
 		e.save();
 		flash.success("Your entity has been created.");
 	}
-	
-//	public static void createEntity(@Required String n, 
-//			@Required String d, Organization org) {
-//		MainEntity entity = new MainEntity(n, d, org);
-//		entity.save();
-//		flash.success("Done =)");
-//		
-//	}
-	
+
+	/**
+	 * This method adds entity2 to the list of entities in entity
+	 * 
+	 * @author Mohamed Hisham
+	 * 
+	 * @param entity
+	 *            : first entity to be related
+	 * 
+	 * @param entity2
+	 *            : second entity to be related
+	 */
+	public static void relateEntity(MainEntity entity, MainEntity entity2) {
+		entity.relatedEntities.add(entity2);
+	}
+
+	// public static void createEntity(@Required String n,
+	// @Required String d, Organization org) {
+	// MainEntity entity = new MainEntity(n, d, org);
+	// entity.save();
+	// flash.success("Done =)");
+	//		
+	// }
+
 	public static void viewEntity(long id) {
 		User user = Security.getConnected();
 		MainEntity entity = MainEntity.findById(id);
@@ -68,4 +83,3 @@ public class MainEntitys extends CRUD {
 		render(user, org, entity, subentities);
 	}
 }
-
