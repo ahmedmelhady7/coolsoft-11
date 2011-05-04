@@ -1,6 +1,10 @@
 #{extends 'planLayout.html' /}
 #{set title:'View Plan as List' /}
 <br/> 
+#{if org == true)}
+<form action="@{VolunteerRequests.viewVolunteerRequests()}" method="post">
+    Volunteer Requests: <input type="submit" value="View Volunteer Requests">
+</form> #{/if}
 #{if error == true}
 <h3>You do not have enough permissions to view this plan.</h3>
 #{/if}

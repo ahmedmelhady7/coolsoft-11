@@ -83,12 +83,16 @@ public class VolunteerRequests extends CRUD {
 		render(item, planId, success);
 	}
 
-	public static void viewMyRequests(long userId) {
-		User user = User.findById(userId);
-		List<VolunteerRequest> myVolunteerRequests = user.volunteerRequests;
-		render(user, myVolunteerRequests);
-	}
-
+	/* Extra method. Unused in the mean time.
+	 * 
+	 * public static void viewMyRequests(long userId) {
+	 *
+	 *	User user = User.findById(userId);
+	 *	List<VolunteerRequest> myVolunteerRequests = user.volunteerRequests;
+	 *	render(user, myVolunteerRequests);
+	 *}
+	 */
+	  
 	/**
 	 * This method renders the page for allowing the organizer to view the
 	 * volunteer requests to work on items in a certain plan.
@@ -114,7 +118,6 @@ public class VolunteerRequests extends CRUD {
 			for (int i = 0; i < plan.items.size(); i++) {
 				planVolunteerRequests
 						.addAll(plan.items.get(i).volunteerRequests);
-
 			}
 			if (planVolunteerRequests.size() > 0) {
 				for (int i = 0; i < planVolunteerRequests.size(); i++) {
@@ -122,7 +125,14 @@ public class VolunteerRequests extends CRUD {
 					Date d = new Date();
 					if (planVolunteerRequests.get(i).destination.endDate
 							.compareTo(d) < 0) {
+						Item destination = planVolunteerRequests.get(i).destination;
+						user.volunteerRequests.remove(planVolunteerRequests
+								.get(i));
+						destination.volunteerRequests
+								.remove(planVolunteerRequests.get(i));
 						planVolunteerRequests.remove(i);
+						user.save();
+						destination.save();
 					} else {
 						if (planVolunteerRequests.get(i).destination.assignees
 								.contains(sender)
@@ -130,9 +140,7 @@ public class VolunteerRequests extends CRUD {
 										.contains(user)) {
 							VolunteerRequest request = VolunteerRequest
 									.findById(planVolunteerRequests.get(i).id);
-							sender.volunteerRequests.remove(request);
-							Item item = request.destination;
-							item.volunteerRequests.remove(request);
+							planVolunteerRequests.remove(request);
 						}
 					}
 				}
@@ -165,6 +173,9 @@ public class VolunteerRequests extends CRUD {
 		item.volunteerRequests.remove(request);
 		user.itemsAssigned.add(item);
 		item.assignees.add(user);
+		user.save();
+		item.save();
+		request.delete();
 		String s = "Your request to volunteer on item: " + item.summary
 				+ " has been accepted.";
 		list.add(user);
@@ -193,6 +204,9 @@ public class VolunteerRequests extends CRUD {
 		user.volunteerRequests.remove(request);
 		Item item = request.destination;
 		item.volunteerRequests.remove(request);
+		user.save();
+		item.save();
+		request.delete();
 		String s = "Your request to volunteer on item: " + item.summary
 				+ " has been rejected.";
 		List<User> list = new ArrayList<User>();

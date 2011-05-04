@@ -76,17 +76,19 @@ public class AssignRequests extends CRUD {
 	 *            : the id of the plan containing the item that will be assigned
 	 *            to the list of users selected
 	 */
-	public static void sendRequests(String itemId, String [] userIds, String planId) {
+	public static void sendRequests(String itemId, String[] userIds,
+			String planId) {
 		User user;
 		Date d = new Date();
 		Item item = Item.findById(itemId);
 		for (int i = 0; i < userIds.length; i++) {
 			user = User.findById(userIds[i]);
-			if (filter(Long.parseLong(itemId), Long.parseLong(planId)).contains(user)) {
+			if (filter(Long.parseLong(itemId), Long.parseLong(planId))
+					.contains(user)) {
 				if (!(item.status == 2) && item.endDate.compareTo(d) > 0) {
-					sendAssignRequest(Long.parseLong(itemId), Long.parseLong(userIds[i]));
+					sendAssignRequest(Long.parseLong(itemId),
+							Long.parseLong(userIds[i]));
 				}
-
 			}
 		}
 
@@ -240,12 +242,6 @@ public class AssignRequests extends CRUD {
 			for (int i = 0; i < assignRequests.size(); i++) {
 				Date d = new Date();
 				if (assignRequests.get(i).source.endDate.compareTo(d) < 0
-						|| !Users
-								.isPermitted(
-										user,
-										"accept/Reject assignments to work on an item in an action plan",
-										assignRequests.get(i).source.plan.topic.id,
-										"topic")
 						|| !Topics.searchByTopic(
 								assignRequests.get(i).source.plan.topic.id)
 								.contains(user)) {
@@ -254,8 +250,17 @@ public class AssignRequests extends CRUD {
 					for (int j = 0; j < assignRequests.get(i).sender.itemsAssigned
 							.size(); j++) {
 						if (user.itemsAssigned
-								.contains(assignRequests.get(i).source))
+								.contains(assignRequests.get(i).source)) {
+							AssignRequest req = assignRequests.get(i);
+							req.destination.receivedAssignRequests.remove(req);
+							req.sender.sentAssignRequests.remove(req);
+							req.source.assignRequests.remove(req);
 							assignRequests.remove(assignRequests.get(i));
+							req.destination.save();
+							req.sender.save();
+							req.source.save();
+							req.delete();
+						}
 					}
 				}
 			}
@@ -280,11 +285,18 @@ public class AssignRequests extends CRUD {
 		AssignRequest request = AssignRequest.findById(reqId);
 		assignRequests.remove(request);
 		Item item = request.source;
+		request.destination.receivedAssignRequests.remove(request);
+		request.sender.sentAssignRequests.remove(request);
+		item.assignRequests.remove(request);
 		List<User> list = new ArrayList<User>();
 		list = item.assignees;
 		list.addAll(item.plan.topic.getOrganizer());
 		user.itemsAssigned.add(item);
 		item.assignees.add(user);
+		request.destination.save();
+		request.sender.save();
+		item.save();
+		request.delete();
 		String s = "User " + user.username
 				+ " has accepted the assignment to work on item"
 				+ request.source.summary + ".";
@@ -307,6 +319,12 @@ public class AssignRequests extends CRUD {
 		List<AssignRequest> assignRequests = user.receivedAssignRequests;
 		AssignRequest request = AssignRequest.findById(reqId);
 		assignRequests.remove(request);
+		request.destination.receivedAssignRequests.remove(request);
+		request.sender.sentAssignRequests.remove(request);
+		request.source.assignRequests.remove(request);
+		request.sender.save();
+		request.destination.save();
+		request.source.save();
 		List<User> list = new ArrayList<User>();
 		list = request.source.assignees;
 		list.addAll(request.source.plan.topic.getOrganizer());
@@ -314,6 +332,7 @@ public class AssignRequests extends CRUD {
 				+ " has rejected the assignment to work on item"
 				+ request.source.summary + ".";
 		Notifications.sendNotification(list, request.source.plan.id, "plan", s);
+		request.delete();
 	}
 
 }
