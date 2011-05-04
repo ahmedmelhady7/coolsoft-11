@@ -32,14 +32,14 @@ public class Notifications extends CRUD {
 	}
 	
 	/**
-	 * This method sends a notification to many users first it checks that the user is
+	 * This method sends a notification to one user first it checks that the user is
 	 * enabling his preferences to receive a notification from this source.
 	 * 
 	 *@author Ahmed Maged
 	 *
 	 * 
-	 * @param list
-	 * 			The list of users to be notified.
+	 * @param uId
+	 * 			The ID of the user to be notified.
 	 * @param notId
 	 * 			The ID of the source of the notification.
 	 * @param type
@@ -49,36 +49,34 @@ public class Notifications extends CRUD {
 	 * 
 	 * @return void
 	 */
-
-	public static boolean sendNotification(List<User> list, long notId,
-			String type, String desc) {
-		for(int j = 0; j < list.size(); j++) {
-			List<NotificationProfile> np = list.get(j).notificationProfiles;
-			boolean contains = false;
-			boolean isenabled = true;
-			/**
-			 * check that the notification profile has the sending source
-			 * if not then add it, if present the check if enabled or not.
-			 */
-			for (int i = 0; i < np.size(); i++) {
-				if(np.get(i).notifiableId == notId && np.get(i).notifiableType.equals(type)) {
-					isenabled = np.get(i).enabled;
-					break;
-				}
+	
+	public static boolean sendNotification(long uId, long notId, String t, String d) {
+		User u = User.findById(uId);
+		List<NotificationProfile> np = u.notificationProfiles;
+		boolean contains = false;
+		boolean isenabled = true;
+		/**
+		 * check that the notification profile has the sending source
+		 * if not then add it, if present the check if enabled or not.
+		 */
+		for (int i = 0; i < np.size(); i++) {
+			if(np.get(i).notifiableId == notId && np.get(i).notifiableType.equals(t)) {
+				isenabled = np.get(i).enabled;
+				break;
 			}
-			// Adding the NP if not there
-			if(!contains) {
-				NotificationProfile np2 = new NotificationProfile(notId, type, list.get(j));
-				np2.save();
-				//u.notificationProfiles.add(np2);
-				isenabled = true;
-			}
-			// Send the notification if enabled
-			if(isenabled) {
-				Notification n = new Notification(type, list.get(j), desc);
-				n.save();
-				return true;
-			}
+		}		
+		// Adding the NP if not there
+		if(!contains) {
+			NotificationProfile np2 = new NotificationProfile(notId, t, u);
+			np2.save();
+			//u.notificationProfiles.add(np2);
+			isenabled = true;
+		}
+		// Send the notification if enabled
+		if(isenabled) {
+			Notification n = new Notification(t, u, d);
+			n.save();
+			return true;
 		}
 		return false;
 	}
