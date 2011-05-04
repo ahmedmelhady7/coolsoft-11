@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
+
+        <title>Entity View</title>
+    </head>
+
+    <body>
+        #{extends 'main.html' /}
+        
+        <center><big><b>${entity.name}</b></big></center><br><br>
+        <p>Description:</br>
+        ${entity.description}</p> 
+        #{if subentities.size() > 0}
+		List of subentities: <br />
+        <ul style="list-style: none;">   
+		#{list items:subentities, as:'subentity'}
+		<li>
+			<a href="@{MainEntitys.viewEntity(subentity.id)}">${subentity.name}</a>
+		</li>
+		#{/list}
+		</ul>
+		#{/if}
+		#{else}
+		No subentities available for this entity!
+		#{/else}
+		
+    </body>
+</html>
+
