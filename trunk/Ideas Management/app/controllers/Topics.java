@@ -494,7 +494,7 @@ public class Topics extends CRUD {
 	 * @throws Exception
 	 * 
 	 */
-	public static void create(/* int entityid */) throws Exception {
+	public static void create(long entityid) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
@@ -505,10 +505,11 @@ public class Topics extends CRUD {
 		String message = "";
 		Topic tmp = (Topic) object;
 		System.out.println("create() entered");
-		// MainEntity topicEntity = to get connected aw kda
-		MainEntity topicEntity = MainEntity.findById((long) 1);// temporary; for
+		MainEntity topicEntity = MainEntity.findById(entityid);
+		//MainEntity topicEntity = MainEntity.findById((long) 2);// temporary; for
 		// testing
 		// purposes
+		
 		tmp.entity = topicEntity;
 		User myUser = Security.getConnected();
 		//User myUser = User.findById((long) 1);// temporary; for testing purposes
@@ -528,9 +529,9 @@ public class Topics extends CRUD {
 			message = "A Topic must belong to an entity";
 			try {
 				render(request.controller.replace(".", "/") + "/blank.html",
-						type, message);
+						type, message, entityid);
 			} catch (TemplateNotFoundException e) {
-				render("CRUD/blank.html", type, message);
+				render("CRUD/blank.html", type, message, entityid);
 			}
 		}
 
@@ -552,10 +553,10 @@ public class Topics extends CRUD {
 
 			try {
 				render(request.controller.replace(".", "/") + "/blank.html",
-						topicEntity, type, tmp.title, tmp.entity,
+						entityid, type, tmp.title, tmp.entity,
 						tmp.description, tmp.followers, tmp.tags, message);
 			} catch (TemplateNotFoundException e) {
-				render("CRUD/blank.html", type);
+				render("CRUD/blank.html", type, entityid);
 			}
 		}
 
@@ -625,7 +626,7 @@ public class Topics extends CRUD {
 	public static void blank(long entityid) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
-		MainEntity entity = MainEntity.findById(entityid);
+		MainEntity topicEntity = MainEntity.findById(entityid);
 		User user = Security.getConnected();
 		System.out.println("blank() entered entity " + entityid + " and user "
 				+ user.toString());
@@ -639,7 +640,7 @@ public class Topics extends CRUD {
 
 		try {
 			System.out.println("blank() done about to render");
-			render(type, entity, user /* , followers, entitiesFollowed */);
+			render(type, entityid, user /* , followers, entitiesFollowed */);
 
 		} catch (TemplateNotFoundException e) {
 			System.out
@@ -819,6 +820,13 @@ public class Topics extends CRUD {
 				.get("where"));
 		try {
 			System.out.println("list() done, will render ");
+			System.out.println("list() done, will render " + type.toString());
+			System.out.println("list() done, will render " + objects.toString());
+			System.out.println("list() done, will render " + count);
+			System.out.println("list() done, will render " + totalCount);
+			System.out.println("list() done, will render " + page);
+			System.out.println("list() done, will render " + orderBy);
+			System.out.println("list() done, will render " + order);
 			render(type, objects, count, totalCount, page, orderBy, order);
 		} catch (TemplateNotFoundException e) {
 			System.out
