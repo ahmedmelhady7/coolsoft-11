@@ -32,10 +32,13 @@ public class Plans extends CRUD {
 	public static void viewAsList(long planId) {
 		User user = Security.getConnected();
 		boolean error = false;
+		boolean org = false;
 		Plan p = Plan.findById(planId);
 		List<Item> itemsList = p.items;
 		int canAssign = 0;
 		int canEdit = 0;
+		if(p.topic.getOrganizer().contains(user))
+			org = true;
 		//if (Users.isPermitted(user, "all", p.topic.id, "topic")) {
 		
 //			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
@@ -49,10 +52,10 @@ public class Plans extends CRUD {
 //
 //				canAssign = 1;
 //			}
-			render(p, itemsList, user, canAssign, canEdit, error);
+			render(p, itemsList, user, canAssign, canEdit, error, org);
 //		} else {
 //			error = true;
-//			render(error);
+//			render(error, org);
 //		}
 	}
 
