@@ -11,7 +11,12 @@
 <p>This is the required notification API</p>
 
 <form action="@{Notifications.sendNotify()}" method = "post">
-<u> the list of users required to receive a notification</u>
+<u><i> the list of users required to receive a notification</i></u>
+<br></br>
+<br></br>
+<i>just for testing my task</i>
+&nbsp;
+User Name: <input type="text" name="directed"/>
 <br></br>
 <b>Notifiable ID: </b> <input type="text" name="notId"> 
 <br></br>
@@ -21,6 +26,6 @@
 <br></br>
 <i>Send a notification: </i><input type="submit" value="Send"/>
 </form>
-<a href="@{Users.userIndex()}">Back to user form</a>
+<a href="@{Login.index()}">Home Page</a>
 </body>
 </html>
