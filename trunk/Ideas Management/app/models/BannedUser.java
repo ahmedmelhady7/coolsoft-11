@@ -96,9 +96,7 @@ public class BannedUser extends Model {
 		Organization myOrganization = Organization.findById(organizationID);
                      
 		BannedUser test = BannedUser.find(
-				"select bu from BannedUser bu where bu.bannedUser = ?"
-						+ " and bu.organization = ? and bu.action like ?"
-						+ "and bu.resourceType like ? and bu.resourceID = ?",
+				"select bu from BannedUser bu where bu.bannedUser = ? and bu.organization = ? and bu.action like ? and bu.resourceType like ? and bu.resourceID = ?",
 				myBannedUser, myOrganization, "All", "entity", entityID)
 				.first();
 
@@ -139,9 +137,7 @@ public class BannedUser extends Model {
 		Organization myOrganization = Organization.findById(organizationID);
 
 		BannedUser test = BannedUser.find(
-				"select bu from BannedUser bu where bu.bannedUser = ?"
-						+ " and bu.organization = ? and bu.action like ?"
-						+ "and bu.resourceType like ? and bu.resourceID = ?",
+				"select bu from BannedUser bu where bu.bannedUser = ? and bu.organization = ? and bu.action like ? and bu.resourceType like ? and bu.resourceID = ?",
 				myBannedUser, myOrganization, action, "entity", entityID)
 				.first();
 
@@ -180,9 +176,7 @@ public class BannedUser extends Model {
 		User myBannedUser = User.findById(userID);
 		Organization myOrganization = Organization.findById(organizationID);
 		BannedUser test = BannedUser.find(
-				"select bu from BannedUser bu where bu.bannedUser = ?"
-						+ " and bu.organization = ? and bu.action like ?"
-						+ "and bu.resourceType like ? and bu.resourceID = ?",
+				"select bu from BannedUser bu where bu.bannedUser = ? and bu.organization = ? and bu.action like ? and bu.resourceType like ? and bu.resourceID = ?",
 				myBannedUser, myOrganization, action, "topic", topicID)
 				.first();
 
