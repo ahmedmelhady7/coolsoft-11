@@ -1,4 +1,4 @@
-
+#{extends 'main.html' /}
 #{set title:'Plan Creation' /}
 <h1> Create Plan </h1>
 #{form @Plans.myCreate(), method:'POST', id:'plancreationForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
@@ -51,6 +51,7 @@ mmm d yy (yy is 20yy)
 function checkdate(objName){
 	var datefield = objName;
 	if (chkdate(objName) == false) {
+		System.out.println("The date is invalid");
 		datefield.select();
 		alert("That date is invalid.  Please try again.");
 		datefield.focus();
