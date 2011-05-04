@@ -334,8 +334,9 @@ public class Users extends CRUD {
 	 *            : the user who wants to report the idea
 	 * 
 	 */
-	public static void reportIdeaAsSpam(Idea idea, User reporter) {
+	public static void reportIdeaAsSpam(Idea idea) {
 		boolean alreadyReported = false;
+		User reporter = Security.getConnected();
 		for (int i = 0; i < reporter.ideasReported.size(); i++) {
 			if (idea == reporter.ideasReported) {
 				alreadyReported = true;
@@ -349,7 +350,7 @@ public class Users extends CRUD {
 			Mail.ReportAsSpamMail(idea.belongsToTopic.getOrganizer().get(j),
 					reporter, idea);
 		}
-		ideaSpamView(idea, reporter);
+		ideaSpamView(idea);
 
 	}
 
@@ -362,8 +363,9 @@ public class Users extends CRUD {
 	 * 
 	 */
 
-	public static void ideaSpamView(Idea idea, User reporter) {
+	public static void ideaSpamView(Idea idea) {
 		int alreadyReported = -1;
+		User reporter = Security.getConnected();
 		for (int i = 0; i < idea.reporters.size(); i++) {
 			if (reporter == idea.reporters.get(i))
 				alreadyReported = 1;
