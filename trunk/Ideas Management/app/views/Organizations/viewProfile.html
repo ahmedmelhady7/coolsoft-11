@@ -14,10 +14,11 @@
 		<ul style="list-style: none;">   
 		#{list items:entities, as:'entity'}
 		<li>
-			<a href="Noha call your method here..">${entity.name}</a>
+			<a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>
 		</li>
 		#{/list}
 		</ul>
+		<a href="@{MainEntitys.createEntity()}">Create a new Entity</a><br /><br />
     </body>
 </html>
 
