@@ -3,8 +3,8 @@
 @story  C4S02
 --> <!DOCTYPE html>
 <html>
-    <script src="http://code.jquery.com/jquery-git.js">
-    </script>
+    <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
+        </script>
     <form name="inPuts" id="inPuts">
         Search in&nbsp;&nbsp;&nbsp;::
         <select name="searchIn" id="searchIn" style="width:90%">
@@ -241,7 +241,8 @@
     <script type="text/javascript">
         
         function doo(searchIn, wantKey, unWantKey, org, entity, topic, plan, idea, item, comm, dayB, monthB, yearB, dayA, monthA, yearA, dayE, monthE, yearE){
-            $.post('@{Search.advSearch()}', {
+            alert('enter doo');
+			$.post('@{Search.advSearch()}', {
                 searchIn: searchIn.value,
                 wantKey: wantKey.value,
                 unWantKey: unWantKey.value,
@@ -262,8 +263,11 @@
                 monthE: monthE.value,
                 yearE: yearE.value
             }, function(){
+				alert('enter func');
                 window.location.href = "/searchResult";
+				alert('enter end');
             });
+			alert('End Totaly');
         }
         
     </script>
