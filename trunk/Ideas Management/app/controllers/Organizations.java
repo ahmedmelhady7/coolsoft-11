@@ -14,6 +14,7 @@ import controllers.CRUD.ObjectType;
 import models.Invitation;
 import models.MainEntity;
 import models.Organization;
+import models.Tag;
 import models.Topic;
 import models.User;
 
@@ -197,24 +198,26 @@ public class Organizations extends CRUD {
 	 *            : whether the users in that organization are allowed to create
 	 *            tags
 	 */
-	public static void createOrganization(@Required String name, User creator,
-			int privacyLevel, boolean createTag) {
+	public static void createOrganization(@Required String name,
+		int privacyLevel, boolean createTag) {
+		User creator = Security.getConnected();
 		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
-			render(creator);
+			render();
 		}
 		Organization existing_organization = Organization.find(
 				"name like '" + name + "'").first();
 		if (existing_organization != null) {
 			flash.error("Organization already exists!" + "\n\t\t"
 					+ "Please choose another organization name.");
-			render(creator);
+			render();
 		}
 		Organization org = new Organization(name, creator, privacyLevel,
 				createTag).save();
 		MainEntity m = new MainEntity("Default","",org);
 		m.save();
+		org.enrolledUsers.add(creator);
 		flash.success("Your organization has been created.");
 	}
 
@@ -245,15 +248,31 @@ public class Organizations extends CRUD {
 	}
 
 	public static void mainPage(){
+//<<<<<<< .mine
+//		User user = Security.getConnected();
+//		List<Organization> organizations = user.enrolled;
+//=======
 		User user = Security.getConnected();
 		List<Organization> organizations = Organization.findAll();
 		render(user, organizations);
 	}
-	
 	public static void viewProfile(long id) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(id);
+		List<Tag> tags = org.createdTags;
+		List<Tag> allTags = Tag.findAll();
+		int i = 0;
+		while(i < allTags.size()) {
+			if (!tags.contains(allTags.get(i)) && (allTags.get(i).createdInOrganization.privacyLevel == 2)) {
+				tags.add(allTags.get(i));
+			}
+			i++;
+		}
 		List<MainEntity> entities = org.entitiesList;
-		render(user, org, entities);
+		boolean enrolled = false;
+		if(org.enrolledUsers.contains(user)) {
+			enrolled = true;
+		}
+		render(user, org, entities, enrolled, tags);
 	}
 }
