@@ -510,8 +510,8 @@ public class Topics extends CRUD {
 		// testing
 		// purposes
 		tmp.entity = topicEntity;
-		// User myUser = Security.getConnected();
-		User myUser = User.findById((long) 1);// temporary; for testing purposes
+		User myUser = Security.getConnected();
+		//User myUser = User.findById((long) 1);// temporary; for testing purposes
 		tmp.creator = myUser;
 
 		/*
@@ -622,13 +622,13 @@ public class Topics extends CRUD {
 	 * @throws Exception
 	 * 
 	 */
-	public static void blank(long entityid, long userid) {
+	public static void blank(long entityid) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		MainEntity entity = MainEntity.findById(entityid);
-		User user = User.findById(userid);
+		User user = Security.getConnected();
 		System.out.println("blank() entered entity " + entityid + " and user "
-				+ userid);
+				+ user.toString());
 		// List<User> followers = entity.followers;
 		// ArrayList<MainEntity> entitiesFollowed = (ArrayList<MainEntity>)
 		// user.followingEntities;//display some of them on the side for quick
@@ -905,8 +905,8 @@ public class Topics extends CRUD {
 		// for testing
 		// purposes
 		tmp.entity = topicEntity;
-		// User myUser = Security.getConnected();
-		User myUser = User.findById((long) 1);// temporary; for testing purposes
+		User myUser = Security.getConnected();
+		//User myUser = User.findById((long) 1);// temporary; for testing purposes
 		tmp.creator = myUser;
 		// ArrayList<Tag> topicTags = (ArrayList<Tag>) tmp.tags;
 		Organization topicOrganization = topicEntity.organization;
