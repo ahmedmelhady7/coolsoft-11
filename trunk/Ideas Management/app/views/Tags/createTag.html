@@ -12,20 +12,12 @@
         <p>Please fill the required information.</p>
         Tag Name: <input type="text" id="name" name=
         "name" required> <br /><br />
-  		<input type="submit" value="Create" onclick = "check(name.value,'${createTag}');" />
+  		<input type="submit" value="Create" onclick = "submit(name.value);" />
 		
 		<script type="text/javascript">
 			function submit(n){
-				$.post('@{createTag()}', {name: n});
+				$.post('@{createTag()}', {name: n, orgId:org.id});
 				alert("Your new tag has been created!");
-			}
-			function check(nn,create){
-				if (create == true) {
-					submit(nn);
-				}
-				else {
-					alert("You are not allowed to create tags!!");
-				}
 			}
 		</script> 
     </body>
