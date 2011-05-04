@@ -17,10 +17,10 @@
 #{form @BannedUsers.restrictOrganizerHelper1(), method:'POST', id:'creationForm',
        enctype:'multipart/form-data' }
   #{list items:users, as:'user'}
-<input id = "1" type="radio" name="userId" value = ${user.id}> ${user.firtsName} ${user.lastName}
+<input id = "1" type="radio" name="userId" value = ${user.id}> ${user.firstName} ${user.lastName} <br /> <br />
 #{/list}
 
 <input type = "hidden" name = "organizationId" value = ${organizationID} >
-<input type="submit" value="Submit">
+<input type="submit" value="Select Entity">
 #{/form}
 #{/else}
