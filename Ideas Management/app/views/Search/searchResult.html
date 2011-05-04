@@ -41,11 +41,11 @@ The Search Results Viewer
         <script type="text/javascript">
             function step1(){
                 document.getElementById('div1').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
-                setTimeout('viewResult()', 2000);
+                setTimeout('viewResult()', 2500);
             }
             
             function viewResult(){
-                document.getElementById('div1').innerHTML = "<center>#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:organizationsFound, as:'item'} <li>${item.toString()}</a></li> #{/list} </ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:entitiesFound, as:'item'} <li>${item.toString()}</li> #{/list} </ul> #{/if} #{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:topicsFound, as:'item'} <li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if} #{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:ideasFound, as:'item'} <li><a href='@{Ideas.show(item.id)}'>${item.toString()}</a></li> #{/list} </ul> #{/if}#{/if} #{else} Sorry! My dog might be sick he can't smell anything :@ #{/else}</center>";
+                document.getElementById('div1').innerHTML = "<center>#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:organizationsFound, as:'item'} <li>${item.toString()}</li>#{/list}</br>----------------------------------------</br> </ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:entitiesFound, as:'item'} <li>${item.toString()}</li>#{/list}</br>----------------------------------------</br> </ul> #{/if} #{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:topicsFound, as:'item'} <li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></li> #{/list}</br>----------------------------------------</br> </ul> #{/if} #{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:ideasFound, as:'item'} <li><a href='@{Ideas.show(item.id)}'>${item.toString()}</a></li> #{/list}</br>----------------------------------------</br> </ul> #{/if}#{/if} #{else}<img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@ #{/else}</center>";
             }
             
             function quickSearch(frm){
@@ -81,31 +81,33 @@ The Search Results Viewer
     Sort by: 
     </u>
 </b>
-<form action="@{sortD()}" method = "GET">
-<input type="radio" name="s" id = "s" value="sortA" />Ascending order
+<form>
+<input type="radio" name="s" id = "s" value="sortA" onclick="s1.checked = false" />Ascending order
 <br>
-<input type="radio" name="s1" value="sortD" />descending order
-</br><input type="radio" name="v" value="v" onchange="whichsortmethod(this.form)"/>Vote 
-<input type="radio" name="r"value="r" onchange="whichsortmethod(this.form)"/>Rate 
+<input type="radio" name="s1" id="s1" value="sortD" onclick="s.checked = false" />descending order
+</br><input type="radio" name="v" id="v" value="v" onclick="whichsortmethod(this.form)"/>Vote 
+<input type="radio" name="r" id="r" value="r"  onclick="whichsortmethod(this.form)"/>Rate 
 </br>
 </form>
 <script type="text/javascript">
     function whichsortmethod(frm){
-        if (frm.s1.checked) {   
-            if (frm.v.checked) {
-    var c = 'v'
+		        var c = 'v';
+				var e = 'r';
+        if (document.getElementById("s1").checked) {  
+            if (document.getElementById("v").checked) {
+				document.getElementById("r").disable;
                 $.post('@{sortD}', {
-                    voteOrRate: c,
-                    searchresult: $listOfResults
+                    //voteOrRate: c,
+                    //searchresult: lof
                 }, function(){
                     window.location.reload(true);
                 });
             }
             else 
-                if (frm.r.checked) {
+                if (document.getElementById("r").checked) {
                     $.post('@{sortD}', {
-                        voteOrRate: 'r',
-                        searchresult: $listOfResults
+                        //voteOrRate: e,
+                        //searchresult: lof
                     }, function(){
                         window.location.reload(true);
                     });
@@ -113,20 +115,19 @@ The Search Results Viewer
             
         }
         else {
-   document.write("else");
-            if (frm.v.checked) {
+            if (document.getElementById("v").checked) {
                 $.post('@{sortA}', {
-                    voteOrRate: 'v',
-                    searchresult: $listOfResults
+                    //voteOrRate: 'v',
+                    //searchresult: lof
                 }, function(){
                     window.location.reload(true);
                 });
             }
             else 
-                if (frm.r.checked) {
+                if (document.getElementById("r").checked) {
                     $.post('@{sortA}', {
-                        voteOrRate: 'r',
-                        searchresult: $listOfResults
+                        //voteOrRate: 'r',
+                        //searchresult: lof
                     }, function(){
                         window.location.reload(true);
                     });
