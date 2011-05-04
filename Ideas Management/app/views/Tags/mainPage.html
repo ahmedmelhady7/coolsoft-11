@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+    <head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
+
+        <title>Organization Profile View</title>
+    </head>
+
+    <body>
+        #{extends 'main.html' /}
+        <center><big><b>${tag.name}</b></big></center><br><br>
+		List of Followers:
+		<br>
+		#{list items:followers, as:'follower'}
+		<li>
+			${follower.name}
+		</li>
+		#{/list}
+		<br>
+		List of tagged Topics:
+		<br>
+		#{list items:topics, as:'topic'}
+		<li>
+			${topic.title}
+		</li>
+		#{/list}
+		<br>
+		List of tagged Organizations:
+		<br>
+		#{list items:organizations, as:'organization'}
+		<li>
+			${organization.name}
+		</li>
+		#{/list}
+		<br>
+		List of tagged Entities:
+		<br>
+		#{list items:entities, as:'entity'}
+		<li>
+			${entity.name}
+		</li>
+		#{/list}
+		<br>
+		List of tagged Ideas:
+		<br>
+		#{list items:ideas, as:'idea'}
+		<li>
+			${idea.title}
+		</li>
+		#{/list}
+		
+    </body>
+</html>
+
