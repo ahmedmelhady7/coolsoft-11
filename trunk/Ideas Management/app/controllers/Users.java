@@ -983,18 +983,23 @@ public class Users extends CRUD {
 		Model object = type.entityClass.newInstance();
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
+		System.out.println(object.toString());
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
 			try {
+				System.out.println(object.toString() + "!1try");
 				render(request.controller.replace(".", "/") + "/blank.html",
 						type, object);
 			} catch (TemplateNotFoundException e) {
+				System.out.println(object.toString() + "catch");
 				render("CRUD/blank.html", type, object);
 			}
 		}
+		System.out.println(object.toString() + "before the save");
 		object._save();
 		flash.success(Messages.get("crud.created", type.modelName));
 		if (params.get("_save") != null) {
+			System.out.println(object.toString() + "save condition");
 			redirect(request.controller + ".list");
 		}
 		if (params.get("_saveAndAddAnother") != null) {
@@ -1026,16 +1031,23 @@ public class Users extends CRUD {
 		long userId = Long.parseLong(id);
 		User object = User.findById(userId);
 		Binder.bind(object, "object", params.all());
+		System.out.println(object.toString() + "begin");
 		validation.valid(object);
-		if (validation.hasErrors()) {
+		/*if (validation.hasErrors()) {
+			System.out.println(object.toString() + "first if");
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
+			System.out.println(object.toString() + "t7t first if");
 			try {
+				System.out.println(object.toString() + "try");
 				render(request.controller.replace(".", "/") + "/show.html",
 						type, object);
+				System.out.println("m3mlsh render");
 			} catch (TemplateNotFoundException e) {
+				System.out.println(object.toString() + "catch");
 				render("CRUD/show.html", type, object);
 			}
-		}
+		}*/
+		System.out.println(object.toString() + "before save");
 		object._save();
 		flash.success(Messages.get("crud.saved", type.modelName));
 		if (params.get("_save") != null) {
@@ -1067,16 +1079,20 @@ public class Users extends CRUD {
 
 			if (!(user.state.equals("n"))) {
 				user.state = "d";
+				user._save();
 				x = "deletion successful";
+				System.out.println(x+"  first if");
 			} else {
 				x = "You can not delete a user who's deactivated his account !";
+				System.out.println(x+"else");
 			}
-			// render(request.controller.replace(".", "/") + "/index.html",x);
+			render(request.controller.replace(".", "/") + "/index.html",x);
 		} catch (NullPointerException e) {
 			x = "No such User !!";
+			System.out.println(x+"catch");
 			// render(x);
-			// render(request.controller.replace(".", "/") + "/index.html",
-			// x);
+			render(request.controller.replace(".", "/") + "/index.html");
+
 		}
 
 	}
