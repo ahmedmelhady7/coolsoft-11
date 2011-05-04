@@ -24,6 +24,9 @@
 <form action="@{Items.viewAssignedItems()}" method="post">
 	My assigned to-do items: <input type="submit" value="View">
 </form>
+<form action="@{AssignRequests.view()}" method="post">
+	Assign Requests: <input type="submit" value="View">
+</form>
 <form action="@{Users.ViewOrgInv()}">
 <input type="hidden" name="userId" value="${u.id}">
 Invitations from Organizations: <input type="submit" value="view">
