@@ -41,9 +41,9 @@ public class Search extends Controller {
 	 */
 	public static List<Model> listOfResults = new ArrayList<Model>();
 
-	public static List<Model> filterResult= new ArrayList<Model>();
+	public static List<Model> filterResult = new ArrayList<Model>();
 
-	public static List<Model> sorted= new ArrayList<Model>();
+	public static List<Model> sorted = new ArrayList<Model>();
 
 	/**
 	 * 
@@ -65,7 +65,7 @@ public class Search extends Controller {
 	 * 
 	 *         Method that renders the searchResult View
 	 */
-	public static void SearchResult() {
+	public static void searchResult() {
 		String connected = Security.connected();
 		User u = Security.getConnected();
 		List<Idea> ideasFound = new ArrayList<Idea>();
@@ -86,12 +86,12 @@ public class Search extends Controller {
 				organizationsFound.add((Organization) listOfResults.get(i));
 			}
 		}
-		for(int i = 0;i<listOfResults.size();i++){
+		for (int i = 0; i < listOfResults.size(); i++) {
 			System.out.println(listOfResults.get(i).toString());
 		}
 		List<Model> lof = listOfResults;
-		render(u,connected, lof, ideasFound, organizationsFound, entitiesFound,
-				topicsFound);
+		render(u, connected, lof, ideasFound, organizationsFound,
+				entitiesFound, topicsFound);
 	}
 
 	/**
@@ -135,10 +135,11 @@ public class Search extends Controller {
 	 */
 	public static void advSearch(int searchIn, String wantKey,
 			String unWantKey, int org, int entity, int topic, byte plan,
-			int idea, int item, int comm, int dayB, int monthB,
-			int yearB, int dayA, int monthA, int yearA, int dayE,
-			int monthE, int yearE) {
+			int idea, int item, int comm, int dayB, int monthB, int yearB,
+			int dayA, int monthA, int yearA, int dayE, int monthE, int yearE) {
 
+		System.out.println("Enter advSearch");
+		
 		if (wantKey.trim().compareTo("") == 0) {
 			// back;
 		} else {
@@ -204,93 +205,92 @@ public class Search extends Controller {
 			}
 			}
 
-			 // Organization
-			 if (org == 0) {
-			 for (int i = 0; i < orgs.size(); i++) {
-			 if (!((Organization) orgs.get(i)).name.contains(unWantKey)) {
-			 if (((Organization) orgs.get(i)).name.contains(wantKey)) {
-			 listOfResults.add(orgs.get(i));
-			 } else {
-			 boolean add = true;
-			 List<Tag> x = ((Organization) orgs.get(i)).relatedTags;
-			 for (int j = 0; j < x.size(); j++) {
-			 if (x.get(j).name.contains(unWantKey)) {
-			 add = false;
-			 }
-			 }
-			 if (add) {
-			 for (int j = 0; j < x.size(); j++) {
-			 if (x.get(j).name.contains(wantKey)) {
-			 listOfResults.add(orgs.get(i));
-			 break;
-			 }
-			 }
-			 }
-			 }
-			 }
-			 }
-			 }
-			
-			 // Entity
-			 if (entity == 0) {
-			 for (int i = 0; i < orgs.size(); i++) {
-			 searchWithEntities(
-			 ((Organization) orgs.get(i)).entitiesList,
-			 unWantKey, wantKey);
-			 }
-			 }
-			
-			 // Topic
-			 List topics = null;
-			 if (topic == 0) {
-			 topics = new ArrayList<Topic>();
-			 for (int i = 0; i < orgs.size(); i++) {
-			 for (int j = 0; j < ((Organization) orgs.get(i)).entitiesList
-			 .size(); j++) {
-			 topics.add(((MainEntity) ((Organization)
-			 orgs.get(i)).entitiesList
-			 .get(j)).topicList);
-			 }
-			 }
-			 searchWithTopic(topics, unWantKey, wantKey);
-			 }
-			
-			 // Plans
-			 List plans = null;
-			 if (plan == 0) {
-			 plans = new ArrayList<Plan>();
-			 for (int i = 0; i < topics.size(); i++) {
-			 plans.add(((Topic) topics.get(i)).plan);
-			 }
-			 searchWithPlan(plans, unWantKey, wantKey);
-			 }
-			
-			 // Ideas
-			 if (idea == 0) {
-			 List ideas = new ArrayList<Idea>();
-			 for (int i = 0; i < topics.size(); i++) {
-			 for (int j = 0; j < ((Topic) topics.get(i)).ideas.size(); j++) {
-			 ideas.add(((Idea) ((Topic) topics.get(i)).ideas.get(j)));
-			 }
-			 }
-			 searchWithIdea(ideas, unWantKey, wantKey);
-			 }
-			
-			 // Item
-			 if (item == 0) {
-			 List items = new ArrayList<Idea>();
-			 for (int i = 0; i < plans.size(); i++) {
-			 for (int j = 0; j < ((models.Plan) plans.get(i)).items
-			 .size(); j++) {
-			 items.add((((models.Plan) plans.get(i)).ideas.get(j)));
-			 }
-			 }
-			 searchWithItem(items, unWantKey, wantKey, before, after, exact);
-			 }
-			
-			 // Comments
+			// Organization
+			if (org == 0) {
+				for (int i = 0; i < orgs.size(); i++) {
+					if (!((Organization) orgs.get(i)).name.contains(unWantKey)) {
+						if (((Organization) orgs.get(i)).name.contains(wantKey)) {
+							listOfResults.add(orgs.get(i));
+						} else {
+							boolean add = true;
+							List<Tag> x = ((Organization) orgs.get(i)).relatedTags;
+							for (int j = 0; j < x.size(); j++) {
+								if (x.get(j).name.contains(unWantKey)) {
+									add = false;
+								}
+							}
+							if (add) {
+								for (int j = 0; j < x.size(); j++) {
+									if (x.get(j).name.contains(wantKey)) {
+										listOfResults.add(orgs.get(i));
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			// Entity
+			if (entity == 0) {
+				for (int i = 0; i < orgs.size(); i++) {
+					searchWithEntities(
+							((Organization) orgs.get(i)).entitiesList,
+							unWantKey, wantKey);
+				}
+			}
+
+			// Topic
+			List topics = null;
+			if (topic == 0) {
+				topics = new ArrayList<Topic>();
+				for (int i = 0; i < orgs.size(); i++) {
+					for (int j = 0; j < ((Organization) orgs.get(i)).entitiesList
+							.size(); j++) {
+						topics.add(((MainEntity) ((Organization) orgs.get(i)).entitiesList
+								.get(j)).topicList);
+					}
+				}
+				searchWithTopic(topics, unWantKey, wantKey);
+			}
+
+			// Plans
+			List plans = null;
+			if (plan == 0) {
+				plans = new ArrayList<Plan>();
+				for (int i = 0; i < topics.size(); i++) {
+					plans.add(((Topic) topics.get(i)).plan);
+				}
+				searchWithPlan(plans, unWantKey, wantKey);
+			}
+
+			// Ideas
+			if (idea == 0) {
+				List ideas = new ArrayList<Idea>();
+				for (int i = 0; i < topics.size(); i++) {
+					for (int j = 0; j < ((Topic) topics.get(i)).ideas.size(); j++) {
+						ideas.add(((Idea) ((Topic) topics.get(i)).ideas.get(j)));
+					}
+				}
+				searchWithIdea(ideas, unWantKey, wantKey);
+			}
+
+			// Item
+			if (item == 0) {
+				List items = new ArrayList<Idea>();
+				for (int i = 0; i < plans.size(); i++) {
+					for (int j = 0; j < ((models.Plan) plans.get(i)).items
+							.size(); j++) {
+						items.add((((models.Plan) plans.get(i)).ideas.get(j)));
+					}
+				}
+				searchWithItem(items, unWantKey, wantKey, before, after, exact);
+			}
+
+			// Comments
 		}
-		render();
+		//render();
 	}
 
 	/**
@@ -643,7 +643,7 @@ public class Search extends Controller {
 		} catch (NullPointerException e) {
 
 		}
-		List<Organization>listOfOrgs = new ArrayList<Organization>();
+		List<Organization> listOfOrgs = new ArrayList<Organization>();
 		for (int s = 0; s < keywords.length; s++) {
 			List<Organization> listOfOrganizations = Organization.findAll();
 			for (int i = 0; i < listOfOrganizations.size(); i++) {
@@ -655,29 +655,30 @@ public class Search extends Controller {
 							.size(); j++) {
 						if (keywords[s].equalsIgnoreCase(listOfOrganizations
 								.get(i).relatedTags.get(j).name)) {
-							if (!listOfOrgs.contains(listOfOrganizations
-									.get(i))) {
+							if (!listOfOrgs
+									.contains(listOfOrganizations.get(i))) {
 								listOfOrgs.add(listOfOrganizations.get(i));
 							}
 						}
 					}
 				}
-//				List<User> enrolledUsers = Users.getEnrolledUsers(listOfOrganizations.get(i));
-//				for (int k = 0; k < enrolledUsers
-//						.size(); k++) {
-//					if (userId
-//							.compareTo(enrolledUsers
-//									.get(k).username) != 0) {
-//						switch (listOfOrganizations.get(i).privacyLevel) {
-//						case 0:
-//							listOfOrganizations.remove(listOfOrganizations
-//									.get(i));
-//							break;
-//						default:
-//							break;
-//						}
-//					}
-//				}
+				// List<User> enrolledUsers =
+				// Users.getEnrolledUsers(listOfOrganizations.get(i));
+				// for (int k = 0; k < enrolledUsers
+				// .size(); k++) {
+				// if (userId
+				// .compareTo(enrolledUsers
+				// .get(k).username) != 0) {
+				// switch (listOfOrganizations.get(i).privacyLevel) {
+				// case 0:
+				// listOfOrganizations.remove(listOfOrganizations
+				// .get(i));
+				// break;
+				// default:
+				// break;
+				// }
+				// }
+				// }
 			}
 		}
 		return listOfOrgs;
@@ -718,18 +719,20 @@ public class Search extends Controller {
 						}
 					}
 				}
-//				for (int k = 0; k < listOfEntities.get(i).followers.size(); k++) {
-//					if (userId
-//							.compareTo(listOfEntities.get(i).followers.get(k).username) != 0) {
-//						switch (listOfEntities.get(i).organization.privacyLevel) {
-//						case 0:
-//							listOfEntities.remove(listOfEntities.get(i));
-//							break;
-//						default:
-//							break;
-//						}
-//					}
-//				}
+				// for (int k = 0; k < listOfEntities.get(i).followers.size();
+				// k++) {
+				// if (userId
+				// .compareTo(listOfEntities.get(i).followers.get(k).username)
+				// != 0) {
+				// switch (listOfEntities.get(i).organization.privacyLevel) {
+				// case 0:
+				// listOfEntities.remove(listOfEntities.get(i));
+				// break;
+				// default:
+				// break;
+				// }
+				// }
+				// }
 			}
 		}
 		return listOfEnts;
@@ -771,21 +774,24 @@ public class Search extends Controller {
 						}
 					}
 				}
-//				List<User> enrolledUsers = Users.getEnrolledUsers(listOfIdeas.get(i).belongsToTopic.entity.organization);
-//				for (int k = 0; k < enrolledUsers
-//						.size(); k++) {
-//					if (userId
-//							.compareTo(enrolledUsers
-//									.get(k).username) != 0) {
-//						switch (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel) {
-//						case 0:
-//							listOfIdeas.remove(listOfIdeas.get(i));
-//							break;
-//						default:
-//							break;
-//						}
-//					}
-//				}
+				// List<User> enrolledUsers =
+				// Users.getEnrolledUsers(listOfIdeas.get(i).belongsToTopic.entity.organization);
+				// for (int k = 0; k < enrolledUsers
+				// .size(); k++) {
+				// if (userId
+				// .compareTo(enrolledUsers
+				// .get(k).username) != 0) {
+				// switch
+				// (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel)
+				// {
+				// case 0:
+				// listOfIdeas.remove(listOfIdeas.get(i));
+				// break;
+				// default:
+				// break;
+				// }
+				// }
+				// }
 
 			}
 		}
@@ -829,38 +835,41 @@ public class Search extends Controller {
 						}
 					}
 				}
-//				for (int k = 0; k < listOfTopics.get(i).followers.size(); k++) {
-//					if (userId
-//							.compareTo(listOfTopics.get(i).followers.get(k).username) != 0) {
-//						switch (listOfTopics.get(i).privacyLevel) {
-//						case 0:
-//							listOfTopics.remove(listOfTopics.get(i));
-//							break;
-//						default:
-//							break;
-//						}
-//					}
-//				}
+				// for (int k = 0; k < listOfTopics.get(i).followers.size();
+				// k++) {
+				// if (userId
+				// .compareTo(listOfTopics.get(i).followers.get(k).username) !=
+				// 0) {
+				// switch (listOfTopics.get(i).privacyLevel) {
+				// case 0:
+				// listOfTopics.remove(listOfTopics.get(i));
+				// break;
+				// default:
+				// break;
+				// }
+				// }
+				// }
 
 			}
 		}
 		return listOfTopis;
 	}
-//
-//	// public static void searchResult() {
-//	// String connected = Security.connected();
-//	// render(listOfResults,connected);
-//	// }
-//	/**
-//	 * 
-//	 * @author Loaay Alkherbawy
-//	 * 
-//	 * @story C4S01 Searching for organizations using a given keyword
-//	 * 
-//	 *        this method renders the searchResult view
-//	 * 
-//	 */
-//
+
+	//
+	// // public static void searchResult() {
+	// // String connected = Security.connected();
+	// // render(listOfResults,connected);
+	// // }
+	// /**
+	// *
+	// * @author Loaay Alkherbawy
+	// *
+	// * @story C4S01 Searching for organizations using a given keyword
+	// *
+	// * this method renders the searchResult view
+	// *
+	// */
+	//
 	/**
 	 * method handelingOrAnd decides which list is to be passed for the filter
 	 * method if the choice is and so we will need to filter on the filtered
@@ -1297,7 +1306,7 @@ public class Search extends Controller {
 			for (int m = 0; m < nottosort.size(); m++) {
 				sorted.add(nottosort.get(m));
 			}
-			
+
 			listOfResults = sorted;
 			// the previous too loops is to append to lists in one
 		}
