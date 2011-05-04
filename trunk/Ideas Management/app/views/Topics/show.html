@@ -1,59 +1,64 @@
 #{extends '/topics/layout.html' /}
 <h3> <label> View Topic</label></h3>
-	
+	<br />
 
 <div id="crudShow" class="${type.name}">
 	
-	
+	<br />
 	
 	 <font color="Red">${message}</font>	
-	
+	<br />
 	<div class="objectForm">
 	#{form action:@view(object._key()), enctype:'multipart/form-data'}
-	
+	<br />
 		#{crud.form fields: ['title', 'creator', 'entity', 'description', 'privacyLevel']}
-		
+		<br />
 		   #{crud.custom 'title'}
 			<p> 
  			<!--<label for="object_title">Title</label>--> 
-			<textarea disabled= true id="object_title" cols="30" rows="1" class="" name="object.title">${object.title}</textarea>
+			<label id="object_title" cols="30" rows="1" class="" name="object.title">${object.title}</label>
  			</p> 
 			#{/crud.custom}
-			
+			<br />
+			<br />
 			#{crud.custom 'creator'}
 			<p> 
  			<label for="object_creator">by</label> 
-			<textarea disabled= true id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">${object.creator}</textarea> 
+			<label id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">${object.creator}</label> 
  			</p> 
 			#{/crud.custom }
-			
+			<br />
+			<br />
 			#{crud.custom 'entity'}
 			<p> 
  			<label for="object_entity">in</label> 
-			<textarea disabled= true id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">${object.entity}</textarea> 
+			<label id="object_entity" cols="30" rows="1" class="" name="object.privacyLevel">${object.entity}</label> 
  			</p> 
 			#{/crud.custom }
-		
+		<br />
+		<br />
 			#{crud.custom 'description'}
 			<p> 
  			<label for="object_description">Description</label> 
-			<textarea disabled= true id="object_description" cols="50" rows="5" class="" name="object.description">${object.description}</textarea> 
+			<label id="object_description" cols="50" rows="5" class="" name="object.description">${object.description}</label> 
 			<!--<span class="crudHelp" ><font color="Red">*</font>Required</span>--> 
  			</p> 
 			#{/crud.custom}
-			
+			<br />
+			<br />
 			#{crud.custom 'privacyLevel'}
 			<p> 
  			<label for="object_privacyLevel">Privacy Level</label> 
-			<textarea disabled= true id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">${object.privacyLevel}</textarea> 
+			<label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">${object.privacyLevel}</label> 
  			</p> 
 			#{/crud.custom }
 		
 		
 		#{/crud.form }
-		<!--<a href="/show?topicid=object._key()">Edit</a>-->
+		<br />
+	
 		<button type="submit" onclick= > Edit </button>
-		
+		<br />
 		#{if canPlan == 1 && openToEdit == false && plan == null}
 		#{form @Plans.addIdea(), method:'POST', enctype:'multipart/form-data' }
 			<input type = "hidden" name = "topicId" value = ${topicid} >
