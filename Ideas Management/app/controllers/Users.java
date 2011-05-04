@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.List;
 
 import javax.persistence.Query;
-
 import notifiers.Mail;
-
 import play.data.binding.Binder;
 import play.data.validation.Validation;
 import play.db.Model;
@@ -19,7 +17,6 @@ import play.db.jpa.GenericModel.JPAQuery;
 import play.db.jpa.JPA;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
-
 import models.MainEntity;
 import models.Notification;
 import models.NotificationProfile;
@@ -28,10 +25,164 @@ import models.Tag;
 import models.Topic;
 import models.User;
 import models.UserRoleInOrganization;
-
 import models.*;
 
 public class Users extends CRUD {
+	
+	/**
+	 * Overriding the CRUD method list.
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * @param page
+	 *            : page of the list we are in
+	 * 
+	 * @param search
+	 *            : search string
+	 * 
+	 * @param searchFields
+	 *            : the fields we want to search
+	 * 
+	 * @param orderBy
+	 *            : criteria to order list by
+	 * 
+	 * @param order
+	 *            : the order of the list
+	 * 
+	 * @description This method renders the list of users
+	 * 
+	 * 
+	 */
+	public static void list(int page, String search, String searchFields,
+			String orderBy, String order) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		if (page < 1) {
+			page = 1;
+		}
+		System.out.println("list() entered ");
+		List<Model> objects = type.findPage(page, search, searchFields,
+				orderBy, order, (String) request.args.get("where"));
+		Long count = type.count(search, searchFields,
+				(String) request.args.get("where"));
+		Long totalCount = type.count(null, null,
+				(String) request.args.get("where"));
+		try {
+			System.out.println("list() done, will render ");
+			render(type, objects, count, totalCount, page, orderBy, order);
+		} catch (TemplateNotFoundException e) {
+			System.out
+					.println("list() done with exceptions, will render CRUD/list.html ");
+			render("CRUD/list.html", type, objects, count, totalCount, page,
+					orderBy, order);
+		}
+	}
+
+	/**
+	 * User view method
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * @param userId
+	 *            : id of the user we want to show
+	 * 
+	 * @description This method renders the form for viewing a user
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	public static void view(String userId) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		User object = User.findById(userId);
+		notFoundIfNull(object);
+		System.out.println("entered view() for User " + object.username);
+		System.out.println(object.email);
+		System.out.println(object.username);
+		int communityContributionCounter = object.communityContributionCounter;
+		String name = object.firstName + " " + object.lastName;
+		String profession = object.profession;
+		String username = object.username;
+		String birthDate = "" + object.dateofBirth;
+
+		try {
+			System.out.println("view() done, about to render");
+			render(type, object, username, name, communityContributionCounter,
+					profession, birthDate, userId);
+		} catch (TemplateNotFoundException e) {
+			System.out
+					.println("view() done with exception, rendering to CRUD/show.html");
+			render("/users/view.html");
+		}
+	}
+
+	/**
+	 * Overriding the CRUD method show.
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * @param userId
+	 *            : id of the user we want to show
+	 * 
+	 * @description This method renders the form for editing and viewing a user
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	public static void show(String userId) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		User object = User.findById(userId);
+		notFoundIfNull(object);
+		System.out.println("entered view() for User " + object.username);
+		System.out.println(object.email);
+		System.out.println(object.username);
+		int communityContributionCounter = object.communityContributionCounter;
+		String name = object.firstName + " " + object.lastName;
+		String profession = object.profession;
+		String username = object.username;
+		String birthDate = "" + object.dateofBirth;
+		try {
+			System.out.println("show() done, about to render");
+			render(type, object, username, name, communityContributionCounter,
+					profession, birthDate, userId);
+		} catch (TemplateNotFoundException e) {
+			System.out
+					.println("show() done with exception, rendering to CRUD/show.html");
+			render("CRUD/show.html", type, object);
+		}
+	}
+	
+	/**
+	 * Overriding the CRUD method blank.
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * @description This method renders the form for creating a user
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	public static void blank() throws Exception {
+        ObjectType type = ObjectType.get(Users.class);
+        notFoundIfNull(type);
+        Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        Model object = (Model)constructor.newInstance();
+        try {
+            render(type, object);
+        } catch (TemplateNotFoundException e) {
+            render("CRUD/blank.html", type, object);
+        }
+    }
 
 	/**
 	 * This Method adds a user to the list of followers in a given tag
@@ -309,52 +460,51 @@ public class Users extends CRUD {
 	 */
 	public static ArrayList<User> searchUser(String keyword) {
 
-	     List<User> searchResultByName = new ArrayList<User>();
-	     List<User> searchResultByProfession = new ArrayList<User>();
-	     List<User> searchResultByEmail = new ArrayList<User>();
+		List<User> searchResultByName = new ArrayList<User>();
+		List<User> searchResultByProfession = new ArrayList<User>();
+		List<User> searchResultByEmail = new ArrayList<User>();
 
-	     if (keyword != null) {
-	      searchResultByName = User.find("username like ? ", keyword)
-	        .fetch();
-	      searchResultByProfession = User.find("profession like ? ",
-	        keyword).fetch();
-	      searchResultByEmail = User.find("email like ? ", keyword).fetch();
-	     }
+		if (keyword != null) {
+			searchResultByName = User.find("username like ? ", keyword).fetch();
+			searchResultByProfession = User.find("profession like ? ", keyword)
+					.fetch();
+			searchResultByEmail = User.find("email like ? ", keyword).fetch();
+		}
 
-	     int nameSize = searchResultByName.size();
-	     int professionSize = searchResultByProfession.size();
-	     int emailSize = searchResultByEmail.size();
-	     for (int i = 0; i < nameSize; i++) {
-	      if (searchResultByName.get(i).state == "d"
-	        || searchResultByName.get(i).state == "n") {
-	       searchResultByName.remove(i);
-	      }
-	     }
-	     for (int i = 0; i < professionSize; i++) {
-	      if (searchResultByProfession.get(i).state == "d"
-	        || searchResultByProfession.get(i).state == "n") {
-	       searchResultByProfession.remove(i);
-	      }
-	     }
+		int nameSize = searchResultByName.size();
+		int professionSize = searchResultByProfession.size();
+		int emailSize = searchResultByEmail.size();
+		for (int i = 0; i < nameSize; i++) {
+			if (searchResultByName.get(i).state == "d"
+					|| searchResultByName.get(i).state == "n") {
+				searchResultByName.remove(i);
+			}
+		}
+		for (int i = 0; i < professionSize; i++) {
+			if (searchResultByProfession.get(i).state == "d"
+					|| searchResultByProfession.get(i).state == "n") {
+				searchResultByProfession.remove(i);
+			}
+		}
 
-	     for (int i = 0; i < emailSize; i++) {
-	      if (searchResultByEmail.get(i).state == "d"
-	        || searchResultByEmail.get(i).state == "n") {
-	       searchResultByEmail.remove(i);
-	      }
-	     }
-	     ArrayList<User> search = new ArrayList<User>();
-	     search.addAll(searchResultByEmail);
-	     search.addAll(searchResultByName);
-	     search.addAll(searchResultByProfession);
-	     
-	     //searchResultByName.addAll(searchResultByProfession);
-	     //searchResultByName.addAll(searchResultByEmail);
-	     // render(searchResultByName, searchResultByProfession,
-	     // searchResultByEmail);
-	     return search;
+		for (int i = 0; i < emailSize; i++) {
+			if (searchResultByEmail.get(i).state == "d"
+					|| searchResultByEmail.get(i).state == "n") {
+				searchResultByEmail.remove(i);
+			}
+		}
+		ArrayList<User> search = new ArrayList<User>();
+		search.addAll(searchResultByEmail);
+		search.addAll(searchResultByName);
+		search.addAll(searchResultByProfession);
 
-	    }
+		// searchResultByName.addAll(searchResultByProfession);
+		// searchResultByName.addAll(searchResultByEmail);
+		// render(searchResultByName, searchResultByProfession,
+		// searchResultByEmail);
+		return search;
+
+	}
 
 	/**
 	 * 
@@ -371,32 +521,35 @@ public class Users extends CRUD {
 	 * @return List<User>
 	 */
 	public static List<User> searchOrganizer(Organization o) {
-		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization> ();
-		List<User> user = new ArrayList<User> ();
+		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
+		List<User> user = new ArrayList<User>();
 		if (o != null) {
-//			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
-//					.find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
-//							o, "organizer");
-			organizers = UserRoleInOrganization.find("byOrganization", o).fetch();
-			for(int i= 0; i <organizers.size(); i++) {
-				if((organizers.get(i).role.roleName).equals("organizer")){
+			// organizers = (List<UserRoleInOrganization>)
+			// UserRoleInOrganization
+			// .find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
+			// o, "organizer");
+			organizers = UserRoleInOrganization.find("byOrganization", o)
+					.fetch();
+			for (int i = 0; i < organizers.size(); i++) {
+				if ((organizers.get(i).role.roleName).equals("organizer")) {
 					user.add(organizers.get(i).enrolled);
 				}
 			}
 
 		}
-//		List<User> finalOrganizers = new ArrayList<User>();
-//		for (int i = 0; i < organizers.size(); i++) {
-//			finalOrganizers.add((organizers.get(i)).enrolled);
-//		}
+		// List<User> finalOrganizers = new ArrayList<User>();
+		// for (int i = 0; i < organizers.size(); i++) {
+		// finalOrganizers.add((organizers.get(i)).enrolled);
+		// }
 		int size = organizers.size();
 		for (int i = 0; i < size; i++) {
-			if(user.get(i).state == "d" || user.get(i).state == "n"){
+			if (user.get(i).state == "d" || user.get(i).state == "n") {
 				user.remove(i);
 			}
 		}
 		return user;
 	}
+
 	/**
 	 * 
 	 * This method is responsible for telling whether a user is allowed to do a
@@ -605,38 +758,28 @@ public class Users extends CRUD {
 	 * 
 	 * @return List of Organizers in that topic
 	 */
-	///to be modefied
+	// /to be modefied
 	public List<User> getTopicOrganizers(Topic t) {
-        List <User> enrolled = new ArrayList<User>();
+		List<User> enrolled = new ArrayList<User>();
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
 		if (t != null) {
 			Organization o = t.entity.organization;
 			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
 					.find("select uro from UserRoleInOrganization uro "
 							+ "where uro.organization = ? and"
-							+ " uro.entityTopicID = ? "
-							+ "and uro.type like ?", o, t.getId(),
-							"topic");
-			for(int i= 0 ; i<organizers.size(); i++){
-				if(!(organizers.get(i).role.roleName.equals("organizer"))){
+							+ " uro.entityTopicID = ? " + "and uro.type like ?",
+							o, t.getId(), "topic");
+			for (int i = 0; i < organizers.size(); i++) {
+				if (!(organizers.get(i).role.roleName.equals("organizer"))) {
 					organizers.remove(i);
-				}
-				else{
+				} else {
 					enrolled.add(organizers.get(i).enrolled);
 				}
 			}
-		
-			
 
 		}
 		return enrolled;
 	}
-	
-	
-	
-	
-	
-	
 
 	/**
 	 * gets the list of organizers of a certain entity
@@ -650,7 +793,7 @@ public class Users extends CRUD {
 	 * @return List of Organizers in that entity
 	 */
 	public static List<User> getEntityOrganizers(MainEntity e) {
-       List <User> enrolled = new ArrayList<User>();
+		List<User> enrolled = new ArrayList<User>();
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
 		if (e != null) {
 			Organization o = e.organization;
@@ -658,13 +801,11 @@ public class Users extends CRUD {
 					.find("select uro from UserRoleInOrganization uro"
 							+ "where uro.organization = ? "
 							+ " and uro.entityTopicID = ? "
-							+ "and uro.type like ?", o, e.getId(),
-							"entity");
-			for(int i = 0 ; i< organizers.size() ;  i++){
-				if(!((organizers.get(i).role).equals("organizer"))){
+							+ "and uro.type like ?", o, e.getId(), "entity");
+			for (int i = 0; i < organizers.size(); i++) {
+				if (!((organizers.get(i).role).equals("organizer"))) {
 					organizers.remove(i);
-				}
-				else{
+				} else {
 					enrolled.add(organizers.get(i).enrolled);
 				}
 			}
