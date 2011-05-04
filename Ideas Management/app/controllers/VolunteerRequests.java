@@ -35,6 +35,7 @@ public class VolunteerRequests extends CRUD {
 		User sender = Security.getConnected();
 		Item dest = Item.findById(itemId);
 		Date d = new Date();
+		System.out.println("ana ItemId" + itemId);
 		if (sender.canVolunteer(itemId)) {
 			if (!(dest.status == 2) && dest.endDate.compareTo(d) > 0) {
 				VolunteerRequest volunteerRequest = new VolunteerRequest(
@@ -45,8 +46,9 @@ public class VolunteerRequests extends CRUD {
 						+ " has requested to volunteer to work on the following item "
 						+ dest.summary + "in the plan " + dest.plan.title
 						+ "of the topic" + dest.plan.topic.title;
-				Notifications.sendNotification(dest.plan.topic.getOrganizer(),
-						dest.plan.id, "plan", description);
+//				List<User> notificationDestination = dest.plan.topic.getOrganizer();
+//				Notifications.sendNotification(notificationDestination,
+//						dest.plan.id, "plan", description);
 				Plans.viewAsList(dest.plan.id);
 			}
 		} else {

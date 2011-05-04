@@ -29,7 +29,10 @@ public class AssignRequests extends CRUD {
 	 */
 
 	public static void assign(long itemId, long planId) {
-		viewUsers(filter(itemId, planId), itemId, planId);
+		ArrayList <User> users = filter(itemId, planId);
+
+		System.out.println(users.size()+"A5ER OBBBBAAAAAAAAAA");
+		viewUsers(users, itemId, planId);
 
 	}
 
@@ -53,7 +56,9 @@ public class AssignRequests extends CRUD {
 	 *            : the id of the plan containing the item that will be assigned
 	 *            to the list of users selected
 	 */
-	public static void viewUsers(List<User> users, long itemId, long planId) {
+	public static void viewUsers(ArrayList<User> users, long itemId, long planId) {
+		System.out.println(itemId + "ITEMID");
+		System.out.println(users.size() + "OFEEEEEEEEEEEEEEEENNN");
 		render(users, itemId, planId);
 	}
 
@@ -154,12 +159,13 @@ public class AssignRequests extends CRUD {
 	 * 
 	 * @return List<User>
 	 */
-	public static List<User> filter(long itemId, long planId) {
+	public static ArrayList<User> filter(long itemId, long planId) {
 		Plan plan = Plan.findById(planId);
 		List<User> nonBlockedUsers = Topics.searchByTopic(plan.topic.id);
 		Item item = Item.findById(itemId);
 		int size = nonBlockedUsers.size();
-		List<User> finalResult = new ArrayList<User>();
+		System.out.println(size + "OBBBAAAAAAAAAAA");
+		ArrayList<User> finalResult = new ArrayList<User>();
 		boolean flag = false;
 		User user;
 		for (int i = 0; i < size; i++) {
@@ -187,6 +193,7 @@ public class AssignRequests extends CRUD {
 			}
 			flag = false;
 		}
+		System.out.println(finalResult.size() + "OFFFFFFFFFFFFFFFFFFFFF");
 		return finalResult;
 	}
 
@@ -213,19 +220,19 @@ public class AssignRequests extends CRUD {
 	 * @return List<User>
 	 */
 
-	// public static void search(String keyword, long itemId, long planId) {
-	//
-	// List<User> nonBlockedUsers = filter(itemId, planId);
-	// List<User> searchResult = Users.searchUser(keyword);
-	// List<User> finalResult = new ArrayList<User>();
-	// for (int i = 0; i < nonBlockedUsers.size(); i++) {
-	// if (searchResult.contains(nonBlockedUsers.get(i))) {
-	// finalResult.add(nonBlockedUsers.get(i));
-	// }
-	// }
-	// viewUsers(finalResult, itemId, planId);
-	//
-	// }
+	 public static void search(String keyword, long itemId, long planId) {
+	
+	 List<User> nonBlockedUsers = filter(itemId, planId);
+	 List<User> searchResult = Users.searchUser(keyword);
+	 ArrayList<User> finalResult = new ArrayList<User>();
+	 for (int i = 0; i < nonBlockedUsers.size(); i++) {
+	 if (searchResult.contains(nonBlockedUsers.get(i))) {
+	 finalResult.add(nonBlockedUsers.get(i));
+	 }
+	 }
+	 viewUsers(finalResult, itemId, planId);
+	
+	 }
 
 	/**
 	 * This method renders the page for allowing the user to view his assign

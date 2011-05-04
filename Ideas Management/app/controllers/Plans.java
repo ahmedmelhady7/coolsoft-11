@@ -17,8 +17,6 @@ import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import controllers.CRUD.ObjectType;
 
-//#{if canAssign == 1 && !(item.status == 2)}
-// #{/if}
 public class Plans extends CRUD {
 
 	/**
@@ -38,8 +36,8 @@ public class Plans extends CRUD {
 		List<Item> itemsList = p.items;
 		int canAssign = 0;
 		int canEdit = 0;
-//		if (Users.isPermitted(user, "all", p.topic.id, "topic")) {
-//		
+		//if (Users.isPermitted(user, "all", p.topic.id, "topic")) {
+		
 //			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
 //					"topic")) {
 //
@@ -51,12 +49,11 @@ public class Plans extends CRUD {
 //
 //				canAssign = 1;
 //			}
-//			render(p, itemsList, user, canAssign, canEdit, error);
+			render(p, itemsList, user, canAssign, canEdit, error);
 //		} else {
 //			error = true;
 //			render(error);
 //		}
-		render(p, itemsList, user, canAssign, canEdit, error);
 	}
 
 	/**

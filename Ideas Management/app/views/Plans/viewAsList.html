@@ -37,7 +37,8 @@ This plan is now rated: ${newRating}
             <br/>
             End Date:  ${item.endDate.format('dd MMM yy')}
             <br/>
-            Assigned Users: 
+            #{if item.assignees.size() > 0}
+			Assigned Users: 
             <ul style="list-style: none; ">
                 #{list items:item.assignees, as:'assignedUser'}
                 <li>
@@ -45,13 +46,14 @@ This plan is now rated: ${newRating}
                 </li>
                 #{/list}
             </ul>
-   		 #{if user.canVolunteer(item.id) && !(item.status == 2)}
+			#{/if}
+ 		 #{if user.canVolunteer(item.id) && !(item.status == 2)}
    		<a href="@{VolunteerRequests.justify(item.id, p.id, 0)}">Volunteer to work on this item</a>
      	<br/>
   		#{/if} &nbsp; &nbsp;
-		
+			#{if canAssign == 1 && !(item.status == 2)}
 		<a href="@{AssignRequests.assign(item.id, p.id)}">Assign a user to this item</a>
-      
+      #{/if}
 		 #{if canEdit == 1}
 		<a href="@{Plans.editItem(item.id)}">Edit this item</a>
       #{/if}
