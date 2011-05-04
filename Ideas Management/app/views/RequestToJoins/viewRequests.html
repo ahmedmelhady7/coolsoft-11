@@ -1,4 +1,4 @@
-
+ #{extends 'main.html' /}
 <a href="@{Application.index()}">Back to home</a>
 <br />
 <br />
@@ -12,30 +12,36 @@
  #{list items:requests, as:'request'}
     <li>
         <fieldset>
-        	
+        	#{if ${type}==1}
             <legend>
             <h2>
-              A new user  Wants to join Organization ${request.organization.name}
+              A new user ${request.source.name} Wants to join Organization ${request.organization.name}
             </h2>
             </legend>
-			
-			<input type = "button" value = "Accept" onclick="javascript: respondGalal(1,'${request.id}');">
-			<input type = "button" value = "Reject" onclick="javascript: respondGalal(0,'${request.id}')">
+			#{/if}
+			#{else}
+			A new user ${request.source.name} Wants to join Topic ${request.topic.name}
+			#{/else}
+
+			<input type = "button" value = "Accept" onclick="javascript: respondGalal(1,${request.id})">
+			<input type = "button" value = "Reject" onclick="javascript: respondGalal(0,${request.id})">
         </fieldset>
     </li>
     #{/list}
 #{/else}
 
+
 <script type="text/javascript">
 function respondGalal(stat, id){
 	if (stat == 1) {
+		alert(stat + "" + id);
 		//id = id + 1;
-		$.post('@{RequestToJoins.respond()}',{status:stat,reqId:id});
+		$.post('@{RequestToJoins.respondToRequest()}',{status:stat,reqId:id});
 		alert("Request Accepted!");
 		window.location.reload();
 	}
 	else {
-		$.post('@{RequestToJoins.respond()}', {
+		$.post('@{RequestToJoins.respondToRequest()}', {
 		status:stat, reqId: id
 		});
 		alert("Request rejected!");
