@@ -21,6 +21,8 @@ public class Bootstrap extends Job {
 			System.out.println("in");
 			Role.createIdeaDeveloperRole();
 			Role.createOrganizerRole();
+			Role.createAdminRole();
+			Role.createOrganizationLeadRole();
 			// add all roles and map them to users in org1
 			User u1 = new User("h@gmail.com", "1234", "Hamed", "EL-Akhdar",
 					"hamedcool", 0, new Date(), "egypt", "student");
