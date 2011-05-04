@@ -224,7 +224,8 @@ public class Organizations extends CRUD {
 	 *            : The user who wants to follow an organization
 	 */
 
-	public void followOrganization(long organizationId, User user) {
+	public void followOrganization(long organizationId) {
+		User user = Security.getConnected();
 		Organization org = Organization.findById(organizationId);
 		if (Users.isPermitted(user, "follow", organizationId, "organization")) {
 			org.followers.add(user);
@@ -235,11 +236,15 @@ public class Organizations extends CRUD {
 	}
 
 	public static void mainPage(){
+		User user = Security.getConnected();
 		List<Organization> organizations = Organization.findAll();
-		render(organizations);
+		render(user, organizations);
 	}
 	
-	public static void viewProfile(User user, Organization org) {
-		render(org);
+	public static void viewProfile(long id) {
+		User user = Security.getConnected();
+		Organization org = Organization.findById(id);
+		List<MainEntity> entities = org.entitiesList;
+		render(user, org, entities);
 	}
 }
