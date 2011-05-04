@@ -1,0 +1,16 @@
+<html>
+	<title> Create New Entity </title>
+#{extends 'main.html' /}
+#{set title:'Entity Creation' /}
+
+<form action="@{MainEntitys.createEntity()}" method="POST">
+
+<input type = "hidden" name = "org" value = org >
+Entity Name: <input type="text" id="name" name="name"> 
+<br />
+<p>Description:</p>
+<p><textarea id="desc" name="desc" rows="5" cols="50"></textarea></p>
+<input type="submit" value="Create">
+</form>
+
+</html> 
