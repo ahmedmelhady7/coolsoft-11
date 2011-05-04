@@ -1,20 +1,22 @@
 #{extends '/topics/layout.html' /}
 
 <div id="crudShow" class="${type.name}">
-	
+
 	<h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
-	
-	 <font color="Red">${message}</font>	
-	
+	<font color="Red">
+		${message}
+	</font>
 	<div class="objectForm">
-	#{form action:@save(object._key()), enctype:'multipart/form-data'}
-	
-		#{crud.form fields: ['title', 'description', 'privacyLevel']}
-		
-		   #{crud.custom 'email'}
+		#{form action:@save(object._key()), enctype:'multipart/form-data'}
+
+		#{crud.form fields: ['email', 'password', 'firstName','lastName', 'username', 'communityContributionCounter','dateofBirth',  'country', 'profession']}
+
+		#{crud.custom 'email'}
 		<p>
-			<label for="object_email">Email</label>
-			<textarea disabled= true id="object_email" cols="30" rows="1" class="" name="object.email">
+			<label for="object_email">
+				Email
+			</label>
+			<textarea id="object_email" cols="30" rows="1" class="" name="object.email">
 				${object.email}
 			</textarea>
 			<span class="crudHelp" >
@@ -30,7 +32,7 @@
 			<label for="object_firstName">
 				First Name
 			</label>
-			<textarea disabled= true id="object_firstName" cols="30" rows="1" class="" name="object.firstName">
+			<textarea id="object_firstName" cols="30" rows="1" class="" name="object.firstName">
 				${object.firstName}
 			</textarea>
 			<span class="crudHelp" >
@@ -46,35 +48,19 @@
 			<label for="object_lastName">
 				Last Name
 			</label>
-			<textarea disabled= true id="object_lastName" cols="30" rows="1" class="" name="object.lastName">
+			<textarea id="object_lastName" cols="30" rows="1" class="" name="object.lastName">
 				${object.lastName}
 			</textarea>
-			
 		</p>
 		#{/crud.custom }
 
-		#{crud.custom 'username'}
-		<p>
-			<label for="object_username">
-				Username
-			</label>
-			<textarea disabled= true id="object_username" cols="50" rows="5" class="" name="object.username">
-				${object.username}
-			</textarea>
-			<span class="crudHelp" >
-				<font color="Red">
-					*
-				</font>Required
-			</span>
-		</p>
-		#{/crud.custom}
 
 		#{crud.custom 'communityContributionCounter'}
 		<p>
 			<label for="object_communityContributionCounter">
 				Community Contribution Counter
 			</label>
-			<textarea disabled= true id="object_communityContributionCounter" cols="3" rows="1" class="" name="object.communityContributionCounter">
+			<textarea id="object_communityContributionCounter" cols="3" rows="1" class="" name="object.communityContributionCounter">
 				${object.communityContributionCounter}
 			</textarea>
 		</p>
@@ -85,7 +71,7 @@
 			<label for="object_dateofBirth">
 				Date Of Birth
 			</label>
-			<textarea disabled= true id="object_dateofBirth" cols="30" rows="1" class="" name="object.dateofBirth">
+			<textarea id="object_dateofBirth" cols="30" rows="1" class="" name="object.dateofBirth">
 				${object.dateofBirth}
 			</textarea>
 		</p>
@@ -96,7 +82,7 @@
 			<label for="object_country">
 				country
 			</label>
-			<textarea disabled= true id="object_country" cols="30" rows="1" class="" name="object.dateofBirth">
+			<textarea id="object_country" cols="30" rows="1" class="" name="object.dateofBirth">
 				${object.country}
 			</textarea>
 		</p>
@@ -107,32 +93,24 @@
 			<label for="object_profession">
 				Profession
 			</label>
-			<textarea disabled= true id="object_profession" cols="30" rows="1" class="" name="object.profession">
+			<textarea id="object_profession" cols="30" rows="1" class="" name="object.profession">
 				${object.profession}
 			</textarea>
 		</p>
 		#{/crud.custom }
 
 		#{/crud.form }
-		<button type="submit" onclick= >
-			Edit
-		</button>
-		#{/form}
-	</div>
 		
-		
-		#{/crud.form }
-		<p class="crudButtons">
-			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
-			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
-		</p>
+	<p class="crudButtons">
+		<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+		<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+	</p>
 	#{/form}
-	</div>
-	
-	<!--#{form @delete(object._key())}
-		<p class="crudDelete">
-			<input type="submit" value="&{'crud.delete', type.modelName}" />
-		</p>
-	#{/form}-->
+</div>
+#{form @delete(object._key())}
+<p class="crudDelete">
+<input type="submit" value="&{'crud.delete', type.modelName}" />
+</p>
+#{/form}
 
 </div>
