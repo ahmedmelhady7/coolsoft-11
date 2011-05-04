@@ -649,7 +649,10 @@ public class Search extends Controller {
 			for (int i = 0; i < listOfOrganizations.size(); i++) {
 				if (listOfOrganizations.get(i).name
 						.equalsIgnoreCase(keywords[s])) {
-					listOfOrgs.add(listOfOrganizations.get(i));
+					if (!listOfOrgs
+							.contains(listOfOrganizations.get(i))) {
+						listOfOrgs.add(listOfOrganizations.get(i));
+					}
 				} else {
 					for (int j = 0; j < listOfOrganizations.get(i).relatedTags
 							.size(); j++) {
@@ -706,8 +709,12 @@ public class Search extends Controller {
 		List<MainEntity> listOfEntities = MainEntity.findAll();
 		for (int s = 0; s < keywords.length; s++) {
 			for (int i = 0; i < listOfEntities.size(); i++) {
-				if (listOfEntities.get(i).name.equalsIgnoreCase(keywords[s])) {
-					listOfEnts.add(listOfEntities.get(i));
+				if (listOfEntities.get(i).name.equalsIgnoreCase(keywords[s])
+						|| listOfEntities.get(i).description.toLowerCase()
+								.contains(keywords[s].toLowerCase())) {
+					if (!listOfEnts.contains(listOfEntities.get(i))) {
+						listOfEnts.add(listOfEntities.get(i));
+					}
 				} else {
 					for (int j = 0; j < listOfEntities.get(i).tagList.size(); j++) {
 						if (keywords[s]
@@ -761,8 +768,11 @@ public class Search extends Controller {
 		for (int s = 0; s < keywords.length; s++) {
 			for (int i = 0; i < listOfIdeas.size(); i++) {
 				if (listOfIdeas.get(i).title.equalsIgnoreCase(keywords[s])
-						|| listOfIdeas.get(i).description.contains(keywords[s])) {
-					listOfIdss.add(listOfIdeas.get(i));
+						|| listOfIdeas.get(i).description.toLowerCase()
+								.contains(keywords[s].toLowerCase())) {
+					if (!listOfIdss.contains(listOfIdeas.get(i))) {
+						listOfIdss.add(listOfIdeas.get(i));
+					}
 				} else {
 					for (int j = 0; j < listOfIdeas.get(i).tagsList.size(); j++) {
 						if (keywords[s]
@@ -822,8 +832,12 @@ public class Search extends Controller {
 			for (int i = 0; i < listOfTopics.size(); i++) { // Looping on the
 															// list of
 															// organization
-				if (listOfTopics.get(i).title.equalsIgnoreCase(keywords[s])) {
-					listOfTopis.add(listOfTopics.get(i));
+				if (listOfTopics.get(i).title.equalsIgnoreCase(keywords[s])
+						|| listOfTopics.get(i).description.toLowerCase()
+								.contains(keywords[s].toLowerCase())) {
+					if (!listOfTopis.contains(listOfTopics.get(i))) {
+						listOfTopis.add(listOfTopics.get(i));
+					}
 				} else {
 					for (int j = 0; j < listOfTopics.get(i).tags.size(); j++) {
 						if (keywords[s]
