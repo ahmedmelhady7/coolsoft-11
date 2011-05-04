@@ -29,6 +29,7 @@ public class Tags extends CRUD {
 
 
 	public static void createTag(@Required String name, long orgId) {
+		User user = Security.getConnected();
 		Organization org = Organization.findById(orgId);
 		if (validation.hasErrors()) {
 			params.flash();
@@ -42,10 +43,19 @@ public class Tags extends CRUD {
 			render(org);
 		}
 		Tag tag = new Tag(name,org);
+		String description = user.username + " has created a new tag \"" + name + "\" in organization " + org.name;
+		Notifications.sendNotification(user.id, notId, "tag", description);
 		tag.save();
 		
 		flash.success("Your tag has been created.");
 	}
+	/**
+	 * This is the main page for any tag the user clicks on
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @param tagId
+	 */
 	public static void mainPage(long tagId) {
 		Tag tag = Tag.findById(tagId);
 		List<User> followers = tag.followers;
