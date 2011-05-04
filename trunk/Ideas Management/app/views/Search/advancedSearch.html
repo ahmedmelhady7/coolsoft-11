@@ -1,15 +1,11 @@
 <!--
 @author Mohamed Ghanem
 @story  C4S02
---> 
-<!DOCTYPE html>
+--> <!DOCTYPE html>
 <html>
-	
-	<script src="http://code.jquery.com/jquery-git.js"></script>
-	
-    <form name="inPuts" id="inPuts" >
-	
-	
+    <script src="http://code.jquery.com/jquery-git.js">
+    </script>
+    <form name="inPuts" id="inPuts">
         Search in&nbsp;&nbsp;&nbsp;::
         <select name="searchIn" id="searchIn" style="width:90%">
             <option disabled="disabled" selected>Search in:</option>
@@ -28,239 +24,247 @@
         <br/>
         show Result of ::
         <br/>
-		<select name="org">
-        	<option value="0">Organization</option>
-			<option value="1">No Organization</option>
-		</select>
+        <select name="org">
+            <option value="0">Organization</option>
+            <option value="1">No Organization</option>
+        </select>
         <br/>
-		<select name="entity">
-        	<option value="0">Entity</option>
-			<option value="1">No Entities</option>
-		</select>
+        <select name="entity">
+            <option value="0">Entity</option>
+            <option value="1">No Entities</option>
+        </select>
         <br/>
-		<select name="topic">
-        	<option value="0">Topic</option>
-			<option value="1">No Topic</option>
-		</select>
+        <select name="topic">
+            <option value="0">Topic</option>
+            <option value="1">No Topic</option>
+        </select>
         <br/>
-		<select name="plan">
-        	<option value="0">Plan</option>
-			<option value="1">No Plan</option>
-		</select>
+        <select name="plan">
+            <option value="0">Plan</option>
+            <option value="1">No Plan</option>
+        </select>
         <br/>
-		<select name="idea">
-        	<option value="0">Idea</option>
-			<option value="1">No Idea</option>
-		</select>
+        <select name="idea">
+            <option value="0">Idea</option>
+            <option value="1">No Idea</option>
+        </select>
         <br/>
-		<select name="item">
-        	<option value="0">Item</option>
-			<option value="1">No Item</option>
-		</select>
+        <select name="item">
+            <option value="0">Item</option>
+            <option value="1">No Item</option>
+        </select>
         <br/>
-		<select name="comm">
-        	<option value="0">Comments</option>
-			<option value="1">No Comments</option>
-		</select>
-		<br/>
-		
-		
-		
+        <select name="comm">
+            <option value="0">Comments</option>
+            <option value="1">No Comments</option>
+        </select>
+        <br/>
         Before Date  ::
         <select name=dayB>
             <option disabled="disabled" selected>Day</option>
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9">9</option>
-			<option value="10">10</option>
-			<option value="11">11</option>
-			<option value="12">12</option>
-			<option value="13">13</option>
-			<option value="14">14</option>
-			<option value="15">15</option>
-			<option value="16">16</option>
-			<option value="17">17</option>
-			<option value="18">18</option>
-			<option value="19">19</option>
-			<option value="20">20</option>
-			<option value="21">21</option>
-			<option value="22">22</option>
-			<option value="23">23</option>
-			<option value="24">24</option>
-			<option value="25">25</option>
-			<option value="26">26</option>
-			<option value="27">27</option>
-			<option value="28">28</option>
-			<option value="29">29</option>
-			<option value="30">30</option>
-			<option value="31">31</option>
-		</select>
-		<select name=monthB>
-			<option value="" disabled="true"selected>Month</option>
-			<option value="1">January</option>
-			<option value="2">February</option>
-			<option value="3">March</option>
-			<option value="4">April</option>
-			<option value="5">May</option>
-			<option value="6">June</option>
-			<option value="7">July</option>
-			<option value="8">August</option>
-			<option value="9">September</option>
-			<option value="10">October</option>
-			<option value="11">November</option>
-			<option value="12">December</option>
-		</select>
-		<select name=yearB >
-			<option value="" disabled="true" selected>Year</option>
-			<option value="1">2011</option>
-			<option value="2">2012</option>
-			<option value="3">2013</option>
-			<option value="4">2014</option>
-			<option value="5">2015</option>
-		</select>
-			
-		<br/>
-		
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+        </select>
+        <select name=monthB>
+            <option value="" disabled="true"selected>Month</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+        <select name=yearB>
+            <option value="" disabled="true" selected>Year</option>
+            <option value="1">2011</option>
+            <option value="2">2012</option>
+            <option value="3">2013</option>
+            <option value="4">2014</option>
+            <option value="5">2015</option>
+        </select>
+        <br/>
         After  Date  ::
-		<select name=dayA>
+        <select name=dayA>
             <option disabled="disabled" selected>Day</option>
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9">9</option>
-			<option value="10">10</option>
-			<option value="11">11</option>
-			<option value="12">12</option>
-			<option value="13">13</option>
-			<option value="14">14</option>
-			<option value="15">15</option>
-			<option value="16">16</option>
-			<option value="17">17</option>
-			<option value="18">18</option>
-			<option value="19">19</option>
-			<option value="20">20</option>
-			<option value="21">21</option>
-			<option value="22">22</option>
-			<option value="23">23</option>
-			<option value="24">24</option>
-			<option value="25">25</option>
-			<option value="26">26</option>
-			<option value="27">27</option>
-			<option value="28">28</option>
-			<option value="29">29</option>
-			<option value="30">30</option>
-			<option value="31">31</option>
-		</select>
-		<select name=monthA>
-			<option value="" disabled="true"selected>Month</option>
-			<option value="1">January</option>
-			<option value="2">February</option>
-			<option value="3">March</option>
-			<option value="4">April</option>
-			<option value="5">May</option>
-			<option value="6">June</option>
-			<option value="7">July</option>
-			<option value="8">August</option>
-			<option value="9">September</option>
-			<option value="10">October</option>
-			<option value="11">November</option>
-			<option value="12">December</option>
-		</select>
-		<select name=yearA >
-			<option value="" disabled="true" selected>Year</option>
-			<option value="1">2011</option>
-			<option value="2">2012</option>
-			<option value="3">2013</option>
-			<option value="4">2014</option>
-			<option value="5">2015</option>
-		</select>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+        </select>
+        <select name=monthA>
+            <option value="" disabled="true"selected>Month</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+        <select name=yearA>
+            <option value="" disabled="true" selected>Year</option>
+            <option value="1">2011</option>
+            <option value="2">2012</option>
+            <option value="3">2013</option>
+            <option value="4">2014</option>
+            <option value="5">2015</option>
+        </select>
         <br/>
         Exact Date/Time ::
-		<select name=dayE>
+        <select name=dayE>
             <option disabled="disabled" selected>Day</option>
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9">9</option>
-			<option value="10">10</option>
-			<option value="11">11</option>
-			<option value="12">12</option>
-			<option value="13">13</option>
-			<option value="14">14</option>
-			<option value="15">15</option>
-			<option value="16">16</option>
-			<option value="17">17</option>
-			<option value="18">18</option>
-			<option value="19">19</option>
-			<option value="20">20</option>
-			<option value="21">21</option>
-			<option value="22">22</option>
-			<option value="23">23</option>
-			<option value="24">24</option>
-			<option value="25">25</option>
-			<option value="26">26</option>
-			<option value="27">27</option>
-			<option value="28">28</option>
-			<option value="29">29</option>
-			<option value="30">30</option>
-			<option value="31">31</option>
-		</select>
-		<select name=monthE>
-			<option value="" disabled="true"selected>Month</option>
-			<option value="1">January</option>
-			<option value="2">February</option>
-			<option value="3">March</option>
-			<option value="4">April</option>
-			<option value="5">May</option>
-			<option value="6">June</option>
-			<option value="7">July</option>
-			<option value="8">August</option>
-			<option value="9">September</option>
-			<option value="10">October</option>
-			<option value="11">November</option>
-			<option value="12">December</option>
-		</select>
-		<select name=yearE >
-			<option value="" disabled="true" selected>Year</option>
-			<option value="1">2011</option>
-			<option value="2">2012</option>
-			<option value="3">2013</option>
-			<option value="4">2014</option>
-			<option value="5">2015</option>
-		</select>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+        </select>
+        <select name=monthE>
+            <option value="" disabled="true"selected>Month</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+        <select name=yearE>
+            <option value="" disabled="true" selected>Year</option>
+            <option value="1">2011</option>
+            <option value="2">2012</option>
+            <option value="3">2013</option>
+            <option value="4">2014</option>
+            <option value="5">2015</option>
+        </select>
         <br/>
-		
-        <input type="submit" name="ok" value="Start Advanced Search" onclick="doo(searchIn, wantKey,unWantKey, org, entity, topic, plan,idea, item, comm, dayB, monthB, yearB,dayA, monthA, yearA, dayE, monthE, yearE);"/>
-			
-        </form>
-		
-		<script type="text/javascript">
-
-		function doo(searchIn, wantKey,unWantKey, org, entity, topic, plan,idea, item, comm, dayB, monthB, yearB,dayA, monthA, yearA, dayE, monthE, yearE)
-		  {
-			$.post('@{Search.search()}' , {searchIn:searchIn.value, wantKey:wantKey.value,
-			unWantKey:unWantKey.value, org:org.value, entity:entity.value, topic:topic.value, plan:plan.value,
-			idea:idea.value, item:item.value, comm:comm.value, dayB:dayB.value, monthB:monthB.value, yearB:yearB.value,
-			dayA:dayA.value, monthA:monthA.value, yearA:yearA.value, dayE:dayE.value, monthE:monthE.value, yearE:yearE.value});
-			
-			window.location.href = "/searchResult";
-		  }
-
-		</script>
+        <input type="button" name="ok" value="Start Advanced Search" onclick="doo(searchIn, wantKey,unWantKey, org, entity, topic, plan,idea, item, comm, dayB, monthB, yearB,dayA, monthA, yearA, dayE, monthE, yearE);"/>
+    </form>
+    <script type="text/javascript">
+        
+        function doo(searchIn, wantKey, unWantKey, org, entity, topic, plan, idea, item, comm, dayB, monthB, yearB, dayA, monthA, yearA, dayE, monthE, yearE){
+            $.post('@{Search.advSearch()}', {
+                searchIn: searchIn.value,
+                wantKey: wantKey.value,
+                unWantKey: unWantKey.value,
+                org: org.value,
+                entity: entity.value,
+                topic: topic.value,
+                plan: plan.value,
+                idea: idea.value,
+                item: item.value,
+                comm: comm.value,
+                dayB: dayB.value,
+                monthB: monthB.value,
+                yearB: yearB.value,
+                dayA: dayA.value,
+                monthA: monthA.value,
+                yearA: yearA.value,
+                dayE: dayE.value,
+                monthE: monthE.value,
+                yearE: yearE.value
+            }, function(){
+                window.location.href = "/searchResult";
+            });
+        }
+        
+    </script>
 </html>
