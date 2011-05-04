@@ -2,7 +2,7 @@
 #{set title:'Edit Plan' /}
 <h1> Edit Action plan </h1>
 <h1> Create Plan </h1>
-#{form @Plans.edit(), method:'POST', id:'plancreationForm', onsubmit: 'return checkall()' enctype:'multipart/form-data' }
+#{form @Plans.edit(), method:'POST', id:'planeditingnForm', onsubmit: 'return checkall()' enctype:'multipart/form-data' }
 Plan title:<input type= "text" id = "title" name = "title" size= "30" value = ""+'${plan.title}'><label id = "titleerror"> </label>
 </br>
 Start Date:<input type = "text" id = "startDate" name = "startDate" size ="30" onblur= "checkdate(this)" value =""+'$plan.startDate'><label id = "starterror"> </label>
