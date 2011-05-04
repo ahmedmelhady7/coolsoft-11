@@ -83,6 +83,24 @@ public class Notifications extends CRUD {
 		return false;
 	}
 	
+	/**
+	 * This method is just for testing that the sendNotification
+	 * method works and it will be removed as soon as everybody
+	 * confirms that the method is working.
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S14
+	 * 
+	 * 
+	 * @param directed
+	 * @param notId
+	 * @param type
+	 * @param desc
+	 * 
+	 * @return void
+	 */
+	
 	public static void sendNotify(String directed, long notId,
 			String type, String desc) {
 		User u = User.find("byUsername", directed).first();
