@@ -35,6 +35,21 @@
             </span>
         </p>
         #{/crud.custom}
+		#{crud.custom 'isDraft'}
+        <p>
+            <label for="object_description">
+                isDraft
+            </label>
+            <input type="checkbox" id="object_isDraft" class="" name="object.isDraft">
+            	is this Idea a draft
+            </input>
+            <span class="crudHelp">
+                <font color="Red">
+                    *
+                </font>Required
+            </span>
+        </p>
+        #{/crud.custom}
         #{/crud.form }
         <p class="crudButtons">
             <input t id = "save" type="submit" name="_save" value="&{'crud.save', type.modelName}" /><input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" /><input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
