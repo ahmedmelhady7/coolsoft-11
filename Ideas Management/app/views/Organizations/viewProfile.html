@@ -1,24 +1,33 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
 <html>
     <head>
         <meta name="generator" content="HTML Tidy, see www.w3.org">
-
         <title>Organization Profile View</title>
     </head>
-
     <body>
         #{extends 'main.html' /}
-        <center><big><b>${org.name}</b></big></center><br><br>
-		
-		<ul style="list-style: none;">   
-		#{list items:entities, as:'entity'}
-		<li>
-			<a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>
-		</li>
-		#{/list}
-		</ul>
-		<a href="@{MainEntitys.createEntity()}">Create a new Entity</a><br /><br />
+        <center>
+            <big>
+                <b>${org.name}</b>
+            </big>
+        </center>
+        <br>
+        <br>
+        <ul style="list-style: none;">
+            #{list items:entities, as:'entity'}
+            <li>
+                <a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>
+            </li>
+            #{/list}
+        </ul>
+        <a href="@{MainEntitys.createEntity()}">Create a new Entity</a>
+        <br/>
+        <br/>
+        <form action="@{Organizations.InviteMember()}">
+            <input type="hidden" name="orgId" value="${org.id}">Invite a user: <input type="submit" value="view">
+        </form>
+        <form action="@{Topics.requestToPost()}">
+            <input type="hidden" name="orgId" value="${org.id}">Request to post: <input type="submit" value="view">
+        </form>
     </body>
 </html>
-

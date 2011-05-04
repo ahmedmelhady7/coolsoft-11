@@ -243,14 +243,11 @@ public class Topics extends CRUD {
 	 * @param orgId
 	 *            : The organization id where the topics are
 	 * 
-	 * @param userId
-	 *            : the user id who wants to request
-	 * 
 	 * @return void
 	 */
 
-	public static void requestToPost(long orgId, long userId) {
-		User user = User.findById(userId);
+	public static void requestToPost(long orgId) {
+		User user = Security.getConnected();
 		Organization org = Organization.findById(orgId);
 		List<MainEntity> e = org.entitiesList;
 		List<Topic> topics = new ArrayList<Topic>();

@@ -25,7 +25,7 @@ import models.UserRoleInOrganization;
 import models.*;
 
 public class Users extends CRUD {
-	
+
 	/**
 	 * Overriding the CRUD method list.
 	 * 
@@ -95,7 +95,7 @@ public class Users extends CRUD {
 	public static void view(String userId) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
-		long userID =Long.parseLong(userId);
+		long userID = Long.parseLong(userId);
 		User object = User.findById(userID);
 		notFoundIfNull(object);
 		System.out.println("entered view() for User " + object.username);
@@ -136,7 +136,7 @@ public class Users extends CRUD {
 	public static void show(String userId) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
-		long userID =Long.parseLong(userId);
+		long userID = Long.parseLong(userId);
 		User object = User.findById(userID);
 		notFoundIfNull(object);
 		System.out.println("entered view() for User " + object.username);
@@ -157,7 +157,7 @@ public class Users extends CRUD {
 			render("CRUD/show.html", type, object);
 		}
 	}
-	
+
 	/**
 	 * Overriding the CRUD method blank.
 	 * 
@@ -171,17 +171,17 @@ public class Users extends CRUD {
 	 * 
 	 */
 	public static void blank() throws Exception {
-        ObjectType type = ObjectType.get(Users.class);
-        notFoundIfNull(type);
-        Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        Model object = (Model)constructor.newInstance();
-        try {
-            render(type, object);
-        } catch (TemplateNotFoundException e) {
-            render("CRUD/blank.html", type, object);
-        }
-    }
+		ObjectType type = ObjectType.get(Users.class);
+		notFoundIfNull(type);
+		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		Model object = (Model) constructor.newInstance();
+		try {
+			render(type, object);
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/blank.html", type, object);
+		}
+	}
 
 	/**
 	 * This Method adds a user to the list of followers in a given tag
@@ -377,7 +377,8 @@ public class Users extends CRUD {
 	public static List<User> getBannedUser(Organization o, String action,
 			long sourceID, String type) {
 		List<User> user = (List<User>) BannedUser
-				.find("select bu.bannedUser from BannedUser where bu.organization = ? and bu.action = ? and bu.resourceType = ? and bu.resourceID = ? ", o, action, type, sourceID);
+				.find("select bu.bannedUser from BannedUser where bu.organization = ? and bu.action = ? and bu.resourceType = ? and bu.resourceID = ? ",
+						o, action, type, sourceID);
 		return (user);
 	}
 
@@ -764,17 +765,20 @@ public class Users extends CRUD {
 			Organization o = t.entity.organization;
 			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
 
-					.find("select uro from UserRoleInOrganization uro  where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?", o, t.getId(),"topic");
-			for(int i= 0 ; i<organizers.size(); i++){
-				if(!(organizers.get(i).role.roleName.equals("organizer"))){
-//=======
-//					.find("select uro from UserRoleInOrganization uro "
-//							+ "where uro.organization = ? and"
-//							+ " uro.entityTopicID = ? " + "and uro.type like ?",
-//							o, t.getId(), "topic");
-//			for (int i = 0; i < organizers.size(); i++) {
-//				if (!(organizers.get(i).role.roleName.equals("organizer"))) {
-//>>>>>>> .r797
+					.find("select uro from UserRoleInOrganization uro  where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?",
+							o, t.getId(), "topic");
+			for (int i = 0; i < organizers.size(); i++) {
+				if (!(organizers.get(i).role.roleName.equals("organizer"))) {
+					// =======
+					// .find("select uro from UserRoleInOrganization uro "
+					// + "where uro.organization = ? and"
+					// + " uro.entityTopicID = ? " + "and uro.type like ?",
+					// o, t.getId(), "topic");
+					// for (int i = 0; i < organizers.size(); i++) {
+					// if
+					// (!(organizers.get(i).role.roleName.equals("organizer")))
+					// {
+					// >>>>>>> .r797
 					organizers.remove(i);
 				} else {
 					enrolled.add(organizers.get(i).enrolled);
@@ -803,19 +807,21 @@ public class Users extends CRUD {
 			Organization o = e.organization;
 
 			long eID = e.getId();
-			organizers =  UserRoleInOrganization
-					.find("select uro from UserRoleInOrganization uro where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?", o, eID,"entity").fetch();
-			for(int i = 0 ; i< organizers.size() ;  i++){
-				if(!((organizers.get(i).role.roleName).equals("organizer"))){
-//=======
-//			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
-//					.find("select uro from UserRoleInOrganization uro"
-//							+ "where uro.organization = ? "
-//							+ " and uro.entityTopicID = ? "
-//							+ "and uro.type like ?", o, e.getId(), "entity");
-//			for (int i = 0; i < organizers.size(); i++) {
-//				if (!((organizers.get(i).role).equals("organizer"))) {
-//>>>>>>> .r797
+			organizers = UserRoleInOrganization
+					.find("select uro from UserRoleInOrganization uro where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?",
+							o, eID, "entity").fetch();
+			for (int i = 0; i < organizers.size(); i++) {
+				if (!((organizers.get(i).role.roleName).equals("organizer"))) {
+					// =======
+					// organizers = (List<UserRoleInOrganization>)
+					// UserRoleInOrganization
+					// .find("select uro from UserRoleInOrganization uro"
+					// + "where uro.organization = ? "
+					// + " and uro.entityTopicID = ? "
+					// + "and uro.type like ?", o, e.getId(), "entity");
+					// for (int i = 0; i < organizers.size(); i++) {
+					// if (!((organizers.get(i).role).equals("organizer"))) {
+					// >>>>>>> .r797
 					organizers.remove(i);
 				} else {
 					enrolled.add(organizers.get(i).enrolled);
@@ -842,8 +848,9 @@ public class Users extends CRUD {
 		List<User> enrolled = null;
 		if (o != null) {
 
-			enrolled = (List<User>) UserRoleInOrganization.find(
-					"select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? ", o);
+			enrolled = (List<User>) UserRoleInOrganization
+					.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? ",
+							o);
 
 		}
 		return enrolled;
@@ -851,7 +858,8 @@ public class Users extends CRUD {
 
 	/**
 	 * 
-<<<<<<< .mine
+	 <<<<<<< .mine
+	 * 
 	 * @author Mostafa Ali
 	 * 
 	 * @story C1S9
@@ -880,16 +888,18 @@ public class Users extends CRUD {
 		}
 
 	}
-	
+
 	/**
 	 * 
 	 */
-	public static List<MainEntity> getEntitiesOfOrganizer(Organization org , User user){
+	public static List<MainEntity> getEntitiesOfOrganizer(Organization org,
+			User user) {
 		List<MainEntity> entities = new ArrayList<MainEntity>();
-		
-		List<UserRoleInOrganization> uro =  UserRoleInOrganization.find("byOrganizationAndEnrolled", org,user).fetch();
-		for(int  i = 0; i<uro.size(); i++){
-			if(uro.get(i).role.roleName.equals("organizer")){
+
+		List<UserRoleInOrganization> uro = UserRoleInOrganization.find(
+				"byOrganizationAndEnrolled", org, user).fetch();
+		for (int i = 0; i < uro.size(); i++) {
+			if (uro.get(i).role.roleName.equals("organizer")) {
 				entities.add((MainEntity) MainEntity.findById(uro.get(i).entityTopicID));
 			}
 		}
@@ -898,10 +908,9 @@ public class Users extends CRUD {
 
 	/**
 	 * 
-=======
->>>>>>> .r797
-	 * This method returns list of entities within a specific organization that
-	 * a user is enrolled in as organizer or organization lead (or admin)
+	 ======= >>>>>>> .r797 This method returns list of entities within a
+	 * specific organization that a user is enrolled in as organizer or
+	 * organization lead (or admin)
 	 * 
 	 * @author {Mai Magdy}
 	 * 
@@ -916,10 +925,9 @@ public class Users extends CRUD {
 			User user) {
 
 		List<MainEntity> list = new ArrayList<MainEntity>();
-		if (org.creator.equals(user) || user.isAdmin){
+		if (org.creator.equals(user) || user.isAdmin) {
 			return org.entitiesList;
 		}
-			
 
 		else {
 			for (int i = 0; i < org.entitiesList.size(); i++) {
@@ -987,7 +995,7 @@ public class Users extends CRUD {
 	 */
 
 	public static void create() throws Exception {
-		//if(Security.getConnected().isAdmin);
+		// if(Security.getConnected().isAdmin);
 		ObjectType type = ObjectType.get(Users.class);
 		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
@@ -1055,7 +1063,7 @@ public class Users extends CRUD {
 		}
 		redirect(request.controller + ".show", object._key());
 	}
-	
+
 	/**
 	 * This method is responsible for deleting a user by the system admin after
 	 * specifying that user's id, and then it renders a message confirming
@@ -1083,12 +1091,12 @@ public class Users extends CRUD {
 			} else {
 				x = "You can not delete a user who's deactivated his account !";
 			}
-//			render(request.controller.replace(".", "/") + "/index.html",x);
+			// render(request.controller.replace(".", "/") + "/index.html",x);
 		} catch (NullPointerException e) {
 			x = "No such User !!";
-			//render(x);
-//			render(request.controller.replace(".", "/") + "/index.html",
-//					x);
+			// render(x);
+			// render(request.controller.replace(".", "/") + "/index.html",
+			// x);
 		}
 
 	}
@@ -1197,18 +1205,23 @@ public class Users extends CRUD {
 			roleInOrg._save();
 			user.userRolesInOrganization.add(roleInOrg);
 			user.save();
-			Notification n1 = new Notification("Invitation accepted",
-					inv.sender, user.username + " accepted the invitation.");
-			n1._save();
+			List<User> list = new ArrayList();
+			list.add(user);
 			User orgLead = org.creator;
-			if (orgLead.id != inv.sender.id) {
-				Notification n2 = new Notification("Invitation accepted",
-						orgLead, user.username + " accepted th invitation");
-				n2._save();
-			}
+			list.add(orgLead);
+			Notifications.sendNotification(list, org.id, "Organization",
+					user.username + " has accepted the invitation to join the "
+							+ org.name);
+			// Notification n1 = new Notification("Organization",
+			// inv.sender, user.username + " accepted the invitation.");
+			// n1._save();
+			// if (orgLead.id != inv.sender.id) {
+			// Notification n2 = new Notification("Invitation accepted",
+			// orgLead, user.username + " accepted th invitation");
+			// n2._save();
+			// }
 			// any other insertions?
 		}
-
 		org.invitation.remove(inv);
 		org._save();
 		user.invitation.remove(inv);
