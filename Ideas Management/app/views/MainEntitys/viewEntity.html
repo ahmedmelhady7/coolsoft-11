@@ -25,6 +25,28 @@
 		#{else}
 		No subentities available for this entity!
 		#{/else}
+		<br />
+		
+		    #{if topicList.size() > 0}
+			<br />
+		<p>List of Topics:</p>
+        <ul style="list-style: none;">   
+		#{list items:topicList, as:'topic'}
+		<li>
+			<a href="@{Topics.show(topic.id)}">${topic.title}</a>
+		</li>
+		#{/list}
+		</ul>
+		#{/if}
+		#{else}
+		No topics available for this entity!
+		#{/else}
+		
+		
+	
+		
+		 &nbsp;
+<input type="submit" value="Add A Topic" onclick=location.href="@{Topics.blank(entity.id)}">
 		
     </body>
 </html>
