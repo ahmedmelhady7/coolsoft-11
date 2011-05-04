@@ -1,7 +1,7 @@
 #{extends 'planLayout.html' /}
 #{set title:'View Plan as List' /}
 <br/> 
-#{if org == true)}
+#{if org == true}
 <form action="@{VolunteerRequests.viewVolunteerRequests()}" method="post">
 	<input type = "hidden" name = "planId" value = ${p.id} >
     Volunteer Requests: <input type="submit" value="View Volunteer Requests">
