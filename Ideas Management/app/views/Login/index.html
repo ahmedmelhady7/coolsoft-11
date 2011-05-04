@@ -1,5 +1,8 @@
 #{extends 'main.html' /}
-#{set title:'Home' /}<b>Welcome </b>${u.username} &nbsp; ${u.email}<b><i>Welcome to COOLSOFT!</i></b>
+#{set title:'Home Page' /}
+
+<big><b><i>Welcome to COOLSOFT!</i></b></big>
+
 <br>
 <b>Username: </b>
 ${u.username}
@@ -7,6 +10,15 @@ ${u.username}
 <b>E-Mail </b>
 ${u.email}
 <br>
+
+<form action="@{Users.viewNotifications()}" method="post" >
+	My Notifications: <input type="submit" value="Notifications">
+</form>
+&nbsp;
+<form action="@{Users.viewNotificationProfile()}" method="post" >
+	My Notification Profile: <input type="submit" value="Notification Profile">
+</form>
+&nbsp;
 <form action="@{Users.viewNotifications()}" method="post">
     Show Notifications list: <input type="submit" value="Notification list">
 </form> &nbsp;
@@ -14,7 +26,7 @@ ${u.email}
     Show Notification Profile: <input type="submit" value="Notification Profile">
 </form> &nbsp;
 <form action="@{Notifications.notificationIndex()}" method="post">
-    Send Notification: <input type="submit" value="Notify">
+	Send Notification: <i>(just for testing)</i><input type="submit" value="Notify">
 </form>
 <form action="@{Items.viewAssignedItems()}" method="post">
     My assigned to-do items: <input type="submit" value="View">
@@ -37,4 +49,7 @@ Show Topic List:
 </p>
 <form action="@{Organizations.mainPage()}" method="post">
     Organizations: <input type="submit" value="View">
+</form>
+<form action="@{Users.logout}" method="post">
+Logout: <input type="submit" value="Logout">
 </form>
