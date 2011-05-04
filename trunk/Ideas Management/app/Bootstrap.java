@@ -5,6 +5,7 @@ import javax.swing.Timer;
 
 import controllers.Roles;
 import controllers.TimerCall;
+import controllers.UserRoleInOrganizations;
 
 import play.*;
 import play.jobs.*;
@@ -40,7 +41,7 @@ public class Bootstrap extends Job {
 			User u3 = new User("teet@gmail.com", "1234", "Ibrahim",
 					"EL-khayat", "IA", 0, new Date(), "egypt", "student");
 			u3._save();
-			User u4 = new User("faruki@gmail.com", "1234", "Omar", "Faruki",
+			User u4 = new User("mai.jt4@gmail.com", "1234", "Omar", "Faruki",
 					"Gunners", 0, new Date(), "egypt", "student");
 			u4._save();
 			User u5 = new User("mostafa@gmail.com", "1234", "mostafa",
@@ -190,8 +191,10 @@ public class Bootstrap extends Job {
 
 			Invitation inv1 = new Invitation("Ibrahim@gmail.com", null, org1,
 					"idea developer", u1).save();
-			u6.invitation.add(inv1);
-			u6.save();
+		//	u6.invitation.add(inv1);
+		//	u6.save();
+			
+			//UserRoleInOrganizations.addEnrolledUser(u2,, role, entityOrTopicId, type)
 
 		}
 	}
