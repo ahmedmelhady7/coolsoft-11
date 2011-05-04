@@ -46,9 +46,10 @@ public class VolunteerRequests extends CRUD {
 						+ " has requested to volunteer to work on the following item "
 						+ dest.summary + "in the plan " + dest.plan.title
 						+ "of the topic" + dest.plan.topic.title;
-//				List<User> notificationDestination = dest.plan.topic.getOrganizer();
-//				Notifications.sendNotification(notificationDestination,
-//						dest.plan.id, "plan", description);
+				// List<User> notificationDestination =
+				// dest.plan.topic.getOrganizer();
+				// Notifications.sendNotification(notificationDestination,
+				// dest.plan.id, "plan", description);
 				Plans.viewAsList(dest.plan.id);
 			}
 		} else {
@@ -85,16 +86,16 @@ public class VolunteerRequests extends CRUD {
 		render(item, planId, success);
 	}
 
-	/* Extra method. Unused in the mean time.
+	/*
+	 * Extra method. Unused in the mean time.
 	 * 
 	 * public static void viewMyRequests(long userId) {
-	 *
-	 *	User user = User.findById(userId);
-	 *	List<VolunteerRequest> myVolunteerRequests = user.volunteerRequests;
-	 *	render(user, myVolunteerRequests);
-	 *}
+	 * 
+	 * User user = User.findById(userId); List<VolunteerRequest>
+	 * myVolunteerRequests = user.volunteerRequests; render(user,
+	 * myVolunteerRequests);}
 	 */
-	  
+
 	/**
 	 * This method renders the page for allowing the organizer to view the
 	 * volunteer requests to work on items in a certain plan.
@@ -112,44 +113,36 @@ public class VolunteerRequests extends CRUD {
 		Plan plan = Plan.findById(planId);
 		List<VolunteerRequest> planVolunteerRequests = new ArrayList<VolunteerRequest>();
 		boolean error = false;
-		if (Users
-				.isPermitted(
-						user,
-						"accept/Reject user request to volunteer to work on action item in a plan",
-						plan.topic.id, "topic")) {
-			for (int i = 0; i < plan.items.size(); i++) {
-				planVolunteerRequests
-						.addAll(plan.items.get(i).volunteerRequests);
-			}
-			if (planVolunteerRequests.size() > 0) {
-				for (int i = 0; i < planVolunteerRequests.size(); i++) {
-					User sender = planVolunteerRequests.get(i).sender;
-					Date d = new Date();
-					if (planVolunteerRequests.get(i).destination.endDate
-							.compareTo(d) < 0) {
-						Item destination = planVolunteerRequests.get(i).destination;
-						user.volunteerRequests.remove(planVolunteerRequests
-								.get(i));
-						destination.volunteerRequests
-								.remove(planVolunteerRequests.get(i));
-						planVolunteerRequests.remove(i);
-						user.save();
-						destination.save();
-					} else {
-						if (planVolunteerRequests.get(i).destination.assignees
-								.contains(sender)
-								|| !Topics.searchByTopic(plan.topic.id)
-										.contains(user)) {
-							VolunteerRequest request = VolunteerRequest
-									.findById(planVolunteerRequests.get(i).id);
-							planVolunteerRequests.remove(request);
-						}
+		// insert here if condition to check if user is permitted
+		for (int i = 0; i < plan.items.size(); i++) {
+			planVolunteerRequests.addAll(plan.items.get(i).volunteerRequests);
+		}
+		if (planVolunteerRequests.size() > 0) {
+			for (int i = 0; i < planVolunteerRequests.size(); i++) {
+				User sender = planVolunteerRequests.get(i).sender;
+				Date d = new Date();
+				if (planVolunteerRequests.get(i).destination.endDate
+						.compareTo(d) < 0) {
+					Item destination = planVolunteerRequests.get(i).destination;
+					user.volunteerRequests.remove(planVolunteerRequests.get(i));
+					destination.volunteerRequests.remove(planVolunteerRequests
+							.get(i));
+					planVolunteerRequests.remove(i);
+					user.save();
+					destination.save();
+				} else {
+					if (planVolunteerRequests.get(i).destination.assignees
+							.contains(sender)
+							|| !Topics.searchByTopic(plan.topic.id).contains(
+									user)) {
+						VolunteerRequest request = VolunteerRequest
+								.findById(planVolunteerRequests.get(i).id);
+						planVolunteerRequests.remove(request);
 					}
 				}
 			}
-			render(user, plan, planVolunteerRequests, error);
-		} else
-			render(error);
+		}
+		render(user, plan, planVolunteerRequests, error);
 	}
 
 	/**
