@@ -41,7 +41,7 @@ public class MarkingRequest extends Controller {
 			duplicateIdeas.add(i1);
 			duplicateIdeas.add(i2);
 			MainEntity ent = MainEntity.findById(ideaOrg1);
-			new LinkDuplicatesRequest(ent.organizers.get(0), i1, i2, des);
+			new LinkDuplicatesRequest(Users.getEntityOrganizers(ent).get(0), i1, i2, des);			
 		}
 		//render(i1, i2, des);
 	}
