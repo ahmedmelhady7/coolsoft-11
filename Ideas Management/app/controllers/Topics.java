@@ -108,7 +108,7 @@ public class Topics extends CRUD {
 	 *            : seconf topic to be related
 	 */
 	public static void relateTopic(Topic topic, Topic topic2) {
-		topic.relatedTopics.add(topic2);
+//		topic.relatedTopics.add(topic2);
 	}
 
 	/**
