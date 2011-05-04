@@ -12,15 +12,15 @@
  #{list items:requests, as:'request'}
     <li>
         <fieldset>
-        	#{if ${type}==1}
+        	#{if type==1}
             <legend>
             <h2>
-              A new user ${request.source.name} Wants to join Organization ${request.organization.name}
+            	A new user ${request.source.username} Wants to join Topic ${request.topic.title}
             </h2>
             </legend>
 			#{/if}
 			#{else}
-			A new user ${request.source.name} Wants to join Topic ${request.topic.name}
+              A new user ${request.source.username} Wants to join Organization ${request.organization.name}
 			#{/else}
 
 			<input type = "button" value = "Accept" onclick="javascript: respondGalal(1,${request.id})">
@@ -34,7 +34,7 @@
 <script type="text/javascript">
 function respondGalal(stat, id){
 	if (stat == 1) {
-		alert(stat + "" + id);
+		//alert(stat + "" + id);
 		//id = id + 1;
 		$.post('@{RequestToJoins.respondToRequest()}',{status:stat,reqId:id});
 		alert("Request Accepted!");

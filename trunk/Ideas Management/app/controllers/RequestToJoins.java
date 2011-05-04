@@ -30,7 +30,7 @@ public class RequestToJoins extends CRUD {
 	 */
 
 	public static void viewRequests(int type, long id) {
-             type=0;
+             type=1;
 		List<RequestToJoin> requests;
 		if (type == 1) {
 			Topic topic = Topic.findById((long)1);

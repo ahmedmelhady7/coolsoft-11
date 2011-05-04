@@ -181,9 +181,12 @@ public class Bootstrap extends Job {
 			item2.assignees.add(u2);
 			item2.save();
 
-			RequestToJoin request = new RequestToJoin(u1, to1, org1,
+			RequestToJoin request = new RequestToJoin(u1,null, org1,
 					"I would like to join your organization..");
 			request._save();
+			RequestToJoin request2 = new RequestToJoin(u1, to1,null,
+			"I would like to post on ur topic.");
+	        request2._save();
 
 			Invitation inv1 = new Invitation("Ibrahim@gmail.com", null, org1,
 					"idea developer", u1).save();
