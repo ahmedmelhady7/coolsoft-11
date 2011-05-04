@@ -24,18 +24,18 @@ import play.db.jpa.Model;
 
 @Entity
 public class User extends Model {
-	@Required
-	@Email
+	//@Required
+	//@Email
 	public String email;
-	@Required
-	@MaxSize(20)
-	@Column(unique = true)
+	//@Required
+	//@MaxSize(20)
+	//@Column(unique = true)
 	public String username;
-	@Required
-	@MaxSize(25)
-	@MinSize(4)
+	//@Required
+	//@MaxSize(25)
+	//@MinSize(4)
 	public String password;
-	@Required
+	//@Required
 	public String firstName;
 	public String lastName;
 	public String country;
