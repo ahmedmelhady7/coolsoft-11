@@ -92,7 +92,7 @@ public class Plan extends Model {
 		this.title = title;
 		this.madeBy = user;
 		this.status = "new";
-		this.progress = 0; // @author: hassan.ziko1 this means that the plan is
+		this.progress = 0; // @author: Hassan Ziko this means that the plan is
 							// new
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -127,7 +127,7 @@ public class Plan extends Model {
 	 * 
 	 * @story C5S1
 	 * 
-	 * @author hassan.ziko1
+	 * @author Hassan Ziko
 	 * 
 	 * @param startDate
 	 *            The start date of working on the item
