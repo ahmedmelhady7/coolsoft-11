@@ -97,6 +97,21 @@ public class Topics extends CRUD {
 	}
 
 	/**
+	 * This method adds topic2 to the list of related topics in topic
+	 * 
+	 * @author Mohamed Hisham
+	 * 
+	 * @param topic
+	 *            : first topic to be related
+	 * 
+	 * @param topic2
+	 *            : seconf topic to be related
+	 */
+	public static void relateTopic(Topic topic, Topic topic2) {
+		topic.relatedTopics.add(topic2);
+	}
+
+	/**
 	 * 
 	 * This method is responsible for posting an idea to a topic by a certain
 	 * user
@@ -495,8 +510,8 @@ public class Topics extends CRUD {
 		System.out.println("create() entered");
 		// MainEntity topicEntity = to get connected aw kda
 		MainEntity topicEntity = MainEntity.findById((long) 1);// temporary; for
-																// testing
-																// purposes
+		// testing
+		// purposes
 		tmp.entity = topicEntity;
 		// User myUser = Security.getConnected();
 		User myUser = User.findById((long) 1);// temporary; for testing purposes
@@ -801,10 +816,10 @@ public class Topics extends CRUD {
 		System.out.println("list() entered ");
 		List<Model> objects = type.findPage(page, search, searchFields,
 				orderBy, order, (String) request.args.get("where"));
-		Long count = type.count(search, searchFields,
-				(String) request.args.get("where"));
-		Long totalCount = type.count(null, null,
-				(String) request.args.get("where"));
+		Long count = type.count(search, searchFields, (String) request.args
+				.get("where"));
+		Long totalCount = type.count(null, null, (String) request.args
+				.get("where"));
 		try {
 			System.out.println("list() done, will render ");
 			render(type, objects, count, totalCount, page, orderBy, order);
@@ -890,8 +905,8 @@ public class Topics extends CRUD {
 		Topic tmp = (Topic) object;
 		// MainEntity topicEntity = to get connected aw kda
 		MainEntity topicEntity = MainEntity.findById((long) 1); // temporary;
-																// for testing
-																// purposes
+		// for testing
+		// purposes
 		tmp.entity = topicEntity;
 		// User myUser = Security.getConnected();
 		User myUser = User.findById((long) 1);// temporary; for testing purposes

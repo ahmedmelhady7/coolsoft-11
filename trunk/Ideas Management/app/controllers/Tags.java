@@ -18,10 +18,9 @@ public class Tags extends CRUD {
 	 * @param name
 	 *            : name of the tag that is going to be created
 	 * 
-	 * @param orgId 
-	 * 				: the current organization that the user is enrolled in
+	 * @param orgId
+	 *            : the current organization that the user is enrolled in
 	 */
-
 
 	public static void createTag(@Required String name, long orgId) {
 		Organization org = Organization.findById(orgId);
@@ -36,9 +35,25 @@ public class Tags extends CRUD {
 					+ "Please choose another tag name.");
 			render(org.createTag);
 		}
-		Tag tag = new Tag(name,org);
+		Tag tag = new Tag(name, org);
 		tag.save();
-		
+
 		flash.success("Your tag has been created.");
 	}
+
+	/**
+	 * This method adds tag2 to the list of tags in tag
+	 * 
+	 * @author Mohamed Hisham
+	 * 
+	 * @param tag
+	 *            : first tag to be related
+	 * 
+	 * @param tag2
+	 *            : second tag to be related
+	 */
+	public static void relateTag(Tag tag, Tag tag2) {
+		tag.relatedTags.add(tag2);
+	}
+
 }
