@@ -10,11 +10,25 @@
     <body>
         #{extends 'main.html' /}
         <center><big><b>${org.name}</b></big></center><br><br>
+
+		#{if ((org.privacyLevel == 1) && (!enrolled))}
+		<form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
+			<input type="hidden" name="requester" value="${user}">
+			<input type="hidden" name="organization" value="${org}">
+			<input type="text" name="description">
+			Request to join <input type="submit" value="Request">
+		</form>
+		#{/if}
+		#{else}
+		#{if org.createTag}
+		<a href="@{Tags.createTag(org.id)}">Create a Tag</a>
+		#{/if}
 		<select id="selec" onchange="test();">
 <option > Tags</option>
 <option id="e" value="0" > enable </option>
 <option id="d" value="1" > disable </option>
 </select>
+
 		<ul style="list-style: none;">   
 		#{list items:entities, as:'entity'}
 		<li>
@@ -23,6 +37,16 @@
 		#{/list}
 		</ul>
 		<a href="@{MainEntitys.createEntity()}">Create a new Entity</a><br /><br />
+		<br>
+		List of viewable Tags:
+		<ul style="list-style: none;">
+		#{list items:tags, as:'tag'}
+		<li>
+			<a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
+		</li>
+		#{/list}
+		</ul>
+		#{/else}
     </body>
 </html>
 <script type="text/javascript">
