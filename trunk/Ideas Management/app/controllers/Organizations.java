@@ -199,7 +199,8 @@ public class Organizations extends CRUD {
 	 *            tags
 	 */
 	public static void createOrganization(@Required String name,
-		int privacyLevel, boolean createTag) {
+		String privacyLevel, String createTag) {
+		System.out.println("HEEEEEEEE");
 		User creator = Security.getConnected();
 		if (validation.hasErrors()) {
 			params.flash();
@@ -213,10 +214,24 @@ public class Organizations extends CRUD {
 					+ "Please choose another organization name.");
 			render();
 		}
-		Organization org = new Organization(name, creator, privacyLevel,
-				createTag).save();
+		int privacyLevell = 0; 
+		if(privacyLevel.equals("Public")) {
+			privacyLevell = 2;
+		}
+		else{
+			if(privacyLevel.equals("Private")) {
+				privacyLevell = 1;
+			}
+		}
+		boolean createTagg = false;
+		if(createTag.equals("Yes")) {
+			createTagg = true;
+		}
+		Organization org = new Organization(name, creator, privacyLevell,
+				createTagg).save();
 		MainEntity m = new MainEntity("Default","",org);
 		m.save();
+		
 		org.enrolledUsers.add(creator);
 		flash.success("Your organization has been created.");
 	}
@@ -247,6 +262,12 @@ public class Organizations extends CRUD {
 		}
 	}
 
+	/**
+	 * This method render a view that gets all organizations on the system with the ability to go to the
+	 * create organization page
+	 * 
+	 * @author Omar Faruki
+	 */
 	public static void mainPage(){
 //<<<<<<< .mine
 //		User user = Security.getConnected();
@@ -256,18 +277,37 @@ public class Organizations extends CRUD {
 		List<Organization> organizations = Organization.findAll();
 		render(user, organizations);
 	}
+	
+	/**
+	 * This method render the main Profile Page of a specific organization
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @param id
+	 */
 	public static void viewProfile(long id) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(id);
 		List<Tag> tags = org.createdTags;
 		List<Tag> allTags = Tag.findAll();
 		int i = 0;
+		boolean loop = false;
+		if (tags.isEmpty()) {
 		while(i < allTags.size()) {
-			if (!tags.contains(allTags.get(i)) && (allTags.get(i).createdInOrganization.privacyLevel == 2)) {
+			if (allTags.get(i).createdInOrganization.privacyLevel == 2) {
 				tags.add(allTags.get(i));
+				loop = true;				
 			}
 			i++;
 		}
+		}
+		if(loop == false) {
+				while(i < allTags.size()) {
+					if (!tags.contains(allTags.get(i)) && (allTags.get(i).createdInOrganization.privacyLevel == 2)) {
+						tags.add(allTags.get(i));
+					}
+					i++;
+			}
 		List<MainEntity> entities = org.entitiesList;
 		boolean enrolled = false;
 		if(org.enrolledUsers.contains(user)) {
@@ -275,4 +315,5 @@ public class Organizations extends CRUD {
 		}
 		render(user, org, entities, enrolled, tags);
 	}
+}
 }
