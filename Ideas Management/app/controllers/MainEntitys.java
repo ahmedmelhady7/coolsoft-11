@@ -64,7 +64,7 @@ public class MainEntitys extends CRUD {
 	 *            : second entity to be related
 	 */
 	public static void relateEntity(MainEntity entity, MainEntity entity2) {
-		entity.relatedEntities.add(entity2);
+//		entity.relatedEntities.add(entity2);
 	}
 
 	// public static void createEntity(@Required String n,
