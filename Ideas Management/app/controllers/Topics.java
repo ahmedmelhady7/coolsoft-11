@@ -965,12 +965,11 @@ public class Topics extends CRUD {
 	 * 
 	 * @param topicId
 	 *            : The id of the topic that the user wants to follow
-	 * 
-	 * @param user
-	 *            : The user who wants to follow a topic
+	 *
 	 */
 
-	public static void followTopic(long topicId, User user) {
+	public static void followTopic(long topicId) {
+		User user = Security.getConnected();
 		Topic t = Topic.findById(topicId);
 		if (Users.isPermitted(user, "follow", topicId, "topic")) {
 			t.followers.add(user);
