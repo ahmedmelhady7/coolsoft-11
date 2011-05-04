@@ -100,11 +100,11 @@ public class Plans extends CRUD {
 	 * 
 	 * @story C5S1
 	 * 
-	 * @author hassan.ziko1
+	 * @author Hassan Ziko
 	 * 
 	 * @param topicId
 	 *            The ID of the topic that this action plan is based upon
-	 * @param checkedIdeas
+	 * @param checkedIdeas 
 	 *            The list of ideas ids selected to be associated to the plan
 	 * 
 	 */
@@ -158,7 +158,7 @@ public class Plans extends CRUD {
 	 * 
 	 * @story C5S1
 	 * 
-	 * @author hassan.ziko1
+	 * @author Hassan Ziko
 	 * 
 	 * @param title
 	 *            The title of the plan
@@ -199,6 +199,7 @@ public class Plans extends CRUD {
 		Topic topic = Topic.findById(topicId);
 		Plan p = new Plan(title, user, startDate, endDate, description, topic,
 				requirement);
+		System.out.println("creation of the plan");
 		p.save();
 		p.addItem(istartdate, ienddate, idescription, isummary);
 		p.save();
@@ -262,7 +263,7 @@ public class Plans extends CRUD {
 	 * 
 	 * @story C5S1
 	 * 
-	 * @author hassan.ziko1
+	 * @author Hassan Ziko
 	 * 
 	 * @param planId
 	 *            The ID of the plan where the items will be added
@@ -280,7 +281,7 @@ public class Plans extends CRUD {
 	 * 
 	 * @story C5S1
 	 * 
-	 * @author hassan.ziko1
+	 * @author Hassan Ziko
 	 * 
 	 * @param startDate
 	 *            The date when the item(task) should be started
@@ -315,7 +316,7 @@ public class Plans extends CRUD {
 	 * 
 	 * @story C5S3
 	 * 
-	 * @author hassan.ziko1
+	 * @author Hassan Ziko
 	 * 
 	 * @param planId
 	 *            The ID of the plan that will be edited
@@ -331,7 +332,7 @@ public class Plans extends CRUD {
 	 * 
 	 * @story C5S3
 	 * 
-	 * @author hassan.ziko1
+	 * @author Hassan Ziko
 	 * 
 	 * @param itemId
 	 *            The ID of the item that will be edited
@@ -349,7 +350,7 @@ public class Plans extends CRUD {
 	 * 
 	 * @story C5S3
 	 * 
-	 * @author hassan.ziko1
+	 * @author Hassan Ziko
 	 * 
 	 * @param title
 	 *            The title of the plan
@@ -390,7 +391,7 @@ public class Plans extends CRUD {
 	 * 
 	 * @story C5S3
 	 * 
-	 * @author hassan.ziko1
+	 * @author Hassan Ziko
 	 * 
 	 * @param startDate
 	 *            The start date of an item
@@ -420,7 +421,27 @@ public class Plans extends CRUD {
 				"This item has been edited");
 		viewAsList(i.plan.id);
 	}
-
+	
+	/**
+	 * This methods deletes an item from the item list of a plan
+	 * 
+	 * @story C5S3
+	 * 
+	 * @author Hassan Ziko
+	 * 
+	 * @param planId
+	 *            The id of the plan that contains the item
+	 *            
+	 * @param itemId
+	 *            The id of the item being deleted
+	 */
+	public static void deleteItem(long planId, long itemId){
+		Plan plan = Plan.findById(planId);
+		Item item = Item.findById(itemId);
+		plan.items.remove(item);
+		item.delete();
+		viewAsList(planId);
+	}
 	public static void viewAsTimeline(long planid) {
 		// Plan p = Plan.findById(planid);
 		// List<Item> itemsList = p.items;
