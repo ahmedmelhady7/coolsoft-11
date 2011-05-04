@@ -176,4 +176,8 @@ public class MainEntity extends Model {
 		followers.remove(user);
 		_save();
 	}
+	
+	public String toString() {
+		return "Name: " + name + " Description: " + description;
+	}
 }
