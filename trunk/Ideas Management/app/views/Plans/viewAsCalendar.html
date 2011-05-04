@@ -23,7 +23,8 @@ navHeight: 25,
 labelHeight: 25,
 
 onMonthChanging: function(dateIn) {
-$.getJSON("http://localhost:9000/controller/Plans",function(data) {
+	
+ /*$.getJSON("http://localhost:9000/controller/Plans",function(data) {
 
                  
 var events = new Array();
@@ -43,7 +44,13 @@ events.push(event);
 
                     $.jMonthCalendar.ReplaceEventCollection(events);
 $.jMonthCalendar.DrawCalendar(dateIn);
-});
+});*/
+
+$.jMonthCalendar.ReplaceEventCollection(events);
+$.jMonthCalendar.DrawEventsOnCalendar();
+$.jMonthCalendar.DrawCalendar(dateIn);
+var events=[{"EventID": 1, "Date": new Date(2011,5,5),"Title":"ttt", "URL": "","Description": "testt",
+"CssClass":"Meeting"}];
 return true;
 },
 onEventBlockOver: function(event) {
