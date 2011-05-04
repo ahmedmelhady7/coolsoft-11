@@ -70,7 +70,7 @@ public class MainEntity extends Model {
 	/**
 	 * The list of related entities
 	 */
-	public List<MainEntity> relatedEntities; 
+//	public List<MainEntity> relatedEntities; 
 
 	/**
 	 * The list of tags that the entity is tagged by
