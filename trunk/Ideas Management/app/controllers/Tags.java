@@ -53,7 +53,7 @@ public class Tags extends CRUD {
 	 *            : second tag to be related
 	 */
 	public static void relateTag(Tag tag, Tag tag2) {
-		tag.relatedTags.add(tag2);
+//		tag.relatedTags.add(tag2);
 	}
 
 }
