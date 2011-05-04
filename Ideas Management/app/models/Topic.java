@@ -62,6 +62,11 @@ public class Topic extends Model {
 	 */
 	@ManyToMany(mappedBy = "topicsIFollow")
 	public List<User> followers;
+	
+	/**
+	 * The list of related topics
+	 */
+	public List<Topic> relatedTopics;
 
 	/*
 	 * the list of users that can access the topic

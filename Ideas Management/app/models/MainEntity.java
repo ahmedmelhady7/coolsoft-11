@@ -66,6 +66,11 @@ public class MainEntity extends Model {
 	 */
 	@OneToMany(mappedBy = "entity")
 	public List<Topic> topicList;
+	
+	/**
+	 * The list of related entities
+	 */
+	public List<MainEntity> relatedEntities; 
 
 	/**
 	 * The list of tags that the entity is tagged by
