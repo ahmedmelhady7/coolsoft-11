@@ -30,7 +30,7 @@ public class Tag extends Model {
 	 * The list of related tags
 	 */
 	
-	public List<Tag> relatedTags;
+//	public List<Tag> relatedTags;
 	
 	/**
 	 * List of users following the tag

@@ -12,11 +12,18 @@ import play.test.*;
 
 import models.*;
 
+/**
+ * 
+ * @author DebugTeam
+ * @version 1.5
+ * 
+ */
+
 @OnApplicationStart
 public class Bootstrap extends Job {
 
 	public void doJob() {
-		// System.out.println("DOJOB");
+
 		if (User.count() < 5) {
 			System.out.println("in");
 			Role.createIdeaDeveloperRole();

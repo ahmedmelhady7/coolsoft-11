@@ -66,7 +66,8 @@ public class Topic extends Model {
 	/**
 	 * The list of related topics
 	 */
-	public List<Topic> relatedTopics;
+//	no  mapping
+//	public List<Topic> relatedTopics;
 
 	/*
 	 * the list of users that can access the topic
