@@ -59,9 +59,13 @@ public class Organizations extends CRUD {
 	 */
 
 	public static void enableTags(long id) {
+		System.out.println("enabling");
+		System.out.println(id);
 		Organization organization = Organization.findById(id);
+		System.out.println(organization);
 		notFoundIfNull(organization);
 		organization.createTag = true;
+		System.out.println(organization.createTag);
 	}
 
 	/**
@@ -80,9 +84,13 @@ public class Organizations extends CRUD {
 	 */
 
 	public static void disableTags(Long id) {
+		System.out.println("disabling");
 		Organization organization = Organization.findById(id);
+		System.out.println(organization);
+		System.out.println(id);
 		notFoundIfNull(organization);
 		organization.createTag = false;
+		System.out.println(organization.createTag);
 	}
 
 	/**
