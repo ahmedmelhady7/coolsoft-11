@@ -56,6 +56,16 @@
 			<!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
 		</p>
 		#{/crud.custom}
+		
+		#{crud.custom 'password'}
+		<p>
+			<label for="object_password">
+				Password
+			</label>
+			<textarea disabled= true id="object_password" cols="15" rows="2" class="" name="object.password">
+			</textarea>
+		</p>
+		#{/crud.custom }
 
 		#{crud.custom 'communityContributionCounter'}
 		<p>
@@ -107,9 +117,9 @@
 		</button>
 		#{/form}
 	</div>
-	<!--#{form @delete(object._key())}
+	#{form @delete(object._key())}
 	<p class="crudDelete">
 	<input type="submit" value="&{'crud.delete', type.modelName}" />
 	</p>
-	#{/form}-->
+	#{/form}
 </div>
