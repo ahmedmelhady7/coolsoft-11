@@ -27,6 +27,12 @@ public class Tag extends Model {
 	// String creator; We might still need this attribute;
 
 	/**
+	 * The list of related tags
+	 */
+	
+	public List<Tag> relatedTags;
+	
+	/**
 	 * List of users following the tag
 	 */
 	@ManyToMany(mappedBy = "followingTags")
