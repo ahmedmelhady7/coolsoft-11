@@ -2,7 +2,11 @@ package controllers;
 
 import java.util.List;
 
+import controllers.CRUD.ObjectType;
+
 import play.data.validation.Required;
+import play.db.Model;
+import play.exceptions.TemplateNotFoundException;
 import models.MainEntity;
 import models.Organization;
 import models.Topic;
@@ -80,6 +84,9 @@ public class MainEntitys extends CRUD {
 		MainEntity entity = MainEntity.findById(id);
 		Organization org = entity.organization;
 		List<MainEntity> subentities = entity.subentities;
-		render(user, org, entity, subentities);
+		List<Topic> topicList = entity.topicList;
+		render(user, org, entity, subentities, topicList);
 	}
+	
+
 }
