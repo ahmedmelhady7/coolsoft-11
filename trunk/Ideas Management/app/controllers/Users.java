@@ -14,14 +14,6 @@ import play.db.jpa.GenericModel.JPAQuery;
 import play.db.jpa.JPA;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
-import models.MainEntity;
-import models.Notification;
-import models.NotificationProfile;
-import models.Organization;
-import models.Tag;
-import models.Topic;
-import models.User;
-import models.UserRoleInOrganization;
 import models.*;
 
 public class Users extends CRUD {
@@ -1223,6 +1215,24 @@ public class Users extends CRUD {
 		user.invitation.remove(inv);
 		user._save();
 		inv._delete();
+	}
+	
+	/**
+	 * This method ends the session of the current user 
+	 * and logs out
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @return void
+	 */
+	
+	public static void logout() {
+		try {			
+			session.remove("user_id");
+			Secure.logout();
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 	}
 
 }
