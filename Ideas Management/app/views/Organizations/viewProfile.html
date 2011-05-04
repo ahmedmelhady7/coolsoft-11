@@ -47,6 +47,12 @@
 		#{/list}
 		</ul>
 		#{/else}
+		<form action="@{Organizations.InviteMember()}">
+            <input type="hidden" name="orgId" value="${org.id}">Invite a user: <input type="submit" value="view">
+        </form>
+        <form action="@{Topics.requestToPost()}">
+            <input type="hidden" name="orgId" value="${org.id}">Request to post: <input type="submit" value="view">
+        </form>
     </body>
 </html>
 <script type="text/javascript">
