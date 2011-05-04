@@ -3,6 +3,7 @@
 <br/> 
 #{if org == true)}
 <form action="@{VolunteerRequests.viewVolunteerRequests()}" method="post">
+	<input type = "hidden" name = "planId" value = ${p.id} >
     Volunteer Requests: <input type="submit" value="View Volunteer Requests">
 </form> #{/if}
 #{if error == true}
