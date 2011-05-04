@@ -382,28 +382,6 @@ public class Users extends CRUD {
 		return (user);
 	}
 
-	public void postTopic(String name, String description, short privacyLevel,
-			User creator, MainEntity entity) {
-
-		if (entity.organizers.contains(creator)) {
-			Topic newTopic = new Topic(name, description, privacyLevel,
-					creator, entity).save();
-			creator.topicsCreated.add(newTopic);
-
-			// List usr = getEntityOrganizers(entity);
-			// UserRoleInOrganization.addEnrolledUser(creator,
-			// newTopic.entity.organization,
-			// Roles.getRoleByName("Organizer"), newTopic.getId(), "topic");
-			List usr = getEntityOrganizers(entity);
-			// UserRoleInOrganization.addEnrolledUser(creator,
-			// newTopic.entity.organization,
-			// Role.getRoleByName("Organizer"), newTopic.getId(), "topic");
-			creator.topicsIOrganize.add(newTopic);
-			for (int i = 0; i < entity.organizers.size(); i++) {
-				entity.organizers.get(i).topicsIOrganize.add(newTopic);
-			}
-		}
-	}
 
 	/**
 	 * 
