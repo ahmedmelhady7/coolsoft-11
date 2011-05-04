@@ -1,4 +1,4 @@
-#{extends '/topics/layout.html' /}
+#{extends '/ideas/layout.html' /}
 <div id="crudShow" class="${type.name}">
     <h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
     <font color="Red">
@@ -12,7 +12,7 @@
             <label for="object_title">
                 Title
             </label>
-            <textarea disabled= true id="object_title" cols="30" rows="1" class="" name="object.title">
+            <textarea disabled= true id="object_title" cols="25" rows="2" class="" name="object.title">
                 ${object.title}
             </textarea>
         </p>
@@ -22,7 +22,7 @@
             <label for="object_description">
                 Description
             </label>
-            <textarea id="object_description" cols="50" rows="5" class="" name="object.description">
+            <textarea id="object_description" cols="60" rows="5" class="" name="object.description">
                 ${object.description}
             </textarea>
             <span class="crudHelp">
@@ -44,22 +44,3 @@
     </p>
     #{/form}-->
 </div>
-<script type="text/javascript">
-    function closeTopic(topicid, userId){
-        $.post('@{Topics.closeTopic()}', {
-            topicId: topicid,
-            userId: userId
-        });
-        alert("done!");
-        location.reload(true);
-    }
-    
-    function reopen(topicid, userId){
-        $.post('@{Topics.reopen()}', {
-            topicId: topicid,
-            userId: userId
-        });
-        alert("done!");
-        location.reload(true);
-    }
-</script>

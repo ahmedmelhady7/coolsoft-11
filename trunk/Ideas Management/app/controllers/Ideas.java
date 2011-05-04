@@ -283,6 +283,7 @@ public class Ideas extends CRUD {
 	 * 
 	 */
 	public static void view(long ideaId) {
+		System.out.println("hadi foo222");
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(ideaId);
@@ -297,8 +298,9 @@ public class Ideas extends CRUD {
 		int privacyLevel = i.privacyLevel;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
-
+		System.out.println("haadi");
 		try {
+			System.out.println("try");
 			render(type, object, /* tags, */author, comments, topic, plan,
 			/* openToEdit, */privacyLevel, deletemessage, /* deletable, */ideaId);
 		} catch (TemplateNotFoundException e) {
