@@ -305,7 +305,7 @@ public class Plans extends CRUD {
 			long planId, String summary, String check) {
 		Plan plan = Plan.findById(planId);
 		plan.addItem(startDate, endDate, description, summary);
-		if (check.equals("checked")) {
+		if (check != null && check.equals("checked")) {
 			addItem(plan.id);
 		} else {
 			viewAsList(plan.id);
