@@ -2,25 +2,26 @@
 <html>
     <head>
         <meta name="generator" content="HTML Tidy, see www.w3.org">
+
         <title>Organization Main View</title>
     </head>
+
     <body>
-        #{extends 'main.html' /} <a href="http://localhost:9008/Organizations/createOrganization">Create a new Organization</a>
-        <br/>
-        <br/>
-        #{if organizations.size() > 0} 
-        These are the currently available organizations 
-        <br/>
-        <ul style="list-style: none;">
-            #{list items:organizations, as:'organization'}
-            <li>
-                <a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>
-            </li>
-            #{/list}
-        </ul>
-        #{/if}
-        #{else}
-        No organizations have been created!!
-        #{/else}
+        #{extends 'main.html' /} 
+		<a href="@{Organizations.createOrganization()}">Create a new Organization</a><br /><br />
+		#{if organizations.size() > 0}
+		These are the currently available organizations <br />
+		<ul style="list-style: none;">
+			#{list items:organizations, as:'organization'}
+			<li>
+				<a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>
+			</li>
+			#{/list}
+		</ul> 
+		#{/if}
+		#{else}
+		No organizations have been created!!
+		#{/else}
     </body>
 </html>
+
