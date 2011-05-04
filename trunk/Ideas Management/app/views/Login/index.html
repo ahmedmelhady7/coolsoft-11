@@ -31,6 +31,7 @@ ${u.email}
 <form action="@{Items.viewAssignedItems()}" method="post">
     My assigned to-do items: <input type="submit" value="View">
 </form>
+<a href="@{Organizations.mainPage()}">View Organizations</a>
 <form action="@{AssignRequests.view()}" method="post">
     Assign Requests: <input type="submit" value="View">
 </form>
@@ -49,6 +50,7 @@ Show Topic List:
 </p>
 <form action="@{Organizations.mainPage()}" method="post">
     Organizations: <input type="submit" value="View">
+</form>
 </form>
 <form action="@{Users.logout}" method="post">
 Logout: <input type="submit" value="Logout">
