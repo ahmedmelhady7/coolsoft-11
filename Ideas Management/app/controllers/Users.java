@@ -5,9 +5,6 @@ package controllers;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
-
-import java.util.List;
-
 import javax.persistence.Query;
 import notifiers.Mail;
 import play.data.binding.Binder;
@@ -98,7 +95,8 @@ public class Users extends CRUD {
 	public static void view(String userId) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
-		User object = User.findById(userId);
+		long userID =Long.parseLong(userId);
+		User object = User.findById(userID);
 		notFoundIfNull(object);
 		System.out.println("entered view() for User " + object.username);
 		System.out.println(object.email);
@@ -138,7 +136,8 @@ public class Users extends CRUD {
 	public static void show(String userId) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
-		User object = User.findById(userId);
+		long userID =Long.parseLong(userId);
+		User object = User.findById(userID);
 		notFoundIfNull(object);
 		System.out.println("entered view() for User " + object.username);
 		System.out.println(object.email);
@@ -839,40 +838,6 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * This method is responsible for deleting a user by the system admin after
-	 * specifying that user's id, and then it renders a message confirming
-	 * whether the delete was successful or not
-	 * 
-	 * @author Mostafa Ali
-	 * 
-	 * @story C1S9
-	 * 
-	 * @param id
-	 *            : the user's id
-	 * 
-	 * @return void
-	 * 
-	 * */
-	public static void delete(long id) {
-		User user = User.findById(id);
-		String x = "";
-		try {
-
-			if (user.state.equals("n")) {
-				user.state = "d";
-				x = "deletion successful";
-			} else {
-				x = "You can not delete a user who's deactivated his account !";
-			}
-			render(x);
-		} catch (NullPointerException e) {
-			x = "No such User !!";
-			render(x);
-		}
-
-	}
-
-	/**
 	 * 
 	 * This method returns list of entities within a specific organization that
 	 * a user is enrolled in as organizer or organization lead (or admin)
@@ -959,7 +924,7 @@ public class Users extends CRUD {
 	 */
 
 	public static void create() throws Exception {
-		// Security.check(Security.getConnected().isAdmin);
+		//if(Security.getConnected().isAdmin);
 		ObjectType type = ObjectType.get(Users.class);
 		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
@@ -1007,7 +972,8 @@ public class Users extends CRUD {
 		ObjectType type = ObjectType.get(Users.class);
 		notFoundIfNull(type);
 		// Model object = type.findById(id);
-		User object = User.findById(id);
+		long userId = Long.parseLong(id);
+		User object = User.findById(userId);
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
 		if (validation.hasErrors()) {
@@ -1025,6 +991,43 @@ public class Users extends CRUD {
 			redirect(request.controller + ".list");
 		}
 		redirect(request.controller + ".show", object._key());
+	}
+	
+	/**
+	 * This method is responsible for deleting a user by the system admin after
+	 * specifying that user's id, and then it renders a message confirming
+	 * whether the delete was successful or not
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * @param id
+	 *            : the user's id
+	 * 
+	 * @return void
+	 * 
+	 * */
+	public static void delete(String id) {
+		long userId = Long.parseLong(id);
+		User user = User.findById(userId);
+		String x = "";
+		try {
+
+			if (!(user.state.equals("n"))) {
+				user.state = "d";
+				x = "deletion successful";
+			} else {
+				x = "You can not delete a user who's deactivated his account !";
+			}
+//			render(request.controller.replace(".", "/") + "/index.html",x);
+		} catch (NullPointerException e) {
+			x = "No such User !!";
+			//render(x);
+//			render(request.controller.replace(".", "/") + "/index.html",
+//					x);
+		}
+
 	}
 
 	/**
