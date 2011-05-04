@@ -1,40 +1,37 @@
 #{extends 'main.html' /}
-#{set title:'Home' /}
-
-<b>Welcome </b>${u.username} &nbsp; ${u.email}
-
-<b><i>Welcome to COOLSOFT!</i></b>
+#{set title:'Home' /}<b>Welcome </b>${u.username} &nbsp; ${u.email}<b><i>Welcome to COOLSOFT!</i></b>
 <br>
-<b>Username: </b> ${u.username}
+<b>Username: </b>
+${u.username}
 <br>
-<b>E-Mail </b> ${u.email}
+<b>E-Mail </b>
+${u.email}
 <br>
-
-<form action="@{Users.viewNotifications()}" method="post" >
-	Show Notifications list: <input type="submit" value="Notification list">
-</form>
-&nbsp;
-<form action="@{Users.viewNotificationProfile()}" method="post" >
-	Show Notification Profile: <input type="submit" value="Notification Profile">
-</form>
-&nbsp;
+<form action="@{Users.viewNotifications()}" method="post">
+    Show Notifications list: <input type="submit" value="Notification list">
+</form> &nbsp;
+<form action="@{Users.viewNotificationProfile()}" method="post">
+    Show Notification Profile: <input type="submit" value="Notification Profile">
+</form> &nbsp;
 <form action="@{Notifications.notificationIndex()}" method="post">
-	Send Notification: <input type="submit" value="Notify">
+    Send Notification: <input type="submit" value="Notify">
 </form>
 <form action="@{Items.viewAssignedItems()}" method="post">
-	My assigned to-do items: <input type="submit" value="View">
+    My assigned to-do items: <input type="submit" value="View">
 </form>
 <form action="@{AssignRequests.view()}" method="post">
-	Assign Requests: <input type="submit" value="View">
+    Assign Requests: <input type="submit" value="View">
 </form>
 <form action="@{Users.ViewOrgInv()}">
-<input type="hidden" name="userId" value="${u.id}">
-Invitations from Organizations: <input type="submit" value="view">
+    <input type="hidden" name="userId" value="${u.id}">Invitations from Organizations: <input type="submit" value="view">
 </form>
 <form action="@{Users.listFollows()}">
-<input type="hidden" name="userId" value="${u.id}">
-Follow List: <input type="submit" value="view">
-</form>
-
-&nbsp;
-    Show Topic List: <input type="submit" value="Show Topic List" onclick=location.href="topics/list">
+    <input type="hidden" name="userId" value="${u.id}">Follow List: <input type="submit" value="view">
+</form> &nbsp;
+Show Topic List:
+<input type="submit" value="Show Topic List" onclick=location.href="topics/list">
+<p>
+    &nbsp;
+    Show Ideas List:
+    <input type="submit" value="Show Ideas List" onclick=location.href="ideas/list">
+</p>

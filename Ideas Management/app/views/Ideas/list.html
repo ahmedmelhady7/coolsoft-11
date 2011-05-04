@@ -1,11 +1,11 @@
-#{extends '/topics/layout.html' /}
+#{extends '/ideas/layout.html' /}
 <div id="crudList" class="${type.name}">
     <h2 id="crudListTitle">&{'crud.list.title', type.name}</h2>
     <div id="crudListSearch">
         #{crud.search /}
     </div>
-	<!--Abdalrahman Ali
-		just added a column for the isDraft value-->
+    <!--Abdalrahman Ali
+    just added a column for the isDraft value-->
     <div id="crudListTable">
         #{crud.table fields:['title', 'author', 'isDraft' ,'privacyLevel'] /}
     </div>

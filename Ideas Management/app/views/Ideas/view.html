@@ -1,6 +1,6 @@
-#{extends '/topics/layout.html' /}<h3>
+#{extends '/ideas/layout.html' /}<h3>
     <label>
-        View Topic
+        View Idea
     </label>
 </h3>
 <div id="crudShow" class="${type.name}">
@@ -8,66 +8,90 @@
         ${message}
     </font>
     <div class="objectForm">
-    #{form action:@view(object._key()), enctype:'multipart/form-data'}
-    #{crud.form fields: ['title', 'author','description', 'privacyLevel']}
-    #{crud.custom 'title'}
-    <p>
-    <!--<label for="object_title">Title</label>-->
-    <textarea disabled= true id="object_title" cols="30" rows="1" class="" name="object.title">
-        ${object.title}
-    </textarea>
-    #{form action:@view(object._key()), enctype:'multipart/form-data'}
-    #{crud.form fields: ['title', 'author','description', 'privacyLevel']}
-    #{crud.custom 'title'}
-    <p>
+        #{form action:@view(object._key()), enctype:'multipart/form-data'}
+        #{crud.form fields: ['title', 'author','description', 'privacyLevel']}
+        #{crud.custom 'title'}
+        <p>
         <!--<label for="object_title">Title</label>-->
-        <textarea disabled= true id="object_title" cols="30" rows="1" class="" name="object.title">
+        <textarea disabled= true id="object_title" cols="25" rows="2" class="" name="object.title">
             ${object.title}
         </textarea>
-    </p>
-    #{/crud.custom}
-    #{crud.custom 'author'}
-    <p>
-        <label for="object_creator">
-            by
-        </label>
-        <textarea disabled= true id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">
-            ${object.author}
-        </textarea>
-    </p>
-    #{/crud.custom }
-    #{crud.custom 'description'}
-    <p>
-        <label for="object_description">
-            Description
-        </label>
-        <textarea disabled= true id="object_description" cols="50" rows="5" class="" name="object.description">
-            ${object.description}
-        </textarea>
-        <!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
-    </p>
+        #{form action:@view(object._key()), enctype:'multipart/form-data'}
+        #{crud.form fields: ['title', 'author','description', 'privacyLevel']}
+        #{crud.custom 'title'}
+        <p>
+            <!--<label for="object_title">Title</label>-->
+            <textarea disabled= true id="object_title" cols="25" rows="2" class="" name="object.title">
+                ${object.title}
+            </textarea>
+        </p>
+        #{/crud.custom}
+        #{crud.custom 'author'}
+        <p>
+            <label for="object_creator">
+                by
+            </label>
+            <textarea disabled= true id="object_creator" cols="25" rows="2" class="" name="object.privacyLevel">
+                ${object.author}
+            </textarea>
+        </p>
+        #{/crud.custom }
+        #{crud.custom 'description'}
+        <p>
+            <label for="object_description">
+                Description
+            </label>
+            <textarea disabled= true id="object_description" cols="50" rows="5" class="" name="object.description">
+                ${object.description}
+            </textarea>
+            <!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
+        </p>
+        #{/crud.custom}
+        #{crud.custom 'privacyLevel'}
+        <p>
+            <label for="object_privacyLevel">
+                Privacy Level
+            </label>
+            <textarea disabled= true id="object_privacyLevel" cols="25" rows="2" class="" name="object.privacyLevel">
+                ${object.privacyLevel}
+            </textarea>
+        </p>
+        <!-- 		<br/>
+        This idea is now rated: ${newRating}
+        <form action="@{Ideas.rate(rating,idea.id)}" method="GET">
+        <!--<input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/>
+        <input type="submit" value="Submit rating"/>
+        </form>
+        <br /> -->
+        <!-- 		<form action="@{Ideas.shareIdea(user, ideaId)}" method="GET">
+        <input type="submit" value="Share with user" />
+        <input type="text" name="user" id="userToShareWith"/>
+        </form>
+        <br /> -->
+        #{/crud.custom }
+        #{/crud.form }
+        <!--<a href="/show?topicid=object._key()">Edit</a>-->
+        <!--<button type="submit" onclick="ideas/show.html">
+        Edit
+        </button>-->
+        #{/form}
+    </div>
     #{/crud.custom}
     #{crud.custom 'privacyLevel'}
     <p>
         <label for="object_privacyLevel">
             Privacy Level
         </label>
-        <textarea disabled= true id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
+        <textarea disabled= true id="object_privacyLevel" cols="25" rows="2" class="" name="object.privacyLevel">
             ${object.privacyLevel}
         </textarea>
     </p>
     <!-- 		<br/>
     This idea is now rated: ${newRating}
     <form action="@{Ideas.rate(rating,idea.id)}" method="GET">
-    <!--<input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/>
-    <input type="submit" value="Submit rating"/>
+    <!--<input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/>--><input type="submit" value="Submit rating"/>
     </form>
-    <br /> -->
-    <!-- 		<form action="@{Ideas.shareIdea(user, ideaId)}" method="GET">
-    <input type="submit" value="Share with user" />
-    <input type="text" name="user" id="userToShareWith"/>
-    </form>
-    <br /> -->
+    <br/>
     #{/crud.custom }
     #{/crud.form }
     <!--<a href="/show?topicid=object._key()">Edit</a>-->
@@ -80,59 +104,9 @@
 <p class="crudDelete">
 <input type="submit" value="&{'crud.delete', type.modelName}" />
 </p>
-#{/crud.custom}
-#{crud.custom 'author'}
-<p>
-<label for="object_creator">
-by
-</label>
-<textarea disabled= true id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">
-${object.author}
-</textarea>
-</p>
-#{/crud.custom }
-#{crud.custom 'description'}
-<p>
-<label for="object_description">
-Description
-</label>
-<textarea disabled= true id="object_description" cols="50" rows="5" class="" name="object.description">
-${object.description}
-</textarea>
-<!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
-</p>
-#{/crud.custom}
-#{crud.custom 'privacyLevel'}
-<p>
-    <label for="object_privacyLevel">
-        Privacy Level
-    </label>
-    <textarea disabled= true id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
-        ${object.privacyLevel}
-    </textarea>
-</p>
-<!-- 		<br/>
-This idea is now rated: ${newRating}
-<form action="@{Ideas.rate(rating,idea.id)}" method="GET">
-<!--<input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/>--><input type="submit" value="Submit rating"/>
-</form>
-<br/>
--->
-#{/crud.custom }
-#{/crud.form }
-<!--<a href="/show?topicid=object._key()">Edit</a>-->
-<!--<button type="submit" onclick="ideas/show.html">
-Edit
-</button>-->
-#{/form}
-</div>
-<!--#{form @delete(object._key())}
-<p class="crudDelete">
-<input type="submit" value="&{'crud.delete', type.modelName}" />
-</p>
 #{/form}-->
 </div>
-<form action="@{Users.ReportIdeaAsSpam()}" method="GET" name="myform">
+<form action="@{Users.ideaSpamView()}" method="GET" name="myform">
     <table border="0" bgcolor="#ececec" cellspacing="5">
         <tr>
             <td>
@@ -141,7 +115,7 @@ Edit
             <td>
                 <input type="submit" value="Report As Spam">
                 </table>
-            </form>#{/if}<!-- <script type="text/javascript">
+            </form><!-- <script type="text/javascript">
             function isNumberKey(evt)
             {
             var charCode = (evt.which) ? evt.which : event.keyCode
