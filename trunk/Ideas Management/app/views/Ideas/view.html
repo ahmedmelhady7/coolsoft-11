@@ -9,7 +9,7 @@
     </font>
     <div class="objectForm">
         #{form action:@view(object._key()), enctype:'multipart/form-data'}
-        #{crud.form fields: ['title', 'author','description', 'privacyLevel']}
+        #{crud.form fields: ['title', 'author','description', 'privacyLevel','isDraft']}
         #{crud.custom 'title'}
         <p>
             <!--<label for="object_title">Title</label>-->
@@ -49,6 +49,21 @@
             </textarea>
         </p>
         #{/crud.custom }
+		#{crud.custom 'isDraft'}
+        <p>
+            <label for="object_description">
+                isDraft
+            </label>
+            <input type="checkbox"  checked="${object.isDraft}" id="object_isDraft" class="" name="object.isDraft">
+            	is this Idea a draft
+            </input>
+            <span class="crudHelp">
+                <font color="Red">
+                    *
+                </font>Required
+            </span>
+        </p>
+        #{/crud.custom}
         #{/crud.form }
         #{/form}
         <form action="@{Users.ReportIdeaAsSpam()}" method="GET" name="myform">
