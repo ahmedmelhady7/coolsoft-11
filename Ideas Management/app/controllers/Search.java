@@ -39,7 +39,7 @@ public class Search extends Controller {
 	 *        in the html page searchResult.
 	 * 
 	 */
-	public static List<Model> listOfResults = new ArrayList<Model>();
+	public static List<Model> listOfResults;
 
 	public static List<Model> filterResult = new ArrayList<Model>();
 
@@ -180,6 +180,8 @@ public static void showAfterFilter(){
 			int idea, int item, int comm, int dayB, int monthB, int yearB,
 			int dayA, int monthA, int yearA, int dayE, int monthE, int yearE) {
 
+		listOfResults = new ArrayList<Model>();
+		
 		System.out.println("Enter advSearch");
 
 		Date before = new Date(yearB, monthB, dayB);
