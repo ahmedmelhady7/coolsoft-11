@@ -70,7 +70,7 @@ This plan is now rated: ${newRating}
             <br/>
             End Date:  ${item.endDate.format('dd MMM yy')}
 			&nbsp;&nbsp;
-			#{if assignedItem.endDatePassed()}
+			#{if item.endDatePassed()}
 			The end date has passed!
 			#{/if}
             <br/>
