@@ -8,18 +8,13 @@
 
     <body>
         #{extends 'main.html' /} 
-
+		#{set title:'Create a new Tag' /}
         <p>Please fill the required information.</p>
-        Tag Name: <input type="text" id="name" name=
-        "name" required> <br /><br />
-  		<input type="submit" value="Create" onclick = "submit(name.value);" />
-		
-		<script type="text/javascript">
-			function submit(n){
-				$.post('@{createTag()}', {name: n, orgId:org.id});
-				alert("Your new tag has been created!");
-			}
-		</script> 
+		<form name="createTag" action="@{Tags.createTagg()}" method="POST">
+		Tag Name: <input type="text" id="name" name="name" required>
+		<input type="hidden" id="orgId" name="orgId" value= "${org.id}"> <br /><br />
+  		<input type="submit" value="Create"/>
+		</form>
     </body>
 </html>
 
