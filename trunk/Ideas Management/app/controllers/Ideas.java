@@ -29,7 +29,7 @@ public class Ideas extends CRUD {
 	/*
 	 * @author Abdalrahman Ali
 	 * 
-	 * this method saves an idea as a draft
+	 * this method saves an idea as a draft for the first time
 	 * 
 	 * @param title the title of the idea
 	 * 
@@ -38,7 +38,7 @@ public class Ideas extends CRUD {
 	 * @param topicId the topic that the idea belongs to
 	 */
 
-	public static void saveDraft(String title, String body, Long topicId) {
+	public static void createDraft(String title, String body, Long topicId) {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
 		Idea idea = new Idea(title, body, user, topic, true).save();
@@ -54,10 +54,28 @@ public class Ideas extends CRUD {
 	 * @param ideaId the saved idea
 	 */
 
-	public static void postDraft(long ideaId) {
+	public static void postDraft(long ideaId,String title, String titl) {
+		
 		Idea idea = Idea.findById(ideaId);
 		idea.isDraft = false;
+		idea.title = title;
+		idea.description = titl;
 		idea.save();
+		System.out.println("POSTED");
+		redirect("/ideas/list");
+	}
+	
+	public static void saveDraft(long ideaId,String title,String titl) {
+		
+		Idea idea = Idea.findById(ideaId);
+		idea.title = title;
+		//idea.description = null;
+		System.out.println(titl);
+		idea.description = titl;
+		idea.save();
+		System.out.println("SAVED");
+		//redirect("/ideas/list");
+		redirect(request.controller + ".list");
 	}
 
 	/*
@@ -71,14 +89,24 @@ public class Ideas extends CRUD {
 	 * @return ArrayList<Idea> all the draft ideas saved by the user
 	 */
 
-	public static ArrayList<Idea> getDrafts(User user) {
-		ArrayList<Idea> drafts = new ArrayList<Idea>();
+	public static void getDrafts() {
+		
+		User user = Security.getConnected();
+		
+		List<Idea> drafts = new ArrayList<Idea>();
 
 		for (Idea idea : user.ideasCreated)
 			if (idea.isDraft)
 				drafts.add(idea);
 
-		return drafts;
+		render(drafts,user);
+	}
+	
+	public static void editDraft(long ideaId)
+	{
+		Idea idea = Idea.findById(ideaId);
+		User user = Security.getConnected();
+		render(idea,user);
 	}
 
 	/**
@@ -348,8 +376,21 @@ public class Ideas extends CRUD {
 		if (page < 1) {
 			page = 1;
 		}
+		
 		List<Model> objects = type.findPage(page, search, searchFields,
-				orderBy, order, (String) request.args.get("where"));
+				orderBy, order, (String) request.args.get("where "));
+		
+		if(objects != null)
+		{
+			for(int i = 0 ;i<objects.size();i++)
+			{
+				Idea o = (Idea) objects.get(i);
+				if(o.isDraft)
+					objects.remove(i);
+			}
+		}
+		
+		
 		Long count = type.count(search, searchFields,
 				(String) request.args.get("where"));
 		Long totalCount = type.count(null, null,
