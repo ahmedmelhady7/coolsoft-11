@@ -439,10 +439,10 @@ public class Users extends CRUD {
 		List<User> searchResultByEmail = new ArrayList<User>();
 
 		if (keyword != null) {
-			searchResultByName = User.find("byUsernameLike", "%" +keyword + "%").fetch();
+			searchResultByName = User.find("byUsernameLike","%" + keyword + "%"). <User>fetch();
 			searchResultByProfession = User.find("byProfessionLike", "%" + keyword+ "%")
-					.fetch();
-			searchResultByEmail = User.find("byEmailLike", "%" + keyword + "%").fetch();
+					.<User>fetch();
+			searchResultByEmail = User.find("byEmailLike", "%" + keyword + "%").<User>fetch();
 		}
 
 		int nameSize = searchResultByName.size();
