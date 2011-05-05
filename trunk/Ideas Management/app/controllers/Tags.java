@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import play.data.validation.Required;
@@ -30,26 +31,56 @@ public class Tags extends CRUD {
 	 */
 
 
-	public static void createTag(@Required String name, long orgId) {
+	public static void createTag(long orgId) {
+		Organization org = Organization.findById(orgId);
+		render(org);
+//		if (validation.hasErrors()) {
+//			params.flash();
+//			validation.keep();
+//			render(org);
+//		}
+//		
+//		
+//		flash.success("Your tag has been created.");
+	}
+	public static void createTagg(String name, long orgId) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(orgId);
-		if (validation.hasErrors()) {
-			params.flash();
-			validation.keep();
-			render(org);
+		List<Organization> allOrg = Organization.findAll();
+		List<Tag> allTags = new ArrayList<Tag>();
+		int i = 0;
+		while(i < org.createdTags.size()) {
+			allTags.add(org.createdTags.get(i));
+			i++;
 		}
-		Tag existing_tag = Tag.find("name like '" + name + "'").first();
-		if (existing_tag != null) {
-			flash.error("Tag already exists!" + "\n\t\t"
-					+ "Please choose another tag name.");
-			render(org);
+		i = 0;
+		while(i < allOrg.size()) {
+			int j = 0;
+			if((allOrg.get(i).privacyLevel == 2) && (!allOrg.get(i).name.equals(org.name))) {
+				while(j < allOrg.get(i).createdTags.size()) {
+					allTags.add(allOrg.get(i).createdTags.get(j));
+					j++;
+				}
+			}
+			i++;
 		}
+		boolean duplicate = false;
+		i = 0;
+		while(i < allTags.size()){
+			if(allTags.get(i).name.equalsIgnoreCase(name)) {
+				duplicate = true;
+				break;
+			}
+			i++;
+		}
+		if(!duplicate) {
 		Tag tag = new Tag(name,org);
+		tag.save();
+		System.out.println(tag.id);
 		String description = user.username + " has created a new tag \"" + name + "\" in organization " + org.name;
-		Notifications.sendNotification(org.creator.id, tag.id, "tag", description);
-        tag.save();
-		
-		flash.success("Your tag has been created.");
+		Notifications.sendNotification(org.creator.id, tag.id, "Tag", description);
+		}
+
 	}
 	/**
 	 * This is the main page for any tag the user clicks on
