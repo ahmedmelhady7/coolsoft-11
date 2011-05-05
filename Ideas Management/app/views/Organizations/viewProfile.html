@@ -6,19 +6,18 @@
     </head>
     <body>
         #{extends 'main.html' /}
-        <center>
-            <big>
-                <b>${org.name}</b>
-            </big>
-        </center>
-        <br>
-        <br>
-        #{if ((org.privacyLevel == 1) && (!enrolled))}
-        <form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
-            <input type="hidden" name="requester" value="${user}"><input type="hidden" name="organization" value="${org}"><input type="text" name="description">Request to join <input type="submit" value="Request">
-        </form>#{/if}
+        <center><big><b>${org.name}</b></big></center><br><br>
+
+		#{if requestToJoin == true}
+		<form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
+			<input type="hidden" id="orgId" name="orgId" value="${org.id}">
+			Your message: <textarea id="description" name="description" rows="5" cols="50"></textarea>
+			Request to join <input type="submit" value="Request"><br /><br /><br /><br />
+		</form>
+		#{/if}
         #{else}
-        #{if org.createTag}<a href="@{Tags.createTag(org.id)}">Create a Tag</a>
+        #{if org.createTag}
+		<a href="@{Tags.createTag(org.id)}">Create a Tag</a>
         #{/if}
         <select id="selec" onchange="test();">
             <option> Tags</option>
@@ -45,6 +44,9 @@
             #{/list}
         </ul>
         #{/else}
+		<form action="@{Organizations.InviteMember()}">
+            <input type="hidden" name="orgId" value="${org.id}">Invite a user: <input type="submit" value="view">
+		</form>
         <form action="@{Topics.requestToPost()}">
             <input type="hidden" name="orgId" value="${org.id}">Request to post: <input type="submit" value="view">
         </form>
