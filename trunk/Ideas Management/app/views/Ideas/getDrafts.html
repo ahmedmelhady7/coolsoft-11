@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
+
+        <title>${user.username} Drafts</title>
+    </head>
+
+    <body>
+        #{extends 'main.html' /} 
+		
+		#{list items:drafts, as:'draft'}
+                <ul>
+                	<li><a href='@{Ideas.editDraft(draft.id)}'>${draft.title}</a></li>
+                </ul>
+        #{/list}     
+		
+    </body>
+</html>
+
