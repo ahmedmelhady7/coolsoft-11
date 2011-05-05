@@ -73,10 +73,10 @@ public class Organization extends Model {
 	 * List of enrolled users in that organization
 	 */
 
-	// to be removed
-	@ManyToMany
-	// , cascade = CascadeType.ALL)
-	public List<User> enrolledUsers;
+//	// >>>>>>>>>>>>>>>>>>>. change 
+//	@ManyToMany
+//	// , cascade = CascadeType.ALL)
+//	public List<User> enrolledUsers;
 
 	/**
 	 * List of tags related to that organization
@@ -150,7 +150,7 @@ public class Organization extends Model {
 		this.entitiesList = new ArrayList<MainEntity>();
 		this.followers = new ArrayList<User>();
 		this.relatedTags = new ArrayList<Tag>();
-		this.enrolledUsers = new ArrayList<User>();
+		//this.enrolledUsers = new ArrayList<User>();
 		 bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
 		logsList = new ArrayList<Log>();
@@ -210,7 +210,7 @@ public class Organization extends Model {
 		this.entitiesList = new ArrayList<MainEntity>();
 		this.followers = new ArrayList<User>();
 		this.relatedTags = new ArrayList<Tag>();
-		this.enrolledUsers = new ArrayList<User>();
+		//this.enrolledUsers = new ArrayList<User>();
 		// bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
 		logsList = new ArrayList<Log>();
