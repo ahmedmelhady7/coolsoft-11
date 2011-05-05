@@ -27,12 +27,12 @@ import models.*;
 public class Topics extends CRUD {
 
 	/**
-	 * This method first checks if the user is allowed to tag the topic,
-	 * searches for the tag in the global list of tags, if found => check if it
-	 * already the topic had the same tag already or add the new one to the list
-	 * if not => create a new tag, save it to db, add it to the list send
-	 * notifications to followers, organizers and organization lead of the
-	 * tagged topic
+	 * This method first checks if the user is allowed to tag the topic, then
+	 * forms a list of the tags that can be used for this certain idea searches
+	 * for the tag in the global list of tags, if found => check if it already
+	 * the topic had the same tag already or add the new one to the list if not
+	 * => create a new tag, save it to db, add it to the list send notifications
+	 * to followers, organizers and organization lead of the tagged topic
 	 * 
 	 * @author Mostafa Yasser El Monayer
 	 * 
@@ -51,22 +51,34 @@ public class Topics extends CRUD {
 		boolean tagAlreadyExists = false;
 		boolean userNotAllowed = false;
 		boolean tagExists = false;
-		List<Tag> listOfTags = Tag.findAll();
+		List<Tag> listOfTags = new ArrayList<Tag>();
+		List<Tag> globalListOfTags = new ArrayList<Tag>();
+		globalListOfTags = Tag.findAll();
 		User user = Security.getConnected();
-		Topic topic = Topic.findById(topicID);
+		Topic topic = (Topic) Topic.findById(topicID);
 
 		if (!topic.getOrganizer().contains(user)) {
 			// user not allowed
 			userNotAllowed = true;
 		} else {
+			for (int i = 0; i < globalListOfTags.size(); i++) {
+				if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
+						|| topic.entity.organization.equals(globalListOfTags
+								.get(i).createdInOrganization)) {
+					listOfTags.add(globalListOfTags.get(i));
+				}
+			}
 			for (int i = 0; i < listOfTags.size(); i++) {
 				if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
 					if (!topic.tags.contains(listOfTags.get(i))) {
 						topic.tags.add(listOfTags.get(i));
-						Notifications.sendNotification(
-								listOfTags.get(i).followers, topic.tags.get(i)
-										.getId(), "tag",
-								"This topic has been tagged as " + tag);
+
+						for (int j = 0; j < listOfTags.get(i).followers.size(); j++) {
+							Notifications.sendNotification(
+									listOfTags.get(i).followers.get(j).id,
+									topic.tags.get(i).getId(), "tag",
+									"This topic has been tagged as " + tag);
+						}
 					} else {
 						// tag already exists error message
 						tagAlreadyExists = true;
@@ -76,24 +88,35 @@ public class Topics extends CRUD {
 			}
 
 			if (!tagExists) {
-				// Tag temp = new Tag(tag);
-				// temp.save();
-				// topic.tags.add(temp);
+				Tag temp = new Tag(tag, topic.entity.organization);
+				temp.save();
+				topic.tags.add(temp);
 			}
 
 			if (!tagAlreadyExists) {
-				Notifications.sendNotification(topic.followers, topicID,
-						"topic", "This topic has been tagged as " + tag);
-				Notifications.sendNotification(topic.getOrganizer(), topicID,
-						"topic", "This topic has been tagged as " + tag);
-				List<User> list1 = new ArrayList<User>();
-				list1.add(topic.entity.organization.creator);
-				Notifications.sendNotification(list1, topicID, "topic",
-						"This topic has been tagged as " + tag);
+				for (int j = 0; j < topic.followers.size(); j++) {
+					Notifications.sendNotification(topic.followers.get(j).id,
+							topicID, "topic", "This topic has been tagged as "
+									+ tag);
+				}
 
+				for (int j = 0; j < topic.getOrganizer().size(); j++) {
+					Notifications.sendNotification(
+							topic.getOrganizer().get(j).id, topicID, "topic",
+							"This topic has been tagged as " + tag);
+				}
+				// Notifications.sendNotification(topic.followers, topicID,
+				// "topic", "This topic has been tagged as " + tag);
+				// Notifications.sendNotification(topic.getOrganizer(), topicID,
+				// "topic", "This topic has been tagged as " + tag);
+				// List<User> list1 = new ArrayList<User>();
+				// list1.add(topic.entity.organization.creator);
+				Notifications.sendNotification(
+						topic.entity.organization.creator.id, topicID, "topic",
+						"This topic has been tagged as " + tag);
 			}
 		}
-		render(tagAlreadyExists, tagExists, userNotAllowed, topic.tags);
+		render(tagAlreadyExists, tagExists, userNotAllowed, topic.tags, topicID);
 	}
 
 	/**
@@ -108,7 +131,7 @@ public class Topics extends CRUD {
 	 *            : seconf topic to be related
 	 */
 	public static void relateTopic(Topic topic, Topic topic2) {
-//		topic.relatedTopics.add(topic2);
+		// topic.relatedTopics.add(topic2);
 	}
 
 	/**
@@ -506,13 +529,15 @@ public class Topics extends CRUD {
 		Topic tmp = (Topic) object;
 		System.out.println("create() entered");
 		MainEntity topicEntity = MainEntity.findById(entityid);
-		//MainEntity topicEntity = MainEntity.findById((long) 2);// temporary; for
+		// MainEntity topicEntity = MainEntity.findById((long) 2);// temporary;
+		// for
 		// testing
 		// purposes
-		
+
 		tmp.entity = topicEntity;
 		User myUser = Security.getConnected();
-		//User myUser = User.findById((long) 1);// temporary; for testing purposes
+		// User myUser = User.findById((long) 1);// temporary; for testing
+		// purposes
 		tmp.creator = myUser;
 
 		/*
@@ -553,8 +578,8 @@ public class Topics extends CRUD {
 
 			try {
 				render(request.controller.replace(".", "/") + "/blank.html",
-						entityid, type, tmp.title, tmp.entity,
-						tmp.description, tmp.followers, tmp.tags, message);
+						entityid, type, tmp.title, tmp.entity, tmp.description,
+						tmp.followers, tmp.tags, message);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/blank.html", type, entityid);
 			}
@@ -814,14 +839,15 @@ public class Topics extends CRUD {
 		System.out.println("list() entered ");
 		List<Model> objects = type.findPage(page, search, searchFields,
 				orderBy, order, (String) request.args.get("where"));
-		Long count = type.count(search, searchFields, (String) request.args
-				.get("where"));
-		Long totalCount = type.count(null, null, (String) request.args
-				.get("where"));
+		Long count = type.count(search, searchFields,
+				(String) request.args.get("where"));
+		Long totalCount = type.count(null, null,
+				(String) request.args.get("where"));
 		try {
 			System.out.println("list() done, will render ");
 			System.out.println("list() done, will render " + type.toString());
-			System.out.println("list() done, will render " + objects.toString());
+			System.out
+					.println("list() done, will render " + objects.toString());
 			System.out.println("list() done, will render " + count);
 			System.out.println("list() done, will render " + totalCount);
 			System.out.println("list() done, will render " + page);
@@ -914,7 +940,8 @@ public class Topics extends CRUD {
 		// purposes
 		tmp.entity = topicEntity;
 		User myUser = Security.getConnected();
-		//User myUser = User.findById((long) 1);// temporary; for testing purposes
+		// User myUser = User.findById((long) 1);// temporary; for testing
+		// purposes
 		tmp.creator = myUser;
 		// ArrayList<Tag> topicTags = (ArrayList<Tag>) tmp.tags;
 		Organization topicOrganization = topicEntity.organization;
