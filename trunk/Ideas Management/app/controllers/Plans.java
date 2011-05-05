@@ -48,7 +48,9 @@ public class Plans extends CRUD {
 			org = true;
 		}
 
+
 		if (Users.isPermitted(user, "view an action plan", p.topic.id, "topic")) {
+
 
 			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
 					"topic")) {
@@ -60,6 +62,7 @@ public class Plans extends CRUD {
 
 				canAssign = 1;
 			}
+
 			render(p, itemsList, user, canAssign, canEdit, error, org);
 		} else {
 			error = true;
