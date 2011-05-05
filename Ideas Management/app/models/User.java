@@ -113,11 +113,6 @@ public class User extends Model {
 	// (mappedBy = "followers")
 	public List<Organization> followingOrganizations;
 
-//	>>>>>>>>>>>>>>>>>.. change
-//	@ManyToMany
-//	// (mappedBy = "organizers")
-//	public List<MainEntity> entitiesIOrganize;
-
 	// @ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
 	// public List<Topic> accessedTopics;
 
