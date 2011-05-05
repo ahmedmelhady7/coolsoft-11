@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
+
+        <title>${org.name} Followers</title>
+    </head>
+
+    <body>
+        #{extends 'main.html' /} 
+		#{if org.followers.size() > 0}
+		These are the currently available followers: <br />
+		<ul style="list-style: none;">
+			#{list items: org.followers, as:'follower'}
+			<li>
+				${follower.firstName} ${follower.lastName}
+			</li>
+			#{/list}
+		</ul> 
+		#{/if}
+		#{else}
+		No users are following ${org.name} at the moment!
+		#{/else}
+    </body>
+</html>
