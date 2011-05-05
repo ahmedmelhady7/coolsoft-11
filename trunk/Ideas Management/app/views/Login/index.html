@@ -36,15 +36,19 @@ My Admin: <input type="submit" value="Admin View" onclick="goAdmin()">
 <form action="@{Users.listFollows()}">
     <input type="hidden" name="userId" value="${u.id}">Follow List: <input type="submit" value="view">
 </form> &nbsp;
-Show Organizations: 
-<input type="submit" value="Organizations" onclick=location.href="organizations/mainpage">
 <p>
     &nbsp;
     Show Ideas List:
     <input type="submit" value="Show Ideas List" onclick=location.href="ideas/list">
 </p>
 <form action="@{Organizations.mainPage()}" method="post">
-    Organizations: <input type="submit" value="View">
+    Organizations you are enrolled in: <input type="submit" value="View">
+</form>
+<form action="@{Organizations.viewAllOrganizations()}" method="post">
+	View All Organizations: <input type="submit" value="View">
+</form>
+<form action="@{Users.logout}" method="post">
+Logout: <input type="submit" value="Logout">
 </form>
 
 <a href="@{Ideas.getDrafts()}">Drafts</a>
