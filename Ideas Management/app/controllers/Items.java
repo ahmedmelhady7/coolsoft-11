@@ -45,9 +45,10 @@ public class Items extends CRUD {
 		User user = Security.getConnected();
 		long itemId = Long.parseLong(id);
 		Item item = Item.findById(itemId);
-		List<User> list = item.plan.topic.getOrganizer();
+		List<User> list = new ArrayList<User>();
+		list.addAll(item.plan.topic.getOrganizer());
 		for (int i = 0; i < item.assignees.size(); i++) {
-			if (item.assignees.get(i).id != user.id)
+			if (item.assignees.get(i).id != user.id && !list.contains(item.assignees.get(i)))
 				list.add(item.assignees.get(i));
 		}
 		if (item.status == 0) {
@@ -79,9 +80,10 @@ public class Items extends CRUD {
 		User user = Security.getConnected();
 		long itemId = Long.parseLong(id);
 		Item item = Item.findById(itemId);
-		List<User> list = item.plan.topic.organizers;
+		List<User> list = new ArrayList<User>();
+		list.addAll(item.plan.topic.organizers);
 		for (int i = 0; i < item.assignees.size(); i++) {
-			if (item.assignees.get(i).id != user.id)
+			if (item.assignees.get(i).id != user.id && !list.contains(item.assignees.get(i)))
 				list.add(item.assignees.get(i));
 		}
 		switch (item.status) {
