@@ -212,9 +212,9 @@ public class Invitations extends CRUD {
 	        
 	         User receiver=User.find("byEmail", email).first();
 	         if(receiver==null){
-	        /*	 Notifications.sendNotification(receiver, org.id, "organization",
+	       Notifications.sendNotification(receiver.id, ent.id, "organization",
 	 					"You have received a new invitation from "
-	 							+ org.name);*/
+	 							+ ent.name);
 	            }
 
 
