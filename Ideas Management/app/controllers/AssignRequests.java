@@ -10,6 +10,7 @@ import models.Plan;
 import models.User;
 
 public class AssignRequests extends CRUD {
+	public static ArrayList <User> users2 = new ArrayList<User> ();
 
 	/**
 	 * 
@@ -29,10 +30,10 @@ public class AssignRequests extends CRUD {
 	 */
 
 	public static void assign(long itemId, long planId) {
-		ArrayList <User> users = filter(itemId, planId);
+		 users2 = filter(itemId, planId);
 
-		System.out.println(users.size()+"A5ER OBBBBAAAAAAAAAA");
-		viewUsers(users, itemId, planId);
+		System.out.println(users2.size()+"A5ER OBBBBAAAAAAAAAA");
+		viewUsers(itemId, planId);
 
 	}
 
@@ -56,9 +57,13 @@ public class AssignRequests extends CRUD {
 	 *            : the id of the plan containing the item that will be assigned
 	 *            to the list of users selected
 	 */
-	public static void viewUsers(ArrayList<User> users, long itemId, long planId) {
+	public static void viewUsers( long itemId, long planId) {
 		System.out.println(itemId + "ITEMID");
-		System.out.println(users.size() + "OFEEEEEEEEEEEEEEEENNN");
+		System.out.println(users2.size() + "OFEEEEEEEEEEEEEEEENNN");
+		ArrayList<User> users = new ArrayList<User>();
+		for(User user:users2){
+			users.add(user);
+		}
 		render(users, itemId, planId);
 	}
 
@@ -85,6 +90,7 @@ public class AssignRequests extends CRUD {
 			String planId) {
 		User user;
 		Date d = new Date();
+		System.out.println("ana da5alt send requests");
 		Item item = Item.findById(itemId);
 		for (int i = 0; i < userIds.length; i++) {
 			user = User.findById(userIds[i]);
@@ -127,15 +133,14 @@ public class AssignRequests extends CRUD {
 		source.addAssignRequest(assignRequest);
 		sender.addSentAssignRequest(assignRequest);
 		destination.addReceivedAssignRequest(assignRequest);
-		List<User> user = new ArrayList<User>();
-		user.add(destination);
+
 		String description = "You have been sent a request to work on this item "
 				+ source.summary
 				+ "\n "
 				+ " In the plan "
 				+ source.plan.title
 				+ "\n" + "by " + sender.username;
-		Notifications.sendNotification(user, source.plan.id, "plan",
+		Notifications.sendNotification(destId, source.plan.id, "plan",
 				description);
 
 	}
@@ -230,7 +235,8 @@ public class AssignRequests extends CRUD {
 	 finalResult.add(nonBlockedUsers.get(i));
 	 }
 	 }
-	 viewUsers(finalResult, itemId, planId);
+	 users2 = finalResult;
+	 viewUsers(itemId, planId);
 	
 	 }
 

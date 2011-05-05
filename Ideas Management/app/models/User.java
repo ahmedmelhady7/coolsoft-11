@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import controllers.Topics;
+import controllers.Users;
 import controllers.VolunteerRequests;
 
 import play.data.validation.Email;
@@ -490,6 +491,9 @@ public class User extends Model {
 		if (!Topics.searchByTopic(item.plan.topic.id).contains(this)) {
 			return false;
 		}
+		if(Users.isPermitted(this, "accept/Reject user request to volunteer to work on action item in a plan", item.plan.topic.id, "topic")) {
+			return false;
+		}
 		if (item.assignees.contains(this)) {
 
 			return false;
@@ -510,5 +514,43 @@ public class User extends Model {
 		return true;
 
 	}
+	
+	/**
+	 * 
+	 * This Method checks if the user can directly assign himself to work on
+	 * an item given the item id
+	 * 
+	 * @author Salma Osama
+	 * 
+	 * @story C5S10
+	 * 
+	 * @param itemId
+	 *            : the id of the item that the user is checking if he can assign himself to 
+	 *            to work on it
+	 * @return boolean
+	 */
+	public boolean canWork(long itemId){ 
+		Item item = Item.findById(itemId);
+		
+		if(Users.isPermitted(this, "accept/Reject user request to volunteer to work on action item in a plan", item.plan.topic.id, "topic")) {
+//			if (!Topics.searchByTopic(item.plan.topic.id).contains(this)) {
+//				return false;
+//			}
+			if (item.assignees.contains(this)) {
+
+				return false;
+			} else {
+
+				for (int i = 0; i < item.assignRequests.size(); i++) {
+					if (this.id == item.assignRequests.get(i).destination.id) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+	
 
 }

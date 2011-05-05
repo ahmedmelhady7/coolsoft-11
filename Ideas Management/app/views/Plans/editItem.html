@@ -1,7 +1,7 @@
 #{extends 'main.html' /}
 #{set title:'Edit Item' /}
 <h1> Edit Item </h1>
-#{form @Plans.edit2(), method:'POST', id:'additemForm', onsubmit: 'return editItem()' enctype:'multipart/form-data' }
+#{form @Plans.edit2(), method:'POST', id:'additemForm', onsubmit: 'return editItem()', enctype:'multipart/form-data' }
 Start Date:<input type = "text" id = "startDate" name = "startDate" size ="30" onblur= "checkdate(this)" value = '${item.startDate}'>
 </br>
 End Date:<input type = "text" id = "endDate" name = "endDate" size ="30" onblur= "checkdate(this)" value = '${item.endDate}'>

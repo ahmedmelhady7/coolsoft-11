@@ -1,4 +1,4 @@
-
+#{extends 'main.html' /}
 
 <script type="text/javascript">
 	var ids = new Array();
@@ -22,15 +22,15 @@
 				itemId: itemId,
 				userIds: ids,
 				planId:planId
-			}, function(){
-				var i;
+			});
 				
-				for (i = 0; i < ids.length; i = i + 1) {
+				
+				for (var i = 0; i < ids.length; i = i + 1) {
 					$('#user_' + ids[i]).remove();
 				}
 				
-				//window.location.reload();
-			});
+				window.location.reload();
+		
 			if(ids.length == users.size()) {
 					document.getElementById("userLabel").innerHTML = "There are no more users to display";
 				}
@@ -81,14 +81,5 @@ There are no users that match your criteria
 
 
 <script type="text/javascript">
-	
-//    function validate()
-//      {
-//    	var keyword = document.getElementById("keyword").value;
-//    	if(keyword = null || keyword == ""){
-//    	document.getElementById("searchError").innerHTML = "you didn't enter any search criteria";
-//    	}
-//    	$.post('@{startItem()}' , {id: id});
-//    
-//      }
+
 </script>
