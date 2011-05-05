@@ -103,12 +103,20 @@ public class RequestToJoins extends CRUD {
 				UserRoleInOrganizations.addEnrolledUser(user, organization,
 						role, topic.id, "Topic");
 				topic.requestsToJoin.remove(request);
+
+//				Notifications.sendNotification(organizers, topic.id, "Topic",
+//						" A new User has joined topic " + topic.title);
+//
+//				Notifications.sendNotification(users, topic.id, "Topic",
+//						"Your Request has been approved");
+
 				for(int i=0;i<organizers.size();i++)
 					Notifications.sendNotification(organizers.get(i).id, topic.id, "Topic",
 						" A new User has joined topic " + topic.title);
 
 				Notifications.sendNotification(user.id, topic.id, "Topic",
 						"Your Request has been approved");
+
 			}
 
 		} else {
@@ -122,8 +130,13 @@ public class RequestToJoins extends CRUD {
 			} else {
 				Topic topic = request.topic;
 				topic.requestsToJoin.remove(request);
+
+//				Notifications.sendNotification(users, topic.id, "Topic",
+//						"Your Request has been rejected");
+
 				Notifications.sendNotification(user.id, topic.id, "Topic",
 						"Your Request has been rejected");
+
 			}
 
 		}
@@ -144,9 +157,11 @@ public class RequestToJoins extends CRUD {
 	 * 
 	 * @param description : A text message that will be sent along with the request
 	 */
-	public static void requestToJoinOrganization(User requester, Organization organization, String description) {
-		List<User> enrolledUsers = Users.getEnrolledUsers(organization);
-		if (!enrolledUsers.contains(requester) && (organization.privacyLevel == 1)) {
+
+	public static void requestToJoinOrganization(long orgId, String description) {
+		User requester = Security.getConnected(); 
+		Organization organization = Organization.findById(orgId);
+		if ((!Users.getEnrolledUsers(organization).contains(requester)) && (organization.privacyLevel == 1)) {
 		RequestToJoin r = new RequestToJoin(requester, null, organization, description).save();
 		organization.joinRequests.add(r);
 		}
