@@ -8,7 +8,7 @@
         #{extends 'main.html' /}
         <center><big><b>${org.name}</b></big></center><br><br>
 
-		#{if requestToJoin == true}
+		#{if (requestToJoin == true) && (!admin)}
 		<form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
 			<input type="hidden" id="orgId" name="orgId" value="${org.id}">
 			Your message: <textarea id="description" name="description" rows="5" cols="50"></textarea>
