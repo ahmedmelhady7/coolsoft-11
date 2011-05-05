@@ -47,9 +47,10 @@ public class Organization extends Model {
 	// /**
 	// * List of organizers managing the organization
 	// */
-	@ManyToMany(mappedBy = "entitiesIOrganize")
-	// (cascade = CascadeType.ALL)
-	public List<User> organizers;
+	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>. change
+//	@ManyToMany(mappedBy = "entitiesIOrganize")
+//	// (cascade = CascadeType.ALL)
+//	public List<User> organizers;
 
 	/**
 	 * Creator of that organization
