@@ -3,6 +3,15 @@
 #{set title:'Choose action to restrict from' /}
 
 
+<script type="text/javascript">
+function show_alert()
+{
+alert("Changes Saved :)");
+}
+</script>
+
+
+
 
 #{if flash.error}
     <p style="color:#c00">
@@ -14,7 +23,7 @@
   <p style="color:#c00"> Sorry No Actions found !! </p>
 #{/if}
 #{else}
-#{form @BannedUsers.restrictOrganizerHelper5(), method:'POST', id:'creationForm',
+#{form @BannedUsers.restrictOrganizerHelper5(), method:'POST', id:'creationForm',onsubmit: 'return show_alert()',
        enctype:'multipart/form-data' }
   #{list items:entityActions, as:'action'}
 <input id = "1" type="radio" name="action" value = ${action}> ${action}<br /> <br />
