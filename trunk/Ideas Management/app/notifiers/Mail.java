@@ -69,4 +69,15 @@ public class Mail extends Mailer {
 		setSubject("An Idea is Reported as a Spam");
 		send(topicOrganizer, reporter, reportedIdea);
 	}
+	
+	
+	
+	public static void welcome(User user) {
+		addRecipient(user.email);
+		setFrom("CoolSoft011@gmail.com");
+		setSubject("Welcome");
+		String url = "http://localhost:9008" ;
+		send(user,url);
+
+	}
 }
