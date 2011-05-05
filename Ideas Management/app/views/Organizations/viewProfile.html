@@ -44,13 +44,13 @@
             #{/list}
         </ul>
         #{/else}
-		<form action="@{Organizations.InviteMember()}">
-            <input type="hidden" name="orgId" value="${org.id}">Invite a user: <input type="submit" value="view">
-		</form>
+		#{if requestToJoin == false}
         <form action="@{Topics.requestToPost()}">
-            <input type="hidden" name="orgId" value="${org.id}">Request to post: <input type="submit" value="view">
+            <input type="hidden" name="orgId" value="${org.id}">
+			
+			Request to post: <input type="show topics" value="view">
         </form>
-
+		#{/if}
         #{if flag == 1}
         <form action="@{BannedUsers.restrictOrganizer()}">
             <input type="hidden" name="orgId" value='${org.id}'>Restrict organizer in this organization: <input type="submit" value="view">
@@ -141,4 +141,3 @@
             }
             </script>
             -->
->>>>>>> .r952
