@@ -330,7 +330,7 @@ public class AssignRequests extends CRUD {
 		request.sender.sentAssignRequests.remove(request);
 		item.assignRequests.remove(request);
 		List<User> list = new ArrayList<User>();
-		list = item.assignees;
+		list.addAll(item.assignees);
 		list.addAll(item.plan.topic.getOrganizer());
 		user.itemsAssigned.add(item);
 		item.assignees.add(user);

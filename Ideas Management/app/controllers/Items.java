@@ -47,7 +47,7 @@ public class Items extends CRUD {
 		Item item = Item.findById(itemId);
 		List<User> list = item.plan.topic.getOrganizer();
 		for (int i = 0; i < item.assignees.size(); i++) {
-			if (item.assignees.get(i) != user)
+			if (item.assignees.get(i).id != user.id)
 				list.add(item.assignees.get(i));
 		}
 		if (item.status == 0) {
@@ -81,7 +81,7 @@ public class Items extends CRUD {
 		Item item = Item.findById(itemId);
 		List<User> list = item.plan.topic.organizers;
 		for (int i = 0; i < item.assignees.size(); i++) {
-			if (item.assignees.get(i) != user)
+			if (item.assignees.get(i).id != user.id)
 				list.add(item.assignees.get(i));
 		}
 		switch (item.status) {
