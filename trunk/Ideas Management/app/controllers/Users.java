@@ -640,8 +640,8 @@ public class Users extends CRUD {
 			}
 			if (topic.privacyLevel == 0 || topic.privacyLevel == 1) {
 				List<UserRoleInOrganization> allowed = UserRoleInOrganization
-						.find("byEnrolledAndbyEntityTopicIDAndType", user,
-								topic, "topic").fetch();
+						.find("byEnrolledAndEntityTopicIDAndType", user,
+								topic.id, "topic").fetch();
 				if (allowed == null) {
 					return false;
 				} else {
@@ -1193,11 +1193,11 @@ public class Users extends CRUD {
 			roleInOrg._save();
 			user.userRolesInOrganization.add(roleInOrg);
 			user.save();
-			List<User> list = new ArrayList();
-			list.add(user);
 			User orgLead = org.creator;
-			list.add(orgLead);
-			Notifications.sendNotification(list, org.id, "Organization",
+			Notifications.sendNotification(user.id, org.id, "Organization",
+					user.username + " has accepted the invitation to join the "
+							+ org.name);
+			Notifications.sendNotification(orgLead.id, org.id, "Organization",
 					user.username + " has accepted the invitation to join the "
 							+ org.name);
 			// Notification n1 = new Notification("Organization",
