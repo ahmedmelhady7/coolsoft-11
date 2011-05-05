@@ -7,6 +7,7 @@ import play.mvc.With;
 import models.Comment;
 import models.Idea;
 import models.Plan;
+import models.User;
 
 /**
  * @author ${Ahmed El-Hadi}
@@ -23,9 +24,14 @@ public class Comments extends CRUD {
 	 * @param comment
 	 *            Comment to be added to list of comments of the plan
 	 */
-	public void addCommentToPlan(long planID, Comment comment) {
+	public static void addCommentToPlan(String comment, long planID) {
+		planID++;
 		Plan p = Plan.findById(planID);
-		p.commentsList.add(comment);
+		System.out.println("Plan is "+planID);
+		User user = Security.getConnected();
+		Comment c = new Comment(comment, p, user).save();
+		
+		p.commentsList.add(c);
 	}
 	/**
 	 * @author ${Ibrahim safwat}
@@ -35,9 +41,11 @@ public class Comments extends CRUD {
 	 * @param comment
 	 *            Comment to be added to list of comments of the idea
 	 */
-	public void addCommentToIdea(long ideaID, Comment comment) {
+	public static void addCommentToIdea(long ideaID, String comment) {
 		Idea i = Idea.findById(ideaID);
-		i.commentsList.add(comment);
+		User user = Security.getConnected();
+		Comment c = new Comment(comment, i, user);
+		i.commentsList.add(c);
 	}
 
 }

@@ -2,6 +2,7 @@ package controllers;
 
 import models.Idea;
 import models.Item;
+import models.Organization;
 import models.Plan;
 import models.Topic;
 import models.User;
@@ -170,20 +171,40 @@ public class Plans extends CRUD {
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
-	 * @param rating
+	 * @param rat
 	 *            the user given rating for the specified plan
 	 * @param planID
 	 *            ID of the plan wished to rate
 	 */
 
-	public void rate(int rating, long planID) {
-		User user = Security.getConnected();
-		if (!checkRated(user, planID)) {
-			Plan p = Plan.findById(planID);
-			int oldRating = p.rating;
-			int newRating = (oldRating + rating) / 2;
-			render(newRating);
-		}
+	public static void rate(long planId, int rat) {
+		//User user = Security.getConnected();
+		//if (!checkRated(user, planID)) {
+		planId++;
+			Plan p = Plan.findById(planId);
+			System.out.println("Plan ID = "+ planId);
+			System.out.println("Rating = " + rat);
+			//int oldRating = p.rating;
+			//int newRating = (oldRating + rating) / 2;
+			p.rating = rat;
+			//render(newRating);
+			System.out.println(p.rating);
+		//}
+			
+//			Idea i = Idea.findById(ideaID);
+//			Organization O = i.belongsToTopic.entity.organization;
+//			User user = Security.getConnected();
+//			List organizers = Users.searchOrganizer(O);
+//			if(organizers.contains(user))
+//			{
+//				if (!checkRated(user, ideaID)) 
+//				{
+//					Idea idea = Idea.findById(ideaID);
+//					int oldRating = idea.rating;
+//					int newRating = (oldRating + rating) / 2;
+//					render(newRating);
+//				}
+//			}
 
 	}
 
@@ -194,11 +215,19 @@ public class Plans extends CRUD {
 	 *            User to be checked if he/she is in the list usersRated
 	 * @return
 	 */
-	public boolean checkRated(User userToCheck, long planID) {
+	public static boolean checkRated(User userToCheck, long planID) {
 		Plan p = Plan.findById(planID);
-		for (int i = 0; i < p.usersRated.size(); i++) {
+		if(p.usersRated.size()==0)
+		{
+			return false;
+		}
+		else
+		{
+			for (int i = 0; i < p.usersRated.size(); i++) 
+			{
 			if (userToCheck == p.usersRated.get(i))
 				return true;
+			}
 		}
 		return false;
 	}
@@ -296,12 +325,13 @@ public class Plans extends CRUD {
 	 * @param planID
 	 *            ID of the plan to be shared
 	 */
-	public void sharePlan(String userName, long planID) {
-		User U = User.find("ByUsername", userName).first();
-		String type = "plan";
+	public static void sharePlan(String userName, long planID) {
+		User U = User.find("byUsername",userName).first();
+		planID++;
+		Plan p = Plan.findById(planID);
+		String type = "Plan";
 		User user = Security.getConnected();
-		String desc = user.firstName + user.lastName
-				+ " shared a plan with you";
+		String desc = user.firstName +" "+ user.lastName + " shared a plan with you : " + p.title;
 		long notId = planID;
 		long userId = U.id;
 		Notifications.sendNotification(userId, notId, type, desc);
