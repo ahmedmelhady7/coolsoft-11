@@ -3,6 +3,7 @@
 <script type="text/javascript">
 		var en_ids = new Array();
 		var dis_ids = new Array();
+		var x = 1;
 		function markAll(){
 			$('.x').attr('checked',true);
 		}
@@ -13,14 +14,17 @@
 			if(en_ids.length == 0 && dis_ids.length == 0) {
 				alert('No changes to perform!!');
 			} else {
-				var r=confirm("Are You sure you want to save changes?");
-				if (r == true) {
+				$.post('@{changePreferences()}', {a:dis_ids,b:en_ids,y:x} ,function(){
+				window.location = 'http://localhost:9008/';
+			});)
+				//var r=confirm("Are You sure you want to save changes?");
+				//if (r == true) {
 					//$.post('@{disablePreferences()}', {a:dis_ids});
 					//$.post('@{enablePreferences()}', {b:en_ids});
-					$.post('@{goHome()}');
+					//$.post('@{goHome()}');
 					//document.write('Done <br> <a href="@{Login.index()}">Back to home page</a>');
 					//window.location ='http://localhost:9000/';
-				}
+				//}
 				
 			}
 		}		

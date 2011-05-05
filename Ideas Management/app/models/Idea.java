@@ -203,21 +203,20 @@ public class Idea extends Model {
 
 	public static void getAllIdeas() {
 		List<Organization> listOfOrganizations = Organization.findAll();
-
-		for (int i = 0; i < listOfOrganizations.size(); i++) {
-			Organization org = listOfOrganizations.get(i);
-			List<User> users = org.enrolledUsers;
-
-			for (int j = 0; j < users.size(); j++) {
-				User user = users.get(j);
-				List<Idea> ideas = user.ideasCreated;
-
-				for (int k = 0; k < ideas.size(); k++) {
-					Idea idea = ideas.get(k);
-					checkDate(idea);
-				}
-			}
-		}
+//		for (int i = 0; i < listOfOrganizations.size(); i++) {
+//			Organization org = listOfOrganizations.get(i);
+//			List<User> users = org.enrolledUsers;
+//
+//			for (int j = 0; j < users.size(); j++) {
+//				User user = users.get(j);
+//				List<Idea> ideas = user.ideasCreated;
+//
+//				for (int k = 0; k < ideas.size(); k++) {
+//					Idea idea = ideas.get(k);
+//					checkDate(idea);
+//				}
+//			}
+//		}
 
 	}
 

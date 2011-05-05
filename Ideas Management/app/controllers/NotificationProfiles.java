@@ -121,7 +121,7 @@ public class NotificationProfiles extends CRUD {
 		}
 	}
 	
-	public static void changePreferences(long[] a, long[] b) {
+	public static void changePreferences(long[] a, long[] b, int y) {
 		System.out.println("I am here");
 		for(int i = 0; i < a.length; i++) {
 			NotificationProfile np = NotificationProfile.findById(a[i]);
