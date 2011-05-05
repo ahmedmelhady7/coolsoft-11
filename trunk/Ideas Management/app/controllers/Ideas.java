@@ -447,8 +447,9 @@ public class Ideas extends CRUD {
 	}
 
 	/**
-	 * This method first checks if the user is allowed to tag the idea, searches
-	 * for the tag in the global list of tags, if found => check if it already
+	 * This method first checks if the user is allowed to tag the idea,
+	 * then forms a list of the tags that can be used for this certain idea
+	 * searches for the tag in the global list of tags, if found => check if it already
 	 * the idea had the same tag already or add the new one to the list if not
 	 * => create a new tag, save it to db, add it to the list send notifications
 	 * to followers of the tag and the creator of the idea
@@ -470,7 +471,9 @@ public class Ideas extends CRUD {
 		boolean tagAlreadyExists = false;
 		boolean userNotAllowed = false;
 		boolean tagExists = false;
-		List<Tag> listOfTags = Tag.findAll();
+		List<Tag> listOfTags = new ArrayList<Tag>();
+		List<Tag> globalListOfTags = new ArrayList<Tag>();
+		globalListOfTags = Tag.findAll();
 		User user = Security.getConnected();
 		Idea idea = Idea.findById(ideaID);
 
@@ -479,14 +482,22 @@ public class Ideas extends CRUD {
 			// user not allowed
 			userNotAllowed = true;
 		} else {
+			for (int i = 0; i < globalListOfTags.size(); i ++){
+				if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2 
+						|| idea.belongsToTopic.entity.organization.equals(globalListOfTags.get(i).createdInOrganization)) {
+					listOfTags.add(globalListOfTags.get(i));
+				}
+			}
 			for (int i = 0; i < listOfTags.size(); i++) {
 				if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
 					if (!idea.tagsList.contains(listOfTags.get(i))) {
 						idea.tagsList.add(listOfTags.get(i));
-						Notifications.sendNotification(
-								listOfTags.get(i).followers,
-								idea.tagsList.get(i).getId(), "tag",
-								"This idea has been tagged as " + tag);
+						for (int j = 0; j < listOfTags.get(i).followers.size(); j++) {
+							Notifications.sendNotification(
+									listOfTags.get(i).followers.get(j).id,
+									idea.tagsList.get(i).getId(), "tag",
+									"This idea has been tagged as " + tag);
+						}
 					} else {
 						// tag already exists error message
 						tagAlreadyExists = true;
@@ -496,23 +507,22 @@ public class Ideas extends CRUD {
 			}
 
 			if (!tagExists) {
-				// Tag temp = new Tag(tag);
-				// temp.save();
-				// idea.tagsList.add(temp);
+				 Tag temp = new Tag(tag, idea.belongsToTopic.entity.organization);
+				 temp.save();
+				 idea.tagsList.add(temp);
 			}
 
 			if (!tagAlreadyExists) {
 				if (user.equals(idea.author)) {
-					List<User> list1 = new ArrayList<User>();
-					list1.add(idea.author);
-					Notifications.sendNotification(list1, ideaID, "idea",
+//					List<User> list1 = new ArrayList<User>();
+//					list1.add(idea.author);
+					Notifications.sendNotification(idea.author.id, ideaID, "idea",
 							"This idea has been tagged as " + tag);
 				}
 			}
 		}
-		render(tagAlreadyExists, tagExists, userNotAllowed, idea.tagsList);
+		render(tagAlreadyExists, tagExists, userNotAllowed, idea.tagsList , ideaID);
 	}
-
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
