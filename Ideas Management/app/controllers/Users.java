@@ -512,7 +512,7 @@ public class Users extends CRUD {
 		// for (int i = 0; i < organizers.size(); i++) {
 		// finalOrganizers.add((organizers.get(i)).enrolled);
 		// }
-		int size = organizers.size();
+		int size = user.size();
 		for (int i = 0; i < size; i++) {
 			if (user.get(i).state == "d" || user.get(i).state == "n") {
 				user.remove(i);
