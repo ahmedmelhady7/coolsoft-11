@@ -304,43 +304,44 @@ public class Topics extends CRUD {
 	 * @return List<User>
 	 */
 
-	public static List<User> searchByTopic(long id) {
+	public static List<User> searchByTopic(long topicId) {
 
-		Topic topic = Topic.findById(id);
+		Topic topic = Topic.findById(topicId);
 		MainEntity entity = topic.entity;
 		Organization org = entity.organization;
+		
 		ArrayList<User> searchList = (ArrayList) User.find("byIsAdmin", true)
 				.fetch();
 		if(! searchList.contains(org.creator))
 		searchList.add(org.creator);
 		// searchList.add(topic.creator);
 
-		ArrayList<User> organizer = (ArrayList) topic.getOrganizer();
-		for(int i = 0; i < organizer.size(); i ++) {
-			if(!searchList.contains(organizer.get(i)))
-				searchList.add(organizer.get(i));
+		ArrayList<User> organizers = (ArrayList) topic.getOrganizer();
+		for(int i = 0; i < organizers.size(); i ++) {
+			if(!searchList.contains(organizers.get(i)))
+				searchList.add(organizers.get(i));
 		}
 		
 
-		List<BannedUser> bannedUserT = BannedUser.find(
+		List<BannedUser> bannedUserTopic = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"all", "topic", id).fetch(); // List of blocked users from a
+				"all", "topic", topicId).fetch(); // List of blocked users from a
 		// topic
-		List<BannedUser> bannedUserE = BannedUser.find(
+		List<BannedUser> bannedUserEntity = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
 				"all", "entity", entity.id).fetch(); // list of blocked users
 		// from an entity
-		List<BannedUser> bannedUserO = BannedUser.find(
+		List<BannedUser> bannedUserOrg = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
 				"all", "organization", org.id).fetch(); // list of blocked user
 		// from an organization
-		List<BannedUser> bannedUserP = BannedUser.find(
+		List<BannedUser> bannedUserPlan = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"can post ideas to a Topic", "topic", id).fetch(); // list of users banned from
+				"can post ideas to a Topic", "topic", topicId).fetch(); // list of users banned from
 		// posting ideas in the
 		// topic
 
-		List<User> bUser = new ArrayList<User>();
+		List<User> bannedUsers = new ArrayList<User>();
 		List<User> user = new ArrayList<User>();
 		List<BannedUser> bannedUser = new ArrayList<BannedUser>(); // list
 		// appending
@@ -348,13 +349,13 @@ public class Topics extends CRUD {
 		// previous
 		// banneduser
 		// lists
-		bannedUser.addAll(bannedUserT);
-		bannedUser.addAll(bannedUserE);
-		bannedUser.addAll(bannedUserO);
-		bannedUser.addAll(bannedUserP);
+		bannedUser.addAll(bannedUserTopic);
+		bannedUser.addAll(bannedUserEntity);
+		bannedUser.addAll(bannedUserOrg);
+		bannedUser.addAll(bannedUserPlan);
 
 		for (int i = 0; i < bannedUser.size(); i++) {
-			bUser.add((bannedUser.get(i)).bannedUser);
+			bannedUsers.add((bannedUser.get(i)).bannedUser);
 		}
 
 		List<UserRoleInOrganization> allUser = new ArrayList<UserRoleInOrganization>();
@@ -365,7 +366,7 @@ public class Topics extends CRUD {
 			// allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
 			// .find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
 			// org, id, "idea developer", "topic");
-			allUser = UserRoleInOrganization.find("byEntityTopicIDAndType", id,
+			allUser = UserRoleInOrganization.find("byEntityTopicIDAndType", topicId,
 					"topic").fetch();
 			for (int i = 0; i < allUser.size(); i++) {
 				if ((allUser.get(i).role.roleName).equals("idea developer")
@@ -378,9 +379,9 @@ public class Topics extends CRUD {
 			// user.add((allUser.get(i)).enrolled);
 			// }
 
-			for (int i = 0; i < bUser.size(); i++) {
-				if (user.contains(bUser.get(i))) {
-					user.remove(bUser.get(i));
+			for (int i = 0; i < bannedUsers.size(); i++) {
+				if (user.contains(bannedUsers.get(i))) {
+					user.remove(bannedUsers.get(i));
 
 				}
 			}
@@ -404,9 +405,9 @@ public class Topics extends CRUD {
 				// user.add((allUser.get(i)).enrolled);
 				// }
 
-				for (int i = 0; i < bUser.size(); i++) {
-					if (user.contains(bUser.get(i))) {
-						user.remove(bUser.get(i));
+				for (int i = 0; i < bannedUsers.size(); i++) {
+					if (user.contains(bannedUsers.get(i))) {
+						user.remove(bannedUsers.get(i));
 
 					}
 				}
@@ -425,7 +426,7 @@ public class Topics extends CRUD {
 					// }
 
 					allUser = UserRoleInOrganization.find(
-							"byEntityTopicIDAndType", id, "topic").fetch();
+							"byEntityTopicIDAndType", topicId, "topic").fetch();
 					for (int i = 0; i < allUser.size(); i++) {
 						if ((allUser.get(i).role.roleName)
 								.equals("idea developer")
@@ -434,9 +435,9 @@ public class Topics extends CRUD {
 						}
 					}
 
-					for (int i = 0; i < bUser.size(); i++) {
-						if (user.contains(bUser.get(i))) {
-							user.remove(bUser.get(i));
+					for (int i = 0; i < bannedUsers.size(); i++) {
+						if (user.contains(bannedUsers.get(i))) {
+							user.remove(bannedUsers.get(i));
 
 						}
 					}
@@ -445,9 +446,9 @@ public class Topics extends CRUD {
 
 						user = User.findAll();
 
-						for (int i = 0; i < bUser.size(); i++) {
-							if (user.contains(bUser.get(i))) {
-								user.remove(bUser.get(i));
+						for (int i = 0; i < bannedUsers.size(); i++) {
+							if (user.contains(bannedUsers.get(i))) {
+								user.remove(bannedUsers.get(i));
 
 							}
 						}
