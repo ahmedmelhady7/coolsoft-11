@@ -37,26 +37,30 @@ public class Plans extends CRUD {
 		List<Item> itemsList = p.items;
 		int canAssign = 0;
 		int canEdit = 0;
-		if(p.topic.getOrganizer().contains(user))
+
+		if(p.topic.getOrganizer().contains(user)){
 			org = true;
+		}
+			
 		//if (Users.isPermitted(user, "all", p.topic.id, "topic")) {
-		
-//			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
-//					"topic")) {
-//
+
+		if (Users.isPermitted(user, "edit an action plan", p.topic.id, "topic")) {
+			canEdit = 1;
+
 //				canEdit = 1;
-//			}
-//			if (Users.isPermitted(user,
-//					"assign one or many users to a to-do item in a plan",
-//					p.topic.id, "topic")) {
-//
-//				canAssign = 1;
-//			}
+			}
+			if (Users.isPermitted(user,
+					"assign one or many users to a to-do item in a plan",
+					p.topic.id, "topic")) {
+
+				canAssign = 1;
+			}
 			render(p, itemsList, user, canAssign, canEdit, error, org);
 //		} else {
 //			error = true;
 //			render(error, org);
 //		}
+
 	}
 
 	/**
@@ -76,27 +80,28 @@ public class Plans extends CRUD {
 		render(ideas, topic);
 	}
 
-//	/**
-//	 * This Method passes the selected items to the planCreate page so that they
-//	 * will be associated to the plan once it's created
-//	 * 
-//	 * @story C5S4
-//	 * 
-//	 * @author Salma Osama
-//	 * 
-//	 * @param topicId
-//	 *            The ID of the topic that this action plan is based upon
-//	 * @param checkedIdeas
-//	 *            The list of ideas selected to be associated to the plan
-//	 */
-//	public static void selectedIdeas(long[] checkedIdeas, long topicId) {
-//		String s = "";
-//		for (int i = 0; i < checkedIdeas.length; i++) {
-//			s = s + checkedIdeas + "a";
-//		}
-//		//planCreate(topicId, s);
-//
-//	}
+	// /**
+	// * This Method passes the selected items to the planCreate page so that
+	// they
+	// * will be associated to the plan once it's created
+	// *
+	// * @story C5S4
+	// *
+	// * @author Salma Osama
+	// *
+	// * @param topicId
+	// * The ID of the topic that this action plan is based upon
+	// * @param checkedIdeas
+	// * The list of ideas selected to be associated to the plan
+	// */
+	// public static void selectedIdeas(long[] checkedIdeas, long topicId) {
+	// String s = "";
+	// for (int i = 0; i < checkedIdeas.length; i++) {
+	// s = s + checkedIdeas + "a";
+	// }
+	// //planCreate(topicId, s);
+	//
+	// }
 
 	/**
 	 * This Method renders the page for the plan creation
@@ -207,37 +212,37 @@ public class Plans extends CRUD {
 		p.addItem(istartdate, ienddate, idescription, isummary);
 		p.save();
 		String[] list2 = ideaString.split(",");
-		long [] list = new long [list2.length];
+		long[] list = new long[list2.length];
 		for (int i = 0; i < list2.length; i++) {
 			list[i] = Long.parseLong(list2[i]);
 		}
 		Idea idea;
 		String notificationContent = "";
-		ArrayList<User> ideaAuthor = new ArrayList<User>();
-		
+
 		for (int i = 0; i < list.length; i++) {
 			idea = Idea.findById(list[i]);
 			idea.plan = p;
 			p.ideas.add(idea);
-			ideaAuthor.add(idea.author);
-			System.out.println(idea.author.username );
+			System.out.println(idea.author.username);
 			notificationContent = "your idea: " + idea.title
 					+ "have been promoted to execution in the following plan "
 					+ p.title + " in the topic: " + topic.title;
-			Notifications.sendNotification(ideaAuthor, p.id, "plan",
+			Notifications.sendNotification(idea.author.id, p.id, "plan",
 					notificationContent);
-			ideaAuthor.remove(idea.author);
 
 		}
-		Notifications.sendNotification(p.topic.getOrganizer(), p.id, "plan",
-		"A new plan has been created");
+		List<User> topicOrganizers= p.topic.getOrganizer();
+		for(int i = 0; i<topicOrganizers.size(); i++) {
+			Notifications.sendNotification(topicOrganizers.get(i).id, p.id, "plan",
+			"A new plan has been created");
+		}
 		
+
 		if (check != null && check.equals("checked")) {
 			addItem(p.id);
 		} else {
 			viewAsList(p.id);
 		}
-	
 
 	}
 
@@ -310,8 +315,11 @@ public class Plans extends CRUD {
 		} else {
 			viewAsList(plan.id);
 		}
-		Notifications.sendNotification(plan.topic.getOrganizer(), plan.id,
-				"plan", "A new item has been added");
+		List<User> topicOrganizers= plan.topic.getOrganizer();
+		for(int i = 0; i<topicOrganizers.size(); i++) {
+			Notifications.sendNotification(topicOrganizers.get(i).id, plan.id, "plan",
+			"A new plan has been created");
+		}
 	}
 
 	/**
@@ -377,13 +385,19 @@ public class Plans extends CRUD {
 		p.description = description;
 		p.requirement = requirement;
 		p.save();
-		Notifications.sendNotification(p.topic.getOrganizer(), p.id, "plan",
-				"This action plan has been edited");
-
-		for (int i = 0; i < p.items.size() - 1; i++) {
-
-			Notifications.sendNotification(p.items.get(i).assignees, p.id,
-					"plan", "This action plan has been edited");
+		
+		List<User> topicOrganizers= p.topic.getOrganizer();
+		for(int i = 0; i<topicOrganizers.size(); i++) {
+			Notifications.sendNotification(topicOrganizers.get(i).id, p.id, "plan",
+			"A new plan has been created");
+		}
+		List<User> assignees  = new ArrayList<User>();
+		for (int i = 0; i < p.items.size(); i++) {
+			assignees= p.items.get(i).assignees;
+			for(int j = 0; j<assignees.size(); j++) {
+				Notifications.sendNotification(assignees.get(j).id, p.id, "plan",
+						"This action plan has been edited");
+			}
 		}
 		viewAsList(p.id);
 	}
@@ -412,17 +426,26 @@ public class Plans extends CRUD {
 
 	public static void edit2(Date startDate, Date endDate, String description,
 			long planId, String summary, long itemId) {
-		Item i = Item.findById(itemId);
-		i.startDate = startDate;
-		i.endDate = endDate;
-		i.description = description;
-		i.summary = summary;
-		i.save();
-		Notifications.sendNotification(i.plan.topic.getOrganizer(), i.plan.id,
-				"plan", "This item has been edited");
-		Notifications.sendNotification(i.assignees, i.plan.id, "plan",
-				"This item has been edited");
-		viewAsList(i.plan.id);
+		Item item = Item.findById(itemId);
+		item.startDate = startDate;
+		item.endDate = endDate;
+		item.description = description;
+		item.summary = summary;
+		item.save();
+		
+		List<User> topicOrganizers = item.plan.topic.getOrganizer();
+		for(int i = 0; i<topicOrganizers.size(); i++) {
+			Notifications.sendNotification(topicOrganizers.get(i).id, item.plan.id, "plan",
+					"This item has been edited");
+		}
+
+		List<User> assignees= item.assignees;
+		for(int j = 0; j<assignees.size(); j++) {
+			Notifications.sendNotification(assignees.get(j).id, item.plan.id, "plan",
+					"This item has been edited");
+		}
+
+		viewAsList(item.plan.id);
 	}
 	
 	/**
@@ -510,31 +533,33 @@ public class Plans extends CRUD {
 	// viewAsList(planId, y);
 	// }
 	// }
-	
-//	<!--
-//	#{if p.topic.getOrganizer().size() > 1} 
-//	<ul>
-//	    #{list items:${p.topics.getOrganizer}, as:'organizer'}
-//	    <li>
-//	        <a href="#">${organizer.username}</a>
-//	    </li>
-//	    #{/list}
-//	</ul>
-//	#{/if} 
-//	#{else}
-//	${p.topics.getOrganizer.get(0).username}
-//	#{/else}
-//	-->
-//	<!--#{if user.canVolunteer(item.id) && !(item.status == 2)}
-//    <a href="@{VolunteerRequests.justify(item.id, p.id, 0)}">Volunteer to work on this item</a>
-//     <br/>
-//		#{/if} -->
-	
-//	   #{if canAssign == 1 && !(item.status == 2)}
-//		<a href="@{AssignRequests.assign(item.id, p.id)}">Assign a user to this item</a>
-//       #{/if}
-//		 #{if canEdit == 1}
-//		<a href="@{Plans.editItem(item.id)}">Edit this item</a>
-//       #{/if}
+
+	// <!--
+	// #{if p.topic.getOrganizer().size() > 1}
+	// <ul>
+	// #{list items:${p.topics.getOrganizer}, as:'organizer'}
+	// <li>
+	// <a href="#">${organizer.username}</a>
+	// </li>
+	// #{/list}
+	// </ul>
+	// #{/if}
+	// #{else}
+	// ${p.topics.getOrganizer.get(0).username}
+	// #{/else}
+	// -->
+	// <!--#{if user.canVolunteer(item.id) && !(item.status == 2)}
+	// <a href="@{VolunteerRequests.justify(item.id, p.id, 0)}">Volunteer to
+	// work on this item</a>
+	// <br/>
+	// #{/if} -->
+
+	// #{if canAssign == 1 && !(item.status == 2)}
+	// <a href="@{AssignRequests.assign(item.id, p.id)}">Assign a user to this
+	// item</a>
+	// #{/if}
+	// #{if canEdit == 1}
+	// <a href="@{Plans.editItem(item.id)}">Edit this item</a>
+	// #{/if}
 
 }

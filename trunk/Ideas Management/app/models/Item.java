@@ -1,6 +1,7 @@
 package models;
 
 import java.util.*;
+
 import javax.persistence.*;
 
 import play.db.jpa.*;
@@ -110,8 +111,36 @@ public class Item extends Model {
 		this.save();
 	}
 	
+	/**
+	 * 
+	 * This Method returns the list of assigned users to this item
+	 * 
+	 * @author Salma Osama
+	 * 
+	 * @story C5S5, C5S10
+	 * 
+	 * @return List <User>
+	 */
 	public List <User> getAssignees() {
 		return assignees;
+	}
+	
+	/**
+	 * 
+	 * This Method checks if the endDate of the item has passed
+	 * 
+	 * @author Salma Osama
+	 * 
+	 * @story C5S5, C5S10
+	 * 
+	 * @return boolean
+	 */
+	public boolean afterEndDate() {
+		Date d = new Date();
+		if(this.endDate.compareTo(d) < 0) {
+			return false;
+		}
+		return true;
 	}
 
 }
