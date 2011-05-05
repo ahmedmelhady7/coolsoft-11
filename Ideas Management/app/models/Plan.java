@@ -181,5 +181,19 @@ public class Plan extends Model {
 	public String toString() {
 		return "Title: " + title;
 	}
+	
+	public String calculateProgress() {
+		double sum = 0;
+		for (Item item : items) {
+			sum += item.status;
+		}
+		double p = sum / (2 * items.size()) * 100;
+		String s = "" + p;
+		s = s.substring(0,4);
+		if(s.endsWith("."))
+			s = s.substring(0,3);
+		s +=  "%";
+		return s;
+	}
 
 }

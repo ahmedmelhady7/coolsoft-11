@@ -10,6 +10,8 @@ EndDate: ${p.endDate.format('dd MMM yy')}
 Description: ${p.description}
 <br/>
 Plan rating: ${p.rating}
+<br/>
+Plan progress: ${p.calculateProgress()}
 <div id="layout">
             #{doLayout /} 
  </div>
