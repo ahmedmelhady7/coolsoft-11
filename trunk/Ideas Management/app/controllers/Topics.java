@@ -509,12 +509,20 @@ public class Topics extends CRUD {
 				+ " has been closed and promoted to execution.";
 
 		// send notification to organizers
+
+		//Notifications.sendNotification(targetTopic.getOrganizer(),
+
 //		Notifications.sendNotification(targetTopic.getOrganizer(),
 //				targetTopic.id, "Topic", notificationDescription);
 //
 //		// send notification to followers
 //		Notifications.sendNotification(targetTopic.followers, targetTopic.id,
 //				"Topic", notificationDescription);
+
+		// send notification to followers
+		//Notifications.sendNotification(targetTopic.followers, targetTopic.id,
+			//	"Topic", notificationDescription);
+
 
 	}
 
@@ -620,12 +628,13 @@ public class Topics extends CRUD {
 			 + tmp.title + " has been added in entity" + tmp.entity.name);
 			}
 
-		/*
-		 * List users = Users.getEntityOrganizers(tmp.entity);
-		 * users.add(tmp.entity.organization.creator);
-		 * Notifications.sendNotification(users, tmp.id, "Topic", "A new Topic "
-		 * + tmp.title + " has been added in entity" + tmp.entity.name);
-		 */
+		
+		  List<User> users = Users.getEntityOrganizers(tmp.entity);
+		  users.add(tmp.entity.organization.creator);
+		  for(int i=0;i<users.size();i++)
+		  Notifications.sendNotification(users.get(i).id, tmp.id, "Topic", "A new Topic "
+		  + tmp.title + " has been added in entity" + tmp.entity.name);
+		 
 
 		// tmp.init();
 		flash.success(Messages.get("crud.created", type.modelName,
@@ -1009,12 +1018,13 @@ public class Topics extends CRUD {
 		// Logs.addLog( myUser, "add", "Task", tmp.id, tmp.entity.organization,
 		// cal.getTime() );
 		// String message3 = myUser.username + " has editted the topic " +
-		/*
-		 * List users = Users.getEntityOrganizers(tmp.entity);
-		 * users.add(tmp.entity.organization.creator);
-		 * Notifications.sendNotification(users, tmp.id, "Topic", "User " +
-		 * myUser.firstName + " has edited topic  " + tmp.title);
-		 */
+		 List<User> users = Users.getEntityOrganizers(tmp.entity);
+		 if(!users.contains(tmp.entity.organization.creator))
+		  users.add(tmp.entity.organization.creator);
+		  for(int i=0;i<users.size();i++)
+		  Notifications.sendNotification(users.get(i).id, tmp.id, "Topic", "User " +
+		  myUser.firstName + " has edited topic  " + tmp.title);
+		 
 		System.out.println("save() done, not redirected yet");
 
 		flash.success(Messages.get("crud.saved", type.modelName,
