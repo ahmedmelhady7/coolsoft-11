@@ -86,16 +86,16 @@ public class Invitations extends CRUD {
 		}
          
 	 
-		List<User> users = new ArrayList<User>();
-		users = Users.searchUser(name);
-		/*List<User> organizers = Users.getEntityOrganizers(ent);
+		List<User> filter = new ArrayList<User>();
+		filter = Users.searchUser(name);
+		List<User> organizers = Users.getEntityOrganizers(ent);
 		organizers.add(org.creator);
 
 		List<User> users = new ArrayList<User>();
 		for (int i = 0; i < filter.size(); i++) {
 			if (!organizers.contains(filter.get(i)))
 				users.add(filter.get(i));
-		}*/
+		}
 
 		render(users, ent,org);
 	}
@@ -184,13 +184,16 @@ public class Invitations extends CRUD {
 		        Page(orgId,entId,id);
 			}
 			
-			if(id==0){
-			  	List<User> organizers = Users.getEntityOrganizers(ent);
+			
+			List<User> organizers = Users.getEntityOrganizers(ent);
 			organizers.add(org.creator);
+			
+			if(id==0){
+			  	
 				boolean flag=true;
 				User u=User.find("byEmail", email).first();
 			
-		for (int i = 0; i <organizers.size(); i++) {
+	    	for (int i = 0; i <organizers.size(); i++) {
 				if (organizers.contains(u))
 					flag=false;
 			}
@@ -206,19 +209,17 @@ public class Invitations extends CRUD {
 	    	 
 	    	 User user=Security.getConnected();
 	          user.addInvitation(email,role,org,ent);
-	      /*  
+	        
 	         User receiver=User.find("byEmail", email).first();
 	         if(!receiver.equals(null)){
-	        	 List<User> u=new ArrayList<User>();
-	        	  u.add(receiver);
-	        	//if(role.equalsIgnoreCase("organizer"))
-	        	 Notifications.sendNotification(u, org.id, "organization",
+	        /*	 Notifications.sendNotification(receiver, org.id, "organization",
 	 					"You have received a new invitation from "
-	 							+ org.name);
+	 							+ org.name);*/
 	            }
 
-				//**fadwa
-				List<User> organizers = Users.getEntityOrganizers(ent);
+			
+	         //**fadwa
+			/*	List<User> organizers = Users.getEntityOrganizers(ent);
 				if (!user.equals(org.creator)) {
 					organizers.remove(user);
 					organizers.add(org.creator);
