@@ -2,160 +2,137 @@
 @author Loaay Alkherbawy
 @story  C4S01
 The Search Results Viewer
---> <!DOCTYPE html>
+-->
+<!DOCTYPE html>
 <html>
-    <head>
-        <title></title>
-        <meta charset="utf-8">
-        <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
-        </script>
-    </head>
-    <style type="text/css">
-        body {
-            font-family: arial, helvetica;
-            font-size: 20px;
-            color: #123456;
-            background-color: #A3D5E4;
-        }
-        
-        #text1 {
-            font-size: 500px;
-            color: #654321;
-        }
-    </style>
-    <div>
-        <center>
-            <img src="/public/images/Picture1.jpg">
-            </img>
-        </center>
-    </div>
-    <body onLoad="step1()">
-        <form action="@{quickSearch()}" method="GET">
-        <font size="+3" color="993300">
-            Welcome ${u.username}!
-        </font>
-        </br>
-        <a href="/Ideas Management/app/views/Application/index.html">Home</a>
-        </br>
-        <input type="text" id="search" name="search" value= "enter a keyword here" /><input type="button" id="submit" name="submit" value="Search" onclick="quickSearch(this.form)"/><a href="AdvancedSearch">Advanced Search</a>
-        <script type="text/javascript">
-            function step1(){
-                document.getElementById('div1').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
-                setTimeout('viewResult()', 2500);
-            }
-            
-            function viewResult(){
-                document.getElementById('div1').innerHTML = "<center>#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:organizationsFound, as:'item'} <li>${item.toString()}</li>#{/list}</br>----------------------------------------</br> </ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:entitiesFound, as:'item'} <li>${item.toString()}</li>#{/list}</br>----------------------------------------</br> </ul> #{/if} #{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:topicsFound, as:'item'} <li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></li> #{/list}</br>----------------------------------------</br> </ul> #{/if} #{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:ideasFound, as:'item'} <li><a href='@{Ideas.show(item.id)}'>${item.toString()}</a></li> #{/list}</br>----------------------------------------</br> </ul> #{/if}#{/if} #{else}<img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@ #{/else}</center>";
-            }
-            
-            function quickSearch(frm){
-                $.post('@{quickSearch}', {
-                    keyword: frm.search.value
-                }, function(){
-                    window.location.reload(true);
-                });
-            }
-    function whichsortmethod(frm){
-		        var c = 'v';
-				var e = 'r';
-        if (document.getElementById("s1").checked) {  
-            if (document.getElementById("v").checked) {
-				//document.getElementById("v").disable;
-             //document.write("d,v");
-				$.post('@{sortD}', {
-                    voteOrRate: c,
-                    //searchresult: lof
-                }, function(){
-                    window.location.reload(true);
-                });
-				//document.write("d,va");
-					
-            }
-            else 
-                if (document.getElementById("r").checked) {
-
-    				//document.write("d,r");
-                	$.post('@{sortD}', {
-                        voteOrRate: e,
-                        //searchresult: lof
-                    }, function(){
-                        window.location.reload(true);
-                    });
-
-    			//	document.write("d,ra");
-                }
-            
-        }
-        else 
-            if (document.getElementById("v").checked) {
-
-				//document.write("a,v");
-            	$.post('@{sortA}', {
-                    voteOrRate: 'v',
-                    //searchresult: lof
-                }, function(){
-                    window.location.reload(true);
-
-    				document.write("reload");
-                });
-
-				//document.write("a,va");
-
-                
-            }
-            else 
-                if (document.getElementById("r").checked) {
-
-    		//document.write("a,r");
-                	$.post('@{sortA}', {
-                        voteOrRate: 'r',
-                        //searchresult: lof
-                    }, function(){
-                        window.location.reload(true);
-                    });
-
-    	//			document.write("a,ra");
-                }
-        window.location.reload(true);
-		    
-    }
-    
+<head>
+<title></title>
+<meta charset="utf-8">
+<script src="@{'/public/javascripts/jquery-1.5.2.min.js'}"
+	type="text/javascript" charset="utf-8">
+	
 </script>
-       
-        </form >
-        <br/>
-        <center>
-        <b>
-            <big>
-                <u>
-                    Search Results:
-                </u>
-            </big>
-        </b>
-        </br>
-        <i>
-        </br>
-        <a href="/filter_options"><b>for filtering your results:
-            </br>
-            click here to chose your criteria</b>
-    </a>
-</i>
-</center>
-<div align="right">
-    <u>
-    <b>
-    Sort by: 
-    </u>
-</b>
-<form method="POST">
-<input type="radio" name="s" id = "s" value="A"  />Ascending order
-<br>
-<input type="radio" name="s" id="s1" value="D"  />descending order
-</br><input type="radio" name="v" id="v" value="v" onclick="whichsortmethod(this.form)"/>Vote 
-<input type="radio" name="v" id="r" value="r"  onclick="whichsortmethod(this.form)"/>Rate 
-</br>
-</form>
-<div id='div1'>
+</head>
+<style type="text/css">
+body {
+	font-family: arial, helvetica;
+	font-size: 20px;
+	color: #123456;
+	background-color: #A3D5E4;
+}
+
+#text1 {
+	font-size: 500px;
+	color: #654321;
+}
+</style>
+<div>
+	<center>
+		<img src="/public/images/Picture1.jpg"> </img>
+	</center>
 </div>
+<body onLoad="step1()">
+	<form action="@{quickSearch()}" method="GET">
+		<font size="+3" color="993300"> Welcome ${u.username}! </font> </br> <a
+			href="/Ideas Management/app/views/Application/index.html">Home</a> </br> <input
+			type="text" id="search" name="search" value="enter a keyword here" /><input
+			type="button" id="submit" name="submit" value="Search"
+			onclick="quickSearch(this.form)" /><a href="AdvancedSearch">Advanced
+			Search</a>
+		<script type="text/javascript">
+			function step1() {
+				document.getElementById('div1').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
+				setTimeout('viewResult()', 2500);
+			}
+
+			function viewResult() {
+				document.getElementById('div1').innerHTML = "<center>#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:organizationsFound, as:'item'} <li>${item.toString()}</li>#{/list}</br>----------------------------------------</br> </ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:entitiesFound, as:'item'} <li>${item.toString()}</li>#{/list}</br>----------------------------------------</br> </ul> #{/if} #{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:topicsFound, as:'item'} <li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></li> #{/list}</br>----------------------------------------</br> </ul> #{/if} #{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br>----------------------------------------</br><ul> #{list items:ideasFound, as:'item'} <li><a href='@{Ideas.show(item.id)}'>${item.toString()}</a></li> #{/list}</br>----------------------------------------</br> </ul> #{/if}#{/if} #{else}<img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@ #{/else}</center>";
+			}
+
+			function quickSearch(frm) {
+				$.post('@{quickSearch}', {
+					keyword : frm.search.value
+				}, function() {
+					window.location.reload(true);
+				});
+			}
+			function whichsortmethod(frm) {
+				var c = 'v';
+				var e = 'r';
+				if (document.getElementById("s1").checked) {
+					if (document.getElementById("v").checked) {
+						//document.getElementById("v").disable;
+						//document.write("d,v");
+						$.post('@{sortD}', {
+							voteOrRate : c
+						//searchresult: lof
+						}, function() {
+							window.location.reload(true);
+						});
+						//document.write("d,va");
+
+					} else if (document.getElementById("r").checked) {
+
+						//document.write("d,r");
+						$.post('@{sortD}', {
+			           voteOrRate: e
+						//searchresult: lof
+						}, function() {
+							window.location.reload(true);
+						});
+
+						//	document.write("d,ra");
+					}
+
+				} else if (document.getElementById("v").checked) {
+
+					//document.write("a,v");
+					$.post('@{Search.sortA}', {
+					  voteOrRate: 'v'
+					//searchresult: lof
+					}, function() {
+						window.location.reload(true);
+
+						document.write("reload");
+					});
+
+					//document.write("a,va");
+
+				} else if (document.getElementById("r").checked) {
+
+					//document.write("a,r");
+					$.post('@{Search.sortA()}', {
+					      voteOrRate: 'r'
+					//searchresult: lof
+					}, function() {
+						window.location.reload(true);
+					});
+
+					//			document.write("a,ra");
+				}
+				//window.location.reload(true);
+
+			}
+		</script>
+
+	</form>
+	<br />
+	<center>
+		<b> <big> <u> Search Results: </u> </big> </b> </br> <i> </br> <a
+			href="/filter_options"><b>for filtering your results: </br> click
+					here to chose your criteria</b> </a> </i>
+	</center>
+	<div align="right">
+		<u> <b> Sort by: 
+		</u> </b>
+		<form method="POST">
+			<input type="radio" name="s" id="s" value="A" />Ascending order <br>
+			<input type="radio" name="s" id="s1" value="D" />descending order </br>
+			<input type="radio" name="v" id="v" value="v"
+				onclick="whichsortmethod(this.form)" />Vote <input type="radio"
+				name="v" id="r" value="r" onclick="whichsortmethod(this.form)" />Rate
+			</br>
+		</form>
+		<div id='div1'></div>
 </body>
 </html>
