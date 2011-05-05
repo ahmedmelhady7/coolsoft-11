@@ -11,6 +11,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import controllers.Notifications;
+import controllers.Users;
+
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.db.jpa.Model;
@@ -86,14 +89,8 @@ public class MainEntity extends Model {
 	@ManyToMany
 	public List<Tag> tagList;
 
-	// Entity does not need an invitation!! Should be removed (Noha)
 	@OneToMany(mappedBy = "entity")
 	public List<Invitation> invitationList;
-
-//	// >>>>>>>>>>>>>>>>>> change 
-//	@ManyToMany
-//	// , cascade = CascadeType.ALL)
-//	public List<User> organizers;
 
 	// ArrayList<Relationship> relationshipList;
 	// ArrayList<Request> requestList;
@@ -129,8 +126,6 @@ public class MainEntity extends Model {
 		followers = new ArrayList<User>();
 		topicList = new ArrayList<Topic>();
 		tagList = new ArrayList<Tag>();
-		//organizers = new ArrayList<User>();
-
 	}
 
 	/**
@@ -167,7 +162,13 @@ public class MainEntity extends Model {
 		followers = new ArrayList<User>();
 		topicList = new ArrayList<Topic>();
 		tagList = new ArrayList<Tag>();
-		//organizers = new ArrayList<User>();
+		List<User> receivers = Users.getEntityOrganizers(parent);
+		receivers.add(org.creator);
+		int size = receivers.size();
+		for(int i = 0; i < size; i++) {
+			Notifications.sendNotification(receivers.get(i).id, parent.id, "entity",
+				"A new subentity (" + n + ") has been created for the entity (" + parent.name + ")");
+		}
 	}
 
 	/**
