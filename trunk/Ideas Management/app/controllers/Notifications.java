@@ -63,27 +63,27 @@ public class Notifications extends CRUD {
 		boolean contains = false;
 		boolean isenabled = true;
 		String title = "No title!";
-		if(type.equals("Idea")) {
+		if(type.equalsIgnoreCase("Idea")) {
 			Idea idea = Idea.findById(notId);
 			if(idea != null)
 				title = idea.toString();
 		} else {
-			if(type.equals("Organisation")) {
+			if(type.equalsIgnoreCase("Organisation")) {
 				Organization o = Organization.findById(notId);
 				if(o != null)
 					title = o.toString();
 			} else {
-				if(type.equals("Topic")) {
+				if(type.equalsIgnoreCase("Topic")) {
 					Topic topic = Topic.findById(notId);
 					if(topic != null)
 						title = topic.toString();
 				} else {
-					if(type.equals("Plan")) {
+					if(type.equalsIgnoreCase("Plan")) {
 						Plan p = Plan.findById(notId);
 						if(p != null)
 							title = p.toString();
 					} else {
-						if(type.equals("Tag")) {
+						if(type.equalsIgnoreCase("Tag")) {
 							Tag tag = Tag.findById(notId);
 							if(tag != null) {
 								title = tag.toString();
