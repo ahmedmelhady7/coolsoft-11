@@ -1,63 +1,44 @@
-#{extends '/topics/layout.html' /}<h3>
-    <label>
-        View Topic
-    </label>
-</h3>
+#{extends '/ideas/layout.html' /}
 <div id="crudShow" class="${type.name}">
+    <h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
     <font color="Red">
         ${message}
     </font>
     <div class="objectForm">
-        #{form action:@view(object._key()), enctype:'multipart/form-data'}
-        #{crud.form fields: ['title', 'author','description', 'privacyLevel','isDraft']}
+        #{form action:@save(object._key()), enctype:'multipart/form-data'}
+        #{crud.form fields: ['title', 'description','isDraft']}
         #{crud.custom 'title'}
         <p>
-            <!--<label for="object_title">Title</label>-->
-            <textarea disabled= true id="object_title" cols="30" rows="1" class="" name="object.title">
+            <label for="object_title">
+                Title
+            </label>
+            <textarea disabled= true id="object_title" cols="25" rows="2" class="" name="object.title">
                 ${object.title}
             </textarea>
         </p>
         #{/crud.custom}
-        #{crud.custom 'author'}
-        <p>
-            <label for="object_creator">
-                by
-            </label>
-            <textarea disabled= true id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">
-                ${object.author}
-            </textarea>
-        </p>
-        #{/crud.custom }
         #{crud.custom 'description'}
         <p>
             <label for="object_description">
                 Description
             </label>
-            <textarea disabled= true id="object_description" cols="50" rows="5" class="" name="object.description">
+            <textarea id="object_description" cols="60" rows="5" class="" name="object.description">
                 ${object.description}
             </textarea>
-            <!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
+            <span class="crudHelp">
+                <font color="Red">
+                    *
+                </font>Required
+            </span>
         </p>
         #{/crud.custom}
-        #{crud.custom 'privacyLevel'}
-        <p>
-            <label for="object_privacyLevel">
-                Privacy Level
-            </label>
-            <textarea disabled= true id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
-                ${object.privacyLevel}
-            </textarea>
-        </p>
-        #{/crud.custom }
-		#{crud.custom 'isDraft'}
+        #{crud.custom 'isDraft'}
         <p>
             <label for="object_description">
                 isDraft
             </label>
-            <input type="checkbox"  checked="${object.isDraft}" id="object_isDraft" class="" name="object.isDraft">
-            	is this Idea a draft
-            </input>
-            <span class="crudHelp">
+            <input type="checkbox" checked="${object.isDraft}" id="object_isDraft" class="" name="object.isDraft">is this Idea a draft
+            </input><span class="crudHelp">
                 <font color="Red">
                     *
                 </font>Required
@@ -66,13 +47,32 @@
         #{/crud.custom}
         #{/crud.form }
         #{/form}
-        <form action="@{Users.ReportIdeaAsSpam()}" method="GET" name="myform">
-            <table border="0" bgcolor="#ececec" cellspacing="5">
-                <tr>
-                    <td>
-                        &nbsp;
-                    </td>
-                    <td>
-                        <input type="submit" value="Report As Spam">
-                        </table>
-                    </form>
+    </div>
+    <!--#{form @delete(object._key())}
+    <p class="crudDelete">
+    <input type="submit" value="&{'crud.delete', type.modelName}" />
+    </p>
+    #{/form}-->
+    <p>
+        <input type="submit" name="_save" value="&{'crud.save', type.modelName}" /><input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+    </p>
+</div>
+<script type="text/javascript">
+    function closeTopic(topicid, userId){
+        $.post('@{Topics.closeTopic()}', {
+            topicId: topicid,
+            userId: userId
+        });
+        alert("done!");
+        location.reload(true);
+    }
+    
+    function reopen(topicid, userId){
+        $.post('@{Topics.reopen()}', {
+            topicId: topicid,
+            userId: userId
+        });
+        alert("done!");
+        location.reload(true);
+    }
+</script>
