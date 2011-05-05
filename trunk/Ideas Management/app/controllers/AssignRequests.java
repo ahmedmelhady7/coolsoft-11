@@ -30,9 +30,9 @@ public class AssignRequests extends CRUD {
 	 */
 
 	public static void assign(long itemId, long planId) {
-		 users2 = filter(itemId, planId);
+		users2 = filter(itemId, planId);
 
-		System.out.println(users2.size()+"A5ER OBBBBAAAAAAAAAA");
+		System.out.println(users2.size() + "A5ER OBBBBAAAAAAAAAA");
 		viewUsers(itemId, planId);
 
 	}
@@ -313,7 +313,10 @@ public class AssignRequests extends CRUD {
 		String s = "User " + user.username
 				+ " has accepted the assignment to work on item"
 				+ request.source.summary + ".";
-		Notifications.sendNotification(list, item.plan.id, "plan", s);
+		for (User userToNotify : list) {
+			Notifications.sendNotification(userToNotify.id, item.plan.id,
+					"plan", s);
+		}
 	}
 
 	/**
@@ -344,7 +347,10 @@ public class AssignRequests extends CRUD {
 		String s = "User " + user.username
 				+ " has rejected the assignment to work on item"
 				+ request.source.summary + ".";
-		Notifications.sendNotification(list, request.source.plan.id, "plan", s);
+		for (User userToNotify : list) {
+			Notifications.sendNotification(userToNotify.id,
+					request.source.plan.id, "plan", s);
+		}
 		request.delete();
 	}
 

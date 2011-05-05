@@ -46,11 +46,13 @@ public class VolunteerRequests extends CRUD {
 						+ " has requested to volunteer to work on the following item "
 						+ dest.summary + "in the plan " + dest.plan.title
 						+ "of the topic" + dest.plan.topic.title;
-				 List<User> notificationDestination = dest.plan.topic.getOrganizer();
-				 for(int i = 0; i<notificationDestination.size(); i++) {
-					 Notifications.sendNotification(notificationDestination.get(i).id,
-							 dest.plan.id, "plan", description);
-				 }
+				List<User> notificationDestination = dest.plan.topic
+						.getOrganizer();
+				for (int i = 0; i < notificationDestination.size(); i++) {
+					Notifications.sendNotification(
+							notificationDestination.get(i).id, dest.plan.id,
+							"plan", description);
+				}
 
 				Plans.viewAsList(dest.plan.id);
 			}
@@ -115,36 +117,46 @@ public class VolunteerRequests extends CRUD {
 		Plan plan = Plan.findById(planId);
 		List<VolunteerRequest> planVolunteerRequests = new ArrayList<VolunteerRequest>();
 		boolean error = false;
-		// insert here if condition to check if user is permitted
-		for (int i = 0; i < plan.items.size(); i++) {
-			planVolunteerRequests.addAll(plan.items.get(i).volunteerRequests);
-		}
-		if (planVolunteerRequests.size() > 0) {
-			for (int i = 0; i < planVolunteerRequests.size(); i++) {
-				User sender = planVolunteerRequests.get(i).sender;
-				Date d = new Date();
-				if (planVolunteerRequests.get(i).destination.endDate
-						.compareTo(d) < 0) {
-					Item destination = planVolunteerRequests.get(i).destination;
-					user.volunteerRequests.remove(planVolunteerRequests.get(i));
-					destination.volunteerRequests.remove(planVolunteerRequests
-							.get(i));
-					planVolunteerRequests.remove(i);
-					user.save();
-					destination.save();
-				} else {
-					if (planVolunteerRequests.get(i).destination.assignees
-							.contains(sender)
-							|| !Topics.searchByTopic(plan.topic.id).contains(
-									user)) {
-						VolunteerRequest request = VolunteerRequest
-								.findById(planVolunteerRequests.get(i).id);
-						planVolunteerRequests.remove(request);
+		if (Users
+				.isPermitted(
+						user,
+						"accept/Reject user request to volunteer to work on action item in a plan",
+						plan.topic.id, "topic")) {
+			for (int i = 0; i < plan.items.size(); i++) {
+				planVolunteerRequests
+						.addAll(plan.items.get(i).volunteerRequests);
+			}
+			if (planVolunteerRequests.size() > 0) {
+				for (int i = 0; i < planVolunteerRequests.size(); i++) {
+					User sender = planVolunteerRequests.get(i).sender;
+					Date d = new Date();
+					if (planVolunteerRequests.get(i).destination.endDate
+							.compareTo(d) < 0) {
+						Item destination = planVolunteerRequests.get(i).destination;
+						user.volunteerRequests.remove(planVolunteerRequests
+								.get(i));
+						destination.volunteerRequests
+								.remove(planVolunteerRequests.get(i));
+						planVolunteerRequests.remove(i);
+						user.save();
+						destination.save();
+					} else {
+						if (planVolunteerRequests.get(i).destination.assignees
+								.contains(sender)
+								|| !Topics.searchByTopic(plan.topic.id)
+										.contains(user)) {
+							VolunteerRequest request = VolunteerRequest
+									.findById(planVolunteerRequests.get(i).id);
+							planVolunteerRequests.remove(request);
+						}
 					}
 				}
 			}
+			render(user, plan, planVolunteerRequests, error);
+		} else {
+			error = true;
+			render(error);
 		}
-		render(user, plan, planVolunteerRequests, error);
 	}
 
 	/**
@@ -180,7 +192,10 @@ public class VolunteerRequests extends CRUD {
 			if (org != item.plan.topic.getOrganizer().get(i))
 				list.add(item.plan.topic.getOrganizer().get(i));
 		}
-		Notifications.sendNotification(list, item.plan.id, "plan", s);
+		for (User userToNotify : list) {
+			Notifications.sendNotification(userToNotify.id, item.plan.id,
+					"plan", s);
+		}
 	}
 
 	/**
@@ -212,6 +227,9 @@ public class VolunteerRequests extends CRUD {
 			if (org != item.plan.topic.getOrganizer().get(i))
 				list.add(item.plan.topic.getOrganizer().get(i));
 		}
-		Notifications.sendNotification(list, item.plan.id, "plan", s);
+		for (User userToNotify : list) {
+			Notifications.sendNotification(userToNotify.id, item.plan.id,
+					"plan", s);
+		}
 	}
 }
