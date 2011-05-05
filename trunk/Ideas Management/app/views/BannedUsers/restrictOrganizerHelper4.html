@@ -26,7 +26,7 @@ window.location.reload();
   #{list items:topicActions, as:'action'}
  
  
-<input id = "1" type="radio" name="actionToDo" value = ${action} > ${action}<br /><br /> 
+<input id = "1" type="radio" name="actionToDo" value ='${action}' > ${action}<br /><br /> 
 #{/list}
 <input type = "hidden" name = "type" value = "topic" >
 <input type = "hidden" name = "entityTopicId" value = ${topicId} >
