@@ -267,9 +267,12 @@ public class Organizations extends CRUD {
 		Organization org = Organization.findById(organizationId);
 		if(org.followers.contains(user)) {
 			System.out.println("You are already a follower");
-		} else if (Users.isPermitted(user, "follow", organizationId, "organization")) {
+		} else if (Users.isPermitted(user,
+				"can follow organization/entities/topics", organizationId, "organization")) {
 			org.followers.add(user);
+			org.save();
 			user.followingOrganizations.add(org);
+			user.save();
 		} else {
 			System.out.println("Sorry! Action cannot be performed");
 		}
