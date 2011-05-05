@@ -27,7 +27,7 @@ window.location.reload();
 #{form @BannedUsers.restrictOrganizerHelper5(), method:'POST', id:'creationForm',onsubmit: 'return show_alert()',
        enctype:'multipart/form-data' }
   #{list items:entityActions, as:'action'}
-<input id = "1" type="radio" name="actionToDo" value = "ay 7aga"> ${action}<br /> <br />
+<input id = "1" type="radio" name="actionToDo" value = '${action}'> ${action}<br /> <br />
 #{/list}
 <input type = "hidden" name = "type" value = "entity" >
 <input type = "hidden" name = "entityTopicId" value = ${entityId} >
