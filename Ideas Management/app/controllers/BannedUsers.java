@@ -24,6 +24,7 @@ public class BannedUsers extends CRUD {
 //		long id = e.getId();
 //		System.out.println(id);
        List<Organization> o = Organization.findAll();
+       System.out.println(o.isEmpty() + "yaaaaaaaaaaaaaaaaaaaaaaaaaaaah");
        Organization org = o.get(0);
 		System.out.println(o .isEmpty());
 		System.out.println("ya raaaaaaaaaaaab" + org.name + "  " );
@@ -49,10 +50,12 @@ public class BannedUsers extends CRUD {
 	public static void restrictOrganizer(long orgId) {
 		
 		Organization org = Organization.findById(orgId);
+		System.out.println((org == null) + "OFFFFFFFFFFFFFf");
 		List<User> users = Users.searchOrganizer(org);
 //		List<User> u = User.findAll();
 //		users.add(u.get(0));
-		render(users, orgId);
+	long	organizationID = orgId;
+		render(users, organizationID);
 	}
 
 	/**
@@ -80,6 +83,7 @@ public class BannedUsers extends CRUD {
 		Organization org = Organization.findById(organizationId);
 		User user = User.findById(userId);
 		List<MainEntity> entities = Users.getEntitiesOfOrganizer(org, user);
+		System.out.println("++++" + entities.isEmpty());
 		render(user, organizationId, entities);
 	}
 
