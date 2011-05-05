@@ -44,14 +44,6 @@ public class Organization extends Model {
 	// , cascade = CascadeType.ALL)
 	public List<MainEntity> entitiesList;
 
-	// /**
-	// * List of organizers managing the organization
-	// */
-	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>. change
-//	@ManyToMany(mappedBy = "entitiesIOrganize")
-//	// (cascade = CascadeType.ALL)
-//	public List<User> organizers;
-
 	/**
 	 * Creator of that organization
 	 */
@@ -69,15 +61,6 @@ public class Organization extends Model {
 	@ManyToMany(mappedBy = "followingOrganizations")
 	// , cascade = CascadeType.ALL)
 	public List<User> followers;
-
-	/**
-	 * List of enrolled users in that organization
-	 */
-
-//	// >>>>>>>>>>>>>>>>>>>. change 
-//	@ManyToMany
-//	// , cascade = CascadeType.ALL)
-//	public List<User> enrolledUsers;
 
 	/**
 	 * List of tags related to that organization
