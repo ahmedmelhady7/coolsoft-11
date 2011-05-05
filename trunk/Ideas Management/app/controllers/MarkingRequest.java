@@ -7,6 +7,7 @@ import models.Idea;
 import models.LinkDuplicatesRequest;
 import models.MainEntity;
 import play.mvc.Controller;
+import play.mvc.With;
 
 /**
  * 
@@ -15,7 +16,7 @@ import play.mvc.Controller;
  * @story C4S10 : Marking two Ideas as a duplicate
  * 
  */
-
+@With(Secure.class)
 public class MarkingRequest extends Controller {
 
 	/**

@@ -3,9 +3,12 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import play.mvc.With;
+
 import models.Item;
 import models.User;
 
+@With(Secure.class)
 public class Items extends CRUD {
 
 	/**

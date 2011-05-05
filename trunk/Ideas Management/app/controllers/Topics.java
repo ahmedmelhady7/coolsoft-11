@@ -22,17 +22,19 @@ import play.data.binding.*;
 import play.db.*;
 import play.exceptions.*;
 import play.i18n.*;
+import play.mvc.With;
 import models.*;
 
+@With(Secure.class)
 public class Topics extends CRUD {
 
 	/**
-	 * This method first checks if the user is allowed to tag the topic, then
-	 * forms a list of the tags that can be used for this certain idea searches
-	 * for the tag in the global list of tags, if found => check if it already
-	 * the topic had the same tag already or add the new one to the list if not
-	 * => create a new tag, save it to db, add it to the list send notifications
-	 * to followers, organizers and organization lead of the tagged topic
+	 * This method first checks if the user is allowed to tag the topic,
+	 * searches for the tag in the global list of tags, if found => check if it
+	 * already the topic had the same tag already or add the new one to the list
+	 * if not => create a new tag, save it to db, add it to the list send
+	 * notifications to followers, organizers and organization lead of the
+	 * tagged topic
 	 * 
 	 * @author Mostafa Yasser El Monayer
 	 * 
@@ -500,12 +502,12 @@ public class Topics extends CRUD {
 				+ " has been closed and promoted to execution.";
 
 		// send notification to organizers
-		Notifications.sendNotification(targetTopic.getOrganizer(),
-				targetTopic.id, "Topic", notificationDescription);
-
-		// send notification to followers
-		Notifications.sendNotification(targetTopic.followers, targetTopic.id,
-				"Topic", notificationDescription);
+//		Notifications.sendNotification(targetTopic.getOrganizer(),
+//				targetTopic.id, "Topic", notificationDescription);
+//
+//		// send notification to followers
+//		Notifications.sendNotification(targetTopic.followers, targetTopic.id,
+//				"Topic", notificationDescription);
 
 	}
 
@@ -654,7 +656,7 @@ public class Topics extends CRUD {
 	 * @throws Exception
 	 * 
 	 */
-	public static void blank(long entityid) {
+	public static void blank(long entityid, long userid) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		MainEntity topicEntity = MainEntity.findById(entityid);
@@ -725,11 +727,11 @@ public class Topics extends CRUD {
 		Topic targetTopic = Topic.findById(topicIdLong);
 
 		if (targetTopic.getOrganizer().contains(actor)) {
-			if (Users.isPermitted(actor, actionClose, topicIdLong, "Topic")) {
+			if (Users.isPermitted(actor, actionClose, topicIdLong, "topic")) {
 				canClose = 1;
 			}
 
-			if (Users.isPermitted(actor, actionPlan, topicIdLong, "Topic")) {
+			if (Users.isPermitted(actor, actionPlan, topicIdLong, "topic")) {
 				canPlan = 1;
 			}
 		}

@@ -19,6 +19,7 @@ import models.*;
 
 
 @With(Secure.class)
+
 public class Users extends CRUD {
 
 	/**

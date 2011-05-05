@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Before;
 
 import play.data.validation.Required;
+import play.mvc.With;
 
 import models.BannedUser;
 import models.MainEntity;
@@ -13,7 +14,7 @@ import models.Organization;
 import models.Role;
 import models.Topic;
 import models.User;
-
+@With(Secure.class)
 public class BannedUsers extends CRUD {
 	@Before
 	public static void restrictOrganizerrr(){

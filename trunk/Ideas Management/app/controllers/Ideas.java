@@ -23,6 +23,7 @@ import models.*;
  * @author ${Ahmed El-Hadi}
  * 
  */
+@With(Secure.class)
 public class Ideas extends CRUD {
 
 	/*
@@ -483,10 +484,10 @@ public class Ideas extends CRUD {
 				if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
 					if (!idea.tagsList.contains(listOfTags.get(i))) {
 						idea.tagsList.add(listOfTags.get(i));
-						Notifications.sendNotification(
-								listOfTags.get(i).followers,
-								idea.tagsList.get(i).getId(), "tag",
-								"This idea has been tagged as " + tag);
+//						Notifications.sendNotification(
+//								listOfTags.get(i).followers,
+//								idea.tagsList.get(i).getId(), "tag",
+//								"This idea has been tagged as " + tag);
 					} else {
 						// tag already exists error message
 						tagAlreadyExists = true;
@@ -505,8 +506,8 @@ public class Ideas extends CRUD {
 				if (user.equals(idea.author)) {
 					List<User> list1 = new ArrayList<User>();
 					list1.add(idea.author);
-					Notifications.sendNotification(list1, ideaID, "idea",
-							"This idea has been tagged as " + tag);
+//					Notifications.sendNotification(list1, ideaID, "idea",
+//							"This idea has been tagged as " + tag);
 				}
 			}
 		}

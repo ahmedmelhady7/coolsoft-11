@@ -7,11 +7,13 @@ import controllers.CRUD.ObjectType;
 import play.data.validation.Required;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
+import play.mvc.With;
 import models.MainEntity;
 import models.Organization;
 import models.Topic;
 import models.User;
 
+@With(Secure.class)
 public class MainEntitys extends CRUD {
 
 	/**

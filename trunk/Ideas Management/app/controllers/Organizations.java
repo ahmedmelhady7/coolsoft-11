@@ -9,6 +9,7 @@ import play.data.validation.Required;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import play.mvc.Controller;
+import play.mvc.With;
 import controllers.CRUD.ObjectType;
 
 import models.Invitation;
@@ -18,6 +19,7 @@ import models.Tag;
 import models.Topic;
 import models.User;
 
+@With(Secure.class)
 public class Organizations extends CRUD {
 
 	/**

@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import play.mvc.With;
+
 import models.AssignRequest;
 import models.Item;
 import models.Plan;
 import models.User;
-
+@With(Secure.class)
 public class AssignRequests extends CRUD {
 	public static ArrayList <User> users2 = new ArrayList<User> ();
 
@@ -31,7 +33,7 @@ public class AssignRequests extends CRUD {
 
 	public static void assign(long itemId, long planId) {
 		users2 = filter(itemId, planId);
-
+		 
 		System.out.println(users2.size() + "A5ER OBBBBAAAAAAAAAA");
 		viewUsers(itemId, planId);
 
@@ -86,19 +88,17 @@ public class AssignRequests extends CRUD {
 	 *            : the id of the plan containing the item that will be assigned
 	 *            to the list of users selected
 	 */
-	public static void sendRequests(String itemId, String[] userIds,
-			String planId) {
+	public static void sendRequests(long itemId, long[] userIds) {
 		User user;
 		Date d = new Date();
 		System.out.println("ana da5alt send requests");
 		Item item = Item.findById(itemId);
 		for (int i = 0; i < userIds.length; i++) {
 			user = User.findById(userIds[i]);
-			if (filter(Long.parseLong(itemId), Long.parseLong(planId))
+			if (filter(itemId,item.plan.id)
 					.contains(user)) {
 				if (!(item.status == 2) && item.endDate.compareTo(d) > 0) {
-					sendAssignRequest(Long.parseLong(itemId),
-							Long.parseLong(userIds[i]));
+					sendAssignRequest(itemId,userIds[i]);
 				}
 			}
 		}
@@ -313,10 +313,12 @@ public class AssignRequests extends CRUD {
 		String s = "User " + user.username
 				+ " has accepted the assignment to work on item"
 				+ request.source.summary + ".";
+
 		for (User userToNotify : list) {
 			Notifications.sendNotification(userToNotify.id, item.plan.id,
 					"plan", s);
 		}
+
 	}
 
 	/**
@@ -347,10 +349,12 @@ public class AssignRequests extends CRUD {
 		String s = "User " + user.username
 				+ " has rejected the assignment to work on item"
 				+ request.source.summary + ".";
+
 		for (User userToNotify : list) {
 			Notifications.sendNotification(userToNotify.id,
 					request.source.plan.id, "plan", s);
 		}
+
 		request.delete();
 	}
 
