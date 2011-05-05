@@ -9,8 +9,13 @@ package controllers;
 
 import java.util.List;
 
+import models.Idea;
 import models.Notification;
 import models.NotificationProfile;
+import models.Organization;
+import models.Plan;
+import models.Tag;
+import models.Topic;
 import models.User;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -52,31 +57,68 @@ public class Notifications extends CRUD {
 	 * @return void
 	 */
 	
-	public static boolean sendNotification(long uId, long notId, String t, String d) {
+	public static boolean sendNotification(long uId, long notId, String type, String d) {
 		User u = User.findById(uId);
 		List<NotificationProfile> np = u.notificationProfiles;
 		boolean contains = false;
 		boolean isenabled = true;
+		String title = "No title!";
+		if(type.equals("Idea")) {
+			Idea idea = Idea.findById(notId);
+			if(idea != null)
+				title = idea.toString();
+		} else {
+			if(type.equals("Organisation")) {
+				Organization o = Organization.findById(notId);
+				if(o != null)
+					title = o.toString();
+			} else {
+				if(type.equals("Topic")) {
+					Topic topic = Topic.findById(notId);
+					if(topic != null)
+						title = topic.toString();
+				} else {
+					if(type.equals("Plan")) {
+						Plan p = Plan.findById(notId);
+						if(p != null)
+							title = p.toString();
+					} else {
+						if(type.equals("Tag")) {
+							Tag tag = Tag.findById(notId);
+							if(tag != null) {
+								title = tag.toString();
+							}
+						}
+					}
+				}
+			}
+		}
+
 		/**
 		 * check that the notification profile has the sending source
 		 * if not then add it, if present the check if enabled or not.
 		 */
+		if(type.equals("User")) {
+			Notification n = new Notification(type, title, u, d);
+			n.save();
+			return true;
+		}
 		for (int i = 0; i < np.size(); i++) {
-			if(np.get(i).notifiableId == notId && np.get(i).notifiableType.equals(t)) {
+			if(np.get(i).notifiableId == notId && np.get(i).notifiableType.equals(type)) {
 				isenabled = np.get(i).enabled;
 				break;
 			}
 		}		
 		// Adding the NP if not there
 		if(!contains) {
-			NotificationProfile np2 = new NotificationProfile(notId, t, u);
+			NotificationProfile np2 = new NotificationProfile(notId, type, title, u);
 			np2.save();
 			//u.notificationProfiles.add(np2);
 			isenabled = true;
 		}
 		// Send the notification if enabled
 		if(isenabled) {
-			Notification n = new Notification(t, u, d);
+			Notification n = new Notification(type, title, u, d);
 			n.save();
 			return true;
 		}
@@ -92,7 +134,6 @@ public class Notifications extends CRUD {
 	 * 
 	 * @story C1S14
 	 * 
-	 * 
 	 * @param directed
 	 * @param notId
 	 * @param type
@@ -105,6 +146,37 @@ public class Notifications extends CRUD {
 			String type, String desc) {
 		User u = User.find("byUsername", directed).first();
 		List<NotificationProfile> np = u.notificationProfiles;
+		String title = "No title!";
+		if(type.equals("Idea")) {
+			Idea idea = Idea.findById(notId);
+			if(idea != null)
+				title = idea.toString();
+		} else {
+			if(type.equals("Organisation")) {
+				Organization o = Organization.findById(notId);
+				if(o != null)
+					title = o.toString();
+			} else {
+				if(type.equals("Topic")) {
+					Topic topic = Topic.findById(notId);
+					if(topic != null)
+						title = topic.toString();
+				} else {
+					if(type.equals("Plan")) {
+						Plan p = Plan.findById(notId);
+						if(p != null)
+							title = p.toString();
+					} else {
+						if(type.equals("Tag")) {
+							Tag tag = Tag.findById(notId);
+							if(tag != null) {
+								title = tag.toString();
+							}
+						}
+					}
+				}
+			}
+		}
 		boolean contains = false;
 		boolean isenabled = true;
 		/**
@@ -120,14 +192,14 @@ public class Notifications extends CRUD {
 		}
 		// Adding the NP if not there
 		if(!contains) {
-			NotificationProfile np2 = new NotificationProfile(notId, type, u);
+			NotificationProfile np2 = new NotificationProfile(notId, type, title, u);
 			np2.save();
 			//u.notificationProfiles.add(np2);
 			isenabled = true;
 		}
 		// Send the notification if enabled
 		if(isenabled) {
-			Notification n = new Notification(type, u, desc);
+			Notification n = new Notification(type, title, u, desc);
 			n.save();
 		}
 		render();

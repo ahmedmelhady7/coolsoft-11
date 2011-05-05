@@ -3,23 +3,27 @@
 
 <big><u>Notification Profile</u></big>
 <br>
+<hr>
+<br>
+#{if npList.size() == 0}
+    <i>You have no notification profiles!!</i>
+#{/if}
+<br>
 <ul>
 #{list items:npList, as:'notifi'}
-    #{if npList.size() == 0}
-    <li>You have no notification profiles!!</li>
-    #{/if}
     <li>
     	<fieldset>
-    		<b>Source ID: </b> ${notifi.notifiableId} 
-    		&nbsp; <b>Type: </b> ${notifi.notifiableType} 
-    		&nbsp; <b>Enabled: </b> ${notifi.enabled}
+    		<b>Notification from: </b> ${notifi.notifiableType}  
+    		&nbsp; ${notifi.title}
+    		<br> 
+    		<b>Enabled: </b> ${notifi.enabled}
     	</fieldset>
     </li>
 #{/list}
 </ul>
+#{if npList.size() != 0}
+   <form action="@{NotificationProfiles.alterPreferences()}" method="post">
+		Change Preferences: <input type="submit" value="Change Preferences">
+	</form>
+#{/if}
 
-<form action="@{NotificationProfiles.alterPreferences()}" method="post">
-Change Preferences: <input type="submit" value="Alter">
-</form>
-
-<a href="@{Login.index()}">Home Page</a>

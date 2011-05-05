@@ -11,21 +11,19 @@
 		}
 		function submit() {
 			if(en_ids.length == 0 && dis_ids.length == 0) {
-				alert('No preferences to edit!!');
+				alert('No changes to perform!!');
 			} else {
-				var r=confirm("Are You sure you want to edit?");
+				var r=confirm("Are You sure you want to save changes?");
 				if (r == true) {
-					$.post('@{disablePreferences()}', {a:dis_ids});
-					$.post('@{enablePreferences()}', {b:en_ids});
+					//$.post('@{disablePreferences()}', {a:dis_ids});
+					//$.post('@{enablePreferences()}', {b:en_ids});
+					$.post('@{goHome()}');
 					//document.write('Done <br> <a href="@{Login.index()}">Back to home page</a>');
 					//window.location ='http://localhost:9000/';
 				}
 				
 			}
-		}
-		function redirectNow() {
-			window.location ='http://localhost:9000/';
-		}
+		}		
 		function checkD(id) {			
 			if(dis_ids.indexOf(id) == -1) {
 				dis_ids.push(id);
@@ -42,18 +40,21 @@
 		}
 </script>
 
-<a onclick="markAll();" href="#"> Check All </a>&nbsp;&nbsp;
-&nbsp;&nbsp;<a onclick="unmarkAll();" href="#"> Uncheck All</a><br /> <br />
-
+<big><u>Notification Profile</u></big>
+<br>
+<hr>
+<br>
+#{if npList.size() == 0}
+    <i>You have no notification profiles!!</i>
+#{/if}
+<br>
 <ul>
 #{list items:npList, as:'npro'}
     <li>
     	<fieldset>
-    	<legend>
-           Notification Profile
-        </legend>
-    		<b>Notifiable Type: </b> ${npro.notifiableType}
-    		&nbsp;
+    		<b>Notification from: </b> ${npro.notifiableType}
+    		&nbsp; ${npro.title}
+    		<br>
     		<b>Receive Notification: </b> ${npro.enabled}
     		&nbsp;
     		#{if npro.enabled}
@@ -70,5 +71,3 @@
 </ul>
 <br>
 Edit Preferences <input type="submit" value="Done" onclick="submit()"/>
-<br>
-<a href="@{Login.index()}">Home Page</a>
