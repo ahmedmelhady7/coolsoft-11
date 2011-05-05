@@ -45,7 +45,10 @@ public class Login extends Controller {
 
 	public static void index() {
 		User u = Security.getConnected();
-		render(u);
+		int admin=0;
+		if(u.isAdmin)
+			admin=1;
+		render(u,admin);
 
 	}
 }
