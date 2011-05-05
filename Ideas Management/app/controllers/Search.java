@@ -338,7 +338,178 @@ public class Search extends Controller {
 		System.out.println("HERE DONE");
 		// Comments
 
+		constrainTime(before, after, exact);
+
 		// render();
+	}
+
+	public static void constrainTime(Date before, Date after, Date exact) {
+
+		if (exact.compareTo(new Date(0, 0, 0)) != 0) {
+			if (before.after(exact) || after.before(exact)) {
+				for (int i = 0; i < listOfResults.size(); i++) {
+					listOfResults.remove(i);
+				}
+
+			} else {
+				for (int i = listOfResults.size() - 1; i > 0; i--) {
+					if (listOfResults instanceof Organization) {
+						if (exact
+								.compareTo(((Organization) listOfResults).intializedIn) != 0) {
+							listOfResults.remove(i);
+						}
+					} else if (listOfResults instanceof MainEntity) {
+						if (exact
+								.compareTo(((MainEntity) listOfResults).intializedIn) != 0) {
+							listOfResults.remove(i);
+						}
+					} else if (listOfResults instanceof Topic) {
+						if (exact
+								.compareTo(((Topic) listOfResults).intializedIn) != 0) {
+							listOfResults.remove(i);
+						}
+					} else if (listOfResults instanceof Plan) {
+						if (exact
+								.compareTo(((Plan) listOfResults).intializedIn) != 0) {
+							listOfResults.remove(i);
+						}
+					} else if (listOfResults instanceof Idea) {
+						if (exact
+								.compareTo(((Idea) listOfResults).intializedIn) != 0) {
+							listOfResults.remove(i);
+						}
+					} else if (listOfResults instanceof Item) {
+						if (exact.before(((Item) listOfResults).endDate)
+								&& exact.after(((Item) listOfResults).startDate)) {
+							listOfResults.remove(i);
+						}
+					}
+				}
+			}
+		} else {
+			if (before.before(after)) {
+				if (before.compareTo(new Date(0, 0, 0)) == 0) {
+					// after
+					for (int i = listOfResults.size() - 1; i > 0; i--) {
+						if (listOfResults instanceof Organization) {
+							if (after
+									.before(((Organization) listOfResults).intializedIn)) {
+								listOfResults.remove(i);
+							}
+						} else if (listOfResults instanceof MainEntity) {
+							if (after
+									.before(((MainEntity) listOfResults).intializedIn)) {
+								listOfResults.remove(i);
+							}
+						} else if (listOfResults instanceof Topic) {
+							if (after
+									.before(((Topic) listOfResults).intializedIn)) {
+								listOfResults.remove(i);
+							}
+						} else if (listOfResults instanceof Plan) {
+							if (after
+									.before(((Plan) listOfResults).intializedIn)) {
+								listOfResults.remove(i);
+							}
+						} else if (listOfResults instanceof Idea) {
+							if (after
+									.before(((Idea) listOfResults).intializedIn)) {
+								listOfResults.remove(i);
+							}
+						} else if (listOfResults instanceof Item) {
+							if (!(after.before(((Item) listOfResults).endDate) && after
+									.after(((Item) listOfResults).startDate))) {
+								listOfResults.remove(i);
+							}
+						}
+					}
+				} else {
+					if (before.compareTo(new Date(0, 0, 0)) == 0) {
+						// before
+						for (int i = listOfResults.size() - 1; i > 0; i--) {
+							if (listOfResults instanceof Organization) {
+								if (!before
+										.before(((Organization) listOfResults).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults instanceof MainEntity) {
+								if (!before
+										.before(((MainEntity) listOfResults).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults instanceof Topic) {
+								if (!before
+										.before(((Topic) listOfResults).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults instanceof Plan) {
+								if (!before
+										.before(((Plan) listOfResults).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults instanceof Idea) {
+								if (!before
+										.before(((Idea) listOfResults).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults instanceof Item) {
+								if (!(before
+										.before(((Item) listOfResults).endDate)
+										&& before
+												.after(((Item) listOfResults).startDate))) {
+									listOfResults.remove(i);
+								}
+							}
+						}
+					} else {
+						// both
+						for (int i = listOfResults.size() - 1; i > 0; i--) {
+							if (listOfResults instanceof Organization) {
+								if (!before
+										.before(((Organization) listOfResults).intializedIn)
+										|| after.before(((Organization) listOfResults).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults instanceof MainEntity) {
+								if (!before
+										.before(((MainEntity) listOfResults).intializedIn)
+										|| after.before(((MainEntity) listOfResults).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults instanceof Topic) {
+								if (!before
+										.before(((Topic) listOfResults).intializedIn)
+										|| after.before(((Topic) listOfResults).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults instanceof Plan) {
+								if (!before
+										.before(((Plan) listOfResults).intializedIn)
+										|| after.before(((Plan) listOfResults).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults instanceof Idea) {
+								if (!before
+										.before(((Idea) listOfResults).intializedIn)
+										|| after.before(((Idea) listOfResults).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults instanceof Item) {
+								if (!(before
+										.before(((Item) listOfResults).endDate)
+										&& before
+												.after(((Item) listOfResults).startDate))||!(after
+														.before(((Item) listOfResults).endDate)
+														&& after
+																.after(((Item) listOfResults).startDate))) {
+									listOfResults.remove(i);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
