@@ -32,23 +32,23 @@ public class Bootstrap extends Job {
 			Role.createAdminRole();
 			Role.createOrganizationLeadRole();
 			// add all roles and map them to users in org1
-			User u1 = new User("h@gmail.com", "1234", "Hamed", "EL-Akhdar",
-					"hamedcool", 0, new Date(), "egypt", "student");
+			User u1 = new User("h@gmail.com","hamedcool", "1234", "Hamed", "EL-Akhdar",
+					 0, new Date(), "egypt", "student");
 			u1._save();
-			User u2 = new User("bob@gmail.com", "1234", "Mohamed", "Gomaa",
-					"Gomaa", 0, new Date(), "egypt", "student");
+			User u2 = new User("bob@gmail.com", "Gomaa","1234", "Mohamed", "Gomaa",
+					 0, new Date(), "egypt", "student");
 			u2._save();
-			User u3 = new User("teet@gmail.com", "1234", "Ibrahim",
-					"EL-khayat", "IA", 0, new Date(), "egypt", "student");
+			User u3 = new User("teet@gmail.com","EL-khayat", "1234", "Ibrahim",
+					 "IA", 0, new Date(), "egypt", "student");
 			u3._save();
-			User u4 = new User("mai.jt4@gmail.com", "1234", "Omar", "Faruki",
-					"Gunners", 0, new Date(), "egypt", "student");
+			User u4 = new User("mai.jt4@gmail.com","Gunners", "1234", "Omar", "Faruki",
+					 0, new Date(), "egypt", "student");
 			u4._save();
-			User u5 = new User("mostafa@gmail.com", "1234", "mostafa",
-					"abo el atta", "Sasa", 0, new Date(), "egypt", "student");
+			User u5 = new User("mostafa@gmail.com","abo el atta", "1234", "mostafa",
+					 "Sasa", 0, new Date(), "egypt", "student");
 			u5._save();
-			User u6 = new User("Ibrahim@gmail.com", "1234", "Ibrahim",
-					"Safwat", "Ibrahim", 0, new Date(), "egypt", "student");
+			User u6 = new User("Ibrahim@gmail.com","Safwat", "1234", "Ibrahim",
+					 "Ibrahim", 0, new Date(), "egypt", "student");
 			u6._save();
 			// System.out.println("in2");
 
@@ -152,13 +152,13 @@ public class Bootstrap extends Job {
 
 			Item item1 = new Item(new Date(2011, 01, 01),
 					new Date(2011, 05, 10),
-					"this is the second item in the plan", p1, "item2");
+					"this is the second item in the plan", p1, "item1");
 			Item item2 = new Item(new Date(2011, 02, 01),
 					new Date(2011, 06, 10),
-					"this is the third item in the plan", p1, "item3");
+					"this is the third item in the plan", p1, "item2");
 			Item item3 = new Item(new Date(2011, 03, 01),
 					new Date(2011, 07, 10),
-					"this is the first item in the plan", p1, "item1");
+					"this is the first item in the plan", p1, "item3");
 			item1.save();
 			item2.save();
 			item3.save();
@@ -191,6 +191,7 @@ public class Bootstrap extends Job {
 
 			Invitation inv1 = new Invitation("Ibrahim@gmail.com", null, org1,
 					"idea developer", u1).save();
+		
 		//	u6.invitation.add(inv1);
 		//	u6.save();
 			
