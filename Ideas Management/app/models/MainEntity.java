@@ -188,6 +188,6 @@ public class MainEntity extends Model {
 	}
 	
 	public String toString() {
-		return "Name: " + name + " Description: " + description;
+		return name;
 	}
 }
