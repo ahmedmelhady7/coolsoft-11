@@ -405,20 +405,21 @@ public class Users extends CRUD {
 	 *            : the user trying to create the topic
 	 */
 
-	public void createTopic(long entityId, String title, String description,
-			short privacyLevel, User user) {
-		Topic topic = new Topic(title, description, privacyLevel, user);
-		MainEntity entity = MainEntity.findById(entityId);
-
-		if (Users.isPermitted(user, "create topic", entityId, "entity")
-				&& user.entitiesIOrganize.contains(entity)) {
-			entity.topicList.add(topic);
-			user.topicsCreated.add(topic);
-			user.topicsIOrganize.add(topic);
-		} else {
-			System.out.println("action cannot be performed in this entity");
-		}
-	}
+	//>>>>>>>>>>>>>change
+//	public void createTopic(long entityId, String title, String description,
+//			short privacyLevel, User user) {
+//		Topic topic = new Topic(title, description, privacyLevel, user);
+//		MainEntity entity = MainEntity.findById(entityId);
+//
+//		if (Users.isPermitted(user, "create topic", entityId, "entity")
+//				&& user.entitiesIOrganize.contains(entity)) {
+//			entity.topicList.add(topic);
+//			user.topicsCreated.add(topic);
+//			user.topicsIOrganize.add(topic);
+//		} else {
+//			System.out.println("action cannot be performed in this entity");
+//		}
+//	}
 
 	/**
 	 * 
@@ -729,6 +730,7 @@ public class Users extends CRUD {
 		return false;
 
 	}
+	
 
 	public static void r(long i) {
 		Topic t = Topic.findById(i);
@@ -755,7 +757,6 @@ public class Users extends CRUD {
 			Organization o = t.entity.organization;
 			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
 
-
 					.find("select uro from UserRoleInOrganization uro  where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?",
 							o, t.getId(), "topic");
 			for (int i = 0; i < organizers.size(); i++) {
@@ -770,7 +771,6 @@ public class Users extends CRUD {
 					// (!(organizers.get(i).role.roleName.equals("organizer")))
 					// {
 					// >>>>>>> .r797
-
 					organizers.remove(i);
 				} else {
 					enrolled.add(organizers.get(i).enrolled);
@@ -814,7 +814,6 @@ public class Users extends CRUD {
 					// for (int i = 0; i < organizers.size(); i++) {
 					// if (!((organizers.get(i).role).equals("organizer"))) {
 					// >>>>>>> .r797
-
 					organizers.remove(i);
 				} else {
 					enrolled.add(organizers.get(i).enrolled);
@@ -841,9 +840,9 @@ public class Users extends CRUD {
 		List<User> enrolled = null;
 		if (o != null) {
 
-			enrolled = (List<User>) UserRoleInOrganization
+			enrolled = UserRoleInOrganization
 					.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? ",
-							o);
+							o).fetch();
 
 		}
 		return enrolled;
@@ -1204,13 +1203,15 @@ public class Users extends CRUD {
 			roleInOrg._save();
 			user.userRolesInOrganization.add(roleInOrg);
 			user.save();
+			List<User> list = new ArrayList();
+			list.add(user);
 			User orgLead = org.creator;
-			Notifications.sendNotification(user.id, org.id, "Organization",
-					user.username + " has accepted the invitation to join the "
-							+ org.name);
-			Notifications.sendNotification(orgLead.id, org.id, "Organization",
-					user.username + " has accepted the invitation to join the "
-							+ org.name);
+			list.add(orgLead);
+			
+			///>>>>>>>>>>>>>>>>>>  change
+//			Notifications.sendNotification(list, org.id, "Organization",
+//					user.username + " has accepted the invitation to join the "
+//							+ org.name);
 			// Notification n1 = new Notification("Organization",
 			// inv.sender, user.username + " accepted the invitation.");
 			// n1._save();
