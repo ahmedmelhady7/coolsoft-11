@@ -574,6 +574,7 @@ public class Topics extends CRUD {
 		 System.out.println("create() render catch");
 		render("CRUD/blank.html", type, entityid);
 		}}*/
+		System.out.println("the idea beforew validation check" + tmp.toString());
 
 
 		if (tmp.entity == null) {

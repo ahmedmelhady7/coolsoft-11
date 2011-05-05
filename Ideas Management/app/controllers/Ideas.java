@@ -55,18 +55,18 @@ public class Ideas extends CRUD {
 	 * 
 	 * @param title the idea's title
 	 * 
-	 * @param titl  the idea's description
+	 * @param titl the idea's description
 	 */
 
-	public static void postDraft(long ideaId,String title, String titl) {
-		
+	public static void postDraft(long ideaId, String title, String titl) {
+
 		Idea idea = Idea.findById(ideaId);
 		idea.isDraft = false;
 		idea.title = title;
 		idea.description = titl;
 		idea.save();
 	}
-	
+
 	/*
 	 * @author Abdalrahman Ali
 	 * 
@@ -76,11 +76,11 @@ public class Ideas extends CRUD {
 	 * 
 	 * @param title the idea's title
 	 * 
-	 * @param titl  the idea's description
+	 * @param titl the idea's description
 	 */
-	
-	public static void saveDraft(long ideaId,String title,String titl) {
-		
+
+	public static void saveDraft(long ideaId, String title, String titl) {
+
 		Idea idea = Idea.findById(ideaId);
 		idea.title = title;
 		System.out.println(titl);
@@ -93,33 +93,32 @@ public class Ideas extends CRUD {
 	 * 
 	 * this method returns all the ideas the user saved as draft in order to
 	 * enable the user to choose one of them and post it.
-	 * 
 	 */
 
 	public static void getDrafts() {
-		
+
 		User user = Security.getConnected();
-		
+
 		List<Idea> drafts = new ArrayList<Idea>();
 
 		for (Idea idea : user.ideasCreated)
 			if (idea.isDraft)
 				drafts.add(idea);
 
-		render(drafts,user);
+		render(drafts, user);
 	}
-	
+
 	/*
 	 * @author Abdalrahman Ali
 	 * 
-	 * this method just directs the user to a page where he can handle his drafts
+	 * this method just directs the user to a page where he can handle his
+	 * drafts
 	 */
-	
-	public static void editDraft(long ideaId)
-	{
+
+	public static void editDraft(long ideaId) {
 		Idea idea = Idea.findById(ideaId);
 		User user = Security.getConnected();
-		render(idea,user);
+		render(idea, user);
 	}
 
 	/**
@@ -271,7 +270,15 @@ public class Ideas extends CRUD {
 		int privacyLevel = i.privacyLevel;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
+		int x = 1;
+		for (int j = 0; j < i.reporters.size(); j++) {
 
+			if (author.username.equals(i.reporters.get(j))) {
+				i.reporters.get(j);
+				x = 0;
+			} else
+				x = 1;
+		}
 		try {
 			System.out.println("show() done, about to render");
 			render(type, object, /* tags, */author, comments, topic, plan,
@@ -389,21 +396,18 @@ public class Ideas extends CRUD {
 		if (page < 1) {
 			page = 1;
 		}
-		
+
 		List<Model> objects = type.findPage(page, search, searchFields,
 				orderBy, order, (String) request.args.get("where "));
-		
-		if(objects != null)
-		{
-			for(int i = 0 ;i<objects.size();i++)
-			{
+
+		if (objects != null) {
+			for (int i = 0; i < objects.size(); i++) {
 				Idea o = (Idea) objects.get(i);
-				if(o.isDraft)
+				if (o.isDraft)
 					objects.remove(i);
 			}
 		}
-		
-		
+
 		Long count = type.count(search, searchFields,
 				(String) request.args.get("where"));
 		Long totalCount = type.count(null, null,
@@ -538,10 +542,10 @@ public class Ideas extends CRUD {
 				if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
 					if (!idea.tagsList.contains(listOfTags.get(i))) {
 						idea.tagsList.add(listOfTags.get(i));
-//						Notifications.sendNotification(
-//								listOfTags.get(i).followers,
-//								idea.tagsList.get(i).getId(), "tag",
-//								"This idea has been tagged as " + tag);
+						// Notifications.sendNotification(
+						// listOfTags.get(i).followers,
+						// idea.tagsList.get(i).getId(), "tag",
+						// "This idea has been tagged as " + tag);
 					} else {
 						// tag already exists error message
 						tagAlreadyExists = true;
@@ -560,8 +564,8 @@ public class Ideas extends CRUD {
 				if (user.equals(idea.author)) {
 					List<User> list1 = new ArrayList<User>();
 					list1.add(idea.author);
-//					Notifications.sendNotification(list1, ideaID, "idea",
-//							"This idea has been tagged as " + tag);
+					// Notifications.sendNotification(list1, ideaID, "idea",
+					// "This idea has been tagged as " + tag);
 				}
 			}
 		}
@@ -593,16 +597,14 @@ public class Ideas extends CRUD {
 	 * @param ideaID
 	 *            idea that the user wants to rate
 	 */
-	
+
 	public void rate(int rating, int ideaID) {
 		Idea i = Idea.findById(ideaID);
 		Organization O = i.belongsToTopic.entity.organization;
 		User user = Security.getConnected();
 		List organizers = Users.searchOrganizer(O);
-		if(organizers.contains(user))
-		{
-			if (!checkRated(user, ideaID)) 
-			{
+		if (organizers.contains(user)) {
+			if (!checkRated(user, ideaID)) {
 				Idea idea = Idea.findById(ideaID);
 				int oldRating = idea.rating;
 				int newRating = (oldRating + rating) / 2;
@@ -623,11 +625,13 @@ public class Ideas extends CRUD {
 		User U = User.find("byUsername", userName).first();
 		String type = "Idea";
 		User user = Security.getConnected();
-		String desc = user.firstName + " " +user.lastName + " shared an Idea with you";
+		String desc = user.firstName + " " + user.lastName
+				+ " shared an Idea with you";
 		long notId = ideaID;
 		long userId = U.id;
 		Notifications.sendNotification(userId, notId, type, desc);
 	}
+
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
@@ -641,8 +645,8 @@ public class Ideas extends CRUD {
 		Organization O = i.belongsToTopic.entity.organization;
 		User user = Security.getConnected();
 		List organizers = Users.searchOrganizer(O);
-		if(organizers.contains(user))
-		i.priority = priority;
+		if (organizers.contains(user))
+			i.priority = priority;
 	}
 
 }
