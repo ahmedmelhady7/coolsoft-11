@@ -11,7 +11,7 @@
                
             </legend>
             Title: ${assignedItem.summary} &nbsp; &nbsp; &nbsp;
-			#{if assignedItem.endDate.compareTo(new Date()) >= 0}
+			#{if !assignedItem.endDatePassed()}
             #{if assignedItem.status == 0} 
 			<input type = "button" value="Start" onclick ="javascript: start_task('${assignedItem.id}');"/> 
 			#{/if}
@@ -25,19 +25,23 @@
 			<label id = "label2_${assignedItem.id}" > Your item is done. Mark it as in progress</label>
 			#{/else}
 			#{/else}
+			#{/if}
 			</label>
 			<br/>
             Item Description: ${assignedItem.description}
             <br/>
             Start Date:  ${assignedItem.startDate.format('dd MMM yy')}
             <br/>
-				#{/if}
-			
             End Date:  ${assignedItem.endDate.format('dd MMM yy')}
+			&nbsp;&nbsp;
+			#{if assignedItem.endDatePassed()}
+			The end date has passed!
+			#{/if}
             <br/>
             Assigned Users: 
             <ul style="list-style: none; ">
                 #{list items:assignedItem.getAssignees(), as:'assignedUser'}
+				
                 <li>
                     <a href="#">${assignedUser.username}</a>
                 </li>
