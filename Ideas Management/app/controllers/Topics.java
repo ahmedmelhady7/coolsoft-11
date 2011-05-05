@@ -311,11 +311,16 @@ public class Topics extends CRUD {
 		Organization org = entity.organization;
 		ArrayList<User> searchList = (ArrayList) User.find("byIsAdmin", true)
 				.fetch();
+		if(! searchList.contains(org.creator))
 		searchList.add(org.creator);
 		// searchList.add(topic.creator);
 
 		ArrayList<User> organizer = (ArrayList) topic.getOrganizer();
-		searchList.addAll(organizer);
+		for(int i = 0; i < organizer.size(); i ++) {
+			if(!searchList.contains(organizer.get(i)))
+				searchList.add(organizer.get(i));
+		}
+		
 
 		List<BannedUser> bannedUserT = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
@@ -364,7 +369,7 @@ public class Topics extends CRUD {
 					"topic").fetch();
 			for (int i = 0; i < allUser.size(); i++) {
 				if ((allUser.get(i).role.roleName).equals("idea developer")
-						&& (allUser.get(i).organization).equals(org)) {
+						&& (allUser.get(i).organization).equals(org) && !(user.contains(allUser.get(i)))) {
 					user.add(allUser.get(i).enrolled);
 				}
 			}
@@ -390,7 +395,7 @@ public class Topics extends CRUD {
 				allUser = UserRoleInOrganization.find("byOrganization", org)
 						.fetch();
 				for (int i = 0; i < allUser.size(); i++) {
-					if ((allUser.get(i).role.roleName).equals("idea developer")) {
+					if ((allUser.get(i).role.roleName).equals("idea developer") && !(user.contains(allUser.get(i)))) {
 						user.add(allUser.get(i).enrolled);
 					}
 				}
@@ -424,7 +429,7 @@ public class Topics extends CRUD {
 					for (int i = 0; i < allUser.size(); i++) {
 						if ((allUser.get(i).role.roleName)
 								.equals("idea developer")
-								&& (allUser.get(i).organization).equals(org)) {
+								&& (allUser.get(i).organization).equals(org) && !(user.contains(allUser.get(i)))) {
 							user.add(allUser.get(i).enrolled);
 						}
 					}
@@ -450,7 +455,13 @@ public class Topics extends CRUD {
 				}
 			}
 		}
-		searchList.addAll(user);
+		
+		
+		for(int i = 0; i < user.size(); i ++) {
+			if(!searchList.contains(user.get(i)))
+				searchList.add(user.get(i));
+		}
+		//searchList.addAll(user);
 		int size = searchList.size();
 		for (int i = 0; i < size; i++) {
 			if (searchList.get(i).state.equals("d")
@@ -458,12 +469,8 @@ public class Topics extends CRUD {
 				searchList.remove(i);
 			}
 		}
-		for(int i = 0; i< size; i++) {
-			for(int j = 1; j< size; j++) {
-				if(searchList.get(i).equals(searchList.get(j)))
-					searchList.remove(searchList.get(j));
-			}
-		}
+		
+		
 		return searchList;
 
 	}
