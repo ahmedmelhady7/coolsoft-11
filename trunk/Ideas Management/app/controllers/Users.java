@@ -582,7 +582,7 @@ public class Users extends CRUD {
 			// List<UserRoleInOrganization> l =
 			// UserRoleInOrganization.find("byOrganizationAnd")
 			if (user.equals(org.creator)) {
-				if (Roles.getRoleActions("organization lead").contains(action)) {
+				if (Roles.getRoleActions("organizationLead").contains(action)) {
 					return true;
 				} else {
 					if (Roles.getRoleActions("organizer").contains(action)) {
@@ -626,7 +626,7 @@ public class Users extends CRUD {
 			MainEntity m = topic.entity;
 			Organization org = m.organization;
 			if (user.equals(org.creator)) {
-				if (Roles.getRoleActions("organization lead").contains(action)) {
+				if (Roles.getRoleActions("organizationLead").contains(action)) {
 					return true;
 				} else {
 					if (Roles.getRoleActions("organizer").contains(action)) {
@@ -686,7 +686,7 @@ public class Users extends CRUD {
 			MainEntity entity = MainEntity.findById(placeId);
 			Organization org = entity.organization;
 			if (user.equals(org.creator)) {
-				if (Roles.getRoleActions("organization lead").contains(action)) {
+				if (Roles.getRoleActions("organizationLead").contains(action)) {
 					return true;
 				} else {
 					if (Roles.getRoleActions("organizer").contains(action)) {
