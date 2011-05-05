@@ -212,27 +212,25 @@ public class Topics extends CRUD {
 		return (ArrayList<Topic>) closedtopics;
 	}
 
-//	/**
-//	 * 
-//	 * This method gets a list of followers for a certain topic
-//	 * 
-//	 * @author Omar Faruki
-//	 * 
-//	 * @story C2S29
-//	 * 
-//	 * @param id
-//	 *            : id of the topic
-//	 * 
-//	 * @return void
-//	 */
-//	public static void viewFollowers(long id) {
-//		Topic topic = Topic.findById(id);
-//		notFoundIfNull(topic);
-//		List<User> follow = topic.followers;
-//		render(follow);
-//	}
-	
-	
+	// /**
+	// *
+	// * This method gets a list of followers for a certain topic
+	// *
+	// * @author Omar Faruki
+	// *
+	// * @story C2S29
+	// *
+	// * @param id
+	// * : id of the topic
+	// *
+	// * @return void
+	// */
+	// public static void viewFollowers(long id) {
+	// Topic topic = Topic.findById(id);
+	// notFoundIfNull(topic);
+	// List<User> follow = topic.followers;
+	// render(follow);
+	// }
 
 	/**
 	 * This Method sends a request to post on a topic for a user to the
@@ -309,23 +307,23 @@ public class Topics extends CRUD {
 		Topic topic = Topic.findById(topicId);
 		MainEntity entity = topic.entity;
 		Organization org = entity.organization;
-		
+
 		ArrayList<User> searchList = (ArrayList) User.find("byIsAdmin", true)
 				.fetch();
-		if(! searchList.contains(org.creator))
-		searchList.add(org.creator);
+		if (!searchList.contains(org.creator))
+			searchList.add(org.creator);
 		// searchList.add(topic.creator);
 
 		ArrayList<User> organizers = (ArrayList) topic.getOrganizer();
-		for(int i = 0; i < organizers.size(); i ++) {
-			if(!searchList.contains(organizers.get(i)))
+		for (int i = 0; i < organizers.size(); i++) {
+			if (!searchList.contains(organizers.get(i)))
 				searchList.add(organizers.get(i));
 		}
-		
 
 		List<BannedUser> bannedUserTopic = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"all", "topic", topicId).fetch(); // List of blocked users from a
+				"all", "topic", topicId).fetch(); // List of blocked users from
+													// a
 		// topic
 		List<BannedUser> bannedUserEntity = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
@@ -337,7 +335,11 @@ public class Topics extends CRUD {
 		// from an organization
 		List<BannedUser> bannedUserPlan = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"can post ideas to a Topic", "topic", topicId).fetch(); // list of users banned from
+				"can post ideas to a Topic", "topic", topicId).fetch(); // list
+																		// of
+																		// users
+																		// banned
+																		// from
 		// posting ideas in the
 		// topic
 
@@ -366,11 +368,12 @@ public class Topics extends CRUD {
 			// allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
 			// .find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
 			// org, id, "idea developer", "topic");
-			allUser = UserRoleInOrganization.find("byEntityTopicIDAndType", topicId,
-					"topic").fetch();
+			allUser = UserRoleInOrganization.find("byEntityTopicIDAndType",
+					topicId, "topic").fetch();
 			for (int i = 0; i < allUser.size(); i++) {
 				if ((allUser.get(i).role.roleName).equals("idea developer")
-						&& (allUser.get(i).organization).equals(org) && !(user.contains(allUser.get(i)))) {
+						&& (allUser.get(i).organization).equals(org)
+						&& !(user.contains(allUser.get(i)))) {
 					user.add(allUser.get(i).enrolled);
 				}
 			}
@@ -396,7 +399,8 @@ public class Topics extends CRUD {
 				allUser = UserRoleInOrganization.find("byOrganization", org)
 						.fetch();
 				for (int i = 0; i < allUser.size(); i++) {
-					if ((allUser.get(i).role.roleName).equals("idea developer") && !(user.contains(allUser.get(i)))) {
+					if ((allUser.get(i).role.roleName).equals("idea developer")
+							&& !(user.contains(allUser.get(i)))) {
 						user.add(allUser.get(i).enrolled);
 					}
 				}
@@ -430,7 +434,8 @@ public class Topics extends CRUD {
 					for (int i = 0; i < allUser.size(); i++) {
 						if ((allUser.get(i).role.roleName)
 								.equals("idea developer")
-								&& (allUser.get(i).organization).equals(org) && !(user.contains(allUser.get(i)))) {
+								&& (allUser.get(i).organization).equals(org)
+								&& !(user.contains(allUser.get(i)))) {
 							user.add(allUser.get(i).enrolled);
 						}
 					}
@@ -456,13 +461,12 @@ public class Topics extends CRUD {
 				}
 			}
 		}
-		
-		
-		for(int i = 0; i < user.size(); i ++) {
-			if(!searchList.contains(user.get(i)))
+
+		for (int i = 0; i < user.size(); i++) {
+			if (!searchList.contains(user.get(i)))
 				searchList.add(user.get(i));
 		}
-		//searchList.addAll(user);
+		// searchList.addAll(user);
 		int size = searchList.size();
 		for (int i = 0; i < size; i++) {
 			if (searchList.get(i).state.equals("d")
@@ -470,8 +474,7 @@ public class Topics extends CRUD {
 				searchList.remove(i);
 			}
 		}
-		
-		
+
 		return searchList;
 
 	}
@@ -511,19 +514,18 @@ public class Topics extends CRUD {
 
 		// send notification to organizers
 
-		//Notifications.sendNotification(targetTopic.getOrganizer(),
+		// Notifications.sendNotification(targetTopic.getOrganizer(),
 
-//		Notifications.sendNotification(targetTopic.getOrganizer(),
-//				targetTopic.id, "Topic", notificationDescription);
-//
-//		// send notification to followers
-//		Notifications.sendNotification(targetTopic.followers, targetTopic.id,
-//				"Topic", notificationDescription);
+		// Notifications.sendNotification(targetTopic.getOrganizer(),
+		// targetTopic.id, "Topic", notificationDescription);
+		//
+		// // send notification to followers
+		// Notifications.sendNotification(targetTopic.followers, targetTopic.id,
+		// "Topic", notificationDescription);
 
 		// send notification to followers
-		//Notifications.sendNotification(targetTopic.followers, targetTopic.id,
-			//	"Topic", notificationDescription);
-
+		// Notifications.sendNotification(targetTopic.followers, targetTopic.id,
+		// "Topic", notificationDescription);
 
 	}
 
@@ -564,21 +566,20 @@ public class Topics extends CRUD {
 		// purposes
 		tmp.creator = myUser;
 
-		/* if( !Users.isPermitted(tmp.creator , "post topics",
-		 topicEntity.getId(), "entity")) { message =
-		 "Sorry but you are not allowed to post topics in this entity";
-		 System.out.println(message);
-		 try {
-		 System.out.println("create() render try");
-		render(request.controller.replace(".", "/") + "/blank.html",
-		entityid, type, tmp.title, tmp.entity, tmp.description,
-		message, entityid);
-		} catch (TemplateNotFoundException e) {
-		 System.out.println("create() render catch");
-		render("CRUD/blank.html", type, entityid);
-		}}*/
-		System.out.println("the idea beforew validation check" + tmp.toString());
-
+		/*
+		 * if( !Users.isPermitted(tmp.creator , "post topics",
+		 * topicEntity.getId(), "entity")) { message =
+		 * "Sorry but you are not allowed to post topics in this entity";
+		 * System.out.println(message); try {
+		 * System.out.println("create() render try");
+		 * render(request.controller.replace(".", "/") + "/blank.html",
+		 * entityid, type, tmp.title, tmp.entity, tmp.description, message,
+		 * entityid); } catch (TemplateNotFoundException e) {
+		 * System.out.println("create() render catch");
+		 * render("CRUD/blank.html", type, entityid); }}
+		 */
+		System.out
+				.println("the idea beforew validation check" + tmp.toString());
 
 		if (tmp.entity == null) {
 			message = "A Topic must belong to an entity";
@@ -624,19 +625,21 @@ public class Topics extends CRUD {
 		// tmp.entity.organization, cal.getTime() );
 		String message2 = tmp.creator.username + " has Created the topic "
 				+ tmp.title + " in " + tmp.entity;
-		if(tmp.followers != null){
-			for(int i = 0; i<tmp.followers.size(); i++)
-			Notifications.sendNotification(tmp.followers.get(i).getId(), tmp.id, "Topic","A new Topic "
-			 + tmp.title + " has been added in entity" + tmp.entity.name);
-			}
+		if (tmp.followers != null) {
+			for (int i = 0; i < tmp.followers.size(); i++)
+				Notifications
+						.sendNotification(tmp.followers.get(i).getId(), tmp.id,
+								"Topic", "A new Topic " + tmp.title
+										+ " has been added in entity"
+										+ tmp.entity.name);
+		}
 
-		
-		  List<User> users = Users.getEntityOrganizers(tmp.entity);
-		  users.add(tmp.entity.organization.creator);
-		  for(int i=0;i<users.size();i++)
-		  Notifications.sendNotification(users.get(i).id, tmp.id, "Topic", "A new Topic "
-		  + tmp.title + " has been added in entity" + tmp.entity.name);
-		 
+		List<User> users = Users.getEntityOrganizers(tmp.entity);
+		users.add(tmp.entity.organization.creator);
+		for (int i = 0; i < users.size(); i++)
+			Notifications.sendNotification(users.get(i).id, tmp.id, "Topic",
+					"A new Topic " + tmp.title + " has been added in entity"
+							+ tmp.entity.name);
 
 		// tmp.init();
 		flash.success(Messages.get("crud.created", type.modelName,
@@ -753,7 +756,16 @@ public class Topics extends CRUD {
 		String actionClose = "close a topic and promote it to execution";
 		String actionPlan = "create an action plan to execute an idea";
 		Topic targetTopic = Topic.findById(topicIdLong);
-
+		int allowed = 0;
+		if (Users
+				.isPermitted(
+						actor,
+						"Accept/Reject requests to post in a private topic in entities he/she manages",
+						tmp.id, "topic"))
+			allowed = 1;
+		System.out.println(actor);
+		System.out.println(tmp);
+		System.out.println(allowed);
 		if (targetTopic.getOrganizer().contains(actor)) {
 			if (Users.isPermitted(actor, actionClose, topicIdLong, "topic")) {
 				canClose = 1;
@@ -767,7 +779,7 @@ public class Topics extends CRUD {
 			System.out.println("show() done, about to render");
 			render(type, object, tags, creator, followers, ideas, comments,
 					entity, plan, openToEdit, privacyLevel, deletemessage,
-					deletable, topicIdLong, canClose, canPlan, targetTopic);
+					deletable, topicIdLong, canClose, canPlan, targetTopic,allowed);
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("show() done with exception, rendering to CRUD/show.html");
@@ -1020,13 +1032,14 @@ public class Topics extends CRUD {
 		// Logs.addLog( myUser, "add", "Task", tmp.id, tmp.entity.organization,
 		// cal.getTime() );
 		// String message3 = myUser.username + " has editted the topic " +
-		 List<User> users = Users.getEntityOrganizers(tmp.entity);
-		 if(!users.contains(tmp.entity.organization.creator))
-		  users.add(tmp.entity.organization.creator);
-		  for(int i=0;i<users.size();i++)
-		  Notifications.sendNotification(users.get(i).id, tmp.id, "Topic", "User " +
-		  myUser.firstName + " has edited topic  " + tmp.title);
-		 
+		List<User> users = Users.getEntityOrganizers(tmp.entity);
+		if (!users.contains(tmp.entity.organization.creator))
+			users.add(tmp.entity.organization.creator);
+		for (int i = 0; i < users.size(); i++)
+			Notifications.sendNotification(users.get(i).id, tmp.id, "Topic",
+					"User " + myUser.firstName + " has edited topic  "
+							+ tmp.title);
+
 		System.out.println("save() done, not redirected yet");
 
 		flash.success(Messages.get("crud.saved", type.modelName,
@@ -1058,9 +1071,10 @@ public class Topics extends CRUD {
 	public static void followTopic(long topicId) {
 		User user = Security.getConnected();
 		Topic t = Topic.findById(topicId);
-		if(t.followers.contains(user)) {
+		if (t.followers.contains(user)) {
 			System.out.println("You are already a follower");
-		} else if (Users.isPermitted(user, "can follow organization/entities/topics", topicId, "topic")) {
+		} else if (Users.isPermitted(user,
+				"can follow organization/entities/topics", topicId, "topic")) {
 			t.followers.add(user);
 			t.save();
 			user.topicsIFollow.add(t);
@@ -1069,6 +1083,7 @@ public class Topics extends CRUD {
 			System.out.println("Sorry! Action cannot be performed");
 		}
 	}
+
 	public static void viewFollowers(long topicId, String f) {
 		Topic topic = Topic.findById(topicId);
 		if (f.equals("true")) {

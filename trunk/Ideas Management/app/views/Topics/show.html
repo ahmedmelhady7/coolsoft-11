@@ -59,7 +59,11 @@
 	
 		<button type="submit" onclick= > Edit </button>
 		<br />
-	
+	        #{if allowed==1}
+      <a href="@{RequestToJoins.viewRequests(1,object.id)}">Requests</a>		
+           #{/if}
+		   <br>
+		   <br>
 			#{/form}
 			
 			<!-- closing topic and reopen buttons -->
