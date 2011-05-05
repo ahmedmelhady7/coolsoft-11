@@ -899,80 +899,7 @@ public class Users extends CRUD {
 		return entities;
 	}
 
-	/**
-	 * 
-	 ======= >>>>>>> .r797 This method returns list of entities within a
-	 * specific organization that a user is enrolled in as organizer or
-	 * organization lead (or admin)
-	 * 
-	 * @author {Mai Magdy}
-	 * 
-	 * @param org
-	 *            the organization that we want to search within its entities
-	 * 
-	 * 
-	 * @return list<MainEntity>
-	 */
-
-	public static List<MainEntity> getOrganizerEntities(Organization org,
-			User user) {
-
-		List<MainEntity> list = new ArrayList<MainEntity>();
-		if (org.creator.equals(user) || user.isAdmin) {
-			return org.entitiesList;
-		}
-
-		else {
-			for (int i = 0; i < org.entitiesList.size(); i++) {
-				if (UserRoleInOrganizations.isOrganizer(user,
-						org.entitiesList.get(i).id, "entity")
-						&& isPermitted(user, "invite",
-								org.entitiesList.get(i).id, "entity"))
-					list.add(org.entitiesList.get(i));
-
-			}
-		}
-
-		return list;
-	}
-
-	/**
-	 * 
-	 * This method returns list of organizations that a user is enrolled in as
-	 * organizer or organization lead (or admin)
-	 * 
-	 * @author {Mai Magdy}
-	 * 
-	 * @param user
-	 * 
-	 * 
-	 * @return list<Organization>
-	 */
-
-	public static List<Organization> getOrganizerOrganization(User user) {
-
-		List<Organization> list = new ArrayList<Organization>();
-		List<Organization> org = Organization.findAll();
-
-		for (int i = 0; i < org.size(); i++) {
-			List<User> organizer = new ArrayList<User>();
-
-			if (org.get(i).creator.equals(user) || user.isAdmin)
-				list.add(org.get(i));
-			else {
-				organizer = searchOrganizer(org.get(i));
-
-				for (int j = 0; j < organizer.size(); j++) {
-					if (organizer.get(j).equals(user)
-							&& isPermitted(user, "invite", org.get(i).id,
-									"organization"))
-						list.add(org.get(i));
-				}
-			}
-		}
-
-		return list;
-	}
+	
 
 	/**
 	 * This method overrides the CRUD create method that is used to create a new
@@ -1259,7 +1186,7 @@ public class Users extends CRUD {
 	 * @return void
 	 */
 
-	public static void acceptToJoinOrg(long invId, long userId, boolean r) {
+	/*public static void acceptToJoinOrg(long invId, long userId, boolean r) {
 		Invitation inv = Invitation.findById(invId);
 		Organization org = inv.organization;
 		User user = User.findById(userId);
