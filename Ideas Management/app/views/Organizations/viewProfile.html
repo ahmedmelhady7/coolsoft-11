@@ -48,6 +48,40 @@
         <form action="@{Topics.requestToPost()}">
             <input type="hidden" name="orgId" value="${org.id}">Request to post: <input type="submit" value="view">
         </form>
+
+        #{if flag == 1}
+        <form action="@{BannedUsers.restrictOrganizer()}">
+            <input type="hidden" name="orgId" value='${org.id}'>Restrict organizer in this organization: <input type="submit" value="view">
+        </form>
+        #{/if}
+        
+<!--     </body> -->
+<!-- </html> -->
+<!-- <script type="text/javascript"> -->
+<!-- function test(){ -->
+	
+<!-- 	//var v = document.getElementById('selec').selectedIndex; -->
+<!-- 	var a = document.getElementById('selec').value; -->
+<!-- 	//alert("function" +  a); -->
+<!-- 	if(a!='Tags') -->
+<!-- 	if(a == 0){ -->
+<!-- 		//alert("function2" +  ${org.id}); -->
+<!-- 	$.post('@{Organizations.enableTags()}',{id:${org.id}}); -->
+<!-- 		alert("Options is enabled"); -->
+<!-- 	} -->
+<!-- 	else{ -->
+		
+<!-- 		//alert("function2" +  ${org.id}); -->
+<!-- 	$.post('@{Organizations.disableTags()}',{id:${org.id}}); -->
+<!-- 		alert("Options is disabled"); -->
+	
+<!-- 	} -->
+
+<!-- 	} -->
+
+<!-- </script> -->
+
+<!-- ======= -->
         <form action="@{Organizations.viewFollowers()}">
             <HR><input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="f" value="true">#{if (!org.followers.contains(user))}
             <p>
@@ -105,3 +139,4 @@
             }
             </script>
             -->
+>>>>>>> .r952
