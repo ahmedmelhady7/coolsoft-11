@@ -94,7 +94,7 @@ public class Invitations extends CRUD {
 
 		List<User> users = new ArrayList<User>();
 		for (int i = 0; i < filter.size(); i++) {
-			if (!organizers.contains(filter.get(i)))
+			if (!organizers.contains(filter.get(i)) || filter.get(i).isAdmin)
 				users.add(filter.get(i));
 		}
 
@@ -191,7 +191,7 @@ public class Invitations extends CRUD {
 				User u=User.find("byEmail", email).first();
 			
 	    	for (int i = 0; i <organizers.size(); i++) {
-				if (organizers.contains(u))
+				if (organizers.contains(u)|| u.isAdmin)
 					flag=false;
 			}
 			
