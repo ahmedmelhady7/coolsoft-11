@@ -58,10 +58,11 @@ public class Bootstrap extends Job {
 			// System.out.println("in2");
 
 			Organization org1 = new Organization("GUC", u1, (short) 2, true);
-			org1.enrolledUsers.add(u1);
+		//org1.enrolledUsers.add(u1);
 			//org1.enrolledUsers.add(u2);
-			org1.enrolledUsers.add(u3);
-			org1.enrolledUsers.add(u4);
+			//org1.enrolledUsers.add(u3);
+			//org1.enrolledUsers.add(u4);
+
 
 			// System.out.println("in3");
 			org1._save();
@@ -77,14 +78,14 @@ public class Bootstrap extends Job {
 			MainEntity me1 = new MainEntity("MET",
 					"Media Engineering and technology", org1);
 			//me1.organizers.add(u2);
-			me1.organizers.add(u1);
+		//	me1.organizers.add(u1);
 			me1.tagList.add(t1);
 			me1._save();
 
 			MainEntity me2 = new MainEntity("CS",
 					"Computer Science and Engineering", me1, org1);
-			me2.organizers.add(u2);
-			me2.organizers.add(u1);
+			//me2.organizers.add(u2);
+			//me2.organizers.add(u1);
 			me2.tagList.add(t2);
 			me2._save();
 			System.out.println("in4");
