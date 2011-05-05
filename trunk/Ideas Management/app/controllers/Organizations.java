@@ -3,9 +3,11 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.oval.constraint.Email;
 import notifiers.Mail;
 
 import play.data.validation.Required;
+import play.data.validation.Validation;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import play.mvc.Controller;
@@ -164,21 +166,22 @@ public class Organizations extends CRUD {
 	 * @return void
 	 */
 
-	public static void sendInvitation(long orgId, String email, long userId) {
-		Organization org = Organization.findById(orgId);
-		User sender = User.findById(userId);
-		Invitation inv = new Invitation(email, null, org, "Idea Developer",
-				sender);
-		inv._save();
-		User rec = User.find("byEmail", email).first();
-		if (rec != null) {
-			rec.invitation.add(inv);
-			rec._save();
+	public static void sendInvitation(long orgId,
+			@play.data.validation.Email String email) {
+		if (!Validation.hasError(email)) {
+			Organization org = Organization.findById(orgId);
+			User sender = Security.getConnected();
+			Invitation inv = new Invitation(email, null, org, "Idea Developer",
+					sender);
+			inv._save();
+			User rec = User.find("byEmail", email).first();
+			if (rec != null) {
+				rec.invitation.add(inv);
+				rec._save();
+			}
+			Mail.invite(email, "Idea Devoloper", org.name, "");
 		}
-		Mail.invite(email, "Idea Devoloper", org.name, "");
-
 	}
-
 
 	/**
 	 * This method creates a new Organization
@@ -201,7 +204,7 @@ public class Organizations extends CRUD {
 	 *            tags
 	 */
 	public static void createOrganization(@Required String name,
-		String privacyLevel, String createTag) {
+			String privacyLevel, String createTag) {
 		System.out.println("HEEEEEEEE");
 		User creator = Security.getConnected();
 		if (validation.hasErrors()) {
@@ -216,28 +219,26 @@ public class Organizations extends CRUD {
 					+ "Please choose another organization name.");
 			render();
 		}
-		int privacyLevell = 0; 
-		if(privacyLevel.equals("Public")) {
+		int privacyLevell = 0;
+		if (privacyLevel.equals("Public")) {
 			privacyLevell = 2;
-		}
-		else{
-			if(privacyLevel.equals("Private")) {
+		} else {
+			if (privacyLevel.equals("Private")) {
 				privacyLevell = 1;
 			}
 		}
 		boolean createTagg = false;
-		if(createTag.equals("Yes")) {
+		if (createTag.equals("Yes")) {
 			createTagg = true;
 		}
 		Organization org = new Organization(name, creator, privacyLevell,
 				createTagg).save();
-		MainEntity m = new MainEntity("Default","",org);
+		MainEntity m = new MainEntity("Default", "", org);
 		m.save();
-		
+
 		org.enrolledUsers.add(creator);
 		flash.success("Your organization has been created.");
 	}
-
 
 	/**
 	 * The method that allows a user to follow a certain organization
@@ -252,15 +253,14 @@ public class Organizations extends CRUD {
 	 * @param user
 	 *            : The user who wants to follow an organization
 	 */
-	
+
 	public static void viewFollowers(long organizationId, String f) {
-		Organization org = Organization.findById(organizationId);		
-		if(f.equals("true")) {
+		Organization org = Organization.findById(organizationId);
+		if (f.equals("true")) {
 			followOrganization(organizationId);
 		}
-		render(org);			
+		render(org);
 	}
-	
 
 	public static void followOrganization(long organizationId) {
 		User user = Security.getConnected();
@@ -276,17 +276,17 @@ public class Organizations extends CRUD {
 	}
 
 	/**
-	 * This method render a view that gets all organizations on the system with the ability to go to the
-	 * create organization page
+	 * This method render a view that gets all organizations on the system with
+	 * the ability to go to the create organization page
 	 * 
 	 * @author Omar Faruki
 	 */
-	public static void mainPage(){
+	public static void mainPage() {
 		User user = Security.getConnected();
 		List<Organization> organizations = Organization.findAll();
 		render(user, organizations);
 	}
-	
+
 	/**
 	 * This method render the main Profile Page of a specific organization
 	 * 
@@ -302,27 +302,35 @@ public class Organizations extends CRUD {
 		int i = 0;
 		boolean loop = false;
 		if (tags.isEmpty()) {
-		while(i < allTags.size()) {
-			if (allTags.get(i).createdInOrganization.privacyLevel == 2) {
-				tags.add(allTags.get(i));
-				loop = true;				
+			while (i < allTags.size()) {
+				if (allTags.get(i).createdInOrganization.privacyLevel == 2) {
+					tags.add(allTags.get(i));
+					loop = true;
+				}
+				i++;
 			}
-			i++;
 		}
-		}
-		if(loop == false) {
-				while(i < allTags.size()) {
-					if (!tags.contains(allTags.get(i)) && (allTags.get(i).createdInOrganization.privacyLevel == 2)) {
-						tags.add(allTags.get(i));
-					}
-					i++;
+		if (loop == false) {
+			while (i < allTags.size()) {
+				if (!tags.contains(allTags.get(i))
+						&& (allTags.get(i).createdInOrganization.privacyLevel == 2)) {
+					tags.add(allTags.get(i));
+				}
+				i++;
 			}
-		List<MainEntity> entities = org.entitiesList;
-		boolean enrolled = false;
-		if(org.enrolledUsers.contains(user)) {
-			enrolled = true;
+			List<MainEntity> entities = org.entitiesList;
+			boolean enrolled = false;
+			if (org.enrolledUsers.contains(user)) {
+				enrolled = true;
+			}
+			int b = 0;
+			if (Users.isPermitted(user,
+					"Invite a user to join a private or secret organization",
+					org.id, "organization")
+					&& org.privacyLevel != 2) {
+				b = 1;
+			}
+			render(user, org, entities, enrolled, tags, b);
 		}
-		render(user, org, entities, enrolled, tags);
 	}
-}
 }
