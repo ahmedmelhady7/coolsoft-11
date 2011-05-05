@@ -328,6 +328,9 @@ public class Organizations extends CRUD {
 		List<Tag> tags = org.createdTags;
 		List<Tag> allTags = Tag.findAll();
 		int i = 0;
+		int allowed=0;
+		if(Users.isPermitted(user,  "accept/reject join requests from users to join a private organization", id, "organization"))
+			allowed=1;
 		boolean loop = false;
 		if (tags.isEmpty()) {
 			while (i < allTags.size()) {
@@ -375,7 +378,7 @@ public class Organizations extends CRUD {
 				flag = 1;		
 			}
 			boolean admin = user.isAdmin;
-			render(user, org, entities, requestToJoin, tags ,flag , b, admin);
+			render(user, org, entities, requestToJoin, tags ,flag , b, admin,allowed);
 
 }
 	public static void viewAllOrganizations() {

@@ -7,7 +7,11 @@
     <body>
         #{extends 'main.html' /}
         <center><big><b>${org.name}</b></big></center><br><br>
-
+		#{if allowed==1}
+      <a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>		
+           #{/if}
+		   <br>
+		   <br>
 		#{if (requestToJoin == true) && (!admin)}
 		<form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
 			<input type="hidden" id="orgId" name="orgId" value="${org.id}">
