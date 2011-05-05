@@ -61,7 +61,6 @@ public class AssignRequests extends CRUD {
 	 */
 	public static void viewUsers( long itemId, long planId) {
 		User loggedUser = Security.getConnected();
-		System.out.println(itemId + "ITEMID");
 		System.out.println(users2.size() + "OFEEEEEEEEEEEEEEEENNN");
 		ArrayList<User> users = new ArrayList<User>();
 		for(User user:users2){
