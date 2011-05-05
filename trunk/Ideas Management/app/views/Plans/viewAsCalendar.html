@@ -1,86 +1,88 @@
-
 #{extends 'planLayout.html' /}
 <head>
-    
-    <title>View Plan As Calendar</title>
+<link rel='stylesheet' type='text/css' href="@{'/public/stylesheets/fullcalendar.css'}" >
+<link rel='stylesheet' type='text/css' href="@{'/public/stylesheets/fullcalendar.print.css'}" media='print'>
+<script type='text/javascript' src="@{'/public/javascripts/jquery-1.5.2.min.js'}"></script>
+<script type='text/javascript' src="@{'/public/javascripts/jquery-ui-1.8.11.custom.min.js'}"></script>
+<script type='text/javascript' src="@{'/public/javascripts/fullcalendar.min.js'}"></script>
+<script type='text/javascript'>
 
-   
-    <link rel="stylesheet" type="text/css" href="@{'/public/stylesheets/core.css'}" >
+	$(document).ready(function() {
+	
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
 		
-    
-    <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript"></script>
-    <script src="@{'/public/javascripts/jMonthCalendar.js'}" type="text/javascript"></script>
+		$('#calendar').fullCalendar({
+			editable: true,
+			events: [
+				{
+					title: 'All Day Event',
+					start: new Date(y, m, 1)
+				},
+				{
+					title: 'Long Event',
+					start: new Date(y, m, d-5),
+					end: new Date(y, m, d-2)
+				},
+				{
+					id: 999,
+					title: 'Repeating Event',
+					start: new Date(y, m, d-3, 16, 0),
+					allDay: false
+				},
+				{
+					id: 999,
+					title: 'Repeating Event',
+					start: new Date(y, m, d+4, 16, 0),
+					allDay: false
+				},
+				{
+					title: 'Meeting',
+					start: new Date(y, m, d, 10, 30),
+					allDay: false
+				},
+				{
+					title: 'Lunch',
+					start: new Date(y, m, d, 12, 0),
+					end: new Date(y, m, d, 14, 0),
+					allDay: false
+				},
+				{
+					title: 'Birthday Party',
+					start: new Date(y, m, d+1, 19, 0),
+					end: new Date(y, m, d+1, 22, 30),
+					allDay: false
+				},
+				{
+					title: 'Click for Google',
+					start: new Date(y, m, 28),
+					end: new Date(y, m, 29),
+					url: ''
+				}
+			]
+		});
+		
+	});
 
+</script>
+<style type='text/css'>
 
-	
-	
-	
-    <script type="text/javascript">
-    $().ready(function() {
-var options = {
+	body {
+		margin-top: 20px;
+		text-align: left;
+		font-size: 14px;
+		}
 
-height: 650,
-width: 980,
-navHeight: 25,
-labelHeight: 25,
+	#calendar {
+		width: 600px;
+		margin: 0 auto;
+		}
 
-onMonthChanging: function(dateIn) {
-	
- /*$.getJSON("http://localhost:9000/controller/Plans",function(data) {
-
-                 
-var events = new Array();
-
-
-                    $.each(data, function(i, item) {
-
-var oResultData = eval('(' + item + ')');
-var event = { "EventID": oResultData.id, "Date": oResultData.endDate,"Title": oResultData.status, "URL": "","Description": oResultData.summary,
-"CssClass":""
-};
-
-events.push(event);
-
-});
-
-
-                    $.jMonthCalendar.ReplaceEventCollection(events);
-$.jMonthCalendar.DrawCalendar(dateIn);
-});*/
-
-$.jMonthCalendar.ReplaceEventCollection(events);
-$.jMonthCalendar.DrawEventsOnCalendar();
-$.jMonthCalendar.DrawCalendar(dateIn);
-var events=[{"EventID": 1, "Date": new Date(2011,5,5),"Title":"ttt", "URL": "","Description": "testt",
-"CssClass":"Meeting"}];
-return true;
-},
-onEventBlockOver: function(event) {
-return true;
-},
-onEventBlockOut: function(event) {
-return true;
-},
-onDayLinkClick: function(date) {
-return true;
-},
-onDayCellClick: function(date) {
-return true;
-}
-};
-
-var newevents = [];
-$.jMonthCalendar.Initialize(options, newevents);
-});</script>
-
+</style>
 </head>
 <body>
-
-	<center>
-		<div id="jMonthCalendar"></div>
-
-		
-	</center>
-
+<div id='calendar'></div>
 </body>
 </html>
