@@ -329,7 +329,7 @@ public class Topics extends CRUD {
 		// from an organization
 		List<BannedUser> bannedUserP = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"post idea", "topic", id).fetch(); // list of users banned from
+				"can post ideas to a Topic", "topic", id).fetch(); // list of users banned from
 		// posting ideas in the
 		// topic
 
@@ -451,9 +451,15 @@ public class Topics extends CRUD {
 		searchList.addAll(user);
 		int size = searchList.size();
 		for (int i = 0; i < size; i++) {
-			if (searchList.get(i).state.endsWith("d")
-					|| searchList.get(i).state.endsWith("n")) {
+			if (searchList.get(i).state.equals("d")
+					|| searchList.get(i).state.equals("n")) {
 				searchList.remove(i);
+			}
+		}
+		for(int i = 0; i< size; i++) {
+			for(int j = 1; j< size; j++) {
+				if(searchList.get(i).equals(searchList.get(j)))
+					searchList.remove(searchList.get(j));
 			}
 		}
 		return searchList;
