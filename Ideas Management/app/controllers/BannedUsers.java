@@ -190,9 +190,9 @@ public class BannedUsers extends CRUD {
 	 * @param userId : to be restricted
 	 */
 
-	public static void restrictOrganizerHelper5(String action, String type,
+	public static void restrictOrganizerHelper5(String actionToDo, String type,
 			long entityTopicId, long userId) {
-
+      System.out.println(actionToDo);
 		boolean changed = true;
 		if (type.equalsIgnoreCase("topic")) {
 
@@ -201,18 +201,19 @@ public class BannedUsers extends CRUD {
 			Organization org = entity.organization;
 			long organizationId = org.getId();
 			changed = BannedUser.banFromActionInTopic(userId, organizationId,
-					action, entityTopicId);
+					actionToDo, entityTopicId);
 		}
 
 		else {
 			MainEntity entity = MainEntity.findById(entityTopicId);
 			Organization org = entity.organization;
 			long organizationId = org.getId();
-			changed = BannedUser.banFromActionInTopic(userId, organizationId,
-					action, entityTopicId);
+			changed = BannedUser.banFromActionInEntity(userId, organizationId,
+					actionToDo, entityTopicId);
 		}
 		List restricted = new ArrayList<User>();
 		restricted.add(User.findById(userId));
+		
 		
 //		Notifications.sendNotification(restricted, Security.getConnected().getId(),
 //				"user", "you have been restricted from the following action :" + action  +" " );
