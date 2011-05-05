@@ -235,8 +235,8 @@ public class Organizations extends CRUD {
 				createTagg).save();
 		MainEntity m = new MainEntity("Default", "", org);
 		m.save();
-
-		org.enrolledUsers.add(creator);
+///////////plz remove
+	//	org.enrolledUsers.add(creator);
 		flash.success("Your organization has been created.");
 	}
 
@@ -318,11 +318,13 @@ public class Organizations extends CRUD {
 				}
 				i++;
 			}
+		}
 			List<MainEntity> entities = org.entitiesList;
 			boolean enrolled = false;
-			if (org.enrolledUsers.contains(user)) {
-				enrolled = true;
-			}
+	//plzzzzzz remove		
+//			if (org.enrolledUsers.contains(user)) {
+//				enrolled = true;
+//			}
 			int b = 0;
 			if (Users.isPermitted(user,
 					"Invite a user to join a private or secret organization",
@@ -330,7 +332,21 @@ public class Organizations extends CRUD {
 					&& org.privacyLevel != 2) {
 				b = 1;
 			}
-			render(user, org, entities, enrolled, tags, b);
-		}
+			
+			int flag = 0;
+			if ((Security.getConnected() ==  org.creator) || (Security.getConnected().isAdmin)){
+				flag = 1;
+				
+			}
+			
+		
+
+		
+		
+		
+		render(user, org, entities, enrolled, tags ,flag ,b);
+		
+
+
 	}
 }
