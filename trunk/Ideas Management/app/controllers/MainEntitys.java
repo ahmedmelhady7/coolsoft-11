@@ -87,7 +87,15 @@ public class MainEntitys extends CRUD {
 		Organization org = entity.organization;
 		List<MainEntity> subentities = entity.subentities;
 		List<Topic> topicList = entity.topicList;
-		render(user, org, entity, subentities, topicList);
+		int permission =1;
+
+				 
+				 if( !Users.isPermitted(user , "post topics",
+						 entity.id, "entity")) {
+					 permission =0;
+				 }
+		
+		render(user, org, entity, subentities, topicList, permission);
 	}
 	
 
