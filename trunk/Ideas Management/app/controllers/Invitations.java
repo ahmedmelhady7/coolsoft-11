@@ -40,12 +40,12 @@ public class Invitations extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void invite(long orgId,long entId) {
+	public static void invite(long entId) {
          
-		Organization org=Organization.findById(orgId);
+		//Organization org=Organization.findById(orgId);
         MainEntity ent= MainEntity.findById(entId);      User u=Security.getConnected();
-       
-		render(ent,org);
+        System.out.println("id"+entId);
+		render(ent);
 
 	}
 
@@ -70,25 +70,27 @@ public class Invitations extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void SearchUsers(long orgId,long entId,@Required String name) {
+	public static void SearchUsers(long entId,@Required String name) {
 
         
-        Organization org=Organization.findById(((long)1));
-        MainEntity ent= MainEntity.findById(((long)1));
+       // Organization org=Organization.findById(((long)1));
+       // MainEntity ent= MainEntity.findById(((long)1));
+     //   Organization org=Organization.findById(entId);
+        MainEntity ent= MainEntity.findById(entId);
         User u= Security.getConnected();
         
         
 		
 		if (validation.hasErrors()) {
 			flash.error("Please enter a name first!");
-			invite(orgId,entId);
+			invite(entId);
 		}
          
 	 
 		List<User> filter = new ArrayList<User>();
 		filter = Users.searchUser(name);
 		List<User> organizers = Users.getEntityOrganizers(ent);
-		organizers.add(org.creator);
+		organizers.add(ent.organization.creator);
 
 		List<User> users = new ArrayList<User>();
 		for (int i = 0; i < filter.size(); i++) {
@@ -96,7 +98,7 @@ public class Invitations extends CRUD {
 				users.add(filter.get(i));
 		}
 
-		render(users, ent,org);
+		render(users, ent);
 	}
 
 	/**
@@ -121,13 +123,13 @@ public class Invitations extends CRUD {
 	 * 
 	 * @return void
 	 */
-	public static void Page(long orgId,long entId, long id) {
+	public static void Page(long entId, long id) {
 		
-		Organization org=Organization.findById(orgId);
+	//	Organization org=Organization.findById(orgId);
         MainEntity ent= MainEntity.findById(entId);
 		System.out.println(id);
 		User user=User.findById(id);
-		render(ent,org,id,user);
+		render(ent,id,user);
 	}
 
 	/**
@@ -155,21 +157,19 @@ public class Invitations extends CRUD {
 	 */
 
 
-	 public static void send(@Required String email,String role,
-			 long orgId,long entId,long id){
+	 public static void send(@Required String email,
+			 long entId,long id){
 		  
 	        
-	        Organization org=Organization.findById(((long)1));
-	        MainEntity ent= MainEntity.findById(((long)1));
+	        //Organization org=Organization.findById(((long)1));
+	       // MainEntity ent= MainEntity.findById(((long)1));
+	        MainEntity ent= MainEntity.findById(entId);
          
 		    if (!rfc2822.matcher(email).matches()) {
 			    flash.error("Invalid address");
-			    Page(orgId,entId,id);
+			    Page(entId,id);
 		    }
-			if(role.equalsIgnoreCase("select")) {
-			        flash.error("Please choose a Role");
-			        Page(orgId,entId,id);
-			    }
+		
 			
 			boolean check=false;
 			List <Invitation> inv=Invitation.findAll();
@@ -180,12 +180,12 @@ public class Invitations extends CRUD {
 			}
 			if(check==true){
 				flash.error("Invitation has already been sent to that user before");
-		        Page(orgId,entId,id);
+		        Page(entId,id);
 			}
 			
 			
 			List<User> organizers = Users.getEntityOrganizers(ent);
-			organizers.add(org.creator);
+			organizers.add(ent.organization.creator);
 			
 			if(id==0){
 			  	
@@ -199,15 +199,16 @@ public class Invitations extends CRUD {
 			
 				if(!flag) {
 			        flash.error("This user is already an organizer to this entity");
-			        Page(orgId,entId,id);
+			        Page(entId,id);
 			    }
 			}
 	         
-		     Mail.invite(email,role,org.name,ent.name);
+			 String role="Organizer";
+		     Mail.invite(email,role,ent.organization.name,ent.name);
 		    
 	    	 
 	    	 User user=Security.getConnected();
-	          user.addInvitation(email,role,org,ent);
+	          user.addInvitation(email,role,ent.organization,ent);
 	        
 	         User receiver=User.find("byEmail", email).first();
 	         if(receiver==null){
@@ -230,7 +231,7 @@ public class Invitations extends CRUD {
 			
 		       
 
-			 render(email);
+			 render(email,ent);
 		                 
 	  }
 	 private static final Pattern rfc2822 = Pattern.compile(
