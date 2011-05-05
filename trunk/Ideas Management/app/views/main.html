@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-	#{extends '/topics/layout.html' /}
+	
     <head>
         <title>#{get 'title' /}</title>
         <meta charset="utf-8">
@@ -27,8 +27,7 @@
     </style>
     <div>
         <center>
-            <img src="@{'/public/images/Picture1.jpg'}">
-            </img>
+
         </center>
     </div>
 	<form>
@@ -36,7 +35,7 @@
     </form>
 	<script type="text/javascript">
         function quickSearch(frm){
-            $.post('@{Search.quickSearch}', {
+            $.post('@{Search.quickSearch()}', {
                 keyword: frm.search.value
             }, function(){
                 window.location.href = "/searchResult";
