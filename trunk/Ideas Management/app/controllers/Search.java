@@ -68,42 +68,41 @@ public class Search extends Controller {
 	 *         this method is to render the filter_option page
 	 * 
 	 */
-	
-	public static void filter_options(){
+
+	public static void filter_options() {
 
 		List<Model> lof = listOfResults;
-		
-		render(lof,filterResult,tobepassed);
-	}
-public static void showAfterFilter(){
-	String connected = Security.connected();
-	List<Idea> ideasFound = new ArrayList<Idea>();
-	List<Organization> organizationsFound = new ArrayList<Organization>();
-	List<Topic> topicsFound = new ArrayList<Topic>();
-	List<MainEntity> entitiesFound = new ArrayList<MainEntity>();
-	for (int i = 0; i < filterResult.size(); i++) {
-		if (filterResult.get(i) instanceof Idea) {
-			ideasFound.add((Idea) filterResult.get(i));
-		}
-		if (filterResult.get(i) instanceof Topic) {
-			topicsFound.add((Topic)filterResult.get(i));
-		}
-		if (filterResult.get(i) instanceof MainEntity) {
-			entitiesFound.add((MainEntity) filterResult.get(i));
-		}
-		if (filterResult.get(i) instanceof Organization) {
-			organizationsFound.add((Organization) filterResult.get(i));
-		}
+
+		render(lof, filterResult, tobepassed);
 	}
 
-	List<Model> lof = filterResult;
-	
-	render(connected, lof, ideasFound, organizationsFound,
-			entitiesFound, topicsFound,filterResult,tobepassed);
-}
+	public static void showAfterFilter() {
+		String connected = Security.connected();
+		List<Idea> ideasFound = new ArrayList<Idea>();
+		List<Organization> organizationsFound = new ArrayList<Organization>();
+		List<Topic> topicsFound = new ArrayList<Topic>();
+		List<MainEntity> entitiesFound = new ArrayList<MainEntity>();
+		for (int i = 0; i < filterResult.size(); i++) {
+			if (filterResult.get(i) instanceof Idea) {
+				ideasFound.add((Idea) filterResult.get(i));
+			}
+			if (filterResult.get(i) instanceof Topic) {
+				topicsFound.add((Topic) filterResult.get(i));
+			}
+			if (filterResult.get(i) instanceof MainEntity) {
+				entitiesFound.add((MainEntity) filterResult.get(i));
+			}
+			if (filterResult.get(i) instanceof Organization) {
+				organizationsFound.add((Organization) filterResult.get(i));
+			}
+		}
 
-	
-	
+		List<Model> lof = filterResult;
+
+		render(connected, lof, ideasFound, organizationsFound, entitiesFound,
+				topicsFound, filterResult, tobepassed);
+	}
+
 	/**
 	 * @author Loaay Alkherbawy
 	 * 
@@ -183,7 +182,7 @@ public static void showAfterFilter(){
 			int dayA, int monthA, int yearA, int dayE, int monthE, int yearE) {
 
 		listOfResults = new ArrayList<Model>();
-		
+
 		System.out.println("Enter advSearch");
 
 		Date before = new Date(yearB, monthB, dayB);
@@ -1194,7 +1193,7 @@ public static void showAfterFilter(){
 
 			for (int i = 0; i < listOfResults.size(); i++) {
 				if (listOfResults.get(i) instanceof Idea
-						||listOfResults.get(i) instanceof Plan) {
+						|| listOfResults.get(i) instanceof Plan) {
 					tosort.add(listOfResults.get(i));
 				} else {
 					nottosort.add(listOfResults.get(i));
@@ -1240,7 +1239,7 @@ public static void showAfterFilter(){
 				sorted.add(nottosort.get(m));
 			}
 			listOfResults = sorted;
-searchResult();
+			searchResult();
 			// the previous too loops is to append to lists in one
 		}
 
@@ -1316,7 +1315,7 @@ searchResult();
 	public static void sortD(char voteOrRate) {// descending
 
 		List<Model> tosort = new ArrayList<Model>();
-		
+
 		List<Model> nottosort = new ArrayList<Model>();
 
 		if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
@@ -1376,7 +1375,7 @@ searchResult();
 			}
 
 			listOfResults = sorted;
-	searchResult();
+			searchResult();
 			// the previous too loops is to append to lists in one
 		}
 
