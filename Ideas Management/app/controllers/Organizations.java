@@ -379,9 +379,31 @@ public class Organizations extends CRUD {
 
 }
 	public static void viewAllOrganizations() {
-		List<Organization> organizations = Organization.findAll();
+		List<Organization> allOrganizations = Organization.findAll();
+		List<Organization> organizations = new ArrayList<Organization>();
 		User user = Security.getConnected();
 		boolean admin = user.isAdmin;
-		render(organizations,admin);
+		if(admin) {
+			int i = 0;
+			while(i < allOrganizations.size()) {
+				organizations.add(allOrganizations.get(i));
+				i++;
+			}
+		}
+		else {
+			int i = 0;
+			while(i < allOrganizations.size()) {
+				if ((allOrganizations.get(i).privacyLevel != 0)) {
+					organizations.add(allOrganizations.get(i));
+				}
+				else {
+					if (Users.getEnrolledUsers(allOrganizations.get(i)).contains(user)) {
+						organizations.add(allOrganizations.get(i));
+					}
+				}
+				i++;
+			}
+		}
+		render(organizations);
 	}
 }

@@ -10,26 +10,13 @@
         #{extends 'main.html' /} 
 		#{if organizations.size() > 0}
 		These are the currently available organizations on the system<br />
-		#{if admin}
 		<ul style="list-style: none;">
 			#{list items:organizations, as:'organization'}
 			<li>
-				<a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>
+				<a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a> 
 			</li>
 			#{/list}
 		</ul> 
-		#{/if}
-		#{else}
-		<ul style="list-style: none;">
-			#{list items:organizations, as:'organization'}
-			<li>
-				#{if (organization.privacyLevel != 0)}
-				<a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>
-				#{/if}
-			</li>
-			#{/list}
-		</ul> 
-		#{/else}
 		#{/if}
 		#{else}
 		There are no available organizations on the system <big><strong>YET!!</strong></big>
