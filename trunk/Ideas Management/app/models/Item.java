@@ -135,12 +135,12 @@ public class Item extends Model {
 	 * 
 	 * @return boolean
 	 */
-	public boolean afterEndDate() {
+	public boolean endDatePassed() {
 		Date d = new Date();
-		if(this.endDate.compareTo(d) > 0) {
-			return false;
+		if(this.endDate.before(d)){
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 }

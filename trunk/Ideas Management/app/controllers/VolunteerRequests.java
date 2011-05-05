@@ -39,11 +39,13 @@ public class VolunteerRequests extends CRUD {
 		Date d = new Date();
 		System.out.println("ana ItemId" + itemId);
 		if (sender.canVolunteer(itemId)) {
-			if (!(dest.status == 2) && dest.endDate.compareTo(d) >= 0) {
+			if (!(dest.status == 2) && !dest.endDatePassed()) {
 				VolunteerRequest volunteerRequest = new VolunteerRequest(
 						sender, dest, justification).save();
 				dest.addVolunteerRequest(volunteerRequest);
+				dest.save();
 				sender.addVolunteerRequest(volunteerRequest);
+				sender.save();
 				String description = sender.username
 						+ " has requested to volunteer to work on the following item "
 						+ dest.summary + "in the plan " + dest.plan.title

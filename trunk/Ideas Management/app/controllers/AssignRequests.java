@@ -104,7 +104,7 @@ public class AssignRequests extends CRUD {
 			user = User.findById(userIds[i]);
 			if (filter(itemId,item.plan.id)
 					.contains(user)) {
-				if (!(item.status == 2) && item.endDate.compareTo(d) > 0) {
+				if (!(item.status == 2) && !item.endDatePassed()) {
 					System.out.println("hab3at " + userIds[i]);
 					//sendAssignRequest(itemId,userIds[i]);
 					User sender = Security.getConnected();
