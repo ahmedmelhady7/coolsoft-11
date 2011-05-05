@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import play.data.validation.Required;
 import play.mvc.Controller;
+import play.mvc.With;
 import models.Invitation;
 import models.MainEntity;
 import models.Notification;
@@ -16,6 +17,8 @@ import models.User;
 import models.UserRoleInOrganization;
 import notifiers.Mail;
 
+
+@With(Secure.class)
 public class Invitations extends CRUD {
 
 	// invitation first page ,it has search or button 'invite by mail'
@@ -41,6 +44,8 @@ public class Invitations extends CRUD {
          
 		Organization org=Organization.findById(orgId);
         MainEntity ent= MainEntity.findById(entId);
+        User u=Security.getConnected();
+       
 		render(ent,org);
 
 	}
@@ -71,6 +76,9 @@ public class Invitations extends CRUD {
         
         Organization org=Organization.findById(((long)1));
         MainEntity ent= MainEntity.findById(((long)1));
+        User u= Security.getConnected();
+        
+        
 		
 		if (validation.hasErrors()) {
 			flash.error("Please enter a name first!");
@@ -80,7 +88,7 @@ public class Invitations extends CRUD {
 	 
 		List<User> users = new ArrayList<User>();
 		users = Users.searchUser(name);
-	/*	List<User> organizers = Users.getEntityOrganizers(ent);
+		/*List<User> organizers = Users.getEntityOrganizers(ent);
 		organizers.add(org.creator);
 
 		List<User> users = new ArrayList<User>();
@@ -164,6 +172,25 @@ public class Invitations extends CRUD {
 			        Page(orgId,entId,id);
 			    }
 			
+			List<User> organizers = Users.getEntityOrganizers(ent);
+			organizers.add(org.creator);
+
+			
+			
+			if(id==0){
+				boolean flag=false;
+				User u=User.find("byEmail", email).first();
+			
+		for (int i = 0; i <organizers.size(); i++) {
+				if (!organizers.contains(u))
+					flag=false;
+			}
+			
+				if(!flag) {
+			        flash.error("This user is already an organizer to this entity");
+			        Page(orgId,entId,id);
+			    }
+			}
 	         
 		     Mail.invite(email,role,org.name,ent.name);
 		    
@@ -319,5 +346,7 @@ public class Invitations extends CRUD {
 				      invite.delete();
 
  	}
+	
+	
 
 }
