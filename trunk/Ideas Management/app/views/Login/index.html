@@ -13,7 +13,7 @@ ${u.email}
 
 My Admin: <input type="submit" value="Admin View" onclick="goAdmin()">
 
-#{if admin==1}	
+#{if admin==0}	
 <form action="@{Invitations.view()}" method="GET">
 <input type="submit" value="View Invitations" />
 </form>
