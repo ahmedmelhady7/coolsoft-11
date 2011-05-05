@@ -60,11 +60,15 @@ public class AssignRequests extends CRUD {
 	 *            to the list of users selected
 	 */
 	public static void viewUsers( long itemId, long planId) {
+		User loggedUser = Security.getConnected();
 		System.out.println(itemId + "ITEMID");
 		System.out.println(users2.size() + "OFEEEEEEEEEEEEEEEENNN");
 		ArrayList<User> users = new ArrayList<User>();
 		for(User user:users2){
 			users.add(user);
+		}
+		if(users.contains(loggedUser)) {
+			users.remove(loggedUser);
 		}
 		render(users, itemId, planId);
 	}
@@ -91,14 +95,38 @@ public class AssignRequests extends CRUD {
 	public static void sendRequests(long itemId, long[] userIds) {
 		User user;
 		Date d = new Date();
-		System.out.println("ana da5alt send requests");
+		System.out.println("ana da5alt send requests" + userIds.length);
+		for (int i = 0; i < userIds.length; i++) {
+			
+			System.out.println(userIds[i]);
+		}
 		Item item = Item.findById(itemId);
 		for (int i = 0; i < userIds.length; i++) {
 			user = User.findById(userIds[i]);
 			if (filter(itemId,item.plan.id)
 					.contains(user)) {
 				if (!(item.status == 2) && item.endDate.compareTo(d) > 0) {
-					sendAssignRequest(itemId,userIds[i]);
+					System.out.println("hab3at " + userIds[i]);
+					//sendAssignRequest(itemId,userIds[i]);
+					User sender = Security.getConnected();
+					User destination = User.findById(userIds[i]);
+					Item source = Item.findById(itemId);
+					String description = "You have been sent a request to work on this item "
+						+ source.summary
+						+ "\n "
+						+ " In the plan "
+						+ source.plan.title
+						+ "\n" + "by " + sender.username;
+					AssignRequest assignRequest = new AssignRequest(source, destination,
+							sender, description);
+					assignRequest.save();
+					source.addAssignRequest(assignRequest);
+					sender.addSentAssignRequest(assignRequest);
+					destination.addReceivedAssignRequest(assignRequest);
+					
+					System.out.println(destination.receivedAssignRequests.contains(assignRequest));
+					boolean b = Notifications.sendNotification(userIds[i], source.plan.id, "plan",
+							description);
 				}
 			}
 		}
@@ -127,20 +155,21 @@ public class AssignRequests extends CRUD {
 		User sender = Security.getConnected();
 		User destination = User.findById(destId);
 		Item source = Item.findById(itemId);
-		String content = "";
+		String description = "You have been sent a request to work on this item "
+			+ source.summary
+			+ "\n "
+			+ " In the plan "
+			+ source.plan.title
+			+ "\n" + "by " + sender.username;
 		AssignRequest assignRequest = new AssignRequest(source, destination,
-				sender, content).save();
+				sender, description);
+		assignRequest.save();
 		source.addAssignRequest(assignRequest);
 		sender.addSentAssignRequest(assignRequest);
 		destination.addReceivedAssignRequest(assignRequest);
-
-		String description = "You have been sent a request to work on this item "
-				+ source.summary
-				+ "\n "
-				+ " In the plan "
-				+ source.plan.title
-				+ "\n" + "by " + sender.username;
-		Notifications.sendNotification(destId, source.plan.id, "plan",
+		
+		System.out.println(destination.receivedAssignRequests.contains(assignRequest));
+		boolean b = Notifications.sendNotification(destId, source.plan.id, "plan",
 				description);
 
 	}
