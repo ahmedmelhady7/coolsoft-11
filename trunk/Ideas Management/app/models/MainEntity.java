@@ -90,10 +90,10 @@ public class MainEntity extends Model {
 	@OneToMany(mappedBy = "entity")
 	public List<Invitation> invitationList;
 
-	// to be removed
-	@ManyToMany
-	// , cascade = CascadeType.ALL)
-	public List<User> organizers;
+//	// >>>>>>>>>>>>>>>>>> change 
+//	@ManyToMany
+//	// , cascade = CascadeType.ALL)
+//	public List<User> organizers;
 
 	// ArrayList<Relationship> relationshipList;
 	// ArrayList<Request> requestList;
@@ -129,7 +129,7 @@ public class MainEntity extends Model {
 		followers = new ArrayList<User>();
 		topicList = new ArrayList<Topic>();
 		tagList = new ArrayList<Tag>();
-		organizers = new ArrayList<User>();
+		//organizers = new ArrayList<User>();
 
 	}
 
@@ -167,7 +167,7 @@ public class MainEntity extends Model {
 		followers = new ArrayList<User>();
 		topicList = new ArrayList<Topic>();
 		tagList = new ArrayList<Tag>();
-		organizers = new ArrayList<User>();
+		//organizers = new ArrayList<User>();
 	}
 
 	/**
