@@ -84,6 +84,30 @@
 		#{/form}
 		#{/if}
 		
+	
+	
+			
+		<form action="@{Topics.viewFollowers()}">
+            <HR>
+            	<input type="hidden" name="topicId" value="${targetTopic.id}">
+            	<input type="hidden" name="f" value="true">
+            	#{if (!targetTopic.followers.contains(user))}            
+            	<p>
+                Follow ${targetTopic.title} <input type="submit" value="Follow">
+                <br/>
+                #{/if}
+                </form>
+                <form action="@{Topics.viewFollowers()}">
+                    <input type="hidden" name="topicId" value="${targetTopic.id}">
+                    <input type="hidden" name="f" value="false">
+                    View ${targetTopic.title} Followers 
+                    <input type="submit" value="Followers">
+                    <br/>
+                    <HR>
+                </form>
+	
+	
+	
 	</div>
 	
 	<!--#{form @delete(object._key())}
