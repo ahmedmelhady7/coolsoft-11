@@ -159,57 +159,10 @@ public class User extends Model {
 	// , cascade = CascadeType.PERSIST)
 	public List<Plan> planscreated;
 
-	public User(String email, String password, String firstName,
-			String lastName, String username, int communityContributionCounter,
+	public User(String email,String username, String password,String firstName,
+			String lastName,int communityContributionCounter,
 			Date dateofBirth, String country, String profession) {
 		this.email = email;
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.communityContributionCounter = communityContributionCounter;
-		this.dateofBirth = dateofBirth;
-		this.country = country;
-		this.lastName = lastName;
-		// this.roles = new ArrayList<Role>();
-		this.ideasCreated = new ArrayList<Idea>();
-		this.itemsAssigned = new ArrayList<Item>();
-		this.topicsIOrganize = new ArrayList<Topic>();
-		this.topicsCreated = new ArrayList<Topic>();
-		this.volunteerRequests = new ArrayList<VolunteerRequest>();
-		this.sentAssignRequests = new ArrayList<AssignRequest>();
-		this.receivedAssignRequests = new ArrayList<AssignRequest>();
-		// this.accessedTopics = new ArrayList<Topic>();
-		notificationProfiles = new ArrayList<NotificationProfile>();
-		notifications = new ArrayList<Notification>();
-		bannedUsers = new ArrayList<BannedUser>();
-		// added
-		userRolesInOrganization = new ArrayList<UserRoleInOrganization>();
-		invitation = new ArrayList<Invitation>();
-		this.enrolled = new ArrayList<Organization>();
-		this.createdOrganization = new ArrayList<Organization>();
-		followingOrganizations = new ArrayList<Organization>();
-		planscreated = new ArrayList<Plan>();
-		this.ideasReported = new ArrayList<Idea>();
-		followingEntities = new ArrayList<MainEntity>();
-		topicsIFollow = new ArrayList<Topic>();
-		this.ideasRated = new ArrayList<Idea>();
-		this.state = "a";
-		this.profession = profession;
-
-		// requests=new ArrayList<Request>();
-		// commentsPosted = new ArrayList<Comment>();
-		// linkDuplicates = new ArrayList<LinkDuplicates>();
-
-		// requestsToJoin = new ArrayList<RequestToJoin>();
-		// requestRelationship = new ArrayList<RequestOfRelationship>();
-		// topicInvitations = new ArrayList<TopicInvitation>();
-
-	}
-	public User(String email,boolean isAdmin, String password, String firstName,
-			String lastName, String username, int communityContributionCounter,
-			Date dateofBirth, String country, String profession) {
-		this.email = email;
-		this.isAdmin=isAdmin;
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
