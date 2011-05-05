@@ -31,15 +31,18 @@ public class RequestToJoins extends CRUD {
 	 *            : the id of the organization or topic the requests belong to
 	 */
 
+	
 	public static void viewRequests(int type, long id) {
-             type=1;
+             //type=1;
+		System.out.println("will view");
 		List<RequestToJoin> requests;
 		if (type == 1) {
-			Topic topic = Topic.findById((long)1);
+			Topic topic = Topic.findById(id);
 			notFoundIfNull(topic);
 			requests = topic.requestsToJoin;
 		} else {
-			Organization organization = Organization.findById((long)1);
+			Organization organization = Organization.findById(id);
+			System.out.println(organization);
 			notFoundIfNull(organization);
 			requests = organization.joinRequests;
 		}
