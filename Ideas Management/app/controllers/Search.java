@@ -181,158 +181,161 @@ public static void showAfterFilter(){
 			int dayA, int monthA, int yearA, int dayE, int monthE, int yearE) {
 
 		System.out.println("Enter advSearch");
-		
-		if (wantKey.trim().compareTo("") == 0) {
-			// back;
-		} else {
-			//
-			Date before = new Date(yearB, monthB, dayB);
-			Date after = new Date(yearA, monthA, dayA);
-			Date exact = new Date(yearE, monthE, dayE);
 
-			List<Model> orgs = Organization.findAll();
+		Date before = new Date(yearB, monthB, dayB);
+		Date after = new Date(yearA, monthA, dayA);
+		Date exact = new Date(yearE, monthE, dayE);
 
-			switch (searchIn) {
-			case 1: {
-				for (int i = 0; i < orgs.size(); i++) {
-					if (((Organization) orgs.get(i)).privacyLevel != 2) {
-						orgs.remove(i);
-					}
-				}
-				break;
-			}
-			case 2: {
-				for (int i = 0; i < orgs.size(); i++) {
-					if (((Organization) orgs.get(i)).privacyLevel != 1) {
-						orgs.remove(i);
-					}
-				}
-				break;
-			}
-			case 3: {
-				for (int i = 0; i < orgs.size(); i++) {
-					if (((Organization) orgs.get(i)).privacyLevel != 0) {
-						orgs.remove(i);
-					}
-				}
-				break;
-			}
-			case 4: {
-				for (int i = 0; i < orgs.size(); i++) {
-					if (((Organization) orgs.get(i)).privacyLevel == 0) {
-						orgs.remove(i);
-					}
-				}
-				break;
-			}
-			case 5: {
-				for (int i = 0; i < orgs.size(); i++) {
-					if (((Organization) orgs.get(i)).privacyLevel == 1) {
-						orgs.remove(i);
-					}
-				}
-				break;
-			}
-			case 6: {
-				for (int i = 0; i < orgs.size(); i++) {
-					if (((Organization) orgs.get(i)).privacyLevel == 2) {
-						orgs.remove(i);
-					}
-				}
-				break;
-			}
-			default: {
+		List<Model> orgs = Organization.findAll();
 
-				break;
+		System.out.println("in1" + searchIn);
+		switch (searchIn) {
+		case 1: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel != 2) {
+					orgs.remove(i);
+				}
 			}
+			break;
+		}
+		case 2: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel != 1) {
+					orgs.remove(i);
+				}
 			}
-
-			// Organization
-			if (org == 0) {
-				for (int i = 0; i < orgs.size(); i++) {
-					if (!((Organization) orgs.get(i)).name.contains(unWantKey)) {
-						if (((Organization) orgs.get(i)).name.contains(wantKey)) {
-							listOfResults.add(orgs.get(i));
-						} else {
-							boolean add = true;
-							List<Tag> x = ((Organization) orgs.get(i)).relatedTags;
-							for (int j = 0; j < x.size(); j++) {
-								if (x.get(j).name.contains(unWantKey)) {
-									add = false;
-								}
+			break;
+		}
+		case 3: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel != 0) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		case 4: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel == 0) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		case 5: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel == 1) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		case 6: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel == 2) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		default: {
+			System.out.println("HERE 7");
+			break;
+		}
+		}
+		System.out.println("HERE out");
+		// Organization
+		if (org == 0) {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (!((Organization) orgs.get(i)).name.contains(unWantKey)) {
+					if (((Organization) orgs.get(i)).name.contains(wantKey)) {
+						listOfResults.add(orgs.get(i));
+					} else {
+						boolean add = true;
+						List<Tag> x = ((Organization) orgs.get(i)).relatedTags;
+						for (int j = 0; j < x.size(); j++) {
+							if (x.get(j).name.contains(unWantKey)) {
+								add = false;
 							}
-							if (add) {
-								for (int j = 0; j < x.size(); j++) {
-									if (x.get(j).name.contains(wantKey)) {
-										listOfResults.add(orgs.get(i));
-										break;
-									}
+						}
+						if (add) {
+							for (int j = 0; j < x.size(); j++) {
+								if (x.get(j).name.contains(wantKey)) {
+									listOfResults.add(orgs.get(i));
+									break;
 								}
 							}
 						}
 					}
 				}
 			}
-
-			// Entity
-			if (entity == 0) {
-				for (int i = 0; i < orgs.size(); i++) {
-					searchWithEntities(
-							((Organization) orgs.get(i)).entitiesList,
-							unWantKey, wantKey);
-				}
-			}
-
-			// Topic
-			List topics = null;
-			if (topic == 0) {
-				topics = new ArrayList<Topic>();
-				for (int i = 0; i < orgs.size(); i++) {
-					for (int j = 0; j < ((Organization) orgs.get(i)).entitiesList
-							.size(); j++) {
-						topics.add(((MainEntity) ((Organization) orgs.get(i)).entitiesList
-								.get(j)).topicList);
-					}
-				}
-				searchWithTopic(topics, unWantKey, wantKey);
-			}
-
-			// Plans
-			List plans = null;
-			if (plan == 0) {
-				plans = new ArrayList<Plan>();
-				for (int i = 0; i < topics.size(); i++) {
-					plans.add(((Topic) topics.get(i)).plan);
-				}
-				searchWithPlan(plans, unWantKey, wantKey);
-			}
-
-			// Ideas
-			if (idea == 0) {
-				List ideas = new ArrayList<Idea>();
-				for (int i = 0; i < topics.size(); i++) {
-					for (int j = 0; j < ((Topic) topics.get(i)).ideas.size(); j++) {
-						ideas.add(((Idea) ((Topic) topics.get(i)).ideas.get(j)));
-					}
-				}
-				searchWithIdea(ideas, unWantKey, wantKey);
-			}
-
-			// Item
-			if (item == 0) {
-				List items = new ArrayList<Idea>();
-				for (int i = 0; i < plans.size(); i++) {
-					for (int j = 0; j < ((models.Plan) plans.get(i)).items
-							.size(); j++) {
-						items.add((((models.Plan) plans.get(i)).ideas.get(j)));
-					}
-				}
-				searchWithItem(items, unWantKey, wantKey, before, after, exact);
-			}
-
-			// Comments
 		}
-		//render();
+		System.out.println("HERE 1");
+		System.out.println(entity);
+		// Entity
+		if (entity == 0) {
+			System.out.println("HERE Enter0");
+			for (int i = 0; i < orgs.size(); i++) {
+				System.out.println("Enter" + i);
+				if (((Organization) orgs.get(i)).entitiesList != null) {
+					System.out.println("innnnn");
+					System.out
+							.println((((Organization) orgs.get(i)).entitiesList)
+									.get(0));
+					searchWithEntities(orgs.get(i).id, unWantKey, wantKey);
+				}
+			}
+		}
+		System.out.println("HERE 2");
+		// Topic
+		List topics = null;
+		if (topic == 0) {
+			topics = new ArrayList<Topic>();
+			for (int i = 0; i < orgs.size(); i++) {
+				for (int j = 0; j < ((Organization) orgs.get(i)).entitiesList
+						.size(); j++) {
+					topics.add(((MainEntity) ((Organization) orgs.get(i)).entitiesList
+							.get(j)).topicList);
+				}
+			}
+			searchWithTopic(topics, unWantKey, wantKey);
+		}
+		System.out.println("HERE 3");
+		// Plans
+		List plans = null;
+		if (plan == 0) {
+			plans = new ArrayList<Plan>();
+			for (int i = 0; i < topics.size(); i++) {
+				plans.add(((Topic) topics.get(i)).plan);
+			}
+			searchWithPlan(plans, unWantKey, wantKey);
+		}
+
+		// Ideas
+		if (idea == 0) {
+			List ideas = new ArrayList<Idea>();
+			for (int i = 0; i < topics.size(); i++) {
+				for (int j = 0; j < ((Topic) topics.get(i)).ideas.size(); j++) {
+					ideas.add(((Idea) ((Topic) topics.get(i)).ideas.get(j)));
+				}
+			}
+			searchWithIdea(ideas, unWantKey, wantKey);
+		}
+		System.out.println("HERE 6");
+		// Item
+		if (item == 0) {
+			List items = new ArrayList<Idea>();
+			for (int i = 0; i < plans.size(); i++) {
+				for (int j = 0; j < ((models.Plan) plans.get(i)).items.size(); j++) {
+					items.add((((models.Plan) plans.get(i)).ideas.get(j)));
+				}
+			}
+			searchWithItem(items, unWantKey, wantKey, before, after, exact);
+		}
+		System.out.println("HERE DONE");
+		// Comments
+
+		// render();
 	}
 
 	/**
@@ -590,10 +593,15 @@ public static void showAfterFilter(){
 	 * @return void.
 	 * 
 	 */
-	public static void searchWithEntities(List<MainEntity> entity,
-			String unwantKey, String wantKey) {
+	public static void searchWithEntities(long id, String unwantKey,
+			String wantKey) {
+
+		List<MainEntity> entity = ((Organization) Organization.findById(id)).entitiesList;
+		System.out.println("LOL");
 		for (int i = 0; i < entity.size(); i++) {
-			List subentity = ((MainEntity) entity.get(i)).subentities;
+			System.out.println("LOL" + i);
+
+			System.out.println("LOL" + i + " " + i);
 			if (!((MainEntity) entity.get(i)).name.contains(unwantKey)
 					&& !((MainEntity) entity.get(i)).description
 							.contains(unwantKey)) {
@@ -622,9 +630,7 @@ public static void showAfterFilter(){
 					}
 				}
 			}
-			if (subentity != null) {
-				searchWithEntities(subentity, unwantKey, wantKey);
-			}
+
 		}
 	}
 
@@ -691,8 +697,7 @@ public static void showAfterFilter(){
 			for (int i = 0; i < listOfOrganizations.size(); i++) {
 				if (listOfOrganizations.get(i).name
 						.equalsIgnoreCase(keywords[s])) {
-					if (!listOfOrgs
-							.contains(listOfOrganizations.get(i))) {
+					if (!listOfOrgs.contains(listOfOrganizations.get(i))) {
 						listOfOrgs.add(listOfOrganizations.get(i));
 					}
 				} else {
