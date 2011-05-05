@@ -211,7 +211,9 @@ public class Search extends Controller {
 		}
 		case 3: {
 			for (int i = 0; i < orgs.size(); i++) {
-				if (((Organization) orgs.get(i)).privacyLevel != 0) {
+				if (((Organization) orgs.get(i)).privacyLevel != 0
+						|| Users.getEnrolledUsers((Organization) orgs.get(i))
+								.contains(Security.getConnected())) {
 					orgs.remove(i);
 				}
 			}
@@ -454,9 +456,8 @@ public class Search extends Controller {
 								}
 							} else if (listOfResults instanceof Item) {
 								if (!(before
-										.before(((Item) listOfResults).endDate)
-										&& before
-												.after(((Item) listOfResults).startDate))) {
+										.before(((Item) listOfResults).endDate) && before
+										.after(((Item) listOfResults).startDate))) {
 									listOfResults.remove(i);
 								}
 							}
@@ -496,12 +497,11 @@ public class Search extends Controller {
 								}
 							} else if (listOfResults instanceof Item) {
 								if (!(before
-										.before(((Item) listOfResults).endDate)
-										&& before
-												.after(((Item) listOfResults).startDate))||!(after
-														.before(((Item) listOfResults).endDate)
-														&& after
-																.after(((Item) listOfResults).startDate))) {
+										.before(((Item) listOfResults).endDate) && before
+										.after(((Item) listOfResults).startDate))
+										|| !(after
+												.before(((Item) listOfResults).endDate) && after
+												.after(((Item) listOfResults).startDate))) {
 									listOfResults.remove(i);
 								}
 							}
