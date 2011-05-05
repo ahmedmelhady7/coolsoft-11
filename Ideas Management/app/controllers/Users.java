@@ -1112,7 +1112,24 @@ public class Users extends CRUD {
 
 	public static void viewNotifications() {
 		User u = Security.getConnected();
-		List<Notification> nList = u.notifications;
+		for(int i = 0; i < u.notifications.size(); i++) {
+			if(u.notifications.get(i).seen) {
+				Notification n = u.notifications.get(i);
+				n.status = "Old";
+				n.save();
+			} else {
+				Notification n = u.notifications.get(i);
+				n.status = "*New";
+				n.seen = true;
+				n.save();
+			}
+		}
+		u.save();
+		List<Notification> nL = u.notifications;
+		List<Notification> nList = new ArrayList<Notification>();
+		for(int i = nL.size() - 1; i > -1; i--) {
+			nList.add(nL.get(i));
+		}
 		render(nList);
 	}
 

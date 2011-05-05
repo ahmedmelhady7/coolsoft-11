@@ -16,11 +16,18 @@ import play.db.jpa.Model;
 
 @Entity
 public class Notification extends Model {
+	
 	// The notification type
 	public String type;
 	
+	// The title of the notification
+	public String title;
+	
 	@Lob
 	public String description;
+	
+	// The status of the notification
+	public String status;
 	
 	@ManyToOne
 	public User directedTo;
@@ -28,11 +35,13 @@ public class Notification extends Model {
 	// The status of the notification
 	public boolean seen;
 	
-	public Notification(String t, User u, String desc) {
+	public Notification(String t, String ti, User u, String desc) {
 		type = t;
+		title = ti;
 		directedTo = u;
 		description = desc;
 		seen = false;
+		status = "New";
 	}
 
 }

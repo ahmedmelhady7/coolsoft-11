@@ -11,6 +11,8 @@ ${u.username}
 ${u.email}
 <br>
 
+My Admin: <input type="submit" value="Admin View" onclick="goAdmin()">
+
 <form action="@{Users.viewNotifications()}" method="post" >
 	My Notifications: <input type="submit" value="Notifications">
 </form>
@@ -47,7 +49,9 @@ Show Organizations:
 
 <a href="@{Ideas.getDrafts()}">Drafts</a>
 
-</form>
-<form action="@{Users.logout}" method="post">
-Logout: <input type="submit" value="Logout">
-</form>
+
+<script type="text/javascript">
+function goAdmin() {
+	window.location ='http://localhost:9008/admin';
+}
+</script>

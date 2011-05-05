@@ -21,20 +21,20 @@ public class NotificationProfile extends Model {
 	// The type of the source
 	public String notifiableType;
 	
+	// The title of the notification related to the profile
+	public String title;
+	
 	@ManyToOne
 	public User user;
 	
 	// The preference of the user
 	public boolean enabled;
 	
-	public NotificationProfile(long nId, String nType, User u) {
+	public NotificationProfile(long nId, String nType, String ti, User u) {
 		notifiableId = nId;
 		notifiableType = nType;
+		title = ti;
 		user = u;
 		enabled = true;
-	}
-	
-	public void disableNotification() {
-		enabled = false;
 	}
 }

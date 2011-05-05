@@ -177,5 +177,9 @@ public class Plan extends Model {
 		this.ideas.add(idea);
 		this.save();
 	}
+	
+	public String toString() {
+		return "Title: " + title;
+	}
 
 }
