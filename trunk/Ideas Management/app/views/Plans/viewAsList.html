@@ -46,6 +46,8 @@ This plan is now rated: ${newRating}
             </legend>
             Item Description: ${item.description}
             <br/>
+			Status: #{if item.status == 0}New#{/if}#{else}#{if item.status == 1} In Progress#{/if}#{else}#{if item.status == 2}Done#{/if}#{/else}#{/else}
+			<br/>
             Start Date:  ${item.startDate.format('dd MMM yy')}
             <br/>
             End Date:  ${item.endDate.format('dd MMM yy')}
