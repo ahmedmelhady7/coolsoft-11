@@ -15,8 +15,10 @@ import play.data.binding.Binder;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
+import play.mvc.With;
 import controllers.CRUD.ObjectType;
 
+@With(Secure.class)
 public class Plans extends CRUD {
 
 	/**

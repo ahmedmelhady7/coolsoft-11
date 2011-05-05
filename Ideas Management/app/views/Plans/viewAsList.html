@@ -54,17 +54,20 @@ This plan is now rated: ${newRating}
      	<br/>
   		#{/if}
 		 #{if user.canWork(item.id) && !(item.status == 2) && !item.afterEndDate()}
-   		<a href="@{VolunteerRequests.justify(item.id, p.id, 0)}">Work on this item</a>
+   		<a href="@{Plans.workOnItem(item.id)}">Work on this item</a>
      	<br/>
   		#{/if}
 			#{if canAssign == 1 && !(item.status == 2)&& !item.afterEndDate()}
 		<a href="@{AssignRequests.assign(item.id, p.id)}">Assign a user to this item</a>
+		<br/>
       #{/if}
 		 #{if canEdit == 1}
 		<a href="@{Plans.editItem(item.id)}">Edit this item</a>
+		<br/>
       #{/if}
 	  	 #{if canEdit == 1}
 		<a href="@{Plans.deleteItem(p.id,item.id)}">Delete this item</a>
+		<br/>
       #{/if}
          
         </fieldset>

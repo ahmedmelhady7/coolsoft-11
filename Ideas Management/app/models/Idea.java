@@ -186,7 +186,7 @@ public class Idea extends Model {
 			String type = "idea ";
 			String desc = "This idea is inactive";
 			// Send notification
-			Notifications.sendNotification(user, idea.id, type, desc);
+			//Notifications.sendNotification(user, idea.id, type, desc);
 		}
 
 	}

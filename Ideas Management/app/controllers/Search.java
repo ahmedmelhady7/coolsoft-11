@@ -20,6 +20,7 @@ import models.User;
 
 import play.db.jpa.Model;
 import play.mvc.Controller;
+import play.mvc.With;
 import play.test.Fixtures;
 
 /**
@@ -29,6 +30,7 @@ import play.test.Fixtures;
  * @story C4SXX : Search Structure
  * 
  */
+@With(Secure.class)
 public class Search extends Controller {
 
 	/**

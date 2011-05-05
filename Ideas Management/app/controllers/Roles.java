@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import play.*;
+import play.mvc.With;
 import models.*;
 
+@With(Secure.class)
 public class Roles extends CRUD {
 
 	/*

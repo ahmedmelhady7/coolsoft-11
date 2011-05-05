@@ -6,11 +6,13 @@ import java.util.List;
 
 import play.data.validation.MinSize;
 import play.data.validation.Required;
+import play.mvc.With;
 import models.Item;
 import models.Plan;
 import models.User;
 import models.VolunteerRequest;
 
+@With(Secure.class)
 public class VolunteerRequests extends CRUD {
 
 	/**
@@ -192,10 +194,12 @@ public class VolunteerRequests extends CRUD {
 			if (org != item.plan.topic.getOrganizer().get(i))
 				list.add(item.plan.topic.getOrganizer().get(i));
 		}
+
 		for (User userToNotify : list) {
 			Notifications.sendNotification(userToNotify.id, item.plan.id,
 					"plan", s);
 		}
+
 	}
 
 	/**
@@ -227,9 +231,11 @@ public class VolunteerRequests extends CRUD {
 			if (org != item.plan.topic.getOrganizer().get(i))
 				list.add(item.plan.topic.getOrganizer().get(i));
 		}
+
 		for (User userToNotify : list) {
 			Notifications.sendNotification(userToNotify.id, item.plan.id,
 					"plan", s);
 		}
+
 	}
 }

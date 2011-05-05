@@ -3,6 +3,7 @@
  */
 package controllers;
 
+import play.mvc.With;
 import models.Comment;
 import models.Idea;
 import models.Plan;
@@ -11,6 +12,7 @@ import models.Plan;
  * @author ${Ahmed El-Hadi}
  *
  */
+@With(Secure.class)
 public class Comments extends CRUD {
 	
 	/**

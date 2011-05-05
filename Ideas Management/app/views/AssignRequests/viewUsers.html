@@ -12,24 +12,20 @@
 		
 	}
 	
-	function submit(itemId, planId){
+	function submit(itemId){
 		if (ids.length == 0) {
 			alert("you haven't selected any users");
 		}
 		else {
 		
-			$.post('@{sendRequests()}', {
-				itemId: itemId,
-				userIds: ids,
-				planId:planId
-			});
+			$.post('@{sendRequests()}', {itemId:itemId,userIds:ids});
 				
 				
 				for (var i = 0; i < ids.length; i = i + 1) {
 					$('#user_' + ids[i]).remove();
 				}
 				
-				window.location.reload();
+				//window.location.reload();
 		
 			if(ids.length == users.size()) {
 					document.getElementById("userLabel").innerHTML = "There are no more users to display";
@@ -57,6 +53,12 @@ You can search for a certain user by name, email or profession
 <input type = "hidden" name = "planId" value = ${planId} >
 <input type = "submit" value ="search" >
 #{/form}
+&nbsp; &nbsp; &nbsp; 
+#{form @AssignRequests.assign(), method:'POST', id:'creationForm', enctype:'multipart/form-data' }
+<input type = "hidden" name = "itemId" value = ${itemId} >
+<input type = "hidden" name = "planId" value = ${planId} >
+<input type = "submit" value ="view all users" >
+#{/form}
 
 
 #{if users.size() > 0}
@@ -65,14 +67,14 @@ You can search for a certain user by name, email or profession
 <ul style="list-style: none; ">
 #{list items:users, as:'user'}
 <li id = "user_${user.id}">
-<input type="checkbox" id="${user.id}" onclick="toggleUser('${user.id}');"> 
+<input type="checkbox" id="${user.id}" onclick="toggleUser(${user.id});"> 
 <a href="#">${user.username}</a>
 <br/>
 </li>
 #{/list}
 </ul>
 <br/>
-<input type="button" value="send requests" onclick="submit('${itemId}', '${planId}')"/>
+<input type="button" value="send requests" onclick="submit(${itemId})"/>
 #{/if}
 #{else}
 There are no users that match your criteria

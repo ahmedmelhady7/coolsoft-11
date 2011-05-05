@@ -5,6 +5,7 @@ import java.util.List;
 import models.NotificationProfile;
 import models.User;
 import play.mvc.Controller;
+import play.mvc.With;
 
 /**
  * This class is the notification profile's controller.
@@ -13,6 +14,7 @@ import play.mvc.Controller;
  *
  */
 
+@With(Secure.class)
 public class NotificationProfiles extends CRUD {
 	
 	/**

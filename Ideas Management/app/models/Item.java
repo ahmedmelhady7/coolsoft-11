@@ -137,7 +137,7 @@ public class Item extends Model {
 	 */
 	public boolean afterEndDate() {
 		Date d = new Date();
-		if(this.endDate.compareTo(d) < 0) {
+		if(this.endDate.compareTo(d) > 0) {
 			return false;
 		}
 		return true;

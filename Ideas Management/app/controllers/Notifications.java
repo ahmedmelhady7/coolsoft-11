@@ -13,7 +13,9 @@ import models.Notification;
 import models.NotificationProfile;
 import models.User;
 import play.mvc.Controller;
+import play.mvc.With;
 
+@With(Secure.class)
 public class Notifications extends CRUD {
 	
 	/**
