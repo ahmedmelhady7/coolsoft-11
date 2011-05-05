@@ -194,6 +194,13 @@ public class Bootstrap extends Job {
 		//	u6.invitation.add(inv1);
 		//	u6.save();
 			
+			Role r1 = Roles.getRoleByName("organizer");
+			long id1 = me1.getId();
+			UserRoleInOrganizations.addEnrolledUser(u1, org1, r1, id1, "entity");
+			
+			Role r2 = Roles.getRoleByName("idea developer");
+			UserRoleInOrganizations.addEnrolledUser(u4, org1, r2);
+			
 			//UserRoleInOrganizations.addEnrolledUser(u2,, role, entityOrTopicId, type)
 
 		}
