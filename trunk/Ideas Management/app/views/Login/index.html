@@ -13,6 +13,11 @@ ${u.email}
 
 My Admin: <input type="submit" value="Admin View" onclick="goAdmin()">
 
+#{if admin==1}	
+<form action="@{Invitations.view()}" method="GET">
+<input type="submit" value="View Invitations" />
+</form>
+#{/if}
 <form action="@{Users.viewNotifications()}" method="post" >
 	My Notifications: <input type="submit" value="Notifications">
 </form>
