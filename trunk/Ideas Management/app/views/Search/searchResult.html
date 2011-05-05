@@ -2,90 +2,43 @@
 @author Loaay Alkherbawy
 @story  C4S01
 The Search Results Viewer
--->
-<!DOCTYPE html>
+--> <!DOCTYPE html>
 <html>
-<head>
-<title></title>
-<meta charset="utf-8">
-<script src="@{'/public/javascripts/jquery-1.5.2.min.js'}"
-	type="text/javascript" charset="utf-8">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
         </script>
-</head>
-<script type="text/javascript">
-    function whichsortmethod(frm){
-		        var c = 'v';
-				var e = 'r';
-        if (document.getElementById("s1").checked) {  
-            if (document.getElementById("v").checked) {
-				document.getElementById("r").disable;
-                $.post('@{sortD()}', {
-                    voteOrRate: c,
-                    searchresult:${lof}
-                }, function(){
-                    window.location.reload(true);
-                });
-            }
-            else 
-                if (document.getElementById("r").checked) {
-                    $.post('@{sortD()}', {
-                        voteOrRate: e,
-                        searchresult:${lof}
-                    }, function(){
-                        window.location.reload(true);
-                    });
-                }
-            
+    </head>
+    <style type="text/css">
+        body {
+            font-family: arial, helvetica;
+            font-size: 20px;
+            color: #123456;
+            background-color: #A3D5E4;
         }
-        else {
-            if (document.getElementById("v").checked) {
-                $.post('@{sortA()}', {
-                    voteOrRate: 'v',
-                    searchresult:${lof}
-                }, function(){
-                    window.location.reload(true);
-                });
-            }
-            else 
-                if (document.getElementById("r").checked) {
-                    $.post('@{sortA()}', {
-                        voteOrRate: 'r',
-                        searchresult:${lof}
-                    }, function(){
-                        window.location.reload(true);
-                    });
-                }
+        
+        #text1 {
+            font-size: 500px;
+            color: #654321;
         }
-    }
-</script>
-
-<style type="text/css">
-body {
-	font-family: arial, helvetica;
-	font-size: 20px;
-	color: #123456;
-	background-color: #A3D5E4;
-}
-
-#text1 {
-	font-size: 500px;
-	color: #654321;
-}
-</style>
-<div>
-	<center>
-		<img src="/public/images/Picture1.jpg"> </img>
-	</center>
-</div>
-<body onLoad="step1()">
-	<form action="@{quickSearch()}" method="GET">
-		<font size="+3" color="993300"> Welcome ${u.username}! </font> </br> <a
-			href="/Ideas Management/app/views/Application/index.html">Home</a> </br> <input
-			type="text" id="search" name="search" value="enter a keyword here" /><input
-			type="button" id="submit" name="submit" value="Search"
-			onclick="quickSearch(this.form)" /><a href="AdvancedSearch">Advanced
-			Search</a>
-		<script type="text/javascript">
+    </style>
+    <div>
+        <center>
+            <img src="/public/images/Picture1.jpg">
+            </img>
+        </center>
+    </div>
+    <body onLoad="step1()">
+        <form action="@{quickSearch()}" method="GET">
+        <font size="+3" color="993300">
+            Welcome ${u.username}!
+        </font>
+        </br>
+        <a href="/Ideas Management/app/views/Application/index.html">Home</a>
+        </br>
+        <input type="text" id="search" name="search" value= "enter a keyword here" /><input type="button" id="submit" name="submit" value="Search" onclick="quickSearch(this.form)"/><a href="AdvancedSearch">Advanced Search</a>
+        <script type="text/javascript">
             function step1(){
                 document.getElementById('div1').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
                 setTimeout('viewResult()', 2500);
@@ -102,28 +55,86 @@ body {
                     window.location.reload(true);
                 });
             }
-        </script>
-	</form>
-	<br />
-	<center>
-		<b> <big> <u> Search Results: </u> </big> </b> </br> <i> </br> <a
-			href="/filter_options"><b>for filtering your results: </br>
-					click here to chose your criteria</b> </a> </i>
-	</center>
-	<div align="right">
-		<u> <b> Sort by: 
-		</u> </b>
-		<form>
-			<input type="radio" name="s" id="s" value="sortA"
-				onclick="s1.checked = false" />Ascending order <br> <input
-				type="radio" name="s" id="s1" value="sortD"
-				onclick="s.checked = false" />descending order </br>
-			<input type="radio" name="v" id="v" value="v"
-				onclick="whichsortmethod(this.form)" />Vote <input type="radio"
-				name="v" id="r" value="r" onclick="whichsortmethod(this.form)" />Rate
-			</br>
-		</form>
-
-		<div id='div1'></div>
+    function whichsortmethod(frm){
+		        var c = 'v';
+				var e = 'r';
+        if (document.getElementById("s1").checked) {  
+            if (document.getElementById("v").checked) {
+				document.getElementById("r").disable;
+                $.post('@{sortD()}', {
+                    voteOrRate: c,
+                    //searchresult: lof
+                }, function(){
+                    window.location.reload(true);
+                });
+            }
+            else 
+                if (document.getElementById("r").checked) {
+                    $.post('@{sortD()}', {
+                        voteOrRate: e,
+                        //searchresult: lof
+                    }, function(){
+                        window.location.reload(true);
+                    });
+                }
+            
+        }
+        else {
+            if (document.getElementById("v").checked) {
+                $.post('@{sortA()}', {
+                    voteOrRate: 'v',
+                    //searchresult: lof
+                }, function(){
+                    window.location.reload(true);
+                });
+            }
+            else 
+                if (document.getElementById("r").checked) {
+                    $.post('@{sortA()}', {
+                        voteOrRate: 'r',
+                        //searchresult: lof
+                    }, function(){
+                        window.location.reload(true);
+                    });
+                }
+        }
+    }
+</script>
+       
+        </form >
+        <br/>
+        <center>
+        <b>
+            <big>
+                <u>
+                    Search Results:
+                </u>
+            </big>
+        </b>
+        </br>
+        <i>
+        </br>
+        <a href="/filter_options"><b>for filtering your results:
+            </br>
+            click here to chose your criteria</b>
+    </a>
+</i>
+</center>
+<div align="right">
+    <u>
+    <b>
+    Sort by: 
+    </u>
+</b>
+<form method="POST">
+<input type="radio" name="s" id = "s" value="sortA" onclick="s1.checked = false" />Ascending order
+<br>
+<input type="radio" name="s" id="s1" value="sortD" onclick="s.checked = false" />descending order
+</br><input type="radio" name="v" id="v" value="v" onclick="whichsortmethod(this.form)"/>Vote 
+<input type="radio" name="v" id="r" value="r"  onclick="whichsortmethod(this.form)"/>Rate 
+</br>
+</form>
+<div id='div1'>
+</div>
 </body>
 </html>
