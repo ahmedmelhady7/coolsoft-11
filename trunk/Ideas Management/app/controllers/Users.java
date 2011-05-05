@@ -583,7 +583,7 @@ public class Users extends CRUD {
 			// List<UserRoleInOrganization> l =
 			// UserRoleInOrganization.find("byOrganizationAnd")
 			if (user.equals(org.creator)) {
-				if (Roles.getRoleActions("organization lead").contains(action)) {
+				if (Roles.getRoleActions("organizationLead").contains(action) ||Roles.getRoleActions("organization lead").contains(action)) {
 					return true;
 				} else {
 					if (Roles.getRoleActions("organizer").contains(action)) {
@@ -873,9 +873,11 @@ public class Users extends CRUD {
 	public static List<MainEntity> getEntitiesOfOrganizer(Organization org,
 			User user) {
 		List<MainEntity> entities = new ArrayList<MainEntity>();
-
+       System.out.println(org == null);
+       System.out.println(user);
 		List<UserRoleInOrganization> uro = UserRoleInOrganization.find(
 				"byOrganizationAndEnrolled", org, user).fetch();
+		System.out.println(uro.isEmpty() + "haaaaaaaaaaaaaaaaay");
 		for (int i = 0; i < uro.size(); i++) {
 			if (uro.get(i).role.roleName.equals("organizer")) {
 				entities.add((MainEntity) MainEntity.findById(uro.get(i).entityTopicID));
