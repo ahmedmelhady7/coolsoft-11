@@ -42,18 +42,23 @@
 		No topics available for this entity!
 		#{/else}
 		
-		
+#{if invite == 1}		
+ <input type="submit" value="Invite Organizers" onclick=location.href="@{Invitations.invite(entity.id)}">
+#{/if}	
 		
 		 #{if permission == 1}
 		 <br />
 <input type="submit" value="Add A Topic" onclick=location.href="@{Topics.blank(entity.id)}">
         <br />
 		#{/if}
+    
 		#{else}
 		<br />
 <input type="submit" disabled=true value="Request A Topic" onclick=location.href="@{Topics.blank(entity.id)}">
 		<br />
 		#{/else}
+
+
 		
     </body>
 </html>
