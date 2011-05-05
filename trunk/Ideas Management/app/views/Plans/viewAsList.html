@@ -19,21 +19,30 @@
 
 <br/>
 This plan is now rated: ${newRating}
-<!-- <form action="@{Plans.rate(rating,p.id)}" method="GET">
-    <input type="text" name="rating" id="rating" onkeypress="return isNumberKey(event)" onkeydown="isSingleDigit()"/> 
-    <input type="submit" value="Submit rating"/>
-</form>  -->
+		<form action="@{Plans.rate(p.id,rat)}" method="GET">
+			<input type="submit" value="Submit rating" onclick="doo(rat)"/>
+			<!-- <input type="hidden" name = "planId" value=${p.id}/> -->
+			<select name="rat">
+				<option value="0">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</select>
+		</form>
 <br />
 		<form action="@{Plans.sharePlan()}" method="GET">
 			<input type="submit" value="Share with user" />
 			<input type="hidden" name = "planID" value=${p.id}/>
 			<input type="text" name="userName" id="userToShareWith"/>
 		</form>
-<!-- 		<br />
-		<form action="@{Comments.addCommentToPlan(planID,comment)}" method="GET">
-		<input type="submit" value="Comment" />
-		<input type="text" name="comment"/>
-	</form> -->
+ 		<br />
+		<form action="@{Comments.addCommentToPlan()}" method="GET">
+		<input type = "text" name = "comment">
+        <input type = "hidden" name = "planId" value = ${p.id} >
+		<input type = "submit" value = "Comment" >
+	</form>
 #{if itemsList.size() > 0}
 <ul style="list-style: none; ">
     #{list items:itemsList, as:'item'}
@@ -108,23 +117,5 @@ No items exist in plan. Please contact
 	#{/else}
 #{/else}
 #{/else}
-<!-- <script type="text/javascript">
 
-   	function isNumberKey(evt)
-    {
-       var charCode = (evt.which) ? evt.which : event.keyCode
-       if (charCode > 31 && (charCode < 48 || charCode > 53)){
-	   	return false;
-	   }
-          
-       return true;
-    }
-    function isSingleDigit()
-    {
-    	var txt = document.getElementById('rating').value;
-    	if(txt.length > 0)
-    	{
-    		document.getElementById('rating').value = document.getElementById('rating').value.substring(0, 0);
-    	}
-    }
-</script> -->
+			

@@ -619,16 +619,15 @@ public class Ideas extends CRUD {
 	 * @param ideaID
 	 *            ID of the idea to be shared
 	 */
-//	public void shareIdea(String userName, long ideaID) {
-//		User U = User.find("ByUsername", userName).first();
-//		String type = "idea";
-//		User user = Security.getConnected();
-//		String desc = user.firstName + user.lastName
-//				+ " shared an Idea with you";
-//		long notId = ideaID;
-//		long userId = U.id;
-//		Notifications.sendNotification(userId, notId, type, desc);
-//	}
+	public static void shareIdea(String userName, long ideaID) {
+		User U = User.find("byUsername", userName).first();
+		String type = "Idea";
+		User user = Security.getConnected();
+		String desc = user.firstName + " " +user.lastName + " shared an Idea with you";
+		long notId = ideaID;
+		long userId = U.id;
+		Notifications.sendNotification(userId, notId, type, desc);
+	}
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
