@@ -36,7 +36,7 @@
 		</li>
 		#{/list}
 		</ul>
-		<a href="@{MainEntitys.createEntity()}">Create a new Entity</a><br /><br />
+		<a href="@{MainEntitys.goToCreateEntity(org.id)}">Create a new Entity</a><br /><br />
 		<br>
 		List of viewable Tags:
 		<ul style="list-style: none;">
@@ -53,8 +53,29 @@
         <form action="@{Topics.requestToPost()}">
             <input type="hidden" name="orgId" value="${org.id}">Request to post: <input type="submit" value="view">
         </form>
+        
+        <form action="@{Organizations.viewFollowers()}">
+        	<HR>
+        	<input type="hidden" name="organizationId" value="${org.id}">
+        	<input type="hidden" name="f" value="true">
+        	#{if (!org.followers.contains(user))}
+        	<p>Follow ${org.name}  
+        	<input type="submit" value="Follow"> <br />
+        	#{/if}
+        </form>
+        
+        <form action="@{Organizations.viewFollowers()}">     	
+        	<input type="hidden" name="organizationId" value="${org.id}">
+        	<input type="hidden" name="f" value="false">
+        	View ${org.name} Followers 
+        	<input type="submit" value="Followers"> <br />
+        	<HR>
+        </form>
+        
     </body>
 </html>
+
+<!--
 <script type="text/javascript">
 function test(){
 	
@@ -78,4 +99,4 @@ function test(){
 	}
 
 </script>
-
+-->
