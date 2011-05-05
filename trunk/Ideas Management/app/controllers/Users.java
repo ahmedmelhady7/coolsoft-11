@@ -976,9 +976,59 @@ public class Users extends CRUD {
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		Model object = type.entityClass.newInstance();
+		User user=(User) object;
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
 		System.out.println(object.toString());
+		String errorMessage="";
+		try{
+			if(user.username.length()>=20)
+			{
+				errorMessage = "Username cannot exceed 20 characters";
+			}
+			
+		}
+		catch(NullPointerException e)
+		{
+			errorMessage = "Username field is required, u must have a username !";
+		}
+		
+		try{
+			if(user.password.length()>=20)
+			{
+				errorMessage += "Password cannot exceed 20 characters";
+			}
+			
+		}
+		catch(NullPointerException e)
+		{
+			errorMessage += "Password field is required, u must have a username !";
+		}
+		
+		try{
+			if(user.password.length()>=20)
+			{
+				errorMessage += "First name cannot exceed 20 characters";
+			}
+			
+		}
+		catch(NullPointerException e)
+		{
+			errorMessage += "First name field is required, u must have a username !";
+		}
+		
+		try{
+			if(/*user.email.endsWith(suffix)||*/!(user.email.contains("@")))
+			{
+				errorMessage += "The email field should be a valid email address";
+			}
+			
+		}
+		catch(NullPointerException e)
+		{
+			errorMessage += "Email field is required, u must have a username !";
+		}
+			
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
 			try {
@@ -989,6 +1039,14 @@ public class Users extends CRUD {
 				System.out.println(object.toString() + "catch");
 				render("CRUD/blank.html", type, object);
 			}
+		}
+		
+		try {
+			render(request.controller.replace(".", "/") + "/blank.html",
+					user.email, user.username, user.password, user.firstName,
+					user.lastName, user.communityContributionCounter, user.dateofBirth,user.country,user.profession ,errorMessage);
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/blank.html", type);
 		}
 		System.out.println(object.toString() + "before the save");
 		object._save();
@@ -1044,6 +1102,7 @@ public class Users extends CRUD {
 		}*/
 		System.out.println(object.toString() + "before save");
 		object._save();
+		System.out.println(object.toString() + "after the save");
 		flash.success(Messages.get("crud.saved", type.modelName));
 		if (params.get("_save") != null) {
 			redirect(request.controller + ".list");
