@@ -482,7 +482,7 @@ public class Plans extends CRUD {
 	 * @param planId
 	 *            the id of the plan
 	 * 
-	 *            Omit @return
+	 *           
 	 **/
 
 	public static void viewAsCalendar(long planId) {
