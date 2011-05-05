@@ -7,40 +7,26 @@
     </head>
 
     <body>
-        #{extends 'main.html' /} 
+        
 
         <p>Please fill the required information.</p>
-		<form name="orderform" action="@{createOrganization()}" method="post">
+		<form name="orderform" action="@{Organizations.createOrg()}" method="POST">
         Organization Name: <input type="text" id="name" name=
         "name" required> <br /><br />
         Privacy Level:<br />
-         <input type="radio" name="privacy" value="Public" checked>
-        Public<br>
-        <input type="radio" name="privacy" value="Private">
-        Private<br>
-        <input type="radio" name="privacy" value="Secret">
-        Secret<br />
+		<select id="privacyLevel" name="privacyLevel">
+			<option value="Public">Public</option>
+            <option value="Private">Private</option>
+            <option value="Secret">Secret</option>
+		</select>
 		<br />
 		Allow users to create tags?<br>
-		<input type="radio" name="tag" value="Yes" checked>Yes<br>
-		<input type="radio" name="tag" value="No">No<br>
-		<input type="submit" value="Create" onclick = "submit(name.value,privacy.value,tag.value);" />
-		<script type="text/javascript">
-			function submit(n,p,t,u){
-				var pp = 0;
-				if(document.orderform.privacy[0].checked){
-					pp = 2;
-				}
-				else if(document.orderform.privacy[1].checked){
-						pp = 1;
-					}
-				var b = true;
-				if(document.orderform.tag[1].checked){
-					b = false;
-				}
-				alert("Your new organization has been created!");
-			}
-		</script> 
+		<select id="createTag" name="createTag">
+			<option value="Yes">Yes</option>
+            <option value="No">No</option>
+		</select>
+		<br />		
+		<input type="submit" value="Submit"/>		
 		</form>
     </body>
 </html>
