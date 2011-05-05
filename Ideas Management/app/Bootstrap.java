@@ -38,21 +38,21 @@ public class Bootstrap extends Job {
 			User u2 = new User("bob@gmail.com", "Gomaa","1234", "Mohamed", "Gomaa",
 					 0, new Date(), "egypt", "student");
 			u2._save();
-			User u3 = new User("teet@gmail.com","EL-khayat", "1234", "Ibrahim",
-					 "IA", 0, new Date(), "egypt", "student");
+			User u3 = new User("teet@gmail.com", "IA","1234", "Ibrahim","EL-khayat",
+					  0, new Date(), "egypt", "student");
 			u3._save();
 			User u4 = new User("mai.jt4@gmail.com","Gunners", "1234", "Omar", "Faruki",
 					 0, new Date(), "egypt", "student");
 			u4._save();
-			User u5 = new User("mostafa@gmail.com","abo el atta", "1234", "mostafa",
-					 "Sasa", 0, new Date(), "egypt", "student");
+			User u5 = new User("mostafa@gmail.com", "Sasa","1234", "mostafa","abo el atta",
+					  0, new Date(), "egypt", "student");
 			u5._save();
-			User u6 = new User("Ibrahim@gmail.com","Safwat", "1234", "Ibrahim",
-					 "Ibrahim", 0, new Date(), "egypt", "student");
+			User u6 = new User("Ibrahim@gmail.com","Ibrahim", "1234", "Ibrahim","Safwat",
+					  0, new Date(), "egypt", "student");
 			u6._save();
 			// System.out.println("in2");
 
-			Organization org1 = new Organization("GUC", u1, (short) 0, true);
+			Organization org1 = new Organization("GUC", u1, (short) 2, true);
 			org1.enrolledUsers.add(u1);
 			org1.enrolledUsers.add(u2);
 			org1.enrolledUsers.add(u3);
@@ -93,7 +93,7 @@ public class Bootstrap extends Job {
 			u5.topicsIFollow.add(to1);
 			u5.save();
 
-			Topic to2 = new Topic("Sports area", "upgrades", 0, u1, me1);
+			Topic to2 = new Topic("Sports area", "upgrades", 2, u1, me1);
 			to2.tags.add(t4);
 			to2._save();
 
@@ -157,7 +157,7 @@ public class Bootstrap extends Job {
 					new Date(2011, 06, 10),
 					"this is the third item in the plan", p1, "item2");
 			Item item3 = new Item(new Date(2011, 03, 01),
-					new Date(2011, 07, 10),
+					new Date(2011, 12, 10),
 					"this is the first item in the plan", p1, "item3");
 			item1.save();
 			item2.save();
