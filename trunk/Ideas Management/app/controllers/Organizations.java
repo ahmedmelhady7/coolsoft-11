@@ -374,11 +374,14 @@ public class Organizations extends CRUD {
 			if ((Security.getConnected() ==  org.creator) || (Security.getConnected().isAdmin)){
 				flag = 1;		
 			}
-			render(user, org, entities, requestToJoin, tags ,flag ,b);
+			boolean admin = user.isAdmin;
+			render(user, org, entities, requestToJoin, tags ,flag , b, admin);
 
 }
 	public static void viewAllOrganizations() {
 		List<Organization> organizations = Organization.findAll();
-		render(organizations);
+		User user = Security.getConnected();
+		boolean admin = user.isAdmin;
+		render(organizations,admin);
 	}
 }
