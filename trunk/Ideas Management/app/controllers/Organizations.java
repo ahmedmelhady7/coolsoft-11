@@ -17,6 +17,7 @@ import controllers.CRUD.ObjectType;
 import models.Invitation;
 import models.MainEntity;
 import models.Organization;
+import models.Role;
 import models.Tag;
 import models.Topic;
 import models.User;
@@ -203,41 +204,57 @@ public class Organizations extends CRUD {
 	 *            : whether the users in that organization are allowed to create
 	 *            tags
 	 */
-	public static void createOrganization(@Required String name,
-			String privacyLevel, String createTag) {
-		System.out.println("HEEEEEEEE");
+
+	public static void createOrganization() {
+		render();
+//		if (validation.hasErrors()) {
+//			params.flash();
+//			validation.keep();
+//			render();
+//		}
+		
+	}
+	public static void createOrg(String name, String privacyLevel, String createTag) {
+
 		User creator = Security.getConnected();
-		if (validation.hasErrors()) {
-			params.flash();
-			validation.keep();
-			render();
+		
+//		Organization existing_organization = Organization.find(
+//				"name like '" + name + "'").first();
+		List<Organization> allOrganizations = Organization.findAll();
+		boolean duplicate = false;
+		int i = 0;
+		while(i < allOrganizations.size()){
+			if(allOrganizations.get(i).name.equalsIgnoreCase(name)) {
+				duplicate = true;
+				break;
+			}
+			i++;
 		}
-		Organization existing_organization = Organization.find(
-				"name like '" + name + "'").first();
-		if (existing_organization != null) {
-			flash.error("Organization already exists!" + "\n\t\t"
-					+ "Please choose another organization name.");
-			render();
-		}
-		int privacyLevell = 0;
-		if (privacyLevel.equals("Public")) {
+		if (!duplicate) {
+		
+		int privacyLevell = 0; 
+		if(privacyLevel.equalsIgnoreCase("Public")) {
 			privacyLevell = 2;
-		} else {
-			if (privacyLevel.equals("Private")) {
+		}
+		else{
+			if(privacyLevel.equalsIgnoreCase("Private")) {
 				privacyLevell = 1;
 			}
 		}
 		boolean createTagg = false;
-		if (createTag.equals("Yes")) {
+		if(createTag.equalsIgnoreCase("Yes")) {
 			createTagg = true;
 		}
 		Organization org = new Organization(name, creator, privacyLevell,
 				createTagg).save();
-		MainEntity m = new MainEntity("Default", "", org);
+		Role r = Roles.getRoleByName("organizationLead");
+		UserRoleInOrganizations.addEnrolledUser(creator, org, r);
+		MainEntity m = new MainEntity("Default","",org);
 		m.save();
-///////////plz remove
-	//	org.enrolledUsers.add(creator);
-		flash.success("Your organization has been created.");
+
+		
+		}
+
 	}
 
 	/**
@@ -286,7 +303,15 @@ public class Organizations extends CRUD {
 	 */
 	public static void mainPage() {
 		User user = Security.getConnected();
-		List<Organization> organizations = Organization.findAll();
+		List<Organization> organizations = new ArrayList<Organization>();
+		List<Organization> allOrganizations = Organization.findAll();
+		int i = 0;
+		while(i < allOrganizations.size()){
+			if(Users.getEnrolledUsers(allOrganizations.get(i)).contains(user)) {
+				organizations.add(allOrganizations.get(i));
+			}
+			i++;
+		}
 		render(user, organizations);
 	}
 
@@ -334,22 +359,26 @@ public class Organizations extends CRUD {
 					org.id, "organization")
 					&& org.privacyLevel != 2) {
 				b = 1;
-			}
 			
+		}
+
+
+		if(Users.getEnrolledUsers(org).contains(user)) {
+			enrolled = true;
+		}
+					
 			int flag = 0;
 			if ((Security.getConnected() ==  org.creator) || (Security.getConnected().isAdmin)){
-				flag = 1;
-				
+				flag = 1;		
 			}
-			
-		
-
-		
-		
-		
-		render(user, org, entities, enrolled, tags ,flag ,b);
+			render(user, org, entities, enrolled, tags ,flag ,b);
 		
 
 
+
+}
+	public static void viewAllOrganizations() {
+		List<Organization> organizations = Organization.findAll();
+		render(organizations);
 	}
 }
