@@ -47,7 +47,7 @@ public class Tags extends CRUD {
 		Tag tag = new Tag(name,org);
 		String description = user.username + " has created a new tag \"" + name + "\" in organization " + org.name;
 		Notifications.sendNotification(org.creator.id, tag.id, "tag", description);
-		tag.save();
+        tag.save();
 		
 		flash.success("Your tag has been created.");
 	}
