@@ -257,9 +257,7 @@ public class Organizations extends CRUD {
 		Organization org = Organization.findById(organizationId);		
 		if(f.equals("true")) {
 			followOrganization(organizationId);
-			System.out.println("true");
 		}
-		System.out.println("false");
 		render(org);			
 	}
 	
@@ -267,7 +265,9 @@ public class Organizations extends CRUD {
 	public static void followOrganization(long organizationId) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(organizationId);
-		if (Users.isPermitted(user, "follow", organizationId, "organization")) {
+		if(org.followers.contains(user)) {
+			System.out.println("You are already a follower");
+		} else if (Users.isPermitted(user, "follow", organizationId, "organization")) {
 			org.followers.add(user);
 			user.followingOrganizations.add(org);
 		} else {
