@@ -52,6 +52,10 @@ public class Ideas extends CRUD {
 	 * this method posts an idea that was saved as a draft
 	 * 
 	 * @param ideaId the saved idea
+	 * 
+	 * @param title the idea's title
+	 * 
+	 * @param titl  the idea's description
 	 */
 
 	public static void postDraft(long ideaId,String title, String titl) {
@@ -61,21 +65,27 @@ public class Ideas extends CRUD {
 		idea.title = title;
 		idea.description = titl;
 		idea.save();
-		System.out.println("POSTED");
-		redirect("/ideas/list");
 	}
+	
+	/*
+	 * @author Abdalrahman Ali
+	 * 
+	 * this method saves a change in a draft idea
+	 * 
+	 * @param ideaId the saved idea
+	 * 
+	 * @param title the idea's title
+	 * 
+	 * @param titl  the idea's description
+	 */
 	
 	public static void saveDraft(long ideaId,String title,String titl) {
 		
 		Idea idea = Idea.findById(ideaId);
 		idea.title = title;
-		//idea.description = null;
 		System.out.println(titl);
 		idea.description = titl;
 		idea.save();
-		System.out.println("SAVED");
-		//redirect("/ideas/list");
-		redirect(request.controller + ".list");
 	}
 
 	/*
@@ -84,9 +94,6 @@ public class Ideas extends CRUD {
 	 * this method returns all the ideas the user saved as draft in order to
 	 * enable the user to choose one of them and post it.
 	 * 
-	 * @param user the user who saved the ideas
-	 * 
-	 * @return ArrayList<Idea> all the draft ideas saved by the user
 	 */
 
 	public static void getDrafts() {
@@ -101,6 +108,12 @@ public class Ideas extends CRUD {
 
 		render(drafts,user);
 	}
+	
+	/*
+	 * @author Abdalrahman Ali
+	 * 
+	 * this method just directs the user to a page where he can handle his drafts
+	 */
 	
 	public static void editDraft(long ideaId)
 	{
