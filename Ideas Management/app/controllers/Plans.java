@@ -38,65 +38,29 @@ public class Plans extends CRUD {
 		int canAssign = 0;
 		int canEdit = 0;
 
-		if (Users
-				.isPermitted(
-						user,
-						"accept/Reject user request to volunteer to work on action item in a plan",
-						p.topic.id, "topic")) {
+		if(p.topic.getOrganizer().contains(user)){
 			org = true;
 		}
-
-		// if (Users.isPermitted(user, "all", p.topic.id, "topic")) {
+			
+		//if (Users.isPermitted(user, "all", p.topic.id, "topic")) {
 
 		if (Users.isPermitted(user, "edit an action plan", p.topic.id, "topic")) {
 			canEdit = 1;
-		}
-		if (Users.isPermitted(user,
-				"assign one or many users to a to-do item in a plan",
-				p.topic.id, "topic")) {
 
-			canAssign = 1;
-		}
-		render(p, itemsList, user, canAssign, canEdit, error, org);
-		// } else {
-		// error = true;
-		// render(error, org);
-		// }
-
-	}
-
-	/**
-	 * This Method directly assigns the logged in user to the item given the
-	 * item id
-	 * 
-	 * @story C5S10
-	 * 
-	 * @author Salma Osama
-	 * 
-	 * @param itemId
-	 *            The ID of the item that the user will be assigned to
-	 */
-	public static void workOnItem(long itemId) {
-		User user = Security.getConnected();
-		Item item = Item.findById(itemId);
-
-		user.itemsAssigned.add(item);
-		user.save();
-		item.assignees.add(user);
-		item.save();
-		List<User> otherUsers = item.getAssignees();
-		User userToBeNotified;
-		String notificationMsg = "User " + user.username
-				+ "has been assigned to the item " + item.summary
-				+ "in the plan " + item.plan.title;
-		for (int i = 0; i < otherUsers.size(); i++) {
-			userToBeNotified = otherUsers.get(i);
-			if (userToBeNotified.id != user.id) {
-				Notifications.sendNotification(userToBeNotified.id,
-						item.plan.id, "plan", notificationMsg);
+//				canEdit = 1;
 			}
-		}
-		viewAsList(item.plan.id);
+			if (Users.isPermitted(user,
+					"assign one or many users to a to-do item in a plan",
+					p.topic.id, "topic")) {
+
+				canAssign = 1;
+			}
+			render(p, itemsList, user, canAssign, canEdit, error, org);
+//		} else {
+//			error = true;
+//			render(error, org);
+//		}
+
 	}
 
 	/**
@@ -148,7 +112,7 @@ public class Plans extends CRUD {
 	 * 
 	 * @param topicId
 	 *            The ID of the topic that this action plan is based upon
-	 * @param checkedIdeas
+	 * @param checkedIdeas 
 	 *            The list of ideas ids selected to be associated to the plan
 	 * 
 	 */
@@ -163,7 +127,7 @@ public class Plans extends CRUD {
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
-	 * @param rate
+	 * @param rating
 	 *            the user given rating for the specified plan
 	 * @param planID
 	 *            ID of the plan wished to rate
@@ -267,11 +231,12 @@ public class Plans extends CRUD {
 					notificationContent);
 
 		}
-		List<User> topicOrganizers = p.topic.getOrganizer();
-		for (int i = 0; i < topicOrganizers.size(); i++) {
-			Notifications.sendNotification(topicOrganizers.get(i).id, p.id,
-					"plan", "A new plan has been created");
+		List<User> topicOrganizers= p.topic.getOrganizer();
+		for(int i = 0; i<topicOrganizers.size(); i++) {
+			Notifications.sendNotification(topicOrganizers.get(i).id, p.id, "plan",
+			"A new plan has been created");
 		}
+		
 
 		if (check != null && check.equals("checked")) {
 			addItem(p.id);
@@ -284,22 +249,21 @@ public class Plans extends CRUD {
 	/**
 	 * @author ${Ibrahim safwat}
 	 * 
-	 * @param UserToShare
+	 * @param userId
 	 *            User that wants to share the plan
-	 * @param UserToShareWith
-	 *            User the will be sent the notification with the planID
 	 * @param planID
 	 *            ID of the plan to be shared
 	 */
-	public void sharePlan(ArrayList<User> UserToShare, User UserToShareWith,
-			long planID) {
-		// Plan p = Plan.findById(planID);
-		String type = "plan";
-		String desc = "userLoggedIn shared a plan with you";
-		UserToShare = new ArrayList<User>();
-		long notId = planID;
-		// Notifications.sendNotification(UserToShare, notId, type, desc);
-	}
+//	public void sharePlan(long userId, long planID) {
+//		ArrayList<User> UserToShare = new ArrayList<User>(1);
+//		User U = User.findById(userId);
+//		UserToShare.add(U);
+//		String type = "plan";
+//		User user = Security.getConnected();
+//		String desc = user.firstName + user.lastName + " shared a plan with you";
+//		long notId = planID;
+//		Notifications.sendNotification(UserToShare, notId, type, desc);
+//	}
 
 	/**
 	 * This Method renders the page for adding items
@@ -350,10 +314,10 @@ public class Plans extends CRUD {
 		} else {
 			viewAsList(plan.id);
 		}
-		List<User> topicOrganizers = plan.topic.getOrganizer();
-		for (int i = 0; i < topicOrganizers.size(); i++) {
-			Notifications.sendNotification(topicOrganizers.get(i).id, plan.id,
-					"plan", "A new plan has been created");
+		List<User> topicOrganizers= plan.topic.getOrganizer();
+		for(int i = 0; i<topicOrganizers.size(); i++) {
+			Notifications.sendNotification(topicOrganizers.get(i).id, plan.id, "plan",
+			"A new plan has been created");
 		}
 	}
 
@@ -420,18 +384,18 @@ public class Plans extends CRUD {
 		p.description = description;
 		p.requirement = requirement;
 		p.save();
-
-		List<User> topicOrganizers = p.topic.getOrganizer();
-		for (int i = 0; i < topicOrganizers.size(); i++) {
-			Notifications.sendNotification(topicOrganizers.get(i).id, p.id,
-					"plan", "A new plan has been created");
+		
+		List<User> topicOrganizers= p.topic.getOrganizer();
+		for(int i = 0; i<topicOrganizers.size(); i++) {
+			Notifications.sendNotification(topicOrganizers.get(i).id, p.id, "plan",
+			"A new plan has been created");
 		}
-		List<User> assignees = new ArrayList<User>();
+		List<User> assignees  = new ArrayList<User>();
 		for (int i = 0; i < p.items.size(); i++) {
-			assignees = p.items.get(i).assignees;
-			for (int j = 0; j < assignees.size(); j++) {
-				Notifications.sendNotification(assignees.get(j).id, p.id,
-						"plan", "This action plan has been edited");
+			assignees= p.items.get(i).assignees;
+			for(int j = 0; j<assignees.size(); j++) {
+				Notifications.sendNotification(assignees.get(j).id, p.id, "plan",
+						"This action plan has been edited");
 			}
 		}
 		viewAsList(p.id);
@@ -467,22 +431,22 @@ public class Plans extends CRUD {
 		item.description = description;
 		item.summary = summary;
 		item.save();
-
+		
 		List<User> topicOrganizers = item.plan.topic.getOrganizer();
-		for (int i = 0; i < topicOrganizers.size(); i++) {
-			Notifications.sendNotification(topicOrganizers.get(i).id,
-					item.plan.id, "plan", "This item has been edited");
+		for(int i = 0; i<topicOrganizers.size(); i++) {
+			Notifications.sendNotification(topicOrganizers.get(i).id, item.plan.id, "plan",
+					"This item has been edited");
 		}
 
-		List<User> assignees = item.assignees;
-		for (int j = 0; j < assignees.size(); j++) {
-			Notifications.sendNotification(assignees.get(j).id, item.plan.id,
-					"plan", "This item has been edited");
+		List<User> assignees= item.assignees;
+		for(int j = 0; j<assignees.size(); j++) {
+			Notifications.sendNotification(assignees.get(j).id, item.plan.id, "plan",
+					"This item has been edited");
 		}
 
 		viewAsList(item.plan.id);
 	}
-
+	
 	/**
 	 * This methods deletes an item from the item list of a plan
 	 * 
@@ -492,18 +456,17 @@ public class Plans extends CRUD {
 	 * 
 	 * @param planId
 	 *            The id of the plan that contains the item
-	 * 
+	 *            
 	 * @param itemId
 	 *            The id of the item being deleted
 	 */
-	public static void deleteItem(long planId, long itemId) {
+	public static void deleteItem(long planId, long itemId){
 		Plan plan = Plan.findById(planId);
 		Item item = Item.findById(itemId);
 		plan.items.remove(item);
 		item.delete();
 		viewAsList(planId);
 	}
-
 	public static void viewAsTimeline(long planid) {
 		// Plan p = Plan.findById(planid);
 		// List<Item> itemsList = p.items;
