@@ -67,6 +67,41 @@ public class Plans extends CRUD {
 		}
 
 	}
+	
+	 /**
+     * This Method directly assigns the logged in user to the item given the
+     * item id
+     * 
+     * @story C5S10
+     * 
+     * @author Salma Osama
+     * 
+     * @param itemId
+     *            The ID of the item that the user will be assigned to
+     */
+    public static void workOnItem(long itemId) {
+            User user = Security.getConnected();
+            Item item = Item.findById(itemId);
+
+            user.itemsAssigned.add(item);
+            user.save();
+            item.assignees.add(user);
+            item.save();
+            List<User> otherUsers = item.getAssignees();
+            User userToBeNotified;
+            String notificationMsg = "User " + user.username
+                            + "has been assigned to the item " + item.summary
+                            + "in the plan " + item.plan.title;
+            for (int i = 0; i < otherUsers.size(); i++) {
+                    userToBeNotified = otherUsers.get(i);
+                    if (userToBeNotified.id != user.id) {
+                            Notifications.sendNotification(userToBeNotified.id,
+                                            item.plan.id, "plan", notificationMsg);
+                    }
+            }
+            viewAsList(item.plan.id);
+    }
+      
 
 	/**
 	 * This Method renders the page addItem where the user selects the ideas
