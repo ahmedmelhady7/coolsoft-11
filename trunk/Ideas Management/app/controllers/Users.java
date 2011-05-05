@@ -17,9 +17,7 @@ import play.i18n.Messages;
 import play.mvc.With;
 import models.*;
 
-
 @With(Secure.class)
-
 public class Users extends CRUD {
 
 	/**
@@ -323,18 +321,19 @@ public class Users extends CRUD {
 	 * 
 	 * @story C3S12
 	 * 
-	 * @param idea
-	 *            : the idea to be reported
+	 * @param ideaId
+	 *            : the ID of the idea to be reported
 	 * 
 	 * @param reporter
 	 *            : the user who wants to report the idea
 	 * 
 	 */
-	public static void reportIdeaAsSpam(Idea idea) {
+	public static void reportIdeaAsSpam(long ideaId) {
+		Idea idea = Idea.findById(ideaId);
 		boolean alreadyReported = false;
 		User reporter = Security.getConnected();
 		for (int i = 0; i < reporter.ideasReported.size(); i++) {
-			if (idea == reporter.ideasReported) {
+			if (idea.toString().equals(reporter.ideasReported.toString())) {
 				alreadyReported = true;
 			}
 		}
@@ -346,8 +345,7 @@ public class Users extends CRUD {
 			Mail.ReportAsSpamMail(idea.belongsToTopic.getOrganizer().get(j),
 					reporter, idea);
 		}
-		ideaSpamView(idea);
-
+		ideaSpamView(ideaId);
 	}
 
 	/**
@@ -359,11 +357,12 @@ public class Users extends CRUD {
 	 * 
 	 */
 
-	public static void ideaSpamView(Idea idea) {
+	public static void ideaSpamView(long ideaId) {
 		int alreadyReported = -1;
+		Idea idea = Idea.findById(ideaId);
 		User reporter = Security.getConnected();
 		for (int i = 0; i < idea.reporters.size(); i++) {
-			if (reporter == idea.reporters.get(i))
+			if (reporter.username.equals(idea.reporters.get(i).username))
 				alreadyReported = 1;
 			else
 				alreadyReported = 0;
@@ -379,7 +378,6 @@ public class Users extends CRUD {
 						o, action, type, sourceID);
 		return (user);
 	}
-
 
 	/**
 	 * 
@@ -441,10 +439,12 @@ public class Users extends CRUD {
 		List<User> searchResultByEmail = new ArrayList<User>();
 
 		if (keyword != null) {
-			searchResultByName = User.find("byUsernameLike","%" + keyword + "%"). <User>fetch();
-			searchResultByProfession = User.find("byProfessionLike", "%" + keyword+ "%")
-					.<User>fetch();
-			searchResultByEmail = User.find("byEmailLike", "%" + keyword + "%").<User>fetch();
+			searchResultByName = User.find("byUsernameLike",
+					"%" + keyword + "%").<User> fetch();
+			searchResultByProfession = User.find("byProfessionLike",
+					"%" + keyword + "%").<User> fetch();
+			searchResultByEmail = User.find("byEmailLike", "%" + keyword + "%")
+					.<User> fetch();
 		}
 
 		int nameSize = searchResultByName.size();
@@ -554,7 +554,7 @@ public class Users extends CRUD {
 		// User banned =
 		// BannedUser.find("select b.bannedUser from BannedUser b where b.bannedUser = ? and b.resourceID = ? and b.resourceType = ? and b.action =  ",
 		// user);
-		 BannedUser banned = BannedUser.find(
+		BannedUser banned = BannedUser.find(
 				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 				action, placeType, placeId).first();
 		String role;
@@ -673,13 +673,6 @@ public class Users extends CRUD {
 						}
 					}
 				}
-				if (org.privacyLevel == 2) {
-					if (Roles.getRoleActions("idea developer").contains(action)) {
-						return true;
-					} else {
-						return false;
-					}
-					}
 			}
 		}
 
@@ -716,13 +709,6 @@ public class Users extends CRUD {
 						return false;
 					}
 				}
-			}
-			if (org.privacyLevel == 2) {
-			if (Roles.getRoleActions("idea developer").contains(action)) {
-				return true;
-			} else {
-				return false;
-			}
 			}
 		}
 
@@ -920,79 +906,66 @@ public class Users extends CRUD {
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		Model object = type.entityClass.newInstance();
-		User user=(User) object;
+		User user = (User) object;
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
 		System.out.println(object.toString());
-		String errorMessage="";
-		try{
-			if(user.username.length()>=20)
-			{
+		String errorMessage = "";
+		try {
+			if (user.username.length() >= 20) {
 				errorMessage = "Username cannot exceed 20 characters";
 			}
-			if(user.find("ByUsername", user.username)!=null)
-			{
+			if (user.find("ByUsername", user.username) != null) {
 				errorMessage += "This username already exists !";
 			}
-		}
-		catch(NullPointerException e)
-		{
+		} catch (NullPointerException e) {
 			errorMessage = "Username field is required, u must have a username !";
 		}
-		
-		try{
-			if(user.password.length()>=20)
-			{
+
+		try {
+			if (user.password.length() >= 20) {
 				errorMessage += "Password cannot exceed 20 characters";
 			}
-			
-		}
-		catch(NullPointerException e)
-		{
+
+		} catch (NullPointerException e) {
 			errorMessage += "Password field is required, u must have a username !";
 		}
-		
-		try{
-			if(user.password.length()>=20)
-			{
+
+		try {
+			if (user.password.length() >= 20) {
 				errorMessage += "First name cannot exceed 20 characters";
 			}
-			
-		}
-		catch(NullPointerException e)
-		{
+
+		} catch (NullPointerException e) {
 			errorMessage += "First name field is required, u must have a username !";
 		}
-		
-		try{
-			
-			if(user.find("ByEmail", user.email)!=null)
-			{
+
+		try {
+
+			if (user.find("ByEmail", user.email) != null) {
 				errorMessage += "This mail already exists !";
 			}
-			
-		}
-		catch(NullPointerException e)
-		{
+
+		} catch (NullPointerException e) {
 			errorMessage += "Email field is required, u must have a username !";
 		}
-			
-		/*if (validation.hasErrors()) {
-			renderArgs.put("error", Messages.get("crud.hasErrors"));
-			try {
-				System.out.println(object.toString() + "!1try");
-				render(request.controller.replace(".", "/") + "/blank.html",
-						type, object);
-			} catch (TemplateNotFoundException e) {
-				System.out.println(object.toString() + "catch");
-				render("CRUD/blank.html", type, object);
-			}
-		}*/
-		
+
+		/*
+		 * if (validation.hasErrors()) { renderArgs.put("error",
+		 * Messages.get("crud.hasErrors")); try {
+		 * System.out.println(object.toString() + "!1try");
+		 * render(request.controller.replace(".", "/") + "/blank.html", type,
+		 * object); } catch (TemplateNotFoundException e) {
+		 * System.out.println(object.toString() + "catch");
+		 * render("CRUD/blank.html", type, object); } }
+		 */
+
 		try {
 			render(request.controller.replace(".", "/") + "/blank.html",
 					user.email, user.username, user.password, user.firstName,
-					user.lastName, user.communityContributionCounter, user.dateofBirth,user.country,user.profession ,errorMessage);
+					user.lastName, user.communityContributionCounter,
+					user.dateofBirth, user.country, user.profession,
+					errorMessage);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/blank.html", type);
 		}
@@ -1034,20 +1007,16 @@ public class Users extends CRUD {
 		Binder.bind(object, "object", params.all());
 		System.out.println(object.toString() + "begin");
 		validation.valid(object);
-		/*if (validation.hasErrors()) {
-			System.out.println(object.toString() + "first if");
-			renderArgs.put("error", Messages.get("crud.hasErrors"));
-			System.out.println(object.toString() + "t7t first if");
-			try {
-				System.out.println(object.toString() + "try");
-				render(request.controller.replace(".", "/") + "/show.html",
-						type, object);
-				System.out.println("m3mlsh render");
-			} catch (TemplateNotFoundException e) {
-				System.out.println(object.toString() + "catch");
-				render("CRUD/show.html", type, object);
-			}
-		}*/
+		/*
+		 * if (validation.hasErrors()) { System.out.println(object.toString() +
+		 * "first if"); renderArgs.put("error", Messages.get("crud.hasErrors"));
+		 * System.out.println(object.toString() + "t7t first if"); try {
+		 * System.out.println(object.toString() + "try");
+		 * render(request.controller.replace(".", "/") + "/show.html", type,
+		 * object); System.out.println("m3mlsh render"); } catch
+		 * (TemplateNotFoundException e) { System.out.println(object.toString()
+		 * + "catch"); render("CRUD/show.html", type, object); } }
+		 */
 		System.out.println(object.toString() + "before save");
 		object._save();
 		System.out.println(object.toString() + "after the save");
@@ -1083,15 +1052,15 @@ public class Users extends CRUD {
 				user.state = "d";
 				user._save();
 				x = "deletion successful";
-				System.out.println(x+"  first if");
+				System.out.println(x + "  first if");
 			} else {
 				x = "You can not delete a user who's deactivated his account !";
-				System.out.println(x+"else");
+				System.out.println(x + "else");
 			}
-			render(request.controller.replace(".", "/") + "/index.html",x);
+			render(request.controller.replace(".", "/") + "/index.html", x);
 		} catch (NullPointerException e) {
 			x = "No such User !!";
-			System.out.println(x+"catch");
+			System.out.println(x + "catch");
 			// render(x);
 			render(request.controller.replace(".", "/") + "/index.html");
 
@@ -1245,18 +1214,17 @@ public class Users extends CRUD {
 		user._save();
 		inv._delete();
 	}
-	
+
 	/**
-	 * This method ends the session of the current user 
-	 * and logs out
+	 * This method ends the session of the current user and logs out
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @return void
 	 */
-	
+
 	public static void logout() {
-		try {			
+		try {
 			session.remove("user_id");
 			Secure.logout();
 		} catch (Throwable e) {

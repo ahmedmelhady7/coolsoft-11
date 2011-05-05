@@ -36,7 +36,6 @@
             <textarea disabled= true id="object_description" cols="50" rows="5" class="" name="object.description">
                 ${object.description}
             </textarea>
-            <!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
         </p>
         #{/crud.custom}
         #{crud.custom 'privacyLevel'}
@@ -51,16 +50,17 @@
         #{/crud.custom }
         #{/crud.form }
         #{/form}
-        <button type="submit" onclick="">
-            Edit
-        </button>
+        <form action= "@{Ideas.view()}">
+            <input type="hidden" name="ideaId" value="${ideaId}"><input type="submit" value = "Edit">
+        </form>
         <form action="@{Users.ReportIdeaAsSpam()}" method="GET" name="myform">
+            <input type="hidden" name="ideaId" value="${ideaId}">
             <table border="0" bgcolor="#ececec" cellspacing="5">
                 <tr>
                     <td>
                         &nbsp;
                     </td>
                     <td>
-                        <input type="submit" value="Report As Spam">
-                        </table>
-                    </form>
+                    </table>
+                    <input type="submit" value="Report As Spam">
+                </form>

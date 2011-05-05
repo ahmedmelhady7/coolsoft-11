@@ -48,31 +48,7 @@
         #{/crud.form }
         #{/form}
     </div>
-    <!--#{form @delete(object._key())}
-    <p class="crudDelete">
-    <input type="submit" value="&{'crud.delete', type.modelName}" />
-    </p>
-    #{/form}-->
     <p>
         <input type="submit" name="_save" value="&{'crud.save', type.modelName}" /><input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
     </p>
 </div>
-<script type="text/javascript">
-    function closeTopic(topicid, userId){
-        $.post('@{Topics.closeTopic()}', {
-            topicId: topicid,
-            userId: userId
-        });
-        alert("done!");
-        location.reload(true);
-    }
-    
-    function reopen(topicid, userId){
-        $.post('@{Topics.reopen()}', {
-            topicId: topicid,
-            userId: userId
-        });
-        alert("done!");
-        location.reload(true);
-    }
-</script>

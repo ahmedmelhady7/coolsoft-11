@@ -29,10 +29,10 @@ public class Idea extends Model {
 	/**
 	 * @author Mohamed Ghanem
 	 * 
-	 * Organization initialization date
+	 *         Organization initialization date
 	 */
 	public Date intializedIn;
-	
+
 	/**
 	 * Idea's description Required for creating an idea
 	 */
@@ -50,12 +50,14 @@ public class Idea extends Model {
 	/**
 	 * the list of tags that the idea is tagged with
 	 */
-	@ManyToMany//(cascade = CascadeType.PERSIST)
+	@ManyToMany
+	// (cascade = CascadeType.PERSIST)
 	public List<Tag> tagsList;
 	/**
 	 * the list of comments to an idea
 	 */
-	@OneToMany//(cascade = CascadeType.PERSIST)
+	@OneToMany
+	// (cascade = CascadeType.PERSIST)
 	public List<Comment> commentsList;
 	/**
 	 * the topic that the idea belongs to
@@ -72,7 +74,7 @@ public class Idea extends Model {
 	/**
 	 * the Repoters of the idea
 	 */
-	@ManyToMany(mappedBy ="ideasReported")
+	@ManyToMany(mappedBy = "ideasReported")
 	public List<User> reporters;
 	/**
 	 * the plan that the idea is marked in
@@ -196,7 +198,7 @@ public class Idea extends Model {
 			String desc = "This idea is inactive";
 			// Send notification
 
-//			Notifications.sendNotification(user, idea.id, type, desc);
+			// Notifications.sendNotification(user, idea.id, type, desc);
 		}
 
 	}
@@ -223,6 +225,5 @@ public class Idea extends Model {
 	public String toString() {
 		return this.title;
 	}
-
 
 }
