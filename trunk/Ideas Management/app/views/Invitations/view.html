@@ -1,6 +1,6 @@
 
  
-<a href="@{Invitations.invite()}">Back to Home</a>
+<a href="@{Login.index()}">Back to Home</a>
 <hr>          </hr>
 <u><font size ="5" color ="blue">Invitations</font></u>
 <br/>
@@ -14,6 +14,7 @@
 #{list items:inv, as:'inn'} 
 <html>
 <table border="0" bgcolor="#ececec" cellspacing="5" id ="inv_${inn.id}">
+<tr><td><font size ="3" color ="black"><i>Date : ${inn.date_of_sending} </i></font></td><td>
 
 <tr><td><font size ="3" color ="black"><u>From : ${inn.organization.name} Organization</u></font></td><td>
 
