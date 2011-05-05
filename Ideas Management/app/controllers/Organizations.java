@@ -366,15 +366,15 @@ public class Organizations extends CRUD {
 		if(Users.getEnrolledUsers(org).contains(user)) {
 			enrolled = true;
 		}
-					
+		boolean requestToJoin = false;
+		if((enrolled == false)&&(org.privacyLevel == 1)) {
+			requestToJoin = true;
+		}					
 			int flag = 0;
 			if ((Security.getConnected() ==  org.creator) || (Security.getConnected().isAdmin)){
 				flag = 1;		
 			}
-			render(user, org, entities, enrolled, tags ,flag ,b);
-		
-
-
+			render(user, org, entities, requestToJoin, tags ,flag ,b);
 
 }
 	public static void viewAllOrganizations() {
