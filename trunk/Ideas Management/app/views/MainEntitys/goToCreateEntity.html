@@ -1,0 +1,48 @@
+<html>
+	<title> Create New Entity </title>
+#{extends 'main.html' /}
+#{set title:'Entity Creation' /}
+
+<form action="@{MainEntitys.createEntity()}" method="POST"
+onsubmit= "return validate()">
+
+<input type = "hidden" name = "orgId" value = ${org.id} >
+<HR>
+Entity Name: <input type="text" id="name" name="name"> 
+<br />
+<label id= "nameerror"> </label><br />
+<HR>
+<p>Description:</p>
+<p><textarea id="description" name="description" rows="5" cols="50"></textarea></p>
+<label id= "descriptionerror"> </label> <br />
+<HR>
+<input type="submit" value="Create">
+<HR>
+</form>
+
+<script type="text/javascript">
+function redirect(){
+         document.location.href = "@{Organizations.viewProfile(org.id)}";
+    }
+    
+    function validate() {
+		var nm = document.getElementById("name").value;
+		var ds = document.getElementById("description").value;
+		var flag = 1;
+		if (nm == "") {
+			document.getElementById("nameerror").innerHTML = "Please insert a name";
+			flag = 0;
+		} else {
+			document.getElementById("nameerror").innerHTML = "";
+		}
+		if (ds == "") {
+			document.getElementById("descriptionerror").innerHTML = "Please insert a description";
+			flag = 0;
+		} else {
+			document.getElementById("descriptionerror").innerHTML = "";
+		}
+		if (flag == 0)
+		return false;		
+	}	
+</script>
+</html> 
