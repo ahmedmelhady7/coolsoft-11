@@ -279,7 +279,7 @@ public class Topics extends CRUD {
 			temp = e.get(i).topicList;
 			for (int j = 0; j < temp.size(); j++) {
 				// ???
-				if (!Users.isPermitted(user, "can post ideas to a Topic;",
+				if (!Users.isPermitted(user, "can post ideas to a Topic",
 						temp.get(j).id, "topic")) {
 					topics.add(temp.get(j));
 				}
