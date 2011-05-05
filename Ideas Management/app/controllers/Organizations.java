@@ -252,8 +252,19 @@ public class Organizations extends CRUD {
 	 * @param user
 	 *            : The user who wants to follow an organization
 	 */
+	
+	public static void viewFollowers(long organizationId, String f) {
+		Organization org = Organization.findById(organizationId);		
+		if(f.equals("true")) {
+			followOrganization(organizationId);
+			System.out.println("true");
+		}
+		System.out.println("false");
+		render(org);			
+	}
+	
 
-	public void followOrganization(long organizationId) {
+	public static void followOrganization(long organizationId) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(organizationId);
 		if (Users.isPermitted(user, "follow", organizationId, "organization")) {
@@ -271,10 +282,6 @@ public class Organizations extends CRUD {
 	 * @author Omar Faruki
 	 */
 	public static void mainPage(){
-//<<<<<<< .mine
-//		User user = Security.getConnected();
-//		List<Organization> organizations = user.enrolled;
-//=======
 		User user = Security.getConnected();
 		List<Organization> organizations = Organization.findAll();
 		render(user, organizations);
