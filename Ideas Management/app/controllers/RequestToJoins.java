@@ -30,14 +30,14 @@ public class RequestToJoins extends CRUD {
 	 */
 
 	public static void viewRequests(int type, long id) {
-             type=1;
+             type=0;
 		List<RequestToJoin> requests;
 		if (type == 1) {
 			Topic topic = Topic.findById((long)1);
 			notFoundIfNull(topic);
 			requests = topic.requestsToJoin;
 		} else {
-			Organization organization = Organization.findById(id);
+			Organization organization = Organization.findById((long)1);
 			notFoundIfNull(organization);
 			requests = organization.joinRequests;
 		}
@@ -79,9 +79,9 @@ public class RequestToJoins extends CRUD {
 			if (request.organization!= null) {
 
 				Organization organization = request.organization;
-				//Role role = Roles.getRoleByName("idea developer");
-				//UserRoleInOrganizations.addEnrolledUser(user, organization,
-					//	role);
+				Role role = Roles.getRoleByName("idea developer");
+				UserRoleInOrganizations.addEnrolledUser(user, organization,
+						role);
 				organization.joinRequests.remove(request);
 				System.out.println(organization.joinRequests);
 				System.out.println(users);
@@ -95,8 +95,8 @@ public class RequestToJoins extends CRUD {
 				Organization organization = entity.organization;
 				organizers.add(organization.creator);
 				Role role = Roles.getRoleByName("idea developer");
-				//UserRoleInOrganizations.addEnrolledUser(user, organization,
-					//	role, topic.id, "Topic");
+				UserRoleInOrganizations.addEnrolledUser(user, organization,
+						role, topic.id, "Topic");
 				topic.requestsToJoin.remove(request);
 				for(int i=0;i<organizers.size();i++)
 					Notifications.sendNotification(organizers.get(i).id, topic.id, "Topic",

@@ -54,7 +54,7 @@ public class Bootstrap extends Job {
 
 			Organization org1 = new Organization("GUC", u1, (short) 2, true);
 			org1.enrolledUsers.add(u1);
-			org1.enrolledUsers.add(u2);
+			//org1.enrolledUsers.add(u2);
 			org1.enrolledUsers.add(u3);
 			org1.enrolledUsers.add(u4);
 
@@ -71,7 +71,7 @@ public class Bootstrap extends Job {
 
 			MainEntity me1 = new MainEntity("MET",
 					"Media Engineering and technology", org1);
-			me1.organizers.add(u2);
+			//me1.organizers.add(u2);
 			me1.organizers.add(u1);
 			me1.tagList.add(t1);
 			me1._save();
@@ -182,10 +182,10 @@ public class Bootstrap extends Job {
 			item2.assignees.add(u2);
 			item2.save();
 
-			RequestToJoin request = new RequestToJoin(u1,null, org1,
+			RequestToJoin request = new RequestToJoin(u2,null, org1,
 					"I would like to join your organization..");
 			request._save();
-			RequestToJoin request2 = new RequestToJoin(u1, to1,null,
+			RequestToJoin request2 = new RequestToJoin(u2, to1,null,
 			"I would like to post on ur topic.");
 	        request2._save();
 
