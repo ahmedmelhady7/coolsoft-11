@@ -216,17 +216,4 @@ public class Idea extends Model {
 	}
 
 
-
-	/**
-	 * @author ${Ibrahim Safwat}
-	 * 
-	 * @param priority
-	 *            the priority to be set
-	 * @param ideaID
-	 *            the ID of the idea to prioritize
-	 */
-	public void setPriority(String priority, int ideaID) {
-		// ideaID.priority = priority
-	}
-
 }
