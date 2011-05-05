@@ -55,18 +55,18 @@ public class User extends Model {
 	// , cascade = CascadeType.PERSIST)
 	public List<Topic> topicsCreated;
 
-	// to be removed
-	@ManyToMany(mappedBy = "enrolledUsers")
-	public List<Organization> enrolled;
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>change
+//	@ManyToMany(mappedBy = "enrolledUsers")
+//	public List<Organization> enrolled;
 
 	@OneToMany(mappedBy = "creator")
 	// , cascade = CascadeType.ALL)
 	public List<Organization> createdOrganization;
 
-	// to be removed
-	@ManyToMany(mappedBy = "organizers")
-	// , cascade = CascadeType.PERSIST)
-	public List<Topic> topicsIOrganize;
+//	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> change
+//	@ManyToMany(mappedBy = "organizers")
+//	// , cascade = CascadeType.PERSIST)
+//	public List<Topic> topicsIOrganize;
 
 	@ManyToMany(mappedBy = "usersRated")
 	public List<Plan> ratedPlans;
@@ -113,10 +113,10 @@ public class User extends Model {
 	// (mappedBy = "followers")
 	public List<Organization> followingOrganizations;
 
-	// to be removed
-	@ManyToMany
-	// (mappedBy = "organizers")
-	public List<MainEntity> entitiesIOrganize;
+//	>>>>>>>>>>>>>>>>>.. change
+//	@ManyToMany
+//	// (mappedBy = "organizers")
+//	public List<MainEntity> entitiesIOrganize;
 
 	// @ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
 	// public List<Topic> accessedTopics;
@@ -173,7 +173,7 @@ public class User extends Model {
 		// this.roles = new ArrayList<Role>();
 		this.ideasCreated = new ArrayList<Idea>();
 		this.itemsAssigned = new ArrayList<Item>();
-		this.topicsIOrganize = new ArrayList<Topic>();
+		//this.topicsIOrganize = new ArrayList<Topic>();
 		this.topicsCreated = new ArrayList<Topic>();
 		this.volunteerRequests = new ArrayList<VolunteerRequest>();
 		this.sentAssignRequests = new ArrayList<AssignRequest>();
@@ -185,7 +185,7 @@ public class User extends Model {
 		// added
 		userRolesInOrganization = new ArrayList<UserRoleInOrganization>();
 		invitation = new ArrayList<Invitation>();
-		this.enrolled = new ArrayList<Organization>();
+		//this.enrolled = new ArrayList<Organization>();
 		this.createdOrganization = new ArrayList<Organization>();
 		followingOrganizations = new ArrayList<Organization>();
 		planscreated = new ArrayList<Plan>();
