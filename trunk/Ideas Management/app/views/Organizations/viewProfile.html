@@ -56,7 +56,7 @@
             <input type="hidden" name="orgId" value='${org.id}'>Restrict organizer in this organization: <input type="submit" value="view">
         </form>
         #{/if}
-        
+   <!--       
 <!--     </body> -->
 <!-- </html> -->
 <!-- <script type="text/javascript"> -->
@@ -83,7 +83,8 @@
 
 <!-- </script> -->
 
-<!-- ======= -->
+<!-- ======= -->  
+
         <form action="@{Organizations.viewFollowers()}">
             <HR><input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="f" value="true">#{if (!org.followers.contains(user))}
             <p>
@@ -141,3 +142,4 @@
             }
             </script>
             -->
+
