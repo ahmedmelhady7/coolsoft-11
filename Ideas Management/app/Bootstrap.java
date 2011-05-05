@@ -50,6 +50,11 @@ public class Bootstrap extends Job {
 			User u6 = new User("Ibrahim@gmail.com","Ibrahim", "1234", "Ibrahim","Safwat",
 					  0, new Date(), "egypt", "student");
 			u6._save();
+			
+			User barnasa = new User("brns@gmail.com", "1234", "barnasa",
+					"barnasa", "brns", 0, new Date(), "egypt", "student");
+			barnasa._save();
+			
 			// System.out.println("in2");
 
 			Organization org1 = new Organization("GUC", u1, (short) 2, true);
@@ -121,7 +126,15 @@ public class Bootstrap extends Job {
 			i3.save();
 			u3.ideasReported.add(i3);
 			u3.save();
+			
+			Idea alaga = new Idea("kill 7", "like7", barnasa, to2, true);
 
+			alaga.tagsList.add(t4);
+			alaga.usersRated.add(u4);
+			alaga.save();
+			barnasa.ideasReported.add(alaga);
+			barnasa.save();
+			
 			Plan p1 = new Plan("Improving Labs", u1, new Date(2011, 07, 01),
 					new Date(2012, 07, 01), "Plan for improving the CS labs",
 					to2, "new software").save();
