@@ -212,25 +212,27 @@ public class Topics extends CRUD {
 		return (ArrayList<Topic>) closedtopics;
 	}
 
-	/**
-	 * 
-	 * This method gets a list of followers for a certain topic
-	 * 
-	 * @author Omar Faruki
-	 * 
-	 * @story C2S29
-	 * 
-	 * @param id
-	 *            : id of the topic
-	 * 
-	 * @return void
-	 */
-	public static void viewFollowers(long id) {
-		Topic topic = Topic.findById(id);
-		notFoundIfNull(topic);
-		List<User> follow = topic.followers;
-		render(follow);
-	}
+//	/**
+//	 * 
+//	 * This method gets a list of followers for a certain topic
+//	 * 
+//	 * @author Omar Faruki
+//	 * 
+//	 * @story C2S29
+//	 * 
+//	 * @param id
+//	 *            : id of the topic
+//	 * 
+//	 * @return void
+//	 */
+//	public static void viewFollowers(long id) {
+//		Topic topic = Topic.findById(id);
+//		notFoundIfNull(topic);
+//		List<User> follow = topic.followers;
+//		render(follow);
+//	}
+	
+	
 
 	/**
 	 * This Method sends a request to post on a topic for a user to the
@@ -764,7 +766,7 @@ public class Topics extends CRUD {
 			System.out.println("show() done, about to render");
 			render(type, object, tags, creator, followers, ideas, comments,
 					entity, plan, openToEdit, privacyLevel, deletemessage,
-					deletable, topicIdLong, canClose, canPlan);
+					deletable, topicIdLong, canClose, canPlan, targetTopic);
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("show() done with exception, rendering to CRUD/show.html");
@@ -1055,12 +1057,22 @@ public class Topics extends CRUD {
 	public static void followTopic(long topicId) {
 		User user = Security.getConnected();
 		Topic t = Topic.findById(topicId);
-		if (Users.isPermitted(user, "follow", topicId, "topic")) {
+		if(t.followers.contains(user)) {
+			System.out.println("You are already a follower");
+		} else if (Users.isPermitted(user, "can follow organization/entities/topics", topicId, "topic")) {
 			t.followers.add(user);
+			t.save();
 			user.topicsIFollow.add(t);
+			user.save();
 		} else {
 			System.out.println("Sorry! Action cannot be performed");
 		}
 	}
-
+	public static void viewFollowers(long topicId, String f) {
+		Topic topic = Topic.findById(topicId);
+		if (f.equals("true")) {
+			followTopic(topicId);
+		}
+		render(topic);
+	}
 }
