@@ -43,8 +43,7 @@ public class Invitations extends CRUD {
 	public static void invite(long orgId,long entId) {
          
 		Organization org=Organization.findById(orgId);
-        MainEntity ent= MainEntity.findById(entId);
-        User u=Security.getConnected();
+        MainEntity ent= MainEntity.findById(entId);      User u=Security.getConnected();
        
 		render(ent,org);
 
@@ -217,18 +216,20 @@ public class Invitations extends CRUD {
 	 							+ org.name);*/
 	            }
 
+
+	       User sender = Security.getConnected();
 			
-	         //**fadwa
-			/*	List<User> organizers = Users.getEntityOrganizers(ent);
-				if (!user.equals(org.creator)) {
-					organizers.remove(user);
-					organizers.add(org.creator);
-				}
-				Notifications.sendNotification(organizers, ent.id, "entity",
-						"Invitation has been sent from entity "+ ent.name);
-		                
-		        //**
-				*/
+					organizers.remove(sender);
+					
+				
+				for(int j=0;j<organizers.size();j++)
+				Notifications.sendNotification(organizers.get(j).id, ent.id, "entity",
+						"New organizer has been invited to be an organizer of entity  "
+								+ ent.name);
+
+			
+		       
+
 			 render(email);
 		                 
 	  }
@@ -299,16 +300,15 @@ public class Invitations extends CRUD {
 			Role role = Role.find("byRoleName", rolename).first();
 			System.out.println("here"+role.roleName);
 
-		/*	// *fadwa
+	
 			List<User> organizers = Users.getEntityOrganizers(ent);
-			if (!invite.sender.equals(org.creator)) {
-				organizers.remove(invite.sender);
 				organizers.add(org.creator);
-			}
-			Notifications.sendNotification(organizers, ent.id, "entity",
+			
+			for(int j=0;j<organizers.size();j++)
+			Notifications.sendNotification(organizers.get(j).id, ent.id, "entity",
 					"New organizer has been added as an organizer to entity  "
 							+ ent.name);
-			// * */
+		
                      
 			if (rolename.equalsIgnoreCase("organzier")) {
 

@@ -32,7 +32,7 @@ public class RequestToJoins extends CRUD {
 	 */
 
 	public static void viewRequests(int type, long id) {
-             type=0;
+             type=1;
 		List<RequestToJoin> requests;
 		if (type == 1) {
 			Topic topic = Topic.findById((long)1);
@@ -95,6 +95,9 @@ public class RequestToJoins extends CRUD {
 				MainEntity entity = topic.entity;
 				List <User> organizers = Users.getEntityOrganizers(entity);
 				Organization organization = entity.organization;
+				User reciever = Security.getConnected();
+				organizers.remove(reciever);
+				//if(!organizers.contains(organization.creator))
 				organizers.add(organization.creator);
 				Role role = Roles.getRoleByName("idea developer");
 				UserRoleInOrganizations.addEnrolledUser(user, organization,
