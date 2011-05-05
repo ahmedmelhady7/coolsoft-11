@@ -254,16 +254,15 @@ public class Plans extends CRUD {
 	 * @param planID
 	 *            ID of the plan to be shared
 	 */
-//	public void sharePlan(long userId, long planID) {
-//		ArrayList<User> UserToShare = new ArrayList<User>(1);
-//		User U = User.findById(userId);
-//		UserToShare.add(U);
-//		String type = "plan";
-//		User user = Security.getConnected();
-//		String desc = user.firstName + user.lastName + " shared a plan with you";
-//		long notId = planID;
-//		Notifications.sendNotification(UserToShare, notId, type, desc);
-//	}
+	public void sharePlan(String userName, long planID) {
+		User U = User.find("ByUsername", userName).first();
+		String type = "plan";
+		User user = Security.getConnected();
+		String desc = user.firstName + user.lastName + " shared a plan with you";
+		long notId = planID;
+		long userId = U.id;
+		Notifications.sendNotification(userId, notId, type, desc);
+	}
 
 	/**
 	 * This Method renders the page for adding items
