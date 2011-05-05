@@ -14,8 +14,11 @@ import play.db.jpa.GenericModel.JPAQuery;
 import play.db.jpa.JPA;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
+import play.mvc.With;
 import models.*;
 
+
+@With(Secure.class)
 public class Users extends CRUD {
 
 	/**
@@ -986,7 +989,10 @@ public class Users extends CRUD {
 			{
 				errorMessage = "Username cannot exceed 20 characters";
 			}
-			
+			if(user.find("ByUsername", user.username)!=null)
+			{
+				errorMessage += "This username already exists !";
+			}
 		}
 		catch(NullPointerException e)
 		{
@@ -1018,9 +1024,10 @@ public class Users extends CRUD {
 		}
 		
 		try{
-			if(/*user.email.endsWith(suffix)||*/!(user.email.contains("@")))
+			
+			if(user.find("ByEmail", user.email)!=null)
 			{
-				errorMessage += "The email field should be a valid email address";
+				errorMessage += "This mail already exists !";
 			}
 			
 		}
@@ -1029,7 +1036,7 @@ public class Users extends CRUD {
 			errorMessage += "Email field is required, u must have a username !";
 		}
 			
-		if (validation.hasErrors()) {
+		/*if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
 			try {
 				System.out.println(object.toString() + "!1try");
@@ -1039,7 +1046,7 @@ public class Users extends CRUD {
 				System.out.println(object.toString() + "catch");
 				render("CRUD/blank.html", type, object);
 			}
-		}
+		}*/
 		
 		try {
 			render(request.controller.replace(".", "/") + "/blank.html",
