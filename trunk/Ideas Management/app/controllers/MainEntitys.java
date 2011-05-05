@@ -31,12 +31,27 @@ public class MainEntitys extends CRUD {
 	public static void followEntity(long entityId) {
 		User user = Security.getConnected();
 		MainEntity e = MainEntity.findById(entityId);
-		if (Users.isPermitted(user, "follow", entityId, "entity")) {
+		if(e.followers.contains(user)) {
+			System.out.println("You are already a follower");
+		} else if (Users.isPermitted(user, 
+				"can follow organization/entities/topics", entityId, "entity")) {
+			System.out.println("BEFORE" + e.followers.size());
 			e.followers.add(user);
-			user.followingEntities.add(e);
+			System.out.println("After" + e.followers.size());
+			e.save();
+			//user.followingEntities.add(e);
+			//user.save();
 		} else {
 			System.out.println("Sorry! Action cannot be performed");
 		}
+	}
+	
+	public static void viewFollowers(long entityId, String f) {
+		MainEntity entity = MainEntity.findById(entityId);
+		if (f.equals("true")) {
+			followEntity(entityId);
+		}
+		render(entity);
 	}
 
 	/**
