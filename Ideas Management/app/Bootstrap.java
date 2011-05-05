@@ -154,12 +154,11 @@ public class Bootstrap extends Job {
 			p1.save();
 			// p1._save();
 
-			Comment c1 = new Comment("i prefer new Computers ", i1, u1,
-					new Date()).save();
+			Comment c1 = new Comment("i prefer new Computers ", i1, u1).save();
 			c1.commentedIdea = i2;
 			c1._save();
 
-			Comment c2 = new Comment("good idea", p1, u2, new Date()).save();
+			Comment c2 = new Comment("good idea", p1, u2).save();
 			c2.commentedPlan = p1;
 			c2._save();
 

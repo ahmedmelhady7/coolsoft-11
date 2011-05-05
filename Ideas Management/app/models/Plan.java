@@ -14,6 +14,14 @@ public class Plan extends Model {
 
 	@Required
 	public String title;
+	
+	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 * Organization initialization date
+	 */
+	public Date intializedIn;
+	
 	@Required
 	public String status;
 
@@ -90,6 +98,7 @@ public class Plan extends Model {
 			String description, Topic topic, String requirement) {
 
 		this.title = title;
+		intializedIn = new Date();
 		this.madeBy = user;
 		this.status = "new";
 		this.progress = 0; // @author: Hassan Ziko this means that the plan is

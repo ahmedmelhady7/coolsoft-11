@@ -17,6 +17,13 @@ public class Topic extends Model {
 	 */
 	@Required
 	public String title;
+	
+	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 * Topic initialization date
+	 */
+	public Date intializedIn;
 
 	/**
 	 * the description of the topic
@@ -146,6 +153,7 @@ public class Topic extends Model {
 	public Topic(String title, String description, int i, User creator,
 			MainEntity entity) {
 		this.title = title;
+		intializedIn = new Date();
 		this.description = description;
 		this.privacyLevel = i;
 		this.creator = creator;
@@ -179,6 +187,7 @@ public class Topic extends Model {
 	public Topic(String title, String description, short privacyLevel,
 			User creator) {
 		this.title = title;
+		intializedIn = new Date();
 		this.description = description;
 		this.privacyLevel = privacyLevel;
 		this.creator = creator;

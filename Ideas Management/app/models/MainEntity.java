@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -28,6 +29,13 @@ public class MainEntity extends Model {
 	 */
 	@Required
 	public String name;
+	
+	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 * Entity initialization date
+	 */
+	public Date intializedIn;
 
 	/**
 	 * The parent entity in case of a sub-entity
@@ -111,6 +119,7 @@ public class MainEntity extends Model {
 
 	public MainEntity(String n, String d, Organization org) {
 		this.name = n;
+		intializedIn = new Date();
 		this.description = d;
 		this.parent = null;
 		this.organization = org;
@@ -147,6 +156,7 @@ public class MainEntity extends Model {
 
 	public MainEntity(String n, String d, MainEntity parent, Organization org) {
 		this.name = n;
+		intializedIn = new Date();
 		this.description = d;
 		this.parent = parent;
 		parent.subentities.add(this);

@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -23,7 +24,14 @@ public class Organization extends Model {
 	 */
 	@Required
 	public String name;
-
+	
+	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 * Organization initialization date
+	 */
+	public Date intializedIn;
+	
 	/**
 	 * Whether or not the users enrolled have the ability to create tags
 	 */
@@ -131,6 +139,7 @@ public class Organization extends Model {
 	public Organization(String name, User creator) {
 		this.name = name;
 		this.creator = creator;
+		intializedIn = new Date();
 		// added by nada ossama
 		// UserRoleInOrganizations.addEnrolledUser(this.creator, this,
 		// Roles.getRoleByName("Organization Lead"));

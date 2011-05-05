@@ -36,24 +36,21 @@ public class Comment extends Model {
 	@OneToOne
 	public User commenter;
 
-	public Comment(String comment, Topic commentedTopic, User commenter,
-			Date commentDate) {
+	public Comment(String comment, Topic commentedTopic, User commenter) {
 		this.comment = comment;
 		this.commentedTopic = commentedTopic;
 		this.commenter = commenter;
 		this.commentDate = new Date();
 	}
 
-	public Comment(String comment, Plan commentedPlan, User commenter,
-			Date commentDate) {
+	public Comment(String comment, Plan commentedPlan, User commenter) {
 		this.comment = comment;
 		this.commentedPlan = commentedPlan;
 		this.commenter = commenter;
 		this.commentDate = new Date();
 	}
 
-	public Comment(String comment, Idea commentedIdea, User commenter,
-			Date commentDate) {
+	public Comment(String comment, Idea commentedIdea, User commenter) {
 		this.comment = comment;
 		this.commentedIdea = commentedIdea;
 		this.commenter = commenter;

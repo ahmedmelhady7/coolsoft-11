@@ -27,6 +27,13 @@ public class Idea extends Model {
 	@Required
 	public String title;
 	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 * Organization initialization date
+	 */
+	public Date intializedIn;
+	
+	/**
 	 * Idea's description Required for creating an idea
 	 */
 	@Required
@@ -114,6 +121,7 @@ public class Idea extends Model {
 	public Idea(String title, String description, User user, Topic topic) {
 		this.title = title;
 		this.description = description;
+		intializedIn = new Date();
 		this.author = user;
 		user.ideasCreated.add(this);
 		this.belongsToTopic = topic;
@@ -147,6 +155,7 @@ public class Idea extends Model {
 	public Idea(String title, String body, User user, Topic topic,
 			boolean isDraft) {
 		this.title = title;
+		intializedIn = new Date();
 		this.description = body;
 		this.belongsToTopic = topic;
 		this.author = user;
@@ -186,7 +195,8 @@ public class Idea extends Model {
 			String type = "idea ";
 			String desc = "This idea is inactive";
 			// Send notification
-			//Notifications.sendNotification(user, idea.id, type, desc);
+
+//			Notifications.sendNotification(user, idea.id, type, desc);
 		}
 
 	}
