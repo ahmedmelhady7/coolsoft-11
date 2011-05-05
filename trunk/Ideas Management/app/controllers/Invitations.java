@@ -172,17 +172,26 @@ public class Invitations extends CRUD {
 			        Page(orgId,entId,id);
 			    }
 			
-			List<User> organizers = Users.getEntityOrganizers(ent);
-			organizers.add(org.creator);
-
-			
+			boolean check=false;
+			List <Invitation> inv=Invitation.findAll();
+			for(int i=0;i<inv.size();i++){
+				if(inv.get(i).email.equals(email)&&inv.get(i).entity.equals(ent))
+					check=true;
+					
+			}
+			if(check==true){
+				flash.error("Invitation has already been sent to that user before");
+		        Page(orgId,entId,id);
+			}
 			
 			if(id==0){
-				boolean flag=false;
+			  	List<User> organizers = Users.getEntityOrganizers(ent);
+			organizers.add(org.creator);
+				boolean flag=true;
 				User u=User.find("byEmail", email).first();
 			
 		for (int i = 0; i <organizers.size(); i++) {
-				if (!organizers.contains(u))
+				if (organizers.contains(u))
 					flag=false;
 			}
 			
