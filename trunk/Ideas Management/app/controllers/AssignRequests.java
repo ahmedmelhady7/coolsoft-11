@@ -331,7 +331,10 @@ public class AssignRequests extends CRUD {
 		item.assignRequests.remove(request);
 		List<User> list = new ArrayList<User>();
 		list.addAll(item.assignees);
-		list.addAll(item.plan.topic.getOrganizer());
+		for(User u : item.plan.topic.getOrganizer()){
+			if(!item.plan.topic.getOrganizer().contains(u))
+				list.add(u);
+		}
 		user.itemsAssigned.add(item);
 		item.assignees.add(user);
 		request.destination.save();
@@ -339,7 +342,7 @@ public class AssignRequests extends CRUD {
 		item.save();
 		request.delete();
 		String s = "User " + user.username
-				+ " has accepted the assignment to work on item"
+				+ " has accepted the assignment to work on item: "
 				+ request.source.summary + ".";
 
 		for (User userToNotify : list) {
@@ -372,7 +375,7 @@ public class AssignRequests extends CRUD {
 		request.destination.save();
 		request.source.save();
 		String s = "User " + user.username
-				+ " has rejected the assignment to work on item"
+				+ " has rejected the assignment to work on item: "
 				+ request.source.summary + ".";
 
 		for (User userToNotify : request.source.plan.topic.getOrganizer()) {

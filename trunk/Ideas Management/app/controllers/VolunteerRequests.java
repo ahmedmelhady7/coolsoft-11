@@ -192,7 +192,7 @@ public class VolunteerRequests extends CRUD {
 		list.add(user);
 		for (int i = 0; i < item.plan.topic.getOrganizer().size(); i++) {
 			if (org.id != item.plan.topic.getOrganizer().get(i).id) {
-				if (list.contains(item.plan.topic.getOrganizer().get(i)))
+				if (!list.contains(item.plan.topic.getOrganizer().get(i)))
 					list.add(item.plan.topic.getOrganizer().get(i));
 			}
 		}
@@ -231,7 +231,7 @@ public class VolunteerRequests extends CRUD {
 		list.add(user);
 		for (int i = 0; i < item.plan.topic.getOrganizer().size(); i++) {
 			if (org.id != item.plan.topic.getOrganizer().get(i).id) {
-				if (list.contains(item.plan.topic.getOrganizer().get(i)))
+				if (!list.contains(item.plan.topic.getOrganizer().get(i)))
 					list.add(item.plan.topic.getOrganizer().get(i));
 			}
 		}
