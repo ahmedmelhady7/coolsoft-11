@@ -72,7 +72,7 @@ public class RequestToJoins extends CRUD {
 		notFoundIfNull(request);
 		User user = request.source;
 		List<User> users = new ArrayList<User>();
-		users.add(user);
+		//users.add(user);
 		System.out.println(users);
 		if (status == 1) {
 			System.out.println("request will be accepeted");
@@ -85,23 +85,24 @@ public class RequestToJoins extends CRUD {
 				organization.joinRequests.remove(request);
 				System.out.println(organization.joinRequests);
 				System.out.println(users);
-			//	Notifications.sendNotification(users, organization.id,
-				//		"Organization", "Your Request has been approved");
+				Notifications.sendNotification(user.id, organization.id,
+						"Organization", "Your Request has been approved");
 
 			} else {
 				Topic topic = request.topic;
 				MainEntity entity = topic.entity;
-				List organizers = Users.getEntityOrganizers(entity);
+				List <User> organizers = Users.getEntityOrganizers(entity);
 				Organization organization = entity.organization;
 				organizers.add(organization.creator);
 				Role role = Roles.getRoleByName("idea developer");
-				UserRoleInOrganizations.addEnrolledUser(user, organization,
-						role, topic.id, "Topic");
+				//UserRoleInOrganizations.addEnrolledUser(user, organization,
+					//	role, topic.id, "Topic");
 				topic.requestsToJoin.remove(request);
-				Notifications.sendNotification(organizers, topic.id, "Topic",
+				for(int i=0;i<organizers.size();i++)
+					Notifications.sendNotification(organizers.get(i).id, topic.id, "Topic",
 						" A new User has joined topic " + topic.title);
 
-				Notifications.sendNotification(users, topic.id, "Topic",
+				Notifications.sendNotification(user.id, topic.id, "Topic",
 						"Your Request has been approved");
 			}
 
@@ -110,13 +111,13 @@ public class RequestToJoins extends CRUD {
                    System.out.println("request will be rejected");
 				Organization organization = request.organization;
 				organization.joinRequests.remove(request);
-				//Notifications.sendNotification(users, organization.id,
-				//		"Organization", "Your Request has been rejected");
+				Notifications.sendNotification(user.id, organization.id,
+						"Organization", "Your Request has been rejected");
 
 			} else {
 				Topic topic = request.topic;
 				topic.requestsToJoin.remove(request);
-				Notifications.sendNotification(users, topic.id, "Topic",
+				Notifications.sendNotification(user.id, topic.id, "Topic",
 						"Your Request has been rejected");
 			}
 
