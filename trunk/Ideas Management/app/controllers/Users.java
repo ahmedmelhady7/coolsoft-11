@@ -672,6 +672,13 @@ public class Users extends CRUD {
 						}
 					}
 				}
+				if (org.privacyLevel == 2) {
+					if (Roles.getRoleActions("idea developer").contains(action)) {
+						return true;
+					} else {
+						return false;
+					}
+					}
 			}
 		}
 
@@ -708,6 +715,13 @@ public class Users extends CRUD {
 						return false;
 					}
 				}
+			}
+			if (org.privacyLevel == 2) {
+			if (Roles.getRoleActions("idea developer").contains(action)) {
+				return true;
+			} else {
+				return false;
+			}
 			}
 		}
 
