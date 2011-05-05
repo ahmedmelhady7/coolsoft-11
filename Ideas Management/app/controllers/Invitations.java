@@ -189,7 +189,7 @@ public class Invitations extends CRUD {
 			  	
 				boolean flag=true;
 				User u=User.find("byEmail", email).first();
-			
+			if(u!=null){
 	    	for (int i = 0; i <organizers.size(); i++) {
 				if (organizers.contains(u)|| u.isAdmin)
 					flag=false;
@@ -200,6 +200,8 @@ public class Invitations extends CRUD {
 			        Page(entId,id);
 			    }
 			}
+			}
+			
 	         
 			 String role="Organizer";
 		     Mail.invite(email,role,ent.organization.name,ent.name);
