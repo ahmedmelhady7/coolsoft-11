@@ -555,15 +555,20 @@ public class Topics extends CRUD {
 		// purposes
 		tmp.creator = myUser;
 
-		/*
-		 * if( !Users.isPermitted(tmp.creator , "post topics",
-		 * topicEntity.getId(), "entity")) { message =
-		 * "Sorry but you are not allowed to post topics in this entity"; } try
-		 * { render( request.controller.replace( ".", "/" ) + "/blank.html",
-		 * topicEntity , type, tmp.title, tmp.entity, tmp.description, message);
-		 * } catch( TemplateNotFoundException e ) { render( "CRUD/blank.html",
-		 * type ); }
-		 */
+		/* if( !Users.isPermitted(tmp.creator , "post topics",
+		 topicEntity.getId(), "entity")) { message =
+		 "Sorry but you are not allowed to post topics in this entity";
+		 System.out.println(message);
+		 try {
+		 System.out.println("create() render try");
+		render(request.controller.replace(".", "/") + "/blank.html",
+		entityid, type, tmp.title, tmp.entity, tmp.description,
+		message, entityid);
+		} catch (TemplateNotFoundException e) {
+		 System.out.println("create() render catch");
+		render("CRUD/blank.html", type, entityid);
+		}}*/
+
 
 		if (tmp.entity == null) {
 			message = "A Topic must belong to an entity";
@@ -609,6 +614,11 @@ public class Topics extends CRUD {
 		// tmp.entity.organization, cal.getTime() );
 		String message2 = tmp.creator.username + " has Created the topic "
 				+ tmp.title + " in " + tmp.entity;
+		if(tmp.followers != null){
+			for(int i = 0; i<tmp.followers.size(); i++)
+			Notifications.sendNotification(tmp.followers.get(i).getId(), tmp.id, "Topic","A new Topic "
+			 + tmp.title + " has been added in entity" + tmp.entity.name);
+			}
 
 		/*
 		 * List users = Users.getEntityOrganizers(tmp.entity);
