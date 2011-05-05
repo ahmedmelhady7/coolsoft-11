@@ -60,45 +60,66 @@ The Search Results Viewer
 				var e = 'r';
         if (document.getElementById("s1").checked) {  
             if (document.getElementById("v").checked) {
-				document.getElementById("r").disable;
-                $.post('@{sortD()}', {
+				//document.getElementById("v").disable;
+             //document.write("d,v");
+				$.post('@{sortD}', {
                     voteOrRate: c,
                     //searchresult: lof
                 }, function(){
                     window.location.reload(true);
                 });
+				//document.write("d,va");
+					
             }
             else 
                 if (document.getElementById("r").checked) {
-                    $.post('@{sortD()}', {
+
+    				//document.write("d,r");
+                	$.post('@{sortD}', {
                         voteOrRate: e,
                         //searchresult: lof
                     }, function(){
                         window.location.reload(true);
                     });
+
+    			//	document.write("d,ra");
                 }
             
         }
-        else {
+        else 
             if (document.getElementById("v").checked) {
-                $.post('@{sortA()}', {
+
+				//document.write("a,v");
+            	$.post('@{sortA}', {
                     voteOrRate: 'v',
                     //searchresult: lof
                 }, function(){
                     window.location.reload(true);
+
+    				document.write("reload");
                 });
+
+				//document.write("a,va");
+
+                
             }
             else 
                 if (document.getElementById("r").checked) {
-                    $.post('@{sortA()}', {
+
+    		//document.write("a,r");
+                	$.post('@{sortA}', {
                         voteOrRate: 'r',
                         //searchresult: lof
                     }, function(){
                         window.location.reload(true);
                     });
+
+    	//			document.write("a,ra");
                 }
-        }
+        window.location.reload(true);
+		    
     }
+    
 </script>
        
         </form >
@@ -127,9 +148,9 @@ The Search Results Viewer
     </u>
 </b>
 <form method="POST">
-<input type="radio" name="s" id = "s" value="sortA" onclick="s1.checked = false" />Ascending order
+<input type="radio" name="s" id = "s" value="A"  />Ascending order
 <br>
-<input type="radio" name="s" id="s1" value="sortD" onclick="s.checked = false" />descending order
+<input type="radio" name="s" id="s1" value="D"  />descending order
 </br><input type="radio" name="v" id="v" value="v" onclick="whichsortmethod(this.form)"/>Vote 
 <input type="radio" name="v" id="r" value="r"  onclick="whichsortmethod(this.form)"/>Rate 
 </br>
