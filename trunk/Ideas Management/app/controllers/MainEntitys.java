@@ -39,25 +39,6 @@ public class MainEntitys extends CRUD {
 		}
 	}
 
-	public static void createEntity(@Required String name,
-			@Required String desc, Organization org) {
-		if (validation.hasErrors()) {
-			params.flash();
-			validation.keep();
-			render(name, desc);
-		}
-		MainEntity existing = MainEntity.find("name like '" + name + "'")
-				.first();
-		if (existing != null) {
-			flash.error("Entity already exists!" + "\n\t\t"
-					+ "Please choose another organization name.");
-			render(name, desc);
-		}
-		MainEntity e = new MainEntity(name, desc, org);
-		e.save();
-		flash.success("Your entity has been created.");
-	}
-
 	/**
 	 * This method adds entity2 to the list of entities in entity
 	 * 
@@ -73,13 +54,31 @@ public class MainEntitys extends CRUD {
 //		entity.relatedEntities.add(entity2);
 	}
 
-	// public static void createEntity(@Required String n,
-	// @Required String d, Organization org) {
-	// MainEntity entity = new MainEntity(n, d, org);
-	// entity.save();
-	// flash.success("Done =)");
-	//		
-	// }
+	 public static void createEntity(String name, String description, 
+			 long orgId) {
+		 Organization org = Organization.findById(orgId);
+		 MainEntity entity = new MainEntity(name, description, org);
+		 entity.save();
+	 }
+	 
+	 public static void createSubEntity(String name, String description, 
+			 long parentId, long orgId) {
+		 Organization org = Organization.findById(orgId);
+		 MainEntity parent = MainEntity.findById(parentId); 
+		 MainEntity entity = new MainEntity(name, description, parent, org);
+		 entity.save();
+	 }
+	 
+	 public static void goToCreateEntity(long orgid) {
+		 Organization org = Organization.findById(orgid);
+		 render(org);
+		 }
+	 
+	 public static void goToCreateSubEntity(long orgid, long pId) {
+		 Organization org = Organization.findById(orgid);
+		 MainEntity parent = MainEntity.findById(pId);
+		 render(org, parent);
+		 }
 
 	public static void viewEntity(long id) {
 		User user = Security.getConnected();
