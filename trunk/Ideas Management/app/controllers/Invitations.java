@@ -161,8 +161,6 @@ public class Invitations extends CRUD {
 			 long entId,long id){
 		  
 	        
-	        //Organization org=Organization.findById(((long)1));
-	       // MainEntity ent= MainEntity.findById(((long)1));
 	        MainEntity ent= MainEntity.findById(entId);
          
 		    if (!rfc2822.matcher(email).matches()) {
@@ -218,17 +216,18 @@ public class Invitations extends CRUD {
 	            }
 
 
-	       User sender = Security.getConnected();
-			
-					organizers.remove(sender);
+	             
+	          //**Fadwa
+	             User sender = Security.getConnected();
+			     organizers.remove(sender);
 					
 				
 				for(int j=0;j<organizers.size();j++)
 				Notifications.sendNotification(organizers.get(j).id, ent.id, "entity",
-						"New organizer has been invited to be an organizer of entity  "
+						"New organizer has been invited to be an organizer to entity  "
 								+ ent.name);
 
-			
+			//**
 		       
 
 			 render(email,ent);
@@ -286,35 +285,36 @@ public class Invitations extends CRUD {
 
 	public static void respond(int id,long i) {
 		
-		System.out.println("HERE");
 		
 		Invitation invite = Invitation.findById(i);
 		String rolename = invite.role.toLowerCase();
-		System.out.println(rolename);
+		
 		Organization org = invite.organization;
 		MainEntity ent = invite.entity;
-		System.out.println(ent.name);
 		
 		if (id == 1) {
 			
 			User user = User.find("byEmail", invite.email).first();
 			Role role = Role.find("byRoleName", rolename).first();
-			System.out.println("here"+role.roleName);
-
-	
-			List<User> organizers = Users.getEntityOrganizers(ent);
-				organizers.add(org.creator);
 			
-			for(int j=0;j<organizers.size();j++)
-			Notifications.sendNotification(organizers.get(j).id, ent.id, "entity",
-					"New organizer has been added as an organizer to entity  "
-							+ ent.name);
-		
                      
-			if (rolename.equalsIgnoreCase("organzier")) {
-
+			if (role.roleName.equals("organizer")) {
+                
 				UserRoleInOrganizations.addEnrolledUser(user, org, role,
 						ent.id, "entity");
+				
+
+				
+			//**Fadwa	
+				List<User> organizers = Users.getEntityOrganizers(ent);
+					organizers.add(org.creator);
+				
+				for(int j=0;j<organizers.size();j++)
+				Notifications.sendNotification(organizers.get(j).id, ent.id, "entity",
+						"New organizer has been added as an organizer to entity  "
+								+ ent.name);
+			//**
+				
 
 			} 
 			else {
@@ -336,7 +336,8 @@ public class Invitations extends CRUD {
 			}
 
 		}
-				     org.invitation.remove(invite);
+				 
+		              org.invitation.remove(invite);
 				     if(ent!=null){
 				      ent.invitationList.remove(invite);
 				      }
