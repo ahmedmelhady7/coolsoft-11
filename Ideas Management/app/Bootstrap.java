@@ -51,8 +51,8 @@ public class Bootstrap extends Job {
 					  0, new Date(), "egypt", "student");
 			u6._save();
 			
-			User barnasa = new User("brns@gmail.com", "1234", "barnasa",
-					"barnasa", "brns", 0, new Date(), "egypt", "student");
+			User barnasa = new User("brns@gmail.com", "brns", "1234",
+					"nano", "someone", 0, new Date(), "egypt", "student");
 			barnasa._save();
 			
 			// System.out.println("in2");
