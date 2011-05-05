@@ -250,9 +250,7 @@ public class Topics extends CRUD {
 	 */
 
 	public static void addRequest(long topicId, long userId) {
-		// System.out.println("kkk");
 		User user = User.findById(userId);
-		// Organization org = Organization.findById(orgId);
 		Topic t = Topic.findById(topicId);
 		t.requestFromUserToPost(user);
 	}
