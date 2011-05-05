@@ -178,33 +178,15 @@ public class Plans extends CRUD {
 	 */
 
 	public static void rate(long planId, int rat) {
-		//User user = Security.getConnected();
-		//if (!checkRated(user, planID)) {
-		planId++;
+//		User user = Security.getConnected();
+//		if (!checkRated(user, planId)) {
+			planId++;
 			Plan p = Plan.findById(planId);
-			System.out.println("Plan ID = "+ planId);
-			System.out.println("Rating = " + rat);
-			//int oldRating = p.rating;
-			//int newRating = (oldRating + rating) / 2;
-			p.rating = rat;
-			//render(newRating);
-			System.out.println(p.rating);
-		//}
-			
-//			Idea i = Idea.findById(ideaID);
-//			Organization O = i.belongsToTopic.entity.organization;
-//			User user = Security.getConnected();
-//			List organizers = Users.searchOrganizer(O);
-//			if(organizers.contains(user))
-//			{
-//				if (!checkRated(user, ideaID)) 
-//				{
-//					Idea idea = Idea.findById(ideaID);
-//					int oldRating = idea.rating;
-//					int newRating = (oldRating + rating) / 2;
-//					render(newRating);
-//				}
-//			}
+			int oldRating = p.rating;
+			int newRating = (oldRating + rat) / 2;
+			p.rating = newRating;
+			p.save();
+//		}
 
 	}
 
@@ -215,22 +197,22 @@ public class Plans extends CRUD {
 	 *            User to be checked if he/she is in the list usersRated
 	 * @return
 	 */
-	public static boolean checkRated(User userToCheck, long planID) {
-		Plan p = Plan.findById(planID);
-		if(p.usersRated.size()==0)
-		{
-			return false;
-		}
-		else
-		{
-			for (int i = 0; i < p.usersRated.size(); i++) 
-			{
-			if (userToCheck == p.usersRated.get(i))
-				return true;
-			}
-		}
-		return false;
-	}
+//	public static boolean checkRated(User userToCheck, long planID) {
+//		Plan p = Plan.findById(planID);
+//		if(p.usersRated.size()==0)
+//		{
+//			return false;
+//		}
+//		else
+//		{
+//			for (int i = 0; i < p.usersRated.size(); i++) 
+//			{
+//			if (userToCheck == p.usersRated.get(i))
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	/**
 	 * This method takes the parameters from the web page of the plan creation
