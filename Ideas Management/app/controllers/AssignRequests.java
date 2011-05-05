@@ -343,14 +343,11 @@ public class AssignRequests extends CRUD {
 		request.sender.save();
 		request.destination.save();
 		request.source.save();
-		List<User> list = new ArrayList<User>();
-		list = request.source.assignees;
-		list.addAll(request.source.plan.topic.getOrganizer());
 		String s = "User " + user.username
 				+ " has rejected the assignment to work on item"
 				+ request.source.summary + ".";
 
-		for (User userToNotify : list) {
+		for (User userToNotify : request.source.plan.topic.getOrganizer()) {
 			Notifications.sendNotification(userToNotify.id,
 					request.source.plan.id, "plan", s);
 		}
