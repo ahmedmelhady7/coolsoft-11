@@ -12,7 +12,7 @@
 	<div class="objectForm">
 		#{form action:@view(object._key()), enctype:'multipart/form-data'}
 
-		#{crud.form fields: ['email', 'password', 'firstName','lastName', 'username', 'communityContributionCounter','dateofBirth',  'country', 'profession']}
+		#{crud.form fields: ['email','username', 'password', 'firstName','lastName', 'communityContributionCounter','dateofBirth',  'country', 'profession']}
 
 		#{crud.custom 'email'}
 		<p>
@@ -22,6 +22,28 @@
 			</textarea>
 		</p>
 		#{/crud.custom}
+		
+		#{crud.custom 'username'}
+		<p>
+			<label for="object_username">
+				Username
+			</label>
+			<textarea disabled= true id="object_username" cols="50" rows="5" class="" name="object.username">
+				${object.username}
+			</textarea>
+			<!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
+		</p>
+		#{/crud.custom}
+		
+		#{crud.custom 'password'}
+		<p>
+			<label for="object_password">
+				Password
+			</label>
+			<textarea disabled= true id="object_password" cols="15" rows="2" class="" name="object.password">
+			</textarea>
+		</p>
+		#{/crud.custom }
 
 		#{crud.custom 'firstName'}
 		<p>
@@ -41,28 +63,6 @@
 			</label>
 			<textarea disabled= true id="object_lastName" cols="30" rows="1" class="" name="object.lastName">
 				${object.lastName}
-			</textarea>
-		</p>
-		#{/crud.custom }
-
-		#{crud.custom 'username'}
-		<p>
-			<label for="object_username">
-				Username
-			</label>
-			<textarea disabled= true id="object_username" cols="50" rows="5" class="" name="object.username">
-				${object.username}
-			</textarea>
-			<!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
-		</p>
-		#{/crud.custom}
-		
-		#{crud.custom 'password'}
-		<p>
-			<label for="object_password">
-				Password
-			</label>
-			<textarea disabled= true id="object_password" cols="15" rows="2" class="" name="object.password">
 			</textarea>
 		</p>
 		#{/crud.custom }

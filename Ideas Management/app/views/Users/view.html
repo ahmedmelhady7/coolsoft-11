@@ -9,14 +9,14 @@
 	<div class="objectForm">
 		#{form action:@save(object._key()), enctype:'multipart/form-data'}
 
-		#{crud.form fields: ['email', 'password', 'firstName','lastName', 'username', 'communityContributionCounter','dateofBirth',  'country', 'profession']}
+		#{crud.form fields: ['email','username', 'password', 'firstName','lastName',  'communityContributionCounter','dateofBirth',  'country', 'profession']}
 
 		#{crud.custom 'email'}
 		<p>
 			<label for="object_email">
 				Email
 			</label>
-			<textarea id="object_email" cols="30" rows="1" class="" name="object.email">
+			<textarea id="object_email" cols="30" rows="1" class="" name="object.email" >
 				${object.email}
 			</textarea>
 			<!--<span class="crudHelp" >
@@ -26,13 +26,35 @@
 			</span>-->
 		</p>
 		#{/crud.custom}
+		
+		{crud.custom 'username'}
+		<p>
+			<label for="object_username">
+				Username
+			</label>
+			<textarea id="object_username" cols="20" rows="1" class="" name="object.username">
+				${object.username}
+			</textarea>
+			<!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
+		</p>
+		#{/crud.custom}
+		
+		#{crud.custom 'password'}
+		<p>
+			<label for="object_password">
+				Password
+			</label>
+			<textarea id="object_password" cols="20" rows="1" class="" name="object.password">
+			</textarea>
+		</p>
+		#{/crud.custom }
 
 		#{crud.custom 'firstName'}
 		<p>
 			<label for="object_firstName">
 				First Name
 			</label>
-			<textarea id="object_firstName" cols="30" rows="1" class="" name="object.firstName">
+			<textarea id="object_firstName" cols="20" rows="1" class="" name="object.firstName">
 				${object.firstName}
 			</textarea>
 			<!--<span class="crudHelp" >
@@ -48,7 +70,7 @@
 			<label for="object_lastName">
 				Last Name
 			</label>
-			<textarea id="object_lastName" cols="30" rows="1" class="" name="object.lastName">
+			<textarea id="object_lastName" cols="20" rows="1" class="" name="object.lastName">
 				${object.lastName}
 			</textarea>
 		</p>
@@ -71,7 +93,7 @@
 			<label for="object_dateofBirth">
 				Date Of Birth
 			</label>
-			<textarea id="object_dateofBirth" cols="30" rows="1" class="" name="object.dateofBirth">
+			<textarea id="object_dateofBirth" cols="20" rows="1" class="" name="object.dateofBirth">
 				${object.dateofBirth}
 			</textarea>
 		</p>
@@ -82,7 +104,7 @@
 			<label for="object_country">
 				country
 			</label>
-			<textarea id="object_country" cols="30" rows="1" class="" name="object.dateofBirth">
+			<textarea id="object_country" cols="20" rows="1" class="" name="object.dateofBirth">
 				${object.country}
 			</textarea>
 		</p>
@@ -93,7 +115,7 @@
 			<label for="object_profession">
 				Profession
 			</label>
-			<textarea id="object_profession" cols="30" rows="1" class="" name="object.profession">
+			<textarea id="object_profession" cols="20" rows="1" class="" name="object.profession">
 				${object.profession}
 			</textarea>
 		</p>
