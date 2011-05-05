@@ -13,23 +13,7 @@
 <tr><td>Email: ${user.email}</td><td>
 #{/else}
 
-<!--
-#{if {org.privacyLevel} !=2} -->
-<tr><td>Roles</td><td>
-#{select 'role', value:0, id:'select2'}
-   #{option value="select"}select#{/option} 
-   #{option value="Idea Developer"}Idea Developer#{/option}
-   #{option value="Organizer"}Organizer#{/option}
-  #{/select}
-<!--#{/if}
-#{else}  
-<tr><td>Roles</td><td>
-#{select 'role', value:0, id:'select2'}
-   #{option value="select"}select#{/option}
-   #{option value="Organizer"}Organizer#{/option}
-#{/select}
- #{/else}  -->
-
+<input type = "hidden" name ="entId" value = ${ent.id}>
 </td></tr>
 #{if flash.error}
    <b><p style="color:#c00">
