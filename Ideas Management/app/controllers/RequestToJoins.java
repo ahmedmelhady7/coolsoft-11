@@ -145,7 +145,8 @@ public class RequestToJoins extends CRUD {
 	 * @param description : A text message that will be sent along with the request
 	 */
 	public static void requestToJoinOrganization(User requester, Organization organization, String description) {
-		if (!organization.enrolledUsers.contains(requester) && (organization.privacyLevel == 1)) {
+		List<User> enrolledUsers = Users.getEnrolledUsers(organization);
+		if (!enrolledUsers.contains(requester) && (organization.privacyLevel == 1)) {
 		RequestToJoin r = new RequestToJoin(requester, null, organization, description).save();
 		organization.joinRequests.add(r);
 		}
