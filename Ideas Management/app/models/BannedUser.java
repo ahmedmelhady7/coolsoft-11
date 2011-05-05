@@ -113,7 +113,7 @@ public class BannedUser extends Model {
 		return true;
 	}
 
-	/*
+	/**
 	 * This method is used so as to block a user from a certain action within an
 	 * entity
 	 * 
@@ -131,7 +131,7 @@ public class BannedUser extends Model {
 	 * 
 	 * returns boolean false if found banned otherwise return true
 	 */
-	public boolean banFromActionInEntity(long userID, long organizationID,
+	public static boolean banFromActionInEntity(long userID, long organizationID,
 			String action, long entityID) {
 		User myBannedUser = User.findById(userID);
 		Organization myOrganization = Organization.findById(organizationID);
