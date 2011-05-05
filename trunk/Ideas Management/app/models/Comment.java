@@ -60,32 +60,8 @@ public class Comment extends Model {
 		this.commentDate = new Date();
 	}
 
-	/**
-	 * @author ${Ibrahim safwat}
-	 * 
-	 * @param ideaID
-	 *            ID of the idea that the user wants to add the comment to
-	 * @param comment
-	 *            Comment to be added to list of comments of the idea
-	 */
-	public void addCommentToIdea(int ideaID, Comment comment) {
-		// get from HTML comment as string, Idea to be commented on, user that
-		// commented
-		// ideaID.commentsList.add(comment);
-	}
 
-	/**
-	 * @author ${Ibrahim safwat}
-	 * 
-	 * @param planID
-	 *            ID of the plan that the user wants to add the comment to
-	 * @param comment
-	 *            Comment to be added to list of comments of the plan
-	 */
-	public void addCommentToPlan(int planID, Comment comment) {
-		// get from HTML comment as string, Idea to be commented on, user that
-		// commented
-		// plaID.commentsList.add(comment);
-	}
+
+
 
 }
