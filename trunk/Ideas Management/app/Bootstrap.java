@@ -16,7 +16,7 @@ import models.*;
 /**
  * 
  * @author DebugTeam
- * @version 1.6
+ * @version 1.7
  * 
  */
 
@@ -165,17 +165,18 @@ public class Bootstrap extends Job {
 
 			Topic egyahlymatch = new Topic("Ahly vs Zamalek",
 					"for football lovers", 2, admin, elAhly).save();
-			
-			Topic innovation = new Topic("Create. Innovate",
-					"how to encourage inventors and enhance creativity", 1, sharaf, govHead).save();
-			
-			Topic matchChaos = new Topic("Chaos in egyptian football matches",
-					"try to avoid chaos and fights during matches due to different points of view", 2, admin, elAhly).save();
 
-			
+			Topic innovation = new Topic("Create. Innovate",
+					"how to encourage inventors and enhance creativity", 1,
+					sharaf, govHead).save();
+
+			Topic matchChaos = new Topic(
+					"Chaos in egyptian football matches",
+					"try to avoid chaos and fights during matches due to different points of view",
+					2, admin, elAhly).save();
+
 			// hadi add ideas here
 
-			//
 			Plan p1 = new Plan("S.U. heads", ashraf, new Date(2011, 07, 01),
 					new Date(2012, 07, 01), "Plan for SU heads elections",
 					gucMetStudentUnion, "summer break").save();
@@ -204,37 +205,43 @@ public class Bootstrap extends Job {
 			// c2.commentedPlan = p1;
 			// c2._save();
 			//
-			// Item item1 = new Item(new Date(2011, 01, 01),
-			// new Date(2011, 05, 10),
-			// "this is the second item in the plan", p1, "item1");
-			// Item item2 = new Item(new Date(2011, 02, 01),
-			// new Date(2011, 06, 10),
-			// "this is the third item in the plan", p1, "item2");
-			// Item item3 = new Item(new Date(2011, 03, 01),
-			// new Date(2011, 12, 10),
-			// "this is the first item in the plan", p1, "item3");
-			// item1.save();
-			// item2.save();
-			// item3.save();
-			// p1.items.add(item1);
-			// p1.items.add(item2);
-			// p1.items.add(item3);
-			// p1.save();
+			Item item1 = new Item(
+					new Date(2011, 05, 01),
+					new Date(2011, 05, 14),
+					"One of the members who is not runing for elections should organize a debate between the candidates",
+					p1, "Candidates Debate");
+			Item item2 = new Item(
+					new Date(2011, 05, 04),
+					new Date(2011, 05, 14),
+					"One of the SU members should reserve a room for the debate",
+					p1, "Room reservation");
+			Item item3 = new Item(
+					new Date(2011, 04, 01),
+					new Date(2011, 05, 28),
+					"One of the members should set up an electronic election process",
+					p1, "Election Process Setup");
+			item1.save();
+			item2.save();
+			item3.save();
+			p1.items.add(item1);
+			p1.items.add(item2);
+			p1.items.add(item3);
+			p1.save();
 			// p1.usersRated.add(gom3a);
 			// // p1.rating = 1;
 			//
 			// p1._save();
-			// // u7.itemsAssigned.add(item1);
-			// // u7.itemsAssigned.add(item2);
-			// // u7.save();
-			// gom3a.itemsAssigned.add(item1);
-			// gom3a.save();
-			// item1.assignees.add(ashraf);
-			// item1.assignees.add(gom3a);
-			// item1.save();
+			khayat.itemsAssigned.add(item1);
+			khayat.itemsAssigned.add(item2);
+			khayat.save();
+			gom3a.itemsAssigned.add(item1);
+			gom3a.save();
+			item1.assignees.add(khayat);
+			item1.assignees.add(gom3a);
+			item1.save();
 			// System.out.println(item1.assignees.get(0).email);
-			// item2.assignees.add(gom3a);
-			// item2.save();
+			item2.assignees.add(khayat);
+			item2.save();
 			//
 			// RequestToJoin request = new RequestToJoin(gom3a, null, guc,
 			// "I would like to join your organization..");
