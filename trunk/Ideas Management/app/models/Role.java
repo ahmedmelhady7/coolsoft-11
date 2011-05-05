@@ -22,9 +22,7 @@ public class Role extends Model {
 	@Lob
 	public String actions;
 
-	// @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
-	// public List<Action> actions;
-
+	
 
 	@OneToMany(mappedBy = "role")
 	// , cascade = CascadeType.ALL)
@@ -34,7 +32,7 @@ public class Role extends Model {
      * @author Nada Ossama
      * @story C1S7
      * @param role is the role name
-     * @param actions is the actions steing
+     * @param actions is the actions string
      */
 
 	public Role(String role, String actions) {
@@ -49,7 +47,7 @@ public class Role extends Model {
 	 * 
 	 */
 	public static void createOrganizerRole() {
-		ArrayList<String> action = new ArrayList();
+	//	ArrayList<String> action = new ArrayList();
 		String actions = "invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages;"
 				+ "block a user from viewing or using a certain entity;"
 				+ "Request to start a relationship with other items;"
@@ -84,8 +82,9 @@ public class Role extends Model {
 				+ "Accept/Reject requests to post in a private topic in entities he/she manages;"
 				+ "close a topic and promote it to execution";
 
-		Role Organizer = new Role("organizer", actions);
-		Organizer.save();
+	      new Role("organizer", actions).save();
+		
+		
 
 	}
 
