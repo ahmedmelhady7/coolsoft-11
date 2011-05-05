@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
+		<title>${user.username}: you're Editing ${idea.title}</title>
+		<script type="text/javascript">
+			
+			function save(id)
+			{
+				var x = document.getElementById("title").value.toString();
+				var y = document.getElementById("body").value;
+				$.post('@{Ideas.saveDraft()}' ,{ideaId:id, title:x, titl:y} );
+				alert("Idea Saved ");
+			}
+			
+			function post(id)
+			{
+				var x = document.getElementById("title").value.toString();
+				var y = document.getElementById("body").value.toString();
+				$.post('@{Ideas.postDraft()}' ,{ideaId:id, title:x, titl:y} );
+				alert("Idea posted ");
+			}
+		</script>
+    </head>
+
+    <body>
+        #{extends 'main.html' /} 
+		
+		<p>Title: </p>
+		<input type="textbox" size = "50" value="${idea.title}" id="title"></input>  
+		<p>Body: </p>
+		<textarea cols="50" rows="5" id="body">${idea.description}</textarea>  
+		<br></br>
+		<input type="submit" value ="Save" onclick="save(${idea.id})"></input>
+		<input type="submit" value ="Post" onclick="post(${idea.id})"></input>
+    </body>
+</html>
