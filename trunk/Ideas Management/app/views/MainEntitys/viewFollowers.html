@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
+
+        <title>${entity.name} Followers</title>
+    </head>
+
+    <body>
+        #{extends 'main.html' /} 
+		#{if entity.followers.size() > 0}
+		These are the currently available followers: <br />
+		<ul style="list-style: none;">
+			#{list items: entity.followers, as:'follower'}
+			<li>
+				${follower.firstName} ${follower.lastName}
+			</li>
+			#{/list}
+		</ul> 
+		#{/if}
+		#{else}
+		No users are following ${entity.name} at the moment!
+		#{/else}
+    </body>
+</html>
