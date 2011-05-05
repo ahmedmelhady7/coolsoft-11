@@ -213,6 +213,7 @@ public class User extends Model {
 				this).save();
 		this.invitation.add(invite);
 		organization.invitation.add(invite);
+		if(entity!=null)
 		entity.invitationList.add(invite);
 		this.save();
 	}
