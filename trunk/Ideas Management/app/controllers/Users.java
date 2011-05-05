@@ -436,10 +436,10 @@ public class Users extends CRUD {
 		List<User> searchResultByEmail = new ArrayList<User>();
 
 		if (keyword != null) {
-			searchResultByName = User.find("username like ? ", keyword).fetch();
-			searchResultByProfession = User.find("profession like ? ", keyword)
+			searchResultByName = User.find("byUsernameLike", "%" +keyword + "%").fetch();
+			searchResultByProfession = User.find("byProfessionLike", "%" + keyword+ "%")
 					.fetch();
-			searchResultByEmail = User.find("email like ? ", keyword).fetch();
+			searchResultByEmail = User.find("byEmailLike", "%" + keyword + "%").fetch();
 		}
 
 		int nameSize = searchResultByName.size();
@@ -549,7 +549,7 @@ public class Users extends CRUD {
 		// User banned =
 		// BannedUser.find("select b.bannedUser from BannedUser b where b.bannedUser = ? and b.resourceID = ? and b.resourceType = ? and b.action =  ",
 		// user);
-		JPAQuery banned = BannedUser.find(
+		 BannedUser banned = BannedUser.find(
 				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 				action, placeType, placeId).first();
 		String role;
@@ -573,7 +573,7 @@ public class Users extends CRUD {
 			}
 		}
 
-		if (placeType == "organization") {
+		if (placeType.equalsIgnoreCase("organization")) {
 			Organization org = Organization.findById(placeId);
 			// List<UserRoleInOrganization> l =
 			// UserRoleInOrganization.find("byOrganizationAnd")
@@ -598,7 +598,7 @@ public class Users extends CRUD {
 			if (org.privacyLevel == 0 || org.privacyLevel == 1) {
 
 				List<UserRoleInOrganization> allowed = UserRoleInOrganization
-						.find("byEnrolledAndbyOrganization", user, org).fetch();
+						.find("byEnrolledAndOrganization", user, org).fetch();
 				if (allowed == null) {
 					return false;
 				} else {
@@ -617,7 +617,7 @@ public class Users extends CRUD {
 			}
 
 		}
-		if (placeType == "topic") {
+		if (placeType.equalsIgnoreCase("topic")) {
 			Topic topic = Topic.findById(placeId);
 			MainEntity m = topic.entity;
 			Organization org = m.organization;
@@ -655,7 +655,7 @@ public class Users extends CRUD {
 				if (org.privacyLevel == 0 || org.privacyLevel == 1) {
 
 					List<UserRoleInOrganization> allowed = UserRoleInOrganization
-							.find("byEnrolledAndbyOrganization", user, org)
+							.find("byEnrolledAndOrganization", user, org)
 							.fetch();
 					if (allowed == null) {
 						return false;
@@ -671,7 +671,7 @@ public class Users extends CRUD {
 			}
 		}
 
-		if (placeType == "entity") {
+		if (placeType.equalsIgnoreCase("entity")) {
 			MainEntity entity = MainEntity.findById(placeId);
 			Organization org = entity.organization;
 			if (user.equals(org.creator)) {
@@ -694,7 +694,7 @@ public class Users extends CRUD {
 			if (org.privacyLevel == 0 || org.privacyLevel == 1) {
 
 				List<UserRoleInOrganization> allowed = UserRoleInOrganization
-						.find("byEnrolledAndbyOrganization", user, org).fetch();
+						.find("byEnrolledAndOrganization", user, org).fetch();
 				if (allowed == null) {
 					return false;
 				} else {
@@ -737,6 +737,7 @@ public class Users extends CRUD {
 			Organization o = t.entity.organization;
 			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
 
+
 					.find("select uro from UserRoleInOrganization uro  where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?",
 							o, t.getId(), "topic");
 			for (int i = 0; i < organizers.size(); i++) {
@@ -751,6 +752,7 @@ public class Users extends CRUD {
 					// (!(organizers.get(i).role.roleName.equals("organizer")))
 					// {
 					// >>>>>>> .r797
+
 					organizers.remove(i);
 				} else {
 					enrolled.add(organizers.get(i).enrolled);
@@ -794,6 +796,7 @@ public class Users extends CRUD {
 					// for (int i = 0; i < organizers.size(); i++) {
 					// if (!((organizers.get(i).role).equals("organizer"))) {
 					// >>>>>>> .r797
+
 					organizers.remove(i);
 				} else {
 					enrolled.add(organizers.get(i).enrolled);
