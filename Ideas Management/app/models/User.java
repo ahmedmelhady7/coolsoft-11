@@ -305,53 +305,50 @@ public class User extends Model {
 	/**
 	 * This Method removes a tag from the followers list
 	 * 
-	 * @author Ibrahim.al.khayat
+	 * @author Ibrahim al-khayat
 	 * 
 	 * @story C2S12
 	 * 
-	 * @param t
-	 *            : the tag that the user is following
+	 * @param tag
+	 *            the tag that the user is following
 	 * 
-	 * @return void
 	 */
 
-	public void unfollow(Tag t) {
-		followingTags.remove(t);
+	public void unfollow(Tag tag) {
+		followingTags.remove(tag);
 		_save();
 	}
 
 	/**
 	 * This Method removes a topic from the followers
 	 * 
-	 * @author Ibrahim.al.khayat
+	 * @author Ibrahim al-khayat
 	 * 
 	 * @story C2S12
 	 * 
-	 * @param t
+	 * @param topic
 	 *            : the topic that the user is following
 	 * 
-	 * @return void
 	 */
 
-	public void unfollow(Topic t) {
-		topicsIFollow.remove(t);
+	public void unfollow(Topic topic) {
+		topicsIFollow.remove(topic);
 		_save();
 	}
 
 	/**
 	 * This Method removes a mainEntity from the followers
 	 * 
-	 * @author Ibrahim.al.khayat
+	 * @author Ibrahim al-khayat
 	 * 
 	 * @story C2S12
 	 * 
-	 * @param m
+	 * @param entity
 	 *            : the MainEntity that the user is following
 	 * 
-	 * @return void
 	 */
-	public void unfollow(MainEntity m) {
-		followingEntities.remove(m);
+	public void unfollow(MainEntity entity) {
+		followingEntities.remove(entity);
 		_save();
 	}
 
@@ -362,13 +359,13 @@ public class User extends Model {
 	 * 
 	 * @story C2S12
 	 * 
-	 * @param o
-	 *            : the Organization that the user is following
+	 * @param organization
+	 *            the Organization that the user is following
 	 * 
 	 * @return void
 	 */
-	public void unfollow(Organization o) {
-		followingOrganizations.remove(o);
+	public void unfollow(Organization organization) {
+		followingOrganizations.remove(organization);
 		_save();
 	}
 

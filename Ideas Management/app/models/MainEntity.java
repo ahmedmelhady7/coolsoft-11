@@ -191,12 +191,12 @@ public class MainEntity extends Model {
 	/**
 	 * This Method removes a user from the list of followers
 	 * 
-	 * @author Ibrahim.al.khayat
+	 * @author Ibrahim al-khayat
 	 * 
 	 * @story C2S12
 	 * 
 	 * @param user
-	 *            : the user who follows
+	 *            the user who follows
 	 * 
 	 * @return void
 	 */

@@ -284,7 +284,7 @@ public class Users extends CRUD {
 	 * 
 	 * @param userId
 	 *            the id of the user who follows
-	 *            
+	 * 
 	 */
 
 	public static void unfollowOrganization(long orgId, long userId) {
@@ -306,7 +306,7 @@ public class Users extends CRUD {
 	 * 
 	 * @param userId
 	 *            the id of the user who follows
-	 *            
+	 * 
 	 */
 
 	public static void unfollowEntity(long entityId, long userId) {
@@ -1156,19 +1156,17 @@ public class Users extends CRUD {
 			try {
 				System.out.println("show user try ");
 				render(request.controller.replace(".", "/") + "/save.html",
-						 type, message);
+						type, message);
 			} catch (TemplateNotFoundException e) {
 				System.out.println("show user catch ");
 				render("CRUD/blank.html", type);
 			}
-		}	
+
 		}
 		System.out.println(object.toString() + "before save");
 		object._save();
 		System.out.println(object.toString() + "after the save");
-		
-		
-		
+
 		flash.success(Messages.get("crud.saved", type.modelName));
 		if (params.get("_save") != null) {
 			redirect(request.controller + ".list");

@@ -252,14 +252,13 @@ public class Topic extends Model {
 	/**
 	 * This Method removes a user from the list of followers
 	 * 
-	 * @author Ibrahim.al.khayat
+	 * @author Ibrahim al-khayat
 	 * 
 	 * @story C2S12
 	 * 
 	 * @param user
-	 *            : the user who follows
+	 *            the user who follows
 	 * 
-	 * @return void
 	 */
 
 	public void unfollow(User user) {
@@ -321,12 +320,12 @@ public class Topic extends Model {
 	 * This Method sends a request to the topic organizer and add the request to
 	 * the list of requests
 	 * 
-	 * @author ibrahim.al.khayat
+	 * @author ibrahim al-khayat
 	 * 
 	 * @story C2S13
 	 * 
 	 * @param u
-	 *            : the user who request to post
+	 *            the user who request to post
 	 * 
 	 * @return void
 	 */
@@ -352,12 +351,12 @@ public class Topic extends Model {
 	/**
 	 * This Method return true if a user have requested to join this topic
 	 * 
-	 * @author ibrahim.al.khayat
+	 * @author ibrahim al-khayat
 	 * 
 	 * @story C2S13
 	 * 
 	 * @param user
-	 *            : the user
+	 *            the user
 	 * 
 	 * @return boolean
 	 */
