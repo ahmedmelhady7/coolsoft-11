@@ -10,8 +10,8 @@ import models.*;
 @With(Secure.class)
 public class Roles extends CRUD {
 
-	/*
-	 * retrieve the role by name
+	/**
+	 * retrieve the role by it's name
 	 * 
 	 * @author Nada Ossama
 	 * 
@@ -32,6 +32,9 @@ public class Roles extends CRUD {
 	 * This methods returns all the DEFAULT actions permitted to a certain role
 	 * 
 	 * @author nada ossama
+	 * 
+	 * @story C1S7
+	 * 
 	 * @param roleName
 	 *            is the name of the role
 	 * @return list of actions of that role
@@ -41,7 +44,7 @@ public class Roles extends CRUD {
 ////changeeeeeeeeeeeeeee
 		//if(roleName.equals("organizer")){
 		
-			Role r = Role.find(
+			Role role = Role.find(
 					"select r from Role r where r.roleName = ? ",roleName).first();
 		//}
 		//if(roleName.equals("organization lead")){
@@ -53,7 +56,7 @@ public class Roles extends CRUD {
 		//}
 		//if(roleName.equals("idea"))
 		
-		String actionsString  = r.actions;
+		String actionsString  = role.actions;
 		String[] actionsArray = actionsString.split(";");
 		List<String> actionsList = new ArrayList();
 		for (int i = 0; i < actionsArray.length; i++) {
@@ -68,7 +71,10 @@ public class Roles extends CRUD {
 	 * Topics not the whole entity
 	 * 
 	 * @author nada ossama
-	 * @param
+	 *  
+	 * @story C1S7
+	 *  
+	 * @return List<String> which is the list of actions
 	 */
 	public static List<String> getOrganizerTopicActions() {
 
