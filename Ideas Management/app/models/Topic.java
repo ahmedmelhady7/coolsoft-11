@@ -61,9 +61,9 @@ public class Topic extends Model {
 	 * the list of topic organizers
 	 */
 
-	// // to be removed  >>>>>>>>>>>>>> change
-//	@ManyToMany
-//	public List<User> organizers;
+	// // to be removed >>>>>>>>>>>>>> change
+	// @ManyToMany
+	// public List<User> organizers;
 
 	/**
 	 * the list of followers of the topic
@@ -151,12 +151,12 @@ public class Topic extends Model {
 	 * @param entity
 	 *            Entity that the topic belongs/added to
 	 */
-	public Topic(String title, String description, int i, User creator,
-			MainEntity entity) {
+	public Topic(String title, String description, int privacyLevel,
+			User creator, MainEntity entity) {
 		this.title = title;
 		intializedIn = new Date();
 		this.description = description;
-		this.privacyLevel = i;
+		this.privacyLevel = privacyLevel;
 		this.creator = creator;
 		this.entity = entity;
 		tags = new ArrayList<Tag>();
