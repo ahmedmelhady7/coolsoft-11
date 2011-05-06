@@ -1,181 +1,207 @@
 <!DOCTYPE html>
-<html >
- <head>
-        <title></title>
-        <meta charset="utf-8">
-        <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
+<html>
+<head>
+<title></title>
+<meta charset="utf-8">
+<script src="@{'/public/javascripts/jquery-1.5.2.min.js'}"
+ type="text/javascript" charset="utf-8">
         </script>
-    </head>
+</head>
 <style type="text/css">
 body {
-	font-family: arial, helvetica;
-	font-size: 11px;
-	color: #123456;
+ font-family: arial, helvetica;
+ font-size: 11px;
+ color: #123456;
 }
 
 #text1 {
-	font-size: 20px;
-	color: #654321;
+ font-size: 20px;
+ color: #654321;
 }
 </style>
 
 <center>
 
-	<body bgcolor="LightBlue" >
+ <body bgcolor="LightBlue">
 
-		
-    <div>
-        <center>
-            <img src="/public/images/Picture1.jpg">
-            </img>
-        </center>
-    </div>
 
-<script type="text/javascript">
+  <div>
+   <center>
+    <img src="/public/images/Picture1.jpg"> </img>
+   </center>
+  </div>
+
+  <script type="text/javascript">
             
             function firstfilter(frm){
-            	if(frm.type==plan){
-            		S.post('@{filterSearchResults()}',
-            				resultList:Search.lisOfResults,
-            				 filterOn:'p');
-            	}
-            	if(frm.type==idea){S.post('@{filterSearchResults()}',
-        				resultList:Search.lisOfResults,
-       				 filterOn:'i');
-            	}
-            	if(frm.type==topic){S.post('@{filterSearchResults()}',
-        				resultList:Search.lisOfResults,
-       				 filterOn:'t');
-            	}
-            	if(frm.type==entity){S.post('@{filterSearchResults()}',
-        				resultList:Search.lisOfResults,
-       				 filterOn:'e');
-            	}
-            	if (frm.type==organization){S.post('@{filterSearchResults()}',
-        				resultList:Search.lisOfResults,
-       				 filterOn:'o');
-            	}
+             if(frm.type=="plan"){
+        document.write("filter on p");
+              $.post('@{filterSearchResults}',
+              //  resultList:Search.lisOfResults,
+                 {filterOn:'p'});
+
+                    document.write("filter on p a");
+             }
+             if(frm.type=="idea"){
+
+                    document.write("filter on i");
+              $.post('@{filterSearchResults}',
+            //resultList:Search.lisOfResults,
+            {filterOn:'i'});
+
+                    document.write("filter on ia");
+             }
+             if(frm.type=="topic"){
+
+                    document.write("filter on t");
+              $.post('@{filterSearchResults}',
+            //resultList:Search.lisOfResults,
+            {filterOn:'t'});
+
+                    document.write("filter on t a");
+             }
+             if(frm.type=="entity"){
+
+                    document.write("filter on e");
+              $.post('@{filterSearchResults}',
+            //resultList:Search.lisOfResults,
+            {filterOn:'e'});
+
+                    document.write("filter on e a");
+             }
+             if (frm.type==organization){
+
+                    document.write("filter on o");
+              $.post('@{filterSearchResults}',
+            //resultList:Search.lisOfResults,
+            {filterOn:'o'});
+
+                    document.write("filter on o a");
+             }
             } 
             function whichlisttopass(frm){
-            	if(frm.scale=="ANDn"){
-            		$.post('@{handelingOrAnd()}',
-            				AndOr:a);
-            	}
-            	if(frm.scale2=="ANDd"){
+             if(frm.scale=="ANDn"){
+              $.post('@{handelingOrAnd}',
+                {AndOr:'a'});
+             }
+             if(frm.scale2=="ANDd"){
 
-            		$.post('@{handelingOrAnd()}',
-            				AndOr:a);
-            		
-            	}
-            	if(frm.scale=="ORn"){
+              $.post('@{handelingOrAnd}',
+                {AndOr:'a'});
+              
+             }
+             if(frm.scale=="ORn"){
 
-            		$.post('@{handelingOrAnd()}',
-            				AndOr:o);
-            	}
-            	if(frm.scale2 == "ORd"){
+              $.post('@{handelingOrAnd}',
+                
+                {AndOr:'o'});
+             }
+             if(frm.scale2 == "ORd"){
 
-            		$.post('@{handelingOrAnd()}',
-            				AndOr:o);
-            	}
+              $.post('@{handelingOrAnd}',
+                {AndOr:'o'});
+             }
             }
             
             
             function filter(frm){
-            	if(frm.name!=""){
-            		$.post('@{filterSearchResults()}',
-            				resultList:Search.tobepassed,
-            				filterOn:"name",
-            				input:name.value));
-            	}
-            	if(frm.description!=""){
-            		$.post('@{filterSearchResults()}',
-            				resultList:Search.tobepassed,
-            				filterOn:"description",
-            				input:description.value));
-            	}
+             if(frm.name!=""){
+              $.post('@{filterSearchResults}',{
+                //resultList:Search.tobepassed,
+                filterOn:"name",
+                input:name.value)});
+             }
+             if(frm.description!=""){
+              $.post('@{filterSearchResults}',{
+                //resultList:Search.tobepassed,
+                filterOn:"description",
+                input:description.value)});
+             }
             }
             function finish(frm){
-            	firstfilter(frm);
-            	whichlisttopass(frm);
-            	filter(frm);
-            	whichlisttopass(frm);
-            	filter(frm);
+             document.write("yarab");
+             firstfilter(frm);
+             whichlisttopass(frm);
+             filter(frm);
+             whichlisttopass(frm);
+             filter(frm);
             
             }
         </script>
-        
-
-		<form action="searchResult.html"  method="get" >
-			<table width="75%" border="2" cellpadding="10" cellspacing="20%"
-				bordercolor="blue" bgcolor="#123456" >
-				<tr>
-					<td bgcolor="LightGreen">
-				<tr>
-					<td bgcolor="LightGreen"><h bgcolor="#123456">
-						<center>
-							<big><u><big> <big><big><u><i>
-														<b> Filter Options: 
-						</h>
-						</center>
-						</big></big></big></u></td>
-				</tr>
-				<tr>
-					<td bgcolor="LightGreen">
-						<p>
-							<big> <u><i> <b>I would like to view only
-											...... in my search results:
-							</big></i></u></b>
-						</p> <div align="left"><big>
-						<input type="checkbox" name="type" value="plan" /> Plans <br />
-						<input type="checkbox" name="type" value="idea" /> Ideas</br> <input
-						type="checkbox" name="type" value="entity" /> Entities</br> <input
-						type="checkbox" name="tupe" value="topic" /> Topics</br> <input
-						type="checkbox" name="type" value="organization" /> Organisations</br></td>
-						</big>
-						</div>
-				</tr>
 
 
-				<tr>
-					<td bgcolor="LightGreen">
-						<p>
-							<big><b><big><u><i><center>with
-													the following name!!</center>
-							</b></u>
-							</big></i>
-						</p>
-						<p>
-							<input type="radio" name="scale" value="ORn" checked/>OR <input
-								type="radio" name="scale" value="ANDn" /> AND
-						</p> Name/title: <input type="text" name="name" /><br /> </big></td>
-				</tr>
+  <form action="/searchResult" method="POST">
+   <table width="75%" border="2" cellpadding="10" cellspacing="20%"
+    bordercolor="blue" bgcolor="#123456">
+    <tr>
+     <td bgcolor="LightGreen">
+    <tr>
+     <td bgcolor="LightGreen"><h bgcolor="#123456">
+      <center>
+       <big><u><big> <big><big><u><i>
+              <b> Filter Options: 
+      </h>
+      </center> </big></big></big></u></td>
+    </tr>
+    <tr>
+     <td bgcolor="LightGreen">
+      <p>
+       <big> <u><i> <b>I would like to view only
+           ...... in my search results: 
+       </big></i></u></b>
+      </p>
+      <div align="left">
+       <big> <input type="checkbox" name="type" value="plan" />
+        Plans <br /> <input type="checkbox" name="type" value="idea" />
+        Ideas</br> <input type="checkbox" name="type" value="entity" />
+        Entities</br> <input type="checkbox" name="tupe" value="topic" />
+        Topics</br> <input type="checkbox" name="type" value="organization" />
+        Organisations</br>
+     </td>
+     </big>
+     </div>
+    </tr>
+
+
+    <tr>
+     <td bgcolor="LightGreen">
+      <p>
+       <big><b><big><u><i><center>with
+             the following name!!</center>
+       </b></u> </big></i>
+      </p>
+      <p>
+       <input type="radio" name="scale" value="ORn" checked />OR <input
+        type="radio" name="scale" value="ANDn" /> AND
+      </p> Name/title: <input type="text" name="name" /><br /> </big></td>
+    </tr>
 
 
 
-				<tr>
-					<td bgcolor="LightGreen">
-						<p>
-							<big> <input type="radio" name="scale2" value="ORd" checked/>OR <input
-								type="radio" name="scale2" value="ANDd" /> AND </big>
-						</p>
+    <tr>
+     <td bgcolor="LightGreen">
+      <p>
+       <big> <input type="radio" name="scale2" value="ORd" checked />OR
+        <input type="radio" name="scale2" value="ANDd" /> AND </big>
+      </p>
 
-						<p>
-							<big> <u><i> <b>the description contains the
-											following!!
-								</i>
-						</p>
-						<center>
-							<textarea name="description" rows="10" cols="60"></textarea>
-						</center></td>
-				</tr>
+      <p>
+       <big> <u><i> <b>the description contains the
+           following!! 
+        </i>
+      </p>
+      <center>
+       <textarea name="description" rows="10" cols="60"></textarea>
+      </center></td>
+    </tr>
 
 
-				</i>
-			</table>
-			<center>
+    </i>
+   </table>
+   <center>
 
-				<input type="submit" value="filter!!" onclick="finish(this.form)"   /> <input type="reset"
-					value="clear" />
-		</form>
+    <input type="submit" value="filter!!" onclick="finish(this.form)" />
+    <input type="reset" value="clear" />
+  </form>
 </center>
 </html>
