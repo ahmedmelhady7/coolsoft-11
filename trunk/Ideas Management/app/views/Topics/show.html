@@ -1,6 +1,10 @@
 #{extends '/topics/layout.html' /}<h3>
 	
 	<br />
+<input type="submit" value="Back to Entity" onclick=location.href="@{MainEntitys.viewEntity(entity.id)}">
+        <br />
+	
+	<br />
 	
 	 <font color="Red">${message}</font>	
 	<br />
@@ -52,9 +56,12 @@
 		
 		#{/crud.form }
 		<br />
-	
-		<button type="submit" onclick= > Edit </button>
-		<br />
+		 #{if permission == 1}
+		 <br />
+<button type="submit" onclick= > Edit </button>
+        <br />
+		#{/if}
+    
 	        #{if allowed==1}
       <a href="@{RequestToJoins.viewRequests(1,object.id)}">Requests</a>		
            #{/if}
