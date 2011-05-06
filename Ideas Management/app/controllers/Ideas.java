@@ -564,11 +564,12 @@ public class Ideas extends CRUD {
 		globalListOfTags = Tag.findAll();
 		User user = (User) Security.getConnected();
 		Idea idea = (Idea) Idea.findById(ideaId);
+		Topic topic = idea.belongsToTopic;
+		MainEntity entity = topic.entity;
 
 		if (!tag.equals("@@")) {
 
-			if (!((ArrayList<User>) (idea.belongsToTopic.getOrganizer()))
-					.contains(user)) {
+			if (!Users.isPermitted(user, "tag ideas in my organization", entity.id, "entity")) {
 				// user not allowed
 				userNotAllowed = true;
 			} else {

@@ -62,6 +62,7 @@ public class Topics extends CRUD {
 		globalListOfTags = Tag.findAll();
 		User user = (User) Security.getConnected();
 		Topic topic = (Topic) Topic.findById(topicId);
+		MainEntity entity = topic.entity;
 
 		if (!tag.equals("@@")) {
 
@@ -75,8 +76,7 @@ public class Topics extends CRUD {
 				System.out.println("safe");
 			// if (((ArrayList<User>)(topic.getOrganizer())) == null)
 			// System.out.println("list"); else System.out.println("safe");
-
-			if (!((ArrayList<User>) (topic.getOrganizer())).contains(user)) {
+			if(!Users.isPermitted(user, "tag topics", entity.id, "entity")){
 				// user not allowed
 				userNotAllowed = true;
 			} else {
