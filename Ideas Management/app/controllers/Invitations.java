@@ -208,8 +208,8 @@ public class Invitations extends CRUD {
 
 	             
 	          //**Fadwa
-	             User sender = Security.getConnected();
-			     organizers.remove(sender);
+	            // User sender = Security.getConnected();
+			     organizers.remove(user);
 					
 				
 				for(int j=0;j<organizers.size();j++)
@@ -294,6 +294,7 @@ public class Invitations extends CRUD {
 			//**Fadwa	
 				List<User> organizers = Users.getEntityOrganizers(entity);
 					organizers.add(organization.creator);
+					organizers.remove(invite.sender);
 				
 				for(int j=0;j<organizers.size();j++)
 				Notifications.sendNotification(organizers.get(j).id, entity.id, "entity",
