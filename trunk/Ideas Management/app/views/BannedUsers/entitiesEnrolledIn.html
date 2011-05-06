@@ -14,7 +14,7 @@
   <p style="color:#c00"> This Organizer is not enrolled in any Entity !!! </p>
 #{/if}
 #{else}
-#{form @BannedUsers.restrictOrganizerHelper2(), method:'POST', id:'creationForm',
+#{form @BannedUsers.topicsEnrolledInOrRedirect(), method:'POST', id:'creationForm',
        enctype:'multipart/form-data' }
   #{list items:entities, as:'entity'}
 <input id = "1" type="radio" name="entityId" value = ${entity.id}> ${entity.name}

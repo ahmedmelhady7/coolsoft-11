@@ -14,7 +14,7 @@
   <p style="color:#c00"> No Organizers Found </p>
 #{/if}
 #{else}
-#{form @BannedUsers.restrictOrganizerHelper1(), method:'POST', id:'creationForm',
+#{form @BannedUsers.entitiesEnrolledIn(), method:'POST', id:'creationForm',
        enctype:'multipart/form-data' }
   #{list items:users, as:'user'}
 <input id = "1" type="radio" name="userId" value = ${user.id}> ${user.firstName} ${user.lastName} <br /> <br />
