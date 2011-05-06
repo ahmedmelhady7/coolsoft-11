@@ -259,7 +259,11 @@ public class Organizations extends CRUD {
 			UserRoleInOrganizations.addEnrolledUser(creator, org, r);
 			MainEntity m = new MainEntity("Default", "", org);
 			m.save();
-
+			flash.success("Your organization has been created!!");
+			redirect("Organizations.mainPage", "Organization created");
+		}
+		else {
+			redirect("Organizations.mainPage", "Name already in use..");
 		}
 
 	}
