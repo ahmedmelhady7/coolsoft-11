@@ -5,30 +5,50 @@ The marking request
 -->
 <!DOCTYPE>
 
-#{extends 
- 'main.html' 
-/}
+#{extends 'main.html' /}
 
 <html>
-    <body>
-        <form action="@{markDuplicate()}" name="frm" method="get">
-            <input type="checkbox" name="idea1" id="i1" value="1" /> Assume the first Idea is here
+<body>
+<a href="@{Application.index()}">Back to home</a>
+<br />
+<br />
+<u><font size ="5" color ="blue"> Requests </font></u>
+<br />
+<br />
+#{if requests.isEmpty()}
+<tr><td><i>No new Requests</i></td><td>
+#{/if}
+#{else}
+ #{list items:requests, as:'request'}
+    <li>
+        <fieldset>
+              User ${request.sender.username} Wants to mark Idea ${request.idea1.title} with Idea ${request.idea2.title}
 			</br>
-			<input type="checkbox" name="idea2" id="i2" value="2" /> Assume the second Idea is here
-			</br>
-			<input type="text" name="des" id="i"/>
-			<input type="button" name = "marking" value="Mark" onclick = 'mark(this.form)'/>
-			<script type="text/javascript">
-				function mark(frm){
-                $.post('@{markDuplicate}', {
-                    idea1: frm.i1.value,
-					idea2: frm.i2.value,
-					des: frm.i.value
-                }, function(){
-					window.location.reload(true);
-                });
-            }
-			</script>
-        </form>
-    </body>
+			<input type = "button" value = "Accept" onclick='reject(${request.id},0)'/>
+			<input type = "button" value = "Reject" onclick='reject(${request.id},1)'/>
+        </fieldset>
+    </li>
+    #{/list}
+#{/else}
+
+
+<script type="text/javascript">	
+	function reject(id,ar) {
+		if (ar > 0) {
+			$.post('@{MarkRequest.reject()}', {
+				reqID: id
+			}, function(){
+				alert("Request rejected!");
+				window.location.reload(true);
+			});
+		}
+		else{
+		$.post('@{MarkRequest.accept()}', {
+		reqID: id
+		},function(){alert("Request Accepted!");
+		window.location.reload(true);});	
+		}
+	}
+</script>
+</body>
 </html>
