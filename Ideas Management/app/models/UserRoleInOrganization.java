@@ -34,24 +34,24 @@ public class UserRoleInOrganization extends Model {
 	public String type;
 
 	/**
-	 * this organizer creates enrolls a user in a certain organization
+	 * creates an enrolled a user in a certain organization
 	 *
 	 * @author Nada Ossama
 	 * 
 	 * @story C1S7
 	 * 
 	 * @param user
-	 *            is the user to be enrolled
+	 *            User user to be enrolled
 	 * @param org
-	 *            is the organization that the user will be enrolled in
+	 *            Organization org that the user will be enrolled in
 	 * @param role
-	 *            is the role of that user in the organization org
+	 *            Role role of that user in the organization org
 	 * @param entityTopicId
-	 *            is the ID of the entity or the topic the user will be inrolled
+	 *            long ID of the entity or the topic the user will be inrolled
 	 *            in if any
 	 * 
 	 * @param type
-	 *            is entity or topic
+	 *            String entity or topic
 	 * 
 	 */
 
@@ -66,18 +66,18 @@ public class UserRoleInOrganization extends Model {
 	}
 
 	/**
-	 * this organizer creates enrolls a user in a certain organization
+	 * creates enrolled user in a certain organization
 	 * 
 	 * @author Nada Ossama
 	 * 
 	 * @story C1S7
 	 *
 	 * @param user
-	 *            is the user to be enrolled
+	 *            User the user to be enrolled
 	 * @param org
-	 *            is the organization that the user will be enrolled in
+	 *            Organization org that the user will be enrolled in
 	 * @param role
-	 *            is the role of that user in the organization org
+	 *            Role role of that user in the organization org
 	 * 
 	 */
 
@@ -98,10 +98,10 @@ public class UserRoleInOrganization extends Model {
 	 * @story C1S7
 	 * 
 	 * @param user
-	 *            the user i need to know has role
+	 *            User user that his role is to be known
 	 * @param org
-	 *            the organization i need to know the user's role in it
-	 * @return the role of the user in that organization
+	 *            Organization org i need to know the user's role in it
+	 * @return Role the role of the user in that organization
 	 */
 
 	public Role userRoleInOrganization(User user, Organization org) {
