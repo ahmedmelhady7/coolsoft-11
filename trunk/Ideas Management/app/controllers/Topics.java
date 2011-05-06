@@ -243,8 +243,8 @@ public class Topics extends CRUD {
 	 * @param topicId
 	 *            : the id of the topic
 	 * 
-	 * @param user
-	 *            : the user who request to post
+	 * @param userId
+	 *            : the id of user who request to post
 	 * 
 	 * @return void
 	 */

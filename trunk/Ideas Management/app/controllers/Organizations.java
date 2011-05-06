@@ -135,10 +135,7 @@ public class Organizations extends CRUD {
 	 * 
 	 * @param orgId
 	 *            the id of the organization
-	 * 
-	 * @param userId
-	 *            the id of the user who will invite
-	 * 
+	 *            
 	 * @return void
 	 */
 
@@ -160,10 +157,7 @@ public class Organizations extends CRUD {
 	 * 
 	 * @param email
 	 *            the email of the receiver
-	 * 
-	 * @param userId
-	 *            the id of the user
-	 * 
+	 *            
 	 * @return void
 	 */
 

@@ -233,10 +233,10 @@ public class Users extends CRUD {
 	 * @story C2S12
 	 * 
 	 * @param topicId
-	 *            : the topic id that the user is following
+	 *            : the id of the topic that the user is following
 	 * 
 	 * @param userId
-	 *            : the user id who follows
+	 *            : the id of the user who follows
 	 * 
 	 * @return void
 	 */
@@ -256,10 +256,10 @@ public class Users extends CRUD {
 	 * @story C2S12
 	 * 
 	 * @param tagId
-	 *            : the tag id that the user is following
+	 *            : the id of the tag that the user is following
 	 * 
 	 * @param userId
-	 *            : the user id who follows
+	 *            : the id of the user who follows
 	 * 
 	 * @return void
 	 */
@@ -278,10 +278,10 @@ public class Users extends CRUD {
 	 * @story C2S12
 	 * 
 	 * @param orgId
-	 *            : the organization id the user is following
+	 *            : the id of the organization the user is following
 	 * 
 	 * @param userId
-	 *            : the user id who follows
+	 *            : the id of the user who follows
 	 * 
 	 * @return void
 	 */
@@ -300,11 +300,11 @@ public class Users extends CRUD {
 	 * 
 	 * @story C2S12
 	 * 
-	 * @param entity
-	 *            : the entity the user is following
+	 * @param entityId
+	 *            : the id of the entity the user is following
 	 * 
-	 * @param user
-	 *            : the user who follows
+	 * @param userId
+	 *            : the id of the user who follows
 	 * 
 	 * @return void
 	 */
@@ -324,7 +324,7 @@ public class Users extends CRUD {
 	 * @story C2S12
 	 * 
 	 * @param userId
-	 *            : the user id who follows
+	 *            : the id of the user who follows
 	 * 
 	 * @return void
 	 */
