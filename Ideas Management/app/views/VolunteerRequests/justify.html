@@ -13,10 +13,14 @@ Please state why you want to work on this item.
 <br/>
 #{/form}
 #{/if}
-#{else}
+#{if success == 1}
 Request not sent successfuly for one of the following reasons:
 You might have been blocked from the plan's topic or an assign request might have been sent to you to work on this item
-#{/else}
+#{/if}
+#{if success == 2}
+Request sent successfuly
+#{/if}
+
 <a href="@{Plans.viewAsList(planId)}">Go back to plan</a>
 
 <script type="text/javascript">

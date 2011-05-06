@@ -189,9 +189,11 @@ public class Plan extends Model {
 		}
 		double p = sum / (2 * items.size()) * 100;
 		String s = "" + p;
+		if(s.length()>=4) {
 		s = s.substring(0,4);
 		if(s.endsWith("."))
 			s = s.substring(0,3);
+		}
 		s +=  "%";
 		return s;
 	}

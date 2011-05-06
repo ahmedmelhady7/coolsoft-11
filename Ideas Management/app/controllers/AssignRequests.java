@@ -66,10 +66,16 @@ public class AssignRequests extends CRUD {
 		for(User user:users2){
 			users.add(user);
 		}
-		if(users.contains(loggedUser)) {
-			users.remove(loggedUser);
+		System.out.println("logged user" + loggedUser.id);
+		for(int i = 0; i<users2.size();i++) {
+			System.out.println("user ids" + users2.get(i).id);
+			if(users2.get(i).id.compareTo(loggedUser.id)==0) {
+				System.out.println(true);
+				users.remove(i);
+			}
 		}
-		render(users, itemId, planId);
+		Item item = Item.findById(itemId);
+		render(users, itemId, planId, item);
 	}
 
 	/**

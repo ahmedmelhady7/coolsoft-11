@@ -81,8 +81,7 @@ public class Items extends CRUD {
 		long itemId = Long.parseLong(id);
 		Item item = Item.findById(itemId);
 		List<User> list = new ArrayList<User>();
-		//>>>>>>>>>>>>>>>change
-	//	list.addAll(item.plan.topic.organizers);
+		list.addAll(item.plan.topic.getOrganizer());
 		for (int i = 0; i < item.assignees.size(); i++) {
 			if (item.assignees.get(i).id != user.id && !list.contains(item.assignees.get(i)))
 				list.add(item.assignees.get(i));

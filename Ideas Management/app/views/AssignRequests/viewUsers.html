@@ -44,7 +44,9 @@
 		}
 	}
 </script>
-You can search for a certain user by name, email or profession
+Item: ${item.summary}
+<br/>
+You can also search for a certain nonblocked user from the plan's topic user by username, email or profession
 
 #{form @AssignRequests.search(), method:'POST', id:'creationForm', onsubmit: 'return validate()', enctype:'multipart/form-data' }
 <input type = "text" id = "keyword" name = "keyword"> &nbsp; &nbsp; &nbsp;
@@ -65,7 +67,7 @@ You can search for a certain user by name, email or profession
 <br/>
 <ul style="list-style: none; ">
 #{list items:users, as:'user'}
-<li id = "user_${user.id}">
+<li id = "user_${user.id}" >
 <input type="checkbox" id="${user.id}" onclick="toggleUser(${user.id});"> 
 <a href="#">${user.username}</a>
 <br/>

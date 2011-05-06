@@ -137,6 +137,8 @@ public class Item extends Model {
 	 */
 	public boolean endDatePassed() {
 		Date d = new Date();
+		System.out.println(d);
+		System.out.println("item's date"  +endDate);
 		if(this.endDate.before(d)){
 			return true;
 		}

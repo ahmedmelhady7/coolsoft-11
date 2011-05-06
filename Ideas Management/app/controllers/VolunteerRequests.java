@@ -58,7 +58,8 @@ public class VolunteerRequests extends CRUD {
 							"plan", description);
 				}
 
-				Plans.viewAsList(dest.plan.id);
+				//Plans.viewAsList(dest.plan.id);
+				justify(itemId, dest.plan.id, 2);
 			}
 		} else {
 			justify(itemId, dest.plan.id, 1);

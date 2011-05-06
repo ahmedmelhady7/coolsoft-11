@@ -1,15 +1,17 @@
-
+#{extends 'main.html' /}
 #{set title:'View list of assigned items' /}
 #{if assignedItems.size() > 0}<h3>Assigned Items </h3>
+
 <ul style="list-style: none; ">
     #{list items:assignedItems, as:'assignedItem'}
-    <li>
+    <li >
         <fieldset>
             <legend>
             	
 				<h2>Plan: <a href="@{Plans.viewAsList(assignedItem.plan.id)}">${assignedItem.plan.title}</a></h2>
                
             </legend>
+
             Title: ${assignedItem.summary} &nbsp; &nbsp; &nbsp;
 			#{if !assignedItem.endDatePassed()}
             #{if assignedItem.status == 0} 
@@ -17,16 +19,16 @@
 			#{/if}
             #{else}
 			<input type="checkbox"  onclick=" javascript: toggle_task('${assignedItem.id}');" ${assignedItem.status == 1 ? '':'checked'} />
-		    <label>
+		    <span>
 			#{if assignedItem.status == 1}
-			<label id = "label1_${assignedItem.id}" > Your item is in progress. Mark it as done. </label>
+			 Your item is in progress. Mark it as done.
 			#{/if}
 			#{else}
-			<label id = "label2_${assignedItem.id}" > Your item is done. Mark it as in progress</label>
+			 Your item is done. Mark it as in progress
 			#{/else}
 			#{/else}
 			#{/if}
-			</label>
+			</span>
 			<br/>
             Item Description: ${assignedItem.description}
             <br/>
@@ -59,7 +61,7 @@ You are not assigned to any to-do item.
 <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
 </script>
 <script type="text/javascript">
-
+	
 function start_task(id)
   {
 	$.post('@{startItem()}' , {id: id});
