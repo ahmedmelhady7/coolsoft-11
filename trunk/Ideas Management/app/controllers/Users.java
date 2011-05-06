@@ -1220,7 +1220,7 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * This method renders the list of notifications of the user, to the view to
+	 * Renders the list of notifications of the user, to the view to
 	 * display the notifications.
 	 * 
 	 * @author Ahmed Maged
@@ -1253,7 +1253,7 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * This method renders the list of notification profiles for the user to
+	 * Renders the list of notification profiles for the user to
 	 * view and edit his preferences.
 	 * 
 	 * @author Ahmed Maged
@@ -1269,14 +1269,14 @@ public class Users extends CRUD {
 	}
 	
 	/**
-	 * This method deletes the notifications of the users which he checked
+	 * Deletes the notifications of the users which he checked
 	 * from the notifiactions list.
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S14
 	 * 
-	 * @param a
+	 * @param a long[]
 	 * 		the list of notification IDs to be deleted
 	 * 
 	 */
@@ -1366,11 +1366,10 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * This method ends the session of the current user and logs out
+	 * Ends the session of the current user and logs out
 	 * 
 	 * @author Ahmed Maged
 	 * 
-	 * @return void
 	 */
 
 	public static void logout() {
@@ -1379,13 +1378,6 @@ public class Users extends CRUD {
 			Secure.logout();
 		} catch (Throwable e) {
 			e.printStackTrace();
-		}
-	}
-	
-	public static void goAdmin() {
-		User u = Security.getConnected();
-		if(u.isAdmin) {
-			redirect("/admin");
 		}
 	}
 

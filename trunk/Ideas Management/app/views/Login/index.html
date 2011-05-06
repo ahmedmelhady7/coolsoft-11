@@ -9,7 +9,7 @@ ${u.username}
 ${u.email}
 </p>
 <br>
-My Admin: <input type="submit" value="Admin View" onclick="goAdmin()">
+My Admin: <input type="submit" value="Admin View" onclick="goAdmin(${u.isAdmin()})">
 <br>
 #{if admin==0}	
 <form action="@{Invitations.view()}" method="GET">
@@ -61,8 +61,11 @@ Logout: <input type="submit" value="Logout">
 </form>
 
 <script type="text/javascript">
-function goAdmin() {
-	window.location ='http://localhost:9008/admin';
-	//redirect('/admin');
+function goAdmin(isA) {
+	if(isA) {
+		window.location ='http://localhost:9008/admin';
+	} else {
+		alert('matesta3batsh');
+	}
 }
 </script>

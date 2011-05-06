@@ -24,7 +24,7 @@ import play.mvc.With;
 public class NotificationProfiles extends CRUD {
 	
 	/**
-	 * This method renders the view were the user can change his preferences.
+	 * Renders the view were the user can change his preferences.
 	 * 
 	 * @author Ahmed Maged
 	 * 
@@ -39,14 +39,14 @@ public class NotificationProfiles extends CRUD {
 	}
 	
 	/**
-	 * This method enables the preferences of the user according to the list
+	 * Enables the preferences of the user according to the list
 	 * provided as input to the method.
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S14
 	 * 
-	 * @param a
+	 * @param b long[]
 	 * 		The list of notification sources to be disabled.	
 	 * 
 	 */
@@ -66,10 +66,8 @@ public class NotificationProfiles extends CRUD {
 	 * 
 	 * @story C1S14
 	 * 
-	 * @param a
+	 * @param a long[]
 	 * 		The list of notification sources to be disabled.
-	 * 
-	 * @return void
 	 * 
 	 */
 	public static void disablePreferences(long[] a) {
