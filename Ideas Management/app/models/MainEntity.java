@@ -103,10 +103,10 @@ public class MainEntity extends Model {
 	 * 
 	 * @stroy C2S2
 	 * 
-	 * @param n
+	 * @param name
 	 *            : the name of the entity being created
 	 * 
-	 * @param d
+	 * @param description
 	 *            : the description of the entity
 	 * 
 	 * @param org
@@ -114,10 +114,10 @@ public class MainEntity extends Model {
 	 * 
 	 */
 
-	public MainEntity(String n, String d, Organization org) {
-		this.name = n;
+	public MainEntity(String name, String description, Organization org) {
+		this.name = name;
 		intializedIn = new Date();
-		this.description = d;
+		this.description = description;
 		this.parent = null;
 		this.organization = org;
 		org.entitiesList.add(this);
@@ -129,7 +129,7 @@ public class MainEntity extends Model {
 		int size = org.followers.size();
 		for (int i = 0; i < size; i++) {
 			Notifications.sendNotification(org.followers.get(i).id, org.id,
-					"organization", "A new entity (" + n
+					"organization", "A new entity (" + name
 							+ ") has been created in " + org.name);
 		}
 	}
@@ -141,10 +141,10 @@ public class MainEntity extends Model {
 	 * 
 	 * @stroy C2S20
 	 * 
-	 * @param n
+	 * @param name
 	 *            : the name of the entity being created
 	 * 
-	 * @param d
+	 * @param description
 	 *            : the description of the entity
 	 * 
 	 * @param parent
@@ -155,10 +155,11 @@ public class MainEntity extends Model {
 	 * 
 	 */
 
-	public MainEntity(String n, String d, MainEntity parent, Organization org) {
-		this.name = n;
+	public MainEntity(String name, String description, MainEntity parent,
+			Organization org) {
+		this.name = name;
 		intializedIn = new Date();
-		this.description = d;
+		this.description = description;
 		this.parent = parent;
 		parent.subentities.add(this);
 		this.organization = org;
@@ -176,14 +177,14 @@ public class MainEntity extends Model {
 		receivers.add(org.creator);
 		for (int i = 0; i < size; i++) {
 			Notifications.sendNotification(receivers.get(i).id, parent.id,
-					"entity", "A new subentity (" + n
+					"entity", "A new subentity (" + name
 							+ ") has been created for the entity ("
 							+ parent.name + ")");
 		}
 		size = org.followers.size();
 		for (int i = 0; i < size; i++) {
 			Notifications.sendNotification(org.followers.get(i).id, org.id,
-					"organization", "A new entity (" + n
+					"organization", "A new entity (" + name
 							+ ") has been created in " + org.name);
 		}
 	}
