@@ -40,12 +40,29 @@ public class Ideas extends CRUD {
 	 * @param topicId the topic that the idea belongs to
 	 */
 
-	public static void createDraft(String title, String body, Long topicId) {
+	public static void createDraft(String title, String description, long topicId) {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
-		Idea idea = new Idea(title, body, user, topic, true).save();
+		Idea idea = new Idea(title, description, user, topic, true).save();
 		// String message = "you have saved the idea with title successfully";
 		// redirect(request.controller + ".show", idea.getId(),message);
+	}
+	
+	/*
+	 * @author Abdalrahman Ali
+	 * 
+	 * @story C3S13
+	 * 
+	 * this method allows the user to create/save an idea
+	 * 
+	 * @param topicId the topic that the idea belongs to
+	 */
+	
+	public static void createIdea(long topicId)
+	{
+		User user = Security.getConnected();
+		Topic topic = Topic.findById(topicId);
+		render(topic,user);
 	}
 
 	/*
