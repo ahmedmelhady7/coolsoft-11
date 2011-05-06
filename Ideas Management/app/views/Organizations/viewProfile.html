@@ -48,7 +48,7 @@
             #{/list}
         </ul>
         #{/else}
-		#{if requestToJoin == false}
+		#{if isMember == true}
         <form action="@{Topics.requestToPost()}">
             <input type="hidden" name="orgId" value="${org.id}">
 			

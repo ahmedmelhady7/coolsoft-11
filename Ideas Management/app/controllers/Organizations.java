@@ -388,8 +388,10 @@ public class Organizations extends CRUD {
 			flag = 1;
 		}
 		boolean admin = user.isAdmin;
+		boolean isMember = org.privacyLevel == 2
+				|| Users.getEnrolledUsers(org).contains(user);
 		render(user, org, entities, requestToJoin, tags, flag, b, admin,
-				allowed);
+				allowed, isMember);
 
 	}
 
