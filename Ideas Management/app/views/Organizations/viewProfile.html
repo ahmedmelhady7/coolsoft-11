@@ -35,7 +35,9 @@
             </li>
             #{/list}
         </ul>
+        #{if (canCreateEntity == 1)}
         <a href="@{MainEntitys.goToCreateEntity(org.id)}">Create a new Entity</a>
+        #{/if}
         <br/>
         <br/>
         <br>
