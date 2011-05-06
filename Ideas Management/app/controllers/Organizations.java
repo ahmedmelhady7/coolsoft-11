@@ -72,6 +72,7 @@ public class Organizations extends CRUD {
 		notFoundIfNull(organization);
 		organization.createTag = true;
 		System.out.println(organization.createTag);
+		System.out.println(getPrivacyLevel(id));
 	}
 
 	/**
@@ -97,6 +98,7 @@ public class Organizations extends CRUD {
 		notFoundIfNull(organization);
 		organization.createTag = false;
 		System.out.println(organization.createTag);
+		System.out.println(getPrivacyLevel(id));
 	}
 
 	/**
@@ -363,6 +365,9 @@ public class Organizations extends CRUD {
 						"enable/disable the user to create their own tags within an organization",
 						id, "organization"))
 			settings = 1;
+		System.out.println(settings);
+		System.out.println(user);
+		System.out.println(org);
 		
 		boolean loop = false;
 		if (tags.isEmpty()) {
