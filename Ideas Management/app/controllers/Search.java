@@ -47,6 +47,8 @@ public class Search extends Controller {
 
 	public static List<Model> sorted = new ArrayList<Model>();
 
+	public static List<Model> tobepassed = listOfResults;
+
 	/**
 	 * 
 	 * @author M Ghanem
@@ -76,6 +78,12 @@ public class Search extends Controller {
 		render(lof, filterResult, tobepassed);
 	}
 
+	 /**
+	  * @author monica
+	  * 
+	  *         this method renders to show reslts after filter
+	  */
+	
 	public static void showAfterFilter() {
 		String connected = Security.connected();
 		List<Idea> ideasFound = new ArrayList<Idea>();
@@ -926,6 +934,21 @@ public class Search extends Controller {
 	 * @return void.
 	 * 
 	 */
+	/**
+	 * method handelingOrAnd decides which list is to be passed for the filter
+	 * method if the choice is and so we will need to filter on the filtered
+	 * list but if or then we filter on the main list
+	 * 
+	 * @author Monica Yousry
+	 * 
+	 * @story C4S03 filtering results after sort
+	 * 
+	 * @param AndOr
+	 *            :: "char"; of the filter option view as input from user
+	 * 
+	 * @return void.
+	 * 
+	 */
 	// //////////////////////////////////////////////////////////////////
 	// filter method by monica yousry
 	// filtering on type (organisation,topic,idea,plan,entity,...etc)
@@ -933,7 +956,6 @@ public class Search extends Controller {
 	// this commented method with the static parametar will help in defining
 	// which list to pass for the filter method accrding to the user's choice
 	// (and or or )
-	static List<Model> tobepassed;
 
 	public static void handelingOrAnd(char AndOr) {
 		if (AndOr == 'a') {
@@ -955,22 +977,18 @@ public class Search extends Controller {
 	 * @param filterOn
 	 *            :: "String"; the criteria to filter on taken from filter
 	 *            option view as input from user
-	 * @param resultList
-	 *            :: "List";the result list to be filtered taken from previous
-	 *            method (search methods )
 	 * @return void.
 	 * 
 	 */
 
-	public static void filterSearchResults(List<Model> resultList,
-			String filterOn) {
+	public static void filterSearchResults(String filterOn) {
 		filterResult = new ArrayList<Model>();
 		if (filterOn.equalsIgnoreCase("o")) {// filtering on organizations
-			for (int i = 0; i < resultList.size(); i++) {// loop on the whole
-															// search result
-				if (resultList.get(i) instanceof Organization) {// if found an
-																// organization
-					filterResult.add(resultList.get(i));// add it to the list
+			for (int i = 0; i < tobepassed.size(); i++) {// loop on the whole
+				// search result
+				if (tobepassed.get(i) instanceof Organization) {// if found an
+					// organization
+					filterResult.add(tobepassed.get(i));// add it to the list
 				}
 			}
 		}
@@ -978,39 +996,39 @@ public class Search extends Controller {
 		// similar to the previous part
 
 		if (filterOn.equalsIgnoreCase("i")) {// filtering on ideas
-			for (int i = 0; i < resultList.size(); i++) {
-				if (resultList.get(i) instanceof Idea) {
-					filterResult.add(resultList.get(i));
+			for (int i = 0; i < tobepassed.size(); i++) {
+				if (tobepassed.get(i) instanceof Idea) {
+					filterResult.add(tobepassed.get(i));
 				}
 			}
 		}
 
 		if (filterOn.equalsIgnoreCase("t")) { // filter on topic
-			for (int i = 0; i < resultList.size(); i++) {
-				if (resultList.get(i) instanceof Topic) {
-					filterResult.add(resultList.get(i));
+			for (int i = 0; i < tobepassed.size(); i++) {
+				if (tobepassed.get(i) instanceof Topic) {
+					filterResult.add(tobepassed.get(i));
 				}
 			}
 		}
 		if (filterOn.equalsIgnoreCase("e")) { // filter on entity
-			for (int i = 0; i < resultList.size(); i++) {
-				if (resultList.get(i) instanceof MainEntity) {
+			for (int i = 0; i < tobepassed.size(); i++) {
+				if (tobepassed.get(i) instanceof MainEntity) {
 
-					filterResult.add(resultList.get(i));
+					filterResult.add(tobepassed.get(i));
 				}
 			}
 		}
 
 		if (filterOn.equalsIgnoreCase("p")) { // filter on plan
-			for (int i = 0; i < resultList.size(); i++) {
-				if (resultList.get(i) instanceof Plan) {
-					filterResult.add(resultList.get(i));
+			for (int i = 0; i < tobepassed.size(); i++) {
+				if (tobepassed.get(i) instanceof Plan) {
+					filterResult.add(tobepassed.get(i));
 				}
 			}
 		}
 
 		if (filterOn.equalsIgnoreCase("a")) {
-			filterResult = resultList;
+			filterResult = tobepassed;
 		}
 
 	}
@@ -1025,9 +1043,6 @@ public class Search extends Controller {
 	 * @param filterOn
 	 *            :: "String"; the criteria to filter on taken from filter
 	 *            option view as input from user
-	 * @param resultList
-	 *            :: "List";the result list to be filtered taken from previous
-	 *            method (search methods )
 	 * 
 	 * @param input
 	 *            :: "String";input is to be taken from the user from the form
@@ -1035,53 +1050,52 @@ public class Search extends Controller {
 	 * @return void.
 	 * 
 	 */
-	public static void filterSearchResults(List<Model> resultList,
-			String filterOn, String input) {
+	public static void filterSearchResults(String filterOn, String input) {
 
 		filterResult = new ArrayList<Model>();
 
 		if (filterOn.equalsIgnoreCase("name")
 				|| filterOn.equalsIgnoreCase("title")) {
-			for (int i = 0; i < resultList.size(); i++) {
+			for (int i = 0; i < tobepassed.size(); i++) {
 
-				if (resultList.get(i) instanceof models.Idea) {
-					models.Idea temp = (models.Idea) resultList.get(i);
+				if (tobepassed.get(i) instanceof models.Idea) {
+					models.Idea temp = (models.Idea) tobepassed.get(i);
 					if (temp.title.equalsIgnoreCase(input)) {
-						filterResult.add(resultList.get(i));
+						filterResult.add(tobepassed.get(i));
 					}
 
 				}
 
-				if (resultList.get(i) instanceof models.Plan) {
-					models.Plan temp = (models.Plan) resultList.get(i);
+				if (tobepassed.get(i) instanceof models.Plan) {
+					models.Plan temp = (models.Plan) tobepassed.get(i);
 					if (temp.title.equalsIgnoreCase(input)) {
-						filterResult.add(resultList.get(i));
+						filterResult.add(tobepassed.get(i));
 					}
 
 				}
 
-				if (resultList.get(i) instanceof models.Organization) {
-					models.Organization temp = (models.Organization) resultList
+				if (tobepassed.get(i) instanceof models.Organization) {
+					models.Organization temp = (models.Organization) tobepassed
 							.get(i);
 					if (temp.name.equalsIgnoreCase(input)) {
-						filterResult.add(resultList.get(i));
+						filterResult.add(tobepassed.get(i));
 					}
 
 				}
 
-				if (resultList.get(i) instanceof models.Topic) {
-					models.Topic temp = (models.Topic) resultList.get(i);
+				if (tobepassed.get(i) instanceof models.Topic) {
+					models.Topic temp = (models.Topic) tobepassed.get(i);
 					if (temp.title.equalsIgnoreCase(input)) {
-						filterResult.add(resultList.get(i));
+						filterResult.add(tobepassed.get(i));
 					}
 
 				}
 
-				if (resultList.get(i) instanceof models.MainEntity) {
-					models.MainEntity temp = (models.MainEntity) resultList
+				if (tobepassed.get(i) instanceof models.MainEntity) {
+					models.MainEntity temp = (models.MainEntity) tobepassed
 							.get(i);
 					if (temp.name.equalsIgnoreCase(input)) {
-						filterResult.add(resultList.get(i));
+						filterResult.add(tobepassed.get(i));
 					}
 
 				}
@@ -1090,37 +1104,37 @@ public class Search extends Controller {
 		}
 
 		if (filterOn.equalsIgnoreCase("description")) {
-			for (int i = 0; i < resultList.size(); i++) {
+			for (int i = 0; i < tobepassed.size(); i++) {
 
-				if (resultList.get(i) instanceof models.Idea) {
-					models.Idea temp = (models.Idea) resultList.get(i);
+				if (tobepassed.get(i) instanceof models.Idea) {
+					models.Idea temp = (models.Idea) tobepassed.get(i);
 					if (temp.description.contains(input)) {
-						filterResult.add(resultList.get(i));
+						filterResult.add(tobepassed.get(i));
 					}
 
 				}
 
-				if (resultList.get(i) instanceof models.Plan) {
-					models.Plan temp = (models.Plan) resultList.get(i);
+				if (tobepassed.get(i) instanceof models.Plan) {
+					models.Plan temp = (models.Plan) tobepassed.get(i);
 					if (temp.description.contains(input)) {
-						filterResult.add(resultList.get(i));
+						filterResult.add(tobepassed.get(i));
 					}
 
 				}
 
-				if (resultList.get(i) instanceof models.Topic) {
-					models.Topic temp = (models.Topic) resultList.get(i);
+				if (tobepassed.get(i) instanceof models.Topic) {
+					models.Topic temp = (models.Topic) tobepassed.get(i);
 					if (temp.description.contains(input)) {
-						filterResult.add(resultList.get(i));
+						filterResult.add(tobepassed.get(i));
 					}
 
 				}
 
-				if (resultList.get(i) instanceof models.MainEntity) {
-					models.MainEntity temp = (models.MainEntity) resultList
+				if (tobepassed.get(i) instanceof models.MainEntity) {
+					models.MainEntity temp = (models.MainEntity) tobepassed
 							.get(i);
 					if (temp.description.contains(input)) {
-						filterResult.add(resultList.get(i));
+						filterResult.add(tobepassed.get(i));
 					}
 
 				}
@@ -1145,10 +1159,6 @@ public class Search extends Controller {
 	 * @param voteOrRate
 	 * 
 	 *            "char": to decide whether to sort by vote or rate .
-	 * 
-	 * @param searchresult
-	 * 
-	 *            "list": The search result List that should be sorted .
 	 * 
 	 * 
 	 * @return void
@@ -1211,10 +1221,10 @@ public class Search extends Controller {
 
 			sorted = new ArrayList<Model>();// final sorted list
 			for (int m = 0; m < tosort.size(); m++) {
-				sorted.add(tosort.get(m));
+				sorted.add(tosort.get((m)));
 			}
 			for (int m = 0; m < nottosort.size(); m++) {
-				sorted.add(nottosort.get(m));
+				sorted.add(nottosort.get((m)));
 			}
 			listOfResults = sorted;
 			searchResult();
@@ -1256,8 +1266,8 @@ public class Search extends Controller {
 		 * }
 		 * 
 		 * sorted= new ArrayList<Object>();//final sorted list for(int
-		 * m=0;m<tosort.size();m++){ sorted.add(tosort.get(m)); } for (int
-		 * m=0;m<nottosort.size();m++){ sorted.add(nottosort.get(m)); } //the
+		 * m=0;m<tosort.size();m++){ sorted.add(tosort.get((e))); } for (int
+		 * m=0;m<nottosort.size();m++){ sorted.add(nottosort.get((e))); } //the
 		 * previous too loops is to append to lists in one }
 		 */
 
@@ -1280,10 +1290,6 @@ public class Search extends Controller {
 	 * 
 	 *            "char": to decide whether to sort by vote or rate .
 	 * 
-	 * @param listOfResults
-	 * 
-	 *            "list": The search result List that should be sorted .
-	 * 
 	 * 
 	 * @return void
 	 * 
@@ -1295,6 +1301,8 @@ public class Search extends Controller {
 		List<Model> tosort = new ArrayList<Model>();
 
 		List<Model> nottosort = new ArrayList<Model>();
+
+		System.out.print("in sortD");
 
 		if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
 
@@ -1346,10 +1354,10 @@ public class Search extends Controller {
 
 			sorted = new ArrayList<Model>();// final sorted list
 			for (int m = 0; m < tosort.size(); m++) {
-				sorted.add(tosort.get(m));
+				sorted.add(tosort.get((m)));
 			}
 			for (int m = 0; m < nottosort.size(); m++) {
-				sorted.add(nottosort.get(m));
+				sorted.add(nottosort.get((m)));
 			}
 
 			listOfResults = sorted;
@@ -1392,11 +1400,10 @@ public class Search extends Controller {
 		 * }
 		 * 
 		 * sorted= new ArrayList<Object>();//final sorted list for(int
-		 * m=0;m<tosort.size();m++){ sorted.add(tosort.get(m)); } for (int
-		 * m=0;m<nottosort.size();m++){ sorted.add(nottosort.get(m)); } //the
+		 * m=0;m<tosort.size();m++){ sorted.add(tosort.get((e))); } for (int
+		 * m=0;m<nottosort.size();m++){ sorted.add(nottosort.get((e))); } //the
 		 * previous too loops is to append to lists in one }
 		 */
-
 	}
 
 }
