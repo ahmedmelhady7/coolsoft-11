@@ -18,11 +18,12 @@
             <option> Tags</option>
             <option id="e" value="0"> enable </option>
             <option id="d" value="1"> disable </option>
-        </select>	
-           #{/if}
+            </select>	
+		    #{/if}
 		   <br>
 		   <br>
-		#{if (requestToJoin == true) && (!admin)}
+	
+        #{if (requestToJoin == true) && (!admin)}
 		<form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
 			<input type="hidden" id="orgId" name="orgId" value="${org.id}">
 			Your message: <textarea id="description" name="description" rows="5" cols="50"></textarea>
@@ -136,7 +137,7 @@
 					return true;
                 }
             </script>
-            <!--
+            
             <script type="text/javascript">
             function test(){
             //var v = document.getElementById('selec').selectedIndex;
@@ -155,5 +156,5 @@
             }
             }
             </script>
-            -->
+            
 
