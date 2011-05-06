@@ -416,8 +416,8 @@ public class Plans extends CRUD {
 	 * 
 	 */
 	public static void editPlan(long planId) {
-		Plan plan = Plan.findById(planId);
-		render(plan);
+		Plan p = Plan.findById(planId);
+		render(p);
 	}
 
 	/**
@@ -447,10 +447,18 @@ public class Plans extends CRUD {
 	 * 
 	 * @param title
 	 *            The title of the plan
-	 * @param startDate
-	 *            The date when the plan will start
-	 * @param endDate
-	 *            The date when the plan will end
+	 * @param startDay
+	 *            The day on which the plan starts
+	 * @param startMonth
+	 * 			  The month when the plan starts
+	 * @param startYear
+	 * 			  The year when the plan starts
+	 * @param endDay
+	 *            The day on which the plan ends
+	 * @param endMonth
+	 * 			  The month when the plan ends
+	 * @param endYear
+	 * 		      The year when the plan ends
 	 * @param description
 	 *            The description of the plan
 	 * @param requirement
@@ -458,12 +466,13 @@ public class Plans extends CRUD {
 	 * @param planId
 	 *            The id of the plan being edit
 	 */
-	public static void edit(String title, Date startDate, Date endDate,
+	public static void edit(String title, int startDay, int startMonth,
+			int startYear,int endDay, int endMonth,int endYear,
 			String description, String requirement, long planId) {
 		Plan p = Plan.findById(planId);
 		p.title = title;
-		p.startDate = startDate;
-		p.endDate = endDate;
+		p.startDate = new Date(startYear-1900,startMonth,startDay);
+		p.endDate = new Date(endYear-1900,startMonth,startDay);
 		p.description = description;
 		p.requirement = requirement;
 		p.save();
