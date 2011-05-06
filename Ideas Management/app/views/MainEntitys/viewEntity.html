@@ -23,7 +23,9 @@
 		No subentities available for this entity!
 		#{/else}
 		<br />
+		#{if (canCreateEntity == 1)}
 		<a href="@{MainEntitys.goToCreateSubEntity(org.id,entity.id)}">Create new SubEntity</a>
+		#{/if}
 		<br />
 		
 		<form action="@{MainEntitys.viewFollowers()}">
@@ -78,6 +80,12 @@
 <input type="submit" disabled=true value="Request A Topic" onclick=location.href="@{Topics.blank(entity.id)}">
 		<br />
 		#{/else}
+		
+		#{if (canEdit == 1)}
+		<HR>
+		<input type="submit" value="Edit" onclick=location.href="@{MainEntitys.editEntityPage(entity.id)}">
+		<HR>	
+		#{/if}
 
 
 		
