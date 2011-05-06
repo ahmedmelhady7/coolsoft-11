@@ -1172,18 +1172,11 @@ public class Users extends CRUD {
 	 * @return void
 	 */
 
-	/*public static void acceptToJoinOrg(long invId, long userId, boolean r) {
+	public static void acceptToJoinOrg(long invId, long userId, boolean r) {
 		Invitation inv = Invitation.findById(invId);
 		Organization org = inv.organization;
 		User user = User.findById(userId);
 		if (r) {
-			// System.out.println("@@@@@");
-			// Role role = Role.find("byRoleName", "Idea Developer").first();
-			// if (role == null) {
-			// // role ???
-			// role = new Role("Idea Developer", "view");
-			// role._save();
-			// }
 			Role role = Roles.getRoleByName("idea developer");
 			UserRoleInOrganization roleInOrg = new UserRoleInOrganization(user,
 					org, role);
@@ -1193,21 +1186,12 @@ public class Users extends CRUD {
 			List<User> list = new ArrayList();
 			list.add(user);
 			User orgLead = org.creator;
-			list.add(orgLead);
-			
-			///>>>>>>>>>>>>>>>>>>  change
-//			Notifications.sendNotification(list, org.id, "Organization",
-//					user.username + " has accepted the invitation to join the "
-//							+ org.name);
-			// Notification n1 = new Notification("Organization",
-			// inv.sender, user.username + " accepted the invitation.");
-			// n1._save();
-			// if (orgLead.id != inv.sender.id) {
-			// Notification n2 = new Notification("Invitation accepted",
-			// orgLead, user.username + " accepted th invitation");
-			// n2._save();
-			// }
-			// any other insertions?
+			Notifications.sendNotification(user.id, org.id, "Organization",
+					user.username + " has accepted the invitation to join the "
+							+ org.name);
+			Notifications.sendNotification(orgLead.id, org.id, "Organization",
+					user.username + " has accepted the invitation to join the "
+							+ org.name);
 		}
 		org.invitation.remove(inv);
 		org._save();
