@@ -36,6 +36,7 @@ public class Topic extends Model {
 	/**
 	 * the privacy level of the topic, restricts who can do what with it
 	 */
+	@Required
 	public int privacyLevel;
 
 	/**
