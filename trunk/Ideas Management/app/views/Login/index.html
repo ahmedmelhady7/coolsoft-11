@@ -9,7 +9,7 @@ ${u.username}
 ${u.email}
 </p>
 <br>
-My Admin: <input type="submit" value="Admin View" onclick="goAdmin(${u.isAdmin()})">
+My Admin: <input type="submit" value="Admin View" onclick="goAdmin(${u.isAdmin})">
 <br>
 #{if admin==0}	
 <form action="@{Invitations.view()}" method="GET">
