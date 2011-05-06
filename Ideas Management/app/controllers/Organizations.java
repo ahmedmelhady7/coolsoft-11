@@ -166,23 +166,23 @@ public class Organizations extends CRUD {
 	public static void sendInvitation(long orgId, String email) {
 		Organization org = Organization.findById(orgId);
 		User sender = Security.getConnected();
-		List<Invitation> invs = Invitation.findAll();
+		List<Invitation> invitations = Invitation.findAll();
 		Invitation temp;
-		for (int i = 0; i < invs.size(); i++) {
-			temp = invs.get(i);
+		for (int i = 0; i < invitations.size(); i++) {
+			temp = invitations.get(i);
 			if (temp.sender.id == sender.id
 					&& temp.email.equalsIgnoreCase(email)
 					&& temp.role.equalsIgnoreCase("idea developer")) {
 				return;
 			}
 		}
-		Invitation inv = new Invitation(email, null, org, "Idea Developer",
+		Invitation invitation = new Invitation(email, null, org, "Idea Developer",
 				sender);
-		inv._save();
-		User rec = User.find("byEmail", email).first();
-		if (rec != null) {
-			rec.invitation.add(inv);
-			rec._save();
+		invitation._save();
+		User reciever = User.find("byEmail", email).first();
+		if (reciever != null) {
+			reciever.invitation.add(invitation);
+			reciever._save();
 		}
 		Mail.invite(email, "Idea Devoloper", org.name, "");
 	}
