@@ -1086,6 +1086,14 @@ public class Users extends CRUD {
 			else if (tmp.password.length() >= 25) {
 				message = "First name cannot exceed 25 characters";
 				}
+			else if (User.find("ByEmail", tmp.email).first() != null)
+			{
+				message = "This Email already exists !";
+			}
+			else if (User.find("ByUsername", tmp.username).first() != null)
+			{
+				message = "This username already exists !";
+			}
 
 			try {
 				System.out.println("show user try ");
@@ -1152,9 +1160,9 @@ public class Users extends CRUD {
 		// Security.check(Security.getConnected().isAdmin||);
 		ObjectType type = ObjectType.get(Users.class);
 		notFoundIfNull(type);
-		// Model object = type.findById(id);
-		long userId = Long.parseLong(id);
-		User object = User.findById(userId);
+		Model object = type.findById(id);
+//		long userId = Long.parseLong(id);
+//		User object = User.findById(userId);
 		Binder.bind(object, "object", params.all());
 		System.out.println(object.toString() + "begin");
 		validation.valid(object);
@@ -1168,6 +1176,44 @@ public class Users extends CRUD {
 		 * (TemplateNotFoundException e) { System.out.println(object.toString()
 		 * + "catch"); render("CRUD/show.html", type, object); } }
 		 */
+		
+		String message = "";
+		User tmp = (User) object;
+		System.out.println("create() entered");
+		tmp.email = tmp.email.trim();
+		tmp.username = tmp.username.trim();
+		tmp.password = tmp.password.trim();
+		tmp.firstName = tmp.firstName.trim();
+
+		if (validation.hasErrors()) {
+			System.out.println("lol");
+			if (tmp.email.equals("")) {
+				message = "A User must have an email";
+				System.out.println(message);
+			} else if (tmp.username.equals("")) {
+				message = "A User must have a username";
+				System.out.println(message);
+			} else if (tmp.password.equals("")) {
+				message = "A User must have a password";
+				System.out.println(message);
+			} else if (tmp.firstName.trim().equals("")) {
+				message = "A User must have a first name";
+				System.out.println(message);
+			} else if (tmp.username.length() >= 20) {
+				message = "Username cannot exceed 20 characters";
+				}
+			else if (tmp.password.length() >= 25) {
+				message = "First name cannot exceed 25 characters";
+				}
+			else if (User.find("ByEmail", tmp.email).first() != null)
+			{
+				message = "This Email already exists !";
+			}
+			else if (User.find("ByUsername", tmp.username).first() != null)
+			{
+				message = "This username already exists !";
+			}
+		}	
 		System.out.println(object.toString() + "before save");
 		object._save();
 		System.out.println(object.toString() + "after the save");
