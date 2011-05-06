@@ -189,7 +189,7 @@ public class Topics extends CRUD {
 		idea.privacyLevel = topic.privacyLevel;
 		render(title, description);
 	}
-
+	
 	/**
 	 * 
 	 * This method reopens a closed topic, used after its plan gets deleted
@@ -805,6 +805,8 @@ public class Topics extends CRUD {
 						"Accept/Reject requests to post in a private topic in entities he/she manages",
 						tmp.id, "topic"))
 			allowed = 1;
+		boolean canPost = Users.isPermitted(Security.getConnected(),
+				"can post ideas to a Topic", tmp.id, "topic");
 		System.out.println(actor);
 		System.out.println(tmp);
 		System.out.println(allowed);
@@ -832,7 +834,7 @@ public class Topics extends CRUD {
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("show() done with exception, rendering to CRUD/show.html");
-			render("CRUD/show.html", type, object, topicId);
+			render("CRUD/show.html", type, object, topicId, canPost);
 		}
 	}
 
