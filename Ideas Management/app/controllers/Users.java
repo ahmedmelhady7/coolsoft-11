@@ -1259,9 +1259,6 @@ public class Users extends CRUD {
 	 * 
 	 * @story C1S14
 	 * 
-	 * @param userId
-	 *            the ID of the user to view his/her profile
-	 * 
 	 */
 
 	public static void viewNotificationProfile() {
@@ -1269,7 +1266,20 @@ public class Users extends CRUD {
 		List<NotificationProfile> npList = user.notificationProfiles;
 		render(npList);
 	}
-
+	
+	/**
+	 * This method deletes the notifications of the users which he checked
+	 * from the notifiactions list.
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S14
+	 * 
+	 * @param a
+	 * 		the list of notification IDs to be deleted
+	 * 
+	 */
+	
 	public static void deleteNotifications(long[] a) {
 		for(int i = 0; i < a.length; i++) {
 			Notification notification = Notification.findById(a[i]);			

@@ -57,6 +57,12 @@ public class Notifications extends CRUD {
 	
 	public static boolean sendNotification(long userId, long notificationId, String type, String description) {
 		User user = User.findById(userId);
+		if(user == null) {
+			return false;
+		}
+		if(user.state.equals("d")) {
+			return false;
+		}
 		List<NotificationProfile> nProfiles = user.notificationProfiles;
 		boolean contains = false;
 		boolean isenabled = true;
