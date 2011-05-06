@@ -6,52 +6,112 @@
 <html>
 
 <head>
-	<script type="text/javascript" src="simpletreemenu.js">
-    </script>
-    <link rel="stylesheet" type="text/css" href="simpletree.css" />
+	<title>Organizations</title>
+   <style>
+      A {text-decoration: none;}
+   </style>
+   
+   <script type="text/javascript">
+   
+			function Toggle(item) {
+   obj=document.getElementById(item);
+   visible=(obj.style.display!="none")
+   key=document.getElementById("x" + item);
+   if (visible) {
+     obj.style.display="none";
+     key.innerHTML="[+]";
+   } else {
+      obj.style.display="block";
+      key.innerHTML="[-]";
+   }
+}
+function Expand() {
+   divs=document.getElementsByTagName("DIV");
+   for (i=0;i<divs.length;i++) {
+     divs[i].style.display="block";
+     key=document.getElementById("x" + divs[i].id);
+     key.innerHTML="[-]";
+   }
+}
+function Collapse() {
+   divs=document.getElementsByTagName("DIV");
+   for (i=0;i<divs.length;i++) {
+     divs[i].style.display="none";
+     key=document.getElementById("x" + divs[i].id);
+     key.innerHTML="[+]";
+   }
+}
+
+   </script>
 </head>
 
 <body>
 
   <form action="@{Browse.browse}" name="test">
 
-  <ul id="treemenu1" class="treeview">
-   <ul> Organizations
+	<h1>Browse Organizations</h1>
+
+
+<hr>
+<b><a ID="xproducts" href="javascript:Toggle('organizations');">[+]</a>
+   Organizations</b><br>
+   
+   
+   <div ID="organizations" style="display:none; margin-left:2em;">
+   
   
     #{list items:listOfOrganizations, as: 'Organization'}
   
-  	<li>
-    		${Organization.name}
-    			 <ul> privacy level
-    		${Organization.privacyLevel}
-    			 
-    			 
-    			 <ul> Creator
-    			 
-    		<li>
-    			${Organization.creator}
-    			<ul> users
-    			
-    		</li>
-    		#{list items:listOfOrganizations.enrolledUsers, as: 'Organization'}
-    		<li>
-    			${Organization.enrolledUsers}
-    		</li>
-    		
-    		#{/list}
-    		
-  	</li>
-  	
+  	 <a href="@{Organizations.viewProfile(Organization.id)}">${Organization.name}</a><br>
+  	 <li>Privacy Level : 
+  	 
+  	 %{
+         privacyLevel = Organization.privacyLevel;
+         
+         if(privacyLevel==0)
+         {
+         	out.print('Public');
+         }
+         else if(privacyLevel==1)
+         {
+         	out.print('Private');
+         }
+         else
+         {
+         	out.print('Secret');
+         }
+         
+      }%
+       
+     
+  	 
+  	 </li>
+ 
+		
+    #{/list}
+   
+   
+  
+   
+   </div>
+
+
+<a href="javascript:Expand();">[Expand All]</a><br>
+<a href="javascript:Collapse();">[Collapse All]</a>
+ 
+  <!--  <ul> Organizations
+  
+    #{list items:listOfOrganizations, as: 'Organization'}
+  
+  	<li>${Organization.name}</li>
+  	<li>${Organization.privacyLevel}</li>
 		
     #{/list}
    
    </ul>
  
-  </ul>
-	
-  <script type="text/javascript">
-    	ddtreemenu.createTree("treemenu1", true)
-  </script>
+  
+-->	
 
  </body>
  
