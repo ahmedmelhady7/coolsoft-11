@@ -17,6 +17,7 @@ import controllers.CRUD.ObjectType;
 import models.Invitation;
 import models.MainEntity;
 import models.Organization;
+import models.RequestToJoin;
 import models.Role;
 import models.Tag;
 import models.Topic;
@@ -74,7 +75,7 @@ public class Organizations extends CRUD {
 		organization.save();
 		System.out.println(organization.createTag);
 		System.out.println(getPrivacyLevel(id));
-		
+
 	}
 
 	/**
@@ -102,7 +103,7 @@ public class Organizations extends CRUD {
 		organization.save();
 		System.out.println(organization.createTag);
 		System.out.println(getPrivacyLevel(id));
-		
+
 	}
 
 	/**
@@ -141,7 +142,7 @@ public class Organizations extends CRUD {
 	 * 
 	 * @param orgId
 	 *            the id of the organization
-	 *            
+	 * 
 	 * @return void
 	 */
 
@@ -163,7 +164,7 @@ public class Organizations extends CRUD {
 	 * 
 	 * @param email
 	 *            the email of the receiver
-	 *            
+	 * 
 	 * @return void
 	 */
 
@@ -180,8 +181,8 @@ public class Organizations extends CRUD {
 				return;
 			}
 		}
-		Invitation invitation = new Invitation(email, null, org, "Idea Developer",
-				sender);
+		Invitation invitation = new Invitation(email, null, org,
+				"Idea Developer", sender);
 		invitation._save();
 		User reciever = User.find("byEmail", email).first();
 		if (reciever != null) {
@@ -265,8 +266,7 @@ public class Organizations extends CRUD {
 			m.save();
 			flash.success("Your organization has been created!!");
 			redirect("Organizations.mainPage", "Organization created");
-		}
-		else {
+		} else {
 			redirect("Organizations.mainPage", "Name already in use..");
 		}
 
@@ -360,14 +360,14 @@ public class Organizations extends CRUD {
 		List<Tag> allTags = Tag.findAll();
 		int i = 0;
 		int allowed = 0;
-		int settings =0;
-		if (org.privacyLevel==1 && Users
-				.isPermitted(
+		int settings = 0;
+		if (org.privacyLevel == 1
+				&& Users.isPermitted(
 						user,
 						"accept/reject join requests from users to join a private organization",
 						id, "organization"))
 			allowed = 1;
-		if ( Users
+		if (Users
 				.isPermitted(
 						user,
 						"enable/disable the user to create their own tags within an organization",
@@ -376,7 +376,7 @@ public class Organizations extends CRUD {
 		System.out.println(settings);
 		System.out.println(user);
 		System.out.println(org);
-		
+
 		boolean loop = false;
 		if (tags.isEmpty()) {
 			while (i < allTags.size()) {
@@ -430,8 +430,22 @@ public class Organizations extends CRUD {
 		if (org.creator.equals(user)) {
 			creator = true;
 		}
+		List<RequestToJoin> allRequests = RequestToJoin.findAll();
+		boolean alreadyRequested = false;
+		if ((!user.isAdmin) && (!org.creator.equals(user))
+				&& (!Users.getEnrolledUsers(org).contains(user))
+				&& (org.privacyLevel == 1)) {
+			int ii = 0;
+			while (ii < allRequests.size()) {
+				if (allRequests.get(ii).organization.equals(org)
+						&& allRequests.get(ii).source.equals(user)) {
+					alreadyRequested = true;
+				}
+				ii++;
+			}
+		}
 		render(user, org, entities, requestToJoin, tags, flag, b, admin,
-				allowed, isMember,settings,creator);
+				allowed, isMember, settings, creator, alreadyRequested);
 	}
 
 	/**
