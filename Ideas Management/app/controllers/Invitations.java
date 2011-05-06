@@ -1,3 +1,8 @@
+
+/**
+ * @author Mai Magdy
+ */
+
 package controllers;
 
 import java.util.ArrayList;
@@ -21,38 +26,32 @@ import notifiers.Mail;
 @With(Secure.class)
 public class Invitations extends CRUD {
 
-	// invitation first page ,it has search or button 'invite by mail'
+	
 	/**
 	 * 
-	 * This method is responsible for rendering the organization, the entity to
-	 * the invitation home page, that contains search for user to invite or
-	 * invite by mail
+	 * Renders the entity to the invitation home page that contains 
+	 * search for user to invite or invite by mail
 	 * 
 	 * @author ${Mai.Magdy}
 	 * 
 	 * @story C1S6
 	 * 
 	 * 
-	 * @param entt
-	 *             the entity id that sends the invitation
+	 * @param entId
+	 *             long id of entity that sends the invitation
 	 * 
-	 * 
-	 * 
-	 * @return void
 	 */
 	public static void invite(long entId) {
-         
-		//Organization org=Organization.findById(orgId);
-        MainEntity ent= MainEntity.findById(entId);      User u=Security.getConnected();
-        System.out.println("id"+entId);
-		render(ent);
+		
+        MainEntity entity= MainEntity.findById(entId);
+		render(entity);
 
 	}
 
-	// Go to search page
+	
 	/**
 	 * 
-	 * This method is responsible for searching for a user to invite the result
+	 * Searchs for a user to invite. The result
 	 * is a list not containing the organizers of this entity
 	 * 
 	 * @author ${Mai.Magdy}
@@ -60,24 +59,17 @@ public class Invitations extends CRUD {
 	 * @story C1S6
 	 * 
 	 * 
-	 * @param entt
-	 *            the entity that sends the invitation
+	 * @param entId
+	 *             long id of entity that sends the invitation
 	 * 
 	 * @param name
-	 *            the entered user name
+	 *            String name that represents the text that has been entered
 	 * 
-	 * 
-	 * 
-	 * @return void
 	 */
-	public static void SearchUsers(long entId,@Required String name) {
+	public static void searchUser(long entId,@Required String name) {
 
-        
-       // Organization org=Organization.findById(((long)1));
-       // MainEntity ent= MainEntity.findById(((long)1));
-     //   Organization org=Organization.findById(entId);
-        MainEntity ent= MainEntity.findById(entId);
-        User u= Security.getConnected();
+        MainEntity entity= MainEntity.findById(entId);
+        User user= Security.getConnected();
         
         
 		
@@ -89,8 +81,10 @@ public class Invitations extends CRUD {
 	 
 		List<User> filter = new ArrayList<User>();
 		filter = Users.searchUser(name);
-		List<User> organizers = Users.getEntityOrganizers(ent);
-		organizers.add(ent.organization.creator);
+		List<User> organizers = Users.getEntityOrganizers(entity);
+		for(int i=0;i<organizers.size();i++)
+		 System.out.println(organizers.get(i).firstName);
+		organizers.add(entity.organization.creator);
 
 		List<User> users = new ArrayList<User>();
 		for (int i = 0; i < filter.size(); i++) {
@@ -98,13 +92,13 @@ public class Invitations extends CRUD {
 				users.add(filter.get(i));
 		}
 
-		render(users, ent);
+		render(users, entity);
 	}
 
 	/**
 	 * 
-	 * This method is responsible for rendering the organization, the entity and
-	 * the user to the invitation page , if no user selected the view will
+	 * Renders the organization, the entity and the user 
+	 * to the invitation page , if no user selected the view will
 	 * enable a text box to enter the email
 	 * 
 	 * @author ${Mai.Magdy}
@@ -113,30 +107,25 @@ public class Invitations extends CRUD {
 	 * @story C1S6
 	 * 
 	 * 
-	 * @param entt
-	 *            the entity id that sends the invitation
+	 * @param entId
+	 *              long id of entity that sends the invitation
 	 * 
 	 * @param id
-	 *            the id of the selected user , 0 if inviting by mail
-	 * 
-	 * 
-	 * 
-	 * @return void
+	 *            long id of the selected user , 0 if inviting by mail
+	 *
 	 */
-	public static void Page(long entId, long id) {
+	public static void page(long entId, long id) {
 		
-	//	Organization org=Organization.findById(orgId);
-        MainEntity ent= MainEntity.findById(entId);
-		System.out.println(id);
+        MainEntity entity= MainEntity.findById(entId);
 		User user=User.findById(id);
-		render(ent,id,user);
+		render(entity,id,user);
 	}
 
 	/**
 	 * 
-	 * This method is responsible for adding a new invitation and rendering the
-	 * email then the Mail class sends the email, if sending to registered user
-	 * he ll be notified with a notification
+	 * Adds a new invitation and renders the email and the entity
+	 * then the Mail class sends the email, if sending to registered user
+	 * the receiver will be notified with a notification
 	 * 
 	 * @author ${Mai.Magdy}
 	 * 
@@ -144,77 +133,76 @@ public class Invitations extends CRUD {
 	 * 
 	 * 
 	 * @param email
-	 *            destination of the invitation
+	 *            String email the destination of the invitation
 	 * 
 	 * @param role
-	 *            role that ll be assigned to the user in case accepted
+	 *            String role that will be assigned to the user in case accepted
 	 * 
 	 * 
-	 * @param entt
-	 *              entity id that sends the invitation
+	 * @param entId
+	 *              long id of entity that sends the invitation
 	 * 
-	 * @return void
 	 */
 
 
-	 public static void send(@Required String email,
-			 long entId,long id){
+	 public static void send(@Required String email,long entId,long id){
 		  
 	        
-	        MainEntity ent= MainEntity.findById(entId);
+	        MainEntity entity= MainEntity.findById(entId);
          
 		    if (!rfc2822.matcher(email).matches()) {
 			    flash.error("Invalid address");
-			    Page(entId,id);
+			    page(entId,id);
 		    }
 		
 			
 			boolean check=false;
 			List <Invitation> inv=Invitation.findAll();
 			for(int i=0;i<inv.size();i++){
-				if(inv.get(i).email.equals(email)&&inv.get(i).entity.equals(ent))
+				if(inv.get(i).email.equals(email)&&inv.get(i).entity.equals(entity))
 					check=true;
 					
 			}
 			if(check==true){
 				flash.error("Invitation has already been sent to that user before");
-		        Page(entId,id);
+		        page(entId,id);
 			}
 			
 			
-			List<User> organizers = Users.getEntityOrganizers(ent);
-			organizers.add(ent.organization.creator);
+			List<User> organizers = Users.getEntityOrganizers(entity);
+			organizers.add(entity.organization.creator);
 			
 			if(id==0){
 			  	
 				boolean flag=true;
-				User u=User.find("byEmail", email).first();
-			if(u!=null){
+				User user=User.find("byEmail", email).first();
+			if(user!=null){
+				System.out.println("CONDITION");
 	    	for (int i = 0; i <organizers.size(); i++) {
-				if (organizers.contains(u)|| u.isAdmin)
+				if (organizers.contains(user)|| user.isAdmin)
 					flag=false;
 			}
 			
 				if(!flag) {
 			        flash.error("This user is already an organizer to this entity");
-			        Page(entId,id);
+			        page(entId,id);
 			    }
 			}
 			}
 			
 	         
 			 String role="Organizer";
-		     Mail.invite(email,role,ent.organization.name,ent.name);
+		     Mail.invite(email,role,entity.organization.name,entity.name);
 		    
 	    	 
 	    	 User user=Security.getConnected();
-	          user.addInvitation(email,role,ent.organization,ent);
+	          user.addInvitation(email,role,entity.organization,entity);
 	        
 	         User receiver=User.find("byEmail", email).first();
 	         if(receiver!=null){
-	       Notifications.sendNotification(receiver.id, ent.id, "organization",
+	       Notifications.sendNotification(receiver.id, entity.id, "organization",
 	 					"You have received a new invitation from "
-	 							+ ent.name);
+	 							+ entity.name);
 	            }
 
 
@@ -225,14 +213,14 @@ public class Invitations extends CRUD {
 					
 				
 				for(int j=0;j<organizers.size();j++)
-				Notifications.sendNotification(organizers.get(j).id, ent.id, "entity",
+				Notifications.sendNotification(organizers.get(j).id, entity.id, "entity",
 						"New organizer has been invited to be an organizer to entity  "
-								+ ent.name);
+								+ entity.name);
 
 			//**
 		       
 
-			 render(email,ent);
+			 render(email,entity);
 		                 
 	  }
 	 private static final Pattern rfc2822 = Pattern.compile(
@@ -242,109 +230,105 @@ public class Invitations extends CRUD {
 
 	/**
 	 * 
-	 * This method is responsible for viewing the received invitations It
-	 * renders the invitation list
+	 * Views the received invitations and renders the invitation list
 	 * 
 	 * @author ${Mai.Magdy}
 	 * 
 	 * @story C1S4
 	 * 
-	 * @param
-	 * 
-	 * 
-	 * @return void
 	 */
 
 	public static void view() {
 
 		User user = Security.getConnected();
-		List<Invitation> inv = Invitation.find("byEmail", user.email).fetch();
+		List<Invitation> invitation = Invitation.find("byEmail", user.email).fetch();
 		
-		render(inv);
+		render(invitation);
 
 	}
 
 	/**
 	 * 
-	 * This method is responsible for responding to the user (accept/reject) to
-	 * the invitation It renders the invitation list and the id (0/1) and the
+	 * Responds to the user (accept/reject) to the invitation and
+	 * renders the invitation list,the id (0/1) and the
 	 * invitation id
 	 * 
 	 * 
 	 * @author ${Mai.Magdy} > if role is organizer
+	 * @author ${Fadwa Sakr} > notifications
+	 * @author ${Ibrahim.Khayat} > if role is idea developer
 	 * 
 	 * @story C1S4
 	 * 
-	 * @param choice
-	 *            0 if reject or 1 if accept
 	 * 
 	 * @param id
-	 *            the invitation id
+	 *            int id represents the clicked button, 0 if reject or 1 if accept
 	 * 
+	 * @param i
+	 *            long id of the invitation
 	 * 
-	 * @return void
 	 */
 
 	public static void respond(int id,long i) {
 		
 		
 		Invitation invite = Invitation.findById(i);
-		String rolename = invite.role.toLowerCase();
+		String roleName = invite.role.toLowerCase();
 		
-		Organization org = invite.organization;
-		MainEntity ent = invite.entity;
+		Organization organization = invite.organization;
+		MainEntity entity = invite.entity;
 		
 		if (id == 1) {
 			
 			User user = User.find("byEmail", invite.email).first();
-			Role role = Role.find("byRoleName", rolename).first();
+			Role role = Role.find("byRoleName", roleName).first();
 			
                      
 			if (role.roleName.equals("organizer")) {
                 
-				UserRoleInOrganizations.addEnrolledUser(user, org, role,
-						ent.id, "entity");
+				UserRoleInOrganizations.addEnrolledUser(user, organization, role,
+						entity.id, "entity");
 				
 
 				
 			//**Fadwa	
-				List<User> organizers = Users.getEntityOrganizers(ent);
-					organizers.add(org.creator);
+				List<User> organizers = Users.getEntityOrganizers(entity);
+					organizers.add(organization.creator);
 				
 				for(int j=0;j<organizers.size();j++)
-				Notifications.sendNotification(organizers.get(j).id, ent.id, "entity",
+				Notifications.sendNotification(organizers.get(j).id, entity.id, "entity",
 						"New organizer has been added as an organizer to entity  "
-								+ ent.name);
+								+ entity.name);
 			//**
 				
 
 			} 
 			else {
-				// idea devoloper by ibrahim adel
+				//* idea devoloper by ibrahim adel
 				role = Roles.getRoleByName("idea developer");
 				UserRoleInOrganization roleInOrg = new UserRoleInOrganization(user,
-						org, role);
+						organization, role);
 				roleInOrg._save();
 				user.userRolesInOrganization.add(roleInOrg);
 				user.save();
-				User orgLead = org.creator;
-				Notifications.sendNotification(user.id, org.id, "Organization",
+				User orgLead = organization.creator;
+				Notifications.sendNotification(user.id, organization.id, "Organization",
 						user.username + " has accepted the invitation to join the "
-								+ org.name);
-				Notifications.sendNotification(orgLead.id, org.id, "Organization",
+								+ organization.name);
+				Notifications.sendNotification(orgLead.id, organization.id, "Organization",
 						user.username + " has accepted the invitation to join the "
-								+ org.name);
+								+ organization.name);
 
 			}
 
-		}
+		}  //**
 				 
-		              org.invitation.remove(invite);
-				     if(ent!=null){
-				      ent.invitationList.remove(invite);
+		              organization.invitation.remove(invite);
+				     if(entity!=null){
+				      entity.invitationList.remove(invite);
 				      }
-				      User u=invite.sender;
-				      u.invitation.remove(invite);
+				      User sender=invite.sender;
+				      sender.invitation.remove(invite);
 				      invite.delete();
 
  	}
