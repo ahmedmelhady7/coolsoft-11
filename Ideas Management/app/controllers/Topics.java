@@ -751,7 +751,7 @@ public class Topics extends CRUD {
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("blank() done with exception about to render CRUD/blank.html");
-			render("CRUD/blank.html", type);
+			render("CRUD/blank.html", type, entityId);
 		}
 
 	}
@@ -832,7 +832,7 @@ public class Topics extends CRUD {
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("show() done with exception, rendering to CRUD/show.html");
-			render("CRUD/show.html", type, object);
+			render("CRUD/show.html", type, object, topicId);
 		}
 	}
 
@@ -1033,16 +1033,16 @@ public class Topics extends CRUD {
 		Topic tmp = (Topic) object; // we temporarily save the object edited in
 									// the form in tmp to validate it before
 									// saving
-		MainEntity topicEntity = tmp.entity;
+		MainEntity entity = tmp.entity;
 		User myUser = Security.getConnected();
 		tmp.creator = myUser;
 		// ArrayList<Tag> topicTags = (ArrayList<Tag>) tmp.tags;
-		Organization topicOrganization = topicEntity.organization;
-		if (!(topicEntity.followers.size() == 0 || topicOrganization.followers
+		Organization topicOrganization = entity.organization;
+		if (!(entity.followers.size() == 0 || topicOrganization.followers
 				.size() == 0))
 			tmp.followers = User.find(
 					"byFollowingEntitiesAndFollowingOrganizations",
-					topicEntity, topicOrganization).fetch();
+					entity, topicOrganization).fetch();
 		String message = "";
 
 		if (validation.hasErrors()) {
@@ -1058,11 +1058,11 @@ public class Topics extends CRUD {
 			 */
 			try {
 				render(request.controller.replace(".", "/") + "/view.html",
-						topicEntity, type, tmp.title, tmp.entity,
+						entity, type, tmp.title, tmp.entity,
 						tmp.description, tmp.followers, tmp.tags, message,
 						object, topicId);
 			} catch (TemplateNotFoundException e) {
-				render("CRUD/view.html", type);
+				render("CRUD/view.html", type, topicId);
 			}
 		}
 
@@ -1070,11 +1070,11 @@ public class Topics extends CRUD {
 			message = "The privary level must be either 1 or 2";
 			try {
 				render(request.controller.replace(".", "/") + "/view.html",
-						topicEntity, type, tmp.title, tmp.entity,
+						entity, type, tmp.title, tmp.entity,
 						tmp.description, tmp.followers, tmp.tags, message,
 						object, topicId);
 			} catch (TemplateNotFoundException e) {
-				render("CRUD/view.html", type);
+				render("CRUD/view.html", type, topicId);
 			}
 
 		}
