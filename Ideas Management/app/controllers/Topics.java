@@ -658,17 +658,18 @@ public class Topics extends CRUD {
 			for (int i = 0; i < tmp.followers.size(); i++)
 				Notifications
 						.sendNotification(tmp.followers.get(i).getId(), tmp.id,
-								"Topic", "A new Topic " + tmp.title
-										+ " has been added in entity"
-										+ tmp.entity.name);
+								"Topic", "A new Topic: '" + tmp.title
+										+ "' has been added in entity '"
+										+ tmp.entity.name + "'");
 		}
 
 		List<User> users = Users.getEntityOrganizers(tmp.entity);
 		users.add(tmp.entity.organization.creator);
 		for (int i = 0; i < users.size(); i++)
 			Notifications.sendNotification(users.get(i).id, tmp.id, "Topic",
-					"A new Topic " + tmp.title + " has been added in entity "
-							+ tmp.entity.name);
+					"A new Topic: '" + tmp.title
+					+ "' has been added in entity '"
+					+ tmp.entity.name + "'");
 
 		// tmp.init();
 		flash.success(Messages.get("crud.created", type.modelName,
@@ -804,12 +805,19 @@ public class Topics extends CRUD {
 				canPlan = 1;
 			}
 		}
+
+		int permission = 1;
+
+		if (!Users.isPermitted(actor, "post topics", entity.id, "entity")) {
+			permission = 0;
+		}
+
 		try {
 			System.out.println("show() done, about to render");
 			render(type, object, tags, creator, followers, ideas, comments,
 					entity, plan, openToEdit, privacyLevel, deleteMessage,
 					deletable, topicIdLong, canClose, canPlan, targetTopic,
-					allowed);
+					allowed, permission);
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("show() done with exception, rendering to CRUD/show.html");
@@ -1071,9 +1079,8 @@ public class Topics extends CRUD {
 			users.add(tmp.entity.organization.creator);
 		for (int i = 0; i < users.size(); i++)
 			Notifications.sendNotification(users.get(i).id, tmp.id, "Topic",
-					"User " + myUser.firstName + " has edited topic  "
-							+ tmp.title + " in entity "
-							+ tmp.entity.name);
+					"User: '" + myUser.firstName + "' has edited topic  '"
+							+ tmp.title + "' in entity '" + tmp.entity.name + "'");
 
 		System.out.println("save() done, not redirected yet");
 
