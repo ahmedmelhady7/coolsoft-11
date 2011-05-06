@@ -23,23 +23,23 @@ public class BannedUser extends Model {
 	public long resourceID;
 
 	/**
-	 * constructor will be used if the action the user is banned from is related
+	 *used if the action the user is banned from is related
 	 * to a certain object
 	 * 
 	 * @autor:Nada Ossama
 	 * 
 	 * @story :C1S7
 	 * 
-	 * @param banned : The banned user
+	 * @param banned : User The banned user
 	 * 
-	 * @param action : The action he will be banned from
+	 * @param action :String action he will be banned from
 	 * 
-	 * @param org : The organization at which this user will be banned from that
+	 * @param org : Organization org at which this user will be banned from that
 	 *       action
 	 * 
-	 * @param rSrcType: the type of the object the action is related to
+	 * @param resourceType: the type of the object the action is related to
 	 * 
-	 * @param rSrcId : the Id of the Object of that type
+	 * @param resourceId : the Id of the Object of that type
 	 */
 
 	public BannedUser(User banned, Organization org, String action,
@@ -53,18 +53,18 @@ public class BannedUser extends Model {
 	}
 
 	/**
-	 * this constructor will be used if the action the user is banned from is
+	 * used if  the action the user is banned from is
 	 * related to a certain object
 	 * 
 	 * @author:Nada Ossama
 	 * 
 	 * @story:C1S7
 	 * 
-	 * @param banned : The banned user
+	 * @param banned : User The banned user
 	 * 
-	 * @param action : The action he will be banned from
+	 * @param action : String The action he will be banned from
 	 * 
-	 * @param org : The organization at which this user will be banned from that
+	 * @param org : Organization at which this user will be banned from that
 	 * action
 	 */
 
@@ -75,19 +75,19 @@ public class BannedUser extends Model {
 	}
 
 	/**
-	 * This method is used so as to block a user from a certain entity
+	 *  used so as to block a user from a certain entity
 	 * 
 	 * @author: Nada Ossama
 	 * 
 	 * @story:C1S7
 	 * 
-	 * @param userID : is the ID of the User to be blocked
+	 * @param userID :long  ID of the User to be blocked
 	 * 
-	 * @param organizationID : is the id that this entity belongs to
+	 * @param organizationID : long id that this entity belongs to
 	 * 
-	 * @param entityID : id the ID of that entity
+	 * @param entityID : long  ID of that entity
 	 * 
-	 * @return boolean false if found banned otherwise return true
+	 * @return boolean:  false if found banned otherwise return true
 	 */
 	public static boolean blockFromEntity(long userID, long organizationID,
 			long entityID) {
@@ -114,22 +114,22 @@ public class BannedUser extends Model {
 	}
 
 	/**
-	 * This method is used so as to block a user from a certain action within an
+	 *  block a user from a certain action within an
 	 * entity
 	 * 
 	 * @author: Nada Ossama
 	 * 
 	 * @story :C1S7
 	 * 
-	 * @param userID : is the ID of the User to be blocked
+	 * @param userID : long ID of the User to be blocked
 	 * 
-	 * @param organizationID : is the id that this entity belongs to
+	 * @param organizationID : long id that this entity belongs to
 	 * 
-	 * @param action : is the action that the user will be banned from
+	 * @param action : String action that the user will be banned from
 	 * 
-	 * @param entityID : id the ID of that entity
+	 * @param entityID : long id the ID of that entity
 	 * 
-	 * @return boolean false if found banned otherwise return true
+	 * @return boolean : false if found banned otherwise return true
 	 * 
 	 */
 	public static boolean banFromActionInEntity(long userID, long organizationID,
@@ -155,20 +155,20 @@ public class BannedUser extends Model {
 	}
 
 	/**
-	 * This method is used so as to block a user from a certain action within a
+	 * block a user from a certain action within a
 	 * topic
 	 * 
 	 * @author : Nada Ossama
 	 * 
 	 * @story :C1S7
 	 * 
-	 * @param userID : is the ID of the User to be blocked
+	 * @param userID : long ID of the User to be blocked
 	 * 
-	 * @param organizationID : is the id that this entity belongs to
+	 * @param organizationID : long id that this entity belongs to
 	 * 
-	 * @param action : is the action that the user will be banned from
+	 * @param action : String action that the user will be banned from
 	 * 
-	 * @param topicID : id the ID of that topic
+	 * @param topicID : long id the ID of that topic
 	 * 
 	 * @return boolean to indicates the successfulness of the operation
 	 */
@@ -195,17 +195,17 @@ public class BannedUser extends Model {
 	}
 
 	/**
-	 * This method is used so as to block a user from a certain entity
+	 *block a user from a certain topic
 	 * 
 	 * @author : Nada Ossama
 	 * 
 	 * @story: C1S7
 	 * 
-	 * @param userID : is the ID of the User to be blocked
+	 * @param userID : long ID of the User to be blocked
 	 * 
-	 * @param organizationID : is the id that this entity belongs to
+	 * @param organizationID : long id that this entity belongs to
 	 * 
-	 * @param entityID : id the ID of that entity
+	 * @param entityID : long ID of that entity
 	 * 
 	 * @return boolean to indicates the successfulness of the operation
 	 */
