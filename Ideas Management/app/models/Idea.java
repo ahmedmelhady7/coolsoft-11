@@ -196,7 +196,7 @@ public class Idea extends Model {
 		Date lastCommentDate = lastComment.commentDate;
 
 		lastCommentDate.setDate(lastCommentDate.getDate() + 14);
-
+		
 		if (lastCommentDate.after(now)) {
 			List<User> user = new ArrayList<User>();
 			user.add(idea.author);

@@ -19,7 +19,4 @@ public class Application extends CRUD {
 		
 	}
 	
-	
-	
-
 }
