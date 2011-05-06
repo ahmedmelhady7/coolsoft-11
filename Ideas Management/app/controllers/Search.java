@@ -123,31 +123,32 @@ public class Search extends Controller {
 		List<Organization> organizationsFound = new ArrayList<Organization>();
 		List<Topic> topicsFound = new ArrayList<Topic>();
 		List<MainEntity> entitiesFound = new ArrayList<MainEntity>();
-		try{for (int i = 0; i < listOfResults.size(); i++) {
-			if (listOfResults.get(i) instanceof Idea) {
-				ideasFound.add((Idea) listOfResults.get(i));
+		try {
+			for (int i = 0; i < listOfResults.size(); i++) {
+				if (listOfResults.get(i) instanceof Idea) {
+					ideasFound.add((Idea) listOfResults.get(i));
+				}
+				if (listOfResults.get(i) instanceof Topic) {
+					topicsFound.add((Topic) listOfResults.get(i));
+				}
+				if (listOfResults.get(i) instanceof MainEntity) {
+					entitiesFound.add((MainEntity) listOfResults.get(i));
+				}
+				if (listOfResults.get(i) instanceof Organization) {
+					organizationsFound.add((Organization) listOfResults.get(i));
+				}
 			}
-			if (listOfResults.get(i) instanceof Topic) {
-				topicsFound.add((Topic) listOfResults.get(i));
+			for (int i = 0; i < listOfResults.size(); i++) {
+				System.out.println(listOfResults.get(i).toString());
 			}
-			if (listOfResults.get(i) instanceof MainEntity) {
-				entitiesFound.add((MainEntity) listOfResults.get(i));
-			}
-			if (listOfResults.get(i) instanceof Organization) {
-				organizationsFound.add((Organization) listOfResults.get(i));
-			}
-		}
-		for (int i = 0; i < listOfResults.size(); i++) {
-			System.out.println(listOfResults.get(i).toString());
-		}
-		System.out.println(organizationsFound.size() + " /organizations found");
-		List<Model> lof = listOfResults;
-		render(u, connected, lof, ideasFound, organizationsFound,
-				entitiesFound, topicsFound);
-		}
-		catch(NullPointerException e){
-			render(u, connected, ideasFound, organizationsFound,
+			System.out.println(organizationsFound.size()
+					+ " /organizations found");
+			List<Model> lof = listOfResults;
+			render(u, connected, lof, ideasFound, organizationsFound,
 					entitiesFound, topicsFound);
+		} catch (NullPointerException e) {
+			render(u, connected, ideasFound, organizationsFound, entitiesFound,
+					topicsFound);
 		}
 	}
 
