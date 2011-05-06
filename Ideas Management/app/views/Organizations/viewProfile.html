@@ -8,7 +8,14 @@
         #{extends 'main.html' /}
         <center><big><b>${org.name}</b></big></center><br><br>
 		#{if allowed==1}
-      <a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>		
+      <a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>
+	   <br>
+		   <br>	
+	     <select id="selec" onchange="test();">
+            <option> Tags</option>
+            <option id="e" value="0"> enable </option>
+            <option id="d" value="1"> disable </option>
+        </select>	
            #{/if}
 		   <br>
 		   <br>
@@ -23,11 +30,7 @@
         #{if org.createTag}
 		<a href="@{Tags.createTag(org.id)}">Create a Tag</a>
         #{/if}
-        <select id="selec" onchange="test();">
-            <option> Tags</option>
-            <option id="e" value="0"> enable </option>
-            <option id="d" value="1"> disable </option>
-        </select>
+ 
         <ul style="list-style: none;">
             #{list items:entities, as:'entity'}
             <li>
