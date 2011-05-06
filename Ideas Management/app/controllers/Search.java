@@ -47,7 +47,7 @@ public class Search extends Controller {
 
 	public static List<Model> sorted = new ArrayList<Model>();
 
-	public static List<Model> tobepassed = listOfResults;
+	public static List<Model> toBePassed = listOfResults;
 
 	/**
 	 * 
@@ -75,7 +75,7 @@ public class Search extends Controller {
 
 		List<Model> lof = listOfResults;
 
-		render(lof, filterResult, tobepassed);
+		render(lof, filterResult, toBePassed);
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class Search extends Controller {
 		List<Model> lof = filterResult;
 
 		render(connected, lof, ideasFound, organizationsFound, entitiesFound,
-				topicsFound, filterResult, tobepassed);
+				topicsFound, filterResult, toBePassed);
 	}
 
 	/**
@@ -767,17 +767,6 @@ public class Search extends Controller {
 						break;
 					}
 				}
-				// for (int k = 0; k < enrolledUsers.size(); k++) {
-				// if (userId.compareTo(enrolledUsers.get(k).username) != 0) {
-				// switch (listOfOrganizations.get(i).privacyLevel) {
-				// case 0:
-				// listOfOrgs.remove(listOfOrganizations.get(i));
-				// break;
-				// default:
-				// break;
-				// }
-				// }
-				// }
 			}
 		}
 		return listOfOrgs;
@@ -833,20 +822,6 @@ public class Search extends Controller {
 						break;
 					}
 				}
-				// for (int k = 0; k < listOfEntities.get(i).followers.size();
-				// k++) {
-				// if (userId
-				// .compareTo(listOfEntities.get(i).followers.get(k).username)
-				// != 0) {
-				// switch (listOfEntities.get(i).organization.privacyLevel) {
-				// case 0:
-				// listOfEnts.remove(listOfEntities.get(i));
-				// break;
-				// default:
-				// break;
-				// }
-				// }
-				// }
 			}
 		}
 		return listOfEnts;
@@ -904,19 +879,6 @@ public class Search extends Controller {
 						break;
 					}
 				}
-				// for (int k = 0; k < enrolledUsers.size(); k++) {
-				// if (userId.compareTo(enrolledUsers.get(k).username) != 0) {
-				// switch
-				// (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel)
-				// {
-				// case 0:
-				// listOfIdss.remove(listOfIdeas.get(i));
-				// break;
-				// default:
-				// break;
-				// }
-				// }
-				// }
 
 			}
 		}
@@ -975,55 +937,11 @@ public class Search extends Controller {
 						break;
 					}
 				}
-				// for (int k = 0; k < listOfTopics.get(i).followers.size();
-				// k++) {
-				// if (userId
-				// .compareTo(listOfTopics.get(i).followers.get(k).username) !=
-				// 0) {
-				// switch (listOfTopics.get(i).privacyLevel) {
-				// case 0:
-				// listOfTopis.remove(listOfTopics.get(i));
-				// break;
-				// default:
-				// break;
-				// }
-				// }
-				// }
-
 			}
 		}
 		return listOfTopis;
 	}
 
-	//
-	// // public static void searchResult() {
-	// // String connected = Security.connected();
-	// // render(listOfResults,connected);
-	// // }
-	// /**
-	// *
-	// * @author Loaay Alkherbawy
-	// *
-	// * @story C4S01 Searching for organizations using a given keyword
-	// *
-	// * this method renders the searchResult view
-	// *
-	// */
-	//
-	/**
-	 * method handelingOrAnd decides which list is to be passed for the filter
-	 * method if the choice is and so we will need to filter on the filtered
-	 * list but if or then we filter on the main list
-	 * 
-	 * @author Monica Yousry
-	 * 
-	 * @story C4S03 filtering results after sort
-	 * @param AndOr
-	 *            :: "char"; of the filter option view as input from user
-	 * 
-	 * @return void.
-	 * 
-	 */
 	/**
 	 * method handelingOrAnd decides which list is to be passed for the filter
 	 * method if the choice is and so we will need to filter on the filtered
@@ -1033,7 +951,7 @@ public class Search extends Controller {
 	 * 
 	 * @story C4S03 filtering results after sort
 	 * 
-	 * @param AndOr
+	 * @param andOr
 	 *            :: "char"; of the filter option view as input from user
 	 * 
 	 * @return void.
@@ -1047,12 +965,12 @@ public class Search extends Controller {
 	// which list to pass for the filter method accrding to the user's choice
 	// (and or or )
 
-	public static void handelingOrAnd(char AndOr) {
-		if (AndOr == 'a') {
-			tobepassed = filterResult;
+	public static void handelingOrAnd(char andOr) {
+		if (andOr == 'a') {
+			toBePassed = filterResult;
 		}
-		if (AndOr == 'o') {
-			tobepassed = listOfResults;
+		if (andOr == 'o') {
+			toBePassed = listOfResults;
 		}
 	}
 
@@ -1074,11 +992,11 @@ public class Search extends Controller {
 	public static void filterSearchResults(String filterOn) {
 		filterResult = new ArrayList<Model>();
 		if (filterOn.equalsIgnoreCase("o")) {// filtering on organizations
-			for (int i = 0; i < tobepassed.size(); i++) {// loop on the whole
+			for (int i = 0; i < toBePassed.size(); i++) {// loop on the whole
 				// search result
-				if (tobepassed.get(i) instanceof Organization) {// if found an
+				if (toBePassed.get(i) instanceof Organization) {// if found an
 					// organization
-					filterResult.add(tobepassed.get(i));// add it to the list
+					filterResult.add(toBePassed.get(i));// add it to the list
 				}
 			}
 		}
@@ -1086,41 +1004,41 @@ public class Search extends Controller {
 		// similar to the previous part
 
 		if (filterOn.equalsIgnoreCase("i")) {// filtering on ideas
-			for (int i = 0; i < tobepassed.size(); i++) {
-				if (tobepassed.get(i) instanceof Idea) {
-					filterResult.add(tobepassed.get(i));
+			for (int i = 0; i < toBePassed.size(); i++) {
+				if (toBePassed.get(i) instanceof Idea) {
+					filterResult.add(toBePassed.get(i));
 				}
 			}
 		}
 
 		if (filterOn.equalsIgnoreCase("t")) { // filter on topic
-			for (int i = 0; i < tobepassed.size(); i++) {
-				if (tobepassed.get(i) instanceof Topic) {
-					filterResult.add(tobepassed.get(i));
+			for (int i = 0; i < toBePassed.size(); i++) {
+				if (toBePassed.get(i) instanceof Topic) {
+					filterResult.add(toBePassed.get(i));
 				}
 			}
 		}
-		if (filterOn.equalsIgnoreCase("e")) { // filter on entity
-			for (int i = 0; i < tobepassed.size(); i++) {
-				if (tobepassed.get(i) instanceof MainEntity) {
 
-					filterResult.add(tobepassed.get(i));
+		if (filterOn.equalsIgnoreCase("e")) { // filter on entity
+			for (int i = 0; i < toBePassed.size(); i++) {
+				if (toBePassed.get(i) instanceof MainEntity) {
+
+					filterResult.add(toBePassed.get(i));
 				}
 			}
 		}
 
 		if (filterOn.equalsIgnoreCase("p")) { // filter on plan
-			for (int i = 0; i < tobepassed.size(); i++) {
-				if (tobepassed.get(i) instanceof Plan) {
-					filterResult.add(tobepassed.get(i));
+			for (int i = 0; i < toBePassed.size(); i++) {
+				if (toBePassed.get(i) instanceof Plan) {
+					filterResult.add(toBePassed.get(i));
 				}
 			}
 		}
 
 		if (filterOn.equalsIgnoreCase("a")) {
-			filterResult = tobepassed;
+			filterResult = toBePassed;
 		}
-
 	}
 
 	/**
@@ -1146,87 +1064,77 @@ public class Search extends Controller {
 
 		if (filterOn.equalsIgnoreCase("name")
 				|| filterOn.equalsIgnoreCase("title")) {
-			for (int i = 0; i < tobepassed.size(); i++) {
+			for (int i = 0; i < toBePassed.size(); i++) {
 
-				if (tobepassed.get(i) instanceof models.Idea) {
-					models.Idea temp = (models.Idea) tobepassed.get(i);
+				if (toBePassed.get(i) instanceof models.Idea) {
+					models.Idea temp = (models.Idea) toBePassed.get(i);
 					if (temp.title.equalsIgnoreCase(input)) {
-						filterResult.add(tobepassed.get(i));
+						filterResult.add(toBePassed.get(i));
 					}
-
 				}
 
-				if (tobepassed.get(i) instanceof models.Plan) {
-					models.Plan temp = (models.Plan) tobepassed.get(i);
+				if (toBePassed.get(i) instanceof models.Plan) {
+					models.Plan temp = (models.Plan) toBePassed.get(i);
 					if (temp.title.equalsIgnoreCase(input)) {
-						filterResult.add(tobepassed.get(i));
+						filterResult.add(toBePassed.get(i));
 					}
-
 				}
 
-				if (tobepassed.get(i) instanceof models.Organization) {
-					models.Organization temp = (models.Organization) tobepassed
+				if (toBePassed.get(i) instanceof models.Organization) {
+					models.Organization temp = (models.Organization) toBePassed
 							.get(i);
 					if (temp.name.equalsIgnoreCase(input)) {
-						filterResult.add(tobepassed.get(i));
+						filterResult.add(toBePassed.get(i));
 					}
-
 				}
 
-				if (tobepassed.get(i) instanceof models.Topic) {
-					models.Topic temp = (models.Topic) tobepassed.get(i);
+				if (toBePassed.get(i) instanceof models.Topic) {
+					models.Topic temp = (models.Topic) toBePassed.get(i);
 					if (temp.title.equalsIgnoreCase(input)) {
-						filterResult.add(tobepassed.get(i));
+						filterResult.add(toBePassed.get(i));
 					}
-
 				}
 
-				if (tobepassed.get(i) instanceof models.MainEntity) {
-					models.MainEntity temp = (models.MainEntity) tobepassed
+				if (toBePassed.get(i) instanceof models.MainEntity) {
+					models.MainEntity temp = (models.MainEntity) toBePassed
 							.get(i);
 					if (temp.name.equalsIgnoreCase(input)) {
-						filterResult.add(tobepassed.get(i));
+						filterResult.add(toBePassed.get(i));
 					}
-
 				}
-
 			}
 		}
 
 		if (filterOn.equalsIgnoreCase("description")) {
-			for (int i = 0; i < tobepassed.size(); i++) {
+			for (int i = 0; i < toBePassed.size(); i++) {
 
-				if (tobepassed.get(i) instanceof models.Idea) {
-					models.Idea temp = (models.Idea) tobepassed.get(i);
+				if (toBePassed.get(i) instanceof models.Idea) {
+					models.Idea temp = (models.Idea) toBePassed.get(i);
 					if (temp.description.contains(input)) {
-						filterResult.add(tobepassed.get(i));
+						filterResult.add(toBePassed.get(i));
 					}
-
 				}
 
-				if (tobepassed.get(i) instanceof models.Plan) {
-					models.Plan temp = (models.Plan) tobepassed.get(i);
+				if (toBePassed.get(i) instanceof models.Plan) {
+					models.Plan temp = (models.Plan) toBePassed.get(i);
 					if (temp.description.contains(input)) {
-						filterResult.add(tobepassed.get(i));
+						filterResult.add(toBePassed.get(i));
 					}
-
 				}
 
-				if (tobepassed.get(i) instanceof models.Topic) {
-					models.Topic temp = (models.Topic) tobepassed.get(i);
+				if (toBePassed.get(i) instanceof models.Topic) {
+					models.Topic temp = (models.Topic) toBePassed.get(i);
 					if (temp.description.contains(input)) {
-						filterResult.add(tobepassed.get(i));
+						filterResult.add(toBePassed.get(i));
 					}
-
 				}
 
-				if (tobepassed.get(i) instanceof models.MainEntity) {
-					models.MainEntity temp = (models.MainEntity) tobepassed
+				if (toBePassed.get(i) instanceof models.MainEntity) {
+					models.MainEntity temp = (models.MainEntity) toBePassed
 							.get(i);
 					if (temp.description.contains(input)) {
-						filterResult.add(tobepassed.get(i));
+						filterResult.add(toBePassed.get(i));
 					}
-
 				}
 
 			}
@@ -1257,8 +1165,8 @@ public class Search extends Controller {
 	 */
 
 	public static void sortA(char voteOrRate) {// ascending
-		List<Model> tosort = new ArrayList<Model>();
-		List<Model> nottosort = new ArrayList<Model>();
+		List<Model> toSort = new ArrayList<Model>();
+		List<Model> notToSort = new ArrayList<Model>();
 
 		System.out.println("2ooo2oooiiii 2ooo 2aaa2aa 2na hena f sort A");
 		if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
@@ -1272,49 +1180,45 @@ public class Search extends Controller {
 			for (int i = 0; i < listOfResults.size(); i++) {
 				if (listOfResults.get(i) instanceof Idea
 						|| listOfResults.get(i) instanceof Plan) {
-					tosort.add(listOfResults.get(i));
+					toSort.add(listOfResults.get(i));
 				} else {
-					nottosort.add(listOfResults.get(i));
+					notToSort.add(listOfResults.get(i));
 				}
 			}
 
-			for (int j = 0; j < tosort.size(); j++) {
+			for (int j = 0; j < toSort.size(); j++) {
 				int rate1 = 0;
 				int rate2 = 0;
-				if (tosort.get(j) instanceof Idea) {
-					Idea temp1 = (Idea) tosort.get(j);
+				if (toSort.get(j) instanceof Idea) {
+					Idea temp1 = (Idea) toSort.get(j);
 					rate1 = temp1.rating;
 				} else {
-					Plan temp1 = (Plan) tosort.get(j);
+					Plan temp1 = (Plan) toSort.get(j);
 					rate1 = temp1.rating;
 				}
-				for (int k = 0; k < tosort.size(); k++) {
-					if (tosort.get(k) instanceof Idea) {
-						Idea temp2 = (Idea) tosort.get(k);
+				for (int k = 0; k < toSort.size(); k++) {
+					if (toSort.get(k) instanceof Idea) {
+						Idea temp2 = (Idea) toSort.get(k);
 						rate2 = temp2.rating;
 					} else {
-						Plan temp2 = (Plan) tosort.get(k);
+						Plan temp2 = (Plan) toSort.get(k);
 						rate2 = temp2.rating;
 					}
 
 					if (rate1 > rate2) { // sorting
-
-						Model temp = (Model) tosort.get(k);
-						tosort.set(k, tosort.get(j));
-						tosort.set(j, temp);
-
+						Model temp = (Model) toSort.get(k);
+						toSort.set(k, toSort.get(j));
+						toSort.set(j, temp);
 					}
-
 				}
-
 			}
 
 			sorted = new ArrayList<Model>();// final sorted list
-			for (int m = 0; m < tosort.size(); m++) {
-				sorted.add(tosort.get((m)));
+			for (int m = 0; m < toSort.size(); m++) {
+				sorted.add(toSort.get((m)));
 			}
-			for (int m = 0; m < nottosort.size(); m++) {
-				sorted.add(nottosort.get((m)));
+			for (int m = 0; m < notToSort.size(); m++) {
+				sorted.add(notToSort.get((m)));
 			}
 			listOfResults = sorted;
 			searchResult();
@@ -1388,9 +1292,8 @@ public class Search extends Controller {
 
 	public static void sortD(char voteOrRate) {// descending
 
-		List<Model> tosort = new ArrayList<Model>();
-
-		List<Model> nottosort = new ArrayList<Model>();
+		List<Model> toSort = new ArrayList<Model>();
+		List<Model> notToSort = new ArrayList<Model>();
 
 		System.out.print("in sortD");
 
@@ -1405,49 +1308,45 @@ public class Search extends Controller {
 			for (int i = 0; i < listOfResults.size(); i++) {
 				if (listOfResults.get(i) instanceof Idea
 						|| listOfResults.get(i) instanceof Plan) {
-					tosort.add(listOfResults.get(i));
+					toSort.add(listOfResults.get(i));
 				} else {
-					nottosort.add(listOfResults.get(i));
+					notToSort.add(listOfResults.get(i));
 				}
 			}
 
-			for (int j = 0; j < tosort.size(); j++) {
+			for (int j = 0; j < toSort.size(); j++) {
 				int rate1 = 0;
 				int rate2 = 0;
-				if (tosort.get(j) instanceof Idea) {
-					Idea temp1 = (Idea) tosort.get(j);
+				if (toSort.get(j) instanceof Idea) {
+					Idea temp1 = (Idea) toSort.get(j);
 					rate1 = temp1.rating;
 				} else {
-					Plan temp1 = (Plan) tosort.get(j);
+					Plan temp1 = (Plan) toSort.get(j);
 					rate1 = temp1.rating;
 				}
-				for (int k = 0; k < tosort.size(); k++) {
-					if (tosort.get(k) instanceof Idea) {
-						Idea temp2 = (Idea) tosort.get(k);
+				for (int k = 0; k < toSort.size(); k++) {
+					if (toSort.get(k) instanceof Idea) {
+						Idea temp2 = (Idea) toSort.get(k);
 						rate2 = temp2.rating;
 					} else {
-						Plan temp2 = (Plan) tosort.get(k);
+						Plan temp2 = (Plan) toSort.get(k);
 						rate2 = temp2.rating;
 					}
 
 					if (rate1 < rate2) { // sorting
-
-						Model temp = (Model) tosort.get(k);
-						tosort.set(k, tosort.get(j));
-						tosort.set(j, temp);
-
+						Model temp = (Model) toSort.get(k);
+						toSort.set(k, toSort.get(j));
+						toSort.set(j, temp);
 					}
-
 				}
-
 			}
 
 			sorted = new ArrayList<Model>();// final sorted list
-			for (int m = 0; m < tosort.size(); m++) {
-				sorted.add(tosort.get((m)));
+			for (int m = 0; m < toSort.size(); m++) {
+				sorted.add(toSort.get((m)));
 			}
-			for (int m = 0; m < nottosort.size(); m++) {
-				sorted.add(nottosort.get((m)));
+			for (int m = 0; m < notToSort.size(); m++) {
+				sorted.add(notToSort.get((m)));
 			}
 
 			listOfResults = sorted;
