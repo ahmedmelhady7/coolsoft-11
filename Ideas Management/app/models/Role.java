@@ -198,6 +198,7 @@ public class Role extends Model {
 	}
 	public boolean equals(Object o){
 		Role r = (Role)o;
+		
 		if(this.roleName .equals(r.roleName)){
 			return true;
 		}
