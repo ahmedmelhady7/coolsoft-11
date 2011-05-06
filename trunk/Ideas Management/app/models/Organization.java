@@ -179,7 +179,7 @@ public class Organization extends Model {
 	 *            : Creator of the organization of type User
 	 * 
 	 * @param privacyLevel
-	 *            : privacy level of the organization of type short
+	 *            : privacy level of the organization of type int
 	 * 
 	 * @param createTag
 	 *            : enable or disable ability of user to create tags of type

@@ -43,16 +43,23 @@ public class RequestToJoin extends Model {
 	 * @story C2S15
 	 * 
 	 * @param source
+	 *            : The user requesting
+	 * 
 	 * @param topic
+	 *            : The topic that the user is requesting to post in
+	 * 
 	 * @param organization
-	 * @param des
+	 *            : The organization that the user wants to join
+	 * 
+	 * @param description
+	 *            : The message sent along with the request
 	 */
 	public RequestToJoin(User source, Topic topic, Organization organization,
-			String des) {
+			String description) {
 		this.source = source;
 		this.topic = topic;
 		this.organization = organization;
-		this.description = des;
+		this.description = description;
 	}
 
 	/**

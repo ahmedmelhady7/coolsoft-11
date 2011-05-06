@@ -78,6 +78,10 @@ public class Tag extends Model {
 	/**
 	 * Tag attributes
 	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S9
+	 * 
 	 * @param name
 	 *            : The name of the created tag
 	 * 

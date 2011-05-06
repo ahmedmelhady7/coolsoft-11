@@ -95,16 +95,18 @@ public class Tags extends CRUD {
 			Notifications.sendNotification(org.creator.id, tag.id, "Tag",
 					description);
 		}
-		redirect("Organizations.viewProfile",orgId, "Name already in use..");
+		redirect("Organizations.viewProfile", orgId, "Name already in use..");
 
 	}
 
 	/**
-	 * This is the main page for any tag the user clicks on
+	 * This is the main page for any tag the user clicks on, it displays all
+	 * info for a specific tag
 	 * 
 	 * @author Omar Faruki
 	 * 
 	 * @param tagId
+	 *            : The id of a specific tag
 	 */
 	public static void mainPage(long tagId) {
 		Tag tag = Tag.findById(tagId);
