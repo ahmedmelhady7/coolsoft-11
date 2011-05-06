@@ -1,7 +1,10 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import models.Idea;
 import models.MainEntity;
 import models.Organization;
 import models.Topic;
@@ -45,10 +48,17 @@ public class Login extends Controller {
 
 	public static void index() {
 		User u = Security.getConnected();
+		List<Idea> ideas = u.ideasCreated;
+		List<Idea> drafts = new ArrayList<Idea>();
+		
+		for(Idea s : ideas)
+			if(s.isDraft)
+				drafts.add(s);
+			
 		int admin=0;
 		if(u.isAdmin)
 			admin=1;
-		render(u,admin);
+		render(u,admin,drafts);
 
 	}
 }
