@@ -125,8 +125,10 @@
                     <br/>
                     <HR>
                 </form>
-	
-	
+	#{if canPost == true}
+                <form action="@{Ideas.blank(topicId)}" method="post">
+                    <input type="hidden" name"topicId" value="${topicId}"><HR><input type="submit" value="Post Idea">
+                </form>#{/if }
 	
 	</div>
 	
