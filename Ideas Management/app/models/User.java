@@ -356,7 +356,7 @@ public class User extends Model {
 	/**
 	 * This Method removes a organization from the followers
 	 * 
-	 * @author Ibrahim.al.khayat
+	 * @author Ibrahim al-khayat
 	 * 
 	 * @story C2S12
 	 * 
