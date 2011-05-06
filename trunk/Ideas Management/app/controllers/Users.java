@@ -782,10 +782,10 @@ public class Users extends CRUD {
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
 		if (t != null) {
 			Organization o = t.entity.organization;
-			organizers = (List<UserRoleInOrganization>) UserRoleInOrganization
+			organizers = UserRoleInOrganization
 
 					.find("select uro from UserRoleInOrganization uro  where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?",
-							o, t.getId(), "topic");
+							o, t.getId(), "topic").fetch();
 			for (int i = 0; i < organizers.size(); i++) {
 				if (!(organizers.get(i).role.roleName.equals("organizer"))) {
 					// =======
