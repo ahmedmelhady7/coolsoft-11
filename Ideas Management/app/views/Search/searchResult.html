@@ -111,7 +111,9 @@ The Search Results Viewer
             						marked.pop(id);
             					} 
             					else{
-            						document.getElementById(id).checked = false;
+									alert("you could only mark two ideas");
+									marked = new Array();
+									window.location.reload(true);
             					}
             				}
             				}				
