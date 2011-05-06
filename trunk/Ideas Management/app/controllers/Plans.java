@@ -364,10 +364,18 @@ public class Plans extends CRUD {
 	 * 
 	 * @author Hassan Ziko
 	 * 
-	 * @param startDate
-	 *            The date when the item(task) should be started
-	 * @param endDate
-	 *            The date when the item(task) should be done
+	 * @param startDay
+	 *            The day on which the item start
+	 * @param startMonth
+	 * 			  The month when the item starts
+	 * @param startYear
+	 * 			  The year when the item starts
+	 * @param endDay
+	 *            The day on which the item ends
+	 * @param endMonth
+	 * 			  The month when the item ends
+	 * @param endYear
+	 * 			  The year when the item ends
 	 * @param descriprtion
 	 *            The description of the item
 	 * @param planId
