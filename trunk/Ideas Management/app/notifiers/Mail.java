@@ -71,7 +71,17 @@ public class Mail extends Mailer {
 	}
 	
 	
-	
+	/**
+	 * @description used to send a mail to the person who was added by the admin
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * @param user
+	 *            :User the user
+	 * 
+	 */
 	public static void welcome(User user) {
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
