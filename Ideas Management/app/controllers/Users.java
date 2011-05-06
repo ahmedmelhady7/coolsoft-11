@@ -468,7 +468,7 @@ public class Users extends CRUD {
 
 	/**
 	 * 
-	 * This method is responsible for searching for users using specific
+	 * responsible for searching for users using specific
 	 * criteria
 	 * 
 	 * @author ${lama ashraf}
@@ -476,7 +476,7 @@ public class Users extends CRUD {
 	 * @story C1S13
 	 * 
 	 * @param keyword
-	 *            : the keyword the user enters for searching
+	 *            :a String keyword the user enters for searching
 	 * 
 	 */
 	public static ArrayList<User> searchUser(String keyword) {
@@ -532,7 +532,7 @@ public class Users extends CRUD {
 
 	/**
 	 * 
-	 * This method is responsible for searching for organizers in a certain
+	 * responsible for searching for organizers in a certain
 	 * organization
 	 * 
 	 * @author ${lama ashraf}
@@ -576,7 +576,7 @@ public class Users extends CRUD {
 
 	/**
 	 * 
-	 * This method is responsible for telling whether a user is allowed to do a
+	 * responsible for telling whether a user is allowed to do a
 	 * specific action in an organization/entity/topic
 	 * 
 	 * @author ${lama ashraf}
@@ -584,16 +584,16 @@ public class Users extends CRUD {
 	 * @story C1S15
 	 * 
 	 * @param user
-	 *            : the user who is going to perform the action
+	 *            : a User user who is going to perform the action
 	 * 
 	 * @param action
-	 *            :the action performed
+	 *            :a String action performed
 	 * 
 	 * @param placeId
-	 *            : the id of the organization/ entity/ topic
+	 *            : a long id of the organization/ entity/ topic
 	 * 
 	 * @param placeType
-	 *            : the type whether an organization/ entity/ topic
+	 *            : a String type whether an organization/ entity/ topic
 	 * 
 	 * @return boolean
 	 */
@@ -732,7 +732,7 @@ public class Users extends CRUD {
     }
 
     if (placeType.equalsIgnoreCase("entity")) {
-            MainEntity entity = MainEntity.findById(placeId);
+    	            MainEntity entity = MainEntity.findById(placeId);
             Organization org = entity.organization;
             if (user.equals(org.creator)) {
                     if (Roles.getRoleActions("organizationLead").contains(action)) {
