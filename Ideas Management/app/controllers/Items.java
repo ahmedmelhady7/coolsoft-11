@@ -45,21 +45,21 @@ public class Items extends CRUD {
 		User user = Security.getConnected();
 		long itemId = Long.parseLong(id);
 		Item item = Item.findById(itemId);
-		List<User> list = new ArrayList<User>();
-		list.addAll(item.plan.topic.getOrganizer());
+		List<User> userToNotifyList = new ArrayList<User>();
+		userToNotifyList.addAll(item.plan.topic.getOrganizer());
 		for (int i = 0; i < item.assignees.size(); i++) {
-			if (item.assignees.get(i).id != user.id && !list.contains(item.assignees.get(i)))
-				list.add(item.assignees.get(i));
+			if (item.assignees.get(i).id != user.id && !userToNotifyList.contains(item.assignees.get(i)))
+				userToNotifyList.add(item.assignees.get(i));
 		}
 		if (item.status == 0) {
 			System.out.println("it is started");
 			item.status = 1;
 			item.save();
-			String s = "Work has started on the following item " + item.summary
-					+ ".";
-			for (User userToNotify : list) {
+			String description = "Work has started on the following item: " + item.summary
+					+ " by user" + user.username + ".";
+			for (User userToNotify : userToNotifyList) {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,
-						"plan", s);
+						"plan", description);
 			}
 		}
 	}
@@ -80,27 +80,27 @@ public class Items extends CRUD {
 		User user = Security.getConnected();
 		long itemId = Long.parseLong(id);
 		Item item = Item.findById(itemId);
-		List<User> list = new ArrayList<User>();
-		list.addAll(item.plan.topic.getOrganizer());
+		List<User> userToNotifyList = new ArrayList<User>();
+		userToNotifyList.addAll(item.plan.topic.getOrganizer());
 		for (int i = 0; i < item.assignees.size(); i++) {
-			if (item.assignees.get(i).id != user.id && !list.contains(item.assignees.get(i)))
-				list.add(item.assignees.get(i));
+			if (item.assignees.get(i).id != user.id && !userToNotifyList.contains(item.assignees.get(i)))
+				userToNotifyList.add(item.assignees.get(i));
 		}
 		switch (item.status) {
 		case 1:
 			item.status = 2;
-			String s = item.summary + ": Item done!";
-			for (User userToNotify : list) {
+			String description = item.summary + ": Item now marked done by user: " + user.username + "!";
+			for (User userToNotify : userToNotifyList) {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,
-						"plan", s);
+						"plan", description);
 			}
 			break;
 		case 2:
 			item.status = 1;
-			String s2 = item.summary + ": Item now in progress.";
-			for (User userToNotify : list) {
+			String descriptionIfInProgress = item.summary + ": Item now marked in progress by user: " + user.username + ".";
+			for (User userToNotify : userToNotifyList) {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,
-						"plan", s2);
+						"plan", descriptionIfInProgress);
 			}
 			break;
 		default:
