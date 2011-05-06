@@ -46,7 +46,7 @@ public class RequestToJoins extends CRUD {
 			requests = organization.joinRequests;
 		}
 
-		render(requests, type);
+		render(requests, type,id);
 	}
 
 	/**

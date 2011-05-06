@@ -71,8 +71,10 @@ public class Organizations extends CRUD {
 		System.out.println(organization);
 		notFoundIfNull(organization);
 		organization.createTag = true;
+		organization.save();
 		System.out.println(organization.createTag);
 		System.out.println(getPrivacyLevel(id));
+		
 	}
 
 	/**
@@ -97,8 +99,10 @@ public class Organizations extends CRUD {
 		System.out.println(id);
 		notFoundIfNull(organization);
 		organization.createTag = false;
+		organization.save();
 		System.out.println(organization.createTag);
 		System.out.println(getPrivacyLevel(id));
+		
 	}
 
 	/**
