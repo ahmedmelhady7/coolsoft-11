@@ -6,15 +6,15 @@
 <br/>
 <br/>
 <table border="0" bgcolor="#ececec" cellspacing="5">
-#{if inv.isEmpty()}
+#{if invitation.isEmpty()}
 </table>
 <tr><td><i>No new invitations</i></td><td>
 #{/if}
 #{else}
-#{list items:inv, as:'inn'} 
+#{list items:invitation, as:'inn'} 
 <html>
 <table border="0" bgcolor="#ececec" cellspacing="5" id ="inv_${inn.id}">
-<tr><td><font size ="3" color ="black"><i>Date : ${inn.date_of_sending.format('dd MMM yy')} </i></font></td><td>
+<tr><td><font size ="2" color ="black"><i>Date : ${inn.dateOfSending.format('dd MMM yy')} </i></font></td><td>
 
 <tr><td><font size ="3" color ="black"><u>From : ${inn.organization.name} Organization</u></font></td><td>
 
