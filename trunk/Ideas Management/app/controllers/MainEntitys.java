@@ -31,16 +31,16 @@ public class MainEntitys extends CRUD {
 
 	public static void followEntity(long entityId) {
 		User user = Security.getConnected();
-		MainEntity e = MainEntity.findById(entityId);
-		if (e.followers.contains(user)) {
+		MainEntity entity = MainEntity.findById(entityId);
+		if (entity.followers.contains(user)) 
 			System.out.println("You are already a follower");
-		} else if (Users.isPermitted(user,
+		else if (Users.isPermitted(user,
 				"can follow organization/entities/topics", entityId, "entity")) {
-			e.followers.add(user);
-			e.save();
-			user.followingEntities.add(e);
+			entity.followers.add(user);
+			entity.save();
+			user.followingEntities.add(entity);
 			user.save();
-			redirect(request.controller + ".viewEntity", e.id,
+			redirect(request.controller + ".viewEntity", entity.id,
 					"You are now a follower");
 		} else {
 			System.out.println("Sorry! Action cannot be performed");
@@ -63,9 +63,8 @@ public class MainEntitys extends CRUD {
 	 */
 	public static void viewFollowers(long entityId, String f) {
 		MainEntity entity = MainEntity.findById(entityId);
-		if (f.equals("true")) {
+		if (f.equals("true")) 
 			followEntity(entityId);
-		}
 		render(entity);
 	}
 
@@ -211,26 +210,22 @@ public class MainEntitys extends CRUD {
 		List<User> organizers = Users.getEntityOrganizers(entity);
 		int canCreateEntity = 0;
 		if (user.isAdmin || org.creator.equals(user)
-				|| organizers.contains(user)) {
+				|| organizers.contains(user)) 
 			canCreateEntity = 1;
-		}
 		int permission = 1;
 		int invite = 0;
 		int canEdit = 0;
 		List<User> allowed = Users.getEntityOrganizers(entity);
-		if (org.creator.equals(user) || allowed.contains(user) || user.isAdmin) {
+		if (org.creator.equals(user) || allowed.contains(user) || user.isAdmin) 
 			canEdit = 1;
-		}
-		if (!Users.isPermitted(user, "post topics", entity.id, "entity")) {
+		if (!Users.isPermitted(user, "post topics", entity.id, "entity")) 
 			permission = 0;
-		}
 		if (Users
 				.isPermitted(
 						user,
 						"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
-						entity.id, "entity")) {
+						entity.id, "entity")) 
 			invite = 1;
-		}
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity);
 	}
@@ -269,10 +264,10 @@ public class MainEntitys extends CRUD {
 	 * 
 	 */
 	public static void editEntity(long entityId, String name, String description) {
-		MainEntity e = MainEntity.findById(entityId);
-		e.name = name;
-		e.description = description;
-		e.save();
-		redirect(request.controller + ".viewEntity", e.id, "Entity created");
+		MainEntity entity = MainEntity.findById(entityId);
+		entity.name = name;
+		entity.description = description;
+		entity.save();
+		redirect(request.controller + ".viewEntity", entity.id, "Entity created");
 	}
 }
