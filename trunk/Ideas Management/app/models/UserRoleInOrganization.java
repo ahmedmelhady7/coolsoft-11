@@ -23,12 +23,12 @@ public class UserRoleInOrganization extends Model {
 
 	@ManyToOne
 	public Role role;
-	/*
+	/**
 	 * this represents the ID of the entity or the topic the enrolled belongs to
 	 * or manages
 	 */
 	public long entityTopicID;
-	/*
+	/**
 	 * represents the type (entity or Topic)
 	 */
 	public String type;
@@ -72,25 +72,32 @@ public class UserRoleInOrganization extends Model {
 		this.type = "none";
 
 	}
+
 	/**
 	 * returns the role of a user in the organization
-	 * @author Nada Osama
-	 * @param user the user i need to know has role
-	 * @param org the organization i need to know the user's role in it 
+	 * 
+	 * @author Nada.Ossama
+	 * 
+	 * @story C1S7
+	 * 
+	 * @param user
+	 *            the user i need to know has role
+	 * @param org
+	 *            the organization i need to know the user's role in it
 	 * @return the role of the user in that organization
 	 */
 
 	public Role userRoleInOrganization(User user, Organization org) {
 
-		UserRoleInOrganization r = UserRoleInOrganization
+		UserRoleInOrganization role = UserRoleInOrganization
 				.find("select uro from UserRoleInOrganization uro where uro.enrolled = ? and uro.organization = ?",
 						user, org).first();
 		
-	    if (r == null ){
+	    if (role == null ){
 	    	return (Roles.getRoleByName("idea developer"));
 	    }
 	    else
-	    return r.role;
+	    return role.role;
 						
 	}
 	//
