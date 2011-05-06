@@ -33,7 +33,7 @@ public class BannedUsers extends CRUD {
 		restrictOrganizer(organizationID);
 	}
 	/**
-	 * this action method and it's helpers restrict the permissions of a certain
+	 *  restrict the permissions of a certain
 	 * Organizer in an organization , this restriction will be in the whole
 	 * entity or in a specific topic , this restriction is done by the
 	 * organization lead
@@ -41,11 +41,13 @@ public class BannedUsers extends CRUD {
 	 * this method specifically renders the list of organizers in an
 	 * organization
 	 * 
-	 * @story C1S7
 	 * @author Nada-Ossama
 	 * 
-	 * @param organizationID
-	 *            the id of the organization
+	 * @story C1S7
+	 * 
+	 * 
+	 * @param orgID
+	 *            long id of the organization
 	 */
 	public static void restrictOrganizer(long orgId) {
 		
@@ -59,7 +61,7 @@ public class BannedUsers extends CRUD {
 	}
 
 	/**
-	 * this method takes the Id of the organization (the same as the previous
+	 * takes the Id of the organization (the same as the previous
 	 * method) and the ID of the User to be restricted,and renders the list of
 	 * entities the selected user is enrolled in and it will give the
 	 * organization lead to restrict him from the whole selected entity or from
@@ -68,8 +70,10 @@ public class BannedUsers extends CRUD {
 	 * @story C1S7
 	 * @author Nada Ossama
 	 * 
-	 * @param long userID, the id of the user to be restricted
-	 * @param long organizationId the id of the organization he will be
+	 * @param  userID
+	 *              long id of the user to be restricted
+	 * @param  organizationId 
+	 *               long id of the organization he will be
 	 *        restricted in
 	 */
 	public static void entitiesEnrolledIn(@Required long userId,
@@ -91,22 +95,23 @@ public class BannedUsers extends CRUD {
 	}
 
 	/**
-	 * this method will check if the organization lead has chosen to restrict
+	 * checks if the organization lead has chosen to restrict
 	 * the organizer from the whole selected entity or from a topic in it and
 	 * accordingly it will render the list of actions related or it will
 	 * redirect to other page to select the topic
 	 * 
 	 * @author Nada ossama
+	 * 
 	 * @story C1S7
 	 * @param entityId
 	 *            : the selected entity id
 	 * @param topic
-	 *            : flag if it is equal to true then restrict from a certain
+	 *            : String flag if it is equal to true then restrict from a certain
 	 *            topic o.w.from the whole entity
 	 * @param organizationId
-	 *            :the id of the organization entered as before
+	 *            :long id of the organization entered as before
 	 * @param userId
-	 *            : to be restricted
+	 *            : long userId to be restricted
 	 */
 
 	public static void topicsEnrolledInOrRedirect(@Required long entityId, @Required String topic,
@@ -127,17 +132,18 @@ public class BannedUsers extends CRUD {
 	}
 
 	/**
-	 * this method will be called if the organizer will be blocked from the
-	 * whole entity so it will render the set of actions
+	 *  block the organizer from the whole entity so the method will render the set of actions
 	 * 
-	 * @story C1S7
+	 * 
 	 * @author Nada Ossama
+	 * @story C1S7
+	 * 
 	 * @param entityId
-	 *            : to be restricted in
+	 *            : long entityId to be restricted in
 	 * @param organizationId
-	 *            : as passed before
+	 *            : long Id of the organization passed before
 	 * @param userId
-	 *            : to be restricted
+	 *            : long userId to be restricted
 	 */
 
 	public static void entityActions(long entityId, long organizationId,
@@ -164,15 +170,18 @@ public class BannedUsers extends CRUD {
 	}
 
 	/**
-	 * this method is used to render the list of actions the organizer is
+	 * render the list of actions the organizer is
 	 * allowed to do in that topic
-	 * @story :C1S7
+	 * 
 	 * @author Nada Ossama
 	 * 
+	 * @story :C1S7
+	 * 
+	 * 
 	 * @param topicId
-	 *            : to be restricted in
+	 *            : long Id of the topic to be restricted in
 	 * @param userId
-	 *            : to be restricted
+	 *            :long Id of the user  to be restricted
 	 */
 
 	public static void topicActions(@Required long topicId, long userId) {
@@ -204,13 +213,16 @@ public class BannedUsers extends CRUD {
 		render(topicActions, topicId, userId);
 	}
 	/**
-	 * This method restricts the user from a certain action according to the slection
+	 * restricts the user from a certain action according to the selection
 	 * @story C1S7
 	 * @author Nada Ossama
-	 * @param action: to be restricted from
-	 * @param type : topic or entity
-	 * @param entityTopicId : the id of the topic or entity
-	 * @param userId : to be restricted
+	 * @param action:
+	 *               String to be restricted from
+	 * @param type : 
+	 *              String topic or entity
+	 * @param entityTopicId : 
+	 *                 long  id of the topic or entity
+	 * @param userId : long Id of the user to be restricted
 	 */
 
 	public static void restrictFinal(@Required String actionToDo, String type,
@@ -234,7 +246,7 @@ public class BannedUsers extends CRUD {
 			changed = BannedUser.banFromActionInTopic(userId, organizationId,
 					actionToDo, entityTopicId);
 			
-			Notifications.sendNotification(userId, userId,
+			Notifications.sendNotification(userId, Security.getConnected().getId(),
 					"user", "you have been restricted from the following action :" + actionToDo  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic );
 
 		}
@@ -253,7 +265,7 @@ public class BannedUsers extends CRUD {
 			changed = BannedUser.banFromActionInEntity(userId, organizationId,
 					actionToDo, entityTopicId);
 			
-			Notifications.sendNotification(userId, userId,
+			Notifications.sendNotification(userId, Security.getConnected().getId(),
 					"user", "you have been restricted from the following action :" + actionToDo  +" In organization  : " + org +" In Entity :" + entity );
 
 		}
