@@ -1,8 +1,8 @@
 package models;
 
 /**
-@author Mostafa Ali
-*/
+ @author Mostafa Ali
+ */
 
 // isdelete , state , access plan , topic , idea 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import play.db.jpa.Model;
 @Entity
 public class User extends Model {
 	@Required
-	//@Email
+	// @Email
 	@Column(unique = true)
 	public String email;
 	@Required
@@ -57,17 +57,17 @@ public class User extends Model {
 	public List<Topic> topicsCreated;
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>change
-//	@ManyToMany(mappedBy = "enrolledUsers")
-//	public List<Organization> enrolled;
+	// @ManyToMany(mappedBy = "enrolledUsers")
+	// public List<Organization> enrolled;
 
 	@OneToMany(mappedBy = "creator")
 	// , cascade = CascadeType.ALL)
 	public List<Organization> createdOrganization;
 
-//	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> change
-//	@ManyToMany(mappedBy = "organizers")
-//	// , cascade = CascadeType.PERSIST)
-//	public List<Topic> topicsIOrganize;
+	// // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> change
+	// @ManyToMany(mappedBy = "organizers")
+	// // , cascade = CascadeType.PERSIST)
+	// public List<Topic> topicsIOrganize;
 
 	@ManyToMany(mappedBy = "usersRated")
 	public List<Plan> ratedPlans;
@@ -142,7 +142,7 @@ public class User extends Model {
 	@OneToMany(mappedBy = "destination")
 	// , cascade = CascadeType.ALL)
 	public List<AssignRequest> receivedAssignRequests;
-	
+
 	@OneToMany(mappedBy = "sender")
 	// , cascade = CascadeType.ALL)
 	public List<LinkDuplicatesRequest> sentMarkingRequests;
@@ -164,11 +164,12 @@ public class User extends Model {
 	public List<Plan> planscreated;
 
 	/**
-	@author Mostafa Ali
-	*/
-	public User(String email,String username, String password,String firstName,
-			String lastName,int communityContributionCounter,
-			Date dateofBirth, String country, String profession) {
+	 * @author Mostafa Ali
+	 */
+	public User(String email, String username, String password,
+			String firstName, String lastName,
+			int communityContributionCounter, Date dateofBirth, String country,
+			String profession) {
 		this.email = email;
 		this.username = username;
 		this.password = password;
@@ -180,7 +181,7 @@ public class User extends Model {
 		// this.roles = new ArrayList<Role>();
 		this.ideasCreated = new ArrayList<Idea>();
 		this.itemsAssigned = new ArrayList<Item>();
-		//this.topicsIOrganize = new ArrayList<Topic>();
+		// this.topicsIOrganize = new ArrayList<Topic>();
 		this.topicsCreated = new ArrayList<Topic>();
 		this.volunteerRequests = new ArrayList<VolunteerRequest>();
 		this.sentAssignRequests = new ArrayList<AssignRequest>();
@@ -192,7 +193,7 @@ public class User extends Model {
 		// added
 		userRolesInOrganization = new ArrayList<UserRoleInOrganization>();
 		invitation = new ArrayList<Invitation>();
-		//this.enrolled = new ArrayList<Organization>();
+		// this.enrolled = new ArrayList<Organization>();
 		this.createdOrganization = new ArrayList<Organization>();
 		followingOrganizations = new ArrayList<Organization>();
 		planscreated = new ArrayList<Plan>();
@@ -220,8 +221,8 @@ public class User extends Model {
 				this).save();
 		this.invitation.add(invite);
 		organization.invitation.add(invite);
-		if(entity!=null)
-		entity.invitationList.add(invite);
+		if (entity != null)
+			entity.invitationList.add(invite);
 		this.save();
 	}
 
@@ -344,7 +345,7 @@ public class User extends Model {
 	 * @story C2S12
 	 * 
 	 * @param entity
-	 *            : the MainEntity that the user is following
+	 *            the MainEntity that the user is following
 	 * 
 	 */
 	public void unfollow(MainEntity entity) {
@@ -421,7 +422,11 @@ public class User extends Model {
 		if (!Topics.searchByTopic(item.plan.topic.id).contains(this)) {
 			return false;
 		}
-		if(Users.isPermitted(this, "accept/Reject user request to volunteer to work on action item in a plan", item.plan.topic.id, "topic")) {
+		if (Users
+				.isPermitted(
+						this,
+						"accept/Reject user request to volunteer to work on action item in a plan",
+						item.plan.topic.id, "topic")) {
 			return false;
 		}
 		if (item.assignees.contains(this)) {
@@ -444,28 +449,32 @@ public class User extends Model {
 		return true;
 
 	}
-	
+
 	/**
 	 * 
-	 * This Method checks if the user can directly assign himself to work on
-	 * an item given the item id
+	 * This Method checks if the user can directly assign himself to work on an
+	 * item given the item id
 	 * 
 	 * @author Salma Osama
 	 * 
 	 * @story C5S10
 	 * 
 	 * @param itemId
-	 *            : the id of the item that the user is checking if he can assign himself to 
-	 *            to work on it
+	 *            : the id of the item that the user is checking if he can
+	 *            assign himself to to work on it
 	 * @return boolean
 	 */
-	public boolean canWork(long itemId){ 
+	public boolean canWork(long itemId) {
 		Item item = Item.findById(itemId);
-		
-		if(Users.isPermitted(this, "accept/Reject user request to volunteer to work on action item in a plan", item.plan.topic.id, "topic")) {
-//			if (!Topics.searchByTopic(item.plan.topic.id).contains(this)) {
-//				return false;
-//			}
+
+		if (Users
+				.isPermitted(
+						this,
+						"accept/Reject user request to volunteer to work on action item in a plan",
+						item.plan.topic.id, "topic")) {
+			// if (!Topics.searchByTopic(item.plan.topic.id).contains(this)) {
+			// return false;
+			// }
 			if (item.assignees.contains(this)) {
 
 				return false;
@@ -481,6 +490,5 @@ public class User extends Model {
 		}
 		return false;
 	}
-	
 
 }
