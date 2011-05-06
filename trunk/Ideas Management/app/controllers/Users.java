@@ -543,20 +543,20 @@ public class Users extends CRUD {
 	 * 
 	 * @story C1S13
 	 * 
-	 * @param o
+	 * @param organization
 	 *            : the organization
 	 * 
 	 * @return List<User>
 	 */
-	public static List<User> searchOrganizer(Organization o) {
+	public static List<User> searchOrganizer(Organization organization) {
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
 		List<User> user = new ArrayList<User>();
-		if (o != null) {
+		if (organization != null) {
 			// organizers = (List<UserRoleInOrganization>)
 			// UserRoleInOrganization
 			// .find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
 			// o, "organizer");
-			organizers = UserRoleInOrganization.find("byOrganization", o)
+			organizers = UserRoleInOrganization.find("byOrganization", organization)
 					.fetch();
 			for (int i = 0; i < organizers.size(); i++) {
 				if ((organizers.get(i).role.roleName).equals("organizer")) {
