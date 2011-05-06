@@ -818,19 +818,19 @@ public class Search extends Controller {
 						}
 					}
 				}
-//				List<User> enrolledUsers = Users.getEnrolledUsers(listOfIdeas
-//						.get(i).belongsToTopic.entity.organization);
-//				for (int k = 0; k < enrolledUsers.size(); k++) {
-//					if (userId.compareTo(enrolledUsers.get(k).username) != 0) {
-//						switch (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel) {
-//						case 0:
-//							listOfIdss.remove(listOfIdeas.get(i));
-//							break;
-//						default:
-//							break;
-//						}
-//					}
-//				}
+				List<User> enrolledUsers = Users.getEnrolledUsers(listOfIdeas
+						.get(i).belongsToTopic.entity.organization);
+				for (int k = 0; k < enrolledUsers.size(); k++) {
+					if (userId.compareTo(enrolledUsers.get(k).username) != 0) {
+						switch (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel) {
+						case 0:
+							listOfIdss.remove(listOfIdeas.get(i));
+							break;
+						default:
+							break;
+						}
+					}
+				}
 
 			}
 		}
