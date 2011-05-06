@@ -187,7 +187,10 @@ public class Bootstrap extends Job {
 
 			Topic govImp = new Topic("التعديلات الدستورية", "اقتراحات", 1,
 					sharaf, govHead).save();
+			Topic govImp2 = new Topic("ثوره 25 يناير", "اقتراحات", 0, sharaf,
+					govHead).save();
 			govHead.topicList.add(govImp);
+			govHead.topicList.add(govImp2);
 			govHead._save();
 			Topic egyahlymatch = new Topic("Ahly vs Zamalek",
 					"for football lovers", 2, admin, elAhly).save();
@@ -243,29 +246,29 @@ public class Bootstrap extends Job {
 			gucMetStudentUnion.save();
 			ashraf.planscreated.add(p1);
 			ashraf.save();
-			
+
 			Item item1 = new Item(
 					new Date(111, 05, 01),
 					new Date(111, 05, 20),
 					"One of the members who is not runing for elections should organize a debate between the candidates",
 					p1, "Candidates Debate");
-			
+
 			Item item2 = new Item(
 					new Date(111, 05, 04),
 					new Date(111, 05, 14),
 					"One of the SU members should reserve a room for the debate",
 					p1, "Room reservation");
-			
+
 			Item item3 = new Item(
 					new Date(111, 04, 01),
 					new Date(111, 05, 28),
 					"One of the members should set up an electronic election process",
 					p1, "Election Process Setup");
-			
+
 			item1.save();
 			item2.save();
 			item3.save();
-			
+
 			p1.items.add(item1);
 			p1.items.add(item2);
 			p1.items.add(item3);
@@ -274,21 +277,18 @@ public class Bootstrap extends Job {
 			khayat.itemsAssigned.add(item1);
 			khayat.itemsAssigned.add(item2);
 			khayat.save();
-			
+
 			gom3a.itemsAssigned.add(item1);
 			gom3a.save();
-			
+
 			item1.assignees.add(khayat);
 			item1.assignees.add(gom3a);
 			item1.save();
 			item2.assignees.add(khayat);
 			item2.save();
-			
-			
+
 			new Comment("here i accept", i1, gom3a).save();
 			new Comment("i love SE course", p1, hadi).save();
-			
-			
 
 			//
 			// RequestToJoin request = new RequestToJoin(gom3a, null, guc,
