@@ -28,10 +28,8 @@ public class Comments extends CRUD {
 	public static void addCommentToPlan(String comment, long planID) {
 		planID++;
 		Plan p = Plan.findById(planID);
-		System.out.println("Plan is "+planID);
 		User user = Security.getConnected();
 		Comment c = new Comment(comment, p, user).save();
-		
 		p.commentsList.add(c);
 	}
 	/**
@@ -46,7 +44,7 @@ public class Comments extends CRUD {
 	public static void addCommentToIdea(long ideaID, String comment) {
 		Idea i = Idea.findById(ideaID);
 		User user = Security.getConnected();
-		Comment c = new Comment(comment, i, user);
+		Comment c = new Comment(comment, i, user).save();
 		i.commentsList.add(c);
 	}
 

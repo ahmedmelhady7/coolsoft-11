@@ -602,24 +602,6 @@ public class Ideas extends CRUD {
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
-	 * @param userToCheck
-	 *            User to be checked if he/she is in the list usersRated
-	 * @return
-	 * 			checks if a given user rated
-	 */
-
-	public boolean checkRated(User userToCheck, long ideaID) {
-		Idea idea = Idea.findById(ideaID);
-		for (int i = 0; i < idea.usersRated.size(); i++) {
-			if (userToCheck == idea.usersRated.get(i))
-				return true;
-		}
-		return false;
-	}
-
-	/**
-	 * @author ${Ibrahim Safwat}
-	 * 
 	 * @param rate
 	 *            rating taken from the user
 	 * @param ideaID
@@ -628,18 +610,16 @@ public class Ideas extends CRUD {
 	 *            rates an idea if the user is an organizer
 	 */
 
-	public void rate(int rating, int ideaID) {
+	public static void rate(int rating, long ideaID) {
 		Idea i = Idea.findById(ideaID);
-		Organization O = i.belongsToTopic.entity.organization;
 		User user = Security.getConnected();
-		List organizers = Users.searchOrganizer(O);
+		List organizers = i.belongsToTopic.getOrganizer();
 		if (organizers.contains(user)) {
-			if (!checkRated(user, ideaID)) {
 				Idea idea = Idea.findById(ideaID);
 				int oldRating = idea.rating;
 				int newRating = (oldRating + rating) / 2;
 				render(newRating);
-			}
+
 		}
 	}
 
@@ -653,15 +633,16 @@ public class Ideas extends CRUD {
 	 *            
 	 *            shares a given idea with the given user
 	 */
-	public static void shareIdea(String userName, long ideaID) {
+	public static void shareIdea(String userName, long ideaId) {
+		
 		User U = User.find("byUsername", userName).first();
 		String type = "Idea";
 		User user = Security.getConnected();
-		String desc = user.firstName + " " + user.lastName
-				+ " shared an Idea with you";
-		long notId = ideaID;
+		String desc = user.firstName + " " + user.lastName + " shared an Idea with you";
+		long notId = ideaId;
 		long userId = U.id;
 		Notifications.sendNotification(userId, notId, type, desc);
+		
 	}
 
 	/**
@@ -674,7 +655,8 @@ public class Ideas extends CRUD {
 	 *            
 	 *            sets the priority if the user is an organizer
 	 */
-	public void setPriority(String priority, long ideaID) {
+	public static void setPriority(String priority, long ideaID) {
+		System.out.println("Dakhalt setPriority");
 		Idea i = Idea.findById(ideaID);
 		Organization O = i.belongsToTopic.entity.organization;
 		User user = Security.getConnected();
