@@ -534,52 +534,66 @@ public class Ideas extends CRUD {
 	 * 
 	 */
 
-	public static void tagIdea(long ideaID, String tag) {
+	public static void tagIdea(long ideaId, String tag) {
 
 		boolean tagAlreadyExists = false;
 		boolean userNotAllowed = false;
 		boolean tagExists = false;
-		List<Tag> listOfTags = Tag.findAll();
-		User user = Security.getConnected();
-		Idea idea = Idea.findById(ideaID);
+		List<Tag> listOfTags = new ArrayList<Tag>();
+		List<Tag> globalListOfTags = new ArrayList<Tag>();
+		globalListOfTags = Tag.findAll();
+		User user = (User) Security.getConnected();
+		Idea idea = (Idea) Idea.findById(ideaId);
 
-		if (!idea.belongsToTopic.getOrganizer().contains(user)
-				|| !user.equals(idea.author)) {
-			// user not allowed
-			userNotAllowed = true;
-		} else {
-			for (int i = 0; i < listOfTags.size(); i++) {
-				if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
-					if (!idea.tagsList.contains(listOfTags.get(i))) {
-						idea.tagsList.add(listOfTags.get(i));
-						// Notifications.sendNotification(
-						// listOfTags.get(i).followers,
-						// idea.tagsList.get(i).getId(), "tag",
-						// "This idea has been tagged as " + tag);
-					} else {
-						// tag already exists error message
-						tagAlreadyExists = true;
+		if (!tag.equals("@@")) {
+
+			if (!((ArrayList<User>) (idea.belongsToTopic.getOrganizer()))
+					.contains(user)) {
+				// user not allowed
+				userNotAllowed = true;
+			} else {
+				for (int i = 0; i < globalListOfTags.size(); i++) {
+					if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
+							|| idea.belongsToTopic.entity.organization
+									.equals(globalListOfTags.get(i).createdInOrganization)) {
+						listOfTags.add(globalListOfTags.get(i));
 					}
-					tagExists = true;
+				}
+				for (int i = 0; i < listOfTags.size(); i++) {
+					if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
+						if (!idea.tagsList.contains(listOfTags.get(i))) {
+							idea.tagsList.add(listOfTags.get(i));
+
+							for (int j = 0; j < listOfTags.get(i).followers
+									.size(); j++) {
+								Notifications.sendNotification(
+										listOfTags.get(i).followers.get(j).id,
+										idea.tagsList.get(i).getId(), "tag",
+										"This idea has been tagged as " + tag);
+							}
+						} else {
+							// tag already exists error message
+							tagAlreadyExists = true;
+						}
+						tagExists = true;
+					}
+				}
+
+				if (!tagExists) {
+					Tag temp = new Tag(tag,
+							idea.belongsToTopic.entity.organization);
+					temp.save();
+					idea.tagsList.add(temp);
+				}
+
+				if (!tagAlreadyExists) {
+					Notifications.sendNotification(idea.author.id, ideaId,
+							"idea", "This idea has been tagged as " + tag);
 				}
 			}
 
-			if (!tagExists) {
-				// Tag temp = new Tag(tag);
-				// temp.save();
-				// idea.tagsList.add(temp);
-			}
-
-			if (!tagAlreadyExists) {
-				if (user.equals(idea.author)) {
-					List<User> list1 = new ArrayList<User>();
-					list1.add(idea.author);
-					// Notifications.sendNotification(list1, ideaID, "idea",
-					// "This idea has been tagged as " + tag);
-				}
-			}
 		}
-		render(tagAlreadyExists, tagExists, userNotAllowed, idea.tagsList);
+		render(tagAlreadyExists, userNotAllowed, idea.tagsList, ideaId);
 	}
 
 	/**
