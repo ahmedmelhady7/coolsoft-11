@@ -123,7 +123,7 @@ public class Search extends Controller {
 		List<Organization> organizationsFound = new ArrayList<Organization>();
 		List<Topic> topicsFound = new ArrayList<Topic>();
 		List<MainEntity> entitiesFound = new ArrayList<MainEntity>();
-		for (int i = 0; i < listOfResults.size(); i++) {
+		try{for (int i = 0; i < listOfResults.size(); i++) {
 			if (listOfResults.get(i) instanceof Idea) {
 				ideasFound.add((Idea) listOfResults.get(i));
 			}
@@ -144,6 +144,11 @@ public class Search extends Controller {
 		List<Model> lof = listOfResults;
 		render(u, connected, lof, ideasFound, organizationsFound,
 				entitiesFound, topicsFound);
+		}
+		catch(NullPointerException e){
+			render(u, connected, ideasFound, organizationsFound,
+					entitiesFound, topicsFound);
+		}
 	}
 
 	/**
