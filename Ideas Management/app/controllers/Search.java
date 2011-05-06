@@ -720,6 +720,7 @@ public class Search extends Controller {
 	 */
 	public static List<Organization> searchForOrganization(String keyword) {
 		String userId = Security.connected();
+		User u = Security.getConnected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
@@ -750,19 +751,27 @@ public class Search extends Controller {
 					}
 				}
 				System.out.println(listOfOrgs.toString() + "----------");
-				List<User> enrolledUsers = Users
-						.getEnrolledUsers(listOfOrganizations.get(i));
-				for (int k = 0; k < enrolledUsers.size(); k++) {
-					if (userId.compareTo(enrolledUsers.get(k).username) != 0) {
-						switch (listOfOrganizations.get(i).privacyLevel) {
-						case 0:
-							listOfOrgs.remove(listOfOrganizations.get(i));
-							break;
-						default:
-							break;
-						}
+				if (!Users.getEnrolledUsers(listOfOrganizations.get(i))
+						.contains(u)) {
+					switch (listOfOrganizations.get(i).privacyLevel) {
+					case 0:
+						listOfOrgs.remove(listOfOrganizations.get(i));
+						break;
+					default:
+						break;
 					}
 				}
+				// for (int k = 0; k < enrolledUsers.size(); k++) {
+				// if (userId.compareTo(enrolledUsers.get(k).username) != 0) {
+				// switch (listOfOrganizations.get(i).privacyLevel) {
+				// case 0:
+				// listOfOrgs.remove(listOfOrganizations.get(i));
+				// break;
+				// default:
+				// break;
+				// }
+				// }
+				// }
 			}
 		}
 		return listOfOrgs;
@@ -781,6 +790,7 @@ public class Search extends Controller {
 	 */
 	public static List<MainEntity> searchForEntity(String keyword) {
 		String userId = Security.connected();
+		User u = Security.getConnected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
@@ -808,18 +818,29 @@ public class Search extends Controller {
 						}
 					}
 				}
-				for (int k = 0; k < listOfEntities.get(i).followers.size(); k++) {
-					if (userId
-							.compareTo(listOfEntities.get(i).followers.get(k).username) != 0) {
-						switch (listOfEntities.get(i).organization.privacyLevel) {
-						case 0:
-							listOfEnts.remove(listOfEntities.get(i));
-							break;
-						default:
-							break;
-						}
+				if (!listOfEntities.get(i).followers.contains(u)) {
+					switch (listOfEntities.get(i).organization.privacyLevel) {
+					case 0:
+						listOfEnts.remove(listOfEntities.get(i));
+						break;
+					default:
+						break;
 					}
 				}
+				// for (int k = 0; k < listOfEntities.get(i).followers.size();
+				// k++) {
+				// if (userId
+				// .compareTo(listOfEntities.get(i).followers.get(k).username)
+				// != 0) {
+				// switch (listOfEntities.get(i).organization.privacyLevel) {
+				// case 0:
+				// listOfEnts.remove(listOfEntities.get(i));
+				// break;
+				// default:
+				// break;
+				// }
+				// }
+				// }
 			}
 		}
 		return listOfEnts;
@@ -838,6 +859,7 @@ public class Search extends Controller {
 	 */
 	public static List<Idea> searchForIdea(String keyword) {
 		String userId = Security.connected();
+		User u = Security.getConnected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
@@ -867,17 +889,28 @@ public class Search extends Controller {
 				}
 				List<User> enrolledUsers = Users.getEnrolledUsers(listOfIdeas
 						.get(i).belongsToTopic.entity.organization);
-				for (int k = 0; k < enrolledUsers.size(); k++) {
-					if (userId.compareTo(enrolledUsers.get(k).username) != 0) {
-						switch (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel) {
-						case 0:
-							listOfIdss.remove(listOfIdeas.get(i));
-							break;
-						default:
-							break;
-						}
+				if (!listOfIdeas.get(i).belongsToTopic.followers.contains(u)) {
+					switch (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel) {
+					case 0:
+						listOfIdss.remove(listOfIdeas.get(i));
+						break;
+					default:
+						break;
 					}
 				}
+				// for (int k = 0; k < enrolledUsers.size(); k++) {
+				// if (userId.compareTo(enrolledUsers.get(k).username) != 0) {
+				// switch
+				// (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel)
+				// {
+				// case 0:
+				// listOfIdss.remove(listOfIdeas.get(i));
+				// break;
+				// default:
+				// break;
+				// }
+				// }
+				// }
 
 			}
 		}
@@ -897,6 +930,7 @@ public class Search extends Controller {
 	 */
 	public static List<Topic> searchForTopic(String keyword) {
 		String userId = Security.connected();
+		User u = Security.getConnected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
@@ -926,18 +960,29 @@ public class Search extends Controller {
 						}
 					}
 				}
-				for (int k = 0; k < listOfTopics.get(i).followers.size(); k++) {
-					if (userId
-							.compareTo(listOfTopics.get(i).followers.get(k).username) != 0) {
-						switch (listOfTopics.get(i).privacyLevel) {
-						case 0:
-							listOfTopis.remove(listOfTopics.get(i));
-							break;
-						default:
-							break;
-						}
+				if (!listOfTopics.get(i).followers.contains(u)) {
+					switch (listOfTopics.get(i).privacyLevel) {
+					case 0:
+						listOfTopis.remove(listOfTopics.get(i));
+						break;
+					default:
+						break;
 					}
 				}
+				// for (int k = 0; k < listOfTopics.get(i).followers.size();
+				// k++) {
+				// if (userId
+				// .compareTo(listOfTopics.get(i).followers.get(k).username) !=
+				// 0) {
+				// switch (listOfTopics.get(i).privacyLevel) {
+				// case 0:
+				// listOfTopis.remove(listOfTopics.get(i));
+				// break;
+				// default:
+				// break;
+				// }
+				// }
+				// }
 
 			}
 		}
