@@ -1,4 +1,3 @@
-
 #{extends 'main.html' /}
 #{set title:'Choose action to restrict from' /}
 
@@ -6,12 +5,10 @@
 <script type="text/javascript">
 function show_alert()
 {
-alert("changes sent");
+alert("Data sent");
 window.location.reload();
 }
 </script>
-
-
 
 
 #{if flash.error}
@@ -20,17 +17,19 @@ window.location.reload();
     </p>
 #{/if}
 
-#{if entityActions.isEmpty() || entityActions == null}
+#{if topicActions.isEmpty() || topicActions == null}
   <p style="color:#c00"> Sorry No Actions found !! </p>
 #{/if}
 #{else}
-#{form @BannedUsers.restrictOrganizerHelper5(), method:'POST', id:'creationForm',onsubmit: 'return show_alert()',
+#{form @BannedUsers.restrictFinal(), method:'POST', id:'creationForm',onsubmit: 'return show_alert()',
        enctype:'multipart/form-data' }
-  #{list items:entityActions, as:'action'}
-<input id = "1" type="radio" name="actionToDo" value = '${action}'> ${action}<br /> <br />
+  #{list items:topicActions, as:'action'}
+ 
+ 
+<input id = "1" type="radio" name="actionToDo" value ='${action}' > ${action}<br /><br /> 
 #{/list}
-<input type = "hidden" name = "type" value = "entity" >
-<input type = "hidden" name = "entityTopicId" value = ${entityId} >
+<input type = "hidden" name = "type" value = "topic" >
+<input type = "hidden" name = "entityTopicId" value = ${topicId} >
 <input type = "hidden" name = "userId" value = ${userId} >
 
 <input type="submit" value="Restrict">
