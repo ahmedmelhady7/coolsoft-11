@@ -163,6 +163,9 @@ public class User extends Model {
 	// , cascade = CascadeType.PERSIST)
 	public List<Plan> planscreated;
 
+	/**
+	@author Mostafa Ali
+	*/
 	public User(String email,String username, String password,String firstName,
 			String lastName,int communityContributionCounter,
 			Date dateofBirth, String country, String profession) {
