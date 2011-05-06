@@ -32,16 +32,26 @@ public class UserRoleInOrganization extends Model {
 	 * represents the type (entity or Topic)
 	 */
 	public String type;
+
 	/**
 	 * this organizer creates enrolls a user in a certain organization
-	 * @story C1S7 
+	 *
 	 * @author Nada Ossama
-	 * @param user is the user to be enrolled
-	 * @param org is the organization that the user will be enrolled in
-	 * @param role is the role of that user in the organization org
-	 * @param entityTopicId  is the ID of the entity or the topic the user will be inrolled in if any
 	 * 
-	 * @param type is entity or topic 
+	 * @story C1S7
+	 * 
+	 * @param user
+	 *            is the user to be enrolled
+	 * @param org
+	 *            is the organization that the user will be enrolled in
+	 * @param role
+	 *            is the role of that user in the organization org
+	 * @param entityTopicId
+	 *            is the ID of the entity or the topic the user will be inrolled
+	 *            in if any
+	 * 
+	 * @param type
+	 *            is entity or topic
 	 * 
 	 */
 
@@ -54,13 +64,20 @@ public class UserRoleInOrganization extends Model {
 		this.type = type;
 
 	}
+
 	/**
 	 * this organizer creates enrolls a user in a certain organization
-	 * @story C1S7 
+	 * 
 	 * @author Nada Ossama
-	 * @param user is the user to be enrolled
-	 * @param org is the organization that the user will be enrolled in
-	 * @param role is the role of that user in the organization org
+	 * 
+	 * @story C1S7
+	 *
+	 * @param user
+	 *            is the user to be enrolled
+	 * @param org
+	 *            is the organization that the user will be enrolled in
+	 * @param role
+	 *            is the role of that user in the organization org
 	 * 
 	 */
 
