@@ -29,16 +29,16 @@ public class Role extends Model {
 	public List<UserRoleInOrganization> userRoleInOrganization;
 
 	/**
-	 * this constructor creates a new role given it's name and action string
+	 * creates a new role given it's name and action string
 	 * 
 	 * @author Nada Ossama
 	 * 
 	 * @story C1S7
 	 * 
 	 * @param role
-	 *            is the role name
+	 *           String role name
 	 * @param actions
-	 *            is the actions string
+	 *            String actions string
 	 */
 
 	public Role(String role, String actions) {
@@ -49,7 +49,7 @@ public class Role extends Model {
 	}
 
 	/**
-	 * method that creates the Organizer role 
+	 * creates the Organizer role 
 	 * 
 	 * @ author nada ossama
 	 * 
@@ -98,7 +98,7 @@ public class Role extends Model {
 	}
 
 	/**
-	 * this method creates the Idea Developer Role
+	 * creates the Idea Developer Role
 	 * 
 	 * @author Nada Ossama
 	 * 
@@ -148,7 +148,7 @@ public class Role extends Model {
 	}
 
 	/**
-	 * this method creates the organization lead role
+	 * creates the organization lead role
 	 * 
 	 * @author Nada Ossama
 	 * 
@@ -166,7 +166,7 @@ public class Role extends Model {
 		     OrganizationLead.save();
 		 }
 	/**
-	 * this method creates the admine role
+	 * creates the admin role
 	 * 
 	 * @author Nada Ossama
 	 * 
@@ -185,13 +185,13 @@ public class Role extends Model {
 	
 	
 	/**
-	 * the toString method that prints the role name
+	 * prints the role by role name
 	 * 
 	 * @author Nada Ossama
 	 * 
 	 * @story C1S7
 	 * 
-	 * @return String which is the role Name
+	 * @return String which will be printed
 	 */
 	public String toString() {
 		return this.roleName;
