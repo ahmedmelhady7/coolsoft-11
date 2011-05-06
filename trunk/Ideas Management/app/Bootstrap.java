@@ -141,14 +141,14 @@ public class Bootstrap extends Job {
 			UserRoleInOrganizations.addEnrolledUser(slim, guc, organizer,
 					gucMet.id, "entity");
 
-			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
-					gucMet.id, "entity");
+//			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
+//					gucMet.id, "entity");
 
 			UserRoleInOrganizations.addEnrolledUser(fatma, guc, organizer,
 					gucCs.id, "entity");
 
-			UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
-					gucCs.id, "entity");
+//			UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
+//					gucCs.id, "entity");
 
 			UserRoleInOrganizations.addEnrolledUser(sharaf, gov,
 					OrganizationLead);
@@ -156,8 +156,8 @@ public class Bootstrap extends Job {
 			UserRoleInOrganizations.addEnrolledUser(gamal, gov, organizer,
 					govHead.id, "entity");
 
-			UserRoleInOrganizations.addEnrolledUser(khalifa, gov,
-					ideadeveloper, govHead.id, "entity");
+//			UserRoleInOrganizations.addEnrolledUser(khalifa, gov,
+//					ideadeveloper, govHead.id, "entity");
 
 			Topic gucMetStudentUnion = new Topic("Student union",
 					"Suggestions", 2, ashraf, gucMet).save();
@@ -167,16 +167,16 @@ public class Bootstrap extends Job {
 
 			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
-			UserRoleInOrganizations.addEnrolledUser(gom3a, guc, ideadeveloper,
-					gucMet.id, "entity");
+//			UserRoleInOrganizations.addEnrolledUser(gom3a, guc, ideadeveloper,
+//					gucMet.id, "entity");
 			UserRoleInOrganizations.addEnrolledUser(gom3a, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
-			UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
-					gucMet.id, "entity");
+//			UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
+//					gucMet.id, "entity");
 			UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
-			UserRoleInOrganizations.addEnrolledUser(u5, guc, ideadeveloper,
-					gucMet.id, "entity");
+//			UserRoleInOrganizations.addEnrolledUser(u5, guc, ideadeveloper,
+//					gucMet.id, "entity");
 			UserRoleInOrganizations.addEnrolledUser(u5, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
 
