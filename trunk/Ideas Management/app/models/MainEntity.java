@@ -32,11 +32,11 @@ public class MainEntity extends Model {
 	 */
 	@Required
 	public String name;
-	
+
 	/**
 	 * @author Mohamed Ghanem
 	 * 
-	 * Entity initialization date
+	 *         Entity initialization date
 	 */
 	public Date intializedIn;
 
@@ -77,11 +77,11 @@ public class MainEntity extends Model {
 	 */
 	@OneToMany(mappedBy = "entity")
 	public List<Topic> topicList;
-	
+
 	/**
 	 * The list of related entities
 	 */
-//	public List<MainEntity> relatedEntities; 
+	// public List<MainEntity> relatedEntities;
 
 	/**
 	 * The list of tags that the entity is tagged by
@@ -126,6 +126,12 @@ public class MainEntity extends Model {
 		followers = new ArrayList<User>();
 		topicList = new ArrayList<Topic>();
 		tagList = new ArrayList<Tag>();
+		int size = org.followers.size();
+		for (int i = 0; i < size; i++) {
+			Notifications.sendNotification(org.followers.get(i).id, org.id,
+					"organization", "A new entity (" + n
+							+ ") has been created in " + org.name);
+		}
 	}
 
 	/**
@@ -163,11 +169,22 @@ public class MainEntity extends Model {
 		topicList = new ArrayList<Topic>();
 		tagList = new ArrayList<Tag>();
 		List<User> receivers = Users.getEntityOrganizers(parent);
-		receivers.add(org.creator);
 		int size = receivers.size();
-		for(int i = 0; i < size; i++) {
-			Notifications.sendNotification(receivers.get(i).id, parent.id, "entity",
-				"A new subentity (" + n + ") has been created for the entity (" + parent.name + ")");
+		for (int j = 0; j < size; j++) {
+			Users.getEntityOrganizers(this).add(receivers.get(j));
+		}
+		receivers.add(org.creator);
+		for (int i = 0; i < size; i++) {
+			Notifications.sendNotification(receivers.get(i).id, parent.id,
+					"entity", "A new subentity (" + n
+							+ ") has been created for the entity ("
+							+ parent.name + ")");
+		}
+		size = org.followers.size();
+		for (int i = 0; i < size; i++) {
+			Notifications.sendNotification(org.followers.get(i).id, org.id,
+					"organization", "A new entity (" + n
+							+ ") has been created in " + org.name);
 		}
 	}
 
@@ -187,7 +204,7 @@ public class MainEntity extends Model {
 		followers.remove(user);
 		_save();
 	}
-	
+
 	public String toString() {
 		return name;
 	}
