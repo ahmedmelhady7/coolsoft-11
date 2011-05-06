@@ -1,8 +1,8 @@
-#{extends '/topics/layout.html' /}<h3>
-	
+#{extends '/topics/layout.html' /}
+<h3> <label> View Topic</label></h3>
 	<br />
-<input type="submit" value="Back to Entity" onclick=location.href="@{MainEntitys.viewEntity(entity.id)}">
-        <br />
+
+<div id="crudShow" class="${type.name}">
 	
 	<br />
 	
@@ -55,41 +55,41 @@
 		
 		
 		#{/crud.form }
-		<br>
-		<br>
-		<br>
-		 #{if permission == 1}
-		 <br>
-<button type="submit" onclick= > Edit </button>
-        <br>
-		#{/if}
-    <br>
-	<br>
+		<br />
+	
+		<button type="submit" onclick= > Edit </button>
+		<br />
 	        #{if allowed==1}
       <a href="@{RequestToJoins.viewRequests(1,object.id)}">Requests</a>		
            #{/if}
 		   <br>
 		   <br>
-		   <br>
-		<a href="@{Topics.tagTopic(object.id,'@@')}">Add tags</a>
-		   <br>
 			#{/form}
 			
-			<!-- closing topic and reopen buttons -->
-		 #{if canClose == 1 && openToEdit == true}
-			<input type="submit" value="Close Topic" onclick="closeTopic('${topicIdLong}', '${userId}');" />
-		#{/if}
-		#{if canClose == 1 && openToEdit == false}
-			<input type="submit" value="Reopen" onclick="reopen('${topicIdLong}', '${userId}');" />
-		#{/if}
+		canclose:${canClose}
+		openToEdit:${openToEdit}
+		#{if canClose == 1 && openToEdit == true}
+		#{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
+				<input type = "hidden" name = "topicId" value = ${topicId} >
+				<input type="submit" value="Close Topic" />
+		#{/form}
+		#{/if}	
 	
 
+		#{if canClose == 1 && openToEdit == false}
+		#{form @Topics.reopen(), method:'POST', enctype:'multipart/form-data' }
+			<input type = "hidden" name = "topicId" value = ${topicId} >
+			<input type="submit" value="Reopen Topic" />
+		#{/form}
+		#{/if}
+		
 		#{if canPlan == 1 && openToEdit == false && plan == null}
 		#{form @Plans.addIdea(), method:'POST', enctype:'multipart/form-data' }
 			<input type = "hidden" name = "topicId" value = ${topicIdLong} >
 			<input type="submit" value="Create A plan" />
 		#{/form}
 		#{/if}
+		
 		#{if openToEdit == false && plan != null}
 			#{form @Plans.viewAsList(), method:'POST', enctype:'multipart/form-data' }
 			<input type = "hidden" name = "planId" value = ${plan.id} >
@@ -130,26 +130,3 @@
 	#{/form}-->
 
 </div>
-
-<!--functions to call after clicking reopen and close buttons --> 
-<script type="text/javascript">
-
-    function closeTopic(viewTopicId, viewUserId){
-        $.post('@{Topics.closeTopic()}', {
-            topicId: viewTopicId,
-            userId: viewUserId
-        });
-        alert("done!");
-        location.reload(true);
-    }
-    
-    function reopen(viewTopicId, viewUserId){
-        $.post('@{Topics.reopen()}', {
-            topicId: viewTopicId,
-            userId: viewUserId
-        });
-        alert("done!");
-        location.reload(true);
-    }
-    
-</script>
