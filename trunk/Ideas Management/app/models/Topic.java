@@ -204,7 +204,7 @@ public class Topic extends Model {
 	}
 
 	/**
-	 * This Method returns a list of organizers in a certain topic
+	 * returns a list of organizers in a certain topic
 	 * 
 	 * @author lama.ashraf
 	 * 
