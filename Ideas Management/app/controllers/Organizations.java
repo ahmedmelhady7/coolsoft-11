@@ -118,14 +118,14 @@ public class Organizations extends CRUD {
 	 */
 
 	public static void getTopics(long id) {
-		Organization org = Organization.findById(id);
-		notFoundIfNull(org);
-		ArrayList<Topic> topics = new ArrayList<Topic>();
+		Organization organization = Organization.findById(id);
+		notFoundIfNull(organization);
+		List<Topic> topics = new ArrayList<Topic>();
 		int i = 0;
-		while (i < org.entitiesList.size()) {
+		while (i < organization.entitiesList.size()) {
 			int j = 0;
-			while (j < org.entitiesList.get(i).topicList.size()) {
-				topics.add(org.entitiesList.get(i).topicList.get(j));
+			while (j < organization.entitiesList.get(i).topicList.size()) {
+				topics.add(organization.entitiesList.get(i).topicList.get(j));
 				j++;
 			}
 			i++;
