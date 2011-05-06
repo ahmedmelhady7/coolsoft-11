@@ -177,6 +177,7 @@ public class Plans extends CRUD {
 	 *            the user given rating for the specified plan
 	 * @param planID
 	 *            ID of the plan wished to rate
+	 *            rates a given plan
 	 */
 
 	public static void rate(long planId, int rat) {
@@ -198,6 +199,7 @@ public class Plans extends CRUD {
 	 * @param userToCheck
 	 *            User to be checked if he/she is in the list usersRated
 	 * @return
+	 * 		checks if a user has rated
 	 */
 //	public static boolean checkRated(User userToCheck, long planID) {
 //		Plan p = Plan.findById(planID);
@@ -326,6 +328,8 @@ public class Plans extends CRUD {
 	 *            User that wants to share the plan
 	 * @param planID
 	 *            ID of the plan to be shared
+	 *            
+	 *            shares a plan with a given user
 	 */
 	public static void sharePlan(String userName, long planID) {
 		User U = User.find("byUsername",userName).first();
