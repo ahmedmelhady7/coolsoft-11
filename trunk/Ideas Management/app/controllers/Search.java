@@ -78,12 +78,12 @@ public class Search extends Controller {
 		render(lof, filterResult, tobepassed);
 	}
 
-	 /**
-	  * @author monica
-	  * 
-	  *         this method renders to show reslts after filter
-	  */
-	
+	/**
+	 * @author monica
+	 * 
+	 *         this method renders to show reslts after filter
+	 */
+
 	public static void showAfterFilter() {
 		String connected = Security.connected();
 		List<Idea> ideasFound = new ArrayList<Idea>();
@@ -164,23 +164,69 @@ public class Search extends Controller {
 	 *            :: "String"; of the word where user want to avoid it within
 	 *            the result of searching.
 	 * 
-	 * @param searchWith
-	 *            :: "String"; of 0s & 1s of length 6 each bit represents a
-	 *            choice either to result ~>'1' or not~>'0' each of the
-	 *            following 1st bit represents Organization, 2nd->MainEntity,
-	 *            3rd->Topic, 4th->Plan, 5th->Idea, 6th->Tag.
+	 * @param org
+	 *            :: "int"; int of 0 or 1 , 0 for searching in organization 1
+	 *            for not searching in organizations.
 	 * 
-	 * @param before
-	 *            :: "Date"; where the user needs all the result initialized
-	 *            before this date.
+	 * @param entity
+	 *            :: "int"; int of 0 or 1 , 0 for searching in MainEntity 1 for
+	 *            not searching in MainEntity.
 	 * 
-	 * @param after
-	 *            :: "Date"; where the user needs all the result initialized
-	 *            after this date.
+	 * @param topic
+	 *            :: "int"; int of 0 or 1 , 0 for searching in Topic 1 for not
+	 *            searching in Topic.
 	 * 
-	 * @param exact
-	 *            :: "Date"; where the user needs all the result initialized in
-	 *            this date.
+	 * @param plan
+	 *            :: "int"; int of 0 or 1 , 0 for searching in Plan 1 for not
+	 *            searching in Plan.
+	 * 
+	 * @param idea
+	 *            :: "int"; int of 0 or 1 , 0 for searching in Idea 1 for not
+	 *            searching in Idea.
+	 * 
+	 * @param item
+	 *            :: "int"; int of 0 or 1 , 0 for searching in item 1 for not
+	 *            searching in item.
+	 * 
+	 * @param comm
+	 *            :: "int"; int of 0 or 1 , 0 for searching in comment 1 for not
+	 *            searching in comment.
+	 * 
+	 * @param dayB
+	 *            :: "int" representing day of the "Date"; where the user needs
+	 *            all the result initialized before this date.
+	 * 
+	 * @param monthB
+	 *            ::"int" representing month of the "Date"; where the user needs
+	 *            all the result initialized before this date.
+	 * 
+	 * @param yearB
+	 *            ::"int" representing year of the "Date"; where the user needs
+	 *            all the result initialized before this date.
+	 * 
+	 * @param dayA
+	 *            :: "int" representing day of the "Date"; where the user needs
+	 *            all the result initialized after this date.
+	 * 
+	 * @param monthA
+	 *            :: "int" representing month of the "Date"; where the user
+	 *            needs all the result initialized after this date.
+	 * 
+	 * @param yearA
+	 *            :: "int" representing year of the "Date"; where the user needs
+	 *            all the result initialized after this date.
+	 * 
+	 * @param dayE
+	 *            :: "int" representing day of the "Date"; where the user needs
+	 *            all the result initialized exactly in this date.
+	 * 
+	 * @param monthE
+	 *            :: "int" representing month of the "Date"; where the user
+	 *            needs all the result initialized exactly in this date.
+	 * 
+	 * @param yearE
+	 *            :: "int" representing year of the "Date"; where the user needs
+	 *            all the result initialized exactly in this date.
 	 * 
 	 */
 
@@ -510,18 +556,11 @@ public class Search extends Controller {
 				}
 			}
 		}
-		//
-		// // Comments
-		//
+
+		// Comments
+
 		constrainTime(before, after, exact);
-		//
-		// System.out.println("===============");
-		//
-		// for (int i = 0; i < listOfResults.size(); i++) {
-		// System.out.println("here::" + listOfResults.get(i));
-		// }
-		//
-		// System.out.println("===============");
+
 	}
 
 	/**
