@@ -74,17 +74,20 @@ public class BannedUsers extends CRUD {
 	 */
 	public static void restrictOrganizerHelper1(@Required long userId,
 			long organizationId) {
-     
-		if (validation.hasErrors()) {
+    
+		if (validation.hasErrors()|| userId == 0) {
 			flash.error("Oops, please select one the Organizers");
 			restrictOrganizer(organizationId);
 		}
+		else{
     // System.out.println(organizationId);
 		Organization org = Organization.findById(organizationId);
 		User user = User.findById(userId);
 		List<MainEntity> entities = Users.getEntitiesOfOrganizer(org, user);
 	//	System.out.println("++++" + entities.isEmpty());
 		render(user, organizationId, entities);
+		
+		}
 	}
 
 	/**
@@ -109,8 +112,8 @@ public class BannedUsers extends CRUD {
 	public static void restrictOrganizerHelper2(@Required long entityId, @Required String topic,
 			long organizationId, long userId) {
 
-		if (validation.hasErrors()) {
-			flash.error("Oops, please select one of the Entities ");
+		if (validation.hasErrors() || entityId == 0) {
+			flash.error("Oops, please select atleast one choise ");
 			restrictOrganizerHelper1(userId,organizationId);
 		}
 		if (topic.equalsIgnoreCase("true")) {
@@ -139,10 +142,14 @@ public class BannedUsers extends CRUD {
 
 	public static void restrictOrganizerHelper3(long entityId, long organizationId,
 			long userId) {
+		
+		
 		List<String> entityActions = Roles.getRoleActions("organizer");
 		MainEntity e = MainEntity.findById(entityId);
 		Organization o = e.organization;
 		User u = User.findById(userId);
+		
+		
 
 		List<String> restricted = BannedUser
 				.find("select bu.action from BannedUser bu where bu.organization = ? and bu.bannedUser = ? and bu.resourceType like ? and resourceID = ? ",
@@ -167,12 +174,22 @@ public class BannedUsers extends CRUD {
 	 *            : to be restricted
 	 */
 
-	public static void restrictOrganizerHelper4(long topicId, long userId) {
+	public static void restrictOrganizerHelper4(@Required long topicId, long userId) {
+		
+		
+		
 		List<String> topicActions = Roles.getOrganizerTopicActions();
 		Topic t = (Topic.findById(topicId));
 		MainEntity e = t.entity;
 		Organization o = e.organization;
 		User u = User.findById(userId);
+		
+		
+		if (validation.hasErrors() || topicId == 0) {
+			flash.error("Oops, please select atleast one choise ");
+			restrictOrganizerHelper2(e.getId(), "topic",
+					o.getId(), u.getId());
+		}
 
 		List<String> restricted = BannedUser
 				.find("select bu.action from BannedUser bu where bu.organization = ? and bu.bannedUser = ? and bu.resourceType like ? and resourceID = ? ",
@@ -195,7 +212,7 @@ public class BannedUsers extends CRUD {
 	 * @param userId : to be restricted
 	 */
 
-	public static void restrictOrganizerHelper5(String actionToDo, String type,
+	public static void restrictOrganizerHelper5(@Required String actionToDo, String type,
 			long entityTopicId, long userId) {
       System.out.println(actionToDo);
 		boolean changed = true;
@@ -205,6 +222,14 @@ public class BannedUsers extends CRUD {
 			MainEntity entity = topic.entity;
 			Organization org = entity.organization;
 			long organizationId = org.getId();
+			
+			if (validation.hasErrors() || actionToDo == null) {
+				flash.error("Oops, please select atleast one choise ");
+				restrictOrganizerHelper4(entityTopicId, userId);
+			}
+			
+			
+			
 			changed = BannedUser.banFromActionInTopic(userId, organizationId,
 					actionToDo, entityTopicId);
 			
@@ -217,6 +242,13 @@ public class BannedUsers extends CRUD {
 			MainEntity entity = MainEntity.findById(entityTopicId);
 			Organization org = entity.organization;
 			long organizationId = org.getId();
+			
+			
+			if (validation.hasErrors()|| actionToDo == null) {
+				flash.error("Oops, please select atleast one choise ");
+				restrictOrganizerHelper3(entityTopicId,organizationId, userId);
+			}
+			
 			changed = BannedUser.banFromActionInEntity(userId, organizationId,
 					actionToDo, entityTopicId);
 			
