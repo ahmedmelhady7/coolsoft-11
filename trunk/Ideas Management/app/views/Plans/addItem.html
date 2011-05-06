@@ -253,7 +253,7 @@ To add another item check here <input type="checkbox" name = "check" value = "ch
 					alert("The end month of the item must be earlier than the end month of the plan");
 					return false;
 					if(parseInt(document.getElementById("endMonth").value.toString())== '$p.endDate.getMonth()'){
-						if(parseInt(document.getElementById("endDay").value.toString()) > '$p.endDate.getMonth()'){
+						if(parseInt(document.getElementById("endDay").value.toString()) > '$p.endDate.getDay()'){
 							alert("The end day of the item must be earlier than the end day of the plan");
 							return false;
 						}
