@@ -146,6 +146,8 @@ public class Idea extends Model {
 	 * 
 	 * @author ${Abdalrahman Ali}
 	 * 
+	 * this constructor is used to create draft ideas
+	 * 
 	 * @param title
 	 *            title of the idea
 	 * @param body
