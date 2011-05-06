@@ -1,8 +1,4 @@
-#{extends '/topics/layout.html' /}
-<h3> <label> View Topic</label></h3>
-	<br />
-
-<div id="crudShow" class="${type.name}">
+#{extends '/topics/layout.html' /}<h3>
 	
 	<br />
 	
@@ -63,6 +59,7 @@
       <a href="@{RequestToJoins.viewRequests(1,object.id)}">Requests</a>		
            #{/if}
 		   <br>
+		<a href="@{Topics.tagTopic(object.id,'@@')}">Add tags</a>
 		   <br>
 			#{/form}
 			
@@ -124,15 +121,23 @@
 
 <!--functions to call after clicking reopen and close buttons --> 
 <script type="text/javascript">
-	function closeTopic(viewtopicId, viewuserid){
-		$.post('@{Topics.closeTopic()}', {topicId:viewtopicId, userId:viewuserid});
-		alert("done!");
-		location.reload(true);
-	}
-	function reopen(viewtopicId,viewuserid) {
-		$.post('@{Topics.reopen()}', {topicId:viewtopicId, userId:viewuserid});
-		alert("done!");
-		location.reload(true);
-	}
 
-</script> 
+    function closeTopic(viewTopicId, viewUserId){
+        $.post('@{Topics.closeTopic()}', {
+            topicId: viewTopicId,
+            userId: viewUserId
+        });
+        alert("done!");
+        location.reload(true);
+    }
+    
+    function reopen(viewTopicId, viewUserId){
+        $.post('@{Topics.reopen()}', {
+            topicId: viewTopicId,
+            userId: viewUserId
+        });
+        alert("done!");
+        location.reload(true);
+    }
+    
+</script>

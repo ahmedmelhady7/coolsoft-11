@@ -48,6 +48,10 @@ public class Topics extends CRUD {
 	 * 
 	 */
 
+	public static void tagTop(long topicId) {
+
+	}
+
 	public static void tagTopic(long topicId, String tag) {
 
 		boolean tagAlreadyExists = false;
@@ -56,69 +60,86 @@ public class Topics extends CRUD {
 		List<Tag> listOfTags = new ArrayList<Tag>();
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
 		globalListOfTags = Tag.findAll();
-		User user = Security.getConnected();
+		User user = (User) Security.getConnected();
 		Topic topic = (Topic) Topic.findById(topicId);
 
-		if (!topic.getOrganizer().contains(user)) {
-			// user not allowed
-			userNotAllowed = true;
-		} else {
-			for (int i = 0; i < globalListOfTags.size(); i++) {
-				if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
-						|| topic.entity.organization.equals(globalListOfTags
-								.get(i).createdInOrganization)) {
-					listOfTags.add(globalListOfTags.get(i));
-				}
-			}
-			for (int i = 0; i < listOfTags.size(); i++) {
-				if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
-					if (!topic.tags.contains(listOfTags.get(i))) {
-						topic.tags.add(listOfTags.get(i));
+		if (!tag.equals("@@")) {
 
-						for (int j = 0; j < listOfTags.get(i).followers.size(); j++) {
-							Notifications.sendNotification(
-									listOfTags.get(i).followers.get(j).id,
-									topic.tags.get(i).getId(), "tag",
-									"This topic has been tagged as " + tag);
-						}
-					} else {
-						// tag already exists error message
-						tagAlreadyExists = true;
+			if (topic == null)
+				System.out.println("topic");
+			else
+				System.out.println("safe");
+			if (user == null)
+				System.out.println("user");
+			else
+				System.out.println("safe");
+			// if (((ArrayList<User>)(topic.getOrganizer())) == null)
+			// System.out.println("list"); else System.out.println("safe");
+
+			if (!((ArrayList<User>) (topic.getOrganizer())).contains(user)) {
+				// user not allowed
+				userNotAllowed = true;
+			} else {
+				for (int i = 0; i < globalListOfTags.size(); i++) {
+					if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
+							|| topic.entity.organization
+									.equals(globalListOfTags.get(i).createdInOrganization)) {
+						listOfTags.add(globalListOfTags.get(i));
 					}
-					tagExists = true;
 				}
-			}
+				for (int i = 0; i < listOfTags.size(); i++) {
+					if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
+						if (!topic.tags.contains(listOfTags.get(i))) {
+							topic.tags.add(listOfTags.get(i));
 
-			if (!tagExists) {
-				Tag temp = new Tag(tag, topic.entity.organization);
-				temp.save();
-				topic.tags.add(temp);
-			}
-
-			if (!tagAlreadyExists) {
-				for (int j = 0; j < topic.followers.size(); j++) {
-					Notifications.sendNotification(topic.followers.get(j).id,
-							topicId, "topic", "This topic has been tagged as "
-									+ tag);
+							for (int j = 0; j < listOfTags.get(i).followers
+									.size(); j++) {
+								Notifications.sendNotification(
+										listOfTags.get(i).followers.get(j).id,
+										topic.tags.get(i).getId(), "tag",
+										"This topic has been tagged as " + tag);
+							}
+						} else {
+							// tag already exists error message
+							tagAlreadyExists = true;
+						}
+						tagExists = true;
+					}
 				}
 
-				for (int j = 0; j < topic.getOrganizer().size(); j++) {
+				if (!tagExists) {
+					Tag temp = new Tag(tag, topic.entity.organization);
+					temp.save();
+					topic.tags.add(temp);
+				}
+
+				if (!tagAlreadyExists) {
+					for (int j = 0; j < topic.followers.size(); j++) {
+						Notifications.sendNotification(
+								topic.followers.get(j).id, topicId, "topic",
+								"This topic has been tagged as " + tag);
+					}
+
+					for (int j = 0; j < topic.getOrganizer().size(); j++) {
+						Notifications.sendNotification(topic.getOrganizer()
+								.get(j).id, topicId, "topic",
+								"This topic has been tagged as " + tag);
+					}
+					// Notifications.sendNotification(topic.followers, topicId,
+					// "topic", "This topic has been tagged as " + tag);
+					// Notifications.sendNotification(topic.getOrganizer(),
+					// topicId,
+					// "topic", "This topic has been tagged as " + tag);
+					// List<User> list1 = new ArrayList<User>();
+					// list1.add(topic.entity.organization.creator);
 					Notifications.sendNotification(
-							topic.getOrganizer().get(j).id, topicId, "topic",
-							"This topic has been tagged as " + tag);
+							topic.entity.organization.creator.id, topicId,
+							"topic", "This topic has been tagged as " + tag);
 				}
-				// Notifications.sendNotification(topic.followers, topicId,
-				// "topic", "This topic has been tagged as " + tag);
-				// Notifications.sendNotification(topic.getOrganizer(), topicId,
-				// "topic", "This topic has been tagged as " + tag);
-				// List<User> list1 = new ArrayList<User>();
-				// list1.add(topic.entity.organization.creator);
-				Notifications.sendNotification(
-						topic.entity.organization.creator.id, topicId, "topic",
-						"This topic has been tagged as " + tag);
 			}
+
 		}
-		render(tagAlreadyExists, tagExists, userNotAllowed, topic.tags, topicId);
+		render(tagAlreadyExists, userNotAllowed, topic.tags, topicId);
 	}
 
 	/**
