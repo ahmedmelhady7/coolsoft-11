@@ -1,15 +1,11 @@
-</form>
-list:
 #{extends '/ideas/layout.html' /}
 <div id="crudList" class="${type.name}">
     <h2 id="crudListTitle">&{'crud.list.title', type.name}</h2>
     <div id="crudListSearch">
         #{crud.search /}
     </div>
-    <!--Abdalrahman Ali
-    just added a column for the isDraft value-->
     <div id="crudListTable">
-        #{crud.table fields:['title', 'author', 'isDraft' ,'privacyLevel'] /}
+        #{crud.table fields:['author','belongsToTopic','title','description',  'isDraft' ,'privacyLevel'] /}
     </div>
     <div id="crudListPagination">
         #{crud.pagination /}
