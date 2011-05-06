@@ -373,34 +373,6 @@ public class User extends Model {
 	}
 
 	/**
-	 * This Method returns all the users notifications
-	 * 
-	 * @author Ahmed Maged
-	 * 
-	 * @story C1S14
-	 * 
-	 * @return List of notifications
-	 */
-
-	public List<Notification> openNotifications() {
-		return notifications;
-	}
-
-	/**
-	 * This Method returns all the users notification profiles
-	 * 
-	 * @author Ahmed Maged
-	 * 
-	 * @story C1S14
-	 * 
-	 * @return List of notification profiles
-	 */
-
-	public List<NotificationProfile> openNotificationProfile() {
-		return notificationProfiles;
-	}
-
-	/**
 	 * This Method overrides method equals that compares two users by comparing
 	 * ther ids
 	 * 

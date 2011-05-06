@@ -2,6 +2,7 @@
 #{set title:'Notifications' /}
 <script type="text/javascript">
 var ids = new Array();
+var counter = ${nList.size()};
 function toggleCheck(id) {			
 	if(ids.indexOf(id) == -1) {
 		ids.push(id);
@@ -10,21 +11,38 @@ function toggleCheck(id) {
 	}			
 }
 function markAll(){
+	if(counter == 1) {
+		oneMark();
+	} else {
+		var field = document.myform.checkfield;	
+		for (i = 0; i < field.length; i++) {
+			field[i].checked = true ;
+			ids.push(field[i].id);
+		}
+	}	
+}
+function oneMark() {
 	var field = document.myform.checkfield;
-	for (i = 0; i < field.length; i++){
-		field[i].checked = true ;
-		ids.push(field[i].id);
-	}
+	field.checked = true;
+	ids.push(field.id);
 }
 function unmarkAll(){
-	var field = document.myform.checkfield;
-	for (i = 0; i < field.length; i++){
-		field[i].checked = false ;
+	if(counter == 1) {
+		oneUnMark();
+	} else {
+		var field = document.myform.checkfield;	
+		for (i = 0; i < field.length; i++) {
+			field[i].checked = false ;
+		}
 	}
 	ids = new Array();
 }
+function oneUnMark() {
+	var field = document.myform.checkfield;
+	field.checked = false;
+}
 function submit() {
-	if(ids.length == 0 && ids.length == 0) {
+	if(ids.length == 0) {
 		alert('No notifications to be deleted!!');
 	} else {
 		var r=confirm("Are You sure you want to delete notifications?");
@@ -33,13 +51,14 @@ function submit() {
 		} else {
 			window.location.reload();
 		}
+		ids = new Array();
+		var field = document.myform.checkfield;
+		for (i = 0; i < field.length; i++){
+			field[i].checked = false ;
+		}
+		window.location.reload();
 	}
-	ids = new Array();
-	var field = document.myform.checkfield;
-	for (i = 0; i < field.length; i++){
-		field[i].checked = false ;
-	}
-	window.location.reload();
+	
 }
 </script>
 

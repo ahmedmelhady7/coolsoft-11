@@ -2,7 +2,8 @@
 
 <script type="text/javascript">
 		var en_ids = new Array();
-		var dis_ids = new Array();		
+		var dis_ids = new Array();
+		var counter = ${npList.size()};
 		function submit() {
 			if(en_ids.length == 0 && dis_ids.length == 0) {
 				alert('No changes to perform!!');
@@ -13,15 +14,20 @@
 					$.post('@{enablePreferences()}', {b:en_ids});					
 				} else {
 					window.location.reload();
-				}
+				}	
 				dis_ids = new Array();
 				en_ids = new Array();
-				var field = document.myform.checkfield;
-				for (i = 0; i < field.length; i++){
-					field[i].checked = false ;
-				}
-				window.location.reload();				
-			}
+				if(counter == 1) {
+					var field = document.myform.checkfield;
+					field.checked = false;
+				} else {
+					var field = document.myform.checkfield;				
+					for (i = 0; i < field.length; i++){
+						field[i].checked = false ;
+					}
+				}				
+				window.location.reload();
+			}			
 		}		
 		function checkD(id) {			
 			if(dis_ids.indexOf(id) == -1) {
@@ -57,10 +63,10 @@
     		<br>
     		<b>Receive Notification: </b> 
     		#{if npro.enabled}
-    		yes
+    		<i>yes</i>
     		#{/if}
     		#{else}
-    		no
+    		<i>no</i>
     		#{/else}
     		&nbsp;
     		#{if npro.enabled}
