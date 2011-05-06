@@ -114,7 +114,7 @@ public class RequestToJoins extends CRUD {
 
 				for (int i = 0; i < organizers.size(); i++)
 					Notifications.sendNotification(organizers.get(i).id,
-							topic.id, "Topic", " A new User has joined topic "
+							topic.id, "Topic", " A new User "+user.username+" has joined topic "
 									+ topic.title);
 
 				Notifications.sendNotification(user.id, topic.id, "Topic",
