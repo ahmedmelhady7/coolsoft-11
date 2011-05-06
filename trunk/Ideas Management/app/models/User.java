@@ -1,22 +1,23 @@
 package models;
 
+/**
+@author Mostafa Ali
+*/
+
 // isdelete , state , access plan , topic , idea 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
 import controllers.Topics;
 import controllers.Users;
 import controllers.VolunteerRequests;
-
 import play.data.validation.Email;
 import play.data.validation.MaxSize;
 import play.data.validation.MinSize;
@@ -27,10 +28,11 @@ import play.db.jpa.Model;
 public class User extends Model {
 	@Required
 	//@Email
+	@Column(unique = true)
 	public String email;
 	@Required
 	@MaxSize(20)
-	//@Column(unique = true)
+	@Column(unique = true)
 	public String username;
 	@Required
 	@MaxSize(25)
