@@ -173,9 +173,8 @@ public class Search extends Controller {
 	 *            :: "Date"; where the user needs all the result initialized in
 	 *            this date.
 	 * 
-	 * @return void.
-	 * 
 	 */
+
 	public static void advSearch(int searchIn, String wantKey,
 			String unWantKey, int org, int entity, int topic, byte plan,
 			int idea, int item, int comm, int dayB, int monthB, int yearB,
@@ -183,15 +182,12 @@ public class Search extends Controller {
 
 		listOfResults = new ArrayList<Model>();
 
-		System.out.println("Enter advSearch");
-
-		Date before = new Date(yearB, monthB, dayB);
-		Date after = new Date(yearA, monthA, dayA);
-		Date exact = new Date(yearE, monthE, dayE);
+		Date before = new Date(yearB + 2010, monthB, dayB);
+		Date after = new Date(yearA + 2010, monthA, dayA);
+		Date exact = new Date(yearE + 2010, monthE, dayE);
 
 		List<Model> orgs = Organization.findAll();
 
-		System.out.println("in1" + searchIn);
 		switch (searchIn) {
 		case 1: {
 			for (int i = 0; i < orgs.size(); i++) {
@@ -244,29 +240,39 @@ public class Search extends Controller {
 			break;
 		}
 		default: {
-			System.out.println("HERE 7");
 			break;
 		}
 		}
-		System.out.println("HERE out");
+
+		System.out.println("Wanted Key ==> " + wantKey);
+		System.out.println("un Wanted Key ==> " + unWantKey);
+
 		// Organization
 		if (org == 0) {
 			for (int i = 0; i < orgs.size(); i++) {
-				if (!((Organization) orgs.get(i)).name.contains(unWantKey)) {
-					if (((Organization) orgs.get(i)).name.contains(wantKey)) {
+				if ((!((Organization) orgs.get(i)).name.toLowerCase().contains(
+						unWantKey.toLowerCase()))
+						|| unWantKey.equals("")) {
+					if (((Organization) orgs.get(i)).name.toLowerCase()
+							.contains(wantKey.toLowerCase())) {
 						listOfResults.add(orgs.get(i));
+						System.out.println(orgs.get(i) + " ADDDDDDED");
 					} else {
 						boolean add = true;
 						List<Tag> x = ((Organization) orgs.get(i)).relatedTags;
 						for (int j = 0; j < x.size(); j++) {
-							if (x.get(j).name.contains(unWantKey)) {
+							if (x.get(j).name.toLowerCase().contains(
+									unWantKey.toLowerCase())) {
 								add = false;
 							}
 						}
 						if (add) {
 							for (int j = 0; j < x.size(); j++) {
-								if (x.get(j).name.contains(wantKey)) {
+								if (x.get(j).name.toLowerCase().contains(
+										wantKey.toLowerCase())) {
 									listOfResults.add(orgs.get(i));
+									System.out.println(orgs.get(i)
+											+ " ADDDDDDED");
 									break;
 								}
 							}
@@ -275,37 +281,118 @@ public class Search extends Controller {
 				}
 			}
 		}
-		System.out.println("HERE 1");
-		System.out.println(entity);
+		System.out.println("-------------");
+		for (int i = 0; i < orgs.size(); i++) {
+			System.out.println(orgs.get(i));
+		}
+		System.out.println("-------------");
+		System.out.println("search entity");
 		// Entity
 		if (entity == 0) {
-			System.out.println("HERE Enter0");
 			for (int i = 0; i < orgs.size(); i++) {
-				System.out.println("Enter" + i);
 				if (((Organization) orgs.get(i)).entitiesList != null) {
-					System.out.println("innnnn");
-					System.out
-							.println((((Organization) orgs.get(i)).entitiesList)
-									.get(0));
-					searchWithEntities(orgs.get(i).id, unWantKey, wantKey);
+					List<MainEntity> entityz = ((Organization) orgs.get(i)).entitiesList;
+
+					System.out.println(entityz.size());
+
+					for (int j = 0; j < entityz.size(); j++) {
+						if ((!((MainEntity) entityz.get(j)).name.toLowerCase()
+								.contains(unWantKey) && !((MainEntity) entityz
+								.get(j)).description.contains(unWantKey))
+								|| unWantKey.equals("")) {
+							if (((MainEntity) entityz.get(j)).name
+									.toLowerCase().contains(wantKey)) {
+								listOfResults.add(entityz.get(j));
+								System.out.println(entityz.get(j)
+										+ " ADDDDDDED");
+							} else {
+								if (((MainEntity) entityz.get(j)).description
+										.toLowerCase().contains(wantKey)) {
+									listOfResults.add(entityz.get(j));
+								} else {
+									boolean add = true;
+									List<Tag> x = ((MainEntity) entityz.get(j)).tagList;
+									for (int k = 0; k < x.size(); k++) {
+										if (x.get(k).name.toLowerCase()
+												.contains(unWantKey)) {
+											add = false;
+										}
+									}
+									if (add) {
+										for (int k = 0; k < x.size(); k++) {
+											if (x.get(k).name.toLowerCase()
+													.contains(wantKey)) {
+												listOfResults.add(entityz
+														.get(j));
+												System.out.println(entityz
+														.get(j) + " ADDDDDDED");
+												break;
+											}
+										}
+									}
+								}
+							}
+						}
+
+					}
+					System.out.println(i);
 				}
 			}
 		}
-		System.out.println("HERE 2");
+		System.out.println("search Topic");
+
 		// Topic
+
 		List topics = null;
 		if (topic == 0) {
 			topics = new ArrayList<Topic>();
 			for (int i = 0; i < orgs.size(); i++) {
 				for (int j = 0; j < ((Organization) orgs.get(i)).entitiesList
 						.size(); j++) {
-					topics.add(((MainEntity) ((Organization) orgs.get(i)).entitiesList
-							.get(j)).topicList);
+					for (int k = 0; k < ((MainEntity) ((Organization) orgs
+							.get(i)).entitiesList.get(j)).topicList.size(); k++) {
+						topics.add(((MainEntity) ((Organization) orgs.get(i)).entitiesList
+								.get(j)).topicList.get(k));
+					}
 				}
 			}
-			searchWithTopic(topics, unWantKey, wantKey);
+			for (int z = 0; z < topics.size(); z++) {
+				if (!((Topic) topics.get(z)).title.toLowerCase().contains(
+						unWantKey)
+						&& !((Topic) topics.get(z)).description.toLowerCase()
+								.contains(unWantKey)) {
+					if (((Topic) topics.get(z)).title.toLowerCase().contains(
+							wantKey)) {
+						listOfResults.add((Topic) topics.get(z));
+					} else {
+						if (((Topic) topics.get(z)).description.toLowerCase()
+								.contains(wantKey)) {
+							listOfResults.add((Topic) topics.get(z));
+						} else {
+							boolean add = true;
+							List<Tag> x = ((Topic) topics.get(z)).tags;
+							for (int jz = 0; jz < x.size(); jz++) {
+								if (x.get(jz).name.toLowerCase().contains(
+										unWantKey)) {
+									add = false;
+								}
+							}
+							if (add) {
+								for (int jz = 0; jz < x.size(); jz++) {
+									if (x.get(jz).name.toLowerCase().contains(
+											wantKey)) {
+										listOfResults
+												.add((Topic) topics.get(z));
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
-		System.out.println("HERE 3");
+
 		// Plans
 		List plans = null;
 		if (plan == 0) {
@@ -313,7 +400,16 @@ public class Search extends Controller {
 			for (int i = 0; i < topics.size(); i++) {
 				plans.add(((Topic) topics.get(i)).plan);
 			}
-			searchWithPlan(plans, unWantKey, wantKey);
+			for (int iz = 0; iz < plans.size(); iz++) {
+				if (((Plan) plans.get(iz)) != null
+						&& !((Plan) plans.get(iz)).title.toLowerCase()
+								.contains(unWantKey)) {
+					if (((Plan) plans.get(iz)).title.toLowerCase().contains(
+							wantKey)) {
+						listOfResults.add((Plan) plans.get(iz));
+					}
+				}
+			}
 		}
 
 		// Ideas
@@ -324,487 +420,205 @@ public class Search extends Controller {
 					ideas.add(((Idea) ((Topic) topics.get(i)).ideas.get(j)));
 				}
 			}
-			searchWithIdea(ideas, unWantKey, wantKey);
+			for (int iz = 0; iz < ideas.size(); iz++) {
+				if (((Idea) ideas.get(iz)) != null
+						&& !((Idea) ideas.get(iz)).title.contains(unWantKey)
+						&& !((Idea) ideas.get(iz)).description.toLowerCase()
+								.contains(unWantKey)) {
+					if (((Idea) ideas.get(iz)).title.toLowerCase().contains(
+							wantKey)) {
+						listOfResults.add((Idea) ideas.get(iz));
+					} else {
+						if (((Idea) ideas.get(iz)).description.toLowerCase()
+								.contains(wantKey)) {
+							listOfResults.add((Idea) ideas.get(iz));
+						} else {
+							boolean add = true;
+							List<Tag> x = ((Idea) ideas.get(iz)).tagsList;
+							for (int j = 0; j < x.size(); j++) {
+								if (x.get(j).name.toLowerCase().contains(
+										unWantKey)) {
+									add = false;
+								}
+							}
+							if (add) {
+								for (int j = 0; j < x.size(); j++) {
+									if (x.get(j).name.toLowerCase().contains(
+											wantKey)) {
+										listOfResults.add((Idea) ideas.get(iz));
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
-		System.out.println("HERE 6");
+
 		// Item
 		if (item == 0) {
 			List items = new ArrayList<Idea>();
 			for (int i = 0; i < plans.size(); i++) {
-				for (int j = 0; j < ((models.Plan) plans.get(i)).items.size(); j++) {
-					items.add((((models.Plan) plans.get(i)).ideas.get(j)));
+				if (((models.Plan) plans.get(i)) != null) {
+					for (int j = 0; j < ((models.Plan) plans.get(i)).items
+							.size(); j++) {
+						items.add((((models.Plan) plans.get(i)).ideas.get(j)));
+					}
 				}
 			}
-			searchWithItem(items, unWantKey, wantKey, before, after, exact);
+			for (int i = 0; i < items.size(); i++) {
+				if (!((Item) items.get(i)).summary.toLowerCase().contains(
+						unWantKey)
+						&& !((Item) items.get(i)).description.toLowerCase()
+								.contains(unWantKey)) {
+					if (((Item) items.get(i)).summary.contains(wantKey)) {
+						listOfResults.add((Item) items.get(i));
+					} else {
+						if (((Item) items.get(i)).description.toLowerCase()
+								.contains(wantKey)) {
+							listOfResults.add((Item) items.get(i));
+						} else {
+							boolean add = true;
+							List<Tag> x = ((Item) items.get(i)).tags;
+							for (int j = 0; j < x.size(); j++) {
+								if (x.get(j).name.toLowerCase().contains(
+										unWantKey)) {
+									add = false;
+								}
+							}
+							if (add) {
+								for (int j = 0; j < x.size(); j++) {
+									if (x.get(j).name.toLowerCase().contains(
+											wantKey)) {
+										listOfResults.add((Item) items.get(i));
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
-		System.out.println("HERE DONE");
-		// Comments
-
+		//
+		// // Comments
+		//
 		constrainTime(before, after, exact);
-
-		// render();
+		//
+		// System.out.println("===============");
+		//
+		// for (int i = 0; i < listOfResults.size(); i++) {
+		// System.out.println("here::" + listOfResults.get(i));
+		// }
+		//
+		// System.out.println("===============");
 	}
+
+	/**
+	 * 
+	 * @author M Ghanem
+	 * 
+	 * @story C4S02 Advanced Search Result; it removes any of the result that
+	 *        violates the constrains of time before rendering it.
+	 * 
+	 * @param before
+	 *            :: "Date"; where the user needs all the result initialized
+	 *            before this date.
+	 * 
+	 * @param after
+	 *            :: "Date"; where the user needs all the result initialized
+	 *            after this date.
+	 * 
+	 * @param exact
+	 *            :: "Date"; where the user needs all the result initialized in
+	 *            this date.
+	 * 
+	 */
 
 	public static void constrainTime(Date before, Date after, Date exact) {
 
-		if (exact.compareTo(new Date(0, 0, 0)) != 0) {
-			if (before.after(exact) || after.before(exact)) {
-				for (int i = 0; i < listOfResults.size(); i++) {
-					listOfResults.remove(i);
-				}
-
-			} else {
-				for (int i = listOfResults.size() - 1; i > 0; i--) {
-					if (listOfResults instanceof Organization) {
-						if (exact
-								.compareTo(((Organization) listOfResults).intializedIn) != 0) {
-							listOfResults.remove(i);
+		if (exact.compareTo(new Date(2010, 0, 0)) == 0) {
+			if (exact.compareTo(after) != 0 || exact.compareTo(before) != 0) {
+				if (before.before(after)) {
+					if (after.compareTo(new Date(2010, 0, 0)) != 0) {
+						for (int i = listOfResults.size() - 1; i > 0; i--) {
+							if (listOfResults.get(i) instanceof Organization) {
+								if (after.before(((Organization) listOfResults
+										.get(i)).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults.get(i) instanceof MainEntity) {
+								if (after.before(((MainEntity) listOfResults
+										.get(i)).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults.get(i) instanceof Topic) {
+								if (after
+										.before(((Topic) listOfResults.get(i)).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults.get(i) instanceof Plan) {
+								if (after
+										.before(((Plan) listOfResults.get(i)).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults.get(i) instanceof Idea) {
+								if (after
+										.before(((Idea) listOfResults.get(i)).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults.get(i) instanceof Item) {
+								if (after
+										.before(((Item) listOfResults.get(i)).startDate)) {
+									listOfResults.remove(i);
+								}
+							}
 						}
-					} else if (listOfResults instanceof MainEntity) {
-						if (exact
-								.compareTo(((MainEntity) listOfResults).intializedIn) != 0) {
-							listOfResults.remove(i);
-						}
-					} else if (listOfResults instanceof Topic) {
-						if (exact
-								.compareTo(((Topic) listOfResults).intializedIn) != 0) {
-							listOfResults.remove(i);
-						}
-					} else if (listOfResults instanceof Plan) {
-						if (exact
-								.compareTo(((Plan) listOfResults).intializedIn) != 0) {
-							listOfResults.remove(i);
-						}
-					} else if (listOfResults instanceof Idea) {
-						if (exact
-								.compareTo(((Idea) listOfResults).intializedIn) != 0) {
-							listOfResults.remove(i);
-						}
-					} else if (listOfResults instanceof Item) {
-						if (exact.before(((Item) listOfResults).endDate)
-								&& exact.after(((Item) listOfResults).startDate)) {
-							listOfResults.remove(i);
+					}
+					if (before.compareTo(new Date(2010, 0, 0)) != 0) {
+						for (int i = listOfResults.size() - 1; i > 0; i--) {
+							if (listOfResults.get(i) instanceof Organization) {
+								if (before.after(((Organization) listOfResults
+										.get(i)).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults.get(i) instanceof MainEntity) {
+								if (before.after(((MainEntity) listOfResults
+										.get(i)).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults.get(i) instanceof Topic) {
+								if (before
+										.after(((Topic) listOfResults.get(i)).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults.get(i) instanceof Plan) {
+								if (before
+										.after(((Plan) listOfResults.get(i)).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults.get(i) instanceof Idea) {
+								if (before
+										.after(((Idea) listOfResults.get(i)).intializedIn)) {
+									listOfResults.remove(i);
+								}
+							} else if (listOfResults.get(i) instanceof Item) {
+								if (before
+										.after(((Item) listOfResults.get(i)).endDate)) {
+									listOfResults.remove(i);
+								}
+							}
 						}
 					}
 				}
 			}
 		} else {
-			if (before.before(after)) {
-				if (before.compareTo(new Date(0, 0, 0)) == 0) {
-					// after
-					for (int i = listOfResults.size() - 1; i > 0; i--) {
-						if (listOfResults instanceof Organization) {
-							if (after
-									.before(((Organization) listOfResults).intializedIn)) {
-								listOfResults.remove(i);
-							}
-						} else if (listOfResults instanceof MainEntity) {
-							if (after
-									.before(((MainEntity) listOfResults).intializedIn)) {
-								listOfResults.remove(i);
-							}
-						} else if (listOfResults instanceof Topic) {
-							if (after
-									.before(((Topic) listOfResults).intializedIn)) {
-								listOfResults.remove(i);
-							}
-						} else if (listOfResults instanceof Plan) {
-							if (after
-									.before(((Plan) listOfResults).intializedIn)) {
-								listOfResults.remove(i);
-							}
-						} else if (listOfResults instanceof Idea) {
-							if (after
-									.before(((Idea) listOfResults).intializedIn)) {
-								listOfResults.remove(i);
-							}
-						} else if (listOfResults instanceof Item) {
-							if (!(after.before(((Item) listOfResults).endDate) && after
-									.after(((Item) listOfResults).startDate))) {
-								listOfResults.remove(i);
-							}
-						}
-					}
-				} else {
-					if (before.compareTo(new Date(0, 0, 0)) == 0) {
-						// before
-						for (int i = listOfResults.size() - 1; i > 0; i--) {
-							if (listOfResults instanceof Organization) {
-								if (!before
-										.before(((Organization) listOfResults).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults instanceof MainEntity) {
-								if (!before
-										.before(((MainEntity) listOfResults).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults instanceof Topic) {
-								if (!before
-										.before(((Topic) listOfResults).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults instanceof Plan) {
-								if (!before
-										.before(((Plan) listOfResults).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults instanceof Idea) {
-								if (!before
-										.before(((Idea) listOfResults).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults instanceof Item) {
-								if (!(before
-										.before(((Item) listOfResults).endDate) && before
-										.after(((Item) listOfResults).startDate))) {
-									listOfResults.remove(i);
-								}
-							}
-						}
-					} else {
-						// both
-						for (int i = listOfResults.size() - 1; i > 0; i--) {
-							if (listOfResults instanceof Organization) {
-								if (!before
-										.before(((Organization) listOfResults).intializedIn)
-										|| after.before(((Organization) listOfResults).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults instanceof MainEntity) {
-								if (!before
-										.before(((MainEntity) listOfResults).intializedIn)
-										|| after.before(((MainEntity) listOfResults).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults instanceof Topic) {
-								if (!before
-										.before(((Topic) listOfResults).intializedIn)
-										|| after.before(((Topic) listOfResults).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults instanceof Plan) {
-								if (!before
-										.before(((Plan) listOfResults).intializedIn)
-										|| after.before(((Plan) listOfResults).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults instanceof Idea) {
-								if (!before
-										.before(((Idea) listOfResults).intializedIn)
-										|| after.before(((Idea) listOfResults).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults instanceof Item) {
-								if (!(before
-										.before(((Item) listOfResults).endDate) && before
-										.after(((Item) listOfResults).startDate))
-										|| !(after
-												.before(((Item) listOfResults).endDate) && after
-												.after(((Item) listOfResults).startDate))) {
-									listOfResults.remove(i);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * @author M Ghanem
-	 * 
-	 * @story C4S02 Advanced Search Result; search for Items according to the
-	 *        given parameters.
-	 * 
-	 * @param items
-	 *            :: "List"; of Item that we need to search in.
-	 * 
-	 * @param wantKey
-	 *            :: "String"; of the keyword that the user is searching for.
-	 * 
-	 * @param unWantKey
-	 *            :: "String"; of the word where user want to avoid it within
-	 *            the result of searching.
-	 * 
-	 * @param befor
-	 *            :: "Date"; where the search result is before this date.
-	 * 
-	 * @param after
-	 *            :: "Date"; where the search result is after this date.
-	 * 
-	 * @param exact
-	 *            :: "Date"; where the search result is in this date.
-	 * 
-	 * @return void.
-	 * 
-	 */
-	public static void searchWithItem(List<Model> items, String unwantKey,
-			String wantKey, Date before, Date after, Date exact) {
-		for (int i = 0; i < items.size(); i++) {
-			if (!((Item) items.get(i)).summary.contains(unwantKey)
-					&& !((Item) items.get(i)).description.contains(unwantKey)) {
-				if (((Item) items.get(i)).summary.contains(wantKey)) {
-					listOfResults.add(items.get(i));
-				} else {
-					if (((Item) items.get(i)).description.contains(wantKey)) {
-						listOfResults.add(items.get(i));
-					} else {
-						boolean add = true;
-						List<Tag> x = ((Item) items.get(i)).tags;
-						for (int j = 0; j < x.size(); j++) {
-							if (x.get(j).name.contains(unwantKey)) {
-								add = false;
-							}
-						}
-						if (add) {
-							for (int j = 0; j < x.size(); j++) {
-								if (x.get(j).name.contains(wantKey)) {
-									listOfResults.add(items.get(i));
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * 
-	 * @author M Ghanem
-	 * 
-	 * @story C4S02 Advanced Search Result; search for Ideas according to the
-	 *        given parameters.
-	 * 
-	 * @param items
-	 *            :: "List"; of Idea that we need to search in.
-	 * 
-	 * @param wantKey
-	 *            :: "String"; of the keyword that the user is searching for.
-	 * 
-	 * @param unWantKey
-	 *            :: "String"; of the word where user want to avoid it within
-	 *            the result of searching.
-	 * 
-	 * @param befor
-	 *            :: "Date"; where the search result is before this date.
-	 * 
-	 * @param after
-	 *            :: "Date"; where the search result is after this date.
-	 * 
-	 * @param exact
-	 *            :: "Date"; where the search result is in this date.
-	 * 
-	 * @return void.
-	 * 
-	 */
-	public static void searchWithIdea(List<Model> ideas, String unwantKey,
-			String wantKey) {
-		for (int i = 0; i < ideas.size(); i++) {
-			if (!((Idea) ideas.get(i)).title.contains(unwantKey)
-					&& !((Idea) ideas.get(i)).description.contains(unwantKey)) {
-				if (((Idea) ideas.get(i)).title.contains(wantKey)) {
-					listOfResults.add(ideas.get(i));
-				} else {
-					if (((Idea) ideas.get(i)).description.contains(wantKey)) {
-						listOfResults.add(ideas.get(i));
-					} else {
-						boolean add = true;
-						List<Tag> x = ((Idea) ideas.get(i)).tagsList;
-						for (int j = 0; j < x.size(); j++) {
-							if (x.get(j).name.contains(unwantKey)) {
-								add = false;
-							}
-						}
-						if (add) {
-							for (int j = 0; j < x.size(); j++) {
-								if (x.get(j).name.contains(wantKey)) {
-									listOfResults.add(ideas.get(i));
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * 
-	 * @author M Ghanem
-	 * 
-	 * @story C4S02 Advanced Search Result; search for Plan according to the
-	 *        given parameters.
-	 * 
-	 * @param items
-	 *            :: "List"; of Plan that we need to search in.
-	 * 
-	 * @param wantKey
-	 *            :: "String"; of the keyword that the user is searching for.
-	 * 
-	 * @param unWantKey
-	 *            :: "String"; of the word where user want to avoid it within
-	 *            the result of searching.
-	 * 
-	 * @param befor
-	 *            :: "Date"; where the search result is before this date.
-	 * 
-	 * @param after
-	 *            :: "Date"; where the search result is after this date.
-	 * 
-	 * @param exact
-	 *            :: "Date"; where the search result is in this date.
-	 * 
-	 * @return void.
-	 * 
-	 */
-	public static void searchWithPlan(List<Model> plans, String unwantKey,
-			String wantKey) {
-		for (int i = 0; i < plans.size(); i++) {
-			if (!((models.Plan) plans.get(i)).title.contains(unwantKey)) {
-				if (((models.Plan) plans.get(i)).title.contains(wantKey)) {
-					listOfResults.add(plans.get(i));
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * 
-	 * @author M Ghanem
-	 * 
-	 * @story C4S02 Advanced Search Result; search for Topic according to the
-	 *        given parameters.
-	 * 
-	 * @param items
-	 *            :: "List"; of Topic that we need to search in.
-	 * 
-	 * @param wantKey
-	 *            :: "String"; of the keyword that the user is searching for.
-	 * 
-	 * @param unWantKey
-	 *            :: "String"; of the word where user want to avoid it within
-	 *            the result of searching.
-	 * 
-	 * @param befor
-	 *            :: "Date"; where the search result is before this date.
-	 * 
-	 * @param after
-	 *            :: "Date"; where the search result is after this date.
-	 * 
-	 * @param exact
-	 *            :: "Date"; where the search result is in this date.
-	 * 
-	 * @return void.
-	 * 
-	 */
-	public static void searchWithTopic(List<Topic> topics, String unwantKey,
-			String wantKey) {
-		for (int i = 0; i < topics.size(); i++) {
-			if (!((Topic) topics.get(i)).title.contains(unwantKey)
-					&& !((Topic) topics.get(i)).description.contains(unwantKey)) {
-				if (((Topic) topics.get(i)).title.contains(wantKey)) {
-					listOfResults.add(topics.get(i));
-				} else {
-					if (((Topic) topics.get(i)).description.contains(wantKey)) {
-						listOfResults.add(topics.get(i));
-					} else {
-						boolean add = true;
-						List<Tag> x = ((Topic) topics.get(i)).tags;
-						for (int j = 0; j < x.size(); j++) {
-							if (x.get(j).name.contains(unwantKey)) {
-								add = false;
-							}
-						}
-						if (add) {
-							for (int j = 0; j < x.size(); j++) {
-								if (x.get(j).name.contains(wantKey)) {
-									listOfResults.add(topics.get(i));
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * @author M Ghanem
-	 * 
-	 * @story C4S02 Advanced Search Result; search for Entities and sub-entities
-	 *        according to the given parameters.
-	 * 
-	 * @param items
-	 *            :: "List"; of MainEntity that we need to search in.
-	 * 
-	 * @param wantKey
-	 *            :: "String"; of the keyword that the user is searching for.
-	 * 
-	 * @param unWantKey
-	 *            :: "String"; of the word where user want to avoid it within
-	 *            the result of searching.
-	 * 
-	 * @param befor
-	 *            :: "Date"; where the search result is before this date.
-	 * 
-	 * @param after
-	 *            :: "Date"; where the search result is after this date.
-	 * 
-	 * @param exact
-	 *            :: "Date"; where the search result is in this date.
-	 * 
-	 * @return void.
-	 * 
-	 */
-	public static void searchWithEntities(long id, String unwantKey,
-			String wantKey) {
-
-		List<MainEntity> entity = ((Organization) Organization.findById(id)).entitiesList;
-		System.out.println("LOL");
-		for (int i = 0; i < entity.size(); i++) {
-			System.out.println("LOL" + i);
-
-			System.out.println("LOL" + i + " " + i);
-			if (!((MainEntity) entity.get(i)).name.contains(unwantKey)
-					&& !((MainEntity) entity.get(i)).description
-							.contains(unwantKey)) {
-				if (((MainEntity) entity.get(i)).name.contains(wantKey)) {
-					listOfResults.add(entity.get(i));
-				} else {
-					if (((MainEntity) entity.get(i)).description
-							.contains(wantKey)) {
-						listOfResults.add(entity.get(i));
-					} else {
-						boolean add = true;
-						List<Tag> x = ((MainEntity) entity.get(i)).tagList;
-						for (int j = 0; j < x.size(); j++) {
-							if (x.get(j).name.contains(unwantKey)) {
-								add = false;
-							}
-						}
-						if (add) {
-							for (int j = 0; j < x.size(); j++) {
-								if (x.get(j).name.contains(wantKey)) {
-									listOfResults.add(entity.get(i));
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-
+			constrainTime(
+					new Date(exact.getYear(), exact.getMonth(),
+							exact.getDay() - 1), new Date(exact.getYear(),
+							exact.getMonth(), exact.getDay() + 1), new Date(
+							2010, 0, 0));
 		}
 	}
 
@@ -819,7 +633,6 @@ public class Search extends Controller {
 	 *            : the keyword the user enters to search for
 	 * 
 	 */
-
 	public static void quickSearch(String keyword) {
 		System.out.println(keyword);
 		listOfResults = new ArrayList<Model>();
@@ -869,16 +682,18 @@ public class Search extends Controller {
 		for (int s = 0; s < keywords.length; s++) {
 			List<Organization> listOfOrganizations = Organization.findAll();
 			for (int i = 0; i < listOfOrganizations.size(); i++) {
-				if (listOfOrganizations.get(i).name.toLowerCase()
-						.contains(keywords[s].toLowerCase())) {
+				if (listOfOrganizations.get(i).name.toLowerCase().contains(
+						keywords[s].toLowerCase())) {
 					if (!listOfOrgs.contains(listOfOrganizations.get(i))) {
 						listOfOrgs.add(listOfOrganizations.get(i));
 					}
 				} else {
 					for (int j = 0; j < listOfOrganizations.get(i).relatedTags
 							.size(); j++) {
-						if (keywords[s].toLowerCase().contains(listOfOrganizations
-								.get(i).relatedTags.get(j).name.toLowerCase())) {
+						if (keywords[s].toLowerCase()
+								.contains(
+										listOfOrganizations.get(i).relatedTags
+												.get(j).name.toLowerCase())) {
 							if (!listOfOrgs
 									.contains(listOfOrganizations.get(i))) {
 								listOfOrgs.add(listOfOrganizations.get(i));
@@ -930,7 +745,8 @@ public class Search extends Controller {
 		List<MainEntity> listOfEntities = MainEntity.findAll();
 		for (int s = 0; s < keywords.length; s++) {
 			for (int i = 0; i < listOfEntities.size(); i++) {
-				if (listOfEntities.get(i).name.toLowerCase().contains(keywords[s].toLowerCase())
+				if (listOfEntities.get(i).name.toLowerCase().contains(
+						keywords[s].toLowerCase())
 						|| listOfEntities.get(i).description.toLowerCase()
 								.contains(keywords[s].toLowerCase())) {
 					if (!listOfEnts.contains(listOfEntities.get(i))) {
@@ -938,9 +754,9 @@ public class Search extends Controller {
 					}
 				} else {
 					for (int j = 0; j < listOfEntities.get(i).tagList.size(); j++) {
-						if (keywords[s].toLowerCase()
-								.contains(listOfEntities.get(i).tagList
-										.get(j).name.toLowerCase())) {
+						if (keywords[s].toLowerCase().contains(
+								listOfEntities.get(i).tagList.get(j).name
+										.toLowerCase())) {
 							if (!listOfEnts.contains(listOfEntities.get(i))) {
 								listOfEnts.add(listOfEntities.get(i));
 							}
@@ -988,7 +804,8 @@ public class Search extends Controller {
 		List<Idea> listOfIdeas = Idea.findAll();
 		for (int s = 0; s < keywords.length; s++) {
 			for (int i = 0; i < listOfIdeas.size(); i++) {
-				if (listOfIdeas.get(i).title.toLowerCase().contains(keywords[s].toLowerCase())
+				if (listOfIdeas.get(i).title.toLowerCase().contains(
+						keywords[s].toLowerCase())
 						|| listOfIdeas.get(i).description.toLowerCase()
 								.contains(keywords[s].toLowerCase())) {
 					if (!listOfIdss.contains(listOfIdeas.get(i))) {
@@ -996,9 +813,9 @@ public class Search extends Controller {
 					}
 				} else {
 					for (int j = 0; j < listOfIdeas.get(i).tagsList.size(); j++) {
-						if (keywords[s].toLowerCase()
-								.contains(listOfIdeas.get(i).tagsList
-										.get(j).name.toLowerCase())) {
+						if (keywords[s].toLowerCase().contains(
+								listOfIdeas.get(i).tagsList.get(j).name
+										.toLowerCase())) {
 							if (!listOfIdss.contains(listOfIdeas.get(i))) {
 								listOfIdss.add(listOfIdeas.get(i));
 							}
@@ -1053,7 +870,8 @@ public class Search extends Controller {
 			for (int i = 0; i < listOfTopics.size(); i++) { // Looping on the
 															// list of
 															// organization
-				if (listOfTopics.get(i).title.toLowerCase().contains(keywords[s].toLowerCase())
+				if (listOfTopics.get(i).title.toLowerCase().contains(
+						keywords[s].toLowerCase())
 						|| listOfTopics.get(i).description.toLowerCase()
 								.contains(keywords[s].toLowerCase())) {
 					if (!listOfTopis.contains(listOfTopics.get(i))) {
@@ -1061,9 +879,9 @@ public class Search extends Controller {
 					}
 				} else {
 					for (int j = 0; j < listOfTopics.get(i).tags.size(); j++) {
-						if (keywords[s].toLowerCase()
-								.contains(listOfTopics.get(i).tags
-										.get(j).name.toLowerCase())) {
+						if (keywords[s].toLowerCase().contains(
+								listOfTopics.get(i).tags.get(j).name
+										.toLowerCase())) {
 							if (!listOfTopis.contains(listOfTopics.get(i))) {
 								listOfTopis.add(listOfTopics.get(i));
 							}
