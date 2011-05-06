@@ -271,18 +271,7 @@ public class Organizations extends CRUD {
 	 * @param organizationId
 	 *            : The id of the organization that the user wants to follow
 	 * 
-	 * @param user
-	 *            : The user who wants to follow an organization
 	 */
-
-	public static void viewFollowers(long organizationId, String f) {
-		Organization org = Organization.findById(organizationId);
-		if (f.equals("true")) {
-			followOrganization(organizationId);
-		}
-		render(org);
-	}
-
 	public static void followOrganization(long organizationId) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(organizationId);
@@ -295,9 +284,34 @@ public class Organizations extends CRUD {
 			org.save();
 			user.followingOrganizations.add(org);
 			user.save();
+			redirect(request.controller + ".viewProfile", org.id,
+					"You are now a follower");
 		} else {
 			System.out.println("Sorry! Action cannot be performed");
 		}
+	}
+
+	/**
+	 * The method that renders the page for viewing the followers of an
+	 * organization
+	 * 
+	 * @author Noha Khater
+	 * 
+	 * @Stroy C2S10
+	 * 
+	 * @param organizationId
+	 *            : The id of the organization that the user wants to view its
+	 *            followers
+	 * 
+	 * @param f
+	 *            : The String which is used as a variable for checking
+	 */
+	public static void viewFollowers(long organizationId, String f) {
+		Organization org = Organization.findById(organizationId);
+		if (f.equals("true")) {
+			followOrganization(organizationId);
+		}
+		render(org);
 	}
 
 	/**
@@ -360,12 +374,12 @@ public class Organizations extends CRUD {
 				i++;
 			}
 		}
+		int canCreateEntity = 0;
+		if (user.isAdmin || org.creator.equals(user)) {
+			canCreateEntity = 1;
+		}
 		List<MainEntity> entities = org.entitiesList;
 		boolean enrolled = false;
-		// plzzzzzz remove
-		// if (org.enrolledUsers.contains(user)) {
-		// enrolled = true;
-		// }
 		int b = 0;
 		if (Users.isPermitted(user,
 				"Invite a user to join a private or secret organization",
@@ -392,7 +406,6 @@ public class Organizations extends CRUD {
 				|| Users.getEnrolledUsers(org).contains(user);
 		render(user, org, entities, requestToJoin, tags, flag, b, admin,
 				allowed, isMember);
-
 	}
 
 	/**
