@@ -333,7 +333,7 @@ public class Topic extends Model {
 	public void requestFromUserToPost(User u) {
 		if (requestsToJoin.indexOf(u) < 0) {
 			User o = getOrganizer().get(0);
-			RequestToJoin r = new RequestToJoin(u, this, null, o.email);
+			RequestToJoin r = new RequestToJoin(u, this, null, o.email).save();
 			// send the request
 			requestsToJoin.add(r);
 			_save();
