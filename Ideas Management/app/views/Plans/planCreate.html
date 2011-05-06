@@ -281,10 +281,6 @@ To add another item check here <input type="checkbox" name = "check" value = "ch
 			alert("Please Insert the day on which the plan starts");
 			return false;
 		}
-		if(document.getElementById("startDay").value == ""){
-			alert("Please insert a day for the start of the plan");
-			return false;
-		}
 		if(document.getElementById("startMonth").value == ""){
 			alert("Please insert a month for the start of the plan");
 			return false;
@@ -426,51 +422,68 @@ To add another item check here <input type="checkbox" name = "check" value = "ch
 			alert("In item's end date: November has only 30 days");
 			return false;
 		}
-		if(parseInt(document.getElementById("endYear").value.toString())< parseInt(document.getElementById("startYear").value.toString())){
-			alert("In plan: End year must be greater than Start year");
+		if(parseInt(document.getElementById("startYear").value.toString()) > parseInt(document.getElementById("endYear").value.toString())){
+			alert("In plan: Start  year must be earlier end year");
 			return false;
-			if(parseInt(document.getElementById("endMonth").value.toString())< parseInt(document.getElementById("startMonth").value.toString())){
-			alert("In plan: End month must be greater than Start month");
-			return false;}
-			if (parseInt(document.getElementById("endDay").value.toString()) < parseInt(document.getElementById("startDay").value.toString())) {
-				alert("In plan: End day must be greater than Start day");
-				return false;
+			if(parseInt(document.getElementById("startYear").value.toString())== parseInt(document.getElementById("endYear").value.toString())){
+				if(parseInt(document.getElementById("startMonth").value.toString())> parseInt(document.getElementById("endMonth").value.toString())){
+					alert("In plan: Start month must be earlier than end month");
+					if(parseInt(document.getElementById("startMonth").value.toString())== parseInt(document.getElementById("endMonth").value.toString())){
+						if(parseInt(document.getElementById("startDay").value.toString())> parseInt(document.getElementById("endDay").value.toString())){
+							alert("In plan: Start day must be earlier than end day");
+							return false;
+						}
+					}
+				}
 			}
 		}
-		if(parseInt(document.getElementById("iendYear").value.toString())< parseInt(document.getElementById("istartYear").value.toString())){
-			alert("In item: End year must be greater than Start year");
+		if(parseInt(document.getElementById("istartYear").value.toString()) > parseInt(document.getElementById("iendYear").value.toString())){
+			alert("In item: Start  year must be earlier end year");
 			return false;
-			if(parseInt(document.getElementById("iendMonth").value.toString())< parseInt(document.getElementById("istartMonth").value.toString())){
-			alert("In item: End month must be greater than Start month");
-			return false;}
-			if(parseInt(document.getElementById("iendDay").value.toString())< parseInt(document.getElementById("istartDay").value.toString())){
-			alert("In item: End day must be greater than Start day");
-			return false;}
+			if(parseInt(document.getElementById("istartYear").value.toString())== parseInt(document.getElementById("iendYear").value.toString())){
+				if(parseInt(document.getElementById("istartMonth").value.toString())> parseInt(document.getElementById("iendMonth").value.toString())){
+					alert("In item: Start month must be earlier than end month");
+					if(parseInt(document.getElementById("istartMonth").value.toString())== parseInt(document.getElementById("iendMonth").value.toString())){
+						if(parseInt(document.getElementById("istartDay").value.toString())> parseInt(document.getElementById("iendDay").value.toString())){
+							alert("In item: Start day must be earlier than end day");
+							return false;
+						}
+					}
+				}
+			}
 		}
-		if(parseInt(document.getElementById("istartYear").value.toString())< parseInt(document.getElementById("startYear").value.toString())){
-			alert("Start year of the item must be later than the start year of the plan");
+		if(parseInt(document.getElementById("istartYear").value.toString()) < parseInt(document.getElementById("startYear").value.toString())){
+			alert("The start year of the item must be later than the start year of the plan");
 			return false;
-		if(parseInt(document.getElementById("istartMonth").value.toString())< parseInt(document.getElementById("startMonth").value.toString())){
-			alert("Start month of the item must be later than the start month of the plan");
-			return false;
-		}
-		if(parseInt(document.getElementById("istartDay").value.toString())< parseInt(document.getElementById("startDay").value.toString())){
-			alert("Start day of the item must be later than the start day of the plan");
-			return false;
-		}
+			if(parseInt(document.getElementById("istartYear").value.toString()) == parseInt(document.getElementById("startYear").value.toString())){
+				if(parseInt(document.getElementById("istartMonth").value.toString())< parseInt(document.getElementById("startMonth").value.toString())){
+					alert("The start month of the item must be later than the start month of the plan");
+					return false;
+					if(parseInt(document.getElementById("istartMonth").value.toString())== parseInt(document.getElementById("startMonth").value.toString())){
+						if(parseInt(document.getElementById("istartDay").value.toString()) < parseInt(document.getElementById("startDay").value.toString())){
+							alert("The start day of the item must be later than the start day of the plan");
+							return false;
+						}
+					}
+				}
+			}
 		}
 		
-		if(parseInt(document.getElementById("iendYear").value.toString())> parseInt(document.getElementById("endYear").value.toString())){
-			alert("End year of the item must be earlier than end year of the plan");
+		if(parseInt(document.getElementById("iendYear").value.toString()) > parseInt(document.getElementById("endYear").value.toString())){
+			alert("The end year of the item must be earlier than the end year of the plan");
 			return false;
-			if(parseInt(document.getElementById("iendMonth").value.toString())> parseInt(document.getElementById("endMonth").value.toString())){
-			alert("End month of the item must be earlier than end month of the plan");
-			return false;
-		}
-		if(parseInt(document.getElementById("iendDay").value.toString())> parseInt(document.getElementById("endDay").value.toString())){
-			alert("End day of the item must be earlier than end day of the plan");
-			return false;
-		}
+			if(parseInt(document.getElementById("iendYear").value.toString())== parseInt(document.getElementById("endYear").value.toString())){
+				if(parseInt(document.getElementById("iendMonth").value.toString())>parseInt(document.getElementById("endMonth").value.toString())){
+					alert("The end month of the item must be earlier than the end month of the plan");
+					return false;
+					if(parseInt(document.getElementById("iendMonth").value.toString())== parseInt(document.getElementById("endMonth").value.toString())){
+						if(parseInt(document.getElementById("iendDay").value.toString()) > parseInt(document.getElementById("endDay").value.toString())){
+							alert("The end day of the item must be earlier than the end day of the plan");
+							return false;
+						}
+					}
+				}
+			}
 		}
 		
 	}
