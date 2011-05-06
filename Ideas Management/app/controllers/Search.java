@@ -472,7 +472,7 @@ public class Search extends Controller {
 				if (((models.Plan) plans.get(i)) != null) {
 					for (int j = 0; j < ((models.Plan) plans.get(i)).items
 							.size(); j++) {
-						items.add((((models.Plan) plans.get(i)).ideas.get(j)));
+						items.add((((models.Plan) plans.get(i)).items.get(j)));
 					}
 				}
 			}
