@@ -189,9 +189,12 @@ public class VolunteerRequests extends CRUD {
 		user.save();
 		item.save();
 		request.delete();
-		String description = "Your request to volunteer on item: " + item.summary
+		String descriptionToNewVolunteer = "Your request to volunteer on item: " + item.summary
 				+ " has been accepted.";
-		userToNotifyList.add(user);
+		String descriptionToOldVolunteer = "User: " + user.username + " is now working with you on item: " + item.summary
+		+ " .";
+		Notifications.sendNotification(user.id, item.plan.id,
+				"plan", descriptionToNewVolunteer);
 		for (int i = 0; i < item.plan.topic.getOrganizer().size(); i++) {
 			if (org.id != item.plan.topic.getOrganizer().get(i).id) {
 				if (!userToNotifyList.contains(item.plan.topic.getOrganizer().get(i)))
@@ -201,7 +204,7 @@ public class VolunteerRequests extends CRUD {
 
 		for (User userToNotify : userToNotifyList) {
 			Notifications.sendNotification(userToNotify.id, item.plan.id,
-					"plan", description);
+					"plan", descriptionToOldVolunteer);
 		}
 
 	}

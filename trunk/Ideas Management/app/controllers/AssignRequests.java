@@ -336,11 +336,11 @@ public class AssignRequests extends CRUD {
 		request.destination.receivedAssignRequests.remove(request);
 		request.sender.sentAssignRequests.remove(request);
 		item.assignRequests.remove(request);
-		List<User> list = new ArrayList<User>();
-		list.addAll(item.assignees);
-		for(User u : item.plan.topic.getOrganizer()){
-			if(!item.plan.topic.getOrganizer().contains(u))
-				list.add(u);
+		List<User> userToNotifyList = new ArrayList<User>();
+		userToNotifyList.addAll(item.assignees);
+		for(User organizer : item.plan.topic.getOrganizer()){
+			if(!item.plan.topic.getOrganizer().contains(organizer))
+				userToNotifyList.add(organizer);
 		}
 		user.itemsAssigned.add(item);
 		item.assignees.add(user);
@@ -352,7 +352,7 @@ public class AssignRequests extends CRUD {
 				+ " has accepted the assignment to work on item: "
 				+ request.source.summary + ".";
 
-		for (User userToNotify : list) {
+		for (User userToNotify : userToNotifyList) {
 			Notifications.sendNotification(userToNotify.id, item.plan.id,
 					"plan", description);
 		}
