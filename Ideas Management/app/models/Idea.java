@@ -146,7 +146,7 @@ public class Idea extends Model {
 	 * 
 	 * @author ${Abdalrahman Ali}
 	 * 
-	 * this constructor is used to create draft ideas
+	 *         this constructor is used to create draft ideas
 	 * 
 	 * @param title
 	 *            title of the idea
@@ -182,8 +182,8 @@ public class Idea extends Model {
 	 * 
 	 * @author ${Fady Amir}
 	 * 
-	 * @param commentsList
-	 *            The list of comments of an idea
+	 * @param idea
+	 *            the idea that we check its date
 	 * 
 	 */
 	public static void checkDate(Idea idea) {
@@ -196,7 +196,7 @@ public class Idea extends Model {
 		Date lastCommentDate = lastComment.commentDate;
 
 		lastCommentDate.setDate(lastCommentDate.getDate() + 14);
-		
+
 		if (lastCommentDate.after(now)) {
 			List<User> user = new ArrayList<User>();
 			user.add(idea.author);
@@ -205,15 +205,24 @@ public class Idea extends Model {
 			String desc = "This idea is inactive";
 			// Send notification
 
-			   for(int i =0;i<user.size();i++){
-				     Notifications.sendNotification(user.get(i).id, idea.id, type, desc);
-				   }
+			for (int i = 0; i < user.size(); i++) {
+				Notifications.sendNotification(user.get(i).id, idea.id, type,
+						desc);
+			}
 		}
 
 	}
 
+	/**
+	 * 
+	 * @author ${Fady Amir}
+	 * 
+	 *         checking the dates of all ideas
+	 * 
+	 */
+
 	public static void getAllIdeas() {
-	List<Organization> listOfOrganizations = Organization.findAll();
+		List<Organization> listOfOrganizations = Organization.findAll();
 		for (int i = 0; i < listOfOrganizations.size(); i++) {
 			Organization org = listOfOrganizations.get(i);
 			List<User> users = Users.getEnrolledUsers(org);
@@ -228,7 +237,6 @@ public class Idea extends Model {
 				}
 			}
 		}
-
 	}
 
 	public String toString() {
