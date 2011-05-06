@@ -16,7 +16,7 @@ import models.*;
 /**
  * 
  * @author DebugTeam
- * @version 1.7
+ * @version 1.8
  * 
  */
 
@@ -36,7 +36,13 @@ public class Bootstrap extends Job {
 					"admin", 0, new Date(1990, 11, 11), "Egypt", "Prgrammer");
 			admin.isAdmin = true;
 			admin._save();
-
+			User hadi = new User("elhadiahmed3@gmail.com", "hadi.18",
+					"notreal", "Ahmed", "El-Hadi", 0, new Date(1991, 3, 20),
+					null, "");
+			hadi._save();
+			User barnasa = new User("brns@gmail.com", "brns", "1234",
+					"Abdelrahman", "Ali", 0, new Date(), "egypt", "student");
+			barnasa._save();
 			User sharaf = new User("sharaf@eg.gov", "sharaf", "1234", "Asam",
 					"Sharaf", 0, new Date(1955, 2, 14), "Egypt", "Primenister")
 					.save();
@@ -53,7 +59,7 @@ public class Bootstrap extends Job {
 					"Mohamed", "Gomaa", 0, new Date(1991, 6, 4), "Egypt",
 					"student");
 			gom3a._save();
-			
+
 			User khayat = new User("ibrahim.al.khayat@gmail.com", "ialk",
 					"1234", "Ibrahim", "EL-khayat", 0, new Date(1991, 1, 19),
 					"Egypt", "student");
@@ -90,7 +96,7 @@ public class Bootstrap extends Job {
 			Organization egypt = new Organization("Egypt", admin, 2, false)
 					.save();
 
-			Organization gov = new Organization("الحكومة المصرية", ashraf, 0,
+			Organization gov = new Organization("الحكومة المصرية", sharaf, 0,
 					true).save();
 
 			Tag tagEducation = new Tag("Education", guc).save();
@@ -155,7 +161,6 @@ public class Bootstrap extends Job {
 
 			Topic gucMetStudentUnion = new Topic("Student union",
 					"Suggestions", 2, ashraf, gucMet).save();
-
 			gucMetStudentUnion._save();
 			gucMetStudentUnion.tags.add(tagGuc);
 			gucMetStudentUnion._save();
@@ -177,21 +182,56 @@ public class Bootstrap extends Job {
 
 			Topic govImp = new Topic("التعديلات الدستورية", "اقتراحات", 1,
 					sharaf, govHead).save();
-
+			govHead.topicList.add(govImp);
+			govHead._save();
 			Topic egyahlymatch = new Topic("Ahly vs Zamalek",
 					"for football lovers", 2, admin, elAhly).save();
-
+			elAhly.topicList.add(egyahlymatch);
+			elAhly._save();
 			Topic innovation = new Topic("Create. Innovate",
 					"how to encourage inventors and enhance creativity", 1,
 					sharaf, govHead).save();
-
+			govHead.topicList.add(innovation);
+			govHead._save();
 			Topic matchChaos = new Topic(
 					"Chaos in egyptian football matches",
 					"try to avoid chaos and fights during matches due to different points of view",
 					2, admin, elAhly).save();
+			elAhly.topicList.add(matchChaos);
+			elAhly._save();
 
 			// hadi add ideas here
 
+			Idea i1 = new Idea("Law Improvement",
+					"Adding restrcitions on businessmen", barnasa, govImp, true);
+			i1.save();
+			barnasa.save();
+
+			Idea i2 = new Idea("Human Rights",
+					"All Humans Are Equal No Matter What", gom3a, govImp);
+			i2.save();
+			gom3a.save();
+			Idea i3 = new Idea(
+					"C7 Labs",
+					"These kinds of labs should be working 24/7 so i suggest to have maintanence man from the IT for every lab it won't be costy and it will save a lot of time ",
+					hadi, gucMetStudentUnion);
+			i3.save();
+			hadi.save();
+			Idea i4 = new Idea(
+					"Chaos",
+					"That should never happen in this country and safety must be maintained",
+					hadi, matchChaos);
+			i4.save();
+			hadi.save();
+			Idea i5 = new Idea(
+					"CA Course",
+					"this course must be more organized and Dr. Amr T. should be more respectful to our mentallity as adults",
+					hadi, gucMetStudentUnion);
+			i5.save();
+			hadi.save();
+			Idea i6 = new Idea("", "", hadi, gucMetStudentUnion);
+			i6.save();
+			hadi.save();
 			Plan p1 = new Plan("S.U. heads", ashraf, new Date(111, 03, 20),
 					new Date(111, 8, 01), "Plan for SU heads elections",
 					gucMetStudentUnion, "summer break").save();
