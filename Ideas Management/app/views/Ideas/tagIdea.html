@@ -1,0 +1,28 @@
+#{extends '/ideas/layout.html' /}
+<html>
+    <head>
+        <title>Adding Tags</title>
+	</head>
+    <body>
+    	
+
+		
+        <p>
+        	
+			#{if tagAlreadyExists == true}
+			alert(tag already exists);
+			#{/if}
+			
+        	#{if userNotAllowed == false}
+			#{form @Ideas.tagIdea()}
+            <input type="text" name="tag" id="tag">
+			<input type="hidden" name="ideaId" value="${ideaId}">
+			<input type="submit" value="Add Tag">
+			#{/form}
+			#{/if}
+			#{else}
+			alert('You are not allowed to tag this topic!');
+			#{/else}
+        </p>
+    </body>
+</html>
