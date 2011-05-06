@@ -55,15 +55,15 @@ public class Ideas extends CRUD {
 	 * 
 	 * @param title the idea's title
 	 * 
-	 * @param titl the idea's description
+	 * @param description the idea's description
 	 */
 
-	public static void postDraft(long ideaId, String title, String titl) {
+	public static void postDraft(long ideaId, String title, String description) {
 
 		Idea idea = Idea.findById(ideaId);
 		idea.isDraft = false;
 		idea.title = title;
-		idea.description = titl;
+		idea.description = description;
 		idea.save();
 	}
 
@@ -76,15 +76,15 @@ public class Ideas extends CRUD {
 	 * 
 	 * @param title the idea's title
 	 * 
-	 * @param titl the idea's description
+	 * @param description the idea's description
 	 */
 
-	public static void saveDraft(long ideaId, String title, String titl) {
+	public static void saveDraft(long ideaId, String title, String description) {
 
 		Idea idea = Idea.findById(ideaId);
 		idea.title = title;
-		System.out.println(titl);
-		idea.description = titl;
+		System.out.println(description);
+		idea.description = description;
 		idea.save();
 	}
 
