@@ -525,34 +525,34 @@ public class Users extends CRUD {
 	 * @return List<User>
 	 */
 	public static List<User> searchOrganizer(Organization o) {
-		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
-		List<User> user = new ArrayList<User>();
-		if (o != null) {
-			// organizers = (List<UserRoleInOrganization>)
-			// UserRoleInOrganization
-			// .find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
-			// o, "organizer");
-			organizers = UserRoleInOrganization.find("byOrganization", o)
-					.fetch();
-			for (int i = 0; i < organizers.size(); i++) {
-				if ((organizers.get(i).role.roleName).equals("organizer")) {
-					user.add(organizers.get(i).enrolled);
-				}
-			}
+        List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
+        List<User> user = new ArrayList<User>();
+        if (o != null) {
+                // organizers = (List<UserRoleInOrganization>)
+                // UserRoleInOrganization
+                // .find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
+                // o, "organizer");
+                organizers = UserRoleInOrganization.find("byOrganization", o)
+                                .fetch();
+                for (int i = 0; i < organizers.size(); i++) {
+                        if ((organizers.get(i).role.roleName).equals("organizer")) {
+                                user.add(organizers.get(i).enrolled);
+                        }
+                }
 
-		}
-		// List<User> finalOrganizers = new ArrayList<User>();
-		// for (int i = 0; i < organizers.size(); i++) {
-		// finalOrganizers.add((organizers.get(i)).enrolled);
-		// }
-		int size = user.size();
-		for (int i = 0; i < size; i++) {
-			if (user.get(i).state == "d" || user.get(i).state == "n") {
-				user.remove(i);
-			}
-		}
-		return user;
-	}
+        }
+        // List<User> finalOrganizers = new ArrayList<User>();
+        // for (int i = 0; i < organizers.size(); i++) {
+        // finalOrganizers.add((organizers.get(i)).enrolled);
+        // }
+        int size = user.size();
+        for (int i = 0; i < size; i++) {
+                if (user.get(i).state == "d" || user.get(i).state == "n") {
+                        user.remove(i);
+                }
+        }
+        return user;
+}
 
 	/**
 	 * 
@@ -578,173 +578,186 @@ public class Users extends CRUD {
 	 * @return boolean
 	 */
 	public static boolean isPermitted(User user, String action, long placeId,
-			String placeType) {
-		// User banned =
-		// BannedUser.find("select b.bannedUser from BannedUser b where b.bannedUser = ? and b.resourceID = ? and b.resourceType = ? and b.action =  ",
-		// user);
-		BannedUser banned = BannedUser.find(
-				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
-				action, placeType, placeId).first();
-		String role;
-		if (user.isAdmin) {
-			return true;
-		}
+            String placeType) {
+    // User banned =
+    // BannedUser.find("select b.bannedUser from BannedUser b where b.bannedUser = ? and b.resourceID = ? and b.resourceType = ? and b.action =  ",
+    // user);
+     BannedUser banned = BannedUser.find(
+                    "byBannedUserAndActionAndResourceTypeAndResourceID", user,
+                    action, placeType, placeId).first();
+    String role;
+    if (user.isAdmin) {
+            return true;
+    }
 
-		if (banned != null) {
-			return false;
-		}
-		if (UserRoleInOrganizations.isOrganizer(user, placeId, placeType)) {
-			List<String> r = Roles.getRoleActions("organizer");
-			if (r.contains(action)) {
-				return true;
-			} else {
-				if (Roles.getRoleActions("idea developer").contains(action)) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		}
+    if (banned != null) {
+            return false;
+    }
+    if (UserRoleInOrganizations.isOrganizer(user, placeId, placeType)) {
+            List<String> r = Roles.getRoleActions("organizer");
+            if (r.contains(action)) {
+                    return true;
+            } else {
+                    if (Roles.getRoleActions("idea developer").contains(action)) {
+                            return true;
+                    } else {
+                            return false;
+                    }
+            }
+    }
 
-		if (placeType.equalsIgnoreCase("organization")) {
-			Organization org = Organization.findById(placeId);
-			// List<UserRoleInOrganization> l =
-			// UserRoleInOrganization.find("byOrganizationAnd")
-			if (user.equals(org.creator)) {
-				if (Roles.getRoleActions("organizationLead").contains(action)) {
-					return true;
-				} else {
-					if (Roles.getRoleActions("organizer").contains(action)) {
-						return true;
-					} else {
-						if (Roles.getRoleActions("idea developer").contains(
-								action)) {
-							return true;
-						} else {
-							return false;
-						}
-					}
-				}
+    if (placeType.equalsIgnoreCase("organization")) {
+            Organization org = Organization.findById(placeId);
+            // List<UserRoleInOrganization> l =
+            // UserRoleInOrganization.find("byOrganizationAnd")
+            if (user.equals(org.creator)) {
+                    if (Roles.getRoleActions("organizationLead").contains(action)) {
+                            return true;
+                    } else {
+                            if (Roles.getRoleActions("organizer").contains(action)) {
+                                    return true;
+                            } else {
+                                    if (Roles.getRoleActions("idea developer").contains(
+                                                    action)) {
+                                            return true;
+                                    } else {
+                                            return false;
+                                    }
+                            }
+                    }
 
-			}
+            }
 
-			if (org.privacyLevel == 0 || org.privacyLevel == 1) {
+            if (org.privacyLevel == 0 || org.privacyLevel == 1) {
 
-				List<UserRoleInOrganization> allowed = UserRoleInOrganization
-						.find("byEnrolledAndOrganization", user, org).fetch();
-				if (allowed == null) {
-					return false;
-				} else {
-					if (Roles.getRoleActions("idea developer").contains(action)) {
-						return true;
-					} else {
-						return false;
-					}
-				}
-			} else {
-				if (Roles.getRoleActions("idea developer").contains(action)) {
-					return true;
-				} else {
-					return false;
-				}
-			}
+                    List<UserRoleInOrganization> allowed = UserRoleInOrganization
+                                    .find("byEnrolledAndOrganization", user, org).fetch();
+                    if (allowed == null) {
+                            return false;
+                    } else {
+                            if (Roles.getRoleActions("idea developer").contains(action)) {
+                                    return true;
+                            } else {
+                                    return false;
+                            }
+                    }
+            } else {
+                    if (Roles.getRoleActions("idea developer").contains(action)) {
+                            return true;
+                    } else {
+                            return false;
+                    }
+            }
 
-		}
-		if (placeType.equalsIgnoreCase("topic")) {
-			Topic topic = Topic.findById(placeId);
-			MainEntity m = topic.entity;
-			Organization org = m.organization;
-			if (user.equals(org.creator)) {
-				if (Roles.getRoleActions("organizationLead").contains(action)) {
-					return true;
-				} else {
-					if (Roles.getRoleActions("organizer").contains(action)) {
-						return true;
-					} else {
-						if (Roles.getRoleActions("idea developer").contains(
-								action)) {
-							return true;
-						} else {
-							return false;
-						}
-					}
-				}
+    }
+    if (placeType.equalsIgnoreCase("topic")) {
+            Topic topic = Topic.findById(placeId);
+            MainEntity m = topic.entity;
+            Organization org = m.organization;
+            if (user.equals(org.creator)) {
+                    if (Roles.getRoleActions("organizationLead").contains(action)) {
+                            return true;
+                    } else {
+                            if (Roles.getRoleActions("organizer").contains(action)) {
+                                    return true;
+                            } else {
+                                    if (Roles.getRoleActions("idea developer").contains(
+                                                    action)) {
+                                            return true;
+                                    } else {
+                                            return false;
+                                    }
+                            }
+                    }
 
-			}
-			if (topic.privacyLevel == 0 || topic.privacyLevel == 1) {
-				List<UserRoleInOrganization> allowed = UserRoleInOrganization
-						.find("byEnrolledAndEntityTopicIDAndType", user,
-								topic.id, "topic").fetch();
-				if (allowed == null) {
-					return false;
-				} else {
-					if (Roles.getRoleActions("idea developer").contains(action)) {
-						return true;
-					} else {
-						return false;
-					}
-				}
-			} else {
-				if (org.privacyLevel == 0 || org.privacyLevel == 1) {
+            }
+            if (topic.privacyLevel == 0 || topic.privacyLevel == 1) {
+                    List<UserRoleInOrganization> allowed = UserRoleInOrganization
+                                    .find("byEnrolledAndEntityTopicIDAndType", user,
+                                                    topic.id, "topic").fetch();
+                    if (allowed == null) {
+                            return false;
+                    } else {
+                            if (Roles.getRoleActions("idea developer").contains(action)) {
+                                    return true;
+                            } else {
+                                    return false;
+                            }
+                    }
+            } else {
+                    if (org.privacyLevel == 0 || org.privacyLevel == 1) {
 
-					List<UserRoleInOrganization> allowed = UserRoleInOrganization
-							.find("byEnrolledAndOrganization", user, org)
-							.fetch();
-					if (allowed == null) {
-						return false;
-					} else {
-						if (Roles.getRoleActions("idea developer").contains(
-								action)) {
-							return true;
-						} else {
-							return false;
-						}
-					}
-				}
-			}
-		}
+                            List<UserRoleInOrganization> allowed = UserRoleInOrganization
+                                            .find("byEnrolledAndOrganization", user, org)
+                                            .fetch();
+                            if (allowed == null) {
+                                    return false;
+                            } else {
+                                    if (Roles.getRoleActions("idea developer").contains(
+                                                    action)) {
+                                            return true;
+                                    } else {
+                                            return false;
+                                    }
+                            }
+                    }
+                    if (org.privacyLevel == 2) {
+                            if (Roles.getRoleActions("idea developer").contains(action)) {
+                                    return true;
+                            } else {
+                                    return false;
+                            }
+                            }
+            }
+    }
 
-		if (placeType.equalsIgnoreCase("entity")) {
-			MainEntity entity = MainEntity.findById(placeId);
-			Organization org = entity.organization;
-			if (user.equals(org.creator)) {
-				if (Roles.getRoleActions("organizationLead").contains(action)) {
-					return true;
-				} else {
-					if (Roles.getRoleActions("organizer").contains(action)) {
-						return true;
-					} else {
-						if (Roles.getRoleActions("idea developer").contains(
-								action)) {
-							return true;
-						} else {
-							return false;
-						}
-					}
-				}
+    if (placeType.equalsIgnoreCase("entity")) {
+            MainEntity entity = MainEntity.findById(placeId);
+            Organization org = entity.organization;
+            if (user.equals(org.creator)) {
+                    if (Roles.getRoleActions("organizationLead").contains(action)) {
+                            return true;
+                    } else {
+                            if (Roles.getRoleActions("organizer").contains(action)) {
+                                    return true;
+                            } else {
+                                    if (Roles.getRoleActions("idea developer").contains(
+                                                    action)) {
+                                            return true;
+                                    } else {
+                                            return false;
+                                    }
+                            }
+                    }
 
-			}
-			if (org.privacyLevel == 0 || org.privacyLevel == 1) {
+            }
+            if (org.privacyLevel == 0 || org.privacyLevel == 1) {
 
-				List<UserRoleInOrganization> allowed = UserRoleInOrganization
-						.find("byEnrolledAndOrganization", user, org).fetch();
-				if (allowed == null) {
-					return false;
-				} else {
-					if (Roles.getRoleActions("idea developer").contains(action)) {
-						return true;
-					} else {
-						return false;
-					}
-				}
-			}
-		}
+                    List<UserRoleInOrganization> allowed = UserRoleInOrganization
+                                    .find("byEnrolledAndOrganization", user, org).fetch();
+                    if (allowed == null) {
+                            return false;
+                    } else {
+                            if (Roles.getRoleActions("idea developer").contains(action)) {
+                                    return true;
+                            } else {
+                                    return false;
+                            }
+                    }
+            }
+            if (org.privacyLevel == 2) {
+            if (Roles.getRoleActions("idea developer").contains(action)) {
+                    return true;
+            } else {
+                    return false;
+            }
+            }
+    }
 
-		System.out.println("you entered an invalid type");
-		return false;
+    System.out.println("you entered an invalid type");
+    return false;
 
-	}
-	
+}
 
 	public static void r(long i) {
 		Topic t = Topic.findById(i);
