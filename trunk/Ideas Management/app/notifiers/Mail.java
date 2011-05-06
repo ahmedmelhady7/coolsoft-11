@@ -8,7 +8,7 @@ import models.*;
 public class Mail extends Mailer {
 	
 	/**
-	 * this Method is responsible for sending a mail to the registered/unregistered
+	 * Send a mail to the registered/unregistered
 	 * inviting him to be organizer/idea developer
 	 * 
 	 * @author ${Mai Magdy}
@@ -16,16 +16,16 @@ public class Mail extends Mailer {
 	 * @story C1S6
 	 * 
 	 * @param role
-	 *            the role whether idea developer/organizer
+	 *             String role whether idea developer/organizer
 	 * 
 	 * @param email
-	 *             the email the invitation will be sent to
+	 *                String email the invitation will be sent to
 	 * 
 	 * @param organization
-	 *                      the organization name that sends the invitation
+	 *                     Organization organization name that sends the invitation
 	 * 
 	 * @param entity
-	 *                     the entity name that sends the invitation
+	 *                  MainEntity entity name that sends the invitation
 	 * 
 	 */
 
