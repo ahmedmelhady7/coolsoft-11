@@ -31,21 +31,21 @@ public class Users extends CRUD {
 	 * @story C1S9
 	 * 
 	 * @param page
-	 *            : page of the list we are in
+	 *            : int page of the list we are in
 	 * 
 	 * @param search
-	 *            : search string
+	 *            : String search string
 	 * 
 	 * @param searchFields
-	 *            : the fields we want to search
+	 *            : String the fields we want to search
 	 * 
 	 * @param orderBy
-	 *            : criteria to order list by
+	 *            : String criteria to order list by
 	 * 
 	 * @param order
-	 *            : the order of the list
+	 *            : String the order of the list
 	 * 
-	 * @description This method renders the list of users
+	 * @description overrides the CRUD list method ,renders the list of users
 	 * 
 	 * 
 	 */
@@ -82,9 +82,9 @@ public class Users extends CRUD {
 	 * @story C1S9
 	 * 
 	 * @param userId
-	 *            : id of the user we want to show
+	 *            :String id of the user we want to show
 	 * 
-	 * @description This method renders the form for viewing a user
+	 * @description overrides the CRUD view method and renders the form for viewing a user
 	 * 
 	 * @throws Exception
 	 * 
@@ -122,10 +122,10 @@ public class Users extends CRUD {
 	 * 
 	 * @story C1S9
 	 * 
-	 * @param userId
+	 * @param String userId
 	 *            : id of the user we want to show
 	 * 
-	 * @description This method renders the form for editing and viewing a user
+	 * @description overrides the CRUD show method,renders the form for editing and viewing a user
 	 * 
 	 * @throws Exception
 	 * 
@@ -189,7 +189,7 @@ public class Users extends CRUD {
 	 * 
 	 * @story C1S9
 	 * 
-	 * @description This method renders the form for creating a user
+	 * @description renders the form for creating a user
 	 * 
 	 * @throws Exception
 	 * 
@@ -1112,7 +1112,7 @@ public class Users extends CRUD {
 	
 
 	/**
-	 * @description used to submit the edit, to make sure that the edits are
+	 * @description overrides the CRUD save method ,used to submit the edit, to make sure that the edits are
 	 * acceptable, and then it renders a message mentioning whether the
 	 * operation was successful or not.
 	 * 
@@ -1121,7 +1121,7 @@ public class Users extends CRUD {
 	 * @story C1S9
 	 * 
 	 * @param id
-	 *            : the user's id
+	 *            :String the user's id
 	 * 
 	 */
 
@@ -1192,7 +1192,7 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * @description is responsible for deleting a user by the system admin after
+	 * @description overrides the CRUD view method ,is responsible for deleting a user by the system admin after
 	 * specifying that user's id, and then it renders a message confirming
 	 * whether the delete was successful or not
 	 * 
@@ -1201,7 +1201,7 @@ public class Users extends CRUD {
 	 * @story C1S9
 	 * 
 	 * @param id
-	 *            : the user's id
+	 *            :String the user's id
 	 * 
 	 * 
 	 * */
