@@ -121,9 +121,23 @@ public class Plans extends CRUD {
 	 *            The ID of the topic that this action plan is based upon
 	 */
 	public static void addIdea(long topicId) {
+		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
-		List<Idea> ideas = topic.ideas;
-		render(ideas, topic);
+		if(topic.openToEdit) {
+			renderText("you are not allowed to to create a plan while the topic is still open");
+		} else {
+			if(Users.isPermitted(user, "create an action plan to execute an idea", topic.id, "topic")) {
+				if(topic.plan == null) {
+				List<Idea> ideas = topic.ideas;
+				render(ideas, topic);
+				} else {
+					renderText("A plan already exists for this topic");
+				}
+			} else {
+				renderText("you are not allowed to to create a plan for this topic");
+			}
+		}
+		
 	}
 
 	// /**
