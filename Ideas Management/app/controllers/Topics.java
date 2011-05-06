@@ -76,7 +76,7 @@ public class Topics extends CRUD {
 				System.out.println("safe");
 			// if (((ArrayList<User>)(topic.getOrganizer())) == null)
 			// System.out.println("list"); else System.out.println("safe");
-			if(!Users.isPermitted(user, "tag topics", entity.id, "entity")){
+			if (!Users.isPermitted(user, "tag topics", entity.id, "entity")) {
 				// user not allowed
 				userNotAllowed = true;
 			} else {
@@ -1118,9 +1118,9 @@ public class Topics extends CRUD {
 	public static void followTopic(long topicId) {
 		User user = Security.getConnected();
 		Topic t = Topic.findById(topicId);
-		if (t.followers.contains(user)) {
+		if (t.followers.contains(user))
 			System.out.println("You are already a follower");
-		} else if (Users.isPermitted(user,
+		else if (Users.isPermitted(user,
 				"can follow organization/entities/topics", topicId, "topic")) {
 			t.followers.add(user);
 			t.save();
@@ -1128,9 +1128,8 @@ public class Topics extends CRUD {
 			user.save();
 			redirect(request.controller + ".show", t.id,
 					"You are now a follower");
-		} else {
+		} else
 			System.out.println("Sorry! Action cannot be performed");
-		}
 	}
 
 	/**
@@ -1150,9 +1149,8 @@ public class Topics extends CRUD {
 	 */
 	public static void viewFollowers(long topicId, String f) {
 		Topic topic = Topic.findById(topicId);
-		if (f.equals("true")) {
+		if (f.equals("true"))
 			followTopic(topicId);
-		}
 		render(topic);
 	}
 }
