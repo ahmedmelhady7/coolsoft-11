@@ -8,6 +8,7 @@
 
     <body>
         #{extends 'main.html' /} 
+		#{set title: 'Available Organizations' /}
 		<a href="@{Organizations.createOrganization()}">Create a new Organization</a><br /><br />
 		#{if organizations.size() > 0}
 		You are currently enrolled in organizations <br />
