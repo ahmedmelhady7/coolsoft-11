@@ -23,6 +23,7 @@ public class Comments extends CRUD {
 	 *            ID of the plan that the user wants to add the comment to
 	 * @param comment
 	 *            Comment to be added to list of comments of the plan
+	 *            addes a comment to a plan
 	 */
 	public static void addCommentToPlan(String comment, long planID) {
 		planID++;
@@ -40,6 +41,7 @@ public class Comments extends CRUD {
 	 *            ID of the idea that the user wants to add the comment to
 	 * @param comment
 	 *            Comment to be added to list of comments of the idea
+	 *            addes a comment to an idea
 	 */
 	public static void addCommentToIdea(long ideaID, String comment) {
 		Idea i = Idea.findById(ideaID);

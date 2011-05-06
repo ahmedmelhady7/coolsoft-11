@@ -605,6 +605,7 @@ public class Ideas extends CRUD {
 	 * @param userToCheck
 	 *            User to be checked if he/she is in the list usersRated
 	 * @return
+	 * 			checks if a given user rated
 	 */
 
 	public boolean checkRated(User userToCheck, long ideaID) {
@@ -623,6 +624,8 @@ public class Ideas extends CRUD {
 	 *            rating taken from the user
 	 * @param ideaID
 	 *            idea that the user wants to rate
+	 *            
+	 *            rates an idea if the user is an organizer
 	 */
 
 	public void rate(int rating, int ideaID) {
@@ -647,6 +650,8 @@ public class Ideas extends CRUD {
 	 *            User that wants to share the idea
 	 * @param ideaID
 	 *            ID of the idea to be shared
+	 *            
+	 *            shares a given idea with the given user
 	 */
 	public static void shareIdea(String userName, long ideaID) {
 		User U = User.find("byUsername", userName).first();
@@ -666,6 +671,8 @@ public class Ideas extends CRUD {
 	 *            the priority to be set
 	 * @param ideaID
 	 *            the ID of the idea to prioritize
+	 *            
+	 *            sets the priority if the user is an organizer
 	 */
 	public void setPriority(String priority, long ideaID) {
 		Idea i = Idea.findById(ideaID);
