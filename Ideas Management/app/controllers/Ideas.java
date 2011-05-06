@@ -620,11 +620,11 @@ public class Ideas extends CRUD {
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 
-	 * @param rate
+	 * @param rating
 	 *            rating taken from the user
 	 * @param ideaID
 	 *            idea that the user wants to rate
-	 *            
+	 * @description
 	 *            rates an idea if the user is an organizer
 	 */
 
@@ -644,11 +644,11 @@ public class Ideas extends CRUD {
 	/**
 	 * @author ${Ibrahim safwat}
 	 * 
-	 * @param userId
+	 * @param userName
 	 *            User that wants to share the idea
 	 * @param ideaID
 	 *            ID of the idea to be shared
-	 *            
+	 * @description        
 	 *            shares a given idea with the given user
 	 */
 	public static void shareIdea(String userName, long ideaId) {
@@ -670,7 +670,7 @@ public class Ideas extends CRUD {
 	 *            the priority to be set
 	 * @param ideaID
 	 *            the ID of the idea to prioritize
-	 *            
+	 * @description          
 	 *            sets the priority if the user is an organizer
 	 */
 	public static void setPriority(String priority, long ideaID) {
