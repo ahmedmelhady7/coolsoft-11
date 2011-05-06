@@ -1061,23 +1061,31 @@ public class Users extends CRUD {
 		String message = "";
 		User tmp = (User) object;
 		System.out.println("create() entered");
-	
+		tmp.email = tmp.email.trim();
+		tmp.username = tmp.username.trim();
+		tmp.password = tmp.password.trim();
+		tmp.firstName = tmp.firstName.trim();
 
 		if (validation.hasErrors()) {
 			System.out.println("lol");
-			if (tmp.email.trim().equals("")) {
+			if (tmp.email.equals("")) {
 				message = "A User must have an email";
 				System.out.println(message);
-			} else if (tmp.username.trim().equals("")) {
+			} else if (tmp.username.equals("")) {
 				message = "A User must have a username";
 				System.out.println(message);
-			} else if (tmp.password.trim().equals("")) {
+			} else if (tmp.password.equals("")) {
 				message = "A User must have a password";
 				System.out.println(message);
 			} else if (tmp.firstName.trim().equals("")) {
 				message = "A User must have a first name";
 				System.out.println(message);
-			} 
+			} else if (tmp.username.length() >= 20) {
+				message = "Username cannot exceed 20 characters";
+				}
+			else if (tmp.password.length() >= 25) {
+				message = "First name cannot exceed 25 characters";
+				}
 
 			try {
 				System.out.println("show user try ");
@@ -1095,7 +1103,7 @@ public class Users extends CRUD {
 		System.out.println("create() object saved");
 		tmp = (User) object;
 		//Calendar cal = new GregorianCalendar();
-		// Logs.addLog( tmp.creator, "add", "Task", tmp.id,
+		// Logs.addLog( user.getConnected, "add", "User", tmp.username,
 		// tmp.entity.organization, cal.getTime() );
 		String message2 = tmp.username + " has been added to users ";
 		System.out.println("id "+ tmp.getId());
@@ -1105,14 +1113,10 @@ public class Users extends CRUD {
 				((User) object).getId()));
 		if (params.get("_save") != null) {
 			System.out
-					.println("create() done will redirect to topics/show?topicid "
+					.println("create() done will redirect to users/show?topicid "
 							+ message2);
 			redirect("/users/show?userid=" + tmp.getId());
 
-			// redirect("/topics/show?" + ((Topic) object).getId(), message2);
-			// redirect( "/storys/liststoriesinproject?projectId=" +
-			// tmp.taskStory.componentID.project.id + "&storyId=" +
-			// tmp.taskStory.id );
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			System.out
