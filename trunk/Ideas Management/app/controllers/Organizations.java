@@ -284,9 +284,9 @@ public class Organizations extends CRUD {
 	public static void followOrganization(long organizationId) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(organizationId);
-		if (org.followers.contains(user)) {
+		if (org.followers.contains(user))
 			System.out.println("You are already a follower");
-		} else if (Users.isPermitted(user,
+		else if (Users.isPermitted(user,
 				"can follow organization/entities/topics", organizationId,
 				"organization")) {
 			org.followers.add(user);
@@ -295,9 +295,8 @@ public class Organizations extends CRUD {
 			user.save();
 			redirect(request.controller + ".viewProfile", org.id,
 					"You are now a follower");
-		} else {
+		} else
 			System.out.println("Sorry! Action cannot be performed");
-		}
 	}
 
 	/**
@@ -317,9 +316,8 @@ public class Organizations extends CRUD {
 	 */
 	public static void viewFollowers(long organizationId, String f) {
 		Organization org = Organization.findById(organizationId);
-		if (f.equals("true")) {
+		if (f.equals("true"))
 			followOrganization(organizationId);
-		}
 		render(org);
 	}
 
