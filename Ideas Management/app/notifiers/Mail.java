@@ -6,26 +6,26 @@ import java.util.*;
 import models.*;
 
 public class Mail extends Mailer {
-	
+
 	/**
-	 * Send a mail to the registered/unregistered
-	 * inviting him to be organizer/idea developer
+	 * Send a mail to the registered/unregistered inviting him to be
+	 * organizer/idea developer
 	 * 
 	 * @author ${Mai Magdy}
 	 * 
 	 * @story C1S6
 	 * 
 	 * @param role
-	 *             String role whether idea developer/organizer
+	 *            String role whether idea developer/organizer
 	 * 
 	 * @param email
-	 *                String email the invitation will be sent to
+	 *            String email the invitation will be sent to
 	 * 
 	 * @param organization
-	 *                     Organization organization name that sends the invitation
+	 *            Organization organization name that sends the invitation
 	 * 
 	 * @param entity
-	 *                  MainEntity entity name that sends the invitation
+	 *            MainEntity entity name that sends the invitation
 	 * 
 	 */
 
@@ -34,16 +34,16 @@ public class Mail extends Mailer {
 		addRecipient(email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Invitation");
-		 String url = "http://localhost:9008/invitations/view" ;
+		String url = "http://localhost:9008/invitations/view";
 		User user = User.find("byEmail", email).first();
 		System.out.println(entity);
-		int id=1;
-		int check=1;
-		if(user==null)
-			id=0;
-		if(entity=="")
-		    check=0;
-		send(user, role,url ,organization, entity,id,check);
+		int id = 1;
+		int check = 1;
+		if (user == null)
+			id = 0;
+		if (entity == "")
+			check = 0;
+		send(user, role, url, organization, entity, id, check);
 
 	}
 
@@ -60,6 +60,10 @@ public class Mail extends Mailer {
 	 * @param reporter : the user who reported the idea
 	 * 
 	 * @param reportedIdea : the reported idea
+	 * 
+	 * @param description : description of the idea
+	 * 
+	 * @param title : title of idea
 	 */
 
 	public static void ReportAsSpamMail(User topicOrganizer, User reporter,
@@ -69,8 +73,7 @@ public class Mail extends Mailer {
 		setSubject("An Idea is Reported as a Spam");
 		send(topicOrganizer, reporter, reportedIdea);
 	}
-	
-	
+
 	/**
 	 * @description used to send a mail to the person who was added by the admin
 	 * 
@@ -86,8 +89,8 @@ public class Mail extends Mailer {
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Welcome");
-		String url = "http://localhost:9008" ;
-		send(user,url);
+		String url = "http://localhost:9008";
+		send(user, url);
 
 	}
 }
