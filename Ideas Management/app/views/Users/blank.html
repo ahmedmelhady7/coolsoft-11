@@ -40,6 +40,23 @@
 		</p>
 		#{/crud.custom}
 
+		
+
+		#{crud.custom 'password'}
+		<p>
+			<label for="object_password">
+				Password
+			</label>
+			<textarea id="object_password" cols="15" rows="2" class="" name="object.password">
+			</textarea>
+			<span class="crudHelp" >
+				<font color="Red">
+					*
+				</font>Required
+			</span>
+		</p>
+		#{/crud.custom }
+		
 		#{crud.custom 'firstName'}
 		<p>
 			<label for="object_firstName">
@@ -54,16 +71,6 @@
 			</span>
 		</p>
 		#{/crud.custom}
-
-		#{crud.custom 'password'}
-		<p>
-			<label for="object_password">
-				Password
-			</label>
-			<textarea id="object_password" cols="15" rows="2" class="" name="object.password">
-			</textarea>
-		</p>
-		#{/crud.custom }
 
 		#{crud.custom 'lastName'}
 		<p>

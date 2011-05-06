@@ -127,24 +127,51 @@ public class Users extends CRUD {
 	 * @throws Exception
 	 * 
 	 */
-	public static void show(String userId) {
+//	public static void show(String userId) {
+//		ObjectType type = ObjectType.get(getControllerClass());
+//		notFoundIfNull(type);
+//		long userID = Long.parseLong(userId);
+//		User object = User.findById(userID);
+//		notFoundIfNull(object);
+//		System.out.println("entered view() for User " + object.username);
+//		System.out.println(object.email);
+//		System.out.println(object.username);
+//		int communityContributionCounter = object.communityContributionCounter;
+//		String name = object.firstName + " " + object.lastName;
+//		String profession = object.profession;
+//		String username = object.username;
+//		String birthDate = "" + object.dateofBirth;
+//		try {
+//			System.out.println("show() done, about to render");
+//			render(type, object, username, name, communityContributionCounter,
+//					profession, birthDate, userId);
+//		} catch (TemplateNotFoundException e) {
+//			System.out
+//					.println("show() done with exception, rendering to CRUD/show.html");
+//			render("CRUD/show.html", type, object);
+//		}
+//	}
+	
+	public static void show(String userid) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
-		long userID = Long.parseLong(userId);
-		User object = User.findById(userID);
+		Model object = type.findById(userid);
 		notFoundIfNull(object);
-		System.out.println("entered view() for User " + object.username);
-		System.out.println(object.email);
-		System.out.println(object.username);
-		int communityContributionCounter = object.communityContributionCounter;
-		String name = object.firstName + " " + object.lastName;
-		String profession = object.profession;
-		String username = object.username;
-		String birthDate = "" + object.dateofBirth;
+		System.out.println("entered show() for user " + userid);
+		User tmp = (User) object;
+		
+		System.out.println("entered view() for User " + tmp.username);
+		System.out.println(tmp.email);
+		System.out.println(tmp.username);
+		int communityContributionCounter = tmp.communityContributionCounter;
+		String name = tmp.firstName + " " + tmp.lastName;
+		String profession = tmp.profession;
+		String username = tmp.username;
+		String birthDate = "" + tmp.dateofBirth;
 		try {
 			System.out.println("show() done, about to render");
 			render(type, object, username, name, communityContributionCounter,
-					profession, birthDate, userId);
+					profession, birthDate, userid);
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("show() done with exception, rendering to CRUD/show.html");
@@ -439,6 +466,7 @@ public class Users extends CRUD {
 		List<User> searchResultByEmail = new ArrayList<User>();
 
 		if (keyword != null) {
+
 			searchResultByName = User.find("byUsernameLike",
 					"%" + keyword + "%").<User> fetch();
 			searchResultByProfession = User.find("byProfessionLike",
@@ -517,7 +545,7 @@ public class Users extends CRUD {
 		// for (int i = 0; i < organizers.size(); i++) {
 		// finalOrganizers.add((organizers.get(i)).enrolled);
 		// }
-		int size = user.size();
+		int size = organizers.size();
 		for (int i = 0; i < size; i++) {
 			if (user.get(i).state == "d" || user.get(i).state == "n") {
 				user.remove(i);
@@ -900,88 +928,168 @@ public class Users extends CRUD {
 	 * @return void
 	 */
 
+//	public static void create() throws Exception {
+//		// if(Security.getConnected().isAdmin);
+//		ObjectType type = ObjectType.get(Users.class);
+//		notFoundIfNull(type);
+//		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+//		constructor.setAccessible(true);
+//		Model object = type.entityClass.newInstance();
+//		User user = (User) object;
+//		Binder.bind(object, "object", params.all());
+//		validation.valid(object);
+//		System.out.println(object.toString());
+//		String errorMessage = "";
+//		try {
+//			if (user.username.length() >= 20) {
+//				errorMessage = "Username cannot exceed 20 characters";
+//			}
+//			if (user.find("ByUsername", user.username) != null) {
+//				errorMessage += "This username already exists !";
+//			}
+//		} catch (NullPointerException e) {
+//			errorMessage = "Username field is required, u must have a username !";
+//		}
+//
+//		try {
+//			if (user.password.length() >= 20) {
+//				errorMessage += "Password cannot exceed 20 characters";
+//			}
+//
+//		} catch (NullPointerException e) {
+//			errorMessage += "Password field is required, u must have a username !";
+//		}
+//
+//		try {
+//			if (user.password.length() >= 20) {
+//				errorMessage += "First name cannot exceed 20 characters";
+//			}
+//
+//		} catch (NullPointerException e) {
+//			errorMessage += "First name field is required, u must have a username !";
+//		}
+//
+//		try {
+//
+//			if (user.find("ByEmail", user.email) != null) {
+//				errorMessage += "This mail already exists !";
+//			}
+//
+//		} catch (NullPointerException e) {
+//			errorMessage += "Email field is required, u must have a username !";
+//		}			
+//		/*if (validation.hasErrors()) {
+//			renderArgs.put("error", Messages.get("crud.hasErrors"));
+//			try {
+//				System.out.println(object.toString() + "!1try");
+//				render(request.controller.replace(".", "/") + "/blank.html",
+//						type, object);
+//			} catch (TemplateNotFoundException e) {
+//				System.out.println(object.toString() + "catch");
+//				render("CRUD/blank.html", type, object);
+//			}
+//		}*/
+//		System.out.println("");
+//
+//		try {
+//			render(request.controller.replace(".", "/") + "/blank.html",
+//					user.email, user.username, user.password, user.firstName,
+//					user.lastName, user.communityContributionCounter,
+//					user.dateofBirth, user.country, user.profession,
+//					errorMessage);
+//		} catch (TemplateNotFoundException e) {
+//			render("CRUD/blank.html", type);
+//		}
+//		System.out.println(object.toString() + "before the save");
+//		object._save();
+//		flash.success(Messages.get("crud.created", type.modelName));
+//		if (params.get("_save") != null) {
+//			System.out.println(object.toString() + "save condition");
+//			redirect(request.controller + ".list");
+//		}
+//		if (params.get("_saveAndAddAnother") != null) {
+//			redirect(request.controller + ".blank");
+//		}
+//		redirect(request.controller + ".show", object._key());
+//	}
 	public static void create() throws Exception {
-		// if(Security.getConnected().isAdmin);
-		ObjectType type = ObjectType.get(Users.class);
+		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
 		constructor.setAccessible(true);
-		Model object = type.entityClass.newInstance();
-		User user = (User) object;
+		Model object = (Model) constructor.newInstance();
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
-		System.out.println(object.toString());
-		String errorMessage = "";
-		try {
-			if (user.username.length() >= 20) {
-				errorMessage = "Username cannot exceed 20 characters";
+		String message = "";
+		User tmp = (User) object;
+		System.out.println("create() entered");
+	
+
+		if (validation.hasErrors()) {
+			System.out.println("lol");
+			if (tmp.email.trim().equals("")) {
+				message = "A User must have an email";
+				System.out.println(message);
+			} else if (tmp.username.trim().equals("")) {
+				message = "A User must have a username";
+				System.out.println(message);
+			} else if (tmp.password.trim().equals("")) {
+				message = "A User must have a password";
+				System.out.println(message);
+			} else if (tmp.firstName.trim().equals("")) {
+				message = "A User must have a first name";
+				System.out.println(message);
+			} 
+
+			try {
+				System.out.println("show user try ");
+				render(request.controller.replace(".", "/") + "/blank.html",
+						 type, message);
+			} catch (TemplateNotFoundException e) {
+				System.out.println("show user catch ");
+				render("CRUD/blank.html", type);
 			}
-			if (user.find("ByUsername", user.username) != null) {
-				errorMessage += "This username already exists !";
-			}
-		} catch (NullPointerException e) {
-			errorMessage = "Username field is required, u must have a username !";
 		}
+		
 
-		try {
-			if (user.password.length() >= 20) {
-				errorMessage += "Password cannot exceed 20 characters";
-			}
-
-		} catch (NullPointerException e) {
-			errorMessage += "Password field is required, u must have a username !";
-		}
-
-		try {
-			if (user.password.length() >= 20) {
-				errorMessage += "First name cannot exceed 20 characters";
-			}
-
-		} catch (NullPointerException e) {
-			errorMessage += "First name field is required, u must have a username !";
-		}
-
-		try {
-
-			if (user.find("ByEmail", user.email) != null) {
-				errorMessage += "This mail already exists !";
-			}
-
-		} catch (NullPointerException e) {
-			errorMessage += "Email field is required, u must have a username !";
-		}
-
-		/*
-		 * if (validation.hasErrors()) { renderArgs.put("error",
-		 * Messages.get("crud.hasErrors")); try {
-		 * System.out.println(object.toString() + "!1try");
-		 * render(request.controller.replace(".", "/") + "/blank.html", type,
-		 * object); } catch (TemplateNotFoundException e) {
-		 * System.out.println(object.toString() + "catch");
-		 * render("CRUD/blank.html", type, object); } }
-		 */
-
-		try {
-			render(request.controller.replace(".", "/") + "/blank.html",
-					user.email, user.username, user.password, user.firstName,
-					user.lastName, user.communityContributionCounter,
-					user.dateofBirth, user.country, user.profession,
-					errorMessage);
-		} catch (TemplateNotFoundException e) {
-			render("CRUD/blank.html", type);
-		}
-		System.out.println(object.toString() + "before the save");
+		System.out.println("create() about to save object");
 		object._save();
-		flash.success(Messages.get("crud.created", type.modelName));
+		System.out.println("create() object saved");
+		tmp = (User) object;
+		//Calendar cal = new GregorianCalendar();
+		// Logs.addLog( tmp.creator, "add", "Task", tmp.id,
+		// tmp.entity.organization, cal.getTime() );
+		String message2 = tmp.username + " has been added to users ";
+		System.out.println("id "+ tmp.getId());
+
+		// tmp.init();
+		flash.success(Messages.get("crud.created", type.modelName,
+				((User) object).getId()));
 		if (params.get("_save") != null) {
-			System.out.println(object.toString() + "save condition");
-			redirect(request.controller + ".list");
+			System.out
+					.println("create() done will redirect to topics/show?topicid "
+							+ message2);
+			redirect("/users/show?userid=" + tmp.getId());
+
+			// redirect("/topics/show?" + ((Topic) object).getId(), message2);
+			// redirect( "/storys/liststoriesinproject?projectId=" +
+			// tmp.taskStory.componentID.project.id + "&storyId=" +
+			// tmp.taskStory.id );
 		}
 		if (params.get("_saveAndAddAnother") != null) {
-			redirect(request.controller + ".blank");
+			System.out
+					.println("create() done will redirect to blank.html to add another "
+							+ message2);
+			redirect(request.controller + ".blank", message2);
 		}
-		redirect(request.controller + ".show", object._key());
+		System.out
+				.println("create() done will redirect to show.html to show created"
+						+ message2);
+		redirect(request.controller + ".view", ((User) object).getId(),
+				message2);
 	}
+
+	
 
 	/**
 	 * This method is used to submit the edit, to make sure that the edits are
@@ -1062,7 +1170,6 @@ public class Users extends CRUD {
 		} catch (NullPointerException e) {
 			x = "No such User !!";
 			System.out.println(x + "catch");
-			// render(x);
 			render(request.controller.replace(".", "/") + "/index.html");
 
 		}

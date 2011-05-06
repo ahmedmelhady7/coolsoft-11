@@ -19,14 +19,14 @@
 			<textarea id="object_email" cols="30" rows="1" class="" name="object.email" >
 				${object.email}
 			</textarea>
-			<!--<span class="crudHelp" >
+			<span class="crudHelp" >
 				<font color="Red">
 					*
 				</font>Required
-			</span>-->
+			</span>
 		</p>
 		#{/crud.custom}
-		
+
 		{crud.custom 'username'}
 		<p>
 			<label for="object_username">
@@ -35,10 +35,14 @@
 			<textarea id="object_username" cols="20" rows="1" class="" name="object.username">
 				${object.username}
 			</textarea>
-			<!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
+			<span class="crudHelp" >
+				<font color="Red">
+					*
+				</font>Required
+			</span>
 		</p>
 		#{/crud.custom}
-		
+
 		#{crud.custom 'password'}
 		<p>
 			<label for="object_password">
@@ -57,11 +61,11 @@
 			<textarea id="object_firstName" cols="20" rows="1" class="" name="object.firstName">
 				${object.firstName}
 			</textarea>
-			<!--<span class="crudHelp" >
+			<span class="crudHelp" >
 				<font color="Red">
 					*
 				</font>Required
-			</span>-->
+			</span>
 		</p>
 		#{/crud.custom }
 
@@ -75,7 +79,6 @@
 			</textarea>
 		</p>
 		#{/crud.custom }
-
 
 		#{crud.custom 'communityContributionCounter'}
 		<p>
@@ -122,17 +125,16 @@
 		#{/crud.custom }
 
 		#{/crud.form }
-		
-	<p class="crudButtons">
-		<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
-		<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+
+		<p class="crudButtons">
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+		</p>
+		#{/form}
+	</div>
+	#{form @delete(object._key())}
+	<p class="crudDelete">
+		<input type="submit" value="&{'crud.delete', type.modelName}" />
 	</p>
 	#{/form}
-</div>
-#{form @delete(object._key())}
-<p class="crudDelete">
-<input type="submit" value="&{'crud.delete', type.modelName}" />
-</p>
-#{/form}
-
 </div>
