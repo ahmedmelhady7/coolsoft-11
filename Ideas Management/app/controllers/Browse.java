@@ -33,13 +33,23 @@ public class Browse extends Controller {
 
 	public static void browse() {
 
-		List<Organization> listOfOrganizations = Organization.findAll();
-		for(int i=0;i< listOfOrganizations.size();i++)
-		{
-			
-			
-		}
-		render(listOfOrganizations);
+		
+		  User u = Security.getConnected();
+		  List<Organization> listOfOrganizations = Organization.findAll();
+		  List<Organization> temp = listOfOrganizations;
+		  for(int i=0;i< listOfOrganizations.size();i++)
+		  {
+		   if(!Users.getEnrolledUsers(listOfOrganizations.get(i)).contains(u)){
+		    switch(listOfOrganizations.get(i).privacyLevel){
+		    case 0:
+		     temp.remove(listOfOrganizations.get(i));
+		     break;
+		     default:break;
+		   }
+		   }
+		  }
+		  listOfOrganizations = temp;
+		  render(listOfOrganizations);
 
 	}
 
