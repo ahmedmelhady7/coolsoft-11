@@ -1,5 +1,14 @@
  #{extends 'main.html' /}
-<a href="@{Application.index()}">Back to home</a>
+ #{if type==1}
+            <legend>
+            <h2>
+       <a href="@{Topic.show(id)}">Back to Topic</a>           
+            </legend>
+			#{/if}
+			#{else}
+  <a href="@{Organizations.viewRequests(id)}">Back to Organization</a>  			
+  #{/else}
+
 <br />
 <br />
 <u><font size ="5" color ="blue"> Requests </font></u>

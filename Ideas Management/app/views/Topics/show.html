@@ -55,16 +55,21 @@
 		
 		
 		#{/crud.form }
-		<br />
+		<br>
+		<br>
+		<br>
 		 #{if permission == 1}
-		 <br />
+		 <br>
 <button type="submit" onclick= > Edit </button>
-        <br />
+        <br>
 		#{/if}
-    
+    <br>
+	<br>
 	        #{if allowed==1}
       <a href="@{RequestToJoins.viewRequests(1,object.id)}">Requests</a>		
            #{/if}
+		   <br>
+		   <br>
 		   <br>
 		<a href="@{Topics.tagTopic(object.id,'@@')}">Add tags</a>
 		   <br>
