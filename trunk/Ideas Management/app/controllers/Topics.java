@@ -555,15 +555,8 @@ public class Topics extends CRUD {
 		Topic tmp = (Topic) object;
 		System.out.println("create() entered");
 		MainEntity topicEntity = MainEntity.findById(entityid);
-		// MainEntity topicEntity = MainEntity.findById((long) 2);// temporary;
-		// for
-		// testing
-		// purposes
-
 		tmp.entity = topicEntity;
 		User myUser = Security.getConnected();
-		// User myUser = User.findById((long) 1);// temporary; for testing
-		// purposes
 		tmp.creator = myUser;
 
 		/*
@@ -599,6 +592,7 @@ public class Topics extends CRUD {
 					"byFollowingEntitiesAndFollowingOrganizations",
 					topicEntity, topicOrganization).fetch();
 
+
 		if (validation.hasErrors()) {
 			if (tmp.title.equals("")) {
 				message = "A Topic must have a title";
@@ -614,6 +608,18 @@ public class Topics extends CRUD {
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/blank.html", type, entityid);
 			}
+		}
+		
+		if (tmp.privacyLevel < 1 || tmp.privacyLevel > 2) {
+			message = "The privary level must be either 1 or 2";
+			try {
+				render(request.controller.replace(".", "/") + "/blank.html",
+						entityid, type, tmp.title, tmp.entity, tmp.description,
+						tmp.followers, tmp.tags, message);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type, entityid);
+			}
+
 		}
 
 		System.out.println("create() about to save object");
@@ -983,10 +989,10 @@ public class Topics extends CRUD {
 		validation.valid(object);
 		Topic tmp = (Topic) object;
 		// MainEntity topicEntity = to get connected aw kda
-		MainEntity topicEntity = MainEntity.findById((long) 1); // temporary;
+		//MainEntity topicEntity = MainEntity.findById((long) 1); // temporary;
 		// for testing
 		// purposes
-		tmp.entity = topicEntity;
+		MainEntity topicEntity = tmp.entity;
 		User myUser = Security.getConnected();
 		// User myUser = User.findById((long) 1);// temporary; for testing
 		// purposes
@@ -1006,10 +1012,6 @@ public class Topics extends CRUD {
 
 			}
 
-			else if (tmp.privacyLevel < 0 || tmp.privacyLevel > 10) {
-				message = "The privary level must be within 0 and 10";
-
-			}
 
 			/*
 			 * else if( !Users.isPermitted(myUser, "edit topics",
@@ -1017,13 +1019,26 @@ public class Topics extends CRUD {
 			 * "Sorry but you are not allowed to edit topics in this entity"; }
 			 */
 			try {
-				render(request.controller.replace(".", "/") + "/show.html",
+				render(request.controller.replace(".", "/") + "/view.html",
 						topicEntity, type, tmp.title, tmp.entity,
 						tmp.description, tmp.followers, tmp.tags, message,
 						object, topicid);
 			} catch (TemplateNotFoundException e) {
-				render("CRUD/show.html", type);
+				render("CRUD/view.html", type);
 			}
+		}
+		
+		if (tmp.privacyLevel < 1 || tmp.privacyLevel > 2) {
+			message = "The privary level must be either 1 or 2";
+			try {
+				render(request.controller.replace(".", "/") + "/view.html",
+						topicEntity, type, tmp.title, tmp.entity,
+						tmp.description, tmp.followers, tmp.tags, message,
+						object, topicid);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/view.html", type);
+			}
+
 		}
 
 		System.out.println("about to save() topic");
