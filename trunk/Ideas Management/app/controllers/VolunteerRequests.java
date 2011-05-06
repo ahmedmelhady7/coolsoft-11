@@ -135,8 +135,7 @@ public class VolunteerRequests extends CRUD {
 				for (int i = 0; i < planVolunteerRequests.size(); i++) {
 					User sender = planVolunteerRequests.get(i).sender;
 					Date d = new Date();
-					if (planVolunteerRequests.get(i).destination.endDate
-							.compareTo(d) < 0) {
+					if (planVolunteerRequests.get(i).destination.endDatePassed()) {
 						Item destination = planVolunteerRequests.get(i).destination;
 						user.volunteerRequests.remove(planVolunteerRequests
 								.get(i));
@@ -149,7 +148,7 @@ public class VolunteerRequests extends CRUD {
 						if (planVolunteerRequests.get(i).destination.assignees
 								.contains(sender)
 								|| !Topics.searchByTopic(plan.topic.id)
-										.contains(user)) {
+										.contains(user) || planVolunteerRequests.get(i).destination.status == 2) {
 							VolunteerRequest request = VolunteerRequest
 									.findById(planVolunteerRequests.get(i).id);
 							planVolunteerRequests.remove(request);
@@ -181,28 +180,28 @@ public class VolunteerRequests extends CRUD {
 		User user = request.sender;
 		user.volunteerRequests.remove(request);
 		Item item = request.destination;
-		List<User> list = new ArrayList<User>();
+		List<User> userToNotifyList = new ArrayList<User>();
 		for (int i = 0; i < item.assignees.size(); i++)
-			list.add(item.assignees.get(i));
+			userToNotifyList.add(item.assignees.get(i));
 		item.volunteerRequests.remove(request);
 		user.itemsAssigned.add(item);
 		item.assignees.add(user);
 		user.save();
 		item.save();
 		request.delete();
-		String s = "Your request to volunteer on item: " + item.summary
+		String description = "Your request to volunteer on item: " + item.summary
 				+ " has been accepted.";
-		list.add(user);
+		userToNotifyList.add(user);
 		for (int i = 0; i < item.plan.topic.getOrganizer().size(); i++) {
 			if (org.id != item.plan.topic.getOrganizer().get(i).id) {
-				if (!list.contains(item.plan.topic.getOrganizer().get(i)))
-					list.add(item.plan.topic.getOrganizer().get(i));
+				if (!userToNotifyList.contains(item.plan.topic.getOrganizer().get(i)))
+					userToNotifyList.add(item.plan.topic.getOrganizer().get(i));
 			}
 		}
 
-		for (User userToNotify : list) {
+		for (User userToNotify : userToNotifyList) {
 			Notifications.sendNotification(userToNotify.id, item.plan.id,
-					"plan", s);
+					"plan", description);
 		}
 
 	}
@@ -228,20 +227,20 @@ public class VolunteerRequests extends CRUD {
 		user.save();
 		item.save();
 		request.delete();
-		String s = "Your request to volunteer on item: " + item.summary
+		String description = "Your request to volunteer on item: " + item.summary
 				+ " has been rejected.";
-		List<User> list = new ArrayList<User>();
-		list.add(user);
+		List<User> userToNotifyList = new ArrayList<User>();
+		userToNotifyList.add(user);
 		for (int i = 0; i < item.plan.topic.getOrganizer().size(); i++) {
 			if (org.id != item.plan.topic.getOrganizer().get(i).id) {
-				if (!list.contains(item.plan.topic.getOrganizer().get(i)))
-					list.add(item.plan.topic.getOrganizer().get(i));
+				if (!userToNotifyList.contains(item.plan.topic.getOrganizer().get(i)))
+					userToNotifyList.add(item.plan.topic.getOrganizer().get(i));
 			}
 		}
 
-		for (User userToNotify : list) {
+		for (User userToNotify : userToNotifyList) {
 			Notifications.sendNotification(userToNotify.id, item.plan.id,
-					"plan", s);
+					"plan", description);
 		}
 
 	}

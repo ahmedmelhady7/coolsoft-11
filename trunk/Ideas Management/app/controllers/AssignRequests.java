@@ -284,14 +284,15 @@ public class AssignRequests extends CRUD {
 	 */
 	public static void view() {
 		User user = Security.getConnected();
-		List<AssignRequest> assignRequests = user.receivedAssignRequests;
+		List<AssignRequest> assignRequests = new ArrayList();
+		assignRequests.addAll(user.receivedAssignRequests);
 		if (assignRequests.size() > 0) {
 			for (int i = 0; i < assignRequests.size(); i++) {
 				Date d = new Date();
-				if (assignRequests.get(i).source.endDate.compareTo(d) < 0
+				if (assignRequests.get(i).source.endDatePassed()
 						|| !Topics.searchByTopic(
 								assignRequests.get(i).source.plan.topic.id)
-								.contains(user)) {
+								.contains(user) || assignRequests.get(i).source.status == 2) {
 					assignRequests.remove(i);
 				} else {
 					for (int j = 0; j < assignRequests.get(i).sender.itemsAssigned
@@ -347,13 +348,13 @@ public class AssignRequests extends CRUD {
 		request.sender.save();
 		item.save();
 		request.delete();
-		String s = "User " + user.username
+		String description = "User " + user.username
 				+ " has accepted the assignment to work on item: "
 				+ request.source.summary + ".";
 
 		for (User userToNotify : list) {
 			Notifications.sendNotification(userToNotify.id, item.plan.id,
-					"plan", s);
+					"plan", description);
 		}
 
 	}
@@ -380,13 +381,13 @@ public class AssignRequests extends CRUD {
 		request.sender.save();
 		request.destination.save();
 		request.source.save();
-		String s = "User " + user.username
+		String description = "User " + user.username
 				+ " has rejected the assignment to work on item: "
 				+ request.source.summary + ".";
 
 		for (User userToNotify : request.source.plan.topic.getOrganizer()) {
 			Notifications.sendNotification(userToNotify.id,
-					request.source.plan.id, "plan", s);
+					request.source.plan.id, "plan", description);
 		}
 
 		request.delete();
