@@ -1,5 +1,8 @@
 package controllers;
 
+/**
+@author Mostafa Ali
+*/
 // list of organizers in entity 
 
 import java.lang.reflect.Constructor;
@@ -152,12 +155,12 @@ public class Users extends CRUD {
 //		}
 //	}
 	
-	public static void show(String userid) {
+	public static void show(String userId) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
-		Model object = type.findById(userid);
+		Model object = type.findById(userId);
 		notFoundIfNull(object);
-		System.out.println("entered show() for user " + userid);
+		System.out.println("entered show() for user " + userId);
 		User tmp = (User) object;
 		
 		System.out.println("entered view() for User " + tmp.username);
@@ -171,7 +174,7 @@ public class Users extends CRUD {
 		try {
 			System.out.println("show() done, about to render");
 			render(type, object, username, name, communityContributionCounter,
-					profession, birthDate, userid);
+					profession, birthDate, userId);
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("show() done with exception, rendering to CRUD/show.html");
@@ -892,38 +895,7 @@ public class Users extends CRUD {
 		return enrolled;
 	}
 
-	/**
-	 * 
-	 * 
-	 * @author Mostafa Ali
-	 * 
-	 * @story C1S9
-	 * 
-	 * @param id
-	 *            : the user's id
-	 * 
-	 * @return void
-	 * 
-	 * */
-	public static void delete(long id) {
-		User user = User.findById(id);
-		String x = "";
-		try {
-
-			if (user.state.equals("n")) {
-				user.state = "d";
-				x = "deletion successful";
-			} else {
-				x = "You can not delete a user who's deactivated his account !";
-			}
-			render(x);
-		} catch (NullPointerException e) {
-			x = "No such User !!";
-			render(x);
-		}
-
-	}
-
+	
 	/**
 	 * return all the entities that a certain organizer is enrolled in within a
 	 * certain organization
@@ -954,7 +926,7 @@ public class Users extends CRUD {
 	
 
 	/**
-	 * This method overrides the CRUD create method that is used to create a new
+	 * @description overrides the CRUD create method that is used to create a new
 	 * user and make sure that this user is valid, and then it renders a message
 	 * mentioning whether the operation was successful or not.
 	 * 
@@ -962,8 +934,7 @@ public class Users extends CRUD {
 	 * 
 	 * @story C1S9
 	 * 
-	 * 
-	 * @return void
+	 *  
 	 */
 
 //	public static void create() throws Exception {
@@ -1116,7 +1087,6 @@ public class Users extends CRUD {
 		String message2 = tmp.username + " has been added to users ";
 		System.out.println("id "+ tmp.getId());
 
-		// tmp.init();
 		flash.success(Messages.get("crud.created", type.modelName,
 				((User) object).getId()));
 		if (params.get("_save") != null) {
@@ -1142,7 +1112,7 @@ public class Users extends CRUD {
 	
 
 	/**
-	 * This method is used to submit the edit, to make sure that the edits are
+	 * @description used to submit the edit, to make sure that the edits are
 	 * acceptable, and then it renders a message mentioning whether the
 	 * operation was successful or not.
 	 * 
@@ -1153,7 +1123,6 @@ public class Users extends CRUD {
 	 * @param id
 	 *            : the user's id
 	 * 
-	 * @return void
 	 */
 
 	public static void save(String id) throws Exception {
@@ -1161,8 +1130,6 @@ public class Users extends CRUD {
 		ObjectType type = ObjectType.get(Users.class);
 		notFoundIfNull(type);
 		Model object = type.findById(id);
-//		long userId = Long.parseLong(id);
-//		User object = User.findById(userId);
 		Binder.bind(object, "object", params.all());
 		System.out.println(object.toString() + "begin");
 		validation.valid(object);
@@ -1225,7 +1192,7 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * This method is responsible for deleting a user by the system admin after
+	 * @description is responsible for deleting a user by the system admin after
 	 * specifying that user's id, and then it renders a message confirming
 	 * whether the delete was successful or not
 	 * 
@@ -1236,7 +1203,6 @@ public class Users extends CRUD {
 	 * @param id
 	 *            : the user's id
 	 * 
-	 * @return void
 	 * 
 	 * */
 	public static void delete(String id) {
