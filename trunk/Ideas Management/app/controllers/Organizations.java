@@ -167,21 +167,28 @@ public class Organizations extends CRUD {
 	 * @return void
 	 */
 
-	public static void sendInvitation(long orgId,
-			@play.data.validation.Email String email) {
-		if (!Validation.hasError(email)) {
-			Organization org = Organization.findById(orgId);
-			User sender = Security.getConnected();
-			Invitation inv = new Invitation(email, null, org, "Idea Developer",
-					sender);
-			inv._save();
-			User rec = User.find("byEmail", email).first();
-			if (rec != null) {
-				rec.invitation.add(inv);
-				rec._save();
+	public static void sendInvitation(long orgId, String email) {
+		Organization org = Organization.findById(orgId);
+		User sender = Security.getConnected();
+		List<Invitation> invs = Invitation.findAll();
+		Invitation temp;
+		for (int i = 0; i < invs.size(); i++) {
+			temp = invs.get(i);
+			if (temp.sender.id == sender.id
+					&& temp.email.equalsIgnoreCase(email)
+					&& temp.role.equalsIgnoreCase("idea developer")) {
+				return;
 			}
-			Mail.invite(email, "Idea Devoloper", org.name, "");
 		}
+		Invitation inv = new Invitation(email, null, org, "Idea Developer",
+				sender);
+		inv._save();
+		User rec = User.find("byEmail", email).first();
+		if (rec != null) {
+			rec.invitation.add(inv);
+			rec._save();
+		}
+		Mail.invite(email, "Idea Devoloper", org.name, "");
 	}
 
 	/**
