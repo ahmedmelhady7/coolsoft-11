@@ -24,7 +24,7 @@
 		   <br>
 		   <br>
 	
-        #{if (requestToJoin == true) && (!admin)}
+        #{if (requestToJoin == true) && (!admin) && (!alreadyRequested)}
 		<form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
 			<input type="hidden" id="orgId" name="orgId" value="${org.id}">
 			Your message: <textarea id="description" name="description" rows="5" cols="50"></textarea>
@@ -32,6 +32,10 @@
 		</form>
 		#{/if}
         #{else}
+		#{if alreadyRequested}
+		<big><b>Your request has already been sent!!</b></big>
+		#{/if}
+		#{else}
 		#{if (admin || creator)}
 		<a href="@{Tags.createTag(org.id)}">Create a Tag</a>
 		#{/if}
@@ -63,6 +67,7 @@
             #{/list}
         </ul>
         #{/else}
+		#{/else}
 		#{if isMember == true}
         <form action="@{Topics.requestToPost()}">
             <input type="hidden" name="orgId" value="${org.id}">
