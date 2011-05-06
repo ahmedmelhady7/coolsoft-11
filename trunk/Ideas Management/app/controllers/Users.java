@@ -850,19 +850,8 @@ public class Users extends CRUD {
 					.find("select uro from UserRoleInOrganization uro where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?",
 							organization, entityId, "entity").fetch();
 			for (int i = 0; i < organizers.size(); i++) {
-				if (!((organizers.get(i).role.roleName).equals("organizer"))) {
-					// =======
-					// organizers = (List<UserRoleInOrganization>)
-					// UserRoleInOrganization
-					// .find("select uro from UserRoleInOrganization uro"
-					// + "where uro.organization = ? "
-					// + " and uro.entityTopicID = ? "
-					// + "and uro.type like ?", o, e.getId(), "entity");
-					// for (int i = 0; i < organizers.size(); i++) {
-					// if (!((organizers.get(i).role).equals("organizer"))) {
-					// >>>>>>> .r797
-					organizers.remove(i);
-				} else {
+				if (((organizers.get(i).role.roleName).equals("organizer"))) {
+					
 					enrolled.add(organizers.get(i).enrolled);
 				}
 			}
