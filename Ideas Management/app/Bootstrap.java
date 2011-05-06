@@ -16,7 +16,7 @@ import models.*;
 /**
  * 
  * @author DebugTeam
- * @version 1.8
+ * @version 1.9
  * 
  */
 
@@ -36,13 +36,16 @@ public class Bootstrap extends Job {
 					"admin", 0, new Date(1990, 11, 11), "Egypt", "Prgrammer");
 			admin.isAdmin = true;
 			admin._save();
+
 			User hadi = new User("elhadiahmed3@gmail.com", "hadi.18",
 					"notreal", "Ahmed", "El-Hadi", 0, new Date(1991, 3, 20),
 					null, "");
 			hadi._save();
+
 			User barnasa = new User("brns@gmail.com", "brns", "1234",
 					"Abdelrahman", "Ali", 0, new Date(), "egypt", "student");
 			barnasa._save();
+
 			User sharaf = new User("sharaf@eg.gov", "sharaf", "1234", "Asam",
 					"Sharaf", 0, new Date(1955, 2, 14), "Egypt", "Primenister")
 					.save();
@@ -55,7 +58,7 @@ public class Bootstrap extends Job {
 					"Abd El Kawi", "Khalifa", 0, new Date(1955, 7, 15),
 					"Egypt", "Governer").save();
 
-			User gom3a = new User("mgmohamedganem@gmail.com", "ghanem", "1234",
+			User gom3a = new User("mgmohamedganem@gmail.com", "Ghanem", "1234",
 					"Mohamed", "Gomaa", 0, new Date(1991, 6, 4), "Egypt",
 					"student");
 			gom3a._save();
@@ -141,14 +144,15 @@ public class Bootstrap extends Job {
 			UserRoleInOrganizations.addEnrolledUser(slim, guc, organizer,
 					gucMet.id, "entity");
 
-//			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
-//					gucMet.id, "entity");
+			// UserRoleInOrganizations.addEnrolledUser(khayat, guc,
+			// ideadeveloper,
+			// gucMet.id, "entity");
 
 			UserRoleInOrganizations.addEnrolledUser(fatma, guc, organizer,
 					gucCs.id, "entity");
 
-//			UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
-//					gucCs.id, "entity");
+			// UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
+			// gucCs.id, "entity");
 
 			UserRoleInOrganizations.addEnrolledUser(sharaf, gov,
 					OrganizationLead);
@@ -156,8 +160,8 @@ public class Bootstrap extends Job {
 			UserRoleInOrganizations.addEnrolledUser(gamal, gov, organizer,
 					govHead.id, "entity");
 
-//			UserRoleInOrganizations.addEnrolledUser(khalifa, gov,
-//					ideadeveloper, govHead.id, "entity");
+			// UserRoleInOrganizations.addEnrolledUser(khalifa, gov,
+			// ideadeveloper, govHead.id, "entity");
 
 			Topic gucMetStudentUnion = new Topic("Student union",
 					"Suggestions", 2, ashraf, gucMet).save();
@@ -167,16 +171,17 @@ public class Bootstrap extends Job {
 
 			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
-//			UserRoleInOrganizations.addEnrolledUser(gom3a, guc, ideadeveloper,
-//					gucMet.id, "entity");
+			// UserRoleInOrganizations.addEnrolledUser(gom3a, guc,
+			// ideadeveloper,
+			// gucMet.id, "entity");
 			UserRoleInOrganizations.addEnrolledUser(gom3a, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
-//			UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
-//					gucMet.id, "entity");
+			// UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
+			// gucMet.id, "entity");
 			UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
-//			UserRoleInOrganizations.addEnrolledUser(u5, guc, ideadeveloper,
-//					gucMet.id, "entity");
+			// UserRoleInOrganizations.addEnrolledUser(u5, guc, ideadeveloper,
+			// gucMet.id, "entity");
 			UserRoleInOrganizations.addEnrolledUser(u5, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
 
@@ -199,8 +204,6 @@ public class Bootstrap extends Job {
 					2, admin, elAhly).save();
 			elAhly.topicList.add(matchChaos);
 			elAhly._save();
-
-			// hadi add ideas here
 
 			Idea i1 = new Idea("Law Improvement",
 					"Adding restrcitions on businessmen", barnasa, govImp, true);
@@ -240,68 +243,53 @@ public class Bootstrap extends Job {
 			gucMetStudentUnion.save();
 			ashraf.planscreated.add(p1);
 			ashraf.save();
-
-			// i3.plan = p1;
-			// i3._save();
-
-			// p1.usersRated.add(gom3a);
-			// p1.rating = 1;
-			// i2.plan = p1;
-			// i2._save();
-			// i1.plan = p1;
-			// i1._save();
-			// p1.addIdea(i3);
-			// p1.addIdea(i2);
-			// p1.addIdea(i1);
-			// p1.save();
-			// // p1._save();
-			//
-			// Comment c1 = new Comment("i prefer new Computers ", i1, ashraf)
-			// .save();
-			// c1.commentedIdea = i2;
-			// c1._save();
-			//
-			// Comment c2 = new Comment("good idea", p1, gom3a).save();
-			// c2.commentedPlan = p1;
-			// c2._save();
-			//
+			
 			Item item1 = new Item(
 					new Date(111, 05, 01),
 					new Date(111, 05, 20),
 					"One of the members who is not runing for elections should organize a debate between the candidates",
 					p1, "Candidates Debate");
+			
 			Item item2 = new Item(
 					new Date(111, 05, 04),
 					new Date(111, 05, 14),
 					"One of the SU members should reserve a room for the debate",
 					p1, "Room reservation");
+			
 			Item item3 = new Item(
 					new Date(111, 04, 01),
 					new Date(111, 05, 28),
 					"One of the members should set up an electronic election process",
 					p1, "Election Process Setup");
+			
 			item1.save();
 			item2.save();
 			item3.save();
+			
 			p1.items.add(item1);
 			p1.items.add(item2);
 			p1.items.add(item3);
 			p1.save();
-			// p1.usersRated.add(gom3a);
-			// // p1.rating = 1;
-			//
-			// p1._save();
+
 			khayat.itemsAssigned.add(item1);
 			khayat.itemsAssigned.add(item2);
 			khayat.save();
+			
 			gom3a.itemsAssigned.add(item1);
 			gom3a.save();
+			
 			item1.assignees.add(khayat);
 			item1.assignees.add(gom3a);
 			item1.save();
-			// System.out.println(item1.assignees.get(0).email);
 			item2.assignees.add(khayat);
 			item2.save();
+			
+			
+			new Comment("here i accept", i1, gom3a).save();
+			new Comment("i love SE course", p1, hadi).save();
+			
+			
+
 			//
 			// RequestToJoin request = new RequestToJoin(gom3a, null, guc,
 			// "I would like to join your organization..");
@@ -319,17 +307,18 @@ public class Bootstrap extends Job {
 			//
 			// // UserRoleInOrganizations.addEnrolledUser(u2,, role,
 			// // entityOrTopicId, type)
-			
-			//////////////////////////////////////////////////
-			
+
+			// //////////////////////////////////////////////
+			//
+			// this part for Fadi
+			//
+			// //////////////////////////////////////////////
 			ActionListener listener = new TimerCall();
-		    // Construct a timer that calls the listener
+			// Construct a timer that calls the listener
 			// once every 24 hours
 			Timer t = new Timer(86400, listener);
 			t.start();
-			
-			       
-
+			// //////////////////////////////////////////////
 
 		}
 	}
