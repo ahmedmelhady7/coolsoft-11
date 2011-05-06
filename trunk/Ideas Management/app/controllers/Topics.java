@@ -646,7 +646,7 @@ public class Topics extends CRUD {
 		users.add(tmp.entity.organization.creator);
 		for (int i = 0; i < users.size(); i++)
 			Notifications.sendNotification(users.get(i).id, tmp.id, "Topic",
-					"A new Topic " + tmp.title + " has been added in entity"
+					"A new Topic " + tmp.title + " has been added in entity "
 							+ tmp.entity.name);
 
 		// tmp.init();
@@ -1051,7 +1051,8 @@ public class Topics extends CRUD {
 		for (int i = 0; i < users.size(); i++)
 			Notifications.sendNotification(users.get(i).id, tmp.id, "Topic",
 					"User " + myUser.firstName + " has edited topic  "
-							+ tmp.title);
+							+ tmp.title + " in entity "
+							+ tmp.entity.name);
 
 		System.out.println("save() done, not redirected yet");
 
