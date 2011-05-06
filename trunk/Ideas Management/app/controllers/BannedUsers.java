@@ -23,13 +23,13 @@ public class BannedUsers extends CRUD {
 //		MainEntity e = (MainEntity) MainEntity.findAll().get(0);
 //		long id = e.getId();
 //		System.out.println(id);
-       List<Organization> o = Organization.findAll();
-       System.out.println(o.isEmpty() + "yaaaaaaaaaaaaaaaaaaaaaaaaaaaah");
-       Organization org = o.get(0);
-		System.out.println(o .isEmpty());
-		System.out.println("ya raaaaaaaaaaaab" + org.name + "  " );
-		long organizationID = o.get(0).getId();
-		System.out.println(organizationID);
+       List<Organization> organizations = Organization.findAll();
+     //  System.out.println(o.isEmpty() + "yaaaaaaaaaaaaaaaaaaaaaaaaaaaah");
+       Organization organization = organizations.get(0);
+		System.out.println(organizations .isEmpty());
+	//	System.out.println("ya raaaaaaaaaaaab" + organization.name + "  " );
+		long organizationID = organizations.get(0).getId();
+	//	System.out.println(organizationID);
 		restrictOrganizer(organizationID);
 	}
 	/**
@@ -49,9 +49,9 @@ public class BannedUsers extends CRUD {
 	 */
 	public static void restrictOrganizer(long orgId) {
 		
-		Organization org = Organization.findById(orgId);
+		Organization organization = Organization.findById(orgId);
 	//	System.out.println((org == null) + "OFFFFFFFFFFFFFf");
-		List<User> users = Users.searchOrganizer(org);
+		List<User> users = Users.searchOrganizer(organization);
 //		List<User> u = User.findAll();
 //		users.add(u.get(0));
 	long	organizationID = orgId;
@@ -81,9 +81,9 @@ public class BannedUsers extends CRUD {
 		}
 		else{
     // System.out.println(organizationId);
-		Organization org = Organization.findById(organizationId);
+		Organization organization = Organization.findById(organizationId);
 		User user = User.findById(userId);
-		List<MainEntity> entities = Users.getEntitiesOfOrganizer(org, user);
+		List<MainEntity> entities = Users.getEntitiesOfOrganizer(organization, user);
 	//	System.out.println("++++" + entities.isEmpty());
 		render(user, organizationId, entities);
 		
@@ -117,8 +117,8 @@ public class BannedUsers extends CRUD {
 			entitiesEnrolledIn(userId,organizationId);
 		}
 		if (topic.equalsIgnoreCase("true")) {
-			MainEntity e = MainEntity.findById(entityId);
-			List<Topic> entityTopics = e.topicList;
+			MainEntity entity = MainEntity.findById(entityId);
+			List<Topic> entityTopics = entity.topicList;
 			render(entityTopics, organizationId, userId);
 		} else {
 			entityActions(entityId, organizationId, userId);
@@ -145,15 +145,15 @@ public class BannedUsers extends CRUD {
 		
 		
 		List<String> entityActions = Roles.getRoleActions("organizer");
-		MainEntity e = MainEntity.findById(entityId);
-		Organization o = e.organization;
-		User u = User.findById(userId);
+		MainEntity entity = MainEntity.findById(entityId);
+		Organization organization = entity.organization;
+		User user = User.findById(userId);
 		
 		
 
 		List<String> restricted = BannedUser
 				.find("select bu.action from BannedUser bu where bu.organization = ? and bu.bannedUser = ? and bu.resourceType like ? and resourceID = ? ",
-						o, u, "entity", entityId).fetch();
+						organization, user, "entity", entityId).fetch();
 		for(int i = 0; i<entityActions.size() ; i++){
 			if (restricted.contains(entityActions.get(i))){
 				System.out.println(entityActions.get(i));
@@ -180,21 +180,21 @@ public class BannedUsers extends CRUD {
 		
 		
 		List<String> topicActions = Roles.getOrganizerTopicActions();
-		Topic t = (Topic.findById(topicId));
-		MainEntity e = t.entity;
-		Organization o = e.organization;
-		User u = User.findById(userId);
+		Topic topic = (Topic.findById(topicId));
+		MainEntity entity = topic.entity;
+		Organization organization = entity.organization;
+		User user = User.findById(userId);
 		
 		
 		if (validation.hasErrors() || topicId == 0) {
 			flash.error("Oops, please select atleast one choise ");
-			topicsEnrolledInOrRedirect(e.getId(), "topic",
-					o.getId(), u.getId());
+			topicsEnrolledInOrRedirect(entity.getId(), "topic",
+					organization.getId(), user.getId());
 		}
 
 		List<String> restricted = BannedUser
 				.find("select bu.action from BannedUser bu where bu.organization = ? and bu.bannedUser = ? and bu.resourceType like ? and resourceID = ? ",
-						o, u, "topic", topicId).fetch();
+						organization, user, "topic", topicId).fetch();
 		for(int i = 0; i<topicActions.size() ; i++){
 			if (restricted.contains(topicActions.get(i))){
 				topicActions.remove(i);
