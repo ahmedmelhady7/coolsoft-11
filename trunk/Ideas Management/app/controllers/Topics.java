@@ -189,7 +189,7 @@ public class Topics extends CRUD {
 		idea.privacyLevel = topic.privacyLevel;
 		render(title, description);
 	}
-	
+
 	/**
 	 * 
 	 * This method reopens a closed topic, used after its plan gets deleted
@@ -249,17 +249,16 @@ public class Topics extends CRUD {
 	 * This Method sends a request to post on a topic for a user to the
 	 * organizer
 	 * 
-	 * @author ibrahim.al.khayat
+	 * @author ibrahim al-khayat
 	 * 
 	 * @story C2S13
 	 * 
 	 * @param topicId
-	 *            : the id of the topic
+	 *            the id of the topic
 	 * 
 	 * @param userId
-	 *            : the id of user who request to post
+	 *            the id of user who request to post
 	 * 
-	 * @return void
 	 */
 
 	public static void addRequest(long topicId, long userId) {
@@ -272,14 +271,12 @@ public class Topics extends CRUD {
 	 * This renders the RequestToPost.html to show the list of all topics where
 	 * the user is not allowed to post within an organization
 	 * 
-	 * @author ibrahim.al.khayat
+	 * @author ibrahim al-khayat
 	 * 
 	 * @story C2S13
 	 * 
 	 * @param orgId
-	 *            : The organization id where the topics are
-	 * 
-	 * @return void
+	 *            The organization id where the topics are
 	 */
 
 	public static void requestToPost(long orgId) {
@@ -324,8 +321,7 @@ public class Topics extends CRUD {
 	}
 
 	/**
-	 * searches for unblocked users who are allowed to post in a
-	 * certain topic
+	 * searches for unblocked users who are allowed to post in a certain topic
 	 * 
 	 * @author lama.ashraf
 	 * 
@@ -1043,8 +1039,8 @@ public class Topics extends CRUD {
 		if (!(entity.followers.size() == 0 || topicOrganization.followers
 				.size() == 0))
 			tmp.followers = User.find(
-					"byFollowingEntitiesAndFollowingOrganizations",
-					entity, topicOrganization).fetch();
+					"byFollowingEntitiesAndFollowingOrganizations", entity,
+					topicOrganization).fetch();
 		String message = "";
 
 		if (validation.hasErrors()) {
@@ -1060,9 +1056,8 @@ public class Topics extends CRUD {
 			 */
 			try {
 				render(request.controller.replace(".", "/") + "/view.html",
-						entity, type, tmp.title, tmp.entity,
-						tmp.description, tmp.followers, tmp.tags, message,
-						object, topicId);
+						entity, type, tmp.title, tmp.entity, tmp.description,
+						tmp.followers, tmp.tags, message, object, topicId);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/view.html", type, topicId);
 			}
@@ -1072,9 +1067,8 @@ public class Topics extends CRUD {
 			message = "The privary level must be either 1 or 2";
 			try {
 				render(request.controller.replace(".", "/") + "/view.html",
-						entity, type, tmp.title, tmp.entity,
-						tmp.description, tmp.followers, tmp.tags, message,
-						object, topicId);
+						entity, type, tmp.title, tmp.entity, tmp.description,
+						tmp.followers, tmp.tags, message, object, topicId);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/view.html", type, topicId);
 			}
