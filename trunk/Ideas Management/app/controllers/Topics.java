@@ -280,7 +280,8 @@ public class Topics extends CRUD {
 			for (int j = 0; j < temp.size(); j++) {
 				// ???
 				if (!Users.isPermitted(user, "can post ideas to a Topic",
-						temp.get(j).id, "topic")) {
+						temp.get(j).id, "topic")
+						&& !temp.get(j).hasRequest(user)) {
 					topics.add(temp.get(j));
 				}
 			}
@@ -592,7 +593,6 @@ public class Topics extends CRUD {
 					"byFollowingEntitiesAndFollowingOrganizations",
 					topicEntity, topicOrganization).fetch();
 
-
 		if (validation.hasErrors()) {
 			if (tmp.title.equals("")) {
 				message = "A Topic must have a title";
@@ -609,7 +609,7 @@ public class Topics extends CRUD {
 				render("CRUD/blank.html", type, entityid);
 			}
 		}
-		
+
 		if (tmp.privacyLevel < 1 || tmp.privacyLevel > 2) {
 			message = "The privary level must be either 1 or 2";
 			try {
@@ -990,7 +990,7 @@ public class Topics extends CRUD {
 		validation.valid(object);
 		Topic tmp = (Topic) object;
 		// MainEntity topicEntity = to get connected aw kda
-		//MainEntity topicEntity = MainEntity.findById((long) 1); // temporary;
+		// MainEntity topicEntity = MainEntity.findById((long) 1); // temporary;
 		// for testing
 		// purposes
 		MainEntity topicEntity = tmp.entity;
@@ -1013,7 +1013,6 @@ public class Topics extends CRUD {
 
 			}
 
-
 			/*
 			 * else if( !Users.isPermitted(myUser, "edit topics",
 			 * topicEntity.getId(), "entity")) { message =
@@ -1028,7 +1027,7 @@ public class Topics extends CRUD {
 				render("CRUD/view.html", type);
 			}
 		}
-		
+
 		if (tmp.privacyLevel < 1 || tmp.privacyLevel > 2) {
 			message = "The privary level must be either 1 or 2";
 			try {

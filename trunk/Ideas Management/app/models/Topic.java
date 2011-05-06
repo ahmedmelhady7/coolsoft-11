@@ -17,11 +17,11 @@ public class Topic extends Model {
 	 */
 	@Required
 	public String title;
-	
+
 	/**
 	 * @author Mohamed Ghanem
 	 * 
-	 * Topic initialization date
+	 *         Topic initialization date
 	 */
 	public Date intializedIn;
 
@@ -70,12 +70,12 @@ public class Topic extends Model {
 	 */
 	@ManyToMany(mappedBy = "topicsIFollow")
 	public List<User> followers;
-	
+
 	/**
 	 * The list of related topics
 	 */
-//	no  mapping
-//	public List<Topic> relatedTopics;
+	// no mapping
+	// public List<Topic> relatedTopics;
 
 	/*
 	 * the list of users that can access the topic
@@ -214,26 +214,27 @@ public class Topic extends Model {
 	 */
 
 	public List<User> getOrganizer() {
-	//  List<UserRoleInOrganization> o = (List<UserRoleInOrganization>) UserRoleInOrganization
-//	    .find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.resourceID = ? and r.roleName like ? and uro.resourceType = ? ",
-//	      this.id, "organizer", "topic");
-	//
-	  List<User> organizer = new ArrayList<User>();
-	//  for (int i = 0; i < o.size(); i++) {
-	//   organizer.add((o.get(i).enrolled));
-	//  }
-	//  return organizer;
-	  
-	  List<UserRoleInOrganization> o = UserRoleInOrganization.find("byEntityTopicIDAndType", this.entity.id,"entity").fetch();
-	  for(int i= 0; i <o.size(); i++) {
-	   if((o.get(i).role.roleName).equals("organizer")){
-	    organizer.add(o.get(i).enrolled);
-	   }
-	  }
-	  return organizer;
-	  
-	  
-	 }
+		// List<UserRoleInOrganization> o = (List<UserRoleInOrganization>)
+		// UserRoleInOrganization
+		// .find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.resourceID = ? and r.roleName like ? and uro.resourceType = ? ",
+		// this.id, "organizer", "topic");
+		//
+		List<User> organizer = new ArrayList<User>();
+		// for (int i = 0; i < o.size(); i++) {
+		// organizer.add((o.get(i).enrolled));
+		// }
+		// return organizer;
+
+		List<UserRoleInOrganization> o = UserRoleInOrganization.find(
+				"byEntityTopicIDAndType", this.entity.id, "entity").fetch();
+		for (int i = 0; i < o.size(); i++) {
+			if ((o.get(i).role.roleName).equals("organizer")) {
+				organizer.add(o.get(i).enrolled);
+			}
+		}
+		return organizer;
+
+	}
 
 	/**
 	 * This Method returns the list of ideas in a certain topic
@@ -331,13 +332,45 @@ public class Topic extends Model {
 	 */
 
 	public void requestFromUserToPost(User u) {
-		if (requestsToJoin.indexOf(u) < 0) {
-			User o = getOrganizer().get(0);
-			RequestToJoin r = new RequestToJoin(u, this, null, o.email).save();
-			// send the request
+		if (!hasRequest(u)) {
+			RequestToJoin r;
+			if (getOrganizer().size() > 0) {
+				User o = getOrganizer().get(0);
+				r = new RequestToJoin(u, this, this.entity.organization,
+						o.email).save();
+
+			} else {
+				User o = entity.organization.creator;
+				r = new RequestToJoin(u, this, this.entity.organization,
+						o.email).save();
+			}
 			requestsToJoin.add(r);
 			_save();
 		}
+	}
+
+	/**
+	 * This Method return true if a user have requested to join this topic
+	 * 
+	 * @author ibrahim.al.khayat
+	 * 
+	 * @story C2S13
+	 * 
+	 * @param user
+	 *            : the user
+	 * 
+	 * @return boolean
+	 */
+
+	public boolean hasRequest(User user) {
+		RequestToJoin req;
+		for (int i = 0; i < requestsToJoin.size(); i++) {
+			req = requestsToJoin.get(i);
+			if (req.source.id == user.id) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean isDeletable() {
