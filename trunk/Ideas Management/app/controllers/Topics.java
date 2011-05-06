@@ -200,22 +200,13 @@ public class Topics extends CRUD {
 	 * 
 	 * @param topicId
 	 *            : the id of the topic that to be reopened
-	 * 
-	 * @return void
 	 */
-	public static void reopen(long topicId, long userId) {
+	public static void reopen(long topicId) {
 
 		Topic targetTopic = Topic.findById(topicId);
-		User actor = User.findById(userId);
-		String action = "close a topic and promote it to execution";
-		if (!targetTopic.getOrganizer().contains(actor)
-				&& Users.isPermitted(actor, action, topicId, "Topic")) {
-			System.out.println("User does not have requiered permission");
-			return;
-		}
 
 		targetTopic.openToEdit = true;
-
+		targetTopic.save();
 	}
 
 	/**
@@ -512,43 +503,44 @@ public class Topics extends CRUD {
 	 * @param topicId
 	 *            : the id of the topic to be closed
 	 * 
-	 * @return boolean
 	 */
-	public static void closeTopic(long topicId, long userId) {
-		Topic targetTopic = Topic.findById(topicId);
-		User actor = User.findById(userId);
-
-		// checks if topic is empty or the user is not an organizer
+public static void closeTopic(String topicId) {
+		
+		System.out.println("entered closeTopic for topic:" + topicId);
+		long topicIdLong = Long.parseLong(topicId);
+		Topic targetTopic = Topic.findById(topicIdLong);
+		User actor = User.findById(Security.getConnected().id);
+		List<User> organizers = targetTopic.getOrganizer();
+		List<User> followers = targetTopic.followers;
+	
 		String action = "close a topic and promote it to execution";
-		if (targetTopic.ideas.size() == 0
-				|| !targetTopic.getOrganizer().contains(actor)
-				&& Users.isPermitted(actor, action, topicId, "Topic")) {
-			System.out.println("User does not have required permission");
+		String notificationDescription = "Topic " + targetTopic.title
+			+ " has been closed and promoted to execution.";
+		
+		System.out.println("ideas count:" + targetTopic.getIdeas().size() + " in topic" +
+				targetTopic.getId() + "-" + targetTopic.id);
+		
+		// checks if topic is empty
+		if (targetTopic.getIdeas().size() == 0) {
+			System.out.println("Topic has no ideas");
 			return;
 		}
 
 		// closing the topic to editing
 		targetTopic.openToEdit = false;
-
+		targetTopic.save();
+		
 		// Sending Notifications
-		String notificationDescription = "Topic " + targetTopic.title
-				+ " has been closed and promoted to execution.";
-
 		// send notification to organizers
-
-		// Notifications.sendNotification(targetTopic.getOrganizer(),
-
-		// Notifications.sendNotification(targetTopic.getOrganizer(),
-		// targetTopic.id, "Topic", notificationDescription);
-		//
-		// // send notification to followers
-		// Notifications.sendNotification(targetTopic.followers, targetTopic.id,
-		// "Topic", notificationDescription);
-
+		for(int i = 0; i < organizers.size(); i++) {
+			Notifications.sendNotification(organizers.get(i).getId(), 
+					targetTopic.getId(), "Topic", notificationDescription);
+		}
 		// send notification to followers
-		// Notifications.sendNotification(targetTopic.followers, targetTopic.id,
-		// "Topic", notificationDescription);
-
+		for(int i = 0; i < followers.size(); i++) {
+			Notifications.sendNotification(followers.get(i).getId(), 
+					targetTopic.getId(), "Topic", notificationDescription);
+		}
 	}
 
 	/**
@@ -796,15 +788,15 @@ public class Topics extends CRUD {
 		System.out.println(actor);
 		System.out.println(tmp);
 		System.out.println(allowed);
-		if (targetTopic.getOrganizer().contains(actor)) {
-			if (Users.isPermitted(actor, actionClose, topicIdLong, "topic")) {
+		
+		if (Users.isPermitted(actor, actionClose, topicIdLong, "topic")) {
 				canClose = 1;
-			}
-
-			if (Users.isPermitted(actor, actionPlan, topicIdLong, "topic")) {
-				canPlan = 1;
-			}
 		}
+
+		if (Users.isPermitted(actor, actionPlan, topicIdLong, "topic")) {
+				canPlan = 1;
+		}
+		
 
 		int permission = 1;
 
@@ -817,7 +809,7 @@ public class Topics extends CRUD {
 			render(type, object, tags, creator, followers, ideas, comments,
 					entity, plan, openToEdit, privacyLevel, deleteMessage,
 					deletable, topicIdLong, canClose, canPlan, targetTopic,
-					allowed, permission);
+					allowed, permission, topicId);
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("show() done with exception, rendering to CRUD/show.html");
