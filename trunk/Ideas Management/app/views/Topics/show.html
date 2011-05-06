@@ -124,13 +124,13 @@
 
 <!--functions to call after clicking reopen and close buttons --> 
 <script type="text/javascript">
-	function closeTopic(viewTopicId, viewUserId){
-		$.post('@{Topics.closeTopic()}', {topicId:viewTopicId, userId:viewUserId});
+	function closeTopic(viewtopicId, viewuserid){
+		$.post('@{Topics.closeTopic()}', {topicId:viewtopicId, userId:viewuserid});
 		alert("done!");
 		location.reload(true);
 	}
-	function reopen(viewTopicId,viewUserId) {
-		$.post('@{Topics.reopen()}', {topicId:viewTopicId, userId:viewUserId});
+	function reopen(viewtopicId,viewuserid) {
+		$.post('@{Topics.reopen()}', {topicId:viewtopicId, userId:viewuserid});
 		alert("done!");
 		location.reload(true);
 	}

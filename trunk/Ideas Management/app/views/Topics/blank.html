@@ -7,7 +7,7 @@
 	<font color="Red">${message}</font>	
 	
 	<div class="objectForm">
-	#{form action:@create(entityid), enctype:'multipart/form-data'}
+	#{form action:@create(entityId), enctype:'multipart/form-data'}
 	#{crud.form fields: ['title', 'description', 'privacyLevel']}
 		
 			#{crud.custom 'title'}
