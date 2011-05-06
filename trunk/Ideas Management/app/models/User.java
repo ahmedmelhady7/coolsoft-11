@@ -141,6 +141,14 @@ public class User extends Model {
 	@OneToMany(mappedBy = "destination")
 	// , cascade = CascadeType.ALL)
 	public List<AssignRequest> receivedAssignRequests;
+	
+	@OneToMany(mappedBy = "sender")
+	// , cascade = CascadeType.ALL)
+	public List<LinkDuplicatesRequest> sentMarkingRequests;
+
+	@OneToMany(mappedBy = "idea1")
+	// , cascade = CascadeType.ALL)
+	public List<LinkDuplicatesRequest> receivedMarkingRequests;
 
 	@OneToMany(mappedBy = "bannedUser")
 	// , cascade = CascadeType.ALL)

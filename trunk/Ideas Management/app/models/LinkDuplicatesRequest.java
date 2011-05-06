@@ -1,20 +1,23 @@
 package models;
 
+import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import play.data.validation.Required;
+import play.db.jpa.Model;
 
-public class LinkDuplicatesRequest {
+@Entity
+public class LinkDuplicatesRequest extends Model {
 	/**
 	 * The Ideas declared as duplicates
 	 */
 	@Required
-	@ManyToMany
+	@ManyToOne
 	public Idea idea1;
 	
 	@Required
-	@ManyToMany
+	@ManyToOne
 	public Idea idea2;
 
 	/**

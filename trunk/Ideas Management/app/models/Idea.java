@@ -87,6 +87,11 @@ public class Idea extends Model {
 	 */
 
 	public boolean isDraft;
+	/**
+	 * @author ${Loaay Alkherbawy} Each idea can have list of duplicates
+	 */
+	@OneToMany
+	public List<Idea> duplicateIdeas;
 
 	/**
 	 * @author ${Ibrahim Safwat} Each idea can have a rating
