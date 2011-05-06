@@ -29,6 +29,8 @@ public class Ideas extends CRUD {
 	/*
 	 * @author Abdalrahman Ali
 	 * 
+	 * @story C3S13
+	 * 
 	 * this method saves an idea as a draft for the first time
 	 * 
 	 * @param title the title of the idea
@@ -48,6 +50,8 @@ public class Ideas extends CRUD {
 
 	/*
 	 * @author Abdalrahman Ali
+	 * 
+	 * @story C3S13
 	 * 
 	 * this method posts an idea that was saved as a draft
 	 * 
@@ -70,6 +74,8 @@ public class Ideas extends CRUD {
 	/*
 	 * @author Abdalrahman Ali
 	 * 
+	 * @story C3S13
+	 * 
 	 * this method saves a change in a draft idea
 	 * 
 	 * @param ideaId the saved idea
@@ -91,6 +97,8 @@ public class Ideas extends CRUD {
 	/*
 	 * @author Abdalrahman Ali
 	 * 
+	 * @story C3S13
+	 * 
 	 * this method returns all the ideas the user saved as draft in order to
 	 * enable the user to choose one of them and post it.
 	 */
@@ -110,6 +118,8 @@ public class Ideas extends CRUD {
 
 	/*
 	 * @author Abdalrahman Ali
+	 * 
+	 * @story C3S13
 	 * 
 	 * this method just directs the user to a page where he can handle his
 	 * drafts
