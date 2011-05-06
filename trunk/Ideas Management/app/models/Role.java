@@ -27,13 +27,19 @@ public class Role extends Model {
 	@OneToMany(mappedBy = "role")
 	// , cascade = CascadeType.ALL)
 	public List<UserRoleInOrganization> userRoleInOrganization;
-    /** 
-     * this constructor creates a new role given it's name and action string
-     * @author Nada Ossama
-     * @story C1S7
-     * @param role is the role name
-     * @param actions is the actions string
-     */
+
+	/**
+	 * this constructor creates a new role given it's name and action string
+	 * 
+	 * @author Nada Ossama
+	 * 
+	 * @story C1S7
+	 * 
+	 * @param role
+	 *            is the role name
+	 * @param actions
+	 *            is the actions string
+	 */
 
 	public Role(String role, String actions) {
 		this.roleName = role;
@@ -43,8 +49,11 @@ public class Role extends Model {
 	}
 
 	/**
-	 * method that creates the Organizer role @ author nada ossama
+	 * method that creates the Organizer role 
 	 * 
+	 * @ author nada ossama
+	 * 
+	 * @story C1S7
 	 */
 	public static void createOrganizerRole() {
 	//	ArrayList<String> action = new ArrayList();
@@ -93,6 +102,8 @@ public class Role extends Model {
 	 * 
 	 * @author Nada Ossama
 	 * 
+	 * @story C1S7
+	 * 
 	 */
 
 	public static void createIdeaDeveloperRole() {
@@ -138,8 +149,10 @@ public class Role extends Model {
 
 	/**
 	 * this method creates the organization lead role
-	 * @story C1S7
+	 * 
 	 * @author Nada Ossama
+	 * 
+	 * @story C1S7
 	 */
 	
 	public static void createOrganizationLeadRole(){
@@ -154,8 +167,10 @@ public class Role extends Model {
 		 }
 	/**
 	 * this method creates the admine role
-	 * @story C1S7
+	 * 
 	 * @author Nada Ossama
+	 * 
+	 * @story C1S7
 	 */
 		 
 		 public static void createAdminRole(){
@@ -173,6 +188,9 @@ public class Role extends Model {
 	 * the toString method that prints the role name
 	 * 
 	 * @author Nada Ossama
+	 * 
+	 * @story C1S7
+	 * 
 	 * @return String which is the role Name
 	 */
 	public String toString() {
