@@ -62,7 +62,7 @@ public class BannedUsers extends CRUD {
 	 * this method takes the Id of the organization (the same as the previous
 	 * method) and the ID of the User to be restricted,and renders the list of
 	 * entities the selected user is enrolled in and it will give the
-	 * organization lead to restrict him from thr whole selected entity or from
+	 * organization lead to restrict him from the whole selected entity or from
 	 * a specific topic
 	 * 
 	 * @story C1S7
@@ -72,7 +72,7 @@ public class BannedUsers extends CRUD {
 	 * @param long organizationId the id of the organization he will be
 	 *        restricted in
 	 */
-	public static void restrictOrganizerHelper1(@Required long userId,
+	public static void entitiesEnrolledIn(@Required long userId,
 			long organizationId) {
     
 		if (validation.hasErrors()|| userId == 0) {
@@ -109,19 +109,19 @@ public class BannedUsers extends CRUD {
 	 *            : to be restricted
 	 */
 
-	public static void restrictOrganizerHelper2(@Required long entityId, @Required String topic,
+	public static void topicsEnrolledInOrRedirect(@Required long entityId, @Required String topic,
 			long organizationId, long userId) {
 
 		if (validation.hasErrors() || entityId == 0) {
 			flash.error("Oops, please select atleast one choise ");
-			restrictOrganizerHelper1(userId,organizationId);
+			entitiesEnrolledIn(userId,organizationId);
 		}
 		if (topic.equalsIgnoreCase("true")) {
 			MainEntity e = MainEntity.findById(entityId);
 			List<Topic> entityTopics = e.topicList;
 			render(entityTopics, organizationId, userId);
 		} else {
-			restrictOrganizerHelper3(entityId, organizationId, userId);
+			entityActions(entityId, organizationId, userId);
 		}
 
 	}
@@ -140,7 +140,7 @@ public class BannedUsers extends CRUD {
 	 *            : to be restricted
 	 */
 
-	public static void restrictOrganizerHelper3(long entityId, long organizationId,
+	public static void entityActions(long entityId, long organizationId,
 			long userId) {
 		
 		
@@ -156,6 +156,7 @@ public class BannedUsers extends CRUD {
 						o, u, "entity", entityId).fetch();
 		for(int i = 0; i<entityActions.size() ; i++){
 			if (restricted.contains(entityActions.get(i))){
+				System.out.println(entityActions.get(i));
 				entityActions.remove(i);
 			}
 		}
@@ -174,7 +175,7 @@ public class BannedUsers extends CRUD {
 	 *            : to be restricted
 	 */
 
-	public static void restrictOrganizerHelper4(@Required long topicId, long userId) {
+	public static void topicActions(@Required long topicId, long userId) {
 		
 		
 		
@@ -187,7 +188,7 @@ public class BannedUsers extends CRUD {
 		
 		if (validation.hasErrors() || topicId == 0) {
 			flash.error("Oops, please select atleast one choise ");
-			restrictOrganizerHelper2(e.getId(), "topic",
+			topicsEnrolledInOrRedirect(e.getId(), "topic",
 					o.getId(), u.getId());
 		}
 
@@ -212,7 +213,7 @@ public class BannedUsers extends CRUD {
 	 * @param userId : to be restricted
 	 */
 
-	public static void restrictOrganizerHelper5(@Required String actionToDo, String type,
+	public static void restrictFinal(@Required String actionToDo, String type,
 			long entityTopicId, long userId) {
       System.out.println(actionToDo);
 		boolean changed = true;
@@ -225,7 +226,7 @@ public class BannedUsers extends CRUD {
 			
 			if (validation.hasErrors() || actionToDo == null) {
 				flash.error("Oops, please select atleast one choise ");
-				restrictOrganizerHelper4(entityTopicId, userId);
+				topicActions(entityTopicId, userId);
 			}
 			
 			
@@ -246,7 +247,7 @@ public class BannedUsers extends CRUD {
 			
 			if (validation.hasErrors()|| actionToDo == null) {
 				flash.error("Oops, please select atleast one choise ");
-				restrictOrganizerHelper3(entityTopicId,organizationId, userId);
+				entityActions(entityTopicId,organizationId, userId);
 			}
 			
 			changed = BannedUser.banFromActionInEntity(userId, organizationId,
