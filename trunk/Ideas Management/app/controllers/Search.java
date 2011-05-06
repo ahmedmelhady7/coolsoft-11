@@ -132,6 +132,7 @@ public class Search extends Controller {
 		for (int i = 0; i < listOfResults.size(); i++) {
 			System.out.println(listOfResults.get(i).toString());
 		}
+		System.out.println(organizationsFound.size() + " /organizations found");
 		List<Model> lof = listOfResults;
 		render(u, connected, lof, ideasFound, organizationsFound,
 				entitiesFound, topicsFound);
@@ -701,23 +702,20 @@ public class Search extends Controller {
 						}
 					}
 				}
-				// List<User> enrolledUsers =
-				// Users.getEnrolledUsers(listOfOrganizations.get(i));
-				// for (int k = 0; k < enrolledUsers
-				// .size(); k++) {
-				// if (userId
-				// .compareTo(enrolledUsers
-				// .get(k).username) != 0) {
-				// switch (listOfOrganizations.get(i).privacyLevel) {
-				// case 0:
-				// listOfOrganizations.remove(listOfOrganizations
-				// .get(i));
-				// break;
-				// default:
-				// break;
-				// }
-				// }
-				// }
+				System.out.println(listOfOrgs.toString() + "----------");
+				List<User> enrolledUsers = Users
+						.getEnrolledUsers(listOfOrganizations.get(i));
+				for (int k = 0; k < enrolledUsers.size(); k++) {
+					if (userId.compareTo(enrolledUsers.get(k).username) != 0) {
+						switch (listOfOrganizations.get(i).privacyLevel) {
+						case 0:
+							listOfOrgs.remove(listOfOrganizations.get(i));
+							break;
+						default:
+							break;
+						}
+					}
+				}
 			}
 		}
 		return listOfOrgs;
@@ -763,20 +761,18 @@ public class Search extends Controller {
 						}
 					}
 				}
-				// for (int k = 0; k < listOfEntities.get(i).followers.size();
-				// k++) {
-				// if (userId
-				// .compareTo(listOfEntities.get(i).followers.get(k).username)
-				// != 0) {
-				// switch (listOfEntities.get(i).organization.privacyLevel) {
-				// case 0:
-				// listOfEntities.remove(listOfEntities.get(i));
-				// break;
-				// default:
-				// break;
-				// }
-				// }
-				// }
+				for (int k = 0; k < listOfEntities.get(i).followers.size(); k++) {
+					if (userId
+							.compareTo(listOfEntities.get(i).followers.get(k).username) != 0) {
+						switch (listOfEntities.get(i).organization.privacyLevel) {
+						case 0:
+							listOfEnts.remove(listOfEntities.get(i));
+							break;
+						default:
+							break;
+						}
+					}
+				}
 			}
 		}
 		return listOfEnts;
@@ -822,24 +818,19 @@ public class Search extends Controller {
 						}
 					}
 				}
-				// List<User> enrolledUsers =
-				// Users.getEnrolledUsers(listOfIdeas.get(i).belongsToTopic.entity.organization);
-				// for (int k = 0; k < enrolledUsers
-				// .size(); k++) {
-				// if (userId
-				// .compareTo(enrolledUsers
-				// .get(k).username) != 0) {
-				// switch
-				// (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel)
-				// {
-				// case 0:
-				// listOfIdeas.remove(listOfIdeas.get(i));
-				// break;
-				// default:
-				// break;
-				// }
-				// }
-				// }
+//				List<User> enrolledUsers = Users.getEnrolledUsers(listOfIdeas
+//						.get(i).belongsToTopic.entity.organization);
+//				for (int k = 0; k < enrolledUsers.size(); k++) {
+//					if (userId.compareTo(enrolledUsers.get(k).username) != 0) {
+//						switch (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel) {
+//						case 0:
+//							listOfIdss.remove(listOfIdeas.get(i));
+//							break;
+//						default:
+//							break;
+//						}
+//					}
+//				}
 
 			}
 		}
@@ -888,20 +879,18 @@ public class Search extends Controller {
 						}
 					}
 				}
-				// for (int k = 0; k < listOfTopics.get(i).followers.size();
-				// k++) {
-				// if (userId
-				// .compareTo(listOfTopics.get(i).followers.get(k).username) !=
-				// 0) {
-				// switch (listOfTopics.get(i).privacyLevel) {
-				// case 0:
-				// listOfTopics.remove(listOfTopics.get(i));
-				// break;
-				// default:
-				// break;
-				// }
-				// }
-				// }
+				for (int k = 0; k < listOfTopics.get(i).followers.size(); k++) {
+					if (userId
+							.compareTo(listOfTopics.get(i).followers.get(k).username) != 0) {
+						switch (listOfTopics.get(i).privacyLevel) {
+						case 0:
+							listOfTopis.remove(listOfTopics.get(i));
+							break;
+						default:
+							break;
+						}
+					}
+				}
 
 			}
 		}

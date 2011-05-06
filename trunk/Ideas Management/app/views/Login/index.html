@@ -56,6 +56,9 @@ Logout: <input type="submit" value="Logout">
 
 <a href="@{Ideas.getDrafts()}">Drafts</a>
 
+<form action="@{MarkRequest.markDuplicate()}" method="post">
+	View duplicates requests: <input type="submit" value="View">
+</form>
 
 <script type="text/javascript">
 function goAdmin() {
