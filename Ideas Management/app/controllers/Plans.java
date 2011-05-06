@@ -352,8 +352,8 @@ public class Plans extends CRUD {
 	 */
 
 	public static void addItem(long planId) {
-		Plan plan = Plan.findById(planId);
-		render(plan);
+		Plan p = Plan.findById(planId);
+		render(p);
 	}
 
 	/**
@@ -379,10 +379,11 @@ public class Plans extends CRUD {
 	 *            The checkbox value that checks whether the user wants to add
 	 *            another item or not
 	 */
-	public static void add(Date startDate, Date endDate, String description,
+	public static void add(int startDay, int startMonth, int startYear,
+			int endDay, int endMonth, int endYear,String description,
 			long planId, String summary, String check) {
 		Plan plan = Plan.findById(planId);
-		plan.addItem(startDate, endDate, description, summary);
+		plan.addItem(new Date(startYear-1900,startMonth,startDay), new Date(endYear-1900,endMonth,endDay), description, summary);
 		if (check != null && check.equals("checked")) {
 			addItem(plan.id);
 		} else {
