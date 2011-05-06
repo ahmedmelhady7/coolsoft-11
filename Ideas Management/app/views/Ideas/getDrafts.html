@@ -9,6 +9,8 @@
     <body>
         #{extends 'main.html' /} 
 		
+		<h3>${user.username} Drafts</h3>
+		
 		#{list items:drafts, as:'draft'}
                 <ul>
                 	<li><a href='@{Ideas.editDraft(draft.id)}'>${draft.title}</a></li>
