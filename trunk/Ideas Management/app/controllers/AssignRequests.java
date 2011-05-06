@@ -99,12 +99,12 @@ public class AssignRequests extends CRUD {
 	 */
 	public static void sendRequests(long itemId, long[] userIds) {
 		User user;
-		Date d = new Date();
-		System.out.println("ana da5alt send requests" + userIds.length);
-		for (int i = 0; i < userIds.length; i++) {
-			
-			System.out.println(userIds[i]);
-		}
+//		Date d = new Date();
+//		System.out.println("ana da5alt send requests" + userIds.length);
+//		for (int i = 0; i < userIds.length; i++) {
+//			
+//			System.out.println(userIds[i]);
+//		}
 		Item item = Item.findById(itemId);
 		for (int i = 0; i < userIds.length; i++) {
 			user = User.findById(userIds[i]);
@@ -130,7 +130,7 @@ public class AssignRequests extends CRUD {
 					destination.addReceivedAssignRequest(assignRequest);
 					
 					System.out.println(destination.receivedAssignRequests.contains(assignRequest));
-					boolean b = Notifications.sendNotification(userIds[i], source.plan.id, "plan",
+				    Notifications.sendNotification(userIds[i], source.plan.id, "plan",
 							description);
 				}
 			}
@@ -174,7 +174,7 @@ public class AssignRequests extends CRUD {
 		destination.addReceivedAssignRequest(assignRequest);
 		
 		System.out.println(destination.receivedAssignRequests.contains(assignRequest));
-		boolean b = Notifications.sendNotification(destId, source.plan.id, "plan",
+		Notifications.sendNotification(destId, source.plan.id, "plan",
 				description);
 
 	}

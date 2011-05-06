@@ -32,12 +32,11 @@ public class VolunteerRequests extends CRUD {
 	 *            : the reason why the user would like to volunteer in this item
 	 */
 
-	public static void sendVolunteerRequest(long itemId,
-			@Required String justification) {
+	public static void sendVolunteerRequest(long itemId, String justification) {
 		User sender = Security.getConnected();
 		Item dest = Item.findById(itemId);
 		Date d = new Date();
-		System.out.println("ana ItemId" + itemId);
+		//System.out.println("ana ItemId" + itemId);
 		if (sender.canVolunteer(itemId)) {
 			if (!(dest.status == 2) && !dest.endDatePassed()) {
 				VolunteerRequest volunteerRequest = new VolunteerRequest(
