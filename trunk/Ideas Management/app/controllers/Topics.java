@@ -785,7 +785,8 @@ public class Topics extends CRUD {
 			System.out.println("show() done, about to render");
 			render(type, object, tags, creator, followers, ideas, comments,
 					entity, plan, openToEdit, privacyLevel, deletemessage,
-					deletable, topicIdLong, canClose, canPlan, targetTopic,allowed);
+					deletable, topicIdLong, canClose, canPlan, targetTopic,
+					allowed);
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("show() done with exception, rendering to CRUD/show.html");
@@ -1082,7 +1083,6 @@ public class Topics extends CRUD {
 	 *            : The id of the topic that the user wants to follow
 	 * 
 	 */
-
 	public static void followTopic(long topicId) {
 		User user = Security.getConnected();
 		Topic t = Topic.findById(topicId);
@@ -1094,11 +1094,28 @@ public class Topics extends CRUD {
 			t.save();
 			user.topicsIFollow.add(t);
 			user.save();
+			redirect(request.controller + ".show", t.id,
+					"You are now a follower");
 		} else {
 			System.out.println("Sorry! Action cannot be performed");
 		}
 	}
 
+	/**
+	 * The method that renders the page for viewing the followers of a topic
+	 * 
+	 * @author Noha Khater
+	 * 
+	 * @Stroy C2S10
+	 * 
+	 * @param topicId
+	 *            : The id of the topic that the user wants to view its
+	 *            followers
+	 * 
+	 * @param f
+	 *            : The String that is used as a variable for checking
+	 * 
+	 */
 	public static void viewFollowers(long topicId, String f) {
 		Topic topic = Topic.findById(topicId);
 		if (f.equals("true")) {
