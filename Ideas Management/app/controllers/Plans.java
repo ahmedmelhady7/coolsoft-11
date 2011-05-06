@@ -521,11 +521,21 @@ public class Plans extends CRUD {
 		item.delete();
 		viewAsList(planId);
 	}
-
+	/**
+	 * This methods 
+	 * 		This Method renders the Timeline view of a plan
+	 * @story C5S8
+	 * 
+	 * @author Alaa Samer
+	 * 
+	 * @param planId
+	 *            The id of the plan 
+	
+	 */
 	public static void viewAsTimeline(long planid) {
-		// Plan p = Plan.findById(planid);
-		// List<Item> itemsList = p.items;
-		// render(p, itemsList);
+		 Plan p = Plan.findById(planid);
+		 List<Item> itemsList = p.items;
+		 render(p, itemsList);
 		render();
 	}
 
