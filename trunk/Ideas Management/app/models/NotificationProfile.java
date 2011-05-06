@@ -30,11 +30,13 @@ public class NotificationProfile extends Model {
 	// The preference of the user
 	public boolean enabled;
 	
-	public NotificationProfile(long nId, String nType, String ti, User u) {
-		notifiableId = nId;
-		notifiableType = nType;
-		title = ti;
-		user = u;
-		enabled = true;
+	
+	// Constructor for the NotificationProfile
+	public NotificationProfile(long notifiableId, String notifiableType, String title, User user) {
+		this.notifiableId = notifiableId;
+		this.notifiableType = notifiableType;
+		this.title = title;
+		this.user = user;
+		this.enabled = true;
 	}
 }

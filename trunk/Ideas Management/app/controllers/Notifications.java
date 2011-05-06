@@ -31,7 +31,6 @@ public class Notifications extends CRUD {
 	 *  
 	 *  @story C1S14
 	 *  
-	 *  @return void
 	 */
 
 	public static void notificationIndex() {
@@ -54,72 +53,79 @@ public class Notifications extends CRUD {
 	 * @param desc
 	 * 			The description message sent as the body of the notification.
 	 * 
-	 * @return void
 	 */
 	
-	public static boolean sendNotification(long uId, long notId, String type, String d) {
-		User u = User.findById(uId);
-		List<NotificationProfile> np = u.notificationProfiles;
+	public static boolean sendNotification(long userId, long notificationId, String type, String description) {
+		User user = User.findById(userId);
+		List<NotificationProfile> nProfiles = user.notificationProfiles;
 		boolean contains = false;
 		boolean isenabled = true;
 		String title = "No title!";
 		if(type.equalsIgnoreCase("Idea")) {
-			Idea idea = Idea.findById(notId);
+			Idea idea = Idea.findById(notificationId);
 			if(idea != null)
 				title = idea.toString();
 		} else {
-			if(type.equalsIgnoreCase("Organisation")) {
-				Organization o = Organization.findById(notId);
-				if(o != null)
-					title = o.toString();
+			if(type.equalsIgnoreCase("Organization") || type.equalsIgnoreCase("Organisation")) {
+				Organization organization = Organization.findById(notificationId);
+				if(organization != null)
+					title = organization.toString();
 			} else {
 				if(type.equalsIgnoreCase("Topic")) {
-					Topic topic = Topic.findById(notId);
+					Topic topic = Topic.findById(notificationId);
 					if(topic != null)
 						title = topic.toString();
 				} else {
 					if(type.equalsIgnoreCase("Plan")) {
-						Plan p = Plan.findById(notId);
-						if(p != null)
-							title = p.toString();
+						Plan plan = Plan.findById(notificationId);
+						if(plan != null)
+							title = plan.toString();
 					} else {
 						if(type.equalsIgnoreCase("Tag")) {
-							Tag tag = Tag.findById(notId);
+							Tag tag = Tag.findById(notificationId);
 							if(tag != null) {
 								title = tag.toString();
+							}
+						} else {
+							if(type.equalsIgnoreCase("User")) {
+								User user2 = User.findById(notificationId);
+								if(user2 != null) {
+									title = user2.toString();
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-
 		/**
 		 * check that the notification profile has the sending source
 		 * if not then add it, if present the check if enabled or not.
 		 */
-		if(type.equals("User")) {
-			Notification n = new Notification(type, title, u, d);
+		if(type.equalsIgnoreCase("User")) {
+			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
+			Notification n = new Notification(notificationId, type, title, user, description);
 			n.save();
 			return true;
 		}
-		for (int i = 0; i < np.size(); i++) {
-			if(np.get(i).notifiableId == notId && np.get(i).notifiableType.equals(type)) {
-				isenabled = np.get(i).enabled;
+		for (int i = 0; i < nProfiles.size(); i++) {
+			if(nProfiles.get(i).notifiableId == notificationId 
+					&& nProfiles.get(i).notifiableType.equals(type)) {
+				isenabled = nProfiles.get(i).enabled;
 				break;
 			}
 		}		
 		// Adding the NP if not there
 		if(!contains) {
-			NotificationProfile np2 = new NotificationProfile(notId, type, title, u);
-			np2.save();
-			//u.notificationProfiles.add(np2);
+			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
+			NotificationProfile notificationProfile = new NotificationProfile(notificationId, type, title, user);
+			notificationProfile.save();			
 			isenabled = true;
 		}
 		// Send the notification if enabled
 		if(isenabled) {
-			Notification n = new Notification(type, title, u, d);
-			n.save();
+			Notification notification = new Notification(notificationId, type, title, user, description);
+			notification.save();
 			return true;
 		}
 		return false;
@@ -171,11 +177,27 @@ public class Notifications extends CRUD {
 							Tag tag = Tag.findById(notId);
 							if(tag != null) {
 								title = tag.toString();
+							} else {
+								if(type.equalsIgnoreCase("User")) {
+									User user2 = User.findById(notId);
+									if(user2 != null) {
+										title = user2.toString();
+									}
+								}
 							}
 						}
 					}
 				}
 			}
+		}
+		/**
+		 * check that the notification profile has the sending source
+		 * if not then add it, if present the check if enabled or not.
+		 */
+		if(type.equalsIgnoreCase("User")) {
+			Notification n = new Notification(notId, type, title, u, desc);
+			n.save();
+			return;
 		}
 		boolean contains = false;
 		boolean isenabled = true;
@@ -192,6 +214,7 @@ public class Notifications extends CRUD {
 		}
 		// Adding the NP if not there
 		if(!contains) {
+			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
 			NotificationProfile np2 = new NotificationProfile(notId, type, title, u);
 			np2.save();
 			//u.notificationProfiles.add(np2);
@@ -199,10 +222,10 @@ public class Notifications extends CRUD {
 		}
 		// Send the notification if enabled
 		if(isenabled) {
-			Notification n = new Notification(type, title, u, desc);
+			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
+			Notification n = new Notification(notId, type, title, u, desc);
 			n.save();
 		}
 		render();
 	}
-
 }

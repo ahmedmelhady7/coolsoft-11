@@ -1,18 +1,16 @@
 #{extends 'main.html' /}
 #{set title:'Home Page' /}
 
-<big><b><i>Welcome to COOLSOFT!</i></b></big>
-
-<br>
+<p>
 <b>Username: </b>
 ${u.username}
 <br>
 <b>E-Mail </b>
 ${u.email}
+</p>
 <br>
-
 My Admin: <input type="submit" value="Admin View" onclick="goAdmin()">
-
+<br>
 #{if admin==0}	
 <form action="@{Invitations.view()}" method="GET">
 <input type="submit" value="View Invitations" />
@@ -62,5 +60,6 @@ Logout: <input type="submit" value="Logout">
 <script type="text/javascript">
 function goAdmin() {
 	window.location ='http://localhost:9008/admin';
+	//redirect('/admin');
 }
 </script>
