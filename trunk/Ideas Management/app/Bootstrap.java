@@ -54,10 +54,6 @@ public class Bootstrap extends Job {
 					"student");
 			gom3a._save();
 			
-			User barnasa = new User("brns@gmail.com", "brns", "1234",
-					"nano", "someone", 0, new Date(), "egypt", "student");
-			barnasa._save();
-
 			User khayat = new User("ibrahim.al.khayat@gmail.com", "ialk",
 					"1234", "Ibrahim", "EL-khayat", 0, new Date(1991, 1, 19),
 					"Egypt", "student");
@@ -85,7 +81,7 @@ public class Bootstrap extends Job {
 					"1234", "Slim", "Abd EL Nadder", 0, new Date(1969, 4, 17),
 					"Egypt", "Professor").save();
 
-			User ashraf = new User("Ashraf@guc.edu.eg", "1234", "ElKbeer",
+			User ashraf = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234",
 					"Ashraf", "Mansoor", 0, new Date(1960, 11, 11), "Egypt",
 					"student").save();
 
@@ -152,17 +148,32 @@ public class Bootstrap extends Job {
 					OrganizationLead);
 
 			UserRoleInOrganizations.addEnrolledUser(gamal, gov, organizer,
-					gucMet.id, "entity");
+					govHead.id, "entity");
 
 			UserRoleInOrganizations.addEnrolledUser(khalifa, gov,
-					ideadeveloper, gucMet.id, "entity");
+					ideadeveloper, govHead.id, "entity");
 
 			Topic gucMetStudentUnion = new Topic("Student union",
-					"Suggestions", 0, ashraf, gucMet).save();
+					"Suggestions", 2, ashraf, gucMet).save();
 
 			gucMetStudentUnion._save();
 			gucMetStudentUnion.tags.add(tagGuc);
 			gucMetStudentUnion._save();
+
+			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
+					gucMetStudentUnion.id, "topic");
+			UserRoleInOrganizations.addEnrolledUser(gom3a, guc, ideadeveloper,
+					gucMet.id, "entity");
+			UserRoleInOrganizations.addEnrolledUser(gom3a, guc, ideadeveloper,
+					gucMetStudentUnion.id, "topic");
+			UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
+					gucMet.id, "entity");
+			UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
+					gucMetStudentUnion.id, "topic");
+			UserRoleInOrganizations.addEnrolledUser(u5, guc, ideadeveloper,
+					gucMet.id, "entity");
+			UserRoleInOrganizations.addEnrolledUser(u5, guc, ideadeveloper,
+					gucMetStudentUnion.id, "topic");
 
 			Topic govImp = new Topic("التعديلات الدستورية", "اقتراحات", 1,
 					sharaf, govHead).save();
@@ -180,13 +191,15 @@ public class Bootstrap extends Job {
 					2, admin, elAhly).save();
 
 			// hadi add ideas here
-			Idea myID = new Idea("Kill_7", "like7", barnasa, innovation, true);
-			myID.save();
-			barnasa.save();
 
-			Plan p1 = new Plan("S.U. heads", ashraf, new Date(2011, 07, 01),
-					new Date(2012, 07, 01), "Plan for SU heads elections",
+			Plan p1 = new Plan("S.U. heads", ashraf, new Date(111, 03, 20),
+					new Date(111, 8, 01), "Plan for SU heads elections",
 					gucMetStudentUnion, "summer break").save();
+			gucMetStudentUnion.plan = p1;
+			gucMetStudentUnion.openToEdit = false;
+			gucMetStudentUnion.save();
+			ashraf.planscreated.add(p1);
+			ashraf.save();
 
 			// i3.plan = p1;
 			// i3._save();
@@ -213,18 +226,18 @@ public class Bootstrap extends Job {
 			// c2._save();
 			//
 			Item item1 = new Item(
-					new Date(2011, 05, 01),
-					new Date(2011, 05, 14),
+					new Date(111, 05, 01),
+					new Date(111, 05, 20),
 					"One of the members who is not runing for elections should organize a debate between the candidates",
 					p1, "Candidates Debate");
 			Item item2 = new Item(
-					new Date(2011, 05, 04),
-					new Date(2011, 05, 14),
+					new Date(111, 05, 04),
+					new Date(111, 05, 14),
 					"One of the SU members should reserve a room for the debate",
 					p1, "Room reservation");
 			Item item3 = new Item(
-					new Date(2011, 04, 01),
-					new Date(2011, 05, 28),
+					new Date(111, 04, 01),
+					new Date(111, 05, 28),
 					"One of the members should set up an electronic election process",
 					p1, "Election Process Setup");
 			item1.save();
