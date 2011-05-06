@@ -80,13 +80,13 @@ The Search Results Viewer
             				var e = 'r';
             				if (document.getElementById("s1").checked) {
             					if (document.getElementById("v").checked) {
-									document.write(document.sort.v.name);
+									//document.write(document.sort.v.name);
             						$.post('@{sortD}', {voteOrRate : document.sort.v.value}, function() {
             							window.location.reload(true);
             						});
             
             					} else if (document.getElementById("r").checked) {
-									document.write(document.sort.v.id);
+									//document.write(document.sort.v.id);
             						$.post('@{sortD}', {voteOrRate : document.sort.v.value}, function() {
             							window.location.reload(true);
             						});
