@@ -171,6 +171,7 @@ public class RequestToJoins extends CRUD {
 			RequestToJoin r = new RequestToJoin(requester, null, organization,
 					description).save();
 			organization.joinRequests.add(r);
+			redirect("Login.index", "Your request has been sent..");
 		}
 	}
 }
