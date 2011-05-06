@@ -121,6 +121,8 @@
                 <form action="@{Ideas.blank(topicId)}" method="post">
                     <input type="hidden" name"topicId" value="${topicId}"><HR><input type="submit" value="Post Idea">
                 </form>#{/if }
+				
+				<a href="/Ideas/createIdea?topicId=${object.id}">create an idea for this topic</a>
             </div><!--#{form @delete(object._key())}
             <p class="crudDelete">
             <input type="submit" value="&{'crud.delete', type.modelName}" />
