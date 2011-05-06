@@ -228,20 +228,36 @@ public class Plans extends CRUD {
 	 *            The title of the plan
 	 * @param user
 	 *            The user creating the plan
-	 * @param startDate
-	 *            The date when the plan will start
-	 * @param endDate
-	 *            The date when the plan will end
+	 * @param startDay
+	 *            The day when the plan will start
+	 * @param startMonth
+	 * 			  The month when the plan will start
+	 * @param startYear
+	 * 			  The year when the plan will start
+	 * @param endDay
+	 *            The day when the plan will end
+	 * @param endMonth
+	 * 			  The month when the plan will end
+	 * @param endYear
+	 * 			  The year when the plan will end
 	 * @param description
 	 *            The description of the plan
 	 * @param topicId
 	 *            The id of the topic which this plan is based upon
 	 * @param requirement
 	 *            The requirements needed for executing this plan
-	 * @param istartdate
-	 *            The start date of the first item added
-	 * @param ienddate
-	 *            The end date of the first item added
+	 * @param istartDay
+	 *            The start day of the first item added
+	 * @param istartMonth
+	 * 			  The start month of the first item added
+	 * @param istartYear
+	 * 			  The start year of the the first item added
+	 * @param iendDay
+	 *            The end day of the first item added
+	 * @param iendMonth
+	 *            The end month of the first item added
+	 * @param iendYear
+	 * 			  The end year of the first item added
 	 * @param idescription
 	 *            The description of the first item added
 	 * @param isummary
@@ -254,18 +270,19 @@ public class Plans extends CRUD {
 	 *            associated to the plan
 	 */
 
-	public static void myCreate(String title, Date startDate, Date endDate,
+	public static void myCreate(String title, int startDay, int startMonth,
+			int startYear, int endDay, int endMonth, int endYear,
 			String description, long topicId, String requirement,
-			Date istartdate, Date ienddate, String idescription,
+			int istartDay, int istartMonth, int istartYear, int iendDay, int iendMonth, int iendYear, String idescription,
 			String isummary, String check, String ideaString) {
 
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
-		Plan p = new Plan(title, user, startDate, endDate, description, topic,
+		Plan p = new Plan(title, user, new Date(startYear-1900,startMonth,startDay), new Date(endYear - 1900, endMonth, endDay), description, topic,
 				requirement);
 		System.out.println("creation of the plan");
 		p.save();
-		p.addItem(istartdate, ienddate, idescription, isummary);
+		p.addItem(new Date(istartYear - 1900, istartMonth, istartDay), new Date(iendYear-1900, iendMonth,iendDay), idescription, isummary);
 		p.save();
 		String[] list2 = ideaString.split(",");
 		System.out.println(list2.length + "number of ideas");
