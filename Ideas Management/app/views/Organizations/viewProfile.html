@@ -12,6 +12,8 @@
       <a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>
 	   <br>
 		   <br>	
+		        #{/if}
+	    #{if settings==1}
 	     <select id="selec" onchange="test();">
             <option> Tags</option>
             <option id="e" value="0"> enable </option>

@@ -350,12 +350,20 @@ public class Organizations extends CRUD {
 		List<Tag> allTags = Tag.findAll();
 		int i = 0;
 		int allowed = 0;
-		if (Users
+		int settings =0;
+		if (org.privacyLevel==1 && Users
 				.isPermitted(
 						user,
 						"accept/reject join requests from users to join a private organization",
 						id, "organization"))
 			allowed = 1;
+		if ( Users
+				.isPermitted(
+						user,
+						"enable/disable the user to create their own tags within an organization",
+						id, "organization"))
+			settings = 1;
+		
 		boolean loop = false;
 		if (tags.isEmpty()) {
 			while (i < allTags.size()) {
@@ -406,7 +414,7 @@ public class Organizations extends CRUD {
 		boolean isMember = org.privacyLevel == 2
 				|| Users.getEnrolledUsers(org).contains(user);
 		render(user, org, entities, requestToJoin, tags, flag, b, admin,
-				allowed, isMember);
+				allowed, isMember,settings);
 	}
 
 	/**
