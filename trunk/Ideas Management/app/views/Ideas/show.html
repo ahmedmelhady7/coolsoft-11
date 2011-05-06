@@ -48,6 +48,44 @@
                 ${object.privacyLevel}
             </textarea>
         </p>
+        <form action="@{Ideas.shareIdea()}">
+			<input type="submit" value="Share with user" />
+			<input type="hidden" name="ideaId" value="${ideaId}">
+			<input type="text" name="userName" id="userName"/>
+		</form>
+ 		<br />
+ 		Idea rating : ${newRating}
+ 		<br/>
+		<form action="@{Ideas.rate(ideaId, rat)}" method="GET">
+			<input type="submit" value="Submit rating"/>
+			<input type="hidden" name = "ideaId" value=${ideaId}/>
+			<select name="rat">
+				<option value="0">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</select>
+		</form>
+		<br />
+ 		<form action="@{Comments.addCommentToIdea()}" method="GET">
+			<input type = "text" name = "comment">
+      	 	<input type = "hidden" name = "ideaID" value = ${ideaId} >
+			<input type = "submit" value = "Comment" >
+		</form>
+		<form action = @{Ideas.setPriority()} method = "GET">
+		<input type ="submit" value = "Submit Priority"/>
+		<br />
+		<input type = "radio" name = "priority" value = "critical" checked ="checked"/> critical
+		<br />
+		<input type = "radio" name = "priority" value = "high"/> high
+		<br />
+		<input type = "radio" name = "priority" value = "medium"/> medium
+		<br />
+		<input type = "radio" name = "priority" value = "low"/> low
+		<br />
+		</form>
         #{/crud.custom }
         #{crud.custom 'isDraft'}
         <p>
