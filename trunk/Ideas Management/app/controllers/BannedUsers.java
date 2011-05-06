@@ -50,7 +50,7 @@ public class BannedUsers extends CRUD {
 	public static void restrictOrganizer(long orgId) {
 		
 		Organization org = Organization.findById(orgId);
-		System.out.println((org == null) + "OFFFFFFFFFFFFFf");
+	//	System.out.println((org == null) + "OFFFFFFFFFFFFFf");
 		List<User> users = Users.searchOrganizer(org);
 //		List<User> u = User.findAll();
 //		users.add(u.get(0));
@@ -79,11 +79,11 @@ public class BannedUsers extends CRUD {
 			flash.error("Oops, please select one the Organizers");
 			restrictOrganizer(organizationId);
 		}
-     System.out.println(organizationId);
+    // System.out.println(organizationId);
 		Organization org = Organization.findById(organizationId);
 		User user = User.findById(userId);
 		List<MainEntity> entities = Users.getEntitiesOfOrganizer(org, user);
-		System.out.println("++++" + entities.isEmpty());
+	//	System.out.println("++++" + entities.isEmpty());
 		render(user, organizationId, entities);
 	}
 
@@ -207,6 +207,10 @@ public class BannedUsers extends CRUD {
 			long organizationId = org.getId();
 			changed = BannedUser.banFromActionInTopic(userId, organizationId,
 					actionToDo, entityTopicId);
+			
+			Notifications.sendNotification(userId, userId,
+					"user", "you have been restricted from the following action :" + actionToDo  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic );
+
 		}
 
 		else {
@@ -215,12 +219,14 @@ public class BannedUsers extends CRUD {
 			long organizationId = org.getId();
 			changed = BannedUser.banFromActionInEntity(userId, organizationId,
 					actionToDo, entityTopicId);
+			
+			Notifications.sendNotification(userId, userId,
+					"user", "you have been restricted from the following action :" + actionToDo  +" In organization  : " + org +" In Entity :" + entity );
+
 		}
 		
 		
 		
-		Notifications.sendNotification(userId, userId,
-				"user", "you have been restricted from the following action :" + actionToDo  +" " );
-
+		
 	}
 }
