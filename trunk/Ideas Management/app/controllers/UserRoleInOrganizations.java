@@ -16,16 +16,16 @@ import models.UserRoleInOrganization;
 public class UserRoleInOrganizations extends CRUD {
 
 	/**
-	 * This method adds a new enrolled user in the organization where his role
-	 * is NOT related to a specific topic, entity .. etc
+	 * adds a new enrolled user in the organization where his role
+	 * is not related to a specific topic, entity .. etc
 	 * 
 	 * @author Nada Ossama
 	 * 
 	 * @story :C1S7
 	 * 
-	 * @param user: is the enrolled user
+	 * @param user: User that is enrolled 
 	 * 
-	 * @param org: is the organization the User user is enrolled in
+	 * @param org: Organization org the User user is enrolled in
 	 * 
 	 * @param role: the role of that user in this organization
 	 * 
@@ -52,25 +52,25 @@ public class UserRoleInOrganizations extends CRUD {
 	}
 
 	/**
-	 * This method adds a new enrolled user in the organization where his role
+	 * adds a new enrolled user in the organization where his role
 	 * is related to a specific topic, entity .. etc
 	 * 
 	 * @author Nada Ossama
 	 * 
 	 * @story :C1S7
 	 * 
-	 * @parm user: is the enrolled user
+	 * @param user: User user the enrolled user
 	 * 
-	 * @parm org: is the organization the User user is enrolled in
+	 * @param org: Organization org that the User user is enrolled in
 	 * 
-	 * @parm role: the role of that user in this organization
+	 * @param role: Role role of that user in this organization
 	 * 
-	 * @parm entityOrTopicId : the id of the entity or topic the role of that
+	 * @param entityOrTopicId : long id of the entity or topic the role of that
 	 * user is related to
 	 * 
-	 * @parm type: the type (entity / topic)
+	 * @param type: String type (entity / topic)
 	 * 
-	 * return boolean indicating the successfulness of the operation
+	 * @return boolean indicating the successfulness of the operation
 	 */
 
 	public static boolean addEnrolledUser(User user, Organization org,
@@ -89,14 +89,18 @@ public class UserRoleInOrganizations extends CRUD {
 	}
 
 	/**
-	 * This method checks whether this user is organizer or not given the
+	 * checks whether this user is organizer or not given the
 	 * organization ,entity or topic REGARDLESS any restrictions
 	 * 
 	 * @author Nada Ossama
-	 * @param user
-	 * @param sourceID
-	 * @param sourceType
-	 * @return boolean whether he is organizer or not
+	 * @param user User to check
+	 * @param sourceID 
+	 *               long sourceID to be checked in
+	 * @param sourceType 
+	 *               String sourceType that represents the type of the source
+	 *                      
+	 * @return boolean 
+	 *                whether he is organizer or not
 	 */
 
 	public static boolean isOrganizer(User user, long sourceID,
