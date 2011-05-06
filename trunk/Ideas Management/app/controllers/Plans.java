@@ -91,14 +91,16 @@ public class Plans extends CRUD {
             user.save();
             item.assignees.add(user);
             item.save();
-            List<User> otherUsers = item.getAssignees();
+            List<User> otherUsers = new ArrayList<User> ();
+            	otherUsers.addAll(item.getAssignees());
+            	otherUsers.addAll(item.plan.topic.getOrganizer());
             User userToBeNotified;
             String notificationMsg = "User " + user.username
-                            + "has been assigned to the item " + item.summary
-                            + "in the plan " + item.plan.title;
+                            + " is now working on the item " + item.summary
+                            + " in the plan ";
             for (int i = 0; i < otherUsers.size(); i++) {
                     userToBeNotified = otherUsers.get(i);
-                    if (userToBeNotified.id != user.id) {
+                    if (userToBeNotified.id.compareTo(user.id) !=0) {
                             Notifications.sendNotification(userToBeNotified.id,
                                             item.plan.id, "plan", notificationMsg);
                     }
@@ -266,6 +268,7 @@ public class Plans extends CRUD {
 		p.addItem(istartdate, ienddate, idescription, isummary);
 		p.save();
 		String[] list2 = ideaString.split(",");
+		System.out.println(list2.length + "number of ideas");
 		long[] list = new long[list2.length];
 		for (int i = 0; i < list2.length; i++) {
 			list[i] = Long.parseLong(list2[i]);
