@@ -1153,10 +1153,22 @@ public class Users extends CRUD {
 			} else if (User.find("ByUsername", tmp.username).first() != null) {
 				message = "This username already exists !";
 			}
+			try {
+				System.out.println("show user try ");
+				render(request.controller.replace(".", "/") + "/save.html",
+						 type, message);
+			} catch (TemplateNotFoundException e) {
+				System.out.println("show user catch ");
+				render("CRUD/blank.html", type);
+			}
+		}	
 		}
 		System.out.println(object.toString() + "before save");
 		object._save();
 		System.out.println(object.toString() + "after the save");
+		
+		
+		
 		flash.success(Messages.get("crud.saved", type.modelName));
 		if (params.get("_save") != null) {
 			redirect(request.controller + ".list");
