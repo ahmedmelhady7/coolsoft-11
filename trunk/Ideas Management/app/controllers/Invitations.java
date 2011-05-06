@@ -82,8 +82,6 @@ public class Invitations extends CRUD {
 		List<User> filter = new ArrayList<User>();
 		filter = Users.searchUser(name);
 		List<User> organizers = Users.getEntityOrganizers(entity);
-		for(int i=0;i<organizers.size();i++)
-		 System.out.println(organizers.get(i).firstName);
 		organizers.add(entity.organization.creator);
 
 		List<User> users = new ArrayList<User>();
@@ -289,6 +287,17 @@ public class Invitations extends CRUD {
 				UserRoleInOrganizations.addEnrolledUser(user, organization, role,
 						entity.id, "entity");
 				
+				List <MainEntity> sub=new ArrayList<MainEntity>();
+				 sub=MainEntity.find("byParent", entity).fetch();
+				 System.out.println(sub.size());
+				if(sub.size()!=0){
+					System.out.println("here");
+				for(int j=0;j<sub.size();j++){
+					UserRoleInOrganizations.addEnrolledUser(user, organization, role,
+							sub.get(j).id, "entity");
+				  System.out.println(sub.get(j).name);
+				}
+				}
 
 				
 			//**Fadwa	
