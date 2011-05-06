@@ -9,11 +9,11 @@
 		
         <p>
         	
-			#{if tagAlreadyExists == true}
+			#{if ${Ideas.tagAlreadyExists} == true}
 			alert(tag already exists);
 			#{/if}
 			
-        	#{if userNotAllowed == false}
+        	#{if ${Ideas.userNotAllowed} == false}
 			#{form @Ideas.tagIdea()}
             <input type="text" name="tag" id="tag">
 			<input type="hidden" name="ideaId" value="${ideaId}">
@@ -21,7 +21,7 @@
 			#{/form}
 			#{/if}
 			#{else}
-			alert('You are not allowed to tag this topic!');
+			alert('You are not allowed to tag this idea!');
 			#{/else}
         </p>
     </body>
