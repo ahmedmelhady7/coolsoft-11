@@ -54,7 +54,7 @@ My Admin: <input type="submit" value="Admin View" onclick="goAdmin()">
 Logout: <input type="submit" value="Logout">
 </form>
 
-<a href="@{Ideas.getDrafts()}">Drafts</a>
+<a href="@{Ideas.getDrafts()}">Drafts (${drafts.size()})</a>
 
 <form action="@{MarkRequest.markDuplicate()}" method="post">
 	View duplicates requests: <input type="submit" value="View">
