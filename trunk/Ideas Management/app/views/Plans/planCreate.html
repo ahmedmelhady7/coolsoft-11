@@ -4,9 +4,123 @@
 #{form @Plans.myCreate(), method:'POST', id:'plancreationForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
 Plan title:<input type= "text" id = "title" name = "title" size= "30"><label id = "titleerror"> </label>
 </br>
-Start Date:<input type = "text" id = "startDate" name = "startDate" size ="30" onblur= "checkdate(this)"><label id = "starterror"> </label>
+Start Date::
+        <select name="startDay" id="startDay">
+            <option value="" disabled="true"selected>Day</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+        </select>
+        <select name="startMonth" id="startMonth">
+            <option value="" disabled="true"selected>Month</option>
+            <option value="0">January</option>
+            <option value="1">February</option>
+            <option value="2">March</option>
+            <option value="3">April</option>
+            <option value="4">May</option>
+            <option value="5">June</option>
+            <option value="6">July</option>
+            <option value="7">August</option>
+            <option value="8">September</option>
+            <option value="9">October</option>
+            <option value="10">November</option>
+            <option value="11">December</option>
+        </select>
+        <select name="startYear" id="startYear">
+            <option value="" disabled="true" selected>Year</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+        </select>
 </br>
-End Date:<input type = "text" id = "endDate" name = "endDate"size ="30" onblur= "checkdate(this)"><label id = "enderror"> </label>
+End Date::
+        <select name="endDay" id="endDay">
+            <option value="" disabled="true"selected>Day</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+        </select>
+        <select name="endMonth" id="endMonth">
+            <option value="" disabled="true"selected>Month</option>
+            <option value="0">January</option>
+            <option value="1">February</option>
+            <option value="2">March</option>
+            <option value="3">April</option>
+            <option value="4">May</option>
+            <option value="5">June</option>
+            <option value="6">July</option>
+            <option value="7">August</option>
+            <option value="8">September</option>
+            <option value="9">October</option>
+            <option value="10">November</option>
+            <option value="11">December</option>
+        </select>
+        <select name="endYear" id="endYear">
+            <option value="" disabled="true" selected>Year</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+        </select>
 </br>
 <p><b>Insert the description of the plan</b></p>
 </br>
@@ -22,9 +136,123 @@ End Date:<input type = "text" id = "endDate" name = "endDate"size ="30" onblur= 
 </br>
 <p><b>Insert an item</b></p>
 </br>
-Start Date:<input type = "text" id = "istartdate" name = "istartdate" size = "30" onblur= "checkdate(this)"><label id = "istartdateerror"> </label>
+Start Date::
+        <select name="istartDay" id="istartDay">
+            <option value="" disabled="true"selected>Day</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+        </select>
+        <select name="istartMonth" id="istartMonth">
+            <option value="" disabled="true"selected>Month</option>
+            <option value="0">January</option>
+            <option value="1">February</option>
+            <option value="2">March</option>
+            <option value="3">April</option>
+            <option value="4">May</option>
+            <option value="5">June</option>
+            <option value="6">July</option>
+            <option value="7">August</option>
+            <option value="8">September</option>
+            <option value="9">October</option>
+            <option value="10">November</option>
+            <option value="11">December</option>
+        </select>
+        <select name="istartYear" id="istartYear">
+            <option value="" disabled="true" selected>Year</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+        </select>
 </br>
-End Date:<input type = "text" id = "ienddate" name = "ienddate" size = "30" onblur= "checkdate(this)"><label id = "ienddateerror"> </label>
+End Date::
+        <select name="iendDay" id="iendDay">
+            <option value="" disabled="true"selected>Day</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+        </select>
+        <select name="iendMonth" id="iendMonth">
+            <option value="" disabled="true"selected>Month</option>
+            <option value="0">January</option>
+            <option value="1">February</option>
+            <option value="2">March</option>
+            <option value="3">April</option>
+            <option value="4">May</option>
+            <option value="5">June</option>
+            <option value="6">July</option>
+            <option value="7">August</option>
+            <option value="8">September</option>
+            <option value="9">October</option>
+            <option value="10">November</option>
+            <option value="11">December</option>
+        </select>
+        <select name="iendYear" id="iendYear">
+            <option value="" disabled="true" selected>Year</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+        </select>
 </br>
 <p><b>Insert the description of the item</b></p>
 </br>
@@ -38,230 +266,213 @@ End Date:<input type = "text" id = "ienddate" name = "ienddate" size = "30" onbl
 To add another item check here <input type="checkbox" name = "check" value = "checked">
 <input type = "submit" value ="Create" >
 #{/form}
-<textarea disabled = true id = "datesupported" name = "datesupported" rows="7" cols = "2000">escriptionerror">
-The following date formats are accepted:
-mm-dd-yyyy, mm/dd/yyyy, mm.dd.yyyy, mm dd yyyy, 
-mmm dd yyyy, mmddyyyy, m-d-yyyy, m/d/yyyy, m.d.yyyy, 
-m d yyyy, mmm d yyyy, m-d-yy, m/d/yy, m.d.yy, m d yy, 
-mmm d yy (yy is 20yy)
-
-(Accepted EU formats just switch month and day)
-</textarea>
 <script type ="text/javascript">
-function checkdate(objName){
-	var datefield = objName;
-	if (chkdate(objName) == false) {
-		System.out.println("The date is invalid");
-		datefield.select();
-		alert("That date is invalid.  Please try again.");
-		datefield.focus();
-		return false;
-	}
-	else {
-		return true;
-	}
-}
-function chkdate(objName) {
-var strDatestyle = "US"; //United States date style
-//var strDatestyle = "EU";  //European date style
-var strDate;
-var strDateArray;
-var strDay;
-var strMonth;
-var strYear;
-var intday;
-var intMonth;
-var intYear;
-var booFound = false;
-var datefield = objName;
-var strSeparatorArray = new Array("-"," ","/",".");
-var intElementNr;
-var err = 0;
-var strMonthArray = new Array(12);
-strMonthArray[0] = "Jan";
-strMonthArray[1] = "Feb";
-strMonthArray[2] = "Mar";
-strMonthArray[3] = "Apr";
-strMonthArray[4] = "May";
-strMonthArray[5] = "Jun";
-strMonthArray[6] = "Jul";
-strMonthArray[7] = "Aug";
-strMonthArray[8] = "Sep";
-strMonthArray[9] = "Oct";
-strMonthArray[10] = "Nov";
-strMonthArray[11] = "Dec";
-strDate = datefield.value;
-if (strDate.length < 1) {
-return true;
-}
-for (intElementNr = 0; intElementNr < strSeparatorArray.length; intElementNr++) {
-if (strDate.indexOf(strSeparatorArray[intElementNr]) != -1) {
-strDateArray = strDate.split(strSeparatorArray[intElementNr]);
-if (strDateArray.length != 3) {
-err = 1;
-return false;
-}
-else {
-strDay = strDateArray[0];
-strMonth = strDateArray[1];
-strYear = strDateArray[2];
-}
-booFound = true;
-   }
-}
-if (booFound == false) {
-if (strDate.length>5) {
-strDay = strDate.substr(0, 2);
-strMonth = strDate.substr(2, 2);
-strYear = strDate.substr(4);
-   }
-}
-if (strYear.length == 2) {
-strYear = '20' + strYear;
-}
-// US style
-if (strDatestyle == "US") {
-strTemp = strDay;
-strDay = strMonth;
-strMonth = strTemp;
-}
-intday = parseInt(strDay, 10);
-if (isNaN(intday)) {
-err = 2;
-return false;
-}
-intMonth = parseInt(strMonth, 10);
-if (isNaN(intMonth)) {
-for (i = 0;i<12;i++) {
-if (strMonth.toUpperCase() == strMonthArray[i].toUpperCase()) {
-intMonth = i+1;
-strMonth = strMonthArray[i];
-i = 12;
-   }
-}
-if (isNaN(intMonth)) {
-err = 3;
-return false;
-   }
-}
-intYear = parseInt(strYear, 10);
-if (isNaN(intYear)) {
-err = 4;
-return false;
-}
-if (intMonth>12 || intMonth<1) {
-err = 5;
-return false;
-}
-if ((intMonth == 1 || intMonth == 3 || intMonth == 5 || intMonth == 7 || intMonth == 8 || intMonth == 10 || intMonth == 12) && (intday > 31 || intday < 1)) {
-err = 6;
-return false;
-}
-if ((intMonth == 4 || intMonth == 6 || intMonth == 9 || intMonth == 11) && (intday > 30 || intday < 1)) {
-err = 7;
-return false;
-}
-if (intMonth == 2) {
-if (intday < 1) {
-err = 8;
-return false;
-}
-if (LeapYear(intYear) == true) {
-if (intday > 29) {
-err = 9;
-return false;
-}
-}
-else {
-if (intday > 28) {
-err = 10;
-return false;
-}
-}
-}
-if (strDatestyle == "US") {
-datefield.value = strMonthArray[intMonth-1] + " " + intday+" " + strYear;
-}
-else {
-datefield.value = intday + " " + strMonthArray[intMonth-1] + " " + strYear;
-}
-return true;
-}
-function LeapYear(intYear) {
-if (intYear % 100 == 0) {
-if (intYear % 400 == 0) { return true; }
-}
-else {
-if ((intYear % 4) == 0) { return true; }
-}
-return false;
-}
-
 	function checkall(){
 		var t = document.getElementById("title").value;
-		var sd = document.getElementById("startDate").value;
-		var ed = document.getElementById("endDate").value;
 		var desc = document.getElementById("description").value;
 		var req = document.getElementById("requirement").value;
-		var isd = document.getElementById("istartdate").value;
-		var ied = document.getElementById("ienddate").value;
 		var idesc = document.getElementById("idescription").value;
 		var isum = document.getElementById("isummary").value;
-		var flag = 0;
 		if (t == null || t == "") {
-			document.getElementById("titleerror").innerHTML = "Please insert a title for your plan";
-			flag = 1;
+			alert("Please Insert a title for the plan");
+			return false;
 		}
-		if (Date.parse(document.getElementById("startDate").value) <= Date.parse(document.getElementById("endDate").value)) {
-		
+		if(document.getElementById("startDay").value == ""){
+			alert("Please Insert the day on which the plan starts");
+			return false;
 		}
-		else {
-			if (sd == "" || ed == "") {
-				alert("Both start and end dates  must be entered.");
-				flag = 1;
-			}
-			else {
-				alert("End Date  must occur after the Start Date.");
-				flag = 1;
-			}
+		if(document.getElementById("startDay").value == ""){
+			alert("Please insert a day for the start of the plan");
+			return false;
+		}
+		if(document.getElementById("startMonth").value == ""){
+			alert("Please insert a month for the start of the plan");
+			return false;
+		}
+		if(document.getElementById("startYear").value == ""){
+			alert("Please insert a year for the start of the plan");
+			return false;
+		}
+		if(document.getElementById("endDay").value == ""){
+			alert("Please Insert the day on which the plan ends");
+			return false;
+		}
+		if(document.getElementById("endMonth").value == ""){
+			alert("Please insert a month for the end of the plan");
+			return false;
+		}
+		if(document.getElementById("endYear").value == ""){
+			alert("Please insert a year for the end of the plan");
+			return false;
 		}
 		if (desc == null || desc == "") {
-			document.getElementById("descriptionerror").innerHTML = "Please insert a description";
-			flag = 1;
+			alert("Please insert a description for the plan");
+			return false;
 		}
 					
 		if (req == null || req == "") {
-			document.getElementById("requirementerror").innerHTML = "Please insert the requirements";
-			flag = 1;
-		}
-		if (Date.parse(document.getElementById("istartdate").value) <= Date.parse(document.getElementById("ienddate").value)) {
-		
-		}
-		else {
-			if (isd == "" || ied == "") {
-				alert("Both item start and item end dates  must be entered.");
-				flag = 1;
-			}
-			else {
-				alert("Item end Date  must occur after the Item start Date.");
-				flag = 1;
-			}
-		}
-		if(Date.parse(document.getElementById("istartdate").value)< Date.parse(document.getElementById("startdate").value)|| Date.parse(document.getElementById("ienddate").value) > Date.parse(document.getElementById("enddate").value)){
-			alert("Item dates must be within the plans dates");
-			flag = 1;
-		}
-		if (idesc == null || idesc == ""){
-			document.getElementById("idescriptionerror").innerHTML = "Please insert a description";
-			flag = 1;
-		}
-		if (isum == null || isum == ""){
-			document.getElementById("isummaryerror").innerHTML = "Please insert summary";
-			flag = 1;
-		}	
-		if(flag == 1){
+			alert("Please insert requirements for the plan");
 			return false;
 		}
+		if(document.getElementById("istartDay").value == ""){
+			alert("Please Insert the day on which the item starts");
+			return false;
+		}
+		if(document.getElementById("istartMonth").value == ""){
+			alert("Please insert a month for the start of the item");
+			return false;
+		}
+		if(document.getElementById("istartYear").value == ""){
+			alert("Please insert a year for the start of the item");
+			return false;
+		}
+		if(document.getElementById("iendDay").value == ""){
+			alert("Please Insert the day on which the item ends");
+			return false;
+		}
+		if(document.getElementById("iendMonth").value == ""){
+			alert("Please insert a month for the end of the item");
+			return false;
+		}
+		if(document.getElementById("iendYear").value == ""){
+			alert("Please insert a year for the end of the item");
+			return false;
+		}
+		if (idesc == null || idesc == ""){
+			alert("Please insert a description for the item");
+			return false;
+		}
+		if (isum == null || isum == ""){
+			alert("Please insert a summary for the item's description");
+			return false;
+		}	
+		if(document.getElementById("startMonth").value == "1" && (document.getElementById("startDay").value == "29" ||document.getElementById("startDay").value == "30"||document.getElementById("startDay").value == "31")){
+			alert("In start date: February has only 28 days");
+			return false;
+		}
+		if(document.getElementById("startMonth").value == "3" && document.getElementById("startDay").value == "31"){
+			alert("In start date: April has only 30 days");
+			return false;
+		}
+		if(document.getElementById("startMonth").value == "5" && document.getElementById("startDay").value == "31"){
+			alert("In start date: June has only 30 days");
+			return false;
+		}
+		if(document.getElementById("startMonth").value == "8" && document.getElementById("startDay").value == "31"){
+			alert("In start date: September has only 30 days");
+			return false;
+		}
+		if(document.getElementById("startMonth").value == "10" && document.getElementById("startDay").value == "31"){
+			alert("In start date: November has only 30 days");
+			return false;
+		}
+		if(document.getElementById("endMonth").value == "1" && (document.getElementById("endDay").value == "29" ||document.getElementById("startDay").value == "30"||document.getElementById("startDay").value == "31")){
+			alert("In end date: February has only 28 days");
+			return false;
+		}
+		if(document.getElementById("endMonth").value == "3" && document.getElementById("endDay").value == "31"){
+			alert("In end date: April has only 30 days");
+			return false;
+		}
+		if(document.getElementById("endMonth").value == "5" && document.getElementById("endDay").value == "31"){
+			alert("In end date: June has only 30 days");
+			return false;
+		}
+		if(document.getElementById("endMonth").value == "8" && document.getElementById("endDay").value == "31"){
+			alert("In end date: September has only 30 days");
+			return false;
+		}
+		if(document.getElementById("endMonth").value == "10" && document.getElementById("endDay").value == "31"){
+			alert("In end date: November has only 30 days");
+			return false;
+		}
+		if(document.getElementById("istartMonth").value == "1" && (document.getElementById("istartDay").value == "29" ||document.getElementById("startDay").value == "30"||document.getElementById("startDay").value == "31")){
+			alert("In item's start date: February has only 28 days");
+			return false;
+		}
+		if(document.getElementById("istartMonth").value == "3" && document.getElementById("istartDay").value == "31"){
+			alert("In item's start date: April has only 30 days");
+			return false;
+		}
+		if(document.getElementById("istartMonth").value == "5" && document.getElementById("istartDay").value == "31"){
+			alert("In item's start date: June has only 30 days");
+			return false;
+		}
+		if(document.getElementById("istartMonth").value == "8" && document.getElementById("istartDay").value == "31"){
+			alert("In item's start date: September has only 30 days");
+			return false;
+		}
+		if(document.getElementById("istartMonth").value == "10" && document.getElementById("istartDay").value == "31"){
+			alert("In item's start date: November has only 30 days");
+			return false;
+		}
+		if(document.getElementById("iendMonth").value == "1" && (document.getElementById("iendDay").value == "29" ||document.getElementById("startDay").value == "30"||document.getElementById("startDay").value == "31")){
+			alert("In item's end date: February has only 28 days");
+			return false;
+		}
+		if(document.getElementById("iendMonth").value == "3" && document.getElementById("iendDay").value == "31"){
+			alert("In item's end date: April has only 30 days");
+			return false;
+		}
+		if(document.getElementById("iendMonth").value == "5" && document.getElementById("iendDay").value == "31"){
+			alert("In item's end date: June has only 30 days");
+			return false;
+		}
+		if(document.getElementById("iendMonth").value == "8" && document.getElementById("iendDay").value == "31"){
+			alert("In item's end date: September has only 30 days");
+			return false;
+		}
+		if(document.getElementById("iendMonth").value == "10" && document.getElementById("iendDay").value == "31"){
+			alert("In item's end date: November has only 30 days");
+			return false;
+		}
+		if(parseInt(document.getElementById("endYear").value.toString())< parseInt(document.getElementById("startYear").value.toString())){
+			alert("In plan: End year must be greater than Start year");
+			return false;
+			if(parseInt(document.getElementById("endMonth").value.toString())< parseInt(document.getElementById("startMonth").value.toString())){
+			alert("In plan: End month must be greater than Start month");
+			return false;}
+			if (parseInt(document.getElementById("endDay").value.toString()) < parseInt(document.getElementById("startDay").value.toString())) {
+				alert("In plan: End day must be greater than Start day");
+				return false;
+			}
+		}
+		if(parseInt(document.getElementById("iendYear").value.toString())< parseInt(document.getElementById("istartYear").value.toString())){
+			alert("In item: End year must be greater than Start year");
+			return false;
+			if(parseInt(document.getElementById("iendMonth").value.toString())< parseInt(document.getElementById("istartMonth").value.toString())){
+			alert("In item: End month must be greater than Start month");
+			return false;}
+			if(parseInt(document.getElementById("iendDay").value.toString())< parseInt(document.getElementById("istartDay").value.toString())){
+			alert("In item: End day must be greater than Start day");
+			return false;}
+		}
+		if(parseInt(document.getElementById("istartYear").value.toString())< parseInt(document.getElementById("startYear").value.toString())){
+			alert("Start year of the item must be later than the start year of the plan");
+			return false;
+		if(parseInt(document.getElementById("istartMonth").value.toString())< parseInt(document.getElementById("startMonth").value.toString())){
+			alert("Start month of the item must be later than the start month of the plan");
+			return false;
+		}
+		if(parseInt(document.getElementById("istartDay").value.toString())< parseInt(document.getElementById("startDay").value.toString())){
+			alert("Start day of the item must be later than the start day of the plan");
+			return false;
+		}
+		}
+		
+		if(parseInt(document.getElementById("iendYear").value.toString())> parseInt(document.getElementById("endYear").value.toString())){
+			alert("End year of the item must be earlier than end year of the plan");
+			return false;
+			if(parseInt(document.getElementById("iendMonth").value.toString())> parseInt(document.getElementById("endMonth").value.toString())){
+			alert("End month of the item must be earlier than end month of the plan");
+			return false;
+		}
+		if(parseInt(document.getElementById("iendDay").value.toString())> parseInt(document.getElementById("endDay").value.toString())){
+			alert("End day of the item must be earlier than end day of the plan");
+			return false;
+		}
+		}
+		
 	}
 	
 </script>
