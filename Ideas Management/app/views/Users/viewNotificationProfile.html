@@ -16,7 +16,13 @@
     		<b>Notification from: </b> ${notifi.notifiableType}  
     		&nbsp; ${notifi.title}
     		<br> 
-    		<b>Enabled: </b> ${notifi.enabled}
+    		<b>Enabled: </b>
+    		#{if notifi.enabled}
+    		<i>yes</i>
+    		#{/if}
+    		#{else}
+    		<i>no</i>
+    		#{/else}
     	</fieldset>
     </li>
 #{/list}

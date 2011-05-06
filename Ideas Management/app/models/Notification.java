@@ -17,6 +17,9 @@ import play.db.jpa.Model;
 @Entity
 public class Notification extends Model {
 	
+	// The notification source ID
+	public long sourceID;
+	
 	// The notification type
 	public String type;
 	
@@ -35,13 +38,13 @@ public class Notification extends Model {
 	// The status of the notification
 	public boolean seen;
 	
-	public Notification(String t, String ti, User u, String desc) {
-		type = t;
-		title = ti;
-		directedTo = u;
-		description = desc;
-		seen = false;
-		status = "New";
+	public Notification(long sourceID, String type, String title, User user, String description) {
+		this.sourceID = sourceID;
+		this.type =type;
+		this.title = title;
+		this.directedTo = user;
+		this.description = description;
+		this.seen = false;
+		this.status = "New";
 	}
-
 }

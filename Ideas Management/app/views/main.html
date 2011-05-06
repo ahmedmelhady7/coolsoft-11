@@ -4,9 +4,10 @@
     <head>
         <title>#{get 'title' /}</title>
         <meta charset="utf-8">
-        <a href="@{Login.index()}">Back to Home</a>
+        <p align="right"><a href="@{Login.index()}">Back to Home</a>
 		&nbsp;
 		<a href="@{Users.logout()}">Logout</a>
+		</p>
         <hr>          </hr>
         <!-- <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">-->
         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/crud.css'}" />
@@ -14,6 +15,13 @@
         <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
         </script>
         #{get 'moreScripts' /}
+        <style type="text/css">
+		h1 {color:blue}
+		h2 {color:green}
+		</style>
+</head>
+
+        
     </head>
     <style type="text/css">
         
@@ -30,14 +38,30 @@
         }
     </style>
     <div>
-        <center>
-
-        </center>
+       
     </div>
 	<form>
-	<input type="text" id="search" name="search" value= "enter a keyword here" /><input type="button" id="submit" name="submit" value="Search" onclick="quickSearch(this.form)"/><a href="AdvancedSearch">Advanced Search</a>
+	 <h1 align="left">
+	 <big><b><i>COOLSOFT</i></b></big>
+	 </h1>	
+	 <h2 align="left">
+	 <i>Collaborative Thinking and Ideas Management</i>
+	 </h2>
+	<p align='center'>
+	<input type="text" id="search" name="search" value= "enter a keyword here" style='width="200px" height="30px"'/>
+	&nbsp; <input type="button" id="submit" name="submit" value="Search" onclick="quickSearch(this.form)"/>
+	&nbsp; <a href="AdvancedSearch">Advanced Search</a>
+    </p>
     </form>
-	<script type="text/javascript">
+    <form action="@{Browse.browse()}" method="GET">        
+        <input type="submit" value="Browse" />    	
+    </form>
+    <form action="@{Invitations.view()}" method="GET">        
+        <input type="submit" value="View Invitations" />    	
+    </form>
+    <br>
+    <hr>
+    <script type="text/javascript">
         function quickSearch(frm){
             $.post('@{Search.quickSearch()}', {
                 keyword: frm.search.value
@@ -46,15 +70,11 @@
             });
         }
     </script>
-    <form action="@{Browse.browse()}" method="GET">
-        <input type="submit" value="Browse" />
-    </form>
-	
 	
     <body>
         #{doLayout /}
     </body>
-    
+    <hr>
     <div id="crudFooter">
             Follow us on <a href="http://www.twitter.com"> Twitter</a>
     </div>

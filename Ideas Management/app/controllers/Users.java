@@ -1221,29 +1221,28 @@ public class Users extends CRUD {
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S14
-	 * 
-	 * @return void
+	 *
 	 */
 
 	public static void viewNotifications() {
-		User u = Security.getConnected();
-		for(int i = 0; i < u.notifications.size(); i++) {
-			if(u.notifications.get(i).seen) {
-				Notification n = u.notifications.get(i);
-				n.status = "Old";
-				n.save();
+		User user = Security.getConnected();
+		for(int i = 0; i < user.notifications.size(); i++) {
+			if(user.notifications.get(i).seen) {
+				Notification notification = user.notifications.get(i);
+				notification.status = "Old";
+				notification.save();
 			} else {
-				Notification n = u.notifications.get(i);
-				n.status = "*New";
-				n.seen = true;
-				n.save();
+				Notification notification = user.notifications.get(i);
+				notification.status = "*New";
+				notification.seen = true;
+				notification.save();
 			}
 		}
-		u.save();
-		List<Notification> nL = u.notifications;
+		user.save();
+		List<Notification> temp = user.notifications;
 		List<Notification> nList = new ArrayList<Notification>();
-		for(int i = nL.size() - 1; i > -1; i--) {
-			nList.add(nL.get(i));
+		for(int i = temp.size() - 1; i > -1; i--) {
+			nList.add(temp.get(i));
 		}
 		render(nList);
 	}
@@ -1259,12 +1258,11 @@ public class Users extends CRUD {
 	 * @param userId
 	 *            the ID of the user to view his/her profile
 	 * 
-	 * @return void
 	 */
 
 	public static void viewNotificationProfile() {
-		User u = Security.getConnected();
-		List<NotificationProfile> npList = u.notificationProfiles;
+		User user = Security.getConnected();
+		List<NotificationProfile> npList = user.notificationProfiles;
 		render(npList);
 	}
 
@@ -1281,6 +1279,14 @@ public class Users extends CRUD {
 	 * 
 	 * @return void
 	 */
+	
+	
+	public static void deleteNotifications(long[] a) {
+		for(int i = 0; i < a.length; i++) {
+			Notification notification = Notification.findById(a[i]);			
+			notification.delete();			
+		}
+	}
 
 	public static void ViewOrgInv(long userId) {
 		User u = User.findById(userId);
@@ -1359,6 +1365,13 @@ public class Users extends CRUD {
 			Secure.logout();
 		} catch (Throwable e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static void goAdmin() {
+		User u = Security.getConnected();
+		if(u.isAdmin) {
+			redirect("/admin");
 		}
 	}
 
