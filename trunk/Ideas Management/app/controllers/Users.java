@@ -1270,6 +1270,13 @@ public class Users extends CRUD {
 		render(npList);
 	}
 
+	public static void deleteNotifications(long[] a) {
+		for(int i = 0; i < a.length; i++) {
+			Notification notification = Notification.findById(a[i]);			
+			notification.delete();			
+		}
+	}
+	
 	/**
 	 * This method renders the list of invitations to join an organization for a
 	 * user.
@@ -1283,14 +1290,6 @@ public class Users extends CRUD {
 	 * 
 	 * @return void
 	 */
-	
-	
-	public static void deleteNotifications(long[] a) {
-		for(int i = 0; i < a.length; i++) {
-			Notification notification = Notification.findById(a[i]);			
-			notification.delete();			
-		}
-	}
 
 	public static void ViewOrgInv(long userId) {
 		User u = User.findById(userId);
@@ -1321,17 +1320,17 @@ public class Users extends CRUD {
 	 * @param userId
 	 *            the id of the user
 	 * 
-	 * @param r
+	 * @param acceptence
 	 *            a boolean to indicate acceptance (true for accepted)
 	 * 
 	 * @return void
 	 */
 
-	public static void acceptToJoinOrg(long invId, long userId, boolean r) {
+	public static void acceptToJoinOrg(long invId, long userId, boolean acceptence) {
 		Invitation inv = Invitation.findById(invId);
 		Organization org = inv.organization;
 		User user = User.findById(userId);
-		if (r) {
+		if (acceptence) {
 			Role role = Roles.getRoleByName("idea developer");
 			UserRoleInOrganization roleInOrg = new UserRoleInOrganization(user,
 					org, role);

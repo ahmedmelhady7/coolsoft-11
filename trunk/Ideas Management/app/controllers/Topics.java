@@ -252,8 +252,8 @@ public class Topics extends CRUD {
 
 	public static void addRequest(long topicId, long userId) {
 		User user = User.findById(userId);
-		Topic t = Topic.findById(topicId);
-		t.requestFromUserToPost(user);
+		Topic topict = Topic.findById(topicId);
+		topict.requestFromUserToPost(user);
 	}
 
 	/**
@@ -273,11 +273,11 @@ public class Topics extends CRUD {
 	public static void requestToPost(long orgId) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(orgId);
-		List<MainEntity> e = org.entitiesList;
+		List<MainEntity> entities = org.entitiesList;
 		List<Topic> topics = new ArrayList<Topic>();
 		List<Topic> temp;
-		for (int i = 0; i < e.size(); i++) {
-			temp = e.get(i).topicList;
+		for (int i = 0; i < entities.size(); i++) {
+			temp = entities.get(i).topicList;
 			for (int j = 0; j < temp.size(); j++) {
 				// ???
 				if (!Users.isPermitted(user, "can post ideas to a Topic",
