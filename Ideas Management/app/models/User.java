@@ -29,12 +29,11 @@ public class User extends Model {
 	//@Email
 	public String email;
 	@Required
-	//@MaxSize(20)
+	@MaxSize(20)
 	//@Column(unique = true)
 	public String username;
 	@Required
-	//@MaxSize(25)
-	//@MinSize(4)
+	@MaxSize(25)
 	public String password;
 	@Required
 	public String firstName;
