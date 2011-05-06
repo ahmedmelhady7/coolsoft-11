@@ -422,8 +422,12 @@ public class Organizations extends CRUD {
 		boolean admin = user.isAdmin;
 		boolean isMember = org.privacyLevel == 2
 				|| Users.getEnrolledUsers(org).contains(user);
+		boolean creator = false;
+		if (org.creator.equals(user)) {
+			creator = true;
+		}
 		render(user, org, entities, requestToJoin, tags, flag, b, admin,
-				allowed, isMember,settings);
+				allowed, isMember,settings,creator);
 	}
 
 	/**
