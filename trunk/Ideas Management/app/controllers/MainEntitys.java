@@ -103,9 +103,16 @@ public class MainEntitys extends CRUD {
 	 * 
 	 */
 	public static void createEntity(String name, String description, long orgId) {
+		boolean canCreate = true;
 		Organization org = Organization.findById(orgId);
-		MainEntity entity = new MainEntity(name, description, org);
-		entity.save();
+		for (int i = 0; i < org.entitiesList.size(); i++) {
+			if (org.entitiesList.get(i).name.equalsIgnoreCase(name))
+				canCreate = false;
+		}
+		if (canCreate) {
+			MainEntity entity = new MainEntity(name, description, org);
+			entity.save();
+		}
 		redirect("Organizations.viewProfile", org.id, "Entity created");
 	}
 
@@ -132,10 +139,17 @@ public class MainEntitys extends CRUD {
 	 */
 	public static void createSubEntity(String name, String description,
 			long parentId, long orgId) {
-		Organization org = Organization.findById(orgId);
+		boolean canCreate = true;
 		MainEntity parent = MainEntity.findById(parentId);
-		MainEntity entity = new MainEntity(name, description, parent, org);
-		entity.save();
+		Organization org = Organization.findById(orgId);
+		for (int i = 0; i < parent.subentities.size(); i++) {
+			if (parent.subentities.get(i).name.equalsIgnoreCase(name))
+				canCreate = false;
+		}
+		if (canCreate) {
+			MainEntity entity = new MainEntity(name, description, parent, org);
+			entity.save();
+		}
 		redirect("Organizations.viewProfile", org.id, "SubEntity created");
 	}
 
