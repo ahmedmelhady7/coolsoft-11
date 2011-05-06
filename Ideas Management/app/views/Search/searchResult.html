@@ -130,7 +130,7 @@ The Search Results Viewer
             				}
             				}				
             				function markDuplicate(){
-            					$.post('@{MarkingRequest.markDuplicate}',{idea1ID: marked[0],idea2ID: marked[1] ,des:"lol"}, function(){alert("The requests have been sent to the Topic organizer");});
+            					$.post('@{MarkingRequest.sendRequest}',{idea1ID: marked[0],idea2ID: marked[1] ,des:"lol"}, function(){alert("The requests have been sent to the Topic organizer");});
             				}
             		
         </script>
