@@ -6,9 +6,10 @@ import models.User;
 public class Security extends Secure.Security {
 
 	/**
-	 * This method is used to get the user how is already connected on the
+	 * Used to get the user how is already connected on the
 	 * session.
 	 * 
+	 * @author C1
 	 * 
 	 * @return User
 	 * 
@@ -19,14 +20,19 @@ public class Security extends Secure.Security {
 	}
 
 	/**
-	 * This method is needed to check that the loging user has access to the
+	 * Needed to check that the loging user has access to the
 	 * website
 	 * 
-	 * @param username
+	 * @author C1
 	 * 
-	 * @param password
+	 * @param username String
+	 * 			the username of the logging user
 	 * 
-	 * @return boolean true if the user is authorised false otherwise
+	 * @param password String
+	 * 			the password of the user
+	 * 
+	 * @return boolean 
+	 * 			true if the user is authorised false otherwise
 	 */
 
 	public static boolean authenticate(String username, String password) {
