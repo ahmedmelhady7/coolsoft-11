@@ -156,12 +156,12 @@ public class Invitations extends CRUD {
 			
 			boolean check=false;
 			List <Invitation> inv=Invitation.findAll();
-			for(int i=0;i<inv.size();i++){
+			for(int i = 0;i < inv.size();i++){
 				if(inv.get(i).email.equals(email)&&inv.get(i).entity.equals(entity))
 					check=true;
 					
 			}
-			if(check==true){
+			if(check == true){
 				flash.error("Invitation has already been sent to that user before");
 		        page(entId,id);
 			}
@@ -174,10 +174,10 @@ public class Invitations extends CRUD {
 			  	
 				boolean flag=true;
 				User user=User.find("byEmail", email).first();
-			if(user!=null){
+			if(user != null){
 				System.out.println("CONDITION");
-	    	for (int i = 0; i <organizers.size(); i++) {
-				if (organizers.contains(user)|| user.isAdmin)
+	    	for (int i = 0; i < organizers.size(); i++) {
+				if (organizers.contains(user) || user.isAdmin)
 					flag=false;
 			}
 			
@@ -197,7 +197,7 @@ public class Invitations extends CRUD {
 	          user.addInvitation(email,role,entity.organization,entity);
 	        
 	         User receiver=User.find("byEmail", email).first();
-	         if(receiver!=null){
+	         if(receiver != null){
 	       Notifications.sendNotification(receiver.id, entity.id, "organization",
 	 					"You have received a new invitation from "
 	 							+ entity.name);
@@ -210,7 +210,7 @@ public class Invitations extends CRUD {
 			     organizers.remove(user);
 					
 				
-				for(int j=0;j<organizers.size();j++)
+				for(int j = 0;j < organizers.size();j++)
 				Notifications.sendNotification(organizers.get(j).id, entity.id, "entity",
 						"New organizer has been invited to be an organizer to entity  "
 								+ entity.name);
@@ -290,9 +290,9 @@ public class Invitations extends CRUD {
 				List <MainEntity> sub=new ArrayList<MainEntity>();
 				 sub=MainEntity.find("byParent", entity).fetch();
 				 System.out.println(sub.size());
-				if(sub.size()!=0){
+				if(sub.size() != 0){
 					System.out.println("here");
-				for(int j=0;j<sub.size();j++){
+				for(int j = 0;j < sub.size();j++){
 					UserRoleInOrganizations.addEnrolledUser(user, organization, role,
 							sub.get(j).id, "entity");
 				  System.out.println(sub.get(j).name);
@@ -305,7 +305,7 @@ public class Invitations extends CRUD {
 					organizers.add(organization.creator);
 					organizers.remove(invite.sender);
 				
-				for(int j=0;j<organizers.size();j++)
+				for(int j = 0;j < organizers.size();j++)
 				Notifications.sendNotification(organizers.get(j).id, entity.id, "entity",
 						"New organizer has been added as an organizer to entity  "
 								+ entity.name);
@@ -334,7 +334,7 @@ public class Invitations extends CRUD {
 		}  //**
 				 
 		              organization.invitation.remove(invite);
-				     if(entity!=null){
+				     if(entity != null){
 				      entity.invitationList.remove(invite);
 				      }
 				      User sender=invite.sender;
