@@ -108,15 +108,15 @@ public class MarkRequest extends Controller {
 		i2.duplicateIdeas.add(i1);
 		i2.save();
 		User sender = req.sender;
-		// for(int i = 0;i<i1.belongsToTopic.creator.size();i++){
 		i1.belongsToTopic.creator.receivedMarkingRequests.remove(req);
 		i1.belongsToTopic.creator.save();
-		// if(i1.belongsToTopic.getOrganizer().get(i).id != u.id){
-		// Notifications.sendNotification(i1.belongsToTopic.getOrganizer().get(i).id,
-		// i1.id, "Idea",
-		// "An organizer approved the duplicating request");
-		// }
-		// }
+		for(int i = 0;i<i1.belongsToTopic.getOrganizer().size();i++){
+		 if(i1.belongsToTopic.getOrganizer().get(i).id != u.id){
+		 Notifications.sendNotification(i1.belongsToTopic.getOrganizer().get(i).id,
+		 i1.id, "Idea",
+		 "An organizer approved the duplicating request");
+		 }
+		 }
 		sender.sentMarkingRequests.remove(req);
 		sender.save();
 		req.delete();
@@ -143,15 +143,15 @@ public class MarkRequest extends Controller {
 		i1.duplicateIdeas.add(i2);
 		i2.duplicateIdeas.add(i1);
 		User sender = req.sender;
-		// for(int i = 0;i<i1.belongsToTopic.getOrganizer().size();i++){
 		i1.belongsToTopic.creator.receivedMarkingRequests.remove(req);
 		i1.belongsToTopic.creator.save();
-		// if(i1.belongsToTopic.getOrganizer().get(i).id != u.id){
-		// Notifications.sendNotification(i1.belongsToTopic.getOrganizer().get(i).id,
-		// i1.id, "Idea",
-		// "An organizer rejected the duplicating request");
-		// }
-		// }
+		for(int i = 0;i<i1.belongsToTopic.getOrganizer().size();i++){
+		 if(i1.belongsToTopic.getOrganizer().get(i).id != u.id){
+		 Notifications.sendNotification(i1.belongsToTopic.getOrganizer().get(i).id,
+		 i1.id, "Idea",
+		 "An organizer rejected the duplicating request");
+		 }
+		 }
 		sender.sentMarkingRequests.remove(req);
 		sender.save();
 		req.delete();
