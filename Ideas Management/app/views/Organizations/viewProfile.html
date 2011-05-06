@@ -103,20 +103,20 @@
                     <br/>
                     <HR>
                 </form>#{if b == 1}
-                <form>
+                <form onsubmit="s(email, '${org.id}');" method="post">
                 	Invite an Idea Developer <br>
-                    Email: <input type="text" id="email" name="email"/><input type="submit" value="Invite" onclick="s(email, '${org.id}');"/>
+                    Email: <input type="text" id="email" name="email"/><input type="submit" value="Invite"/>
                 </form>#{/if}
             </body>
             </html>
             <script type="text/javascript">
                 function s(e, id){
                     if (validate(e.value)) {
+						alert("done!");
                         $.post('@{sendInvitation()}', {
                             orgId: id,
                             email: e.value
                         });
-                        alert("done!");
                         location.reload(true);
                     }
                 }
@@ -125,7 +125,9 @@
                     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
                     if (reg.test(address) == false) {
                         alert('Invalid Email Address');
+						return false;
                     }
+					return true;
                 }
             </script>
             <!--
