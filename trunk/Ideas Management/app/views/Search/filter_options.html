@@ -34,69 +34,68 @@ body {
   <script type="text/javascript">
             
             function firstfilter(frm){
-             if(frm.type=="plan"){
-        document.write("filter on p");
+             if(frm.type.value="plan"){
+        //document.write("filter on p");
               $.post('@{filterSearchResults}',
               //  resultList:Search.lisOfResults,
                  {filterOn:'p'});
-
-                    document.write("filter on p a");
+                   // document.write("filter on p a");
              }
-             if(frm.type=="idea"){
+             if(frm.type.value="idea"){
 
-                    document.write("filter on i");
+                   // document.write("filter on i");
               $.post('@{filterSearchResults}',
             //resultList:Search.lisOfResults,
             {filterOn:'i'});
 
-                    document.write("filter on ia");
+                   // document.write("filter on ia");
              }
-             if(frm.type=="topic"){
+             if(frm.type.value="topic"){
 
-                    document.write("filter on t");
+                    //document.write("filter on t");
               $.post('@{filterSearchResults}',
             //resultList:Search.lisOfResults,
             {filterOn:'t'});
 
-                    document.write("filter on t a");
+                    //document.write("filter on t a");
              }
-             if(frm.type=="entity"){
+             if(frm.type.value="entity"){
 
-                    document.write("filter on e");
+                   // document.write("filter on e");
               $.post('@{filterSearchResults}',
             //resultList:Search.lisOfResults,
             {filterOn:'e'});
 
-                    document.write("filter on e a");
+                    //document.write("filter on e a");
              }
-             if (frm.type==organization){
+             if (frm.type.value=organization){
 
-                    document.write("filter on o");
+                    //document.write("filter on o");
               $.post('@{filterSearchResults}',
             //resultList:Search.lisOfResults,
             {filterOn:'o'});
 
-                    document.write("filter on o a");
+                    //document.write("filter on o a");
              }
             } 
             function whichlisttopass(frm){
-             if(frm.scale=="ANDn"){
+             if(frm.scale.value="ANDn"){
               $.post('@{handelingOrAnd}',
                 {AndOr:'a'});
              }
-             if(frm.scale2=="ANDd"){
+             if(frm.scale2.value="ANDd"){
 
               $.post('@{handelingOrAnd}',
                 {AndOr:'a'});
               
              }
-             if(frm.scale=="ORn"){
+             if(frm.scale.value="ORn"){
 
               $.post('@{handelingOrAnd}',
                 
                 {AndOr:'o'});
              }
-             if(frm.scale2 == "ORd"){
+             if(frm.scale2.value = "ORd"){
 
               $.post('@{handelingOrAnd}',
                 {AndOr:'o'});
@@ -109,22 +108,23 @@ body {
               $.post('@{filterSearchResults}',{
                 //resultList:Search.tobepassed,
                 filterOn:"name",
-                input:name.value)});
+                input:name.value});
              }
              if(frm.description!=""){
               $.post('@{filterSearchResults}',{
                 //resultList:Search.tobepassed,
                 filterOn:"description",
-                input:description.value)});
+                input:description.value});
              }
             }
             function finish(frm){
-             document.write("yarab");
+             //document.write("yarab");
              firstfilter(frm);
-             whichlisttopass(frm);
+             whichlisttopass(frm);			 
              filter(frm);
              whichlisttopass(frm);
              filter(frm);
+			 window.location.href="/searchResult";
             
             }
         </script>
@@ -136,7 +136,8 @@ body {
     <tr>
      <td bgcolor="LightGreen">
     <tr>
-     <td bgcolor="LightGreen"><h bgcolor="#123456">
+     <td bgcolor="LightGreen">
+     	<h bgcolor="#123456">
       <center>
        <big><u><big> <big><big><u><i>
               <b> Filter Options: 
