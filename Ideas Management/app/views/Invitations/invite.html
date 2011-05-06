@@ -1,16 +1,16 @@
 <!--C1S6  @author : Mai Magdy -->
-<form action="@{Invitations.Page()}" method="GET">
+<form action="@{Invitations.page()}" method="GET">
 	<input type="submit" value="Invite by mail">
-	<input type = "hidden" name ="entId" value = ${ent.id}>
+	<input type = "hidden" name ="entId" value = ${entity.id}>
 	<input type = "hidden" name ="id" value = 0>
 	</form>
 
-<form action="@{Invitations.SearchUsers()}" method="GET" name="myform">
+<form action="@{Invitations.searchUser()}" method="GET" name="myform">
 <table border="0" bgcolor="#ececec" cellspacing="5">
 <tr><td><u> You can search by name for users to invite </u></td></tr>
 <tr><td>Name <input type="text" size="20" name="name"></td></tr>
 <tr><td>&nbsp;</td><td><input type="submit" value="Next">
-<input type = "hidden" name ="entId" value = ${ent.id}>
+<input type = "hidden" name ="entId" value = ${entity.id}>
 
 </table>
 </form>
