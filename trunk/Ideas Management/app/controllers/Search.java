@@ -869,16 +869,16 @@ public class Search extends Controller {
 		for (int s = 0; s < keywords.length; s++) {
 			List<Organization> listOfOrganizations = Organization.findAll();
 			for (int i = 0; i < listOfOrganizations.size(); i++) {
-				if (listOfOrganizations.get(i).name
-						.equalsIgnoreCase(keywords[s])) {
+				if (listOfOrganizations.get(i).name.toLowerCase()
+						.contains(keywords[s].toLowerCase())) {
 					if (!listOfOrgs.contains(listOfOrganizations.get(i))) {
 						listOfOrgs.add(listOfOrganizations.get(i));
 					}
 				} else {
 					for (int j = 0; j < listOfOrganizations.get(i).relatedTags
 							.size(); j++) {
-						if (keywords[s].equalsIgnoreCase(listOfOrganizations
-								.get(i).relatedTags.get(j).name)) {
+						if (keywords[s].toLowerCase().contains(listOfOrganizations
+								.get(i).relatedTags.get(j).name.toLowerCase())) {
 							if (!listOfOrgs
 									.contains(listOfOrganizations.get(i))) {
 								listOfOrgs.add(listOfOrganizations.get(i));
@@ -930,7 +930,7 @@ public class Search extends Controller {
 		List<MainEntity> listOfEntities = MainEntity.findAll();
 		for (int s = 0; s < keywords.length; s++) {
 			for (int i = 0; i < listOfEntities.size(); i++) {
-				if (listOfEntities.get(i).name.equalsIgnoreCase(keywords[s])
+				if (listOfEntities.get(i).name.toLowerCase().contains(keywords[s].toLowerCase())
 						|| listOfEntities.get(i).description.toLowerCase()
 								.contains(keywords[s].toLowerCase())) {
 					if (!listOfEnts.contains(listOfEntities.get(i))) {
@@ -938,9 +938,9 @@ public class Search extends Controller {
 					}
 				} else {
 					for (int j = 0; j < listOfEntities.get(i).tagList.size(); j++) {
-						if (keywords[s]
-								.equalsIgnoreCase(listOfEntities.get(i).tagList
-										.get(j).name)) {
+						if (keywords[s].toLowerCase()
+								.contains(listOfEntities.get(i).tagList
+										.get(j).name.toLowerCase())) {
 							if (!listOfEnts.contains(listOfEntities.get(i))) {
 								listOfEnts.add(listOfEntities.get(i));
 							}
@@ -988,7 +988,7 @@ public class Search extends Controller {
 		List<Idea> listOfIdeas = Idea.findAll();
 		for (int s = 0; s < keywords.length; s++) {
 			for (int i = 0; i < listOfIdeas.size(); i++) {
-				if (listOfIdeas.get(i).title.equalsIgnoreCase(keywords[s])
+				if (listOfIdeas.get(i).title.toLowerCase().contains(keywords[s].toLowerCase())
 						|| listOfIdeas.get(i).description.toLowerCase()
 								.contains(keywords[s].toLowerCase())) {
 					if (!listOfIdss.contains(listOfIdeas.get(i))) {
@@ -996,9 +996,9 @@ public class Search extends Controller {
 					}
 				} else {
 					for (int j = 0; j < listOfIdeas.get(i).tagsList.size(); j++) {
-						if (keywords[s]
-								.equalsIgnoreCase(listOfIdeas.get(i).tagsList
-										.get(j).name)) {
+						if (keywords[s].toLowerCase()
+								.contains(listOfIdeas.get(i).tagsList
+										.get(j).name.toLowerCase())) {
 							if (!listOfIdss.contains(listOfIdeas.get(i))) {
 								listOfIdss.add(listOfIdeas.get(i));
 							}
@@ -1053,7 +1053,7 @@ public class Search extends Controller {
 			for (int i = 0; i < listOfTopics.size(); i++) { // Looping on the
 															// list of
 															// organization
-				if (listOfTopics.get(i).title.equalsIgnoreCase(keywords[s])
+				if (listOfTopics.get(i).title.toLowerCase().contains(keywords[s].toLowerCase())
 						|| listOfTopics.get(i).description.toLowerCase()
 								.contains(keywords[s].toLowerCase())) {
 					if (!listOfTopis.contains(listOfTopics.get(i))) {
@@ -1061,9 +1061,9 @@ public class Search extends Controller {
 					}
 				} else {
 					for (int j = 0; j < listOfTopics.get(i).tags.size(); j++) {
-						if (keywords[s]
-								.equalsIgnoreCase(listOfTopics.get(i).tags
-										.get(j).name)) {
+						if (keywords[s].toLowerCase()
+								.contains(listOfTopics.get(i).tags
+										.get(j).name.toLowerCase())) {
 							if (!listOfTopis.contains(listOfTopics.get(i))) {
 								listOfTopis.add(listOfTopics.get(i));
 							}
