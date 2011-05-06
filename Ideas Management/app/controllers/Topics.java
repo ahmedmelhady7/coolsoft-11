@@ -288,17 +288,38 @@ public class Topics extends CRUD {
 		List<MainEntity> entities = org.entitiesList;
 		List<Topic> topics = new ArrayList<Topic>();
 		List<Topic> temp;
+		List<UserRoleInOrganization> roles = UserRoleInOrganization.find(
+				"byEnrolled", user).fetch();
+		UserRoleInOrganization role;
+
 		for (int i = 0; i < entities.size(); i++) {
 			temp = entities.get(i).topicList;
 			for (int j = 0; j < temp.size(); j++) {
-				// ???
-				if (!Users.isPermitted(user, "can post ideas to a Topic",
-						temp.get(j).id, "topic")
+				if (temp.get(j).creator.id != user.id && !user.isAdmin
 						&& !temp.get(j).hasRequest(user)) {
 					topics.add(temp.get(j));
 				}
 			}
 		}
+		for (int k = 0; k < roles.size(); k++) {
+			role = roles.get(k);
+			if (role.type.equalsIgnoreCase("topic")
+					&& role.organization.id == org.id) {
+				topics.remove(Topic.findById(role.entityTopicID));
+			}
+		}
+
+		// for (int i = 0; i < entities.size(); i++) {
+		// temp = entities.get(i).topicList;
+		// for (int j = 0; j < temp.size(); j++) {
+		// ???
+		// if (!Users.isPermitted(user, "can post ideas to a Topic",
+		// temp.get(j).id, "topic")
+		// && !temp.get(j).hasRequest(user)) {
+		// topics.add(temp.get(j));
+		// }
+		// }
+		// }
 		render(topics, user);
 	}
 
@@ -504,22 +525,22 @@ public class Topics extends CRUD {
 	 *            : the id of the topic to be closed
 	 * 
 	 */
-public static void closeTopic(String topicId) {
-		
+	public static void closeTopic(String topicId) {
+
 		System.out.println("entered closeTopic for topic:" + topicId);
 		long topicIdLong = Long.parseLong(topicId);
 		Topic targetTopic = Topic.findById(topicIdLong);
 		User actor = User.findById(Security.getConnected().id);
 		List<User> organizers = targetTopic.getOrganizer();
 		List<User> followers = targetTopic.followers;
-	
+
 		String action = "close a topic and promote it to execution";
 		String notificationDescription = "Topic " + targetTopic.title
-			+ " has been closed and promoted to execution.";
-		
-		System.out.println("ideas count:" + targetTopic.getIdeas().size() + " in topic" +
-				targetTopic.getId() + "-" + targetTopic.id);
-		
+				+ " has been closed and promoted to execution.";
+
+		System.out.println("ideas count:" + targetTopic.getIdeas().size()
+				+ " in topic" + targetTopic.getId() + "-" + targetTopic.id);
+
 		// checks if topic is empty
 		if (targetTopic.getIdeas().size() == 0) {
 			System.out.println("Topic has no ideas");
@@ -529,16 +550,16 @@ public static void closeTopic(String topicId) {
 		// closing the topic to editing
 		targetTopic.openToEdit = false;
 		targetTopic.save();
-		
+
 		// Sending Notifications
 		// send notification to organizers
-		for(int i = 0; i < organizers.size(); i++) {
-			Notifications.sendNotification(organizers.get(i).getId(), 
+		for (int i = 0; i < organizers.size(); i++) {
+			Notifications.sendNotification(organizers.get(i).getId(),
 					targetTopic.getId(), "Topic", notificationDescription);
 		}
 		// send notification to followers
-		for(int i = 0; i < followers.size(); i++) {
-			Notifications.sendNotification(followers.get(i).getId(), 
+		for (int i = 0; i < followers.size(); i++) {
+			Notifications.sendNotification(followers.get(i).getId(),
 					targetTopic.getId(), "Topic", notificationDescription);
 		}
 	}
@@ -648,11 +669,10 @@ public static void closeTopic(String topicId) {
 				+ tmp.title + " in " + tmp.entity;
 		if (tmp.followers != null) {
 			for (int i = 0; i < tmp.followers.size(); i++)
-				Notifications
-						.sendNotification(tmp.followers.get(i).getId(), tmp.id,
-								"Topic", "A new Topic: '" + tmp.title
-										+ "' has been added in entity '"
-										+ tmp.entity.name + "'");
+				Notifications.sendNotification(tmp.followers.get(i).getId(),
+						tmp.id, "Topic", "A new Topic: '" + tmp.title
+								+ "' has been added in entity '"
+								+ tmp.entity.name + "'");
 		}
 
 		List<User> users = Users.getEntityOrganizers(tmp.entity);
@@ -660,8 +680,8 @@ public static void closeTopic(String topicId) {
 		for (int i = 0; i < users.size(); i++)
 			Notifications.sendNotification(users.get(i).id, tmp.id, "Topic",
 					"A new Topic: '" + tmp.title
-					+ "' has been added in entity '"
-					+ tmp.entity.name + "'");
+							+ "' has been added in entity '" + tmp.entity.name
+							+ "'");
 
 		// tmp.init();
 		flash.success(Messages.get("crud.created", type.modelName,
@@ -788,15 +808,14 @@ public static void closeTopic(String topicId) {
 		System.out.println(actor);
 		System.out.println(tmp);
 		System.out.println(allowed);
-		
+
 		if (Users.isPermitted(actor, actionClose, topicIdLong, "topic")) {
-				canClose = 1;
+			canClose = 1;
 		}
 
 		if (Users.isPermitted(actor, actionPlan, topicIdLong, "topic")) {
-				canPlan = 1;
+			canPlan = 1;
 		}
-		
 
 		int permission = 1;
 
@@ -1072,7 +1091,8 @@ public static void closeTopic(String topicId) {
 		for (int i = 0; i < users.size(); i++)
 			Notifications.sendNotification(users.get(i).id, tmp.id, "Topic",
 					"User: '" + myUser.firstName + "' has edited topic  '"
-							+ tmp.title + "' in entity '" + tmp.entity.name + "'");
+							+ tmp.title + "' in entity '" + tmp.entity.name
+							+ "'");
 
 		System.out.println("save() done, not redirected yet");
 
