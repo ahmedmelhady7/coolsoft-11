@@ -86,7 +86,6 @@ public class Ideas extends CRUD {
 	 */
 
 	public static void saveDraft(long ideaId, String title, String description) {
-
 		Idea idea = Idea.findById(ideaId);
 		idea.title = title;
 		System.out.println(description);
@@ -149,13 +148,11 @@ public class Ideas extends CRUD {
 	 * @throws Exception
 	 * 
 	 */
-	public static void blank(long topicId, long userId) {
+	public static void blank(long topicId) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Topic topic = Topic.findById(topicId);
-		User user = User.findById(userId);
-		System.out.println("blank() entered entity " + topicId + " and user "
-				+ userId);
+		User user = Security.getConnected();
 		try {
 			render(type, topic, user);
 
@@ -164,6 +161,8 @@ public class Ideas extends CRUD {
 		}
 
 	}
+	
+	
 
 	/**
 	 * Overriding the CRUD method create.
@@ -180,7 +179,7 @@ public class Ideas extends CRUD {
 	 * 
 	 */
 
-	public static void create() throws Exception {
+	public static void create(long topicId) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
@@ -188,30 +187,30 @@ public class Ideas extends CRUD {
 		Model object = (Model) constructor.newInstance();
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
-		Topic topic = Topic.findById((long) 1);
-		User author = User.findById((long) 1);
-		Idea i = (Idea) object;
-		i.belongsToTopic = topic;
-		i.author = author;
-		i.privacyLevel = topic.privacyLevel;
+		Topic topic = Topic.findById(topicId);// topicId);
+		User author = Security.getConnected();
+		Idea idea = (Idea) object;
+		idea.belongsToTopic = topic;
+		idea.author = author;
+		// i.privacyLevel = topic.privacyLevel;
 		// ArrayList<Comment> ideaComments = (ArrayList<Comment>)
 		// i.commentsList;
 		// ArrayList<Tag> ideaTags = (ArrayList<Tag>) i.tagsList;
 		String message = "";
-		if (i.belongsToTopic == null) {
+		if (idea.belongsToTopic == null) {
 			message = "An Idea must belong to a Topic";
 			try {
 				render(request.controller.replace(".", "/") + "/blank.html",
-						type, message);
+						type, message, topicId);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/blank.html", type, message);
 			}
 		}
 
 		if (validation.hasErrors()) {
-			if (i.title.equals("")) {
+			if (idea.title.equals("")) {
 				message = "An Idea must have a title";
-			} else if (i.description.equals("")) {
+			} else if (idea.description.equals("")) {
 				message = "An Idea must have a description";
 
 			}
@@ -219,8 +218,9 @@ public class Ideas extends CRUD {
 			try {
 				System.out.println("foo2 Render");
 				render(request.controller.replace(".", "/") + "/blank.html",
-						type, i.title, i.belongsToTopic, i.description,
-						i.commentsList, /* i.tagsList, */message);
+						type, idea.title, idea.belongsToTopic,
+						idea.description, idea.commentsList, /* i.tagsList, */
+						message);
 				System.out.println("rendered 5alas");
 			} catch (TemplateNotFoundException e) {
 				System.out.println("fel catch templatenotfound");
@@ -231,7 +231,7 @@ public class Ideas extends CRUD {
 		object._save();
 		System.out.println("3ada el save");
 		String anothermessage = "you have created a new idea with title "
-				+ i.title + " and with description " + i.description;
+				+ idea.title + " and with description " + idea.description;
 		flash.success(Messages.get("crud.created", type.modelName,
 				((Idea) object).getId()));
 		System.out.println("foo2 el if");
@@ -240,7 +240,7 @@ public class Ideas extends CRUD {
 			System.out
 					.println("/ideas/view?ideasid=" + ((Idea) object).getId());
 
-			redirect("/ideas/view?ideaId=" + ((Idea) object).getId());
+			redirect("/ideas/show?ideaId=" + ((Idea) object).getId());
 			if (params.get("_saveAndAddAnother") != null) {
 				redirect(request.controller + ".blank", anothermessage);
 			}
@@ -270,29 +270,32 @@ public class Ideas extends CRUD {
 		notFoundIfNull(type);
 		Model object = type.findById(ideaId);
 		notFoundIfNull(object);
-		Idea i = (Idea) object;
+		Idea idea = (Idea) object;
 		// List<Tag> tags = i.tagsList;
-		User author = i.author;
-		List<Comment> comments = i.commentsList;
-		Plan plan = i.plan;
-		Topic topic = i.belongsToTopic;
+		User author = Security.getConnected();
+		List<Comment> comments = idea.commentsList;
+		Plan plan = idea.plan;
+		Topic topic = idea.belongsToTopic;
+		long topicId = topic.id;
 		// boolean openToEdit = i.openToEdit;
-		int privacyLevel = i.privacyLevel;
+		int privacyLevel = idea.privacyLevel;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
-		int x = 1;
-		for (int j = 0; j < i.reporters.size(); j++) {
-
-			if (author.username.equals(i.reporters.get(j))) {
-				i.reporters.get(j);
+		int x = 0;
+		for (int j = 0; j < idea.reporters.size(); j++) {
+			if (!author.username.equals(idea.reporters.get(j).username)) {
+				idea.reporters.add(author);
+				System.out.println(author.ideasReported.toString());
 				x = 0;
 			} else
 				x = 1;
 		}
 		try {
 			System.out.println("show() done, about to render");
+			//System.out.println("x is " + x);
 			render(type, object, /* tags, */author, comments, topic, plan,
-			/* openToEdit, */privacyLevel, deletemessage, /* deletable, */ideaId);
+			/* openToEdit, */privacyLevel,topicId, x, deletemessage, /* deletable, */
+			ideaId);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -671,6 +674,38 @@ public class Ideas extends CRUD {
 		List organizers = Users.searchOrganizer(O);
 		if (organizers.contains(user))
 			i.priority = priority;
+	}
+
+	/**
+	 * Overriding the CRUD method save.
+	 * 
+	 * @author ${Ahmed EL-Hadi}
+	 * 
+	 * @story C3S10
+	 * 
+	 * @param entityId
+	 *            the id of the entity where the user would like to post
+	 * 
+	 * @description This method renders the list of ideas the connected user can
+	 *              post in
+	 * 
+	 * @return void
+	 */
+
+	public void topicsList(long entityId) {
+		User user = Security.getConnected();
+		MainEntity m = MainEntity.findById(entityId);
+		List<Topic> all = m.topicList;
+		Topic temp;
+		List<Topic> topics = new ArrayList<Topic>();
+		for (int i = 0; i < all.size(); i++) {
+			temp = all.get(i);
+			if (!Users.isPermitted(user, "can post ideas to a Topic", temp.id,
+					"topic")) {
+				topics.add(temp);
+			}
+		}
+		render(topics);
 	}
 
 }
