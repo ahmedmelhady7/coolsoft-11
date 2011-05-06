@@ -6,6 +6,7 @@
     </head>
     <body>
         #{extends 'main.html' /}
+		#{set title: 'Organization Profile' /}
         <center><big><b>${org.name}</b></big></center><br><br>
 		#{if allowed==1}
       <a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>
