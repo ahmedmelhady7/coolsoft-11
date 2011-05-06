@@ -205,27 +205,29 @@ public class Idea extends Model {
 			String desc = "This idea is inactive";
 			// Send notification
 
-			// Notifications.sendNotification(user, idea.id, type, desc);
+			   for(int i =0;i<user.size();i++){
+				     Notifications.sendNotification(user.get(i).id, idea.id, type, desc);
+				   }
 		}
 
 	}
 
 	public static void getAllIdeas() {
 	List<Organization> listOfOrganizations = Organization.findAll();
-//		for (int i = 0; i < listOfOrganizations.size(); i++) {
-//			Organization org = listOfOrganizations.get(i);
-//			List<User> users = org.enrolledUsers;
-//
-//			for (int j = 0; j < users.size(); j++) {
-//				User user = users.get(j);
-//				List<Idea> ideas = user.ideasCreated;
-//
-//				for (int k = 0; k < ideas.size(); k++) {
-//					Idea idea = ideas.get(k);
-//					checkDate(idea);
-//				}
-//			}
-//		}
+		for (int i = 0; i < listOfOrganizations.size(); i++) {
+			Organization org = listOfOrganizations.get(i);
+			List<User> users = Users.getEnrolledUsers(org);
+
+			for (int j = 0; j < users.size(); j++) {
+				User user = users.get(j);
+				List<Idea> ideas = user.ideasCreated;
+
+				for (int k = 0; k < ideas.size(); k++) {
+					Idea idea = ideas.get(k);
+					checkDate(idea);
+				}
+			}
+		}
 
 	}
 
