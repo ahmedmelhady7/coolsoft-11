@@ -319,6 +319,17 @@ public class Bootstrap extends Job {
 			//
 			// // UserRoleInOrganizations.addEnrolledUser(u2,, role,
 			// // entityOrTopicId, type)
+			
+			//////////////////////////////////////////////////
+			
+			ActionListener listener = new TimerCall();
+		    // Construct a timer that calls the listener
+			// once every 24 hours
+			Timer t = new Timer(86400, listener);
+			t.start();
+			
+			       
+
 
 		}
 	}

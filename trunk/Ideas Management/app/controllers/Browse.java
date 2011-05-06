@@ -34,6 +34,11 @@ public class Browse extends Controller {
 	public static void browse() {
 
 		List<Organization> listOfOrganizations = Organization.findAll();
+		for(int i=0;i< listOfOrganizations.size();i++)
+		{
+			
+			
+		}
 		render(listOfOrganizations);
 
 	}
