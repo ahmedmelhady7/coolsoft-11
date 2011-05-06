@@ -398,11 +398,28 @@ public class Users extends CRUD {
 
 	}
 
-	public static List<User> getBannedUser(Organization o, String action,
+	/**
+	 * this method returns the list of users that are banned from a certain
+	 * action in a certain organization from a certain source in a certain type
+	 * 
+	 * @author Nada Ossama
+	 * @story C1S7
+	 * @param organization
+	 *            is the organization where this user is banned from
+	 * @param action
+	 *            is the action those users are banned form
+	 * @param sourceID
+	 *            is the id of the source that user is banned from
+	 * @param type
+	 *            is the type of the source
+	 * @return List<User> is the list of he banned users
+	 */
+
+	public static List<User> getBannedUser(Organization organization, String action,
 			long sourceID, String type) {
-		List<User> user = (List<User>) BannedUser
+		List<User> user =  BannedUser
 				.find("select bu.bannedUser from BannedUser where bu.organization = ? and bu.action = ? and bu.resourceType = ? and bu.resourceID = ? ",
-						o, action, type, sourceID);
+						organization, action, type, sourceID).fetch();
 		return (user);
 	}
 
@@ -770,22 +787,22 @@ public class Users extends CRUD {
 	 * 
 	 * @author: Nada Ossama
 	 * 
-	 * @param e
+	 * @param topic
 	 *            : is the topic that i want to retrieve all the organizers that
 	 *            are enrolled in it
 	 * 
 	 * @return List of Organizers in that topic
 	 */
 	// /to be modefied
-	public List<User> getTopicOrganizers(Topic t) {
+	public List<User> getTopicOrganizers(Topic topic) {
 		List<User> enrolled = new ArrayList<User>();
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
-		if (t != null) {
-			Organization o = t.entity.organization;
+		if (topic != null) {
+			Organization organization = topic.entity.organization;
 			organizers = UserRoleInOrganization
 
 					.find("select uro from UserRoleInOrganization uro  where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?",
-							o, t.getId(), "topic").fetch();
+							organization, topic.getId(), "topic").fetch();
 			for (int i = 0; i < organizers.size(); i++) {
 				if (!(organizers.get(i).role.roleName.equals("organizer"))) {
 					// =======
@@ -813,22 +830,22 @@ public class Users extends CRUD {
 	 * 
 	 * @author: Nada Ossama
 	 * 
-	 * @param e
+	 * @param entity
 	 *            : is the entity that i want to retrieve all the organizers
 	 *            that are enrolled in it
 	 * 
 	 * @return List of Organizers in that entity
 	 */
-	public static List<User> getEntityOrganizers(MainEntity e) {
+	public static List<User> getEntityOrganizers(MainEntity entity) {
 		List<User> enrolled = new ArrayList<User>();
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
-		if (e != null) {
-			Organization o = e.organization;
+		if (entity != null) {
+			Organization organization = entity.organization;
 
-			long eID = e.getId();
+			long entityId = entity.getId();
 			organizers = UserRoleInOrganization
 					.find("select uro from UserRoleInOrganization uro where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?",
-							o, eID, "entity").fetch();
+							organization, entityId, "entity").fetch();
 			for (int i = 0; i < organizers.size(); i++) {
 				if (!((organizers.get(i).role.roleName).equals("organizer"))) {
 					// =======
@@ -863,13 +880,13 @@ public class Users extends CRUD {
 	 * @return :List of enrolled users
 	 */
 
-	public static List<User> getEnrolledUsers(Organization o) {
+	public static List<User> getEnrolledUsers(Organization organization) {
 		List<User> enrolled = null;
-		if (o != null) {
+		if (organization != null) {
 
 			enrolled = UserRoleInOrganization
 					.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? ",
-							o).fetch();
+							organization).fetch();
 
 		}
 		return enrolled;
@@ -908,19 +925,27 @@ public class Users extends CRUD {
 	}
 
 	/**
+	 * return all the entities that a certain organizer is enrolled in within a
+	 * certain organization
 	 * 
+	 * @story C1S7
+	 * @author Nada Ossama
+	 * @param org
+	 *            is the organization
+	 * @param user
+	 * @return list of entities List<MainEntity>
 	 */
 	public static List<MainEntity> getEntitiesOfOrganizer(Organization org,
 			User user) {
 		List<MainEntity> entities = new ArrayList<MainEntity>();
        System.out.println(org == null);
        System.out.println(user);
-		List<UserRoleInOrganization> uro = UserRoleInOrganization.find(
+		List<UserRoleInOrganization> userRoleInOrg = UserRoleInOrganization.find(
 				"byOrganizationAndEnrolled", org, user).fetch();
-		System.out.println(uro.isEmpty() + "haaaaaaaaaaaaaaaaay");
-		for (int i = 0; i < uro.size(); i++) {
-			if (uro.get(i).role.roleName.equals("organizer")) {
-				entities.add((MainEntity) MainEntity.findById(uro.get(i).entityTopicID));
+		//System.out.println(userRoleInOrganization.isEmpty() + "haaaaaaaaaaaaaaaaay");
+		for (int i = 0; i < userRoleInOrg.size(); i++) {
+			if (userRoleInOrg.get(i).role.roleName.equals("organizer")) {
+				entities.add((MainEntity) MainEntity.findById(userRoleInOrg.get(i).entityTopicID));
 			}
 		}
 		return entities;
