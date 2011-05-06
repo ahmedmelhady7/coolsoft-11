@@ -154,10 +154,10 @@ public class Ideas extends CRUD {
 		Topic topic = Topic.findById(topicId);
 		User user = Security.getConnected();
 		try {
-			render(type, topic, user);
+			render(type, topic, user, topicId);
 
 		} catch (TemplateNotFoundException e) {
-			render("CRUD/blank.html", type);
+			render("CRUD/blank.html", type, topicId);
 		}
 
 	}
@@ -203,7 +203,7 @@ public class Ideas extends CRUD {
 				render(request.controller.replace(".", "/") + "/blank.html",
 						type, message, topicId);
 			} catch (TemplateNotFoundException e) {
-				render("CRUD/blank.html", type, message);
+				render("CRUD/blank.html", type, message, topicId);
 			}
 		}
 
@@ -220,11 +220,11 @@ public class Ideas extends CRUD {
 				render(request.controller.replace(".", "/") + "/blank.html",
 						type, idea.title, idea.belongsToTopic,
 						idea.description, idea.commentsList, /* i.tagsList, */
-						message);
+						message, topicId);
 				System.out.println("rendered 5alas");
 			} catch (TemplateNotFoundException e) {
 				System.out.println("fel catch templatenotfound");
-				render("CRUD/blank.html", type);
+				render("CRUD/blank.html", type, topicId);
 			}
 		}
 
