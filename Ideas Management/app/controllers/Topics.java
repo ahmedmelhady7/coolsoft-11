@@ -364,7 +364,7 @@ public class Topics extends CRUD {
 		List<UserRoleInOrganization> allUser = new ArrayList<UserRoleInOrganization>();
 		// List<User> u = new ArrayList<User>();
 		if ((org.privacyLevel == 0 || org.privacyLevel == 1)
-				&& (topic.privacyLevel == 0 || topic.privacyLevel == 1)) {
+				&& (topic.privacyLevel == 2)) {
 
 			// allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
 			// .find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
@@ -392,7 +392,7 @@ public class Topics extends CRUD {
 		} else {
 
 			if ((org.privacyLevel == 0 || org.privacyLevel == 1)
-					&& (topic.privacyLevel == 2)) {
+					&& (topic.privacyLevel == 1)) {
 				// allUser = (List<UserRoleInOrganization>)
 				// UserRoleInOrganization
 				// .find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
@@ -420,7 +420,7 @@ public class Topics extends CRUD {
 
 			else {
 				if ((org.privacyLevel == 2)
-						&& (topic.privacyLevel == 0 || topic.privacyLevel == 1)) {
+						&& (topic.privacyLevel == 2)) {
 					// allUser = (List<UserRoleInOrganization>)
 					// UserRoleInOrganization
 					// .find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entityTopicID = ? and r.roleName like ? and and uro.type like ?",
@@ -448,7 +448,7 @@ public class Topics extends CRUD {
 						}
 					}
 				} else {
-					if ((org.privacyLevel == 2) && (topic.privacyLevel == 2)) {
+					if ((org.privacyLevel == 2) && (topic.privacyLevel == 1)) {
 
 						user = User.findAll();
 
