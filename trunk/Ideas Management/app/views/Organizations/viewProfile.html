@@ -14,6 +14,7 @@
 		   <br>	
 		        #{/if}
 	    #{if settings==1}
+		Creation Of Tags :
 	     <select id="selec" onchange="test();">
             <option> Tags</option>
             <option id="e" value="0"> enable </option>
@@ -153,14 +154,16 @@
             //alert("function2" +  ${org.id});
             $.post('@{Organizations.enableTags()}',{id:${org.id}});
             alert("Options is enabled");
+		  location.reload(true);
 		
             }
             else{
             //alert("function2" +  ${org.id});
             $.post('@{Organizations.disableTags()}',{id:${org.id}});
             alert("Options is disabled");
+			  location.reload(true);
             }
-				window.location.reload();
+				
             }
             </script>
             
