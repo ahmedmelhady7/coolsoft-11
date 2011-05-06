@@ -153,12 +153,14 @@
             //alert("function2" +  ${org.id});
             $.post('@{Organizations.enableTags()}',{id:${org.id}});
             alert("Options is enabled");
+		
             }
             else{
             //alert("function2" +  ${org.id});
             $.post('@{Organizations.disableTags()}',{id:${org.id}});
             alert("Options is disabled");
             }
+				window.location.reload();
             }
             </script>
             
