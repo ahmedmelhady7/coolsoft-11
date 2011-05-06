@@ -1,8 +1,8 @@
 package controllers;
 
 /**
-@author Mostafa Ali
-*/
+ @author Mostafa Ali
+ */
 // list of organizers in entity 
 
 import java.lang.reflect.Constructor;
@@ -84,7 +84,8 @@ public class Users extends CRUD {
 	 * @param userId
 	 *            :String id of the user we want to show
 	 * 
-	 * @description overrides the CRUD view method and renders the form for viewing a user
+	 * @description overrides the CRUD view method and renders the form for
+	 *              viewing a user
 	 * 
 	 * @throws Exception
 	 * 
@@ -122,39 +123,40 @@ public class Users extends CRUD {
 	 * 
 	 * @story C1S9
 	 * 
-	 * @param String userId
-	 *            : id of the user we want to show
+	 * @param String
+	 *            userId : id of the user we want to show
 	 * 
-	 * @description overrides the CRUD show method,renders the form for editing and viewing a user
+	 * @description overrides the CRUD show method,renders the form for editing
+	 *              and viewing a user
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-//	public static void show(String userId) {
-//		ObjectType type = ObjectType.get(getControllerClass());
-//		notFoundIfNull(type);
-//		long userID = Long.parseLong(userId);
-//		User object = User.findById(userID);
-//		notFoundIfNull(object);
-//		System.out.println("entered view() for User " + object.username);
-//		System.out.println(object.email);
-//		System.out.println(object.username);
-//		int communityContributionCounter = object.communityContributionCounter;
-//		String name = object.firstName + " " + object.lastName;
-//		String profession = object.profession;
-//		String username = object.username;
-//		String birthDate = "" + object.dateofBirth;
-//		try {
-//			System.out.println("show() done, about to render");
-//			render(type, object, username, name, communityContributionCounter,
-//					profession, birthDate, userId);
-//		} catch (TemplateNotFoundException e) {
-//			System.out
-//					.println("show() done with exception, rendering to CRUD/show.html");
-//			render("CRUD/show.html", type, object);
-//		}
-//	}
-	
+	// public static void show(String userId) {
+	// ObjectType type = ObjectType.get(getControllerClass());
+	// notFoundIfNull(type);
+	// long userID = Long.parseLong(userId);
+	// User object = User.findById(userID);
+	// notFoundIfNull(object);
+	// System.out.println("entered view() for User " + object.username);
+	// System.out.println(object.email);
+	// System.out.println(object.username);
+	// int communityContributionCounter = object.communityContributionCounter;
+	// String name = object.firstName + " " + object.lastName;
+	// String profession = object.profession;
+	// String username = object.username;
+	// String birthDate = "" + object.dateofBirth;
+	// try {
+	// System.out.println("show() done, about to render");
+	// render(type, object, username, name, communityContributionCounter,
+	// profession, birthDate, userId);
+	// } catch (TemplateNotFoundException e) {
+	// System.out
+	// .println("show() done with exception, rendering to CRUD/show.html");
+	// render("CRUD/show.html", type, object);
+	// }
+	// }
+
 	public static void show(String userId) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -162,7 +164,7 @@ public class Users extends CRUD {
 		notFoundIfNull(object);
 		System.out.println("entered show() for user " + userId);
 		User tmp = (User) object;
-		
+
 		System.out.println("entered view() for User " + tmp.username);
 		System.out.println(tmp.email);
 		System.out.println(tmp.username);
@@ -360,22 +362,24 @@ public class Users extends CRUD {
 	 */
 	public static void reportIdeaAsSpam(long ideaId) {
 		Idea idea = Idea.findById(ideaId);
-		boolean alreadyReported = false;
+		int alreadyReported = 0;
 		User reporter = Security.getConnected();
 		for (int i = 0; i < reporter.ideasReported.size(); i++) {
 			if (idea.toString().equals(reporter.ideasReported.toString())) {
-				alreadyReported = true;
+				alreadyReported = 1;
 			}
 		}
-		if (!alreadyReported) {
+		if (alreadyReported == 0) {
 			idea.spamCounter++;
 			reporter.ideasReported.add(idea);
+			for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
+				Mail.ReportAsSpamMail(
+						idea.belongsToTopic.getOrganizer().get(j), reporter,
+						idea, idea.description, idea.title);
+			}
+			ideaSpamView(ideaId);
 		}
-		for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
-			Mail.ReportAsSpamMail(idea.belongsToTopic.getOrganizer().get(j),
-					reporter, idea);
-		}
-		ideaSpamView(ideaId);
+
 	}
 
 	/**
@@ -418,9 +422,9 @@ public class Users extends CRUD {
 	 * @return List<User> is the list of he banned users
 	 */
 
-	public static List<User> getBannedUser(Organization organization, String action,
-			long sourceID, String type) {
-		List<User> user =  BannedUser
+	public static List<User> getBannedUser(Organization organization,
+			String action, long sourceID, String type) {
+		List<User> user = BannedUser
 				.find("select bu.bannedUser from BannedUser where bu.organization = ? and bu.action = ? and bu.resourceType = ? and bu.resourceID = ? ",
 						organization, action, type, sourceID).fetch();
 		return (user);
@@ -450,21 +454,21 @@ public class Users extends CRUD {
 	 *            : the user trying to create the topic
 	 */
 
-	//>>>>>>>>>>>>>change
-//	public void createTopic(long entityId, String title, String description,
-//			short privacyLevel, User user) {
-//		Topic topic = new Topic(title, description, privacyLevel, user);
-//		MainEntity entity = MainEntity.findById(entityId);
-//
-//		if (Users.isPermitted(user, "create topic", entityId, "entity")
-//				&& user.entitiesIOrganize.contains(entity)) {
-//			entity.topicList.add(topic);
-//			user.topicsCreated.add(topic);
-//			user.topicsIOrganize.add(topic);
-//		} else {
-//			System.out.println("action cannot be performed in this entity");
-//		}
-//	}
+	// >>>>>>>>>>>>>change
+	// public void createTopic(long entityId, String title, String description,
+	// short privacyLevel, User user) {
+	// Topic topic = new Topic(title, description, privacyLevel, user);
+	// MainEntity entity = MainEntity.findById(entityId);
+	//
+	// if (Users.isPermitted(user, "create topic", entityId, "entity")
+	// && user.entitiesIOrganize.contains(entity)) {
+	// entity.topicList.add(topic);
+	// user.topicsCreated.add(topic);
+	// user.topicsIOrganize.add(topic);
+	// } else {
+	// System.out.println("action cannot be performed in this entity");
+	// }
+	// }
 
 	/**
 	 * 
@@ -545,34 +549,34 @@ public class Users extends CRUD {
 	 * @return List<User>
 	 */
 	public static List<User> searchOrganizer(Organization o) {
-        List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
-        List<User> user = new ArrayList<User>();
-        if (o != null) {
-                // organizers = (List<UserRoleInOrganization>)
-                // UserRoleInOrganization
-                // .find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
-                // o, "organizer");
-                organizers = UserRoleInOrganization.find("byOrganization", o)
-                                .fetch();
-                for (int i = 0; i < organizers.size(); i++) {
-                        if ((organizers.get(i).role.roleName).equals("organizer")) {
-                                user.add(organizers.get(i).enrolled);
-                        }
-                }
+		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
+		List<User> user = new ArrayList<User>();
+		if (o != null) {
+			// organizers = (List<UserRoleInOrganization>)
+			// UserRoleInOrganization
+			// .find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.organization = ? and r.roleName like ? ",
+			// o, "organizer");
+			organizers = UserRoleInOrganization.find("byOrganization", o)
+					.fetch();
+			for (int i = 0; i < organizers.size(); i++) {
+				if ((organizers.get(i).role.roleName).equals("organizer")) {
+					user.add(organizers.get(i).enrolled);
+				}
+			}
 
-        }
-        // List<User> finalOrganizers = new ArrayList<User>();
-        // for (int i = 0; i < organizers.size(); i++) {
-        // finalOrganizers.add((organizers.get(i)).enrolled);
-        // }
-        int size = user.size();
-        for (int i = 0; i < size; i++) {
-                if (user.get(i).state == "d" || user.get(i).state == "n") {
-                        user.remove(i);
-                }
-        }
-        return user;
-}
+		}
+		// List<User> finalOrganizers = new ArrayList<User>();
+		// for (int i = 0; i < organizers.size(); i++) {
+		// finalOrganizers.add((organizers.get(i)).enrolled);
+		// }
+		int size = user.size();
+		for (int i = 0; i < size; i++) {
+			if (user.get(i).state == "d" || user.get(i).state == "n") {
+				user.remove(i);
+			}
+		}
+		return user;
+	}
 
 	/**
 	 * 
