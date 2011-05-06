@@ -15,7 +15,7 @@ import models.UserRoleInOrganization;
 @With(Secure.class)
 public class UserRoleInOrganizations extends CRUD {
 
-	/*
+	/**
 	 * This method adds a new enrolled user in the organization where his role
 	 * is NOT related to a specific topic, entity .. etc
 	 * 
@@ -34,11 +34,11 @@ public class UserRoleInOrganizations extends CRUD {
 
 	public static boolean addEnrolledUser(User user, Organization org, Role role) {
 
-		UserRoleInOrganization uro = 
+		UserRoleInOrganization userRoleInOrg = 
 		new UserRoleInOrganization(user, org, role).save();
-		user.userRolesInOrganization.add(uro);
-		org.userRoleInOrg.add(uro);
-		role.userRoleInOrganization.add(uro);
+		user.userRolesInOrganization.add(userRoleInOrg);
+		org.userRoleInOrg.add(userRoleInOrg);
+		role.userRoleInOrganization.add(userRoleInOrg);
 		user.save();
 		org.save();
 		role.save();
@@ -51,7 +51,7 @@ public class UserRoleInOrganizations extends CRUD {
 		return true;
 	}
 
-	/*
+	/**
 	 * This method adds a new enrolled user in the organization where his role
 	 * is related to a specific topic, entity .. etc
 	 * 
@@ -76,11 +76,11 @@ public class UserRoleInOrganizations extends CRUD {
 	public static boolean addEnrolledUser(User user, Organization org,
 			Role role, long entityOrTopicId, String type) {
 
-		UserRoleInOrganization uro = new UserRoleInOrganization(user, org, role, entityOrTopicId, type)
+		UserRoleInOrganization userRoleInOrg = new UserRoleInOrganization(user, org, role, entityOrTopicId, type)
 				.save();
-		user.userRolesInOrganization.add(uro);
-		org.userRoleInOrg.add(uro);
-		role.userRoleInOrganization.add(uro);
+		user.userRolesInOrganization.add(userRoleInOrg);
+		org.userRoleInOrg.add(userRoleInOrg);
+		role.userRoleInOrganization.add(userRoleInOrg);
 		user.save();
 		org.save();
 		role.save();
