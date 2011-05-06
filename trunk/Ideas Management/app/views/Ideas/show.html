@@ -53,6 +53,7 @@
         <form action= "@{Ideas.view()}">
             <input type="hidden" name="ideaId" value="${ideaId}"><input type="submit" value = "Edit">
         </form>
+				<a href="@{Ideas.tagIdea(object.id,'@@')}">Add tags</a>
         <form action="@{Users.ReportIdeaAsSpam()}" method="GET" name="myform">
             <input type="hidden" name="ideaId" value="${ideaId}">
             <table border="0" bgcolor="#ececec" cellspacing="5">
