@@ -671,7 +671,7 @@ public class Users extends CRUD {
                     }
 
             }
-            if (topic.privacyLevel == 0 || topic.privacyLevel == 1) {
+            if (topic.privacyLevel == 2) {
                     List<UserRoleInOrganization> allowed = UserRoleInOrganization
                                     .find("byEnrolledAndEntityTopicIDAndType", user,
                                                     topic.id, "topic").fetch();
