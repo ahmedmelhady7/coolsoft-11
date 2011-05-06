@@ -53,6 +53,10 @@ public class Bootstrap extends Job {
 					"Mohamed", "Gomaa", 0, new Date(1991, 6, 4), "Egypt",
 					"student");
 			gom3a._save();
+			
+			User barnasa = new User("brns@gmail.com", "brns", "1234",
+					"nano", "someone", 0, new Date(), "egypt", "student");
+			barnasa._save();
 
 			User khayat = new User("ibrahim.al.khayat@gmail.com", "ialk",
 					"1234", "Ibrahim", "EL-khayat", 0, new Date(1991, 1, 19),
@@ -90,7 +94,7 @@ public class Bootstrap extends Job {
 			Organization egypt = new Organization("Egypt", admin, 2, false)
 					.save();
 
-			Organization gov = new Organization("الحكومة المصرية", sharaf, 0,
+			Organization gov = new Organization("الحكومة المصرية", ashraf, 0,
 					true).save();
 
 			Tag tagEducation = new Tag("Education", guc).save();
@@ -176,6 +180,9 @@ public class Bootstrap extends Job {
 					2, admin, elAhly).save();
 
 			// hadi add ideas here
+			Idea alaga = new Idea("Kill_7", "like7", barnasa, innovation, true);
+			alaga.save();
+			barnasa.save();
 
 			Plan p1 = new Plan("S.U. heads", ashraf, new Date(2011, 07, 01),
 					new Date(2012, 07, 01), "Plan for SU heads elections",
