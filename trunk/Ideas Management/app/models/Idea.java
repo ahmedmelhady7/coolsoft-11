@@ -209,7 +209,7 @@ public class Idea extends Model {
 	}
 
 	public static void getAllIdeas() {
-		List<Organization> listOfOrganizations = Organization.findAll();
+	List<Organization> listOfOrganizations = Organization.findAll();
 //		for (int i = 0; i < listOfOrganizations.size(); i++) {
 //			Organization org = listOfOrganizations.get(i);
 //			List<User> users = org.enrolledUsers;
