@@ -324,7 +324,7 @@ public class Topics extends CRUD {
 	}
 
 	/**
-	 * This method searches for unblocked users who are allowed to post in a
+	 * searches for unblocked users who are allowed to post in a
 	 * certain topic
 	 * 
 	 * @author lama.ashraf
@@ -332,7 +332,7 @@ public class Topics extends CRUD {
 	 * @story C1S13
 	 * 
 	 * @param topicId
-	 *            : the id of the topic to search in
+	 *            : a long id of the topic to search in
 	 * 
 	 * @return List<User>
 	 */
