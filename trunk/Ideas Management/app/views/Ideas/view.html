@@ -1,20 +1,38 @@
-#{extends '/ideas/layout.html' /}
+#{extends '/ideas/layout.html' /}<h3>
+    <label>
+        View Idea
+    </label>
+</h3>
 <div id="crudShow" class="${type.name}">
-    <h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
     <font color="Red">
         ${message}
     </font>
     <div class="objectForm">
-        #{form action:@save(object._key()), enctype:'multipart/form-data'}
-        #{crud.form fields: ['title', 'description','isDraft']}
+        #{form action:@show(object._key()), enctype:'multipart/form-data'}
+        #{crud.form fields: ['author','belongsToTopic','title','description', 'privacyLevel','isDraft']}
+        #{crud.custom 'author'}
+        <p>
+            <label for="object_creator">
+                by
+            </label>
+            <textarea disabled= true id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">${object.author}
+            </textarea>
+        </p>
+        #{/crud.custom }'
+        #{crud.custom 'belongsToTopic'}
+        <p>
+            <label for="object_creator">
+                Idea belong to topic 
+            </label>
+            <textarea disabled= true id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">${object.belongsToTopic}</textarea>
+        </p>
+        #{/crud.custom }
         #{crud.custom 'title'}
         <p>
             <label for="object_title">
                 Title
             </label>
-            <textarea disabled= true id="object_title" cols="25" rows="2" class="" name="object.title">
-                ${object.title}
-            </textarea>
+            <textarea disabled= true id="object_title" cols="30" rows="1" class="" name="object.title">${object.title}</textarea>
         </p>
         #{/crud.custom}
         #{crud.custom 'description'}
@@ -22,33 +40,19 @@
             <label for="object_description">
                 Description
             </label>
-            <textarea id="object_description" cols="60" rows="5" class="" name="object.description">
-                ${object.description}
-            </textarea>
-            <span class="crudHelp">
-                <font color="Red">
-                    *
-                </font>Required
-            </span>
+            <textarea id="object_description" cols="50" rows="5" class="" name="object.description" required>${object.description}</textarea>
         </p>
         #{/crud.custom}
-        #{crud.custom 'isDraft'}
+        #{crud.custom 'privacyLevel'}
         <p>
-            <label for="object_description">
-                isDraft
+            <label for="object_privacyLevel">
+                Privacy Level
             </label>
-            <input type="checkbox" checked="${object.isDraft}" id="object_isDraft" class="" name="object.isDraft">is this Idea a draft
-            </input><span class="crudHelp">
-                <font color="Red">
-                    *
-                </font>Required
-            </span>
+            <textarea disabled= true id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">${object.privacyLevel}
+            </textarea>
         </p>
-        #{/crud.custom}
+        #{/crud.custom }
         #{/crud.form }
-        #{/form}
-    </div>
-    <p>
-        <input type="submit" name="_save" value="&{'crud.save', type.modelName}" /><input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
-    </p>
-</div>
+        <p class="crudButtons">
+            <input type="submit" name="_save" value="&{'crud.save', type.modelName}" /><input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+        </p>#{/form}
