@@ -7,34 +7,34 @@ import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
-public class RequestToJoin extends Model{
-	
+public class RequestToJoin extends Model {
+
 	/**
 	 * The user requesting to join a specific organization or posting in a topic
 	 */
 	@Required
 	@ManyToOne
 	public User source;
-	
+
 	/**
 	 * The topic that the user is requesting to post in
 	 */
 	@Required
 	@ManyToOne
 	public Topic topic;
-	
+
 	/**
 	 * The organization that the user is requesting to join
 	 */
 	@Required
 	@ManyToOne
 	public Organization organization;
-	
+
 	/**
 	 * A description that a user adds when sending the request
 	 */
 	public String description;
-	
+
 	/**
 	 * RequestToJoin Class Constructor
 	 * 
@@ -47,10 +47,22 @@ public class RequestToJoin extends Model{
 	 * @param organization
 	 * @param des
 	 */
-	public RequestToJoin(User source, Topic topic, Organization organization, String des) {
+	public RequestToJoin(User source, Topic topic, Organization organization,
+			String des) {
 		this.source = source;
 		this.topic = topic;
 		this.organization = organization;
 		this.description = des;
+	}
+
+	/**
+	 * Overrides the toString method to get the description of a request
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @return String
+	 */
+	public String toString() {
+		return this.description;
 	}
 }
