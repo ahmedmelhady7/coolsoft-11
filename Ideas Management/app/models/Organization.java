@@ -24,14 +24,14 @@ public class Organization extends Model {
 	 */
 	@Required
 	public String name;
-	
+
 	/**
 	 * @author Mohamed Ghanem
 	 * 
-	 * Organization initialization date
+	 *         Organization initialization date
 	 */
 	public Date intializedIn;
-	
+
 	/**
 	 * Whether or not the users enrolled have the ability to create tags
 	 */
@@ -67,8 +67,8 @@ public class Organization extends Model {
 	 */
 	@ManyToMany
 	public List<Tag> relatedTags;
-	
-	//ERD change
+
+	// ERD change
 	/**
 	 * The list of tags that were created in this organization
 	 */
@@ -113,6 +113,8 @@ public class Organization extends Model {
 	 * 
 	 * @author Omar Faruki
 	 * 
+	 * @story C2S1
+	 * 
 	 * @param name
 	 *            : Name of the organization of type String
 	 * 
@@ -134,12 +136,12 @@ public class Organization extends Model {
 		this.entitiesList = new ArrayList<MainEntity>();
 		this.followers = new ArrayList<User>();
 		this.relatedTags = new ArrayList<Tag>();
-		//this.enrolledUsers = new ArrayList<User>();
-		 bannedUsers = new ArrayList<BannedUser>();
+		// this.enrolledUsers = new ArrayList<User>();
+		bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
 		logsList = new ArrayList<Log>();
 		joinRequests = new ArrayList<RequestToJoin>();
-		//ERD change
+		// ERD change
 		this.createdTags = new ArrayList<Tag>();
 	}
 
@@ -168,6 +170,8 @@ public class Organization extends Model {
 	 * 
 	 * @author Omar Faruki
 	 * 
+	 * @story C2S1
+	 * 
 	 * @param name
 	 *            : Name of the organization of type String
 	 * 
@@ -194,7 +198,7 @@ public class Organization extends Model {
 		this.entitiesList = new ArrayList<MainEntity>();
 		this.followers = new ArrayList<User>();
 		this.relatedTags = new ArrayList<Tag>();
-		//this.enrolledUsers = new ArrayList<User>();
+		// this.enrolledUsers = new ArrayList<User>();
 		// bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
 		logsList = new ArrayList<Log>();

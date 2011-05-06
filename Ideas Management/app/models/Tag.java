@@ -29,9 +29,9 @@ public class Tag extends Model {
 	/**
 	 * The list of related tags
 	 */
-	
-//	public List<Tag> relatedTags;
-	
+
+	// public List<Tag> relatedTags;
+
 	/**
 	 * List of users following the tag
 	 */
@@ -66,19 +66,23 @@ public class Tag extends Model {
 
 	@ManyToMany(mappedBy = "tagsList")
 	public List<Idea> taggedIdeas;
-	
-	//ERD change : organization can create many tags, a tag can be created in a single org
+
+	// ERD change : organization can create many tags, a tag can be created in a
+	// single org
 	/**
 	 * The Organization in which the tag was created
 	 */
 	@ManyToOne
 	public Organization createdInOrganization;
+
 	/**
 	 * Tag attributes
 	 * 
-	 * @param name : The name of the created tag
+	 * @param name
+	 *            : The name of the created tag
 	 * 
-	 * @param org : The organization in which the tag was created
+	 * @param org
+	 *            : The organization in which the tag was created
 	 */
 	public Tag(String name, Organization org) {
 		this.setName(name);
@@ -88,7 +92,7 @@ public class Tag extends Model {
 		this.taggedTopics = new ArrayList<Topic>();
 		this.taggedIdeas = new ArrayList<Idea>();
 		// this.relatedTags = new ArrayList<Tag>();
-		//ERD change
+		// ERD change
 		this.createdInOrganization = org;
 	}
 
@@ -136,6 +140,10 @@ public class Tag extends Model {
 
 	/**
 	 * Overrides the method toString to return the name of the tag
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @return String
 	 */
 	public String toString() {
 		return this.name;

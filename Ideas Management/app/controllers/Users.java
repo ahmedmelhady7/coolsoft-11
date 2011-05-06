@@ -836,7 +836,6 @@ public class Users extends CRUD {
 
 	/**
 	 * 
-	 <<<<<<< .mine
 	 * 
 	 * @author Mostafa Ali
 	 * 

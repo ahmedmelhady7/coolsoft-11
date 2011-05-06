@@ -185,6 +185,24 @@ public class Organizations extends CRUD {
 	}
 
 	/**
+	 * This method merely redirects you to the create organization page where
+	 * all the forms are
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S1
+	 */
+	public static void createOrganization() {
+		render();
+		// if (validation.hasErrors()) {
+		// params.flash();
+		// validation.keep();
+		// render();
+		// }
+
+	}
+
+	/**
 	 * This method creates a new Organization
 	 * 
 	 * @author Omar Faruki
@@ -194,9 +212,6 @@ public class Organizations extends CRUD {
 	 * @param name
 	 *            : name of the organization
 	 * 
-	 * @param creator
-	 *            : creator of the organization
-	 * 
 	 * @param privacyLevel
 	 *            : whether the organization is public, private or secret
 	 * 
@@ -204,55 +219,44 @@ public class Organizations extends CRUD {
 	 *            : whether the users in that organization are allowed to create
 	 *            tags
 	 */
-
-	public static void createOrganization() {
-		render();
-//		if (validation.hasErrors()) {
-//			params.flash();
-//			validation.keep();
-//			render();
-//		}
-		
-	}
-	public static void createOrg(String name, String privacyLevel, String createTag) {
+	public static void createOrg(String name, String privacyLevel,
+			String createTag) {
 
 		User creator = Security.getConnected();
-		
-//		Organization existing_organization = Organization.find(
-//				"name like '" + name + "'").first();
+
+		// Organization existing_organization = Organization.find(
+		// "name like '" + name + "'").first();
 		List<Organization> allOrganizations = Organization.findAll();
 		boolean duplicate = false;
 		int i = 0;
-		while(i < allOrganizations.size()){
-			if(allOrganizations.get(i).name.equalsIgnoreCase(name)) {
+		while (i < allOrganizations.size()) {
+			if (allOrganizations.get(i).name.equalsIgnoreCase(name)) {
 				duplicate = true;
 				break;
 			}
 			i++;
 		}
 		if (!duplicate) {
-		
-		int privacyLevell = 0; 
-		if(privacyLevel.equalsIgnoreCase("Public")) {
-			privacyLevell = 2;
-		}
-		else{
-			if(privacyLevel.equalsIgnoreCase("Private")) {
-				privacyLevell = 1;
-			}
-		}
-		boolean createTagg = false;
-		if(createTag.equalsIgnoreCase("Yes")) {
-			createTagg = true;
-		}
-		Organization org = new Organization(name, creator, privacyLevell,
-				createTagg).save();
-		Role r = Roles.getRoleByName("organizationLead");
-		UserRoleInOrganizations.addEnrolledUser(creator, org, r);
-		MainEntity m = new MainEntity("Default","",org);
-		m.save();
 
-		
+			int privacyLevell = 0;
+			if (privacyLevel.equalsIgnoreCase("Public")) {
+				privacyLevell = 2;
+			} else {
+				if (privacyLevel.equalsIgnoreCase("Private")) {
+					privacyLevell = 1;
+				}
+			}
+			boolean createTagg = false;
+			if (createTag.equalsIgnoreCase("Yes")) {
+				createTagg = true;
+			}
+			Organization org = new Organization(name, creator, privacyLevell,
+					createTagg).save();
+			Role r = Roles.getRoleByName("organizationLead");
+			UserRoleInOrganizations.addEnrolledUser(creator, org, r);
+			MainEntity m = new MainEntity("Default", "", org);
+			m.save();
+
 		}
 
 	}
@@ -282,10 +286,11 @@ public class Organizations extends CRUD {
 	public static void followOrganization(long organizationId) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(organizationId);
-		if(org.followers.contains(user)) {
+		if (org.followers.contains(user)) {
 			System.out.println("You are already a follower");
 		} else if (Users.isPermitted(user,
-				"can follow organization/entities/topics", organizationId, "organization")) {
+				"can follow organization/entities/topics", organizationId,
+				"organization")) {
 			org.followers.add(user);
 			org.save();
 			user.followingOrganizations.add(org);
@@ -296,8 +301,9 @@ public class Organizations extends CRUD {
 	}
 
 	/**
-	 * This method render a view that gets all organizations on the system with
-	 * the ability to go to the create organization page
+	 * This method render a view that gets all organizations on the system in
+	 * which the user is enrolled with the ability to go to the create
+	 * organization page
 	 * 
 	 * @author Omar Faruki
 	 */
@@ -306,8 +312,8 @@ public class Organizations extends CRUD {
 		List<Organization> organizations = new ArrayList<Organization>();
 		List<Organization> allOrganizations = Organization.findAll();
 		int i = 0;
-		while(i < allOrganizations.size()){
-			if(Users.getEnrolledUsers(allOrganizations.get(i)).contains(user)) {
+		while (i < allOrganizations.size()) {
+			if (Users.getEnrolledUsers(allOrganizations.get(i)).contains(user)) {
 				organizations.add(allOrganizations.get(i));
 			}
 			i++;
@@ -328,9 +334,13 @@ public class Organizations extends CRUD {
 		List<Tag> tags = org.createdTags;
 		List<Tag> allTags = Tag.findAll();
 		int i = 0;
-		int allowed=0;
-		if(Users.isPermitted(user,  "accept/reject join requests from users to join a private organization", id, "organization"))
-			allowed=1;
+		int allowed = 0;
+		if (Users
+				.isPermitted(
+						user,
+						"accept/reject join requests from users to join a private organization",
+						id, "organization"))
+			allowed = 1;
 		boolean loop = false;
 		if (tags.isEmpty()) {
 			while (i < allTags.size()) {
@@ -350,57 +360,63 @@ public class Organizations extends CRUD {
 				i++;
 			}
 		}
-			List<MainEntity> entities = org.entitiesList;
-			boolean enrolled = false;
-	//plzzzzzz remove		
-//			if (org.enrolledUsers.contains(user)) {
-//				enrolled = true;
-//			}
-			int b = 0;
-			if (Users.isPermitted(user,
-					"Invite a user to join a private or secret organization",
-					org.id, "organization")
-					&& org.privacyLevel != 2) {
-				b = 1;
-			
+		List<MainEntity> entities = org.entitiesList;
+		boolean enrolled = false;
+		// plzzzzzz remove
+		// if (org.enrolledUsers.contains(user)) {
+		// enrolled = true;
+		// }
+		int b = 0;
+		if (Users.isPermitted(user,
+				"Invite a user to join a private or secret organization",
+				org.id, "organization")
+				&& org.privacyLevel != 2) {
+			b = 1;
+
 		}
 
-
-		if(Users.getEnrolledUsers(org).contains(user)) {
+		if (Users.getEnrolledUsers(org).contains(user)) {
 			enrolled = true;
 		}
 		boolean requestToJoin = false;
-		if((enrolled == false)&&(org.privacyLevel == 1)) {
+		if ((enrolled == false) && (org.privacyLevel == 1)) {
 			requestToJoin = true;
-		}					
-			int flag = 0;
-			if ((Security.getConnected() ==  org.creator) || (Security.getConnected().isAdmin)){
-				flag = 1;		
-			}
-			boolean admin = user.isAdmin;
-			render(user, org, entities, requestToJoin, tags ,flag , b, admin,allowed);
+		}
+		int flag = 0;
+		if ((Security.getConnected() == org.creator)
+				|| (Security.getConnected().isAdmin)) {
+			flag = 1;
+		}
+		boolean admin = user.isAdmin;
+		render(user, org, entities, requestToJoin, tags, flag, b, admin,
+				allowed);
 
-}
+	}
+
+	/**
+	 * A method to view all organizations that a user can see
+	 * 
+	 * @author Omar Faruki
+	 */
 	public static void viewAllOrganizations() {
 		List<Organization> allOrganizations = Organization.findAll();
 		List<Organization> organizations = new ArrayList<Organization>();
 		User user = Security.getConnected();
 		boolean admin = user.isAdmin;
-		if(admin) {
+		if (admin) {
 			int i = 0;
-			while(i < allOrganizations.size()) {
+			while (i < allOrganizations.size()) {
 				organizations.add(allOrganizations.get(i));
 				i++;
 			}
-		}
-		else {
+		} else {
 			int i = 0;
-			while(i < allOrganizations.size()) {
+			while (i < allOrganizations.size()) {
 				if ((allOrganizations.get(i).privacyLevel != 0)) {
 					organizations.add(allOrganizations.get(i));
-				}
-				else {
-					if (Users.getEnrolledUsers(allOrganizations.get(i)).contains(user)) {
+				} else {
+					if (Users.getEnrolledUsers(allOrganizations.get(i))
+							.contains(user)) {
 						organizations.add(allOrganizations.get(i));
 					}
 				}
