@@ -180,8 +180,8 @@ public class Bootstrap extends Job {
 					2, admin, elAhly).save();
 
 			// hadi add ideas here
-			Idea alaga = new Idea("Kill_7", "like7", barnasa, innovation, true);
-			alaga.save();
+			Idea myID = new Idea("Kill_7", "like7", barnasa, innovation, true);
+			myID.save();
 			barnasa.save();
 
 			Plan p1 = new Plan("S.U. heads", ashraf, new Date(2011, 07, 01),
