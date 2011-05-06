@@ -80,57 +80,27 @@ The Search Results Viewer
             				var e = 'r';
             				if (document.getElementById("s1").checked) {
             					if (document.getElementById("v").checked) {
-            						//document.getElementById("v").disable;
-            						//document.write("d,v");
-            						$.post('@{sortD}', {
-            							voteOrRate : c
-            						//searchresult: lof
-            						}, function() {
+									document.write(document.sort.v.name);
+            						$.post('@{sortD}', {voteOrRate : document.sort.v.value}, function() {
             							window.location.reload(true);
             						});
-            						//document.write("d,va");
             
             					} else if (document.getElementById("r").checked) {
-            
-            						//document.write("d,r");
-            						$.post('@{sortD}', {
-            			           voteOrRate: e
-            						//searchresult: lof
-            						}, function() {
+									document.write(document.sort.v.id);
+            						$.post('@{sortD}', {voteOrRate : document.sort.v.value}, function() {
             							window.location.reload(true);
             						});
-            
-            						//	document.write("d,ra");
             					}
             
             				} else if (document.getElementById("v").checked) {
-            
-            					//document.write("a,v");
-            					$.post('@{Search.sortA}', {
-            					  voteOrRate: 'v'
-            					//searchresult: lof
-            					}, function() {
+            					$.post('@{sortA}', {voteOrRate: document.sort.v.value}, function() {
             						window.location.reload(true);
-            
-            						document.write("reload");
             					});
-            
-            					//document.write("a,va");
-            
             				} else if (document.getElementById("r").checked) {
-            
-            					//document.write("a,r");
-            					$.post('@{Search.sortA()}', {
-            					      voteOrRate: 'r'
-            					//searchresult: lof
-            					}, function() {
+            					$.post('@{sortA()}', {voteOrRate: frm.v.value}, function() {
             						window.location.reload(true);
             					});
-            
-            					//			document.write("a,ra");
             				}
-            				//window.location.reload(true);
-            
             			}
             			function mark(id){
             				if (marked.indexOf(id) == -1 && marked.length < 2) {
@@ -161,11 +131,10 @@ The Search Results Viewer
         </b>
 		</br>
 		</br>
-	<form>
+	<form name = "sort">
     <input type="radio" name="s" id="s" value="A" />Ascending order <br>
     <input type="radio" name="s" id="s1" value="D" />descending order </br>
-    <input type="radio" name="v" id="v" value="v"
-     onclick="whichsortmethod(this.form)" />Vote <input type="radio"
+    <input type="radio" name="v" id="v" value="v" onclick="whichsortmethod(this.form)" />Vote <input type="radio"
      name="v" id="r" value="r" onclick="whichsortmethod(this.form)" />Rate
     </br>
    </form>
