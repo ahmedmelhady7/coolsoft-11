@@ -136,14 +136,13 @@ public class Organizations extends CRUD {
 	/**
 	 * This method renders the page for inviting a user to organization
 	 * 
-	 * @author ibrahim.al.khayat
+	 * @author ibrahim al-khayat
 	 * 
 	 * @story C2S26
 	 * 
 	 * @param orgId
 	 *            the id of the organization
 	 * 
-	 * @return void
 	 */
 
 	public static void InviteMember(long orgId) {
@@ -155,7 +154,7 @@ public class Organizations extends CRUD {
 	 * This method creates an invitation to a user to join an organization and
 	 * sends it to a user
 	 * 
-	 * @author ibrahim.al.khayat
+	 * @author ibrahim al-khayat
 	 * 
 	 * @story C2S26
 	 * 
@@ -165,7 +164,6 @@ public class Organizations extends CRUD {
 	 * @param email
 	 *            the email of the receiver
 	 * 
-	 * @return void
 	 */
 
 	public static void sendInvitation(long orgId, String email) {
