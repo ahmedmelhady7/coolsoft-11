@@ -72,9 +72,17 @@
             <label for="object_privacyLevel">
                 Privacy Level
             </label>
-            <label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
-                ${object.privacyLevel}
+			#{if object.privacyLevel ==1} 
+			<label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
+               private
             </label>
+			#{/if}
+			#{else}
+			<label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
+                public
+            </label>
+			#{/else}
+           
         </p>
         #{/crud.custom }
         #{/crud.form }

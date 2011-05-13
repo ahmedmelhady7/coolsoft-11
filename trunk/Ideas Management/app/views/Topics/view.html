@@ -34,7 +34,10 @@
 			#{crud.custom 'privacyLevel'}
 			<p> 
  			<label for="object_privacyLevel">Privacy Level</label> 
-			<textarea id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">${object.privacyLevel}</textarea> 
+			<select name="object.privacyLevel">
+ 				<option value = "1">private</option>
+				<option value = "2">public</option>
+ 			</select>
  			<span class="crudHelp" ><font color="Red">*</font>Required</span> 
 			</p> 
 			#{/crud.custom }
