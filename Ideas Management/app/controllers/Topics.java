@@ -697,7 +697,11 @@ public class Topics extends CRUD {
 			System.out
 					.println("create() done will redirect to blank.html to add another "
 							+ message2);
-			redirect(request.controller + ".blank", message2);
+			render(request.controller.replace(".", "/") + "/blank.html", message2, entityId);
+			
+			/*render(request.controller.replace(".", "/") + "/blank.html",
+					entityId, type, tmp.title, tmp.entity, tmp.description,
+					tmp.followers, tmp.tags, message);*/
 		}
 		System.out
 				.println("create() done will redirect to show.html to show created"

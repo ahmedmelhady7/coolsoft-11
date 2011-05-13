@@ -31,15 +31,17 @@
 			#{crud.custom 'privacyLevel'}
 			<p> 
  			<label for="object_privacyLevel">Privacy Level</label> 
-			<textarea id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel"></textarea> 
+			<select name="object.privacyLevel">
+ 				<option value = "1">private</option>
+				<option value = "2">public</option>
+ 			</select>
  			<span class="crudHelp" ><font color="Red">*</font>Required</span> 
 			</p> 
-			#{/crud.custom }
-		
+			#{/crud.custom } 
 		
 		#{/crud.form }
 		<p class="crudButtons">
-			<input t  id = "save" type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			<input id = "save" type="submit" name="_save" value="&{'crud.save', type.modelName}" />
 			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
 			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
 		</p>
