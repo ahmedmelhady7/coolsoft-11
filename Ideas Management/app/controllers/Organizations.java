@@ -39,7 +39,7 @@ public class Organizations extends CRUD {
 	 *            : the id of the organization for which the privacy level is
 	 *            needed
 	 * 
-	 * @return short
+	 * @return int
 	 */
 
 	public static int getPrivacyLevel(long id) {
