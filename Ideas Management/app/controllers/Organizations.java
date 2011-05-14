@@ -258,8 +258,8 @@ public class Organizations extends CRUD {
 					createTagg).save();
 			Role role = Roles.getRoleByName("organizationLead");
 			UserRoleInOrganizations.addEnrolledUser(creator, org, role);
-			MainEntity m = new MainEntity("Default", "", org);
-			m.save();
+			MainEntity defaultEntity = new MainEntity("Default", "", org);
+			defaultEntity.save();
 			flash.success("Your organization has been created!!");
 			redirect("Organizations.mainPage", "Organization created");
 		} else {
