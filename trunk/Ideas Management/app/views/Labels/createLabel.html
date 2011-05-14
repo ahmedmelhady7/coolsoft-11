@@ -1,0 +1,30 @@
+#{extends 'main.html' /} 
+
+<div id="creation">
+	<p>Label Name:</p>
+	<input type="textbox" size = "50" id="name"></input>  
+	<input type="submit" value ="create label" onclick="save()"></input>
+</div>
+
+<div id="labels">
+	<p>
+		Choose the Ideas you want to apply the label to:
+	</p>
+	
+	<select id="myIdeas" multiple="yes">
+		#{list items:user.ideasCreated , as:'idea'}
+    		<option value="${idea.id}">${idea.title}</input><br>
+		#{/list}
+     </select>
+
+</div> 
+
+<script type="text/javascript">
+	function save()
+	{
+		var choosenIdeas = new Array();
+		choosenIdeas = document.getElementById("myIdeas").value;
+		var x = document.getElementById("name").value.toString();
+		$.post('@{Labels.doCreateLabel()}' ,{name:x, ideas: choosenIdeas},function(){window.location.href= "/labels/showAllLabels"});
+	}
+</script>
