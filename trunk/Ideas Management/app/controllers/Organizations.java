@@ -162,7 +162,7 @@ public class Organizations extends CRUD {
 				return;
 			}
 		}
-		Organization org = Organization.findById(organizationId);
+		Organization organization = Organization.findById(organizationId);
 		User sender = Security.getConnected();
 		List<Invitation> invitations = Invitation.findAll();
 		Invitation temp;
@@ -174,7 +174,7 @@ public class Organizations extends CRUD {
 				return;
 			}
 		}
-		Invitation invitation = new Invitation(email, null, org,
+		Invitation invitation = new Invitation(email, null, organization,
 				"Idea Developer", sender);
 		invitation._save();
 		if (reciever != null) {
@@ -182,7 +182,7 @@ public class Organizations extends CRUD {
 			reciever._save();
 		}
 		try {
-			Mail.invite(email, "Idea Devoloper", org.name, "");
+			Mail.invite(email, "Idea Devoloper", organization.name, "");
 		} catch (Exception e) {
 
 		}
