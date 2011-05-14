@@ -202,6 +202,11 @@ public class Invitations extends CRUD {
 			        flash.error("This user is already an organizer to this entity");
 			        page(entId,id);
 			    }
+				
+				if(user.state.equals("n")||user.state.equals("d")){
+					flash.error("This user is not available");
+			        page(entId,id);
+				}
 			}
 			}
 			
