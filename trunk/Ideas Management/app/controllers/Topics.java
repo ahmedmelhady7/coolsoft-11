@@ -244,7 +244,7 @@ public class Topics extends CRUD {
 	// List<User> follow = topic.followers;
 	// render(follow);
 	// }
-
+	
 	/**
 	 * This Method sends a request to post on a topic for a user to the
 	 * organizer
@@ -256,15 +256,12 @@ public class Topics extends CRUD {
 	 * @param topicId
 	 *            the id of the topic
 	 * 
-	 * @param userId
-	 *            the id of user who request to post
-	 * 
 	 */
 
-	public static void addRequest(long topicId, long userId) {
-		User user = User.findById(userId);
+	public static void addRequest(long topicId) {
+		User user = Security.getConnected();
 		Topic topict = Topic.findById(topicId);
-		topict.requestFromUserToPost(user);
+		topict.requestFromUserToPost(user.id);
 	}
 
 	/**
@@ -293,7 +290,7 @@ public class Topics extends CRUD {
 			temp = entities.get(i).topicList;
 			for (int j = 0; j < temp.size(); j++) {
 				if (temp.get(j).creator.id != user.id && !user.isAdmin
-						&& !temp.get(j).hasRequest(user)) {
+						&& !temp.get(j).hasRequest(user.id)) {
 					topics.add(temp.get(j));
 				}
 			}
@@ -305,18 +302,7 @@ public class Topics extends CRUD {
 				topics.remove(Topic.findById(role.entityTopicID));
 			}
 		}
-
-		// for (int i = 0; i < entities.size(); i++) {
-		// temp = entities.get(i).topicList;
-		// for (int j = 0; j < temp.size(); j++) {
-		// ???
-		// if (!Users.isPermitted(user, "can post ideas to a Topic",
-		// temp.get(j).id, "topic")
-		// && !temp.get(j).hasRequest(user)) {
-		// topics.add(temp.get(j));
-		// }
-		// }
-		// }
+		
 		render(topics, user);
 	}
 
@@ -776,10 +762,8 @@ public class Topics extends CRUD {
 		notFoundIfNull(type);
 		Model object = type.findById(topicId);
 		notFoundIfNull(object);
-		System.out.println("entered show() for topic " + topicId);
 		Topic tmp = (Topic) object;
 		System.out.println(tmp.title);
-		System.out.println(tmp.description);
 		List<Tag> tags = tmp.tags;
 		User creator = tmp.creator;
 		List<User> followers = tmp.followers;
@@ -805,11 +789,9 @@ public class Topics extends CRUD {
 						"Accept/Reject requests to post in a private topic in entities he/she manages",
 						tmp.id, "topic"))
 			allowed = 1;
+		// Note isPermitted has a bug here! 
 		boolean canPost = Users.isPermitted(Security.getConnected(),
 				"can post ideas to a Topic", tmp.id, "topic");
-		System.out.println(actor);
-		System.out.println(tmp);
-		System.out.println(allowed);
 
 		if (Users.isPermitted(actor, actionClose, topicIdLong, "topic")) {
 			canClose = 1;
@@ -824,17 +806,17 @@ public class Topics extends CRUD {
 		if (!Users.isPermitted(actor, "post topics", entity.id, "entity")) {
 			permission = 0;
 		}
-
+		boolean pending = targetTopic.hasRequest(actor.id);
+		boolean canNotPost = (targetTopic.creator.id != actor.id && !actor.isAdmin
+				&& !pending);
+		
 		try {
-			System.out.println("show() done, about to render");
 			render(type, object, tags, creator, followers, ideas, comments,
 					entity, plan, openToEdit, privacyLevel, deleteMessage,
 					deletable, topicIdLong, canClose, canPlan, targetTopic,
-					allowed, permission, topicId);
+					allowed, permission, topicId, canPost, canNotPost, pending);
 		} catch (TemplateNotFoundException e) {
-			System.out
-					.println("show() done with exception, rendering to CRUD/show.html");
-			render("CRUD/show.html", type, object, topicId, canPost);
+			render("CRUD/show.html", type, object, topicId);
 		}
 	}
 

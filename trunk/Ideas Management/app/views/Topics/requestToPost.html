@@ -9,14 +9,14 @@ Topics
 <ul>
     #{list items:topics, as:'topic'}
     <li> 
-    <a onclick="requestToPost('${topic.id}', '${user.id}');" href="#">${topic.title}</a>
+    <a onclick="requestToPost('${topic.id}');" href="#">${topic.title}</a>
     </li>
 	#{/list}
 </ul>
 
 <script type="text/javascript">
-	function requestToPost(id, user){
-		$.post('@{addRequest()}', {topicId:id, userId:user});
+	function requestToPost(id){
+		$.post('@{addRequest()}', {topicId:id});
 		alert("done!");
 		location.reload(true);
 	}

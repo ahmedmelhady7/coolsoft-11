@@ -96,8 +96,6 @@
         <a href="@{Topics.tagTopic(object.id,'@@')}">Add tags</a>
         <br>
         #{/form}
-        canclose:${canClose}
-        openToEdit:${openToEdit}
         #{if canClose == 1 && openToEdit == true}
         #{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
         <input type = "hidden" name = "topicId" value = ${topicId}><input type="submit" value="Close Topic" />#{/form} 
@@ -129,11 +127,24 @@
                 <form action="@{Ideas.blank(topicId)}" method="post">
                     <input type="hidden" name"topicId" value="${topicId}"><HR><input type="submit" value="Post Idea">
                 </form>#{/if }
-				
 				<a href="/Ideas/createIdea?topicId=${object.id}">create an idea for this topic</a>
-            </div><!--#{form @delete(object._key())}
+            </div>
+			#{if canNotPost == true}
+			<a onclick="requestToPost('${topicId}');" href="#">request to post on this topic</a>
+			#{/if}
+			#{if pending == true && canNotPost == false}
+			Request To Post status: Pending
+			#{/if}
+			<!--#{form @delete(object._key())}
             <p class="crudDelete">
             <input type="submit" value="&{'crud.delete', type.modelName}" />
             </p>
             #{/form}-->
             </div>
+<script type="text/javascript">
+	function requestToPost(id, user){
+		$.post('@{addRequest()}', {topicId:id});
+		alert("done!");
+		location.reload(true);
+	}
+</script>
