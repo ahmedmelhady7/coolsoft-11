@@ -58,13 +58,16 @@ public class Invitation extends Model{
 	 * 
 	 * @param email
 	 *              String email that represents the destination
-	 *            
+	 *
 	 * @param entity
 	 *             MainEntity that sents the invitation
 	 *             
 	 * @param organization
 	 *             Organization that sends the invitation
 	 *             
+	 * @param role
+	 *            String role that ll be assigned to the user if accept
+	 *                         
 	 * @param sender
 	 *              User that has sent the invitations
 	 */
