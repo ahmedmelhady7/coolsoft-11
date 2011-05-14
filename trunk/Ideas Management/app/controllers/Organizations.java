@@ -156,9 +156,11 @@ public class Organizations extends CRUD {
 			email = ((User) User.find("byUsername", email).first()).email;
 		}
 		User reciever = User.find("byEmail", email).first();
-		if (reciever.state.equalsIgnoreCase("d")
-				|| reciever.state.equalsIgnoreCase("n")) {
-			return;
+		if (reciever != null) {
+			if (reciever.state.equalsIgnoreCase("d")
+					|| reciever.state.equalsIgnoreCase("n")) {
+				return;
+			}
 		}
 		Organization org = Organization.findById(organizationId);
 		User sender = Security.getConnected();
@@ -439,9 +441,12 @@ public class Organizations extends CRUD {
 		boolean follower = user.followingOrganizations.contains(org);
 		List<User> users = User.findAll();
 		String usernames = "";
+		List<User> enrolledUsers = Users.getEnrolledUsers(org);
 		if (canInvite) {
 			for (int j = 0; j < users.size(); j++) {
-				if (users.get(j).state.equalsIgnoreCase("a")) {
+				if (users.get(j).state.equalsIgnoreCase("a")
+						&& !enrolledUsers.contains(users.get(j))
+						&& !users.get(j).isAdmin) {
 					if (j < users.size() - 1) {
 						usernames += users.get(j).username + "|";
 					} else {
