@@ -311,7 +311,6 @@ public class Topic extends Model {
 
 	public void postIdea(User user, String title, String description) {
 		Idea idea = new Idea(title, description, user, this);
-		idea.privacyLevel = this.privacyLevel;
 		this.ideas.add(idea);
 
 	}

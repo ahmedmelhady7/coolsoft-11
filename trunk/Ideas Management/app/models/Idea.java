@@ -44,10 +44,6 @@ public class Idea extends Model {
 	 */
 	public int spamCounter;
 	/**
-	 * The level of privacy of the idea (public,private,secret)
-	 */
-	public int privacyLevel;
-	/**
 	 * the list of tags that the idea is tagged with
 	 */
 	@ManyToMany
@@ -62,13 +58,11 @@ public class Idea extends Model {
 	/**
 	 * the topic that the idea belongs to
 	 */
-	// @Required
 	@ManyToOne
 	public Topic belongsToTopic;
 	/**
 	 * the Author of the idea
 	 */
-	// @Required
 	@ManyToOne
 	public User author;
 	/**

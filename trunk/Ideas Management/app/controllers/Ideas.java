@@ -40,14 +40,15 @@ public class Ideas extends CRUD {
 	 * @param topicId the topic that the idea belongs to
 	 */
 
-	public static void createDraft(String title, String description, long topicId) {
+	public static void createDraft(String title, String description,
+			long topicId) {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
 		Idea idea = new Idea(title, description, user, topic, true).save();
 		// String message = "you have saved the idea with title successfully";
 		// redirect(request.controller + ".show", idea.getId(),message);
 	}
-	
+
 	/*
 	 * @author Abdalrahman Ali
 	 * 
@@ -57,12 +58,11 @@ public class Ideas extends CRUD {
 	 * 
 	 * @param topicId the topic that the idea belongs to
 	 */
-	
-	public static void createIdea(long topicId)
-	{
+
+	public static void createIdea(long topicId) {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
-		render(topic,user);
+		render(topic, user);
 	}
 
 	/*
@@ -178,8 +178,6 @@ public class Ideas extends CRUD {
 		}
 
 	}
-	
-	
 
 	/**
 	 * Overriding the CRUD method create.
@@ -295,7 +293,6 @@ public class Ideas extends CRUD {
 		Topic topic = idea.belongsToTopic;
 		long topicId = topic.id;
 		// boolean openToEdit = i.openToEdit;
-		int privacyLevel = idea.privacyLevel;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
 		int x = 0;
@@ -309,9 +306,11 @@ public class Ideas extends CRUD {
 		}
 		try {
 			System.out.println("show() done, about to render");
-			//System.out.println("x is " + x);
+			// System.out.println("x is " + x);
 			render(type, object, /* tags, */author, comments, topic, plan,
-			/* openToEdit, */privacyLevel,topicId, x, deletemessage, /* deletable, */
+			/* openToEdit, */topicId, x, deletemessage, /*
+														 * deletable,
+														 */
 			ideaId);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
@@ -375,19 +374,18 @@ public class Ideas extends CRUD {
 		Plan plan = i.plan;
 		Topic topic = i.belongsToTopic;
 		// boolean openToEdit = i.openToEdit;
-		int privacyLevel = i.privacyLevel;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
 		System.out.println("haadi");
 		try {
 			System.out.println("try");
 			render(type, object, /* tags, */author, comments, topic, plan,
-			/* openToEdit, */privacyLevel, deletemessage, /* deletable, */ideaId);
+			/* openToEdit, */deletemessage, /* deletable, */ideaId);
 		} catch (TemplateNotFoundException e) {
 			render("/ideas/view.html", type, object, /* tags, */comments, topic,
-					plan, /* openToEdit, */privacyLevel, deletemessage, /*
-																	 * deletable,
-																	 */ideaId);
+					plan, /* openToEdit, */deletemessage, /*
+														 * deletable,
+														 */ideaId);
 		}
 	}
 
@@ -489,11 +487,6 @@ public class Ideas extends CRUD {
 
 			}
 
-			else if (i.privacyLevel < 0 || i.privacyLevel > 10) {
-				message = "The privary level must be within 0 and 10";
-
-			}
-
 			/*
 			 * else if( !Users.isPermitted(myUser, "edit topics",
 			 * topicEntity.getId(), "entity")) { message =
@@ -569,7 +562,8 @@ public class Ideas extends CRUD {
 
 		if (!tag.equals("@@")) {
 
-			if (!Users.isPermitted(user, "tag ideas in my organization", entity.id, "entity")) {
+			if (!Users.isPermitted(user, "tag ideas in my organization",
+					entity.id, "entity")) {
 				// user not allowed
 				userNotAllowed = true;
 			} else {
@@ -624,8 +618,7 @@ public class Ideas extends CRUD {
 	 *            rating taken from the user
 	 * @param ideaID
 	 *            idea that the user wants to rate
-	 * @description
-	 *            rates an idea if the user is an organizer
+	 * @description rates an idea if the user is an organizer
 	 */
 
 	public static void rate(int rating, long ideaID) {
@@ -633,10 +626,10 @@ public class Ideas extends CRUD {
 		User user = Security.getConnected();
 		List organizers = i.belongsToTopic.getOrganizer();
 		if (organizers.contains(user)) {
-				Idea idea = Idea.findById(ideaID);
-				int oldRating = idea.rating;
-				int newRating = (oldRating + rating) / 2;
-				render(newRating);
+			Idea idea = Idea.findById(ideaID);
+			int oldRating = idea.rating;
+			int newRating = (oldRating + rating) / 2;
+			render(newRating);
 
 		}
 	}
@@ -648,19 +641,19 @@ public class Ideas extends CRUD {
 	 *            User that wants to share the idea
 	 * @param ideaID
 	 *            ID of the idea to be shared
-	 * @description        
-	 *            shares a given idea with the given user
+	 * @description shares a given idea with the given user
 	 */
 	public static void shareIdea(String userName, long ideaId) {
-		
+
 		User U = User.find("byUsername", userName).first();
 		String type = "Idea";
 		User user = Security.getConnected();
-		String desc = user.firstName + " " + user.lastName + " shared an Idea with you";
+		String desc = user.firstName + " " + user.lastName
+				+ " shared an Idea with you";
 		long notId = ideaId;
 		long userId = U.id;
 		Notifications.sendNotification(userId, notId, type, desc);
-		
+
 	}
 
 	/**
@@ -670,8 +663,7 @@ public class Ideas extends CRUD {
 	 *            the priority to be set
 	 * @param ideaID
 	 *            the ID of the idea to prioritize
-	 * @description          
-	 *            sets the priority if the user is an organizer
+	 * @description sets the priority if the user is an organizer
 	 */
 	public static void setPriority(String priority, long ideaID) {
 		System.out.println("Dakhalt setPriority");

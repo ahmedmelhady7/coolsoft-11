@@ -186,7 +186,6 @@ public class Topics extends CRUD {
 	public static void postIdea(Topic topic, String title, String description) {
 		User user = Security.getConnected();
 		Idea idea = new Idea(title, description, user, topic);
-		idea.privacyLevel = topic.privacyLevel;
 		render(title, description);
 	}
 
@@ -483,11 +482,11 @@ public class Topics extends CRUD {
 				searchList.add(user.get(i));
 		}
 		// searchList.addAll(user);
-		
+
 		int size = searchList.size();
-		ArrayList<User> searchListActive = new ArrayList<User> ();
+		ArrayList<User> searchListActive = new ArrayList<User>();
 		for (int i = 0; i < size; i++) {
-			if (searchList.get(i).state.equals("a")){
+			if (searchList.get(i).state.equals("a")) {
 				searchListActive.add(searchList.get(i));
 			}
 		}
