@@ -239,14 +239,11 @@ public class Users extends CRUD {
 	 * 
 	 * @param topicId
 	 *            the id of the topic that the user is following
-	 * 
-	 * @param userId
-	 *            the id of the user who follows
 	 */
 
-	public static void unfollowTopic(long topicId, long userId) {
+	public static void unfollowTopic(long topicId) {
 		Topic topic = Topic.findById(topicId);
-		User user = User.findById(userId);
+		User user = Security.getConnected();
 		topic.unfollow(user);
 		user.unfollow(topic);
 	}
@@ -260,13 +257,10 @@ public class Users extends CRUD {
 	 * 
 	 * @param tagId
 	 *            the id of the tag that the user is following
-	 * 
-	 * @param userId
-	 *            the id of the user who follows
 	 */
-	public static void unfollowTag(long tagId, long userId) {
+	public static void unfollowTag(long tagId) {
 		Tag tag = Tag.findById(tagId);
-		User user = User.findById(userId);
+		User user = Security.getConnected();
 		tag.unfollow(user);
 		user.unfollow(tag);
 	}
@@ -278,18 +272,18 @@ public class Users extends CRUD {
 	 * 
 	 * @story C2S12
 	 * 
-	 * @param orgId
+	 * @param organizationId
 	 *            the id of the organization the user is following
 	 * 
 	 * @param userId
 	 *            the id of the user who follows
 	 */
 
-	public static void unfollowOrganization(long orgId, long userId) {
-		Organization org = Organization.findById(orgId);
-		User user = User.findById(userId);
-		org.unfollow(user);
-		user.unfollow(org);
+	public static void unfollowOrganization(long organizationId) {
+		Organization organization = Organization.findById(organizationId);
+		User user = Security.getConnected();
+		organization.unfollow(user);
+		user.unfollow(organization);
 	}
 
 	/**
@@ -301,14 +295,11 @@ public class Users extends CRUD {
 	 * 
 	 * @param entityId
 	 *            the id of the entity the user is following
-	 * 
-	 * @param userId
-	 *            the id of the user who follows
 	 */
 
-	public static void unfollowEntity(long entityId, long userId) {
+	public static void unfollowEntity(long entityId) {
 		MainEntity entity = MainEntity.findById(entityId);
-		User user = User.findById(userId);
+		User user = Security.getConnected();
 		entity.unfollow(user);
 		user.unfollow(entity);
 	}

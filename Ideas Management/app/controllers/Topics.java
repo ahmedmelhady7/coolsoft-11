@@ -809,12 +809,12 @@ public class Topics extends CRUD {
 		boolean pending = targetTopic.hasRequest(actor.id);
 		boolean canNotPost = (targetTopic.creator.id != actor.id && !actor.isAdmin
 				&& !pending);
-		
+		boolean follower = actor.topicsIFollow.contains(targetTopic);
 		try {
 			render(type, object, tags, creator, followers, ideas, comments,
 					entity, plan, openToEdit, privacyLevel, deleteMessage,
 					deletable, topicIdLong, canClose, canPlan, targetTopic,
-					allowed, permission, topicId, canPost, canNotPost, pending);
+					allowed, permission, topicId, canPost, canNotPost, pending, follower);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object, topicId);
 		}
