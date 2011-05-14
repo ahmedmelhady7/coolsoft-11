@@ -162,6 +162,9 @@ public class User extends Model {
 	@OneToMany(mappedBy = "madeBy")
 	// , cascade = CascadeType.PERSIST)
 	public List<Plan> planscreated;
+	
+	@OneToMany(mappedBy = "user")
+	public List<Label> myLabels;
 
 	/**
 	 * @author Mostafa Ali
