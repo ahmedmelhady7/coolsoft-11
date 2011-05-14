@@ -115,10 +115,18 @@
         <form action="@{Topics.viewFollowers()}">
             <HR><input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">#{if (!targetTopic.followers.contains(user))} 
             <p>
-                Follow ${targetTopic.title} <input type="submit" value="Follow">
+                #{if follower == false}
+				Follow ${targetTopic.title} <input type="submit" value="Follow">
+				#{/if}
                 <br/>
                 #{/if}
                 </form>
+				#{if follower == true}
+				<p>
+			 	Unfollow ${targetTopic.title} <input type="submit" value="unfollow" onclick="unfollow('${topicId}');" />
+				</p>
+				#{/if}
+				</br>
                 <form action="@{Topics.viewFollowers()}">
                     <input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="false">View ${targetTopic.title} Followers <input type="submit" value="Followers">
                     <br/>
@@ -130,10 +138,14 @@
 				<a href="/Ideas/createIdea?topicId=${object.id}">create an idea for this topic</a>
             </div>
 			#{if canNotPost == true}
+			<p>
 			<a onclick="requestToPost('${topicId}');" href="#">request to post on this topic</a>
+			</p>
 			#{/if}
 			#{if pending == true && canNotPost == false}
+			<p>
 			Request To Post status: Pending
+			</p>
 			#{/if}
 			<!--#{form @delete(object._key())}
             <p class="crudDelete">
@@ -144,6 +156,11 @@
 <script type="text/javascript">
 	function requestToPost(id, user){
 		$.post('@{addRequest()}', {topicId:id});
+		alert("done!");
+		location.reload(true);
+	}
+	function unfollow(topic, user){
+		$.post('@{Users.unfollowTopic()}', {topicId:topic});
 		alert("done!");
 		location.reload(true);
 	}

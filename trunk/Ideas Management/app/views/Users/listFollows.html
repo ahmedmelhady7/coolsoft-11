@@ -10,7 +10,7 @@ Organizations
 <ul>
     #{list items:organizations, as:'organization'}
     <li> 
-        <input type="submit" value="unfollow" onclick="org('${organization.id}', '${user.id}');" />
+        <input type="submit" value="unfollow" onclick="org('${organization.id}');" />
 		${organization.name}
     </li>
 	#{/list}
@@ -26,7 +26,7 @@ Topics
 <ul>
     #{list items:topics, as:'topic'}
     <li> 
-        <input type="submit" value="unfollow" onclick="topic('${topic.id}', '${user.id}');" />
+        <input type="submit" value="unfollow" onclick="topic('${topic.id}');" />
 		${topic.title}
     </li>
 	#{/list}
@@ -42,7 +42,7 @@ Entities
 <ul>
     #{list items:entities, as:'entity'}
     <li> 
-        <input type="submit" value="unfollow" onclick="entity('${entity.id}', '${user.id}');" />
+        <input type="submit" value="unfollow" onclick="entity('${entity.id}');" />
 		${entity.name}
     </li>
 	#{/list}
@@ -58,30 +58,38 @@ Tags
 <ul>
     #{list items:tags, as:'tag'}
     <li> 
-        <input type="submit" value="unfollow" onclick="tag('${tag.id}', '${user.id}');" />
+        <input type="submit" value="unfollow" onclick="tag('${tag.id}');" />
 		${tag.name}
     </li>
 	#{/list}
 </ul>
 
 <script type="text/javascript">
-	function tag(t, u){
-		$.post('@{Users.unfollowTag()}', {tagId:t, userId:u});
+	function tag(id){
+		$.post('@{Users.unfollowTag()}', {
+			tagId: id
+		});
 		alert("done!");
 		location.reload(true);
 	}
-	function topic(topic, user){
-		$.post('@{unfollowTopic()}', {topicId:topic, userId:user});
+	function topic(id){
+		$.post('@{unfollowTopic()}', {
+			topicId: id
+		});
 		alert("done!");
 		location.reload(true);
 	}
-	function org(org, user){
-		$.post('@{unfollowOrganization()}', {orgId:org, userId:user});
+	function org(id){
+		$.post('@{unfollowOrganization()}', {
+			organizationId: id
+		});
 		alert("done!");
 		location.reload(true);
 	}
-	function entity(entity, user){
-		$.post('@{unfollowEntity()}', {entityId:entity, userId:user});
+	function entity(id){
+		$.post('@{unfollowEntity()}', {
+			entityId: id
+		});
 		alert("done!");
 		location.reload(true);
 	}
