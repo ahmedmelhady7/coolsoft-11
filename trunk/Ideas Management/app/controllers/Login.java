@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import notifiers.Mail;
+
 import models.Idea;
 import models.MainEntity;
 import models.Organization;
@@ -57,7 +59,17 @@ public class Login extends Controller {
 			
 		int admin=0;
 		if(u.isAdmin)
-			admin=1;
+		  admin=1;
+		
+		if(u.state.equals("n")){
+		System.out.println(u.state);
+			u.state="a";
+			u.save();
+			Mail.reactivate();
+			flash.error("Your account has been reactivated successfuly");
+		}
+			
+		
 		render(u,admin,drafts);
 
 	}
