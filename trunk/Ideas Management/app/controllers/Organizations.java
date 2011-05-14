@@ -161,16 +161,21 @@ public class Organizations extends CRUD {
 	 * 
 	 * @story C2S26
 	 * 
-	 * @param orgId
+	 * @param organizationId
 	 *            the id of the organization
 	 * 
 	 * @param email
 	 *            the email of the receiver
 	 * 
+	 * @param byMail
+	 * 			  invite by mail or by username
 	 */
 
-	public static void sendInvitation(long orgId, String email) {
-		Organization org = Organization.findById(orgId);
+	public static void sendInvitation(long organizationId, String email, boolean byMail) {
+		if (!byMail) {
+			email = ((User) User.find("byUsername", email).first()).email;
+		}
+		Organization org = Organization.findById(organizationId);
 		User sender = Security.getConnected();
 		List<Invitation> invitations = Invitation.findAll();
 		Invitation temp;
@@ -190,8 +195,12 @@ public class Organizations extends CRUD {
 			reciever.invitation.add(invitation);
 			reciever._save();
 		}
+		try {
 		Mail.invite(email, "Idea Devoloper", org.name, "");
-	}
+		} catch(Exception e) {
+			
+			}
+		}
 
 	/**
 	 * This method merely redirects you to the create organization page where
