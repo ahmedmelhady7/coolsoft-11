@@ -1,0 +1,64 @@
+#{extends '/topics/layout.html' /}
+
+<div id="crudBlank" class="${type.name}">
+	
+	<br />
+	
+	<h2 id="crudBlankTitle">&{'crud.blank.title', type.modelName}</h2>
+	
+	<font color="Red">${message}</font>	
+	
+	<div class="objectForm">
+	#{form action:@create(entityId), enctype:'multipart/form-data'}
+	#{crud.form fields: ['title', 'description', 'privacyLevel', 'message']}
+		
+			#{crud.custom 'title'}
+	  		<p> 
+ 			<label for="object_title">Title</label> 
+			<textarea id="object_title" cols="30" rows="1" class="" name="object.title"></textarea> 
+ 			<span class="crudHelp" ><font color="Red">*</font>Required</span>
+			</p> 
+			#{/crud.custom}
+		
+			#{crud.custom 'description'}
+			<p> 
+ 			<label for="object_description">Description</label> 
+			<textarea id="object_description" cols="50" rows="5" class="" name="object.description"></textarea> 
+			<span class="crudHelp" ><font color="Red">*</font>Required</span> 
+ 			</p> 
+			#{/crud.custom}
+			
+			#{crud.custom 'privacyLevel'}
+			<p> 
+ 			<label for="object_privacyLevel">Privacy Level</label> 
+			<select name="object.privacyLevel">
+ 				<option value = "1">private</option>
+				<option value = "2">public</option>
+ 			</select>
+ 			<span class="crudHelp" ><font color="Red">*</font>Required</span> 
+			</p> 
+			#{/crud.custom } 
+			
+			#{crud.custom 'message'}
+			<p> 
+ 			<label for="object_message">Message</label> 
+			<textarea id="object_message" cols="50" rows="5" class="" name="object.message"></textarea> 
+ 			</p> 
+			#{/crud.custom}
+			
+			
+		
+		#{/crud.form }
+		<p class="crudButtons">
+			<input id = "save" type="submit" name="_save" value="&{'crud.save', type.modelName}" onclick=location.href="@{MainEntitys.viewEntity(entityId)}"/>
+			
+		</p>
+	#{/form}
+	</div>
+
+</div>
+
+
+	
+	
+			

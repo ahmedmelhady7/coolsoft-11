@@ -165,6 +165,11 @@ public class User extends Model {
 	
 	@OneToMany(mappedBy = "user")
 	public List<Label> myLabels;
+	
+	@OneToMany(mappedBy = "requester")
+	// , cascade = CascadeType.ALL)
+	public List<TopicRequest> topicRequests;
+
 
 	/**
 	 * @author Mostafa Ali

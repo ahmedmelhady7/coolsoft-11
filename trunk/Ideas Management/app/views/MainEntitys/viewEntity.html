@@ -7,6 +7,12 @@
         #{extends 'main.html' /}
         
         <center><big><b>${entity.name}</b></big></center><br><br>
+		
+		 <br/>
+    <font color="Red">
+        ${message}
+    </font>
+    <br/>
         <p>Description:</br>
         ${entity.description}</p> 
         #{if subentities.size() > 0}
@@ -84,7 +90,7 @@
     
 		#{else}
 		<br />
-<input type="submit" disabled=true value="Request A Topic" onclick=location.href="@{Topics.blank(entity.id)}">
+<input type="submit" value="Request A Topic" onclick=location.href="@{TopicRequests.blank(entity.id)}">
 		<br />
 		#{/else}
 		
