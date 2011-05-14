@@ -483,15 +483,16 @@ public class Topics extends CRUD {
 				searchList.add(user.get(i));
 		}
 		// searchList.addAll(user);
+		
 		int size = searchList.size();
+		ArrayList<User> searchListActive = new ArrayList<User> ();
 		for (int i = 0; i < size; i++) {
-			if (searchList.get(i).state.equals("d")
-					|| searchList.get(i).state.equals("n")) {
-				searchList.remove(i);
+			if (searchList.get(i).state.equals("a")){
+				searchListActive.add(searchList.get(i));
 			}
 		}
 
-		return searchList;
+		return searchListActive;
 
 	}
 
