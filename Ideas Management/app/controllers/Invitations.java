@@ -51,7 +51,7 @@ public class Invitations extends CRUD {
 	
 	/**
 	 * 
-	 * Searchs for a user to invite. The result
+	 * Searches for a user to invite. The result
 	 * is a list not containing the organizers of this entity
 	 * 
 	 * @author ${Mai.Magdy}
@@ -132,10 +132,7 @@ public class Invitations extends CRUD {
 	 * 
 	 * @param email
 	 *            String email the destination of the invitation
-	 * 
-	 * @param role
-	 *            String role that will be assigned to the user in case accepted
-	 * 
+	 *  
 	 * 
 	 * @param entId
 	 *              long id of entity that sends the invitation
@@ -169,6 +166,15 @@ public class Invitations extends CRUD {
 			
 			List<User> organizers = Users.getEntityOrganizers(entity);
 			organizers.add(entity.organization.creator);
+			/*
+			List <MainEntity> subentities=MainEntitys.find("byParent",entity);
+			List<User> suborganizers = new ArrayList <Users>();
+			
+			for(int i=0;i<subentities.size();i++){
+			   List <User> organizer=Users.getEntityOrganizers(subentities.get(i));
+			    for(int j=0;j<organizer.size();i++)
+			    	suborganizers.add(organizer.get(i));
+			}*/
 			
 			if(id==0){
 			  	
