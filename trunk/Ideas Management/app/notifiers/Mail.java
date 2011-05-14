@@ -116,4 +116,28 @@ public class Mail extends Mailer {
 		send(user, url);
 
 	}
+	
+	
+	
+
+	/**
+	 * @Sends a mail to the user informing him that his account has been reactivated
+	 * 
+	 * @author Mai Magdy
+	 * 
+	 * @story C1S5
+	 * 
+	 * 
+	 */
+	
+	public static void reactivate() {
+		User user=Security.getConnected();
+		addRecipient(user.email);
+		setFrom("CoolSoft011@gmail.com");
+		setSubject("Reactivation");
+		send(user);
+
+	}
+	
+	
 }
