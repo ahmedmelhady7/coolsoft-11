@@ -398,13 +398,12 @@ public class Organizations extends CRUD {
 		}
 		List<MainEntity> entities = org.entitiesList;
 		boolean enrolled = false;
-		int b = 0;
+		boolean canInvite = false;
 		if (Users.isPermitted(user,
 				"Invite a user to join a private or secret organization",
 				org.id, "organization")
 				&& org.privacyLevel != 2) {
-			b = 1;
-
+			canInvite = true;
 		}
 
 		if (Users.getEnrolledUsers(org).contains(user)) {
@@ -440,8 +439,9 @@ public class Organizations extends CRUD {
 				ii++;
 			}
 		}
-		render(user, org, entities, requestToJoin, tags, flag, b, admin,
-				allowed, isMember, settings, creator, alreadyRequested);
+		boolean follower = user.followingOrganizations.contains(org);
+		render(user, org, entities, requestToJoin, tags, flag, canInvite, admin,
+				allowed, isMember, settings, creator, alreadyRequested, follower);
 	}
 
 	/**
