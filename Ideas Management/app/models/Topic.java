@@ -38,6 +38,12 @@ public class Topic extends Model {
 	 */
 	@Required
 	public int privacyLevel;
+	
+	/**
+	 * The list of related topics
+	 */
+	 @ManyToMany
+	 public List<TopicRelationship> relations;
 
 	/**
 	 * the list of tags the topic is tagged with
@@ -162,6 +168,7 @@ public class Topic extends Model {
 		this.privacyLevel = privacyLevel;
 		this.creator = creator;
 		this.entity = entity;
+		relations = new ArrayList<TopicRelationship>();
 		tags = new ArrayList<Tag>();
 		// relationships = new ArrayList<Relationship>();
 		// organizers = new ArrayList<User>();
@@ -195,6 +202,7 @@ public class Topic extends Model {
 		this.description = description;
 		this.privacyLevel = privacyLevel;
 		this.creator = creator;
+		relations = new ArrayList<TopicRelationship>();
 		tags = new ArrayList<Tag>();
 		// relationships = new ArrayList<Relationship>();
 		// organizers = new ArrayList<User>();

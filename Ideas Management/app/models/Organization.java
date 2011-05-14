@@ -95,7 +95,12 @@ public class Organization extends Model {
 	@OneToMany(mappedBy = "organization")
 	// , cascade = CascadeType.ALL)
 	public List<RequestToJoin> joinRequests;
-
+	
+	/**
+	 * list of the created relations names in the organization
+	 */
+	public ArrayList<String> relationNames;
+	
 	/**
 	 * *********
 	 */
@@ -143,6 +148,18 @@ public class Organization extends Model {
 		this.relatedTags = new ArrayList<Tag>();
 		// this.enrolledUsers = new ArrayList<User>();
 		bannedUsers = new ArrayList<BannedUser>();
+		relationNames = new ArrayList<String>(){{add("manages"); add("has many"); add("belongs to");}};
+		
+		
+//		for testing
+//		relationNames.add("manages");
+//		relationNames.add("hates");
+//		relationNames.add("controlls");
+//		relationNames.add("lead by");
+		
+//		topicRelationNames = new ArrayList<String>();
+//		tagRelationNames = new ArrayList<String>();
+
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
 		logsList = new ArrayList<Log>();
 		joinRequests = new ArrayList<RequestToJoin>();
@@ -203,6 +220,18 @@ public class Organization extends Model {
 		this.entitiesList = new ArrayList<MainEntity>();
 		this.followers = new ArrayList<User>();
 		this.relatedTags = new ArrayList<Tag>();
+
+		relationNames = new ArrayList<String>(){{add("manages"); add("has many"); add("belongs to");}};
+
+//		for testing
+//		relationNames.add("manages");
+//		relationNames.add("hates");
+//		relationNames.add("controlls");
+//		relationNames.add("lead by");
+		
+//		topicRelationNames = new ArrayList<String>();
+//		tagRelationNames = new ArrayList<String>();
+		
 		// this.enrolledUsers = new ArrayList<User>();
 		// bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
