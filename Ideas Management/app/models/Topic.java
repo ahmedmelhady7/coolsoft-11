@@ -293,7 +293,7 @@ public class Topic extends Model {
 	/**
 	 * This Method overrides the toString method
 	 * 
-	 * @author aliaelbolock
+	 * @author Alia El Bolock
 	 * 
 	 * @story C3S1
 	 * 
@@ -379,6 +379,15 @@ public class Topic extends Model {
 		return false;
 	}
 
+	/**
+	 * Checks wether a topic can be deleted
+	 * 
+	 * @author Alia El Bolock
+	 * 
+	 * @story C3S9
+	 * 
+	 * @return boolean
+	 */
 	public boolean isDeletable() {
 		// TODO Auto-generated method stub
 		if (openToEdit == false)
@@ -388,6 +397,15 @@ public class Topic extends Model {
 		return true;
 	}
 
+	/**
+	 * Checks wether a topic can be hidden
+	 * 
+	 * @author Alia El Bolock
+	 * 
+	 * @story C3S9
+	 * 
+	 * @return boolean
+	 */
 	public boolean isHideable() {
 		// TODO Auto-generated method stub
 		if (openToEdit == false)

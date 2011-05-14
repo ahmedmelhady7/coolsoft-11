@@ -97,6 +97,9 @@ public class MainEntity extends Model {
 
 	@OneToMany(mappedBy = "entity")
 	public List<Invitation> invitationList;
+	
+	@OneToMany(mappedBy = "entity")
+	public List<TopicRequest> topicRequests;
 
 	// ArrayList<Relationship> relationshipList;
 	// ArrayList<Request> requestList;
