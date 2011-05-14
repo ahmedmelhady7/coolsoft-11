@@ -806,9 +806,18 @@ public class Topics extends CRUD {
 		if (!Users.isPermitted(actor, "post topics", entity.id, "entity")) {
 			permission = 0;
 		}
+		boolean isIdeaDeveloper = false;
+		List<UserRoleInOrganization> roles = UserRoleInOrganization.find(
+				"byEnrolled", actor).fetch();
+		for (int k = 0; k < roles.size(); k++) {
+			if (roles.get(k).type.equalsIgnoreCase("topic") && roles.get(k).entityTopicID == topicIdLong) {
+				isIdeaDeveloper = true;
+				break;
+			}
+		}
 		boolean pending = targetTopic.hasRequest(actor.id);
 		boolean canNotPost = (targetTopic.creator.id != actor.id && !actor.isAdmin
-				&& !pending);
+				&& !pending) && !isIdeaDeveloper;
 		boolean follower = actor.topicsIFollow.contains(targetTopic);
 		try {
 			render(type, object, tags, creator, followers, ideas, comments,
