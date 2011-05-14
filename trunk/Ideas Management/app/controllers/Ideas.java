@@ -295,22 +295,22 @@ public class Ideas extends CRUD {
 		// boolean openToEdit = i.openToEdit;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
-		int x = 0;
+		int alreadyReported = -1;
 		for (int j = 0; j < idea.reporters.size(); j++) {
 			if (!author.username.equals(idea.reporters.get(j).username)) {
 				idea.reporters.add(author);
 				System.out.println(author.ideasReported.toString());
-				x = 0;
+				alreadyReported = 0;
 			} else
-				x = 1;
+				alreadyReported = 1;
 		}
 		try {
 			System.out.println("show() done, about to render");
 			// System.out.println("x is " + x);
 			render(type, object, /* tags, */author, comments, topic, plan,
-			/* openToEdit, */topicId, x, deletemessage, /*
-														 * deletable,
-														 */
+			/* openToEdit, */topicId, alreadyReported, deletemessage, /*
+																	 * deletable,
+																	 */
 			ideaId);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);

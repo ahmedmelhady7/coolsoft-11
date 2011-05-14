@@ -343,22 +343,13 @@ public class Users extends CRUD {
 	 */
 	public static void reportIdeaAsSpam(long ideaId) {
 		Idea idea = Idea.findById(ideaId);
-		int alreadyReported = 0;
 		User reporter = Security.getConnected();
-		for (int i = 0; i < reporter.ideasReported.size(); i++) {
-			if (idea.toString().equals(reporter.ideasReported.toString())) {
-				alreadyReported = 1;
-			}
-		}
-		if (alreadyReported == 0) {
-			idea.spamCounter++;
-			reporter.ideasReported.add(idea);
-			for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
-//				Mail.ReportAsSpamMail(
-//						idea.belongsToTopic.getOrganizer().get(j), reporter,
-//						idea, idea.description, idea.title);
-			}
-			ideaSpamView(ideaId);
+		idea.spamCounter++;
+		reporter.ideasReported.add(idea);
+		for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
+			Mail.ReportAsSpamMail(idea.belongsToTopic.getOrganizer().get(j),
+					reporter, idea, idea.description, idea.title);
+			//ideaSpamView(ideaId);
 		}
 
 	}
@@ -387,21 +378,20 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * returns the list of users that are banned from a certain
-	 * action in a certain organization from a certain source in a certain type
+	 * returns the list of users that are banned from a certain action in a
+	 * certain organization from a certain source in a certain type
 	 * 
 	 * @author Nada Ossama
 	 * @story C1S7
 	 * @param organization
 	 *            Organization organization where this user is banned from
 	 * @param action
-	 *            String  action those users are banned form
+	 *            String action those users are banned form
 	 * @param sourceID
 	 *            long id of the source that user is banned from
 	 * @param type
 	 *            String type of the source
-	 * @return List<User> 
-	 *             is the list of he banned users
+	 * @return List<User> is the list of he banned users
 	 */
 
 	public static List<User> getBannedUser(Organization organization,
@@ -454,8 +444,7 @@ public class Users extends CRUD {
 
 	/**
 	 * 
-	 * responsible for searching for users using specific
-	 * criteria
+	 * responsible for searching for users using specific criteria
 	 * 
 	 * @author ${lama ashraf}
 	 * 
@@ -470,7 +459,7 @@ public class Users extends CRUD {
 		List<User> searchResultByName = new ArrayList<User>();
 		List<User> searchResultByProfession = new ArrayList<User>();
 		List<User> searchResultByEmail = new ArrayList<User>();
-		
+
 		List<User> searchResultByNameActive = new ArrayList<User>();
 		List<User> searchResultByProfessionActive = new ArrayList<User>();
 		List<User> searchResultByEmailActive = new ArrayList<User>();
@@ -495,7 +484,8 @@ public class Users extends CRUD {
 		}
 		for (int i = 0; i < professionSize; i++) {
 			if (searchResultByProfession.get(i).state == "a") {
-				searchResultByProfessionActive.add(searchResultByProfession.get(i));
+				searchResultByProfessionActive.add(searchResultByProfession
+						.get(i));
 			}
 		}
 
@@ -519,8 +509,7 @@ public class Users extends CRUD {
 
 	/**
 	 * 
-	 * responsible for searching for organizers in a certain
-	 * organization
+	 * responsible for searching for organizers in a certain organization
 	 * 
 	 * @author ${lama ashraf}
 	 * 
@@ -564,8 +553,8 @@ public class Users extends CRUD {
 
 	/**
 	 * 
-	 * responsible for telling whether a user is allowed to do a
-	 * specific action in an organization/entity/topic
+	 * responsible for telling whether a user is allowed to do a specific action
+	 * in an organization/entity/topic
 	 * 
 	 * @author ${lama ashraf}
 	 * 
@@ -586,186 +575,186 @@ public class Users extends CRUD {
 	 * @return boolean
 	 */
 	public static boolean isPermitted(User user, String action, long placeId,
-            String placeType) {
-    // User banned =
-    // BannedUser.find("select b.bannedUser from BannedUser b where b.bannedUser = ? and b.resourceID = ? and b.resourceType = ? and b.action =  ",
-    // user);
-     BannedUser banned = BannedUser.find(
-                    "byBannedUserAndActionAndResourceTypeAndResourceID", user,
-                    action, placeType, placeId).first();
-    String role;
-    if (user.isAdmin) {
-            return true;
-    }
+			String placeType) {
+		// User banned =
+		// BannedUser.find("select b.bannedUser from BannedUser b where b.bannedUser = ? and b.resourceID = ? and b.resourceType = ? and b.action =  ",
+		// user);
+		BannedUser banned = BannedUser.find(
+				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
+				action, placeType, placeId).first();
+		String role;
+		if (user.isAdmin) {
+			return true;
+		}
 
-    if (banned != null) {
-            return false;
-    }
-    if (UserRoleInOrganizations.isOrganizer(user, placeId, placeType)) {
-            List<String> r = Roles.getRoleActions("organizer");
-            if (r.contains(action)) {
-                    return true;
-            } else {
-                    if (Roles.getRoleActions("idea developer").contains(action)) {
-                            return true;
-                    } else {
-                            return false;
-                    }
-            }
-    }
+		if (banned != null) {
+			return false;
+		}
+		if (UserRoleInOrganizations.isOrganizer(user, placeId, placeType)) {
+			List<String> r = Roles.getRoleActions("organizer");
+			if (r.contains(action)) {
+				return true;
+			} else {
+				if (Roles.getRoleActions("idea developer").contains(action)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
 
-    if (placeType.equalsIgnoreCase("organization")) {
-            Organization org = Organization.findById(placeId);
-            // List<UserRoleInOrganization> l =
-            // UserRoleInOrganization.find("byOrganizationAnd")
-            if (user.equals(org.creator)) {
-                    if (Roles.getRoleActions("organizationLead").contains(action)) {
-                            return true;
-                    } else {
-                            if (Roles.getRoleActions("organizer").contains(action)) {
-                                    return true;
-                            } else {
-                                    if (Roles.getRoleActions("idea developer").contains(
-                                                    action)) {
-                                            return true;
-                                    } else {
-                                            return false;
-                                    }
-                            }
-                    }
+		if (placeType.equalsIgnoreCase("organization")) {
+			Organization org = Organization.findById(placeId);
+			// List<UserRoleInOrganization> l =
+			// UserRoleInOrganization.find("byOrganizationAnd")
+			if (user.equals(org.creator)) {
+				if (Roles.getRoleActions("organizationLead").contains(action)) {
+					return true;
+				} else {
+					if (Roles.getRoleActions("organizer").contains(action)) {
+						return true;
+					} else {
+						if (Roles.getRoleActions("idea developer").contains(
+								action)) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
 
-            }
+			}
 
-            if (org.privacyLevel == 0 || org.privacyLevel == 1) {
+			if (org.privacyLevel == 0 || org.privacyLevel == 1) {
 
-                    List<UserRoleInOrganization> allowed = UserRoleInOrganization
-                                    .find("byEnrolledAndOrganization", user, org).fetch();
-                    if (allowed == null) {
-                            return false;
-                    } else {
-                            if (Roles.getRoleActions("idea developer").contains(action)) {
-                                    return true;
-                            } else {
-                                    return false;
-                            }
-                    }
-            } else {
-                    if (Roles.getRoleActions("idea developer").contains(action)) {
-                            return true;
-                    } else {
-                            return false;
-                    }
-            }
+				List<UserRoleInOrganization> allowed = UserRoleInOrganization
+						.find("byEnrolledAndOrganization", user, org).fetch();
+				if (allowed == null) {
+					return false;
+				} else {
+					if (Roles.getRoleActions("idea developer").contains(action)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			} else {
+				if (Roles.getRoleActions("idea developer").contains(action)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
 
-    }
-    if (placeType.equalsIgnoreCase("topic")) {
-            Topic topic = Topic.findById(placeId);
-            MainEntity m = topic.entity;
-            Organization org = m.organization;
-            if (user.equals(org.creator)) {
-                    if (Roles.getRoleActions("organizationLead").contains(action)) {
-                            return true;
-                    } else {
-                            if (Roles.getRoleActions("organizer").contains(action)) {
-                                    return true;
-                            } else {
-                                    if (Roles.getRoleActions("idea developer").contains(
-                                                    action)) {
-                                            return true;
-                                    } else {
-                                            return false;
-                                    }
-                            }
-                    }
+		}
+		if (placeType.equalsIgnoreCase("topic")) {
+			Topic topic = Topic.findById(placeId);
+			MainEntity m = topic.entity;
+			Organization org = m.organization;
+			if (user.equals(org.creator)) {
+				if (Roles.getRoleActions("organizationLead").contains(action)) {
+					return true;
+				} else {
+					if (Roles.getRoleActions("organizer").contains(action)) {
+						return true;
+					} else {
+						if (Roles.getRoleActions("idea developer").contains(
+								action)) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
 
-            }
-            if (topic.privacyLevel == 2) {
-                    List<UserRoleInOrganization> allowed = UserRoleInOrganization
-                                    .find("byEnrolledAndEntityTopicIDAndType", user,
-                                                    topic.id, "topic").fetch();
-                    if (allowed == null) {
-                            return false;
-                    } else {
-                            if (Roles.getRoleActions("idea developer").contains(action)) {
-                                    return true;
-                            } else {
-                                    return false;
-                            }
-                    }
-            } else {
-                    if (org.privacyLevel == 0 || org.privacyLevel == 1) {
+			}
+			if (topic.privacyLevel == 2) {
+				List<UserRoleInOrganization> allowed = UserRoleInOrganization
+						.find("byEnrolledAndEntityTopicIDAndType", user,
+								topic.id, "topic").fetch();
+				if (allowed == null) {
+					return false;
+				} else {
+					if (Roles.getRoleActions("idea developer").contains(action)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			} else {
+				if (org.privacyLevel == 0 || org.privacyLevel == 1) {
 
-                            List<UserRoleInOrganization> allowed = UserRoleInOrganization
-                                            .find("byEnrolledAndOrganization", user, org)
-                                            .fetch();
-                            if (allowed == null) {
-                                    return false;
-                            } else {
-                                    if (Roles.getRoleActions("idea developer").contains(
-                                                    action)) {
-                                            return true;
-                                    } else {
-                                            return false;
-                                    }
-                            }
-                    }
-                    if (org.privacyLevel == 2) {
-                            if (Roles.getRoleActions("idea developer").contains(action)) {
-                                    return true;
-                            } else {
-                                    return false;
-                            }
-                            }
-            }
-    }
+					List<UserRoleInOrganization> allowed = UserRoleInOrganization
+							.find("byEnrolledAndOrganization", user, org)
+							.fetch();
+					if (allowed == null) {
+						return false;
+					} else {
+						if (Roles.getRoleActions("idea developer").contains(
+								action)) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
+				if (org.privacyLevel == 2) {
+					if (Roles.getRoleActions("idea developer").contains(action)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+		}
 
-    if (placeType.equalsIgnoreCase("entity")) {
-    	            MainEntity entity = MainEntity.findById(placeId);
-            Organization org = entity.organization;
-            if (user.equals(org.creator)) {
-                    if (Roles.getRoleActions("organizationLead").contains(action)) {
-                            return true;
-                    } else {
-                            if (Roles.getRoleActions("organizer").contains(action)) {
-                                    return true;
-                            } else {
-                                    if (Roles.getRoleActions("idea developer").contains(
-                                                    action)) {
-                                            return true;
-                                    } else {
-                                            return false;
-                                    }
-                            }
-                    }
+		if (placeType.equalsIgnoreCase("entity")) {
+			MainEntity entity = MainEntity.findById(placeId);
+			Organization org = entity.organization;
+			if (user.equals(org.creator)) {
+				if (Roles.getRoleActions("organizationLead").contains(action)) {
+					return true;
+				} else {
+					if (Roles.getRoleActions("organizer").contains(action)) {
+						return true;
+					} else {
+						if (Roles.getRoleActions("idea developer").contains(
+								action)) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
 
-            }
-            if (org.privacyLevel == 0 || org.privacyLevel == 1) {
+			}
+			if (org.privacyLevel == 0 || org.privacyLevel == 1) {
 
-                    List<UserRoleInOrganization> allowed = UserRoleInOrganization
-                                    .find("byEnrolledAndOrganization", user, org).fetch();
-                    if (allowed == null) {
-                            return false;
-                    } else {
-                            if (Roles.getRoleActions("idea developer").contains(action)) {
-                                    return true;
-                            } else {
-                                    return false;
-                            }
-                    }
-            }
-            if (org.privacyLevel == 2) {
-            if (Roles.getRoleActions("idea developer").contains(action)) {
-                    return true;
-            } else {
-                    return false;
-            }
-            }
-    }
+				List<UserRoleInOrganization> allowed = UserRoleInOrganization
+						.find("byEnrolledAndOrganization", user, org).fetch();
+				if (allowed == null) {
+					return false;
+				} else {
+					if (Roles.getRoleActions("idea developer").contains(action)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+			if (org.privacyLevel == 2) {
+				if (Roles.getRoleActions("idea developer").contains(action)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
 
-    System.out.println("you entered an invalid type");
-    return false;
+		System.out.println("you entered an invalid type");
+		return false;
 
-}
+	}
 
 	public static void r(long i) {
 		Topic t = Topic.findById(i);
@@ -843,7 +832,7 @@ public class Users extends CRUD {
 							organization, entityId, "entity").fetch();
 			for (int i = 0; i < organizers.size(); i++) {
 				if (((organizers.get(i).role.roleName).equals("organizer"))) {
-					
+
 					enrolled.add(organizers.get(i).enrolled);
 				}
 			}
@@ -861,8 +850,8 @@ public class Users extends CRUD {
 	 * 
 	 * @story C1S7
 	 * 
-	 * @param: organization 
-	 *               Organization organization that the users are enrolled in
+	 * @param: organization Organization organization that the users are
+	 *         enrolled in
 	 * 
 	 * @return :List<User> enrolled users
 	 */
@@ -879,7 +868,6 @@ public class Users extends CRUD {
 		return enrolled;
 	}
 
-	
 	/**
 	 * return all the entities that a certain organizer is enrolled in within a
 	 * certain organization
@@ -887,127 +875,128 @@ public class Users extends CRUD {
 	 * @author Nada Ossama
 	 * 
 	 * @story C1S7
-	 
+	 * 
 	 * @param org
 	 *            Organization org that contains the entities
-	 * @param user User 
-	 *                the intended user
-	 * @return list <MainEntities> of entities 
+	 * @param user
+	 *            User the intended user
+	 * @return list <MainEntities> of entities
 	 */
 	public static List<MainEntity> getEntitiesOfOrganizer(Organization org,
 			User user) {
 		List<MainEntity> entities = new ArrayList<MainEntity>();
-       System.out.println(org == null);
-       System.out.println(user);
-		List<UserRoleInOrganization> userRoleInOrg = UserRoleInOrganization.find(
-				"byOrganizationAndEnrolled", org, user).fetch();
-		//System.out.println(userRoleInOrganization.isEmpty() + "haaaaaaaaaaaaaaaaay");
+		System.out.println(org == null);
+		System.out.println(user);
+		List<UserRoleInOrganization> userRoleInOrg = UserRoleInOrganization
+				.find("byOrganizationAndEnrolled", org, user).fetch();
+		// System.out.println(userRoleInOrganization.isEmpty() +
+		// "haaaaaaaaaaaaaaaaay");
 		for (int i = 0; i < userRoleInOrg.size(); i++) {
 			if (userRoleInOrg.get(i).role.roleName.equals("organizer")) {
-				entities.add((MainEntity) MainEntity.findById(userRoleInOrg.get(i).entityTopicID));
+				entities.add((MainEntity) MainEntity.findById(userRoleInOrg
+						.get(i).entityTopicID));
 			}
 		}
 		return entities;
 	}
 
-	
-
 	/**
-	 * @description overrides the CRUD create method that is used to create a new
-	 * user and make sure that this user is valid, and then it renders a message
-	 * mentioning whether the operation was successful or not.
+	 * @description overrides the CRUD create method that is used to create a
+	 *              new user and make sure that this user is valid, and then it
+	 *              renders a message mentioning whether the operation was
+	 *              successful or not.
 	 * 
 	 * @author Mostafa Ali
 	 * 
 	 * @story C1S9
 	 * 
-	 *  
+	 * 
 	 */
 
-//	public static void create() throws Exception {
-//		// if(Security.getConnected().isAdmin);
-//		ObjectType type = ObjectType.get(Users.class);
-//		notFoundIfNull(type);
-//		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
-//		constructor.setAccessible(true);
-//		Model object = type.entityClass.newInstance();
-//		User user = (User) object;
-//		Binder.bind(object, "object", params.all());
-//		validation.valid(object);
-//		System.out.println(object.toString());
-//		String errorMessage = "";
-//		try {
-//			if (user.username.length() >= 20) {
-//				errorMessage = "Username cannot exceed 20 characters";
-//			}
-//			if (user.find("ByUsername", user.username) != null) {
-//				errorMessage += "This username already exists !";
-//			}
-//		} catch (NullPointerException e) {
-//			errorMessage = "Username field is required, u must have a username !";
-//		}
-//
-//		try {
-//			if (user.password.length() >= 20) {
-//				errorMessage += "Password cannot exceed 20 characters";
-//			}
-//
-//		} catch (NullPointerException e) {
-//			errorMessage += "Password field is required, u must have a username !";
-//		}
-//
-//		try {
-//			if (user.password.length() >= 20) {
-//				errorMessage += "First name cannot exceed 20 characters";
-//			}
-//
-//		} catch (NullPointerException e) {
-//			errorMessage += "First name field is required, u must have a username !";
-//		}
-//
-//		try {
-//
-//			if (user.find("ByEmail", user.email) != null) {
-//				errorMessage += "This mail already exists !";
-//			}
-//
-//		} catch (NullPointerException e) {
-//			errorMessage += "Email field is required, u must have a username !";
-//		}			
-//		/*if (validation.hasErrors()) {
-//			renderArgs.put("error", Messages.get("crud.hasErrors"));
-//			try {
-//				System.out.println(object.toString() + "!1try");
-//				render(request.controller.replace(".", "/") + "/blank.html",
-//						type, object);
-//			} catch (TemplateNotFoundException e) {
-//				System.out.println(object.toString() + "catch");
-//				render("CRUD/blank.html", type, object);
-//			}
-//		}*/
-//		System.out.println("");
-//
-//		try {
-//			render(request.controller.replace(".", "/") + "/blank.html",
-//					user.email, user.username, user.password, user.firstName,
-//					user.lastName, user.communityContributionCounter,
-//					user.dateofBirth, user.country, user.profession,
-//					errorMessage);
-//		} catch (TemplateNotFoundException e) {
-//			render("CRUD/blank.html", type);
-//		}
-//		System.out.println(object.toString() + "before the save");
-//		object._save();
-//		flash.success(Messages.get("crud.created", type.modelName));
-//		if (params.get("_save") != null) {
-//			System.out.println(object.toString() + "save condition");
-//			redirect(request.controller + ".list");
-//		}
-//		if (params.get("_saveAndAddAnother") != null) {
-//			redirect(request.controller + ".blank");
-//		}
-//		redirect(request.controller + ".show", object._key());
-//	}
+	// public static void create() throws Exception {
+	// // if(Security.getConnected().isAdmin);
+	// ObjectType type = ObjectType.get(Users.class);
+	// notFoundIfNull(type);
+	// Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+	// constructor.setAccessible(true);
+	// Model object = type.entityClass.newInstance();
+	// User user = (User) object;
+	// Binder.bind(object, "object", params.all());
+	// validation.valid(object);
+	// System.out.println(object.toString());
+	// String errorMessage = "";
+	// try {
+	// if (user.username.length() >= 20) {
+	// errorMessage = "Username cannot exceed 20 characters";
+	// }
+	// if (user.find("ByUsername", user.username) != null) {
+	// errorMessage += "This username already exists !";
+	// }
+	// } catch (NullPointerException e) {
+	// errorMessage = "Username field is required, u must have a username !";
+	// }
+	//
+	// try {
+	// if (user.password.length() >= 20) {
+	// errorMessage += "Password cannot exceed 20 characters";
+	// }
+	//
+	// } catch (NullPointerException e) {
+	// errorMessage += "Password field is required, u must have a username !";
+	// }
+	//
+	// try {
+	// if (user.password.length() >= 20) {
+	// errorMessage += "First name cannot exceed 20 characters";
+	// }
+	//
+	// } catch (NullPointerException e) {
+	// errorMessage += "First name field is required, u must have a username !";
+	// }
+	//
+	// try {
+	//
+	// if (user.find("ByEmail", user.email) != null) {
+	// errorMessage += "This mail already exists !";
+	// }
+	//
+	// } catch (NullPointerException e) {
+	// errorMessage += "Email field is required, u must have a username !";
+	// }
+	// /*if (validation.hasErrors()) {
+	// renderArgs.put("error", Messages.get("crud.hasErrors"));
+	// try {
+	// System.out.println(object.toString() + "!1try");
+	// render(request.controller.replace(".", "/") + "/blank.html",
+	// type, object);
+	// } catch (TemplateNotFoundException e) {
+	// System.out.println(object.toString() + "catch");
+	// render("CRUD/blank.html", type, object);
+	// }
+	// }*/
+	// System.out.println("");
+	//
+	// try {
+	// render(request.controller.replace(".", "/") + "/blank.html",
+	// user.email, user.username, user.password, user.firstName,
+	// user.lastName, user.communityContributionCounter,
+	// user.dateofBirth, user.country, user.profession,
+	// errorMessage);
+	// } catch (TemplateNotFoundException e) {
+	// render("CRUD/blank.html", type);
+	// }
+	// System.out.println(object.toString() + "before the save");
+	// object._save();
+	// flash.success(Messages.get("crud.created", type.modelName));
+	// if (params.get("_save") != null) {
+	// System.out.println(object.toString() + "save condition");
+	// redirect(request.controller + ".list");
+	// }
+	// if (params.get("_saveAndAddAnother") != null) {
+	// redirect(request.controller + ".blank");
+	// }
+	// redirect(request.controller + ".show", object._key());
+	// }
 	public static void create() throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -1040,39 +1029,33 @@ public class Users extends CRUD {
 				System.out.println(message);
 			} else if (tmp.username.length() >= 20) {
 				message = "Username cannot exceed 20 characters";
-				}
-			else if (tmp.password.length() >= 25) {
+			} else if (tmp.password.length() >= 25) {
 				message = "First name cannot exceed 25 characters";
-				}
-			else if (User.find("ByEmail", tmp.email).first() != null)
-			{
+			} else if (User.find("ByEmail", tmp.email).first() != null) {
 				message = "This Email already exists !";
-			}
-			else if (User.find("ByUsername", tmp.username).first() != null)
-			{
+			} else if (User.find("ByUsername", tmp.username).first() != null) {
 				message = "This username already exists !";
 			}
 
 			try {
 				System.out.println("show user try ");
 				render(request.controller.replace(".", "/") + "/blank.html",
-						 type, message);
+						type, message);
 			} catch (TemplateNotFoundException e) {
 				System.out.println("show user catch ");
 				render("CRUD/blank.html", type);
 			}
 		}
-		
 
 		System.out.println("create() about to save object");
 		object._save();
 		System.out.println("create() object saved");
 		tmp = (User) object;
-		//Calendar cal = new GregorianCalendar();
+		// Calendar cal = new GregorianCalendar();
 		// Logs.addLog( user.getConnected, "add", "User", tmp.username,
 		// tmp.entity.organization, cal.getTime() );
 		String message2 = tmp.username + " has been added to users ";
-		System.out.println("id "+ tmp.getId());
+		System.out.println("id " + tmp.getId());
 
 		flash.success(Messages.get("crud.created", type.modelName,
 				((User) object).getId()));
@@ -1096,12 +1079,11 @@ public class Users extends CRUD {
 				message2);
 	}
 
-	
-
 	/**
-	 * @description overrides the CRUD save method ,used to submit the edit, to make sure that the edits are
-	 * acceptable, and then it renders a message mentioning whether the
-	 * operation was successful or not.
+	 * @description overrides the CRUD save method ,used to submit the edit, to
+	 *              make sure that the edits are acceptable, and then it renders
+	 *              a message mentioning whether the operation was successful or
+	 *              not.
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1130,7 +1112,7 @@ public class Users extends CRUD {
 		 * (TemplateNotFoundException e) { System.out.println(object.toString()
 		 * + "catch"); render("CRUD/show.html", type, object); } }
 		 */
-		
+
 		String message = "";
 		User tmp = (User) object;
 		System.out.println("create() entered");
@@ -1155,19 +1137,14 @@ public class Users extends CRUD {
 				System.out.println(message);
 			} else if (tmp.username.length() >= 20) {
 				message = "Username cannot exceed 20 characters";
-				}
-			else if (tmp.password.length() >= 25) {
+			} else if (tmp.password.length() >= 25) {
 				message = "First name cannot exceed 25 characters";
-				}
-			else if (User.find("ByEmail", tmp.email).first() != null)
-			{
+			} else if (User.find("ByEmail", tmp.email).first() != null) {
 				message = "This Email already exists !";
-			}
-			else if (User.find("ByUsername", tmp.username).first() != null)
-			{
+			} else if (User.find("ByUsername", tmp.username).first() != null) {
 				message = "This username already exists !";
 			}
-	try {
+			try {
 				System.out.println("show user try ");
 				render(request.controller.replace(".", "/") + "/save.html",
 						type, message);
@@ -1176,23 +1153,23 @@ public class Users extends CRUD {
 				render("CRUD/blank.html", type);
 			}
 
+			System.out.println(object.toString() + "before save");
+			object._save();
+			System.out.println(object.toString() + "after the save");
 
-		System.out.println(object.toString() + "before save");
-		object._save();
-		System.out.println(object.toString() + "after the save");
-
-		flash.success(Messages.get("crud.saved", type.modelName));
-		if (params.get("_save") != null) {
-			redirect(request.controller + ".list");
+			flash.success(Messages.get("crud.saved", type.modelName));
+			if (params.get("_save") != null) {
+				redirect(request.controller + ".list");
+			}
+			redirect(request.controller + ".show", object._key());
 		}
-		redirect(request.controller + ".show", object._key());
-	}
 	}
 
 	/**
-	 * @description overrides the CRUD view method ,is responsible for deleting a user by the system admin after
-	 * specifying that user's id, and then it renders a message confirming
-	 * whether the delete was successful or not
+	 * @description overrides the CRUD view method ,is responsible for deleting
+	 *              a user by the system admin after specifying that user's id,
+	 *              and then it renders a message confirming whether the delete
+	 *              was successful or not
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1229,19 +1206,19 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * Renders the list of notifications of the user, to the view to
-	 * display the notifications.
+	 * Renders the list of notifications of the user, to the view to display the
+	 * notifications.
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S14
-	 *
+	 * 
 	 */
 
 	public static void viewNotifications() {
 		User user = Security.getConnected();
-		for(int i = 0; i < user.notifications.size(); i++) {
-			if(user.notifications.get(i).seen) {
+		for (int i = 0; i < user.notifications.size(); i++) {
+			if (user.notifications.get(i).seen) {
 				Notification notification = user.notifications.get(i);
 				notification.status = "Old";
 				notification.save();
@@ -1255,15 +1232,15 @@ public class Users extends CRUD {
 		user.save();
 		List<Notification> temp = user.notifications;
 		List<Notification> nList = new ArrayList<Notification>();
-		for(int i = temp.size() - 1; i > -1; i--) {
+		for (int i = temp.size() - 1; i > -1; i--) {
 			nList.add(temp.get(i));
 		}
 		render(nList);
 	}
 
 	/**
-	 * Renders the list of notification profiles for the user to
-	 * view and edit his preferences.
+	 * Renders the list of notification profiles for the user to view and edit
+	 * his preferences.
 	 * 
 	 * @author Ahmed Maged
 	 * 
@@ -1276,27 +1253,27 @@ public class Users extends CRUD {
 		List<NotificationProfile> npList = user.notificationProfiles;
 		render(npList);
 	}
-	
+
 	/**
-	 * Deletes the notifications of the users which he checked
-	 * from the notifiactions list.
+	 * Deletes the notifications of the users which he checked from the
+	 * notifiactions list.
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S14
 	 * 
-	 * @param a long[]
-	 * 		the list of notification IDs to be deleted
+	 * @param a
+	 *            long[] the list of notification IDs to be deleted
 	 * 
 	 */
-	
+
 	public static void deleteNotifications(long[] a) {
-		for(int i = 0; i < a.length; i++) {
-			Notification notification = Notification.findById(a[i]);			
-			notification.delete();			
+		for (int i = 0; i < a.length; i++) {
+			Notification notification = Notification.findById(a[i]);
+			notification.delete();
 		}
 	}
-	
+
 	/**
 	 * Ends the session of the current user and logs out
 	 * 
