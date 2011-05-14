@@ -9,7 +9,7 @@ ${u.username}
 ${u.email}
 </p>
 <br>
-My Admin: <input type="submit" value="Admin View" onclick="goAdmin(${u.isAdmin})">
+My Admin: <input type="submit" value="Admin View" onclick="goAdmin('${u.isAdmin}')">
 <br>
 #{if admin==0}	
 <form action="@{Invitations.view()}" method="GET">
@@ -32,9 +32,6 @@ My Admin: <input type="submit" value="Admin View" onclick="goAdmin(${u.isAdmin})
 </form>
 <form action="@{AssignRequests.view()}" method="post">
     Assign Requests: <input type="submit" value="View">
-</form>
-<form action="@{Users.ViewOrgInv()}">
-    <input type="hidden" name="userId" value="${u.id}">Invitations from Organizations: <input type="submit" value="view">
 </form>
 <form action="@{Users.listFollows()}">
     <input type="hidden" name="userId" value="${u.id}">Follow List: <input type="submit" value="view">
