@@ -1,0 +1,11 @@
+#{extends 'main.html' /} 
+
+<h3>${user.username} Labels</h3>
+	
+	<div id="labels">
+		#{list items:user.myLabels , as:'label'}
+	    	<ul>
+	        	<li><a href='@{Labels.showLabel(label.id)}'>${label.name}</a></li>
+			</ul>
+		#{/list}
+	</div> 
