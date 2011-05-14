@@ -96,6 +96,22 @@
         <a href="@{Topics.tagTopic(object.id,'@@')}">Add tags</a>
         <br>
         #{/form}
+                     <h4>List of ideas within this topic : </h4>               
+	<div>
+	<form action=@{Ideas.show(ideaId)}>			
+				<ul>
+    #{list items:ideas, as:'idea'}
+    <li> 
+        <a href="@{Ideas.show(idea.id)}">${idea.title}</a>
+    </li>
+	#{/list}
+</ul>
+</form>
+                </form>#{if canPost == true}
+                <form action="@{Ideas.blank(topicId)}" method="post">
+                    <input type="hidden" name"topicId" value="${topicId}"><HR><input type="submit" value="Post Idea to this topic">
+                </form>#{/if }
+            </div>
         #{if canClose == 1 && openToEdit == true}
         #{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
         <input type = "hidden" name = "topicId" value = ${topicId}><input type="submit" value="Close Topic" />#{/form} 
@@ -131,12 +147,6 @@
                     <input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="false">View ${targetTopic.title} Followers <input type="submit" value="Followers">
                     <br/>
                     <HR>
-                </form>#{if canPost == true}
-                <form action="@{Ideas.blank(topicId)}" method="post">
-                    <input type="hidden" name"topicId" value="${topicId}"><HR><input type="submit" value="Post Idea">
-                </form>#{/if }
-				<a href="/Ideas/createIdea?topicId=${object.id}">create an idea for this topic</a>
-            </div>
 			#{if canNotPost == true}
 			<p>
 			<a onclick="requestToPost('${topicId}');" href="#">request to post on this topic</a>

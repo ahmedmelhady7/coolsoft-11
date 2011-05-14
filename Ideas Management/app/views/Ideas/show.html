@@ -6,7 +6,7 @@
     </font>
     <div class="objectForm">
         #{form action:@show(object._key()), enctype:'multipart/form-data'}
-        #{crud.form fields: ['author','belongsToTopic','title','description', 'privacyLevel','isDraft']}
+        #{crud.form fields: ['author','belongsToTopic','title','description','isDraft']}
         #{crud.custom 'author'}
         <p>
             <label for="object_creator">
@@ -39,14 +39,6 @@
             <textarea disabled= true id="object_description" cols="60" rows="5" class="" name="object.description" required>${object.description}</textarea>
         </p>
         #{/crud.custom}
-        #{crud.custom 'privacyLevel'}
-        <p>
-            <label for="object_privacyLevel">
-                Privacy Level
-            </label>
-            <textarea disabled= true id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
-                ${object.privacyLevel}
-            </textarea>
         </p>
         <form action="@{Ideas.shareIdea()}">
 			<input type="submit" value="Share with user" />
@@ -86,7 +78,6 @@
 		<input type = "radio" name = "priority" value = "low"/> low
 		<br />
 		</form>
-        #{/crud.custom }
         #{crud.custom 'isDraft'}
         <p>
             <label for="object_description">
@@ -103,9 +94,7 @@
         #{/crud.form }
         #{/form}
     </div>
-    <form action= "@{Ideas.view()}">
-        <input type="hidden" name="ideaId" value="${ideaId}"><input type="submit" value = "Edit">
-    </form>#{if x==0}
+    <div>
     <form action="@{Users.ReportIdeaAsSpam()}" method="GET" name="myform">
         <input type="hidden" name="ideaId" value="${ideaId}">
         <table border="0" bgcolor="#ececec" cellspacing="5">
@@ -116,7 +105,5 @@
                 <td>
                 </table>
                 <input type="submit" value="Report As Spam">
-            </form>#{/if}
-	#{if x==1}
-                <input disabled=true type="submit" value="Report As Spam">
-	#{/if}
+            </form>
+	</div>

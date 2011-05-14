@@ -9,7 +9,7 @@
     </font>
     <div class="objectForm">
         #{form action:@show(object._key()), enctype:'multipart/form-data'}
-        #{crud.form fields: ['author','belongsToTopic','title','description', 'privacyLevel','isDraft']}
+        #{crud.form fields: ['author','belongsToTopic','title','description','isDraft']}
         #{crud.custom 'author'}
         <p>
             <label for="object_creator">
@@ -43,15 +43,6 @@
             <textarea id="object_description" cols="50" rows="5" class="" name="object.description" required>${object.description}</textarea>
         </p>
         #{/crud.custom}
-        #{crud.custom 'privacyLevel'}
-        <p>
-            <label for="object_privacyLevel">
-                Privacy Level
-            </label>
-            <textarea disabled= true id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">${object.privacyLevel}
-            </textarea>
-        </p>
-        #{/crud.custom }
         #{/crud.form }
         <p class="crudButtons">
             <input type="submit" name="_save" value="&{'crud.save', type.modelName}" /><input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
