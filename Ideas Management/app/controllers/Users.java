@@ -1315,6 +1315,7 @@ public class Users extends CRUD {
 	public static void deactivate(){
 		User user=Security.getConnected();
 		user.state="n";
+		user.save();
 		Mail.deactivate();
 		 logout();
 	}
