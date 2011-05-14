@@ -16,6 +16,61 @@ import models.User;
 
 @With(Secure.class)
 public class Tags extends CRUD {
+
+	/**
+	 * creates relationship between two tags
+	 * 
+	 * @author Mohamed Hisham
+	 * 
+	 * @story C2S5
+	 * 
+	 * @param tagId : id of the tag being related
+	 * 
+	 * @param orgId : id of the organization the tag belongs to
+	 */
+	public static void createRelation(long tagId, long orgId) {
+
+		// System.out.println("2ABEL !!!" + orgId + "," + tagId);
+		Tag tag = Tag.findById(tagId);
+		Organization org = Organization.findById(orgId);
+		List<Tag> tagList = null;
+
+		if (org.createdTags != null) {
+			tagList = org.createdTags;
+			tagList.remove(tag);
+		}
+		// else {
+		// System.out.print("Hobba!!");
+		// }
+
+		render(tag, tagList);
+	}
+
+	/**
+	 * This Method adds a user to the list of followers in a given tag
+	 * 
+	 * @author Mohamed Hisham
+	 * 
+	 * @story C2S11
+	 * 
+	 * @param tagId
+	 *            : the id of the tag that the user is following
+	 * 
+	 * @param userId
+	 *            : the id of the user who follows
+	 * 
+	 */
+	public static void followTag(long tagId) {
+		Tag tag = Tag.findById(tagId);
+		User user = Security.getConnected();
+		if (!user.followingTags.contains(tag)) {
+			tag.follow(user);
+			user.follow(tag);
+			user.save();
+			tag.save();
+		}
+	}
+
 	/**
 	 * This method opens the page with all the forms for creating a new tag
 	 * 

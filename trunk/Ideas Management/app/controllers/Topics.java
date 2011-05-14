@@ -27,6 +27,33 @@ import models.*;
 
 @With(Secure.class)
 public class Topics extends CRUD {
+	
+	/**
+	 * creates relationship between two topics
+	 * 
+	 * @author Mohamed Hisham
+	 * 
+	 * @story C2S5
+	 * 
+	 * @param topicId : id of the topic to be related
+	 * 
+	 * @param entityId : id of the entity the topic belongs to
+	 */
+	public static void createRelation(long topicId, long entityId) {
+
+//		System.out.println("2ABEL !!!" + entityId + "," + topicId);
+		Topic topic = Topic.findById(topicId);
+		MainEntity ent = MainEntity.findById(entityId);
+		List<Topic> listOfTopics = null;
+
+		if (ent.topicList != null) {
+			listOfTopics = ent.topicList;
+			listOfTopics.remove(topic);
+		}
+		System.out.println(topic.title + "7aga" + ent.name);
+
+		render(topic, ent, listOfTopics);
+	}
 
 	/**
 	 * This method first checks if the user is allowed to tag the topic,

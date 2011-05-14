@@ -1,5 +1,7 @@
 package controllers;
 
+import groovy.util.ObjectGraphBuilder.RelationNameResolver;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,25 @@ import models.User;
 
 @With(Secure.class)
 public class Organizations extends CRUD {
+	
+	/**
+	 * adds a new name to the previously created relation names in the organization
+	 * 
+	 * @author Mohamed
+	 * 
+	 * @story C2S5
+	 * 
+	 * @param organizationId : id of the organization to add the relation name in
+	 * 
+	 * @param name : name of the relation to add
+	 * 
+	 */
+	public static void addRelationName(long organizationId, String name){
+		Organization organization = Organization.findById(organizationId);
+		organization.relationNames.add(name);
+		organization.save();
+		render(organization);
+	}
 
 	/**
 	 * 
