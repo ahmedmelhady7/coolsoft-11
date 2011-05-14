@@ -328,6 +328,14 @@ public class Invitations extends CRUD {
 				Notifications.sendNotification(orgLead.id, organization.id, "Organization",
 						user.username + " has accepted the invitation to join the "
 								+ organization.name);
+				List<User> followers = organization.followers;
+				for (int j = 0; j < followers.size(); j++) {
+					if (followers.get(j).state.equalsIgnoreCase("a")) {
+					Notifications.sendNotification(followers.get(j).id, organization.id, "Organization",
+							user.username + " has join "
+									+ organization.name);
+					}
+				}
 
 			}
 
