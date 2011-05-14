@@ -244,7 +244,7 @@ public class Topics extends CRUD {
 	// List<User> follow = topic.followers;
 	// render(follow);
 	// }
-	
+
 	/**
 	 * This Method sends a request to post on a topic for a user to the
 	 * organizer
@@ -302,7 +302,7 @@ public class Topics extends CRUD {
 				topics.remove(Topic.findById(role.entityTopicID));
 			}
 		}
-		
+
 		render(topics, user);
 	}
 
@@ -683,11 +683,14 @@ public class Topics extends CRUD {
 			System.out
 					.println("create() done will redirect to blank.html to add another "
 							+ message2);
-			render(request.controller.replace(".", "/") + "/blank.html", message2, entityId);
-			
-			/*render(request.controller.replace(".", "/") + "/blank.html",
-					entityId, type, tmp.title, tmp.entity, tmp.description,
-					tmp.followers, tmp.tags, message);*/
+			render(request.controller.replace(".", "/") + "/blank.html",
+					message2, entityId);
+
+			/*
+			 * render(request.controller.replace(".", "/") + "/blank.html",
+			 * entityId, type, tmp.title, tmp.entity, tmp.description,
+			 * tmp.followers, tmp.tags, message);
+			 */
 		}
 		System.out
 				.println("create() done will redirect to show.html to show created"
@@ -789,7 +792,7 @@ public class Topics extends CRUD {
 						"Accept/Reject requests to post in a private topic in entities he/she manages",
 						tmp.id, "topic"))
 			allowed = 1;
-		// Note isPermitted has a bug here! 
+		// Note isPermitted has a bug here!
 		boolean canPost = Users.isPermitted(Security.getConnected(),
 				"can post ideas to a Topic", tmp.id, "topic");
 
@@ -810,20 +813,25 @@ public class Topics extends CRUD {
 		List<UserRoleInOrganization> roles = UserRoleInOrganization.find(
 				"byEnrolled", actor).fetch();
 		for (int k = 0; k < roles.size(); k++) {
-			if (roles.get(k).type.equalsIgnoreCase("topic") && roles.get(k).entityTopicID == topicIdLong) {
+			if (roles.get(k).type.equalsIgnoreCase("topic")
+					&& roles.get(k).entityTopicID == topicIdLong) {
 				isIdeaDeveloper = true;
 				break;
 			}
 		}
+		boolean isMemeber = Users.getEnrolledUsers(
+				targetTopic.entity.organization).contains(actor);
 		boolean pending = targetTopic.hasRequest(actor.id);
-		boolean canNotPost = (targetTopic.creator.id != actor.id && !actor.isAdmin
-				&& !pending) && !isIdeaDeveloper;
+		boolean canNotPost = (targetTopic.creator.id != actor.id
+				&& !actor.isAdmin && !pending)
+				&& !isIdeaDeveloper && isMemeber;
 		boolean follower = actor.topicsIFollow.contains(targetTopic);
 		try {
 			render(type, object, tags, creator, followers, ideas, comments,
 					entity, plan, openToEdit, privacyLevel, deleteMessage,
 					deletable, topicIdLong, canClose, canPlan, targetTopic,
-					allowed, permission, topicId, canPost, canNotPost, pending, follower);
+					allowed, permission, topicId, canPost, canNotPost, pending,
+					follower);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object, topicId);
 		}
