@@ -3,6 +3,8 @@ package notifiers;
 import play.mvc.*;
 import java.util.*;
 
+import controllers.Security;
+
 import models.*;
 
 public class Mail extends Mailer {
@@ -89,6 +91,27 @@ public class Mail extends Mailer {
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Welcome");
+		String url = "http://localhost:9008";
+		send(user, url);
+
+	}
+	
+
+	/**
+	 * @Sends a mail to the user informing him that his account has been deactivated
+	 * 
+	 * @author Mai Magdy
+	 * 
+	 * @story C1S5
+	 * 
+	 * 
+	 */
+	
+	public static void deactivate() {
+		User user=Security.getConnected();
+		addRecipient(user.email);
+		setFrom("CoolSoft011@gmail.com");
+		setSubject("Deactivation");
 		String url = "http://localhost:9008";
 		send(user, url);
 
