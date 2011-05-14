@@ -52,6 +52,12 @@ public class MainEntity extends Model {
 	@Lob
 	@Required
 	public String description;
+	
+	/**
+	 * list of relations for the entity
+	 */
+	@ManyToMany
+	public List<EntityRelationship> relations; 
 
 	/**
 	 * A list of sub-entities of this entity
@@ -124,6 +130,7 @@ public class MainEntity extends Model {
 		invitationList = new ArrayList<Invitation>();
 		subentities = new ArrayList<MainEntity>();
 		followers = new ArrayList<User>();
+		relations = new ArrayList<EntityRelationship>();
 		topicList = new ArrayList<Topic>();
 		tagList = new ArrayList<Tag>();
 		int size = org.followers.size();
@@ -169,6 +176,7 @@ public class MainEntity extends Model {
 		followers = new ArrayList<User>();
 		topicList = new ArrayList<Topic>();
 		tagList = new ArrayList<Tag>();
+		relations = new ArrayList<EntityRelationship>();
 		List<User> receivers = Users.getEntityOrganizers(parent);
 		int size = receivers.size();
 		for (int j = 0; j < size; j++) {

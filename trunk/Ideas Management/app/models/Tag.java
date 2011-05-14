@@ -62,6 +62,12 @@ public class Tag extends Model {
 	 */
 	@ManyToMany(mappedBy = "tagList")
 	public List<MainEntity> entities;
+	
+	/**
+	 * The list of related tags
+	 */
+	@ManyToMany
+	 public List<TagRelationship> relations;
 
 	/**
 	 * List of items tagged by the tag
@@ -99,6 +105,7 @@ public class Tag extends Model {
 		this.organizations = new ArrayList<Organization>();
 		this.taggedItems = new ArrayList<Item>();
 		this.taggedTopics = new ArrayList<Topic>();
+		this.relations = new ArrayList<TagRelationship>();
 		this.taggedIdeas = new ArrayList<Idea>();
 		// this.relatedTags = new ArrayList<Tag>();
 		// ERD change
