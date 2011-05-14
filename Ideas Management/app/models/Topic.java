@@ -324,24 +324,21 @@ public class Topic extends Model {
 	 * 
 	 * @story C2S13
 	 * 
-	 * @param u
-	 *            the user who request to post
-	 * 
-	 * @return void
+	 * @param userId
+	 *            the id of the user who request to post
 	 */
 
-	public void requestFromUserToPost(User u) {
-		if (!hasRequest(u)) {
+	public void requestFromUserToPost(long userId) {
+		User user = User.findById(userId);
+		if (!hasRequest(userId)) {
 			RequestToJoin r;
 			if (getOrganizer().size() > 0) {
-				User o = getOrganizer().get(0);
-				r = new RequestToJoin(u, this, this.entity.organization,
-						o.email).save();
+				r = new RequestToJoin(user, this, this.entity.organization,
+						"I would like to post").save();
 
 			} else {
-				User o = entity.organization.creator;
-				r = new RequestToJoin(u, this, this.entity.organization,
-						o.email).save();
+				r = new RequestToJoin(user, this, this.entity.organization,
+						"I would like to post").save();
 			}
 			requestsToJoin.add(r);
 			_save();
@@ -355,17 +352,17 @@ public class Topic extends Model {
 	 * 
 	 * @story C2S13
 	 * 
-	 * @param user
-	 *            the user
+	 * @param userId
+	 *            the id of the user
 	 * 
 	 * @return boolean
 	 */
 
-	public boolean hasRequest(User user) {
+	public boolean hasRequest(long userId) {
 		RequestToJoin req;
 		for (int i = 0; i < requestsToJoin.size(); i++) {
 			req = requestsToJoin.get(i);
-			if (req.source.id == user.id) {
+			if (req.source.id == userId) {
 				return true;
 			}
 		}
