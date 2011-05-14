@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import controllers.CRUD.ObjectType;
@@ -15,6 +16,43 @@ import models.User;
 
 @With(Secure.class)
 public class MainEntitys extends CRUD {
+	
+	/**
+	 * creates the relation between two entities
+	 * 
+	 * @author Mohamed Hisham
+	 * 
+	 * @story C2S5
+	 * 
+	 * @param entityId : id of the entity to be related
+	 * 
+	 * @param orgId : id of the organization the entity belongs to
+	 */
+	public static void createRelation(long entityId, long orgId) {
+
+//		System.out.println("2ABEL !!!" + orgId + "," + entityId);
+		MainEntity entity = MainEntity.findById(entityId);
+		Organization org = Organization.findById(orgId);
+		List<MainEntity> entityList = new ArrayList<MainEntity> ();
+
+		if (org.entitiesList != null) {
+			entityList = org.entitiesList;
+			entityList.remove(entity);
+		}
+
+		if (entity.parent == null) {
+			for (int i = 0; i < entityList.size(); i++) {
+				if (entityList.get(i).parent != null)
+					entityList.remove(entityList.get(i));
+			}
+		} else {
+			for (int i = 0; i < entityList.size(); i++) {
+				if (entityList.get(i).parent == null)
+					entityList.remove(entityList.get(i));
+			}
+		}
+		render(entity, entityList);
+	}
 
 	/**
 	 * The method that allows a user to follow a certain entity and also checks
