@@ -1312,5 +1312,34 @@ public class Users extends CRUD {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	/**
+	 * renders the deactivation page
+	 * 
+	 * @story C1S5
+	 *  
+	 * @author Mai Magdy
+	 * 
+	 */
+	public static void confirmDeactivation(){
+		render();
+		
+	}
+	
+	/**
+	 * Deactivate the account of that user by setting the state to "n"
+	 * 
+	 * @story C1S5
+	 * 
+	 * @author Mai Magdy
+	 * 
+	 */
+	public static void deactivate(){
+		User user=Security.getConnected();
+		user.state="n";
+		Mail.deactivate();
+		 logout();
+	}
 
 }
