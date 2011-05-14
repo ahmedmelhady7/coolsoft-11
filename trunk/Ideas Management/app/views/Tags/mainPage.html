@@ -4,7 +4,7 @@
     <head>
         <meta name="generator" content="HTML Tidy, see www.w3.org">
 
-        <title>Organization Profile View</title>
+        <title>Tag Profile View</title>
     </head>
 
     <body>
@@ -29,7 +29,7 @@
 		<br>
 		#{list items:followers, as:'follower'}
 		<li>
-			${follower.username}
+			<a href="@{Users.show(follower.id)}">${follower.username}</a>
 		</li>
 		#{/list}
 		<br>
@@ -37,7 +37,7 @@
 		<br>
 		#{list items:topics, as:'topic'}
 		<li>
-			${topic.title}
+			<a href="@{Topics.show(topic.id)}">${topic.title}</a>
 		</li>
 		#{/list}
 		<br>
@@ -45,7 +45,7 @@
 		<br>
 		#{list items:organizations, as:'organization'}
 		<li>
-			${organization.name}
+			<a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>
 		</li>
 		#{/list}
 		<br>
@@ -53,7 +53,7 @@
 		<br>
 		#{list items:entities, as:'entity'}
 		<li>
-			${entity.name}
+			<a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>
 		</li>
 		#{/list}
 		<br>
@@ -61,7 +61,7 @@
 		<br>
 		#{list items:ideas, as:'idea'}
 		<li>
-			${idea.title}
+			<a href="@{Ideas.show(idea.id)}">${idea.title}</a>
 		</li>
 		#{/list}
 		<script type="text/javascript">
