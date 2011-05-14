@@ -328,7 +328,7 @@ public class User extends Model {
 	 * @story C2S12
 	 * 
 	 * @param topic
-	 *            : the topic that the user is following
+	 *            the topic that the user is following
 	 * 
 	 */
 
@@ -362,8 +362,6 @@ public class User extends Model {
 	 * 
 	 * @param organization
 	 *            the Organization that the user is following
-	 * 
-	 * @return void
 	 */
 	public void unfollow(Organization organization) {
 		followingOrganizations.remove(organization);

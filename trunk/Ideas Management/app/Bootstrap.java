@@ -82,11 +82,11 @@ public class Bootstrap extends Job {
 					"student");
 			u6._save();
 
-			User fatma = new User("fatma.meawad@guc.edu.eg", "fmeawad", "1234",
+			User fatma = new User("testfatma.meawad@guc.edu.eg", "fmeawad", "1234",
 					"Fatma", "Meawad", 0, new Date(1978, 4, 17), "Egypt",
 					"Professor").save();
 
-			User slim = new User(" slim.abdennadher@guc.edu.eg", "mezo",
+			User slim = new User("testslim.abdennadher@guc.edu.eg", "mezo",
 					"1234", "Slim", "Abd EL Nadder", 0, new Date(1969, 4, 17),
 					"Egypt", "Professor").save();
 

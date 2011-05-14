@@ -233,17 +233,15 @@ public class Users extends CRUD {
 	/**
 	 * This Method removes a user from the list of followers in a given Topic
 	 * 
-	 * @author Ibrahim.al.khayat
+	 * @author Ibrahim al-khayat
 	 * 
 	 * @story C2S12
 	 * 
 	 * @param topicId
-	 *            : the id of the topic that the user is following
+	 *            the id of the topic that the user is following
 	 * 
 	 * @param userId
-	 *            : the id of the user who follows
-	 * 
-	 * @return void
+	 *            the id of the user who follows
 	 */
 
 	public static void unfollowTopic(long topicId, long userId) {
@@ -256,17 +254,15 @@ public class Users extends CRUD {
 	/**
 	 * This Method removes a user from the list of followers in a given Tag
 	 * 
-	 * @author Ibrahim.al.khayat
+	 * @author Ibrahim al-khayat
 	 * 
 	 * @story C2S12
 	 * 
 	 * @param tagId
-	 *            : the id of the tag that the user is following
+	 *            the id of the tag that the user is following
 	 * 
 	 * @param userId
-	 *            : the id of the user who follows
-	 * 
-	 * @return void
+	 *            the id of the user who follows
 	 */
 	public static void unfollowTag(long tagId, long userId) {
 		Tag tag = Tag.findById(tagId);
@@ -278,22 +274,15 @@ public class Users extends CRUD {
 	/**
 	 * This Method removes a user from the list of followers in an organization
 	 * 
-	 * @author Ibrahim.al.khayat
+	 * @author Ibrahim al-khayat
 	 * 
 	 * @story C2S12
 	 * 
 	 * @param orgId
-	 *            : the id of the organization the user is following
+	 *            the id of the organization the user is following
 	 * 
 	 * @param userId
-<<<<<<< .mine
-	 *            : the id of the user who follows
-	 * 
-	 * @return void
-=======
 	 *            the id of the user who follows
-	 * 
->>>>>>> .r1239
 	 */
 
 	public static void unfollowOrganization(long orgId, long userId) {
@@ -306,22 +295,15 @@ public class Users extends CRUD {
 	/**
 	 * This Method removes a user from the list of followers in an entity
 	 * 
-	 * @author Ibrahim.al.khayat
+	 * @author Ibrahim al-khayat
 	 * 
 	 * @story C2S12
 	 * 
 	 * @param entityId
-	 *            : the id of the entity the user is following
+	 *            the id of the entity the user is following
 	 * 
 	 * @param userId
-<<<<<<< .mine
-	 *            : the id of the user who follows
-	 * 
-	 * @return void
-=======
 	 *            the id of the user who follows
-	 * 
->>>>>>> .r1239
 	 */
 
 	public static void unfollowEntity(long entityId, long userId) {
@@ -334,14 +316,12 @@ public class Users extends CRUD {
 	/**
 	 * This Method renders a page of all objects followed by a user
 	 * 
-	 * @author Ibrahim.al.khayat
+	 * @author Ibrahim al-khayat
 	 * 
 	 * @story C2S12
 	 * 
 	 * @param userId
-	 *            : the id of the user who follows
-	 * 
-	 * @return void
+	 *            the id of the user who follows
 	 */
 
 	public static void listFollows(long userId) {
@@ -1328,23 +1308,21 @@ public class Users extends CRUD {
 	 * This method renders the list of invitations to join an organization for a
 	 * user.
 	 * 
-	 * @author ibrahim.al.khayat
+	 * @author ibrahim al-khayat
 	 * 
 	 * @story C2S16
 	 * 
 	 * @param userId
 	 *            the id of the user
-	 * 
-	 * @return void
 	 */
 
 	public static void ViewOrgInv(long userId) {
-		User u = User.findById(userId);
+		User user = User.findById(userId);
 		// User u = (User) User.findAll().get(1);
 		List<Invitation> invitations = new ArrayList<Invitation>();
 		List<Invitation> invs1 = Invitation.findAll();
 		for (int j = 0; j < invs1.size(); j++) {
-			if (invs1.get(j).email.equalsIgnoreCase(u.email)
+			if (invs1.get(j).email.equalsIgnoreCase(user.email)
 					&& invs1.get(j).organization != null) {
 				invitations.add(invs1.get(j));
 			}
@@ -1357,7 +1335,7 @@ public class Users extends CRUD {
 	 * This method accepts or rejects an invitation to a user to join an
 	 * organization.
 	 * 
-	 * @author ibrahim.al.khayat
+	 * @author ibrahim al-khayat
 	 * 
 	 * @story C2S16
 	 * 
@@ -1369,36 +1347,34 @@ public class Users extends CRUD {
 	 * 
 	 * @param acceptence
 	 *            a boolean to indicate acceptance (true for accepted)
-	 * 
-	 * @return void
 	 */
 
 	public static void acceptToJoinOrg(long invId, long userId, boolean acceptence) {
-		Invitation inv = Invitation.findById(invId);
-		Organization org = inv.organization;
+		Invitation invitastion = Invitation.findById(invId);
+		Organization organization = invitastion.organization;
 		User user = User.findById(userId);
 		if (acceptence) {
 			Role role = Roles.getRoleByName("idea developer");
 			UserRoleInOrganization roleInOrg = new UserRoleInOrganization(user,
-					org, role);
+					organization, role);
 			roleInOrg._save();
 			user.userRolesInOrganization.add(roleInOrg);
 			user.save();
 			List<User> list = new ArrayList();
 			list.add(user);
-			User orgLead = org.creator;
-			Notifications.sendNotification(user.id, org.id, "Organization",
+			User orgLead = organization.creator;
+			Notifications.sendNotification(user.id, organization.id, "Organization",
 					user.username + " has accepted the invitation to join the "
-							+ org.name);
-			Notifications.sendNotification(orgLead.id, org.id, "Organization",
+							+ organization.name);
+			Notifications.sendNotification(orgLead.id, organization.id, "Organization",
 					user.username + " has accepted the invitation to join the "
-							+ org.name);
+							+ organization.name);
 		}
-		org.invitation.remove(inv);
-		org._save();
-		user.invitation.remove(inv);
+		organization.invitation.remove(invitastion);
+		organization._save();
+		user.invitation.remove(invitastion);
 		user._save();
-		inv._delete();
+		invitastion._delete();
 	}
 
 	/**
