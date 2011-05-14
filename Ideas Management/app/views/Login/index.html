@@ -1,6 +1,10 @@
 #{extends 'main.html' /}
 #{set title:'Home Page' /}
-
+#{if flash.error}
+   <b> <p style="color:green">
+               ${flash.error}
+    </p></b>
+#{/if}
 <p>
 <b>Username: </b>
 ${u.username}
