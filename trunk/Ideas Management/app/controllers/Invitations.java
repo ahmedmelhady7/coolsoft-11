@@ -216,7 +216,7 @@ public class Invitations extends CRUD {
 		    
 	    	 
 	    	 User user=Security.getConnected();
-	          user.addInvitation(email,role,entity.organization,entity);
+	          user.addInvitation(email,role,entity.organization,entity,null);
 	        
 	         User receiver=User.find("byEmail", email).first();
 	         if(receiver != null){
