@@ -3,6 +3,7 @@
     <head>
         <meta name="generator" content="HTML Tidy, see www.w3.org">
         <title>Organization Profile View</title>
+		<script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js"></script>
     </head>
     <body>
         #{extends 'main.html' /}
@@ -128,35 +129,84 @@
                     <br/>
                     <HR>
                 </form>#{if canInvite == true}
-                <form onsubmit="s(email, '${org.id}');" method="post">
+                <form onsubmit="help('${org.id}', email.value);" method="post">
+                	<input type="hidden" id='users' name="users" value="${usernames}">
                 	Invite an Idea Developer <br>
-                    Email: <input type="text" id="email" name="email"/><input type="submit" value="Invite"/>
+                    Email: <input type="text" id="email" name="email" autoComplete="group"/><br>
+					Invite by:
+					<input type="radio" id="s" name="select" value="username" checked> Usernamer
+					<input type="radio" name="select" value="email" > E-Mail<br>
+				<script language="javascript" type="text/javascript"> 
+    			var a = document.getElementById('users');
+				b = a.value + "";
+    			c = b.split("|");
+				autoComplete.Set("group", c); 
+				</script>
+					<input type="submit" value="Invite"/>
                 </form>#{/if}
             </body>
             </html>
             <script type="text/javascript">
-                function s(e, id){
-                    if (validate(e.value)) {
-						alert("done!");
-                        $.post('@{sendInvitation()}', {
-                            orgId: id,
-                            email: e.value
-                        });
-                        location.reload(true);
-                    }
-                }
-                
-                function validate(address){
-                    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-                    if (reg.test(address) == false) {
-                        alert('Invalid Email Address');
-						return false;
-                    }
-					return true;
-                }
-            </script>
-            
-            <script type="text/javascript">
+function echeck(str) {
+
+		var at="@"
+		var dot="."
+		var lat=str.indexOf(at)
+		var lstr=str.length
+		var ldot=str.indexOf(dot)
+		if (str.indexOf(at)==-1){
+		   alert("Invalid E-mail ID")
+		   return false
+		}
+
+		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
+		   alert("Invalid E-mail ID")
+		   return false
+		}
+
+		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
+		    alert("Invalid E-mail ID")
+		    return false
+		}
+
+		 if (str.indexOf(at,(lat+1))!=-1){
+		    alert("Invalid E-mail ID")
+		    return false
+		 }
+
+		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
+		    alert("Invalid E-mail ID")
+		    return false
+		 }
+
+		 if (str.indexOf(dot,(lat+2))==-1){
+		    alert("Invalid E-mail ID")
+		    return false
+		 }
+		
+		 if (str.indexOf(" ")!=-1){
+		    alert("Invalid E-mail ID")
+		    return false
+		 }
+
+ 		 return true				
+	}
+
+function ValidateForm(){
+	var emailID=document.getElementById("email");
+	
+	if ((emailID.value==null)||(emailID.value=="")){
+		alert("Please Enter your Email ID")
+		emailID.focus()
+		return false
+	}
+	if (echeck(emailID.value)==false){
+		emailID.value=""
+		emailID.focus()
+		return false
+	}
+	return true
+ }
             function test(){
             //var v = document.getElementById('selec').selectedIndex;
             var a = document.getElementById('selec').value;
@@ -184,6 +234,40 @@
 		alert("done!");
 		location.reload(true);
 	}
+    function help(id, e){
+		s = document.getElementById("s").checked;
+        if (!s) {
+           if(ValidateForm()) {
+		   	send(id, e, true);
+		   }
+			} else {
+				if (username()) {
+				send(id, e, false);
+				}
+			}
+    }
+	function send(id, e, b) {
+		$.post('@{Organizations.sendInvitation()}', {
+			organizationId:id,
+			email:e,
+			byMail:b
+		});
+		alert("Invitation has been sent");
+		location.reload(true);
+	}
+	function username() {
+		var name = document.getElementById("email").value;
+		var a = document.getElementById('users');
+				b = a.value + "";
+    			c = b.split("|");
+				for (var i = 0; i < c.length; i++) {
+				if (c[i] == name) {
+				return true;
+				}
+				}
+				alert("User with this username does not exist");
+			return false;
+			}
             </script>
             
 
