@@ -1,44 +1,66 @@
 #{extends '/ideas/layout.html' /}
+<br/>
+<input type="submit" value="Back to topic" onclick=location.href="@{Topics.show(topic.id)}">
+<br/>
+<br/>
+<h3>
+    <label>
+        View idea
+    </label>
+</h3>
+<br/>
 <div id="crudShow" class="${type.name}">
-    <h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
+    <br/>
     <font color="Red">
         ${message}
     </font>
+    <br/>
+    
     <div class="objectForm">
         #{form action:@show(object._key()), enctype:'multipart/form-data'}
+		<br/>
         #{crud.form fields: ['author','belongsToTopic','title','description','isDraft']}
+		<br/>
         #{crud.custom 'author'}
         <p>
             <label for="object_creator">
                 by
             </label>
-            <textarea disabled= true id="object_creator" cols="30" rows="1" class="" name="object.author">${object.author}</textarea>
+            <label disabled= true id="object_creator" cols="30" rows="1" class="" name="object.author">${object.author}</label>
         </p>
         #{/crud.custom }
+		<br/>
+        <br/>
         #{crud.custom 'belongsToTopic'}
         <p>
             <label for="object_topic">
                 Idea belong to topic 
             </label>
-            <textarea disabled= true id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">${object.belongsToTopic}</textarea>
+            <label disabled= true id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">${object.belongsToTopic}</label>
         </p>
         #{/crud.custom }
+		<br/>
+        <br/>
         #{crud.custom 'title'}
         <p>
             <label for="object_title">
                 Title
             </label>
-            <textarea disabled= true id="object_title" cols="25" rows="2" class="" name="object.title">${object.title}</textarea>
+            <label disabled= true id="object_title" cols="25" rows="2" class="" name="object.title">${object.title}</label>
         </p>
         #{/crud.custom}
+		<br/>
+        <br/>
         #{crud.custom 'description'}
         <p>
             <label for="object_description">
                 Description
             </label>
-            <textarea disabled= true id="object_description" cols="60" rows="5" class="" name="object.description" required>${object.description}</textarea>
+            <label disabled= true id="object_description" cols="60" rows="5" class="" name="object.description" required>${object.description}</label>
         </p>
         #{/crud.custom}
+		<br/>
+        <br/>
         </p>
         <form action="@{Ideas.shareIdea()}">
 			<input type="submit" value="Share with user" />
@@ -78,6 +100,8 @@
 		<input type = "radio" name = "priority" value = "low"/> low
 		<br />
 		</form>
+        <br />
+        <br />
         #{crud.custom 'isDraft'}
         <p>
             <label for="object_description">
@@ -92,6 +116,7 @@
         </p>
         #{/crud.custom}
         #{/crud.form }
+		<br/>
         #{/form}
     </div>
     <div>

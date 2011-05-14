@@ -786,6 +786,7 @@ public class Topics extends CRUD {
 		String actionPlan = "create an action plan to execute an idea";
 		Topic targetTopic = Topic.findById(topicIdLong);
 		int allowed = 0;
+		int numberOfIdeas = ideas.size();
 		if (Users
 				.isPermitted(
 						actor,
@@ -827,7 +828,7 @@ public class Topics extends CRUD {
 				&& !isIdeaDeveloper && isMemeber;
 		boolean follower = actor.topicsIFollow.contains(targetTopic);
 		try {
-			render(type, object, tags, creator, followers, ideas, comments,
+			render(type, object, tags, creator, followers, ideas, numberOfIdeas,comments,
 					entity, plan, openToEdit, privacyLevel, deleteMessage,
 					deletable, topicIdLong, canClose, canPlan, targetTopic,
 					allowed, permission, topicId, canPost, canNotPost, pending,
