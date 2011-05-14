@@ -47,6 +47,11 @@ public class Invitation extends Model{
      */ 
     @ManyToOne
     public MainEntity entity;
+    /**
+     *   Topic topic that sends the invitation    
+     */ 
+    @ManyToOne
+    public Topic topic;
 	
     
     /**
@@ -73,13 +78,14 @@ public class Invitation extends Model{
 	 */
    
     public Invitation(String email,MainEntity entity,Organization organization,String role,
-    		User sender){
+    		User sender,Topic topic){
         this.email=email;
         this.organization = organization;
         this.entity=entity;
         this.sender = sender;
         this.role=role;
         this.dateOfSending=new Date();
+        this.topic=topic;
         
     }
 

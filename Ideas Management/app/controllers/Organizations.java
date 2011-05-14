@@ -175,7 +175,7 @@ public class Organizations extends CRUD {
 			}
 		}
 		Invitation invitation = new Invitation(email, null, organization,
-				"Idea Developer", sender);
+				"Idea Developer", sender,null);
 		invitation._save();
 		if (reciever != null) {
 			reciever.invitation.add(invitation);

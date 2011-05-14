@@ -103,7 +103,7 @@ public class RequestToJoins extends CRUD {
 				organizers.add(organization.creator);
 				Role role = Roles.getRoleByName("idea developer");
 				UserRoleInOrganizations.addEnrolledUser(user, organization,
-						role, topic.id, "Topic");
+						role, topic.id, "topic");
 				topic.requestsToJoin.remove(request);
 
 				// Notifications.sendNotification(organizers, topic.id, "Topic",

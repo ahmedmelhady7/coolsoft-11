@@ -240,14 +240,19 @@ public class User extends Model {
 	 */
 
 	public void addInvitation(String email, String role,
-			Organization organization, MainEntity entity) {
-
+			Organization organization, MainEntity entity,Topic topic) {
+        
 		Invitation invite = new Invitation(email, entity, organization, role,
-				this).save();
+				this,topic).save();
 		this.invitation.add(invite);
+		if(topic!=null)
+			topic.invitations.add(invite);
+		else{
 		organization.invitation.add(invite);
 		if (entity != null)
 			entity.invitationList.add(invite);
+		
+	}
 		this.save();
 	}
 
