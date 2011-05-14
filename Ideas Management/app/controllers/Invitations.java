@@ -83,10 +83,18 @@ public class Invitations extends CRUD {
 		filter = Users.searchUser(name);
 		List<User> organizers = Users.getEntityOrganizers(entity);
 		organizers.add(entity.organization.creator);
+		List <MainEntity> subentities=MainEntity.find("byParent",entity).fetch();
+		List<User> suborganizers = new ArrayList <User>();
+		
+		for(int i=0;i<subentities.size();i++){
+		   List <User> organizer=Users.getEntityOrganizers(subentities.get(i));
+		    for(int j=0;j<organizer.size();j++)
+		    	suborganizers.add(organizer.get(j));
+		}
 
 		List<User> users = new ArrayList<User>();
 		for (int i = 0; i < filter.size(); i++) {
-			if (!organizers.contains(filter.get(i)) || filter.get(i).isAdmin)
+			if (!organizers.contains(filter.get(i)) || !suborganizers.contains(filter.get(i)) || filter.get(i).isAdmin)
 				users.add(filter.get(i));
 		}
 
@@ -141,7 +149,10 @@ public class Invitations extends CRUD {
 
 
 	 public static void send(@Required String email,long entId,long id){
-		  
+		    System.out.println("here");
+		    System.out.println(email);
+		    System.out.println(id);
+		    
 	        
 	        MainEntity entity= MainEntity.findById(entId);
          
@@ -166,15 +177,15 @@ public class Invitations extends CRUD {
 			
 			List<User> organizers = Users.getEntityOrganizers(entity);
 			organizers.add(entity.organization.creator);
-			/*
-			List <MainEntity> subentities=MainEntitys.find("byParent",entity);
-			List<User> suborganizers = new ArrayList <Users>();
+			
+			List <MainEntity> subentities=MainEntity.find("byParent",entity).fetch();
+			List<User> suborganizers = new ArrayList <User>();
 			
 			for(int i=0;i<subentities.size();i++){
 			   List <User> organizer=Users.getEntityOrganizers(subentities.get(i));
-			    for(int j=0;j<organizer.size();i++)
-			    	suborganizers.add(organizer.get(i));
-			}*/
+			    for(int j=0;j<organizer.size();j++)
+			    	suborganizers.add(organizer.get(j));
+			}
 			
 			if(id==0){
 			  	
@@ -183,7 +194,7 @@ public class Invitations extends CRUD {
 			if(user != null){
 				System.out.println("CONDITION");
 	    	for (int i = 0; i < organizers.size(); i++) {
-				if (organizers.contains(user) || user.isAdmin)
+			  if (organizers.contains(user) || user.isAdmin || suborganizers.contains(user))
 					flag=false;
 			}
 			
@@ -223,8 +234,7 @@ public class Invitations extends CRUD {
 
 			//**
 		       
-
-			 render(email,entity);
+				
 		                 
 	  }
 	 private static final Pattern rfc2822 = Pattern.compile(
