@@ -95,8 +95,7 @@ public class Tags extends CRUD {
 			Notifications.sendNotification(org.creator.id, tag.id, "Tag",
 					description);
 		}
-		redirect("Organizations.viewProfile", orgId, "Name already in use..");
-
+		Organizations.viewProfile(orgId);
 	}
 
 	/**

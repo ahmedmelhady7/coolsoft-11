@@ -454,9 +454,13 @@ public class Organizations extends CRUD {
 				}
 			}
 		}
+		boolean join = false;
+		if ((!Users.getEnrolledUsers(org).contains(user)) && (!admin) && (org.privacyLevel == 2)) {
+			join = true;
+		}
 		render(user, org, entities, requestToJoin, tags, flag, canInvite,
 				admin, allowed, isMember, settings, creator, alreadyRequested,
-				follower, usernames);
+				follower, usernames, join);
 	}
 
 	/**
@@ -490,5 +494,23 @@ public class Organizations extends CRUD {
 			}
 		}
 		render(organizations);
+	}
+	
+	/**
+	 * This method allows a user to join a public organization
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S29
+	 * 
+	 * @param orgId
+	 * 				The id of the organization that the user wishes to join
+	 */
+	public static void join(long orgId) {
+		Organization organization = Organization.findById(orgId);
+		User user = Security.getConnected();
+		Role role = Roles.getRoleByName("idea developer");
+		UserRoleInOrganizations.addEnrolledUser(user, organization, role);
+		Organizations.viewProfile(orgId);
 	}
 }
