@@ -213,6 +213,31 @@ public class User extends Model {
 		// topicInvitations = new ArrayList<TopicInvitation>();
 
 	}
+	
+	
+	/**
+	 * 
+	 * Creates a new invitation and adds it to the list of invitations 
+	 * in organization and entity
+	 * 
+	 * @author ${Mai.Magdy}
+	 * 
+	 * @story C1S6
+	 * 
+	 * 
+	 * @param email
+	 *            String email the destination of the invitation
+	 *  
+	 * @param role
+	 *              String role that ll be assigned to the user if accept
+	 *
+	 * @param organization
+	 *                Organization organization that sends the invitation
+	 *              
+	 * @param entity
+	 *              MainEntity entity that sends the invitation
+	 * 
+	 */
 
 	public void addInvitation(String email, String role,
 			Organization organization, MainEntity entity) {
