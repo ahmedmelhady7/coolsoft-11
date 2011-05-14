@@ -115,6 +115,8 @@ public class Tags extends CRUD {
 		List<Organization> organizations = tag.organizations;
 		List<MainEntity> entities = tag.entities;
 		List<Idea> ideas = tag.taggedIdeas;
-		render(tag, followers, topics, organizations, entities, ideas);
+		User user = Security.getConnected();
+		boolean follower = user.followingTags.contains(tag);
+		render(tag, followers, topics, organizations, entities, ideas, follower, user);
 	}
 }

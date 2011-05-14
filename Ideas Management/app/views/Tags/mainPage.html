@@ -10,12 +10,26 @@
     <body>
         #{extends 'main.html' /}
 		#{set title: 'Tag Profile' /}
+		#{if follower == true}
+			 <form onsubmit="unfollow('${tag.id}');" method="post">
+			<p>
+			Unfollow ${tag.name} <input type="submit" value="unfollow" />
+			</p>	
+			</form>
+		#{/if} 
+		#{if follower == false}
+			 <form onsubmit="follow('${tag.id}', '${user.id}');" method="post">
+			<p>
+			Follow ${tag.name} <input type="submit" value="follow" />
+			</p>	
+			</form>
+		#{/if} 
         <center><big><b>${tag.name}</b></big></center><br><br>
 		List of Followers:
 		<br>
 		#{list items:followers, as:'follower'}
 		<li>
-			${follower.name}
+			${follower.username}
 		</li>
 		#{/list}
 		<br>
@@ -50,6 +64,22 @@
 			${idea.title}
 		</li>
 		#{/list}
+		<script type="text/javascript">
+			function unfollow(id){
+		$.post('@{Users.unfollowTag()}', {
+			tagId: id
+		});
+		alert("done!");
+		location.reload(true);
+	}
+	function follow(id, user){
+		$.post('@{Users.followTag()}', {
+			tagId: id, userId:user
+		});
+		alert("done!");
+		location.reload(true);
+	}
+		</script>
 		
     </body>
 </html>
