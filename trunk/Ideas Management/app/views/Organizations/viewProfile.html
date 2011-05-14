@@ -116,11 +116,18 @@
                 <br/>
                 #{/if}
                 </form>
+				#{if follower == true}
+				 <form onsubmit="unfollow('${org.id}');" method="post">
+				<p>
+					Unfollow ${org.name} <input type="submit" value="unfollow" />
+				</p>	
+				</form>
+				#{/if}    
                 <form action="@{Organizations.viewFollowers()}">
                     <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="f" value="false">View ${org.name} Followers <input type="submit" value="Followers">
                     <br/>
                     <HR>
-                </form>#{if b == 1}
+                </form>#{if canInvite == true}
                 <form onsubmit="s(email, '${org.id}');" method="post">
                 	Invite an Idea Developer <br>
                     Email: <input type="text" id="email" name="email"/><input type="submit" value="Invite"/>
@@ -170,6 +177,13 @@
             }
 				
             }
+		function unfollow(id){
+		$.post('@{Users.unfollowOrganization()}', {
+			organizationId: id
+		});
+		alert("done!");
+		location.reload(true);
+	}
             </script>
             
 
