@@ -9,14 +9,10 @@ import notifiers.Mail;
 import play.data.validation.Required;
 import play.data.validation.Validation;
 import play.db.Model;
-import play.db.jpa.GenericModel.JPAQuery;
-import play.db.jpa.JPA;
 import play.exceptions.TemplateNotFoundException;
 import play.mvc.Controller;
 import play.mvc.With;
-import quicktime.app.display.JQTCanvas;
 import controllers.CRUD.ObjectType;
-
 import models.Invitation;
 import models.MainEntity;
 import models.Organization;
@@ -117,7 +113,7 @@ public class Organizations extends CRUD {
 	 * @story C2S28
 	 * 
 	 * @param orgId
-	 *             ID of an organization of type long
+	 *            ID of an organization of type long
 	 */
 
 	public static void getTopics(long orgId) {
@@ -137,23 +133,6 @@ public class Organizations extends CRUD {
 	}
 
 	/**
-	 * This method renders the page for inviting a user to organization
-	 * 
-	 * @author ibrahim al-khayat
-	 * 
-	 * @story C2S26
-	 * 
-	 * @param orgId
-	 *            the id of the organization
-	 * 
-	 */
-
-	public static void InviteMember(long orgId) {
-		long userId = Security.getConnected().id;
-		render(orgId, userId);
-	}
-
-	/**
 	 * This method creates an invitation to a user to join an organization and
 	 * sends it to a user
 	 * 
@@ -168,12 +147,18 @@ public class Organizations extends CRUD {
 	 *            the email of the receiver
 	 * 
 	 * @param byMail
-	 * 			  invite by mail or by username
+	 *            invite by mail or by username
 	 */
 
-	public static void sendInvitation(long organizationId, String email, boolean byMail) {
+	public static void sendInvitation(long organizationId, String email,
+			boolean byMail) {
 		if (!byMail) {
 			email = ((User) User.find("byUsername", email).first()).email;
+		}
+		User reciever = User.find("byEmail", email).first();
+		if (reciever.state.equalsIgnoreCase("d")
+				|| reciever.state.equalsIgnoreCase("n")) {
+			return;
 		}
 		Organization org = Organization.findById(organizationId);
 		User sender = Security.getConnected();
@@ -190,17 +175,16 @@ public class Organizations extends CRUD {
 		Invitation invitation = new Invitation(email, null, org,
 				"Idea Developer", sender);
 		invitation._save();
-		User reciever = User.find("byEmail", email).first();
 		if (reciever != null) {
 			reciever.invitation.add(invitation);
 			reciever._save();
 		}
 		try {
-		Mail.invite(email, "Idea Devoloper", org.name, "");
-		} catch(Exception e) {
-			
-			}
+			Mail.invite(email, "Idea Devoloper", org.name, "");
+		} catch (Exception e) {
+
 		}
+	}
 
 	/**
 	 * This method merely redirects you to the create organization page where
@@ -228,14 +212,14 @@ public class Organizations extends CRUD {
 	 * @story C2S1
 	 * 
 	 * @param name
-	 *             name of the organization
+	 *            name of the organization
 	 * 
 	 * @param privacyLevel
-	 *             whether the organization is public, private or secret
+	 *            whether the organization is public, private or secret
 	 * 
 	 * @param createTag
-	 *             whether the users in that organization are allowed to create
-	 *             tags
+	 *            whether the users in that organization are allowed to create
+	 *            tags
 	 */
 	public static void createOrg(String name, String privacyLevel,
 			String createTag) {
@@ -360,7 +344,7 @@ public class Organizations extends CRUD {
 	 * @author Omar Faruki
 	 * 
 	 * @param id
-	 * 			The id of the organization that you wish to view
+	 *            The id of the organization that you wish to view
 	 */
 	public static void viewProfile(long id) {
 		User user = Security.getConnected();
@@ -457,15 +441,16 @@ public class Organizations extends CRUD {
 		String usernames = "";
 		if (canInvite) {
 			for (int j = 0; j < users.size(); j++) {
-				if (j < users.size()-1) {
-					usernames += users.get(j).username + "|" ;
+				if (j < users.size() - 1) {
+					usernames += users.get(j).username + "|";
 				} else {
 					usernames += users.get(j).username;
 				}
 			}
 		}
-		render(user, org, entities, requestToJoin, tags, flag, canInvite, admin,
-				allowed, isMember, settings, creator, alreadyRequested, follower, usernames);
+		render(user, org, entities, requestToJoin, tags, flag, canInvite,
+				admin, allowed, isMember, settings, creator, alreadyRequested,
+				follower, usernames);
 	}
 
 	/**
