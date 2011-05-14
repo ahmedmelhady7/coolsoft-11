@@ -441,10 +441,12 @@ public class Organizations extends CRUD {
 		String usernames = "";
 		if (canInvite) {
 			for (int j = 0; j < users.size(); j++) {
-				if (j < users.size() - 1) {
-					usernames += users.get(j).username + "|";
-				} else {
-					usernames += users.get(j).username;
+				if (users.get(j).state.equalsIgnoreCase("a")) {
+					if (j < users.size() - 1) {
+						usernames += users.get(j).username + "|";
+					} else {
+						usernames += users.get(j).username;
+					}
 				}
 			}
 		}
