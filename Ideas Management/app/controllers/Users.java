@@ -470,6 +470,10 @@ public class Users extends CRUD {
 		List<User> searchResultByName = new ArrayList<User>();
 		List<User> searchResultByProfession = new ArrayList<User>();
 		List<User> searchResultByEmail = new ArrayList<User>();
+		
+		List<User> searchResultByNameActive = new ArrayList<User>();
+		List<User> searchResultByProfessionActive = new ArrayList<User>();
+		List<User> searchResultByEmailActive = new ArrayList<User>();
 
 		if (keyword != null) {
 
@@ -485,28 +489,25 @@ public class Users extends CRUD {
 		int professionSize = searchResultByProfession.size();
 		int emailSize = searchResultByEmail.size();
 		for (int i = 0; i < nameSize; i++) {
-			if (searchResultByName.get(i).state == "d"
-					|| searchResultByName.get(i).state == "n") {
-				searchResultByName.remove(i);
+			if (searchResultByName.get(i).state == "a") {
+				searchResultByNameActive.add(searchResultByName.get(i));
 			}
 		}
 		for (int i = 0; i < professionSize; i++) {
-			if (searchResultByProfession.get(i).state == "d"
-					|| searchResultByProfession.get(i).state == "n") {
-				searchResultByProfession.remove(i);
+			if (searchResultByProfession.get(i).state == "a") {
+				searchResultByProfessionActive.add(searchResultByProfession.get(i));
 			}
 		}
 
 		for (int i = 0; i < emailSize; i++) {
-			if (searchResultByEmail.get(i).state == "d"
-					|| searchResultByEmail.get(i).state == "n") {
-				searchResultByEmail.remove(i);
+			if (searchResultByEmail.get(i).state == "a") {
+				searchResultByEmailActive.add(searchResultByEmail.get(i));
 			}
 		}
 		ArrayList<User> search = new ArrayList<User>();
-		search.addAll(searchResultByEmail);
-		search.addAll(searchResultByName);
-		search.addAll(searchResultByProfession);
+		search.addAll(searchResultByEmailActive);
+		search.addAll(searchResultByNameActive);
+		search.addAll(searchResultByProfessionActive);
 
 		// searchResultByName.addAll(searchResultByProfession);
 		// searchResultByName.addAll(searchResultByEmail);
@@ -533,6 +534,7 @@ public class Users extends CRUD {
 	public static List<User> searchOrganizer(Organization o) {
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
 		List<User> user = new ArrayList<User>();
+		List<User> userActive = new ArrayList<User>();
 		if (o != null) {
 			// organizers = (List<UserRoleInOrganization>)
 			// UserRoleInOrganization
@@ -553,11 +555,11 @@ public class Users extends CRUD {
 		// }
 		int size = user.size();
 		for (int i = 0; i < size; i++) {
-			if (user.get(i).state == "d" || user.get(i).state == "n") {
-				user.remove(i);
+			if (user.get(i).state == "a") {
+				userActive.add(user.get(i));
 			}
 		}
-		return user;
+		return userActive;
 	}
 
 	/**
