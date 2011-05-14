@@ -39,6 +39,13 @@
                 <br/>
                 #{/if}
                 </form>
+				#{if follower == true}
+			<form onsubmit="unfollow('${entity.id}');" method="post">
+			<p>
+			Unfollow ${entity.name} <input type="submit" value="unfollow" />
+			</p>	
+			</form>
+			#{/if}
        <form action="@{MainEntitys.viewFollowers()}">
           <input type="hidden" name="entityId" value="${entity.id}">
           <input type="hidden" name="f" value="false">
@@ -86,9 +93,15 @@
 		<input type="submit" value="Edit" onclick=location.href="@{MainEntitys.editEntityPage(entity.id)}">
 		<HR>	
 		#{/if}
-
-
-		
+		<script type="text/javascript">
+			function unfollow(id){
+		$.post('@{Users.unfollowEntity()}', {
+			entityId: id
+		});
+		alert("done!");
+		location.reload(true);
+	}
+		</script>
     </body>
 </html>
 

@@ -226,8 +226,9 @@ public class MainEntitys extends CRUD {
 						"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
 						entity.id, "entity")) 
 			invite = 1;
+		boolean follower = user.followingEntities.contains(entity);
 		render(user, org, entity, subentities, topicList, permission, invite,
-				canEdit, canCreateEntity);
+				canEdit, canCreateEntity, follower);
 	}
 
 	/**
