@@ -9,9 +9,12 @@ import notifiers.Mail;
 import play.data.validation.Required;
 import play.data.validation.Validation;
 import play.db.Model;
+import play.db.jpa.GenericModel.JPAQuery;
+import play.db.jpa.JPA;
 import play.exceptions.TemplateNotFoundException;
 import play.mvc.Controller;
 import play.mvc.With;
+import quicktime.app.display.JQTCanvas;
 import controllers.CRUD.ObjectType;
 
 import models.Invitation;
@@ -441,8 +444,19 @@ public class Organizations extends CRUD {
 			}
 		}
 		boolean follower = user.followingOrganizations.contains(org);
+		List<User> users = User.findAll();
+		String usernames = "";
+		if (canInvite) {
+			for (int j = 0; j < users.size(); j++) {
+				if (j < users.size()-1) {
+					usernames += users.get(j).username + "|" ;
+				} else {
+					usernames += users.get(j).username;
+				}
+			}
+		}
 		render(user, org, entities, requestToJoin, tags, flag, canInvite, admin,
-				allowed, isMember, settings, creator, alreadyRequested, follower);
+				allowed, isMember, settings, creator, alreadyRequested, follower, usernames);
 	}
 
 	/**
