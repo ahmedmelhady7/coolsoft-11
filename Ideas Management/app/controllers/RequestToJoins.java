@@ -157,10 +157,10 @@ public class RequestToJoins extends CRUD {
 	 * @story C2S15
 	 * 
 	 * @param orgId
-	 *            : The Id of the desired organization
+	 *             The Id of the desired organization
 	 * 
 	 * @param description
-	 *            : The message to be sent when sending the request
+	 *             The message to be sent when sending the request
 	 */
 
 	public static void requestToJoinOrganization(long orgId, String description) {
@@ -168,9 +168,9 @@ public class RequestToJoins extends CRUD {
 		Organization organization = Organization.findById(orgId);
 		if ((!Users.getEnrolledUsers(organization).contains(requester))
 				&& (organization.privacyLevel == 1)) {
-			RequestToJoin r = new RequestToJoin(requester, null, organization,
+			RequestToJoin request = new RequestToJoin(requester, null, organization,
 					description).save();
-			organization.joinRequests.add(r);
+			organization.joinRequests.add(request);
 			redirect("Login.index", "Your request has been sent..");
 		}
 	}

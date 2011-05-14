@@ -24,7 +24,7 @@ public class Tags extends CRUD {
 	 * @story C2S9
 	 * 
 	 * @param orgId
-	 *            : the current organization that the user wants to create a tag
+	 *            the current organization that the user wants to create a tag
 	 *            in
 	 */
 
@@ -49,10 +49,10 @@ public class Tags extends CRUD {
 	 * @story C2S9
 	 * 
 	 * @param name
-	 *            : The name of the tag
+	 *            The name of the tag
 	 * 
 	 * @param orgId
-	 *            : The organization id of the organization where the tag will
+	 *            The organization id of the organization where the tag will
 	 *            be created
 	 */
 	public static void createTagg(String name, long orgId) {
@@ -106,7 +106,7 @@ public class Tags extends CRUD {
 	 * @author Omar Faruki
 	 * 
 	 * @param tagId
-	 *            : The id of a specific tag
+	 *             The id of a specific tag
 	 */
 	public static void mainPage(long tagId) {
 		Tag tag = Tag.findById(tagId);

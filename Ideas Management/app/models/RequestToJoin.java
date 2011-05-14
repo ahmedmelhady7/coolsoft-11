@@ -6,6 +6,12 @@ import javax.persistence.ManyToOne;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 
+/**
+ * This class is responsible for all requests for joining a private organization
+ * or posting in a private topic
+ * 
+ * @author Omar Faruki 
+ */
 @Entity
 public class RequestToJoin extends Model {
 
@@ -43,16 +49,16 @@ public class RequestToJoin extends Model {
 	 * @story C2S15
 	 * 
 	 * @param source
-	 *            : The user requesting
+	 *            The user requesting
 	 * 
 	 * @param topic
-	 *            : The topic that the user is requesting to post in
+	 *            The topic that the user is requesting to post in
 	 * 
 	 * @param organization
-	 *            : The organization that the user wants to join
+	 *            The organization that the user wants to join
 	 * 
 	 * @param description
-	 *            : The message sent along with the request
+	 *            The message sent along with the request
 	 */
 	public RequestToJoin(User source, Topic topic, Organization organization,
 			String description) {
