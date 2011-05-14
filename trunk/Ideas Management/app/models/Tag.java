@@ -12,6 +12,11 @@ import javax.persistence.OneToMany;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 
+/**
+ * This class is responsible for the creation of a certain tag
+ * 
+ * @author Omar Faruki
+ */
 @Entity
 public class Tag extends Model {
 
@@ -83,10 +88,10 @@ public class Tag extends Model {
 	 * @story C2S9
 	 * 
 	 * @param name
-	 *            : The name of the created tag
+	 *            The name of the created tag
 	 * 
 	 * @param org
-	 *            : The organization in which the tag was created
+	 *            The organization in which the tag was created
 	 */
 	public Tag(String name, Organization org) {
 		this.setName(name);

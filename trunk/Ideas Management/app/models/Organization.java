@@ -16,6 +16,11 @@ import controllers.UserRoleInOrganizations;
 import play.data.validation.*;
 import play.db.jpa.Model;
 
+/**
+ * This is the Organization model class responsible for creating an organization
+ * 
+ * @author Omar Faruki
+ */
 @Entity
 public class Organization extends Model {
 
@@ -116,10 +121,10 @@ public class Organization extends Model {
 	 * @story C2S1
 	 * 
 	 * @param name
-	 *            : Name of the organization of type String
+	 *            Name of the organization of type String
 	 * 
 	 * @param creator
-	 *            : Creator of the organization of type User
+	 *            Creator of the organization of type User
 	 */
 
 	public Organization(String name, User creator) {
@@ -173,16 +178,16 @@ public class Organization extends Model {
 	 * @story C2S1
 	 * 
 	 * @param name
-	 *            : Name of the organization of type String
+	 *            Name of the organization of type String
 	 * 
 	 * @param creator
-	 *            : Creator of the organization of type User
+	 *            Creator of the organization of type User
 	 * 
 	 * @param privacyLevel
-	 *            : privacy level of the organization of type int
+	 *            privacy level of the organization of type int
 	 * 
 	 * @param createTag
-	 *            : enable or disable ability of user to create tags of type
+	 *            enable or disable ability of user to create tags of type
 	 *            boolean
 	 */
 	public Organization(String name, User creator, int privacyLevel,

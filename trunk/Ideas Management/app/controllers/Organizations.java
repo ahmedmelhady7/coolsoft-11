@@ -114,11 +114,11 @@ public class Organizations extends CRUD {
 	 * @story C2S28
 	 * 
 	 * @param orgId
-	 *            : ID of an organization of type long
+	 *             ID of an organization of type long
 	 */
 
-	public static void getTopics(long id) {
-		Organization organization = Organization.findById(id);
+	public static void getTopics(long orgId) {
+		Organization organization = Organization.findById(orgId);
 		notFoundIfNull(organization);
 		List<Topic> topics = new ArrayList<Topic>();
 		int i = 0;
@@ -216,14 +216,14 @@ public class Organizations extends CRUD {
 	 * @story C2S1
 	 * 
 	 * @param name
-	 *            : name of the organization
+	 *             name of the organization
 	 * 
 	 * @param privacyLevel
-	 *            : whether the organization is public, private or secret
+	 *             whether the organization is public, private or secret
 	 * 
 	 * @param createTag
-	 *            : whether the users in that organization are allowed to create
-	 *            tags
+	 *             whether the users in that organization are allowed to create
+	 *             tags
 	 */
 	public static void createOrg(String name, String privacyLevel,
 			String createTag) {
@@ -258,8 +258,8 @@ public class Organizations extends CRUD {
 			}
 			Organization org = new Organization(name, creator, privacyLevell,
 					createTagg).save();
-			Role r = Roles.getRoleByName("organizationLead");
-			UserRoleInOrganizations.addEnrolledUser(creator, org, r);
+			Role role = Roles.getRoleByName("organizationLead");
+			UserRoleInOrganizations.addEnrolledUser(creator, org, role);
 			MainEntity m = new MainEntity("Default", "", org);
 			m.save();
 			flash.success("Your organization has been created!!");
@@ -348,6 +348,7 @@ public class Organizations extends CRUD {
 	 * @author Omar Faruki
 	 * 
 	 * @param id
+	 * 			The id of the organization that you wish to view
 	 */
 	public static void viewProfile(long id) {
 		User user = Security.getConnected();
