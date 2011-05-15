@@ -10,7 +10,7 @@ import play.data.validation.*;
 import play.db.jpa.*;
 
 @Entity
-public class Topic extends Model {
+public class Topic extends CoolModel {
 
 	/**
 	 * the name of the topic
