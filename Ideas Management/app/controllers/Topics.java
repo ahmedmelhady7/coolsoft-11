@@ -854,14 +854,15 @@ public class Topics extends CRUD {
 				&& !actor.isAdmin && !pending)
 				&& !isIdeaDeveloper && isMemeber;
 		boolean follower = actor.topicsIFollow.contains(targetTopic);
+		boolean canCreateRelationship = TopicRelationships.isAllowedTo(topicIdLong);
 		try {
 			render(type, object, tags, creator, followers, ideas, numberOfIdeas,comments,
 					entity, plan, openToEdit, privacyLevel, deleteMessage,
 					deletable, topicIdLong, canClose, canPlan, targetTopic,
 					allowed, permission, topicId, canPost, canNotPost, pending,
-					follower);
+					follower, canCreateRelationship);
 		} catch (TemplateNotFoundException e) {
-			render("CRUD/show.html", type, object, topicId);
+			render("CRUD/show.html", type, object, topicId, canCreateRelationship);
 		}
 	}
 

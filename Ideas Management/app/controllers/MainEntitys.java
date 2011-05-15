@@ -265,8 +265,9 @@ public class MainEntitys extends CRUD {
 						entity.id, "entity")) 
 			invite = 1;
 		boolean follower = user.followingEntities.contains(entity);
+		boolean canCreateRelationship = EntityRelationships.isAllowedTo(id);
 		render(user, org, entity, subentities, topicList, permission, invite,
-				canEdit, canCreateEntity, follower);
+				canEdit, canCreateEntity, follower, canCreateRelationship);
 	}
 
 	/**
