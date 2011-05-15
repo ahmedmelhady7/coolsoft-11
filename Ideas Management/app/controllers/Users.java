@@ -896,6 +896,10 @@ public class Users extends CRUD {
 	 * Returns a list of all idea developers within a certain organization in a
 	 * certain entity or in a specific topic according to the "type" passed
 	 * 
+	 * @author Nada Ossama
+	 * 
+	 * @story C1S7
+	 * 
 	 * @param entityTopicId
 	 *            : long entityTopicId is the id of the entity or topic
 	 * 
