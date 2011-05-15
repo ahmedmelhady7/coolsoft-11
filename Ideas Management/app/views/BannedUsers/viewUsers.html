@@ -1,0 +1,108 @@
+<!-- @author : Mai Magdy -->
+#{extends 'main.html' /}
+
+<a href="@{Login.index()}">Back to Home</a>
+<hr>          </hr>
+
+<u><font size ="5" color ="blue">Idea Developers Enrolled</font></u>
+<br/>
+<br/>
+<table border="0" bgcolor="#ececec" cellspacing="5">
+#{if users.isEmpty()}
+</table>
+<tr><td><u><font size ="3" color ="black">No user Found</font></u></td><td>
+#{/if}
+#{else}
+#{list items:0..users.size()-1, as:'u'} 
+<html>
+<table border="0" bgcolor="#ececec" cellspacing="5" >
+
+<tr><td><font size ="3" color ="black">Name  : ${users.get(u).firstName}</font></td><td>
+<tr><td><font size ="3" color ="black">Name  : ${users.get(u).email}</font></td><td>
+
+<tr><td><input type="button" onclick="javascript: show('${users.get(u).id}',0,'${topic.id}','num','${u}');" id="1_${u}" />
+<input type="button" onclick="javascript: show('${users.get(u).id}',1,'${topic.id}','num','${u}');"  id="2_${u}" />
+</td><td> 
+</table>
+</html>
+<br/>
+<br/>
+
+#{/list}
+#{list items:0..count.size()-1, as:'c'}
+#{if count.get(c)==3}
+<script type="text/javascript">
+document.getElementById('1_${c}').value="Unblock from viewing";
+document.getElementById('2_${c}').value="Unblock from using";
+</script>
+#{/if}
+#{if count.get(c)==2}
+<script type="text/javascript">
+document.getElementById('1_${c}').value="Block from viewing";
+document.getElementById('2_${c}').value="Unblock from using";
+</script>
+#{/if}
+#{if count.get(c)==1}
+<script type="text/javascript">
+document.getElementById('1_${c}').value="Unblock from viewing";
+document.getElementById('2_${c}').value="Block from using";
+</script>
+#{/if}
+#{if count.get(c)==0}
+<script type="text/javascript">
+document.getElementById('1_${c}').value="Block from viewing";
+document.getElementById('2_${c}').value="Block from using";
+</script>
+#{/if}
+#{/list}
+#{/else}
+
+
+
+
+
+<script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
+	</script>
+	
+<script type="text/javascript">
+function show(userId,type,topId,id,i){
+	       
+	if ( type==0 ) {
+		       var m=document.getElementById('1_'+i).value;
+		$.post('@{block()}', {userId :userId,type:type,topId:topId,id:id,m:m},
+			 function()
+			 {
+			    if (m == "Block from viewing") {
+					alert("Block from viewing");
+					document.getElementById('1_' + i).value = "Unblock from viewing";
+				}
+				else{
+					alert("Unblock from viewing");
+					document.getElementById('1_' + i).value = "Block from viewing";
+				}
+			});
+	}
+	else {
+		   var m=document.getElementById('2_'+i).value;
+		$.post('@{block()}', {userId :userId,type:type,topId:topId,id:id,m:m},
+			 function()
+			 {
+			     
+				 if (m == "Block from using") {
+				 	
+				 	alert("Block from using");
+				 	
+				 	document.getElementById('2_'+i).value = "Unblock from using";
+				 }
+				 else{
+				 	  	alert("Unblock from using");
+				 	
+				 	document.getElementById('2_'+i).value = "Block from using";
+				 }
+			     
+			});
+	}
+}
+
+</script>
+
