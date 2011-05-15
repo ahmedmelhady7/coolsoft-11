@@ -118,7 +118,11 @@ public class Search extends Controller {
 	/**
 	 * @author Loaay Alkherbawy
 	 * 
-	 *         Method that renders the searchResult View
+	 * @return void
+	 * 
+	 * @description Method that renders the searchResult View and divides the
+	 *              listOfResults to 4 lists according to the type of the result
+	 *              to render it
 	 */
 	public static void searchResult() {
 		String connected = Security.connected();
@@ -142,11 +146,6 @@ public class Search extends Controller {
 					organizationsFound.add((Organization) listOfResults.get(i));
 				}
 			}
-			for (int i = 0; i < listOfResults.size(); i++) {
-				System.out.println(listOfResults.get(i).toString());
-			}
-			System.out.println(organizationsFound.size()
-					+ " /organizations found");
 			download(u);
 			List<Model> lof = listOfResults;
 			render(u, connected, lof, ideasFound, organizationsFound,
@@ -691,9 +690,11 @@ public class Search extends Controller {
 	 * @param keyword
 	 *            : the keyword the user enters to search for
 	 * 
+	 * @description the method that calls all the helper methods
+	 *              searchForOrganization, searchForEntity, searchForIdea,
+	 *              searchForTopic and sums up the results in one list
 	 */
 	public static void quickSearch(String keyword) {
-		System.out.println(keyword);
 		listOfResults = new ArrayList<Model>();
 		// Adding Organizations to search result
 		List<Organization> organizationsList = searchForOrganization(keyword);
@@ -715,7 +716,6 @@ public class Search extends Controller {
 		for (int i = 0; i < TopicsList.size(); i++) {
 			listOfResults.add(TopicsList.get(i));
 		}
-		System.out.println(listOfResults.size() + "fin");
 	}
 
 	/**
@@ -728,6 +728,9 @@ public class Search extends Controller {
 	 *            : the keyword the user enters to search for
 	 * 
 	 * @return List<Object>
+	 * 
+	 * @description the method that searches for organizations with the keyword
+	 *              given
 	 */
 	public static List<Organization> searchForOrganization(String keyword) {
 		String userId = Security.connected();
@@ -761,7 +764,6 @@ public class Search extends Controller {
 						}
 					}
 				}
-				System.out.println(listOfOrgs.toString() + "----------");
 				if (!Users.getEnrolledUsers(listOfOrganizations.get(i))
 						.contains(u)) {
 					switch (listOfOrganizations.get(i).privacyLevel) {
@@ -787,6 +789,8 @@ public class Search extends Controller {
 	 *            : the keyword the user enters to search for
 	 * 
 	 * @return List<Object>
+	 * 
+	 * @description the method that searches for entities with the keyword given
 	 */
 	public static List<MainEntity> searchForEntity(String keyword) {
 		String userId = Security.connected();
@@ -842,6 +846,8 @@ public class Search extends Controller {
 	 *            : the keyword the user enters to search for
 	 * 
 	 * @return List<Object>
+	 * 
+	 * @description the method that searches for ideas with the keyword given
 	 */
 	public static List<Idea> searchForIdea(String keyword) {
 		String userId = Security.connected();
@@ -873,8 +879,6 @@ public class Search extends Controller {
 						}
 					}
 				}
-				List<User> enrolledUsers = Users.getEnrolledUsers(listOfIdeas
-						.get(i).belongsToTopic.entity.organization);
 				if (!listOfIdeas.get(i).belongsToTopic.followers.contains(u)) {
 					switch (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel) {
 					case 0:
@@ -900,6 +904,8 @@ public class Search extends Controller {
 	 *            : the keyword the user enters to search for
 	 * 
 	 * @return List<Object>
+	 * 
+	 * @description the method that searches for Topics with the keyword given
 	 */
 	public static List<Topic> searchForTopic(String keyword) {
 		String userId = Security.connected();
@@ -1405,8 +1411,8 @@ public class Search extends Controller {
 	 * 
 	 * @param User
 	 *            user: the User connected now
-	 *            
-	 * @return File the file containing the search result 
+	 * 
+	 * @return File the file containing the search result
 	 * 
 	 * @description this method generates the .csv file that will be downloaded
 	 *              and puts it in the public folder
@@ -1418,7 +1424,6 @@ public class Search extends Controller {
 					.getLocation().getPath();
 			File root = new File(path + "/public/");
 			File file = new File(root, "searchResults.csv");
-			System.out.println(file.getAbsolutePath());
 			if (!file.exists()) {
 				file.createNewFile();
 			}
