@@ -1063,7 +1063,7 @@ public class Users extends CRUD {
 			System.out
 					.println("create() done will redirect to users/show?topicid "
 							+ message2);
-			redirect("/users/show?userid=" + tmp.getId());
+			redirect("/users/show?userId=" + tmp.getId());
 
 		}
 		if (params.get("_saveAndAddAnother") != null) {
@@ -1152,17 +1152,17 @@ public class Users extends CRUD {
 				System.out.println("show user catch ");
 				render("CRUD/blank.html", type);
 			}
+		}
 
 			System.out.println(object.toString() + "before save");
 			object._save();
 			System.out.println(object.toString() + "after the save");
-
 			flash.success(Messages.get("crud.saved", type.modelName));
 			if (params.get("_save") != null) {
 				redirect(request.controller + ".list");
 			}
 			redirect(request.controller + ".show", object._key());
-		}
+		
 	}
 
 	/**
