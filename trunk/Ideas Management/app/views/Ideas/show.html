@@ -17,6 +17,13 @@
     <br/>
     
     <div class="objectForm">
+    #{if canDelete}
+    #{form @delete(object._key())}
+		<p class="crudDelete">
+			<input type="submit" value="&{'crud.delete', type.modelName}" />
+		</p>
+	#{/form}
+	#{/if}
         #{form action:@show(object._key()), enctype:'multipart/form-data'}
 		<br/>
         #{crud.form fields: ['author','belongsToTopic','title','description','isDraft']}
@@ -131,7 +138,4 @@
                 <input type="submit" value="Report As Spam">
             </form>
             #{/if}
-      #{else}
-      you have already reported this idea as spam.
-      #{/else}
 	</div>
