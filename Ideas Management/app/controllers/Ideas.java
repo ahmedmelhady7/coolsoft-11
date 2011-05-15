@@ -1,6 +1,3 @@
-/**
- * 
- */
 package controllers;
 
 import java.util.*;
@@ -8,6 +5,8 @@ import java.lang.reflect.*;
 import java.lang.annotation.*;
 
 import javax.persistence.Id;
+
+import controllers.CRUD.ObjectType;
 
 import play.*;
 import play.data.binding.*;
@@ -245,7 +244,7 @@ public class Ideas extends CRUD {
 		}
 
 		object._save();
-		author.communityContributionCounter++ ;
+		author.communityContributionCounter++;
 		author.save();
 		System.out.println("3ada el save");
 		String anothermessage = "you have created a new idea with title "
@@ -299,6 +298,10 @@ public class Ideas extends CRUD {
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
 		int alreadyReported = -1;
+		boolean canDelete = false;
+		if (author.toString().equals(idea.author.toString()))
+			canDelete = true;
+
 		for (int j = 0; j < idea.reporters.size(); j++) {
 			if (!author.username.equals(idea.reporters.get(j).username)) {
 				idea.reporters.add(author);
@@ -310,11 +313,13 @@ public class Ideas extends CRUD {
 		try {
 			System.out.println("show() done, about to render");
 			// System.out.println("x is " + x);
-			render(type, object, /* tags, */author, comments, topic, plan,
-			/* openToEdit, */topicId, alreadyReported, deletemessage, /*
-																	 * deletable,
-																	 */
-			ideaId);
+			render(type, object, /* tags, */author, canDelete, comments, topic,
+					plan,
+					/* openToEdit, */topicId, alreadyReported, deletemessage, /*
+																			 * deletable
+																			 * ,
+																			 */
+					ideaId);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -360,7 +365,6 @@ public class Ideas extends CRUD {
 	 * 
 	 * @description This method is resposible for viewing an idea
 	 * 
-	 * @throws Exception
 	 * 
 	 */
 	public static void view(long ideaId) {
@@ -417,7 +421,6 @@ public class Ideas extends CRUD {
 	 * @description This method renders the list of topics, with search and sort
 	 *              options
 	 * 
-	 * @throws Exception
 	 * 
 	 */
 	public static void list(int page, String search, String searchFields,
@@ -529,6 +532,34 @@ public class Ideas extends CRUD {
 		}
 		redirect(request.controller + ".show", ((Idea) object).getId());
 		System.out.println("save() done, redirected to default show.html");
+	}
+
+	/**
+	 * Overriding the CRUD method delete.
+	 * 
+	 * @author ${Ahmed EL-Hadi}
+	 * 
+	 * 
+	 * @param ideaId
+	 *            : id of the idea to be deleted
+	 * 
+	 * @description This method deletes and idea from the database
+	 * 
+	 * 
+	 */
+	public static void delete(long ideaId) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(ideaId);
+		notFoundIfNull(object);
+		try {
+			object._delete();
+		} catch (Exception e) {
+			flash.error(Messages.get("crud.delete.error", type.modelName));
+			redirect(request.controller + ".show", object._key());
+		}
+		flash.success(Messages.get("crud.deleted", type.modelName));
+		redirect(request.controller + ".list");
 	}
 
 	/**

@@ -47,15 +47,8 @@ My Profile: <input type="submit" value="Profile" />
 </form>
 <form action="@{Users.listFollows()}">
     <input type="hidden" name="userId" value="${u.id}">Follow List: <input type="submit" value="view">
-</form> &nbsp;
-<p>
-    &nbsp;
-    Show Ideas List:
-    <input type="submit" value="Show Ideas List" onclick=location.href="ideas/list">
-</p>
-<form action="@{Organizations.mainPage()}" method="post">
-    Organizations you are enrolled in: <input type="submit" value="View">
 </form>
+<form action="@{Organizations.mainPage()}" method="post">Organizations you are enrolled in: <input type="submit" value="View"></form>
 <form action="@{Organizations.viewAllOrganizations()}" method="post">
 	View All Organizations: <input type="submit" value="View">
 </form>
