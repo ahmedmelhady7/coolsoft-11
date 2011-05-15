@@ -890,7 +890,38 @@ public class Users extends CRUD {
 		}
 		return enrolled;
 	}
-
+   
+	
+	/**
+	 * Returns a list of all idea developers within a certain organization in a
+	 * certain entity or in a specific topic according to the "type" passed
+	 * 
+	 * @param entityTopicId
+	 *            : long entityTopicId is the id of the entity or topic
+	 * 
+	 * @param type
+	 *            : String type is the parameter that specifies whether to fetch
+	 *            all the idea developers in the required entity or in a certain
+	 *            topic
+	 * 
+	 * @return List<User> : is the list of idea developers
+	 */
+	
+	public static List<User> getIdeaDevelopers(long entityTopicId , String type){
+		List <User> enrolled = null;
+	
+		Role role = Roles.getRoleByName("idea developer");
+		MainEntity entity = MainEntity.findById(entityTopicId);
+		Organization organization = entity.organization;
+		if(type.equalsIgnoreCase("topic")){
+			Topic topic = Topic.findById(entityTopicId);
+			entity = topic.entity;
+			organization = entity.organization;
+		}
+		enrolled = UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? and uro.role = ? and uro.entityTopicID = ? and type = ?",organization,role,entityTopicId, type ).fetch();
+		return enrolled ;
+	}
+	
 	/**
 	 * return all the entities that a certain organizer is enrolled in within a
 	 * certain organization
