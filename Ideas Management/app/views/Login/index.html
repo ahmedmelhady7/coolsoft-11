@@ -19,6 +19,10 @@ ${u.communityContributionCounter}
 <br>
 My Admin: <input type="submit" value="Admin View" onclick="goAdmin('${u.isAdmin}')">
 <br>
+<form action="@{Users.myProfile()}" method="post">
+My Profile: <input type="submit" value="Profile" />
+</form>
+
 #{if admin==0}	
 <form action="@{Invitations.view()}" method="GET">
 <input type="submit" value="View Invitations" />

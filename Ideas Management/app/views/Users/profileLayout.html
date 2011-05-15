@@ -1,5 +1,4 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-#{extends '/main.html' /}
 <html lang="${lang}">
     <head>
         <title>#{get 'title' /}</title>
@@ -15,9 +14,6 @@
         </div>-->
 
 #{if request.actionMethod != 'index'}
-            <div id="crudBreadcrumb">
-                #{crud.navigation /}
-            </div>
 #{/if}
 
 #{if flash.success}

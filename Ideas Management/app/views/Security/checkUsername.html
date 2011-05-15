@@ -1,0 +1,32 @@
+#{extends 'Secure/layout.html' /}
+#{set title:'Password Recovery' /}
+
+
+<h1>Please answer your security question:</h1>
+<br>
+#{if flash.error}
+<div id = passrecovery>
+	<p class="error">
+		${flash.error}
+	</p>
+</div>
+#{/if}
+<p>Who is the GOAT?</p>
+<form action="@{Security.recoverPassword()}" method="post">
+	<input type="hidden" name="username" value="${user.username}"/>
+	<input type="text" name="answer" id="ans"/>
+	<input type="submit"  value="submit" />
+</form>
+
+#{if flash.success}
+<div id = passrecovery>
+	<p class="success">
+		${flash.success}
+	</p>
+</div>
+#{/if}
+<script type="text/javascript">
+function check() {
+	
+}
+</script>
