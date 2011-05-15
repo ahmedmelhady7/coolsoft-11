@@ -20,13 +20,19 @@ public class Log extends CoolModel{
 	public String actionDescription;
 	public long time;
 	
-	
-	
 	/**
-     * Adds a log with the models attached
-     * @param message log message
-     * @param models all models attached to this log
-     */
+	 * Adds a log with the models attached
+	 * 
+	 * @author Lama Ashraf
+	 * 
+	 * @story C1S8
+	 * 
+	 * @param  message 
+	 * 				String log message
+	 *@param models 
+	 *				CoolModel all models attached to this log        
+	 */
+	
 	public static void addLog(String message, CoolModel... models) {
         Log log = new Log();
         log.actionDescription = message;
@@ -46,10 +52,18 @@ public class Log extends CoolModel{
 }
 	
 	/**
-     * Adds a log with the connected user attached to the models
-     * @param message log message
-     * @param models all  models attached to this log
-     */
+	 * Adds a log with the connected user attached to the models
+	 * 
+	 * @author Lama Ashraf
+	 * 
+	 * @story C1S8
+	 * 
+	 * @param  message 
+	 * 				String log message
+	 *@param models 
+	 *				CoolModel all models attached to this log        
+	 */
+	
     public static void addUserLog(String message, CoolModel... models) {
             CoolModel[] newModels = Arrays.copyOf(models, models.length + 1);
             newModels[models.length] = Security.getConnected();
