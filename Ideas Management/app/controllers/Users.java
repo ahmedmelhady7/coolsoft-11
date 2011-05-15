@@ -1064,8 +1064,13 @@ public class Users extends CRUD {
 		tmp.username = tmp.username.trim();
 		tmp.password = tmp.password.trim();
 		tmp.firstName = tmp.firstName.trim();
+		boolean flag=false;
+		if (User.find("ByEmail", tmp.email)!= null||User.find("ByUsername", tmp.username) != null)
+		{
+			flag = true;
+		}
 
-		if (validation.hasErrors()) {
+		if (validation.hasErrors()||flag) {
 			System.out.println("lol");
 			if (tmp.email.equals("")) {
 				message = "A User must have an email";
@@ -1083,9 +1088,9 @@ public class Users extends CRUD {
 				message = "Username cannot exceed 20 characters";
 			} else if (tmp.password.length() >= 25) {
 				message = "First name cannot exceed 25 characters";
-			} else if (User.find("ByEmail", tmp.email).first() != null) {
+			} else if (User.find("ByEmail", tmp.email) != null) {
 				message = "This Email already exists !";
-			} else if (User.find("ByUsername", tmp.username).first() != null) {
+			} else if (User.find("ByUsername", tmp.username) != null) {
 				message = "This username already exists !";
 			}
 
@@ -1103,6 +1108,7 @@ public class Users extends CRUD {
 		object._save();
 		System.out.println("create() object saved");
 		tmp = (User) object;
+		Mail.welcome(tmp);
 		// Calendar cal = new GregorianCalendar();
 		// Logs.addLog( user.getConnected, "add", "User", tmp.username. cal.getTime() );
 		String message2 = tmp.username + " has been added to users ";
@@ -1152,17 +1158,7 @@ public class Users extends CRUD {
 		Binder.bind(object, "object", params.all());
 		System.out.println(object.toString() + "begin");
 		validation.valid(object);
-		/*
-		 * if (validation.hasErrors()) { System.out.println(object.toString() +
-		 * "first if"); renderArgs.put("error", Messages.get("crud.hasErrors"));
-		 * System.out.println(object.toString() + "t7t first if"); try {
-		 * System.out.println(object.toString() + "try");
-		 * render(request.controller.replace(".", "/") + "/show.html", type,
-		 * object); System.out.println("m3mlsh render"); } catch
-		 * (TemplateNotFoundException e) { System.out.println(object.toString()
-		 * + "catch"); render("CRUD/show.html", type, object); } }
-		 */
-
+		
 		String message = "";
 		User tmp = (User) object;
 		System.out.println("create() entered");
