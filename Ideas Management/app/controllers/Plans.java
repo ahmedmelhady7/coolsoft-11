@@ -191,7 +191,9 @@ public class Plans extends CRUD {
 	}
 
 	/**
-	 * This Method associates the list of selected ideas to the plan
+	 * This Method associates the list of selected ideas to the plan 
+	 * and increments the community contribution counter of the authors 
+	 * of these plans
 	 * 
 	 * @story C5S4
 	 * 
