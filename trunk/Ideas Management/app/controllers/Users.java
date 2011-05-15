@@ -104,7 +104,6 @@ public class Users extends CRUD {
 		String profession = object.profession;
 		String username = object.username;
 		String birthDate = "" + object.dateofBirth;
-
 		try {
 			System.out.println("view() done, about to render");
 			render(type, object, username, name, communityContributionCounter,
@@ -183,7 +182,31 @@ public class Users extends CRUD {
 			render("CRUD/show.html", type, object);
 		}
 	}
-
+	
+	public static void showProfile(String userId) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(userId);
+		notFoundIfNull(object);
+		User tmp = (User) object;
+		int communityContributionCounter = tmp.communityContributionCounter;
+		String name = tmp.firstName + " " + tmp.lastName;
+		String profession = tmp.profession;
+		String username = tmp.username;
+		String birthDate = "" + tmp.dateofBirth;
+		try {
+			render(type, object, username, name, communityContributionCounter,
+					profession, birthDate, userId);
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/show.html", type, object);
+		}
+	}
+	
+	public static void myProfile() {
+		User user = Security.getConnected();
+		showProfile(user.id + "");
+	}
+	
 	/**
 	 * Overriding the CRUD method blank.
 	 * 
