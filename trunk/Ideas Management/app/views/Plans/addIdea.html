@@ -1,10 +1,11 @@
 #{extends 'main.html' /}
-Topic: ${topic.title}
+Topic: <a href="@{Topics.show("" + topic.id)}">${topic.title}</a>
+
 <br/>
 #{if ideas.size() > 0}
 Ideas posted in this topic:
 <br/>
-#{form @Plans.planCreate(), method:'POST', id:'creationForm', onsubmit: 'return validate()',
+#{form @Plans.selectedIdeas(), method:'POST', id:'creationForm', onsubmit: 'return validate()',
        enctype:'multipart/form-data' }
 #{list items:ideas, as:'idea'}
  <fieldset>
@@ -13,20 +14,27 @@ Ideas posted in this topic:
         </legend>
 		Description: ${idea.description}
 		<br/>
-		Author:  <a href="#">${idea.author.username}</a>
+		Author: 
+		#{if idea.author.state == "a"}
+		  <a href="#">${idea.author.username}</a>
+		 #{/if}
+		 #{else}
+		  ${idea.author.username}
+		  #{/else}
 		<br/>
 		Rating: ${idea.rating}
 		<br/>
-<input  type="checkbox" name="checkedIdeas" value = ${idea.id} onclick = "javascript: toggleCheck('${idea.id}')"> add to plan
+<input  type="checkbox" name="checkedIdeas" value = ${idea.id} onclick = "javascript: toggleCheck('${idea.id}')"> Associate to plan
  </fieldset>
 #{/list}
-<input type = "hidden" name = "topicId" value = ${topic.id} >
-<input type="submit" value="Create the plan">
+<input type = "hidden" name = "planId" value = ${plan.id} >
+<input type="submit" value="save">
 #{/form}
 #{/if}
 #{else}
 The topic has no ideas to be promoted to execution
 #{/else}
+<a href="@{Plans.viewAsList(plan.id)}">Go back to plan</a>
 
 <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
 </script>

@@ -15,8 +15,17 @@
 #{if canEdit == 1}
 			<a href="@{Plans.editPlan(p.id)}">Edit General info about the plan</a>
 #{/if}
+#{if canIdea == 1}
+<form action="@{Plans.addIdea()}" method="post">
+<input type = "hidden" name = "planId" value = ${p.id} >
+<input type="submit" value="Associate ideas to this plan">
+</form>
+#{/if}
 <br/>
-
+<form action="@{Plans.planView()}" method="post">
+<input type = "hidden" name = "planId" value = ${p.id} >
+<input type="submit" value="View the list of ideas associated to this plan">
+</form>
 <br/>
 		<form action="@{Plans.rate(p.id,rat)}" method="GET">
 			<input type="submit" value="Submit rating"/>
@@ -77,7 +86,7 @@
             #{if item.assignees.size() > 0}
 			Assigned Users: 
             <ul style="list-style: none; ">
-                #{list items:item.assignees, as:'assignedUser'}
+                #{list items:item.getAssignees(), as:'assignedUser'}
                 <li>
                     <a href="#">${assignedUser.username}</a>
                 </li>

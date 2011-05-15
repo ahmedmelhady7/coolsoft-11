@@ -87,8 +87,11 @@
         #{/crud.custom }
         #{/crud.form }
         <br/>
-        <button type="submit" onclick= >  Edit
-        </button>
+         #{if permission == 1}
+                 <br>
+<button type="submit" onclick= > Edit </button>
+        <br>
+                #{/if}
         <br/>
         #{if allowed==1}<a href="@{RequestToJoins.viewRequests(1,object.id)}">Requests</a>
         #{/if}
@@ -129,7 +132,7 @@
         <input type = "hidden" name = "topicId" value = ${topicId}><input type="submit" value="Reopen Topic" />#{/form}
         #{/if}
         #{if canPlan == 1 && openToEdit == false && plan == null}
-        #{form @Plans.addIdea(), method:'POST', enctype:'multipart/form-data' }
+        #{form @Plans.planCreate(), method:'POST', enctype:'multipart/form-data' }
         <input type = "hidden" name = "topicId" value = ${topicIdLong}><input type="submit" value="Create A plan" />#{/form}
         #{/if}
         #{if openToEdit == false && plan != null}

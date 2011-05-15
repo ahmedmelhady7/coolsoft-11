@@ -1,0 +1,50 @@
+#{extends 'planLayout.html' /}
+#{if ideas.size() > 0}
+
+Ideas associated to this plan:
+<br/>
+<ul style="list-style: none; ">
+    #{list items:ideas, as:'idea'}
+    <li id = "idea_${idea.id}">
+        <fieldset>
+            <legend>
+                Title: ${idea.title}
+            </legend>
+            Description: ${idea.description}
+            <br/>
+            Author: 
+            #{if idea.author.state == "a"}<a href="#">${idea.author.username}</a>
+            #{/if}
+            #{else}
+            ${idea.author.username}
+            #{/else}
+            <br/>
+            Rating: ${idea.rating}
+            <br/>
+			#{if canIdea == 1}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="unassociate to the plan" onclick="submit(${idea.id}, ${p.id})"/>
+       		#{/if}
+	    </fieldset>
+    </li>#{/list}
+</ul> #{/if}
+#{else}
+There are no ideas associated to this plan
+#{/else}
+#{if canIdea == 1}
+<form action="@{Plans.addIdea()}" method="post">
+    <input type = "hidden" name = "planId" value = ${p.id}><input type="submit" value="Associate ideas to this plan">
+</form>
+#{/if}
+<a href="@{Plans.viewAsList(p.id)}">Go back to plan</a>
+<script type="text/javascript">
+    
+    function submit(id, planId){
+    
+        $.post('@{unassociateIdea()}', {ideaId:id, planId:planId});
+        
+        $('#idea_' + id).remove();    
+        //window.location.reload();
+  }
+    
+    
+</script>

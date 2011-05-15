@@ -63,6 +63,7 @@ public class Bootstrap extends Job {
 					"student");
 			gom3a._save();
 
+
 			User khayat = new User("ibrahim.al.khayat@gmail.com", "ialk",
 					"1234", "Ibrahim", "EL-khayat", 0, new Date(1991, 1, 19),
 					"Egypt", "student");
@@ -168,7 +169,7 @@ public class Bootstrap extends Job {
 			gucMetStudentUnion._save();
 			gucMetStudentUnion.tags.add(tagGuc);
 			gucMetStudentUnion._save();
-
+			
 			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
 			// UserRoleInOrganizations.addEnrolledUser(gom3a, guc,
@@ -208,6 +209,7 @@ public class Bootstrap extends Job {
 			elAhly.topicList.add(matchChaos);
 			elAhly._save();
 
+
 			Idea i1 = new Idea("Law Improvement",
 					"Adding restrcitions on businessmen", barnasa, govImp, true);
 			i1.save();
@@ -239,13 +241,40 @@ public class Bootstrap extends Job {
 			i6.save();
 			hadi.save();
 			Plan p1 = new Plan("S.U. heads", ashraf, new Date(111, 03, 20),
-					new Date(111, 8, 01), "Plan for SU heads elections",
+					new Date(111, 07, 30), "Plan for SU heads elections",
 					gucMetStudentUnion, "summer break").save();
 			gucMetStudentUnion.plan = p1;
 			gucMetStudentUnion.openToEdit = false;
 			gucMetStudentUnion.save();
 			ashraf.planscreated.add(p1);
 			ashraf.save();
+
+			 i6.plan = p1;
+			 i6._save();
+			 p1.addIdea(i6);
+			 p1.save();
+
+			// p1.usersRated.add(gom3a);
+			// p1.rating = 1;
+			// i2.plan = p1;
+			// i2._save();
+			// i1.plan = p1;
+			// i1._save();
+			
+			// p1.addIdea(i2);
+			// p1.addIdea(i1);
+			// p1.save();
+			// // p1._save();
+			//
+			// Comment c1 = new Comment("i prefer new Computers ", i1, ashraf)
+			// .save();
+			// c1.commentedIdea = i2;
+			// c1._save();
+			//
+			// Comment c2 = new Comment("good idea", p1, gom3a).save();
+			// c2.commentedPlan = p1;
+			// c2._save();
+			//
 
 			Item item1 = new Item(
 					new Date(111, 05, 01),

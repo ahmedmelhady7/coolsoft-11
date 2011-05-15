@@ -47,7 +47,7 @@ public class BannedUser extends Model {
 		this.bannedUser = banned;
 		this.action = action;
 		organization = org;
-		resourceType = resourceType;
+		this.resourceType = resourceType;
 		resourceID = resourceId;
 
 	}
