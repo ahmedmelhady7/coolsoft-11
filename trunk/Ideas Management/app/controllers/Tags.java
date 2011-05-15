@@ -171,6 +171,7 @@ public class Tags extends CRUD {
 		List<Idea> ideas = tag.taggedIdeas;
 		User user = Security.getConnected();
 		boolean follower = user.followingTags.contains(tag);
-		render(tag, followers, topics, organizations, entities, ideas, follower, user);
+		boolean canCreateRelationship = TagRelationships.isAllowedTo(tagId);
+		render(tag, followers, topics, organizations, entities, ideas, follower, user, canCreateRelationship);
 	}
 }
