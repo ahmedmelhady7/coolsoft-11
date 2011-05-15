@@ -11,7 +11,7 @@ import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
-public class Label extends Model
+public class Label extends CoolModel
 {
 	@Required
 	public String name;
