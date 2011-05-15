@@ -524,14 +524,14 @@ public class Organizations extends CRUD {
 	 * 
 	 * @story C2S29
 	 * 
-	 * @param orgId
+	 * @param organizationId
 	 * 				The id of the organization that the user wishes to join
 	 */
-	public static void join(long orgId) {
-		Organization organization = Organization.findById(orgId);
+	public static void join(long organizationId) {
+		Organization organization = Organization.findById(organizationId);
 		User user = Security.getConnected();
 		Role role = Roles.getRoleByName("idea developer");
 		UserRoleInOrganizations.addEnrolledUser(user, organization, role);
-		Organizations.viewProfile(orgId);
+		Organizations.viewProfile(organizationId);
 	}
 }
