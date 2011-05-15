@@ -583,7 +583,8 @@ public class Topics extends CRUD {
 	 * 
 	 * @description This method checks for the Validation of the info inserted
 	 *              in the Add form of a Topic and if they are valid the object
-	 *              is created and saved.
+	 *              is created and saved and the community contribution
+	 *              counter of the author is incremented.
 	 * @throws Exception
 	 * 
 	 */
@@ -604,19 +605,6 @@ public class Topics extends CRUD {
 		tmp.entity = topicEntity;
 		User myUser = Security.getConnected();
 		tmp.creator = myUser;
-
-		/*
-		 * if( !Users.isPermitted(tmp.creator , "post topics",
-		 * topicEntity.getId(), "entity")) { message =
-		 * "Sorry but you are not allowed to post topics in this entity";
-		 * System.out.println(message); try {
-		 * System.out.println("create() render try");
-		 * render(request.controller.replace(".", "/") + "/blank.html",
-		 * entityId, type, tmp.title, tmp.entity, tmp.description, message,
-		 * entityId); } catch (TemplateNotFoundException e) {
-		 * System.out.println("create() render catch");
-		 * render("CRUD/blank.html", type, entityId); }}
-		 */
 		System.out
 				.println("the idea beforew validation check" + tmp.toString());
 
@@ -669,6 +657,10 @@ public class Topics extends CRUD {
 
 		System.out.println("create() about to save object");
 		object._save();
+		//myUser.communityContributionCounter = myUser.communityContributionCounter +1 ;
+		myUser.communityContributionCounter++;
+		myUser.save();
+		System.out.println(myUser.communityContributionCounter);
 		System.out.println("create() object saved");
 		tmp = (Topic) object;
 		Calendar cal = new GregorianCalendar();
@@ -742,8 +734,6 @@ public class Topics extends CRUD {
 	 * @description This method renders the form for creating a topic in the
 	 *              entity
 	 * 
-	 * @throws Exception
-	 * 
 	 */
 	public static void blank(long entityId, long userId) {
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -783,8 +773,6 @@ public class Topics extends CRUD {
 	 *            : id of the topic we want to show
 	 * 
 	 * @description This method renders the form for editing and viewing a topic
-	 * 
-	 * @throws Exception
 	 * 
 	 */
 	public static void show(String topicId) {
@@ -877,9 +865,7 @@ public class Topics extends CRUD {
 	 *            : id of the topic we want to show
 	 * 
 	 * @description This method renders the form for viewing a topic
-	 * 
-	 * @throws Exception
-	 * 
+	 *
 	 */
 	public static void view(String topicId) {
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -952,9 +938,7 @@ public class Topics extends CRUD {
 	 * 
 	 * @description This method renders the list of topics, with search and sort
 	 *              options
-	 * 
-	 * @throws Exception
-	 * 
+	 *
 	 */
 	public static void list(int page, String search, String searchFields,
 			String orderBy, String order) {
@@ -1013,8 +997,6 @@ public class Topics extends CRUD {
 	 * 
 	 * @description This method renders the list of closed topics, with search
 	 *              and sort options
-	 * 
-	 * @throws Exception
 	 * 
 	 */
 	public static void closedTopicsList(int page, String search,

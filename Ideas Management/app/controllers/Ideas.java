@@ -189,7 +189,8 @@ public class Ideas extends CRUD {
 	 * 
 	 * @description This method checks for the Validation of the information
 	 *              inserted in the Add form of an Idea and if they are valid
-	 *              the Idea is created and saved.
+	 *              the Idea is created and saved and the community contribution
+	 *              counter of the author is incremented.
 	 * @throws Exception
 	 * 
 	 */
@@ -244,6 +245,8 @@ public class Ideas extends CRUD {
 		}
 
 		object._save();
+		author.communityContributionCounter++ ;
+		author.save();
 		System.out.println("3ada el save");
 		String anothermessage = "you have created a new idea with title "
 				+ idea.title + " and with description " + idea.description;
