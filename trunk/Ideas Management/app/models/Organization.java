@@ -10,6 +10,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import controllers.CRUD;
 import controllers.Roles;
 import controllers.UserRoleInOrganizations;
 
@@ -22,7 +23,7 @@ import play.db.jpa.Model;
  * @author Omar Faruki
  */
 @Entity
-public class Organization extends Model {
+public class Organization extends CoolModel {
 
 	/**
 	 * Organization name
@@ -111,12 +112,9 @@ public class Organization extends Model {
 	/**
 	 * **********
 	 */
-	@OneToMany(mappedBy = "organization")
-	// , cascade = CascadeType.PERSIST)
-	public List<Log> logsList;
+	
 
-	// to which constructor should the logList, bannedUser and
-	// UserRoleInOrganazation be added.
+	
 
 	/**
 	 * Organization Class Constructor
@@ -161,7 +159,6 @@ public class Organization extends Model {
 //		tagRelationNames = new ArrayList<String>();
 
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
-		logsList = new ArrayList<Log>();
 		joinRequests = new ArrayList<RequestToJoin>();
 		// ERD change
 		this.createdTags = new ArrayList<Tag>();
@@ -235,7 +232,6 @@ public class Organization extends Model {
 		// this.enrolledUsers = new ArrayList<User>();
 		// bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
-		logsList = new ArrayList<Log>();
 		joinRequests = new ArrayList<RequestToJoin>();
 	}
 
@@ -253,7 +249,7 @@ public class Organization extends Model {
 
 	public void unfollow(User user) {
 		followers.remove(user);
-		_save();
+	     _save();
 	}
 
 	/**
