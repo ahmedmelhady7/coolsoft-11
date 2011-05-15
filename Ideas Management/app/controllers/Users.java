@@ -24,7 +24,8 @@ import models.*;
 public class Users extends CRUD {
 
 	/**
-	 * Overriding the CRUD method list.
+	 * 
+	 * overrides the CRUD list method ,renders the list of users
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -44,8 +45,6 @@ public class Users extends CRUD {
 	 * 
 	 * @param order
 	 *            : String the order of the list
-	 * 
-	 * @description overrides the CRUD list method ,renders the list of users
 	 * 
 	 * 
 	 */
@@ -75,7 +74,7 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * User view method
+	 * overrides the CRUD view method and renders the form for viewing a user
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -84,8 +83,6 @@ public class Users extends CRUD {
 	 * @param userId
 	 *            :String id of the user we want to show
 	 * 
-	 * @description overrides the CRUD view method and renders the form for
-	 *              viewing a user
 	 * 
 	 * @throws Exception
 	 * 
@@ -116,7 +113,8 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * Overriding the CRUD method show.
+	 * overrides the CRUD show method,renders the form for editing
+	 *              and viewing a user
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -125,8 +123,6 @@ public class Users extends CRUD {
 	 * @param String
 	 *            userId : id of the user we want to show
 	 * 
-	 * @description overrides the CRUD show method,renders the form for editing
-	 *              and viewing a user
 	 * 
 	 * @throws Exception
 	 * 
@@ -208,13 +204,12 @@ public class Users extends CRUD {
 	}
 	
 	/**
-	 * Overriding the CRUD method blank.
+	 * Overrides the CRUD method blank, renders the form for creating a user
 	 * 
 	 * @author Mostafa Ali
 	 * 
 	 * @story C1S9
 	 * 
-	 * @description renders the form for creating a user
 	 * 
 	 * @throws Exception
 	 * 
@@ -959,10 +954,9 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * @description overrides the CRUD create method that is used to create a
-	 *              new user and make sure that this user is valid, and then it
-	 *              renders a message mentioning whether the operation was
-	 *              successful or not.
+	 *  overrides the CRUD create method that is used to create a
+	 *  new user and make sure that this user is valid, and then it
+	 *  renders a message mentioning whether the operation was successful or not.
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1110,8 +1104,7 @@ public class Users extends CRUD {
 		System.out.println("create() object saved");
 		tmp = (User) object;
 		// Calendar cal = new GregorianCalendar();
-		// Logs.addLog( user.getConnected, "add", "User", tmp.username,
-		// tmp.entity.organization, cal.getTime() );
+		// Logs.addLog( user.getConnected, "add", "User", tmp.username. cal.getTime() );
 		String message2 = tmp.username + " has been added to users ";
 		System.out.println("id " + tmp.getId());
 
@@ -1138,10 +1131,9 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * @description overrides the CRUD save method ,used to submit the edit, to
-	 *              make sure that the edits are acceptable, and then it renders
-	 *              a message mentioning whether the operation was successful or
-	 *              not.
+	 *  overrides the CRUD save method ,used to submit the edit, to
+	 *  make sure that the edits are acceptable, and then it renders a 
+	 *  message mentioning whether the operation was successful or not.
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1224,10 +1216,9 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * @description overrides the CRUD view method ,is responsible for deleting
-	 *              a user by the system admin after specifying that user's id,
-	 *              and then it renders a message confirming whether the delete
-	 *              was successful or not
+	 *  overrides the CRUD view method ,is responsible for deleting a user by the 
+	 *  System admin after specifying that user's id , and then it renders a message
+	 *  confirming whether the delete was successful or not
 	 * 
 	 * @author Mostafa Ali
 	 * 
