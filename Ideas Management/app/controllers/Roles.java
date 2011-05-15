@@ -17,9 +17,10 @@ public class Roles extends CRUD {
 	 * 
 	 * @story C1S7
 	 * 
-	 * @param: role is the name of the role
+	 * @param: role 
+	 *             String the name of the role
 	 * 
-	 * @return Role
+	 * @return the Role required
 	 */
 
 	public static Role getRoleByName(String role) {
@@ -29,15 +30,16 @@ public class Roles extends CRUD {
 	}
 
 	/**
-	 * This methods returns all the DEFAULT actions permitted to a certain role
+	 * returns all the default actions permitted to a certain role
 	 * 
 	 * @author nada ossama
 	 * 
 	 * @story C1S7
 	 * 
 	 * @param roleName
-	 *            is the name of the role
-	 * @return list of actions of that role
+	 *            String name of the role
+	 * @return list<String> 
+	 *             list actions of that role
 	 */
 
 	public static List<String> getRoleActions(String roleName) {
@@ -67,7 +69,7 @@ public class Roles extends CRUD {
 
 	// 13
 	/**
-	 * this method returns the list of Organizer actions that are related to
+	 * returns the list of Organizer actions that are related to
 	 * Topics not the whole entity
 	 * 
 	 * @author nada ossama
