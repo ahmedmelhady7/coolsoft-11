@@ -142,6 +142,11 @@ public class Topic extends CoolModel {
 	 * @author Mostafa Aboul Atta
 	 */
 	public boolean openToEdit;
+	
+	/**
+	 * shows whether the topic is visible or hidden
+	 */
+	public boolean hidden;
 
 	/**
 	 * Default constructor that creates a topic with name, description,privacy
@@ -390,8 +395,8 @@ public class Topic extends CoolModel {
 	 */
 	public boolean isDeletable() {
 		// TODO Auto-generated method stub
-		if (openToEdit == false)
-			return false;
+		//if (openToEdit == false)
+		//	return false;
 		if (ideas.size() > 0)
 			return false;
 		return true;

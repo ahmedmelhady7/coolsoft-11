@@ -72,117 +72,126 @@
             <label for="object_privacyLevel">
                 Privacy Level
             </label>
-			#{if object.privacyLevel ==1} 
-			<label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
-               private
+            #{if object.privacyLevel ==1} 
+            <label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
+                private
             </label>
-			#{/if}
-			#{else}
-			<label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
+            #{/if}
+            #{else}
+            <label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
                 public
             </label>
-			#{/else}
-           
+            #{/else}
         </p>
         #{/crud.custom }
         #{/crud.form }
         <br/>
-         #{if permission == 1}
-                 <br>
-<button type="submit" onclick= > Edit </button>
+        #{if permission == 1}
         <br>
-                #{/if}
+        <button type="submit" onclick= >  Edit
+        </button>
+        <br>
+        #{/if}
         <br/>
         #{if allowed==1}<a href="@{RequestToJoins.viewRequests(1,object.id)}">Requests</a>
         #{/if}
         <br>
         <a href="@{Topics.tagTopic(object.id,'@@')}">Add tags</a>
         <br>
-        #{/form}
-                     <h4>List of ideas within this topic : </h4>  
-                                
-	<div>
-	#{if numberOfIdeas > 0}
-	<form action=@{Ideas.show(ideaId)}>			
-				<ul>
-    #{list items:ideas, as:'idea'}
-    <li> 
-<a href="@{Ideas.show(idea.id)}">${idea.title}</a>  <a href="">hide idea</a>  <a href="">delete idea</a>
-    </li>
-	#{/list}
-</ul>
-</form>
+        #{/form}<h4>List of ideas within this topic : </h4>
+        <div>
+        #{if numberOfIdeas > 0}
+        <form action=@{Ideas.show(ideaId)}>
+            <ul>
+                #{list items:ideas, as:'idea'}
+                <li>
+                    <a href="@{Ideas.show(idea.id)}">${idea.title}</a>
+                    <a href="">hide idea</a>
+                    <a href="">delete idea</a>
+                </li>
+                #{/list}
+            </ul>
+        </form>
+        #{/if}
+        #{if numberOfIdeas == 0}<h4>no ideas posted to this topic</h4>
+        #{/if}
+        </form>#{if canPost == true}
+        <form action="@{Ideas.blank(topicId)}" method="post">
+            <input type="hidden" name"topicId" value="${topicId}"><HR><input type="submit" value="Post Idea to this topic">
+        </form>#{/if }
+    </div>#{if permission == 1}
+    #{if !hidden}
+    #{if deletable}
+    <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to delete this topic?');">
+        <p class="crudDelete">
+            <input type="submit" value="&{'crud.delete', type.modelName}" />
+        </p>
+    </form> #{/if}
+    #{if !deletable}
+    <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to hide this topic?');">
+        <p class="crudDelete">
+            <input type="submit" value="&{'Hide', type.modelName}" />
+        </p>
+    </form> #{/if}
+    #{/if}
+    #{/if}
+</div>#{if canClose == 1 && openToEdit == true}
+#{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }<input type = "hidden" name = "topicId" value = ${topicId}><input type="submit" value="Close Topic" />#{/form} 
+#{/if} 
+#{if canClose == 1 && openToEdit == false && plan == null}
+#{form @Topics.reopen(), method:'POST', enctype:'multipart/form-data' }<input type = "hidden" name = "topicId" value = ${topicId}><input type="submit" value="Reopen Topic" />#{/form}
 #{/if}
-	#{if numberOfIdeas == 0}
-		<h4>
-					no ideas posted to this topic</h4>
-	#{/if}
-
-                </form>#{if canPost == true}
-                <form action="@{Ideas.blank(topicId)}" method="post">
-                    <input type="hidden" name"topicId" value="${topicId}"><HR><input type="submit" value="Post Idea to this topic">
-                </form>#{/if }
-            </div>
-        #{if canClose == 1 && openToEdit == true}
-        #{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
-        <input type = "hidden" name = "topicId" value = ${topicId}><input type="submit" value="Close Topic" />#{/form} 
-        #{/if} 
-        #{if canClose == 1 && openToEdit == false && plan == null}
-        #{form @Topics.reopen(), method:'POST', enctype:'multipart/form-data' }
-        <input type = "hidden" name = "topicId" value = ${topicId}><input type="submit" value="Reopen Topic" />#{/form}
+#{if canPlan == 1 && openToEdit == false && plan == null}
+#{form @Plans.planCreate(), method:'POST', enctype:'multipart/form-data' }<input type = "hidden" name = "topicId" value = ${topicIdLong}><input type="submit" value="Create A plan" />#{/form}
+#{/if}
+#{if openToEdit == false && plan != null}
+#{form @Plans.viewAsList(), method:'POST', enctype:'multipart/form-data' }<input type = "hidden" name = "planId" value = ${plan.id}><input type="submit" value="View the plan" />#{/form}
+#{/if}
+<form action="@{Topics.viewFollowers()}">
+    <HR><input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">#{if (!targetTopic.followers.contains(user))} 
+    <p>
+        #{if follower == false} 
+        Follow ${targetTopic.title} <input type="submit" value="Follow">#{/if}
+        <br/>
         #{/if}
-        #{if canPlan == 1 && openToEdit == false && plan == null}
-        #{form @Plans.planCreate(), method:'POST', enctype:'multipart/form-data' }
-        <input type = "hidden" name = "topicId" value = ${topicIdLong}><input type="submit" value="Create A plan" />#{/form}
-        #{/if}
-        #{if openToEdit == false && plan != null}
-        #{form @Plans.viewAsList(), method:'POST', enctype:'multipart/form-data' }
-        <input type = "hidden" name = "planId" value = ${plan.id}><input type="submit" value="View the plan" />#{/form}
-        #{/if}
+        </form>
+        #{if follower == true}
+        <p>
+            Unfollow ${targetTopic.title} <input type="submit" value="unfollow" onclick="unfollow('${topicId}');"/>
+        </p>#{/if}
+        </br>
         <form action="@{Topics.viewFollowers()}">
-            <HR><input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">#{if (!targetTopic.followers.contains(user))} 
+            <input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="false">View ${targetTopic.title} Followers <input type="submit" value="Followers">
+            <br/>
+            <HR>#{if canNotPost == true}
             <p>
-                #{if follower == false}
-				Follow ${targetTopic.title} <input type="submit" value="Follow">
-				#{/if}
-                <br/>
-                #{/if}
-                </form>
-				#{if follower == true}
-				<p>
-			 	Unfollow ${targetTopic.title} <input type="submit" value="unfollow" onclick="unfollow('${topicId}');" />
-				</p>
-				#{/if}
-				</br>
-                <form action="@{Topics.viewFollowers()}">
-                    <input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="false">View ${targetTopic.title} Followers <input type="submit" value="Followers">
-                    <br/>
-                    <HR>
-			#{if canNotPost == true}
-			<p>
-			<a onclick="requestToPost('${topicId}');" href="#">request to post on this topic</a>
-			</p>
-			#{/if}
-			#{if pending == true && canNotPost == false}
-			<p>
-			Request To Post status: Pending
-			</p>
-			#{/if}
-			<!--#{form @delete(object._key())}
+                <a onclick="requestToPost('${topicId}');" href="#">request to post on this topic</a>
+            </p>
+            #{/if}
+            #{if pending == true && canNotPost == false}
+            <p>
+                Request To Post status: Pending
+            </p>
+            #{/if}<!--#{form @delete(object._key())}
             <p class="crudDelete">
             <input type="submit" value="&{'crud.delete', type.modelName}" />
             </p>
             #{/form}-->
             </div>
-<script type="text/javascript">
-	function requestToPost(id, user){
-		$.post('@{addRequest()}', {topicId:id});
-		alert("done!");
-		location.reload(true);
-	}
-	function unfollow(topic, user){
-		$.post('@{Users.unfollowTopic()}', {topicId:topic});
-		alert("done!");
-		location.reload(true);
-	}
-</script>
+            <script type="text/javascript">
+                function requestToPost(id, user){
+                    $.post('@{addRequest()}', {
+                        topicId: id
+                    });
+                    alert("done!");
+                    location.reload(true);
+                }
+                
+                function unfollow(topic, user){
+                    $.post('@{Users.unfollowTopic()}', {
+                        topicId: topic
+                    });
+                    alert("done!");
+                    location.reload(true);
+                }
+            </script>

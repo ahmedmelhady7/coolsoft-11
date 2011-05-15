@@ -69,7 +69,9 @@
         <ul style="list-style: none;">   
 		#{list items:topicList, as:'topic'}
 		<li>
+			#{if topic.hidden == false}
 			<a href="@{Topics.show(topic.id)}">${topic.title}</a>
+			#{/if}
 		</li>
 		#{/list}
 		</ul>
