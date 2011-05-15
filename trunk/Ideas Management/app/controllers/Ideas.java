@@ -552,7 +552,10 @@ public class Ideas extends CRUD {
 		notFoundIfNull(type);
 		Model object = type.findById(ideaId);
 		notFoundIfNull(object);
+		Idea tmpIdea = (Idea) object;
 		try {
+			tmpIdea.author.communityContributionCounter--;
+			tmpIdea.author.save();
 			object._delete();
 		} catch (Exception e) {
 			flash.error(Messages.get("crud.delete.error", type.modelName));
