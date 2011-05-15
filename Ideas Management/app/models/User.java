@@ -25,7 +25,7 @@ import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
-public class User extends Model {
+public class User extends CoolModel {
 	@Required
 	// @Email
 	@Column(unique = true)
