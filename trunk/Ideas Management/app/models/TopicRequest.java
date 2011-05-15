@@ -10,7 +10,7 @@ import play.data.validation.Required;
 
 
 @Entity
-public class TopicRequest extends Model{
+public class TopicRequest extends CoolModel{
 	
 		/**
 		 * The user requesting the topic
