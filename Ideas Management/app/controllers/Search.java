@@ -1,5 +1,9 @@
 package controllers;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -143,6 +147,7 @@ public class Search extends Controller {
 			}
 			System.out.println(organizationsFound.size()
 					+ " /organizations found");
+			download(u);
 			List<Model> lof = listOfResults;
 			render(u, connected, lof, ideasFound, organizationsFound,
 					entitiesFound, topicsFound);
@@ -1395,4 +1400,58 @@ public class Search extends Controller {
 		 */
 	}
 
+	/**
+	 * @author Loaay Alkherbawy
+	 * 
+	 * @param User
+	 *            user: the User connected now
+	 *            
+	 * @return File the file containing the search result 
+	 * 
+	 * @description this method generates the .csv file that will be downloaded
+	 *              and puts it in the public folder
+	 */
+
+	public static File download(User user) {
+		try {
+			String path = Search.class.getProtectionDomain().getCodeSource()
+					.getLocation().getPath();
+			File root = new File(path + "/public/");
+			File file = new File(root, "searchResults.csv");
+			System.out.println(file.getAbsolutePath());
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			BufferedWriter out = new BufferedWriter(new FileWriter(file));
+			out.write("Search results for," + user.firstName + ","
+					+ user.lastName);
+			out.newLine();
+			out.write("Type,Result,Description");
+			out.newLine();
+			for (int i = 0; i < listOfResults.size(); i++) {
+				if (listOfResults.get(i) instanceof Idea) {
+					Idea item = (Idea) listOfResults.get(i);
+					out.write("Idea," + item.title + "," + item.description);
+				}
+				if (listOfResults.get(i) instanceof Topic) {
+					Topic item = (Topic) listOfResults.get(i);
+					out.write("Topic," + item.title + "," + item.description);
+				}
+				if (listOfResults.get(i) instanceof Organization) {
+					Organization item = (Organization) listOfResults.get(i);
+					out.write("Organization," + item.name
+							+ ",no description for organizations");
+				}
+				if (listOfResults.get(i) instanceof MainEntity) {
+					MainEntity item = (MainEntity) listOfResults.get(i);
+					out.write("Entity," + item.name + "," + item.description);
+				}
+				out.newLine();
+			}
+			out.close();
+			return file;
+		} catch (IOException e) {
+			return null;
+		}
+	}
 }
