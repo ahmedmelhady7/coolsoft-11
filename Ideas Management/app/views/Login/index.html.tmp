@@ -1,0 +1,77 @@
+#{extends 'main.html' /}
+#{set title:'Home Page' /}
+#{if flash.error}
+   <b> <p style="color:green">
+               ${flash.error}
+    </p></b>
+#{/if}
+<p>
+<b>Username: </b>
+${u.username}
+<br>
+<b>E-Mail </b>
+${u.email}
+
+</p>
+<br>
+<b>Community Contribution Counter </b>
+${u.communityContributionCounter}
+</p>
+<br>
+My Admin: <input type="submit" value="Admin View" onclick="goAdmin('${u.isAdmin}')">
+<br>
+#{if admin==0}	
+<form action="@{Invitations.view()}" method="GET">
+<input type="submit" value="View Invitations" />
+</form>
+#{/if}
+<form action="@{Users.viewNotifications()}" method="post" >
+	My Notifications: <input type="submit" value="Notifications">
+</form>
+&nbsp;
+<form action="@{Users.viewNotificationProfile()}" method="post" >
+	My Notification Profile: <input type="submit" value="Notification Profile">
+</form>
+&nbsp;
+<form action="@{Notifications.notificationIndex()}" method="post">
+	Send Notification: <i>(just for testing)</i><input type="submit" value="Notify">
+</form>
+<form action="@{Items.viewAssignedItems()}" method="post">
+    My assigned to-do items: <input type="submit" value="View">
+</form>
+<form action="@{AssignRequests.view()}" method="post">
+    Assign Requests: <input type="submit" value="View">
+</form>
+<form action="@{Users.listFollows()}">
+    <input type="hidden" name="userId" value="${u.id}">Follow List: <input type="submit" value="view">
+</form> &nbsp;
+<p>
+    &nbsp;
+    Show Ideas List:
+    <input type="submit" value="Show Ideas List" onclick=location.href="ideas/list">
+</p>
+<form action="@{Organizations.mainPage()}" method="post">
+    Organizations you are enrolled in: <input type="submit" value="View">
+</form>
+<form action="@{Organizations.viewAllOrganizations()}" method="post">
+	View All Organizations: <input type="submit" value="View">
+</form>
+<form action="@{Users.logout}" method="post">
+Logout: <input type="submit" value="Logout">
+</form>
+
+<a href="@{Ideas.getDrafts()}">Drafts (${drafts.size()})</a>
+
+<form action="@{MarkRequest.markDuplicate()}" method="post">
+	View duplicates requests: <input type="submit" value="View">
+</form>
+
+<script type="text/javascript">
+function goAdmin(isA) {
+	if(isA) {
+		window.location ='http://localhost:9008/admin';
+	} else {
+		alert('matesta3batsh');
+	}
+}
+</script>

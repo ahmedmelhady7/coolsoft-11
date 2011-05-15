@@ -122,7 +122,15 @@ public class Item extends Model {
 	 * @return List <User>
 	 */
 	public List <User> getAssignees() {
-		return assignees;
+		List <User> assignedUsers = new ArrayList<User> ();
+	
+		for(User user:assignees){
+			if(user.state == "a") {
+				assignedUsers.add(user);
+			}
+		}
+
+		return assignedUsers;
 	}
 	
 	/**
@@ -136,10 +144,9 @@ public class Item extends Model {
 	 * @return boolean
 	 */
 	public boolean endDatePassed() {
-		Date d = new Date();
-		//System.out.println(d);
-		//System.out.println("item's date"  +endDate);
-		if(this.endDate.before(d)){
+		Date currentDate = new Date();
+
+		if(this.endDate.before(currentDate)){
 			return true;
 		}
 		return false;
