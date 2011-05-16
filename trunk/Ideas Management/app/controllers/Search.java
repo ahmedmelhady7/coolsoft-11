@@ -68,12 +68,14 @@ public class Search extends Controller {
 		render();
 	}
 
+
 	/**
 	 * @auther monica
 	 * 
 	 *         this method is to render the filter_option page
-	 * 
+	 *@return void 
 	 */
+
 
 	public static void filter_options() {
 
@@ -86,7 +88,10 @@ public class Search extends Controller {
 	 * @author monica
 	 * 
 	 *         this method renders to show reslts after filter
+	 *         
+	 * @return void
 	 */
+	
 
 	public static void showAfterFilter() {
 		String connected = Security.connected();
@@ -1155,32 +1160,28 @@ public class Search extends Controller {
 
 	/**
 	 * 
-	 * sortA method sorts according to votes or rates (known from input) in
-	 * ascending order
+	 * sortA method sorts according to rates (known from input) in ascending order
 	 * 
 	 * task.
 	 * 
 	 * 
 	 * @author Monica Yousry
 	 * 
-	 * @story C4S04 sort ascending the search result according to votes or rates
+	 * @story C4S04 sort ascending the search result according to rates
 	 * 
-	 * @param voteOrRate
-	 * 
-	 *            "char": to decide whether to sort by vote or rate .
-	 * 
+	 
 	 * 
 	 * @return void
 	 * 
 	 * 
 	 */
 
-	public static void sortA(char voteOrRate) {// ascending
+	public static void sortA(){//char voteOrRate) {// ascending
 		List<Model> toSort = new ArrayList<Model>();
 		List<Model> notToSort = new ArrayList<Model>();
 
 		System.out.println("2ooo2oooiiii 2ooo 2aaa2aa 2na hena f sort A");
-		if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
+		//if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
 
 			/*
 			 * a for loop to find all objects having attribute rate and add them
@@ -1234,7 +1235,7 @@ public class Search extends Controller {
 			listOfResults = sorted;
 			searchResult();
 			// the previous too loops is to append to lists in one
-		}
+		//}
 
 		// waiting for the vote to be done in order to sort by voting
 		/*
@@ -1280,20 +1281,14 @@ public class Search extends Controller {
 
 	/**
 	 * 
-	 * sortD method sorts according to votes or rates (known from input) in
-	 * descending order
+	 * sortD method sorts according to rates in descending order
 	 * 
 	 * task.
 	 * 
 	 * 
 	 * @author Monica Yousry
 	 * 
-	 * @story C4S04 sort descending the search result according to votes or
-	 *        rates
-	 * 
-	 * @param voteOrRate
-	 * 
-	 *            "char": to decide whether to sort by vote or rate .
+	 * @story C4S04 sort descending the search result according to rates
 	 * 
 	 * 
 	 * @return void
@@ -1301,14 +1296,14 @@ public class Search extends Controller {
 	 * 
 	 */
 
-	public static void sortD(char voteOrRate) {// descending
+	public static void sortD(){//char voteOrRate) {// descending
 
 		List<Model> toSort = new ArrayList<Model>();
 		List<Model> notToSort = new ArrayList<Model>();
 
 		System.out.print("in sortD");
 
-		if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
+		//if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
 
 			/*
 			 * a for loop to find all objects having attribute rate and add them
@@ -1363,7 +1358,7 @@ public class Search extends Controller {
 			listOfResults = sorted;
 			searchResult();
 			// the previous too loops is to append to lists in one
-		}
+//		}
 
 		// waiting for the vote to be done in order to sort by voting
 		/*
@@ -1404,6 +1399,7 @@ public class Search extends Controller {
 		 * m=0;m<nottosort.size();m++){ sorted.add(nottosort.get((e))); } //the
 		 * previous too loops is to append to lists in one }
 		 */
+
 	}
 
 	/**
