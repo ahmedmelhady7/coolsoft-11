@@ -16,7 +16,7 @@ public class Application extends CRUD {
 
 	public static void index() {
 		render();
-		
+		//bla bla
 	}
 	
 }
