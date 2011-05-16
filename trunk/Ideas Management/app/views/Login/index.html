@@ -63,6 +63,7 @@ Logout: <input type="submit" value="Logout">
 </form>
 
 <form action="@{Documents.newDocument()}" method="post">
+	<input type="hidden" name="id" value="${u.id}">
 	Create a Document: <input type="submit" value="Create">
 </form>
 
