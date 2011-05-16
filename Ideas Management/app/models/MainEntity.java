@@ -5,11 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.ManyToAny;
 
 import controllers.Notifications;
 import controllers.Users;
@@ -54,10 +57,16 @@ public class MainEntity extends Model {
 	public String description;
 	
 	/**
-	 * list of relations for the entity
+	 * list of relations where the entity is the source
 	 */
-	@ManyToMany
-	public List<EntityRelationship> relations; 
+	@OneToMany(mappedBy = "source")
+	public List<EntityRelationship> relationsSource; 
+	
+	/**
+	 * list of relations where the entity is the destination
+	 */
+	@OneToMany(mappedBy = "destination")
+	public List<EntityRelationship> relationsDestination;
 
 	/**
 	 * A list of sub-entities of this entity
@@ -142,7 +151,8 @@ public class MainEntity extends Model {
 		invitationList = new ArrayList<Invitation>();
 		subentities = new ArrayList<MainEntity>();
 		followers = new ArrayList<User>();
-		relations = new ArrayList<EntityRelationship>();
+		relationsSource = new ArrayList<EntityRelationship>();
+		relationsDestination = new ArrayList<EntityRelationship>();
 		topicList = new ArrayList<Topic>();
 		tagList = new ArrayList<Tag>();
 		int size = org.followers.size();
@@ -189,7 +199,8 @@ public class MainEntity extends Model {
 		followers = new ArrayList<User>();
 		topicList = new ArrayList<Topic>();
 		tagList = new ArrayList<Tag>();
-		relations = new ArrayList<EntityRelationship>();
+		relationsSource = new ArrayList<EntityRelationship>();
+		relationsDestination = new ArrayList<EntityRelationship>();
 		List<User> receivers = Users.getEntityOrganizers(parent);
 		int size = receivers.size();
 		this.createRelationship = createRelationship;
