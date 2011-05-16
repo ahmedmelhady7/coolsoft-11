@@ -18,7 +18,7 @@ import models.User;
 public class MainEntitys extends CRUD {
 	
 	/**
-	 * creates the relation between two entities
+	 * renders the related entity and the list of other entities in the organization to the view
 	 * 
 	 * @author Mohamed Hisham
 	 * 
@@ -26,17 +26,17 @@ public class MainEntitys extends CRUD {
 	 * 
 	 * @param entityId : id of the entity to be related
 	 * 
-	 * @param orgId : id of the organization the entity belongs to
+	 * @param organizationId : id of the organization the entity belongs to
 	 */
-	public static void createRelation(long entityId, long orgId) {
+	public static void createRelation(long entityId, long organizationId) {
 
 //		System.out.println("2ABEL !!!" + orgId + "," + entityId);
 		MainEntity entity = MainEntity.findById(entityId);
-		Organization org = Organization.findById(orgId);
+		Organization organization = Organization.findById(organizationId);
 		List<MainEntity> entityList = new ArrayList<MainEntity> ();
 
-		if (org.entitiesList != null) {
-			entityList = org.entitiesList;
+		if (organization.entitiesList != null) {
+			entityList = organization.entitiesList;
 			entityList.remove(entity);
 		}
 

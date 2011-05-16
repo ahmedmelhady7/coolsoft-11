@@ -1,6 +1,7 @@
 package controllers;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.List;
 
 import groovy.ui.text.FindReplaceUtility;
@@ -19,7 +20,7 @@ import models.*;
 
 
 /**
- * @author Mohamed
+ * @author Mohamed Hisham
  * 
  * @story C2S5
  *
@@ -53,9 +54,8 @@ public class EntityRelationships extends CRUD {
 		EntityRelationship relation = new EntityRelationship(name, source,
 				destination);
 		relation.save();
-
-		source.relations.add(relation);
-		destination.relations.add(relation);
+		relation.source.relationsSource.add(relation);
+		relation.destination.relationsDestination.add(relation);
 		
 		System.out.println("Creation DONE!!");
 	//	render(name,source, destination);
@@ -85,6 +85,7 @@ public class EntityRelationships extends CRUD {
 		EntityRelationship relation = EntityRelationship
 				.findById(relationToBeRenamedId);
 		relation.name = newName;
+		relation.save();
 
 	}
 
@@ -100,8 +101,9 @@ public class EntityRelationships extends CRUD {
 	 */
 	public static void delete(long relationId) {
 		EntityRelationship relation = EntityRelationship.findById(relationId);
+		relation.source.relationsSource.remove(relation);
+		relation.destination.relationsSource.remove(relation);
 		relation.delete();
-
 	}
 
 	/**
@@ -123,6 +125,25 @@ public class EntityRelationships extends CRUD {
 						"create relationships between entities/sub-entities/topics/tags",
 						entityId, "entity"))
 			return true;
+		return false;
+	}
+	
+	/**
+	 * checks relation name for duplicate
+	 * 
+	 * @author Mohamed Hisham
+	 * 
+	 * @param relationName : name of the relation
+	 * 
+	 * @param relationNamesInOrganization : list of relation names in the organization
+	 * 
+	 * @return boolean value if duplicate(true) or not(false)
+	 */
+	public static boolean isDuplicate(String relationName, ArrayList<String> relationNamesInOrganization){
+		for(int i = 0; i < relationNamesInOrganization.size(); i++){
+			if(relationName.equals(relationNamesInOrganization.get(i)))
+				return true;	
+		}
 		return false;
 	}
 }
