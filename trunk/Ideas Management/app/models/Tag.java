@@ -64,11 +64,17 @@ public class Tag extends Model {
 	public List<MainEntity> entities;
 	
 	/**
-	 * The list of related tags
+	 * The list of relations where the tag is the source
 	 */
-	@ManyToMany
-	 public List<TagRelationship> relations;
+	@OneToMany
+	 public List<TagRelationship> relationsSource;
 
+	/**
+	 * The list of relations where the tag is the destination
+	 */
+	@OneToMany
+	 public List<TagRelationship> relationsDestination;
+	
 	/**
 	 * List of items tagged by the tag
 	 */
@@ -105,7 +111,8 @@ public class Tag extends Model {
 		this.organizations = new ArrayList<Organization>();
 		this.taggedItems = new ArrayList<Item>();
 		this.taggedTopics = new ArrayList<Topic>();
-		this.relations = new ArrayList<TagRelationship>();
+		this.relationsSource = new ArrayList<TagRelationship>();
+		this.relationsDestination = new ArrayList<TagRelationship>();
 		this.taggedIdeas = new ArrayList<Idea>();
 		// this.relatedTags = new ArrayList<Tag>();
 		// ERD change

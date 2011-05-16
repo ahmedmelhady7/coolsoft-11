@@ -3,6 +3,7 @@ package models;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 import play.data.validation.Required;
 import play.db.jpa.Model;
@@ -28,12 +29,14 @@ public class TagRelationship extends Model {
 	 * the first related Tag
 	 */
 	@Required
+	@ManyToOne
 	public Tag source;
 
 	/**
 	 * the second related Tag
 	 */
 	@Required
+	@ManyToOne
 	public Tag destination;
 
 	/**
@@ -56,7 +59,6 @@ public class TagRelationship extends Model {
 		this.name = name;
 		this.source = source;
 		this.destination = destination;
-		source.createdInOrganization.relationNames.add(name);
 	}
 
 }
