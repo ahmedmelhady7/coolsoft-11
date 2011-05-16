@@ -16,6 +16,8 @@ import java.lang.*;
 import java.lang.reflect.*;
 import java.util.*;
 
+import com.sun.mail.iap.Response;
+
 import controllers.CRUD.ObjectType;
 
 import play.data.binding.*;
@@ -64,7 +66,7 @@ public class Topics extends CRUD {
 	 * tagged topic
 	 * 
 	 * @author Mostafa Yasser El Monayer
-	 * 
+	 *
 	 * @story C3S2
 	 * 
 	 * @param topicId
@@ -233,6 +235,8 @@ public class Topics extends CRUD {
 
 		targetTopic.openToEdit = true;
 		targetTopic.save();
+		
+		redirect("/topics/show?topicId=" + topicId);
 	}
 
 	/**
@@ -571,6 +575,8 @@ public class Topics extends CRUD {
 			Notifications.sendNotification(followers.get(i).getId(),
 					targetTopic.getId(), "Topic", notificationDescription);
 		}
+		
+		redirect("/topics/show?topicId=" + topicId);
 	}
 
 	/**
@@ -657,6 +663,9 @@ public class Topics extends CRUD {
 
 		System.out.println("create() about to save object");
 		object._save();
+		((Topic) object).openToEdit = true;
+		object._save();
+		
 		//myUser.communityContributionCounter = myUser.communityContributionCounter +1 ;
 		//myUser.communityContributionCounter++;
 		//myUser.save();
