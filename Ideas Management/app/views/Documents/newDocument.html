@@ -79,6 +79,10 @@
     function create(id, b){
         var name = document.getElementById("title").value;
         var data = tinyMCE.get('data').getContent();
+		if (name.length == 0) {
+			alert("Title is required");
+			return;
+		}
         $.post('@{Documents.createDocument()}', {
             id: id,
             isOrganization: b,

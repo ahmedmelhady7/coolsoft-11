@@ -75,6 +75,10 @@
 <script type="text/javascript">
     function save(id){
         var name = document.getElementById("title").value;
+		if (name.length == 0) {
+			alert("Title is required");
+			return;
+		}
         var data = tinyMCE.get('data').getContent();
         $.post('@{Documents.updateDocument()}', {
             id: id,
