@@ -62,6 +62,14 @@ Logout: <input type="submit" value="Logout">
 	View duplicates requests: <input type="submit" value="View">
 </form>
 
+<form action="@{Documents.newDocument()}" method="post">
+	Create a Document: <input type="submit" value="Create">
+</form>
+
+<form action="@{Documents.listDocument()}" method="post">
+	Show my Documents: <input type="submit" value="show">
+</form>
+
 <script type="text/javascript">
 function goAdmin(isA) {
 	if(isA) {
