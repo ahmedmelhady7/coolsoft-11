@@ -3,56 +3,65 @@
     <head>
         <meta name="generator" content="HTML Tidy, see www.w3.org">
         <title>Organization Profile View</title>
-		<script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js"></script>
+        <script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js">
+        </script>
     </head>
     <body>
         #{extends 'main.html' /}
-		#{set title: 'Organization Profile' /}
-        <center><big><b>${org.name}</b></big></center>&nbsp;&nbsp;
-		#{if join}
-		<form action="@{Organizations.join()}" method="post">
-			<input type="hidden" id="organizationId" name="organizationId" value="${org.id}" />
-			Join Organization 
-			<p><input type="submit" value="Join" /></p>
-		</form>
-		#{/if}<br><br>
-		#{if allowed==1}
-      <a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>
-	   <br>
-		   <br>	
-		        #{/if}
-	    #{if settings==1}
-		Creation Of Tags :
-	     <select id="selec" onchange="test();">
-            <option> Tags</option>
-            <option id="e" value="0"> enable </option>
-            <option id="d" value="1"> disable </option>
-            </select>	
-		    #{/if}
-		   <br>
-		   <br>
-	
-        #{if (requestToJoin == true) && (!admin) && (!alreadyRequested)}
-		<form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
-			<input type="hidden" id="orgId" name="orgId" value="${org.id}">
-			Your message: <textarea id="description" name="description" rows="5" cols="50"></textarea>
-			Request to join <input type="submit" value="Request"><br /><br /><br /><br />
-		</form>
-		#{/if}
-        #{else}
-		#{if alreadyRequested}
-		<big><b>Your request has already been sent!!</b></big>
-		#{/if}
-		#{else}
-		#{if (admin || creator)}
-		<a href="@{Tags.createTag(org.id)}">Create a Tag</a>
-		#{/if}
-		#{else}
-        #{if (org.createTag) && (!join)}
-		<a href="@{Tags.createTag(org.id)}">Create a Tag</a>
+        #{set title: 'Organization Profile' /}
+        <center>
+            <big>
+                <b>${org.name}</b>
+            </big>
+        </center>&nbsp;&nbsp;
+        #{if join}
+        <form action="@{Organizations.join()}" method="post">
+            <input type="hidden" id="organizationId" name="organizationId" value="${org.id}" />Join Organization 
+            <p>
+                <input type="submit" value="Join" />
+            </p>
+        </form>#{/if}
+        <br>
+        <br>
+        #{if allowed==1}<a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>
+        <br>
+        <br>
         #{/if}
-		#{/else}
- 
+        #{if settings==1}
+        Creation Of Tags :
+        <select id="selec" onchange="test();">
+            <option>Tags</option>
+            <option id="e" value="0">enable </option>
+            <option id="d" value="1">disable </option>
+        </select>
+        #{/if}
+        <br>
+        <br>
+        #{if (requestToJoin == true) && (!admin) && (!alreadyRequested)}
+        <form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
+            <input type="hidden" id="orgId" name="orgId" value="${org.id}">Your message: 
+            <textarea id="description" name="description" rows="5" cols="50">
+            </textarea>
+            Request to join <input type="submit" value="Request">
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+        </form>
+        #{/if}
+        #{else}
+        #{if alreadyRequested}
+        <big>
+            <b>Your request has already been sent!!</b>
+        </big>
+        #{/if}
+        #{else}
+        #{if (admin || creator)}<a href="@{Tags.createTag(org.id)}">Create a Tag</a>
+        #{/if}
+        #{else}
+        #{if (org.createTag) && (!join)}<a href="@{Tags.createTag(org.id)}">Create a Tag</a>
+        #{/if}
+        #{/else}
         <ul style="list-style: none;">
             #{list items:entities, as:'entity'}
             <li>
@@ -60,8 +69,7 @@
             </li>
             #{/list}
         </ul>
-        #{if (canCreateEntity == 1)}
-        <a href="@{MainEntitys.goToCreateEntity(org.id)}">Create a new Entity</a>
+        #{if (canCreateEntity == 1)}<a href="@{MainEntitys.goToCreateEntity(org.id)}">Create a new Entity</a>
         #{/if}
         <br/>
         <br/>
@@ -75,48 +83,36 @@
             #{/list}
         </ul>
         #{/else}
-		#{/else}
-		#{if isMember == true}
+        #{/else}
+        #{if isMember == true}
         <form action="@{Topics.requestToPost()}">
-            <input type="hidden" name="orgId" value="${org.id}">
-			
-			Request to post: <input type="submit" value="show topics">
-        </form>
-		#{/if}
+            <input type="hidden" name="orgId" value="${org.id}">Request to post: <input type="submit" value="show topics">
+        </form>#{/if}
         #{if flag == 1}
         <form action="@{BannedUsers.restrictOrganizer()}">
             <input type="hidden" name="orgId" value='${org.id}'>Restrict organizer in this organization: <input type="submit" value="view">
-        </form>
-        #{/if}
-   <!--       
-<!--     </body> -->
-<!-- </html> -->
-<!-- <script type="text/javascript"> -->
-<!-- function test(){ -->
-	
-<!-- 	//var v = document.getElementById('selec').selectedIndex; -->
-<!-- 	var a = document.getElementById('selec').value; -->
-<!-- 	//alert("function" +  a); -->
-<!-- 	if(a!='Tags') -->
-<!-- 	if(a == 0){ -->
-<!-- 		//alert("function2" +  ${org.id}); -->
-<!-- 	$.post('@{Organizations.enableTags()}',{id:${org.id}}); -->
-<!-- 		alert("Options is enabled"); -->
-<!-- 	} -->
-<!-- 	else{ -->
-		
-<!-- 		//alert("function2" +  ${org.id}); -->
-<!-- 	$.post('@{Organizations.disableTags()}',{id:${org.id}}); -->
-<!-- 		alert("Options is disabled"); -->
-	
-<!-- 	} -->
-
-<!-- 	} -->
-
-<!-- </script> -->
-
-<!-- ======= -->  
-
+        </form>#{/if}<!--
+        <!--     </body> -->
+        <!-- </html> -->
+        <!-- <script type="text/javascript"> -->
+        <!-- function test(){ -->
+        <!-- 	//var v = document.getElementById('selec').selectedIndex; -->
+        <!-- 	var a = document.getElementById('selec').value; -->
+        <!-- 	//alert("function" +  a); -->
+        <!-- 	if(a!='Tags') -->
+        <!-- 	if(a == 0){ -->
+        <!-- 		//alert("function2" +  ${org.id}); -->
+        <!-- 	$.post('@{Organizations.enableTags()}',{id:${org.id}}); -->
+        <!-- 		alert("Options is enabled"); -->
+        <!-- 	} -->
+        <!-- 	else{ -->
+        <!-- 		//alert("function2" +  ${org.id}); -->
+        <!-- 	$.post('@{Organizations.disableTags()}',{id:${org.id}}); -->
+        <!-- 		alert("Options is disabled"); -->
+        <!-- 	} -->
+        <!-- 	} -->
+        <!-- </script> -->
+        <!-- ======= -->
         <form action="@{Organizations.viewFollowers()}">
             <HR><input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="f" value="true">#{if (!org.followers.contains(user))}
             <p>
@@ -124,157 +120,166 @@
                 <br/>
                 #{/if}
                 </form>
-				#{if follower == true}
-				 <form onsubmit="unfollow('${org.id}');" method="post">
-				<p>
-					Unfollow ${org.name} <input type="submit" value="unfollow" />
-				</p>	
-				</form>
-				#{/if}    
+                #{if follower == true}
+                <form onsubmit="unfollow('${org.id}');" method="post">
+                    <p>
+                        Unfollow ${org.name} <input type="submit" value="unfollow" />
+                    </p>
+                </form>#{/if} 
                 <form action="@{Organizations.viewFollowers()}">
                     <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="f" value="false">View ${org.name} Followers <input type="submit" value="Followers">
                     <br/>
                     <HR>
                 </form>#{if canInvite == true}
                 <form onsubmit="help('${org.id}', email.value);" method="post">
-                	<input type="hidden" id='users' name="users" value="${usernames}">
-                	Invite an Idea Developer <br>
-                    Username/Email: <input type="text" id="email" name="email" autoComplete="group"/><br>
-					Invite by:
-					<input type="radio" id="s" name="select" value="username" checked> Username
-					<input type="radio" name="select" value="email" > E-Mail<br>
-				<script language="javascript" type="text/javascript"> 
-    			var a = document.getElementById('users');
-				b = a.value + "";
-    			c = b.split("|");
-				autoComplete.Set("group", c); 
-				</script>
-					<input type="submit" value="Invite"/>
+                    <input type="hidden" id='users' name="users" value="${usernames}">Invite an Idea Developer 
+                    <br>
+                    Username/Email: <input type="text" id="email" name="email" autoComplete="group"/>
+                    <br>
+                    Invite by:<input type="radio" id="s" name="select" value="username" checked> Username<input type="radio" name="select" value="email">E-Mail
+                    <br>
+                    <script language="javascript" type="text/javascript">
+                        var a = document.getElementById('users');
+                        b = a.value + "";
+                        c = b.split("|");
+                        autoComplete.Set("group", c);
+                    </script>
+                    <input type="submit" value="Invite"/>
                 </form>#{/if}
+				#{if isMember == true || org.privacyLevel == 2}
+                <form action="@{Documents.listDocument()}" method="post">
+                    <input type="hidden" name="id" value="${org.id}">Documents: <input type="submit" value="show">
+                </form>
+				#{/if}
+				#{if creator == true || admin == true}
+                <form action="@{Documents.newDocument()}" method="post">
+                    <input type="hidden" name="id" value="${org.id}">Create a Document: <input type="submit" value="Create">
+                </form>
+				#{/if}
             </body>
             </html>
             <script type="text/javascript">
-function echeck(str) {
-
-		var at="@"
-		var dot="."
-		var lat=str.indexOf(at)
-		var lstr=str.length
-		var ldot=str.indexOf(dot)
-		if (str.indexOf(at)==-1){
-		   alert("Invalid E-mail ID")
-		   return false
-		}
-
-		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
-		   alert("Invalid E-mail ID")
-		   return false
-		}
-
-		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
-		    alert("Invalid E-mail ID")
-		    return false
-		}
-
-		 if (str.indexOf(at,(lat+1))!=-1){
-		    alert("Invalid E-mail ID")
-		    return false
-		 }
-
-		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
-		    alert("Invalid E-mail ID")
-		    return false
-		 }
-
-		 if (str.indexOf(dot,(lat+2))==-1){
-		    alert("Invalid E-mail ID")
-		    return false
-		 }
-		
-		 if (str.indexOf(" ")!=-1){
-		    alert("Invalid E-mail ID")
-		    return false
-		 }
-
- 		 return true				
-	}
-
-function ValidateForm(){
-	var emailID=document.getElementById("email");
-	
-	if ((emailID.value==null)||(emailID.value=="")){
-		alert("Please Enter your Email ID")
-		emailID.focus()
-		return false
-	}
-	if (echeck(emailID.value)==false){
-		emailID.value=""
-		emailID.focus()
-		return false
-	}
-	return true
- }
-            function test(){
-            //var v = document.getElementById('selec').selectedIndex;
-            var a = document.getElementById('selec').value;
-            //alert("function" +  a);
-            if(a!='Tags')
-            if(a == 0){
-            //alert("function2" +  ${org.id});
-            $.post('@{Organizations.enableTags()}',{id:${org.id}});
-            alert("Options is enabled");
-		  location.reload(true);
-		
-            }
-            else{
-            //alert("function2" +  ${org.id});
-            $.post('@{Organizations.disableTags()}',{id:${org.id}});
-            alert("Options is disabled");
-			  location.reload(true);
-            }
-				
-            }
-		function unfollow(id){
-		$.post('@{Users.unfollowOrganization()}', {
-			organizationId: id
-		});
-		alert("done!");
-		location.reload(true);
-	}
-    function help(id, e){
-		s = document.getElementById("s").checked;
-        if (!s) {
-           if(ValidateForm()) {
-		   	send(id, e, true);
-		   }
-			} else {
-				if (username()) {
-				send(id, e, false);
-				}
-			}
-    }
-	function send(id, e, b) {
-		$.post('@{Organizations.sendInvitation()}', {
-			organizationId:id,
-			email:e,
-			byMail:b
-		});
-		alert("Invitation has been sent");
-		location.reload(true);
-	}
-	function username() {
-		var name = document.getElementById("email").value;
-		var a = document.getElementById('users');
-				b = a.value + "";
-    			c = b.split("|");
-				for (var i = 0; i < c.length; i++) {
-				if (c[i] == name) {
-				return true;
-				}
-				}
-				alert("User with this username does not exist");
-			return false;
-			}
+                                function echeck(str) {
+                                
+                                		var at="@"
+                                		var dot="."
+                                		var lat=str.indexOf(at)
+                                		var lstr=str.length
+                                		var ldot=str.indexOf(dot)
+                                		if (str.indexOf(at)==-1){
+                                		   alert("Invalid E-mail ID")
+                                		   return false
+                                		}
+                                
+                                		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
+                                		   alert("Invalid E-mail ID")
+                                		   return false
+                                		}
+                                
+                                		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
+                                		    alert("Invalid E-mail ID")
+                                		    return false
+                                		}
+                                
+                                		 if (str.indexOf(at,(lat+1))!=-1){
+                                		    alert("Invalid E-mail ID")
+                                		    return false
+                                		 }
+                                
+                                		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
+                                		    alert("Invalid E-mail ID")
+                                		    return false
+                                		 }
+                                
+                                		 if (str.indexOf(dot,(lat+2))==-1){
+                                		    alert("Invalid E-mail ID")
+                                		    return false
+                                		 }
+                                		
+                                		 if (str.indexOf(" ")!=-1){
+                                		    alert("Invalid E-mail ID")
+                                		    return false
+                                		 }
+                                
+                                 		 return true				
+                                	}
+                                
+                                function ValidateForm(){
+                                	var emailID=document.getElementById("email");
+                                	
+                                	if ((emailID.value==null)||(emailID.value=="")){
+                                		alert("Please Enter your Email ID")
+                                		emailID.focus()
+                                		return false
+                                	}
+                                	if (echeck(emailID.value)==false){
+                                		emailID.value=""
+                                		emailID.focus()
+                                		return false
+                                	}
+                                	return true
+                                 }
+                                            function test(){
+                                            //var v = document.getElementById('selec').selectedIndex;
+                                            var a = document.getElementById('selec').value;
+                                            //alert("function" +  a);
+                                            if(a!='Tags')
+                                            if(a == 0){
+                                            //alert("function2" +  ${org.id});
+                                            $.post('@{Organizations.enableTags()}',{id:${org.id}});
+                                            alert("Options is enabled");
+                                		  location.reload(true);
+                                		
+                                            }
+                                            else{
+                                            //alert("function2" +  ${org.id});
+                                            $.post('@{Organizations.disableTags()}',{id:${org.id}});
+                                            alert("Options is disabled");
+                                			  location.reload(true);
+                                            }
+                                				
+                                            }
+                                		function unfollow(id){
+                                		$.post('@{Users.unfollowOrganization()}', {
+                                			organizationId: id
+                                		});
+                                		alert("done!");
+                                		location.reload(true);
+                                	}
+                                    function help(id, e){
+                                		s = document.getElementById("s").checked;
+                                        if (!s) {
+                                           if(ValidateForm()) {
+                                		   	send(id, e, true);
+                                		   }
+                                			} else {
+                                				if (username()) {
+                                				send(id, e, false);
+                                				}
+                                			}
+                                    }
+                                	function send(id, e, b) {
+                                		$.post('@{Organizations.sendInvitation()}', {
+                                			organizationId:id,
+                                			email:e,
+                                			byMail:b
+                                		});
+                                		alert("Invitation has been sent");
+                                		location.reload(true);
+                                	}
+                                	function username() {
+                                		var name = document.getElementById("email").value;
+                                		var a = document.getElementById('users');
+                                				b = a.value + "";
+                                    			c = b.split("|");
+                                				for (var i = 0; i < c.length; i++) {
+                                				if (c[i] == name) {
+                                				return true;
+                                				}
+                                				}
+                                				alert("User with this username does not exist");
+                                			return false;
+                                			}
+                                            
+                            
             </script>
-            
-
