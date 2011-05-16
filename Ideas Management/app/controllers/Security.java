@@ -58,7 +58,7 @@ public class Security extends Secure.Security {
 	 * 
 	 * @author Ahmed Maged
 	 * 
-	 * @story C1S18
+	 * @story C1S21
 	 * 
 	 */
 	
@@ -72,14 +72,14 @@ public class Security extends Secure.Security {
 	 * 
 	 * @author Ahmed Maged
 	 * 
-	 * @story C1S18
+	 * @story C1S21
 	 * 
 	 * @param username String
 	 *			the username or the e-mail of the user who forgot his password 
 	 *
 	 */
 	
-	public static void checkUsername( @Required String username ) {
+	public static void checkUsername( @Required String username) {
 		if( validation.hasErrors() )
 		{
 			flash.error( "Please enter a valid username/Email" );
@@ -90,8 +90,6 @@ public class Security extends Secure.Security {
 			flash.error( "This username/Email does not exist" );
 			Security.forgotPassword();
 		} else {
-			//flash.success("User exists");
-			//Security.forgotPassword();
 			render(user);
 		}
 	}
@@ -102,7 +100,7 @@ public class Security extends Secure.Security {
 	 * 
 	 * @author Ahmed Maged
 	 * 
-	 * @story C1S18
+	 * @story C1S21
 	 * 
 	 * @param username String 
 	 * 			the username or the e-mail of the user who forgot his password
@@ -120,10 +118,6 @@ public class Security extends Secure.Security {
 		}
 		User user = User.find("select u from User u where u.username=?", 
 				username).first();
-//		if(user == null) {
-//			flash.error("NULL");
-//			Security.checkUsername();
-//		}
 		if(answer == null) {
 			flash.error("You must answer the security question!");
 			Security.checkUsername(username);
@@ -135,8 +129,7 @@ public class Security extends Secure.Security {
 			user.save();
 			Mail.recoverPassword(user.username, user.email, newPassword);
 			flash.success("An email is sent to " + user.email 
-					+ "with your new password \n" 
-					+ "your password is " + newPassword);
+					+ " with your new password \n");
 			Security.checkUsername(username);
 		} else {
 			flash.error("Incorrect answer");
@@ -149,7 +142,7 @@ public class Security extends Secure.Security {
 	 * 
 	 * @author Ahmed Maged
 	 * 
-	 * @story C1S18
+	 * @story C1S21
 	 * 	 
 	 * @return string
 	 * 			the new generated password

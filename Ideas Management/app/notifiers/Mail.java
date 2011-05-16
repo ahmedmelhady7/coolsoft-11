@@ -76,6 +76,22 @@ public class Mail extends Mailer {
 		send(topicOrganizer, reporter, reportedIdea);
 	}
 	
+	/**
+	 * Sends an e-mail to the user with a new generated password and 
+	 * gives him a hyper link to the login page
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S21
+	 * 
+	 * @param username String
+	 * 			the username of the receiver
+	 * @param email String
+	 * 			the e-mail of the recipient
+	 * @param password String
+	 * 			the new generated password
+	 */
+	
 	public static void recoverPassword(String username, String email, String password) {
 		System.out.println(email);
 		addRecipient(email);
