@@ -44,6 +44,8 @@ public class TopicRelationships extends CRUD {
 		relation.save();
 		relation.source.relationsSource.add(relation);
 		relation.destination.relationsDestination.add(relation);
+		if(!isDuplicate(name, relation.source.entity.organization.relationNames))
+			relation.source.entity.organization.relationNames.add(name);
 	}
 
 	/**
@@ -115,13 +117,13 @@ public class TopicRelationships extends CRUD {
 	 * 
 	 * @param relationName : name of the relation
 	 * 
-	 * @param relationNamesInOrganization : list of relation names in the organization
+	 * @param relationNames : list of relation names in the organization
 	 * 
 	 * @return boolean value if duplicate(true) or not(false)
 	 */
-	public static boolean isDuplicate(String relationName, ArrayList<String> relationNamesInOrganization){
-		for(int i = 0; i < relationNamesInOrganization.size(); i++){
-			if(relationName.equals(relationNamesInOrganization.get(i)))
+	public static boolean isDuplicate(String relationName, ArrayList<String> relationNames){
+		for(int i = 0; i < relationNames.size(); i++){
+			if(relationName.equals(relationNames.get(i)))
 				return true;	
 		}
 		return false;
