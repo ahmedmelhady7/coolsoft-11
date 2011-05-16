@@ -93,10 +93,6 @@
                 #{/list}
             </ul>
 			#{/if}
- 		 #{if user.canVolunteer(item.id) && !(item.status == 2) && !item.endDatePassed()}
-   		<a href="@{VolunteerRequests.justify(item.id, p.id, 0)}">Volunteer to work on this item</a>
-     	<br/>
-  		#{/if}
 		 #{if user.canWork(item.id) && !(item.status == 2) && !item.endDatePassed()}
    		<a href="@{Plans.workOnItem(item.id)}">Work on this item</a>
      	<br/>
@@ -113,7 +109,24 @@
 		<a href="@{Plans.deleteItem(p.id,item.id)}">Delete this item</a>
 		<br/>
       #{/if}
-         
+	  #{if user.pendingVolunteerRequest(item.id)}
+	   <label>Pending volunteer Request</label>
+	  #{/if}
+	  <label id = "label_${item.id}"></label>
+        #{if user.canVolunteer(item.id) && !(item.status == 2) && !item.endDatePassed()}
+		<input type="button" onclick="show1(${item.id});" id = "button_${item.id}" value = "volunteer"> 
+   		<div id = "item_${item.id}" class = "req">
+   			Please state why you want to work on this item.
+			<br/>
+				<textarea id = "text_${item.id}" rows="7" cols="50"> </textarea>
+					<br/>
+				<input type="button" onclick="send(${item.id});" value = "send request"> 
+		&nbsp;&nbsp;&nbsp;
+			<input type="button" onclick="cancel(${item.id});" value = "cancel"> 
+			
+		</div>
+     	<br/>
+  		#{/if}
         </fieldset>
     </li>
     #{/list}
@@ -138,5 +151,37 @@ No items exist in plan. Please contact
 	#{/else}
 #{/else}
 #{/else}
+<script type="text/javascript">
+	$(".req").hide();
+	
+	function show1(id) {
 
+	    $("#item_" + id).show();
+		$("#button_" + id).hide();
+
+	}
+	
+		function send(id) {
+			alert("da5al " + id);
+		var x = $("#text_" + id).val();
+		alert("yalla ba2a " + x);
+		if (x == null || x.trim() == "") {
+			alert("you have to enter a justification");
+		}
+		else {
+			$.post('@{sendVolunteerRequest()}', {
+				itemId: id,
+				justification: x
+			});
+			$("#item_" + id).remove();
+			document.getElementById("label_" + id).innerHTML = "pending volunteer request";	
+		}	
+	}	
+	
+		function cancel(id) {
+		$("#item_" + id).hide();
+	    $("#button_" + id).show();		
+	}
+	
+</script>	
 			

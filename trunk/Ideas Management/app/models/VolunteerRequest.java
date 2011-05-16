@@ -8,7 +8,7 @@ import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
-public class VolunteerRequest extends Model {
+public class VolunteerRequest extends CoolModel {
 
 	@ManyToOne
 	public User sender;

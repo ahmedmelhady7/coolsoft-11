@@ -7,7 +7,7 @@ import javax.persistence.*;
 import play.db.jpa.*;
 
 @Entity
-public class Item extends Model {
+public class Item extends CoolModel {
 
 	public Date startDate;
 
