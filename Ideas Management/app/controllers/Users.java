@@ -9,6 +9,8 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
+
+import controllers.CRUD.ObjectType;
 import notifiers.Mail;
 import play.data.binding.Binder;
 import play.data.validation.Validation;
@@ -179,6 +181,15 @@ public class Users extends CRUD {
 		}
 	}
 	
+	/**
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S1
+	 * 
+	 * @param userId
+	 */
+	
 	public static void showProfile(String userId) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -198,10 +209,19 @@ public class Users extends CRUD {
 		}
 	}
 	
+	/**
+	 * Gets the Id of the current logged in user and calls the method showProfile
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S1
+	 */
+	
 	public static void myProfile() {
 		User user = Security.getConnected();
 		showProfile(user.id + "");
 	}
+	
 	
 	/**
 	 * Overrides the CRUD method blank, renders the form for creating a user

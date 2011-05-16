@@ -6,7 +6,7 @@
 <br>
 #{if flash.error}
 <div id = passrecovery>
-	<p class="error">
+	<p class="error" style="color: #c00">
 		${flash.error}
 	</p>
 </div>
@@ -15,12 +15,12 @@
 <form action="@{Security.recoverPassword()}" method="post">
 	<input type="hidden" name="username" value="${user.username}"/>
 	<input type="text" name="answer" id="ans"/>
-	<input type="submit"  value="submit" />
+	<input type="submit"  value="recover password" />
 </form>
-
+ <a href="/secure/login">Back to login..</a>
 #{if flash.success}
 <div id = passrecovery>
-	<p class="success">
+	<p class="success" style="color: #008800">
 		${flash.success}
 	</p>
 </div>
