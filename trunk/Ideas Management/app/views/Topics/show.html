@@ -135,12 +135,21 @@
     </form> #{/if}
     #{/if}
     #{/if}
+
 </div>#{if canClose == 1 && openToEdit == true}
-#{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }<input type = "hidden" name = "topicId" value = ${topicId}><input type="submit" value="Close Topic" />#{/form} 
-#{/if} 
-#{if canClose == 1 && openToEdit == false && plan == null}
-#{form @Topics.reopen(), method:'POST', enctype:'multipart/form-data' }<input type = "hidden" name = "topicId" value = ${topicId}><input type="submit" value="Reopen Topic" />#{/form}
-#{/if}
+			#{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
+				<input type = "hidden" name = "topicId" value = ${topicId}>
+				<input type="submit" value="Close Topic" />
+			#{/form} 
+		#{/if} 
+
+		#{if canClose == 1 && openToEdit == false && plan == null}
+			#{form @Topics.reopen(), method:'POST', enctype:'multipart/form-data' }
+				<input type = "hidden" name = "topicId" value = ${topicId}>
+				<input type="submit" value="Reopen Topic" />
+			#{/form}
+		#{/if}
+
 #{if canPlan == 1 && openToEdit == false && plan == null}
 #{form @Plans.planCreate(), method:'POST', enctype:'multipart/form-data' }<input type = "hidden" name = "topicId" value = ${topicIdLong}><input type="submit" value="Create A plan" />#{/form}
 #{/if}
