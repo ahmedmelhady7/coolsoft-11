@@ -1,9 +1,9 @@
 #{extends 'Secure/layout.html' /}
 #{set title:'Login' /}
-
+<h1>Login</h1>
 <div id="login">
 	<form method="post" action="@{authenticate()}">
-	<h1>Login</h1>
+	
 	#{if flash.error}
 		<p class="error">
 			&{flash.error}
@@ -35,6 +35,10 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<a href="/Security/forgotpassword">Forgot your password?</a>
+			<br/>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a hert="/Users/register">Register DONT CLICK!</a>
 		</p>
 	</form>
 </div>
