@@ -40,11 +40,17 @@ public class Topic extends CoolModel {
 	public int privacyLevel;
 	
 	/**
-	 * The list of related topics
+	 * The list of relations where the topic is the source
 	 */
-	 @ManyToMany
-	 public List<TopicRelationship> relations;
+	 @OneToMany(mappedBy = "source")
+	 public List<TopicRelationship> relationsSource;
 
+	 /**
+	  * The list of relations where the topic is the destination
+	  */
+	 @OneToMany(mappedBy = "destination")
+	 public List<TopicRelationship> relationsDestination;
+	 
 	/**
 	 * the list of tags the topic is tagged with
 	 */
@@ -185,7 +191,8 @@ public class Topic extends CoolModel {
 		this.privacyLevel = privacyLevel;
 		this.creator = creator;
 		this.entity = entity;
-		relations = new ArrayList<TopicRelationship>();
+		relationsSource = new ArrayList<TopicRelationship>();
+		relationsDestination = new ArrayList<TopicRelationship>();
 		tags = new ArrayList<Tag>();
 		// relationships = new ArrayList<Relationship>();
 		// organizers = new ArrayList<User>();
@@ -219,7 +226,8 @@ public class Topic extends CoolModel {
 		this.description = description;
 		this.privacyLevel = privacyLevel;
 		this.creator = creator;
-		relations = new ArrayList<TopicRelationship>();
+		relationsSource = new ArrayList<TopicRelationship>();
+		relationsDestination = new ArrayList<TopicRelationship>();
 		tags = new ArrayList<Tag>();
 		// relationships = new ArrayList<Relationship>();
 		// organizers = new ArrayList<User>();
