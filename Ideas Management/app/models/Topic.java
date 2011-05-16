@@ -142,11 +142,23 @@ public class Topic extends CoolModel {
 	 * @author Mostafa Aboul Atta
 	 */
 	public boolean openToEdit;
+
+	
+	/**
+	 * This variable checks whether this entity allows the creation of relationships in it
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S31
+	 */
+	public boolean createRelationship;
+
 	
 	/**
 	 * shows whether the topic is visible or hidden
 	 */
 	public boolean hidden;
+
 
 	/**
 	 * Default constructor that creates a topic with name, description,privacy
@@ -166,7 +178,7 @@ public class Topic extends CoolModel {
 	 *            Entity that the topic belongs/added to
 	 */
 	public Topic(String title, String description, int privacyLevel,
-			User creator, MainEntity entity) {
+			User creator, MainEntity entity, boolean createRelationship) {
 		this.title = title;
 		intializedIn = new Date();
 		this.description = description;
@@ -182,7 +194,7 @@ public class Topic extends CoolModel {
 		commentsOn = new ArrayList<Comment>();
 		// canAccess = new ArrayList<User>();
 		requestsToJoin = new ArrayList<RequestToJoin>();
-
+		this.createRelationship = createRelationship;
 		openToEdit = true;
 	}
 
@@ -201,7 +213,7 @@ public class Topic extends CoolModel {
 	 *            Author of the topic
 	 */
 	public Topic(String title, String description, short privacyLevel,
-			User creator) {
+			User creator, boolean createRelationship) {
 		this.title = title;
 		intializedIn = new Date();
 		this.description = description;
@@ -215,7 +227,8 @@ public class Topic extends CoolModel {
 		ideas = new ArrayList<Idea>();
 		commentsOn = new ArrayList<Comment>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
-
+		hidden = false;
+		this.createRelationship = createRelationship;
 		openToEdit = true;
 	}
 

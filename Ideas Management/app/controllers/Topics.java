@@ -800,6 +800,7 @@ public class Topics extends CRUD {
 		Plan plan = temporaryTopic.plan;
 		boolean openToEdit = temporaryTopic.openToEdit;
 		int privacyLevel = temporaryTopic.privacyLevel;
+		boolean createRelationship = temporaryTopic.createRelationship;
 		String deleteMessage = "Are you Sure you want to delete the task ?!";
 		boolean deletable = temporaryTopic.isDeletable();
 		int canClose = 0;
@@ -892,6 +893,7 @@ public class Topics extends CRUD {
 		List<Comment> comments = temporaryTopic.commentsOn;
 		MainEntity entity = temporaryTopic.entity;
 		Plan plan = temporaryTopic.plan;
+		boolean createRelationship = temporaryTopic.createRelationship;
 		boolean openToEdit = temporaryTopic.openToEdit;
 		int privacyLevel = temporaryTopic.privacyLevel;
 		String deleteMessage = "Are you Sure you want to delete the task ?!";
@@ -901,13 +903,13 @@ public class Topics extends CRUD {
 			System.out.println("view() done, about to render");
 			render(type, object, tags, creator, followers, ideas, comments,
 					entity, plan, openToEdit, privacyLevel, deleteMessage,
-					deletable, topicId);
+					deletable, topicId, createRelationship);
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("view() done with exception, rendering to CRUD/show.html");
 			render("/topics/view.html", type, object, tags, creator, followers,
 					ideas, comments, entity, plan, openToEdit, privacyLevel,
-					deleteMessage, deletable, topicId);
+					deleteMessage, deletable, topicId, createRelationship);
 		}
 	}
 
@@ -1056,6 +1058,7 @@ public class Topics extends CRUD {
 									// saving
 		MainEntity entity = temporaryTopic.entity;
 		User myUser = Security.getConnected();
+		boolean createRelationship = temporaryTopic.createRelationship;
 		temporaryTopic.creator = myUser;
 		// ArrayList<Tag> topicTags = (ArrayList<Tag>) temporaryTopic.tags;
 		Organization topicOrganization = entity.organization;
@@ -1080,7 +1083,7 @@ public class Topics extends CRUD {
 			try {
 				render(request.controller.replace(".", "/") + "/view.html",
 						entity, type, temporaryTopic.title, temporaryTopic.entity, temporaryTopic.description,
-						temporaryTopic.followers, temporaryTopic.tags, message, object, topicId);
+						temporaryTopic.followers, temporaryTopic.tags, message, object, topicId, createRelationship);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/view.html", type, topicId);
 			}
@@ -1091,7 +1094,7 @@ public class Topics extends CRUD {
 			try {
 				render(request.controller.replace(".", "/") + "/view.html",
 						entity, type, temporaryTopic.title, temporaryTopic.entity, temporaryTopic.description,
-						temporaryTopic.followers, temporaryTopic.tags, message, object, topicId);
+						temporaryTopic.followers, temporaryTopic.tags, message, object, topicId, createRelationship);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/view.html", type, topicId);
 			}
@@ -1099,7 +1102,10 @@ public class Topics extends CRUD {
 		}
 
 		System.out.println("about to save() topic");
+		System.out.println(temporaryTopic.createRelationship);
+		
 		object._save();
+		
 		Calendar cal = new GregorianCalendar();
 		// Logs.addLog( myUser, "add", "Task", temporaryTopic.id, temporaryTopic.entity.organization,
 		// cal.getTime() );

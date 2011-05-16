@@ -14,7 +14,7 @@
 	<div class="objectForm">
 	#{form action:@save(object._key()), enctype:'multipart/form-data'}
 	
-		#{crud.form fields: ['title', 'description', 'privacyLevel']}
+		#{crud.form fields: ['title', 'description', 'privacyLevel', 'createRelationship']}
 		
 		   #{crud.custom 'title'}
 			<p> 
@@ -42,6 +42,12 @@
 			</p> 
 			#{/crud.custom }
 		
+		#{crud.custom 'createRelationship'}
+			<p> 
+ 			<label for="object_createRelationship">Allow this topic to have relationships</label> 
+			<input type="checkbox" id="object_createRelationship" name="object.createRelationship"> 
+			</p> 
+			#{/crud.custom } 
 		
 		#{/crud.form }
 		<p class="crudButtons">

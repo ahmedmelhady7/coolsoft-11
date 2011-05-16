@@ -10,7 +10,7 @@
 	
 	<div class="objectForm">
 	#{form action:@create(entityId), enctype:'multipart/form-data'}
-	#{crud.form fields: ['title', 'description', 'privacyLevel']}
+	#{crud.form fields: ['title', 'description', 'privacyLevel', 'createRelationship']}
 		
 			#{crud.custom 'title'}
 	  		<p> 
@@ -36,6 +36,13 @@
 				<option value = "2">public</option>
  			</select>
  			<span class="crudHelp" ><font color="Red">*</font>Required</span> 
+			</p> 
+			#{/crud.custom } 
+			
+			#{crud.custom 'createRelationship'}
+			<p> 
+ 			<label for="object_createRelationship">Allow this topic to have relationships</label> 
+			<input type="checkbox" id="object_createRelationship" name="object.createRelationship"> 
 			</p> 
 			#{/crud.custom } 
 		

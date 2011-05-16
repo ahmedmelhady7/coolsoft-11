@@ -18,7 +18,7 @@
     <div class="objectForm">
         #{form action:@view(object._key()), enctype:'multipart/form-data'}
         <br/>
-        #{crud.form fields: ['title', 'creator', 'entity', 'description', 'privacyLevel']}
+        #{crud.form fields: ['title', 'creator', 'entity', 'description', 'privacyLevel', 'createRelationship']}
         <br/>
         #{crud.custom 'title'}
         <p>
@@ -84,6 +84,18 @@
             #{/else}
         </p>
         #{/crud.custom }
+		
+		#{crud.custom 'createRelationship'}
+        <p>
+            <label for="object_createRelationship">
+                createRelationship
+            </label>
+            <label id="object_createRelationship" cols="50" rows="5" class="" name="object.createRelationship">
+                ${object.createRelationship}
+            </label>
+            <!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
+        </p>
+        #{/crud.custom}
         #{/crud.form }
         <br/>
         #{if permission == 1}

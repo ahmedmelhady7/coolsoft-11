@@ -100,6 +100,15 @@ public class MainEntity extends Model {
 	
 	@OneToMany(mappedBy = "entity")
 	public List<TopicRequest> topicRequests;
+	
+	/**
+	 * This variable checks whether this entity allows the creation of relationships in it
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S31
+	 */
+	public boolean createRelationship;
 
 	// ArrayList<Relationship> relationshipList;
 	// ArrayList<Request> requestList;
@@ -123,7 +132,7 @@ public class MainEntity extends Model {
 	 * 
 	 */
 
-	public MainEntity(String name, String description, Organization org) {
+	public MainEntity(String name, String description, Organization org, boolean createRelationship) {
 		this.name = name;
 		intializedIn = new Date();
 		this.description = description;
@@ -137,6 +146,7 @@ public class MainEntity extends Model {
 		topicList = new ArrayList<Topic>();
 		tagList = new ArrayList<Tag>();
 		int size = org.followers.size();
+		this.createRelationship = createRelationship;
 		for (int i = 0; i < size; i++) {
 			Notifications.sendNotification(org.followers.get(i).id, org.id,
 					"organization", "A new entity (" + name
@@ -166,7 +176,7 @@ public class MainEntity extends Model {
 	 */
 
 	public MainEntity(String name, String description, MainEntity parent,
-			Organization org) {
+			Organization org,boolean createRelationship) {
 		this.name = name;
 		intializedIn = new Date();
 		this.description = description;
@@ -182,6 +192,7 @@ public class MainEntity extends Model {
 		relations = new ArrayList<EntityRelationship>();
 		List<User> receivers = Users.getEntityOrganizers(parent);
 		int size = receivers.size();
+		this.createRelationship = createRelationship;
 		for (int j = 0; j < size; j++) {
 			Users.getEntityOrganizers(this).add(receivers.get(j));
 		}
