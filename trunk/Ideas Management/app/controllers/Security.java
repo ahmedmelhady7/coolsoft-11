@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.LinkedList;
+
 import play.data.validation.Required;
 import play.mvc.With;
 import models.Log;
@@ -58,8 +60,7 @@ public class Security extends Secure.Security {
 	 * 
 	 */
 	
-	public static void forgotPassword()
-	{
+	public static void forgotPassword() {
 		render();
 	}
 	
@@ -75,6 +76,7 @@ public class Security extends Secure.Security {
 	 *			the username or the e-mail of the user who forgot his password 
 	 *
 	 */
+	
 	public static void checkUsername( @Required String username ) {
 		if( validation.hasErrors() )
 		{
@@ -114,7 +116,7 @@ public class Security extends Secure.Security {
 			flash.error( "You must answer the question!" );
 			Security.checkUsername(username);
 		}
-		User u = User.find("select u from User u where u.username=?", 
+		User user = User.find("select u from User u where u.username=?", 
 				username).first();
 //		if(user == null) {
 //			flash.error("NULL");
@@ -126,25 +128,47 @@ public class Security extends Secure.Security {
 		}
 		if(answer.equalsIgnoreCase("rogerfederer")) {
 			// should send a generated password by mail
-			flash.success("your passord is " + u.password);
+			String newPassword = generatePassword();
+			user.password = newPassword;
+			user.save();
+			flash.success("your password is " + newPassword);
 			Security.checkUsername(username);
 		} else {
 			flash.error("Incorrect answer");
 			Security.checkUsername(username);
 		}
 	}
-
-	// public static void onAuthenticated() {
-	// String usr = (isConnected() ? connected() : "");
-	// User user = User.find(
-	// "select u from User u where u.email=? or u.name=?", usr.toLowerCase(),
-	// usr ).first();
-	// session.put("user_id", user.id);
-	// System.out.println(user.id);
-	// String url = flash.get("url");
-	// if(url == null) {
-	// url = "/";
-	// }
-	// redirect(url);
-	// }
+	
+	/**
+	 * Generates a random password of length 7
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S18
+	 * 	 
+	 * @return string
+	 * 			the new generated password
+	 */
+	
+	public static String generatePassword() {
+		LinkedList<String> chars = new LinkedList<String>();
+		char current = 'a';
+		int number = 0;
+		// add all the characters in a list of characters
+		for(int i = 0; i < 26; i++) {
+			chars.add(current + "");
+			String tmp = ("" + current).toUpperCase();
+			chars.add(tmp);
+			chars.add(number + "");
+			current++;
+			number = (number + 1) % 10;
+		}
+		// generate a random password of length 7
+		String password = "";
+		for(int i = 0; i < 7; i++) {
+			int x = (int) (Math.random() * (chars.size() - 1));
+			password += chars.get(x);
+		}
+		return password;
+	}
 }
