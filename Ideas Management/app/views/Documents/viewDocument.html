@@ -18,10 +18,15 @@
     });
 </script>
 <b>${document.name}</b><br /><br />
-<form>
+
     <p>
         <textarea id="data" name="data" rows="30" cols="80" style="width: 40%">
         ${document.data}
 		</textarea>
     </p>
-</form>
+	#{if canEdit == true}
+	<form action="@{Documents.editDocument()}" method="post">
+	<input type="hidden" name="id" value="${document.id}">
+	<input type="submit" value="edit">
+	</form>
+	#{/if}
