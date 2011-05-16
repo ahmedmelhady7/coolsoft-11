@@ -118,22 +118,22 @@ public class Bootstrap extends Job {
 			gov.save();
 
 			MainEntity gucMet = new MainEntity("MET",
-					"Media Engineering and technology", guc).save();
+					"Media Engineering and technology", guc, true).save();
 			gucMet.tagList.add(tagEducation);
 			gucMet._save();
 
 			MainEntity gucCs = new MainEntity("CS",
-					"Computer Science and Engineering", gucMet, guc).save();
+					"Computer Science and Engineering", gucMet, guc, false).save();
 			gucCs.tagList.add(tagGuc);
 			gucCs._save();
 
 			MainEntity govHead = new MainEntity("الوزارة", "راسه مجلس الوزراء",
-					gov).save();
+					gov, true).save();
 			gucMet.tagList.add(tagEducation);
 			gucMet._save();
 
 			MainEntity elAhly = new MainEntity("El-Ahly",
-					"Al-Ahly Club Lovers", egypt).save();
+					"Al-Ahly Club Lovers", egypt, true).save();
 
 			Role organizer = Roles.getRoleByName("organizer");
 			Role ideadeveloper = Roles.getRoleByName("idea developer");
@@ -165,7 +165,7 @@ public class Bootstrap extends Job {
 			// ideadeveloper, govHead.id, "entity");
 
 			Topic gucMetStudentUnion = new Topic("Student union",
-					"Suggestions", 2, ashraf, gucMet).save();
+					"Suggestions", 2, ashraf, gucMet, true).save();
 			gucMetStudentUnion._save();
 			gucMetStudentUnion.tags.add(tagGuc);
 			gucMetStudentUnion._save();
@@ -187,25 +187,25 @@ public class Bootstrap extends Job {
 					gucMetStudentUnion.id, "topic");
 
 			Topic govImp = new Topic("التعديلات الدستورية", "اقتراحات", 1,
-					sharaf, govHead).save();
+					sharaf, govHead, false).save();
 			Topic govImp2 = new Topic("ثوره 25 يناير", "اقتراحات", 0, sharaf,
-					govHead).save();
+					govHead, true).save();
 			govHead.topicList.add(govImp);
 			govHead.topicList.add(govImp2);
 			govHead._save();
 			Topic egyahlymatch = new Topic("Ahly vs Zamalek",
-					"for football lovers", 2, admin, elAhly).save();
+					"for football lovers", 2, admin, elAhly, false).save();
 			elAhly.topicList.add(egyahlymatch);
 			elAhly._save();
 			Topic innovation = new Topic("Create. Innovate",
 					"how to encourage inventors and enhance creativity", 1,
-					sharaf, govHead).save();
+					sharaf, govHead, true).save();
 			govHead.topicList.add(innovation);
 			govHead._save();
 			Topic matchChaos = new Topic(
 					"Chaos in egyptian football matches",
 					"try to avoid chaos and fights during matches due to different points of view",
-					2, admin, elAhly).save();
+					2, admin, elAhly, true).save();
 			elAhly.topicList.add(matchChaos);
 			elAhly._save();
 

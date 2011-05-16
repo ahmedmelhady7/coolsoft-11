@@ -5,7 +5,7 @@
 
     <body>
         #{extends 'main.html' /}
-        <form action="@{MainEntitys.editEntity()}" method="POST"
+        <form name="entityForm" action="@{MainEntitys.editEntity()}" method="POST"
         onsubmit= "return validate()">
         	<input type="hidden" name="entityId" value="${entity.id}">		
 			<HR>
@@ -17,9 +17,17 @@
 			<p>Description:</p>
 			<p><textarea id="description" name="description" rows="5" cols="50"
 				>${entity.description}</textarea></p>
-			<label id= "descriptionerror"> </label> <br />
+			<label id= "descriptionerror"> </label> <br /><br /><br />
 			<HR>
-			<input type="submit" value = "Save">
+			#{if entity.createRelationship}
+			<input type="checkbox" id="createRelationship" name="createRelationship" checked>Allow entity to have relationships<br />
+			<HR>
+			#{/if}
+			#{else}
+			<input type="checkbox" id="createRelationship" name="createRelationship">Allow entity to have relationships<br />
+			<HR>
+			#{/else}
+			<input type="submit" onclick="get_Value()" value = "Save">
 			<HR>
 				
 			<script type="text/javascript">
@@ -43,6 +51,14 @@
 				if (flag == 0)
 				return false;		
 			}	
+			
+			function get_Value() {
+		var createRelationship = false;
+		if(document.entityForm.createRelationship.checked) {
+			createRelationship = true;
+		}
+		return createRelationship;
+	}	
 		</script>		
 	</body>
 </html>	

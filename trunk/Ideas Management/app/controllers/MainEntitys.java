@@ -139,15 +139,16 @@ public class MainEntitys extends CRUD {
 	 *            created
 	 * 
 	 */
-	public static void createEntity(String name, String description, long orgId) {
+	public static void createEntity(String name, String description, long orgId, boolean createRelationship) {
 		boolean canCreate = true;
+		System.out.println(createRelationship);
 		Organization org = Organization.findById(orgId);
 		for (int i = 0; i < org.entitiesList.size(); i++) {
 			if (org.entitiesList.get(i).name.equalsIgnoreCase(name))
 				canCreate = false;
 		}
 		if (canCreate) {
-			MainEntity entity = new MainEntity(name, description, org);
+			MainEntity entity = new MainEntity(name, description, org, createRelationship);
 			entity.save();
 		}
 		redirect("Organizations.viewProfile", org.id, "Entity created");
@@ -175,7 +176,7 @@ public class MainEntitys extends CRUD {
 	 * 
 	 */
 	public static void createSubEntity(String name, String description,
-			long parentId, long orgId) {
+			long parentId, long orgId, boolean createRelationship) {
 		boolean canCreate = true;
 		MainEntity parent = MainEntity.findById(parentId);
 		Organization org = Organization.findById(orgId);
@@ -184,7 +185,7 @@ public class MainEntitys extends CRUD {
 				canCreate = false;
 		}
 		if (canCreate) {
-			MainEntity entity = new MainEntity(name, description, parent, org);
+			MainEntity entity = new MainEntity(name, description, parent, org, createRelationship);
 			entity.save();
 		}
 		redirect("Organizations.viewProfile", org.id, "SubEntity created");
@@ -303,10 +304,11 @@ public class MainEntitys extends CRUD {
 	 *            : The new description of the entity
 	 * 
 	 */
-	public static void editEntity(long entityId, String name, String description) {
+	public static void editEntity(long entityId, String name, String description, boolean createRelationship) {
 		MainEntity entity = MainEntity.findById(entityId);
 		entity.name = name;
 		entity.description = description;
+		entity.createRelationship = createRelationship;
 		entity.save();
 		redirect(request.controller + ".viewEntity", entity.id, "Entity created");
 	}

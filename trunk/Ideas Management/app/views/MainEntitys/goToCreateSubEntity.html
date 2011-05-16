@@ -3,7 +3,7 @@
 #{extends 'main.html' /}
 #{set title:'Entity Creation' /}
 
-<form action="@{MainEntitys.createSubEntity()}" method="POST"
+<form name="entityForm" action="@{MainEntitys.createSubEntity()}" method="POST"
 onsubmit= "return validate()">
 
 <input type = "hidden" name = "orgId" value = ${org.id} >
@@ -17,7 +17,9 @@ Entity Name: <input type="text" id="name" name="name">
 <p><textarea id="description" name="description" rows="5" cols="50"></textarea></p>
 <label id= "descriptionerror"> </label> <br />
 <HR>
-<input type="submit" value="Create">
+<input type="checkbox" id="createRelationship" name="createRelationship">Allow subentity to have relationships<br />
+<HR>
+<input type="submit" onclick="get_Value()" value="Create">
 <HR>
 </form>
 
@@ -44,6 +46,14 @@ function redirect(){
 		}
 		if (flag == 0)
 		return false;		
+	}	
+	
+	function get_Value() {
+		var createRelationship = false;
+		if(document.entityForm.createRelationship.checked) {
+			createRelationship = true;
+		}
+		return createRelationship;
 	}	
 </script>
 
