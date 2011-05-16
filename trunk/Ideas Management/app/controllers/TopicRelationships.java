@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.ArrayList;
+
 import groovy.ui.text.FindReplaceUtility;
 
 import javax.xml.transform.Source;
@@ -40,9 +42,8 @@ public class TopicRelationships extends CRUD {
 		TopicRelationship relation = new TopicRelationship(name, source,
 				destination);
 		relation.save();
-
-		source.relations.add(relation);
-		destination.relations.add(relation);
+		relation.source.relationsSource.add(relation);
+		relation.destination.relationsDestination.add(relation);
 	}
 
 	/**
@@ -63,6 +64,7 @@ public class TopicRelationships extends CRUD {
 		TopicRelationship relation = TopicRelationship
 				.findById(relationToBeRenamedId);
 		relation.name = newName;
+		relation.save();
 
 	}
 
@@ -78,6 +80,8 @@ public class TopicRelationships extends CRUD {
 	 */
 	public static void delete(long relationId) {
 		TopicRelationship relation = TopicRelationship.findById(relationId);
+		relation.source.relationsSource.remove(relation);
+		relation.destination.relationsDestination.remove(relation);
 		relation.delete();
 
 	}
@@ -104,6 +108,23 @@ public class TopicRelationships extends CRUD {
 		return false;
 	}
 
-	
+	/**
+	 * checks relation name for duplicate
+	 * 
+	 * @author Mohamed Hisham
+	 * 
+	 * @param relationName : name of the relation
+	 * 
+	 * @param relationNamesInOrganization : list of relation names in the organization
+	 * 
+	 * @return boolean value if duplicate(true) or not(false)
+	 */
+	public static boolean isDuplicate(String relationName, ArrayList<String> relationNamesInOrganization){
+		for(int i = 0; i < relationNamesInOrganization.size(); i++){
+			if(relationName.equals(relationNamesInOrganization.get(i)))
+				return true;	
+		}
+		return false;
+	}
 
 }

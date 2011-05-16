@@ -31,7 +31,7 @@ import models.*;
 public class Topics extends CRUD {
 	
 	/**
-	 * creates relationship between two topics
+	 * renders the related topic, entity the topic belongs to and the list of other topics in the organization to the view
 	 * 
 	 * @author Mohamed Hisham
 	 * 
