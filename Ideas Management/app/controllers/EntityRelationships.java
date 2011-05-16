@@ -102,7 +102,7 @@ public class EntityRelationships extends CRUD {
 	public static void delete(long relationId) {
 		EntityRelationship relation = EntityRelationship.findById(relationId);
 		relation.source.relationsSource.remove(relation);
-		relation.destination.relationsSource.remove(relation);
+		relation.destination.relationsDestination.remove(relation);
 		relation.delete();
 	}
 
