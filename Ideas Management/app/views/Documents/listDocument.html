@@ -1,0 +1,26 @@
+#{extends 'main.html' /}
+
+<b>Documents</b><br />
+#{ifnot documents}
+<p>
+    No documents 
+</p>
+#{/ifnot}
+<ul>
+    #{list items:documents, as:'document'}
+    <li>
+    	<form action="@{Documents.viewDocument(document.id)}" method="post">
+        <input type="submit" value="show" />
+		${document.name}
+		</form>
+    </li>
+	#{/list}
+</ul>
+
+<script type="text/javascript">
+	function show(id) {
+		$.post('@{Documents.viewDocument()}', {
+			id: id
+		});
+	}
+</script>
