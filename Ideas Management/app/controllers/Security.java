@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.LinkedList;
 
+import notifiers.Mail;
+
 import play.data.validation.Required;
 import play.mvc.With;
 import models.Log;
@@ -131,7 +133,10 @@ public class Security extends Secure.Security {
 			String newPassword = generatePassword();
 			user.password = newPassword;
 			user.save();
-			flash.success("your password is " + newPassword);
+			Mail.recoverPassword(user.username, user.email, newPassword);
+			flash.success("An email is sent to " + user.email 
+					+ "with your new password \n" 
+					+ "your password is " + newPassword);
 			Security.checkUsername(username);
 		} else {
 			flash.error("Incorrect answer");

@@ -75,6 +75,15 @@ public class Mail extends Mailer {
 		setSubject("An Idea is Reported as a Spam");
 		send(topicOrganizer, reporter, reportedIdea);
 	}
+	
+	public static void recoverPassword(String username, String email, String password) {
+		System.out.println(email);
+		addRecipient(email);
+		setFrom("coolsoft-11@gmail.com");
+		setSubject("No Relpay: Password recovery");
+		String url = "http://localhost:9008/secure/login";
+		send(username, password, url);
+	}
 
 	/**
 	 * @description used to send a mail to the person who was added by the admin
