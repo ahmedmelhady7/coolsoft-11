@@ -597,9 +597,27 @@ public class Users extends CRUD {
 		// User banned =
 		// BannedUser.find("select b.bannedUser from BannedUser b where b.bannedUser = ? and b.resourceID = ? and b.resourceType = ? and b.action =  ",
 		// user);
+		
+		BannedUser bannedView = BannedUser.find(
+				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
+				"view", placeType, placeId).first();
+		
+		if(bannedView != null) {
+			return false;
+		}
+		else {
+			if(!action.substring(4).equals("view")) {
+				BannedUser bannedUse = BannedUser.find(
+						"byBannedUserAndActionAndResourceTypeAndResourceID", user,
+						"use", placeType, placeId).first();
+				if(bannedUse != null)
+					return false;
+			}
+		}
 		BannedUser banned = BannedUser.find(
 				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 				action, placeType, placeId).first();
+		
 		String role;
 		if (user.isAdmin) {
 			return true;
