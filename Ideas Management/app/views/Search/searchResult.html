@@ -75,71 +75,68 @@ The Search Results Viewer
             					window.location.reload(true);
             				});
             			}
-            			function whichsortmethod(frm) {
-            				var c = 'v';
-            				var e = 'r';
-            				if (document.getElementById("s1").checked) {
-            					if (document.getElementById("v").checked) {
-									//document.write(document.sort.v.name);
-            						$.post('@{sortD}', {voteOrRate : document.sort.v.value}, function() {
-            							window.location.reload(true);
-            						});
-            
-            					} else if (document.getElementById("r").checked) {
-									//document.write(document.sort.v.id);
-            						$.post('@{sortD}', {voteOrRate : document.sort.v.value}, function() {
-            							window.location.reload(true);
-            						});
-            					}
-            
-            				} else if (document.getElementById("v").checked) {
-            					$.post('@{sortA}', {voteOrRate: document.sort.v.value}, function() {
-            						window.location.reload(true);
-            					});
-            				} else if (document.getElementById("r").checked) {
-            					$.post('@{sortA()}', {voteOrRate: frm.v.value}, function() {
-            						window.location.reload(true);
-            					});
-            				}
-            			}
-            			function mark(id){
-            				if (marked.indexOf(id) == -1 && marked.length < 2) {
-            					marked.push(id);
-            				}
-            				else {
-            					if (marked.indexOf(id) != -1){
-            						marked.pop(id);
-            					} 
-            					else{
-									alert("you could only mark two ideas");
-									marked = new Array();
-									window.location.reload(true);
-            					}
-            				}
-            				}				
-            				function markDuplicate(){
-            					$.post('@{MarkRequest.sendRequest}',{idea1ID: marked[0],idea2ID: marked[1] ,des:"lol"}, function(){alert("The requests have been sent to the Topic organizer");});
-            				}
-            		
-        </script>
-        </form>
-        <br/>
-        <b>
-            <big>
-                <u>
-                    Search Results:<a href="/filter_options"><i>Filter Results</i></a>
-                </u>
-            </big>
-        </b>
-		</br>
-		</br>
-	<form name = "sort">
-    <input type="radio" name="s" id="s" value="A" />Ascending order <br>
-    <input type="radio" name="s" id="s1" value="D" />descending order </br>
-    <input type="radio" name="v" id="v" value="v" onclick="whichsortmethod(this.form)" />Vote <input type="radio"
-     name="v" id="r" value="r" onclick="whichsortmethod(this.form)" />Rate
-    </br>
-   </form>
+
+			function whichsortmethod(frm) {
+				var c = 'v';
+				var e = 'r';
+				if (document.getElementById("s1").checked) {
+					//			if (document.getElementById("v").checked) {
+					//document.write(document.sort.v.name);
+					$.post('@{sortD}', {
+						//voteOrRate : document.sort.v.value
+					}, function() {
+						window.location.reload(true);
+					});
+
+				} else //if (document.getElementById("v").checked)
+				{
+					$.post('@{sortA}', {
+						//voteOrRate : document.sort.v.value
+					}, function() {
+						window.location.reload(true);
+					});
+				}
+			}
+			function mark(id) {
+				if (marked.indexOf(id) == -1 && marked.length < 2) {
+					marked.push(id);
+				} else {
+					if (marked.indexOf(id) != -1) {
+						marked.pop(id);
+					} else {
+						alert("you could only mark two ideas");
+						marked = new Array();
+						window.location.reload(true);
+					}
+				}
+			}
+			function markDuplicate() {
+				$
+						.post(
+								'@{MarkRequest.sendRequest}',
+								{
+									idea1ID : marked[0],
+									idea2ID : marked[1],
+									des : "lol"
+								},
+								function() {
+									alert("The requests have been sent to the Topic organizer");
+								});
+			}
+		</script>
+	</form>
+	<br />
+	<b> <big> <u> Search Results:<a href="/filter_options"><i>Filter
+						Results</i> </a> </u> </big> </b>
+	</br>
+	</br>
+	<form name="sort">
+		<input type="radio" name="s" id="s" value="A"
+			onclick="whichsortmethod(this.form)" />Ascending rate order  <br> <input
+			type="radio" name="s" id="s1" value="D"
+			onclick="whichsortmethod(this.form)" />descending rate order </br> 
+	 </br>
+	</form>
 <div id='div1' align='left'>
 </div>
 </body>
