@@ -8,7 +8,7 @@ import java.util.*;
 import java.lang.reflect.*;
 
 import models.*;
-import others.*;
+
 
 @With(Secure.class)
 public class Logs extends CRUD {
