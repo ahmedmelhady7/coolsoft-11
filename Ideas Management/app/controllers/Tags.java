@@ -18,7 +18,7 @@ import models.User;
 public class Tags extends CRUD {
 
 	/**
-	 * creates relationship between two tags
+	 * renders the related tag and the list of other tags in the organization to the view
 	 * 
 	 * @author Mohamed Hisham
 	 * 
