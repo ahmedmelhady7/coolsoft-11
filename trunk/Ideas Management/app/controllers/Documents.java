@@ -22,11 +22,15 @@ public class Documents extends CRUD {
 	 * 
 	 * @author Ibrahim Al-Khayat
 	 * @param id
-	 *            id of the owner user/organization
+	 *            id of the owner organization (-1 for user)
 	 */
 	public static void newDocument(long id) {
-		boolean isOrganization = false;
+		boolean isOrganization = true;
 		User user = Security.getConnected();
+		if (id == -1) {
+			isOrganization = false;
+			id = user.id;
+		}
 		render(id, user, isOrganization);
 	}
 
@@ -81,21 +85,49 @@ public class Documents extends CRUD {
 	 */
 	public static void listDocument(long id) {
 		User user = Security.getConnected();
-		List<Document> documents = Document.find("byUserOrganizationId",
-				user.id).fetch();
-		for (int i = 0; i < documents.size(); i++) {
-			if (documents.get(i).isOrganization)
-				documents.remove(i);
+		List<Document> documents;
+		if (id == -1) {
+			documents = Document.find("byUserOrganizationId",
+					user.id).fetch();
+			for (int i = 0; i < documents.size(); i++) {
+				if (documents.get(i).isOrganization)
+					documents.remove(i);
+			}
+		} else {
+			documents = Document.find("byUserOrganizationId",
+					id).fetch();
+			for (int i = 0; i < documents.size(); i++) {
+				if (!documents.get(i).isOrganization)
+					documents.remove(i);
+			}
 		}
 		render(user, documents);
 	}
 
+	/**
+	 * Renders the editDocument HTML
+	 * 
+	 * @author Ibrahim Al-Kahayat
+	 * @param id
+	 *            id of the document
+	 */
 	public static void editDocument(long id) {
 		User user = Security.getConnected();
 		Document document = Document.findById(id);
 		render(user, document);
 	}
 
+	/**
+	 * Edits the title and the body of the document
+	 * 
+	 * @author Ibrahim Al-Kahayat
+	 * @param id
+	 *            id of the document
+	 * @param title
+	 *            the updated title
+	 * @param data
+	 *            the updated body
+	 */
 	public static void updateDocument(long id, String title, String data) {
 		Document document = Document.findById(id);
 		document.data = data;
@@ -103,6 +135,13 @@ public class Documents extends CRUD {
 		document.save();
 	}
 
+	/**
+	 * Deletes a document
+	 * 
+	 * @author Ibrahim Al-Kahayat
+	 * @param id
+	 *            id of the document
+	 */
 	public static void deleteDocument(long id) {
 		Document document = Document.findById(id);
 		document.delete();

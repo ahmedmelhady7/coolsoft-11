@@ -63,11 +63,12 @@ Logout: <input type="submit" value="Logout">
 </form>
 
 <form action="@{Documents.newDocument()}" method="post">
-	<input type="hidden" name="id" value="${u.id}">
+	<input type="hidden" name="id" value="-1">
 	Create a Document: <input type="submit" value="Create">
 </form>
 
 <form action="@{Documents.listDocument()}" method="post">
+	<input type="hidden" name="id" value="-1">
 	Show my Documents: <input type="submit" value="show">
 </form>
 
