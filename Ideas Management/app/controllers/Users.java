@@ -201,6 +201,7 @@ public class Users extends CRUD {
 		String profession = tmp.profession;
 		String username = tmp.username;
 		String birthDate = "" + tmp.dateofBirth;
+		
 		try {
 			render(type, object, username, name, communityContributionCounter,
 					profession, birthDate, userId);
@@ -625,15 +626,7 @@ public class Users extends CRUD {
 		if(bannedView != null) {
 			return false;
 		}
-		else {
-			if(!action.substring(4).equals("view")) {
-				BannedUser bannedUse = BannedUser.find(
-						"byBannedUserAndActionAndResourceTypeAndResourceID", user,
-						"use", placeType, placeId).first();
-				if(bannedUse != null)
-					return false;
-			}
-		}
+		
 		BannedUser banned = BannedUser.find(
 				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 				action, placeType, placeId).first();
