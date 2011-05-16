@@ -61,7 +61,6 @@ public class EntityRelationship extends Model {
 		this.name = name;
 		this.source = source;
 		this.destination = destination;
-		source.organization.relationNames.add(name);
 	}
 
 }
