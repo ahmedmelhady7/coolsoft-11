@@ -32,6 +32,10 @@ public class Bootstrap extends Job {
 			Role.createAdminRole();
 			Role.createOrganizationLeadRole();
 
+			User rf = new User("aymaestro@gmail.com", "majic", "1234", "Ahmed",
+					"Maged", 0, new Date(1990, 11, 11), "Egypt", "Programmer");
+			rf.save();
+			
 			User admin = new User("admin@coolsoft.com", "admin", "1234", "Mr.",
 					"admin", 0, new Date(1990, 11, 11), "Egypt", "Prgrammer");
 			admin.isAdmin = true;
