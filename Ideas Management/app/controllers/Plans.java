@@ -7,6 +7,7 @@ import models.Organization;
 import models.Plan;
 import models.Topic;
 import models.User;
+import models.VolunteerRequest;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -22,6 +23,38 @@ import controllers.CRUD.ObjectType;
 
 @With(Secure.class)
 public class Plans extends CRUD {
+	
+	public static void sendVolunteerRequest(long itemId, String justification) {
+		User sender = Security.getConnected();
+		Item dest = Item.findById(itemId);
+
+		if (sender.canVolunteer(itemId)) {
+			if (!(dest.status == 2) && !dest.endDatePassed()) {
+				VolunteerRequest volunteerRequest = new VolunteerRequest(
+						sender, dest, justification).save();
+				dest.addVolunteerRequest(volunteerRequest);
+				dest.save();
+				sender.addVolunteerRequest(volunteerRequest);
+				sender.save();
+				String description = sender.username
+						+ " has requested to volunteer to work on the following item "
+						+ dest.summary + "in the plan " + dest.plan.title
+						+ "of the topic" + dest.plan.topic.title;
+				List<User> notificationDestination = dest.plan.topic
+						.getOrganizer();
+				for (int i = 0; i < notificationDestination.size(); i++) {
+					Notifications.sendNotification(
+							notificationDestination.get(i).id, dest.plan.id,
+							"plan", description);
+				}
+
+				//Plans.viewAsList(dest.plan.id);
+				//justify(itemId, dest.plan.id, 2);
+			}
+		} else {
+			//justify(itemId, dest.plan.id, 1);
+		}
+	}
 
 	public static void planList(String type, long id) {
 		List<Plan> plans = new ArrayList<Plan>();

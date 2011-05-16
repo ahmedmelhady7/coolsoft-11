@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import play.db.jpa.Model;
 
 @Entity
-public class AssignRequest extends Model {
+public class AssignRequest extends CoolModel {
 
 	@ManyToOne
 	public Item source;

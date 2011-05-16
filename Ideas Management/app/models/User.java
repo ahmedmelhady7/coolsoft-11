@@ -526,5 +526,15 @@ public class User extends CoolModel {
 		}
 		return false;
 	}
+	
+	public boolean pendingVolunteerRequest(long itemId){
+
+		for(VolunteerRequest volunteerRequest:volunteerRequests) {
+			if(volunteerRequest.destination.id == itemId){
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

@@ -10,7 +10,7 @@ import play.data.validation.Required;
 import play.db.jpa.*;
 
 @Entity
-public class Plan extends Model {
+public class Plan extends CoolModel {
 
 	@Required
 	public String title;
