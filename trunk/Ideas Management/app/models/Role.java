@@ -107,10 +107,39 @@ public class Role extends Model {
 	 */
 
 	public static void createIdeaDeveloperRole() {
+
 		String actions = 
+				
+				
+				 "can post ideas to a Topic;"
+				+ "create a certain tag;"
+				+ "can follow organization, entitie or topic;"
+				+ "follow tags of his/her choice;"
+				+ "request to join a private topic;"
+				+ "request to join a private organization;"
+				+ "tag his/her ideas;"
+				+ "report an idea as a spam or abuse;"
+				+ "leave an idea or topic in draft mode while creating it and publish it;"
+				+ "request a topic suitable for positing his/her idea;"
+				+ "report a topic or comment as spam;"
+				+ "delete his/her ideas;"
+				+ "add labels;"
+				+ "delete labels;"
+				+ "change labels;"
+				+ "View it;"
+				+ "comment or share any idea, plan;"
+				+ "rate plans;"
+				+ "request marking an idea as a duplicate;"
+				+ "view an action plan;"
+				+ "request to volunteer to work on an action item in a plan;"
+				+ "view his/her assigned to-do items;"
+				+ "mark his/her to-do item as done;";
+
+		String actions2 = 
 				 "use;"
 		        + "view";
 		        
+
 		Role ideaDeveloper = new Role("idea developer", actions);
 		ideaDeveloper.save();
 		
