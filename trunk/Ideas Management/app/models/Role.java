@@ -108,7 +108,7 @@ public class Role extends CoolModel {
 
 	public static void createIdeaDeveloperRole() {
 
-		String actions = 
+		String actions1 = 
 				
 				
 				 "can post ideas to a Topic;"
@@ -135,7 +135,7 @@ public class Role extends CoolModel {
 				+ "view his/her assigned to-do items;"
 				+ "mark his/her to-do item as done;";
 
-		String actions2 = 
+		String actions = 
 				 "use;"
 		        + "view";
 		        
