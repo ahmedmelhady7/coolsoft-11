@@ -105,7 +105,7 @@ public class Mail extends Mailer {
 	}
 
 	/**
-	 * @description used to send a mail to the person who was added by the admin
+	 *  used to send a mail to the person who was added by the admin
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -121,6 +121,46 @@ public class Mail extends Mailer {
 		setSubject("Welcome");
 		String url = "http://localhost:9008";
 		send(user, url);
+
+	}
+	/**
+	 *  used to send a mail to the person who was added by the admin
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * @param user
+	 *            :User the user
+	 * 
+	 */
+	public static void activation(User user) {
+		addRecipient(user.email);
+		setFrom("CoolSoft011@gmail.com");
+		setSubject("Welcome to CoolSoft, Reactivate your account ");
+		String url = "http://localhost:9008";
+		send(user, url);
+
+	}
+	/**
+	 *  used to send a mail to the person who was deleted by the admin
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * @param user
+	 *            :User the user
+	 * 
+	 * @param message
+	 *            :String the reason for which the user has been deleted
+	 */
+	public static void deletion(User user,String message) {
+		addRecipient(user.email);
+		setFrom("CoolSoft011@gmail.com");
+		setSubject("Your account has been deleted ! ");
+		//String url = "http://localhost:9008";
+		send(user, message);
 
 	}
 
