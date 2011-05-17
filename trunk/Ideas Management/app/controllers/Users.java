@@ -103,10 +103,14 @@ public class Users extends CRUD {
 		String profession = object.profession;
 		String username = object.username;
 		String birthDate = "" + object.dateofBirth;
+		int adminFlag = 0;
+		if(Security.getConnected().isAdmin) {
+			adminFlag = 1;
+		}
 		try {
 			System.out.println("view() done, about to render");
 			render(type, object, username, name, communityContributionCounter,
-					profession, birthDate, userId);
+					profession, birthDate, userId, adminFlag);
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("view() done with exception, rendering to CRUD/show.html");
@@ -201,10 +205,14 @@ public class Users extends CRUD {
 		String profession = tmp.profession;
 		String username = tmp.username;
 		String birthDate = "" + tmp.dateofBirth;
+		int flag = 0;
+		if (Security.getConnected().equals(tmp)){
+			flag = 1;
+		}
 		
 		try {
 			render(type, object, username, name, communityContributionCounter,
-					profession, birthDate, userId);
+					profession, birthDate, userId, flag);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
