@@ -13,7 +13,7 @@ import play.db.jpa.Model;
  */
 
 @Entity
-public class NotificationProfile extends Model {
+public class NotificationProfile extends CoolModel {
 
 	// The ID of the source
 	public long notifiableId;

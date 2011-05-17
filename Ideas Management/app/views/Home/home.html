@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+<title>Ideas Management</title>
+</head>
+<!-- Header -->
+<div id="wrapper">
+	<div id="header-wrapper">
+		<div id="header">
+			<div id="logo">
+				<h1>Collaborative Thinking</h1>
+			</div>
+			<div id="menu">
+				<ul>
+					<li><a href="@{Home.index()}">Home</a></li>
+					<li><a href="@{Home.about()}">About</a></li>	
+					<li><a href="@{Home.contact()}">Contact</a></li>
+					<li><a href="@{Login.index()}">Login</a></li>
+					<li><a href="#">Register</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End of header -->
+<body>
+#{doLayout /}
+</body>
+</html>
