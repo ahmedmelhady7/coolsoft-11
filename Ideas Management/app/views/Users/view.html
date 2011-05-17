@@ -1,4 +1,11 @@
 #{extends '/users/layout.html' /}
+#{if adminFlag == 1}
+#{if request.actionMethod != 'index'}
+            <div id="crudBreadcrumb">
+                #{crud.navigation /}
+            </div>
+#{/if}
+#{/if}
 
 <div id="crudShow" class="${type.name}">
 
@@ -18,7 +25,7 @@
 			</label> 
 			<select name="object.country" size="1">
 				<option value="Afghanistan">Afghanistan</option>
-				<option value="Åland Islands">Åland Islands</option>
+				<option value="ï¿½land Islands">ï¿½land Islands</option>
 				<option value="Albania">Albania</option>
 				<option value="Algeria">Algeria</option>
 				<option value="American Samoa">American Samoa</option>
@@ -75,7 +82,7 @@
 					Democratic Republic</option>
 				<option value="Cook Islands">Cook Islands</option>
 				<option value="Costa Rica">Costa Rica</option>
-				<option value="Côte d'Ivoire (Ivory Coast)">Côte d'Ivoire(Ivory Coast)</option>
+				<option value="Cï¿½te d'Ivoire (Ivory Coast)">Cï¿½te d'Ivoire(Ivory Coast)</option>
 				<option value="Croatia (Hrvatska)">Croatia (Hrvatska)</option>
 				<option value="Cuba">Cuba</option>
 				<option value="Cyprus">Cyprus</option>
@@ -205,7 +212,7 @@
 				<option value="Portugal">Portugal</option>
 				<option value="Puerto Rico">Puerto Rico</option>
 				<option value="Qatar">Qatar</option>
-				<option value="Réunion">Réunion</option>
+				<option value="Rï¿½union">Rï¿½union</option>
 				<option value="Romania">Romania</option>
 				<option value="Russian Federation">Russian Federation</option>
 				<option value="Rwanda">Rwanda</option>
@@ -284,16 +291,21 @@
 		#{/crud.custom }
 
 		#{/crud.form }
-
+    
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			#{if adminFlag == 1}
 			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+				#{/if}
 		</p>
+		
 		#{/form}
 	</div>
+	#{if adminFlag == 1}
 	#{form @delete(object._key())}
 	<p class="crudDelete">
 		<input type="submit" value="&{'crud.delete', type.modelName}" />
 	</p>
 	#{/form}
+	#{/if}
 </div>

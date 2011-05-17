@@ -103,14 +103,18 @@ public class Users extends CRUD {
 		String profession = object.profession;
 		String username = object.username;
 		String birthDate = "" + object.dateofBirth;
+		
 		int adminFlag = 0;
 		if (Security.getConnected().isAdmin) {
 			adminFlag = 1;
 		}
 		try {
-			System.out.println("view() done, about to render");
-			render(type, object, username, name, communityContributionCounter,
-					profession, birthDate, userId, adminFlag);
+			
+				System.out.println("view() done, about to render");
+				render(type, object, username, name, communityContributionCounter,
+						profession, birthDate, userId, adminFlag);
+			
+			
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("view() done with exception, rendering to CRUD/show.html");
@@ -206,7 +210,10 @@ public class Users extends CRUD {
 		String username = tmp.username;
 		String birthDate = "" + tmp.dateofBirth;
 		int flag = 0;
-		if (Security.getConnected().equals(tmp)) {
+
+		if (Security.getConnected().equals(tmp) || Security.getConnected().isAdmin){
+
+
 			flag = 1;
 		}
 
@@ -1241,6 +1248,7 @@ public class Users extends CRUD {
 				System.out.println("show user try ");
 				render(request.controller.replace(".", "/") + "/save.html",
 						type, message);
+				
 			} catch (TemplateNotFoundException e) {
 				System.out.println("show user catch ");
 				render("CRUD/blank.html", type);
@@ -1252,7 +1260,12 @@ public class Users extends CRUD {
 		System.out.println(object.toString() + "after the save");
 		flash.success(Messages.get("crud.saved", type.modelName));
 		if (params.get("_save") != null) {
+			if(Security.getConnected().isAdmin){
 			redirect(request.controller + ".list");
+			}
+			else {
+				redirect("/Users/showProfile?userId=" + id);
+			}
 		}
 		redirect(request.controller + ".show", object._key());
 
