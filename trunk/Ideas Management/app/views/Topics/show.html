@@ -147,14 +147,14 @@
     #{if deletable}
     <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         <p class="crudDelete">
-        	<input type="hidden" name = "message2" id = "justText">
+        	<input type="hidden" name = "justification" id = "justText">
             <input type="submit" value="&{'crud.delete', type.modelName}" />
         </p>
     </form> #{/if}
     #{if !deletable}
     <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         <p class="crudDelete">
-        	<input type="hidden" name = "message2" id = "justText">
+        	<input type="hidden" name = "justification" id = "justText">
             <input type="submit" value="&{'Hide', type.modelName}" />
         </p>
     </form> #{/if}
