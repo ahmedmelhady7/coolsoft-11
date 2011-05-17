@@ -31,6 +31,8 @@ public class Comments extends CRUD {
 		User user = Security.getConnected();
 		Comment c = new Comment(comment, p, user).save();
 		p.commentsList.add(c);
+		p.save();
+		redirect("/plans/viewaslist?planId="+p.id);
 	}
 	/**
 	 * @author ${Ibrahim safwat}

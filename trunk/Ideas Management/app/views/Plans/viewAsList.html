@@ -56,6 +56,18 @@
         <input type = "hidden" name = "planId" value = ${p.id} >
 		<input type = "submit" value = "Comment" >
 	</form>
+	<br/>
+		<input type = "submit" value = "Show Comments" onclick="viewComments()" >
+		<br/>
+		<script type="text/javascript">
+			function viewComments(){
+				
+				document.getElementById('div1').innerHTML = "#{if comments} Comments <br/> <ul> #{list comments, as:'comment'} <li><a>${comment.toString()}</a></li> #{/list} <br/></ul> #{/if} #{else}No comments posted#{/else}"
+			}
+			</script>
+	
+	<div id='div1' align='left'>
+</div>
 #{if itemsList.size() > 0}
 <ul style="list-style: none; ">
     #{list items:itemsList, as:'item'}
