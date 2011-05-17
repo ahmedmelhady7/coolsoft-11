@@ -65,13 +65,11 @@ public class Documents extends CRUD {
 		long userId = Security.getConnected().id;
 		if (document.isOrganization) {
 			if (((Organization) Organization
-					.findById(document.userOrganizationId)).creator.id == userId) {
+					.findById(document.userOrganizationId)).creator.id == userId)
 				canEdit = true;
-			}
 		} else {
-			if (userId == document.userOrganizationId) {
+			if (userId == document.userOrganizationId)
 				canEdit = true;
-			}
 		}
 		render(document, canEdit);
 	}
@@ -87,15 +85,13 @@ public class Documents extends CRUD {
 		User user = Security.getConnected();
 		List<Document> documents;
 		if (id == -1) {
-			documents = Document.find("byUserOrganizationId",
-					user.id).fetch();
+			documents = Document.find("byUserOrganizationId", user.id).fetch();
 			for (int i = 0; i < documents.size(); i++) {
 				if (documents.get(i).isOrganization)
 					documents.remove(i);
 			}
 		} else {
-			documents = Document.find("byUserOrganizationId",
-					id).fetch();
+			documents = Document.find("byUserOrganizationId", id).fetch();
 			for (int i = 0; i < documents.size(); i++) {
 				if (!documents.get(i).isOrganization)
 					documents.remove(i);
