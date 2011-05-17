@@ -1,7 +1,14 @@
 #{extends 'main.html' /} 
 
-<h3>${label.name}</h3>
+	<label id="labelname">${label.name}</label>
+	<a onclick = "$('#editName').show()" href="#">Change this Label name</a>
+	<form id = "editName" style="display:none;" >
+		<input id = "newName" type="text" value="${label.name}" required></input>
+		<!--<input type="submit" value="change name"  onclick="alterName(${label.id})"></input>-->
+		<a href="@{Labels.changeName()}">hoa</a>
+	</form>
 	
+	#{if label.ideas.get(0) != null}
 	<div id="ideas">
 		#{list items:label.ideas , as:'idea'}
 	    	<ul>
@@ -9,3 +16,26 @@
 			</ul>
 		#{/list}
 	</div> 
+	#{/if}
+	
+	
+	<a onclick="$('#otherIdeas').slideToggle()" href="#">add new ideas to this label</a>
+	
+	<div id = "otherIdeas" style="display:none;" >
+		#{list items:otherIdeas , as:'other'}
+			<ul>
+		       	<input type="checkbox"><a href='@{Ideas.show(other.id)}'>${other.title}</a></input>
+			</ul>
+		#{/list}
+	</div>
+	<script type="text/javascript">
+		function alterName(id)
+		{
+			var name = document.getElementById("newName").value.toString();
+			//alert(id+' '+name);
+			$.post('@{changeName()}' ,{labelId:id, newName:name});
+			//${'#labelname'}.html(name);
+			//alert(id+' '+name);
+			//window.location.reload();
+		}
+	</script>
