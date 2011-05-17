@@ -825,6 +825,8 @@ public class Topics extends CRUD {
 		for (int i = 0; i < ideas.size(); i++) {
 			if (ideas.get(i).hidden)
 				ideas.remove(i);
+			else if(ideas.get(i).isDraft)
+				ideas.remove(i);
 		}
 		int numberOfIdeas = ideas.size();
 		if ((temporaryTopic.privacyLevel==2) && Users

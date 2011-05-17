@@ -28,7 +28,7 @@
 	#{if canDelete}
 	<form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="">
         <p class="crudDelete">
-            <input type="submit" value="&{'Hide Idea', type.modelName}" />
+            <input type="submit" onClick="window.prompt('enter a justification note for the author of the idea');" value="&{'Hide Idea', type.modelName}" />
         </p>
     </form>
     #{/if}
