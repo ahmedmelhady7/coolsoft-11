@@ -1,10 +1,11 @@
 package models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-
+import javax.persistence.OneToMany;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 
@@ -35,9 +36,12 @@ public class TopicRelationship extends CoolModel {
 	/**
 	 * the second related Topic
 	 */
-	@ManyToOne
 	@Required
+	@ManyToOne
 	public Topic destination;
+
+	@OneToMany(mappedBy = "topicRelationship")
+	public List<RenameEndRelationshipRequest> renameEndRequests;
 
 	/**
 	 * The constructor for assigning Relationships

@@ -62,18 +62,15 @@ public class Tag extends Model {
 	 */
 	@ManyToMany(mappedBy = "tagList")
 	public List<MainEntity> entities;
-	
+
 	/**
 	 * The list of relations where the tag is the source
 	 */
-	@OneToMany
-	 public List<TagRelationship> relationsSource;
-
-	/**
-	 * The list of relations where the tag is the destination
-	 */
-	@OneToMany
-	 public List<TagRelationship> relationsDestination;
+	@OneToMany(mappedBy = "source")
+	public List<TagRelationship> relationsSource;
+	
+	@OneToMany(mappedBy = "destination")
+	public List<TagRelationship> relationsDestination;
 	
 	/**
 	 * List of items tagged by the tag
@@ -83,6 +80,15 @@ public class Tag extends Model {
 
 	@ManyToMany(mappedBy = "tagsList")
 	public List<Idea> taggedIdeas;
+
+	/**
+	 * List of relationship requests for the Tag
+	 */
+	@OneToMany(mappedBy = "destinationTag")
+	public List<CreateRelationshipRequest> relationshipRequestsDestination;
+
+	@OneToMany(mappedBy = "sourceTag")
+	public List<CreateRelationshipRequest> relationshipRequestsSource;
 
 	// ERD change : organization can create many tags, a tag can be created in a
 	// single org
@@ -113,6 +119,8 @@ public class Tag extends Model {
 		this.taggedTopics = new ArrayList<Topic>();
 		this.relationsSource = new ArrayList<TagRelationship>();
 		this.relationsDestination = new ArrayList<TagRelationship>();
+		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
+		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		this.taggedIdeas = new ArrayList<Idea>();
 		// this.relatedTags = new ArrayList<Tag>();
 		// ERD change

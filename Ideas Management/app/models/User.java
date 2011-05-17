@@ -23,6 +23,7 @@ import play.data.validation.MaxSize;
 import play.data.validation.MinSize;
 import play.data.validation.Required;
 import play.db.jpa.Model;
+import play.jobs.OnApplicationStart;
 
 @Entity
 public class User extends CoolModel {
@@ -162,14 +163,25 @@ public class User extends CoolModel {
 	@OneToMany(mappedBy = "madeBy")
 	// , cascade = CascadeType.PERSIST)
 	public List<Plan> planscreated;
-	
+
 	@OneToMany(mappedBy = "user")
 	public List<Label> myLabels;
-	
+
 	@OneToMany(mappedBy = "requester")
 	// , cascade = CascadeType.ALL)
 	public List<TopicRequest> topicRequests;
 
+	/**
+	 * List of creation relationship requests the user made
+	 */
+	@OneToMany(mappedBy = "requester")
+	public List<CreateRelationshipRequest> myRelationshipRequests;
+
+	/**
+	 * List of renaming and ending relationship requests the user made
+	 */
+	@OneToMany(mappedBy = "requester")
+	public List<RenameEndRelationshipRequest> myRenameEndRelationshipRequests;
 
 	/**
 	 * @author Mostafa Ali
@@ -221,12 +233,11 @@ public class User extends CoolModel {
 		// topicInvitations = new ArrayList<TopicInvitation>();
 
 	}
-	
-	
+
 	/**
 	 * 
-	 * Creates a new invitation and adds it to the list of invitations 
-	 * in organization and entity
+	 * Creates a new invitation and adds it to the list of invitations in
+	 * organization and entity
 	 * 
 	 * @author ${Mai.Magdy}
 	 * 
@@ -235,32 +246,32 @@ public class User extends CoolModel {
 	 * 
 	 * @param email
 	 *            String email the destination of the invitation
-	 *  
+	 * 
 	 * @param role
-	 *              String role that ll be assigned to the user if accept
-	 *
+	 *            String role that ll be assigned to the user if accept
+	 * 
 	 * @param organization
-	 *                Organization organization that sends the invitation
-	 *              
+	 *            Organization organization that sends the invitation
+	 * 
 	 * @param entity
-	 *              MainEntity entity that sends the invitation
+	 *            MainEntity entity that sends the invitation
 	 * 
 	 */
 
 	public void addInvitation(String email, String role,
-			Organization organization, MainEntity entity,Topic topic) {
-        
+			Organization organization, MainEntity entity, Topic topic) {
+
 		Invitation invite = new Invitation(email, entity, organization, role,
-				this,topic).save();
+				this, topic).save();
 		this.invitation.add(invite);
-		if(topic!=null)
+		if (topic != null)
 			topic.invitations.add(invite);
-		else{
-		organization.invitation.add(invite);
-		if (entity != null)
-			entity.invitationList.add(invite);
-		
-	}
+		else {
+			organization.invitation.add(invite);
+			if (entity != null)
+				entity.invitationList.add(invite);
+
+		}
 		this.save();
 	}
 
@@ -526,11 +537,11 @@ public class User extends CoolModel {
 		}
 		return false;
 	}
-	
-	public boolean pendingVolunteerRequest(long itemId){
 
-		for(VolunteerRequest volunteerRequest:volunteerRequests) {
-			if(volunteerRequest.destination.id == itemId){
+	public boolean pendingVolunteerRequest(long itemId) {
+
+		for (VolunteerRequest volunteerRequest : volunteerRequests) {
+			if (volunteerRequest.destination.id == itemId) {
 				return true;
 			}
 		}

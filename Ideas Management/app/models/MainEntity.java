@@ -20,6 +20,7 @@ import controllers.Users;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.db.jpa.Model;
+import play.jobs.OnApplicationStart;
 
 /**
  * @author Noha Khater
@@ -28,7 +29,7 @@ import play.db.jpa.Model;
  */
 
 @Entity
-public class MainEntity extends Model {
+public class MainEntity extends CoolModel {
 
 	/**
 	 * Name of the Entity
@@ -55,13 +56,13 @@ public class MainEntity extends Model {
 	@Lob
 	@Required
 	public String description;
-	
+
 	/**
 	 * list of relations where the entity is the source
 	 */
 	@OneToMany(mappedBy = "source")
-	public List<EntityRelationship> relationsSource; 
-	
+	public List<EntityRelationship> relationsSource;
+
 	/**
 	 * list of relations where the entity is the destination
 	 */
@@ -94,11 +95,6 @@ public class MainEntity extends Model {
 	public List<Topic> topicList;
 
 	/**
-	 * The list of related entities
-	 */
-	// public List<MainEntity> relatedEntities;
-
-	/**
 	 * The list of tags that the entity is tagged by
 	 */
 	@ManyToMany
@@ -106,12 +102,13 @@ public class MainEntity extends Model {
 
 	@OneToMany(mappedBy = "entity")
 	public List<Invitation> invitationList;
-	
+
 	@OneToMany(mappedBy = "entity")
 	public List<TopicRequest> topicRequests;
-	
+
 	/**
-	 * This variable checks whether this entity allows the creation of relationships in it
+	 * This variable checks whether this entity allows the creation of
+	 * relationships in it
 	 * 
 	 * @author Omar Faruki
 	 * 
@@ -119,16 +116,21 @@ public class MainEntity extends Model {
 	 */
 	public boolean createRelationship;
 
-	// ArrayList<Relationship> relationshipList;
-	// ArrayList<Request> requestList;
-	// Arraylist<RequestOfRelationship>
+	/**
+	 * List of relationship requests for the Entity
+	 */
+	@OneToMany(mappedBy = "sourceEntity")
+	public List<CreateRelationshipRequest> relationshipRequestsSource;
+
+	@OneToMany(mappedBy = "destinationEntity")
+	public List<CreateRelationshipRequest> relationshipRequestsDestination;
 
 	/**
 	 * Default constructor for an entity within an organization
 	 * 
 	 * @author Noha Khater
 	 * 
-	 * @stroy C2S2
+	 * @Story C2S2
 	 * 
 	 * @param name
 	 *            : the name of the entity being created
@@ -141,20 +143,23 @@ public class MainEntity extends Model {
 	 * 
 	 */
 
-	public MainEntity(String name, String description, Organization org, boolean createRelationship) {
+	public MainEntity(String name, String description, Organization org,
+			boolean createRelationship) {
 		this.name = name;
-		intializedIn = new Date();
+		this.intializedIn = new Date();
 		this.description = description;
 		this.parent = null;
 		this.organization = org;
 		org.entitiesList.add(this);
-		invitationList = new ArrayList<Invitation>();
-		subentities = new ArrayList<MainEntity>();
-		followers = new ArrayList<User>();
-		relationsSource = new ArrayList<EntityRelationship>();
-		relationsDestination = new ArrayList<EntityRelationship>();
-		topicList = new ArrayList<Topic>();
-		tagList = new ArrayList<Tag>();
+		this.invitationList = new ArrayList<Invitation>();
+		this.subentities = new ArrayList<MainEntity>();
+		this.followers = new ArrayList<User>();
+		this.relationsSource = new ArrayList<EntityRelationship>();
+		this.relationsDestination = new ArrayList<EntityRelationship>();
+		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
+		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
+		this.topicList = new ArrayList<Topic>();
+		this.tagList = new ArrayList<Tag>();
 		int size = org.followers.size();
 		this.createRelationship = createRelationship;
 		for (int i = 0; i < size; i++) {
@@ -169,7 +174,7 @@ public class MainEntity extends Model {
 	 * 
 	 * @author Noha Khater
 	 * 
-	 * @stroy C2S20
+	 * @Story C2S20
 	 * 
 	 * @param name
 	 *            : the name of the entity being created
@@ -186,21 +191,23 @@ public class MainEntity extends Model {
 	 */
 
 	public MainEntity(String name, String description, MainEntity parent,
-			Organization org,boolean createRelationship) {
+			Organization org, boolean createRelationship) {
 		this.name = name;
-		intializedIn = new Date();
+		this.intializedIn = new Date();
 		this.description = description;
 		this.parent = parent;
 		parent.subentities.add(this);
 		this.organization = org;
 		org.entitiesList.add(this);
-		invitationList = new ArrayList<Invitation>();
-		subentities = new ArrayList<MainEntity>();
-		followers = new ArrayList<User>();
-		topicList = new ArrayList<Topic>();
-		tagList = new ArrayList<Tag>();
-		relationsSource = new ArrayList<EntityRelationship>();
-		relationsDestination = new ArrayList<EntityRelationship>();
+		this.invitationList = new ArrayList<Invitation>();
+		this.subentities = new ArrayList<MainEntity>();
+		this.followers = new ArrayList<User>();
+		this.topicList = new ArrayList<Topic>();
+		this.tagList = new ArrayList<Tag>();
+		this.relationsSource = new ArrayList<EntityRelationship>();
+		this.relationsDestination = new ArrayList<EntityRelationship>();
+		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
+		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		List<User> receivers = Users.getEntityOrganizers(parent);
 		int size = receivers.size();
 		this.createRelationship = createRelationship;
