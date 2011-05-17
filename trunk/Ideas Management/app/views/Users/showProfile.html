@@ -9,9 +9,11 @@
 	<font color="Red">
 		${message}
 	</font>
+	
+		
 	<div class="objectForm">
 		#{form action:@view(object._key()), enctype:'multipart/form-data'}
-
+	
 		#{crud.form fields: ['email','username', 'password', 'firstName','lastName', 'communityContributionCounter','dateofBirth',  'country', 'profession']}
 
 		#{crud.custom 'email'}
@@ -98,6 +100,11 @@
 		#{/crud.custom }
 
 		#{/crud.form }
+		#{if flag == 1}
+		<button type="submit" onclick= >
+			Edit
+		</button>
+		#{/if}
 		#{/form}
 	</div>
 </div>
