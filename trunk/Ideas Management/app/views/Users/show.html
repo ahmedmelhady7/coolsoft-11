@@ -12,7 +12,7 @@
 	<div class="objectForm">
 		#{form action:@view(object._key()), enctype:'multipart/form-data'}
 
-		#{crud.form fields: ['email','username', 'password', 'firstName','lastName', 'communityContributionCounter','dateofBirth',  'country', 'profession']}
+		#{crud.form fields: ['email','username', 'firstName','lastName', 'communityContributionCounter','dateofBirth',  'country', 'profession']}
 
 		#{crud.custom 'email'}
 		<p>
@@ -34,15 +34,7 @@
 		</p>
 		#{/crud.custom}
 		
-		#{crud.custom 'password'}
-		<p>
-			<label for="object_password">
-				Password
-			</label>
-			<textarea disabled= true id="object_password" cols="25" rows="1" class="" name="object.password">${object.password}</textarea>
-		</p>
-		#{/crud.custom }
-
+		
 		#{crud.custom 'firstName'}
 		<p>
 			<label for="object_firstName">
