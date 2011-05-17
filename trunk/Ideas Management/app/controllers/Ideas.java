@@ -268,6 +268,55 @@ public class Ideas extends CRUD {
 	}
 
 	/**
+	 * Hide an idea
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S8
+	 * 
+	 * @param id
+	 *            : the id of the idea to be hidden
+	 */
+	public static void hide(long id) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(id);
+		notFoundIfNull(object);
+		Idea idea = (Idea) object;
+		Topic topic = idea.belongsToTopic;
+		User user = Security.getConnected();
+
+		try {
+			// Logs.addLog( myUser, "delete", "Task", temporaryTopic.id,
+			// temporaryTopic.taskStory.componentID.project, cal.getTime() );
+			String message = user.username + " has hidden the topic "
+					+ idea.title;
+			List<User> users = Users.getEntityOrganizers(topic.entity);
+			// for (int i = 0; i < users.size(); i++)
+			Notifications.sendNotification(topic.creator.id/*
+															 * users.get(i).id
+															 */, idea.id,
+					"Idea", message);
+			// for (int i = 0; i < topic.followers.size(); i++)
+			// Notifications.sendNotification(topic.followers.get(i).getId(),
+			// topic.getId(), "entity", message);
+			idea.hidden = true;
+			idea.save();
+			System.out.println("hidden");
+			System.out.println("leaving try");
+
+		} catch (Exception e) {
+			System.out.println("entered catch");
+			flash.error(Messages.get("crud.delete.error", type.modelName));
+			redirect(request.controller + ".show", object._key());
+		}
+		flash.success(Messages.get("crud.deleted", type.modelName));
+		System.out.println("flash.success");
+		// redirect(request.controller + ".list");
+		redirect("topics.show", topic.id);
+	}
+
+	/**
 	 * Overriding the CRUD method show.
 	 * 
 	 * @author ${Ahmed El-Hadi}
@@ -279,7 +328,6 @@ public class Ideas extends CRUD {
 	 * 
 	 * @description This method renders the form for editing and viewing an idea
 	 * 
-	 * @throws Exception
 	 * 
 	 */
 	public static void show(long ideaId) {
@@ -289,7 +337,7 @@ public class Ideas extends CRUD {
 		notFoundIfNull(object);
 		Idea idea = (Idea) object;
 		// List<Tag> tags = i.tagsList;
-		User author = Security.getConnected();
+		User user = Security.getConnected();
 		List<Comment> comments = idea.commentsList;
 		Plan plan = idea.plan;
 		Topic topic = idea.belongsToTopic;
@@ -297,23 +345,28 @@ public class Ideas extends CRUD {
 		// boolean openToEdit = i.openToEdit;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
-		int alreadyReported = -1;
 		boolean canDelete = false;
-		if (author.toString().equals(idea.author.toString()))
+		if (user.toString().equals(idea.author.toString())
+				|| user.toString().equals(
+						idea.belongsToTopic.creator.toString()))
 			canDelete = true;
-
-		for (int j = 0; j < idea.reporters.size(); j++) {
-			if (!author.username.equals(idea.reporters.get(j).username)) {
-				idea.reporters.add(author);
-				System.out.println(author.ideasReported.toString());
-				alreadyReported = 0;
+		boolean alreadyReported = false;
+		System.out.println("false alreadyreoprted");
+		for (int i = 0; i < idea.reporters.size()
+				|| i < user.ideasReported.size(); i++) {
+			System.out.println("gowa el loop");
+			if (user.toString().equals(idea.reporters.get(i).toString())
+					|| idea.toString().equals(idea.reporters.get(i).toString())) {
+				alreadyReported = true;
+				System.out
+						.println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
 			} else
-				alreadyReported = 1;
+				alreadyReported = false;
 		}
 		try {
 			System.out.println("show() done, about to render");
 			// System.out.println("x is " + x);
-			render(type, object, /* tags, */author, canDelete, comments, topic,
+			render(type, object, /* tags, */user, canDelete, comments, topic,
 					plan,
 					/* openToEdit, */topicId, alreadyReported, deletemessage, /*
 																			 * deletable
@@ -552,10 +605,7 @@ public class Ideas extends CRUD {
 		notFoundIfNull(type);
 		Model object = type.findById(ideaId);
 		notFoundIfNull(object);
-		Idea tmpIdea = (Idea) object;
 		try {
-			tmpIdea.author.communityContributionCounter--;
-			tmpIdea.author.save();
 			object._delete();
 		} catch (Exception e) {
 			flash.error(Messages.get("crud.delete.error", type.modelName));

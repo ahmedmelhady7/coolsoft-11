@@ -68,31 +68,34 @@ public class Mail extends Mailer {
 	 * @param title : title of idea
 	 */
 
-	public static void ReportAsSpamMail(User topicOrganizer, User reporter,
+	public static void reportAsSpamMail(User topicOrganizer, User reporter,
 			Idea reportedIdea, String description, String title) {
-		addRecipient(topicOrganizer.email);
+		long id = reportedIdea.id;
+		System.out.println("maiiiiiiiiii");
+		addRecipient("elhadiahmed3@gmail.com");
 		setFrom("coolsoft-11@gmail.com");
 		setSubject("An Idea is Reported as a Spam");
-		send(topicOrganizer, reporter, reportedIdea);
+		send(topicOrganizer, reporter, reportedIdea, description, title, id);
 	}
-	
+
 	/**
-	 * Sends an e-mail to the user with a new generated password and 
-	 * gives him a hyper link to the login page
+	 * Sends an e-mail to the user with a new generated password and gives him a
+	 * hyper link to the login page
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S21
 	 * 
-	 * @param username String
-	 * 			the username of the receiver
-	 * @param email String
-	 * 			the e-mail of the recipient
-	 * @param password String
-	 * 			the new generated password
+	 * @param username
+	 *            String the username of the receiver
+	 * @param email
+	 *            String the e-mail of the recipient
+	 * @param password
+	 *            String the new generated password
 	 */
-	
-	public static void recoverPassword(String username, String email, String password) {
+
+	public static void recoverPassword(String username, String email,
+			String password) {
 		System.out.println(email);
 		addRecipient(email);
 		setFrom("coolsoft-11@gmail.com");
@@ -120,10 +123,10 @@ public class Mail extends Mailer {
 		send(user, url);
 
 	}
-	
 
 	/**
-	 * @Sends a mail to the user informing him that his account has been deactivated
+	 * @Sends a mail to the user informing him that his account has been
+	 *        deactivated
 	 * 
 	 * @author Mai Magdy
 	 * 
@@ -131,9 +134,9 @@ public class Mail extends Mailer {
 	 * 
 	 * 
 	 */
-	
+
 	public static void deactivate() {
-		User user=Security.getConnected();
+		User user = Security.getConnected();
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Deactivation");
@@ -141,12 +144,10 @@ public class Mail extends Mailer {
 		send(user, url);
 
 	}
-	
-	
-	
 
 	/**
-	 * @Sends a mail to the user informing him that his account has been reactivated
+	 * @Sends a mail to the user informing him that his account has been
+	 *        reactivated
 	 * 
 	 * @author Mai Magdy
 	 * 
@@ -154,15 +155,14 @@ public class Mail extends Mailer {
 	 * 
 	 * 
 	 */
-	
+
 	public static void reactivate() {
-		User user=Security.getConnected();
+		User user = Security.getConnected();
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Reactivation");
 		send(user);
 
 	}
-	
-	
+
 }

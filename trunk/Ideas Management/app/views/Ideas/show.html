@@ -20,10 +20,19 @@
     #{if canDelete}
     #{form @delete(object._key())}
 		<p class="crudDelete">
-			<input type="submit" value="&{'crud.delete', type.modelName}" />
+			<input type="submit" value="&{'Delete Idea                   ', type.modelName}" />
 		</p>
-	#{/form}
+	#{/form}    
 	#{/if}
+	<div>
+	#{if canDelete}
+	<form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to hide this idea?');">
+        <p class="crudDelete">
+            <input type="submit" value="&{'Hide Idea', type.modelName}" />
+        </p>
+    </form>
+    #{/if}
+    </div>
         #{form action:@show(object._key()), enctype:'multipart/form-data'}
 		<br/>
         #{crud.form fields: ['author','belongsToTopic','title','description','isDraft']}
@@ -127,8 +136,8 @@
         #{/form}
     </div>
     <div>
-    #{if alreadyReported!=1}
-    <form action="@{Users.ReportIdeaAsSpam()}" method="GET" name="myform">
+    #{if !alreadyReported}
+    <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform">
         <input type="hidden" name="ideaId" value="${ideaId}">
             <tr>
                 <td>

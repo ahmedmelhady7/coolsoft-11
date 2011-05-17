@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import models.BannedUser;
@@ -29,21 +30,24 @@ import models.*;
 
 @With(Secure.class)
 public class Topics extends CRUD {
-	
+
 	/**
-	 * renders the related topic, entity the topic belongs to and the list of other topics in the organization to the view
+	 * renders the related topic, entity the topic belongs to and the list of
+	 * other topics in the organization to the view
 	 * 
 	 * @author Mohamed Hisham
 	 * 
 	 * @story C2S5
 	 * 
-	 * @param topicId : id of the topic to be related
+	 * @param topicId
+	 *            : id of the topic to be related
 	 * 
-	 * @param entityId : id of the entity the topic belongs to
+	 * @param entityId
+	 *            : id of the entity the topic belongs to
 	 */
 	public static void createRelation(long topicId, long entityId) {
 
-//		System.out.println("2ABEL !!!" + entityId + "," + topicId);
+		// System.out.println("2ABEL !!!" + entityId + "," + topicId);
 		Topic topic = Topic.findById(topicId);
 		MainEntity entity = MainEntity.findById(entityId);
 		List<Topic> listOfTopics = null;
@@ -66,7 +70,7 @@ public class Topics extends CRUD {
 	 * tagged topic
 	 * 
 	 * @author Mostafa Yasser El Monayer
-	 *
+	 * 
 	 * @story C3S2
 	 * 
 	 * @param topicId
@@ -235,7 +239,7 @@ public class Topics extends CRUD {
 
 		targetTopic.openToEdit = true;
 		targetTopic.save();
-		
+
 		redirect("/topics/show?topicId=" + topicId);
 	}
 
@@ -575,7 +579,7 @@ public class Topics extends CRUD {
 			Notifications.sendNotification(followers.get(i).getId(),
 					targetTopic.getId(), "Topic", notificationDescription);
 		}
-		
+
 		redirect("/topics/show?topicId=" + topicId);
 	}
 
@@ -589,8 +593,8 @@ public class Topics extends CRUD {
 	 * 
 	 * @description This method checks for the Validation of the info inserted
 	 *              in the Add form of a Topic and if they are valid the object
-	 *              is created and saved and the community contribution
-	 *              counter of the author is incremented.
+	 *              is created and saved and the community contribution counter
+	 *              of the author is incremented.
 	 * @throws Exception
 	 * 
 	 */
@@ -603,16 +607,17 @@ public class Topics extends CRUD {
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
 		String message = "";
-		Topic temporaryTopic = (Topic) object; // we temporarily save the object created by
-									// the form in temporaryTopic to validate it before
-									// saving
+		Topic temporaryTopic = (Topic) object; // we temporarily save the object
+												// created by
+		// the form in temporaryTopic to validate it before
+		// saving
 		System.out.println("create() entered");
 		MainEntity topicEntity = MainEntity.findById(entityId);
 		temporaryTopic.entity = topicEntity;
 		User myUser = Security.getConnected();
 		temporaryTopic.creator = myUser;
-		System.out
-				.println("the idea beforew validation check" + temporaryTopic.toString());
+		System.out.println("the idea beforew validation check"
+				+ temporaryTopic.toString());
 
 		if (temporaryTopic.entity == null) {
 			message = "A Topic must belong to an entity";
@@ -642,7 +647,8 @@ public class Topics extends CRUD {
 
 			try {
 				render(request.controller.replace(".", "/") + "/blank.html",
-						entityId, type, temporaryTopic.title, temporaryTopic.entity, temporaryTopic.description,
+						entityId, type, temporaryTopic.title,
+						temporaryTopic.entity, temporaryTopic.description,
 						temporaryTopic.followers, temporaryTopic.tags, message);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/blank.html", type, entityId);
@@ -653,7 +659,8 @@ public class Topics extends CRUD {
 			message = "The privary level must be either 1 or 2";
 			try {
 				render(request.controller.replace(".", "/") + "/blank.html",
-						entityId, type, temporaryTopic.title, temporaryTopic.entity, temporaryTopic.description,
+						entityId, type, temporaryTopic.title,
+						temporaryTopic.entity, temporaryTopic.description,
 						temporaryTopic.followers, temporaryTopic.tags, message);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/blank.html", type, entityId);
@@ -665,33 +672,36 @@ public class Topics extends CRUD {
 		object._save();
 		((Topic) object).openToEdit = true;
 		object._save();
-		
-		//myUser.communityContributionCounter = myUser.communityContributionCounter +1 ;
-		//myUser.communityContributionCounter++;
-		//myUser.save();
+
+		// myUser.communityContributionCounter =
+		// myUser.communityContributionCounter +1 ;
+		// myUser.communityContributionCounter++;
+		// myUser.save();
 		System.out.println(myUser.communityContributionCounter);
 		System.out.println("create() object saved");
 		temporaryTopic = (Topic) object;
 		Calendar cal = new GregorianCalendar();
-		// Logs.addLog( temporaryTopic.creator, "add", "Task", temporaryTopic.id,
+		// Logs.addLog( temporaryTopic.creator, "add", "Task",
+		// temporaryTopic.id,
 		// temporaryTopic.entity.organization, cal.getTime() );
-		String message2 = temporaryTopic.creator.username + " has Created the topic "
-				+ temporaryTopic.title + " in " + temporaryTopic.entity;
+		String message2 = temporaryTopic.creator.username
+				+ " has Created the topic " + temporaryTopic.title + " in "
+				+ temporaryTopic.entity;
 		if (temporaryTopic.followers != null) {
 			for (int i = 0; i < temporaryTopic.followers.size(); i++)
-				Notifications.sendNotification(temporaryTopic.followers.get(i).getId(),
-						temporaryTopic.id, "Topic", "A new Topic: '" + temporaryTopic.title
-								+ "' has been added in entity '"
-								+ temporaryTopic.entity.name + "'");
+				Notifications.sendNotification(temporaryTopic.followers.get(i)
+						.getId(), temporaryTopic.id, "Topic", "A new Topic: '"
+						+ temporaryTopic.title + "' has been added in entity '"
+						+ temporaryTopic.entity.name + "'");
 		}
 
 		List<User> users = Users.getEntityOrganizers(temporaryTopic.entity);
 		users.add(temporaryTopic.entity.organization.creator);
 		for (int i = 0; i < users.size(); i++)
-			Notifications.sendNotification(users.get(i).id, temporaryTopic.id, "Topic",
-					"A new Topic: '" + temporaryTopic.title
-							+ "' has been added in entity '" + temporaryTopic.entity.name
-							+ "'");
+			Notifications.sendNotification(users.get(i).id, temporaryTopic.id,
+					"Topic", "A new Topic: '" + temporaryTopic.title
+							+ "' has been added in entity '"
+							+ temporaryTopic.entity.name + "'");
 
 		// temporaryTopic.init();
 		flash.success(Messages.get("crud.created", type.modelName,
@@ -716,8 +726,9 @@ public class Topics extends CRUD {
 
 			/*
 			 * render(request.controller.replace(".", "/") + "/blank.html",
-			 * entityId, type, temporaryTopic.title, temporaryTopic.entity, temporaryTopic.description,
-			 * temporaryTopic.followers, temporaryTopic.tags, message);
+			 * entityId, type, temporaryTopic.title, temporaryTopic.entity,
+			 * temporaryTopic.description, temporaryTopic.followers,
+			 * temporaryTopic.tags, message);
 			 */
 		}
 		System.out
@@ -811,6 +822,10 @@ public class Topics extends CRUD {
 		String actionPlan = "create an action plan to execute an idea";
 		Topic targetTopic = Topic.findById(topicIdLong);
 		int allowed = 0;
+		for (int i = 0; i < ideas.size(); i++) {
+			if (ideas.get(i).hidden)
+				ideas.remove(i);
+		}
 		int numberOfIdeas = ideas.size();
 		if ((temporaryTopic.privacyLevel==2) && Users
 				.isPermitted(
@@ -852,15 +867,18 @@ public class Topics extends CRUD {
 				&& !actor.isAdmin && !pending)
 				&& !isIdeaDeveloper && isMemeber;
 		boolean follower = actor.topicsIFollow.contains(targetTopic);
-		boolean canCreateRelationship = TopicRelationships.isAllowedTo(topicIdLong);
+		boolean canCreateRelationship = TopicRelationships
+				.isAllowedTo(topicIdLong);
 		try {
-			render(type, object, tags, creator, followers, ideas, numberOfIdeas,comments,
-					entity, plan, openToEdit, privacyLevel, deleteMessage,
-					deletable, topicIdLong, canClose, canPlan, targetTopic,
-					allowed, permission, topicId, canPost, canNotPost, pending,
-					follower, canCreateRelationship);
+			render(type, object, tags, creator, followers, ideas,
+					numberOfIdeas, comments, entity, plan, openToEdit,
+					privacyLevel, deleteMessage, deletable, topicIdLong,
+					canClose, canPlan, targetTopic, allowed, permission,
+					topicId, canPost, canNotPost, pending, follower,
+					canCreateRelationship);
 		} catch (TemplateNotFoundException e) {
-			render("CRUD/show.html", type, object, topicId, canCreateRelationship);
+			render("CRUD/show.html", type, object, topicId,
+					canCreateRelationship);
 		}
 	}
 
@@ -875,7 +893,7 @@ public class Topics extends CRUD {
 	 *            : id of the topic we want to show
 	 * 
 	 * @description This method renders the form for viewing a topic
-	 *
+	 * 
 	 */
 	public static void view(String topicId) {
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -922,7 +940,8 @@ public class Topics extends CRUD {
 	 * topicId); Topic temporaryTopic = (Topic) object;
 	 * flash.success(Messages.get("crud.edit", type.modelName, ((Topic)
 	 * object).getId())); System.out.println("About to redirect from edit()");
-	 * redirect("/topics/show?topicId=" + ((Topic) object).getId(), temporaryTopic); }
+	 * redirect("/topics/show?topicId=" + ((Topic) object).getId(),
+	 * temporaryTopic); }
 	 */
 
 	/**
@@ -949,7 +968,7 @@ public class Topics extends CRUD {
 	 * 
 	 * @description This method renders the list of topics, with search and sort
 	 *              options
-	 *
+	 * 
 	 */
 	public static void list(int page, String search, String searchFields,
 			String orderBy, String order) {
@@ -1053,9 +1072,10 @@ public class Topics extends CRUD {
 		System.out.println("entered save() for " + topicId);
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
-		Topic temporaryTopic = (Topic) object; // we temporarily save the object edited in
-									// the form in temporaryTopic to validate it before
-									// saving
+		Topic temporaryTopic = (Topic) object; // we temporarily save the object
+												// edited in
+		// the form in temporaryTopic to validate it before
+		// saving
 		MainEntity entity = temporaryTopic.entity;
 		User myUser = Security.getConnected();
 		boolean createRelationship = temporaryTopic.createRelationship;
@@ -1082,8 +1102,10 @@ public class Topics extends CRUD {
 			 */
 			try {
 				render(request.controller.replace(".", "/") + "/view.html",
-						entity, type, temporaryTopic.title, temporaryTopic.entity, temporaryTopic.description,
-						temporaryTopic.followers, temporaryTopic.tags, message, object, topicId, createRelationship);
+						entity, type, temporaryTopic.title,
+						temporaryTopic.entity, temporaryTopic.description,
+						temporaryTopic.followers, temporaryTopic.tags, message,
+						object, topicId, createRelationship);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/view.html", type, topicId);
 			}
@@ -1093,8 +1115,10 @@ public class Topics extends CRUD {
 			message = "The privary level must be either 1 or 2";
 			try {
 				render(request.controller.replace(".", "/") + "/view.html",
-						entity, type, temporaryTopic.title, temporaryTopic.entity, temporaryTopic.description,
-						temporaryTopic.followers, temporaryTopic.tags, message, object, topicId, createRelationship);
+						entity, type, temporaryTopic.title,
+						temporaryTopic.entity, temporaryTopic.description,
+						temporaryTopic.followers, temporaryTopic.tags, message,
+						object, topicId, createRelationship);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/view.html", type, topicId);
 			}
@@ -1103,20 +1127,22 @@ public class Topics extends CRUD {
 
 		System.out.println("about to save() topic");
 		System.out.println(temporaryTopic.createRelationship);
-		
+
 		object._save();
-		
+
 		Calendar cal = new GregorianCalendar();
-		// Logs.addLog( myUser, "add", "Task", temporaryTopic.id, temporaryTopic.entity.organization,
+		// Logs.addLog( myUser, "add", "Task", temporaryTopic.id,
+		// temporaryTopic.entity.organization,
 		// cal.getTime() );
 		// String message3 = myUser.username + " has editted the topic " +
 		List<User> users = Users.getEntityOrganizers(temporaryTopic.entity);
 		if (!users.contains(temporaryTopic.entity.organization.creator))
 			users.add(temporaryTopic.entity.organization.creator);
 		for (int i = 0; i < users.size(); i++)
-			Notifications.sendNotification(users.get(i).id, temporaryTopic.id, "Topic",
-					"User: '" + myUser.firstName + "' has edited topic  '"
-							+ temporaryTopic.title + "' in entity '" + temporaryTopic.entity.name
+			Notifications.sendNotification(users.get(i).id, temporaryTopic.id,
+					"Topic", "User: '" + myUser.firstName
+							+ "' has edited topic  '" + temporaryTopic.title
+							+ "' in entity '" + temporaryTopic.entity.name
 							+ "'");
 
 		System.out.println("save() done, not redirected yet");
@@ -1182,96 +1208,103 @@ public class Topics extends CRUD {
 			followTopic(topicId);
 		render(topic);
 	}
-	  /**
-	   * Overrides CRUD's delete() and deletes a topic
-	   * 
-	   * @author Alia El Bolock
-	   * 
-	   * @story C3S9
-	   * 
-	   * @param id
-	   *         : the id of the topic to be deleted
-	   */
-	  public static void delete(String id) {
-		  System.out.println("entered my delete");
-	        ObjectType type = ObjectType.get(getControllerClass());
-	        notFoundIfNull(type);
-	        Model object = type.findById(id);
-	        notFoundIfNull(object);
-	        Topic temporaryTopic = (Topic) object;
-	        MainEntity entity = temporaryTopic.entity;
-	        System.out.println("entering try");
-	        try {
-	        	System.out.println("entered try");
-	            Calendar cal = new GregorianCalendar();
-				User myUser = Security.getConnected();
-				//Logs.addLog( myUser, "delete", "Task", temporaryTopic.id, temporaryTopic.taskStory.componentID.project, cal.getTime() );
-				String message = myUser.username + " has deleted the topic " + temporaryTopic.title;
-				List<User> users = Users.getEntityOrganizers(entity);
-				for (int i = 0; i < users.size(); i++)
-					Notifications.sendNotification(users.get(i).id, temporaryTopic.id, "Topic",
-							message);
-				for(int i =0; i< temporaryTopic.followers.size(); i++)
-				Notifications.sendNotification(temporaryTopic.followers.get(i).getId(), entity.getId(), "entity", message);
-				 object._delete();
-		            System.out.println("deleted");
-				System.out.println("leaving try");
-				
-	        } catch (Exception e) {
-	        	System.out.println("entered catch");
-	            flash.error(Messages.get("crud.delete.error", type.modelName));
-	            redirect(request.controller + ".show", object._key());
-	        }
-	        flash.success(Messages.get("crud.deleted", type.modelName));
-	        System.out.println("flash.success");
-	        //redirect(request.controller + ".list");
-	        redirect("mainentitys.viewentity",entity.id);
-	    }
-	  
-	  /**
-	   * Hides a topic but keeps it in the database
-	   * 
-	   * @author Alia El Bolock
-	   * 
-	   * @story C3S9
-	   * 
-	   * @param id
-	   *         : the id of the topic to be hidden
-	   */
-	 public static void hide (String id){
-		 ObjectType type = ObjectType.get(getControllerClass());
-	        notFoundIfNull(type);
-	        Model object = type.findById(id);
-	        notFoundIfNull(object);
-	        Topic temporaryTopic = (Topic) object;
-	        MainEntity entity = temporaryTopic.entity;
-	        User myUser = Security.getConnected();
-	        
-	        try {
-	        	System.out.println("entered try");
-	            Calendar cal = new GregorianCalendar();
-				//Logs.addLog( myUser, "delete", "Task", temporaryTopic.id, temporaryTopic.taskStory.componentID.project, cal.getTime() );
-				String message = myUser.username + " has hidden the topic " + temporaryTopic.title;
-				List<User> users = Users.getEntityOrganizers(entity);
-				for (int i = 0; i < users.size(); i++)
-					Notifications.sendNotification(users.get(i).id, temporaryTopic.id, "Topic",
-							message);
-				for(int i =0; i< temporaryTopic.followers.size(); i++)
-				Notifications.sendNotification(temporaryTopic.followers.get(i).getId(), entity.getId(), "entity", message);
-				temporaryTopic.hidden = true;
-				 temporaryTopic.save();
-		            System.out.println("hidden");
-				System.out.println("leaving try");
-				
-	        } catch (Exception e) {
-	        	System.out.println("entered catch");
-	            flash.error(Messages.get("crud.delete.error", type.modelName));
-	            redirect(request.controller + ".show", object._key());
-	        }
-	        flash.success(Messages.get("crud.deleted", type.modelName));
-	        System.out.println("flash.success");
-	        //redirect(request.controller + ".list");
-	        redirect("mainentitys.viewentity",entity.id);
-	 }
-	  
+
+	/**
+	 * Overrides CRUD's delete() and deletes a topic
+	 * 
+	 * @author Alia El Bolock
+	 * 
+	 * @story C3S9
+	 * 
+	 * @param id
+	 *            : the id of the topic to be deleted
+	 */
+	public static void delete(String id) {
+		System.out.println("entered my delete");
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(id);
+		notFoundIfNull(object);
+		Topic temporaryTopic = (Topic) object;
+		MainEntity entity = temporaryTopic.entity;
+		System.out.println("entering try");
+		try {
+			System.out.println("entered try");
+			Calendar cal = new GregorianCalendar();
+			User myUser = Security.getConnected();
+			// Logs.addLog( myUser, "delete", "Task", temporaryTopic.id,
+			// temporaryTopic.taskStory.componentID.project, cal.getTime() );
+			String message = myUser.username + " has deleted the topic "
+					+ temporaryTopic.title;
+			List<User> users = Users.getEntityOrganizers(entity);
+			for (int i = 0; i < users.size(); i++)
+				Notifications.sendNotification(users.get(i).id,
+						temporaryTopic.id, "Topic", message);
+			for (int i = 0; i < temporaryTopic.followers.size(); i++)
+				Notifications.sendNotification(temporaryTopic.followers.get(i)
+						.getId(), entity.getId(), "entity", message);
+			object._delete();
+			System.out.println("deleted");
+			System.out.println("leaving try");
+
+		} catch (Exception e) {
+			System.out.println("entered catch");
+			flash.error(Messages.get("crud.delete.error", type.modelName));
+			redirect(request.controller + ".show", object._key());
+		}
+		flash.success(Messages.get("crud.deleted", type.modelName));
+		System.out.println("flash.success");
+		// redirect(request.controller + ".list");
+		redirect("mainentitys.viewentity", entity.id);
+	}
+
+	/**
+	 * Hides a topic but keeps it in the database
+	 * 
+	 * @author Alia El Bolock
+	 * 
+	 * @story C3S9
+	 * 
+	 * @param id
+	 *            : the id of the topic to be hidden
+	 */
+	public static void hide(String id) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(id);
+		notFoundIfNull(object);
+		Topic temporaryTopic = (Topic) object;
+		MainEntity entity = temporaryTopic.entity;
+		User myUser = Security.getConnected();
+
+		try {
+			System.out.println("entered try");
+			Calendar cal = new GregorianCalendar();
+			// Logs.addLog( myUser, "delete", "Task", temporaryTopic.id,
+			// temporaryTopic.taskStory.componentID.project, cal.getTime() );
+			String message = myUser.username + " has hidden the topic "
+					+ temporaryTopic.title;
+			List<User> users = Users.getEntityOrganizers(entity);
+			for (int i = 0; i < users.size(); i++)
+				Notifications.sendNotification(users.get(i).id,
+						temporaryTopic.id, "Topic", message);
+			for (int i = 0; i < temporaryTopic.followers.size(); i++)
+				Notifications.sendNotification(temporaryTopic.followers.get(i)
+						.getId(), entity.getId(), "entity", message);
+			temporaryTopic.hidden = true;
+			temporaryTopic.save();
+			System.out.println("hidden");
+			System.out.println("leaving try");
+
+		} catch (Exception e) {
+			System.out.println("entered catch");
+			flash.error(Messages.get("crud.delete.error", type.modelName));
+			redirect(request.controller + ".show", object._key());
+		}
+		flash.success(Messages.get("crud.deleted", type.modelName));
+		System.out.println("flash.success");
+		// redirect(request.controller + ".list");
+		redirect("mainentitys.viewentity", entity.id);
+	}
+
 }

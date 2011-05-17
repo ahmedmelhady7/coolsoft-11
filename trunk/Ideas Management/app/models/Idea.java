@@ -20,7 +20,7 @@ import play.db.jpa.Model;
  */
 
 @Entity
-public class Idea extends Model {
+public class Idea extends CoolModel {
 	/**
 	 * Idea's Tittle Required for creating an idea
 	 */
@@ -55,6 +55,10 @@ public class Idea extends Model {
 	@OneToMany
 	// (cascade = CascadeType.PERSIST)
 	public List<Comment> commentsList;
+	/**
+	 * a flag that represents if the idea is hidden
+	 * */
+	public boolean hidden;
 	/**
 	 * the topic that the idea belongs to
 	 */
@@ -133,6 +137,7 @@ public class Idea extends Model {
 		this.usersRated = new ArrayList<User>();
 		this.rating = 0;
 		this.priority = null;
+		this.hidden = false;
 
 	}
 
@@ -170,6 +175,7 @@ public class Idea extends Model {
 		this.usersRated = new ArrayList<User>();
 		this.rating = 0;
 		this.priority = null;
+		this.hidden = false;
 	}
 
 	/**
