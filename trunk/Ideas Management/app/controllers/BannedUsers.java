@@ -280,7 +280,7 @@ public class BannedUsers extends CRUD {
 	 * 
 	 * @author Mai Magdy
 	 * 
-	 * @story :C1S16
+	 * @story  C1S16
 	 * 
 	 * @param topId
 	 *                long Id of the topic/entity that ll view the ideadevelopers
@@ -298,8 +298,10 @@ public class BannedUsers extends CRUD {
 		MainEntity topic=MainEntity.findById(topId);
 		List <Integer> count=new ArrayList <Integer>();
 		for(int i=0;i<users.size();i++){
-		    BannedUser banned1=BannedUser.find("byBannedUserAndAction", users.get(i),"view").first();
-            BannedUser banned2=BannedUser.find("byBannedUserAndAction", users.get(i),"use").first();
+		    BannedUser banned1=BannedUser.find("byBannedUserAndActionAndResourceTypeAndResourceID",
+		    		users.get(i),"view","entity",topic.id).first();
+            BannedUser banned2=BannedUser.find("byBannedUserAndActionAndResourceTypeAndResourceID",
+		    		users.get(i),"use","entity",topic.id).first();
 		    if(banned1==null&&banned2==null)
 		    	count.add(0);
 		    else
@@ -319,8 +321,10 @@ public class BannedUsers extends CRUD {
 			Topic topic=Topic.findById(topId);
 			List <Integer> count=new ArrayList <Integer>();
 			for(int i=0;i<users.size();i++){
-			    BannedUser banned1=BannedUser.find("byBannedUserAndAction", users.get(i),"view").first();
-	            BannedUser banned2=BannedUser.find("byBannedUserAndAction", users.get(i),"use").first();
+			    BannedUser banned1=BannedUser.find("byBannedUserAndActionAndResourceTypeAndResourceID",
+			    		users.get(i),"view","topic",topic.id).first();
+	            BannedUser banned2=BannedUser.find("byBannedUserAndActionAndResourceTypeAndResourceID",
+			    		users.get(i),"entity","topic",topic.id).first();
 			    if(banned1==null&&banned2==null)
 			    	count.add(0);
 			    else
@@ -349,7 +353,7 @@ public class BannedUsers extends CRUD {
 	 * 
 	 * @author Mai Magdy
 	 * 
-	 * @story :C1S16
+	 * @story  C1S16
 	 * 
 	 * @param userId
 	 *                long Id of user that ll be blocked/unblocked
@@ -364,34 +368,33 @@ public class BannedUsers extends CRUD {
 	 *                
 	 */
 	
-	public static void block(long userId,int type,long topId,int id,String m){
-		   
+	public static void block(long userId,int type,long topId,int id,String text,String message){
+		
+		System.out.println(message);
 		System.out.println("here");
-		System.out.println(m);
+		System.out.println(text);
 		   System.out.println(userId);
 		   System.out.println(type);
 		   System.out.println(topId);
 		User user=User.findById(userId);
 		
 		if(id==0){
-		//Topic topic=Topic.findById(topId);
-		MainEntity entity=MainEntity.findById(topId);
 		
 		if(type==0){
-			if(m.equals("Block from viewing")){
-				doBlock(user,entity,0,"view");
+			if(text.equals("Block from viewing")){
+				 doBlock(userId,topId,0,0);
 			}
 			else{
-				doBlock(user,entity,1,"view");
+				doBlock(userId,topId,1,0);
 				   
 			}
 		}
 		  else{
-			  if(m.equals("Block from using")){
-				  doBlock(user,entity,0,"use");
+			  if(text.equals("Block from using")){
+				  doBlock(userId,topId,0,1);
 			  }
 			  else{
-				    doBlock(user,entity,1,"use");
+				   doBlock(userId,topId,1,1);
 					   
 				}
 		  }
@@ -401,14 +404,14 @@ public class BannedUsers extends CRUD {
 			Topic topic=Topic.findById(topId);
 			
 			if(type==0){
-				if(m.equals("Block from viewing")){
+				if(text.equals("Block from viewing")){
 				BannedUser block=new BannedUser(user, topic.entity.organization, "view topic",
 					"topic", topId);
 			    block.save();
 				}
 			}
 			  else{
-				  if(m.equals("Block from using")){
+				  if(text.equals("Block from using")){
 				  BannedUser block=new BannedUser(user, topic.entity.organization, "use",
 							"topic", topId);
 					    block.save();
@@ -424,27 +427,34 @@ public class BannedUsers extends CRUD {
 	 * 
 	 * @author Mai Magdy
 	 * 
-	 * @story :C1S16
+	 * @story  C1S16
 	 * 
-	 * @param user
-	 *                User user that 
+	 * @param userId
+	 *                long Id of user that ll be blocked/unblocked 
 	 *                
-	 * @param entity
-	 *                MainEntity entity that user ll be blocked/unblocked from
+	 * @param entId
+	 *                long Id of entity that user ll be blocked/unblocked from
 	 *                
 	 * @param choice
 	 *                int choice as 0 if view or 1 if use
 	 
-	 * @param action
-	 *                String action that user ll be blocked/unblocked from 
+	 * @param type
+	 *                int type view of 0 or use if 1 ,that user ll be blocked/unblocked from 
 	 *                
 	 */
 	
-	public static void doBlock(User user,MainEntity entity,int choice,String action){
+	public static void doBlock(long userId,long entId,int choice,int type){
 		
-		 Long entId=entity.id;
+		String action="";
+		  if(type==0)
+			action="view";
+		  else
+			 action="use";
+		  
+		MainEntity entity = MainEntity.findById(entId);
+		User user = User.findById(userId);
+		 
 		if(choice==0){
-			
 			BannedUser block=new BannedUser(user, entity.organization, action,
 				"entity", entId);
 		    block.save();
@@ -453,7 +463,7 @@ public class BannedUsers extends CRUD {
 						"topic", entity.topicList.get(j).id);
 				block1.save();
 			}
-		    
+		   
 		    List <MainEntity> subentity=entity.subentities;
 			for(int j = 0;j < subentity.size();j++){
 				BannedUser block1=new BannedUser(user, entity.organization, action,
@@ -467,31 +477,31 @@ public class BannedUsers extends CRUD {
 				}
 			}
 			
-		    
-			}
+		  }
 			else{
+				
 				BannedUser unblock=BannedUser.find("byBannedUserAndActionAndResourceTypeAndResourceID", 
 						                user,action,"entity",entity.id).first();
 				   unblock.delete();
-				   
+				
 				   for(int j = 0;j < entity.topicList.size();j++){
 					   BannedUser unblock1=BannedUser.find("byBannedUserAndActionAndResourceTypeAndResourceID", 
-						 user, entity.organization, action,"topic", entity.topicList.get(j).id).first();
-						 unblock1.save();
+						 user, action,"topic", entity.topicList.get(j).id).first();
+						 unblock1.delete();
 					}
 				    
-				    List <MainEntity> subentity=entity.subentities;
+				   List <MainEntity> subentity=entity.subentities;
 					for(int j = 0;j < subentity.size();j++){
 						BannedUser unblock2=BannedUser.find("byBannedUserAndActionAndResourceTypeAndResourceID", 
-							user, entity.organization, action,"entity", subentity.get(j).id).first();
+							user, action,"entity", subentity.get(j).id).first();
 						
-						unblock2.save();
+						unblock2.delete();
 						
 						for(int k = 0;k < subentity.get(j).topicList.size();k++){
 							 BannedUser unblock1=BannedUser.find("byBannedUserAndActionAndResourceTypeAndResourceID", 
-							  user, entity.organization, action,"topic", subentity.get(j).topicList.get(k).id).first();
+							  user,action,"topic", subentity.get(j).topicList.get(k).id).first();
 							
-							  unblock1.save();
+							  unblock1.delete();
 						}
 					}
 				   
