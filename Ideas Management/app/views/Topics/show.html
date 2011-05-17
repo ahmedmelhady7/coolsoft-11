@@ -142,22 +142,25 @@
         </form>
 <!--        #{if canPost == true}-->
 <!--        #{/if }-->
-    </div>#{if permission == 1}
-    #{if !hidden}
+#{if permission == 1}
+   #{if !hidden}
     #{if deletable}
-    <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to delete this topic?');">
+    <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         <p class="crudDelete">
+        	<input type="hidden" name = "message2" id = "justText">
             <input type="submit" value="&{'crud.delete', type.modelName}" />
         </p>
     </form> #{/if}
     #{if !deletable}
-    <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to hide this topic?');">
+    <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         <p class="crudDelete">
+        	<input type="hidden" name = "message2" id = "justText">
             <input type="submit" value="&{'Hide', type.modelName}" />
         </p>
     </form> #{/if}
     #{/if}
     #{/if}
+
 
 </div>#{if canClose == 1 && openToEdit == true}
 			#{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
@@ -254,4 +257,17 @@
 					}
 					return createRelationship;
 				}	
+				function prompt1(){
+					var text = prompt("Why do you want to delete/hide this topic?");
+					
+					if(text){
+						document.getElementById("justText").value=text;
+						return true;
+					}
+					else{
+						return false;
+					}
+					
+				}
+
             </script>
