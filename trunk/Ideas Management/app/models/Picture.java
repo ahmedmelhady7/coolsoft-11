@@ -13,6 +13,7 @@ import play.db.jpa.Blob;
 import play.libs.Images;
 
 /**
+ * This is a model for storing pictures
  * 
  * @author Ibrahim Al-Khayat
  * 
@@ -33,13 +34,6 @@ public class Picture extends CoolModel {
 
 	@Required
 	public Blob image;
-
-	/**
-	 * thumbnail
-	 */
-
-	@Required
-	public Blob thumbnail;
 
 	/**
 	 * Id of owner organization/user
@@ -67,17 +61,11 @@ public class Picture extends CoolModel {
 	 *            id of owner user/organization
 	 * @param isOrganization
 	 *            True for organization false for user
-	 * @throws Exception
 	 */
 	public Picture(String name, Blob image, long id, boolean isOrganization) {
 		this.name = name;
 		this.image = image;
 		this.userOrganizationId = id;
 		this.isOrganization = isOrganization;
-		// File thumbnailFile = new File("C:\\Users\\I.A\\Desktop\\thumb0.png");
-		// Images.resize(this.image.getFile(), thumbnailFile, -1, 200);
-		// InputStream is = new
-		// FileInputStream("C:\\Users\\I.A\\Desktop\\thumb0.png");
-		// thumbnail.set(is, "png");
 	}
 }

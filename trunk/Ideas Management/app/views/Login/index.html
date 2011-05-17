@@ -5,6 +5,15 @@
                ${flash.error}
     </p></b>
 #{/if}
+#{if profilePicture == true}
+#{list items:pictureId, as:'id'}
+<img src="@{Pictures.getPicture(id)}" width="75" height="75"/>
+#{/list}
+#{/if}
+#{if profilePicture == false}
+<img src="/public/images/user.png" width="75" height="75"/>
+#{/if}
+
 <p>
 <b>Username: </b>
 ${u.username}

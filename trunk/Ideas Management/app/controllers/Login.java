@@ -52,9 +52,9 @@ public class Login extends Controller {
 			Mail.reactivate();
 			flash.error("Your account has been reactivated successfuly");
 		}
-			
-		
-		render(u,admin,drafts);
+		boolean profilePicture = u.profilePictureId != -1;
+		long pictureId = u.profilePictureId;
+		render(u,admin,drafts,profilePicture, pictureId);
 
 	}
 }

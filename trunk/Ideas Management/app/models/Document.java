@@ -7,6 +7,7 @@ import play.data.validation.Required;
 import play.db.jpa.Model;
 
 /**
+ * This is a model for storing documents
  * 
  * @author Ibrahim Al-Khayat
  * 

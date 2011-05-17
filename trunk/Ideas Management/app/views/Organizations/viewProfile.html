@@ -10,10 +10,19 @@
         #{extends 'main.html' /}
         #{set title: 'Organization Profile' /}
         <center>
+        	#{if org.profilePictureId != -1}
+			#{list items:pictureId, as:'id'}
+			<img src="@{Pictures.getPicture(id)}" width="75" height="75"/>
+			#{/list}
+			#{/if}
+			#{if org.profilePictureId == -1}
+			<img src="/public/images/org.png" width="75" height="75"/>
+			#{/if}
             <big>
                 <b>${org.name}</b>
             </big>
         </center>&nbsp;&nbsp;
+		
 		#{if admin || creator}
 		<form action="@{Organizations.deleteOrganization()}" method="post">
             <input type="hidden" id="organizationId" name="organizationId" value="${org.id}" />Delete Organization 
@@ -174,6 +183,12 @@
                 <form action="@{Documents.newDocument()}" method="post">
                     <input type="hidden" name="id" value="${org.id}">Create a Document: <input type="submit" value="Create">
                 </form>
+				#{/if}
+				#{if isMember == true || org.privacyLevel == 2}
+                <form action="@{Pictures.index()}" method="post">
+				<input type="hidden" name="id" value="${org.id}">
+				Show my Gallery: <input type="submit" value="show">
+				</form>
 				#{/if}
             </body>
             </html>
