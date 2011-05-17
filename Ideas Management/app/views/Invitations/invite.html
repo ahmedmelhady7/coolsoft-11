@@ -3,8 +3,14 @@
 
 <form action="@{Invitations.page()}" method="GET">
 	<input type="submit" value="Invite by mail">
-	<input type = "hidden" name ="entId" value = ${entity.id}>
-	<input type = "hidden" name ="id" value = 0>
+#{if type==0}
+   <input type = "hidden" name ="entId" value = ${entity.id}>
+#{/if}
+#{else}
+  <input type = "hidden" name ="topicId" value = ${topic.id}>
+#{/else}	
+  <input type = "hidden" name ="id" value = 0>
+  <input type = "hidden" name ="type" value = type>
 	</form>
 
 <form action="@{Invitations.searchUser()}" method="GET" name="myform">
@@ -12,8 +18,12 @@
 <tr><td><u> You can search by name/email for users to invite </u></td></tr>
 <tr><td>Name <input type="text" size="20" name="name"></td></tr>
 <tr><td>&nbsp;</td><td><input type="submit" value="Next">
+#{if type==0}
 <input type = "hidden" name ="entId" value = ${entity.id}>
-
+#{/if}
+#{else}
+<input type = "hidden" name ="topicId" value = ${topic.id}>
+#{/else}
 </table>
 </form>
 
