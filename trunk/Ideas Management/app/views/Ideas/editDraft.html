@@ -2,36 +2,110 @@
 <html>
     <head>
         <meta name="generator" content="HTML Tidy, see www.w3.org">
-		<title>${user.username}: you're Editing ${idea.title}</title>
-		<script type="text/javascript">
-			
-			function save(id)
+        <title>${user.username}: you're Editing ${idea.title}</title>
+        <script type="text/javascript">
+            
+            function save(id){
+				
+                var x = document.getElementById("title").value.toString();
+                var y = document.getElementById("body").value;
+                $.post('@{Ideas.saveDraft()}', {ideaId: id, title: x,description: y } 
+				/*, function(){
+                    //window.location.href = "/ideas/getdrafts"
+					$('#success').html('Saved successfully!');
+					setTimeout("myFade()",'2000');			
+				 }*/
+				);
+               // alert("Idea Saved ");
+			   
+			   $('#success').html('Saved successfully!');
+			   setTimeout("myFade()",'2000');	
+            }
+			function myFade()
 			{
-				var x = document.getElementById("title").value.toString();
-				var y = document.getElementById("body").value;
-				$.post('@{Ideas.saveDraft()}' ,{ideaId:id, title:x, description:y},function(){window.location.href= "/ideas/getdrafts"}  );
-				alert("Idea Saved ");
+				$('#success').fadeOut('500');
+				window.location.href = "/ideas/getdrafts"
 			}
 			
-			function post(id)
+			function myFader()
 			{
-				var x = document.getElementById("title").value.toString();
-				var y = document.getElementById("body").value.toString();
-				$.post('@{Ideas.postDraft()}' ,{ideaId:id, title:x, description:y},function(){window.location.href= "/ideas/list"});
-				alert("Idea posted ");
+				$('#success').fadeOut('500');
 			}
-		</script>
-    </head>
+			
+			function auto()
+			{
+				$('#success').fadeIn('10');
+				var id = ${idea.id};
+				var x = document.getElementById("title").value.toString();
+               	var y = document.getElementById("body").value;
+               	$.post('@{Ideas.saveDraft()}', {ideaId: id, title: x,description: y });			   
+		   		
+				
+				var currentTime = new Date();
+				var hours = currentTime.getHours();
+				var minutes = currentTime.getMinutes();
+				var secs    = currentTime.getSeconds();
 
+				if (minutes < 10)	
+					minutes = "0" + minutes;
+
+				var write =(hours + ":" + minutes + ":" + secs + " " );
+								
+				$('#success').html('Auto Saved at '+write);
+		   		setTimeout("myFader()",'2000');
+				setTimeout("auto()",'10000');
+			}
+			 
+			window.onload = auto;
+            
+           	function post(id)
+			{
+               	var x = document.getElementById("title").value.toString();
+               	var y = document.getElementById("body").value.toString();
+               	$.post('@{Ideas.postDraft()}', 
+				{ideaId: id, title: x, description: y }
+				, function()
+				{
+                   	window.location.href = "/ideas/list"
+               	}
+					 );
+               alert("Idea posted ");
+           }
+        </script>
+        <style type="text/css">
+            error {
+                background: #c00 !important;
+            }
+            
+            .success {
+                background: #008800 !important;
+            }
+            
+        </style>
+    </head>
     <body>
         #{extends 'main.html' /} 
-		
-		<p>Title: </p>
-		<input type="textbox" size = "50" value="${idea.title}" id="title"></input>  
-		<p>Body: </p>
-		<textarea cols="50" rows="5" id="body">${idea.description}</textarea>  
-		<br></br>
-		<input type="submit" value ="Save" onclick="save(${idea.id})"></input>
+        #{if flash.error}
+        <p class="error" id="error">
+            &{flash.error}
+			
+        </p>
+        #{/if}
+        
+        <p class="success" id="success"></p>
+        
+        <p>
+            Title: 
+        </p>
+        <input type="textbox" size = "50" value="${idea.title}" id="title"></input>
+        <p>
+            Body:
+        </p>
+        <textarea cols="50" rows="5" id="body" onchange="auto()">${idea.description}</textarea>
+        <br>
+        </br>
+        <input type="submit" value ="Save" onclick="save(${idea.id})"></input>
 		<input type="submit" value ="Post" onclick="post(${idea.id})"></input>
+		<input type="submit" value ="SAS" onclick="auto()"></input>
     </body>
 </html>
