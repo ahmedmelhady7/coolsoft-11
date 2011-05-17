@@ -45,16 +45,16 @@ public class Topics extends CRUD {
 
 //		System.out.println("2ABEL !!!" + entityId + "," + topicId);
 		Topic topic = Topic.findById(topicId);
-		MainEntity ent = MainEntity.findById(entityId);
+		MainEntity entity = MainEntity.findById(entityId);
 		List<Topic> listOfTopics = null;
 
-		if (ent.topicList != null) {
-			listOfTopics = ent.topicList;
+		if (entity.topicList != null) {
+			listOfTopics = entity.topicList;
 			listOfTopics.remove(topic);
 		}
-		System.out.println(topic.title + "7aga" + ent.name);
+		System.out.println(topic.title + "7aga" + entity.name);
 
-		render(topic, ent, listOfTopics);
+		render(topic, entity, listOfTopics);
 	}
 
 	/**
