@@ -124,7 +124,7 @@ public class MainEntitys extends CRUD {
 	/**
 	 * This method allows the user to create an entity in an organization
 	 * 
-	 * @author Noha Khater
+	 * @author Noha Khater, Omar Faruki
 	 * 
 	 * @Stroy C2S2
 	 * 
@@ -137,7 +137,9 @@ public class MainEntitys extends CRUD {
 	 * @param orgId
 	 *            : The id of the organization in which the entity will be
 	 *            created
-	 * 
+	 *            
+	 * @param createRelationship
+	 * 				specifies whether an entity can have relationships with others
 	 */
 	public static void createEntity(String name, String description, long orgId, boolean createRelationship) {
 		boolean canCreate = true;
@@ -157,7 +159,7 @@ public class MainEntitys extends CRUD {
 	/**
 	 * This method allows the user to create a subentity in an entity
 	 * 
-	 * @author Noha Khater
+	 * @author Noha Khater, Omar Faruki
 	 * 
 	 * @Stroy C2S20
 	 * 
@@ -174,6 +176,8 @@ public class MainEntitys extends CRUD {
 	 *            : The id of the organization in which the entity will be
 	 *            created
 	 * 
+	 * @param createRelationship
+	 * 				specifies whether an entity can have relationships with others
 	 */
 	public static void createSubEntity(String name, String description,
 			long parentId, long orgId, boolean createRelationship) {
@@ -290,7 +294,7 @@ public class MainEntitys extends CRUD {
 	/**
 	 * The method that allows editing any entity
 	 * 
-	 * @author Noha Khater
+	 * @author Noha Khater, Omar Faruki
 	 * 
 	 * @Stroy C2S2, C2S20
 	 * 
@@ -302,6 +306,9 @@ public class MainEntitys extends CRUD {
 	 * 
 	 * @param description
 	 *            : The new description of the entity
+	 *            
+	 * @param createRelationship
+	 * 				specifies whether an entity can have relationships with others
 	 * 
 	 */
 	public static void editEntity(long entityId, String name, String description, boolean createRelationship) {
