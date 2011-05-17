@@ -136,7 +136,7 @@
         #{/form}
     </div>
     <div>
-    #{if !alreadyReported}
+    #{if alreadyReported==false}
     <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform">
         <input type="hidden" name="ideaId" value="${ideaId}">
             <tr>

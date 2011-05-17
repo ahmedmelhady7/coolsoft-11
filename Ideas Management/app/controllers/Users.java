@@ -104,7 +104,7 @@ public class Users extends CRUD {
 		String username = object.username;
 		String birthDate = "" + object.dateofBirth;
 		int adminFlag = 0;
-		if(Security.getConnected().isAdmin) {
+		if (Security.getConnected().isAdmin) {
 			adminFlag = 1;
 		}
 		try {
@@ -119,8 +119,8 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * overrides the CRUD show method,renders the form for editing
-	 * 			and viewing a user
+	 * overrides the CRUD show method,renders the form for editing and viewing a
+	 * user
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -184,7 +184,7 @@ public class Users extends CRUD {
 			render("CRUD/show.html", type, object);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @author Ahmed Maged
@@ -206,10 +206,10 @@ public class Users extends CRUD {
 		String username = tmp.username;
 		String birthDate = "" + tmp.dateofBirth;
 		int flag = 0;
-		if (Security.getConnected().equals(tmp)){
+		if (Security.getConnected().equals(tmp)) {
 			flag = 1;
 		}
-		
+
 		try {
 			render(type, object, username, name, communityContributionCounter,
 					profession, birthDate, userId, flag);
@@ -226,7 +226,7 @@ public class Users extends CRUD {
 	 * 
 	 * @story C1S1
 	 */
-	 
+
 	public static void myProfile() {
 		User user = Security.getConnected();
 		showProfile(user.id + "");
@@ -400,6 +400,10 @@ public class Users extends CRUD {
 		Mail.reportAsSpamMail(idea.belongsToTopic.creator, reporter, idea,
 				idea.description, idea.title);
 		// }
+		System.out.println(idea.spamCounter
+				+ "****************************************************");
+		idea.save();
+		reporter.save();
 		System.out.println(reporter.ideasReported.get(0).toString());
 		ideaSpamView(ideaId);
 
@@ -422,8 +426,8 @@ public class Users extends CRUD {
 			if (reporter.username.equals(idea.reporters.get(i).username))
 				alreadyReported = true;
 		}
-		// render(alreadyReported);
 		redirect("/ideas/show?ideaId=" + idea.getId(), alreadyReported);
+		// render(alreadyReported);
 	}
 
 	/**
