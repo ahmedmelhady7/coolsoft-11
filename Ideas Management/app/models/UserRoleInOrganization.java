@@ -13,7 +13,7 @@ import controllers.Roles;
 import play.db.jpa.Model;
 
 @Entity
-public class UserRoleInOrganization extends Model {
+public class UserRoleInOrganization extends CoolModel {
 
 	@ManyToOne
 	public User enrolled;
