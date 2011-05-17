@@ -37,6 +37,17 @@
         <p class="crudButtons">
             <input "hidden" id = "save" type="submit" name="_save" value="&{'Post Idea', type.modelName}" />
         </p>#{/form}
+		<button onclick="save()">Save as Draft</button>
         <input "hidden" type = "sumbit" href="">
     </div>
 </div>
+<script type="text/javascript">
+	function save()
+	{
+		var id = ${topic.id};
+		var x = document.getElementById("object_title").value.toString();
+		var y = document.getElementById("object_description").value;
+		$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/ideas/getdrafts"}  );
+		//alert("Idea Saved ");
+	}
+</script>
