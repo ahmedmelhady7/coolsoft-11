@@ -24,11 +24,27 @@ window.location.reload();
   <p style="color:#c00"> Sorry No Actions found !! </p>
 #{/if}
 #{else}
-#{form @BannedUsers.restrictFinal(), method:'POST', id:'creationForm',onsubmit: 'return show_alert()',
+#{form  @BannedUsers.restrictFinal(), method:'POST', id:'creationForm',
        enctype:'multipart/form-data' }
+       
+       
+    <p> <font face="Monotype Corsiva, Verdana" size="6" color="#2B60DE">
+    <b><u> Actions that the organizer is not restricted from : </u></b></font></p>
+       
   #{list items:entityActions, as:'action'}
-<input id = "1" type="radio" name="actionToDo" value = '${action}'> ${action}<br /> <br />
-#{/list}
+  
+  <input type="checkbox" name="actionToDo[]" value='${action}' id = "enabled"/> ${action}<br />
+ 
+  #{/list}
+  <br / >
+  <hr> <br />  <br />
+   
+   <b> <u> Actions that the organizer is restricted from : </u> </b> <br /> <br />
+    
+  #{list items:restricted, as:'restrict'}
+   <input type="checkbox" name="notUsed" value='${restrict}' id ="disabled" DISABLED/> ${restrict}<br />
+   #{/list}
+  
 <input type = "hidden" name = "type" value = "entity" >
 <input type = "hidden" name = "entityTopicId" value = ${entityId} >
 <input type = "hidden" name = "userId" value = ${userId} >
@@ -36,3 +52,7 @@ window.location.reload();
 <input type="submit" value="Restrict">
 #{/form}
 #{/else}
+ 
+
+  
+  
