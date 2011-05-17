@@ -11,10 +11,16 @@ import models.Topic;
 import models.User;
 import models.VolunteerRequest;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import play.data.binding.Binder;
 import play.db.Model;
@@ -779,13 +785,79 @@ public class Plans extends CRUD {
 	 * 
 	 * @param planId
 	 *            The id of the plan
+	 * @throws java.text.ParseException 
 	 */
-	public static void viewAsTimeline(long planid) {
-		Plan p = Plan.findById(planid);
-		List<Item> itemsList = p.items;
-		render(p, itemsList);
+public static void viewasTimeline(long planId) throws IOException, ParseException, java.text.ParseException {
 
+		
+		Plan p = Plan.findById(planId);
+		List<Item> itemsList = p.items;
+
+		 FileWriter fstream;
+		fstream =  new FileWriter("Ideas Management/app/views/plans/out.xml");	
+		
+			BufferedWriter out = new BufferedWriter(fstream);
+					
+		         out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");out.write("\n");
+		         out.write("<data>");
+		         out.write("\n");
+		
+		         
+		 
+
+			        // See if we can parse the output of Date.toString()
+			        
+		         
+		 for(int i=0;i<itemsList.size();i++){
+		 
+			 	 out.write("<event start=\"");
+		  //       out.write(itemsList.get(i).startDate.toGMTString());
+		        String inputDate = (itemsList.get(i).startDate.toGMTString());
+		         Date date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz").parse(inputDate);
+		        
+		         
+		         
+		         
+		         out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z").format(date));
+	         
+				 out.write("\"");
+				 out.write(" ");		 
+				 out.write("end=\"");
+				 
+				 //out.write(itemsList.get(i).endDate.toGMTString());
+				 inputDate = (itemsList.get(i).startDate.toGMTString());
+		         date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz").parse(inputDate);
+		         out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z").format(date));
+		         
+				 out.write("\"");
+				 out.write(" ");		 
+				 out.write("title=\"");
+				 out.write(itemsList.get(i).summary);
+				 out.write("\"");
+				 out.write(">" );
+				 out.write(itemsList.get(i).description); 
+				 out.write("</event>");
+				 out.write("\n");
+		
+	
+	
+		
+		 }
+		 
+		 out.write("</data>");
+		 out.flush();
+		 out.close();
+		
+
+//render(p, itemsList);
+		
+		
+		
+		
 	}
+	
+
+
 
 	/**
 	 * @author Yasmine Elsayed
