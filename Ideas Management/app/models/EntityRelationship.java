@@ -19,7 +19,7 @@ import play.db.jpa.Model;
  * 
  */
 @Entity
-public class EntityRelationship extends Model {
+public class EntityRelationship extends CoolModel {
 
 	/**
 	 * the name of the Relationship
