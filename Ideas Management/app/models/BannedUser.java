@@ -12,7 +12,7 @@ import controllers.Roles;
 import play.db.jpa.Model;
 
 @Entity
-public class BannedUser extends Model {
+public class BannedUser extends CoolModel {
 
 	@ManyToOne
 	public Organization organization;
