@@ -17,8 +17,7 @@
 			{
 				var x = document.getElementById("title").value.toString();
 				var y = document.getElementById("body").value.toString();
-				$.post('@{Ideas.create()}' ,{topicId:id},function(){window.location.href= "/ideas/list"});
-				alert("Idea posted ");
+				$.post('@{Ideas.doCreateIdea()}' ,{topicId:id,title:x,body:y},function(){window.location.href= "/ideas/list"});
 			}
 		</script>
     </head>
