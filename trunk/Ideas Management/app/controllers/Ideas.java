@@ -336,6 +336,7 @@ public class Ideas extends CRUD {
 		Model object = type.findById(ideaId);
 		notFoundIfNull(object);
 		Idea idea = (Idea) object;
+		int rate = idea.rating;
 		// List<Tag> tags = i.tagsList;
 		User user = Security.getConnected();
 		List<Comment> comments = idea.commentsList;
@@ -375,7 +376,7 @@ public class Ideas extends CRUD {
 																			 * deletable
 																			 * ,
 																			 */
-					ideaId);
+					ideaId,rate);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -719,8 +720,6 @@ public class Ideas extends CRUD {
 			Idea idea = Idea.findById(ideaID);
 			int oldRating = idea.rating;
 			int newRating = (oldRating + rating) / 2;
-			render(newRating);
-
 		}
 	}
 
