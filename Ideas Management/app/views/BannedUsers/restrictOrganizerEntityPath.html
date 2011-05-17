@@ -4,16 +4,11 @@
 
 
 
-#{if flash.error}
-    <p style="color:#c00">
-        ${flash.error}
-    </p>
-#{/if}
 
 <input type="submit" style="background-color:lightblue" align = "Right" value="Start new Restriction / De-Restriction Process"  onclick="Restart()" > <br /> <br />
 
 #{if users.isEmpty()}
-  <p style="color:#c00"> No Organizers Found </p>
+  <p style="color:#c00"> No Organizers Found !! </p>
 #{/if}
 #{else}
 
@@ -31,27 +26,11 @@
 </fieldset>
 </form>
 <br />
-<input type="submit" value="Select Entity" onclick="submit()">
 #{/else}
 
 <hr> <br /><br /> 
 
 
-
-<form name = "entityList">
-<fieldset>  
-<legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
-    <b><u> Entities set: </u></b></font></legend> <br />
-       <select name = "entityName" id = "e">
-
-        </select>
-</fieldset> 
-</form>
-
-
-
-
-<br /> 
 
 <form id ="topicz" name = "topics"  >
 <fieldset>
@@ -119,7 +98,6 @@ var topicID = 0;
 var topicFlag = true;
 var organizationID = ${organizationID};
 var submitBtnFlag = false;
-var selectEntityBtnFlag = false;
 var submitTopicBtnFlag = false;
 
 
@@ -128,14 +106,14 @@ function Restart(){
 	window.location.reload();
 }
 
-function submit(){
+// function submit(){
 	
 	
-	if (selectEntityBtnFlag == false){
-		selectEntityBtnFlag = true;
-	 userID = document.getElementById('userss').value;
-	organizationID = ${organizationID};
-	$.getJSON( '@{BannedUsers.entitiesEnrolledIn()}', { userId: userID , organizationId: ${organizationID}} , function(data) { 
+// 	if (selectEntityBtnFlag == false){
+// 		selectEntityBtnFlag = true;
+// 	 userID = document.getElementById('userss').value;
+// 	organizationID = ${organizationID};
+// 	$.getJSON( '@{BannedUsers.entitiesEnrolledIn()}', { userId: userID , organizationId: ${organizationID}} , function(data) { 
 		
 // 		var temp =  ${flag};
 // 		var H[] = entities;
@@ -144,10 +122,10 @@ function submit(){
             
             
 //  	     for
-         var text = "";
+//          var text = "";
 	     
-	     var List;
-	    // <% entities = entities.split(';') %>
+// 	     var List;
+// 	    <% entities = entities.split(';') %>
 	   
 	    
 //          for( var i=0; i<List.length; i++ ) {  
@@ -156,36 +134,36 @@ function submit(){
         	 
         	
 //     	  }
-       //  alert("Data Loaded: " + data.entityList);
-	    //  String [] entitiesL = entities.split(,);
-	     var s={};
-        s=data.entityList.split(",");
-      //  alert("Data Loaded: " + data.entityList);
-        var d={};
-        d=data.entityIds.split(",");
+//         alert("Data Loaded: " + data.entityList);
+// 	     String [] entitiesL = entities.split(,);
+// 	     var s={};
+//         s=data.entityList.split(",");
+ //      alert("Data Loaded: " + data.entityList);
+//         var d={};
+//         d=data.entityIds.split(",");
   
 	    
-	    // document.getElementById("dynamic").innerHTML= counter;
-	    for( var i = 0 ; i < s.length-1 ; i++){
-	    	myOption= new Option();
+//	    document.getElementById("dynamic").innerHTML= counter;
+// 	    for( var i = 0 ; i < s.length-1 ; i++){
+// 	    	myOption= new Option();
 	    	
-            myOption.text= s[i];
-	         myOption.value= d[i]; 
-	         document.entityList.entityName.options[document.entityList.entityName.options.length]=myOption;
-	    }
+//             myOption.text= s[i];
+// 	         myOption.value= d[i]; 
+// 	         document.entityList.entityName.options[document.entityList.entityName.options.length]=myOption;
+// 	    }
          
-	    $('#topicz').show();
+// 	    $('#topicz').show();
        
-	   });
+// 	   });
 	
-  }
-	else{
+//   }
+// 	else{
 		
-		alert("Oops You have changed the selection criteria. The process will restart !!");
-		window.location.reload();
-	}
+// 		alert("Oops You have changed the selection criteria. The process will restart !!");
+// 		window.location.reload();
+// 	}
 	
-}
+// }
 
 
   function getTopicActions(){
@@ -240,7 +218,8 @@ function getTopic(){
 	if (submitBtnFlag == false){
 		submitBtnFlag = true;
 	
-	userIDD = document.getElementById('userss').value;
+	userID = document.getElementById('userss').value;
+	var userIDD = userID;
 	var topicc = true;
 
 	topicFlag = true;
@@ -250,7 +229,7 @@ function getTopic(){
     topicFlag = false;
     }
 	
-    var entityIdd = document.getElementById('e').value;
+    var entityIdd = ${entityId};
      entityID = entityIdd;
      if(topicc == false){
     $.getJSON( '@{BannedUsers.entityActions()}', { entityId: entityIdd ,topic :topicc, organizationId: ${organizationID} ,userId: userIDD} ,  function(data) { 
@@ -504,9 +483,7 @@ function getSelectedCheckboxValue(buttonGroup) {
 </script>
 
 <script type="text/javascript"> 
-	$(function() {
-		$('#topicz').hide();
-	});
+	
 	
 	$(function(){
 		$('#restrictBtn').hide();
