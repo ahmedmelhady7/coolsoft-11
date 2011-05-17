@@ -369,20 +369,20 @@ public class Topics extends CRUD {
 
 		List<BannedUser> bannedUserTopic = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"all", "topic", topicId).fetch(); // List of blocked users from
+				"use", "topic", topicId).fetch(); // List of blocked users from
 													// a
 		// topic
 		List<BannedUser> bannedUserEntity = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"all", "entity", entity.id).fetch(); // list of blocked users
+				"use", "entity", entity.id).fetch(); // list of blocked users
 		// from an entity
 		List<BannedUser> bannedUserOrg = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"all", "organization", org.id).fetch(); // list of blocked user
+				"use", "organization", org.id).fetch(); // list of blocked user
 		// from an organization
-		List<BannedUser> bannedUserPlan = BannedUser.find(
-				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				"can post ideas to a Topic", "topic", topicId).fetch(); // list
+		//List<BannedUser> bannedUserPlan = BannedUser.find(
+			//	"byOrganizationAndActionAndResourceTypeAndResourceID", org,
+				//"can post ideas to a Topic", "topic", topicId).fetch(); // list
 																		// of
 																		// users
 																		// banned
@@ -401,7 +401,7 @@ public class Topics extends CRUD {
 		bannedUser.addAll(bannedUserTopic);
 		bannedUser.addAll(bannedUserEntity);
 		bannedUser.addAll(bannedUserOrg);
-		bannedUser.addAll(bannedUserPlan);
+	//	bannedUser.addAll(bannedUserPlan);
 
 		for (int i = 0; i < bannedUser.size(); i++) {
 			bannedUsers.add((bannedUser.get(i)).bannedUser);
