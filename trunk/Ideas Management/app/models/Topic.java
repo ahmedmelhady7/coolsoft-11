@@ -38,13 +38,13 @@ public class Topic extends CoolModel {
 	 */
 	@Required
 	public int privacyLevel;
-	
+
 	/**
 	 * The list of relations where the topic is the source
 	 */
-	 @OneToMany(mappedBy = "source")
-	 public List<TopicRelationship> relationsSource;
-
+	@OneToMany(mappedBy = "source")
+	public List<TopicRelationship> relationsSource;
+	
 	 /**
 	  * The list of relations where the topic is the destination
 	  */
@@ -115,14 +115,18 @@ public class Topic extends CoolModel {
 	@OneToMany(mappedBy = "topic")
 	// , cascade = CascadeType.ALL)
 	public List<RequestToJoin> requestsToJoin;
-	
+
 	@OneToMany(mappedBy = "topic")
 	public List<Invitation> invitations;
 
 	/**
-	 * the list of relationship requests with the topic
+	 * List of relationship requests for the Topic
 	 */
-	// public List<RequestOfRelationship> relationshipRequests;
+	@OneToMany(mappedBy = "sourceTopic")
+	public List<CreateRelationshipRequest> relationshipRequestsSource;
+	
+	@OneToMany(mappedBy = "destinationTopic")
+	public List<CreateRelationshipRequest> relationshipRequestsDestination;
 
 	/**
 	 * the list of invitations to the topic?
@@ -149,7 +153,6 @@ public class Topic extends CoolModel {
 	 */
 	public boolean openToEdit;
 
-	
 	/**
 	 * This variable checks whether this entity allows the creation of relationships in it
 	 * 
@@ -191,18 +194,20 @@ public class Topic extends CoolModel {
 		this.privacyLevel = privacyLevel;
 		this.creator = creator;
 		this.entity = entity;
-		relationsSource = new ArrayList<TopicRelationship>();
-		relationsDestination = new ArrayList<TopicRelationship>();
-		tags = new ArrayList<Tag>();
+		this.relationsSource = new ArrayList<TopicRelationship>();
+		this.relationsDestination = new ArrayList<TopicRelationship>();
+		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
+		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
+		this.tags = new ArrayList<Tag>();
 		// relationships = new ArrayList<Relationship>();
 		// organizers = new ArrayList<User>();
-		followers = new ArrayList<User>();
-		ideas = new ArrayList<Idea>();
-		commentsOn = new ArrayList<Comment>();
+		this.followers = new ArrayList<User>();
+		this.ideas = new ArrayList<Idea>();
+		this.commentsOn = new ArrayList<Comment>();
 		// canAccess = new ArrayList<User>();
-		requestsToJoin = new ArrayList<RequestToJoin>();
+		this.requestsToJoin = new ArrayList<RequestToJoin>();
 		this.createRelationship = createRelationship;
-		openToEdit = true;
+		this.openToEdit = true;
 	}
 
 	/**
@@ -226,18 +231,20 @@ public class Topic extends CoolModel {
 		this.description = description;
 		this.privacyLevel = privacyLevel;
 		this.creator = creator;
-		relationsSource = new ArrayList<TopicRelationship>();
-		relationsDestination = new ArrayList<TopicRelationship>();
-		tags = new ArrayList<Tag>();
-		// relationships = new ArrayList<Relationship>();
-		// organizers = new ArrayList<User>();
-		followers = new ArrayList<User>();
-		ideas = new ArrayList<Idea>();
-		commentsOn = new ArrayList<Comment>();
+		this.relationsSource = new ArrayList<TopicRelationship>();
+		this.relationsDestination = new ArrayList<TopicRelationship>();
+		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
+		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
+		this.tags = new ArrayList<Tag>();
+		//organizers = new ArrayList<User>();
+		this.followers = new ArrayList<User>();
+		this.ideas = new ArrayList<Idea>();
+		this.commentsOn = new ArrayList<Comment>();
+
 		// requestsToJoin = new ArrayList<RequestToJoin>();
-		hidden = false;
+		this.hidden = false;
 		this.createRelationship = createRelationship;
-		openToEdit = true;
+		this.openToEdit = true;
 	}
 
 	/**
@@ -416,8 +423,8 @@ public class Topic extends CoolModel {
 	 */
 	public boolean isDeletable() {
 		// TODO Auto-generated method stub
-		//if (openToEdit == false)
-		//	return false;
+		// if (openToEdit == false)
+		// return false;
 		if (ideas.size() > 0)
 			return false;
 		return true;

@@ -1,6 +1,7 @@
 package models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -41,6 +42,9 @@ public class EntityRelationship extends CoolModel {
 	@ManyToOne
 	public MainEntity destination;
 
+	@OneToMany(mappedBy = "entityRelationship")
+	public List<RenameEndRelationshipRequest> renameEndRequests;
+
 	/**
 	 * The constructor for assigning Relationships
 	 * 
@@ -57,7 +61,8 @@ public class EntityRelationship extends CoolModel {
 	 * @param destination
 	 *            : the second related Entity
 	 */
-	public EntityRelationship(String name, MainEntity source, MainEntity destination) {
+	public EntityRelationship(String name, MainEntity source,
+			MainEntity destination) {
 		this.name = name;
 		this.source = source;
 		this.destination = destination;
