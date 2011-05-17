@@ -16,7 +16,7 @@
 	<div class="objectForm">
 		#{form action:@save(object._key()), enctype:'multipart/form-data'}
 
-		#{crud.form fields: ['email','username', 'password', 'firstName','lastName',  'communityContributionCounter','dateofBirth',  'country', 'profession']}
+		#{crud.form fields: ['email','firstName','lastName',  'communityContributionCounter','dateofBirth',  'country', 'profession']}
 
 		#{crud.custom 'country'}
 		<p>
