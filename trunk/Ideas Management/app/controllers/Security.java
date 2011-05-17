@@ -45,6 +45,10 @@ public class Security extends Secure.Security {
 		User user = User.find(
 				"select u from User u where (u.username=? and u.password = ?)",
 				username, password).first();
+		if(user.state.equals("d")) {
+			flash.error("Your account has been deleted");
+			return false;
+		}
 		if (user != null) {
 			session.put("user_id", user.id);
 			return true;

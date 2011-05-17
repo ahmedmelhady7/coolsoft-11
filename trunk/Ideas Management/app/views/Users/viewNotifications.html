@@ -47,16 +47,19 @@ function submit() {
 	} else {
 		var r=confirm("Are You sure you want to delete notifications?");
 		if (r == true) {
-			$.post('@{deleteNotifications()}', {a:ids});					
+			$.post('@{deleteNotifications()}', {a:ids});
+			for(var i=0;i<ids.length;i++) {
+				$('#not_' + ids[i]).remove();
+			}
 		} else {
-			window.location.reload();
+			//window.location.reload();
 		}
 		ids = new Array();
 		var field = document.myform.checkfield;
 		for (i = 0; i < field.length; i++){
 			field[i].checked = false ;
 		}
-		window.location.reload();
+		//window.location.reload();
 	}
 	
 }
@@ -72,7 +75,7 @@ function submit() {
 <form name='myform'>
 <ul>
 #{list items:nList, as:'notifi'}
-    <li>
+    <li id="not_${notifi.id}">
     	<fieldset>
     		<big><b>${notifi.status}</b></big>
     		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
