@@ -17,6 +17,13 @@ ${u.email}
 ${u.communityContributionCounter}
 </p>
 <br>
+<br/>
+#{if admin==0}	
+ <input type="submit" value="Deactivate" onclick=location.href="@{Users.confirmDeactivation()}">
+ <input type="submit" value="View Invitations" onclick=location.href="@{Invitations.view()}">
+#{/if}
+<br/>
+<br/>
 My Admin: <input type="submit" value="Admin View" onclick="goAdmin('${u.isAdmin}')">
 <br>
 <form action="@{Users.myProfile()}" method="post">
