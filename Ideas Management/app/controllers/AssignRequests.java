@@ -117,15 +117,14 @@ public class AssignRequests extends CRUD {
 					User destination = User.findById(userIds[i]);
 					Item source = Item.findById(itemId);
 					String description = "You have been sent a request to work on this item "
-							+ source.summary
-							+ "\n "
-							+ " In the plan "
-							+ source.plan.title
-							+ "\n"
-							+ "by "
-							+ sender.username;
-					AssignRequest assignRequest = new AssignRequest(source,
-							destination, sender, description);
+
+						+ source.summary
+						+ "\n "
+						+ " In the plan "
+						+ source.plan.title;
+					AssignRequest assignRequest = new AssignRequest(source, destination,
+							sender, description);
+
 					assignRequest.save();
 					source.addAssignRequest(assignRequest);
 					sender.addSentAssignRequest(assignRequest);

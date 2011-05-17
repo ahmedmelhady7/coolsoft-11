@@ -538,6 +538,19 @@ public class User extends CoolModel {
 		return false;
 	}
 
+	/**
+	 * 
+	 * This Method checks if the user has sent a volunteer request and it's still pending 
+	 * 
+	 * @author Salma Osama
+	 * 
+	 * @story C5S10
+	 * 
+	 * @param itemId
+	 *            : the id of the item that the user is checking if he can
+	 *            assign himself to to work on it
+	 * @return boolean
+	 */
 	public boolean pendingVolunteerRequest(long itemId) {
 
 		for (VolunteerRequest volunteerRequest : volunteerRequests) {

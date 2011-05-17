@@ -1,11 +1,31 @@
 #{extends 'planLayout.html' /}
+<script type="text/javascript">
+    var count = 0;
+    function submit(id, planId){
+    
+	   var r=confirm("Are You sure you want to remove this idea from the plan?");
+		if (r == true) {
+			$.post('@{unassociateIdea()}', {ideaId: id,	planId: planId});
+			$('#idea_' + id).remove();
+			count = count-1;
+			if(count==0) {
+				document.getElementById("label").innerHTML = "There are no ideas associated to this plan";
+			}
+			
+		}
+  }
+    
+    
+</script>
 #{if ideas.size() > 0}
-
+<span id = "label">
 Ideas associated to this plan:
+</span>
 <br/>
 <ul style="list-style: none; ">
     #{list items:ideas, as:'idea'}
     <li id = "idea_${idea.id}">
+    	<script type="text/javascript"> count = count+1;   </script>
         <fieldset>
             <legend>
                 Title: ${idea.title}
@@ -22,7 +42,8 @@ Ideas associated to this plan:
             Rating: ${idea.rating}
             <br/>
 			#{if canIdea == 1}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="unassociate to the plan" onclick="submit(${idea.id}, ${p.id})"/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" value="remove from plan" onclick="submit(${idea.id}, ${p.id})"/>
        		#{/if}
 	    </fieldset>
     </li>#{/list}
@@ -36,15 +57,4 @@ There are no ideas associated to this plan
 </form>
 #{/if}
 <a href="@{Plans.viewAsList(p.id)}">Go back to plan</a>
-<script type="text/javascript">
-    
-    function submit(id, planId){
-    
-        $.post('@{unassociateIdea()}', {ideaId:id, planId:planId});
-        
-        $('#idea_' + id).remove();    
-        //window.location.reload();
-  }
-    
-    
-</script>
+

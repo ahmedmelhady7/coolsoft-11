@@ -1,10 +1,12 @@
 package controllers;
 
+import models.Comment;
 import models.Idea;
 import models.Item;
 import models.MainEntity;
 import models.Organization;
 import models.Plan;
+import models.Tag;
 import models.Topic;
 import models.User;
 import models.VolunteerRequest;
@@ -23,88 +25,6 @@ import controllers.CRUD.ObjectType;
 
 @With(Secure.class)
 public class Plans extends CRUD {
-	
-	public static void sendVolunteerRequest(long itemId, String justification) {
-		User sender = Security.getConnected();
-		Item dest = Item.findById(itemId);
-
-		if (sender.canVolunteer(itemId)) {
-			if (!(dest.status == 2) && !dest.endDatePassed()) {
-				VolunteerRequest volunteerRequest = new VolunteerRequest(
-						sender, dest, justification).save();
-				dest.addVolunteerRequest(volunteerRequest);
-				dest.save();
-				sender.addVolunteerRequest(volunteerRequest);
-				sender.save();
-				String description = sender.username
-						+ " has requested to volunteer to work on the following item "
-						+ dest.summary + "in the plan " + dest.plan.title
-						+ "of the topic" + dest.plan.topic.title;
-				List<User> notificationDestination = dest.plan.topic
-						.getOrganizer();
-				for (int i = 0; i < notificationDestination.size(); i++) {
-					Notifications.sendNotification(
-							notificationDestination.get(i).id, dest.plan.id,
-							"plan", description);
-				}
-
-				//Plans.viewAsList(dest.plan.id);
-				//justify(itemId, dest.plan.id, 2);
-			}
-		} else {
-			//justify(itemId, dest.plan.id, 1);
-		}
-	}
-
-	public static void planList(String type, long id) {
-		List<Plan> plans = new ArrayList<Plan>();
-		if (type == "entity") {
-			MainEntity entity = MainEntity.findById(id);
-			List<Topic> topics = entity.topicList;
-			for (int i = 0; i < topics.size(); i++) {
-				if (topics.get(i).plan != null) {
-					plans.add(topics.get(i).plan);
-				}
-			}
-		} else {
-			Organization organization = Organization.findById(id);
-			List<MainEntity> entities = organization.entitiesList;
-			MainEntity entity;
-			for (int i = 0; i < entities.size(); i++) {
-				entity = entities.get(i);
-				List<Topic> topics = entity.topicList;
-				for (int j = 0; j < topics.size(); j++) {
-					if (topics.get(j).plan != null) {
-						plans.add(topics.get(j).plan);
-					}
-				}
-			}
-		}
-		render(plans);
-	}
-
-	public static void planView(long planId) {
-		Plan p = Plan.findById(planId);
-		User user = Security.getConnected();
-
-		List<Idea> ideas = p.ideas;
-		int canIdea = 0;
-		if (Users.isPermitted(user,
-				"associate an idea or more to an already existing plan",
-				p.topic.id, "topic")) {
-			canIdea = 1;
-		}
-		render(ideas, p, canIdea);
-	}
-	
-	public static void unassociateIdea(long ideaId, long planId) {
-		Idea idea = Idea.findById(ideaId);
-		Plan plan = Plan.findById(planId);
-		idea.plan = null;
-		plan.ideas.remove(idea);
-		idea.save();
-		plan.save();
-	}
 
 	/**
 	 * This method renders the page for viewing the plan as a to-do list.
@@ -125,7 +45,6 @@ public class Plans extends CRUD {
 		int canAssign = 0;
 		int canEdit = 0;
 		int canIdea = 0;
-
 		if (Users
 				.isPermitted(
 						user,
@@ -134,10 +53,10 @@ public class Plans extends CRUD {
 			org = true;
 		}
 
-		if (Users.isPermitted(user, "view an action plan", p.topic.id, "topic")) {
-
+		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
 			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
 					"topic")) {
+
 				canEdit = 1;
 			}
 			if (Users.isPermitted(user,
@@ -150,6 +69,7 @@ public class Plans extends CRUD {
 			if (Users.isPermitted(user,
 					"associate an idea or more to an already existing plan",
 					p.topic.id, "topic")) {
+
 				canIdea = 1;
 			}
 
@@ -175,7 +95,7 @@ public class Plans extends CRUD {
 	public static void workOnItem(long itemId) {
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
-
+		System.out.println("ana hena");
 		user.itemsAssigned.add(item);
 		user.save();
 		item.assignees.add(user);
@@ -194,7 +114,8 @@ public class Plans extends CRUD {
 						item.plan.id, "plan", notificationMsg);
 			}
 		}
-		viewAsList(item.plan.id);
+
+		// viewAsList(item.plan.id);
 	}
 
 	/**
@@ -224,9 +145,9 @@ public class Plans extends CRUD {
 	}
 
 	/**
-	 * This Method associates the list of selected ideas to the plan 
-	 * and increments the community contribution counter of the authors 
-	 * of these plans
+	 * This Method associates the list of selected ideas to the plan and
+	 * increments the community contribution counter of the authors of these
+	 * plans
 	 * 
 	 * @story C5S4
 	 * 
@@ -251,16 +172,149 @@ public class Plans extends CRUD {
 			idea.author.communityContributionCounter = idea.author.communityContributionCounter + 13;
 			idea.author.save();
 			plan.save();
-			System.out.println(idea.author.username);
-			notificationContent = "your idea: " + idea.title
+			notificationContent = "Congratulayions!! your idea: " + idea.title
 					+ "have been promoted to execution in the following plan "
-					+ plan.title + " in the topic: " + topic.title;
+					+ plan.title + " of the topic: " + topic.title;
 			Notifications.sendNotification(idea.author.id, plan.id, "plan",
 					notificationContent);
 
 		}
 		planView(planId);
 
+	}
+
+	public static void planList(String type, long id) {
+		User user = Security.getConnected();
+		List<Plan> plans = new ArrayList<Plan>();
+		if (type == "entity") {
+			MainEntity entity = MainEntity.findById(id);
+			List<Topic> topics = entity.topicList;
+			for (int i = 0; i < topics.size(); i++) {
+				if (topics.get(i).plan != null
+						&& Users.isPermitted(user, "view", topics.get(i).id,
+								"topic")) {
+					plans.add(topics.get(i).plan);
+				}
+			}
+		} else {
+			Organization organization = Organization.findById(id);
+			List<MainEntity> entities = organization.entitiesList;
+			MainEntity entity;
+			for (int i = 0; i < entities.size(); i++) {
+				entity = entities.get(i);
+				List<Topic> topics = entity.topicList;
+				for (int j = 0; j < topics.size(); j++) {
+					if (topics.get(j).plan != null
+							&& Users.isPermitted(user, "view",
+									topics.get(j).id, "topic")) {
+						plans.add(topics.get(j).plan);
+					}
+				}
+			}
+		}
+		render(plans);
+	}
+
+	/**
+	 * This method renders the view containing the list of ideas associated to
+	 * the plan given the plan id
+	 * 
+	 * @story C5S4
+	 * 
+	 * @author Salma Osama
+	 * 
+	 * @param planId
+	 *            the id of the plan whose list of ideas will be viewed
+	 */
+	public static void planView(long planId) {
+		Plan p = Plan.findById(planId);
+		User user = Security.getConnected();
+
+		List<Idea> ideas = p.ideas;
+		int canIdea = 0;
+		if (Users.isPermitted(user,
+				"associate an idea or more to an already existing plan",
+				p.topic.id, "topic")) {
+			canIdea = 1;
+		}
+		render(ideas, p, canIdea);
+	}
+
+	/**
+	 * This method removes an idea from the the list of ideas associated to the
+	 * plan given the idea id and the plan id
+	 * 
+	 * @story C5S4
+	 * 
+	 * @author Salma Osama
+	 * 
+	 * @param ideaId
+	 *            the id of the idea to be removed from the list of ideas of the
+	 *            plan
+	 * @param planId
+	 *            the id of the plan that the idea will be removed from
+	 */
+	public static void unassociateIdea(long ideaId, long planId) {
+		Idea idea = Idea.findById(ideaId);
+		Plan plan = Plan.findById(planId);
+		idea.plan = null;
+		plan.ideas.remove(idea);
+		idea.save();
+		plan.save();
+		String notificationMsg = "Sorry!! your idea " + idea.title
+				+ "has been removed from the following plan" + plan.title
+				+ " of the topic: " + plan.topic.title;
+		Notifications.sendNotification(idea.author.id, plan.id, "plan",
+				notificationMsg);
+
+	}
+
+	/**
+	 * 
+	 * This Method creates an instance of VolunteerRequest if the user is
+	 * allowed to volunteer and adds it to the list of sent volunteer requests
+	 * of the user and to the list of volunteer requests in the item given the
+	 * the item id and the required justification string
+	 * 
+	 * @author Salma Osama
+	 * 
+	 * @story C5S10
+	 * 
+	 * @param itemId
+	 *            : the id of the item the user wishes to volunteer to work on
+	 * @param justification
+	 *            : the reason why the user would like to volunteer in this item
+	 */
+	public static void sendVolunteerRequest(long itemId, String justification) {
+		User sender = Security.getConnected();
+		Item dest = Item.findById(itemId);
+
+		if (sender.canVolunteer(itemId)) {
+			if (!(dest.status == 2) && !dest.endDatePassed()) {
+				VolunteerRequest volunteerRequest = new VolunteerRequest(
+						sender, dest, justification).save();
+				dest.addVolunteerRequest(volunteerRequest);
+				dest.save();
+				sender.addVolunteerRequest(volunteerRequest);
+				sender.save();
+				String description = sender.username
+						+ " has requested to volunteer to work on the following item "
+						+ dest.summary + "in the plan " + dest.plan.title
+						+ "of the topic" + dest.plan.topic.title;
+				List<User> notificationDestination = dest.plan.topic
+						.getOrganizer();
+				for (int i = 0; i < notificationDestination.size(); i++) {
+					Notifications.sendNotification(
+							notificationDestination.get(i).id, dest.plan.id,
+							"plan", description);
+				}
+
+				// Plans.viewAsList(dest.plan.id);
+				// justify(itemId, dest.plan.id, 2);
+			}
+		} else {
+			// justify(itemId, dest.plan.id, 1);
+		}
 	}
 
 	/**
@@ -394,11 +448,6 @@ public class Plans extends CRUD {
 				new Date(iendYear - 1900, iendMonth, iendDay), idescription,
 				isummary);
 		p.save();
-		// String[] list2 = ideaString.split(",");
-		// long[] list = new long[list2.length];
-		// for (int i = 0; i < list2.length; i++) {
-		// list[i] = Long.parseLong(list2[i]);
-		// }
 
 		List<User> topicOrganizers = p.topic.getOrganizer();
 		for (int i = 0; i < topicOrganizers.size(); i++) {
@@ -661,12 +710,63 @@ public class Plans extends CRUD {
 	 * @param itemId
 	 *            The id of the item being deleted
 	 */
-	public static void deleteItem(long planId, long itemId) {
-		Plan plan = Plan.findById(planId);
+	public static boolean deleteItem(long itemId) {
 		Item item = Item.findById(itemId);
+		Plan plan = Plan.findById(item.plan.id);
 		plan.items.remove(item);
+		plan.save();
+		for (int i = 0; i < item.volunteerRequests.size(); i++) {
+			item.volunteerRequests.get(i).delete();
+		}
+		for (int i = 0; i < item.assignRequests.size(); i++) {
+			item.assignRequests.get(i).delete();
+		}
+		List<Item> items;
+		User userAssigned;
+		String notificationMsg;
+		for (int i = 0; i < item.assignees.size(); i++) {
+			userAssigned = item.assignees.get(i);
+			items = userAssigned.itemsAssigned;
+			items.remove(item);
+			userAssigned.save();
+			notificationMsg = "The item " + item.summary
+					+ " has been deleted from the plan";
+			Notifications.sendNotification(userAssigned.id, plan.id, "plan",
+					notificationMsg);
+		}
+		Tag tag;
+		for (int i = 0; i < item.tags.size(); i++) {
+			tag = item.tags.get(i);
+			items = tag.taggedItems;
+			items.remove(item);
+			tag.save();
+		}
 		item.delete();
-		viewAsList(planId);
+		return true;
+		// viewAsList(planId);
+	}
+
+	public static void deletePlan(long planId) {
+		Plan plan = Plan.findById(planId);
+		while (!plan.items.isEmpty()) {
+			deleteItem(plan.items.get(0).id);
+			System.out.println(plan.items.size());
+			plan.save();
+		}
+		Idea idea;
+		while (!plan.ideas.isEmpty()) {
+			idea = plan.ideas.remove(0);
+			idea.plan = null;
+			idea.save();
+			plan.save();
+		}
+		Comment comment;
+		while (!plan.commentsList.isEmpty()) {
+			comment = plan.commentsList.remove(0);
+			comment.delete();
+		}
+		plan.delete();
+
 	}
 
 	/**
