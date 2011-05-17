@@ -120,7 +120,7 @@ public class Users extends CRUD {
 
 	/**
 	 * overrides the CRUD show method,renders the form for editing
-	 *              and viewing a user
+	 * 			and viewing a user
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -193,7 +193,7 @@ public class Users extends CRUD {
 	 * 
 	 * @param userId
 	 */
-	
+
 	public static void showProfile(String userId) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -217,21 +217,21 @@ public class Users extends CRUD {
 			render("CRUD/show.html", type, object);
 		}
 	}
-	
+
 	/**
-	 * Gets the Id of the current logged in user and calls the method showProfile
+	 * Gets the Id of the current logged in user and calls the method
+	 * showProfile
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S1
 	 */
-	
+	 
 	public static void myProfile() {
 		User user = Security.getConnected();
 		showProfile(user.id + "");
 	}
-	
-	
+
 	/**
 	 * Overrides the CRUD method blank, renders the form for creating a user
 	 * 
@@ -389,15 +389,19 @@ public class Users extends CRUD {
 	 * 
 	 */
 	public static void reportIdeaAsSpam(long ideaId) {
+		System.out.println("sakdjhdafakasjdf");
 		Idea idea = Idea.findById(ideaId);
 		User reporter = Security.getConnected();
 		idea.spamCounter++;
 		reporter.ideasReported.add(idea);
-		for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
-			Mail.ReportAsSpamMail(idea.belongsToTopic.getOrganizer().get(j),
-					reporter, idea, idea.description, idea.title);
-			//ideaSpamView(ideaId);
-		}
+		idea.reporters.add(reporter);
+		System.out.println(idea.reporters.get(0).toString());
+		// for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
+		Mail.reportAsSpamMail(idea.belongsToTopic.creator, reporter, idea,
+				idea.description, idea.title);
+		// }
+		System.out.println(reporter.ideasReported.get(0).toString());
+		ideaSpamView(ideaId);
 
 	}
 
@@ -411,17 +415,15 @@ public class Users extends CRUD {
 	 */
 
 	public static void ideaSpamView(long ideaId) {
-		int alreadyReported = -1;
+		boolean alreadyReported = false;
 		Idea idea = Idea.findById(ideaId);
 		User reporter = Security.getConnected();
 		for (int i = 0; i < idea.reporters.size(); i++) {
 			if (reporter.username.equals(idea.reporters.get(i).username))
-				alreadyReported = 1;
-			else
-				alreadyReported = 0;
+				alreadyReported = true;
 		}
-		render(alreadyReported);
-
+		// render(alreadyReported);
+		redirect("/ideas/show?ideaId=" + idea.getId(), alreadyReported);
 	}
 
 	/**
@@ -626,19 +628,19 @@ public class Users extends CRUD {
 		// User banned =
 		// BannedUser.find("select b.bannedUser from BannedUser b where b.bannedUser = ? and b.resourceID = ? and b.resourceType = ? and b.action =  ",
 		// user);
-		
+
 		BannedUser bannedView = BannedUser.find(
 				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 				"view", placeType, placeId).first();
-		
-		if(bannedView != null) {
+
+		if (bannedView != null) {
 			return false;
 		}
-		
+
 		BannedUser banned = BannedUser.find(
 				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 				action, placeType, placeId).first();
-		
+
 		String role;
 		if (user.isAdmin) {
 			return true;
@@ -924,8 +926,7 @@ public class Users extends CRUD {
 		}
 		return enrolled;
 	}
-   
-	
+
 	/**
 	 * Returns a list of all idea developers within a certain organization in a
 	 * certain entity or in a specific topic according to the "type" passed
@@ -944,22 +945,24 @@ public class Users extends CRUD {
 	 * 
 	 * @return List<User> : is the list of idea developers
 	 */
-	
-	public static List<User> getIdeaDevelopers(long entityTopicId , String type){
-		List <User> enrolled = null;
-	
+
+	public static List<User> getIdeaDevelopers(long entityTopicId, String type) {
+		List<User> enrolled = null;
+
 		Role role = Roles.getRoleByName("idea developer");
 		MainEntity entity = MainEntity.findById(entityTopicId);
 		Organization organization = entity.organization;
-		if(type.equalsIgnoreCase("topic")){
+		if (type.equalsIgnoreCase("topic")) {
 			Topic topic = Topic.findById(entityTopicId);
 			entity = topic.entity;
 			organization = entity.organization;
 		}
-		enrolled = UserRoleInOrganization.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? and uro.role = ? and uro.entityTopicID = ? and type = ?",organization,role,entityTopicId, type ).fetch();
-		return enrolled ;
+		enrolled = UserRoleInOrganization
+				.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? and uro.role = ? and uro.entityTopicID = ? and type = ?",
+						organization, role, entityTopicId, type).fetch();
+		return enrolled;
 	}
-	
+
 	/**
 	 * return all the entities that a certain organizer is enrolled in within a
 	 * certain organization
@@ -993,9 +996,9 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 *  overrides the CRUD create method that is used to create a
-	 *  new user and make sure that this user is valid, and then it
-	 *  renders a message mentioning whether the operation was successful or not.
+	 * overrides the CRUD create method that is used to create a new user and
+	 * make sure that this user is valid, and then it renders a message
+	 * mentioning whether the operation was successful or not.
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1103,13 +1106,13 @@ public class Users extends CRUD {
 		tmp.username = tmp.username.trim();
 		tmp.password = tmp.password.trim();
 		tmp.firstName = tmp.firstName.trim();
-		boolean flag=false;
-		if (User.find("ByEmail", tmp.email)!= null||User.find("ByUsername", tmp.username) != null)
-		{
+		boolean flag = false;
+		if (User.find("ByEmail", tmp.email) != null
+				|| User.find("ByUsername", tmp.username) != null) {
 			flag = true;
 		}
 
-		if (validation.hasErrors()||flag) {
+		if (validation.hasErrors() || flag) {
 			System.out.println("lol");
 			if (tmp.email.equals("")) {
 				message = "A User must have an email";
@@ -1149,7 +1152,8 @@ public class Users extends CRUD {
 		tmp = (User) object;
 		Mail.welcome(tmp);
 		// Calendar cal = new GregorianCalendar();
-		// Logs.addLog( user.getConnected, "add", "User", tmp.username. cal.getTime() );
+		// Logs.addLog( user.getConnected, "add", "User", tmp.username.
+		// cal.getTime() );
 		String message2 = tmp.username + " has been added to users ";
 		System.out.println("id " + tmp.getId());
 
@@ -1176,9 +1180,9 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 *  overrides the CRUD save method ,used to submit the edit, to
-	 *  make sure that the edits are acceptable, and then it renders a 
-	 *  message mentioning whether the operation was successful or not.
+	 * overrides the CRUD save method ,used to submit the edit, to make sure
+	 * that the edits are acceptable, and then it renders a message mentioning
+	 * whether the operation was successful or not.
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1197,7 +1201,7 @@ public class Users extends CRUD {
 		Binder.bind(object, "object", params.all());
 		System.out.println(object.toString() + "begin");
 		validation.valid(object);
-		
+
 		String message = "";
 		User tmp = (User) object;
 		System.out.println("create() entered");
@@ -1239,21 +1243,21 @@ public class Users extends CRUD {
 			}
 		}
 
-			System.out.println(object.toString() + "before save");
-			object._save();
-			System.out.println(object.toString() + "after the save");
-			flash.success(Messages.get("crud.saved", type.modelName));
-			if (params.get("_save") != null) {
-				redirect(request.controller + ".list");
-			}
-			redirect(request.controller + ".show", object._key());
-		
+		System.out.println(object.toString() + "before save");
+		object._save();
+		System.out.println(object.toString() + "after the save");
+		flash.success(Messages.get("crud.saved", type.modelName));
+		if (params.get("_save") != null) {
+			redirect(request.controller + ".list");
+		}
+		redirect(request.controller + ".show", object._key());
+
 	}
 
 	/**
-	 *  overrides the CRUD view method ,is responsible for deleting a user by the 
-	 *  System admin after specifying that user's id , and then it renders a message
-	 *  confirming whether the delete was successful or not
+	 * overrides the CRUD view method ,is responsible for deleting a user by the
+	 * System admin after specifying that user's id , and then it renders a
+	 * message confirming whether the delete was successful or not
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1373,21 +1377,20 @@ public class Users extends CRUD {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	/**
 	 * renders the deactivation page
 	 * 
 	 * @story C1S5
-	 *  
+	 * 
 	 * @author Mai Magdy
 	 * 
 	 */
-	public static void confirmDeactivation(){
+	public static void confirmDeactivation() {
 		render();
-		
+
 	}
-	
+
 	/**
 	 * Deactivate the account of that user by setting the state to "n"
 	 * 
@@ -1396,12 +1399,12 @@ public class Users extends CRUD {
 	 * @author Mai Magdy
 	 * 
 	 */
-	public static void deactivate(){
-		User user=Security.getConnected();
-		user.state="n";
+	public static void deactivate() {
+		User user = Security.getConnected();
+		user.state = "n";
 		user.save();
 		Mail.deactivate();
-		 logout();
+		logout();
 	}
 
 }

@@ -12,7 +12,7 @@
             <label for="object_title">
                 Title
             </label>
-            <textarea id="object_title" cols="30" rows="1" class="" name="object.title" required></textarea>
+            <input type="text" id="object_title" cols="30" rows="1" class="" name="object.title" required>
             <span class="crudHelp">
                 <font color="Red">
                     *
@@ -50,5 +50,6 @@
         <p class="crudButtons">
             <input "hidden" id = "save" type="submit" name="_save" value="&{'crud.save', type.modelName}" />
         </p>#{/form}
+        <input "hidden" type = "sumbit" href="">
     </div>
 </div>
