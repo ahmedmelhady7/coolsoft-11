@@ -201,7 +201,8 @@
         </br>
         <form action="@{Topics.viewFollowers()}">
             <input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="false">View ${targetTopic.title} Followers <input type="submit" value="Followers">
-            <br/>
+           </form>
+		    <br/>
             <HR>#{if canNotPost == true}
             <p>
                 <a onclick="requestToPost('${topicId}');" href="#">request to post on this topic</a>
@@ -211,7 +212,27 @@
             <p>
                 Request To Post status: Pending
             </p>
-            #{/if}<!--#{form @delete(object._key())}
+            #{/if}
+			<br />
+			#{if seeRelationStatus}
+			#{if createRelationship}
+			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
+				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
+				<input type="checkbox" id="createRelationship" name="createRelationship" checked>Allow entity to have relationships<br />
+				<input type="submit" onclick="get_Value()" value="Change"><br />
+				<HR>
+			</form>
+			#{/if}
+			#{else}
+			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
+				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
+				<input type="checkbox" id="createRelationship" name="createRelationship">Allow entity to have relationships
+				<input type="submit" onclick="get_Value()" value="Change"><br />
+				<HR>
+			</form>
+			#{/else}
+			#{/if}
+			<!--#{form @delete(object._key())}
             <p class="crudDelete">
             <input type="submit" value="&{'crud.delete', type.modelName}" />
             </p>
@@ -233,4 +254,11 @@
                     alert("done!");
                     location.reload(true);
                 }
+				function get_Value() {
+					var createRelationship = false;
+					if(document.topicForm.createRelationship.checked) {
+						createRelationship = true;
+					}
+					return createRelationship;
+				}	
             </script>
