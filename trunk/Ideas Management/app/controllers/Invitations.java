@@ -29,22 +29,30 @@ public class Invitations extends CRUD {
 	
 	/**
 	 * 
-	 * Renders the entity to the invitation home page that contains 
+	 * Renders the entity/topic to the invitation home page that contains 
 	 * search for user to invite or invite by mail
 	 * 
-	 * @author ${Mai.Magdy}
+	 * @author ${Mai.Magdy} , ${Fadwa.Sakr}
 	 * 
-	 * @story C1S6
+	 * @story C1S6,C2S22
 	 * 
-	 * 
-	 * @param entId
-	 *             long id of entity that sends the invitation
+	 * @param type
+	 *             type either entity (0) or topic(1)
+	 *             
+	 * @param id
+	 *             long id of entity/topic that sends the invitation
 	 * 
 	 */
-	public static void invite(long entId) {
-		
-        MainEntity entity= MainEntity.findById(entId);
-		render(entity);
+	public static void invite(int type , long id) {
+		if(type==0){
+        MainEntity entity= MainEntity.findById(id);
+		render(type,entity);
+		}
+		else{
+			Topic topic = Topic.findById(id);
+			notFoundIfNull(topic);
+			render(type,topic);
+		}
 
 	}
 
@@ -73,7 +81,7 @@ public class Invitations extends CRUD {
 		
 		if (validation.hasErrors()) {
 			flash.error("Please enter a name first!");
-			invite(entId);
+			invite(0,entId);
 		}
          
 	 

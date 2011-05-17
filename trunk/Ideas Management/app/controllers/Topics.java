@@ -812,7 +812,7 @@ public class Topics extends CRUD {
 		Topic targetTopic = Topic.findById(topicIdLong);
 		int allowed = 0;
 		int numberOfIdeas = ideas.size();
-		if (Users
+		if ((temporaryTopic.privacyLevel==2) && Users
 				.isPermitted(
 						actor,
 						"Accept/Reject requests to post in a private topic in entities he/she manages",
