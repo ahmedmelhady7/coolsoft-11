@@ -57,7 +57,23 @@ public class Comment extends Model {
 		this.commentDate = new Date();
 	}
 
-
+/**
+ * This method overrides toString to display:- First and last name of the user that commented, the comment itself, and the date of the comment
+ * 
+ * @author Ibrahim Safwat
+ * 
+ * @story C4S08
+ * 
+ * @param void
+ * 
+ * @return String
+ */
+	public String toString()
+	{
+		int year = this.commentDate.getYear() + 1900;
+		String display = this.commenter.firstName + " " + this.commenter.lastName + " : " + this.comment + " on " + this.commentDate.getDay() + "/" + this.commentDate.getMonth()+ "/" + year;
+		return display;
+	}
 
 
 
