@@ -16,7 +16,7 @@ import play.db.jpa.Model;
  */
 
 @Entity
-public class Comment extends Model {
+public class Comment extends CoolModel {
 
 	@Required
 	public String comment;
