@@ -27,6 +27,10 @@
         <br>
         <br>
         #{/if}
+		
+		#{if logFlag == 1}		
+ <input type="submit" value="View Logs" onclick=location.href="@{Logs.viewLogs(org.id)}">
+#{/if}	
         #{if settings==1}
         Creation Of Tags :
         <select id="selec" onchange="test();">
