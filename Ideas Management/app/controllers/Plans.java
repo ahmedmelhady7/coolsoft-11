@@ -41,6 +41,7 @@ public class Plans extends CRUD {
 		boolean error = false;
 		boolean org = false;
 		Plan p = Plan.findById(planId);
+		List<Comment> comments = p.commentsList;
 		List<Item> itemsList = p.items;
 		int canAssign = 0;
 		int canEdit = 0;
@@ -73,7 +74,7 @@ public class Plans extends CRUD {
 				canIdea = 1;
 			}
 
-			render(p, itemsList, user, canAssign, canEdit, error, org, canIdea);
+			render(p, itemsList, user, canAssign, canEdit, error, org, canIdea, comments);
 		} else {
 			error = true;
 			render(error, org);
