@@ -12,7 +12,7 @@ import models.User;
 import org.hsqldb.store.BitMap;
 
 /**
- * This is the controller for Picture model 
+ * This is the controller for Picture model
  * 
  * @author Ibrahim Al-Khayat
  * 
@@ -103,6 +103,15 @@ public class Pictures extends Controller {
 	public static void deletePicture(long pictureId, long id) {
 		Picture picture = Picture.findById(pictureId);
 		picture.image.getFile().delete();
+		if (picture.isOrganization) {
+			if (((Organization) Organization
+					.findById(picture.userOrganizationId)).profilePictureId == pictureId)
+				((Organization) Organization
+						.findById(picture.userOrganizationId)).profilePictureId = -1;
+		} else {
+			if (((User) User.findById(picture.userOrganizationId)).profilePictureId == pictureId)
+				((User) User.findById(picture.userOrganizationId)).profilePictureId = -1;
+		}
 		picture.delete();
 		index(id);
 	}
