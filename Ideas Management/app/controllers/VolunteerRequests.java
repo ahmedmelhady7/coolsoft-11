@@ -36,7 +36,7 @@ public class VolunteerRequests extends CRUD {
 		User sender = Security.getConnected();
 		Item dest = Item.findById(itemId);
 		Date d = new Date();
-		//System.out.println("ana ItemId" + itemId);
+		// System.out.println("ana ItemId" + itemId);
 		if (sender.canVolunteer(itemId)) {
 			if (!(dest.status == 2) && !dest.endDatePassed()) {
 				VolunteerRequest volunteerRequest = new VolunteerRequest(
@@ -57,7 +57,7 @@ public class VolunteerRequests extends CRUD {
 							"plan", description);
 				}
 
-				//Plans.viewAsList(dest.plan.id);
+				// Plans.viewAsList(dest.plan.id);
 				justify(itemId, dest.plan.id, 2);
 			}
 		} else {
@@ -117,41 +117,30 @@ public class VolunteerRequests extends CRUD {
 	 *            viewed.
 	 */
 	public static void viewVolunteerRequests(long planId) {
+		
 		User user = Security.getConnected();
 		Plan plan = Plan.findById(planId);
 		List<VolunteerRequest> planVolunteerRequests = new ArrayList<VolunteerRequest>();
 		boolean error = false;
+
 		if (Users
 				.isPermitted(
 						user,
 						"accept/Reject user request to volunteer to work on action item in a plan",
 						plan.topic.id, "topic")) {
+			List<VolunteerRequest> itemRequests = new ArrayList<VolunteerRequest>();
 			for (int i = 0; i < plan.items.size(); i++) {
-				planVolunteerRequests
-						.addAll(plan.items.get(i).volunteerRequests);
-			}
-			if (planVolunteerRequests.size() > 0) {
-				for (int i = 0; i < planVolunteerRequests.size(); i++) {
-					User sender = planVolunteerRequests.get(i).sender;
-					Date d = new Date();
-					if (planVolunteerRequests.get(i).destination.endDatePassed()) {
-						Item destination = planVolunteerRequests.get(i).destination;
-						user.volunteerRequests.remove(planVolunteerRequests
-								.get(i));
-						destination.volunteerRequests
-								.remove(planVolunteerRequests.get(i));
-						planVolunteerRequests.remove(i);
-						user.save();
-						destination.save();
-					} else {
-						if (planVolunteerRequests.get(i).destination.assignees
-								.contains(sender)
-								|| !Topics.searchByTopic(plan.topic.id)
-										.contains(user) || planVolunteerRequests.get(i).destination.status == 2) {
-							VolunteerRequest request = VolunteerRequest
-									.findById(planVolunteerRequests.get(i).id);
-							planVolunteerRequests.remove(request);
-						}
+				itemRequests = plan.items.get(i).volunteerRequests;
+				VolunteerRequest currentRequest;
+				for (int j = 0; j < itemRequests.size(); j++) {
+					currentRequest = itemRequests.get(j);
+					if (!currentRequest.destination.endDatePassed()
+							&& !currentRequest.destination.assignees
+									.contains(currentRequest.sender)
+							&& Topics.searchByTopic(plan.topic.id).contains(
+									user)
+							&& currentRequest.destination.status != 2 && currentRequest.sender.state == "a") {
+						planVolunteerRequests.add(currentRequest);
 					}
 				}
 			}
@@ -188,15 +177,16 @@ public class VolunteerRequests extends CRUD {
 		user.save();
 		item.save();
 		request.delete();
-		String descriptionToNewVolunteer = "Your request to volunteer on item: " + item.summary
-				+ " has been accepted.";
-		String descriptionToOldVolunteer = "User: " + user.username + " is now working with you on item: " + item.summary
-		+ " .";
-		Notifications.sendNotification(user.id, item.plan.id,
-				"plan", descriptionToNewVolunteer);
+		String descriptionToNewVolunteer = "Your request to volunteer on item: "
+				+ item.summary + " has been accepted.";
+		String descriptionToOldVolunteer = "User: " + user.username
+				+ " is now working with you on item: " + item.summary + " .";
+		Notifications.sendNotification(user.id, item.plan.id, "plan",
+				descriptionToNewVolunteer);
 		for (int i = 0; i < item.plan.topic.getOrganizer().size(); i++) {
 			if (org.id != item.plan.topic.getOrganizer().get(i).id) {
-				if (!userToNotifyList.contains(item.plan.topic.getOrganizer().get(i)))
+				if (!userToNotifyList.contains(item.plan.topic.getOrganizer()
+						.get(i)))
 					userToNotifyList.add(item.plan.topic.getOrganizer().get(i));
 			}
 		}
@@ -229,13 +219,14 @@ public class VolunteerRequests extends CRUD {
 		user.save();
 		item.save();
 		request.delete();
-		String description = "Your request to volunteer on item: " + item.summary
-				+ " has been rejected.";
+		String description = "Your request to volunteer on item: "
+				+ item.summary + " has been rejected.";
 		List<User> userToNotifyList = new ArrayList<User>();
 		userToNotifyList.add(user);
 		for (int i = 0; i < item.plan.topic.getOrganizer().size(); i++) {
 			if (org.id != item.plan.topic.getOrganizer().get(i).id) {
-				if (!userToNotifyList.contains(item.plan.topic.getOrganizer().get(i)))
+				if (!userToNotifyList.contains(item.plan.topic.getOrganizer()
+						.get(i)))
 					userToNotifyList.add(item.plan.topic.getOrganizer().get(i));
 			}
 		}

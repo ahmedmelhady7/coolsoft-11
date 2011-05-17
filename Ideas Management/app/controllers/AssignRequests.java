@@ -10,9 +10,10 @@ import models.AssignRequest;
 import models.Item;
 import models.Plan;
 import models.User;
+
 @With(Secure.class)
 public class AssignRequests extends CRUD {
-	public static ArrayList <User> users2 = new ArrayList<User> ();
+	public static ArrayList<User> users2 = new ArrayList<User>();
 
 	/**
 	 * 
@@ -33,7 +34,7 @@ public class AssignRequests extends CRUD {
 
 	public static void assign(long itemId, long planId) {
 		users2 = filter(itemId, planId);
-		 
+
 		System.out.println(users2.size() + "A5ER OBBBBAAAAAAAAAA");
 		viewUsers(itemId, planId);
 
@@ -59,17 +60,17 @@ public class AssignRequests extends CRUD {
 	 *            : the id of the plan containing the item that will be assigned
 	 *            to the list of users selected
 	 */
-	public static void viewUsers( long itemId, long planId) {
+	public static void viewUsers(long itemId, long planId) {
 		User loggedUser = Security.getConnected();
 		System.out.println(users2.size() + "OFEEEEEEEEEEEEEEEENNN");
 		ArrayList<User> users = new ArrayList<User>();
-		for(User user:users2){
+		for (User user : users2) {
 			users.add(user);
 		}
 		System.out.println("logged user" + loggedUser.id);
-		for(int i = 0; i<users2.size();i++) {
+		for (int i = 0; i < users2.size(); i++) {
 			System.out.println("user ids" + users2.get(i).id);
-			if(users2.get(i).id.compareTo(loggedUser.id)==0) {
+			if (users2.get(i).id.compareTo(loggedUser.id) == 0) {
 				System.out.println(true);
 				users.remove(i);
 			}
@@ -99,39 +100,41 @@ public class AssignRequests extends CRUD {
 	 */
 	public static void sendRequests(long itemId, long[] userIds) {
 		User user;
-//		Date d = new Date();
-//		System.out.println("ana da5alt send requests" + userIds.length);
-//		for (int i = 0; i < userIds.length; i++) {
-//			
-//			System.out.println(userIds[i]);
-//		}
+		// Date d = new Date();
+		// System.out.println("ana da5alt send requests" + userIds.length);
+		// for (int i = 0; i < userIds.length; i++) {
+		//
+		// System.out.println(userIds[i]);
+		// }
 		Item item = Item.findById(itemId);
 		for (int i = 0; i < userIds.length; i++) {
 			user = User.findById(userIds[i]);
-			if (filter(itemId,item.plan.id)
-					.contains(user)) {
+			if (filter(itemId, item.plan.id).contains(user)) {
 				if (!(item.status == 2) && !item.endDatePassed()) {
 					System.out.println("hab3at " + userIds[i]);
-					//sendAssignRequest(itemId,userIds[i]);
+					// sendAssignRequest(itemId,userIds[i]);
 					User sender = Security.getConnected();
 					User destination = User.findById(userIds[i]);
 					Item source = Item.findById(itemId);
 					String description = "You have been sent a request to work on this item "
-						+ source.summary
-						+ "\n "
-						+ " In the plan "
-						+ source.plan.title
-						+ "\n" + "by " + sender.username;
-					AssignRequest assignRequest = new AssignRequest(source, destination,
-							sender, description);
+							+ source.summary
+							+ "\n "
+							+ " In the plan "
+							+ source.plan.title
+							+ "\n"
+							+ "by "
+							+ sender.username;
+					AssignRequest assignRequest = new AssignRequest(source,
+							destination, sender, description);
 					assignRequest.save();
 					source.addAssignRequest(assignRequest);
 					sender.addSentAssignRequest(assignRequest);
 					destination.addReceivedAssignRequest(assignRequest);
-					
-					System.out.println(destination.receivedAssignRequests.contains(assignRequest));
-				    Notifications.sendNotification(userIds[i], source.plan.id, "plan",
-							description);
+
+					System.out.println(destination.receivedAssignRequests
+							.contains(assignRequest));
+					Notifications.sendNotification(userIds[i], source.plan.id,
+							"plan", description);
 				}
 			}
 		}
@@ -161,19 +164,20 @@ public class AssignRequests extends CRUD {
 		User destination = User.findById(destId);
 		Item source = Item.findById(itemId);
 		String description = "You have been sent a request to work on this item "
-			+ source.summary
-			+ "\n "
-			+ " In the plan "
-			+ source.plan.title
-			+ "\n" + "by " + sender.username;
+				+ source.summary
+				+ "\n "
+				+ " In the plan "
+				+ source.plan.title
+				+ "\n" + "by " + sender.username;
 		AssignRequest assignRequest = new AssignRequest(source, destination,
 				sender, description);
 		assignRequest.save();
 		source.addAssignRequest(assignRequest);
 		sender.addSentAssignRequest(assignRequest);
 		destination.addReceivedAssignRequest(assignRequest);
-		
-		System.out.println(destination.receivedAssignRequests.contains(assignRequest));
+
+		System.out.println(destination.receivedAssignRequests
+				.contains(assignRequest));
 		Notifications.sendNotification(destId, source.plan.id, "plan",
 				description);
 
@@ -259,20 +263,20 @@ public class AssignRequests extends CRUD {
 	 * @return List<User>
 	 */
 
-	 public static void search(String keyword, long itemId, long planId) {
-	
-	 List<User> nonBlockedUsers = filter(itemId, planId);
-	 List<User> searchResult = Users.searchUser(keyword);
-	 ArrayList<User> finalResult = new ArrayList<User>();
-	 for (int i = 0; i < nonBlockedUsers.size(); i++) {
-	 if (searchResult.contains(nonBlockedUsers.get(i))) {
-	 finalResult.add(nonBlockedUsers.get(i));
-	 }
-	 }
-	 users2 = finalResult;
-	 viewUsers(itemId, planId);
-	
-	 }
+	public static void search(String keyword, long itemId, long planId) {
+
+		List<User> nonBlockedUsers = filter(itemId, planId);
+		List<User> searchResult = Users.searchUser(keyword);
+		ArrayList<User> finalResult = new ArrayList<User>();
+		for (int i = 0; i < nonBlockedUsers.size(); i++) {
+			if (searchResult.contains(nonBlockedUsers.get(i))) {
+				finalResult.add(nonBlockedUsers.get(i));
+			}
+		}
+		users2 = finalResult;
+		viewUsers(itemId, planId);
+
+	}
 
 	/**
 	 * This method renders the page for allowing the user to view his assign
@@ -285,31 +289,16 @@ public class AssignRequests extends CRUD {
 	public static void view() {
 		User user = Security.getConnected();
 		List<AssignRequest> assignRequests = new ArrayList();
-		assignRequests.addAll(user.receivedAssignRequests);
-		if (assignRequests.size() > 0) {
-			for (int i = 0; i < assignRequests.size(); i++) {
-				Date d = new Date();
-				if (assignRequests.get(i).source.endDatePassed()
-						|| !Topics.searchByTopic(
-								assignRequests.get(i).source.plan.topic.id)
-								.contains(user) || assignRequests.get(i).source.status == 2) {
-					assignRequests.remove(i);
-				} else {
-					for (int j = 0; j < assignRequests.get(i).sender.itemsAssigned
-							.size(); j++) {
-						if (user.itemsAssigned
-								.contains(assignRequests.get(i).source)) {
-							AssignRequest req = assignRequests.get(i);
-							req.destination.receivedAssignRequests.remove(req);
-							req.sender.sentAssignRequests.remove(req);
-							req.source.assignRequests.remove(req);
-							assignRequests.remove(assignRequests.get(i));
-							req.destination.save();
-							req.sender.save();
-							req.source.save();
-							req.delete();
-						}
-					}
+
+		for (int i = 0; i < user.receivedAssignRequests.size(); i++) {
+			AssignRequest currentRequest = user.receivedAssignRequests.get(i);
+			if (!currentRequest.source.endDatePassed()
+					&& Topics
+							.searchByTopic(currentRequest.source.plan.topic.id)
+							.contains(user)
+					&& currentRequest.source.status != 2) {
+				if (!user.itemsAssigned.contains(currentRequest.source)) {
+					assignRequests.add(currentRequest);
 				}
 			}
 		}
@@ -338,8 +327,8 @@ public class AssignRequests extends CRUD {
 		item.assignRequests.remove(request);
 		List<User> userToNotifyList = new ArrayList<User>();
 		userToNotifyList.addAll(item.assignees);
-		for(User organizer : item.plan.topic.getOrganizer()){
-			if(!item.plan.topic.getOrganizer().contains(organizer))
+		for (User organizer : item.plan.topic.getOrganizer()) {
+			if (!item.plan.topic.getOrganizer().contains(organizer))
 				userToNotifyList.add(organizer);
 		}
 		user.itemsAssigned.add(item);
