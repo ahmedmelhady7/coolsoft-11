@@ -64,6 +64,17 @@ Logout: <input type="submit" value="Logout">
 </form>
 
 <a href="@{Ideas.getDrafts()}">Drafts (${drafts.size()})</a>
+<br>
+<a href="@{Labels.createLabel()}">Create a Label</a>
+<br>
+<a href="@{Labels.showAllLabels()}">Manage Labels</a>
+<br>
+<div id="labels">
+	<p>Labels</p>
+	#{list items:u.myLabels , as:'label'}
+	   	<a href='@{Labels.showLabel(label.id)}'>${label.name}</a><br>
+	#{/list}
+</div> 
 
 <form action="@{MarkRequest.markDuplicate()}" method="post">
 	View duplicates requests: <input type="submit" value="View">
