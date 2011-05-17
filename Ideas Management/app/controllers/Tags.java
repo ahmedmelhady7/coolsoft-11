@@ -26,17 +26,17 @@ public class Tags extends CRUD {
 	 * 
 	 * @param tagId : id of the tag being related
 	 * 
-	 * @param orgId : id of the organization the tag belongs to
+	 * @param organizationId : id of the organization the tag belongs to
 	 */
-	public static void createRelation(long tagId, long orgId) {
+	public static void createRelation(long tagId, long organizationId) {
 
 		// System.out.println("2ABEL !!!" + orgId + "," + tagId);
 		Tag tag = Tag.findById(tagId);
-		Organization org = Organization.findById(orgId);
+		Organization organization = Organization.findById(organizationId);
 		List<Tag> tagList = null;
 
-		if (org.createdTags != null) {
-			tagList = org.createdTags;
+		if (organization.createdTags != null) {
+			tagList = organization.createdTags;
 			tagList.remove(tag);
 		}
 		// else {
