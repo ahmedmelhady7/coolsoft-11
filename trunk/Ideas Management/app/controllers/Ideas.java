@@ -355,8 +355,11 @@ public class Ideas extends CRUD {
 		for (int i = 0; i < idea.reporters.size()
 				|| i < user.ideasReported.size(); i++) {
 			System.out.println("gowa el loop");
-			if (user.toString().equals(idea.reporters.get(i).toString())
-					|| idea.toString().equals(idea.reporters.get(i).toString())) {
+			if (idea.reporters.size() > 0
+					&& (user.toString()
+							.equals(idea.reporters.get(i).toString()) || idea
+							.toString()
+							.equals(idea.reporters.get(i).toString()))) {
 				alreadyReported = true;
 				System.out
 						.println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
