@@ -1,0 +1,59 @@
+#{extends 'main.html' /}
+
+<style type="text/css">    
+
+            .pg-normal {
+
+                color: black;
+
+                font-weight: normal;
+
+                text-decoration: none;    
+
+                cursor: pointer;    
+
+            }
+
+            .pg-selected {
+
+                color: black;
+
+                font-weight: bold;        
+
+                text-decoration: underline;
+
+                cursor: pointer;
+
+            }
+
+        </style>
+
+
+<u><font size ="5" color ="blue">Logs</font></u>
+<br/>
+<br/>
+<table border="0" bgcolor="#ececec" cellspacing="5">
+	#{if toFilter.isEmpty()}
+</table>
+<tr><td><i>No logs</i></td><td>
+#{/if}
+#{else}
+<table border="0" bgcolor="#ececec" cellspacing="5" id ="toFil">	
+<div id="pageNavPosition"></div>
+#{list items:toFilter, as:'filter'} 
+<tr><td width="100%"><font size ="2" color ="black"><i>${filter.actionDescription} &nbsp;&nbsp;&nbsp;&nbsp; ${filter.time}</i></font></td></tr>
+#{/list}
+</table>
+<script src="@{'/public/javascripts/paging.js'}"></script>
+	
+	<script type="text/javascript">
+
+    var pager = new Pager('toFil', 1); 
+    pager.init(); 
+    pager.showPageNav('pager', 'pageNavPosition'); 
+    pager.showPage(1);
+   </script>
+#{/else}
+
+<br/>
+<br/>
