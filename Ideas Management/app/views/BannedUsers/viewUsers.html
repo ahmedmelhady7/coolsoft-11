@@ -34,6 +34,7 @@
 <script type="text/javascript">
 document.getElementById('1_${c}').value="Unblock from viewing";
 document.getElementById('2_${c}').value="Unblock from using";
+document.getElementById('2_${c}').disabled = true;
 </script>
 #{/if}
 #{if count.get(c)==2}
@@ -46,6 +47,7 @@ document.getElementById('2_${c}').value="Unblock from using";
 <script type="text/javascript">
 document.getElementById('1_${c}').value="Unblock from viewing";
 document.getElementById('2_${c}').value="Block from using";
+document.getElementById('2_${c}').disabled = true;
 </script>
 #{/if}
 #{if count.get(c)==0}
@@ -58,47 +60,57 @@ document.getElementById('2_${c}').value="Block from using";
 #{/else}
 
 
-
+<TEXTAREA NAME="Text" ROWS="10" COLS="30" onBlur="blurHandlerRouting" id="text">
+                     Displayed Text
+                     </TEXTAREA>
 
 
 <script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
+	document.getElementById("text").style.display='none';
 	</script>
 	
 <script type="text/javascript">
 function show(userId,type,topId,id,i){
 	       
 	if ( type==0 ) {
-		       var m=document.getElementById('1_'+i).value;
-		$.post('@{block()}', {userId :userId,type:type,topId:topId,id:id,m:m},
-			 function()
-			 {
-			    if (m == "Block from viewing") {
-					alert("Block from viewing");
+		        
+		       var text=document.getElementById('1_'+i).value;
+			    if (text == "Block from viewing") {
+                     
+                    var message=window.prompt("please enter the reason why")
+					alert("User has bee blocked from viewing");
 					document.getElementById('1_' + i).value = "Unblock from viewing";
+					document.getElementById('2_' + i).disabled = true;
 				}
 				else{
-					alert("Unblock from viewing");
+					alert("User has been unblocked from viewing");
 					document.getElementById('1_' + i).value = "Block from viewing";
+					document.getElementById('2_' + i).disabled = false;
+					var message=document.getElementById('1_'+i).value;
 				}
+		$.post('@{block()}', {userId :userId,type:type,topId:topId,id:id,text:text,message:message},
+			 function()
+			 {
+			   
 			});
 	}
 	else {
-		   var m=document.getElementById('2_'+i).value;
-		$.post('@{block()}', {userId :userId,type:type,topId:topId,id:id,m:m},
-			 function()
-			 {
-			     
-				 if (m == "Block from using") {
-				 	
-				 	alert("Block from using");
-				 	
+		   var text=document.getElementById('2_'+i).value;
+		    if (text == "Block from using") {
+				 	var message=window.prompt("please enter the reason why")
+				 	alert("User has been blocked from using");
 				 	document.getElementById('2_'+i).value = "Unblock from using";
 				 }
 				 else{
-				 	  	alert("Unblock from using");
-				 	
+				 	  	alert("User has been unblocked from using");
 				 	document.getElementById('2_'+i).value = "Block from using";
+					var message=document.getElementById('1_'+i).value;
 				 }
+		$.post('@{block()}', {userId :userId,type:type,topId:topId,id:id,text:text,message:message},
+			 function()
+			 {
+			     
+				
 			     
 			});
 	}
