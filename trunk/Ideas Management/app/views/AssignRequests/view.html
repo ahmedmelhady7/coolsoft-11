@@ -7,11 +7,9 @@
         <fieldset>
             <legend>
             <h2>
-                ${assignRequest.source}</a>
+             <a href="@{Plans.viewAsList(assignRequest.source.plan.id)}">   ${assignRequest.source}</a>
             </h2>
             </legend>
-            Sender: ${assignRequest.sender}
-            <br/>
             Content:  ${assignRequest.content}
             <br/>
 			<input type = "button" value = "Accept" onclick="accept_request('${assignRequest.id}')">
