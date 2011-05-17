@@ -1,118 +1,86 @@
-<!--
+
 @author Fady Amir
 @story  C4S05
---> 
-<!DOCTYPE html>
+--> <!DOCTYPE html>
 <html>
-
-<head>
-	<title>Organizations</title>
-   <style>
-      A {text-decoration: none;}
-   </style>
-   
-   <script type="text/javascript">
-   
-			function Toggle(item) {
-   obj=document.getElementById(item);
-   visible=(obj.style.display!="none")
-   key=document.getElementById("x" + item);
-   if (visible) {
-     obj.style.display="none";
-     key.innerHTML="[+]";
-   } else {
-      obj.style.display="block";
-      key.innerHTML="[-]";
-   }
-}
-function Expand() {
-   divs=document.getElementsByTagName("DIV");
-   for (i=0;i<divs.length;i++) {
-     divs[i].style.display="block";
-     key=document.getElementById("x" + divs[i].id);
-     key.innerHTML="[-]";
-   }
-}
-function Collapse() {
-   divs=document.getElementsByTagName("DIV");
-   for (i=0;i<divs.length;i++) {
-     divs[i].style.display="none";
-     key=document.getElementById("x" + divs[i].id);
-     key.innerHTML="[+]";
-   }
-}
-
-   </script>
-</head>
-
-<body>
-
-  <form action="@{Browse.browse}" name="test">
-
-	<h1>Browse Organizations</h1>
-
-
-<hr>
-<b><a ID="xproducts" href="javascript:Toggle('organizations');">[+]</a>
-   Organizations</b><br>
-   
-   
+    <head>
+        <title>Organizations</title>
+        <style>
+            A {
+                text-decoration: none;
+            }
+        </style>
+        <script type="text/javascript">
+            
+            function Toggle(item){
+                obj = document.getElementById(item);
+                visible = (obj.style.display != "none")
+                key = document.getElementById("x" + item);
+                if (visible) {
+                    obj.style.display = "none";
+                    key.innerHTML = "[+]";
+                }
+                else {
+                    obj.style.display = "block";
+                    key.innerHTML = "[-]";
+                }
+            }
+            
+            function Expand(){
+                divs = document.getElementsByTagName("DIV");
+                for (i = 0; i < divs.length; i++) {
+                    divs[i].style.display = "block";
+                    key = document.getElementById("x" + divs[i].id);
+                    key.innerHTML = "[-]";
+                }
+            }
+            
+            function Collapse(){
+                divs = document.getElementsByTagName("DIV");
+                for (i = 0; i < divs.length; i++) {
+                    divs[i].style.display = "none";
+                    key = document.getElementById("x" + divs[i].id);
+                    key.innerHTML = "[+]";
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <form action="@{Browse.browse}" name="test">
+            <h1>Browse Organizations</h1>
+            <hr><b><a ID="orgs" href="javascript:Toggle('organizations');">[+]</a> Organizations</b>
+   </br>  
    <div ID="organizations" style="display:none; margin-left:2em;">
-   
-  
-    #{list items:listOfOrganizations, as: 'Organization'}
-  
-  	 <a href="@{Organizations.viewProfile(Organization.id)}">${Organization.name}</a><br>
-  	 <li>Privacy Level : 
-  	 
-  	 %{
-         privacyLevel = Organization.privacyLevel;
-         
-         if(privacyLevel==0)
-         {
-         	out.print('Secret');
-         }
-         else if(privacyLevel==1)
-         {
-         	out.print('Private');
-         }
-         else
-         {
-         	out.print('Public ');
-         }
-         
-      }%
-       
+                #{list items:listOfOrganizations, as: 'Organization'}
+    <a ID="ents" href="javascript:Toggle('Entitys');">[+]</a>
+    <a href="@{Organizations.viewProfile(Organization.id)}">${Organization.name}</a> 
+    </br>
+                <div ID="Entitys" style="display:none; margin-left:2em;">
+                  
+                    #{list items:Organization.entitiesList, as: 'Entity'}
      
-  	 
-  	 </li>
- 
-		
-    #{/list}
-   
-   
-  
-   
-   </div>
-
-
-<a href="javascript:Expand();">[Expand All]</a><br>
-<a href="javascript:Collapse();">[Collapse All]</a>
- 
-  <!--  <ul> Organizations
-  
-    #{list items:listOfOrganizations, as: 'Organization'}
-  
-  	<li>${Organization.name}</li>
-  	<li>${Organization.privacyLevel}</li>
-		
-    #{/list}
-   
-   </ul>
- 
-  
--->	
-
- </body>
- 
-</html>
+     <a ID="subs" href="javascript:Toggle('SubEntitys');">[+]</a>
+     <a href="@{MainEntitys.viewEntity(Entity.id)}">${Entity.name}</a>
+                 </br>
+     <div ID="SubEntitys" style="display:none; margin-left:2em;">
+                        #{list items:Entity.subentities, as: 'Sub'}
+      <a href="@{MainEntitys.viewEntity(Sub.id)}">${Sub.name}</a>
+      </br>
+      #{/list}
+      <a ID="top" href="javascript:Toggle('topics');">[+]</a> Topics </br>
+      <div ID="topics" style="display:none; margin-left:2em;">
+                        #{list items:Entity.topicList, as: 'topic'}
+                        <a href="@{Topics.view(topic.id)}">${topic.title}</a>
+      </br>
+      #{/list}
+      </div>
+     </div>
+                    #{/list} 
+    </div>
+                #{/list}
+            </div>
+            <a href="javascript:Expand();">[Expand All]</a>
+            <br>
+            <a href="javascript:Collapse();">[Collapse All]</a>
+            </body>
+        </html>
