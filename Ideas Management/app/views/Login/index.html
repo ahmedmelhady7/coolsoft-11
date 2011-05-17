@@ -79,6 +79,11 @@ Logout: <input type="submit" value="Logout">
 	Show my Documents: <input type="submit" value="show">
 </form>
 
+<form action="@{Pictures.index()}" method="post">
+	<input type="hidden" name="id" value="-1">
+	Show my Gallery: <input type="submit" value="show">
+</form>
+
 <script type="text/javascript">
 function goAdmin(isA) {
 	if(isA) {

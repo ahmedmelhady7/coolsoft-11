@@ -40,6 +40,8 @@ public class Document extends CoolModel {
 	public boolean isOrganization;
 
 	/**
+	 * Constructor
+	 * 
 	 * @author Ibrahim Al-Khayat
 	 * 
 	 * @param name
