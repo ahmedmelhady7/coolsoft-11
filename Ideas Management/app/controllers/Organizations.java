@@ -534,4 +534,30 @@ public class Organizations extends CRUD {
 		UserRoleInOrganizations.addEnrolledUser(user, organization, role);
 		Organizations.viewProfile(organizationId);
 	}
+	
+	/**
+	 * This method deletes an organization
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S37
+	 * 
+	 * @param organizationId
+	 * 				The id of the organization that the user wishes to join 
+	 */
+	public static void deleteOrganization(long organizationId) {
+		Organization organization = Organization.findById(organizationId);
+		String name = organization.name;
+		System.out.println(name);
+		Organization.delete("byName",name);
+		Organizations.mainPage();
+	}
+	
+	public static void editOrganization(long organizationId) {
+		Organization organization = Organization.findById(organizationId);
+		render(organization);
+	}
+	public static void editOrg(long organizationId) {
+		
+	}
 }
