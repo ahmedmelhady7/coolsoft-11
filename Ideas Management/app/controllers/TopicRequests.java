@@ -61,7 +61,7 @@ public class TopicRequests extends CRUD{
 			try {
 				render(request.controller.replace(".", "/") + "/blank.html",
 						type, message, entityId);
-			} catch (TemplateNotFoundException e) {
+			} catch (TemplateNotFoundException exception) {
 				render("CRUD/blank.html", type, message, entityId);
 			}
 		}
@@ -84,7 +84,7 @@ public class TopicRequests extends CRUD{
 					.println("try" + message);
 				} 
 				
-				catch (TemplateNotFoundException e) {
+				catch (TemplateNotFoundException exception) {
 					render("CRUD/blank.html", type, entityId);
 					System.out
 					.println("catch" + message);
@@ -103,7 +103,7 @@ public class TopicRequests extends CRUD{
 					.println("try" + message);
 				} 
 				
-				catch (TemplateNotFoundException e) {
+				catch (TemplateNotFoundException exception) {
 					render("CRUD/blank.html", type, entityId);
 					System.out
 					.println("catch" + message);
@@ -121,7 +121,7 @@ public class TopicRequests extends CRUD{
 				render(request.controller.replace(".", "/") + "/blank.html",
 						entityId, type, tmp.title, tmp.entity, tmp.description,
 						tmp.message, message);
-			} catch (TemplateNotFoundException e) {
+			} catch (TemplateNotFoundException exception) {
 				render("CRUD/blank.html", type, entityId);
 			}
 
@@ -171,7 +171,7 @@ public class TopicRequests extends CRUD{
 			System.out.println("blank() for TopicRequests done about to render");
 			render(type, entityId, user);
 
-		} catch (TemplateNotFoundException e) {
+		} catch (TemplateNotFoundException exception) {
 			System.out
 					.println("blank() for TopicRequests done with exception about to render CRUD/blank.html");
 			render("CRUD/blank.html", type, entityId);
