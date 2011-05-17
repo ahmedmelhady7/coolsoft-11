@@ -79,7 +79,7 @@ public class Labels extends CRUD
 		Label label = Label.findById(labelId);
 		label.name = newName;
 		label.save();
-		showLabel(labelId);
+		//showLabel(labelId);
 	}
 	
 	
