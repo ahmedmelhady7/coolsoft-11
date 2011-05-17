@@ -12,7 +12,7 @@ import play.data.validation.Required;
 import play.db.jpa.*;
 
 @Entity
-public class Role extends Model {
+public class Role extends CoolModel {
 
 	@Required
 	public String roleName;
