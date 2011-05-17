@@ -15,10 +15,12 @@
 <script type="text/javascript">
     document.write('<style>.noscript { display: none; }</style>');
 </script>
+#{if canDelete == true}
 #{form @Pictures.uploadPicture(), enctype:'multipart/form-data'}<input type="file" name="image" /> image name: <input name="name" Required><input type="hidden" name="id" value="${id}"><input type="hidden" name="isOrganization" value="${isOrganization}"><input type="submit" name="submit" value="add to gallery" />#{/form}
+#{/if}
 <div id="page">
     <div id="container">
-        <h1>My Gallery</h1>
+        <h1>Gallery</h1>
         <div class="navigation-container">
             <div id="thumbs" class="navigation">
                 <a class="pageLink prev" style="visibility: hidden;" href="#" title="Previous Page"></a>
@@ -31,8 +33,13 @@
                                 ${picture.name}
                             </div>
                             <div class="download">
-                                <a href="@{Pictures.getPicture(picture.id)}">Download Original</a>
-                            </div>
+                            	<input type="hidden" name="id" value="${id}">
+								#{if canDelete == true}
+                            	<a href="@{Pictures.deletePicture(picture.id, id.value)}">Remove Image</a><br />
+                                <a href="@{Pictures.setProfilePicture(picture.id)}">Set profile picture</a><br />
+								#{/if}
+								<a href="@{Pictures.getPicture(picture.id)}" target="_blank">Download Original</a>
+							</div>
                         </div>
                     </li>
                     #{/list}

@@ -56,6 +56,11 @@ public class User extends CoolModel {
 	@OneToMany(mappedBy = "creator")
 	// , cascade = CascadeType.PERSIST)
 	public List<Topic> topicsCreated;
+	
+	/**
+	 * id of the profile Picture
+	 */
+	public long profilePictureId;
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>change
 	// @ManyToMany(mappedBy = "enrolledUsers")
@@ -223,7 +228,7 @@ public class User extends CoolModel {
 		this.ideasRated = new ArrayList<Idea>();
 		this.state = "a";
 		this.profession = profession;
-
+		profilePictureId = -1;
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
 		// linkDuplicates = new ArrayList<LinkDuplicates>();

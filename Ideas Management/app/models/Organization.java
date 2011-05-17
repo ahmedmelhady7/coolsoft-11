@@ -110,10 +110,9 @@ public class Organization extends CoolModel {
 	public List<Invitation> invitation;
 
 	/**
-	 * **********
+	 * id of the profile picture
 	 */
-	
-
+	public long profilePictureId;
 	
 
 	/**
@@ -147,7 +146,7 @@ public class Organization extends CoolModel {
 		// this.enrolledUsers = new ArrayList<User>();
 		bannedUsers = new ArrayList<BannedUser>();
 		relationNames = new ArrayList<String>(){{add("manages"); add("has many"); add("belongs to");}};
-		
+		profilePictureId = -1;
 		
 //		for testing
 //		relationNames.add("manages");
@@ -219,7 +218,7 @@ public class Organization extends CoolModel {
 		this.relatedTags = new ArrayList<Tag>();
 
 		relationNames = new ArrayList<String>(){{add("manages"); add("has many"); add("belongs to");}};
-
+		profilePictureId = -1;
 //		for testing
 //		relationNames.add("manages");
 //		relationNames.add("hates");
