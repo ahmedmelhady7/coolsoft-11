@@ -1,5 +1,23 @@
 #{extends 'Secure/layout.html' /}
 #{set title:'Login' /}
+<div id="wrapper">
+	<div id="header-wrapper">
+		<div id="header">
+			<div id="logo">
+				<h1>Collaborative Thinking</h1>
+			</div>
+			<div id="menu">
+				<ul>
+					<li><a href="@{Home.index()}">Home</a></li>
+					<li><a href="@{Home.about()}">About</a></li>	
+					<li><a href="@{Home.contact()}">Contact</a></li>
+					<li><a href="@{Login.index()}">Login</a></li>
+					<li><a href="#">Register</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
 <h1>Login</h1>
 <div id="login">
 	<form method="post" action="@{authenticate()}">
