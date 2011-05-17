@@ -2,11 +2,11 @@
  #{if type==1}
             <legend>
             <h2>
-       <a href="@{Topics.show(id)}">Back to Topic</a>           
+       <a href="@{Topics.show(id)}">Back to ${name}</a>           
             </legend>
 			#{/if}
 			#{else}
-  <a href="@{Organizations.viewProfile(id)}">Back to Organization</a>  			
+  <a href="@{Organizations.viewProfile(id)}">Back to ${name}</a>  			
   #{/else}
 
 <br />

@@ -35,18 +35,27 @@ public class RequestToJoins extends CRUD {
 		// type=1;
 		System.out.println("will view");
 		List<RequestToJoin> requests;
+		String name;
 		if (type == 1) {
 			Topic topic = Topic.findById(id);
 			notFoundIfNull(topic);
 			requests = topic.requestsToJoin;
+			name=topic.title;
 		} else {
 			Organization organization = Organization.findById(id);
 			System.out.println(organization);
 			notFoundIfNull(organization);
 			requests = organization.joinRequests;
+			name = organization.name;
+		}
+		User user;
+		for(int i=0;i<requests.size();i++){
+		user = requests.get(i).source;
+		if(user.state.equals("n"))
+			requests.remove(i);
 		}
 
-		render(requests, type,id);
+		render(requests, type,id,name);
 	}
 
 	/**
