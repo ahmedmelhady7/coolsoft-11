@@ -702,7 +702,7 @@ public class Plans extends CRUD {
 		Plan p = Plan.findById(planId);
 		List<Item> itemsList = p.items;
 
-		render(p, itemsList);
+		render(itemsList);
 	}
 
 }
