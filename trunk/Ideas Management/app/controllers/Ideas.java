@@ -25,7 +25,7 @@ import models.*;
 @With(Secure.class)
 public class Ideas extends CRUD {
 
-	/*
+	/**
 	 * @author Abdalrahman Ali
 	 * 
 	 * @story C3S13
@@ -48,7 +48,7 @@ public class Ideas extends CRUD {
 		// redirect(request.controller + ".show", idea.getId(),message);
 	}
 
-	/*
+	/**
 	 * @author Abdalrahman Ali
 	 * 
 	 * @story C3S13
@@ -63,8 +63,22 @@ public class Ideas extends CRUD {
 		Topic topic = Topic.findById(topicId);
 		render(topic, user);
 	}
+	
+	public static void doCreateIdea(long topicId,String title,String body) 
+	{
+		System.out.println("De Te Kill "+topicId);
+		User user = Security.getConnected();
+		Topic topic = Topic.findById(topicId);
+		System.out.println(topic.title +" b " +user.email);
+		Idea idea = new Idea(title,body,user,topic);
+		idea.isDraft = false;
+		if(idea != null)
+			System.out.println("mesh null");
+		else
+			System.out.println("NUll ya fale7");
+		}
 
-	/*
+	/**
 	 * @author Abdalrahman Ali
 	 * 
 	 * @story C3S13
@@ -87,7 +101,7 @@ public class Ideas extends CRUD {
 		idea.save();
 	}
 
-	/*
+	/**
 	 * @author Abdalrahman Ali
 	 * 
 	 * @story C3S13
@@ -104,12 +118,13 @@ public class Ideas extends CRUD {
 	public static void saveDraft(long ideaId, String title, String description) {
 		Idea idea = Idea.findById(ideaId);
 		idea.title = title;
-		System.out.println(description);
 		idea.description = description;
 		idea.save();
+		//flash.success("aho");
+		//redirect("/ideas/editdraft?ideaId=" + ideaId);
 	}
 
-	/*
+	/**
 	 * @author Abdalrahman Ali
 	 * 
 	 * @story C3S13
@@ -131,7 +146,7 @@ public class Ideas extends CRUD {
 		render(drafts, user);
 	}
 
-	/*
+	/**
 	 * @author Abdalrahman Ali
 	 * 
 	 * @story C3S13
@@ -143,6 +158,7 @@ public class Ideas extends CRUD {
 	public static void editDraft(long ideaId) {
 		Idea idea = Idea.findById(ideaId);
 		User user = Security.getConnected();
+		//flash.success("aho");
 		render(idea, user);
 	}
 
