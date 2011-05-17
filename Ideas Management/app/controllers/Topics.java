@@ -860,6 +860,10 @@ public class Topics extends CRUD {
 				break;
 			}
 		}
+		boolean seeRelationStatus = false;
+		if (actor.isAdmin || entity.organization.creator.equals(actor) || creator.equals(actor)) {
+			seeRelationStatus = true;
+		}
 		boolean isMemeber = Users.getEnrolledUsers(
 				targetTopic.entity.organization).contains(actor);
 		boolean pending = targetTopic.hasRequest(actor.id);
@@ -870,12 +874,13 @@ public class Topics extends CRUD {
 		boolean canCreateRelationship = TopicRelationships
 				.isAllowedTo(topicIdLong);
 		try {
-			render(type, object, tags, creator, followers, ideas,
-					numberOfIdeas, comments, entity, plan, openToEdit,
-					privacyLevel, deleteMessage, deletable, topicIdLong,
-					canClose, canPlan, targetTopic, allowed, permission,
-					topicId, canPost, canNotPost, pending, follower,
-					canCreateRelationship);
+
+			render(type, object, tags, creator, followers, ideas, numberOfIdeas,comments,
+					entity, plan, openToEdit, privacyLevel, deleteMessage,
+					deletable, topicIdLong, canClose, canPlan, targetTopic,
+					allowed, permission, topicId, canPost, canNotPost, pending,
+					follower, canCreateRelationship, seeRelationStatus, createRelationship);
+
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object, topicId,
 					canCreateRelationship);
@@ -1307,4 +1312,25 @@ public class Topics extends CRUD {
 		redirect("mainentitys.viewentity", entity.id);
 	}
 
+	 /**
+	  * This method changes the relationship status of a topic
+	  * 
+	  * @author Omar Faruki
+	  * 
+	  * @story C2S31
+	  * 
+	  * @param topicId
+	  * 				The id of the topic
+	  * 
+	  * @param createRelationship
+	  * 				Specifies whether a relationship can be created with that topic
+	  */
+	 
+	 public static void changeRelationStatus(long topicId, boolean createRelationship) {
+		 Topic topic = Topic.findById(topicId);
+		 topic.createRelationship = createRelationship;
+		 topic.save();
+		 String topiccId = topicId + "";
+		 Topics.show(topiccId);
+	 }
 }
