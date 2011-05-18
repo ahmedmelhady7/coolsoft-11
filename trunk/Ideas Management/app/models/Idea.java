@@ -187,7 +187,7 @@ public class Idea extends CoolModel {
 	 * 
 	 */
 	
-	@On("0 0 12 0 0 ?")
+	//@On("0 0 12 0 0 ?")
 	
 	public static void checkDate(Idea idea) {
 
