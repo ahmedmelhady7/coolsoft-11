@@ -107,11 +107,11 @@ public class Bootstrap extends Job {
 			Organization gov = new Organization("الحكومة المصرية", sharaf, 0,
 					true).save();
 
-			Tag tagEducation = new Tag("Education", guc, slim).save();
-			Tag tagGuc = new Tag("GUC", guc, ashraf).save();
+			Tag tagEducation = new Tag("Education", guc).save();
+			Tag tagGuc = new Tag("GUC", guc).save();
 
-			Tag tagEgypt = new Tag("Egypt", gov, sharaf).save();
-			Tag tagGov = new Tag("Government", gov, sharaf).save();
+			Tag tagEgypt = new Tag("Egypt", gov).save();
+			Tag tagGov = new Tag("Government", gov).save();
 
 			guc.relatedTags.add(tagGuc);
 			guc.relatedTags.add(tagEducation);
@@ -123,7 +123,7 @@ public class Bootstrap extends Job {
 
 			MainEntity gucMet = new MainEntity("MET",
 					"Media Engineering and technology", guc, true).save();
-//			gucMet.tagList.add(tagEducation);
+			gucMet.tagList.add(tagEducation);
 			gucMet._save();
 
 			MainEntity gucCs = new MainEntity("CS",
@@ -346,12 +346,7 @@ public class Bootstrap extends Job {
 			// this part for Fadi
 			//
 			// //////////////////////////////////////////////
-			ActionListener listener = new TimerCall();
-			// Construct a timer that calls the listener
-			// once every 24 hours
-			Timer t = new Timer(86400, listener);
-			t.start();
-			// //////////////////////////////////////////////
+	
 
 		}
 	}
