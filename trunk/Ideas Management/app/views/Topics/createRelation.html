@@ -1,0 +1,77 @@
+ #{extends 'main.html' /} 
+	<body>
+		<h1>Create Topic Relation</h1>
+		<form>
+			<p>
+				<form id="f1" style="display: inline;">
+					<abbr id="rName" style="display: inline;">Relation Name:</abbr> <select id="rels" style="display: inline;"> 
+					<option >choose name</option>
+					#{list items:topic.entity.organization.relationNames, as:'relName'}
+					<option >${relName}</option>
+					#{/list}
+					</select> <input id="button1" type="button" value="Add new name" onclick="buttonOne();" style="display: inline;"></input>
+				</form>
+				<form id="f2" style="display: none;">
+				Relation Name: <input id = "text" type="textbox" required>
+					</select> <input id="button2" type="button" value="Add from list" onclick="buttonTwo();">
+				</form>
+			</p>
+			
+			<p>
+				Related Topic: 
+				
+				<select id="tpc"> 
+					<option>Select Topic</option>
+					#{list items:listOfTopics, as:'topicElement'}
+					<option value="${topicElement.id}">${topicElement.title}</option>
+					#{/list}
+				</select>
+				
+				<input type="submit" value="Create" onclick="kill(${topic.id})">
+			</p>
+		</form>
+	</body>
+<script type="text/javascript">
+	var check = true;
+					
+	function buttonOne(){
+		document.getElementById('rels').style.display = 'none';
+		document.getElementById('button1').style.display = 'none';
+		document.getElementById('rName').style.display = 'none';
+		document.getElementById('f2').style.display = 'inline';
+		check = !check;
+	};
+					
+	function buttonTwo(){
+		document.getElementById('f2').style.display = 'none';
+		document.getElementById('rName').style.display = 'inline';
+		document.getElementById('rels').style.display = 'inline';
+		document.getElementById('button1').style.display = 'inline';
+		check = !check;
+	};
+	
+	function kill(a)
+	{
+		
+		
+		if (!check) {
+			var x = document.getElementById("text").value;
+		}
+		else {
+			var x = document.getElementById("rels").value;
+		}
+		var b = document.getElementById("tpc").value;
+		
+		if (x == "" || x == "choose name" || b == "Select Topic") {
+			alert("Please enter the Missing field(s)");
+		}
+		else {
+			$.post('@{TopicRelationships.createRelationship()}', {
+				name: x,
+				sourceId: a,
+				destinationId: b
+			});
+			alert("you have created a relation:" + x);
+			}
+		}
+</script>
