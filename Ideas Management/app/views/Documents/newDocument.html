@@ -90,10 +90,10 @@
             data: data
         });
 		alert("Document Created");
-		if (!b) {
+		if (b == "false") {
 			window.location = "http://localhost:9008/documents/listdocument?id=-1";	
 		} else {
-			window.location = "http://localhost:9008";
+			window.location = "http://localhost:9008/documents/listdocument?id=" + id;
 		}
 	}
 </script>

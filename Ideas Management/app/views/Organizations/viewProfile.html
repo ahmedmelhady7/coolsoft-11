@@ -164,8 +164,7 @@
                     <br>
                     Username/Email: <input type="text" id="email" name="email" autoComplete="group"/>
                     <br>
-                    Invite by:<input type="radio" id="s" name="select" value="username" checked> Username<input type="radio" name="select" value="email">E-Mail
-                    <br>
+                    Invite by:<input type="radio" id="s" name="select" value="username" checked> Username<input type="radio" name="select" value="email">E-Mail   
                     <script language="javascript" type="text/javascript">
                         var a = document.getElementById('users');
                         b = a.value + "";
@@ -173,8 +172,9 @@
                         autoComplete.Set("group", c);
                     </script>
                     <input type="submit" value="Invite"/>
+					 <HR>
                 </form>#{/if}
-				#{if isMember == true || org.privacyLevel == 2}
+				#{if isMember == true || org.privacyLevel == 2 || admin}
                 <form action="@{Documents.listDocument()}" method="post">
                     <input type="hidden" name="id" value="${org.id}">Documents: <input type="submit" value="show">
                 </form>
@@ -184,10 +184,10 @@
                     <input type="hidden" name="id" value="${org.id}">Create a Document: <input type="submit" value="Create">
                 </form>
 				#{/if}
-				#{if isMember == true || org.privacyLevel == 2}
+				#{if isMember == true || org.privacyLevel == 2 || admin}
                 <form action="@{Pictures.index()}" method="post">
 				<input type="hidden" name="id" value="${org.id}">
-				Show my Gallery: <input type="submit" value="show">
+				Show Gallery: <input type="submit" value="show">
 				</form>
 				#{/if}
             </body>
