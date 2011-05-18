@@ -99,11 +99,13 @@
         #{/crud.form }
         <br/>
         #{if permission == 1}
+		#{if !hidden}
         <br>
         <button type="submit" onclick= >  Edit
         </button>
         <br>
         #{/if}
+		#{/if}
         <br/>
         #{if allowed==1}<a href="@{RequestToJoins.viewRequests(1,object.id)}">Requests</a>
 		<br>

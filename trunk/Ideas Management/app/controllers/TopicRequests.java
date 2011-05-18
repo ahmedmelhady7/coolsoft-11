@@ -45,18 +45,18 @@ public class TopicRequests extends CRUD{
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
 		String message = "";
-		TopicRequest tmp = (TopicRequest) object; // we temporarily save the object created by
-									// the form in tmp to validate it before
+		TopicRequest temporaryTopicRequest = (TopicRequest) object; // we temporarily save the object created by
+									// the form in temporaryTopicRequest to validate it before
 									// saving
 		System.out.println("create() entered");
 		MainEntity entity = MainEntity.findById(entityId);
-		tmp.entity = entity;
+		temporaryTopicRequest.entity = entity;
 		User requester = Security.getConnected();
-		tmp.requester = requester;
+		temporaryTopicRequest.requester = requester;
 		System.out
-				.println("the topic before validation check" + tmp.toString());
+				.println("the topic before validation check" + temporaryTopicRequest.toString());
 
-		if (tmp.entity == null) {
+		if (temporaryTopicRequest.entity == null) {
 			message = "A Topic must belong to an entity";
 			try {
 				render(request.controller.replace(".", "/") + "/blank.html",
@@ -72,14 +72,14 @@ public class TopicRequests extends CRUD{
 		if (validation.hasErrors()) {
 			System.out
 			.println("entered validation check");
-			if (tmp.title.equals("")) {
+			if (temporaryTopicRequest.title.equals("")) {
 				System.out
 				.println(message);
 				message = "A Topic must have a title";
 				try {
 					render(request.controller.replace(".", "/") + "/blank.html",
-							entityId, type, tmp.title, tmp.entity, tmp.description,
-							tmp.message, message);
+							entityId, type, temporaryTopicRequest.title, temporaryTopicRequest.entity, temporaryTopicRequest.description,
+							temporaryTopicRequest.message, message);
 					System.out
 					.println("try" + message);
 				} 
@@ -90,15 +90,15 @@ public class TopicRequests extends CRUD{
 					.println("catch" + message);
 				}
 				
-			} else if (tmp.description.equals("")) {
+			} else if (temporaryTopicRequest.description.equals("")) {
 				message = "A Topic must have a description";
 				System.out
 				.println(message);
 				
 				try {
 					render(request.controller.replace(".", "/") + "/blank.html",
-							entityId, type, tmp.title, tmp.entity, tmp.description,
-							tmp.message, message);
+							entityId, type, temporaryTopicRequest.title, temporaryTopicRequest.entity, temporaryTopicRequest.description,
+							temporaryTopicRequest.message, message);
 					System.out
 					.println("try" + message);
 				} 
@@ -115,12 +115,12 @@ public class TopicRequests extends CRUD{
 		System.out
 		.println("222");
 
-		if (tmp.privacyLevel < 1 || tmp.privacyLevel > 2) {
+		if (temporaryTopicRequest.privacyLevel < 1 || temporaryTopicRequest.privacyLevel > 2) {
 			message = "The privary level must be either 1 or 2";
 			try {
 				render(request.controller.replace(".", "/") + "/blank.html",
-						entityId, type, tmp.title, tmp.entity, tmp.description,
-						tmp.message, message);
+						entityId, type, temporaryTopicRequest.title, temporaryTopicRequest.entity, temporaryTopicRequest.description,
+						temporaryTopicRequest.message, message);
 			} catch (TemplateNotFoundException exception) {
 				render("CRUD/blank.html", type, entityId);
 			}

@@ -145,6 +145,7 @@
 			</div>
 			#{/if}
 			#{/if}
+			#{else}
 			#{if topic.hider.username == user.username && topic.hidden == true}
 			#{if canView == 1}
 			<div class="accordionItem">
@@ -156,6 +157,7 @@
 			</div>
 			#{/if}
 			#{/if}
+			#{/else}
 		</li>
 		#{/list}
 		</ul>
