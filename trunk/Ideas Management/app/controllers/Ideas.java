@@ -859,5 +859,143 @@ public class Ideas extends CRUD {
 				Security.getConnected().username + " dis liked your idea "
 						+ idea.title);
 	}
+	
+	/**
+	 * The method renders the ideas the organizer wants to merge
+	 * 
+	 * @author Mostafa Aboul-Atta
+	 * 
+	 * @story C3S7
+	 * 
+	 * @param selectedIdeas
+	 * 				: array of the selected ideas ids
+	 * 
+	 * @param TopicId
+	 * 				: the id of the topic t which the ideas belongs
+	 */
+	
+	public static void displayIdeasToMerge(long[] selectedIdeasIds, long topicId) {
+		
+		Topic targetTopic = Topic.findById(topicId);
+		List<Idea> selectedIdeas = new ArrayList<Idea>();
+		//List<Idea> allIdeas = targetTopic.getIdeas();
+		String selectedIdeasString = "";
+		
+		selectedIdeas = Ideas.getIdeasFromIds(selectedIdeasIds, topicId);
+		
+		for(int i = 0; i < selectedIdeasIds.length; i++) {
+			selectedIdeasString = selectedIdeasString + selectedIdeasIds[i] + "%";
+		}
+		long idd = selectedIdeas.get(0).getId();
+		System.out.println(selectedIdeasString + " " + idd);
+		render(selectedIdeas, topicId, selectedIdeasString, idd);
+	}
+	
+	
+	/**
+	 * method to merge ideas, overwrites the first idea with the new description and title
+	 * then deletes the other ideas, the authors of the deleted ideas are added in the description
+	 * as contributors and the merger is added to the description as the merger
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @stroy C3S7
+	 * 
+	 * @param topicId
+	 * 			: the id of the topic to which the ideas belong
+	 * @param oldIdeas
+	 * 			: ideas to be merged
+	 * @param newTitle
+	 * 			: title of the resulted idea
+	 * @param newDescription
+	 * 			: description of the resulted idea
+	 * 
+	 */
+	public static void mergeIdeas(long topicId, String oldIdeas, String newTitle,String newDescription) {
+		
+		System.out.println("I entered mergeIdeas()");
+		
+		Topic targetTopic = Topic.findById(topicId);
+		User merger = Security.getConnected();
+		String[] ideasIdsString = oldIdeas.split("%");
+		long[] ideasIds = new long[ideasIdsString.length - 1];
+		List<Idea> selectedIdeas = new ArrayList<Idea>();
+		Idea ideaToKeep;
+		
+		for(int i = 0; i < ideasIdsString.length  - 1; i++) {
+			ideasIds[i] = Long.parseLong(ideasIdsString[i]);
+		}
+		
+		selectedIdeas = Ideas.getIdeasFromIds(ideasIds, topicId);
+		
+		newDescription = newDescription + "/n" + "Contributers: ";
+		
+		for(int i = 1; i < selectedIdeas.size(); i++) {
+			String contributor = selectedIdeas.get(i).author.username;
+			if(i == selectedIdeas.size() - 1) {
+				newDescription.concat(contributor);
+			}
+			
+			else{
+				newDescription.concat(contributor + ", ");
+			}
+		}
+		
+		newDescription.concat("/n + Merger: " + merger.username);
+		
+		ideaToKeep = selectedIdeas.get(0);
+		
+		ideaToKeep.description = newDescription;
+		ideaToKeep.title = newTitle;
+		ideaToKeep.save();
+		
+		for(int i = 1; i < selectedIdeas.size(); i++) {
+			Idea ideaToDelete = selectedIdeas.get(i);
+			ideaToDelete.delete();
+		}
+		
+		targetTopic.save();
+		
+		render("topics/show?topicId=" + topicId);
+	}
+	
+	/**
+	 * takes an array of ideas ids and the topic id they belong to and 
+	 * returns a list of the ideas
+	 * 
+	 * @author Mostafa Aboul-Atta
+	 * 
+	 * @param selectedIdeasIds
+	 * 				: ideas ids that their ideas to be returned
+	 * @param topicId
+	 * 				: id of the topic to which the ideas belong
+	 * @return
+	 * 				: list of Idea
+	 */
+	public static List<Idea> getIdeasFromIds(long[] selectedIdeasIds, long topicId) {
+		Topic targetTopic = Topic.findById(topicId);
+		List<Idea> selectedIdeas = new ArrayList<Idea>();
+		List<Idea> allIdeas = targetTopic.getIdeas();
+		//String selectedIdeasString = "";
+		
+		for(int i = 0; i < allIdeas.size(); i++) {
+			
+			//checks if all selected ideas are already in the new list
+			if(selectedIdeas.size() == selectedIdeasIds.length) {
+				break;
+			}
+			
+			Idea currentIdea = allIdeas.get(i);
+			Arrays.sort(selectedIdeasIds);
+			
+			//checks if the current idea is indeed selected
+			if(Arrays.binarySearch(selectedIdeasIds, currentIdea.getId()) >= 0) {
+				selectedIdeas.add(currentIdea);
+			}
+			
+		}
+		
+		return selectedIdeas;
+	}
 
 }
