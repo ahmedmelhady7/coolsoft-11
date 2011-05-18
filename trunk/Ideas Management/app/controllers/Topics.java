@@ -145,7 +145,7 @@ public class Topics extends CRUD {
 				}
 
 				if (!tagExists) {
-					Tag temp = new Tag(tag, topic.entity.organization);
+					Tag temp = new Tag(tag, topic.entity.organization, user);
 					temp.save();
 					topic.tags.add(temp);
 				}

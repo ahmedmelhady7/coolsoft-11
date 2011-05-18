@@ -29,7 +29,7 @@
 		<br>
 		#{list items:followers, as:'follower'}
 		<li>
-			<a href="@{Users.show(follower.id)}">${follower.username}</a>
+			<a href="@{Users.showProfile(follower.id)}">${follower.username}</a>
 		</li>
 		#{/list}
 		<br>
@@ -53,7 +53,7 @@
 		<br>
 		#{list items:entities, as:'entity'}
 		<li>
-			<a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>
+			<a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name} ${entity.organization}</a>
 		</li>
 		#{/list}
 		<br>

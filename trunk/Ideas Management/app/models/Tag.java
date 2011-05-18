@@ -97,6 +97,12 @@ public class Tag extends Model {
 	 */
 	@ManyToOne
 	public Organization createdInOrganization;
+	
+	/**
+	 * The User that created the tag
+	 */
+	@ManyToOne
+	public User creator;
 
 	/**
 	 * Tag attributes
@@ -111,7 +117,7 @@ public class Tag extends Model {
 	 * @param org
 	 *            The organization in which the tag was created
 	 */
-	public Tag(String name, Organization org) {
+	public Tag(String name, Organization org, User creator) {
 		this.setName(name);
 		this.followers = new ArrayList<User>();
 		this.organizations = new ArrayList<Organization>();
@@ -125,6 +131,7 @@ public class Tag extends Model {
 		// this.relatedTags = new ArrayList<Tag>();
 		// ERD change
 		this.createdInOrganization = org;
+		this.creator = creator;
 	}
 
 	/**
