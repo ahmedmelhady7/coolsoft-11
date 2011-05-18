@@ -59,7 +59,7 @@
 				window.location.href = "/ideas/getdrafts"
 			}
 			
-			function myFade()
+			function myFadex()
 			{
 				$('#success').fadeOut('500');
 				window.location.href = "/ideas/list"
@@ -145,8 +145,8 @@
 			   if(validate())
 			   {
 			   		$.post('@{Ideas.postDraft()}', {ideaId: id, title: x, description: y });
-               		$('#success').html('Saved successfully!');
-			   		setTimeout("myFade()",'2000');	
+               		$('#success').html('Posted successfully!');
+			   		setTimeout("myFadex()",'2000');	
 			   }
            }
 		   
