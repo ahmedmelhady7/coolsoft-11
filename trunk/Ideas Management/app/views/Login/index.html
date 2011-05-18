@@ -10,7 +10,7 @@
 <!-- side bar -->
 <div id="hmenu">
 		<ul>
-			<li><a href="@{Users.myProfile()}" >Profile</a></li>
+			<li><a href="@{Users.viewProfile()}" >Profile</a></li>
 			<li><a href="@{Browse.browse()}" >Browse All</a></li>												     							
 			<li>
 			<a href="javascript:void(0)" id="demo01">Latest Notifications</a>
@@ -94,7 +94,7 @@
  								<li><a href="@{Users.listFollows()}">Follow List</a></li> 
  								<li><a href="@{MarkRequest.markDuplicate()}">Duplicate Requests</a></li>								 								 								 															
 							</ul>
-						</li>
+						</li>		
 						<li>
 							<h2>My Documents</h2>
 							<ul>
@@ -123,18 +123,18 @@
 							</ul>
 						</li>
 						<li>
-						<h2>My Labels</h2>
-							<ul>
-							<li><a href="@{Labels.createLabel()}"">Create Label</a></li>
-							<li><a href="@{Labels.showAllLabels()}">Manage Labels</a></li>
-							</ul>
-						</li>
-						<li>
 						<h2>Drafts</h2>
 							<ul>
 								<li><a href="@{Ideas.getDrafts()}">Drafts (${user.getDraftsCount()})</a></li>						
 							</ul>
 						</li>
+						<li>
+						<h2>My Labels</h2>
+							<ul>
+							<li><a href="@{Labels.createLabel()}"">Create Label</a></li>
+							<li><a href="@{Labels.showAllLabels()}">Manage Labels</a></li>
+							</ul>
+						</li>				
 					</ul>					
 			</div>
 #{if flash.error}

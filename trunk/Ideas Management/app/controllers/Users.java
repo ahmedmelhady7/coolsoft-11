@@ -189,6 +189,11 @@ public class Users extends CRUD {
 		}
 	}
 
+	public static void editProfile() {
+		User user = Security.getConnected();
+		view(user.id + "");
+	}
+	
 	/**
 	 * 
 	 * @author Ahmed Maged
@@ -210,13 +215,9 @@ public class Users extends CRUD {
 		String username = tmp.username;
 		String birthDate = "" + tmp.dateofBirth;
 		int flag = 0;
-
 		if (Security.getConnected().equals(tmp) || Security.getConnected().isAdmin){
-
-
 			flag = 1;
 		}
-
 		try {
 			render(type, object, username, name, communityContributionCounter,
 					profession, birthDate, userId, flag);
@@ -237,6 +238,11 @@ public class Users extends CRUD {
 	public static void myProfile() {
 		User user = Security.getConnected();
 		showProfile(user.id + "");
+	}
+	
+	public static void viewProfile() {
+		User user = Security.getConnected();
+		render(user);
 	}
 
 	/**

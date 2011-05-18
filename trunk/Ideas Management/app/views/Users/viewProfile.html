@@ -1,0 +1,43 @@
+#{extends 'Login/index.html' /}
+#{set title:'Profile' /}
+<div id="page">
+		<div id="page-bgtop">
+			<div id="page-bgbtm">
+				<div id="content">
+					<div class="post">
+						<h2 class="title"><a href="#">Profile Page </a></h2>						
+					<div style="clear: both;">&nbsp;</div>
+					<h1>${user.username}</h1>
+					<br>
+					<div style="clear: both;">&nbsp;</div>
+							#{if user.profilePictureId != -1}							
+							#{list items:user.pictureId, as:'id'}
+							<img src="@{Pictures.getPicture(id)}" width="80" height="80"/>
+							#{/list}
+							#{/if}
+							#{if user.profilePictureId == -1}
+							<img src="/public/images/user.png" width="80" height="80"/>
+							#{/if}
+					<br>
+					<div style="clear: both;">&nbsp;</div>
+					<p><big><b>E-Mail: </b></big> &nbsp;&nbsp; <i>${user.email}</i> <br>	
+					<div style="clear: both;">&nbsp;</div>					
+					<big><b>First Name: </b></big> &nbsp;&nbsp; <i>${user.firstName}</i> <br>
+					<div style="clear: both;">&nbsp;</div>
+					<big><b>Last Name: </b></big> &nbsp;&nbsp; <i>${user.lastName}</i> <br>
+					<div style="clear: both;">&nbsp;</div>
+					<big><b>Date of Birth: </b></big> &nbsp;&nbsp; <i>${user.dateofBirth}</i> <br>
+					<div style="clear: both;">&nbsp;</div>
+					<big><b>Community Contribution Counter: </b></big> &nbsp;&nbsp; <i>${user.communityContributionCounter}</i> <br>
+					<div style="clear: both;">&nbsp;</div>
+					<big><b>Country: </b></big> &nbsp;&nbsp; <i>${user.country}</i> <br>
+					<div style="clear: both;">&nbsp;</div>
+					<big><b>Profession: </b></big> &nbsp;&nbsp; <i>${user.profession}</i></p>										
+					</div>
+			</div>
+		</div>
+	</div>
+</div>
+<form action="@{Users.editProfile()}" method="post">
+<input type="submit" value="Edit" />
+</form>
