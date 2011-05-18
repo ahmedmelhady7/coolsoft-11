@@ -12,7 +12,6 @@ public class Home extends Controller {
 		} else {
 			render();
 		}
-		
 	}
 	
 	public static void about() {

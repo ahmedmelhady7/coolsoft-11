@@ -33,22 +33,26 @@ public class Login extends Controller {
 	 */
 
 	public static void index() {
-		User u = Security.getConnected();
-
+		User user = Security.getConnected();
+		List<Idea> ideas = user.ideasCreated;
+		List<Idea> drafts = new ArrayList<Idea>();
+		
+		for(Idea s : ideas)
+			if(s.isDraft)
+				drafts.add(s);
+			
 		int admin=0;
-		if(u.isAdmin)
+		if(user.isAdmin)
 		  admin=1;
 		
-		if(u.state.equals("n")){
-		System.out.println(u.state);
-			u.state="a";
-			u.save();
+		if(user.state.equals("n")){
+		//System.out.println(user.state);
+			user.state="a";
+			user.save();
 			Mail.reactivate();
 			flash.error("Your account has been reactivated successfuly");
-		}
-		boolean profilePicture = u.profilePictureId != -1;
-		long pictureId = u.profilePictureId;
-		render(u,admin,profilePicture, pictureId);
+		}		
+		render(user,admin,drafts);
 
 	}
 }

@@ -365,12 +365,10 @@ public class Users extends CRUD {
 	 * 
 	 * @story C2S12
 	 * 
-	 * @param userId
-	 *            the id of the user who follows
 	 */
 
-	public static void listFollows(long userId) {
-		User user = User.findById(userId);
+	public static void listFollows() {
+		User user = Security.getConnected();
 		try {
 			List<Organization> organizations = user.followingOrganizations;
 			List<Tag> tags = user.followingTags;
@@ -1300,7 +1298,7 @@ public class Users extends CRUD {
 		for (int i = temp.size() - 1; i > -1; i--) {
 			nList.add(temp.get(i));
 		}
-		render(nList);
+		render(user, nList);
 	}
 
 	/**
@@ -1316,7 +1314,7 @@ public class Users extends CRUD {
 	public static void viewNotificationProfile() {
 		User user = Security.getConnected();
 		List<NotificationProfile> npList = user.notificationProfiles;
-		render(npList);
+		render(user, npList);
 	}
 
 	/**
