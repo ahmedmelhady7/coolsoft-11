@@ -1,0 +1,77 @@
+#{extends 'main.html' /} 
+
+
+#{form @Ideas.displayIdeasToMerge(), method:'POST', id:'selectingIdeasForm', onsubmit: 'return validate()',
+       enctype:'multipart/form-data' }
+ 	<ul>
+ 		#{list items:ideas, as:'idea'}
+	<fieldset>
+        <legend>
+           <input type="checkbox" name="selectedIdeasIds" value=${idea.id} 
+		   onclick = "javascript: toggleCheck('${idea.id}')"/> 
+		   ${idea.title}
+        </legend>
+		${idea.description}
+		<br/>
+		Author: 
+		#{if idea.author.state == "a"}
+		  <a href="#">${idea.author.username}</a>
+		 #{/if}
+		 #{else}
+		  ${idea.author.username}
+		  #{/else}
+		&nbsp&nbsp&nbsp&nbsp
+		Rating: ${idea.rating}
+		<br/>
+			
+		</fieldset>
+		#{/list}
+		<input type = "hidden" name = "topicId" value = ${topicId}>
+		<input type="submit" value="Next Step">
+ 	</ul>
+#{/form}
+
+
+
+<!--<div id: "mergingDev">
+	#{form @Topics.getIdeasToMerge(), method:'POST', id:'selectingIdeasForm', onsubmit: 'return validate()',
+       enctype:'multipart/form-data' }
+	   
+	 #{/form}
+</div> -->
+
+
+<script type="text/javascript" >
+	var ideasIds = new Array();
+	
+	function toggleCheck(id) {
+		if(ideasIds.indexOf(id) == -1) {
+			ideasIds.push(id);
+		}
+		else {
+			ideasIds.pop(id);
+		}
+	}
+	
+	
+	function validate() {
+		if (ideasIds.length < 2){
+			alert("You have to select at least 2 ideas to merge");
+			return false;
+		}
+	}
+	
+	function prepareToMerge() {
+		var ideasDescription = new Array();
+		var oldIdeasTable = "";
+		selectingIdeasForm.style.display = "none";
+		
+		var i = 0;
+		for(i=0; i <ideasIds.length; i++) {
+			oldIdeasTable = 
+			"<bd> "
+		}
+	
+	}
+	
+	</script>
