@@ -44,8 +44,8 @@ public class Plans extends CRUD {
 	 */
 	public static void viewAsList(long planId) {
 		User user = Security.getConnected();
-		boolean error = false;
-		boolean org = false;
+		boolean canView = true;
+		boolean isOrganizer = false;
 		Plan p = Plan.findById(planId);
 		List<Comment> comments = p.commentsList;
 		List<Item> itemsList = p.items;
@@ -57,7 +57,7 @@ public class Plans extends CRUD {
 						user,
 						"accept/Reject user request to volunteer to work on action item in a plan",
 						p.topic.id, "topic")) {
-			org = true;
+			isOrganizer = true;
 		}
 
 		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
@@ -79,11 +79,11 @@ public class Plans extends CRUD {
 
 				canIdea = 1;
 			}
-
-			render(p, itemsList, user, canAssign, canEdit, error, org, canIdea, comments);
+			List<MainEntity> entitiesList = p.topic.entity.organization.entitiesList;
+			render(p, itemsList, user, canAssign, canEdit, canView, isOrganizer, canIdea, comments, entitiesList);
 		} else {
-			error = true;
-			render(error, org);
+			canView = false;
+			render(canView, isOrganizer);
 		}
 
 	}
@@ -981,6 +981,32 @@ render(p, itemsList);
 		List<Item> itemsList = p.items;
 
 		render(itemsList);
+	}
+	
+	public static void relateToEntity(long itemId, long entityId) {
+		// User user = Security.getConnected();
+		Item item = Item.findById(itemId);
+		MainEntity entity = MainEntity.findById(entityId);
+		System.out.println("Testeeeeeeeeeeeeeeeeeeee");
+		if (!entity.relatedItems.contains(item)) {
+			if (item.relatedEntity == null) {
+				entity.relatedItems.add(item);
+				item.relatedEntity = entity;
+				entity.save();
+				item.save();
+			}
+		}
+	}
+	
+	public static void removeItemEntityRelation(long itemId) {
+		// User user = Security.getConnected();
+		Item item = Item.findById(itemId);
+		System.out.println("Test removing");
+		item.relatedEntity.relatedItems.remove(item);
+		item.relatedEntity.save();
+		item.relatedEntity = null;
+		item.save();
+		
 	}
 
 }
