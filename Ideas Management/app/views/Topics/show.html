@@ -157,7 +157,7 @@
                 #{/else}    
         </form>
         #{/if}
-		
+        		
 		#{if numberOfIdeas > 1}
 		#{form @Topics.getIdeasToMerge(), method:'POST', enctype:'multipart/form-data' }
 				<input type = "hidden" name = "topicId" value = ${topicId}>
@@ -253,11 +253,17 @@
 			#{/form}
 		#{/if}
 
-#{if canPlan == 1 && openToEdit == false && plan == null}
-#{form @Plans.planCreate(), method:'POST', enctype:'multipart/form-data' }<input type = "hidden" name = "topicId" value = ${topicIdLong}><input type="submit" value="Create A plan" />#{/form}
+#{if canPlan == 1 && plan == null}
+#{form @Plans.planCreate(), method:'POST', enctype:'multipart/form-data' }
+<input type = "hidden" name = "topicId" value = ${topicIdLong}>
+<input type="submit" value="Create A plan" />
+#{/form}
 #{/if}
-#{if openToEdit == false && plan != null}
-#{form @Plans.viewAsList(), method:'POST', enctype:'multipart/form-data' }<input type = "hidden" name = "planId" value = ${plan.id}><input type="submit" value="View the plan" />#{/form}
+#{if plan != null}
+#{form @Plans.viewAsList(), method:'POST', enctype:'multipart/form-data' }
+<input type = "hidden" name = "planId" value = ${plan.id}>
+<input type="submit" value="View the plan" />
+#{/form}
 #{/if}
 <form action="@{Topics.viewFollowers()}">
     <HR><input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">#{if (!targetTopic.followers.contains(user))} 

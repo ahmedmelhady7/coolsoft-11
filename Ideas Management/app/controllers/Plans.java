@@ -718,7 +718,7 @@ public class Plans extends CRUD {
 	 * @param itemId
 	 *            The id of the item being deleted
 	 */
-	public static boolean deleteItem(long itemId) {
+	public static boolean deleteItem(long itemId, int notify) {
 		Item item = Item.findById(itemId);
 		Plan plan = Plan.findById(item.plan.id);
 		plan.items.remove(item);
@@ -737,10 +737,12 @@ public class Plans extends CRUD {
 			items = userAssigned.itemsAssigned;
 			items.remove(item);
 			userAssigned.save();
+			if(notify ==1) {
 			notificationMsg = "The item " + item.summary
 					+ " has been deleted from the plan";
 			Notifications.sendNotification(userAssigned.id, plan.id, "plan",
 					notificationMsg);
+			}
 		}
 		Tag tag;
 		for (int i = 0; i < item.tags.size(); i++) {
@@ -754,27 +756,79 @@ public class Plans extends CRUD {
 		// viewAsList(planId);
 	}
 
+	/**
+	 * This methods deletes a plan given the plan id
+	 * 
+	 * @story C5S2
+	 * 
+	 * @author Salma Osama
+	 * 
+	 * @param planId
+	 *            The id of the plan that will be deleted
+	 *            
+	 */
 	public static void deletePlan(long planId) {
+		List <User> toBeNotified = new ArrayList<User>();
 		Plan plan = Plan.findById(planId);
+		String notificationMsg = "The plan " + plan.title + " has been deleted";
+		for(Item item:plan.items) {
+			for(User user: item.assignees) {
+				if(!toBeNotified.contains(user)) {
+					toBeNotified.add(user);
+					Notifications.sendNotification(user.id, plan.topic.id, "topic",
+							notificationMsg);
+			}
+			}
+		}
+		for(User organizer:plan.topic.getOrganizer()) {
+			if(!toBeNotified.contains(organizer)) {
+				toBeNotified.add(organizer);
+				Notifications.sendNotification(organizer.id, plan.topic.id, "topic",
+						notificationMsg);
+		}
+		}
+		
 		while (!plan.items.isEmpty()) {
-			deleteItem(plan.items.get(0).id);
-			System.out.println(plan.items.size());
+			deleteItem(plan.items.get(0).id, 0);
+			System.out.println("items " + plan.items.size());
 			plan.save();
 		}
 		Idea idea;
 		while (!plan.ideas.isEmpty()) {
 			idea = plan.ideas.remove(0);
 			idea.plan = null;
+			System.out.println("ideas " + plan.items.size());
 			idea.save();
 			plan.save();
 		}
 		Comment comment;
 		while (!plan.commentsList.isEmpty()) {
 			comment = plan.commentsList.remove(0);
+			System.out.println("comments " + plan.items.size());
+			plan.save();
 			comment.delete();
 		}
+		
+		User userRated;
+		while(!plan.usersRated.isEmpty()) {
+			userRated = plan.usersRated.remove(0);
+			userRated.ratedPlans.remove(plan);
+			System.out.println("rated " + plan.usersRated.size());
+			userRated.save();
+			plan.save();
+			
+		}
+		User creator = plan.madeBy;
+		creator.planscreated.remove(plan);
+		creator.save();
+		plan.madeBy = null;
+		plan.save();
+		
+		Topic topic = plan.topic;
+		topic.plan=null;
+		topic.save();
 		plan.delete();
-
+		Topics.show("" + topic.id);
 	}
 
 	/**
