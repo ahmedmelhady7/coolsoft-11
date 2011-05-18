@@ -188,7 +188,7 @@ public class Idea extends CoolModel {
 	 */
 	
 	//@On("0 0 12 0 0 ?")
-	
+	/*
 	public static void checkDate(Idea idea) {
 
 		Comment lastComment = idea.commentsList
@@ -222,7 +222,7 @@ public class Idea extends CoolModel {
 	 * 
 	 *         checking the dates of all ideas
 	 * 
-	 */
+	 
 
 	public static void getAllIdeas() {
 		List<Organization> listOfOrganizations = Organization.findAll();
@@ -245,5 +245,5 @@ public class Idea extends CoolModel {
 	public String toString() {
 		return this.title;
 	}
-
+*/
 }
