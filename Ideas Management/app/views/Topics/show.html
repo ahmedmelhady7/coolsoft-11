@@ -124,7 +124,7 @@
                 <a id = "LOL" href="@{Ideas.show(idea.id)}">${idea.title}</a>
                 <a href="@{Ideas.hide(idea.id)}">hide idea</a>
 					<a id = "delete" href="@{Ideas.delete(idea.id)}"><font color="Red">x</font></a>
-<!--					<img width="64" height="64" alt="HTML tutorial" src="http://download.oracle.com/docs/cd/E13171_01/alsb/docs26/tutorial/wwimages/Icon_Delete.gif">-->
+				<h2 id= "hadi"><input value="show details" type="button" onclick="showOrHide();"/></h2>
                 <table id = "table" border="0" bgcolor="#FAF8CC" cellspacing="0" id ="toFil">
                 <tr><td><font size ="3" color ="black"><i>
                 <label>Description : ${idea.description}</label>
@@ -134,7 +134,7 @@
                 </i></font></td><td>
                 </tr>
                 </table>
-                <script type ="text/javascript"">
+                <script type ="text/javascript">
         				$('#hide').click(function(){
 						$('#idea').hide();});
       		    </script>
@@ -178,6 +178,9 @@
 		</div>
 		<style type="text/css">
 			#postIdeaform{display: none;}
+		</style>
+		<style type="text/css">
+			#table{display: none;}
 		</style>
 		<script type="text/javascript">
                  $('#postIdea').click(function(){
@@ -315,4 +318,17 @@
 					
 				}
 				
+            </script>
+            <script type ="text/javascript">
+            var isHidden = true;
+
+            var showOrHide = function() {
+            	if (isHidden) {
+            		isHidden = false;
+            		$("#table").fadeIn();
+            	} else {
+            		isHidden = true;
+            		$("#table").fadeOut();
+            	}
+            }
             </script>
