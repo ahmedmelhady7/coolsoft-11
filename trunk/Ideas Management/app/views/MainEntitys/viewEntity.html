@@ -75,7 +75,9 @@
 		#{list items:topicList, as:'topic'}
 		<li>
 			#{if topic.hidden == false}
+			#{if canView == 1}
 			<a href="@{Topics.show(topic.id)}">${topic.title}</a>
+			#/{if}
 			#{/if}
 		</li>
 		#{/list}
@@ -96,9 +98,11 @@
 		#{/if}
     
 		#{else}
+		{if canRequest == 1}
 		<br />
 <input type="submit" value="Request A Topic" onclick=location.href="@{TopicRequests.blank(entity.id)}">
 		<br />
+		#{/if}
 		#{/else}
 		
 		#{if (canEdit == 1)}
