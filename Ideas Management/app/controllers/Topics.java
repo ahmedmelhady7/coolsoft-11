@@ -800,11 +800,13 @@ public class Topics extends CRUD {
 	 * 
 	 */
 	public static void show(String topicId) {
+		
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(topicId);
 		notFoundIfNull(object);
 		Topic temporaryTopic = (Topic) object;
+		System.out.println("topic is hidden? " + temporaryTopic.hidden);
 		System.out.println(temporaryTopic.title);
 		List<Tag> tags = temporaryTopic.tags;
 		User creator = temporaryTopic.creator;
@@ -818,6 +820,7 @@ public class Topics extends CRUD {
 		boolean createRelationship = temporaryTopic.createRelationship;
 		String deleteMessage = "Are you Sure you want to delete the task ?!";
 		boolean deletable = temporaryTopic.isDeletable();
+		boolean hidden = temporaryTopic.hidden;
 		int canClose = 0;
 		int canPlan = 0;
 		long topicIdLong = Long.parseLong(topicId);
@@ -885,7 +888,7 @@ public class Topics extends CRUD {
 					entity, plan, openToEdit, privacyLevel, deleteMessage,
 					deletable, topicIdLong, canClose, canPlan, targetTopic,
 					allowed, permission, topicId, canPost, canNotPost, pending,
-					follower, canCreateRelationship, seeRelationStatus, createRelationship);
+					follower, canCreateRelationship, seeRelationStatus, createRelationship, actor, hidden);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
@@ -1299,8 +1302,56 @@ public class Topics extends CRUD {
 				Notifications.sendNotification(temporaryTopic.creator.getId(), entity.getId(), "entity", justification);
 				System.out.println(justification);
 				temporaryTopic.hidden = true;
+				temporaryTopic.hider = myUser;
 				 temporaryTopic.save();
-		            System.out.println("hidden");
+		            System.out.println("test " + temporaryTopic.hidden);
+				System.out.println("leaving try");
+				
+	        } catch (Exception exception) {
+	        	System.out.println("entered catch");
+	            flash.error(Messages.get("crud.delete.error", type.modelName));
+	            redirect(request.controller + ".show", object._key());
+	        }
+	        flash.success(Messages.get("crud.deleted", type.modelName));
+	        System.out.println("flash.success");
+	        //redirect(request.controller + ".list");
+	        redirect("mainentitys.viewentity",entity.id);
+	 }
+	 
+	 /**
+	   * Unhides a topic but keeps it in the database
+	   * 
+	   * @author Alia El Bolock
+	   * 
+	   * @story C3S9
+	   * 
+	   * @param id
+	   *         : the id of the topic to be unhidden
+	   */
+	 public static void unhide (String id){
+		 ObjectType type = ObjectType.get(getControllerClass());
+	        notFoundIfNull(type);
+	        Model object = type.findById(id);
+	        notFoundIfNull(object);
+	        Topic temporaryTopic = (Topic) object;
+	        MainEntity entity = temporaryTopic.entity;
+	        User myUser = Security.getConnected();
+	        
+	        try {
+	        	System.out.println("entered try");
+	            Calendar calendar= new GregorianCalendar();
+				//Logs.addLog( myUser, "delete", "Task", temporaryTopic.id, temporaryTopic.taskStory.componentID.project, calendar.getTime() );
+				String message = myUser.username + " has unhidden the topic " + temporaryTopic.title;
+				List<User> users = Users.getEntityOrganizers(entity);
+				for (int i = 0; i < users.size(); i++)
+					Notifications.sendNotification(users.get(i).id, temporaryTopic.id, "Topic",
+							message);
+				for(int i =0; i< temporaryTopic.followers.size(); i++)
+				Notifications.sendNotification(temporaryTopic.followers.get(i).getId(), entity.getId(), "entity", message);
+				
+				temporaryTopic.hidden = false;
+				 temporaryTopic.save();
+		            System.out.println("test " + temporaryTopic.hidden);
 				System.out.println("leaving try");
 				
 	        } catch (Exception exception) {

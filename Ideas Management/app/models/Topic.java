@@ -167,6 +167,11 @@ public class Topic extends CoolModel {
 	 * shows whether the topic is visible or hidden
 	 */
 	public boolean hidden;
+	
+	/**
+	 * the user who hid the topic
+	 */
+	public User hider;
 
 
 	/**
