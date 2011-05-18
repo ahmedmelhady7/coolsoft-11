@@ -23,7 +23,7 @@ import models.*;
  * @author Mohamed Hisham
  * 
  * @story C2S5
- *
+ * 
  */
 @With(Secure.class)
 public class EntityRelationships extends CRUD {
@@ -46,21 +46,42 @@ public class EntityRelationships extends CRUD {
 	 */
 	public static void createRelationship(String name, long sourceId,
 			long destinationId) {
-//		System.out.println("WASALNA!! " + sourceId + "|" + destinationId);
-		
+		// System.out.println("WASALNA!! " + sourceId + "|" + destinationId);
+
 		MainEntity source = MainEntity.findById(sourceId);
 		MainEntity destination = MainEntity.findById(destinationId);
-		
+
 		EntityRelationship relation = new EntityRelationship(name, source,
 				destination);
-		relation.save();
 		relation.source.relationsSource.add(relation);
 		relation.destination.relationsDestination.add(relation);
-		if(!isDuplicate(name, relation.source.organization.relationNames))
+		if (!isDuplicate(name, relation.source.organization.relationNames))
 			relation.source.organization.relationNames.add(name);
 		
+		relation.save();
+		Organization organization = relation.source.organization;
+		organization.save();
+		
+		for (int i = 0; i < Users.getEntityOrganizers(source).size(); i++) {
+			Notifications.sendNotification(Users.getEntityOrganizers(source)
+					.get(i).id, source.organization.id, "Organization",
+					"a new relation \"" + name
+							+ "\" is created now between entities \""
+							+ source.name + "\" and \"" + destination.name
+							+ "\".");
+		}
+		for (int i = 0; i < Users.getEntityOrganizers(destination).size(); i++) {
+			Notifications.sendNotification(Users.getEntityOrganizers(destination)
+					.get(i).id, source.organization.id, "Organization",
+					"a new relation \"" + name
+							+ "\" is created now between entities \""
+							+ source.name + "\" and \"" + destination.name
+							+ "\".");
+		}
+		
+
 		System.out.println("Creation DONE!!");
-	//	render(name,source, destination);
+		// render(name,source, destination);
 
 		// } else {
 		// System.out.println("Cannot relate Entity to Sub-Entity!!");
@@ -129,22 +150,25 @@ public class EntityRelationships extends CRUD {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * checks relation name for duplicate
 	 * 
 	 * @author Mohamed Hisham
 	 * 
-	 * @param relationName : name of the relation
+	 * @param relationName
+	 *            : name of the relation
 	 * 
-	 * @param relationNames : list of relation names in the organization
+	 * @param relationNames
+	 *            : list of relation names in the organization
 	 * 
 	 * @return boolean value if duplicate(true) or not(false)
 	 */
-	public static boolean isDuplicate(String relationName, ArrayList<String> relationNames){
-		for(int i = 0; i < relationNames.size(); i++){
-			if(relationName.equals(relationNames.get(i)))
-				return true;	
+	public static boolean isDuplicate(String relationName,
+			ArrayList<String> relationNames) {
+		for (int i = 0; i < relationNames.size(); i++) {
+			if (relationName.equals(relationNames.get(i)))
+				return true;
 		}
 		return false;
 	}

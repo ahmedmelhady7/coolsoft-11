@@ -28,9 +28,28 @@ import models.User;
 public class Organizations extends CRUD {
 	
 	/**
+	 * checks relation name for duplicate
+	 * 
+	 * @author Mohamed Hisham
+	 * 
+	 * @param relationName : name of the relation
+	 * 
+	 * @param relationNames : list of relation names in the organization
+	 * 
+	 * @return boolean value if duplicate(true) or not(false)
+	 */
+	public static boolean isDuplicate(String relationName, ArrayList<String> relationNames){
+		for(int i = 0; i < relationNames.size(); i++){
+			if(relationName.equals(relationNames.get(i)))
+				return true;	
+		}
+		return false;
+	}
+	
+	/**
 	 * adds a new name to the previously created relation names in the organization
 	 * 
-	 * @author Mohamed
+	 * @author Mohamed Hisham
 	 * 
 	 * @story C2S5
 	 * 
@@ -41,9 +60,11 @@ public class Organizations extends CRUD {
 	 */
 	public static void addRelationName(long organizationId, String name){
 		Organization organization = Organization.findById(organizationId);
-		organization.relationNames.add(name);
-		organization.save();
-		render(organization);
+		if(!isDuplicate(name, organization.relationNames)){
+			organization.relationNames.add(name);
+			organization.save();
+			render(organization);
+		}
 	}
 
 	/**
@@ -417,6 +438,12 @@ public class Organizations extends CRUD {
 			canCreateEntity = 1;
 		}
 		List<MainEntity> entities = org.entitiesList;
+		List<Topic> topics = new ArrayList<Topic>();
+		for(int x = 0; x < entities.size(); x++){
+			for(int y = 0; y < entities.get(x).topicList.size(); y++){
+				topics.add(entities.get(x).topicList.get(y));
+			}
+		}
 		boolean enrolled = false;
 		boolean canInvite = false;
 		if (Users.isPermitted(user,

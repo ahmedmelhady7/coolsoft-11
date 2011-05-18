@@ -51,6 +51,10 @@ public class MainEntitys extends CRUD {
 					entityList.remove(entityList.get(i));
 			}
 		}
+		for(int i = 0; i < entityList.size(); i++){
+			if(!entityList.get(i).createRelationship)
+				entityList.remove(entityList.get(i));
+		}
 		render(entity, entityList);
 	}
 
