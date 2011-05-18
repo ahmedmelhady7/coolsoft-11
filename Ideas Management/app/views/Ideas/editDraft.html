@@ -5,58 +5,128 @@
         <title>${user.username}: you're Editing ${idea.title}</title>
         <script type="text/javascript">
             
-            function save(id){
+			window.onload = auto;
+			//window.onload = magic;
+			
+			function magic()
+			{
+				if(!magic.c) magic.c = 0;
+				if(!magic.t) magic.t = auto.t; /*document.getElementById("title").value;*/
+            	if(!magic.b) magic.b = auto.b; /*document.getElementById("body").value;*/
 				
-                var x = document.getElementById("title").value.toString();
-                var y = document.getElementById("body").value;
-                $.post('@{Ideas.saveDraft()}', {ideaId: id, title: x,description: y } 
-				/*, function(){
-                    //window.location.href = "/ideas/getdrafts"
-					$('#success').html('Saved successfully!');
-					setTimeout("myFade()",'2000');			
-				 }*/
-				);
-               // alert("Idea Saved ");
+				
+				
+				if(magic.c != 0)
+				{
+					if((magic.t == auto.t) && (magic.b == auto.b))
+					{
+						$('#success').fadeIn('1');
+						$('#success').html('this is your original idea !');
+			   			setTimeout("myFader2()",'2000');
+					}
+					else
+					{
+						document.getElementById("title").value = magic.t;
+						document.getElementById("body").value = magic.b;
+					
+						$('#success').fadeIn('1');
+						$('#success').html('abracadabra !');
+			   			setTimeout("myFader2()",'2000');
+					}
+				}
+				
+				magic.c++;
+			}
+			
+            function save(id)
+			{
+			   var x = document.getElementById("title").value.toString();
+               var y = document.getElementById("body").value;
 			   
-			   $('#success').html('Saved successfully!');
-			   setTimeout("myFade()",'2000');	
+			   if(validate())
+			   {
+			   		$.post('@{Ideas.saveDraft()}', {ideaId: id, title: x,description: y });
+               		$('#success').html('Saved successfully!');
+			   		setTimeout("myFade()",'2000');	
+			   }
+               
             }
+			
 			function myFade()
 			{
 				$('#success').fadeOut('500');
 				window.location.href = "/ideas/getdrafts"
 			}
 			
+			function myFaded()
+			{
+				$('#success').fadeOut('500');
+				window.location.href = "/"
+			}
+			
 			function myFader()
+			{
+				$('#flashAmessage').fadeOut('500');
+			}
+			
+			function myFader2()
 			{
 				$('#success').fadeOut('500');
 			}
 			
 			function auto()
 			{
-				$('#success').fadeIn('10');
+				if(!auto.c) auto.c = 0;
+				if(!auto.t) auto.t = document.getElementById("title").value;
+            	if(!auto.b)	auto.b = document.getElementById("body").value;
+				
+				if(auto.c == 0)
+					magic();
+				
+				
 				var id = ${idea.id};
 				var x = document.getElementById("title").value.toString();
-               	var y = document.getElementById("body").value;
-               	$.post('@{Ideas.saveDraft()}', {ideaId: id, title: x,description: y });			   
+               	var y = document.getElementById("body").value;			   
 		   		
-				
 				var currentTime = new Date();
 				var hours = currentTime.getHours();
 				var minutes = currentTime.getMinutes();
-				var secs    = currentTime.getSeconds();
+				//var secs    = currentTime.getSeconds();
 
 				if (minutes < 10)	
 					minutes = "0" + minutes;
 
-				var write =(hours + ":" + minutes + ":" + secs + " " );
-								
-				$('#success').html('Auto Saved at '+write);
-		   		setTimeout("myFader()",'2000');
-				setTimeout("auto()",'10000');
+				var write =(hours + ":" + minutes /*+ ":" + secs + " "*/ );
+				
+				auto.c++;
+				
+				var xx = jQuery.trim(x);
+				var yy = jQuery.trim(y);
+				
+				if(((x != auto.t) || (y != auto.b)) && ((xx != "") && (yy != "") ) )
+				{
+					
+					$('#flashAmessage').fadeIn('10');
+					
+					$.post('@{Ideas.saveDraft()}', {ideaId: id, title: x,description: y });
+					
+					auto.t = document.getElementById("title").value;
+            		auto.b = document.getElementById("body").value;
+					
+					document.getElementById("flashAmessage").innerHTML = "draft auto saved at " + write;
+					setTimeout("myFader()",'3000');
+				}
+				
+				setTimeout("auto()",'15000');
 			}
 			 
-			window.onload = auto;
+			function discard(id)
+			{
+				$('#success').fadeIn('1');
+				$.post('@{Ideas.discardIdea()}',{ideaId:id});
+				$('#success').html('Idea discarded successfully');
+			   	setTimeout("myFaded()",'2000');
+			}
             
            	function post(id)
 			{
@@ -71,41 +141,78 @@
 					 );
                alert("Idea posted ");
            }
+		   
+		   function validate()
+     	   {
+				var x = document.getElementById("title").value.toString();
+				var y = document.getElementById("body").value;
+				var Tflag = true;
+				var Dflag = true;
+				
+				x = jQuery.trim(x);
+				y = jQuery.trim(y);
+				
+				if(x=="")
+				{
+					document.getElementById("ideaTitleError").innerHTML = "Why would you like to save a draft with no title!";
+					Tflag = false;
+				}
+				else
+				{
+					document.getElementById("ideaTitleError").innerHTML = "";
+					Tflag = true;
+				}
+				if(y=="")
+				{
+					document.getElementById("ideaDescriptionError").innerHTML = "Do you really want to save nothing ???";
+					Dflag = false;
+				}
+				else
+				{
+					document.getElementById("ideaDescriptionError").innerHTML = "";
+					Dflag = true;
+				}
+					
+				if(Tflag && Dflag)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+		   
         </script>
         <style type="text/css">
-            error {
-                background: #c00 !important;
-            }
-            
             .success {
-                background: #008800 !important;
+                background: #FFF1A8 !important;
             }
             
         </style>
     </head>
     <body>
         #{extends 'main.html' /} 
-        #{if flash.error}
-        <p class="error" id="error">
-            &{flash.error}
-			
-        </p>
-        #{/if}
-        
+               
         <p class="success" id="success"></p>
         
-        <p>
-            Title: 
-        </p>
-        <input type="textbox" size = "50" value="${idea.title}" id="title"></input>
-        <p>
-            Body:
-        </p>
+		
+		
+        <p>Title: <font color="#123456"><span id="flashAmessage"></span></font></p>
+        
+		<input type="textbox" size = "50" value="${idea.title}" id="title"></input>
+        <span id="ideaTitleError"></span>
+		
+		<p>Body: </p>
+		
         <textarea cols="50" rows="5" id="body" onchange="auto()">${idea.description}</textarea>
-        <br>
-        </br>
+        <span id="ideaDescriptionError"></span>
+		
+		<br></br>
+		
         <input type="submit" value ="Save" onclick="save(${idea.id})"></input>
 		<input type="submit" value ="Post" onclick="post(${idea.id})"></input>
-		<input type="submit" value ="SAS" onclick="auto()"></input>
+		<input type="submit" value ="discard" onclick="discard(${idea.id})"></input><br>
+		<span>The auto-save ruined my idea, wish i could get my old idea back :( </span><input type="submit" value ="I'm sad" onclick="magic()"></input>
     </body>
 </html>
