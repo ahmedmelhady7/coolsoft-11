@@ -112,6 +112,13 @@
         #{/if}
         <br>
         <a href="@{Topics.tagTopic(object.id,'@@')}">Add tags</a>
+		#{if (targetTopic.createRelationship == true)}
+		#{if (canCreateRelationship == true)}
+			<p>
+				<a href="@{Topics.createRelation(object.id,object.entity.id)}">Create Relation</a>
+			</p>
+		#{/if}
+		#{/if}
         <br>
         #{/form}<h4>List of ideas within this topic : </h4>
         <div>

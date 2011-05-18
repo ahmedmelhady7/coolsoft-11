@@ -33,7 +33,12 @@
 		<a href="@{MainEntitys.goToCreateSubEntity(org.id,entity.id)}">Create new SubEntity</a>
 		#{/if}
 		<br />
-		
+		#{if (entity.createRelationship == true)}
+		#{if (canCreateRelationship == true)}
+		<a href="@{MainEntitys.createRelation(entity.id,org.id)}">Create Relation</a>
+		<br />
+		#{/if}
+		#{/if}
 		<form action="@{MainEntitys.viewFollowers()}">
             <HR>
             	<input type="hidden" name="entityId" value="${entity.id}">
