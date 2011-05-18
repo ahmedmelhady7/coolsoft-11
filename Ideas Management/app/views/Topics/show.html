@@ -342,6 +342,17 @@
 					var id = ${topicId};
 					var x = document.getElementById("ideaTitle").value.toString();
 					var y = document.getElementById("ideaDescription").value;
+					
+					if(validate())
+					{
+						$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/ideas/getdrafts"}  );
+					}					
+				}
+				
+				function validate()
+				{
+					var x = document.getElementById("ideaTitle").value.toString();
+					var y = document.getElementById("ideaDescription").value;
 					var Tflag = true;
 					var Dflag = true;
 					
@@ -368,8 +379,11 @@
 					
 					if(Tflag && Dflag)
 					{
-						$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/ideas/getdrafts"}  );
+						return true;
 					}
-					
+					else
+					{
+						return false;
+					}
 				}
 			</script>
