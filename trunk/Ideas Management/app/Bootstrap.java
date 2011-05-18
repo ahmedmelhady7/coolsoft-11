@@ -123,7 +123,7 @@ public class Bootstrap extends Job {
 
 			MainEntity gucMet = new MainEntity("MET",
 					"Media Engineering and technology", guc, true).save();
-			gucMet.tagList.add(tagEducation);
+//			gucMet.tagList.add(tagEducation);
 			gucMet._save();
 
 			MainEntity gucCs = new MainEntity("CS",
