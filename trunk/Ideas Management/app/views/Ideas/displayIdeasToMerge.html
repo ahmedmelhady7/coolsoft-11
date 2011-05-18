@@ -1,0 +1,97 @@
+#{extends 'main.html' /} 
+
+<table width="500">
+	#{list items:selectedIdeas, as:'idea'}
+	
+	#{if "shouldAddRow()"}
+		<tr>
+	#{/if}
+	<td>
+	<fieldset>
+        <legend>
+		   ${idea.title}
+        </legend>
+		${idea.description}
+		<br/>
+		Author: 
+		#{if idea.author.state == "a"}
+		  <a href="#">${idea.author.username}</a>
+		 #{/if}
+		 #{else}
+		  ${idea.author.username}
+		  #{/else}
+		&nbsp&nbsp&nbsp&nbsp
+		Rating: ${idea.rating}
+		<br/>
+			
+	</fieldset>
+	</td>	
+	#{if "shouldAddRow()"}
+		<tr>
+	#{/if}
+	incrementInsertedIdeas()
+	#{/list}
+</table>
+<div style="center">
+<fieldset>
+		Title: <br>
+		<input type="textbox" size = "50" id="title"></input>  
+		<br>Body: </br>
+		<textarea cols="50" rows="5" id="body"></textarea>  
+		<br></br>
+		
+		<input type="submit" value ="Merge" onclick="callMerge(${topicId})"></input>
+</fieldset>
+</div>
+
+		<textarea cols="50" rows="5" id="hiddenIdeasId">${selectedIdeasString}</textarea> 
+<script type="text/javascript">
+	var insertedIdeas = 0;
+	document.getElementById("hiddenIdeasId").style.display = "none";
+	function shouldAddRow() {
+		if(insertedIdeas % 3 == 0) {
+			alert("I'm the function");
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	function incrementInsertedIdeas() {
+		insertedIdeas++;
+		
+	}
+	
+	function callMerge(topicId) {
+		var title = document.getElementById("title").value.toString();
+		var body = document.getElementById("body").value.toString();
+		var IdeasIds = document.getElementById("hiddenIdeasId").value.toString();
+	
+		if(title == "") {
+			if(body == "") {
+				alert("Please enter the title and description");
+				return;
+			}
+			alert("Please enter the title of the idea");
+			return;
+		}
+		
+		if(body == "") {
+			alert("Please enter the description of the idea");
+			return;
+		}
+		
+		alert("I'm here");
+		
+		$.post('@{Ideas.mergeIdeas()}' ,{topicId:topicId, oldIdeas:IdeasIds, 
+						newTitle:title, newDescription:body });
+		
+		alert("i'm here 2");
+
+	}
+	
+	
+	
+	
+</script>
