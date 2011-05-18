@@ -157,6 +157,13 @@
                 #{/else}    
         </form>
         #{/if}
+		
+		#{if numberOfIdeas > 1}
+		#{form @Topics.getIdeasToMerge(), method:'POST', enctype:'multipart/form-data' }
+				<input type = "hidden" name = "topicId" value = ${topicId}>
+				<input type="submit" value="Merge Ideas" />
+		#{/form}
+		#{/if}
         #{if numberOfIdeas == 0}<h4>no ideas posted to this topic</h4>
         #{/if}
 <!--        <form action="@{Ideas.blank(topicId)}" method="post">-->
