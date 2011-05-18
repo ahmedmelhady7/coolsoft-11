@@ -107,11 +107,11 @@ public class Bootstrap extends Job {
 			Organization gov = new Organization("الحكومة المصرية", sharaf, 0,
 					true).save();
 
-			Tag tagEducation = new Tag("Education", guc).save();
-			Tag tagGuc = new Tag("GUC", guc).save();
+			Tag tagEducation = new Tag("Education", guc, slim).save();
+			Tag tagGuc = new Tag("GUC", guc, ashraf).save();
 
-			Tag tagEgypt = new Tag("Egypt", gov).save();
-			Tag tagGov = new Tag("Government", gov).save();
+			Tag tagEgypt = new Tag("Egypt", gov, sharaf).save();
+			Tag tagGov = new Tag("Government", gov, sharaf).save();
 
 			guc.relatedTags.add(tagGuc);
 			guc.relatedTags.add(tagEducation);
