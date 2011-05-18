@@ -1,16 +1,16 @@
-#{if error == false}
+#{if canView == true}
 #{extends 'planLayout.html' /}
 #{/if}
 #{set title:'View Plan as List' /}
 
-#{if error == true}
+#{if canView == false}
 #{extends 'main.html' /}
 <h3>You are not allowed to view this plan.</h3>
 #{/if}
 #{else}
 <br/> 
 
-#{if org == true}
+#{if isOrganizer == true}
 <form action="@{VolunteerRequests.viewVolunteerRequests()}" method="post">
 	<input type = "hidden" name = "planId" value = ${p.id} >
     Volunteer Requests: <input type="submit" value="View Volunteer Requests">
@@ -128,6 +128,28 @@
 		<input type="button" onclick="delItem(${item.id});" value = "delete item"> 
 		<br/>
       #{/if}
+	  
+		  #{if isOrganizer == true}
+	#{if item.isRelatedToEntity() == true} 
+	<div id = "removeEntity_${item.id}">
+	Related to entity: ${item.relatedEntity}
+	<input type = "button" value = "Remove" onclick="remove_entity(${item.id});">
+	</div>
+	#{/if}
+	#{else} <div id = "relateEntity_${item.id}">
+	Relate to entity: 
+	  <select name="entity" id="entitySelect" >
+   		 #{list items:entitiesList, as:'ent'}
+ 		 <option value = ${ent.id}>${ent.name}</option>
+		 #{/list}
+	  </select>
+	  
+	  <input type = "button" value = "Relate" onclick="relate_entity(${item.id});">
+	</div>
+	#{/else}
+	 <div id = "entity_div"></div>
+	 #{/if}
+	  
 	  #{if user.pendingVolunteerRequest(item.id)}
 	   <label>Pending volunteer Request</label>
 	  #{/if}
@@ -226,3 +248,18 @@ No items exist in plan. Please contact
 
 </script>	
 			
+function remove_entity(item)
+  {
+  	$.post('@{removeItemEntityRelation()}' , {itemId: item});
+	$("#removeEntity_" + item).hide();
+	
+	document.getElementById('entity_div').innerHTML = "Relate to entity: 
+	  <select name="entity" id="entitySelect" >
+    #{list items:entitiesList, as:'ent'}
+ 		 <option value = ${ent.id}>${ent.name}</option>
+		 #{/list}
+	  </select>
+	  
+	  <input type = "button" value = "Relate" onclick="relate_entity(${item.id});">"
+  }
+</script>
