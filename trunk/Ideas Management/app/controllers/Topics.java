@@ -1386,4 +1386,25 @@ public class Topics extends CRUD {
 		 String topiccId = topicId + "";
 		 Topics.show(topiccId);
 	 }
+	 
+	 /**
+		 * This method renders get a topic ID, 
+		 * and the renders the ideas to a new page
+		 * 
+		 * @author Mostafa Aboul Atta
+		 * 
+		 * @story C3S7
+		 * 
+		 * @param topicId
+		 *            : the id of the topic to be closed
+		 * 
+		 */
+		 public static void getIdeasToMerge(String topicId) {
+			 
+			 Long topicIdLong = Long.parseLong(topicId);
+			 Topic targetTopic = Topic.findById(topicIdLong);
+			 List ideas = targetTopic.getIdeas();
+			 
+			 render(topicId, ideas);
+		 }
 }
