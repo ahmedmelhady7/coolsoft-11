@@ -90,21 +90,28 @@ var eventSource=new Timeline.DefaultEventSource();
 
 
   var bandInfos = [
+  
+  
+  
     Timeline.createBandInfo({
 eventSource: eventSource,
 date: "Jan 25 2011 00:00:00 +0300",
-        width:          "70%", 
-        intervalUnit:   Timeline.DateTime.MONTH, 
-        intervalPixels: 100
+        width:          "60%", 
+         intervalUnit:   Timeline.DateTime.MONTH,  
+        intervalPixels: 100,
+			timeZone: +3
   
     }),
     Timeline.createBandInfo({
   eventSource: eventSource,
 date: "Jan 25 2011 00:00:00 +0300",
-        width:          "28%", 
+        width:          "38%", 
         intervalUnit:   Timeline.DateTime.YEAR, 
-        intervalPixels: 200
-    })
+        intervalPixels: 100,
+		timeZone: +3
+    }),
+	
+	
   ];
   
   
