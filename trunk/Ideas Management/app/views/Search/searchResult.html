@@ -12,6 +12,19 @@ The Search Results Viewer
         <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
         </script>
     </head>
+    <style type="text/css">
+    
+        #div1 { 
+        float:left; 
+        width:50%;
+        }
+        
+        #div2 { 
+        marging-left:50%; 
+        width:50%;
+        }
+        
+    </style>
     <body onLoad="step1()">
         <form name="myform" action="@{quickSearch()}" method="GET">
         <font size="+3" color="993300">
@@ -104,23 +117,65 @@ The Search Results Viewer
 			}
 		document.getElementById(marked[0]).disabled = true;
 		document.getElementById(marked[1]).disabled = true;
+		
+		function filterplan(){
+		
+		
+		$.post('@{filterSearchResults}',
+				{filterOn:"p"},
+				function(){
+				});	
+		
+		}
+		function filteridea(){
+			$.post('@{filterSearchResults}',{filterOn:"i"},function(){
+				});
+		}
+		function filterentity(){
+			$.post('@{filterSearchResults}',{filterOn:"e"},function(){
+				});
+		}	
+
+		function filttopic(){
+			$.post('@{filterSearchResults}',{filterOn:"t"},function(){
+				});
+		}	
+
+		function filtorganization(){
+			$.post('@{filterSearchResults}',{filterOn:"t"},function(){
+				});
+		}	
 		</script>
 	</form>
 	<br />
-	<b> <big> <u> Search Results:<a href="/filter_options"><i>Filter
-						Results</i> </a> </u> </big> </b>
+	<b> <big> <u> Search Results: </u> </big> </b>
 	</br>
 	</br>
-	<div align = 'right'>
-		Sort By:
 	<form name="sort">
 		<input type="radio" name="s" id="s" value="A"
 			onclick="whichsortmethod(this.form)" />Ascending rate order  <br> <input
 			type="radio" name="s" id="s1" value="D"
 			onclick="whichsortmethod(this.form)" />descending rate order </br> 
+	 </br>
 	</form>
+<div id='div1' >
+</div>
+
+</body>
 	</div>
 <div id='div1' align='left'>
+</br>
+<font color="black">
+<u><b><big> chose your filter options here :)!!</b></big></u>
+<br></br>
+<input type="checkbox" name="type" value="plan"  onclick="filterplan()" />Plans <br /> 
+<input type="checkbox" name="type" value="idea" onclick="filteridea()" />Ideas</br> 
+<input type="checkbox" name="type" value="entity" onclick="filterentity()"/>Entities</br> 
+<input type="checkbox" name="tupe" value="topic" onclick="filttopic()" />Topics</br> 
+<input type="checkbox" name="type" value="organization" onclick="filtorganization()"/>Organizations</br>
+     
+</font>
+
 </div>
-</body>
+
 </html>
