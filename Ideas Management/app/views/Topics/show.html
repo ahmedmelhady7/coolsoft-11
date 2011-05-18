@@ -113,8 +113,7 @@
 		   <a href="@{Invitations.invite(1,object.id)}">Invite</a>
         #{/if}
         <br>
-        <a href="@{Topics.tagTopic(object.id,'@@')}">Add tags</a>
-		#{if (targetTopic.createRelationship == true)}
+        #{if (targetTopic.createRelationship == true)}
 		#{if (canCreateRelationship == true)}
 			<p>
 				<a href="@{Topics.createRelation(object.id,object.entity.id)}">Create Relation</a>
@@ -122,7 +121,15 @@
 		#{/if}
 		#{/if}
         <br>
-        #{/form}<h4>List of ideas within this topic : </h4>
+        #{/form}
+		
+		<form action="@{Topics.tagTopic()}" method="post">
+        	<input type="hidden" value=${topicId} name='topicId'>
+			<input type="hidden" value='@@' name='tag'>
+			<input type="submit" value="Add tags">
+        </form>
+		
+		<h4>List of ideas within this topic : </h4>
         <div>
         
         #{if numberOfIdeas > 0}

@@ -175,4 +175,10 @@
         </br>
         </div>
       	  <div id='div1' align='left'>
+      	  	
+			<form action="@{Ideas.tagIdea()}" method="post">
+				<input type="hidden" value=${ideaId} name='ideaId'>
+				<input type="hidden" value='@@' name='tag'>
+				<input type="submit" value="Add tags">
+			</form>
 </div>

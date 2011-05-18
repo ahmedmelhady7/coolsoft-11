@@ -85,10 +85,6 @@ public class Topics extends CRUD {
 	 * 
 	 */
 
-	public static void tagTop(long topicId) {
-
-	}
-
 	public static void tagTopic(long topicId, String tag) {
 
 		boolean tagAlreadyExists = false;
@@ -103,18 +99,9 @@ public class Topics extends CRUD {
 
 		if (!tag.equals("@@")) {
 
-			if (topic == null)
-				System.out.println("topic");
-			else
-				System.out.println("safe");
-			if (user == null)
-				System.out.println("user");
-			else
-				System.out.println("safe");
-			// if (((ArrayList<User>)(topic.getOrganizer())) == null)
-			// System.out.println("list"); else System.out.println("safe");
 			if (!Users.isPermitted(user, "tag topics", entity.id, "entity")) {
 				// user not allowed
+				System.out.println("user not allowed");
 				userNotAllowed = true;
 			} else {
 				for (int i = 0; i < globalListOfTags.size(); i++) {
@@ -128,6 +115,8 @@ public class Topics extends CRUD {
 					if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
 						if (!topic.tags.contains(listOfTags.get(i))) {
 							topic.tags.add(listOfTags.get(i));
+							listOfTags.get(i).taggedTopics.add(topic);
+							listOfTags.get(i).save();
 
 							for (int j = 0; j < listOfTags.get(i).followers
 									.size(); j++) {
@@ -138,6 +127,7 @@ public class Topics extends CRUD {
 							}
 						} else {
 							// tag already exists error message
+							System.out.println("tag already exists");
 							tagAlreadyExists = true;
 						}
 						tagExists = true;
@@ -146,8 +136,10 @@ public class Topics extends CRUD {
 
 				if (!tagExists) {
 					Tag temp = new Tag(tag, topic.entity.organization, user);
-					temp.save();
 					topic.tags.add(temp);
+					temp.taggedTopics.add(topic);
+					temp.save();
+					System.out.println("new tag created and saved");
 				}
 
 				if (!tagAlreadyExists) {
@@ -176,7 +168,9 @@ public class Topics extends CRUD {
 			}
 
 		}
-		render(tagAlreadyExists, userNotAllowed, topic.tags, topicId);
+		topic.save();
+		List<Tag> tags = topic.tags;
+		render(tagAlreadyExists, userNotAllowed, tags, topicId);
 	}
 
 	/**

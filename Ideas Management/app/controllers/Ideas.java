@@ -401,8 +401,9 @@ public class Ideas extends CRUD {
 		try {
 			System.out.println("show() done, about to render");
 			// System.out.println("x is " + x);
+			boolean permittedToTagIdea = Users.isPermitted(user, "tag his/her ideas", ideaId, "idea") || Users.isPermitted(user, "tag ideas in my organization", ideaId, "idea");
 			render(type, object, /* tags, */user, canDelete, comments, topic,
-					plan,
+					plan, permittedToTagIdea,
 					/* openToEdit, */topicId, alreadyReported, deletemessage, /*
 																			 * deletable
 																			 * ,
@@ -677,6 +678,7 @@ public class Ideas extends CRUD {
 		List<Tag> listOfTags = new ArrayList<Tag>();
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
 		globalListOfTags = Tag.findAll();
+		System.out.println("global = " + globalListOfTags.size());
 		User user = (User) Security.getConnected();
 		Idea idea = (Idea) Idea.findById(ideaId);
 		Topic topic = idea.belongsToTopic;
@@ -685,8 +687,10 @@ public class Ideas extends CRUD {
 		if (!tag.equals("@@")) {
 
 			if (!Users.isPermitted(user, "tag ideas in my organization",
-					entity.id, "entity")) {
+					entity.id, "entity") || !Users.isPermitted(user, "tag his/her ideas",
+							topic.id, "topic")) {
 				// user not allowed
+				System.out.println("user not allowed");
 				userNotAllowed = true;
 			} else {
 				for (int i = 0; i < globalListOfTags.size(); i++) {
@@ -700,7 +704,9 @@ public class Ideas extends CRUD {
 					if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
 						if (!idea.tagsList.contains(listOfTags.get(i))) {
 							idea.tagsList.add(listOfTags.get(i));
-
+							listOfTags.get(i).taggedIdeas.add(idea);
+							listOfTags.get(i).save();
+							System.out.println("existing tag added");
 							for (int j = 0; j < listOfTags.get(i).followers
 									.size(); j++) {
 								Notifications.sendNotification(
@@ -710,6 +716,7 @@ public class Ideas extends CRUD {
 							}
 						} else {
 							// tag already exists error message
+							System.out.println("tag already exists");
 							tagAlreadyExists = true;
 						}
 						tagExists = true;
@@ -719,8 +726,10 @@ public class Ideas extends CRUD {
 				if (!tagExists) {
 					Tag temp = new Tag(tag,
 							idea.belongsToTopic.entity.organization, user);
-					temp.save();
 					idea.tagsList.add(temp);
+					temp.taggedIdeas.add(idea);
+					temp.save();	
+					System.out.println("new tag created and added");
 				}
 
 				if (!tagAlreadyExists) {
@@ -730,7 +739,9 @@ public class Ideas extends CRUD {
 			}
 
 		}
-		render(tagAlreadyExists, userNotAllowed, idea.tagsList, ideaId);
+		idea.save();
+		List<Tag> tags = idea.tagsList;
+		render(tagAlreadyExists, userNotAllowed, tags, ideaId);
 	}
 
 	/**
