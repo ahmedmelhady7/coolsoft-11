@@ -46,13 +46,11 @@
 					<ul>
 						<li>
 							<div id="search" >
-								<form method="get" action="#">
-									<div>
+								<form>
 										Search: <br>
-										<input type="text" name="search" id="search1" value="keyword" />
-										<input type="submit" id="submit" name="submit" value="GO" onclick="quickSearch(this.form)"/>										
+										<input type="text" name="search1" id="search1" value="keyword" />
+										<input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick="quickSearch(this.form)"/>										
 										<br> <small><i><a href="/AdvancedSearch">Advanced Search</a></i></small>										
-									</div>
 								</form>
 							</div>
 							<div style="clear: both;">&nbsp;</div>
@@ -170,7 +168,7 @@
 <script type="text/javascript">
         function quickSearch(frm){
             $.post('@{Search.quickSearch()}', {
-                keyword: frm.search.value
+                keyword: frm.search1.value
             }, function(){
                 window.location.href = "/searchResult";
             });
