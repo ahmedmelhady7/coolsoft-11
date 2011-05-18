@@ -142,7 +142,7 @@ public class Tags extends CRUD {
 			i++;
 		}
 		if (!duplicate) {
-			Tag tag = new Tag(name, org);
+			Tag tag = new Tag(name, org, user);
 			tag.save();
 			System.out.println(tag.id);
 			String description = user.username + " has created a new tag \""

@@ -718,7 +718,7 @@ public class Ideas extends CRUD {
 
 				if (!tagExists) {
 					Tag temp = new Tag(tag,
-							idea.belongsToTopic.entity.organization);
+							idea.belongsToTopic.entity.organization, user);
 					temp.save();
 					idea.tagsList.add(temp);
 				}

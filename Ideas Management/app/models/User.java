@@ -189,6 +189,11 @@ public class User extends CoolModel {
 	public List<RenameEndRelationshipRequest> myRenameEndRelationshipRequests;
 
 	/**
+	 * The tags that the user created
+	 */
+	@OneToMany(mappedBy = "creator")
+	public List<Tag> createdTags;
+	/**
 	 * @author Mostafa Ali
 	 */
 	public User(String email, String username, String password,
