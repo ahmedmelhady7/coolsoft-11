@@ -1239,6 +1239,7 @@ public class Topics extends CRUD {
 	        notFoundIfNull(object);
 	        Topic temporaryTopic = (Topic) object;
 	        MainEntity entity = temporaryTopic.entity;
+	        Plan plan = temporaryTopic.plan;
 	        System.out.println("entering try");
 	        try {
 	        	System.out.println("entered try");
@@ -1254,6 +1255,12 @@ public class Topics extends CRUD {
 				Notifications.sendNotification(temporaryTopic.followers.get(i).getId(), entity.getId(), "entity", message);
 				Notifications.sendNotification(temporaryTopic.creator.getId(), entity.getId(), "entity", justification);
 				System.out.println(justification);
+				
+				//>>>>added by Salma Osama to delete the topic's plan if the topic is deleted
+								if(plan != null) {
+									Plans.deletePlan(plan.id);
+								}
+								
 				 object._delete();
 		            System.out.println("deleted");
 				System.out.println("leaving try");
