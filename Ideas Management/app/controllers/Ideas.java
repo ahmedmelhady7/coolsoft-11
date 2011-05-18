@@ -769,10 +769,11 @@ public class Ideas extends CRUD {
 		String type = "Idea";
 		User user = Security.getConnected();
 		String desc = user.firstName + " " + user.lastName
-				+ " shared an Idea with you";
+				+ " shared an Idea with you" + "\n" + "Copy this link into your address bar to view the shared Idea : http://localhost:9008/ideas/show?ideaId="+ideaId;
 		long notId = ideaId;
 		long userId = U.id;
 		Notifications.sendNotification(userId, notId, type, desc);
+		redirect("/ideas/show?ideaId="+ideaId);
 
 	}
 
