@@ -487,10 +487,11 @@ public class Plans extends CRUD {
 		String type = "Plan";
 		User user = Security.getConnected();
 		String desc = user.firstName + " " + user.lastName
-				+ " shared a plan with you : " + p.title;
+				+ " shared a plan with you" + "\n" + "Copy this link into your address bar to view the shared Idea : http://localhost:9008/plans/viewaslist?planId="+p.id;
 		long notId = planID;
 		long userId = U.id;
 		Notifications.sendNotification(userId, notId, type, desc);
+		redirect("/plans/viewaslist?planId="+p.id);
 	}
 
 	/**
