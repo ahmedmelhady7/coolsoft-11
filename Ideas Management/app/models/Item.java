@@ -39,6 +39,17 @@ public class Item extends CoolModel {
 
 	@ManyToOne
 	public Plan plan;
+	
+	/**
+	 * The list of items related to this entity
+	 * 
+	 * @author Mohamed Mohie
+	 * 
+	 * @story C5S17
+	 */
+	@ManyToOne
+	public MainEntity relatedEntity;
+	
 	/**
 	 * This is the constructor for Item
 	 * 
@@ -150,6 +161,12 @@ public class Item extends CoolModel {
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean isRelatedToEntity(){
+		if(this.relatedEntity == null)
+			return false;
+		else return true;
 	}
 
 }

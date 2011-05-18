@@ -124,6 +124,16 @@ public class MainEntity extends CoolModel {
 
 	@OneToMany(mappedBy = "destinationEntity")
 	public List<CreateRelationshipRequest> relationshipRequestsDestination;
+	
+	/**
+	 * The list of items related to this entity
+	 * 
+	 * @author Mohamed Mohie
+	 * 
+	 * @story C5S17
+	 */
+	@OneToMany(mappedBy = "relatedEntity")
+	public List<Item> relatedItems;
 
 	/**
 	 * Default constructor for an entity within an organization
