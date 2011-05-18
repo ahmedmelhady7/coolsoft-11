@@ -16,6 +16,7 @@ public class IdeaCase {
 	/**
 	 * 
 	 * @author ${Fady Amir}
+	 * @return void
 	 * 
 	 * @param idea
 	 *            the idea that we check its date
