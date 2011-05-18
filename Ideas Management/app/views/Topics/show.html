@@ -120,7 +120,8 @@
         <form action=@{Ideas.show(ideaId)}>
                 #{if ideas}
                 #{list items:ideas, as:'idea'}
-                <li id="idea">
+                #{if idea.isDraft == false}
+				<li id="idea">
                 <a id = "LOL" href="@{Ideas.show(idea.id)}">${idea.title}</a>
                 <a href="@{Ideas.hide(idea.id)}">hide idea</a>
 					<a id = "delete" href="@{Ideas.delete(idea.id)}"><font color="Red">x</font></a>
@@ -139,6 +140,7 @@
 						$('#idea').hide();});
       		    </script>
                 </li>
+				#{/if}
                 #{/list}
                 #{/if}
                 #{else}
@@ -340,6 +342,11 @@
 					var id = ${topicId};
 					var x = document.getElementById("ideaTitle").value.toString();
 					var y = document.getElementById("ideaDescription").value;
+					if(x=="")
+						alert("yamma");
+					if(y=="")
+						alert("er7amene");
+					
 					$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/ideas/getdrafts"}  );
 				}
 			</script>
