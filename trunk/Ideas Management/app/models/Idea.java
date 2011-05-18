@@ -186,6 +186,9 @@ public class Idea extends CoolModel {
 	 *            the idea that we check its date
 	 * 
 	 */
+	
+	@On("0 0 12 0 0 ?")
+	
 	public static void checkDate(Idea idea) {
 
 		Comment lastComment = idea.commentsList
