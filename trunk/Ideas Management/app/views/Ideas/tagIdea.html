@@ -1,28 +1,45 @@
 #{extends '/ideas/layout.html' /}
+<!--<script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js">
+        </script>-->
 <html>
     <head>
         <title>Adding Tags</title>
 	</head>
     <body>
-    	
-
 		
-        <p>
+			<ul>
+			#{list items:tags, as:'tag'}
+                <li>
+                    ${tag.name}
+                </li>
+                #{/list}
+			</ul>
+		<p>
         	
 			#{if tagAlreadyExists == true}
-			alert(tag already exists);
+			<script type='text/javascript'>
+			alert("tag already exists");
+			</script>
 			#{/if}
 			
-        	#{if ${Ideas.userNotAllowed} == false}
-			#{form @Ideas.tagIdea()}
+        	#{if userNotAllowed == false}
+			<form action="@{Ideas.tagIdea()}" method="post">
             <input type="text" name="tag" id="tag">
+<!--			 <input type="hidden" id='tagsList' name="users" value="${tags}">
+			 <script language="javascript" type="text/javascript">
+                        var a = document.getElementById('tagsList');
+                        b = a.value + "";
+                        c = b.split("|");
+                        autoComplete.Set("group", c);
+                    </script>-->
 			<input type="hidden" name="ideaId" value="${ideaId}">
 			<input type="submit" value="Add Tag">
-			#{/form}
+			</form>
 			#{/if}
 			#{else}
-			alert('You are not allowed to tag this idea!');
-			#{/else}
+			<script type='text/javascript'>
+			alert("you are not allowed to tag this idea");
+			</script>			#{/else}
         </p>
     </body>
 </html>
