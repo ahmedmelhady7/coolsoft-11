@@ -1186,16 +1186,14 @@ public class Topics extends CRUD {
 		Topic t = Topic.findById(topicId);
 		if (t.followers.contains(user))
 			System.out.println("You are already a follower");
-		else if (Users.isPermitted(user,
-				"can follow organization/entities/topics", topicId, "topic")) {
+		else {
 			t.followers.add(user);
 			t.save();
 			user.topicsIFollow.add(t);
 			user.save();
 			redirect(request.controller + ".show", t.id,
 					"You are now a follower");
-		} else
-			System.out.println("Sorry! Action cannot be performed");
+		}
 	}
 
 	/**

@@ -26,41 +26,47 @@ import models.User;
 
 @With(Secure.class)
 public class Organizations extends CRUD {
-	
+
 	/**
 	 * checks relation name for duplicate
 	 * 
 	 * @author Mohamed Hisham
 	 * 
-	 * @param relationName : name of the relation
+	 * @param relationName
+	 *            : name of the relation
 	 * 
-	 * @param relationNames : list of relation names in the organization
+	 * @param relationNames
+	 *            : list of relation names in the organization
 	 * 
 	 * @return boolean value if duplicate(true) or not(false)
 	 */
-	public static boolean isDuplicate(String relationName, ArrayList<String> relationNames){
-		for(int i = 0; i < relationNames.size(); i++){
-			if(relationName.equals(relationNames.get(i)))
-				return true;	
+	public static boolean isDuplicate(String relationName,
+			ArrayList<String> relationNames) {
+		for (int i = 0; i < relationNames.size(); i++) {
+			if (relationName.equals(relationNames.get(i)))
+				return true;
 		}
 		return false;
 	}
-	
+
 	/**
-	 * adds a new name to the previously created relation names in the organization
+	 * adds a new name to the previously created relation names in the
+	 * organization
 	 * 
 	 * @author Mohamed Hisham
 	 * 
 	 * @story C2S5
 	 * 
-	 * @param organizationId : id of the organization to add the relation name in
+	 * @param organizationId
+	 *            : id of the organization to add the relation name in
 	 * 
-	 * @param name : name of the relation to add
+	 * @param name
+	 *            : name of the relation to add
 	 * 
 	 */
-	public static void addRelationName(long organizationId, String name){
+	public static void addRelationName(long organizationId, String name) {
 		Organization organization = Organization.findById(organizationId);
-		if(!isDuplicate(name, organization.relationNames)){
+		if (!isDuplicate(name, organization.relationNames)) {
 			organization.relationNames.add(name);
 			organization.save();
 			render(organization);
@@ -217,7 +223,7 @@ public class Organizations extends CRUD {
 			}
 		}
 		Invitation invitation = new Invitation(email, null, organization,
-				"Idea Developer", sender,null);
+				"Idea Developer", sender, null);
 		invitation._save();
 		if (reciever != null) {
 			reciever.invitation.add(invitation);
@@ -326,17 +332,14 @@ public class Organizations extends CRUD {
 		Organization org = Organization.findById(organizationId);
 		if (org.followers.contains(user))
 			System.out.println("You are already a follower");
-		else if (Users.isPermitted(user,
-				"can follow organization/entities/topics", organizationId,
-				"organization")) {
+		else {
 			org.followers.add(user);
 			org.save();
 			user.followingOrganizations.add(org);
 			user.save();
 			redirect(request.controller + ".viewProfile", org.id,
 					"You are now a follower");
-		} else
-			System.out.println("Sorry! Action cannot be performed");
+		}
 	}
 
 	/**
@@ -439,8 +442,8 @@ public class Organizations extends CRUD {
 		}
 		List<MainEntity> entities = org.entitiesList;
 		List<Topic> topics = new ArrayList<Topic>();
-		for(int x = 0; x < entities.size(); x++){
-			for(int y = 0; y < entities.get(x).topicList.size(); y++){
+		for (int x = 0; x < entities.size(); x++) {
+			for (int y = 0; y < entities.get(x).topicList.size(); y++) {
 				topics.add(entities.get(x).topicList.get(y));
 			}
 		}
@@ -503,7 +506,8 @@ public class Organizations extends CRUD {
 			}
 		}
 		boolean join = false;
-		if ((!Users.getEnrolledUsers(org).contains(user)) && (!admin) && (org.privacyLevel == 2)) {
+		if ((!Users.getEnrolledUsers(org).contains(user)) && (!admin)
+				&& (org.privacyLevel == 2)) {
 			join = true;
 		}
 		long pictureId = org.profilePictureId;
@@ -544,7 +548,7 @@ public class Organizations extends CRUD {
 		}
 		render(organizations);
 	}
-	
+
 	/**
 	 * This method allows a user to join a public organization
 	 * 
@@ -553,7 +557,7 @@ public class Organizations extends CRUD {
 	 * @story C2S29
 	 * 
 	 * @param organizationId
-	 * 				The id of the organization that the user wishes to join
+	 *            The id of the organization that the user wishes to join
 	 */
 	public static void join(long organizationId) {
 		Organization organization = Organization.findById(organizationId);
@@ -562,7 +566,7 @@ public class Organizations extends CRUD {
 		UserRoleInOrganizations.addEnrolledUser(user, organization, role);
 		Organizations.viewProfile(organizationId);
 	}
-	
+
 	/**
 	 * This method deletes an organization
 	 * 
@@ -571,21 +575,22 @@ public class Organizations extends CRUD {
 	 * @story C2S37
 	 * 
 	 * @param organizationId
-	 * 				The id of the organization that the user wishes to join 
+	 *            The id of the organization that the user wishes to join
 	 */
 	public static void deleteOrganization(long organizationId) {
 		Organization organization = Organization.findById(organizationId);
 		String name = organization.name;
 		System.out.println(name);
-		Organization.delete("byName",name);
+		Organization.delete("byName", name);
 		Organizations.mainPage();
 	}
-	
+
 	public static void editOrganization(long organizationId) {
 		Organization organization = Organization.findById(organizationId);
 		render(organization);
 	}
+
 	public static void editOrg(long organizationId) {
-		
+
 	}
 }

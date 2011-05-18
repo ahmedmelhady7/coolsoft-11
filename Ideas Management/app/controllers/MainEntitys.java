@@ -76,16 +76,13 @@ public class MainEntitys extends CRUD {
 		MainEntity entity = MainEntity.findById(entityId);
 		if (entity.followers.contains(user)) 
 			System.out.println("You are already a follower");
-		else if (Users.isPermitted(user,
-				"can follow organization/entities/topics", entityId, "entity")) {
+		else {
 			entity.followers.add(user);
 			entity.save();
 			user.followingEntities.add(entity);
 			user.save();
 			redirect(request.controller + ".viewEntity", entity.id,
 					"You are now a follower");
-		} else {
-			System.out.println("Sorry! Action cannot be performed");
 		}
 	}
 
