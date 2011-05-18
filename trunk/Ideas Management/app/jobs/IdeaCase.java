@@ -13,7 +13,14 @@ import play.jobs.On;
 
 @On("0 0 12 0 0 ?")
 public class IdeaCase {
-
+	/**
+	 * 
+	 * @author ${Fady Amir}
+	 * 
+	 * @param idea
+	 *            the idea that we check its date
+	 * 
+	 */
 	
 	public static void checkDate(Idea idea) {
 
