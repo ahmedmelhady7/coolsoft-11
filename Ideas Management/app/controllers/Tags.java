@@ -30,7 +30,6 @@ public class Tags extends CRUD {
 	 */
 	public static void createRelation(long tagId, long organizationId) {
 
-		// System.out.println("2ABEL !!!" + orgId + "," + tagId);
 		Tag tag = Tag.findById(tagId);
 		Organization organization = Organization.findById(organizationId);
 		List<Tag> tagList = null;
@@ -39,10 +38,7 @@ public class Tags extends CRUD {
 			tagList = organization.createdTags;
 			tagList.remove(tag);
 		}
-		// else {
-		// System.out.print("Hobba!!");
-		// }
-
+		
 		render(tag, tagList);
 	}
 
@@ -171,7 +167,7 @@ public class Tags extends CRUD {
 		List<Idea> ideas = tag.taggedIdeas;
 		User user = Security.getConnected();
 		boolean follower = user.followingTags.contains(tag);
-		boolean canCreateRelationship = TagRelationships.isAllowedTo(tagId);
-		render(tag, followers, topics, organizations, entities, ideas, follower, user, canCreateRelationship);
+//		boolean canCreateRelationship = TagRelationships.isAllowedTo(tagId);
+		render(tag, followers, topics, organizations, entities, ideas, follower, user/*, canCreateRelationship*/);
 	}
 }
