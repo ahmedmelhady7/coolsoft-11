@@ -16,24 +16,27 @@ import models.User;
 
 @With(Secure.class)
 public class MainEntitys extends CRUD {
-	
+
 	/**
-	 * renders the related entity and the list of other entities in the organization to the view
+	 * renders the related entity and the list of other entities in the
+	 * organization to the view
 	 * 
 	 * @author Mohamed Hisham
 	 * 
 	 * @story C2S5
 	 * 
-	 * @param entityId : id of the entity to be related
+	 * @param entityId
+	 *            : id of the entity to be related
 	 * 
-	 * @param organizationId : id of the organization the entity belongs to
+	 * @param organizationId
+	 *            : id of the organization the entity belongs to
 	 */
 	public static void createRelation(long entityId, long organizationId) {
 
-//		System.out.println("2ABEL !!!" + orgId + "," + entityId);
+		// System.out.println("2ABEL !!!" + orgId + "," + entityId);
 		MainEntity entity = MainEntity.findById(entityId);
 		Organization organization = Organization.findById(organizationId);
-		List<MainEntity> entityList = new ArrayList<MainEntity> ();
+		List<MainEntity> entityList = new ArrayList<MainEntity>();
 
 		if (organization.entitiesList != null) {
 			entityList = organization.entitiesList;
@@ -51,8 +54,8 @@ public class MainEntitys extends CRUD {
 					entityList.remove(entityList.get(i));
 			}
 		}
-		for(int i = 0; i < entityList.size(); i++){
-			if(!entityList.get(i).createRelationship)
+		for (int i = 0; i < entityList.size(); i++) {
+			if (!entityList.get(i).createRelationship)
 				entityList.remove(entityList.get(i));
 		}
 		render(entity, entityList);
@@ -74,7 +77,7 @@ public class MainEntitys extends CRUD {
 	public static void followEntity(long entityId) {
 		User user = Security.getConnected();
 		MainEntity entity = MainEntity.findById(entityId);
-		if (entity.followers.contains(user)) 
+		if (entity.followers.contains(user))
 			System.out.println("You are already a follower");
 		else {
 			entity.followers.add(user);
@@ -102,7 +105,7 @@ public class MainEntitys extends CRUD {
 	 */
 	public static void viewFollowers(long entityId, String f) {
 		MainEntity entity = MainEntity.findById(entityId);
-		if (f.equals("true")) 
+		if (f.equals("true"))
 			followEntity(entityId);
 		render(entity);
 	}
@@ -138,11 +141,12 @@ public class MainEntitys extends CRUD {
 	 * @param orgId
 	 *            : The id of the organization in which the entity will be
 	 *            created
-	 *            
+	 * 
 	 * @param createRelationship
-	 * 				specifies whether an entity can have relationships with others
+	 *            specifies whether an entity can have relationships with others
 	 */
-	public static void createEntity(String name, String description, long orgId, boolean createRelationship) {
+	public static void createEntity(String name, String description,
+			long orgId, boolean createRelationship) {
 		boolean canCreate = true;
 		System.out.println(createRelationship);
 		Organization org = Organization.findById(orgId);
@@ -151,7 +155,8 @@ public class MainEntitys extends CRUD {
 				canCreate = false;
 		}
 		if (canCreate) {
-			MainEntity entity = new MainEntity(name, description, org, createRelationship);
+			MainEntity entity = new MainEntity(name, description, org,
+					createRelationship);
 			entity.save();
 		}
 		redirect("Organizations.viewProfile", org.id, "Entity created");
@@ -178,7 +183,7 @@ public class MainEntitys extends CRUD {
 	 *            created
 	 * 
 	 * @param createRelationship
-	 * 				specifies whether an entity can have relationships with others
+	 *            specifies whether an entity can have relationships with others
 	 */
 	public static void createSubEntity(String name, String description,
 			long parentId, long orgId, boolean createRelationship) {
@@ -190,7 +195,8 @@ public class MainEntitys extends CRUD {
 				canCreate = false;
 		}
 		if (canCreate) {
-			MainEntity entity = new MainEntity(name, description, parent, org, createRelationship);
+			MainEntity entity = new MainEntity(name, description, parent, org,
+					createRelationship);
 			entity.save();
 		}
 		redirect("Organizations.viewProfile", org.id, "SubEntity created");
@@ -254,32 +260,37 @@ public class MainEntitys extends CRUD {
 		List<User> organizers = Users.getEntityOrganizers(entity);
 		int canCreateEntity = 0;
 		if (user.isAdmin || org.creator.equals(user)
-				|| organizers.contains(user)) 
+				|| organizers.contains(user))
 			canCreateEntity = 1;
 		int permission = 1;
 		int invite = 0;
 		int canEdit = 0;
 		int canView = 0;
 		int canRequest = 0;
+		int canRequestRelationship = 0;
 		List<User> allowed = Users.getEntityOrganizers(entity);
-		if (org.creator.equals(user) || allowed.contains(user) || user.isAdmin) 
+		if (org.creator.equals(user) || allowed.contains(user) || user.isAdmin)
 			canEdit = 1;
-		if (!Users.isPermitted(user, "post topics", entity.id, "entity")) 
+		if (!Users.isPermitted(user, "post topics", entity.id, "entity"))
 			permission = 0;
-		if (Users.isPermitted(user, "view", entity.id, "entity")) 
+		if (Users.isPermitted(user, "view", entity.id, "entity"))
 			canView = 1;
-		if (Users.isPermitted(user, "use", entity.id, "entity")) 
+		if (Users.isPermitted(user, "use", entity.id, "entity"))
 			canRequest = 1;
 		if (Users
 				.isPermitted(
 						user,
 						"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
-						entity.id, "entity")) 
+						entity.id, "entity"))
 			invite = 1;
+		if (Users.getEntityOrganizers(entity).contains(user)) {
+			canRequestRelationship = 1;
+		}
 		boolean follower = user.followingEntities.contains(entity);
 		boolean canCreateRelationship = EntityRelationships.isAllowedTo(id);
 		render(user, org, entity, subentities, topicList, permission, invite,
-				canEdit, canCreateEntity, follower, canCreateRelationship, canView, canRequest);
+				canEdit, canCreateEntity, follower, canCreateRelationship,
+				canView, canRequest, canRequestRelationship);
 	}
 
 	/**
@@ -313,17 +324,23 @@ public class MainEntitys extends CRUD {
 	 * 
 	 * @param description
 	 *            : The new description of the entity
-	 *            
+	 * 
 	 * @param createRelationship
-	 * 				specifies whether an entity can have relationships with others
+	 *            specifies whether an entity can have relationships with others
 	 * 
 	 */
-	public static void editEntity(long entityId, String name, String description, boolean createRelationship) {
+	public static void editEntity(long entityId, String name,
+			String description, boolean createRelationship) {
 		MainEntity entity = MainEntity.findById(entityId);
 		entity.name = name;
 		entity.description = description;
 		entity.createRelationship = createRelationship;
 		entity.save();
-		redirect(request.controller + ".viewEntity", entity.id, "Entity created");
+		redirect(request.controller + ".viewEntity", entity.id,
+				"Entity created");
+	}
+	
+	public static void createRelationship() {
+		System.out.println("HEEEEYYYY");
 	}
 }
