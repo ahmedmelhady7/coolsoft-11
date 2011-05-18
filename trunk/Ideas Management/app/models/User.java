@@ -570,5 +570,21 @@ public class User extends CoolModel {
 		}
 		return false;
 	}
+	
+	public ArrayList<Idea> getDrafts()
+	{
+		List<Idea> drafts = new ArrayList<Idea>();
+		
+		for(Idea idea : this.ideasCreated)
+			if(idea.isDraft)
+				drafts.add(idea);
+		
+		return (ArrayList<Idea>) drafts;
+	}
+	
+	public int getDraftsCount()
+	{
+		return this.getDrafts().size();
+	}
 
 }
