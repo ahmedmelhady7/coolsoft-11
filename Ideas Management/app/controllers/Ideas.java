@@ -30,13 +30,16 @@ public class Ideas extends CRUD {
 	 * 
 	 * @story C3S13
 	 * 
-	 * this method saves an idea as a draft for the first time
+	 *        this method saves an idea as a draft for the first time
 	 * 
-	 * @param title the title of the idea
+	 * @param title
+	 *            the title of the idea
 	 * 
-	 * @param body the body of the idea
+	 * @param body
+	 *            the body of the idea
 	 * 
-	 * @param topicId the topic that the idea belongs to
+	 * @param topicId
+	 *            the topic that the idea belongs to
 	 */
 
 	public static void createDraft(String title, String description,
@@ -53,9 +56,10 @@ public class Ideas extends CRUD {
 	 * 
 	 * @story C3S13
 	 * 
-	 * this method allows the user to create/save an idea
+	 *        this method allows the user to create/save an idea
 	 * 
-	 * @param topicId the topic that the idea belongs to
+	 * @param topicId
+	 *            the topic that the idea belongs to
 	 */
 
 	public static void createIdea(long topicId) {
@@ -63,33 +67,35 @@ public class Ideas extends CRUD {
 		Topic topic = Topic.findById(topicId);
 		render(topic, user);
 	}
-	
-	public static void doCreateIdea(long topicId,String title,String body) 
-	{
-		System.out.println("De Te Kill "+topicId);
+
+	public static void doCreateIdea(long topicId, String title, String body) {
+		System.out.println("De Te Kill " + topicId);
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
-		System.out.println(topic.title +" b " +user.email);
-		Idea idea = new Idea(title,body,user,topic);
+		System.out.println(topic.title + " b " + user.email);
+		Idea idea = new Idea(title, body, user, topic);
 		idea.isDraft = false;
-		if(idea != null)
+		if (idea != null)
 			System.out.println("mesh null");
 		else
 			System.out.println("NUll ya fale7");
-		}
+	}
 
 	/**
 	 * @author Abdalrahman Ali
 	 * 
 	 * @story C3S13
 	 * 
-	 * this method posts an idea that was saved as a draft
+	 *        this method posts an idea that was saved as a draft
 	 * 
-	 * @param ideaId the saved idea
+	 * @param ideaId
+	 *            the saved idea
 	 * 
-	 * @param title the idea's title
+	 * @param title
+	 *            the idea's title
 	 * 
-	 * @param description the idea's description
+	 * @param description
+	 *            the idea's description
 	 */
 
 	public static void postDraft(long ideaId, String title, String description) {
@@ -106,13 +112,16 @@ public class Ideas extends CRUD {
 	 * 
 	 * @story C3S13
 	 * 
-	 * this method saves a change in a draft idea
+	 *        this method saves a change in a draft idea
 	 * 
-	 * @param ideaId the saved idea
+	 * @param ideaId
+	 *            the saved idea
 	 * 
-	 * @param title the idea's title
+	 * @param title
+	 *            the idea's title
 	 * 
-	 * @param description the idea's description
+	 * @param description
+	 *            the idea's description
 	 */
 
 	public static void saveDraft(long ideaId, String title, String description) {
@@ -120,8 +129,8 @@ public class Ideas extends CRUD {
 		idea.title = title;
 		idea.description = description;
 		idea.save();
-		//flash.success("aho");
-		//redirect("/ideas/editdraft?ideaId=" + ideaId);
+		// flash.success("aho");
+		// redirect("/ideas/editdraft?ideaId=" + ideaId);
 	}
 
 	/**
@@ -129,8 +138,8 @@ public class Ideas extends CRUD {
 	 * 
 	 * @story C3S13
 	 * 
-	 * this method returns all the ideas the user saved as draft in order to
-	 * enable the user to choose one of them and post it.
+	 *        this method returns all the ideas the user saved as draft in order
+	 *        to enable the user to choose one of them and post it.
 	 */
 
 	public static void getDrafts() {
@@ -151,14 +160,14 @@ public class Ideas extends CRUD {
 	 * 
 	 * @story C3S13
 	 * 
-	 * this method just directs the user to a page where he can handle his
-	 * drafts
+	 *        this method just directs the user to a page where he can handle
+	 *        his drafts
 	 */
 
 	public static void editDraft(long ideaId) {
 		Idea idea = Idea.findById(ideaId);
 		User user = Security.getConnected();
-		//flash.success("aho");
+		// flash.success("aho");
 		render(idea, user);
 	}
 
@@ -392,7 +401,7 @@ public class Ideas extends CRUD {
 																			 * deletable
 																			 * ,
 																			 */
-					ideaId,rate);
+					ideaId, rate, idea);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -810,6 +819,38 @@ public class Ideas extends CRUD {
 			}
 		}
 		render(topics);
+	}
+
+	/**
+	 * @author Loaay Alkherbawy
+	 * @param ideaId
+	 *            : the Id of the idea that the user likes
+	 * @description: this method sends a notification to the creator telling him
+	 *               who liked his idea
+	 */
+
+	public static void like(long ideaId) {
+		System.out.println("Notification about to be sent");
+		Idea idea = Idea.findById(ideaId);
+		Notifications.sendNotification(idea.author.id, ideaId, "Idea",
+				Security.getConnected().username + " liked your idea "
+						+ idea.title);
+		System.out.println("Notification sent");
+	}
+
+	/**
+	 * @author Loaay Alkherbawy
+	 * @param ideaId
+	 *            : the Id of the idea that the user dislikes
+	 * @description: this method sends a notification to the creator telling him
+	 *               who disliked his idea
+	 */
+	
+	public static void disLike(long ideaId) {
+		Idea idea = Idea.findById(ideaId);
+		Notifications.sendNotification(idea.author.id, ideaId, "Idea",
+				Security.getConnected().username + " dis liked your idea "
+						+ idea.title);
 	}
 
 }
