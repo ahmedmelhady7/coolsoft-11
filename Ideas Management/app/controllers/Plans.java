@@ -795,7 +795,7 @@ public static void viewasTimeline(long planId) throws IOException, ParseExceptio
 		List<Item> itemsList = p.items;
 
 		 FileWriter fstream;
-		fstream =  new FileWriter("Ideas Management/app/views/plans/out.xml");	
+		fstream =  new FileWriter("Ideas Management/public/xml/out.xml");	
 		
 			BufferedWriter out = new BufferedWriter(fstream);
 					
@@ -804,17 +804,68 @@ public static void viewasTimeline(long planId) throws IOException, ParseExceptio
 		         out.write("\n");
 		
 		         
-		 
 
-			        // See if we can parse the output of Date.toString()
+
+		         
+		         out.write("<event start=\"");
+				  //       out.write(itemsList.get(i).startDate.toGMTString());
+				        String inputDate = (p.startDate.toGMTString());
+				         Date date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz").parse(inputDate);
+				        
+				         
+				         
+				         
+				         out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z").format(date));
+			         
+						 out.write("\"");
+								 
+						
+						 out.write(" ");		 
+						 out.write("title=\"");
+						 out.write("START");
+						 out.write("\"");out.write(" ");
+						 out.write("icon=\"/public/rer7.png\"");
+						 out.write(">" );
+						  
+						 out.write("</event>");
+						 out.write("\n");
+				
+		         
+		         
+		         
+		        
+						 
+						 
+						 out.write("<event start=\"");
+						  //       out.write(itemsList.get(i).startDate.toGMTString());
+						         inputDate = (p.endDate.toGMTString());
+						         date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz").parse(inputDate);
+						        
+						         
+						         
+						         
+						         out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z").format(date));
+					         
+								 out.write("\"");
+								 out.write(" ");		 
+									 
+								 out.write("title=\"");
+								 out.write("END");
+								 out.write("\"");out.write(" ");
+								 out.write("icon=\"/public/rer7.png\"");
+								 out.write(">" );
+								  
+								 out.write("</event>");
+								 out.write("\n");
+						
+		         
 			        
 		         
 		 for(int i=0;i<itemsList.size();i++){
-		 
 			 	 out.write("<event start=\"");
 		  //       out.write(itemsList.get(i).startDate.toGMTString());
-		        String inputDate = (itemsList.get(i).startDate.toGMTString());
-		         Date date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz").parse(inputDate);
+		         inputDate = (itemsList.get(i).startDate.toGMTString());
+		          date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz").parse(inputDate);
 		        
 		         
 		         
@@ -826,7 +877,7 @@ public static void viewasTimeline(long planId) throws IOException, ParseExceptio
 				 out.write("end=\"");
 				 
 				 //out.write(itemsList.get(i).endDate.toGMTString());
-				 inputDate = (itemsList.get(i).startDate.toGMTString());
+				 inputDate = (itemsList.get(i).endDate.toGMTString());
 		         date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz").parse(inputDate);
 		         out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z").format(date));
 		         
@@ -849,8 +900,7 @@ public static void viewasTimeline(long planId) throws IOException, ParseExceptio
 		 out.flush();
 		 out.close();
 		
-
-//render(p, itemsList);
+render(p, itemsList);
 		
 		
 		
