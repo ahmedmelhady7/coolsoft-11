@@ -42,11 +42,14 @@ public class TagRelationships extends CRUD {
 
 		TagRelationship relation = new TagRelationship(name, source,
 				destination);
-		relation.save();
+		
 		relation.source.relationsSource.add(relation);
 		relation.destination.relationsDestination.add(relation);
 		if(!isDuplicate(name, relation.source.createdInOrganization.relationNames))
 			relation.source.createdInOrganization.relationNames.add(name);
+		
+		relation.save();
+		
 	}
 
 	/**

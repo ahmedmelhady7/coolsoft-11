@@ -41,11 +41,32 @@ public class TopicRelationships extends CRUD {
 
 		TopicRelationship relation = new TopicRelationship(name, source,
 				destination);
-		relation.save();
+		
 		relation.source.relationsSource.add(relation);
 		relation.destination.relationsDestination.add(relation);
 		if(!isDuplicate(name, relation.source.entity.organization.relationNames))
 			relation.source.entity.organization.relationNames.add(name);
+		
+		relation.save();
+		Organization organization = relation.source.entity.organization;
+		organization.save();
+		
+		for (int i = 0; i < Users.getEntityOrganizers(source.entity).size(); i++) {
+			Notifications.sendNotification(Users.getEntityOrganizers(source.entity)
+					.get(i).id, source.entity.organization.id, "Organization",
+					"a new relation \"" + name
+							+ "\" is created now between topics \""
+							+ source.title + "\" and \"" + destination.title
+							+ "\".");
+		}
+		for (int i = 0; i < Users.getEntityOrganizers(destination.entity).size(); i++) {
+			Notifications.sendNotification(Users.getEntityOrganizers(destination.entity)
+					.get(i).id, source.entity.organization.id, "Organization",
+					"a new relation \"" + name
+							+ "\" is created now between topics \""
+							+ source.title + "\" and \"" + destination.title
+							+ "\".");
+		}
 	}
 
 	/**

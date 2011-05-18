@@ -56,8 +56,12 @@ public class Topics extends CRUD {
 			listOfTopics = entity.topicList;
 			listOfTopics.remove(topic);
 		}
-		System.out.println(topic.title + "7aga" + entity.name);
-
+		for(int i = 0; i < listOfTopics.size(); i++){
+			if(!listOfTopics.get(i).createRelationship){
+				System.out.println(listOfTopics.get(i).createRelationship);
+				listOfTopics.remove(listOfTopics.get(i));
+			}
+		}
 		render(topic, entity, listOfTopics);
 	}
 
