@@ -80,6 +80,12 @@ public class Ideas extends CRUD {
 		else
 			System.out.println("NUll ya fale7");
 	}
+	
+	public static void discardIdea(long ideaId)
+	{
+		Idea idea = Idea.findById(ideaId);
+		idea.delete();
+	}
 
 	/**
 	 * @author Abdalrahman Ali
