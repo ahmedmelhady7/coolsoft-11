@@ -239,7 +239,7 @@
     #{/if}
 
 
-</div>#{if canClose == 1 && openToEdit == true}
+</div>#{if canClose == 1 && openToEdit == true && numberOfIdeas > 0}
 			#{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
 				<input type = "hidden" name = "topicId" value = ${topicId}>
 				<input type="submit" value="Close Topic" />
