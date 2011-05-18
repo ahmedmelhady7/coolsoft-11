@@ -1,115 +1,182 @@
 #{extends 'main.html' /}
 #{set title:'Home Page' /}
+
+<script src="/public/javascripts/topbar_message/jquery.js" type="text/javascript"></script>
+<script src="/public/javascripts/topbar_message/juery.topbar.js" type="text/javascript"></script>
+
+ <link href="jquery.jnotify.css" rel="stylesheet" type="text/css" />
+ <script src="/public/javascript/jnotify/jquery.jnotify.js" type="text/javascript"></script>
+
+<!-- side bar -->
+<div id="hmenu">
+		<ul>
+			<li><a href="@{Users.myProfile()}" >Profile</a></li>
+			<li><a href="@{Browse.browse()}" >Browse All</a></li>												     							
+			<li>
+			<a href="javascript:void(0)" id="demo01">Latest Notifications</a>
+			<div id="demo01-body" style="display: none;">
+				#{if user.notificationsNumber == 0}
+					You have no notifications!!
+				#{/if}
+				#{else}
+					#{if user.notificationsNumber == 1}
+					<h1>user.notifications.get(0).title</h1>
+					<p>user.notifications.get(0).description</p>					
+					#{/if}
+					#{else}
+						#{if user.notificationsNumber == 2}
+						#{/if}
+						#{else}
+							#{if user.notificationsNumber == 3}
+							#{/if}
+						#{/else}
+					#{/else}
+				#{/else}
+			</div>
+			</li>
+			<li ><a href="@{Users.viewNotifications()}" >Notifications(${user.notificationsNumber})</a></li>
+			<li><a href="@{Users.viewNotificationProfile()}" >Notification Profile</a></li>			
+			<li>#{if !user.isAdmin}
+									<a href="@{Invitations.view()}">Invitations</a>
+ 				#{/if}</li>	
+		</ul>
+</div>
+
+<div id="sidebar">
+					<ul>
+						<li>
+							<div id="search" >
+								<form method="get" action="#">
+									<div>
+										Search: <br>
+										<input type="text" name="search" id="search1" value="keyword" />
+										<input type="submit" id="submit" name="submit" value="GO" onclick="quickSearch(this.form)"/>										
+										<br> <small><i><a href="/AdvancedSearch">Advanced Search</a></i></small>										
+									</div>
+								</form>
+							</div>
+							<div style="clear: both;">&nbsp;</div>
+						</li>
+						<div style="clear: both;">&nbsp;</div>
+						<li>
+							<h2>${user.username}</h2> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							#{if user.profilePictureId != -1}							
+							#{list items:user.pictureId, as:'id'}
+							<img src="@{Pictures.getPicture(id)}" width="40" height="40"/>
+							#{/list}
+							#{/if}
+							#{if user.profilePictureId == -1}
+							<img src="/public/images/user.png" width="40" height="40"/>
+							#{/if}
+							<br>
+							<b>E-Mail: </b>
+							${user.email} <br>
+							<b>Community Contribution Counter: </b>
+							${user.communityContributionCounter} <br> 
+							#{if !user.isAdmin}
+							<a href="@{Users.confirmDeactivation()}">Deactivate</a>
+							<br>
+							#{/if}
+							#{if user.isAdmin}							
+							<a href="http://localhost:9008/admin">Admin View</a>
+							<br>							
+							#{/if}							
+						</li>
+						<div style="clear: both;">&nbsp;</div>
+						<li>
+							<h2>My Links</h2>
+							<ul>								
+ 								<li><a href="@{Organizations.mainPage()}">My Organisations</a></li>
+ 								<li><a href="@{Organizations.viewAllOrganizations()}">All Organisations</a></li>
+ 								<li><a href="@{Items.viewAssignedItems()}">Assigned Items</a></li>
+ 								<li><a href="@{AssignRequests.view()}">Assigned Requests</a></li>
+ 								<li><input type="hidden" name="userId" value="${user.id}"></li>
+ 								<li><a href="@{Users.listFollows()}">Follow List</a></li> 
+ 								<li><a href="@{MarkRequest.markDuplicate()}">Duplicate Requests</a></li>								 								 								 															
+							</ul>
+						</li>
+						<li>
+							<h2>My Documents</h2>
+							<ul>
+								<li><form action="@{Documents.newDocument()}" method="post">
+										<input type="hidden" name="id" value="-1">
+										Create a Document: <input type="submit" value="Create">
+									</form>
+								</li>
+								<li>
+								<form action="@{Documents.listDocument()}" method="post">
+									<input type="hidden" name="id" value="-1">
+									Show my Documents: <input type="submit" value="show">
+								</form>
+								</li>								
+							</ul>
+						</li>
+						<li>
+						<h2>My Gallery</h2>
+							<ul>
+								<li>
+									<form action="@{Pictures.index()}" method="post">
+									<input type="hidden" name="id" value="-1">
+									Show my Gallery: <input type="submit" value="show">
+									</form>
+								</li>
+							</ul>
+						</li>
+						<li>
+						<h2>My Labels</h2>
+							<ul>
+							<li><a href="@{Labels.createLabel()}"">Create Label</a></li>
+							<li><a href="@{Labels.showAllLabels()}">Manage Labels</a></li>
+							</ul>
+						</li>
+						<li>
+						<h2>Drafts</h2>
+							<ul>
+								<li><a href="@{Ideas.getDrafts()}">Drafts (${user.getDraftsCount()})</a></li>						
+							</ul>
+						</li>
+					</ul>					
+			</div>
 #{if flash.error}
    <b> <p style="color:green">
                ${flash.error}
     </p></b>
 #{/if}
-#{if profilePicture == true}
-#{list items:pictureId, as:'id'}
-<img src="@{Pictures.getPicture(id)}" width="75" height="75"/>
-#{/list}
-#{/if}
-#{if profilePicture == false}
-<img src="/public/images/user.png" width="75" height="75"/>
-#{/if}
-
-<p>
-<b>Username: </b>
-${u.username}
-<br>
-<b>E-Mail </b>
-${u.email}
-</p>
-<br>
-<b>Community Contribution Counter </b>
-${u.communityContributionCounter}
-</p>
-<br>
-<br/>
-#{if admin==0}	
- <input type="submit" value="Deactivate" onclick=location.href="@{Users.confirmDeactivation()}">
- <input type="submit" value="View Invitations" onclick=location.href="@{Invitations.view()}">
-#{/if}
-<br/>
-<br/>
-My Admin: <input type="submit" value="Admin View" onclick="goAdmin('${u.isAdmin}')">
-<br>
-<form action="@{Users.myProfile()}" method="post">
-My Profile: <input type="submit" value="Profile" />
-</form>
-
-#{if admin==0}	
-<form action="@{Invitations.view()}" method="GET">
-<input type="submit" value="View Invitations" />
-</form>
-#{/if}
-<form action="@{Users.viewNotifications()}" method="post" >
-	My Notifications: <input type="submit" value="Notifications">
-</form>
-&nbsp;
-<form action="@{Users.viewNotificationProfile()}" method="post" >
-	My Notification Profile: <input type="submit" value="Notification Profile">
-</form>
-&nbsp;
-<form action="@{Notifications.notificationIndex()}" method="post">
-	Send Notification: <i>(just for testing)</i><input type="submit" value="Notify">
-</form>
-<form action="@{Items.viewAssignedItems()}" method="post">
-    My assigned to-do items: <input type="submit" value="View">
-</form>
-<form action="@{AssignRequests.view()}" method="post">
-    Assign Requests: <input type="submit" value="View">
-</form>
-<form action="@{Users.listFollows()}">
-    <input type="hidden" name="userId" value="${u.id}">Follow List: <input type="submit" value="view">
-</form>
-<form action="@{Organizations.mainPage()}" method="post">Organizations you are enrolled in: <input type="submit" value="View"></form>
-<form action="@{Organizations.viewAllOrganizations()}" method="post">
-	View All Organizations: <input type="submit" value="View">
-</form>
-<form action="@{Users.logout}" method="post">
-Logout: <input type="submit" value="Logout">
-</form>
-
-<a href="@{Ideas.getDrafts()}">Drafts (${u.getDraftsCount()})</a>
-<br>
-<a href="@{Labels.createLabel()}">Create a Label</a>
-<br>
-<a href="@{Labels.showAllLabels()}">Manage Labels</a>
-<br>
-<div id="labels">
-	<p>Labels</p>
-	#{list items:u.myLabels , as:'label'}
-	   	<a href='@{Labels.showLabel(label.id)}'>${label.name}</a><br>
-	#{/list}
-</div> 
-
-<form action="@{MarkRequest.markDuplicate()}" method="post">
-	View duplicates requests: <input type="submit" value="View">
-</form>
-
-<form action="@{Documents.newDocument()}" method="post">
-	<input type="hidden" name="id" value="-1">
-	Create a Document: <input type="submit" value="Create">
-</form>
-
-<form action="@{Documents.listDocument()}" method="post">
-	<input type="hidden" name="id" value="-1">
-	Show my Documents: <input type="submit" value="show">
-</form>
-
-<form action="@{Pictures.index()}" method="post">
-	<input type="hidden" name="id" value="-1">
-	Show my Gallery: <input type="submit" value="show">
-</form>
+<body>
+	#{doLayout /}
+	</body>
+	
+<script type="text/javascript" language="javascript">
+		$(function () {
+ 
+			$("#demo01").click(function () {
+				$('#demo01-body').showTopbarMessage();
+			});
+ 
+			$("#demo02").click(function () {
+				$('#demo02-body').showTopbarMessage({ close: 5000 });
+			});
+ 
+			$("#demo03").click(function () {
+				$('#demo03-body').showTopbarMessage({ background: "#093", close: 2000 });
+			});
+ 
+			$("#demo04").click(function () {
+				$('#demo04-body').showTopbarMessage({ height: "150px", close: 2000 });
+			});
+		});	
+</script>
 
 <script type="text/javascript">
-function goAdmin(isA) {
-	if(isA) {
-		window.location ='http://localhost:9008/admin';
-	} else {
-		alert('matesta3batsh');
-	}
-}
+        function quickSearch(frm){
+            $.post('@{Search.quickSearch()}', {
+                keyword: frm.search.value
+            }, function(){
+                window.location.href = "/searchResult";
+            });
+        }
+    </script>
+<script type="text/javascript">
 </script>
+
+

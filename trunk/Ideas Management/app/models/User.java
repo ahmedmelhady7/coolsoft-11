@@ -52,6 +52,7 @@ public class User extends CoolModel {
 	 */
 	public String state;
 	public String profession;
+	public int notificationsNumber;
 
 	@OneToMany(mappedBy = "creator")
 	// , cascade = CascadeType.PERSIST)
@@ -234,6 +235,7 @@ public class User extends CoolModel {
 		this.state = "a";
 		this.profession = profession;
 		profilePictureId = -1;
+		notificationsNumber = notifications.size();
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
 		// linkDuplicates = new ArrayList<LinkDuplicates>();

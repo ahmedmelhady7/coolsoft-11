@@ -13,7 +13,7 @@ public class TimerCall extends Controller implements ActionListener
 {
 	 public void actionPerformed(ActionEvent event)
 	 {
-	       Idea.getAllIdeas();
+	      // Idea.getAllIdeas();
 	 }
 	 
 	 

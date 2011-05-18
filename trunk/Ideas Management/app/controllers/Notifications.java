@@ -118,8 +118,9 @@ public class Notifications extends CRUD {
 		 */
 		if(type.equalsIgnoreCase("User")) {
 			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
-			Notification n = new Notification(notificationId, type, title, user, description);
-			n.save();
+			Notification notification = new Notification(notificationId, type, title, user, description);
+			notification.save();
+			user.notificationsNumber++;
 			return true;
 		}
 		for (int i = 0; i < nProfiles.size(); i++) {
@@ -134,13 +135,14 @@ public class Notifications extends CRUD {
 		if(!contains) {
 			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
 			NotificationProfile notificationProfile = new NotificationProfile(notificationId, type, title, user);
-			notificationProfile.save();			
+			notificationProfile.save();
 			isenabled = true;
 		}
 		// Send the notification if enabled
 		if(isenabled) {
 			Notification notification = new Notification(notificationId, type, title, user, description);
 			notification.save();
+			user.notificationsNumber++;
 			return true;
 		}
 		return false;
@@ -231,6 +233,7 @@ public class Notifications extends CRUD {
 			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
 			Notification n = new Notification(notId, type, title, user, description);
 			n.save();
+			user.notificationsNumber++;
 			render();
 		}
 		for (int i = 0; i < nProfiles.size(); i++) {
@@ -252,6 +255,7 @@ public class Notifications extends CRUD {
 		if(isenabled) {
 			Notification notification = new Notification(notId, type, title, user, description);
 			notification.save();
+			user.notificationsNumber++;
 			render();
 		}
 		render();
