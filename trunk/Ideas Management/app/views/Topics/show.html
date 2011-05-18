@@ -154,7 +154,7 @@
         <input id="postIdea" type="button" value="Post Idea to this topic">
         <div id="postIdeaform">
         	<p>
-            <label>Title</label><input type="text" id="object_title" cols="30" rows="1" class="" name="object.title" required>
+            <label>Title</label><input type="text" id="ideaTitle" cols="30" rows="1" class="" name="object.title" required>
             <span>
                 <font color="Red">
                     *
@@ -165,15 +165,16 @@
             <label>
                 Description
             </label>
-            <textarea id="description" cols="50" rows="5" class="" name="object.description" required></textarea>
+            <textarea id="ideaDescription" cols="50" rows="5" class="" name="object.description" required></textarea>
             <span>
                 <font color="Red">
                     *
                 </font>Required
             </span>
             </p>
+			<input id ="draftSaver" type="submit"  value="Save as Draft" onclick="save()" ></input>
             <form action="@{create(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to hide this topic?');">
-            <input type="submit" value="post"/>
+           	<input type="submit" value="post"/>
     </form> 
 		</div>
 		<style type="text/css">
@@ -332,3 +333,13 @@
             	}
             }
             </script>
+			<script type="text/javascript">
+				
+				function save()
+				{
+					var id = ${topicId};
+					var x = document.getElementById("ideaTitle").value.toString();
+					var y = document.getElementById("ideaDescription").value;
+					$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/ideas/getdrafts"}  );
+				}
+			</script>
