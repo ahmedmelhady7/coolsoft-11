@@ -16,11 +16,11 @@ public class IdeaCase {
 	/**
 	 * 
 	 * @author ${Fady Amir}
-	 * @return void
+	 * 
 	 * 
 	 * @param idea
 	 *            the idea that we check its date
-	 * 
+	 * @return void
 	 */
 	
 	public static void checkDate(Idea idea) {
@@ -54,6 +54,7 @@ public class IdeaCase {
 	 * @author ${Fady Amir}
 	 * 
 	 *         checking the dates of all ideas
+	 * @return void
 	 * 
 	 */
 
