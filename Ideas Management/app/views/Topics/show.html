@@ -157,7 +157,7 @@
         <div id="postIdeaform">
         	<p>
             <label>Title</label><input type="text" id="ideaTitle" cols="30" rows="1" class="" name="object.title" required>
-            <span>
+            <span id = "ideaTitleError">
                 <font color="Red">
                     *
                 </font>Required
@@ -168,7 +168,7 @@
                 Description
             </label>
             <textarea id="ideaDescription" cols="50" rows="5" class="" name="object.description" required></textarea>
-            <span>
+            <span id="ideaDescriptionError">
                 <font color="Red">
                     *
                 </font>Required
@@ -342,11 +342,34 @@
 					var id = ${topicId};
 					var x = document.getElementById("ideaTitle").value.toString();
 					var y = document.getElementById("ideaDescription").value;
-					if(x=="")
-						alert("yamma");
-					if(y=="")
-						alert("er7amene");
+					var Tflag = true;
+					var Dflag = true;
 					
-					$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/ideas/getdrafts"}  );
+					if(x=="")
+					{
+						document.getElementById("ideaTitleError").innerHTML = "please enter a title for the idea";
+						Tflag = false;
+					}
+					else
+					{
+						document.getElementById("ideaTitleError").innerHTML = "";
+						Tflag = true;
+					}
+					if(y=="")
+					{
+						document.getElementById("ideaDescriptionError").innerHTML = "please enter a body for the idea";
+						Dflag = false;
+					}
+					else
+					{
+						document.getElementById("ideaDescriptionError").innerHTML = "";
+						Dflag = true;
+					}
+					
+					if(Tflag && Dflag)
+					{
+						$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/ideas/getdrafts"}  );
+					}
+					
 				}
 			</script>
