@@ -259,11 +259,17 @@ public class MainEntitys extends CRUD {
 		int permission = 1;
 		int invite = 0;
 		int canEdit = 0;
+		int canView = 0;
+		int canRequest = 0;
 		List<User> allowed = Users.getEntityOrganizers(entity);
 		if (org.creator.equals(user) || allowed.contains(user) || user.isAdmin) 
 			canEdit = 1;
 		if (!Users.isPermitted(user, "post topics", entity.id, "entity")) 
 			permission = 0;
+		if (Users.isPermitted(user, "view", entity.id, "entity")) 
+			canView = 1;
+		if (Users.isPermitted(user, "use", entity.id, "entity")) 
+			canRequest = 1;
 		if (Users
 				.isPermitted(
 						user,
@@ -273,7 +279,7 @@ public class MainEntitys extends CRUD {
 		boolean follower = user.followingEntities.contains(entity);
 		boolean canCreateRelationship = EntityRelationships.isAllowedTo(id);
 		render(user, org, entity, subentities, topicList, permission, invite,
-				canEdit, canCreateEntity, follower, canCreateRelationship);
+				canEdit, canCreateEntity, follower, canCreateRelationship, canView, canRequest);
 	}
 
 	/**
