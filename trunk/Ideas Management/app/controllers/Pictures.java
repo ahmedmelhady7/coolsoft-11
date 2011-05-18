@@ -102,16 +102,22 @@ public class Pictures extends Controller {
 	 */
 	public static void deletePicture(long pictureId, long id) {
 		Picture picture = Picture.findById(pictureId);
-		picture.image.getFile().delete();
 		if (picture.isOrganization) {
+			Organization organization = Organization
+					.findById(picture.userOrganizationId);
 			if (((Organization) Organization
-					.findById(picture.userOrganizationId)).profilePictureId == pictureId)
-				((Organization) Organization
-						.findById(picture.userOrganizationId)).profilePictureId = -1;
+					.findById(picture.userOrganizationId)).profilePictureId == pictureId) {
+				organization.profilePictureId = -1;
+				organization.save();
+			}
 		} else {
-			if (((User) User.findById(picture.userOrganizationId)).profilePictureId == pictureId)
-				((User) User.findById(picture.userOrganizationId)).profilePictureId = -1;
+			User user = User.findById(picture.userOrganizationId);
+			if (user.profilePictureId == pictureId) {
+				user.profilePictureId = -1;
+				user.save();
+			}
 		}
+		picture.image.getFile().delete();
 		picture.delete();
 		index(id);
 	}
@@ -120,21 +126,25 @@ public class Pictures extends Controller {
 	 * Set the Picture as profile picture
 	 * 
 	 * @author Ibrahim Al-Khayat
+	 * @param pictureId
+	 *            picture id
 	 * @param id
-	 *            the id of the picture
+	 *            id of the organization (-1 for user) needed for rendering the
+	 *            gallery
 	 */
-	public static void setProfilePicture(long id) {
-		Picture picture = Picture.findById(id);
+	public static void setProfilePicture(long pictureId, long id) {
+		Picture picture = Picture.findById(pictureId);
 		if (picture.isOrganization) {
 			Organization organization = Organization
 					.findById(picture.userOrganizationId);
-			organization.profilePictureId = id;
+			organization.profilePictureId = pictureId;
 			organization.save();
 		} else {
 			User user = User.findById(picture.userOrganizationId);
-			user.profilePictureId = id;
+			user.profilePictureId = pictureId;
 			user.save();
 		}
+		index(id);
 	}
 
 }

@@ -36,7 +36,7 @@
                             	<input type="hidden" name="id" value="${id}">
 								#{if canDelete == true}
                             	<a href="@{Pictures.deletePicture(picture.id, id.value)}">Remove Image</a><br />
-                                <a href="@{Pictures.setProfilePicture(picture.id)}">Set profile picture</a><br />
+                                <a href="@{Pictures.setProfilePicture(picture.id, id.value)}">Set profile picture</a><br />
 								#{/if}
 								<a href="@{Pictures.getPicture(picture.id)}" target="_blank">Download Original</a>
 							</div>
