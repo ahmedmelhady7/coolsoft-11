@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+<event start="Apr 20 2011 00:00:00 +0200" title="START" icon="/public/rer7.png"></event>
+<event start="Aug 30 2011 00:00:00 +0300" title="END" icon="/public/rer7.png"></event>
+<event start="Jun 01 2011 00:00:00 +0300" end="Jun 20 2011 00:00:00 +0300" title="Candidates Debate">One of the members who is not runing for elections should organize a debate between the candidates</event>
+<event start="Jun 04 2011 00:00:00 +0300" end="Jun 14 2011 00:00:00 +0300" title="Room reservation">One of the SU members should reserve a room for the debate</event>
+<event start="May 01 2011 00:00:00 +0300" end="Jun 28 2011 00:00:00 +0300" title="Election Process Setup">One of the members should set up an electronic election process</event>
+</data>
