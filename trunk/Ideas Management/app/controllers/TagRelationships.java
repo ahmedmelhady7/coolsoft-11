@@ -108,7 +108,7 @@ public class TagRelationships extends CRUD {
 				.isPermitted(
 						user,
 						"create relationships between entities/sub-entities/topics/tags",
-						tagId, "entity"))
+						tagId, "tag"))
 			return true;
 		return false;
 	}
