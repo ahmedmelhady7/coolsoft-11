@@ -64,13 +64,16 @@ public class Organizations extends CRUD {
 	 *            : name of the relation to add
 	 * 
 	 */
-	public static void addRelationName(long organizationId, String name) {
+
+	public static boolean addRelationName(long organizationId, String name){
 		Organization organization = Organization.findById(organizationId);
-		if (!isDuplicate(name, organization.relationNames)) {
+		boolean isDuplicate = true;
+		if(!isDuplicate(name, organization.relationNames)){
+			isDuplicate = false;
 			organization.relationNames.add(name);
 			organization.save();
-			render(organization);
 		}
+		return isDuplicate;
 	}
 
 	/**
