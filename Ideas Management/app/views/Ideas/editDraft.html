@@ -45,6 +45,7 @@
 			   
 			   if(validate())
 			   {
+			   		$('#success').fadeIn('1');
 			   		$.post('@{Ideas.saveDraft()}', {ideaId: id, title: x,description: y });
                		$('#success').html('Saved successfully!');
 			   		setTimeout("myFade()",'2000');	
@@ -57,6 +58,13 @@
 				$('#success').fadeOut('500');
 				window.location.href = "/ideas/getdrafts"
 			}
+			
+			function myFade()
+			{
+				$('#success').fadeOut('500');
+				window.location.href = "/ideas/list"
+			}
+			
 			
 			function myFaded()
 			{
@@ -132,14 +140,14 @@
 			{
                	var x = document.getElementById("title").value.toString();
                	var y = document.getElementById("body").value.toString();
-               	$.post('@{Ideas.postDraft()}', 
-				{ideaId: id, title: x, description: y }
-				, function()
-				{
-                   	window.location.href = "/ideas/list"
-               	}
-					 );
-               alert("Idea posted ");
+               	
+				$('#success').fadeIn('1');
+			   if(validate())
+			   {
+			   		$.post('@{Ideas.postDraft()}', {ideaId: id, title: x, description: y });
+               		$('#success').html('Saved successfully!');
+			   		setTimeout("myFade()",'2000');	
+			   }
            }
 		   
 		   function validate()
