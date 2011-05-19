@@ -1201,7 +1201,7 @@ public class Search extends Controller {
 		List<Model> toSort = new ArrayList<Model>();
 		List<Model> notToSort = new ArrayList<Model>();
 
-		//System.out.println("2ooo2oooiiii 2ooo 2aaa2aa 2na hena f sort A");
+		System.out.println("2ooo2oooiiii 2ooo 2aaa2aa 2na hena f sort A");
 		// if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
 
 		/*
@@ -1220,8 +1220,8 @@ public class Search extends Controller {
 		}
 
 		for (int j = 0; j < toSort.size(); j++) {
-			int rate1 = 0;
-			int rate2 = 0;
+			String rate1 = "0";
+			String rate2 = "0";
 			if (toSort.get(j) instanceof Idea) {
 				Idea temp1 = (Idea) toSort.get(j);
 				rate1 = temp1.rating;
@@ -1238,7 +1238,7 @@ public class Search extends Controller {
 					rate2 = temp2.rating;
 				}
 
-				if (rate1 > rate2) { // sorting
+				if (Integer.parseInt(rate1) > Integer.parseInt(rate2)) { // sorting
 					Model temp = (Model) toSort.get(k);
 					toSort.set(k, toSort.get(j));
 					toSort.set(j, temp);
@@ -1342,8 +1342,8 @@ public class Search extends Controller {
 		}
 
 		for (int j = 0; j < toSort.size(); j++) {
-			int rate1 = 0;
-			int rate2 = 0;
+			String rate1 = "0";
+			String rate2 = "0";
 			if (toSort.get(j) instanceof Idea) {
 				Idea temp1 = (Idea) toSort.get(j);
 				rate1 = temp1.rating;
@@ -1360,7 +1360,7 @@ public class Search extends Controller {
 					rate2 = temp2.rating;
 				}
 
-				if (rate1 < rate2) { // sorting
+				if (Integer.parseInt(rate1) < Integer.parseInt(rate2)) { // sorting
 					Model temp = (Model) toSort.get(k);
 					toSort.set(k, toSort.get(j));
 					toSort.set(j, temp);
