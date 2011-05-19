@@ -608,6 +608,10 @@ public class Organizations extends CRUD {
 		Organization organization = Organization.findById(organizationId);
 		String name = organization.name;
 		System.out.println(name);
+		//fadwa
+		for(int i =0 ; i <organization.joinRequests.size();i++)
+			organization.joinRequests.get(i).delete();
+		//fadwa
 		Organization.delete("byName", name);
 		Organizations.mainPage();
 	}
