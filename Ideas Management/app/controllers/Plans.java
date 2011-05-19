@@ -1185,6 +1185,20 @@ public class Plans extends CRUD {
 
 	}
 
+	/**
+	 * 
+	 * This method relates a given item to the given entity if the item is not related to any entity
+	 * 
+	 * @author Mohamed Mohie
+	 * 
+	 * @story C5S17
+	 * 
+	 * @param itemId
+	 *            the id of the item
+	 *            
+	 * @param entityId
+	 *            the id of the entity
+	 */
 	public static void relateToEntity(long itemId, long entityId) {
 		// User user = Security.getConnected();
 		Item item = Item.findById(itemId);
@@ -1200,6 +1214,17 @@ public class Plans extends CRUD {
 		}
 	}
 
+	/**
+	 * 
+	 * This method removes the relation between an item and the entity
+	 * 
+	 * @author Mohamed Mohie
+	 * 
+	 * @story C5S17
+	 * 
+	 * @param itemId
+	 *            the id of the item
+	 */
 	public static void removeItemEntityRelation(long itemId) {
 		// User user = Security.getConnected();
 		Item item = Item.findById(itemId);
