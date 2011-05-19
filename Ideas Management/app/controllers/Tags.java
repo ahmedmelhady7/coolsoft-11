@@ -278,6 +278,14 @@ public class Tags extends CRUD {
 		Tags.mainPage(tagId);
 	}
 	
+	/**
+	 * This method deletes a tag
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @param tagId
+	 * 			The id of the tag that will be deleted
+	 */
 	public static void delete(long tagId) {
 		Tag tag = Tag.findById(tagId);
 		List<Organization> allOrganizations = Organization.findAll();
