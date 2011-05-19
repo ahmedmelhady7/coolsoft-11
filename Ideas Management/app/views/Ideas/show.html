@@ -20,7 +20,7 @@
     #{if canDelete}
     #{form @delete(object._key())}
 		<p class="crudDelete">
-			<input type="submit" value="&{'Delete Idea', type.modelName}" />
+			<input type="submit" value="&{'Delete Idea		        ', type.modelName}" />
 		</p>
 	#{/form}    
 	#{/if}
@@ -100,10 +100,9 @@
 			<input type="hidden" name="ideaId" value="${ideaId}">
 			<input type="text" name="userName" id="userName"/>
 		</form>
-			<input type="image" src='/public/images/Like.jpg' id ='like' value="Like" onclick="like()" />
-			<input type="image" src='/public/images/dislike.jpg' id ='dislike' value="Dislike" onclick="disLike()" />
+			<input type="button" id ='like' value="Like" onclick="like()" />
+			<input type="button" id ='dislike' value="Dislike" onclick="disLike()" />
 		<form>
-			</br>
 			<big><b>List Of Duplicates</b></big>
 			#{list items:idea.duplicateIdeas , as:'idea'}
 			<li>
@@ -111,20 +110,22 @@
 			</li>
 			#{/list}
 		</form>
-		<script type='text/javascript'>
+				<script type='text/javascript'>
+			;
 			function like(){
 				$.post('@{Ideas.like}',{ideaId: ${ideaId}},function(){
 					alert("you liked this idea");
 					document.getElementById('like').disabled = true;
 					document.getElementById('dislike').disabled = true;
-				})
+				});
 				}
+				;
 			function disLike(){
 				$.post('@{Ideas.disLike}',{ideaId: ${ideaId}},function(){
 					alert("you disliked this idea");
 					document.getElementById('like').disabled = true;
 					document.getElementById('dislike').disabled = true;
-				})
+				});
 			}
 		</script>
 		</br>

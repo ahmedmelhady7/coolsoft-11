@@ -197,11 +197,8 @@ public class Topics extends CRUD {
 	 * 
 	 * @story C3S10
 	 * 
-	 * @param user
-	 *            : the user who posted the idea
-	 * 
-	 * @param topic
-	 *            : the topic which the idea belongs/added to
+	 * @param topicId
+	 *            : the id of topic which the idea belongs/added to
 	 * 
 	 * @param title
 	 *            : the title of the idea
@@ -209,15 +206,14 @@ public class Topics extends CRUD {
 	 * @param description
 	 *            : the description of the idea
 	 * 
-	 * @param privacyLevel
-	 *            : the level of privacy of the idea
 	 * 
 	 */
 
-	public static void postIdea(Topic topic, String title, String description) {
+	public static void postIdea(long topicId, String title, String description) {
 		User user = Security.getConnected();
+		Topic topic = Topic.findById(topicId);
 		Idea idea = new Idea(title, description, user, topic);
-		render(title, description);
+		idea.save();
 	}
 
 	/**
@@ -382,13 +378,13 @@ public class Topics extends CRUD {
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
 				"use", "organization", org.id).fetch(); // list of blocked user
 		// from an organization
-		//List<BannedUser> bannedUserPlan = BannedUser.find(
-			//	"byOrganizationAndActionAndResourceTypeAndResourceID", org,
-				//"can post ideas to a Topic", "topic", topicId).fetch(); // list
-																		// of
-																		// users
-																		// banned
-																		// from
+		// List<BannedUser> bannedUserPlan = BannedUser.find(
+		// "byOrganizationAndActionAndResourceTypeAndResourceID", org,
+		// "can post ideas to a Topic", "topic", topicId).fetch(); // list
+		// of
+		// users
+		// banned
+		// from
 		// posting ideas in the
 		// topic
 
@@ -403,7 +399,7 @@ public class Topics extends CRUD {
 		bannedUser.addAll(bannedUserTopic);
 		bannedUser.addAll(bannedUserEntity);
 		bannedUser.addAll(bannedUserOrg);
-	//	bannedUser.addAll(bannedUserPlan);
+		// bannedUser.addAll(bannedUserPlan);
 
 		for (int i = 0; i < bannedUser.size(); i++) {
 			bannedUsers.add((bannedUser.get(i)).bannedUser);
@@ -822,16 +818,34 @@ public class Topics extends CRUD {
 		String actionClose = "close a topic and promote it to execution";
 		String actionPlan = "create an action plan to execute an idea";
 		Topic targetTopic = Topic.findById(topicIdLong);
-		int allowed = 0;
+		boolean alreadyReported = false;
+		boolean canDelete = Users.isPermitted(actor, "hide and delete an idea",
+				topicIdLong, "topic");
+		// mestani lama
 		for (int i = 0; i < ideas.size(); i++) {
-			if (ideas.get(i).hidden)
-				ideas.remove(i);
-			else if(ideas.get(i).isDraft)
-				ideas.remove(i);
+			Idea idea = ideas.get(i);
+
+			for (int j = 0; j < idea.reporters.size()
+					|| j < actor.ideasReported.size(); j++) {
+				System.out.println("gowa el loop");
+				if (idea.reporters.size() > 0
+						&& (actor.toString().equals(
+								idea.reporters.get(j).toString()) || idea
+								.toString().equals(
+										idea.reporters.get(j).toString())))
+					alreadyReported = true;
+			}
+		}
+		int allowed = 0;
+		for (int k = 0; k < ideas.size(); k++) {
+			if (ideas.get(k).hidden)
+				ideas.remove(k);
+			else if (ideas.get(k).isDraft)
+				ideas.remove(k);
 		}
 		int numberOfIdeas = ideas.size();
-		if ((temporaryTopic.privacyLevel==2) && Users
-				.isPermitted(
+		if ((temporaryTopic.privacyLevel == 2)
+				&& Users.isPermitted(
 						actor,
 						"Accept/Reject requests to post in a private topic in entities he/she manages",
 						temporaryTopic.id, "topic"))
@@ -878,11 +892,13 @@ public class Topics extends CRUD {
 				.isAllowedTo(topicIdLong);
 		try {
 
-			render(type, object, tags, creator, followers, ideas, numberOfIdeas,comments,
-					entity, plan, openToEdit, privacyLevel, deleteMessage,
-					deletable, topicIdLong, canClose, canPlan, targetTopic,
-					allowed, permission, topicId, canPost, canNotPost, pending,
-					follower, canCreateRelationship, seeRelationStatus, createRelationship, actor, hidden);
+			render(type, object, tags, creator, followers, ideas,
+					numberOfIdeas, comments, entity, canDelete,
+					alreadyReported, plan, openToEdit, privacyLevel,
+					deleteMessage, deletable, topicIdLong, canClose, canPlan,
+					targetTopic, allowed, permission, topicId, canPost,
+					canNotPost, pending, follower, canCreateRelationship,
+					seeRelationStatus, createRelationship, actor, hidden);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
@@ -1366,27 +1382,93 @@ public class Topics extends CRUD {
 	        redirect("mainentitys.viewentity",entity.id);
 	 }
 
-	 /**
-	  * This method changes the relationship status of a topic
-	  * 
-	  * @author Omar Faruki
-	  * 
-	  * @story C2S31
-	  * 
-	  * @param topicId
-	  * 				The id of the topic
-	  * 
-	  * @param createRelationship
-	  * 				Specifies whether a relationship can be created with that topic
-	  */
-	 
-	 public static void changeRelationStatus(long topicId, boolean createRelationship) {
-		 Topic topic = Topic.findById(topicId);
-		 topic.createRelationship = createRelationship;
-		 topic.save();
-		 String topiccId = topicId + "";
-		 Topics.show(topiccId);
-	 }
+	/**
+	 * This method changes the relationship status of a topic
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S31
+	 * 
+	 * @param topicId
+	 *            The id of the topic
+	 * 
+	 * @param createRelationship
+	 *            Specifies whether a relationship can be created with that
+	 *            topic
+	 */
+
+	public static void changeRelationStatus(long topicId,
+			boolean createRelationship) {
+		Topic topic = Topic.findById(topicId);
+		topic.createRelationship = createRelationship;
+		topic.save();
+		String topiccId = topicId + "";
+		Topics.show(topiccId);
+	}
+
+	/**
+	 * 
+	 * @author ${Ahmed EL-Hadi}
+	 * 
+	 * 
+	 * @param ideaId
+	 *            : id of the idea to be deleted
+	 * 
+	 * @description This method deletes and idea from the database
+	 * 
+	 * 
+	 */
+	public static void deleteIdea(long ideaId) {
+		Idea idea = Idea.findById(ideaId);
+		try {
+			idea.delete();
+		} catch (Exception e) {
+			redirect(request.controller + ".show");
+		}
+		flash.success(Messages.get("crud.deleted"));
+		redirect(request.controller + ".list");
+	}
+	
+	/**
+	 * Hide an idea
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S8
+	 * 
+	 * @param ideaId
+	 *            : the id of the idea to be hidden
+	 */
+	public static void hideIdea(Long ideaId) {
+		Idea idea = Idea.findById(ideaId);
+		Topic topic = idea.belongsToTopic;
+		User user = Security.getConnected();
+		try {
+			// Logs.addLog( myUser, "delete", "Task", temporaryTopic.id,
+			// temporaryTopic.taskStory.componentID.project, cal.getTime() );
+			String message = user.username + " has hidden the topic "
+					+ idea.title;
+			List<User> users = Users.getEntityOrganizers(topic.entity);
+			// for (int i = 0; i < users.size(); i++)
+			Notifications.sendNotification(topic.creator.id/*
+															 * users.get(i).id
+															 */, idea.id,
+					"Idea", message);
+			// for (int i = 0; i < topic.followers.size(); i++)
+			// Notifications.sendNotification(topic.followers.get(i).getId(),
+			// topic.getId(), "entity", message);
+			idea.hidden = true;
+			idea.save();
+			System.out.println("hidden");
+			System.out.println("leaving try");
+
+		} catch (Exception e) {
+			System.out.println("entered catch");
+		}
+		System.out.println("flash.success");
+		// redirect(request.controller + ".list");
+		redirect("topics.show", topic.id);
+	}
 	 
 	 /**
 		 * This method renders get a topic ID, 

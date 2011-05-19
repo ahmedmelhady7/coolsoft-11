@@ -377,11 +377,7 @@ public class Ideas extends CRUD {
 		// boolean openToEdit = i.openToEdit;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
-		boolean canDelete = false;
-		if (user.toString().equals(idea.author.toString())
-				|| user.toString().equals(
-						idea.belongsToTopic.creator.toString()))
-			canDelete = true;
+		boolean canDelete = Users.isPermitted(user, "hide and delete an idea", topicId, "topic");
 		boolean alreadyReported = false;
 		System.out.println("false alreadyreoprted");
 		for (int i = 0; i < idea.reporters.size()
