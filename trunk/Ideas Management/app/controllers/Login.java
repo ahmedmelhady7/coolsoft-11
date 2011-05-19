@@ -7,6 +7,7 @@ import java.util.List;
 import notifiers.Mail;
 
 import models.Idea;
+import models.Invitation;
 import models.MainEntity;
 import models.Organization;
 import models.Topic;
@@ -31,6 +32,17 @@ public class Login extends Controller {
 	 * 
 	 * @return void
 	 */
+	
+	/**Reactivates the account if it has been deactivated before
+	 * Redirects the new registered users to the invitation page if 
+	 * they have been invited to be idea developers/organizers
+	 * 
+	 * @author Mai Magdy
+	 * 
+	 * @Stroy C1S5, C1S11
+	 * 
+	 * @return void
+	 */
 
 	public static void homePage() {
 		User user = Security.getConnected();
@@ -51,7 +63,20 @@ public class Login extends Controller {
 			user.save();
 			Mail.reactivate();
 			flash.error("Your account has been reactivated successfuly");
-		}		
+		}	
+		
+		if(user.state.equals("c")){
+			 Invitation invite=Invitation.find("byEmail",user.email).first();
+			    user.state="a";
+			    user.save();
+			    Mail.activation(user);
+			 
+			    if(invite !=null){
+				   Invitations.view();
+			   }
+				
+			}
+		
 		render(user,admin,drafts);
 	}
 	
