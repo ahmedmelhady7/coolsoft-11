@@ -283,6 +283,8 @@ public class Tags extends CRUD {
 	 * 
 	 * @author Omar Faruki
 	 * 
+	 * @story C2S38
+	 * 
 	 * @param tagId
 	 * 			The id of the tag that will be deleted
 	 */
