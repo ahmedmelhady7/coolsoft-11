@@ -98,13 +98,13 @@ public class Bootstrap extends Job {
 					"Ashraf", "Mansoor", 0, new Date(1960, 11, 11), "Egypt",
 					"student").save();
 
-			Organization guc = new Organization("GUC", ashraf, 1, true).save();
+			Organization guc = new Organization("GUC", ashraf, 1, true, "The German University in Cairo").save();
 
-			Organization egypt = new Organization("Egypt", admin, 2, false)
+			Organization egypt = new Organization("Egypt", admin, 2, false, "The National Egyptian Organization")
 					.save();
 
 			Organization gov = new Organization("الحكومة المصرية", sharaf, 0,
-					true).save();
+					true, "").save();
 
 			Tag tagEducation = new Tag("Education", guc, slim).save();
 			Tag tagGuc = new Tag("GUC", guc, ashraf).save();

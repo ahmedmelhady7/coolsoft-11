@@ -277,7 +277,7 @@ public class Organizations extends CRUD {
 	 *            tags
 	 */
 	public static void createOrg(String name, String privacyLevel,
-			String createTag) {
+			String createTag, String description) {
 
 		User creator = Security.getConnected();
 
@@ -308,7 +308,7 @@ public class Organizations extends CRUD {
 				createTagg = true;
 			}
 			Organization org = new Organization(name, creator, privacyLevell,
-					createTagg).save();
+					createTagg, description).save();
 			Role role = Roles.getRoleByName("organizationLead");
 			UserRoleInOrganizations.addEnrolledUser(creator, org, role);
 			MainEntity defaultEntity = new MainEntity("Default", "", org, false);

@@ -114,6 +114,10 @@ public class Organization extends CoolModel {
 	 */
 	public long profilePictureId;
 	
+	/**
+	 * The description of an organization
+	 */
+	public String description;
 
 	/**
 	 * Organization Class Constructor
@@ -204,7 +208,7 @@ public class Organization extends CoolModel {
 	 *            boolean
 	 */
 	public Organization(String name, User creator, int privacyLevel,
-			boolean createTag) {
+			boolean createTag, String description) {
 		this.name = name;
 		this.creator = creator;
 		// added by nada ossama
@@ -232,6 +236,7 @@ public class Organization extends CoolModel {
 		// bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
 		joinRequests = new ArrayList<RequestToJoin>();
+		this.description = description;
 	}
 
 	/**
