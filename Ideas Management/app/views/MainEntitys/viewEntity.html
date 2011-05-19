@@ -59,6 +59,14 @@
       }
     }
 	
+	$(document).ready(function(){
+    $('ul.menu ul').slideUp();
+    $('ul.menu>a').click(function(){
+        $(this).next('ul').slideToggle();
+        
+    });
+	})
+	
 	
 		</script>
     </head>
@@ -167,6 +175,19 @@
 		#{else}
 		No topics available for this entity!
 		#{/else}
+		
+	
+	<ul class='menu'>
+ <a>Show Relationships</a>
+   <ul class="blah">
+      #{list items:entity.relationsSource, as:'relationElement'}
+			<a href="#">${relationElement.name}</a> entity ${relationElement.destination.name}
+	  #{/list}
+	  #{list items:entity.relationsDestination, as:'relEelement'}
+			<a href="#">${relElement.name}</a> entity ${relElement.destination.name}
+	  #{/list}
+   </ul>
+</ul>
 		
 #{if invite == 1}		
  <input type="submit" value="Invite Organizers" onclick=location.href="@{Invitations.invite(entity.id)}">
