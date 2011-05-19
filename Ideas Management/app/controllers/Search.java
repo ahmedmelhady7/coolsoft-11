@@ -65,7 +65,8 @@ public class Search extends Controller {
 	 */
 	public static void advancedSearch() {
 		System.out.println("in advanced search");
-		render();
+		User user = Security.getConnected();
+		render(user);
 	}
 
 
