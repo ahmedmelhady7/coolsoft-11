@@ -2,9 +2,9 @@
 @author Loaay Alkherbawy
 @story  C4S01
 The Search Results Viewer
--->
- <!DOCTYPE html>
- #{extends 'main.html' /}
+--> #{extends 'main.html' /}
+#{set title:'Your results'/} 
+<!DOCTYPE html>
 <html>
     <head>
         <title></title>
@@ -13,17 +13,16 @@ The Search Results Viewer
         </script>
     </head>
     <style type="text/css">
-    
-        #div1 { 
-        float:left; 
-        width:50%;
+        
+        #div1 {
+            float: left;
+            width: 50%;
         }
         
-        #div2 { 
-        marging-left:50%; 
-        width:50%;
+        #div2 {
+            marging-left: 50%;
+            width: 50%;
         }
-        
     </style>
     <body onLoad="step1()">
         <form name="myform" action="@{quickSearch()}" method="GET">
@@ -31,151 +30,183 @@ The Search Results Viewer
             Welcome ${u.username}! 
         </font>
         </br>
-			</br>View: <SELECT NAME="view" onChange='modifyResult()'>
-				 <OPTION VALUE="1">Abstract
-				 <OPTION VALUE="2">Detailed
-				 </SELECT>
-        <script type="text/javascript">
-            			
-            			var marked = new Array();
-            			
-            			function step1() {
-            				document.getElementById('div1').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
-            				setTimeout('viewResult()', 2500);
-            			}
-            
-            			function viewResult(){
-								document.getElementById('div1').innerHTML = "#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br><ul> #{list items:organizationsFound, as:'org'}<li><a href='@{Organizations.viewProfile(org.id)}'>${org.toString()}</a></li>#{/list}</br></ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br><ul> #{list items:entitiesFound, as:'item'}<li><a href='@{MainEntitys.show(item.id)}'>${item.toString()}</a></li>#{/list}</br></ul> #{/if} #{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br><ul> #{list items:topicsFound, as:'item'}<li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></li> #{/list}</br></ul> #{/if} #{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br><ul> #{list items:ideasFound, as:'item'}<li><input type='checkbox' id = item.id onclick='mark(${item.id})'/><a href='@{Ideas.show(item.id)}'>${item.title}</a></li> #{/list}</br></ul><input type='image' src='/public/images/Mark.png' value = 'Mark two ideas as duplicate' onclick='markDuplicate()'> #{/if}<a href='/public/searchResults.csv'><img src='/public/images/download.jpg'/></a>#{/if} #{else}<center><img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@</center> #{/else}";
-						}
-						
-						function modifyResult(){
-							switch(document.myform.view.value){
-								case '1':
-								document.getElementById('div1').innerHTML = "#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br><ul> #{list items:organizationsFound, as:'org'}<li><a href='@{Organizations.viewProfile(org.id)}'>${org.toString()}</a></li>#{/list}</br></ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br><ul> #{list items:entitiesFound, as:'item'}<li><a href='@{MainEntitys.show(item.id)}'>${item.toString()}</a></li>#{/list}</br></ul> #{/if} #{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br><ul> #{list items:topicsFound, as:'item'}<li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></li> #{/list}</br></ul> #{/if} #{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br><ul> #{list items:ideasFound, as:'item'}<li><input type='checkbox' id = item.id onclick='mark(${item.id})'/><a href='@{Ideas.show(item.id)}'>${item.title}</a></li> #{/list}</br></ul><input type='image' src='/public/images/Mark.png' value = 'Mark two ideas as duplicate' onclick='markDuplicate()'> #{/if}<a href='/public/searchResults.csv'><img src='/public/images/download.jpg'/></a>#{/if} #{else}<center><img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@</center> #{/else}";
-								break;
-								case '2':
-								document.getElementById('div1').innerHTML = "#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br><ul> #{list items:organizationsFound, as:'org'}<li><a href='@{Organizations.viewProfile(org.id)}'>${org.toString()}</a></br>${org.intializedIn.toString()}</li>#{/list}</br></ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br><ul> #{list items:entitiesFound, as:'item'}<li><a href='@{MainEntitys.show(item.id)}'>${item.toString()}</a></br>Description: ${item.description}</li>#{/list}</br></ul> #{/if}#{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br><ul>#{list items:topicsFound, as:'item'}<li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></br>Description: ${item.description}</li>#{/list}</br></ul>#{/if}#{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br><ul>#{list items:ideasFound, as:'item'}<li><input type='checkbox' id = item.id onclick='mark(${item.id})'/><a href='@{Ideas.show(item.id)}'>${item.title}</a></br>Description: ${item.description}</li>#{/list}</br></ul><input type='image' src='/public/images/Mark.png' value = 'Mark two ideas as duplicate' onclick='markDuplicate()'>#{/if}<a href='/public/searchResults.csv'><img src='/public/images/download.jpg'/></a>#{/if}#{else}<center><img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@ </center>#{/else}";
-								break;
-								default:break;
-							}
-						}
-            
-            			function quickSearch(frm) {
-            				$.post('@{quickSearch}', {
-            					keyword : frm.search.value
-            				}, function() {
-            					window.location.reload(true);
-            				});
-            			}
-
-			function whichsortmethod(frm) {
-				var c = 'v';
-				var e = 'r';
-				if (document.getElementById("s1").checked) {
-					//			if (document.getElementById("v").checked) {
-					//document.write(document.sort.v.name);
-					$.post('@{sortD}', {
-						//voteOrRate : document.sort.v.value
-					}, function() {
-						window.location.reload(true);
-					});
-
-				} else //if (document.getElementById("v").checked)
-				{
-					$.post('@{sortA}', {
-						//voteOrRate : document.sort.v.value
-					}, function() {
-						window.location.reload(true);
-					});
-				}
-			}
-			function mark(id) {
-				if (marked.indexOf(id) == -1 && marked.length < 2) {
-					marked.push(id);
-				} else {
-					if (marked.indexOf(id) != -1) {
-						marked.pop(id);
-					} else {
-						alert("you could only mark two ideas");
-						marked = new Array();
-						window.location.reload(true);
-					}
-				}
-			}
-			function markDuplicate() {
-				$
-						.post(
-								'@{MarkRequest.sendRequest}',
-								{
-									idea1ID : marked[0],
-									idea2ID : marked[1],
-									des : "lol"
-								},
-								function() {
-									alert("The requests have been sent to the Topic organizer");
-								});
-			}
-		document.getElementById(marked[0]).disabled = true;
-		document.getElementById(marked[1]).disabled = true;
-		
-		function filterplan(){
-		
-		
-		$.post('@{filterSearchResults}',
-				{filterOn:"p"},
-				function(){
-				});	
-		
-		}
-		function filteridea(){
-			$.post('@{filterSearchResults}',{filterOn:"i"},function(){
-				});
-		}
-		function filterentity(){
-			$.post('@{filterSearchResults}',{filterOn:"e"},function(){
-				});
-		}	
-
-		function filttopic(){
-			$.post('@{filterSearchResults}',{filterOn:"t"},function(){
-				});
-		}	
-
-		function filtorganization(){
-			$.post('@{filterSearchResults}',{filterOn:"t"},function(){
-				});
-		}	
-		</script>
-	</form>
-	<br />
-	<b> <big> <u> Search Results: </u> </big> </b>
-	</br>
-	</br>
-	<form name="sort">
-		<input type="radio" name="s" id="s" value="A"
-			onclick="whichsortmethod(this.form)" />Ascending rate order  <br> <input
-			type="radio" name="s" id="s1" value="D"
-			onclick="whichsortmethod(this.form)" />descending rate order </br> 
-	 </br>
-	</form>
-<div id='div1' >
+        <div id="search">
+            <form action="@{Search.quickSearch()}" method='post'>
+                Search: 
+                <br>
+                <input type="text" name="keyword" id="keyword" value="keyword" /><input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick="quickSearch(this.form)"/>
+                <br>
+                <small>
+                    <i><a href="/AdvancedSearch">Advanced Search</a></i>
+                </small>
+            </form>
+        </div>
+        </br>View: 
+        <SELECT NAME="view" onChange='modifyResult()'>
+            <OPTION VALUE="1">Abstract<OPTION VALUE="2">Detailed
+                </SELECT>
+                <script type="text/javascript">
+                    
+                    var marked = new Array();
+                    
+                    function step1(){
+                        document.getElementById('div1').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
+                        setTimeout('viewResult()', 2500);
+                    }
+                    
+                    function viewResult(){
+                        document.getElementById('div1').innerHTML = "#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br><ul> #{list items:organizationsFound, as:'org'}<li><a href='@{Organizations.viewProfile(org.id)}'>${org.toString()}</a></li>#{/list}</br></ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br><ul> #{list items:entitiesFound, as:'item'}<li><a href='@{MainEntitys.show(item.id)}'>${item.toString()}</a></li>#{/list}</br></ul> #{/if} #{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br><ul> #{list items:topicsFound, as:'item'}<li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></li> #{/list}</br></ul> #{/if} #{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br><ul> #{list items:ideasFound, as:'item'}<li><input type='checkbox' id = item.id onclick='mark(${item.id})'/><a href='@{Ideas.show(item.id)}'>${item.title}</a></li> #{/list}</br></ul><input type='image' src='/public/images/Mark.png' value = 'Mark two ideas as duplicate' onclick='markDuplicate()'> #{/if}<a href='/public/searchResults.csv'><img src='/public/images/download.jpg'/></a>#{/if} #{else}<center><img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@</center> #{/else}";
+                    }
+                    
+                    function modifyResult(){
+                        switch (document.myform.view.value) {
+                            case '1':
+                                document.getElementById('div1').innerHTML = "#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br><ul> #{list items:organizationsFound, as:'org'}<li><a href='@{Organizations.viewProfile(org.id)}'>${org.toString()}</a></li>#{/list}</br></ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br><ul> #{list items:entitiesFound, as:'item'}<li><a href='@{MainEntitys.show(item.id)}'>${item.toString()}</a></li>#{/list}</br></ul> #{/if} #{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br><ul> #{list items:topicsFound, as:'item'}<li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></li> #{/list}</br></ul> #{/if} #{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br><ul> #{list items:ideasFound, as:'item'}<li><input type='checkbox' id = item.id onclick='mark(${item.id})'/><a href='@{Ideas.show(item.id)}'>${item.title}</a></li> #{/list}</br></ul><input type='image' src='/public/images/Mark.png' value = 'Mark two ideas as duplicate' onclick='markDuplicate()'> #{/if}<a href='/public/searchResults.csv'><img src='/public/images/download.jpg'/></a>#{/if} #{else}<center><img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@</center> #{/else}";
+                                break;
+                            case '2':
+                                document.getElementById('div1').innerHTML = "#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br><ul> #{list items:organizationsFound, as:'org'}<li><a href='@{Organizations.viewProfile(org.id)}'>${org.toString()}</a></br>${org.intializedIn.toString()}</li>#{/list}</br></ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br><ul> #{list items:entitiesFound, as:'item'}<li><a href='@{MainEntitys.show(item.id)}'>${item.toString()}</a></br>Description: ${item.description}</li>#{/list}</br></ul> #{/if}#{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br><ul>#{list items:topicsFound, as:'item'}<li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></br>Description: ${item.description}</li>#{/list}</br></ul>#{/if}#{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br><ul>#{list items:ideasFound, as:'item'}<li><input type='checkbox' id = item.id onclick='mark(${item.id})'/><a href='@{Ideas.show(item.id)}'>${item.title}</a></br>Description: ${item.description}</li>#{/list}</br></ul><input type='image' src='/public/images/Mark.png' value = 'Mark two ideas as duplicate' onclick='markDuplicate()'>#{/if}<a href='/public/searchResults.csv'><img src='/public/images/download.jpg'/></a>#{/if}#{else}<center><img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@ </center>#{/else}";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    
+                    function quickSearch(frm){
+                        $.post('@{quickSearch}', {
+                            keyword: frm.search.value
+                        }, function(){
+                            window.location.reload(true);
+                        });
+                    }
+                    
+                    function whichsortmethod(frm){
+                        var c = 'v';
+                        var e = 'r';
+                        if (document.getElementById("s1").checked) {
+                            //			if (document.getElementById("v").checked) {
+                            //document.write(document.sort.v.name);
+                            $.post('@{sortD}', { //voteOrRate : document.sort.v.value
+                    }, function(){
+                                window.location.reload(true);
+                            });
+                            
+                        }
+                        else //if (document.getElementById("v").checked)
+                        {
+                            $.post('@{sortA}', { //voteOrRate : document.sort.v.value
+                    }, function(){
+                                window.location.reload(true);
+                            });
+                        }
+                    }
+                    
+                    function mark(id){
+                        if (marked.indexOf(id) == -1 && marked.length < 2) {
+                            marked.push(id);
+                        }
+                        else {
+                            if (marked.indexOf(id) != -1) {
+                                marked.pop(id);
+                            }
+                            else {
+                                alert("you could only mark two ideas");
+                                marked = new Array();
+                                window.location.reload(true);
+                            }
+                        }
+                    }
+                    
+                    function markDuplicate(){
+                        $.post('@{MarkRequest.sendRequest}', {
+                            idea1ID: marked[0],
+                            idea2ID: marked[1],
+                            des: "lol"
+                        }, function(){
+                            alert("The requests have been sent to the Topic organizer");
+                        });
+                    }
+                    
+                    document.getElementById(marked[0]).disabled = true;
+                    document.getElementById(marked[1]).disabled = true;
+                    
+                    function filterplan(){
+                    
+                    
+                        $.post('@{filterSearchResults}', {
+                            filterOn: "p"
+                        }, function(){
+                        });
+                        
+                    }
+                    
+                    function filteridea(){
+                        $.post('@{filterSearchResults}', {
+                            filterOn: "i"
+                        }, function(){
+                        });
+                    }
+                    
+                    function filterentity(){
+                        $.post('@{filterSearchResults}', {
+                            filterOn: "e"
+                        }, function(){
+                        });
+                    }
+                    
+                    function filttopic(){
+                        $.post('@{filterSearchResults}', {
+                            filterOn: "t"
+                        }, function(){
+                        });
+                    }
+                    
+                    function filtorganization(){
+                        $.post('@{filterSearchResults}', {
+                            filterOn: "t"
+                        }, function(){
+                        });
+                    }
+                </script>
+            </form>
+            <br/>
+            <b>
+                <big>
+                    <u>
+                        Search Results: 
+                    </u>
+                </big>
+            </b>
+            </br>
+            </br>
+            <form name="sort">
+            <input type="radio" name="s" id="s" value="A" onclick="whichsortmethod(this.form)"/>Ascending rate order 
+            <br>
+            <input type="radio" name="s" id="s1" value="D" onclick="whichsortmethod(this.form)"/>descending rate order 
+            </br>
+            </br>
+        </form>
+        <div id='div1'>
+        </div>
+    </body>
 </div>
-
-</body>
-	</div>
 <div id='div1' align='left'>
 </br>
 <font color="black">
-<u><b><big> chose your filter options here :)!!</b></big></u>
-<br></br>
-<input type="checkbox" name="type" value="plan"  onclick="filterplan()" />Plans <br /> 
-<input type="checkbox" name="type" value="idea" onclick="filteridea()" />Ideas</br> 
-<input type="checkbox" name="type" value="entity" onclick="filterentity()"/>Entities</br> 
-<input type="checkbox" name="tupe" value="topic" onclick="filttopic()" />Topics</br> 
-<input type="checkbox" name="type" value="organization" onclick="filtorganization()"/>Organizations</br>
-     
+    <u>
+        <b>
+        <big>
+        chose your filter options here :)!!</b>
+    </big>
+    </u>
+    <br>
+    </br>
+    <input type="checkbox" name="type" value="plan" onclick="filterplan()"/>Plans 
+    <br/>
+    <input type="checkbox" name="type" value="idea" onclick="filteridea()"/>Ideas
+    </br><input type="checkbox" name="type" value="entity" onclick="filterentity()"/>Entities
+    </br><input type="checkbox" name="tupe" value="topic" onclick="filttopic()"/>Topics
+    </br><input type="checkbox" name="type" value="organization" onclick="filtorganization()"/>Organizations
+    </br>
 </font>
-
 </div>
-
 </html>
