@@ -52,13 +52,37 @@ The Search Results Viewer
                     var marked = new Array();
                     
                     function step1(){
-                        document.getElementById('div1').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
+                        document.getElementById('divO').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
+                        setTimeout('viewResult()', 2500);
+
+                        document.getElementById('divT').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
+                        setTimeout('viewResult()', 2500);
+      
+                        document.getElementById('divI').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
+                        setTimeout('viewResult()', 2500);
+                        
+
+                        document.getElementById('divP').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
+                        setTimeout('viewResult()', 2500);
+      
+
+                        document.getElementById('divE').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
                         setTimeout('viewResult()', 2500);
                     }
                     
                     function viewResult(){
-                        document.getElementById('div1').innerHTML = "#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br><ul> #{list items:organizationsFound, as:'org'}<li><a href='@{Organizations.viewProfile(org.id)}'>${org.toString()}</a></li>#{/list}</br></ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br><ul> #{list items:entitiesFound, as:'item'}<li><a href='@{MainEntitys.show(item.id)}'>${item.toString()}</a></li>#{/list}</br></ul> #{/if} #{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br><ul> #{list items:topicsFound, as:'item'}<li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></li> #{/list}</br></ul> #{/if} #{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br><ul> #{list items:ideasFound, as:'item'}<li><input type='checkbox' id = item.id onclick='mark(${item.id})'/><a href='@{Ideas.show(item.id)}'>${item.title}</a></li> #{/list}</br></ul><input type='image' src='/public/images/Mark.png' value = 'Mark two ideas as duplicate' onclick='markDuplicate()'> #{/if}<a href='/public/searchResults.csv'><img src='/public/images/download.jpg'/></a>#{/if} #{else}<center><img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@</center> #{/else}";
-                    }
+                        //document.getElementById('div1').innerHTML = "#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br><ul> #{list items:organizationsFound, as:'org'}<li><a href='@{Organizations.viewProfile(org.id)}'>${org.toString()}</a></li>#{/list}</br></ul> #{/if}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br><ul> #{list items:entitiesFound, as:'item'}<li><a href='@{MainEntitys.show(item.id)}'>${item.toString()}</a></li>#{/list}</br></ul> #{/if} #{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br><ul> #{list items:topicsFound, as:'item'}<li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></li> #{/list}</br></ul> #{/if} #{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br><ul> #{list items:ideasFound, as:'item'}<li><input type='checkbox' id = item.id onclick='mark(${item.id})'/><a href='@{Ideas.show(item.id)}'>${item.title}</a></li> #{/list}</br></ul><input type='image' src='/public/images/Mark.png' value = 'Mark two ideas as duplicate' onclick='markDuplicate()'> #{/if}<a href='/public/searchResults.csv'><img src='/public/images/download.jpg'/></a>#{/if} #{else}<center><img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@</center> #{/else}";
+                    	
+                        document.getElementById('divO').innerHTML = "#{if lof}#{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}</br><ul> #{list items:organizationsFound, as:'org'}<li><a href='@{Organizations.viewProfile(org.id)}'>${org.toString()}</a></li>#{/list}</br></ul> #{/if}#{/if} #{else}<center><img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@</center> #{/else}";
+
+                        document.getElementById('divT').innerHTML = "#{if lof}#{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}</br><ul> #{list items:topicsFound, as:'item'}<li><a href='@{Topics.show(item.id)}'>${item.toString()}</a></li> #{/list}</br></ul> #{/if}#{/if} #{else}<center><img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@</center> #{/else}";
+						
+                        document.getElementById('divE').innerHTML = "#{if lof}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}</br><ul> #{list items:entitiesFound, as:'item'}<li><a href='@{MainEntitys.show(item.id)}'>${item.toString()}</a></li>#{/list}</br></ul> #{/if}#{/if} #{else}<center><img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@</center> #{/else}";
+                    
+						document.getElementById('divI').innerHTML = "#{if lof}#{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}</br><ul> #{list items:ideasFound, as:'item'}<li><input type='checkbox' id = item.id onclick='mark(${item.id})'/><a href='@{Ideas.show(item.id)}'>${item.title}</a></li> #{/list}</br></ul><input type='image' src='/public/images/Mark.png' value = 'Mark two ideas as duplicate' onclick='markDuplicate()'> #{/if}#{/if} #{else}<center><img src='/public/images/nothing.gif'></br> Sorry! My dog might be sick he can't smell anything :@</center> #{/else}";
+						
+						document.getElementById('down').innerHTML ="<a href='/public/searchResults.csv'><img src='/public/images/download.jpg'/></a>"			
+					}
                     
                     function modifyResult(){
                         switch (document.myform.view.value) {
@@ -136,6 +160,10 @@ The Search Results Viewer
                     
                         $.post('@{filterP}', {
                         }, function(){
+                        	
+                        	document.getElementById('divP').innerHTML=" ";
+
+                       	 document.getElementById("P").style.visibility="hidden"; 
                         });
                         
                     }
@@ -144,18 +172,29 @@ The Search Results Viewer
                         $.post('@{filterI}', {
 
                         }, function(){
+                        	
+                       	 document.getElementById('divI').innerHTML=" ";
+
+                    	 document.getElementById("I").style.visibility="hidden"; 
                         });
                     }
                     
                     function filterentity(){
                         $.post('@{filterE}', {
                         }, function(){
+                        	
+                       	 document.getElementById('divE').innerHTML=" ";
+
+                    	 document.getElementById("E").style.visibility="hidden"; 
                         });
                     }
                     
                     function filttopic(){
                         $.post('@{filterT}', {
                         }, function(){
+                       	 document.getElementById('divT').innerHTML=" ";
+
+                    	 document.getElementById("T").style.visibility="hidden"; 
                         });
                     }
                     
@@ -163,6 +202,9 @@ The Search Results Viewer
                         $.post('@{filterO}', {
 
                         }, function(){
+                        	 document.getElementById('divO').innerHTML=" ";
+
+                        	 document.getElementById("O").style.visibility="hidden";                    	
                         });
                     }
                 </script>
@@ -184,6 +226,16 @@ The Search Results Viewer
             </br>
         </form>
         <div id='div1'>
+        <div id='divO'>
+        </div>
+        <div id='divE'>
+        </div>
+        <div id='divI'>
+        </div>
+        <div id='divT'>
+        </div>
+        <div id='down'>
+        </div>
         </div>
     </body>
 </div>
@@ -196,14 +248,15 @@ The Search Results Viewer
         chose your filter options here :)!!</b>
     </big>
     </u>
+    </br>
+  <u>  N.B:</u> unchecked is what is removed 
     <br>
     </br>
-    <input type="checkbox" name="type" value="plan" onclick="filterplan()"/>Plans 
-    <br/>
-    <input type="checkbox" name="type" value="idea" onclick="filteridea()"/>Ideas
-    </br><input type="checkbox" name="type" value="entity" onclick="filterentity()"/>Entities
-    </br><input type="checkbox" name="tupe" value="topic" onclick="filttopic()"/>Topics
-    </br><input type="checkbox" name="type" value="organization" onclick="filtorganization()"/>Organizations
+  
+    <input type="checkbox" id ='I' name="type" value="idea" onclick="filteridea()" checked="checked"/>Ideas
+    </br><input type="checkbox" id='E' name="type" value="entity" onclick="filterentity()"checked="checked"/>Entities
+    </br><input type="checkbox" id='T' name="tupe" value="topic" onclick="filttopic()"checked="checked"/>Topics
+    </br><input type="checkbox" id='O' name="type" value="organization" onclick="filtorganization()"checked="checked"/>Organizations
     </br>
 </font>
 </div>
