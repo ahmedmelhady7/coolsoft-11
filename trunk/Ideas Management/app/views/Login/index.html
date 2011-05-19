@@ -57,7 +57,7 @@
                 <form action="@{Search.quickSearch()}" method='post'>
                     Search: 
                     <br>
-                    <input type="text" name="keyword" id="keyword" value="keyword" /><input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick="quickSearch(this.form)"/>
+                    <input type="text" name="keyword" id="keyword" value = "Enter a keyword here" onfocus=this.value="" onblur='this.value="Enter a keyword here"' /><input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick="quickSearch(this.form)"/>
                     <br>
                     <small>
                         <i><a href="/AdvancedSearch">Advanced Search</a></i>
