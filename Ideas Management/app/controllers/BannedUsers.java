@@ -588,16 +588,30 @@ public class BannedUsers extends CRUD {
 			
 			if(type==0){
 				if(text.equals("Block from viewing")){
-				BannedUser block=new BannedUser(user, topic.entity.organization, "view topic",
+				BannedUser block=new BannedUser(user, topic.entity.organization, "view",
 					"topic", topId);
 			    block.save();
 				}
+				else{
+					
+				BannedUser unblock=BannedUser.find("byBannedUserAndActionAndResourceTypeAndResourceID", 
+							                user,"view","topic",topic.id).first();
+					   unblock.delete();
+					
+				}
+				
 			}
 			  else{
 				  if(text.equals("Block from using")){
 				  BannedUser block=new BannedUser(user, topic.entity.organization, "use",
 							"topic", topId);
 					    block.save();
+				  }
+				  else{
+					  
+					  BannedUser unblock=BannedUser.find("byBannedUserAndActionAndResourceTypeAndResourceID", 
+				                user,"use","topic",topic.id).first();
+		               unblock.delete();
 				  }
 			  }
 			}
