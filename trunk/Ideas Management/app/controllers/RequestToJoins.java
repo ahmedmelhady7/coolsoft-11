@@ -80,10 +80,9 @@ public class RequestToJoins extends CRUD {
 	 *            : the id of the request to be responded to
 	 */
 
-	public static void respondToRequest(int status, long reqId) {
+	public static void respondToRequest(int status, long requestId) {
 		System.out.println("da5alt");
-		RequestToJoin request = RequestToJoin.findById(reqId);
-		System.out.println(status + "" + reqId);
+		RequestToJoin request = RequestToJoin.findById(requestId);
 		System.out.println(request);
 		notFoundIfNull(request);
 		User user = request.source;
