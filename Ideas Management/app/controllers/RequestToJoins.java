@@ -3,6 +3,7 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.Log;
 import models.MainEntity;
 import models.Organization;
 import models.RequestToJoin;
@@ -40,7 +41,7 @@ public class RequestToJoins extends CRUD {
 			Topic topic = Topic.findById(id);
 			notFoundIfNull(topic);
 			requests = topic.requestsToJoin;
-			name=topic.title;
+			name = topic.title;
 		} else {
 			Organization organization = Organization.findById(id);
 			System.out.println(organization);
@@ -49,13 +50,15 @@ public class RequestToJoins extends CRUD {
 			name = organization.name;
 		}
 		User user;
-		for(int i=0;i<requests.size();i++){
-		user = requests.get(i).source;
-		if(user.state.equals("n"))
-			requests.remove(i);
+		for (int i = 0; i < requests.size(); i++) {
+			user = requests.get(i).source;
+			if (user.state.equals("n")) {
+				requests.remove(i);
+				i--;
+			}
 		}
 
-		render(requests, type,id,name);
+		render(requests, type, id, name);
 	}
 
 	/**
@@ -87,6 +90,7 @@ public class RequestToJoins extends CRUD {
 		List<User> users = new ArrayList<User>();
 		// users.add(user);
 		System.out.println(users);
+		User reciever = Security.getConnected();
 		if (status == 1) {
 			System.out.println("request will be accepeted");
 			if (request.organization != null) {
@@ -98,6 +102,11 @@ public class RequestToJoins extends CRUD {
 				organization.joinRequests.remove(request);
 				System.out.println(organization.joinRequests);
 				System.out.println(users);
+				Log.addUserLog("User " + reciever.firstName + " "
+						+ reciever.lastName + " has accepted user "
+						+ user.firstName + " " + user.lastName
+						+ " request to join organization " + organization.name,
+						organization, request);
 				Notifications.sendNotification(user.id, organization.id,
 						"Organization", "Your Request has been approved");
 
@@ -106,7 +115,7 @@ public class RequestToJoins extends CRUD {
 				MainEntity entity = topic.entity;
 				List<User> organizers = Users.getEntityOrganizers(entity);
 				Organization organization = entity.organization;
-				User reciever = Security.getConnected();
+
 				organizers.remove(reciever);
 				// if(!organizers.contains(organization.creator))
 				organizers.add(organization.creator);
@@ -115,16 +124,16 @@ public class RequestToJoins extends CRUD {
 						role, topic.id, "topic");
 				topic.requestsToJoin.remove(request);
 
-				// Notifications.sendNotification(organizers, topic.id, "Topic",
-				// " A new User has joined topic " + topic.title);
-				//
-				// Notifications.sendNotification(users, topic.id, "Topic",
-				// "Your Request has been approved");
+				Log.addUserLog("User " + reciever.firstName + " "
+						+ reciever.lastName + " has accepted user "
+						+ user.firstName + " " + user.lastName
+						+ " request to join topic " + topic.title,
+						organization, request,topic);
 
 				for (int i = 0; i < organizers.size(); i++)
 					Notifications.sendNotification(organizers.get(i).id,
-							topic.id, "Topic", " A new User "+user.username+" has joined topic "
-									+ topic.title);
+							topic.id, "Topic", " A new User " + user.username
+									+ " has joined topic " + topic.title);
 
 				Notifications.sendNotification(user.id, topic.id, "Topic",
 						"Your Request has been approved");
@@ -136,12 +145,24 @@ public class RequestToJoins extends CRUD {
 				System.out.println("request will be rejected");
 				Organization organization = request.organization;
 				organization.joinRequests.remove(request);
+				Log.addUserLog("User " + reciever.firstName + " "
+						+ reciever.lastName + " has rejected user "
+						+ user.firstName + " " + user.lastName
+						+ " request to join organization " + organization.name,
+						organization, request,reciever,user);
 				Notifications.sendNotification(user.id, organization.id,
 						"Organization", "Your Request has been rejected");
 
 			} else {
 				Topic topic = request.topic;
+				MainEntity entity = topic.entity;
+				Organization organization = entity.organization;
 				topic.requestsToJoin.remove(request);
+				Log.addUserLog("User " + reciever.firstName + " "
+						+ reciever.lastName + " has rejected user "
+						+ user.firstName + " " + user.lastName
+						+ " request to join organization " + topic.title,
+						topic, request,reciever,user,organization);
 
 				// Notifications.sendNotification(users, topic.id, "Topic",
 				// "Your Request has been rejected");
@@ -166,10 +187,10 @@ public class RequestToJoins extends CRUD {
 	 * @story C2S15
 	 * 
 	 * @param orgId
-	 *             The Id of the desired organization
+	 *            The Id of the desired organization
 	 * 
 	 * @param description
-	 *             The message to be sent when sending the request
+	 *            The message to be sent when sending the request
 	 */
 
 	public static void requestToJoinOrganization(long orgId, String description) {
@@ -177,8 +198,8 @@ public class RequestToJoins extends CRUD {
 		Organization organization = Organization.findById(orgId);
 		if ((!Users.getEnrolledUsers(organization).contains(requester))
 				&& (organization.privacyLevel == 1)) {
-			RequestToJoin request = new RequestToJoin(requester, null, organization,
-					description).save();
+			RequestToJoin request = new RequestToJoin(requester, null,
+					organization, description).save();
 			organization.joinRequests.add(request);
 			redirect("Login.index", "Your request has been sent..");
 		}

@@ -13,7 +13,7 @@ import play.db.jpa.Model;
  * @author Omar Faruki 
  */
 @Entity
-public class RequestToJoin extends Model {
+public class RequestToJoin extends CoolModel {
 
 	/**
 	 * The user requesting to join a specific organization or posting in a topic
