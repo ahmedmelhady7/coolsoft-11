@@ -3,13 +3,39 @@
 <html>
     <head>
         <meta name="generator" content="HTML Tidy, see www.w3.org">
-
+		<style type="text/css">
+p.padding
+{
+/*
+padding-top:50px;
+*/
+padding-bottom:25px;
+/*
+padding-right:50px;
+*/
+position:absolute;
+top:350px;
+padding-left:950px;
+}
+</style>
         <title>Tag Profile View</title>
     </head>
 
     <body>
         #{extends 'main.html' /}
 		#{set title: 'Tag Profile' /}
+		#{if flash.success}
+		<p style="color:#00ff40">
+			${flash.success}
+			</p>
+		</style>
+		#{/if}
+		#{if flash.error}
+		<p style="color:#ff0000">
+			${flash.error}
+			</p>
+		</style>
+		#{/if}
 		#{if follower == true}
 			 <form onsubmit="unfollow('${tag.id}');" method="post">
 			<p>
@@ -23,10 +49,27 @@
 			Follow ${tag.name} <input type="submit" value="follow" />
 			</p>	
 			</form>
-		#{/if} 
+		#{/if}		 
+		#{if allowed}
+		<form action="@{Tags.edit()}" method="post">
+			<p>
+			<input type="hidden" id="tagId" name="tagId" value="${tag.id}" />Edit Tag Name
+			<input type="text" id="name" name="name" value="${tag.name}" /> 
+                <input type="submit" value="Edit" />
+            </p>
+		</form>
+		<br />
+		<form action="@{Tags.delete()}" method="post">
+			<p>
+			<input type="hidden" id="tagId" name="tagId" value="${tag.id}" />Delete Tag 
+                <input type="submit" value="Delete" />
+            </p>
+		</form>
+		#{/if}
         <center><big><b>${tag.name}</b></big></center><br><br>
 		List of Followers:
 		<br>
+		
 		#{list items:followers, as:'follower'}
 		<li>
 			<a href="@{Users.showProfile(follower.id)}">${follower.username}</a>
