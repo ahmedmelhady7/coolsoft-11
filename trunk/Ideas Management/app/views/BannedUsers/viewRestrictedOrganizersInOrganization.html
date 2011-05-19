@@ -1,0 +1,409 @@
+#{extends 'main.html' /}
+#{set title:'View Restricted Organizers' /}
+
+#{if sortedByEntity.isEmpty()}
+<font face="Monotype Corsiva, Verdana" size="6" color="#2B60DE">
+    <b> There are no restricted organizers !!</b></font>
+    
+ #{/if}   
+ #{else}
+ <form >
+ <input type="radio" id ="Entity"  name="select" value="Entity"  onclick = "createEntityTable()"/> Sort by Entity Name <br />
+ <input type="radio" id = "User" name= "select" value="User" onclick = "createUserTable()" /> Sort by User Name <br />
+ <input type="radio" id = "Action" name= "select" value="Action" onclick = "createActionTable()" /> Sort by Action Restricted from <br />
+ 
+ 
+ </form>
+ 
+ <form name = "sortedByEntity" id = "entityName">
+ 
+ <table border="1">
+
+<tbody>
+<tr>
+<td> Main Entity Name </td><td> User's Name</td><td> Action Restricted From</td>
+</tr>
+</tbody>
+
+ 
+</table>
+ 
+ </form>
+ 
+ 
+ 
+ 
+ #{/else}
+ 
+ <script>
+ 
+ 
+ 
+ var first = true;
+ 
+ 
+ 
+ function createActionTable(){
+	 
+	 
+	 
+	 if(first == false){
+		 for( var i  = 0 ; i <${sortByUserInEntity.size()} +1 ; i++){
+		 try {       
+//	 		   var table = document.getElementsById("u");      
+//	 			var rowCount = table.rows.length;           
+//	 			for(var i=0; i<rowCount; i++) {           
+//	 				var row = table.rows[i];             
+//	 				var chkbox = row.cells[0].childNodes[0];     
+//	 				if(null != chkbox && true == chkbox.checked) {        
+//	 					table.deleteRow(i);             
+//	 					rowCount--;               
+//	 					i--;              
+//	 					}          
+//	 				}        
+
+	              
+
+	    theTableBody = document.getElementsByTagName("TBODY").item(0);
+	    theTableBody.deleteRow(0);
+	   
+	
+
+//	 		 tabBody=document.getElementsByTagName("TBODY").item(0);
+//	 		 tabBody.removeChild(row);
+	               }
+
+				
+				catch(e) {       
+					alert(e);       
+					}      
+		 
+		 }
+		 
+		 
+		 if (!document.getElementsByTagName) return;
+	     tabBody=document.getElementsByTagName("TBODY").item(0);
+	     row=document.createElement("TR");
+	     cell1 = document.createElement("TD");
+	     cell2 = document.createElement("TD");
+	     cell3 = document.createElement("TD");
+	     textnode1=document.createTextNode("Main Entity Name");
+	     textnode2=document.createTextNode("User's Name");
+	     textnode3=document.createTextNode("Action restricted from");
+	     cell1.appendChild(textnode1);
+	     cell2.appendChild(textnode2);
+	     cell3.appendChild(textnode3);
+	     row.appendChild(cell1);
+	     row.appendChild(cell2);
+	     row.appendChild(cell3);
+	     tabBody.appendChild(row);
+		 
+		 }
+		 else{
+			 first = false;
+		 }
+	 
+	 
+	 
+	 var username = "";
+		var actionToDo = "";
+		var ID = "";
+		 var content = "";
+	
+	
+	
+	for( var i  = 0 ; i <${sortByUserInEntity.size()} ; i++){
+		
+		
+			
+		$.getJSON( '@{BannedUsers.go()}', {order:i ,organizationID  : ${organizationID } , number:3 , type:"entity" } ,  function(data) {
+			
+			username = data.name;
+		 
+		 actionToDo = data.action;
+		 ID = data.resourceId;
+		
+		 content = data.namee;
+			
+			if (!document.getElementsByTagName) return;
+	         tabBody=document.getElementsByTagName("TBODY").item(0);
+	         row=document.createElement("TR");
+	         cell1 = document.createElement("TD");
+	         cell2 = document.createElement("TD");
+	         cell3 = document.createElement("TD");
+	         textnode1=document.createTextNode(content);
+	         textnode2=document.createTextNode(username);
+	         textnode3=document.createTextNode(actionToDo);
+	         cell1.appendChild(textnode1);
+	         cell2.appendChild(textnode2);
+	         cell3.appendChild(textnode3);
+	         row.appendChild(cell1);
+	         row.appendChild(cell2);
+	         row.appendChild(cell3);
+	         tabBody.appendChild(row);
+		 
+		 
+		});
+
+
+		
+		}
+	
+	
+	
+	
+	
+	
+	 
+ }
+ 
+	 
+ 
+ 
+ 
+ 
+ function createEntityTable(){
+	 
+	 
+	 
+	 
+	 
+	 if(first == false){
+		 for( var i  = 0 ; i <${sortByUserInEntity.size()} +1 ; i++){
+		 try {       
+//	 		   var table = document.getElementsById("u");      
+//	 			var rowCount = table.rows.length;           
+//	 			for(var i=0; i<rowCount; i++) {           
+//	 				var row = table.rows[i];             
+//	 				var chkbox = row.cells[0].childNodes[0];     
+//	 				if(null != chkbox && true == chkbox.checked) {        
+//	 					table.deleteRow(i);             
+//	 					rowCount--;               
+//	 					i--;              
+//	 					}          
+//	 				}        
+
+	              
+
+	    theTableBody = document.getElementsByTagName("TBODY").item(0);
+	    theTableBody.deleteRow(0);
+	   
+	
+//	 		 tabBody=document.getElementsByTagName("TBODY").item(0);
+//	 		 tabBody.removeChild(row);
+	               }
+
+				
+				catch(e) {       
+					alert(e);       
+					}      
+		 
+		 }
+		 
+		 
+		 if (!document.getElementsByTagName) return;
+	     tabBody=document.getElementsByTagName("TBODY").item(0);
+	     row=document.createElement("TR");
+	     cell1 = document.createElement("TD");
+	     cell2 = document.createElement("TD");
+	     cell3 = document.createElement("TD");
+	     textnode1=document.createTextNode("Main Entity Name");
+	     textnode2=document.createTextNode("User's Name");
+	     textnode3=document.createTextNode("Action restricted from");
+	     cell1.appendChild(textnode1);
+	     cell2.appendChild(textnode2);
+	     cell3.appendChild(textnode3);
+	     row.appendChild(cell1);
+	     row.appendChild(cell2);
+	     row.appendChild(cell3);
+	     tabBody.appendChild(row);
+		 
+		 }
+		 else{
+			 first = false;
+		 }
+	 
+	 
+	 var username = "";
+		var actionToDo = "";
+		var ID = "";
+		 var content = "";
+	
+	
+	
+	for( var i  = 0 ; i <${sortByUserInEntity.size()} ; i++){
+		
+		
+			
+		$.getJSON( '@{BannedUsers.go()}', {order:i ,organizationID  : ${organizationID } , number:1 , type:"entity" } ,  function(data) {
+			
+			username = data.name;
+		 
+		 actionToDo = data.action;
+		 ID = data.resourceId;
+		
+		 content = data.namee;
+			
+			if (!document.getElementsByTagName) return;
+	         tabBody=document.getElementsByTagName("TBODY").item(0);
+	         row=document.createElement("TR");
+	         cell1 = document.createElement("TD");
+	         cell2 = document.createElement("TD");
+	         cell3 = document.createElement("TD");
+	         textnode1=document.createTextNode(content);
+	         textnode2=document.createTextNode(username);
+	         textnode3=document.createTextNode(actionToDo);
+	         cell1.appendChild(textnode1);
+	         cell2.appendChild(textnode2);
+	         cell3.appendChild(textnode3);
+	         row.appendChild(cell1);
+	         row.appendChild(cell2);
+	         row.appendChild(cell3);
+	         tabBody.appendChild(row);
+		 
+		 
+		});
+
+
+		
+		}
+	
+	
+	
+	
+	
+	 
+ }
+ 
+ function createUserTable(){
+	 
+	 
+	 if(first == false){
+	 for( var i  = 0 ; i <${sortByUserInEntity.size()} +1 ; i++){
+	 try {       
+// 		   var table = document.getElementsById("u");      
+// 			var rowCount = table.rows.length;           
+// 			for(var i=0; i<rowCount; i++) {           
+// 				var row = table.rows[i];             
+// 				var chkbox = row.cells[0].childNodes[0];     
+// 				if(null != chkbox && true == chkbox.checked) {        
+// 					table.deleteRow(i);             
+// 					rowCount--;               
+// 					i--;              
+// 					}          
+// 				}        
+
+              
+
+    theTableBody = document.getElementsByTagName("TBODY").item(0);
+    theTableBody.deleteRow(0);
+   
+
+
+// 		 tabBody=document.getElementsByTagName("TBODY").item(0);
+// 		 tabBody.removeChild(row);
+               }
+
+			
+			catch(e) {       
+				alert(e);       
+				}      
+	 
+	 }
+	 
+	 
+	 if (!document.getElementsByTagName) return;
+     tabBody=document.getElementsByTagName("TBODY").item(0);
+     row=document.createElement("TR");
+     cell1 = document.createElement("TD");
+     cell2 = document.createElement("TD");
+     cell3 = document.createElement("TD");
+     textnode1=document.createTextNode("Main Entity Name");
+     textnode2=document.createTextNode("User's Name");
+     textnode3=document.createTextNode("Action restricted from");
+     cell1.appendChild(textnode1);
+     cell2.appendChild(textnode2);
+     cell3.appendChild(textnode3);
+     row.appendChild(cell1);
+     row.appendChild(cell2);
+     row.appendChild(cell3);
+     tabBody.appendChild(row);
+	 
+	 }
+	 else{
+		 first = false;
+	 }
+	 
+		
+		
+		
+		 var username = "";
+			var actionToDo = "";
+			var ID = "";
+			 var content = "";
+		
+		
+		
+		for( var i  = 0 ; i <${sortByUserInEntity.size()} ; i++){
+	 		
+			
+				
+			$.getJSON( '@{BannedUsers.go()}', {order:i ,organizationID  : ${organizationID } , number:2 , type:"entity" } ,  function(data) {
+				
+				username = data.name;
+			 
+			 actionToDo = data.action;
+			 ID = data.resourceId;
+			
+			 content = data.namee;
+				
+				if (!document.getElementsByTagName) return;
+		         tabBody=document.getElementsByTagName("TBODY").item(0);
+		         row=document.createElement("TR");
+		         cell1 = document.createElement("TD");
+		         cell2 = document.createElement("TD");
+		         cell3 = document.createElement("TD");
+		         textnode1=document.createTextNode(content);
+		         textnode2=document.createTextNode(username);
+		         textnode3=document.createTextNode(actionToDo);
+		         cell1.appendChild(textnode1);
+		         cell2.appendChild(textnode2);
+		         cell3.appendChild(textnode3);
+		         row.appendChild(cell1);
+		         row.appendChild(cell2);
+		         row.appendChild(cell3);
+		         tabBody.appendChild(row);
+			 
+			 
+			});
+	 
+	  
+			
+			}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		}
+	 
+ 
+
+ </script>
+ 
+ 
+ <script>
+ function(){
+	 $('#entityName').hide();
+ }
+ 
+ function(){
+	 createEntityTable();
+	 $('#entityName').show();
+ }
+ </script>
