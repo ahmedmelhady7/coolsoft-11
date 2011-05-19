@@ -1,58 +1,27 @@
 #{extends 'Secure/layout.html' /}
 #{set title:'Login' /}
-<div id="wrapper">
-	<div id="header-wrapper">
-		<div id="header">
-			<div id="logo">
-				<h1>Collaborative Thinking</h1>
-			</div>
-			<div id="menu">
-				<ul>
-					<li><a href="@{Home.index()}">Home</a></li>
-					<li><a href="@{Home.about()}">About</a></li>	
-					<li><a href="@{Home.contact()}">Contact</a></li>
-					<li><a href="@{Login.index()}">Login</a></li>
-					<li><a href="#">Register</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
-<h1>Login</h1>
-<div id="login">
-	<form method="post" action="@{authenticate()}">
-	
-	#{if flash.error}
-		<p class="error">
+
+<div style="padding: 100px 0 0 250px;">
+
+<div id="login-box">
+#{if flash.error}
+		<p class="error" style="color: #c00">
 			&{flash.error}
 		</p>
 	#{/if}
-	#{if flash.success}
-		<p class="success">
-			&{flash.success}
-		</p>
-	#{/if}
-		<p id="username-field">
-			<label for="username">Username</label>
-			&nbsp;&nbsp;&nbsp;
-			<input type="text" name="username"/>
-		</p>
-		<p id="password-field">
-			<label for="password">Password</label>
-			&nbsp;&nbsp;&nbsp;
-			<input type="password" name="password" />
-		</p>
-		<p id="remember-field">
-			<input type="checkbox" name="remember" value="true" />
-			<label for="remember">Remember me</label>
-		</p>
-		<p id="signin-field">
-			&nbsp;&nbsp;
-			<input type="submit" id="signin" value="Login" />
-			<br/>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="/Security/forgotpassword">Forgot your password?</a>
-		</p>
-	</form>
+<H2>Login</H2>
+<br />
+<br />
+<form method="post" action="@{authenticate()}">
+<div id="login-box-name" style="margin-top:20px;">Username:</div><div id="login-box-field" style="margin-top:20px;"><input name="username" class="form-login" title="Username" value="" size="30" maxlength="2048" /></div>
+<div id="login-box-name">Password:</div><div id="login-box-field"><input name="password" type="password" class="form-login" title="Password" value="" size="30" maxlength="2048" /></div>
+<br />
+<span class="login-box-options"><input type="checkbox" name="1" value="1"> Remember Me <a href="/Security/forgotpassword" style="margin-left:30px;">Forgot password?</a></span>
+<br />
+<br />
+<input type="image" src="/public/images/login-btn.png" width="103" height="42" style="margin-left:90px;" alt="Submit button">
+</form>
+
+</div>
+
 </div>
