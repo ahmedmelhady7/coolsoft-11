@@ -289,6 +289,7 @@ public class Tags extends CRUD {
 		while (i < allOrganizations.size()) {
 			if(allOrganizations.get(i).relatedTags.contains(tag)) {
 				allOrganizations.get(i).relatedTags.remove(tag);
+				allOrganizations.get(i).save();
 			}
 			i++;
 		}
@@ -296,6 +297,7 @@ public class Tags extends CRUD {
 		while (i < followers.size()) {
 			if(followers.get(i).followingTags.contains(tag)) {
 				followers.get(i).followingTags.remove(tag);
+				followers.get(i).save();
 			}
 			i++;
 		}
@@ -303,6 +305,7 @@ public class Tags extends CRUD {
 		while (i < topics.size()) {
 			if(topics.get(i).tags.contains(tag)) {
 				topics.get(i).tags.remove(tag);
+				topics.get(i).save();
 			}
 			i++;
 		}
@@ -310,6 +313,7 @@ public class Tags extends CRUD {
 		while (i < ideas.size()) {
 			if(ideas.get(i).tagsList.contains(tag)) {
 				ideas.get(i).tagsList.remove(tag);
+				ideas.get(i).save();
 			}
 			i++;
 		}
@@ -317,10 +321,11 @@ public class Tags extends CRUD {
 		while (i < items.size()) {
 			if(items.get(i).tags.contains(tag)) {
 				items.get(i).tags.remove(tag);
+				items.get(i).save();
 			}
 			i++;
 		}
-		tag.remove();
+		tag.delete();
 		Organizations.mainPage();
 	}
 }

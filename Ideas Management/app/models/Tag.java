@@ -18,7 +18,7 @@ import play.db.jpa.Model;
  * @author Omar Faruki
  */
 @Entity
-public class Tag extends Model {
+public class Tag extends CoolModel {
 
 	/**
 	 * Tag name
@@ -174,10 +174,6 @@ public class Tag extends Model {
 
 	public String getName() {
 		return name;
-	}
-	
-	public void remove() {
-		this.delete();
 	}
 
 	/**
