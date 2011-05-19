@@ -10,7 +10,7 @@
         #{extends 'main.html' /}
 		#{set title: 'Create Organization' /}
         
-		<form name="orderform" action="@{Organizations.editOrg()}" method="POST">
+		<form name="orderform" action="@{Organizations.edit()}" method="POST">
         <input type="hidden" id="organizationId" name="organizationId" value=${organization.id}>
         Privacy Level:<br />
 		#{if (organization.privacyLevel == 0)}
