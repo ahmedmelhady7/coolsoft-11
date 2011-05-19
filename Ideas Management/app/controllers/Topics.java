@@ -27,6 +27,7 @@ import play.exceptions.*;
 import play.i18n.*;
 import play.mvc.With;
 import models.*;
+import notifiers.Mail;
 
 @With(Secure.class)
 public class Topics extends CRUD {
@@ -186,6 +187,57 @@ public class Topics extends CRUD {
 	 */
 	public static void relateTopic(Topic topic, Topic topic2) {
 		// topic.relatedTopics.add(topic2);
+	}
+
+	/**
+	 * this Method is responsible for reporting a topic as a spam
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S16
+	 * 
+	 * @param ideaId
+	 *            : the ID of the idea to be reported
+	 * 
+	 * 
+	 */
+	public static void reportTopicAsSpam(long ideaId) {
+		Topic topic = Topic.findById(ideaId);
+		User reporter = Security.getConnected();
+		reporter.topicsReported.add(topic);
+		topic.reporters.add(reporter);
+		System.out.println(topic.reporters.get(0).toString());
+		// for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
+		Mail.reportAsSpamMail(
+		/* 3'lt w 3ayz el foo2 el topic */topic.creator, reporter, topic.id,
+				topic.description, topic.title);
+		// }
+		topic.save();
+		reporter.save();
+		System.out.println(reporter.ideasReported.get(0).toString());
+		TopicSpamView(ideaId);
+
+	}
+
+	/**
+	 * this Method is responsible for the view of reporting the topic as spam
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S16
+	 * 
+	 */
+
+	public static void TopicSpamView(long ideaId) {
+		boolean alreadyReported = false;
+		Idea idea = Idea.findById(ideaId);
+		User reporter = Security.getConnected();
+		for (int i = 0; i < idea.reporters.size(); i++) {
+			if (reporter.username.equals(idea.reporters.get(i).username))
+				alreadyReported = true;
+		}
+		redirect("/ideas/show?ideaId=" + idea.getId(), alreadyReported);
+		// render(alreadyReported);
 	}
 
 	/**
@@ -1277,12 +1329,12 @@ public class Topics extends CRUD {
 			if (plan != null) {
 				Plans.deletePlan(plan.id);
 			}
-			//fadwa
+			// fadwa
 			for (int i = 0; i < temporaryTopic.requestsToJoin.size(); i++)
 				temporaryTopic.requestsToJoin.get(i).delete();
 			for (int i = 0; i < temporaryTopic.invitations.size(); i++)
 				temporaryTopic.invitations.get(i).delete();
-			//fadwa
+			// fadwa
 			object._delete();
 			System.out.println("deleted");
 			System.out.println("leaving try");

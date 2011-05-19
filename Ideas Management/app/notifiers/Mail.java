@@ -69,14 +69,16 @@ public class Mail extends Mailer {
 	 */
 
 	public static void reportAsSpamMail(User topicOrganizer, User reporter,
-			Idea reportedIdea, String description, String title) {
-		long id = reportedIdea.id;
+			long reportedIdeaOrTopicOrCommentId, String description, String title) {
+		long id = reportedIdeaOrTopicOrCommentId;
 		System.out.println("maiiiiiiiiii");
 		addRecipient("elhadiahmed3@gmail.com");
 		setFrom("coolsoft-11@gmail.com");
 		setSubject("An Idea is Reported as a Spam");
-		send(topicOrganizer, reporter, reportedIdea, description, title, id);
+		send(topicOrganizer, reporter,id,description, title);
 	}
+	
+	
 
 	/**
 	 * Sends an e-mail to the user with a new generated password and gives him a

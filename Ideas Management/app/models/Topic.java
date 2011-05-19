@@ -141,6 +141,12 @@ public class Topic extends CoolModel {
 	public MainEntity entity;
 
 	/**
+	 * the Repoters of the topic
+	 */
+	@ManyToMany(mappedBy = "topicsReported")
+	public List<User> reporters;
+	
+	/**
 	 * the plan that the topic is promoted to
 	 */
 	@OneToOne
