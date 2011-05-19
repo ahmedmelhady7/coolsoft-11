@@ -946,49 +946,53 @@ public class Ideas extends CRUD {
 	public static void mergeIdeas(long topicId, String oldIdeas, String newTitle,String newDescription) {
 		
 		System.out.println("I entered mergeIdeas()");
-		
+		String allContributors = "";
 		Topic targetTopic = Topic.findById(topicId);
 		User merger = Security.getConnected();
+		
 		String[] ideasIdsString = oldIdeas.split("%");
-		long[] ideasIds = new long[ideasIdsString.length - 1];
+		long[] ideasIds = new long[ideasIdsString.length];
 		List<Idea> selectedIdeas = new ArrayList<Idea>();
 		Idea ideaToKeep;
 		
-		for(int i = 0; i < ideasIdsString.length  - 1; i++) {
+		for(int i = 0; i < ideasIdsString.length; i++) {
 			ideasIds[i] = Long.parseLong(ideasIdsString[i]);
 		}
 		
 		selectedIdeas = Ideas.getIdeasFromIds(ideasIds, topicId);
 		
-		newDescription = newDescription + "/n" + "Contributers: ";
+		newDescription = newDescription + " " +  "\nContributers: ";
 		
 		for(int i = 1; i < selectedIdeas.size(); i++) {
 			String contributor = selectedIdeas.get(i).author.username;
+			System.out.println("contributor:" + contributor);
 			if(i == selectedIdeas.size() - 1) {
-				newDescription.concat(contributor);
+				allContributors = allContributors + contributor;
 			}
 			
 			else{
-				newDescription.concat(contributor + ", ");
+				allContributors = allContributors + contributor + ", ";
 			}
 		}
 		
-		newDescription.concat("/n + Merger: " + merger.username);
+		allContributors = allContributors + " \n" + "Merger: " + merger.username;
+		newDescription = newDescription + allContributors;
 		
 		ideaToKeep = selectedIdeas.get(0);
 		
 		ideaToKeep.description = newDescription;
 		ideaToKeep.title = newTitle;
-		ideaToKeep.save();
+		
 		
 		for(int i = 1; i < selectedIdeas.size(); i++) {
 			Idea ideaToDelete = selectedIdeas.get(i);
 			ideaToDelete.delete();
 		}
 		
+		ideaToKeep.save();
 		targetTopic.save();
-		
-		render("topics/show?topicId=" + topicId);
+
+		redirect("/topics/show?topicId=" + topicId);
 	}
 	
 	/**
@@ -1010,6 +1014,8 @@ public class Ideas extends CRUD {
 		List<Idea> allIdeas = targetTopic.getIdeas();
 		//String selectedIdeasString = "";
 		
+		Arrays.sort(selectedIdeasIds);
+		
 		for(int i = 0; i < allIdeas.size(); i++) {
 			
 			//checks if all selected ideas are already in the new list
@@ -1018,15 +1024,25 @@ public class Ideas extends CRUD {
 			}
 			
 			Idea currentIdea = allIdeas.get(i);
-			Arrays.sort(selectedIdeasIds);
+			System.out.println("selectedIdeasIds bef sort:" + selectedIdeasIds.length);
 			
+			System.out.println("selectedIdeasIds bef sort:" + selectedIdeasIds.length);
 			//checks if the current idea is indeed selected
 			if(Arrays.binarySearch(selectedIdeasIds, currentIdea.getId()) >= 0) {
 				selectedIdeas.add(currentIdea);
 			}
 			
 		}
-		
+		System.out.println("selectedIdeasIds:");
+		for (int i = 0; i < selectedIdeasIds.length; i++) {
+			System.out.println(selectedIdeasIds[i]);
+		}
+		System.out.println("selectedIdeas:");
+		for (int i = 0; i < selectedIdeas.size(); i++) {
+			System.out.println(selectedIdeas.get(i).getId());
+		}
+			
+			
 		return selectedIdeas;
 	}
 
