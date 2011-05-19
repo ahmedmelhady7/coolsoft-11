@@ -18,7 +18,7 @@ import play.db.jpa.*;
 @Entity
 public class Log extends CoolModel{
 	public String actionDescription;
-	public long time;
+	public String time;
 	
 	/**
 	 * Adds a log with the models attached
@@ -36,7 +36,8 @@ public class Log extends CoolModel{
 	public static void addLog(String message, CoolModel... models) {
         Log log = new Log();
         log.actionDescription = message;
-        log.time = new Date().getTime();
+        log.time = new Date().toString();
+        System.out.println(log.time);
         log.save();
 
         List<Class> clazzes = new ArrayList<Class>();
@@ -70,6 +71,7 @@ public class Log extends CoolModel{
             addLog(message, newModels);
     }
     
+   
 	
     /**
      * Returns the first user associated with this log (usually the log performer)

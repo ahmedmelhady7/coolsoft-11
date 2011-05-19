@@ -2,28 +2,31 @@
 package controllers;
 
 import play.*;
+import play.data.validation.Required;
 import play.mvc.*;
 
 import java.util.*;
 import java.lang.reflect.*;
 
-import models.*;
+import com.google.gson.JsonObject;
 
+import models.*;
+ 
 
 @With(Secure.class)
 public class Logs extends CRUD {
 	
 	
-	public static void passId() {
+	/*public static void passId() {
 		viewLogs(1);
-	}
+	}*/
         /**
          * Lists the logs of this organization
          * @param organizationId organization Id to list logs of
          * 
          */
         public static void viewLogs(long organizationId) {
-            
+        	
                Organization organization = Organization.findById(organizationId);
                System.out.println(organizationId + "3aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                 List<Log> toFilter = new ArrayList<Log> ();
@@ -42,7 +45,49 @@ public class Logs extends CRUD {
                 
                 
                
-                render(toFilter);
+                render(toFilter,organizationId);
+        }
+        public static void searchLog(@Required String keyword, long id) {
+        	ArrayList<Log> filtered = new ArrayList <Log> () ;
+        	Organization organization = Organization.findById(id);
+            System.out.println(id + "searchLog");
+             List<Log> toFilter = new ArrayList<Log> ();
+             if (organization == null) {
+            	 
+                  if(Security.getConnected().isAdmin)
+                   toFilter = Log.findAll();
+             } else {
+             	 
+                    if(Security.getConnected() == organization.creator || Security.getConnected().isAdmin)
+                 	   toFilter = organization.logs;
+                    
+                    else {
+                 	   System.out.println("you are not authorized to view....................");
+                    }
+             }
+             System.out.println(id + "organization id");
+             	System.out.println("111111"+ toFilter.size());
+            	 for(int i = 0; i < toFilter.size(); i++) {
+            		 if((toFilter.get(i).actionDescription).toLowerCase().contains(keyword.toLowerCase())) {
+            			 System.out.println("mohsen" + toFilter.get(i).actionDescription);
+            			 filtered.add(toFilter.get(i));
+            		 }
+            	 }
+            	 System.out.println(filtered.size() + ">>>>>>>>>");
+            	 JsonObject json = new JsonObject();
+            	 String actions="";
+            	 String time="";
+            	 for(int i=0;i<filtered.size();i++){
+            		 actions= actions + filtered.get(i).actionDescription + ",";
+            		 time= time + filtered.get(i).time + ",";
+            	 }
+            	 
+            	 json.addProperty("actions", actions);
+            	 json.addProperty("time", time);
+            	 
+            	 renderJSON(json.toString());
+             
+        	
         }
         
         /**

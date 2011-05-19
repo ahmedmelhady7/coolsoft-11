@@ -1,14 +1,85 @@
 #{extends 'main.html' /}
 
-<style type="text/css">    
 
-            .pg-normal {
+
+<u><font size ="5" color ="blue">Logs</font></u>
+<br/>
+<br/>
+Search Logs <input type="text" size="20" name="name" id="table">
+
+<input type="button" onclick="javascript: show('${organizationId}');" value="Search" />
+
+<table border="0" bgcolor="#ececec" cellspacing="5">
+	#{if toFilter.isEmpty()}
+</table>
+<tr><td><i>No logs</i></td><td>
+#{/if}
+#{else}
+<table border="0" bgcolor="#ececec" cellspacing="5" id ="toFil">	
+
+#{list items:toFilter, as:'filter'} 
+<tr><td width="100%"><font size ="2" color ="black">${filter.actionDescription} &nbsp;&nbsp;&nbsp;&nbsp; ${filter.time}</font></td><td>
+#{/list}
+</table>
+<div id="pageNavPosition"></div>
+<script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
+	</script>
+	
+<script src="@{'/public/javascripts/paging.js'}"></script>
+	
+	<script type="text/javascript"><!--
+
+
+    var pager = new Pager('toFil', 3); 
+    pager.init(); 
+    pager.showPageNav('pager', 'pageNavPosition'); 
+    pager.showPage(1);
+    //--></script>
+#{/else}
+
+<br/>
+<br/>
+
+
+
+<script type="text/javascript">
+function show(id){
+	var name = document.getElementById('table').value;
+
+	      
+          $.getJSON('@{searchLog()}', {keyword:name,id:id},
+			 function(data)
+			 {
+			   
+			   
+			  var action={};
+	        action=data.actions.split(",");
+	         var  times = {};
+	          times = data.time.split(",");
+	        
+		     
+			  	var text = action[0];
+			  	var tex = times[0];
+				$('#toFil').html('<tr><td><font size=2>  ' + text + tex + '</font></td><td>');
+				 for (var i = 1; i < action.length - 1; i++) {
+				 	$('#toFil').append('<tr><td><font size=2> ' + text +'&nbsp;&nbsp;&nbsp;&nbsp;'+ tex + '</font></td><td>');
+				 	$('#toFil').show();
+				 }
+			  
+			 
+			 
+			 
+			});
+}
+	</script>
+	<style type="text/css">    
+.pg-normal {
 
                 color: black;
 
                 font-weight: normal;
 
-                text-decoration: none;    
+                 text-decoration: none;    
 
                 cursor: pointer;    
 
@@ -25,35 +96,6 @@
                 cursor: pointer;
 
             }
-
         </style>
 
-
-<u><font size ="5" color ="blue">Logs</font></u>
-<br/>
-<br/>
-<table border="0" bgcolor="#ececec" cellspacing="5">
-	#{if toFilter.isEmpty()}
-</table>
-<tr><td><i>No logs</i></td><td>
-#{/if}
-#{else}
-<table border="0" bgcolor="#ececec" cellspacing="5" id ="toFil">	
-<div id="pageNavPosition"></div>
-#{list items:toFilter, as:'filter'} 
-<tr><td width="100%"><font size ="2" color ="black"><i>${filter.actionDescription} &nbsp;&nbsp;&nbsp;&nbsp; ${filter.time}</i></font></td></tr>
-#{/list}
-</table>
-<script src="@{'/public/javascripts/paging.js'}"></script>
 	
-	<script type="text/javascript">
-
-    var pager = new Pager('toFil', 1); 
-    pager.init(); 
-    pager.showPageNav('pager', 'pageNavPosition'); 
-    pager.showPage(1);
-   </script>
-#{/else}
-
-<br/>
-<br/>

@@ -625,13 +625,17 @@ public class Users extends CRUD {
 			return false;
 		}
 		if (UserRoleInOrganizations.isOrganizer(user, placeId, placeType)) {
+			System.out.println("aloooooooooo2");
 			List<String> r = Roles.getRoleActions("organizer");
 			if (r.contains(action)) {
+				System.out.println("aloooooooooo3");
 				return true;
 			} else {
 				if (Roles.getRoleActions("idea developer").contains(action)) {
+					System.out.println("aloooooooooo4");
 					return true;
 				} else {
+					System.out.println("aloooooooooo5");
 					return false;
 				}
 			}
@@ -682,6 +686,7 @@ public class Users extends CRUD {
 
 		}
 		if (placeType.equalsIgnoreCase("topic")) {
+			System.out.println("aloooooooooo1");
 			Topic topic = Topic.findById(placeId);
 			MainEntity m = topic.entity;
 			Organization org = m.organization;
@@ -874,7 +879,65 @@ public class Users extends CRUD {
 		}
 		return enrolled;
 	}
+	/**
+	 * gets the list of users who are allowed to delete an idea or a comment
+	 * 
+	 * @author: Lama Ashraf
+	 * 
+	 * @story C1S15
+	 * 
+	 * @param user
+	 *            : User user is the idea developer performing this action
+	 *
+	  * @param action
+	 *            :a String action performed
+	 * 
+	 * @param placeId
+	 *            : a long id of the idea/comment
+	 * 
+	 * @param placeType
+	 *            : a String type whether an idea/comment
+	 * @param topicId
+	 *            : a long id of the topic
+	 * 
+	 * @return boolean
+	 **/
+	public static boolean canDelete(User user, String action, long placeId,
+			String placeType, long topicId) {
+		
+		
+		BannedUser bannedView = BannedUser.find(
+				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
+				"view", placeType, placeId).first();
 
+		if (bannedView != null) {
+			return false;
+		}
+
+		BannedUser banned = BannedUser.find(
+				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
+				action, placeType, placeId).first();
+		
+		if (banned != null) {
+			return false;
+		}
+		if(placeType == "idea"){
+			Idea idea = Idea.findById(placeId);
+			if(user.equals(idea.author)) {
+				return true;
+			}
+			return false;
+		}
+		
+		if(placeType == "comment") {
+			Comment comment = Comment.findById(placeId);
+			if(user.equals(comment.commenter)) {
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
 	/**
 	 * gets all the users enrolled in an organization these users are: 1- the
 	 * Organization lead 2- the organizers (even if blocked) 3- Idea Developers
