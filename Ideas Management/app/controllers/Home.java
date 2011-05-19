@@ -8,7 +8,7 @@ public class Home extends Controller {
 	public static void index() {
 		User user = Security.getConnected();
 		if(user != null) {
-			Login.index();
+			Login.homePage();
 		} else {
 			render();
 		}

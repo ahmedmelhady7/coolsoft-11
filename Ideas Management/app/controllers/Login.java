@@ -32,7 +32,7 @@ public class Login extends Controller {
 	 * @return void
 	 */
 
-	public static void index() {
+	public static void homePage() {
 		User user = Security.getConnected();
 		List<Idea> ideas = user.ideasCreated;
 		List<Idea> drafts = new ArrayList<Idea>();
@@ -53,6 +53,15 @@ public class Login extends Controller {
 			flash.error("Your account has been reactivated successfuly");
 		}		
 		render(user,admin,drafts);
-
+	}
+	
+	public static void about() {
+		User user = Security.getConnected();
+		render(user);
+	}
+	
+	public static void contact() {
+		User user = Security.getConnected();
+		render(user);
 	}
 }
