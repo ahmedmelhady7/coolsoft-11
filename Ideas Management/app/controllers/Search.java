@@ -1113,7 +1113,7 @@ public class Search extends Controller {
 		for (int m = 0; m < notToSort.size(); m++) {
 			sorted.add(notToSort.get((m)));
 		}
-		listOfResults = sorted;
+		listOfResults = toSort;
 		searchResult();
 		// the previous too loops is to append to lists in one
 		// }
@@ -1248,7 +1248,7 @@ public class Search extends Controller {
 			sorted.add(notToSort.get((m)));
 		}
 
-		listOfResults = sorted;
+		listOfResults = toSort;
 		searchResult();
 		// the previous too loops is to append to lists in one
 		// }
