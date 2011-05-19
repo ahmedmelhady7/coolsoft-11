@@ -212,10 +212,8 @@ public class Tags extends CRUD {
 			allowed = true;
 		}
 		boolean follower = user.followingTags.contains(tag);
-
-//		boolean canCreateRelationship = TagRelationships.isAllowedTo(tagId);
-		render(tag, followers, topics, organizations, entities, ideas, follower, user, allowed/*, canCreateRelationship*/);
-
+		boolean canCreateRelationship = TagRelationships.isAllowedTo(tagId);
+		render(tag, followers, topics, organizations, entities, ideas, follower, user, canCreateRelationship);
 	}
 	
 	/**

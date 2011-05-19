@@ -99,16 +99,13 @@ public class TagRelationships extends CRUD {
 	 * @param tagId
 	 *            : the id of the tag that the user belongs to
 	 * 
-	 * @return boolean value whether the user is allowed(True) or not(False)
+	 * @return boolean
 	 */
 
 	public static boolean isAllowedTo(long tagId) {
 		User user = Security.getConnected();
-		if (Users
-				.isPermitted(
-						user,
-						"create relationships between entities/sub-entities/topics/tags",
-						tagId, "tag"))
+		Tag tag = Tag.findById(tagId);
+		if (user == tag.createdInOrganization.creator)
 			return true;
 		return false;
 	}
@@ -122,7 +119,7 @@ public class TagRelationships extends CRUD {
 	 * 
 	 * @param relationNames : list of relation names in the organization
 	 * 
-	 * @return boolean value if duplicate(true) or not(false)
+	 * @return boolean
 	 */
 	public static boolean isDuplicate(String relationName, ArrayList<String> relationNames){
 		for(int i = 0; i < relationNames.size(); i++){
