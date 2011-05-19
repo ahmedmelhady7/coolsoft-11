@@ -3,6 +3,7 @@
 #{set title:'Restrict Organizer' /}
 
 
+<input type="submit" style="background-color:lightblue" align = "Right" value="Back to the Entity Main Page"  onclick=location.href="@{MainEntitys.viewEntity(entityId)}" > <br /> <br />
 
 
 <input type="submit" style="background-color:lightblue" align = "Right" value="Start new Restriction / De-Restriction Process"  onclick="Restart()" > <br /> <br />
@@ -15,7 +16,7 @@
 <form name = "organizer">
 <fieldset>  
 <legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
-    <b><u> Users set: </u></b></font></legend> <br />
+    <b><u> Organizers' set: </u></b></font></legend> <br />
        <select name = "userId" id = "userss">
   #{list items:users, as:'user'}
   
@@ -84,7 +85,7 @@
     <b><u> Actions that the organizer is restricted from : </u></b></font></p>
        
 </form>
-
+<br />
 <input type="submit" id = "deRestrictBtn" value="De-Restrict" onclick = "deRestrict()"> <br /> <br />
 
 <input type="submit" style="background-color:lightblue" value="Start new Restriction / De-Restriction Process" align = "Right" onclick="Restart()" >
@@ -250,7 +251,7 @@ function getTopic(){
         
         var restrictedActionz = {};
         restrictedActionz = data.restrictedActions.split(",");
-        alert(restrictedActionz.length + " restrictedActions" + data.restrictedActions);
+       
         for( var i = 0 ; i < restrictedActionz.length-1 ; i++){
 		     
         	var text = restrictedActionz[i];
@@ -419,8 +420,8 @@ function getSelectedCheckboxValue(buttonGroup) {
 			
 // 			alert("restrictedActions.length" + field.length);
 			var enabledActions = getSelectedCheckboxValue(field2);
-			alert(enabledActions[0]);
-			alert(enabledActions.length);
+			//alert(enabledActions[0]);
+			//alert(enabledActions.length);
 			
 
 			if(enabledActions.length == 0 ) {
@@ -458,7 +459,7 @@ function getSelectedCheckboxValue(buttonGroup) {
 						
 						
 						if(field2.checked){
-							alert("henna");
+							//alert("henna");
 							field2.disabled = true;
 							field2.checked = false;
 							$('#enabledActions').append('<input type="checkbox" id = "c" name = "actionToDo"  value = "'+field2.value +'" class = "enabled"/> ' + field2.value + '<br />'); 
