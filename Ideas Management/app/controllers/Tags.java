@@ -333,6 +333,14 @@ public class Tags extends CRUD {
 			}
 			i++;
 		}
+		
+		for(int j = 0; j < tag.relationsSource.size(); j++){
+			TagRelationships.delete(tag.relationsSource.get(j).id);
+		}
+		for(int j = 0; j < tag.relationsDestination.size(); j++){
+			TagRelationships.delete(tag.relationsDestination.get(j).id);
+		}
+		
 		tag.delete();
 		Organizations.mainPage();
 	}
