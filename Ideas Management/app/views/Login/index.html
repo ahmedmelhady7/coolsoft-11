@@ -59,7 +59,7 @@
 						<li>
 							<h2>${user.username}</h2> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							#{if user.profilePictureId != -1}							
-							#{list items:user.pictureId, as:'id'}
+							#{list items:user.profilePictureId, as:'id'}
 							<img src="@{Pictures.getPicture(id)}" width="40" height="40"/>
 							#{/list}
 							#{/if}
