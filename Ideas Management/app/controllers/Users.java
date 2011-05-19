@@ -188,6 +188,18 @@ public class Users extends CRUD {
 		}
 	}
 
+	/**
+	 * renders the form for editing and viewing a
+	 * user
+	 * 
+	 * @author Lama Ashraf
+	 * 
+	 * @story C1S1-2
+	 * 
+	 * @param String
+	 *            userId : id of the user we want to show
+	 * 
+	 */
 	public static void viewMyProfile(String userId) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -222,6 +234,16 @@ public class Users extends CRUD {
 		}
 	}
 
+	/**
+	 * passes the user's Id to viewMyProfile method
+	 * 
+	 * @author Lama Ashraf
+	 * 
+	 * @story C1S2-1
+	 * 
+	 * @param String
+	 * 
+	 */
 	public static void editProfile() {
 		User user = Security.getConnected();
 		viewMyProfile(user.id + "");
@@ -523,6 +545,7 @@ public class Users extends CRUD {
 	 * @param keyword
 	 *            :a String keyword the user enters for searching
 	 * 
+	 * @return List<User>
 	 */
 	public static ArrayList<User> searchUser(String keyword) {
 
@@ -723,11 +746,16 @@ public class Users extends CRUD {
 					}
 				}
 			} else {
-				if (Roles.getRoleActions("idea developer").contains(action)) {
+				if(action.equals("view")){
 					return true;
-				} else {
-					return false;
 				}
+				List<UserRoleInOrganization> allowed = UserRoleInOrganization
+				.find("byEnrolledAndOrganization", user, org).fetch();
+		        if (allowed == null) {
+			return false;
+		}
+		else
+			return true;
 			}
 
 		}
@@ -784,14 +812,20 @@ public class Users extends CRUD {
 					}
 				}
 				if (org.privacyLevel == 2) {
-					if (Roles.getRoleActions("idea developer").contains(action)) {
+					if(action.equals("view")){
 						return true;
-					} else {
-						return false;
 					}
+					List<UserRoleInOrganization> allowed = UserRoleInOrganization
+					.find("byEnrolledAndOrganization", user, topic).fetch();
+			        if (allowed == null) {
+				return false;
+			}
+			else
+				return true;
+				}
 				}
 			}
-		}
+		
 
 		if (placeType.equalsIgnoreCase("entity")) {
 			MainEntity entity = MainEntity.findById(placeId);
