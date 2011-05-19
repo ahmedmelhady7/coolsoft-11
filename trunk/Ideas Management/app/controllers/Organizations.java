@@ -312,10 +312,10 @@ public class Organizations extends CRUD {
 			MainEntity defaultEntity = new MainEntity("Default", "", org, false);
 			defaultEntity.save();
 			flash.success("Your organization has been created!!");
-			redirect("Organizations.mainPage", "Organization created");
 		} else {
-			redirect("Organizations.mainPage", "Name already in use..");
+			flash.error("Organization name already in use..");
 		}
+		Organizations.mainPage();
 
 	}
 
@@ -399,7 +399,7 @@ public class Organizations extends CRUD {
 	public static void viewProfile(long id) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(id);
-		List<Tag> tags = org.createdTags;
+		List<Tag> tags = new ArrayList<Tag>();
 		List<Tag> allTags = Tag.findAll();
 		int i = 0;
 		int allowed = 0;
@@ -419,26 +419,36 @@ public class Organizations extends CRUD {
 		System.out.println(settings);
 		System.out.println(user);
 		System.out.println(org);
-
-		boolean loop = false;
-		if (tags.isEmpty()) {
-			while (i < allTags.size()) {
-				if (allTags.get(i).createdInOrganization.privacyLevel == 2) {
-					tags.add(allTags.get(i));
-					loop = true;
-				}
-				i++;
-			}
+		
+//		while (i < org.createdTags.size()) {
+//			tags.add(org.createdTags.get(i));
+//			i++;
+//		}
+//		i = 0;
+		while (i < org.relatedTags.size()) {
+			tags.add(org.relatedTags.get(i));
+			i++;
 		}
-		if (loop == false) {
-			while (i < allTags.size()) {
-				if (!tags.contains(allTags.get(i))
-						&& (allTags.get(i).createdInOrganization.privacyLevel == 2)) {
-					tags.add(allTags.get(i));
-				}
-				i++;
-			}
-		}
+//		System.out.println(org.relatedTags.get(0).name);
+//		boolean loop = false;
+//		if (tags.isEmpty()) {
+//			while (i < allTags.size()) {
+//				if (allTags.get(i).createdInOrganization.privacyLevel == 2) {
+//					tags.add(allTags.get(i));
+//					loop = true;
+//				}
+//				i++;
+//			}
+//		}
+//		if (loop == false) {
+//			while (i < allTags.size()) {
+//				if (!tags.contains(allTags.get(i))
+//						&& (allTags.get(i).createdInOrganization.privacyLevel == 2)) {
+//					tags.add(allTags.get(i));
+//				}
+//				i++;
+//			}
+//		}
 		int canCreateEntity = 0;
 		if (user.isAdmin || org.creator.equals(user)) {
 			canCreateEntity = 1;

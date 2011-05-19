@@ -8,6 +8,18 @@
 
     <body>
         #{extends 'main.html' /} 
+		#{if flash.success}
+		<p style="color:#00ff40">
+			${flash.success}
+			</p>
+		</style>
+		#{/if}
+		#{if flash.error}
+		<p style="color:#ff0000">
+			${flash.error}
+			</p>
+		</style>
+		#{/if}
 		#{set title: 'Available Organizations' /}
 		<a href="@{Organizations.createOrganization()}">Create a new Organization</a><br /><br />
 		#{if organizations.size() > 0}

@@ -110,41 +110,82 @@ public class Tags extends CRUD {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(orgId);
 		List<Organization> allOrg = Organization.findAll();
-		List<Tag> allTags = new ArrayList<Tag>();
+//		List<Tag> allTags = new ArrayList<Tag>();
 		int i = 0;
-		while (i < org.createdTags.size()) {
-			allTags.add(org.createdTags.get(i));
-			i++;
-		}
-		i = 0;
-		while (i < allOrg.size()) {
-			int j = 0;
-			if ((allOrg.get(i).privacyLevel == 2)
-					&& (!allOrg.get(i).name.equals(org.name))) {
-				while (j < allOrg.get(i).createdTags.size()) {
-					allTags.add(allOrg.get(i).createdTags.get(j));
-					j++;
+//		while (i < org.relatedTags.size()) {
+//			allTags.add(org.relatedTags.get(i));
+//			i++;
+//		}
+//		i = 0;
+//		while (i < allOrg.size()) {
+//			int j = 0;
+//			if ((allOrg.get(i).privacyLevel == 2)
+//					&& (!allOrg.get(i).name.equals(org.name))) {
+//				while (j < allOrg.get(i).createdTags.size()) {
+//					allTags.add(allOrg.get(i).createdTags.get(j));
+//					j++;
+//				}
+//			}
+//			i++;
+//		}
+		boolean duplicate = false;
+		if(org.privacyLevel == 2) {
+			while(i < org.relatedTags.size()) {
+				if (org.relatedTags.get(i).name.equalsIgnoreCase(name)) {
+					duplicate = true;
+					break;
+				}
+				i++;
+			}
+			if(!duplicate) {
+				i = 0;
+				while (i < allOrg.size()) {
+					if (allOrg.get(i).privacyLevel == 2) {
+						int j = 0;
+						while (j < allOrg.get(i).relatedTags.size()) {
+							if (allOrg.get(i).relatedTags.get(j).name.equalsIgnoreCase(name)) {
+								duplicate = true;
+								break;
+							}
+							j++;
+						}
+					}
+					i++;
 				}
 			}
-			i++;
 		}
-		boolean duplicate = false;
-		i = 0;
-		while (i < allTags.size()) {
-			if (allTags.get(i).name.equalsIgnoreCase(name)) {
-				duplicate = true;
-				break;
+		else {
+			i = 0;
+			while (i < org.relatedTags.size()) {
+				if (org.relatedTags.get(i).name.equalsIgnoreCase(name)) {
+					duplicate = true;
+					break;
+				}
+				i++;
 			}
-			i++;
 		}
+//		i = 0;
+//		while (i < allTags.size()) {
+//			if (allTags.get(i).name.equalsIgnoreCase(name)) {
+//				duplicate = true;
+//				break;
+//			}
+//			i++;
+//		}
 		if (!duplicate) {
 			Tag tag = new Tag(name, org, user);
 			tag.save();
+			org.relatedTags.add(tag);
+			org.save();
 			System.out.println(tag.id);
 			String description = user.username + " has created a new tag \""
 					+ name + "\" in organization " + org.name;
 			Notifications.sendNotification(org.creator.id, tag.id, "Tag",
 					description);
+			flash.success("Your tag has been created!!");
+		}
+		else {
+			flash.error("There is already a tag with that same name!!");
 		}
 		Organizations.viewProfile(orgId);
 	}
@@ -166,8 +207,120 @@ public class Tags extends CRUD {
 		List<MainEntity> entities = tag.entities;
 		List<Idea> ideas = tag.taggedIdeas;
 		User user = Security.getConnected();
+		boolean allowed = false;
+		if (user.isAdmin || user.equals(tag.createdInOrganization.creator) || user.equals(tag.creator)) {
+			allowed = true;
+		}
 		boolean follower = user.followingTags.contains(tag);
+
 //		boolean canCreateRelationship = TagRelationships.isAllowedTo(tagId);
-		render(tag, followers, topics, organizations, entities, ideas, follower, user/*, canCreateRelationship*/);
+		render(tag, followers, topics, organizations, entities, ideas, follower, user, allowed/*, canCreateRelationship*/);
+
+	}
+	
+	/**
+	 * This method edits a certain tag
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S38
+	 * 
+	 * @param tagId
+	 * 			The id of the tag
+	 * 
+	 * @param name
+	 * 			The new name of the tag
+	 */
+	public static void edit(long tagId, String name) {
+		Tag tag = Tag.findById(tagId);
+		Organization tagOrganization = tag.createdInOrganization;
+		List<Tag> tags = new ArrayList<Tag>();
+		List<Organization> allOrganizations = Organization.findAll();
+		boolean duplicate = false;
+		int i = 0;
+		while(i < allOrganizations.size()) {
+			if (allOrganizations.get(i).privacyLevel == 2) {
+				int j = 0;
+				while (j < allOrganizations.get(i).createdTags.size()) {
+					tags.add(allOrganizations.get(i).createdTags.get(j));
+					j++;
+				}
+			}
+			i++;
+		}
+		i = 0;
+		if((tagOrganization.privacyLevel == 2)) {
+			while (i < tags.size()) {
+				if (tags.get(i).name.equalsIgnoreCase(name)) {
+					duplicate = true;
+					break;
+				}
+				i++;
+			}
+		}
+		else {
+			while (i < tagOrganization.createdTags.size()) {
+				if (tagOrganization.createdTags.get(i).name.equalsIgnoreCase(name)) {
+					duplicate = true;
+					break;
+				}					
+			i++;
+			}
+		}
+		if(!duplicate) {
+			tag.name = name;
+			tag.save();
+			flash.success("DONE");
+		}
+		else {
+			flash.error("There is already a tag with the same name");
+		}
+		Tags.mainPage(tagId);
+	}
+	
+	public static void delete(long tagId) {
+		Tag tag = Tag.findById(tagId);
+		List<Organization> allOrganizations = Organization.findAll();
+		List<Topic> topics = Topic.findAll();
+		List<Item> items = Item.findAll();
+		List<Idea> ideas = Idea.findAll();
+		List<User> followers = User.findAll();
+		int i = 0;
+		while (i < allOrganizations.size()) {
+			if(allOrganizations.get(i).relatedTags.contains(tag)) {
+				allOrganizations.get(i).relatedTags.remove(tag);
+			}
+			i++;
+		}
+		i = 0;
+		while (i < followers.size()) {
+			if(followers.get(i).followingTags.contains(tag)) {
+				followers.get(i).followingTags.remove(tag);
+			}
+			i++;
+		}
+		i = 0;
+		while (i < topics.size()) {
+			if(topics.get(i).tags.contains(tag)) {
+				topics.get(i).tags.remove(tag);
+			}
+			i++;
+		}
+		i = 0;
+		while (i < ideas.size()) {
+			if(ideas.get(i).tagsList.contains(tag)) {
+				ideas.get(i).tagsList.remove(tag);
+			}
+			i++;
+		}
+		i = 0;
+		while (i < items.size()) {
+			if(items.get(i).tags.contains(tag)) {
+				items.get(i).tags.remove(tag);
+			}
+			i++;
+		}
+		tag.remove();
+		Organizations.mainPage();
 	}
 }
