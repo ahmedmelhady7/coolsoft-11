@@ -94,7 +94,7 @@ public class Idea extends CoolModel {
 	/**
 	 * @author ${Ibrahim Safwat} Each idea can have a rating
 	 */
-	public int rating;
+	public String rating;
 
 	/**
 	 * @author ${Ibrahim Safwat} Must keep track of which users rated
@@ -135,8 +135,8 @@ public class Idea extends CoolModel {
 		this.commentsList = new ArrayList<Comment>();
 		this.reporters = new ArrayList<User>();
 		this.usersRated = new ArrayList<User>();
-		this.rating = 0;
-		this.priority = null;
+		this.rating = "Not yet rated";
+		this.priority = "Not yet prioritized";
 		this.hidden = false;
 
 	}
@@ -173,8 +173,8 @@ public class Idea extends CoolModel {
 		this.commentsList = new ArrayList<Comment>();
 		this.reporters = new ArrayList<User>();
 		this.usersRated = new ArrayList<User>();
-		this.rating = 0;
-		this.priority = null;
+		this.rating = "Not yet rated";
+		this.priority = "Not yet prioritized";
 		this.hidden = false;
 	}
 

@@ -367,7 +367,8 @@ public class Ideas extends CRUD {
 		Model object = type.findById(ideaId);
 		notFoundIfNull(object);
 		Idea idea = (Idea) object;
-		int rate = idea.rating;
+		String rate = idea.rating;
+		String priority = idea.priority;
 		// List<Tag> tags = i.tagsList;
 		User user = Security.getConnected();
 		List<Comment> comments = idea.commentsList;
@@ -404,7 +405,7 @@ public class Ideas extends CRUD {
 																			 * deletable
 																			 * ,
 																			 */
-					ideaId, rate, idea);
+					ideaId, rate, idea,priority);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -745,20 +746,34 @@ public class Ideas extends CRUD {
 	 * 
 	 * @param rating
 	 *            rating taken from the user
-	 * @param ideaID
+	 * @param ideaId
 	 *            idea that the user wants to rate
 	 * @description rates an idea if the user is an organizer
 	 */
 
-	public static void rate(int rating, long ideaID) {
-		Idea i = Idea.findById(ideaID);
+	public static void rate(long ideaId, int rat) {
 		User user = Security.getConnected();
-		List organizers = i.belongsToTopic.getOrganizer();
-		if (organizers.contains(user)) {
-			Idea idea = Idea.findById(ideaID);
-			int oldRating = idea.rating;
-			int newRating = (oldRating + rating) / 2;
+		ideaId++;
+		Idea i = Idea.findById(ideaId);
+		long topicId = i.belongsToTopic.id;
+		System.out.println("---------------------------------------");
+		System.out.println("isPermitted raga3et " + Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic"));
+		if (Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic"))
+		{
+			if(i.rating.equals("Not yet rated"))
+				i.rating = Integer.toString(rat);
+			else
+			{
+				int oldRating = Integer.parseInt(i.rating);
+				int newRating;
+				newRating = (oldRating + rat) / 2;
+				i.rating = Integer.toString(newRating);
+			}
+			i.save();
+			redirect("/ideas/show?ideaId=" + ideaId);
 		}
+		
+		
 	}
 
 	/**
@@ -789,18 +804,23 @@ public class Ideas extends CRUD {
 	 * 
 	 * @param priority
 	 *            the priority to be set
-	 * @param ideaID
+	 * @param ideaId
 	 *            the ID of the idea to prioritize
 	 * @description sets the priority if the user is an organizer
 	 */
-	public static void setPriority(String priority, long ideaID) {
-		System.out.println("Dakhalt setPriority");
-		Idea i = Idea.findById(ideaID);
-		Organization O = i.belongsToTopic.entity.organization;
+	public static void setPriority(String priority, long ideaId) {
 		User user = Security.getConnected();
-		List organizers = Users.searchOrganizer(O);
-		if (organizers.contains(user))
+		ideaId++;
+		Idea i = Idea.findById(ideaId);
+		long topicId = i.belongsToTopic.id;
+		System.out.println("---------------------------------------");
+		System.out.println("isPermitted raga3et " + Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic"));
+		if (Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic"))
+		{
 			i.priority = priority;
+			i.save();
+			redirect("/ideas/show?ideaId=" + ideaId);
+		}
 	}
 
 	/**

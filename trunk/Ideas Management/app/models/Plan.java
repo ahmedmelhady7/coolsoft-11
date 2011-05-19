@@ -61,7 +61,7 @@ public class Plan extends CoolModel {
 	/**
 	 * @author ${Ibrahim Safwat} Every plan can have a rating
 	 */
-	public int rating;
+	public String rating;
 	/**
 	 * @author ${Ibrahim Safwat} Must keep track of which users rated
 	 */
@@ -111,7 +111,7 @@ public class Plan extends CoolModel {
 		this.items = new ArrayList<Item>();
 		this.ideas = new ArrayList<Idea>();
 		this.topic = topic;
-		this.rating = 0;
+		this.rating = "Not yet rated";
 		this.commentsList = new ArrayList<Comment>();
 		this.usersRated = new ArrayList<User>();
 

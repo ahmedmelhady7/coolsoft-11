@@ -131,18 +131,17 @@
 		</br>
  		Idea rating : ${rate}
  		<br/>
-		<form action="@{Ideas.rate(ideaId, rat)}" method="GET">
-			<input type="submit" value="Submit rating"/>
-			<input type="hidden" name = "ideaId" value=${ideaId}/>
-			<select name="rat">
-				<option value="0">0</option>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-			</select>
-		</form>
+		<form action="@{Ideas.rate(ideaId,rat)}" method="GET">
+    <input type="submit" value="Submit rating"/><input type = "hidden" name = "ideaID" value = ${ideaId}>
+    <select name="rat">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+</form>
 		<br />
  		<form action="@{Comments.addCommentToIdea()}" method="GET">
 			<input type = "text" name = "comment">
@@ -158,6 +157,10 @@
 				document.getElementById('div1').innerHTML = "#{if comments} Comments <br/> <ul> #{list comments, as:'comment'} <li><a>${comment.toString()}</a></li> #{/list} <br/></ul> #{/if} #{else}No comments posted#{/else}"
 			}
 			</script>
+			
+		<br/>
+		Idea priority : ${priority}	
+		<br/>
 		<form action = @{Ideas.setPriority()} method = "GET">
 		<input type ="submit" value = "Submit Priority"/>
 		<br />
