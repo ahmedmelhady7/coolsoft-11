@@ -1421,6 +1421,10 @@ public class Users extends CRUD {
 				x = "You can not delete a user who's deactivated his account !";
 				System.out.println(x + "else");
 			}
+			for(int i =0 ;i<user.invitation.size();i++)
+				user.invitation.get(i).delete();
+			for(int i =0 ; i<user.requestsToJoin.size();i++)
+				user.requestsToJoin.get(i).delete();
 			render(request.controller.replace(".", "/") + "/index.html", x);
 		} catch (NullPointerException e) {
 			x = "No such User !!";
