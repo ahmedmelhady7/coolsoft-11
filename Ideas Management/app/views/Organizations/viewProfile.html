@@ -90,6 +90,12 @@
         #{if (org.createTag) && (!join)}<a href="@{Tags.createTag(org.id)}">Create a Tag</a>
         #{/if}
         #{/else}
+        
+        <br/>
+        <br/>
+        <HR>
+        	<br/>
+        List of entities:
         <ul style="list-style: none;">
             #{list items:entities, as:'entity'}
             <li>
@@ -100,7 +106,7 @@
         #{if (canCreateEntity == 1)}<a href="@{MainEntitys.goToCreateEntity(org.id)}">Create a new Entity</a>
         #{/if}
         <br/>
-        <br/>
+        <HR>
         <br>
         List of viewable Tags:
         <ul style="list-style: none;">
@@ -119,7 +125,7 @@
         #{if flag == 1}
         <form action="@{BannedUsers.restrictOrganizer()}">
             <input type="hidden" name="orgId" value='${org.id}'>Restrict organizer in this organization: <input type="submit" value="view">
-        </form>#{/if}<!--
+        </form>#{/if}
         <!--     </body> -->
         <!-- </html> -->
         <!-- <script type="text/javascript"> -->
