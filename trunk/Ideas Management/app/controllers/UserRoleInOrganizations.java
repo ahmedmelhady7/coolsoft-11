@@ -89,18 +89,22 @@ public class UserRoleInOrganizations extends CRUD {
 	}
 
 	/**
-	 * checks whether this user is organizer or not given the
-	 * organization ,entity or topic REGARDLESS any restrictions
+	 * checks whether this user is organizer or not given the organization
+	 * ,entity or topic REGARDLESS any restrictions , this method doesnot put
+	 * into consideration the state of the user
 	 * 
 	 * @author Nada Ossama
-	 * @param user User to check
-	 * @param sourceID 
-	 *               long sourceID to be checked in
-	 * @param sourceType 
-	 *               String sourceType that represents the type of the source
-	 *                      
-	 * @return boolean 
-	 *                whether he is organizer or not
+	 * 
+	 * @story C1S7
+	 * 
+	 * @param user
+	 *            User to check
+	 * @param sourceID
+	 *            long sourceID to be checked in
+	 * @param sourceType
+	 *            String sourceType that represents the type of the source
+	 * 
+	 * @return boolean whether he is organizer or not
 	 */
 
 	public static boolean isOrganizer(User user, long sourceID,
