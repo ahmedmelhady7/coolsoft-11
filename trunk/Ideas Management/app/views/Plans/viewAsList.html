@@ -1,7 +1,9 @@
 #{if canView == true}
 #{extends 'planLayout.html' /}
 #{/if}
-#{set title:'View Plan as List' /}
+#{set 'title'}
+    ${p.title} - View Plan as List
+#{/set}
 #{if canView == false}
 #{extends 'main.html' /}<h3>You are not allowed to view this plan.</h3>
 #{/if}
@@ -111,16 +113,9 @@
             #{if isOrganizer == true}  
             #{if item.isRelatedToEntity() == true} 
             <div id = "removeEntity_${item.id}">
-                Related to entity: ${item.relatedEntity}<input type = "button" value = "Remove" onclick="remove_entity(${item.id});">
+                Related to entity: <a href="@{MainEntitys.viewEntity(item.relatedEntity.id)}">${item.relatedEntity}</a><input type = "button" value = "Remove" onclick="remove_entity(${item.id});">
             </div>
-            <div id = "relateEntity2_${item.id}" hidden>
- Relate to entity:
-                <select name="entity" id="entitySelect">
-                    #{list items:entitiesList, as:'ent'}<option value = ${ent.id}>${ent.name}</option>
-                    #{/list}
-                </select>
-                <input type = "button" value = "Relate" onclick="relate_entity(${item.id});">
-            </div>#{/if} 
+            #{/if} 
             #{else} 
             <div id = "relateEntity_${item.id}">
                 Relate to entity: 
@@ -129,10 +124,25 @@
                     #{/list}
                 </select>
                 <input type = "button" value = "Relate" onclick="relate_entity(${item.id});">
-            </div>#{/else}
-            <div id = "entity_div">
             </div>
+			
+			#{/else}
             #{/if}
+			
+			<div id = "relateEntity2_${item.id}" hidden = true>
+ 			Relate to entity:
+                <select name="entity" id="entitySelect">
+                    #{list items:entitiesList, as:'ent'}<option value = ${ent.id}>${ent.name}</option>
+                    #{/list}
+                </select>
+                <input type = "button" value = "Relate" onclick="relate_entity(${item.id});">
+            </div>
+			<div id = "removeEntity2_${item.id}" hidden = true>
+               #{if item.isRelatedToEntity() == true}
+			    Related to entity: <a href="@{MainEntitys.viewEntity(item.relatedEntity.id)}">${item.relatedEntity}</a><input type = "button" value = "Remove" onclick="remove_entity(${item.id});"> 
+			   #{/if}
+		    </div>
+			
             #{if user.pendingVolunteerRequest(item.id)}
             <label>
                 Pending volunteer Request
@@ -235,15 +245,16 @@ ${p.topic.getOrganizer().get(0).username}
                   {
                   	var entity = document.getElementById('entitySelect').value;
                 	$.post('@{relateToEntity()}' , {itemId: item, entityId: entity});
-                  	alert(entity);
                 	$("#relateEntity_" + item).hide();
-               
+					$("#relateEntity2_" + item).hide();
+               		$("#removeEntity2_" + item).show();
                   }
                   
                 function remove_entity(item)
                   {
                   	$.post('@{removeItemEntityRelation()}' , {itemId: item});
                 	$("#removeEntity_" + item).hide();
-                	
+					$("#removeEntity2_" + item).hide();
+                	$("#relateEntity2_" + item).show();
                   }
 </script>
