@@ -1450,6 +1450,21 @@ public class BannedUsers extends CRUD {
 							"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 							"view", "topic", topic.id).first();
 					unblock.delete();
+					for (int i = 0; i < organizers.size(); i++)
+						Notifications
+								.sendNotification(
+										organizers.get(i).id,
+										numId,
+										"topic",
+										"User "
+												+ user.firstName
+												+ " "
+												+ user.lastName
+												+ " has been unblocked from performing any action within topic "
+												+ topic.title);
+					Notifications.sendNotification(userId, numId, "topic",
+							"You have been unblocked from viewing topic "
+									+ topic.title);
 				}
 			} else {
 				if (text.equals("Block from using")) {
@@ -1478,6 +1493,22 @@ public class BannedUsers extends CRUD {
 							"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 							"use", "topic", topic.id).first();
 					unblock.delete();
+					
+					for (int i = 0; i < organizers.size(); i++)
+						Notifications
+								.sendNotification(
+										organizers.get(i).id,
+										numId,
+										"topic",
+										"User "
+												+ user.firstName
+												+ " "
+												+ user.lastName
+												+ " has been unblocked from performing any action within topic "
+												+ topic.title);
+					Notifications.sendNotification(userId, numId, "topic",
+							"You have been unblocked from performing any action within topic "
+									+ topic.title);
 				}
 			}
 		}
