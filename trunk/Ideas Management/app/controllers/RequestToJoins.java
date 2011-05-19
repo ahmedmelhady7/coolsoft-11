@@ -42,12 +42,19 @@ public class RequestToJoins extends CRUD {
 			notFoundIfNull(topic);
 			requests = topic.requestsToJoin;
 			name = topic.title;
+			for(int i =0;i<requests.size();i++){
+				if(requests.get(i).topic.hidden){
+					requests.remove(i);
+					i--;
+				}
+		}
 		} else {
 			Organization organization = Organization.findById(id);
 			System.out.println(organization);
 			notFoundIfNull(organization);
 			requests = organization.joinRequests;
 			name = organization.name;
+		
 		}
 		User user;
 		for (int i = 0; i < requests.size(); i++) {
