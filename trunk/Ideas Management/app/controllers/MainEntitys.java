@@ -111,21 +111,6 @@ public class MainEntitys extends CRUD {
 	}
 
 	/**
-	 * This method adds entity2 to the list of entities in entity
-	 * 
-	 * @author Mohamed Hisham
-	 * 
-	 * @param entity
-	 *            : first entity to be related
-	 * 
-	 * @param entity2
-	 *            : second entity to be related
-	 */
-	public static void relateEntity(MainEntity entity, MainEntity entity2) {
-		// entity.relatedEntities.add(entity2);
-	}
-
-	/**
 	 * This method allows the user to create an entity in an organization
 	 * 
 	 * @author Noha Khater, Omar Faruki
