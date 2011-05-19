@@ -56,8 +56,8 @@ public class Topics extends CRUD {
 			listOfTopics = entity.topicList;
 			listOfTopics.remove(topic);
 		}
-		for(int i = 0; i < listOfTopics.size(); i++){
-			if(!listOfTopics.get(i).createRelationship){
+		for (int i = 0; i < listOfTopics.size(); i++) {
+			if (!listOfTopics.get(i).createRelationship) {
 				System.out.println(listOfTopics.get(i).createRelationship);
 				listOfTopics.remove(listOfTopics.get(i));
 			}
@@ -790,7 +790,7 @@ public class Topics extends CRUD {
 	 * 
 	 */
 	public static void show(String topicId) {
-		
+
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(topicId);
@@ -878,7 +878,8 @@ public class Topics extends CRUD {
 			}
 		}
 		boolean seeRelationStatus = false;
-		if (actor.isAdmin || entity.organization.creator.equals(actor) || creator.equals(actor)) {
+		if (actor.isAdmin || entity.organization.creator.equals(actor)
+				|| creator.equals(actor)) {
 			seeRelationStatus = true;
 		}
 		boolean isMemeber = Users.getEnrolledUsers(
@@ -1231,156 +1232,176 @@ public class Topics extends CRUD {
 		render(topic);
 	}
 
-	  /**
-	   * Overrides CRUD's delete() and deletes a topic
-	   * 
-	   * @author Alia El Bolock
-	   * 
-	   * @story C3S9
-	   * 
-	   * @param id
-	   *         : the id of the topic to be deleted
-	   */
-	  public static void delete(String id, String justification) {
-		  System.out.println("entered my delete");
-	        ObjectType type = ObjectType.get(getControllerClass());
-	        notFoundIfNull(type);
-	        Model object = type.findById(id);
-	        notFoundIfNull(object);
-	        Topic temporaryTopic = (Topic) object;
-	        MainEntity entity = temporaryTopic.entity;
-	        Plan plan = temporaryTopic.plan;
-	        System.out.println("entering try");
-	        try {
-	        	System.out.println("entered try");
-	            Calendar calendar = new GregorianCalendar();
-				User myUser = Security.getConnected();
-				//Logs.addLog( myUser, "delete", "Task", temporaryTopic.id, temporaryTopic.taskStory.componentID.project, calendar.getTime() );
-				String message = myUser.username + " has deleted the topic " + temporaryTopic.title;
-				List<User> users = Users.getEntityOrganizers(entity);
-				for (int i = 0; i < users.size(); i++)
-					Notifications.sendNotification(users.get(i).id, temporaryTopic.id, "Topic",
-							message);
-				for(int i =0; i< temporaryTopic.followers.size(); i++)
-				Notifications.sendNotification(temporaryTopic.followers.get(i).getId(), entity.getId(), "entity", message);
-				Notifications.sendNotification(temporaryTopic.creator.getId(), entity.getId(), "entity", justification);
-				System.out.println(justification);
-				
-				//>>>>added by Salma Osama to delete the topic's plan if the topic is deleted
-								if(plan != null) {
-									Plans.deletePlan(plan.id);
-								}
-								
-				 object._delete();
-		            System.out.println("deleted");
-				System.out.println("leaving try");
-				
-	        } catch (Exception exception) {
-	        	System.out.println("entered catch");
-	            flash.error(Messages.get("crud.delete.error", type.modelName));
-	            redirect(request.controller + ".show", object._key());
-	        }
-	        flash.success(Messages.get("crud.deleted", type.modelName));
-	        System.out.println("flash.success");
-	        //redirect(request.controller + ".list");
-	        redirect("mainentitys.viewentity",entity.id);
-	    }
-	  
-	  /**
-	   * Hides a topic but keeps it in the database
-	   * 
-	   * @author Alia El Bolock
-	   * 
-	   * @story C3S9
-	   * 
-	   * @param id
-	   *         : the id of the topic to be hidden
-	   */
-	 public static void hide (String id, String justification){
-		 ObjectType type = ObjectType.get(getControllerClass());
-	        notFoundIfNull(type);
-	        Model object = type.findById(id);
-	        notFoundIfNull(object);
-	        Topic temporaryTopic = (Topic) object;
-	        MainEntity entity = temporaryTopic.entity;
-	        User myUser = Security.getConnected();
-	        
-	        try {
-	        	System.out.println("entered try");
-	            Calendar calendar= new GregorianCalendar();
-				//Logs.addLog( myUser, "delete", "Task", temporaryTopic.id, temporaryTopic.taskStory.componentID.project, calendar.getTime() );
-				String message = myUser.username + " has hidden the topic " + temporaryTopic.title;
-				List<User> users = Users.getEntityOrganizers(entity);
-				for (int i = 0; i < users.size(); i++)
-					Notifications.sendNotification(users.get(i).id, temporaryTopic.id, "Topic",
-							message);
-				for(int i =0; i< temporaryTopic.followers.size(); i++)
-				Notifications.sendNotification(temporaryTopic.followers.get(i).getId(), entity.getId(), "entity", message);
-				Notifications.sendNotification(temporaryTopic.creator.getId(), entity.getId(), "entity", justification);
-				System.out.println(justification);
-				temporaryTopic.hidden = true;
-				temporaryTopic.hider = myUser;
-				 temporaryTopic.save();
-		            System.out.println("test " + temporaryTopic.hidden);
-				System.out.println("leaving try");
-				
-	        } catch (Exception exception) {
-	        	System.out.println("entered catch");
-	            flash.error(Messages.get("crud.delete.error", type.modelName));
-	            redirect(request.controller + ".show", object._key());
-	        }
-	        flash.success(Messages.get("crud.deleted", type.modelName));
-	        System.out.println("flash.success");
-	        //redirect(request.controller + ".list");
-	        redirect("mainentitys.viewentity",entity.id);
-	 }
-	 
-	 /**
-	   * Unhides a topic but keeps it in the database
-	   * 
-	   * @author Alia El Bolock
-	   * 
-	   * @story C3S9
-	   * 
-	   * @param id
-	   *         : the id of the topic to be unhidden
-	   */
-	 public static void unhide (String id){
-		 ObjectType type = ObjectType.get(getControllerClass());
-	        notFoundIfNull(type);
-	        Model object = type.findById(id);
-	        notFoundIfNull(object);
-	        Topic temporaryTopic = (Topic) object;
-	        MainEntity entity = temporaryTopic.entity;
-	        User myUser = Security.getConnected();
-	        
-	        try {
-	        	System.out.println("entered try");
-	            Calendar calendar= new GregorianCalendar();
-				//Logs.addLog( myUser, "delete", "Task", temporaryTopic.id, temporaryTopic.taskStory.componentID.project, calendar.getTime() );
-				String message = myUser.username + " has unhidden the topic " + temporaryTopic.title;
-				List<User> users = Users.getEntityOrganizers(entity);
-				for (int i = 0; i < users.size(); i++)
-					Notifications.sendNotification(users.get(i).id, temporaryTopic.id, "Topic",
-							message);
-				for(int i =0; i< temporaryTopic.followers.size(); i++)
-				Notifications.sendNotification(temporaryTopic.followers.get(i).getId(), entity.getId(), "entity", message);
-				
-				temporaryTopic.hidden = false;
-				 temporaryTopic.save();
-		            System.out.println("test " + temporaryTopic.hidden);
-				System.out.println("leaving try");
-				
-	        } catch (Exception exception) {
-	        	System.out.println("entered catch");
-	            flash.error(Messages.get("crud.delete.error", type.modelName));
-	            redirect(request.controller + ".show", object._key());
-	        }
-	        flash.success(Messages.get("crud.deleted", type.modelName));
-	        System.out.println("flash.success");
-	        //redirect(request.controller + ".list");
-	        redirect("mainentitys.viewentity",entity.id);
-	 }
+	/**
+	 * Overrides CRUD's delete() and deletes a topic
+	 * 
+	 * @author Alia El Bolock
+	 * 
+	 * @story C3S9
+	 * 
+	 * @param id
+	 *            : the id of the topic to be deleted
+	 */
+	public static void delete(String id, String justification) {
+		System.out.println("entered my delete");
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(id);
+		notFoundIfNull(object);
+		Topic temporaryTopic = (Topic) object;
+		MainEntity entity = temporaryTopic.entity;
+		Plan plan = temporaryTopic.plan;
+		System.out.println("entering try");
+		try {
+			System.out.println("entered try");
+			Calendar calendar = new GregorianCalendar();
+			User myUser = Security.getConnected();
+			// Logs.addLog( myUser, "delete", "Task", temporaryTopic.id,
+			// temporaryTopic.taskStory.componentID.project, calendar.getTime()
+			// );
+			String message = myUser.username + " has deleted the topic "
+					+ temporaryTopic.title;
+			List<User> users = Users.getEntityOrganizers(entity);
+			for (int i = 0; i < users.size(); i++)
+				Notifications.sendNotification(users.get(i).id,
+						temporaryTopic.id, "Topic", message);
+			for (int i = 0; i < temporaryTopic.followers.size(); i++)
+				Notifications.sendNotification(temporaryTopic.followers.get(i)
+						.getId(), entity.getId(), "entity", message);
+			Notifications.sendNotification(temporaryTopic.creator.getId(),
+					entity.getId(), "entity", justification);
+			System.out.println(justification);
+
+			// >>>>added by Salma Osama to delete the topic's plan if the topic
+			// is deleted
+			if (plan != null) {
+				Plans.deletePlan(plan.id);
+			}
+			//fadwa
+			for (int i = 0; i < temporaryTopic.requestsToJoin.size(); i++)
+				temporaryTopic.requestsToJoin.get(i).delete();
+			for (int i = 0; i < temporaryTopic.invitations.size(); i++)
+				temporaryTopic.invitations.get(i).delete();
+			//fadwa
+			object._delete();
+			System.out.println("deleted");
+			System.out.println("leaving try");
+
+		} catch (Exception exception) {
+			System.out.println("entered catch");
+			flash.error(Messages.get("crud.delete.error", type.modelName));
+			redirect(request.controller + ".show", object._key());
+		}
+		flash.success(Messages.get("crud.deleted", type.modelName));
+		System.out.println("flash.success");
+		// redirect(request.controller + ".list");
+		redirect("mainentitys.viewentity", entity.id);
+	}
+
+	/**
+	 * Hides a topic but keeps it in the database
+	 * 
+	 * @author Alia El Bolock
+	 * 
+	 * @story C3S9
+	 * 
+	 * @param id
+	 *            : the id of the topic to be hidden
+	 */
+	public static void hide(String id, String justification) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(id);
+		notFoundIfNull(object);
+		Topic temporaryTopic = (Topic) object;
+		MainEntity entity = temporaryTopic.entity;
+		User myUser = Security.getConnected();
+
+		try {
+			System.out.println("entered try");
+			Calendar calendar = new GregorianCalendar();
+			// Logs.addLog( myUser, "delete", "Task", temporaryTopic.id,
+			// temporaryTopic.taskStory.componentID.project, calendar.getTime()
+			// );
+			String message = myUser.username + " has hidden the topic "
+					+ temporaryTopic.title;
+			List<User> users = Users.getEntityOrganizers(entity);
+			for (int i = 0; i < users.size(); i++)
+				Notifications.sendNotification(users.get(i).id,
+						temporaryTopic.id, "Topic", message);
+			for (int i = 0; i < temporaryTopic.followers.size(); i++)
+				Notifications.sendNotification(temporaryTopic.followers.get(i)
+						.getId(), entity.getId(), "entity", message);
+			Notifications.sendNotification(temporaryTopic.creator.getId(),
+					entity.getId(), "entity", justification);
+			System.out.println(justification);
+			temporaryTopic.hidden = true;
+			temporaryTopic.hider = myUser;
+			temporaryTopic.save();
+			System.out.println("test " + temporaryTopic.hidden);
+			System.out.println("leaving try");
+
+		} catch (Exception exception) {
+			System.out.println("entered catch");
+			flash.error(Messages.get("crud.delete.error", type.modelName));
+			redirect(request.controller + ".show", object._key());
+		}
+		flash.success(Messages.get("crud.deleted", type.modelName));
+		System.out.println("flash.success");
+		// redirect(request.controller + ".list");
+		redirect("mainentitys.viewentity", entity.id);
+	}
+
+	/**
+	 * Unhides a topic but keeps it in the database
+	 * 
+	 * @author Alia El Bolock
+	 * 
+	 * @story C3S9
+	 * 
+	 * @param id
+	 *            : the id of the topic to be unhidden
+	 */
+	public static void unhide(String id) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(id);
+		notFoundIfNull(object);
+		Topic temporaryTopic = (Topic) object;
+		MainEntity entity = temporaryTopic.entity;
+		User myUser = Security.getConnected();
+
+		try {
+			System.out.println("entered try");
+			Calendar calendar = new GregorianCalendar();
+			// Logs.addLog( myUser, "delete", "Task", temporaryTopic.id,
+			// temporaryTopic.taskStory.componentID.project, calendar.getTime()
+			// );
+			String message = myUser.username + " has unhidden the topic "
+					+ temporaryTopic.title;
+			List<User> users = Users.getEntityOrganizers(entity);
+			for (int i = 0; i < users.size(); i++)
+				Notifications.sendNotification(users.get(i).id,
+						temporaryTopic.id, "Topic", message);
+			for (int i = 0; i < temporaryTopic.followers.size(); i++)
+				Notifications.sendNotification(temporaryTopic.followers.get(i)
+						.getId(), entity.getId(), "entity", message);
+
+			temporaryTopic.hidden = false;
+			temporaryTopic.save();
+			System.out.println("test " + temporaryTopic.hidden);
+			System.out.println("leaving try");
+
+		} catch (Exception exception) {
+			System.out.println("entered catch");
+			flash.error(Messages.get("crud.delete.error", type.modelName));
+			redirect(request.controller + ".show", object._key());
+		}
+		flash.success(Messages.get("crud.deleted", type.modelName));
+		System.out.println("flash.success");
+		// redirect(request.controller + ".list");
+		redirect("mainentitys.viewentity", entity.id);
+	}
 
 	/**
 	 * This method changes the relationship status of a topic
@@ -1428,7 +1449,7 @@ public class Topics extends CRUD {
 		flash.success(Messages.get("crud.deleted"));
 		redirect(request.controller + ".list");
 	}
-	
+
 	/**
 	 * Hide an idea
 	 * 
@@ -1469,25 +1490,25 @@ public class Topics extends CRUD {
 		// redirect(request.controller + ".list");
 		redirect("topics.show", topic.id);
 	}
-	 
-	 /**
-		 * This method renders get a topic ID, 
-		 * and the renders the ideas to a new page
-		 * 
-		 * @author Mostafa Aboul Atta
-		 * 
-		 * @story C3S7
-		 * 
-		 * @param topicId
-		 *            : the id of the topic to be closed
-		 * 
-		 */
-		 public static void getIdeasToMerge(String topicId) {
-			 
-			 Long topicIdLong = Long.parseLong(topicId);
-			 Topic targetTopic = Topic.findById(topicIdLong);
-			 List ideas = targetTopic.getIdeas();
-			 
-			 render(topicId, ideas);
-		 }
+
+	/**
+	 * This method renders get a topic ID, and the renders the ideas to a new
+	 * page
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @story C3S7
+	 * 
+	 * @param topicId
+	 *            : the id of the topic to be closed
+	 * 
+	 */
+	public static void getIdeasToMerge(String topicId) {
+
+		Long topicIdLong = Long.parseLong(topicId);
+		Topic targetTopic = Topic.findById(topicIdLong);
+		List ideas = targetTopic.getIdeas();
+
+		render(topicId, ideas);
+	}
 }
