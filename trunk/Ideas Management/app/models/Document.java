@@ -11,6 +11,8 @@ import play.db.jpa.Model;
  * 
  * @author Ibrahim Al-Khayat
  * 
+ * @story C2S28
+ * 
  */
 @Entity
 public class Document extends CoolModel {
@@ -45,9 +47,11 @@ public class Document extends CoolModel {
 	 * 
 	 * @author Ibrahim Al-Khayat
 	 * 
+	 * @story C2S28
+	 * 
 	 * @param name
 	 *            Document name
-	 * @param file
+	 * @param data
 	 *            Data in bytes
 	 * @param id
 	 *            Id of the owner user or organization

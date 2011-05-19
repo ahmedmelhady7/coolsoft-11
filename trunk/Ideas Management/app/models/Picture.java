@@ -17,6 +17,7 @@ import play.libs.Images;
  * 
  * @author Ibrahim Al-Khayat
  * 
+ * @story C2S27
  */
 
 @Entity
@@ -51,12 +52,13 @@ public class Picture extends CoolModel {
 	 * Constructor
 	 * 
 	 * @author Ibrahim Al-Khayat
+	 * 
+	 * @story C2S27
+	 * 
 	 * @param name
 	 *            image name
-	 * @param data
-	 *            data in bytes
-	 * @param type
-	 *            image file extension
+	 * @param image
+	 *            image in bytes
 	 * @param id
 	 *            id of owner user/organization
 	 * @param isOrganization
