@@ -1,4 +1,6 @@
 #{extends 'main.html' /}
+#{script src:"jquery-1.5.2.min.js" /}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
 <br/>
 <input type="submit" value="Back to Entity" onclick=location.href="@{MainEntitys.viewEntity(entity.id)}">
 <br/>
@@ -99,13 +101,11 @@
         #{/crud.form }
         <br/>
         #{if permission == 1}
-		#{if !hidden}
         <br>
         <button type="submit" onclick= >  Edit
         </button>
         <br>
         #{/if}
-		#{/if}
         <br/>
         #{if allowed==1}<a href="@{RequestToJoins.viewRequests(1,object.id)}">Requests</a>
 		<br>
@@ -137,12 +137,15 @@
                 #{if ideas}
                 #{list items:ideas, as:'idea'}
                 #{if idea.isDraft == false}
-				<li id="idea">
+				<li id="idea_${idea.id}">
                 <a id = "LOL" href="@{Ideas.show(idea.id)}">${idea.title}</a>
-                <a href="@{Ideas.hide(idea.id)}">hide idea</a>
-					<a id = "delete" href="@{Ideas.delete(idea.id)}"><font color="Red">x</font></a>
-				<h2 id= "hadi"><input value="show details" type="button" onclick="showOrHide();"/></h2>
-                <table id = "table" border="0" bgcolor="#FAF8CC" cellspacing="0" id ="toFil">
+				#{if canDelete}
+				<input type="button" name="hide" value="Hide Idea" onclick="hides(${idea.id});">
+				<input type="button" name="delete" value="x" onclick="deletes(${idea.id});">
+				#{/if}
+				<h2 id= "showdetails_${idea.id}"><input value="show details" type="button" onclick="showOrHide();"/></h2>
+				<h2 id= "hidedetails_${idea.id}"><input value="hide details" type="button" onclick="showOrHide();"/></h2>
+                <table id = "table_${idea.id}" border="0" bgcolor="#FAF8CC" cellspacing="0" id ="toFil">
                 <tr><td><font size ="3" color ="black"><i>
                 <label>Description : ${idea.description}</label>
                 </i></font></td><td>
@@ -152,10 +155,29 @@
                 </tr>
                 </table>
                 <script type ="text/javascript">
-        				$('#hide').click(function(){
-						$('#idea').hide();});
+        				$("#hide").click(function(){
+						$("#idea").hide();});
+                        var isHidden = false;
+
+                        var showOrHide = function() {
+                        	if (isHidden) {
+                        		isHidden = false;
+                        		$("#table_${idea.id}").fadeIn();
+                        		$("#hidedetails_${idea.id}").fadeIn();
+                        		$("#showdetails_${idea.id}").hide();
+                        	} else {
+                        		isHidden = true;
+                        		$("#table_${idea.id}").fadeOut();
+                        		$("#hidedetails_${idea.id}").fadeOut();
+                        		$("#showdetails_${idea.id}").show();
+                        	}
+                        }
       		    </script>
+                 <p>
+    				===================================================================================================
+    			 </p>
                 </li>
+                
 				#{/if}
                 #{/list}
                 #{/if}
@@ -198,21 +220,22 @@
             </span>
             </p>
 			<input id ="draftSaver" type="submit"  value="Save as Draft" onclick="save()" ></input>
-            <form action="@{create(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to hide this topic?');">
-           	<input type="submit" value="post"/>
-    </form> 
+           	<input type="submit" value="post" onclick="postIt()"/>
 		</div>
 		<style type="text/css">
 			#postIdeaform{display: none;}
 		</style>
+		#{if numberOfIdeas > 0}
 		<style type="text/css">
-			#table{display: none;}
+			#showdetails_${idea.id}{display: none;}
 		</style>
+		#{/if}
 		<script type="text/javascript">
-                 $('#postIdea').click(function(){
-                	 $('#postIdeaform').toggle();
-                 });
+		$("#postIdea").click(function(){
+          	 $("#postIdeaform").toggle();
+           });
                  </script>
+                 
 <!--        #{if canPost == true}-->
 <!--        #{/if }-->
     </div>
@@ -233,16 +256,6 @@
         </p>
     </form> #{/if}
     #{/if}
-	#{if hidden}
-	#{if object.hider.username == actor.username}
-	   <form action="@{unhide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">
-        <p class="crudDelete">
-            <input type="submit" value="Unhide" />
-        </p>
-    </form>
-	
-	#{/if}
-	#{/if}
     #{/if}
 
 
@@ -362,17 +375,7 @@
 				
             </script>
             <script type ="text/javascript">
-            var isHidden = true;
-
-            var showOrHide = function() {
-            	if (isHidden) {
-            		isHidden = false;
-            		$("#table").fadeIn();
-            	} else {
-            		isHidden = true;
-            		$("#table").fadeOut();
-            	}
-            }
+            
             </script>
 			<script type="text/javascript">
 				
@@ -428,4 +431,29 @@
 						return false;
 					}
 				}
+			</script>
+			<script type="text/javascript">
+				function postIt()
+				{
+					var id = ${topicId};
+					var x = document.getElementById("ideaTitle").value.toString();
+					var y = document.getElementById("ideaDescription").value;
+					
+					if(validate())
+					{
+						$.post('@{Topics.postIdea()}' ,{topicId:id, title:x, description:y},function(){window.location.href = "/topics/show?topicId="+id});
+					}
+				}
+				function hides(id){
+					$.post('@{hideIdea()}', {
+						ideaId: id
+					});
+					$('#idea_' + id).hide();
+			}
+				function deletes(id){
+					$.post('@{Ideas.delete()}', {
+						ideaId: id
+					});
+					$('#idea_' + id).hide();
+			}
 			</script>
