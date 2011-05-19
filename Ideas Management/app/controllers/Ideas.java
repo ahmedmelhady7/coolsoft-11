@@ -753,7 +753,6 @@ public class Ideas extends CRUD {
 
 	public static void rate(long ideaId, int rat) {
 		User user = Security.getConnected();
-		ideaId++;
 		Idea i = Idea.findById(ideaId);
 		long topicId = i.belongsToTopic.id;
 		System.out.println("---------------------------------------");
