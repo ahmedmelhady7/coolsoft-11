@@ -283,6 +283,13 @@ public class MainEntitys extends CRUD {
 						"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
 						entity.id, "entity"))
 			invite = 1;
+		
+		int check=0;
+		if (Users.isPermitted(user,"block a user from viewing or using a certain entity",entity.id, "entity")) 
+			check = 1;
+			//if (Users.isPermitted(user,"use",topicList.get(0).id, "topic")) 
+		     
+		
 		if (Users.getEntityOrganizers(entity).contains(user)) {
 			canRequestRelationship = 1;
 		}
@@ -290,7 +297,7 @@ public class MainEntitys extends CRUD {
 		boolean canCreateRelationship = EntityRelationships.isAllowedTo(id);
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity, follower, canCreateRelationship,
-				canView, canRequest, canRequestRelationship);
+				canView, canRequest, canRequestRelationship,check);
 	}
 
 	/**
