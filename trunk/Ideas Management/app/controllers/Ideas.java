@@ -755,22 +755,28 @@ public class Ideas extends CRUD {
 		User user = Security.getConnected();
 		Idea i = Idea.findById(ideaId);
 		long topicId = i.belongsToTopic.id;
-		System.out.println("---------------------------------------");
-		System.out.println("isPermitted raga3et " + Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic"));
-		if (Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic"))
+		if(i.usersRated.contains(user))
+			System.out.print("user already rated");
+		else
 		{
-			if(i.rating.equals("Not yet rated"))
-				i.rating = Integer.toString(rat);
-			else
+			System.out.println("user didn't rate yet");
+			i.usersRated.add(user);
+			if (Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic"))
 			{
-				int oldRating = Integer.parseInt(i.rating);
-				int newRating;
-				newRating = (oldRating + rat) / 2;
-				i.rating = Integer.toString(newRating);
+				if(i.rating.equals("Not yet rated"))
+					i.rating = Integer.toString(rat);
+				else
+				{
+					int oldRating = Integer.parseInt(i.rating);
+					int newRating;
+					newRating = (oldRating + rat) / 2;
+					i.rating = Integer.toString(newRating);
+				}
+				i.save();
+				redirect("/ideas/show?ideaId=" + ideaId);
 			}
-			i.save();
-			redirect("/ideas/show?ideaId=" + ideaId);
 		}
+		
 		
 		
 	}
