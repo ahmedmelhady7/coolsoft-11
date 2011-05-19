@@ -11,7 +11,7 @@ import play.db.jpa.Model;
 
 
 @Entity
-public class Invitation extends Model{
+public class Invitation extends CoolModel{
 
 	
 	/**
