@@ -194,7 +194,12 @@
 		<input type="submit" value="Edit" onclick=location.href="@{MainEntitys.editEntityPage(entity.id)}">
 		<HR>	
 		#{/if}
-
+		#{if (canRestrict == 1)}
+		
+		<input type="submit" value="Restrict/De-Restrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerEntityPath(entity.id)}">
+		<HR>	
+		#{/if}
+         
 	
     </body>
 </html>
