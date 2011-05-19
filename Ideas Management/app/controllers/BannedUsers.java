@@ -1226,7 +1226,7 @@ public class BannedUsers extends CRUD {
 	 * 
 	 * @story C1S16
 	 * 
-	 * @param topId
+	 * @param numId
 	 *            long Id of the topic/entity that ll view the ideadevelopers
 	 * 
 	 * @param num
@@ -1234,20 +1234,20 @@ public class BannedUsers extends CRUD {
 	 * 
 	 */
 
-	public static void viewUsers(long topId, int num) {
+	public static void viewUsers(long numId, int num) {
 
 		if (num == 0) {
 
-			List<User> users = Users.getIdeaDevelopers(topId, "entity");
-			MainEntity topic = MainEntity.findById(topId);
+			List<User> users = Users.getIdeaDevelopers(numId, "entity");
+			MainEntity object = MainEntity.findById(numId);
 			List<Integer> count = new ArrayList<Integer>();
 			for (int i = 0; i < users.size(); i++) {
 				BannedUser banned1 = BannedUser.find(
 						"byBannedUserAndActionAndResourceTypeAndResourceID",
-						users.get(i), "view", "entity", topic.id).first();
+						users.get(i), "view", "entity", object.id).first();
 				BannedUser banned2 = BannedUser.find(
 						"byBannedUserAndActionAndResourceTypeAndResourceID",
-						users.get(i), "use", "entity", topic.id).first();
+						users.get(i), "use", "entity", object.id).first();
 				if (banned1 == null && banned2 == null)
 					count.add(0);
 				else if (banned1 != null && banned2 != null)
@@ -1259,18 +1259,18 @@ public class BannedUsers extends CRUD {
 
 			}
 
-			render(users, count, topic, num);
+			render(users, count, object, num);
 		} else {
-			List<User> users = Users.getIdeaDevelopers(topId, "topic");
-			Topic topic = Topic.findById(topId);
+			List<User> users = Users.getIdeaDevelopers(numId, "topic");
+			Topic object = Topic.findById(numId);
 			List<Integer> count = new ArrayList<Integer>();
 			for (int i = 0; i < users.size(); i++) {
 				BannedUser banned1 = BannedUser.find(
 						"byBannedUserAndActionAndResourceTypeAndResourceID",
-						users.get(i), "view", "topic", topic.id).first();
+						users.get(i), "view", "topic", object.id).first();
 				BannedUser banned2 = BannedUser.find(
 						"byBannedUserAndActionAndResourceTypeAndResourceID",
-						users.get(i), "entity", "topic", topic.id).first();
+						users.get(i), "use", "topic", object.id).first();
 				if (banned1 == null && banned2 == null)
 					count.add(0);
 				else if (banned1 != null && banned2 != null)
@@ -1282,7 +1282,7 @@ public class BannedUsers extends CRUD {
 
 			}
 
-			render(users, count, topic, num);
+			render(users, count, object, num);
 
 		}
 
@@ -1298,20 +1298,28 @@ public class BannedUsers extends CRUD {
 	 * 
 	 * @param userId
 	 *            long Id of user that ll be blocked/unblocked
+	 *            
 	 * @param type
 	 *            int type 0 if view and 1 if use
-	 * @param topId
+	 *            
+	 * @param numId
 	 *            long Id of the topic/entity that user ll be blocked/unblocked
 	 *            from
+	 *            
 	 * @param id
 	 *            int id , 0 if entity and 1 if topic
-	 * @param m
-	 *            String m that is the text on the button to the action if
-	 *            (block or unblock)
+	 *            
+	 *@param message
+	 *            String text that is the text on the button to the action if
+	 *            (block or unblock) 
+	 *            
+	 * @param text
+	 *           String message that is the reason why this person has been blocked
+	 *            
 	 * 
 	 */
 
-	public static void block(long userId, int type, long topId, int id,
+	public static void block(long userId, int type, long numId, int id,
 			String text, String message) {
 
 		System.out.println(message);
@@ -1319,44 +1327,45 @@ public class BannedUsers extends CRUD {
 		System.out.println(text);
 		System.out.println(userId);
 		System.out.println(type);
-		System.out.println(topId);
+		System.out.println(numId);
 		User user = User.findById(userId);
+		
 		List<User> organizers = new ArrayList<User>();
 		MainEntity entity = null;
 		Topic topic = null;
 
 		if (id == 0) {
-			entity = MainEntity.findById(topId);
+			entity = MainEntity.findById(numId);
 			organizers = Users.getEntityOrganizers(entity);
 
 			if (type == 0) {
 
 				if (text.equals("Block from viewing")) {
-					doBlock(userId, topId, 0, 0);
+					doBlock(userId, numId, 0, 0);
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
 										organizers.get(i).id,
-										topId,
+										numId,
 										"entity",
 										"User "
 												+ user.firstName
 												+ " "
 												+ user.lastName
 												+ " has been blocked from viewing Entity "
-												+ entity.name);
-					Notifications.sendNotification(userId, topId, "entity",
+												+ entity.name+ " because " + message);
+					Notifications.sendNotification(userId, numId, "entity",
 							"You have been blocked from viewing entity "
 									+ entity.name + " because " + message);
 
 				} else {
 
-					doBlock(userId, topId, 1, 0);
+					doBlock(userId, numId, 1, 0);
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
 										organizers.get(i).id,
-										topId,
+										numId,
 										"entity",
 										"User "
 												+ user.firstName
@@ -1364,98 +1373,111 @@ public class BannedUsers extends CRUD {
 												+ user.lastName
 												+ " has been unblocked from viewing Entity "
 												+ entity.name);
-					Notifications.sendNotification(userId, topId, "entity",
+					Notifications.sendNotification(userId, numId, "entity",
 							"You have been unblocked from viewing entity "
 									+ entity.name);
 
 				}
 			} else {
 				if (text.equals("Block from using")) {
-					doBlock(userId, topId, 0, 1);
+					doBlock(userId, numId, 0, 1);
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
 										organizers.get(i).id,
-										topId,
+										numId,
 										"entity",
 										"User "
 												+ user.firstName
 												+ " "
 												+ user.lastName
-												+ " has been blocked from performing any action within entity "
-												+ entity.name);
-					Notifications.sendNotification(userId, topId, "entity",
+												+ " has been blocked from performing any action within Entity "
+												+ entity.name+ " because " + message);
+					Notifications.sendNotification(userId, numId, "entity",
 							"You have been blocked from performing any action within entity "
 									+ entity.name + " because " + message);
 				} else {
-					doBlock(userId, topId, 1, 1);
+					doBlock(userId, numId, 1, 1);
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
 										organizers.get(i).id,
-										topId,
+										numId,
 										"entity",
 										"User "
 												+ user.firstName
 												+ " "
 												+ user.lastName
-												+ " has been unblocked from performing any action within entity "
+												+ " has been unblocked from performing any action within Entity "
 												+ entity.name);
-					Notifications.sendNotification(userId, topId, "entity",
+					Notifications.sendNotification(userId, numId, "entity",
 							"You have been ublocked from performing any action within entity "
 									+ entity.name + " because " + message);
 				}
 			}
 		} else {
-			topic = Topic.findById(topId);
+			topic = Topic.findById(numId);
 			entity = topic.entity;
             organizers = Users.getEntityOrganizers(entity);
 			if (type == 0) {
 				if (text.equals("Block from viewing")) {
+					
 					BannedUser block = new BannedUser(user,
-							topic.entity.organization, "view topic", "topic",
-							topId);
-					// unblock
+							topic.entity.organization, "view", "topic",
+							numId);
 					block.save();
+					
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
 										organizers.get(i).id,
-										topId,
+										numId,
 										"topic",
 										"User "
 												+ user.firstName
 												+ " "
 												+ user.lastName
-												+ " has been blocked from viewing topiic "
-												+ topic.title);
-					Notifications.sendNotification(userId, topId, "topic",
+												+ " has been blocked from viewing topic "
+												+ topic.title
+												+ " because " + message);
+					Notifications.sendNotification(userId, numId, "topic",
 							"You have been blocked from viewing topic "
 									+ topic.title + " because " + message);
 
 				}
+				else{
+					BannedUser unblock = BannedUser.find(
+							"byBannedUserAndActionAndResourceTypeAndResourceID", user,
+							"view", "topic", topic.id).first();
+					unblock.delete();
+				}
 			} else {
 				if (text.equals("Block from using")) {
 					BannedUser block = new BannedUser(user,
-							topic.entity.organization, "use", "topic", topId);
-					// unblock
+							topic.entity.organization, "use", "topic", numId);
 					block.save();
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
 										organizers.get(i).id,
-										topId,
+										numId,
 										"topic",
 										"User "
 												+ user.firstName
 												+ " "
 												+ user.lastName
 												+ " has been blocked from performing any action within topic "
-												+ topic.title);
-					Notifications.sendNotification(userId, topId, "topic",
+												+ topic.title+ " because " + message);
+					Notifications.sendNotification(userId, numId, "topic",
 							"You have been blocked from performing any action within topic "
 									+ topic.title + " because " + message);
 
+				}
+				else{
+					BannedUser unblock = BannedUser.find(
+							"byBannedUserAndActionAndResourceTypeAndResourceID", user,
+							"use", "topic", topic.id).first();
+					unblock.delete();
 				}
 			}
 		}
