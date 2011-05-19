@@ -7,11 +7,11 @@
 #{if planVolunteerRequests.size() > 0}<h3>Volunteer Requests </h3>
 <ul>
     #{list items:planVolunteerRequests, as:'request'}
-    <li>
+    <div id = "request_${request.id}"><li>
         <fieldset>
             <legend>
             <h2>
-                ${request.destination}
+                <a href="@{Plans.viewAsList(request.destination.plan.id)}">${request.destination.summary}</a>
             </h2>
             </legend>
             Sender: ${request.sender}
@@ -21,7 +21,7 @@
 			<input type = "button" value = "Accept" onclick="accept_request('${request.id}')">
 			<input type = "button" value = "Reject" onclick="reject_request('${request.id}')">
         </fieldset>
-    </li>
+    </li></div>
     #{/list}
 </ul>
 #{/if}
@@ -30,20 +30,23 @@ No volunteer requests for this plan exist.
 #{/else}
 #{/else}
 
+
+</br><a href="@{Plans.viewAsList(plan.id)}">Go back to plan</a>
+
 <script type="text/javascript">
 
 function accept_request(id)
   {
 	$.post('@{accept()}' , {requestId: id});
 	alert("Request accepted!");
-	window.location.reload();
+	$("#request_" + id).remove();
   }
 
 function reject_request(id)
   {
 	$.post( '@{reject()}' , {requestId: id});
 	alert("Request rejected!");
-	window.location.reload();
+	$("#request_" + id).remove();
   }
 
 </script>
