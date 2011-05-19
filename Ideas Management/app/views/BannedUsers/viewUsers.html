@@ -18,14 +18,14 @@
 <table border="0" bgcolor="#ececec" cellspacing="5" >
 
 <tr><td><font size ="3" color ="black">Name  : ${users.get(u).firstName}</font></td><td>
-<tr><td><font size ="3" color ="black">Name  : ${users.get(u).email}</font></td><td>
+<tr><td><font size ="3" color ="black">Email  : ${users.get(u).email}</font></td><td>
 
 <tr><td><input type="button" onclick="javascript: show('${users.get(u).id}',0,'${topic.id}','num','${u}');" id="1_${u}" />
 <input type="button" onclick="javascript: show('${users.get(u).id}',1,'${topic.id}','num','${u}');"  id="2_${u}" /> 
-<div id="tex"></div>
-<textarea rows="2" cols="20" id="area" style="display:none"></textarea>
-<input type="submit" id="popup" value="block" style="display:none">
-<input type="submit" id="cancel" value="cancel" style="display:none">
+<div id="3_${u}" ></div>
+<textarea rows="2" cols="20" id="6_${u}" style="display:none"></textarea>
+<input type="submit" id="4_${u}"  value="block" style="display:none">
+<input type="submit" id="5_${u}"  value="cancel" style="display:none">
 </td><td> 
 </table>
 
@@ -78,19 +78,20 @@ function show(userId,type,topId,id,i){
 		        
 		       var text=document.getElementById('1_'+i).value;
 			    if (text == "Block from viewing") {
-                     var textarea = $('#area');
+                     var textarea = $('#6_' + i);
 					 textarea.show();
-					  $('#tex').html('<font  size ="2"><i>please specify the reason</i></font>')
+					 $('#3_' + i).show();
+					  $('#3_' + i).html('<font  size ="2"><i>please specify the reason</i></font>');
 					 
-					 $('#popup').show();
-					 $('#cancel').show();
+					 $('#4_' + i).show();
+					 $('#5_' + i).show();
 					 document.getElementById('1_' + i).disabled = true;
 					 document.getElementById('2_' + i).disabled = true;
 					 
-					 $('#popup').click(function(){ 
+					 $('#4_' + i).click(function(){ 
 					 
-					if ( document.getElementById('area').value== '') {
-						$('#tex').html('<font color="red"  size ="2"><i>please specify the reason first</i></font>')
+					if ( document.getElementById('6_' + i).value== '') {
+						$('#3_' + i).html('<font color="red"  size ="2"><i>please specify the reason first</i></font>')
 	                
 					
 					}else{
@@ -106,10 +107,10 @@ function show(userId,type,topId,id,i){
 							text: text,
 							message: message
 						}, function(){
-							$('#popup').hide();
+							$('#4_' + i).hide();
 							textarea.hide();
-							$('#tex').hide();
-							$('#cancel').hide();
+							$('#3_' + i).hide();
+							$('#5_' + i).hide();
 							document.getElementById('1_' + i).disabled = false;
 							
 						});
@@ -117,11 +118,11 @@ function show(userId,type,topId,id,i){
                      
                     });
 					
-					$('#cancel').click(function(){
-						    $('#popup').hide();
-							 $('#cancel').hide();
+					$('#5_' + i).click(function(){
+						    $('#4_' + i).hide();
+							 $('#5_' + i).hide();
 						     textarea.hide();
-							 $('#tex').hide();
+							 $('#3_' + i).hide();
 						    document.getElementById('1_' + i).disabled = false;
 					        document.getElementById('2_' + i).disabled = false;
 						});
@@ -145,17 +146,19 @@ function show(userId,type,topId,id,i){
 		   var text=document.getElementById('2_'+i).value;
 		    if (text == "Block from using") {
 				 	
-					var textarea = $('#area');
+					var textarea = $('#6_' + i);
 					 textarea.show();
-					 $('#popup').show();
-					 $('#cancel').show();
-					 $('#tex').html('<font  size ="2"><i>please specify the reason</i></font>')
+					  $('#3_' + i).show();
+					  $('#3_' + i).html('<font  size ="2"><i>please specify the reason</i></font>');
+					 
+					 $('#4_' + i).show();
+					 $('#5_' + i).show();
 					 document.getElementById('1_' + i).disabled = true;
 					 document.getElementById('2_' + i).disabled = true;
-					 $('#popup').click(function(){
+					 $('#4_' + i).click(function(){
 					 	
-						if (document.getElementById('area').value == '') {
-							$('#tex').html('<font color="red"  size ="2"><i>please specify the reason first</i></font>')
+						if (document.getElementById('6_' + i).value == '') {
+							$('#3_' + i).html('<font color="red"  size ="2"><i>please specify the reason first</i></font>')
 							
 							
 						}
@@ -171,10 +174,10 @@ function show(userId,type,topId,id,i){
 								text: text,
 								message: message
 							}, function(){
-								$('#popup').hide();
+								$('#4_' + i).hide();
 								textarea.hide();
-								$('#cancel').hide();
-								$('#tex').hide();
+								$('#5_' + i).hide();
+								$('#3_' + i).hide();
 								document.getElementById('1_' + i).disabled = false;
 								document.getElementById('2_' + i).disabled = false;
 								
@@ -183,11 +186,11 @@ function show(userId,type,topId,id,i){
                     });
 					
 					
-					$('#cancel').click(function(){
-						    $('#popup').hide();
-							 $('#cancel').hide();
+					$('#5_' + i).click(function(){
+						    $('#4_' + i).hide();
+							 $('#5_' + i).hide();
 						     textarea.hide();
-							 $('#tex').hide();
+							 $('#3_' + i).hide();
 						    document.getElementById('1_' + i).disabled = false;
 					        document.getElementById('2_' + i).disabled = false;
 						});
