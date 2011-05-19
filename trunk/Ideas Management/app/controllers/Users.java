@@ -1400,8 +1400,10 @@ public class Users extends CRUD {
 
 		System.out.println(object.toString() + "before save");
 		object._save();
+		if(Security.getConnected().isAdmin) {
 		Notifications.sendNotification(tmp.id, Security.getConnected().id,
 				"User", "The admin has edited your profile");
+		}
 		if (oldEmail.equals(tmp.email))
 			;
 		if (Security.getConnected().isAdmin) {
@@ -1454,6 +1456,7 @@ public class Users extends CRUD {
 			if (Security.getConnected().isAdmin) {
 				redirect(request.controller + ".list");
 			} else {
+				Log.addUserLog("User" + Security.getConnected().firstName + " " + Security.getConnected().lastName + " has edites his/her profile", Security.getConnected());
 				redirect("/Users/viewProfile?userId=" + id); // was showProfile
 			}
 		}
