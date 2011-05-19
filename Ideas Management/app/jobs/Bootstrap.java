@@ -240,9 +240,26 @@ public class Bootstrap extends Job {
 					hadi, gucMetStudentUnion);
 			i5.save();
 			hadi.save();
-			Idea i6 = new Idea("", "", hadi, gucMetStudentUnion);
+			Idea i6 = new Idea("SU is Important", "We Can Make our University better", hadi, gucMetStudentUnion);
 			i6.save();
 			hadi.save();
+			
+			Idea i7 = new Idea("Blank", "Blank", sharaf, govImp);
+			i7.save();
+			sharaf.save();
+			
+			Idea i8 = new Idea("Blank 2 ", "Blank 2 ", sharaf, govImp);
+			i8.save();
+			sharaf.save();
+			
+			Idea i9 = new Idea("Blank 3 ", "Blank 3 " , sharaf, govImp2);
+			i9.save();
+			sharaf.save();
+			
+			Idea i10 = new Idea("Blank 4", "Blank 4", sharaf, govImp2);
+			i10.save();
+			sharaf.save();
+			
 			Plan p1 = new Plan("S.U. heads", ashraf, new Date(111, 03, 20),
 					new Date(111, 07, 30), "Plan for SU heads elections",
 					gucMetStudentUnion, "summer break").save();
