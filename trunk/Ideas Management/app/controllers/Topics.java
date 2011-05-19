@@ -850,6 +850,7 @@ public class Topics extends CRUD {
 		boolean hidden = temporaryTopic.hidden;
 		int canClose = 0;
 		int canPlan = 0;
+		int canRestrict = 0;
 		long topicIdLong = Long.parseLong(topicId);
 		User actor = Security.getConnected();
 		String actionClose = "close a topic and promote it to execution";
@@ -928,6 +929,9 @@ public class Topics extends CRUD {
 		boolean follower = actor.topicsIFollow.contains(targetTopic);
 		boolean canCreateRelationship = TopicRelationships
 				.isAllowedTo(topicIdLong);
+		if (actor.isAdmin || entity.organization.creator.equals(actor) ){
+			canRestrict = 1;
+		}
 		try {
 
 			render(type, object, tags, creator, followers, ideas,
@@ -936,7 +940,7 @@ public class Topics extends CRUD {
 					deleteMessage, deletable, topicIdLong, canClose, canPlan,
 					targetTopic, allowed, permission, topicId, canPost,
 					canNotPost, pending, follower, canCreateRelationship,
-					seeRelationStatus, createRelationship, actor, hidden);
+					seeRelationStatus, createRelationship, actor, hidden , canRestrict);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
