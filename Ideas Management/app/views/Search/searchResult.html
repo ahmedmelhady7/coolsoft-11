@@ -134,37 +134,34 @@ The Search Results Viewer
                     function filterplan(){
                     
                     
-                        $.post('@{filterSearchResults}', {
-                            filterOn: "p"
+                        $.post('@{filterP}', {
                         }, function(){
                         });
                         
                     }
                     
                     function filteridea(){
-                        $.post('@{filterSearchResults}', {
-                            filterOn: "i"
+                        $.post('@{filterI}', {
+
                         }, function(){
                         });
                     }
                     
                     function filterentity(){
-                        $.post('@{filterSearchResults}', {
-                            filterOn: "e"
+                        $.post('@{filterE}', {
                         }, function(){
                         });
                     }
                     
                     function filttopic(){
-                        $.post('@{filterSearchResults}', {
-                            filterOn: "t"
+                        $.post('@{filterT}', {
                         }, function(){
                         });
                     }
                     
                     function filtorganization(){
-                        $.post('@{filterSearchResults}', {
-                            filterOn: "t"
+                        $.post('@{filterO}', {
+
                         }, function(){
                         });
                     }
