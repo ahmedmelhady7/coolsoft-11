@@ -35,7 +35,7 @@ public class NotificationProfiles extends CRUD {
 	public static void alterPreferences() {		
 		User user = Security.getConnected();
 		List<NotificationProfile> npList = user.notificationProfiles;		
-		render(npList);
+		render(user, npList);
 	}
 	
 	/**

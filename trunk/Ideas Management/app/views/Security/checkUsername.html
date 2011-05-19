@@ -1,49 +1,34 @@
 #{extends 'Secure/layout.html' /}
 #{set title:'Password Recovery' /}
 
-<div id="wrapper">
-	<div id="header-wrapper">
-		<div id="header">
-			<div id="logo">
-				<h1>Collaborative Thinking</h1>
-			</div>
-			<div id="menu">
-				<ul>
-					<li><a href="@{Home.index()}">Home</a></li>
-					<li><a href="@{Home.about()}">About</a></li>	
-					<li><a href="@{Home.contact()}">Contact</a></li>
-					<li><a href="@{Login.index()}">Login</a></li>
-					<li><a href="#">Register</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
-<h1>Please answer your security question:</h1>
-<br>
-#{if flash.error}
-<div id = passrecovery>
-	<p class="error" style="color: #c00">
+<div style="padding: 100px 0 0 250px;">
+	<div id="login-box">
+	<H2>Question</H2>
+	Please answer your security question:
+	#{if flash.error}
+		<div id = passrecovery>
+		<p class="error" style="color: #c00">
 		${flash.error}
-	</p>
-</div>
-#{/if}
-<p>Who is the GOAT?</p>
-<form action="@{Security.recoverPassword()}" method="post">
-	<input type="hidden" name="username" value="${user.username}"/>
-	<input type="text" name="answer" id="ans"/>
-	<input type="submit"  value="recover password" />
-</form>
- <a href="/secure/login">Back to login..</a>
-#{if flash.success}
-<div id = passrecovery>
-	<p class="success" style="color: #008800">
+		</p>
+	</div>
+	#{/if}
+	
+	<form action="@{Security.recoverPassword()}" method="post">
+		<input type="hidden" name="username" value="${user.username}"/>
+		<div id="login-box-name" style="margin-top:20px;">Answer:</div><div id="login-box-field" style="margin-top:20px;"><input name="answer" class="form-login" title="Username" value="" size="30" maxlength="2048" /></div>
+		<br />
+		<span class="login-box-options"><a href="/secure/login" style="margin-left:30px;">Back to login..</a></span>
+		<br/>
+		<br/>
+		<input type="image" src="/public/images/submit-btn.png" width="103" height="42" style="margin-left:90px;" alt="Submit button">
+	</form>
+	#{if flash.success}
+	<div id = passrecovery>
+		<p class="success" style="color: #00FF00">
 		${flash.success}
 	</p>
+	</div>
+	#{/if}
+	</div>
 </div>
-#{/if}
-<script type="text/javascript">
-function check() {
-	
-}
-</script>
+
