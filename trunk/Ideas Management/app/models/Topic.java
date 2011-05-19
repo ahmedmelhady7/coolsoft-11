@@ -116,7 +116,10 @@ public class Topic extends CoolModel {
 	// , cascade = CascadeType.ALL)
 	public List<RequestToJoin> requestsToJoin;
 
-	@OneToMany(mappedBy = "topic")
+	/**
+	 * the list of invitations to join the topic
+	 */
+    @OneToMany(mappedBy = "topic")
 	public List<Invitation> invitations;
 
 	/**
