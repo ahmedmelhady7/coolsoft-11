@@ -1,10 +1,59 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Edit Organization</title>
-</head>
-<body>
+    <head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
 
-</body>
+        <title>Create Organization</title>
+    </head>
+
+    <body>
+        #{extends 'main.html' /}
+		#{set title: 'Create Organization' /}
+        
+		<form name="orderform" action="@{Organizations.editOrg()}" method="POST">
+        <input type="hidden" id="organizationId" name="organizationId" value=${organization.id}>
+        Privacy Level:<br />
+		#{if (organization.privacyLevel == 0)}
+		<select id="privacyLevel" name="privacyLevel">
+			<option value="Public">Public</option>
+            <option value="Private">Private</option>
+            <option value="Secret" selected>Secret</option>
+		</select>
+		#{/if}
+		#{if (organization.privacyLevel == 1)}
+		<select id="privacyLevel" name="privacyLevel">
+			<option value="Public">Public</option>
+            <option value="Private" selected>Private</option>
+            <option value="Secret">Secret</option>
+		</select>
+		#{/if}
+		#{if (organization.privacyLevel == 2)}
+		<select id="privacyLevel" name="privacyLevel">
+			<option value="Public" selected>Public</option>
+            <option value="Private">Private</option>
+            <option value="Secret">Secret</option>
+		</select>
+		#{/if}
+		<br />
+		Allow users to create tags?<br>
+		#{if organization.createTag}
+		<select id="createTag" name="createTag">
+			<option value="Yes" selected>Yes</option>
+            <option value="No">No</option>
+		</select>
+		#{/if}
+		#{else}
+		<select id="createTag" name="createTag">
+			<option value="Yes">Yes</option>
+            <option value="No" selected>No</option>
+		</select>
+		#{/else}
+		<br />
+		<p>Description:</p>
+		<p><textarea id="description" name="description" rows="5" cols="50">${organization.description}</textarea></p>
+		<br />
+		<input type="submit" value="Submit"/>		
+		</form>
+    </body>
 </html>
+

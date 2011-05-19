@@ -617,13 +617,59 @@ public class Organizations extends CRUD {
 		Organization.delete("byName", name);
 		Organizations.mainPage();
 	}
-
+	
+	/**
+	 * This method only render the view for editing the
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S8
+	 * 
+	 * @param organizationId
+	 * 				The id of the organization that will be edited
+	 */
 	public static void editOrganization(long organizationId) {
 		Organization organization = Organization.findById(organizationId);
 		render(organization);
 	}
 
-	public static void editOrg(long organizationId) {
-
+	/**
+	 * This method edits the Organization
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S8
+	 * 
+	 * @param organizationId
+	 * 				The id of the edited organization
+	 * 
+	 * @param createTag
+	 * 				A String to determine if the organization allows its users to create tags
+	 * 
+	 * @param privacyLevel
+	 * 				The privacy level of the organization
+	 * 
+	 * @param description
+	 * 				The description of the organization
+	 */
+	public static void editOrg(long organizationId, String createTag, String privacyLevel, String description) {
+		Organization organization = Organization.findById(organizationId);
+		int privacyLevell = 0;
+		if (privacyLevel.equalsIgnoreCase("Public")) {
+			privacyLevell = 2;
+		} else {
+			if (privacyLevel.equalsIgnoreCase("Private")) {
+				privacyLevell = 1;
+			}
+		}
+		boolean createTagg = false;
+		if (createTag.equalsIgnoreCase("Yes")) {
+			createTagg = true;
+		}
+		organization.privacyLevel = privacyLevell;
+		organization.createTag = createTagg;
+		organization.description = description;
+		organization.save();
+		Organizations.viewProfile(organizationId);
 	}	
 }
