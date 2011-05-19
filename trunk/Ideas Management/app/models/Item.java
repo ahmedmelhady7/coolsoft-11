@@ -163,6 +163,16 @@ public class Item extends CoolModel {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * This method checks whether the item is related to an entity or not
+	 * 
+	 * @author Mohamed Mohie
+	 * 
+	 * @story C5S17
+	 * 
+	 * @return boolean
+	 */
 	public boolean isRelatedToEntity(){
 		if(this.relatedEntity == null)
 			return false;
