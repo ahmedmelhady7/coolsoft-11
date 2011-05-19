@@ -11,6 +11,7 @@ import play.data.validation.Required;
 import play.mvc.With;
 
 import models.BannedUser;
+import models.Log;
 import models.MainEntity;
 import models.Organization;
 import models.Role;
@@ -1303,8 +1304,7 @@ public class BannedUsers extends CRUD {
 	 *            int type 0 if view and 1 if use
 	 *            
 	 * @param numId
-	 *            long Id of the topic/entity that user ll be blocked/unblocked
-	 *            from
+	 *            long Id of the topic/entity that user ll be blocked/unblocked from
 	 *            
 	 * @param id
 	 *            int id , 0 if entity and 1 if topic
@@ -1328,7 +1328,9 @@ public class BannedUsers extends CRUD {
 		System.out.println(userId);
 		System.out.println(type);
 		System.out.println(numId);
+		
 		User user = User.findById(userId);
+		User organizer=Security.getConnected();
 		
 		List<User> organizers = new ArrayList<User>();
 		MainEntity entity = null;
@@ -1342,6 +1344,12 @@ public class BannedUsers extends CRUD {
 
 				if (text.equals("Block from viewing")) {
 					doBlock(userId, numId, 0, 0);
+					Log.addUserLog(
+							organizer.firstName+" "+organizer.lastName
+							+"blocked"
+							+user.firstName+" "+user.lastName
+							+"from viewing Entity "
+							+entity.name,user,organizer,entity,entity.organization);
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1361,6 +1369,13 @@ public class BannedUsers extends CRUD {
 				} else {
 
 					doBlock(userId, numId, 1, 0);
+					Log.addUserLog(
+							organizer.firstName+" "+organizer.lastName
+							+"unblocked"
+							+user.firstName+" "+user.lastName
+							+"from viewing Entity "
+							+entity.name,user,organizer,entity,entity.organization);
+					
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1381,6 +1396,12 @@ public class BannedUsers extends CRUD {
 			} else {
 				if (text.equals("Block from using")) {
 					doBlock(userId, numId, 0, 1);
+					Log.addUserLog(
+							organizer.firstName+" "+organizer.lastName
+							+"blocked"
+							+user.firstName+" "+user.lastName
+							+"from using Entity "
+							+entity.name,user,organizer,entity,entity.organization);
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1398,6 +1419,13 @@ public class BannedUsers extends CRUD {
 									+ entity.name + " because " + message);
 				} else {
 					doBlock(userId, numId, 1, 1);
+					Log.addUserLog(
+							organizer.firstName+" "+organizer.lastName
+							+"blocked"
+							+user.firstName+" "+user.lastName
+							+"from using Entity "
+							+entity.name,user,organizer,entity,entity.organization);
+					
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1426,6 +1454,12 @@ public class BannedUsers extends CRUD {
 							topic.entity.organization, "view", "topic",
 							numId);
 					block.save();
+					Log.addUserLog(
+							organizer.firstName+" "+organizer.lastName
+							+"blocked"
+							+user.firstName+" "+user.lastName
+							+"from viewing Topic "
+							+topic.title,user,organizer,topic,entity.organization);
 					
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
@@ -1450,6 +1484,13 @@ public class BannedUsers extends CRUD {
 							"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 							"view", "topic", topic.id).first();
 					unblock.delete();
+					Log.addUserLog(
+							organizer.firstName+" "+organizer.lastName
+							+"unblocked"
+							+user.firstName+" "+user.lastName
+							+"from viewing Topic "
+							+topic.title,user,organizer,topic,entity.organization);
+					
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1471,6 +1512,13 @@ public class BannedUsers extends CRUD {
 					BannedUser block = new BannedUser(user,
 							topic.entity.organization, "use", "topic", numId);
 					block.save();
+					Log.addUserLog(
+							organizer.firstName+" "+organizer.lastName
+							+"blocked"
+							+user.firstName+" "+user.lastName
+							+"from using Topic "
+							+topic.title,user,organizer,topic,entity.organization);
+					
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1493,6 +1541,13 @@ public class BannedUsers extends CRUD {
 							"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 							"use", "topic", topic.id).first();
 					unblock.delete();
+					Log.addUserLog(
+							organizer.firstName+" "+organizer.lastName
+							+"unblocked"
+							+user.firstName+" "+user.lastName
+							+"from using Topic "
+							+topic.title,user,organizer,topic,entity.organization);
+					
 					
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
