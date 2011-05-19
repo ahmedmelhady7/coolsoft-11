@@ -103,18 +103,17 @@ public class Users extends CRUD {
 		String profession = object.profession;
 		String username = object.username;
 		String birthDate = "" + object.dateofBirth;
-		
+
 		int adminFlag = 0;
 		if (Security.getConnected().isAdmin) {
 			adminFlag = 1;
 		}
 		try {
-			
-				System.out.println("view() done, about to render");
-				render(type, object, username, name, communityContributionCounter,
-						profession, birthDate, userId, adminFlag);
-			
-			
+
+			System.out.println("view() done, about to render");
+			render(type, object, username, name, communityContributionCounter,
+					profession, birthDate, userId, adminFlag);
+
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("view() done with exception, rendering to CRUD/show.html");
@@ -188,6 +187,7 @@ public class Users extends CRUD {
 			render("CRUD/show.html", type, object);
 		}
 	}
+
 	public static void viewMyProfile(String userId) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -204,31 +204,29 @@ public class Users extends CRUD {
 		String birthDate = "" + object.dateofBirth;
 		String password = object.password;
 		String email = object.email;
-		
+
 		int adminFlag = 0;
 		if (Security.getConnected().isAdmin) {
 			adminFlag = 1;
 		}
 		try {
-			
-				System.out.println("view() done, about to render");
-				render(type, object, username, name, communityContributionCounter,
-						profession, birthDate, userId, adminFlag, email, password);
-			
-			
+
+			System.out.println("view() done, about to render");
+			render(type, object, username, name, communityContributionCounter,
+					profession, birthDate, userId, adminFlag, email, password);
+
 		} catch (TemplateNotFoundException e) {
 			System.out
 					.println("view() done with exception, rendering to CRUD/show.html");
 			render("/users/view.html");
 		}
 	}
+
 	public static void editProfile() {
 		User user = Security.getConnected();
 		viewMyProfile(user.id + "");
 	}
-	
-	
-	
+
 	/**
 	 * 
 	 * @author Ahmed Maged
@@ -250,7 +248,8 @@ public class Users extends CRUD {
 		String username = tmp.username;
 		String birthDate = "" + tmp.dateofBirth;
 		int flag = 0;
-		if (Security.getConnected().equals(tmp) || Security.getConnected().isAdmin){
+		if (Security.getConnected().equals(tmp)
+				|| Security.getConnected().isAdmin) {
 			flag = 1;
 		}
 		try {
@@ -274,7 +273,7 @@ public class Users extends CRUD {
 		User user = Security.getConnected();
 		showProfile(user.id + "");
 	}
-	
+
 	public static void viewProfile() {
 		User user = Security.getConnected();
 		render(user);
@@ -435,7 +434,7 @@ public class Users extends CRUD {
 	 * 
 	 */
 	public static void reportIdeaAsSpam(long ideaId) {
-		System.out.println("sakdjhdafakasjdf");
+		System.out.println("hadiiiiiiiiiiiiiiii");
 		Idea idea = Idea.findById(ideaId);
 		User reporter = Security.getConnected();
 		idea.spamCounter++;
@@ -443,7 +442,7 @@ public class Users extends CRUD {
 		idea.reporters.add(reporter);
 		System.out.println(idea.reporters.get(0).toString());
 		// for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
-		Mail.reportAsSpamMail(idea.belongsToTopic.creator, reporter, idea,
+		Mail.reportAsSpamMail(idea.belongsToTopic.creator, reporter, idea.id,
 				idea.description, idea.title);
 		// }
 		System.out.println(idea.spamCounter
@@ -914,6 +913,7 @@ public class Users extends CRUD {
 		}
 		return enrolled;
 	}
+
 	/**
 	 * gets the list of users who are allowed to delete an idea or a comment
 	 * 
@@ -923,8 +923,8 @@ public class Users extends CRUD {
 	 * 
 	 * @param user
 	 *            : User user is the idea developer performing this action
-	 *
-	  * @param action
+	 * 
+	 * @param action
 	 *            :a String action performed
 	 * 
 	 * @param placeId
@@ -952,27 +952,28 @@ public class Users extends CRUD {
 		BannedUser banned = BannedUser.find(
 				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 				action, placeType, placeId).first();
-		
+
 		if (banned != null) {
 			return false;
 		}
-		if(placeType == "idea"){
+		if (placeType == "idea") {
 			Idea idea = Idea.findById(placeId);
-			if(user.equals(idea.author)) {
+			if (user.equals(idea.author)) {
 				return true;
 			}
 			return false;
 		}
-		
-		if(placeType == "comment") {
+
+		if (placeType == "comment") {
 			Comment comment = Comment.findById(placeId);
-			if(user.equals(comment.commenter)) {
+			if (user.equals(comment.commenter)) {
 				return true;
 			}
 			return false;
 		}
 		return false;
 	}
+
 	/**
 	 * gets all the users enrolled in an organization these users are: 1- the
 	 * Organization lead 2- the organizers (even if blocked) 3- Idea Developers
@@ -1215,11 +1216,12 @@ public class Users extends CRUD {
 				message = "First name cannot exceed 25 characters";
 			} else if(communityCounterFlag){
 				message = "Community contributuion counter must be a number";
-			} /*else if (User.find("ByEmail", tmp.email) != null) {
-				message = "This Email already exists !";
-			} else if (User.find("ByUsername", tmp.username) != null) {
-				message = "This username already exists !";
-			}*/
+			} /*
+			 *else if (User.find("ByEmail", tmp.email) != null) { message =
+			 * "This Email already exists !"; } else if (User.find("ByUsername",
+			 * tmp.username) != null) { message =
+			 * "This username already exists !"; }
+			 */
 
 			try {
 				System.out.println("show user try ");
@@ -1293,25 +1295,22 @@ public class Users extends CRUD {
 		Binder.bind(object, "object", params.all());
 		System.out.println(object.toString() + "begin");
 		validation.valid(object);
-		String editedMessage="User : " + oldUser.username +"\n";
+		String editedMessage = "User : " + oldUser.username + "\n";
 		String message = "";
 		User tmp = (User) object;
 		System.out.println("create() entered");
 		tmp.email = tmp.email.trim();
-		tmp.email=tmp.email.toLowerCase();
+		tmp.email = tmp.email.toLowerCase();
 		tmp.username = tmp.username.trim();
 		tmp.password = tmp.password.trim();
 		tmp.firstName = tmp.firstName.trim();
 		tmp.lastName = tmp.lastName.trim();
-		tmp.profession=tmp.profession.trim();
+		tmp.profession = tmp.profession.trim();
 		String communityCounterString = tmp.communityContributionCounter + "";
 		boolean communityCounterFlag = false;
-		try 
-		{
+		try {
 			Integer.parseInt(communityCounterString);
-		}
-		catch(NumberFormatException e)
-		{
+		} catch (NumberFormatException e) {
 			communityCounterFlag = true;
 		}
 
@@ -1323,117 +1322,131 @@ public class Users extends CRUD {
 			} else if (tmp.username.trim().equals("")) {
 				message = "A User must have a username";
 				System.out.println(message);
-			}
-			else if (tmp.password.trim().equals("")) {
+			} else if (tmp.password.trim().equals("")) {
 				message = "A User must have a password";
 				System.out.println(message);
 			} else if (tmp.username.length() >= 20) {
 				message = "Username cannot exceed 20 characters";
 			} else if (tmp.password.length() >= 25) {
 				message = "First name cannot exceed 25 characters";
-			} else if(communityCounterFlag){
+			} else if (communityCounterFlag) {
 				message = "Community contributuion counter must be a number";
-			} 
+			}
 			try {
 				System.out.println("show user try ");
 				render(request.controller.replace(".", "/") + "/save.html",
 						type, message);
-				
+
 			} catch (TemplateNotFoundException e) {
 				System.out.println("show user catch ");
 				render("CRUD/blank.html", type);
 			}
 		}
-		
+
 		System.out.println(object.toString() + "before save");
 		object._save();
-		if(Security.getConnected().isAdmin) {
-		Notifications.sendNotification(tmp.id,Security.getConnected().id , "User", "The admin has edited your profile");
+		Notifications.sendNotification(tmp.id, Security.getConnected().id,
+				"User", "The admin has edited your profile");
+		if (oldEmail.equals(tmp.email))
+			;
+		if (Security.getConnected().isAdmin) {
+			Notifications.sendNotification(tmp.id, Security.getConnected().id,
+					"User", "The admin has edited your profile");
 		}
-		if(oldEmail.equals(tmp.email));
+		if (oldEmail.equals(tmp.email))
+			;
 		{
-			editedMessage += oldEmail + "  changed to -->  " + tmp.email +"\n";
+			editedMessage += oldEmail + "  changed to -->  " + tmp.email + "\n";
 		}
-		if(oldFirstName.equalsIgnoreCase(tmp.firstName));
+		if (oldFirstName.equalsIgnoreCase(tmp.firstName))
+			;
 		{
-			editedMessage += oldFirstName + "  changed to -->  " + tmp.firstName +"\n";
+			editedMessage += oldFirstName + "  changed to -->  "
+					+ tmp.firstName + "\n";
 		}
-		if(oldUser.lastName.equalsIgnoreCase(tmp.lastName));
+		if (oldUser.lastName.equalsIgnoreCase(tmp.lastName))
+			;
 		{
-			editedMessage += oldLastName + "  changed to -->  " + tmp.lastName +"\n";
+			editedMessage += oldLastName + "  changed to -->  " + tmp.lastName
+					+ "\n";
 		}
-		if(oldUser.communityContributionCounter != tmp.communityContributionCounter)
-		{
-			editedMessage += oldCommunityContributionCounter + "  changed to -->  " + tmp.communityContributionCounter +"\n";
+		if (oldUser.communityContributionCounter != tmp.communityContributionCounter) {
+			editedMessage += oldCommunityContributionCounter
+					+ "  changed to -->  " + tmp.communityContributionCounter
+					+ "\n";
 		}
-		/*if(oldUser.dateofBirth !=(tmp.dateofBirth));
+		/*
+		 * if(oldUser.dateofBirth !=(tmp.dateofBirth)); { editedMessage +=
+		 * dateofBirth + "  changed to -->  " + tmp.dateofBirth +"\n"; }
+		 */
+		if (oldUser.country.equalsIgnoreCase(tmp.country))
+			;
 		{
-			editedMessage += dateofBirth + "  changed to -->  " + tmp.dateofBirth +"\n";
-		}*/
-		if(oldUser.country.equalsIgnoreCase(tmp.country));
-		{
-			editedMessage += oldUser.country + "  changed to -->  " + tmp.country+"\n";
+			editedMessage += oldUser.country + "  changed to -->  "
+					+ tmp.country + "\n";
 		}
-		if(oldProfession.equalsIgnoreCase(tmp.profession));
+		if (oldProfession.equalsIgnoreCase(tmp.profession))
+			;
 		{
-			editedMessage += oldProfession + " changed to --> " + tmp.profession+"\n";
+			editedMessage += oldProfession + " changed to --> "
+					+ tmp.profession + "\n";
 		}
 		System.out.println("eidted" + editedMessage + " all");
 		Log.addUserLog(editedMessage, tmp);
 		System.out.println(object.toString() + "after the save");
 		flash.success(Messages.get("crud.saved", type.modelName));
 		if (params.get("_save") != null) {
-			if(Security.getConnected().isAdmin){
-			redirect(request.controller + ".list");
-			}
-			else {
-				redirect("/Users/viewProfile?userId=" + id); //was showProfile
+			if (Security.getConnected().isAdmin) {
+				redirect(request.controller + ".list");
+			} else {
+				redirect("/Users/viewProfile?userId=" + id); // was showProfile
 			}
 		}
 		redirect(request.controller + ".show", object._key());
 
 	}
 
-//	/**
-//	 * overrides the CRUD view method ,is responsible for deleting a user by the
-//	 * System admin after specifying that user's id , and then it renders a
-//	 * message confirming whether the delete was successful or not
-//	 * 
-//	 * @author Mostafa Ali
-//	 * 
-//	 * @story C1S9
-//	 * 
-//	 * @param id
-//	 *            :String the user's id
-//	 * 
-//	 * 
-//	 * */
-//	public static void delete(String id) {
-//		long userId = Long.parseLong(id);
-//		User user = User.findById(userId);
-//		String x = "";
-//		try {
-//
-//			if (!(user.state.equals("n"))) {
-//				user.state = "d";
-//				user._save();
-//				x = "deletion successful";
-//				System.out.println(x + "  first if");
-//				Mail.deletion(user, "");
-//			} else {
-//				x = "You can not delete a user who's deactivated his account !";
-//				System.out.println(x + "else");
-//			}
-//			render(request.controller.replace(".", "/") + "/index.html", x);
-//		} catch (NullPointerException e) {
-//			x = "No such User !!";
-//			System.out.println(x + "catch");
-//			render(request.controller.replace(".", "/") + "/index.html");
-//
-//		}
-//
-//	}
-	
+	// /**
+	// * overrides the CRUD view method ,is responsible for deleting a user by
+	// the
+	// * System admin after specifying that user's id , and then it renders a
+	// * message confirming whether the delete was successful or not
+	// *
+	// * @author Mostafa Ali
+	// *
+	// * @story C1S9
+	// *
+	// * @param id
+	// * :String the user's id
+	// *
+	// *
+	// * */
+	// public static void delete(String id) {
+	// long userId = Long.parseLong(id);
+	// User user = User.findById(userId);
+	// String x = "";
+	// try {
+	//
+	// if (!(user.state.equals("n"))) {
+	// user.state = "d";
+	// user._save();
+	// x = "deletion successful";
+	// System.out.println(x + "  first if");
+	// Mail.deletion(user, "");
+	// } else {
+	// x = "You can not delete a user who's deactivated his account !";
+	// System.out.println(x + "else");
+	// }
+	// render(request.controller.replace(".", "/") + "/index.html", x);
+	// } catch (NullPointerException e) {
+	// x = "No such User !!";
+	// System.out.println(x + "catch");
+	// render(request.controller.replace(".", "/") + "/index.html");
+	//
+	// }
+	//
+	// }
+
 	/**
 	 * overrides the CRUD view method ,is responsible for deleting a user by the
 	 * System admin after specifying that user's id , and then it renders a
@@ -1448,7 +1461,7 @@ public class Users extends CRUD {
 	 * 
 	 * 
 	 * */
-	public static void delete(String id,String deletionMessage) {
+	public static void delete(String id, String deletionMessage) {
 		long userId = Long.parseLong(id);
 		User user = User.findById(userId);
 		String x = "";
@@ -1464,9 +1477,9 @@ public class Users extends CRUD {
 				x = "You can not delete a user who's deactivated his account !";
 				System.out.println(x + "else");
 			}
-			for(int i =0 ;i<user.invitation.size();i++)
+			for (int i = 0; i < user.invitation.size(); i++)
 				user.invitation.get(i).delete();
-			for(int i =0 ; i<user.requestsToJoin.size();i++)
+			for (int i = 0; i < user.requestsToJoin.size(); i++)
 				user.requestsToJoin.get(i).delete();
 			render(request.controller.replace(".", "/") + "/index.html", x);
 		} catch (NullPointerException e) {

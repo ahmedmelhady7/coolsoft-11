@@ -20,7 +20,7 @@
     #{if canDelete}
     #{form @delete(object._key())}
 		<p class="crudDelete">
-			<input type="submit" value="&{'Delete Idea		        ', type.modelName}" />
+			<input type="submit" value="&{'Delete Idea', type.modelName}" />
 		</p>
 	#{/form}    
 	#{/if}
@@ -80,19 +80,15 @@
         </p>
         #{/crud.form }
 		<br/>
+        #{/form}
+    </div>
+    
 		  #{if alreadyReported==false}
     <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform">
         <input type="hidden" name="ideaId" value="${ideaId}">
-            <tr>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
                 <input type="submit" value="Report As Spam">
             </form>
             #{/if}
-        #{/form}
-    </div>
 	<br>
 	<div>
 	<form action="@{Ideas.shareIdea()}">
@@ -179,10 +175,4 @@
         </br>
         </div>
       	  <div id='div1' align='left'>
-      	  	
-			<form action="@{Ideas.tagIdea()}" method="post">
-				<input type="hidden" value=${ideaId} name='ideaId'>
-				<input type="hidden" value='@@' name='tag'>
-				<input type="submit" value="Add tags">
-			</form>
 </div>

@@ -57,7 +57,7 @@ public class User extends CoolModel {
 	@OneToMany(mappedBy = "creator")
 	// , cascade = CascadeType.PERSIST)
 	public List<Topic> topicsCreated;
-	
+
 	/**
 	 * id of the profile Picture
 	 */
@@ -90,11 +90,20 @@ public class User extends CoolModel {
 	@OneToMany(mappedBy = "author")
 	// , cascade = CascadeType.ALL)
 	public List<Idea> ideasCreated;
-
+	/**
+	 * ideas reported by the user	 
+	 **/
 	@ManyToMany
 	// (mappedBy = "reporters")
 	// , cascade = CascadeType.ALL)
 	public List<Idea> ideasReported;
+	/**
+	 * topics reported by the user	 
+	 **/
+	@ManyToMany
+	// (mappedBy = "reporters")
+	// , cascade = CascadeType.ALL)
+	public List<Topic> topicsReported;
 
 	@ManyToMany(mappedBy = "usersRated")
 	public List<Idea> ideasRated;
@@ -194,6 +203,7 @@ public class User extends CoolModel {
 	 */
 	@OneToMany(mappedBy = "creator")
 	public List<Tag> createdTags;
+
 	/**
 	 * @author Mostafa Ali
 	 */
@@ -552,7 +562,8 @@ public class User extends CoolModel {
 
 	/**
 	 * 
-	 * This Method checks if the user has sent a volunteer request and it's still pending 
+	 * This Method checks if the user has sent a volunteer request and it's
+	 * still pending
 	 * 
 	 * @author Salma Osama
 	 * 
@@ -572,20 +583,18 @@ public class User extends CoolModel {
 		}
 		return false;
 	}
-	
-	public ArrayList<Idea> getDrafts()
-	{
+
+	public ArrayList<Idea> getDrafts() {
 		List<Idea> drafts = new ArrayList<Idea>();
-		
-		for(Idea idea : this.ideasCreated)
-			if(idea.isDraft)
+
+		for (Idea idea : this.ideasCreated)
+			if (idea.isDraft)
 				drafts.add(idea);
-		
+
 		return (ArrayList<Idea>) drafts;
 	}
-	
-	public int getDraftsCount()
-	{
+
+	public int getDraftsCount() {
 		return this.getDrafts().size();
 	}
 

@@ -143,8 +143,8 @@
 				<input type="button" name="hide" value="Hide Idea" onclick="hides(${idea.id});">
 				<input type="button" name="delete" value="x" onclick="deletes(${idea.id});">
 				#{/if}
-				<h2 id= "showdetails_${idea.id}"><input value="show details" type="button" onclick="showOrHide();"/></h2>
-				<h2 id= "hidedetails_${idea.id}"><input value="hide details" type="button" onclick="showOrHide();"/></h2>
+				<h2 id= "showdetails_${idea.id}"><input value="show details" id="${idea.id}" type="button" onclick="showOrHide(this.id);"/></h2>
+				<h2 id= "hidedetails_${idea.id}"><input id="${idea.id}" value="hide details" type="button" onclick="showOrHide(this.id);"/></h2>
                 <table id = "table_${idea.id}" border="0" bgcolor="#FAF8CC" cellspacing="0" id ="toFil">
                 <tr><td><font size ="3" color ="black"><i>
                 <label>Description : ${idea.description}</label>
@@ -154,25 +154,7 @@
                 </i></font></td><td>
                 </tr>
                 </table>
-                <script type ="text/javascript">
-        				$("#hide").click(function(){
-						$("#idea").hide();});
-                        var isHidden = false;
 
-                        var showOrHide = function() {
-                        	if (isHidden) {
-                        		isHidden = false;
-                        		$("#table_${idea.id}").fadeIn();
-                        		$("#hidedetails_${idea.id}").fadeIn();
-                        		$("#showdetails_${idea.id}").hide();
-                        	} else {
-                        		isHidden = true;
-                        		$("#table_${idea.id}").fadeOut();
-                        		$("#hidedetails_${idea.id}").fadeOut();
-                        		$("#showdetails_${idea.id}").show();
-                        	}
-                        }
-      		    </script>
                  <p>
     				===================================================================================================
     			 </p>
@@ -180,6 +162,18 @@
                 
 				#{/if}
                 #{/list}
+                        <script type ="text/javascript">
+        				$("#hide").click(function(){
+						$("#idea").hide();});
+                        
+
+                        var showOrHide = function(id) {
+                        		$("#table_"+id).toggle();
+                        		$("#hidedetails_"+id).toggle();
+                        		$("#showdetails_"+id).toggle();
+                        	
+                        }
+      		    </script>
                 #{/if}
                 #{else}
                 no ideas posted to this topic
