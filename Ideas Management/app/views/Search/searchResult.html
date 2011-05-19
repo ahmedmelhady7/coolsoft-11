@@ -2,7 +2,8 @@
 @author Loaay Alkherbawy
 @story  C4S01
 The Search Results Viewer
---> #{extends 'main.html' /}
+--> 
+#{extends 'login/index.html' /}
 #{set title:'Your results'/} 
 <!DOCTYPE html>
 <html>
@@ -14,12 +15,12 @@ The Search Results Viewer
     </head>
     <style type="text/css">
         
-        #div1 {
-            float: left;
-            width: 50%;
+        #div2 {
+            float: right;
+            width: 30%;
         }
         
-        #div2 {
+        #div1 {
             marging-left: 50%;
             width: 50%;
         }
@@ -29,17 +30,6 @@ The Search Results Viewer
             Welcome ${u.username}! 
         </font>
         </br>
-        <div id="search">
-            <form action="@{Search.quickSearch()}" method='post'>
-                Search: 
-                <br>
-                <input type="text" name="keyword" id="keyword" value="keyword" /><input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick="quickSearch(this.form)"/>
-                <br>
-                <small>
-                    <i><a href="/AdvancedSearch">Advanced Search</a></i>
-                </small>
-            </form>
-        </div>
         </br>View: 
 		<form name="myform">
         <SELECT NAME="view" onChange='modifyResult()'>
@@ -58,9 +48,6 @@ The Search Results Viewer
                         document.getElementById('divT').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
                         setTimeout('viewResult()', 2500);
       
-                        document.getElementById('divI').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
-                        setTimeout('viewResult()', 2500);
-                        
 
                         document.getElementById('divP').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
                         setTimeout('viewResult()', 2500);
@@ -68,6 +55,11 @@ The Search Results Viewer
 
                         document.getElementById('divE').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
                         setTimeout('viewResult()', 2500);
+
+                        document.getElementById('divI').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
+                        setTimeout('viewResult()', 2500);
+                        
+
                     }
                     
                     function viewResult(){
@@ -241,21 +233,7 @@ The Search Results Viewer
             </br>
             </br>
         </form>
-        <div id='div1'>
-        <div id='divO'>
-        </div>
-        <div id='divE'>
-        </div>
-        <div id='divT'>
-        </div>
-        <div id='divI'>
-        </div>
-        <div id='down'>
-        </div>
-        </div>
-    </body>
-</div>
-<div id='div1' align='left'>
+<div id='div2' align="left">
 </br>
 <font color="black">
     <u>
@@ -276,4 +254,19 @@ The Search Results Viewer
     </br>
 </font>
 </div>
+        <div id='div1'>
+        <div id='divO'>
+        </div>
+        <div id='divE'>
+        </div>
+        <div id='divT'>
+        </div>
+        <div id='divI'>
+        </div>
+        <div id='down'>
+        </div>
+        </div>
+    </body>
+</div>
+
 </html>
