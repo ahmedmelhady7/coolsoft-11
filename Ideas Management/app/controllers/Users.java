@@ -1471,6 +1471,23 @@ public class Users extends CRUD {
 				user.state = "d";
 				user._save();
 				x = "deletion successful";
+/*>>>>> Added by Salma Osama to: delete the volunteerRequests and the receivedAssignRequests of the user
+							   : remove the user from the list of assignees of the items he's assigned to
+*/			
+				for (int i = 0; i < user.volunteerRequests.size(); i++) {
+					user.volunteerRequests.get(i).delete();
+				}
+				for (int i = 0; i < user.receivedAssignRequests.size(); i++) {
+					user.receivedAssignRequests.get(i).delete();
+				}
+				Item item;
+				while (!user.itemsAssigned.isEmpty()) {
+					item = user.itemsAssigned.remove(0);
+					item.assignees.remove(user);
+					item.save();
+					user.save();
+				}
+//>>>>>> end of Salma's part :)				
 				System.out.println(x + "  first if");
 				Mail.deletion(user, deletionMessage);
 			} else {

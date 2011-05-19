@@ -11,7 +11,7 @@ body {
 	background: #FFFFFF;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
-	color: #A19D9A;
+	color: #000000;;
 }
 
 h1, h2, h3 {
@@ -379,6 +379,79 @@ a:hover {
 	color: #8A8A8A;
 }
 
+/* Left Sidebar */
+
+#leftSidebar {
+	float: left;
+	width: 260px;
+	margin: 0px;
+	padding: 0px 20px 0px 0px;
+	color: #787878;
+}
+
+#leftSidebar ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#leftSidebar li {
+	margin: 0;
+	padding: 0;
+}
+
+#leftSidebar li ul {
+	margin: 0px 0px;
+	padding-bottom: 30px;
+}
+
+#leftSidebar li li {
+	line-height: 35px;
+	border-bottom: 1px dotted #E7E2DC;
+	margin: 0px 30px;
+	border-left: none;
+}
+
+#leftSidebar li li span {
+	display: block;
+	margin-top: -20px;
+	padding: 0;
+	font-size: 11px;
+	font-style: italic;
+}
+
+#leftSidebar li li a {
+	padding: 0px 0px 0px 15px;
+	background: url(images/img01.jpg) no-repeat left 5px;
+}
+
+#leftSidebar h2 {
+	height: 38px;
+	padding-left: 30px;
+	letter-spacing: -.5px;
+	font-size: 1.8em;
+}
+
+#leftSidebar p {
+	margin: 0 0px;
+	padding: 0px 30px 20px 30px;
+	text-align: justify;
+}
+
+#leftSidebar a {
+	border: none;
+	color: #339CCB;
+}
+
+#leftSidebar a:hover {
+	text-decoration: underline;
+	color: #8A8A8A;
+}
+
+/* layout */
+#layout {
+	float:left;
+}
 /* Calendar */
 
 #calendar {
@@ -399,6 +472,7 @@ a:hover {
 #calendar #next {
 	text-align: right;
 }
+
 
 /* Footer */
 

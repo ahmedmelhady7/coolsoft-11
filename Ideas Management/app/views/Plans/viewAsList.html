@@ -1,29 +1,9 @@
-#{if canView == true}
 #{extends 'planLayout.html' /}
-#{/if}
+
 #{set 'title'}
     ${p.title} - View Plan as List
 #{/set}
-#{if canView == false}
-#{extends 'main.html' /}<h3>You are not allowed to view this plan.</h3>
-#{/if}
-#{else}
-<br/>
-#{if isOrganizer == true}
-<form action="@{VolunteerRequests.viewVolunteerRequests()}" method="post">
-    <input type = "hidden" name = "planId" value = ${p.id}>Volunteer Requests: <input type="submit" value="View Volunteer Requests">
-</form> #{/if}
-#{if canEdit == 1}<a href="@{Plans.editPlan(p.id)}">Edit General info about the plan</a>
-<a href="@{Plans.deletePlan(p.id)}">Delete the plan</a>
-#{/if}
-#{if canIdea == 1}
-<form action="@{Plans.addIdea()}" method="post">
-    <input type = "hidden" name = "planId" value = ${p.id}><input type="submit" value="Associate ideas to this plan">
-</form> #{/if}
-<br/>
-<form action="@{Plans.planView()}" method="post">
-    <input type = "hidden" name = "planId" value = ${p.id}><input type="submit" value="View the list of ideas associated to this plan">
-</form>
+
 <br/>
 <form action="@{Plans.rate(p.id,rat)}" method="GET">
     <input type="submit" value="Submit rating"/><input type="hidden" name = "planId" value=${p.id}/>
@@ -56,9 +36,10 @@
 <div id='div1' align='left'>
 </div>
 #{if itemsList.size() > 0}
-<ul style="list-style: none; ">
+<ul style="list-style: none; " >
     #{list items:itemsList, as:'item'}
     <li id = "listItem_${item.id}">
+    	<br/>
         <fieldset>
             <legend>
                 <h2>
@@ -170,8 +151,7 @@
     </li>
     #{/list}
 </ul>
-#{if canEdit == 1}<a href="@{Plans.addItem(p.id)}">Add item(s)</a>
-#{/if} 
+
 #{/if}  
 #{else} 
 No items exist in plan. Please contact  
@@ -186,7 +166,6 @@ No items exist in plan. Please contact
 #{/if} 
 #{else}
 ${p.topic.getOrganizer().get(0).username}
-#{/else}
 #{/else}
 #{/else}
 <script type="text/javascript">
