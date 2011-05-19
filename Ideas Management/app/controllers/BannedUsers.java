@@ -542,8 +542,12 @@ public class BannedUsers extends CRUD {
 	 *               long Id of the topic/entity that user ll be blocked/unblocked from
 	 * @param id
 	 *               int id , 0 if entity and 1 if topic                
-	 * @param m
+	 * @param text
 	 *               String m that is the text on the button to the action if (block or unblock)
+	 *       
+	 * @param text
+	 *               String message which 	is the reason why this person has been blocked
+	 *                
 	 *                
 	 */
 	
