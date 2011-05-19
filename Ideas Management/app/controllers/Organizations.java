@@ -652,7 +652,7 @@ public class Organizations extends CRUD {
 	 * @param description
 	 * 				The description of the organization
 	 */
-	public static void editOrg(long organizationId, String createTag, String privacyLevel, String description) {
+	public static void edit(long organizationId, String createTag, String privacyLevel, String description) {
 		Organization organization = Organization.findById(organizationId);
 		int privacyLevell = 0;
 		if (privacyLevel.equalsIgnoreCase("Public")) {
