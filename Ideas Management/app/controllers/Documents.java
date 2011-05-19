@@ -21,6 +21,9 @@ public class Documents extends CRUD {
 	 * Renders the page for creating a new document
 	 * 
 	 * @author Ibrahim Al-Khayat
+	 * 
+	 * @story C2S28
+	 * 
 	 * @param id
 	 *            id of the owner organization (-1 for user)
 	 */
@@ -38,6 +41,9 @@ public class Documents extends CRUD {
 	 * Creates a new document and store it in the database
 	 * 
 	 * @author Ibrahim Al-Kahayat
+	 * 
+	 * @story C2S28
+	 * 
 	 * @param id
 	 *            id of the owner user/organization
 	 * @param isOrganization
@@ -56,6 +62,9 @@ public class Documents extends CRUD {
 	 * Renders the viewsDocument HTML
 	 * 
 	 * @author Ibrahim Al-Kahayat
+	 * 
+	 * @story C2S28
+	 * 
 	 * @param id
 	 *            id of the document
 	 */
@@ -78,6 +87,9 @@ public class Documents extends CRUD {
 	 * Renders the listDocument HTML
 	 * 
 	 * @author Ibrahim Al-Kahayat
+	 * 
+	 * @story C2S28
+	 * 
 	 * @param id
 	 *            id of the Organization (-1 for rendering the list for a user)
 	 */
@@ -104,6 +116,9 @@ public class Documents extends CRUD {
 	 * Renders the editDocument HTML
 	 * 
 	 * @author Ibrahim Al-Kahayat
+	 * 
+	 * @story C2S28
+	 * 
 	 * @param id
 	 *            id of the document
 	 */
@@ -117,6 +132,9 @@ public class Documents extends CRUD {
 	 * Edits the title and the body of the document
 	 * 
 	 * @author Ibrahim Al-Kahayat
+	 * 
+	 * @story C2S28
+	 * 
 	 * @param id
 	 *            id of the document
 	 * @param title
@@ -135,6 +153,9 @@ public class Documents extends CRUD {
 	 * Deletes a document
 	 * 
 	 * @author Ibrahim Al-Kahayat
+	 * 
+	 * @story C2S28
+	 * 
 	 * @param id
 	 *            id of the document
 	 */

@@ -23,6 +23,9 @@ public class Pictures extends Controller {
 	 * Renders the gallery
 	 * 
 	 * @author Ibrahim Al-Khayat
+	 * 
+	 * @story C2S27
+	 * 
 	 * @param id
 	 *            id of the organization (-1 for user)
 	 */
@@ -56,6 +59,9 @@ public class Pictures extends Controller {
 	 * Creates a new Picture
 	 * 
 	 * @author Ibrahim Al-Khayat
+	 * 
+	 * @story C2S27
+	 * 
 	 * @param name
 	 *            image display name
 	 * @param image
@@ -81,6 +87,9 @@ public class Pictures extends Controller {
 	 * Renders the image
 	 * 
 	 * @author Ibrahim Al-Khayat
+	 * 
+	 * @story C2S27
+	 * 
 	 * @param id
 	 *            id of the Picture
 	 */
@@ -94,6 +103,9 @@ public class Pictures extends Controller {
 	 * Deletes a Picture
 	 * 
 	 * @author Ibrahim Al-Khayat
+	 * 
+	 * @story C2S27
+	 * 
 	 * @param pictureId
 	 *            picture id
 	 * @param id
@@ -126,6 +138,9 @@ public class Pictures extends Controller {
 	 * Set the Picture as profile picture
 	 * 
 	 * @author Ibrahim Al-Khayat
+	 * 
+	 * @story C2S27
+	 * 
 	 * @param pictureId
 	 *            picture id
 	 * @param id
