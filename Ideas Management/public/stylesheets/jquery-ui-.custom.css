@@ -580,11 +580,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 /*
  * M Gomaa Ghanem
  */
-ui-datepicker-div {
-	position: absolute; 
-	width: 20px;
-	top: 78px; 
-	left: 418.5px; 
-	z-index: 1; 
-	display: block;
+#ui-datepicker-div {
+	width: 150px;
+	font-size: 10px;
 }
