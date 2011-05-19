@@ -46,9 +46,9 @@
 					<ul>
 						<li>
 							<div id="search" >
-								<form>
+								<form action="@{Search.quickSearch()}" method='post'>
 										Search: <br>
-										<input type="text" name="search1" id="search1" value="keyword" />
+										<input type="text" name="keyword" id="keyword" value="keyword" />
 										<input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick="quickSearch(this.form)"/>										
 										<br> <small><i><a href="/AdvancedSearch">Advanced Search</a></i></small>										
 								</form>
@@ -167,9 +167,8 @@
 
 <script type="text/javascript">
         function quickSearch(frm){
-            $.post('@{Search.quickSearch()}', {
-                keyword: frm.search1.value
-            }, function(){
+            $.post('@{Search.quickSearch()}', { keyword: frm.search1.value}, 
+			function(){
                 window.location.href = "/searchResult";
             });
         }

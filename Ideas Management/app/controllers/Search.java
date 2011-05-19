@@ -45,7 +45,7 @@ public class Search extends Controller {
 	 *        in the html page searchResult.
 	 * 
 	 */
-	public static List<Model> listOfResults;
+	public static List<Model> listOfResults = new ArrayList<Model>();
 
 	public static List<Model> filterResult = new ArrayList<Model>();
 
@@ -136,7 +136,7 @@ public class Search extends Controller {
 		List<Organization> organizationsFound = new ArrayList<Organization>();
 		List<Topic> topicsFound = new ArrayList<Topic>();
 		List<MainEntity> entitiesFound = new ArrayList<MainEntity>();
-toBePassed=listOfResults;
+		toBePassed=listOfResults;
 		try {
 			for (int i = 0; i < listOfResults.size(); i++) {
 				if (listOfResults.get(i) instanceof Idea) {
@@ -154,6 +154,7 @@ toBePassed=listOfResults;
 			}
 			download(u);
 			List<Model> lof = listOfResults;
+			System.out.println("Size " + lof.size());
 			render(u, connected, lof, ideasFound, organizationsFound,
 					entitiesFound, topicsFound);
 		} catch (NullPointerException e) {
@@ -722,6 +723,7 @@ toBePassed=listOfResults;
 		for (int i = 0; i < TopicsList.size(); i++) {
 			listOfResults.add(TopicsList.get(i));
 		}
+		searchResult();
 	}
 
 	/**
