@@ -350,15 +350,19 @@ public class Plans extends CRUD {
 	 */
 
 	public static void rate(long planId, int rat) {
-		// User user = Security.getConnected();
-		// if (!checkRated(user, planId)) {
 		planId++;
 		Plan p = Plan.findById(planId);
-		int oldRating = p.rating;
-		int newRating = (oldRating + rat) / 2;
-		p.rating = newRating;
+		if(p.rating.equals("Not yet rated"))
+			p.rating = Integer.toString(rat);
+		else
+		{
+			int oldRating = Integer.parseInt(p.rating);
+			int newRating;
+			newRating = (oldRating + rat) / 2;
+			p.rating = Integer.toString(newRating);
+		}
 		p.save();
-		// }
+		redirect("/plans/viewaslist?planId="+planId);
 
 	}
 
