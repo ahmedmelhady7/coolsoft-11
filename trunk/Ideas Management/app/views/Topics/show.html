@@ -113,15 +113,8 @@
 		   <a href="@{Invitations.invite(1,object.id)}">Invite</a>
         #{/if}
         <br>
-        #{if (targetTopic.createRelationship == true)}
-		#{if (canCreateRelationship == true)}
-			<p>
-				<a href="@{Topics.createRelation(object.id,object.entity.id)}">Create Relation</a>
-			</p>
-		#{/if}
-		#{/if}
-        <br>
-        #{/form}
+       
+	    #{/form}
 		
 		<form action="@{Topics.tagTopic()}" method="post">
         	<input type="hidden" value=${topicId} name='topicId'>
@@ -173,6 +166,7 @@
                         		$("#showdetails_"+id).toggle();
                         	
                         }
+		
       		    </script>
                 #{/if}
                 #{else}
@@ -279,6 +273,30 @@
 <input type="submit" value="View the plan" />
 #{/form}
 #{/if}
+
+<script type ="text/javascript">
+				$(document).ready(function(){
+    $('ul.menu ul').slideUp();
+    $('ul.menu>a').click(function(){
+        $(this).next('ul').slideToggle();
+        
+    });
+	})
+</script>
+
+<HR>
+	<ul class='menu'>
+ <a>Show Relationships</a>
+   <ul class="blah">
+      #{list items:targetTopic.relationsSource, as:'relationElement'}
+			<p><a href="#">${relationElement.name}</a> topic ${relationElement.destination.title}</p>
+	  #{/list}
+	  #{list items:targetTopic.relationsDestination, as:'relEelement'}
+			<p><a href="#">${relElement.name}</a> entity ${relElement.source.title}</p>
+	  #{/list}
+   </ul>
+</ul>
+
 <form action="@{Topics.viewFollowers()}">
     <HR><input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">#{if (!targetTopic.followers.contains(user))} 
     <p>
@@ -305,8 +323,18 @@
             <p>
                 Request To Post status: Pending
             </p>
+			
             #{/if}
 			<br />
+			
+			#{if (targetTopic.createRelationship == true)}
+			#{if (canCreateRelationship == true)}
+			<p>
+				<a href="@{Topics.createRelation(object.id,object.entity.id)}">Create Relation</a>
+			</p>
+			#{/if}
+			#{/if}
+			
 			#{if seeRelationStatus}
 			#{if createRelationship}
 			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
