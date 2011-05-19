@@ -488,21 +488,14 @@ public class BannedUsers extends CRUD {
 				.find("select bu.action from BannedUser bu where bu.organization = ? and bu.bannedUser = ? and bu.resourceType like ? and resourceID = ? ",
 						organization, user, "topic", topicId).fetch();
 	  
-		int topicActionsSize = topicActions.size();
-		for(int i = 0; i< topicActionsSize ; i++){
-			for(int j = 0 ; j < restricted.size() ; j++){
-				if (restricted.get(j).equalsIgnoreCase(topicActions.get(i))){
-					topicActions.remove(i);
-					i--;
-					topicActionsSize --;
-					continue;
-				}
-			}
+		
+		for(int i = 0; i<  topicActions.size(); i++){
 			
-//			if (restricted.contains(topicActions.get(i))){
-//			
-//				System.out.println("removed :" + topicActions.remove(i));
-//			}
+			if (restricted.contains(topicActions.get(i))){
+			    topicActions.remove(i);
+			    i--;
+			
+			}
 		}
 		String topicsActions = "";
 		for(int  i = 0 ; i < topicActions.size() ; i++ ){
