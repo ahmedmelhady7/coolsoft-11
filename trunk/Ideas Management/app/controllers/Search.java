@@ -69,56 +69,6 @@ public class Search extends Controller {
 	}
 
 
-	/**
-	 * @auther monica
-	 * 
-	 *         this method is to render the filter_option page
-	 *@return void 
-	 */
-
-
-	public static void filter_options() {
-
-		List<Model> lof = listOfResults;
-
-		render(lof, filterResult, toBePassed);
-	}
-
-	/**
-	 * @author monica
-	 * 
-	 *         this method renders to show results after filter
-	 *         
-	 * @return void
-	 */
-	
-
-	public static void showAfterFilter() {
-		String connected = Security.connected();
-		List<Idea> ideasFound = new ArrayList<Idea>();
-		List<Organization> organizationsFound = new ArrayList<Organization>();
-		List<Topic> topicsFound = new ArrayList<Topic>();
-		List<MainEntity> entitiesFound = new ArrayList<MainEntity>();
-		for (int i = 0; i < filterResult.size(); i++) {
-			if (filterResult.get(i) instanceof Idea) {
-				ideasFound.add((Idea) filterResult.get(i));
-			}
-			if (filterResult.get(i) instanceof Topic) {
-				topicsFound.add((Topic) filterResult.get(i));
-			}
-			if (filterResult.get(i) instanceof MainEntity) {
-				entitiesFound.add((MainEntity) filterResult.get(i));
-			}
-			if (filterResult.get(i) instanceof Organization) {
-				organizationsFound.add((Organization) filterResult.get(i));
-			}
-		}
-
-		List<Model> lof = filterResult;
-
-		render(connected, lof, ideasFound, organizationsFound, entitiesFound,
-				topicsFound, filterResult, toBePassed);
-	}
 
 	/**
 	 * @author Loaay Alkherbawy
@@ -136,6 +86,7 @@ public class Search extends Controller {
 		List<Organization> organizationsFound = new ArrayList<Organization>();
 		List<Topic> topicsFound = new ArrayList<Topic>();
 		List<MainEntity> entitiesFound = new ArrayList<MainEntity>();
+		User user = Security.getConnected();
 		toBePassed=listOfResults;
 		try {
 			for (int i = 0; i < listOfResults.size(); i++) {
@@ -159,7 +110,7 @@ public class Search extends Controller {
 					entitiesFound, topicsFound);
 		} catch (NullPointerException e) {
 			render(u, connected, ideasFound, organizationsFound, entitiesFound,
-					topicsFound);
+					topicsFound,user);
 		}
 	}
 
@@ -1077,108 +1028,6 @@ public class Search extends Controller {
 			}
 		}
 	}
-
-	/**
-	 * filterSearchResults method takes a list and something to filter
-	 * on(criteria) similar to previous method but takes input with the criteria
-	 * 
-	 * @author Monica Yousry
-	 * 
-	 * @story C4S03 filtering results after sort
-	 * @param filterOn
-	 *            :: "String"; the criteria to filter on taken from filter
-	 *            option view as input from user
-	 * 
-	 * @param input
-	 *            :: "String";input is to be taken from the user from the form
-	 *            in the filter options view
-	 * @return void.
-	 * 
-	 */
-	public static void filterSearchResults(String filterOn, String input) {
-
-		filterResult = new ArrayList<Model>();
-
-		if (filterOn.equalsIgnoreCase("name")
-				|| filterOn.equalsIgnoreCase("title")) {
-			for (int i = 0; i < toBePassed.size(); i++) {
-
-				if (toBePassed.get(i) instanceof models.Idea) {
-					models.Idea temp = (models.Idea) toBePassed.get(i);
-					if (temp.title.equalsIgnoreCase(input)) {
-						filterResult.add(toBePassed.get(i));
-					}
-				}
-
-				if (toBePassed.get(i) instanceof models.Plan) {
-					models.Plan temp = (models.Plan) toBePassed.get(i);
-					if (temp.title.equalsIgnoreCase(input)) {
-						filterResult.add(toBePassed.get(i));
-					}
-				}
-
-				if (toBePassed.get(i) instanceof models.Organization) {
-					models.Organization temp = (models.Organization) toBePassed
-							.get(i);
-					if (temp.name.equalsIgnoreCase(input)) {
-						filterResult.add(toBePassed.get(i));
-					}
-				}
-
-				if (toBePassed.get(i) instanceof models.Topic) {
-					models.Topic temp = (models.Topic) toBePassed.get(i);
-					if (temp.title.equalsIgnoreCase(input)) {
-						filterResult.add(toBePassed.get(i));
-					}
-				}
-
-				if (toBePassed.get(i) instanceof models.MainEntity) {
-					models.MainEntity temp = (models.MainEntity) toBePassed
-							.get(i);
-					if (temp.name.equalsIgnoreCase(input)) {
-						filterResult.add(toBePassed.get(i));
-					}
-				}
-			}
-		}
-
-		if (filterOn.equalsIgnoreCase("description")) {
-			for (int i = 0; i < toBePassed.size(); i++) {
-
-				if (toBePassed.get(i) instanceof models.Idea) {
-					models.Idea temp = (models.Idea) toBePassed.get(i);
-					if (temp.description.contains(input)) {
-						filterResult.add(toBePassed.get(i));
-					}
-				}
-
-				if (toBePassed.get(i) instanceof models.Plan) {
-					models.Plan temp = (models.Plan) toBePassed.get(i);
-					if (temp.description.contains(input)) {
-						filterResult.add(toBePassed.get(i));
-					}
-				}
-
-				if (toBePassed.get(i) instanceof models.Topic) {
-					models.Topic temp = (models.Topic) toBePassed.get(i);
-					if (temp.description.contains(input)) {
-						filterResult.add(toBePassed.get(i));
-					}
-				}
-
-				if (toBePassed.get(i) instanceof models.MainEntity) {
-					models.MainEntity temp = (models.MainEntity) toBePassed
-							.get(i);
-					if (temp.description.contains(input)) {
-						filterResult.add(toBePassed.get(i));
-					}
-				}
-
-			}
-		}
-
-	}
-
 	/**
 	 * 
 	 * sortA method sorts according to rates (known from input) in ascending order
