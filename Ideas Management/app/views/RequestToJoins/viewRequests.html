@@ -45,13 +45,13 @@ function respondGalal(stat, id){
 	if (stat == 1) {
 		//alert(stat + "" + id);
 		//id = id + 1;
-		$.post('@{RequestToJoins.respondToRequest()}',{status:stat,reqId:id});
+		$.post('@{RequestToJoins.respondToRequest()}',{status:stat,requestId:id});
 		alert("Request Accepted!");
 		window.location.reload();
 	}
 	else {
 		$.post('@{RequestToJoins.respondToRequest()}', {
-		status:stat, reqId: id
+		status:stat, requestId: id
 		});
 		alert("Request rejected!");
 		window.location.reload();	
