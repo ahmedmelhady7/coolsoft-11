@@ -132,6 +132,7 @@ public class Tag extends Model {
 		// ERD change
 		this.createdInOrganization = org;
 		this.creator = creator;
+//		org.relatedTags.add(this);
 	}
 
 	/**
@@ -173,6 +174,10 @@ public class Tag extends Model {
 
 	public String getName() {
 		return name;
+	}
+	
+	public void remove() {
+		this.delete();
 	}
 
 	/**
