@@ -477,10 +477,13 @@ public class Users extends CRUD {
 
 	/**
 	 * returns the list of users that are banned from a certain action in a
-	 * certain organization from a certain source in a certain type
+	 * certain organization from a certain source in a certain type such that
+	 * the returned users are all active
 	 * 
 	 * @author Nada Ossama
+	 * 
 	 * @story C1S7
+	 * 
 	 * @param organization
 	 *            Organization organization where this user is banned from
 	 * @param action
@@ -494,10 +497,19 @@ public class Users extends CRUD {
 
 	public static List<User> getBannedUser(Organization organization,
 			String action, long sourceID, String type) {
-		List<User> user = BannedUser
+		List<User> users = BannedUser
 				.find("select bu.bannedUser from BannedUser where bu.organization = ? and bu.action = ? and bu.resourceType = ? and bu.resourceID = ? ",
 						organization, action, type, sourceID).fetch();
-		return (user);
+		
+		for(int i = 0 ; i < users.size() ; i++){
+			
+			if (!users.get(i).state.equals("a")){
+				users.remove(i);
+				i--;
+			}
+		}
+		
+		return (users);
 	}
 
 	/**
@@ -836,7 +848,8 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * gets the list of organizers of a certain topic
+	 * gets the list of organizers of a certain topic such that all the users in 
+	 * the returned list are active 
 	 * 
 	 * @author: Nada Ossama
 	 * 
@@ -848,7 +861,7 @@ public class Users extends CRUD {
 	 * 
 	 * @return List<User> of Organizers in that topic
 	 */
-	// /to be modefied
+	
 	public List<User> getTopicOrganizers(Topic topic) {
 		List<User> enrolled = new ArrayList<User>();
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
@@ -859,22 +872,14 @@ public class Users extends CRUD {
 					.find("select uro from UserRoleInOrganization uro  where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?",
 							organization, topic.getId(), "topic").fetch();
 			for (int i = 0; i < organizers.size(); i++) {
-				if (!(organizers.get(i).role.roleName.equals("organizer"))) {
-					// =======
-					// .find("select uro from UserRoleInOrganization uro "
-					// + "where uro.organization = ? and"
-					// + " uro.entityTopicID = ? " + "and uro.type like ?",
-					// o, t.getId(), "topic");
-					// for (int i = 0; i < organizers.size(); i++) {
-					// if
-					// (!(organizers.get(i).role.roleName.equals("organizer")))
-					// {
-					// >>>>>>> .r797
-					organizers.remove(i);
-				} else {
+				
+				if ((organizers.get(i).role.roleName.equals("organizer")) && organizers.get(i).enrolled.state.equals("a")) {
 					enrolled.add(organizers.get(i).enrolled);
-				}
+				} 
+				
 			}
+			
+			
 
 		}
 		return enrolled;
@@ -904,7 +909,7 @@ public class Users extends CRUD {
 					.find("select uro from UserRoleInOrganization uro where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?",
 							organization, entityId, "entity").fetch();
 			for (int i = 0; i < organizers.size(); i++) {
-				if (((organizers.get(i).role.roleName).equals("organizer"))) {
+				if (((organizers.get(i).role.roleName).equals("organizer")) && (organizers.get(i).enrolled.state.equals("a"))) {
 
 					enrolled.add(organizers.get(i).enrolled);
 				}
@@ -977,7 +982,7 @@ public class Users extends CRUD {
 	/**
 	 * gets all the users enrolled in an organization these users are: 1- the
 	 * Organization lead 2- the organizers (even if blocked) 3- Idea Developers
-	 * in secret or private topics
+	 * in secret or private topics and the state of all the returned users is active
 	 * 
 	 * @author : Nada Ossama
 	 * 
@@ -990,20 +995,28 @@ public class Users extends CRUD {
 	 */
 
 	public static List<User> getEnrolledUsers(Organization organization) {
-		List<User> enrolled = null;
+		List<User> enrolled = new ArrayList<User>();
+		List<User> finalEnrolled = new ArrayList<User>();
 		if (organization != null) {
 
 			enrolled = UserRoleInOrganization
 					.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? ",
 							organization).fetch();
+			
+			for (int i = 0 ; i < enrolled.size() ; i++){
+				if (enrolled.get(i).state.equals("a")){
+					finalEnrolled.add(enrolled.get(i));
+				}
+			}
 
 		}
-		return enrolled;
+		return finalEnrolled;
 	}
 
 	/**
 	 * Returns a list of all idea developers within a certain organization in a
-	 * certain entity or in a specific topic according to the "type" passed
+	 * certain entity or in a specific topic according to the "type" passed such
+	 * that the state of all the returned users is active
 	 * 
 	 * @author Nada Ossama
 	 * 
@@ -1021,8 +1034,8 @@ public class Users extends CRUD {
 	 */
 
 	public static List<User> getIdeaDevelopers(long entityTopicId, String type) {
-		List<User> enrolled = null;
-
+		List<User> enrolled = new ArrayList<User>();
+        List<User> finalEnrolled = new ArrayList<User>();
 		Role role = Roles.getRoleByName("idea developer");
 		MainEntity entity = MainEntity.findById(entityTopicId);
 		Organization organization = entity.organization;
@@ -1034,7 +1047,15 @@ public class Users extends CRUD {
 		enrolled = UserRoleInOrganization
 				.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? and uro.role = ? and uro.entityTopicID = ? and type = ?",
 						organization, role, entityTopicId, type).fetch();
-		return enrolled;
+		
+		for (int  i = 0 ; i < enrolled.size() ; i++){
+			if (enrolled.get(i).state.equals("a")){
+				finalEnrolled.add(enrolled.get(i));
+			}
+		}
+		
+		return finalEnrolled;
+		
 	}
 
 	/**
