@@ -175,21 +175,6 @@ public class Topics extends CRUD {
 	}
 
 	/**
-	 * This method adds topic2 to the list of related topics in topic
-	 * 
-	 * @author Mohamed Hisham
-	 * 
-	 * @param topic
-	 *            : first topic to be related
-	 * 
-	 * @param topic2
-	 *            : seconf topic to be related
-	 */
-	public static void relateTopic(Topic topic, Topic topic2) {
-		// topic.relatedTopics.add(topic2);
-	}
-
-	/**
 	 * this Method is responsible for reporting a topic as a spam
 	 * 
 	 * @author ${Ahmed El-Hadi}
