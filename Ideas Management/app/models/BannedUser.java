@@ -253,7 +253,8 @@ public class BannedUser extends CoolModel {
 		return true;
 	}
 	/**
-	 * de-restricts an organizer from a certain action within a specified topic
+	 * de-restricts an organizer from a certain action within a specified topic and cascades the 
+	 * de-restriction to the rest of the entity
 	 * 
 	 * @author Nada Ossama
 	 * 
