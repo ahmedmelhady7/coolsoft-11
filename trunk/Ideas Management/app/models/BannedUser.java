@@ -161,6 +161,18 @@ public class BannedUser extends CoolModel {
 		
 		ArrayList<String> topicActions = (ArrayList<String>) Roles.getOrganizerTopicActions();
 		/**
+		 * cascade the restriction in the sub-entities
+		 */
+		MainEntity mainEntity = MainEntity.findById(entityID);
+		List <MainEntity> subEntities = mainEntity.subentities;
+		
+			for(int i = 0 ; i < subEntities.size() ; i++){
+				MainEntity subEntity = subEntities.get(i);
+				banFromActionInEntity(userID ,organizationID , action ,subEntity.getId());
+			}
+			
+		
+		/**
 		 * cascade the restriction if the action is topic related
 		 */
 		if(topicActions.contains(action)){
@@ -301,13 +313,15 @@ public class BannedUser extends CoolModel {
 	}
 	
 	/**
+	 * 
+	 * TO BE REMOVED
 	 * de-restricts a certain user from a certain action in a certain entity
 	 * without cascading the derestricton process to the topics within that
 	 * entity
 	 * 
 	 * @author: Nada Ossama
 	 * 
-	 * @story: C1S16
+	 * @story: C1S19
 	 * 
 	 * 
 	 * @param userID
@@ -341,7 +355,7 @@ public class BannedUser extends CoolModel {
 		}
 		
 		
-		System.out.println("DELETEDDDD");
+		
 		
 	}
 
@@ -351,7 +365,7 @@ public class BannedUser extends CoolModel {
 	 * 
 	 * @author Nada Ossama
 	 * 
-	 * @story C1S16
+	 * @story C1S19
 	 * 
 	 * @param userID
 	 *            : long userID is the id of the user to be de-restricted
@@ -402,6 +416,16 @@ public class BannedUser extends CoolModel {
 		}
 		
 		System.out.println("DELETEDDDD");
+		
+		/**
+		 * cascade the de-restriction from the sub-entities
+		 */
+		
+		List <MainEntity> subEntities = entity.subentities;
+		for(int i = 0 ; i < subEntities.size() ; i++){
+			MainEntity subEntity = subEntities.get(i);
+			deRestrictFromEntityWithCascading(userID, action, subEntity.getId());
+		}
 		
 	}
 
