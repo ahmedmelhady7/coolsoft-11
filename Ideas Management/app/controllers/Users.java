@@ -188,11 +188,46 @@ public class Users extends CRUD {
 			render("CRUD/show.html", type, object);
 		}
 	}
-
+	public static void viewMyProfile(String userId) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		long userID = Long.parseLong(userId);
+		User object = User.findById(userID);
+		notFoundIfNull(object);
+		System.out.println("entered view() for User " + object.username);
+		System.out.println(object.email);
+		System.out.println(object.username);
+		int communityContributionCounter = object.communityContributionCounter;
+		String name = object.firstName + " " + object.lastName;
+		String profession = object.profession;
+		String username = object.username;
+		String birthDate = "" + object.dateofBirth;
+		String password = object.password;
+		String email = object.email;
+		
+		int adminFlag = 0;
+		if (Security.getConnected().isAdmin) {
+			adminFlag = 1;
+		}
+		try {
+			
+				System.out.println("view() done, about to render");
+				render(type, object, username, name, communityContributionCounter,
+						profession, birthDate, userId, adminFlag, email, password);
+			
+			
+		} catch (TemplateNotFoundException e) {
+			System.out
+					.println("view() done with exception, rendering to CRUD/show.html");
+			render("/users/view.html");
+		}
+	}
 	public static void editProfile() {
 		User user = Security.getConnected();
-		view(user.id + "");
+		viewMyProfile(user.id + "");
 	}
+	
+	
 	
 	/**
 	 * 
@@ -1264,6 +1299,8 @@ public class Users extends CRUD {
 		System.out.println("create() entered");
 		tmp.email = tmp.email.trim();
 		tmp.email=tmp.email.toLowerCase();
+		tmp.username = tmp.username.trim();
+		tmp.password = tmp.password.trim();
 		tmp.firstName = tmp.firstName.trim();
 		tmp.lastName = tmp.lastName.trim();
 		tmp.profession=tmp.profession.trim();
@@ -1283,8 +1320,12 @@ public class Users extends CRUD {
 			if (tmp.email.equals("")) {
 				message = "A User must have an email";
 				System.out.println(message);
-			} else if (tmp.firstName.trim().equals("")) {
-				message = "A User must have a first name";
+			} else if (tmp.username.trim().equals("")) {
+				message = "A User must have a username";
+				System.out.println(message);
+			}
+			else if (tmp.password.trim().equals("")) {
+				message = "A User must have a password";
 				System.out.println(message);
 			} else if (tmp.username.length() >= 20) {
 				message = "Username cannot exceed 20 characters";
@@ -1306,7 +1347,9 @@ public class Users extends CRUD {
 		
 		System.out.println(object.toString() + "before save");
 		object._save();
+		if(Security.getConnected().isAdmin) {
 		Notifications.sendNotification(tmp.id,Security.getConnected().id , "User", "The admin has edited your profile");
+		}
 		if(oldEmail.equals(tmp.email));
 		{
 			editedMessage += oldEmail + "  changed to -->  " + tmp.email +"\n";
@@ -1344,7 +1387,7 @@ public class Users extends CRUD {
 			redirect(request.controller + ".list");
 			}
 			else {
-				redirect("/Users/showProfile?userId=" + id);
+				redirect("/Users/viewProfile?userId=" + id); //was showProfile
 			}
 		}
 		redirect(request.controller + ".show", object._key());
