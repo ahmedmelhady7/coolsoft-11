@@ -1321,13 +1321,14 @@ public class BannedUsers extends CRUD {
 
 	public static void block(long userId, int type, long numId, int id,
 			String text, String message) {
-
+		System.out.println("OK");
 		System.out.println(message);
 		System.out.println("here");
 		System.out.println(text);
 		System.out.println(userId);
 		System.out.println(type);
 		System.out.println(numId);
+		System.out.println(id);
 		
 		User user = User.findById(userId);
 		User organizer=Security.getConnected();
@@ -1346,7 +1347,7 @@ public class BannedUsers extends CRUD {
 					doBlock(userId, numId, 0, 0);
 					Log.addUserLog(
 							organizer.firstName+" "+organizer.lastName
-							+"blocked"
+							+"blocked "
 							+user.firstName+" "+user.lastName
 							+"from viewing Entity "
 							+entity.name,user,organizer,entity,entity.organization);
@@ -1368,10 +1369,12 @@ public class BannedUsers extends CRUD {
 
 				} else {
 
+					System.out.println("LAMA");
 					doBlock(userId, numId, 1, 0);
+					System.out.println("HEREEEEEEEEEEE LAMA");
 					Log.addUserLog(
 							organizer.firstName+" "+organizer.lastName
-							+"unblocked"
+							+"unblocked "
 							+user.firstName+" "+user.lastName
 							+"from viewing Entity "
 							+entity.name,user,organizer,entity,entity.organization);
@@ -1396,12 +1399,14 @@ public class BannedUsers extends CRUD {
 			} else {
 				if (text.equals("Block from using")) {
 					doBlock(userId, numId, 0, 1);
+					
 					Log.addUserLog(
 							organizer.firstName+" "+organizer.lastName
-							+"blocked"
+							+"blocked "
 							+user.firstName+" "+user.lastName
 							+"from using Entity "
 							+entity.name,user,organizer,entity,entity.organization);
+					
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1421,7 +1426,7 @@ public class BannedUsers extends CRUD {
 					doBlock(userId, numId, 1, 1);
 					Log.addUserLog(
 							organizer.firstName+" "+organizer.lastName
-							+"blocked"
+							+"blocked "
 							+user.firstName+" "+user.lastName
 							+"from using Entity "
 							+entity.name,user,organizer,entity,entity.organization);
@@ -1456,7 +1461,7 @@ public class BannedUsers extends CRUD {
 					block.save();
 					Log.addUserLog(
 							organizer.firstName+" "+organizer.lastName
-							+"blocked"
+							+"blocked "
 							+user.firstName+" "+user.lastName
 							+"from viewing Topic "
 							+topic.title,user,organizer,topic,entity.organization);
@@ -1480,13 +1485,15 @@ public class BannedUsers extends CRUD {
 
 				}
 				else{
+					System.out.println("LAMALEEEM");
 					BannedUser unblock = BannedUser.find(
 							"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 							"view", "topic", topic.id).first();
 					unblock.delete();
+					
 					Log.addUserLog(
 							organizer.firstName+" "+organizer.lastName
-							+"unblocked"
+							+"unblocked "
 							+user.firstName+" "+user.lastName
 							+"from viewing Topic "
 							+topic.title,user,organizer,topic,entity.organization);
@@ -1514,7 +1521,7 @@ public class BannedUsers extends CRUD {
 					block.save();
 					Log.addUserLog(
 							organizer.firstName+" "+organizer.lastName
-							+"blocked"
+							+"blocked "
 							+user.firstName+" "+user.lastName
 							+"from using Topic "
 							+topic.title,user,organizer,topic,entity.organization);
@@ -1543,7 +1550,7 @@ public class BannedUsers extends CRUD {
 					unblock.delete();
 					Log.addUserLog(
 							organizer.firstName+" "+organizer.lastName
-							+"unblocked"
+							+"unblocked "
 							+user.firstName+" "+user.lastName
 							+"from using Topic "
 							+topic.title,user,organizer,topic,entity.organization);
