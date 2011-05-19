@@ -181,10 +181,10 @@
  <a>Show Relationships</a>
    <ul class="blah">
       #{list items:entity.relationsSource, as:'relationElement'}
-			<a href="#">${relationElement.name}</a> entity ${relationElement.destination.name}
+			<p><a href="#">${relationElement.name}</a> entity ${relationElement.destination.name}</p>
 	  #{/list}
 	  #{list items:entity.relationsDestination, as:'relEelement'}
-			<a href="#">${relElement.name}</a> entity ${relElement.destination.name}
+			<p><a href="#">${relElement.name}</a> entity ${relElement.destination.name}</p>
 	  #{/list}
    </ul>
 </ul>
