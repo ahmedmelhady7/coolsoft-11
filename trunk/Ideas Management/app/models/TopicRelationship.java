@@ -40,6 +40,9 @@ public class TopicRelationship extends CoolModel {
 	@ManyToOne
 	public Topic destination;
 
+	/**
+	 * List of requests to rename or end a relationship
+	 */
 	@OneToMany(mappedBy = "topicRelationship")
 	public List<RenameEndRelationshipRequest> renameEndRequests;
 
