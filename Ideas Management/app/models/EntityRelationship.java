@@ -42,6 +42,9 @@ public class EntityRelationship extends CoolModel {
 	@ManyToOne
 	public MainEntity destination;
 
+	/**
+	 * List of requests to rename or end a relationship
+	 */
 	@OneToMany(mappedBy = "entityRelationship")
 	public List<RenameEndRelationshipRequest> renameEndRequests;
 
