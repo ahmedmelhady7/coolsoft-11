@@ -1,0 +1,419 @@
+#{extends 'main.html' /}
+#{set title:'Restrict Group of Organizers' /}
+
+
+
+<input type="submit" style="background-color:lightblue" align = "Right" value="Start new Restriction / De-Restriction Process"  onclick="Restart()" >
+
+#{if organizationEntities.isEmpty()}
+  <p style="color:#2B60DE"> Oops No Entities Found !! </p>
+#{/if}
+#{else}
+
+<form name = "entityForm">
+<fieldset>  
+<legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
+    <b><u> Entities List: </u></b></font></legend> <br />
+       <select name = "entityId" id = "entityy">
+  #{list items:organizationEntities, as:'entity'}
+  
+  <option name = ${entity.id} value=${entity.id}>${entity.name}</option>
+  
+   #{/list}
+        </select>
+</fieldset>
+</form>
+
+<br /> 
+
+<form id ="topicz" name = "topics"  >
+<fieldset>
+<legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
+    <b><u> Options set: </u></b></font></legend>
+    <br />
+
+<input type="radio" id = "TOPIC" name="topic" value="false" checked = "true" /> Restrict / De-Restrict the organizers in the whole entity <br />
+<input type="radio" id = "TOPIC" name="topic" value="true" /> Restrict / De-Restrict the organizers in a certain topic <br />
+ </fieldset>
+</form>
+
+<input  type="submit" value="Submit" onclick = "getTopic()">
+
+#{/else}
+
+<hr> <br />
+
+<form id = "topicsListId" name = "topicsList">
+<fieldset>  
+<legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
+    <b><u> Topics Set : </u></b></font></legend> <br />
+       <select name = "topicName" id = "topic">
+
+        </select>
+</fieldset> 
+</form>
+<br />
+<input id = "topicBtn" type="submit" value="Submit topic" onclick = "getTopicActions()">
+      
+<br />
+
+
+<hr> <br />
+
+ <form id = "enabledActions" name = "actionsList" >
+
+    <p> <font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
+    <b><u> Actions to be restricted from : </u></b></font></p>
+       
+</form>
+<br />
+<input type="submit" id = "restrictBtn" value="Restrict" onclick = "restrict()">
+
+
+<br />
+<hr> <br />
+
+
+ <form id = "disabledActions" name = "disabledActionsList" >
+
+    <p> <font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
+    <b><u> Actions to be de-restricted from : </u></b></font></p>
+       
+</form>
+
+<input type="submit" id = "deRestrictBtn" value="De-Restrict" onclick = "deRestrict()"> <br /> <br />
+
+<input type="submit" style="background-color:lightblue" value="Start new Restriction / De-Restriction Process" align = "Right" onclick="Restart()" >
+
+
+
+
+
+<script> 
+var selectEntityBtnFlag = false;
+var submitTopicBtnFlag =false ;
+
+var topicID = 0;
+var entityID = 0;
+var organizationID = ${organizationID};
+var topicFlag = true;
+
+
+function Restart(){
+	
+	window.location.reload();
+}
+
+function getTopic(){
+	
+	
+	if (selectEntityBtnFlag == false){
+		selectEntityBtnFlag = true;
+	 entityID = document.getElementById('entityy').value;
+	 
+	 
+			topicFlag = true;
+			if (document.topics.topic[0].checked)
+		    {
+		    topicFlag = false;
+		    }
+			alert("hayy");
+		   
+		     if(topicFlag == false){
+		    $.getJSON( '@{BannedUsers.getAllEntityActions()}',{},  function(data) { 
+				
+			     var s={};
+		        s=data.actions.split(",");
+		       
+		        for( var i = 0 ; i < s.length-1 ; i++){
+			     
+		        	var text = s[i];
+		        	$('#enabledActions').append('<input type="checkbox" id = "c" name = "actionToDo"  value = "'+text+'" class = "enabled"/> ' + text + '<br />'); 
+		        	
+		        	$('#disabledActions').append('<input type="checkbox" id = "dc" name = "actionNotToDo"  value = "'+text+'" class = "enabled"/> ' + text + '<br />'); 
+			    
+		        }
+		        
+		        
+		        $('#enabledActions').show();
+		        $('#restrictBtn').show();
+		        $('#disabledActions').show();
+		        $('#deRestrictBtn').show();
+		       
+			
+			});
+			
+		     }
+		     
+		     else{
+		    	  	 
+		    	 
+		    	 $.getJSON('@{BannedUsers.getEntityTopics()}', { entityId: entityID} ,  function(data) { 
+		    			
+		    	     var names ={};
+		            names=data.topicsNames.split(",");
+		           var  ids = {};
+		           ids = data.topicsIds.split(",");
+		            if(names.length == 1){
+		            	alert("Oops there are no topics within this entity !!!");
+		            	window.location.reload();
+		            }
+		            for( var i = 0 ; i < names.length-1 ; i++){
+		    	      	        
+		    	        topicOption= new Option();
+		    	        topicOption.text= names[i];
+		    	        topicOption.value= ids[i]; 
+		    	        document.topicsList.topicName.options[document.topicsList.topicName.options.length]=topicOption;
+		    	        
+		            }
+		    	
+		            $('#topicsListId').show();
+		            $('#topicBtn').show();
+		    	
+		    	});
+		    	 
+		    	 
+		     } 
+		     
+		  }
+			else{
+				alert("Oops You have changed the selection criteria. The process will restart !!");
+				window.location.reload();
+				
+			}
+		    
+	
+}
+
+
+
+     function getTopicActions(){
+    	 
+    		  
+    		  if(submitTopicBtnFlag == false ){
+    			  submitTopicBtnFlag = true;
+    		 
+    		  topicID = document.getElementById('topic').value;
+    		 
+    		  $.getJSON( '@{BannedUsers.getTopicActions()}',{},  function(data) { 
+    				
+    			    
+    			     var actions={};
+    		        actions=data.topicsActions.split(",");
+    		         
+    		        for( var i = 0 ; i < actions.length-1 ; i++){
+    			     
+    		        	var text = actions[i];
+    		        	$('#enabledActions').append('<input type="checkbox" id = "c" name = "actionToDo"  value = "'+text+'" class = "enabled"/> ' + text + '<br />'); 
+    		        	$('#disabledActions').append('<input type="checkbox" id = "dc" name = "actionNotToDo"  value = "'+text+'" class = "enabled"/> ' + text + '<br />'); 
+        			    
+    		        }
+    		        
+    		        
+    		        $('#enabledActions').show();
+    		        $('#restrictBtn').show();
+    		        $('#disabledActions').show();
+    		        $('#deRestrictBtn').show();
+    			
+    			});
+    		  
+    	  }
+    		  else{
+    			  alert("Oops You have changed the selection criteria. The process will restart !!");
+    				window.location.reload();
+    			  
+    		  }
+    		 
+    	 
+     }
+
+     
+     
+     
+     function getSelectedCheckboxValue(buttonGroup) {
+  	   // return an array of values selected in the check box group. if no boxes
+  	   // were checked, returned array will be empty (length will be zero)
+  	   var retArr = new Array(); // set up empty array for the return values
+  	   var selectedItems = getSelectedCheckbox(buttonGroup);
+  	   if (selectedItems.length != 0) { // if there was something selected
+  	      retArr.length = selectedItems.length;
+  	      for (var i=0; i<selectedItems.length; i++) {
+  	         if (buttonGroup[selectedItems[i]]) { // Make sure it's an array
+  	            retArr[i] = buttonGroup[selectedItems[i]].value;
+  	         } else { // It's not an array (there's just one check box and it's selected)
+  	            retArr[i] = buttonGroup.value;// return that value
+  	         }
+  	      }
+  	   }
+  	   return retArr;
+  	} // Ends the "getSelectedCheckBoxValue" function
+  	
+  	function getSelectedCheckbox(buttonGroup) {
+  		   // Go through all the check boxes. return an array of all the ones
+  		   // that are selected (their position numbers). if no boxes were checked,
+  		   // returned array will be empty (length will be zero)
+  		   var retArr = new Array();
+  		   var lastElement = 0;
+  		   if (buttonGroup[0]) { // if the button group is an array (one check box is not an array)
+  		      for (var i=0; i<buttonGroup.length; i++) {
+  		         if (buttonGroup[i].checked) {
+  		            retArr.length = lastElement;
+  		            retArr[lastElement] = i;
+  		            lastElement++;
+  		         }
+  		      }
+  		   } else { // There is only one check box (it's not an array)
+  		      if (buttonGroup.checked) { // if the one check box is checked
+  		         retArr.length = lastElement;
+  		         retArr[lastElement] = 0; // return zero as the only array value
+  		      }
+  		   }
+  		   return retArr;
+  		} // Ends the "getSelectedCheckbox" function
+
+
+
+
+  	
+  	function restrict(){
+  		
+  		var field = document.actionsList.actionToDo;
+  		
+  		var restrictedActions = getSelectedCheckboxValue(field);
+  
+  		
+  		if(restrictedActions.length == 0 ) {
+  			alert("You did not even choose a single action !!!");
+  		} else {
+  			
+  			var r=confirm("Are You sure you want to proceed ? ");
+  			if (r == true) {
+  				if(topicFlag == false){
+  					$.post('@{BannedUsers.restrictGroupFinal()}', {actionToDo:restrictedActions ,type: "entity",
+  						entityTopicId: entityID});
+  				}
+  				
+  				else{
+  					$.post('@{BannedUsers.restrictGroupFinal()}', {actionToDo:restrictedActions ,type: "topic",
+  						entityTopicId: topicID});
+  				}
+  				var selected ={};
+  				selected = getSelectedCheckbox(field);
+  					for( var i = 0 ; i < field.length ; i++){
+  				    	  if(field[i].checked){
+  				    		  field[i].disabled = true;
+  				              field[i].checked = false;
+  				              
+  			    		  $('#disabledActions').append('<input type="checkbox" id = "dc" name = "actionNotToDo"  value = "'+field[i].value+'" class = "enabled"/> ' + field[i].value + '<br />'); 
+  				    	  }
+  				      }
+  				
+  									
+  			} else {
+  				window.location.reload();
+  			}	
+  			
+  	     }
+  	
+  		}
+  		
+  		
+  		function deRestrict(){
+  	
+  			
+  			var field2 = document.disabledActionsList.actionNotToDo;
+  			
+  			var enabledActions = getSelectedCheckboxValue(field2);
+  			alert(enabledActions[0]);
+  			alert(enabledActions.length);
+  			
+
+  			if(enabledActions.length == 0 ) {
+  				alert("You did not even choose a single action !!!");
+  			} else {
+  				
+  				var r=confirm("Are You sure you want to proceed ? ");
+  				if (r == true) {
+  					if(topicFlag == false){
+  							
+  						$.post('@{BannedUsers.deRestrictGroup()}', {actionsRestricted:enabledActions ,entityTopicID: entityID,type: "entity"});
+  					}
+  					
+  					else{
+  						
+  						$.post('@{BannedUsers.deRestrictGroup()}', {actionsRestricted:enabledActions ,entityTopicID: topicID,type: "topic"});
+  						
+  					}
+  					
+  					var selected = getSelectedCheckbox(field2);
+  					
+  					if(field2[0]){
+  						for( var i = 0 ; i < field2.length ; i++){
+  					    	  if(field2[i].checked){
+  					    		  field2[i].disabled = true;
+  					              field2[i].checked = false;
+                                  
+  					    		  $('#enabledActions').append('<input type="checkbox" id = "c" name = "actionToDo"  value = "'+field2[i].value+'" class = "enabled"/> ' + field2[i].value + '<br />'); 
+  					    	  }
+  					      }
+  					
+  					}
+  					else{
+  						
+  						
+  						if(field2.checked){
+                           field2.disabled = true;
+  							field2.checked = false;
+  							$('#enabledActions').append('<input type="checkbox" id = "c" name = "actionToDo"  value = "'+field2.value +'" class = "enabled"/> ' + field2.value + '<br />'); 
+  							
+  						}
+  					}
+  						
+  										
+  				} 
+  				
+  				else {
+  					window.location.reload();
+  				}	
+  				
+  		     }
+  			
+  		}
+  	
+  	
+  	
+     
+     
+
+</script>
+
+<script type="text/javascript"> 
+	
+	
+	$(function(){
+		$('#restrictBtn').hide();
+	});
+	
+	$(function(){
+		$('#topicsListId').hide();
+	});
+	
+	$(function(){
+		$('#topicBtn').hide();
+	});
+	$(function(){
+		$('#disabledActions').hide();
+	});
+	$(function(){
+		$('#deRestrictBtn').hide();
+	});
+	
+</script>
+<script type="text/javascript"> 
+	
+	$(function(){
+		$('#enabledActions').hide();
+	});
+</script>
+
+
