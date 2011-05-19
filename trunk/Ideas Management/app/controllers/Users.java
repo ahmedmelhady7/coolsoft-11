@@ -1082,6 +1082,16 @@ public class Users extends CRUD {
 		tmp.password = tmp.password.trim();
 		tmp.firstName = tmp.firstName.trim();
 		boolean flag = false;
+		String communityCounterString = tmp.communityContributionCounter + "";
+		boolean communityCounterFlag = false;
+		try 
+		{
+			Integer.parseInt(communityCounterString);
+		}
+		catch(NumberFormatException e)
+		{
+			communityCounterFlag = true;
+		}
 		if (User.find("ByEmail", tmp.email) != null
 				|| User.find("ByUsername", tmp.username) != null) {
 			flag = true;
@@ -1105,11 +1115,13 @@ public class Users extends CRUD {
 				message = "Username cannot exceed 20 characters";
 			} else if (tmp.password.length() >= 25) {
 				message = "First name cannot exceed 25 characters";
-			} else if (User.find("ByEmail", tmp.email) != null) {
+			} else if(communityCounterFlag){
+				message = "Community contributuion counter must be a number";
+			} /*else if (User.find("ByEmail", tmp.email) != null) {
 				message = "This Email already exists !";
 			} else if (User.find("ByUsername", tmp.username) != null) {
 				message = "This username already exists !";
-			}
+			}*/
 
 			try {
 				System.out.println("show user try ");
@@ -1173,28 +1185,40 @@ public class Users extends CRUD {
 		ObjectType type = ObjectType.get(Users.class);
 		notFoundIfNull(type);
 		Model object = type.findById(id);
+		User oldUser = (User) object;
+		String oldEmail = oldUser.email;
+		String oldFirstName = oldUser.firstName;
+		String oldLastName = oldUser.lastName;
+		int oldCommunityContributionCounter = oldUser.communityContributionCounter;
+		String oldCountry = oldUser.country;
+		String oldProfession = oldUser.country;
 		Binder.bind(object, "object", params.all());
 		System.out.println(object.toString() + "begin");
 		validation.valid(object);
-
+		String editedMessage="User : " + oldUser.username +"\n";
 		String message = "";
 		User tmp = (User) object;
 		System.out.println("create() entered");
 		tmp.email = tmp.email.trim();
-		tmp.username = tmp.username.trim();
-		tmp.password = tmp.password.trim();
+		tmp.email=tmp.email.toLowerCase();
 		tmp.firstName = tmp.firstName.trim();
+		tmp.lastName = tmp.lastName.trim();
+		tmp.profession=tmp.profession.trim();
+		String communityCounterString = tmp.communityContributionCounter + "";
+		boolean communityCounterFlag = false;
+		try 
+		{
+			Integer.parseInt(communityCounterString);
+		}
+		catch(NumberFormatException e)
+		{
+			communityCounterFlag = true;
+		}
 
-		if (validation.hasErrors()) {
+		if (validation.hasErrors() || communityCounterFlag) {
 			System.out.println("lol");
 			if (tmp.email.equals("")) {
 				message = "A User must have an email";
-				System.out.println(message);
-			} else if (tmp.username.equals("")) {
-				message = "A User must have a username";
-				System.out.println(message);
-			} else if (tmp.password.equals("")) {
-				message = "A User must have a password";
 				System.out.println(message);
 			} else if (tmp.firstName.trim().equals("")) {
 				message = "A User must have a first name";
@@ -1203,11 +1227,9 @@ public class Users extends CRUD {
 				message = "Username cannot exceed 20 characters";
 			} else if (tmp.password.length() >= 25) {
 				message = "First name cannot exceed 25 characters";
-			} else if (User.find("ByEmail", tmp.email).first() != null) {
-				message = "This Email already exists !";
-			} else if (User.find("ByUsername", tmp.username).first() != null) {
-				message = "This username already exists !";
-			}
+			} else if(communityCounterFlag){
+				message = "Community contributuion counter must be a number";
+			} 
 			try {
 				System.out.println("show user try ");
 				render(request.controller.replace(".", "/") + "/save.html",
@@ -1218,9 +1240,40 @@ public class Users extends CRUD {
 				render("CRUD/blank.html", type);
 			}
 		}
-
+		
 		System.out.println(object.toString() + "before save");
 		object._save();
+		Notifications.sendNotification(tmp.id,Security.getConnected().id , "User", "The admin has edited your profile");
+		if(oldEmail.equals(tmp.email));
+		{
+			editedMessage += oldEmail + "  changed to -->  " + tmp.email +"\n";
+		}
+		if(oldFirstName.equalsIgnoreCase(tmp.firstName));
+		{
+			editedMessage += oldFirstName + "  changed to -->  " + tmp.firstName +"\n";
+		}
+		if(oldUser.lastName.equalsIgnoreCase(tmp.lastName));
+		{
+			editedMessage += oldLastName + "  changed to -->  " + tmp.lastName +"\n";
+		}
+		if(oldUser.communityContributionCounter != tmp.communityContributionCounter)
+		{
+			editedMessage += oldCommunityContributionCounter + "  changed to -->  " + tmp.communityContributionCounter +"\n";
+		}
+		/*if(oldUser.dateofBirth !=(tmp.dateofBirth));
+		{
+			editedMessage += dateofBirth + "  changed to -->  " + tmp.dateofBirth +"\n";
+		}*/
+		if(oldUser.country.equalsIgnoreCase(tmp.country));
+		{
+			editedMessage += oldUser.country + "  changed to -->  " + tmp.country+"\n";
+		}
+		if(oldProfession.equalsIgnoreCase(tmp.profession));
+		{
+			editedMessage += oldProfession + " changed to --> " + tmp.profession+"\n";
+		}
+		System.out.println("eidted" + editedMessage + " all");
+		Log.addUserLog(editedMessage, tmp);
 		System.out.println(object.toString() + "after the save");
 		flash.success(Messages.get("crud.saved", type.modelName));
 		if (params.get("_save") != null) {
@@ -1235,6 +1288,46 @@ public class Users extends CRUD {
 
 	}
 
+//	/**
+//	 * overrides the CRUD view method ,is responsible for deleting a user by the
+//	 * System admin after specifying that user's id , and then it renders a
+//	 * message confirming whether the delete was successful or not
+//	 * 
+//	 * @author Mostafa Ali
+//	 * 
+//	 * @story C1S9
+//	 * 
+//	 * @param id
+//	 *            :String the user's id
+//	 * 
+//	 * 
+//	 * */
+//	public static void delete(String id) {
+//		long userId = Long.parseLong(id);
+//		User user = User.findById(userId);
+//		String x = "";
+//		try {
+//
+//			if (!(user.state.equals("n"))) {
+//				user.state = "d";
+//				user._save();
+//				x = "deletion successful";
+//				System.out.println(x + "  first if");
+//				Mail.deletion(user, "");
+//			} else {
+//				x = "You can not delete a user who's deactivated his account !";
+//				System.out.println(x + "else");
+//			}
+//			render(request.controller.replace(".", "/") + "/index.html", x);
+//		} catch (NullPointerException e) {
+//			x = "No such User !!";
+//			System.out.println(x + "catch");
+//			render(request.controller.replace(".", "/") + "/index.html");
+//
+//		}
+//
+//	}
+	
 	/**
 	 * overrides the CRUD view method ,is responsible for deleting a user by the
 	 * System admin after specifying that user's id , and then it renders a
@@ -1249,7 +1342,7 @@ public class Users extends CRUD {
 	 * 
 	 * 
 	 * */
-	public static void delete(String id) {
+	public static void delete(String id,String deletionMessage) {
 		long userId = Long.parseLong(id);
 		User user = User.findById(userId);
 		String x = "";
@@ -1260,6 +1353,7 @@ public class Users extends CRUD {
 				user._save();
 				x = "deletion successful";
 				System.out.println(x + "  first if");
+				Mail.deletion(user, deletionMessage);
 			} else {
 				x = "You can not delete a user who's deactivated his account !";
 				System.out.println(x + "else");
