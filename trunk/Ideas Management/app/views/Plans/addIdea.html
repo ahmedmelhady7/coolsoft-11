@@ -1,4 +1,4 @@
-#{extends 'main.html' /}
+#{extends 'planLayout.html' /}
 Topic: <a href="@{Topics.show("" + topic.id)}">${topic.title}</a>
 
 <br/>
@@ -7,7 +7,10 @@ Ideas posted in this topic:
 <br/>
 #{form @Plans.selectedIdeas(), method:'POST', id:'creationForm', onsubmit: 'return validate()',
        enctype:'multipart/form-data' }
+	   
+<ul style="list-style: none; " >
 #{list items:ideas, as:'idea'}
+<li></li>
  <fieldset>
         <legend>
             Title: ${idea.title}
@@ -26,15 +29,17 @@ Ideas posted in this topic:
 		<br/>
 <input  type="checkbox" name="checkedIdeas" value = ${idea.id} onclick = "javascript: toggleCheck('${idea.id}')"> Promote to execution
  </fieldset>
+ </li>
 #{/list}
-<input type = "hidden" name = "planId" value = ${plan.id} >
+</ul>
+<input type = "hidden" name = "planId" value = ${p.id} >
 <input type="submit" value="save">
 #{/form}
 #{/if}
 #{else}
 The topic has no ideas to be promoted to execution
 #{/else}
-<a href="@{Plans.viewAsList(plan.id)}">Go back to plan</a>
+<a href="@{Plans.viewAsList(p.id)}">Go back to plan</a>
 
 <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
 </script>

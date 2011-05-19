@@ -1,21 +1,89 @@
-#{extends 'main.html' /}
-Plan: ${p.title}
-<br/>
-Created by: ${p.madeBy.username}
-<br/>
-Status: ${p.status}
-<br/>
-StartDate: ${p.startDate.format('dd MMM yy')}
-<br/>
-EndDate: ${p.endDate.format('dd MMM yy')}
-<br/>
-Description: ${p.description}
-<br/>
-Plan rating: ${p.rating}
-<br/>
-Plan progress: ${p.calculateProgress()}
-<br/>
-<div id="layout">
-	<br/>
-            #{doLayout /} 
- </div>
+#{extends 'login/index.html' /}
+#{set title:'View Plan as List' /}
+#{if canView == true}
+<div id="leftSidebar">
+    <ul>
+        <div style="clear: both;">
+            &nbsp;
+        </div>
+        <li>
+            <ul>
+                #{if isOrganizer == true}
+                <li>
+                    <a href="@{VolunteerRequests.viewVolunteerRequests(p.id)}">Volunteer Requests</a>
+                </li>
+                #{/if} 
+                #{if canIdea == 1} 
+                <li>
+                    <a href="@{Plans.addIdea(p.id)}">Associate ideas to plan</a>
+                </li>
+                #{/if}
+                <li>
+                    <a href="@{Plans.planView(p.id)}">Promoted Ideas </a>
+                </li>
+                #{if canEdit == 1}
+                <li>
+                    <a href="@{Plans.addItem(p.id)}">Add item(s)</a>
+                </li>
+                <li>
+                    <a href="@{Plans.editPlan(p.id)}" id="demo01">Edit plan</a>
+                </li>
+                #{/if} 
+                <li>
+                    <a href="@{Plans.viewAsList(p.id)}">View list of to-do items</a>
+                </li>
+                <li>
+                    <a href="@{Plans.viewAsCalendar(p.id)}">View plan calendar</a>
+                </li>
+                <li>
+                    <a href="@{Plans.viewAsTimeline(p.id)}">View plan timeline</a>
+                </li>
+                #{if canEdit == 1}
+				  <li>
+				<input type="button" value= "delete plan" onclick="delPlan(${p.id}, '${p.topic.id}')">
+				</li>
+				#{/if}
+            </ul>
+        </li>
+    </ul>
+</div>
+<body>
+    <h1 align="center">${p.title}</h1>
+    <br/>
+    <p>
+        <b>Created by: </b>
+        ${p.madeBy.username}
+        <br/>
+        <b>StartDate: </b>${p.startDate.format('dd MMM yy')}
+        <br/>
+        <b>EndDate: </b>${p.endDate.format('dd MMM yy')}
+        <br/>
+        <b>Description:</b>
+        ${p.description}
+        <br/>
+        <b>Plan rating: </b>
+        ${p.rating}
+        <br/>
+        <b>Plan progress:</b>
+        ${p.calculateProgress()}
+        <br/>
+    </p>
+    <script type="text/javascript">
+        function delPlan(id, topicId){
+            var r = confirm("Are You sure you want to delete the plan?");
+            if (r == true) {
+                $.post('@{deletePlan()}', {planId: id}, function () {
+					window.location.replace("/topics/show?topicId=" + topicId);
+				});
+
+            }
+        }
+    </script>
+    <div id="layout">
+        <br/>
+        #{doLayout /} 
+    </div>
+</body>
+#{/if}
+#{else}<h3>You are not allowed to view this plan.</h3>
+#{/else}

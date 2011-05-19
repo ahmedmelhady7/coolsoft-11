@@ -44,14 +44,14 @@ public class Plans extends CRUD {
 	 */
 	public static void viewAsList(long planId) {
 		User user = Security.getConnected();
-		boolean canView = true;
-		boolean isOrganizer = false;
 		Plan p = Plan.findById(planId);
 		List<Comment> comments = p.commentsList;
 		List<Item> itemsList = p.items;
 		int canAssign = 0;
 		int canEdit = 0;
 		int canIdea = 0;
+		boolean canView = true;
+		boolean isOrganizer = false;
 		if (Users
 				.isPermitted(
 						user,
@@ -80,7 +80,8 @@ public class Plans extends CRUD {
 				canIdea = 1;
 			}
 			List<MainEntity> entitiesList = p.topic.entity.organization.entitiesList;
-			render(p, itemsList, user, canAssign, canEdit, canView, isOrganizer, canIdea, comments, entitiesList);
+			render(p, itemsList, user, canAssign, canEdit, canView,
+					isOrganizer, canIdea, comments, entitiesList);
 		} else {
 			canView = false;
 			render(canView, isOrganizer);
@@ -138,17 +139,51 @@ public class Plans extends CRUD {
 	 */
 	public static void addIdea(long planId) {
 		User user = Security.getConnected();
-		Plan plan = Plan.findById(planId);
-		Topic topic = Topic.findById(plan.topic.id);
+		Plan p = Plan.findById(planId);
+		Topic topic = Topic.findById(p.topic.id);
 		List<Idea> ideas = new ArrayList<Idea>();
+		int canAssign = 0;
+		int canEdit = 0;
+		int canIdea = 0;
+		boolean canView = false;
+		boolean isOrganizer = false;
+		if (Users
+				.isPermitted(
+						user,
+						"accept/Reject user request to volunteer to work on action item in a plan",
+						p.topic.id, "topic")) {
+			isOrganizer = true;
+		}
 
+		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
+			canView = true;
+			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+					"topic")) {
+
+				canEdit = 1;
+			}
+			if (Users.isPermitted(user,
+					"assign one or many users to a to-do item in a plan",
+					p.topic.id, "topic")) {
+
+				canAssign = 1;
+			}
+
+			if (Users.isPermitted(user,
+					"associate an idea or more to an already existing plan",
+					p.topic.id, "topic")) {
+
+				canIdea = 1;
+			}
+		}
 		for (Idea idea : topic.ideas) {
 			if (idea.plan == null) {
 				ideas.add(idea);
 			}
 		}
 
-		render(ideas, topic, plan);
+		render(ideas, topic, p, user, canEdit, canView, isOrganizer, canIdea, canAssign);
+		
 	}
 
 	/**
@@ -236,15 +271,43 @@ public class Plans extends CRUD {
 	public static void planView(long planId) {
 		Plan p = Plan.findById(planId);
 		User user = Security.getConnected();
-
-		List<Idea> ideas = p.ideas;
+		int canAssign = 0;
+		int canEdit = 0;
 		int canIdea = 0;
-		if (Users.isPermitted(user,
-				"associate an idea or more to an already existing plan",
-				p.topic.id, "topic")) {
-			canIdea = 1;
+		boolean canView = false;
+		boolean isOrganizer = false;
+		if (Users
+				.isPermitted(
+						user,
+						"accept/Reject user request to volunteer to work on action item in a plan",
+						p.topic.id, "topic")) {
+			isOrganizer = true;
 		}
-		render(ideas, p, canIdea);
+
+		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
+			canView = true;
+			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+					"topic")) {
+
+				canEdit = 1;
+			}
+			if (Users.isPermitted(user,
+					"assign one or many users to a to-do item in a plan",
+					p.topic.id, "topic")) {
+
+				canAssign = 1;
+			}
+
+			if (Users.isPermitted(user,
+					"associate an idea or more to an already existing plan",
+					p.topic.id, "topic")) {
+
+				canIdea = 1;
+			}
+		}
+		List<Idea> ideas = p.ideas;
+
+		render(ideas, p, user, canEdit, canView, isOrganizer, canIdea, canAssign);
 	}
 
 	/**
@@ -499,12 +562,17 @@ public class Plans extends CRUD {
 		Plan p = Plan.findById(planID);
 		String type = "Plan";
 		User user = Security.getConnected();
-		String desc = user.firstName + " " + user.lastName
-				+ " shared a plan with you" + "\n" + "Copy this link into your address bar to view the shared Idea : http://localhost:9008/plans/viewaslist?planId="+p.id;
+		String desc = user.firstName
+				+ " "
+				+ user.lastName
+				+ " shared a plan with you"
+				+ "\n"
+				+ "Copy this link into your address bar to view the shared Idea : http://localhost:9008/plans/viewaslist?planId="
+				+ p.id;
 		long notId = planID;
 		long userId = U.id;
 		Notifications.sendNotification(userId, notId, type, desc);
-		redirect("/plans/viewaslist?planId="+p.id);
+		redirect("/plans/viewaslist?planId=" + p.id);
 	}
 
 	/**
@@ -521,7 +589,43 @@ public class Plans extends CRUD {
 
 	public static void addItem(long planId) {
 		Plan p = Plan.findById(planId);
-		render(p);
+		User user = Security.getConnected();
+		int canAssign = 0;
+		int canEdit = 0;
+		int canIdea = 0;
+		boolean canView = false;
+		boolean isOrganizer = false;
+		if (Users
+				.isPermitted(
+						user,
+						"accept/Reject user request to volunteer to work on action item in a plan",
+						p.topic.id, "topic")) {
+			isOrganizer = true;
+		}
+
+		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
+			canView = true;
+			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+					"topic")) {
+
+				canEdit = 1;
+			}
+			if (Users.isPermitted(user,
+					"assign one or many users to a to-do item in a plan",
+					p.topic.id, "topic")) {
+
+				canAssign = 1;
+			}
+
+			if (Users.isPermitted(user,
+					"associate an idea or more to an already existing plan",
+					p.topic.id, "topic")) {
+
+				canIdea = 1;
+			}
+		}
+
+		render(p, user, canEdit, canView, isOrganizer, canIdea, canAssign);
 	}
 
 	/**
@@ -587,7 +691,42 @@ public class Plans extends CRUD {
 	 */
 	public static void editPlan(long planId) {
 		Plan p = Plan.findById(planId);
-		render(p);
+		User user = Security.getConnected();
+		int canAssign = 0;
+		int canEdit = 0;
+		int canIdea = 0;
+		boolean canView = false;
+		boolean isOrganizer = false;
+		if (Users
+				.isPermitted(
+						user,
+						"accept/Reject user request to volunteer to work on action item in a plan",
+						p.topic.id, "topic")) {
+			isOrganizer = true;
+		}
+
+		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
+			canView = true;
+			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+					"topic")) {
+
+				canEdit = 1;
+			}
+			if (Users.isPermitted(user,
+					"assign one or many users to a to-do item in a plan",
+					p.topic.id, "topic")) {
+
+				canAssign = 1;
+			}
+
+			if (Users.isPermitted(user,
+					"associate an idea or more to an already existing plan",
+					p.topic.id, "topic")) {
+
+				canIdea = 1;
+			}
+		}
+		render(p, user, canEdit, canView, isOrganizer, canIdea, canAssign);
 	}
 
 	/**
@@ -750,11 +889,11 @@ public class Plans extends CRUD {
 			items = userAssigned.itemsAssigned;
 			items.remove(item);
 			userAssigned.save();
-			if(notify ==1) {
-			notificationMsg = "The item " + item.summary
-					+ " has been deleted from the plan";
-			Notifications.sendNotification(userAssigned.id, plan.id, "plan",
-					notificationMsg);
+			if (notify == 1) {
+				notificationMsg = "The item " + item.summary
+						+ " has been deleted from the plan";
+				Notifications.sendNotification(userAssigned.id, plan.id,
+						"plan", notificationMsg);
 			}
 		}
 		Tag tag;
@@ -778,29 +917,29 @@ public class Plans extends CRUD {
 	 * 
 	 * @param planId
 	 *            The id of the plan that will be deleted
-	 *            
+	 * 
 	 */
-	public static void deletePlan(long planId) {
-		List <User> toBeNotified = new ArrayList<User>();
+	public static boolean deletePlan(long planId) {
+		List<User> toBeNotified = new ArrayList<User>();
 		Plan plan = Plan.findById(planId);
 		String notificationMsg = "The plan " + plan.title + " has been deleted";
-		for(Item item:plan.items) {
-			for(User user: item.assignees) {
-				if(!toBeNotified.contains(user)) {
+		for (Item item : plan.items) {
+			for (User user : item.assignees) {
+				if (!toBeNotified.contains(user)) {
 					toBeNotified.add(user);
-					Notifications.sendNotification(user.id, plan.topic.id, "topic",
-							notificationMsg);
-			}
+					Notifications.sendNotification(user.id, plan.topic.id,
+							"topic", notificationMsg);
+				}
 			}
 		}
-		for(User organizer:plan.topic.getOrganizer()) {
-			if(!toBeNotified.contains(organizer)) {
+		for (User organizer : plan.topic.getOrganizer()) {
+			if (!toBeNotified.contains(organizer)) {
 				toBeNotified.add(organizer);
-				Notifications.sendNotification(organizer.id, plan.topic.id, "topic",
-						notificationMsg);
+				Notifications.sendNotification(organizer.id, plan.topic.id,
+						"topic", notificationMsg);
+			}
 		}
-		}
-		
+
 		while (!plan.items.isEmpty()) {
 			deleteItem(plan.items.get(0).id, 0);
 			System.out.println("items " + plan.items.size());
@@ -821,27 +960,29 @@ public class Plans extends CRUD {
 			plan.save();
 			comment.delete();
 		}
-		
+
 		User userRated;
-		while(!plan.usersRated.isEmpty()) {
+		while (!plan.usersRated.isEmpty()) {
 			userRated = plan.usersRated.remove(0);
 			userRated.ratedPlans.remove(plan);
 			System.out.println("rated " + plan.usersRated.size());
 			userRated.save();
 			plan.save();
-			
+
 		}
 		User creator = plan.madeBy;
 		creator.planscreated.remove(plan);
 		creator.save();
 		plan.madeBy = null;
 		plan.save();
-		
+
 		Topic topic = plan.topic;
-		topic.plan=null;
+		topic.plan = null;
 		topic.save();
 		plan.delete();
-		Topics.show("" + topic.id);
+		System.out.println("the plan has been deletd");
+		return true;
+		//Topics.show("" + topic.id);
 	}
 
 	/**
@@ -853,129 +994,142 @@ public class Plans extends CRUD {
 	 * 
 	 * @param planId
 	 *            The id of the plan
-	 * @throws java.text.ParseException 
+	 * @throws java.text.ParseException
 	 */
-public static void viewasTimeline(long planId) throws IOException, ParseException, java.text.ParseException {
+	public static void viewasTimeline(long planId) throws IOException,
+			ParseException, java.text.ParseException {
 
-		
+		User user = Security.getConnected();
 		Plan p = Plan.findById(planId);
 		List<Item> itemsList = p.items;
 
-		 FileWriter fstream;
-		fstream =  new FileWriter("Ideas Management/public/xml/out.xml");	
-		
-			BufferedWriter out = new BufferedWriter(fstream);
-					
-		         out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");out.write("\n");
-		         out.write("<data>");
-		         out.write("\n");
-		
-		         
+		boolean canView = false;
+		boolean isOrganizer = false;
+		int canEdit = 0;
+		int canIdea = 0;
+		int canAssign = 0;
+		if (Users
+				.isPermitted(
+						user,
+						"accept/Reject user request to volunteer to work on action item in a plan",
+						p.topic.id, "topic")) {
+			isOrganizer = true;
+		}
 
+		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
+			canView = true;
+			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+					"topic")) {
 
-		         
-		         out.write("<event start=\"");
-				  //       out.write(itemsList.get(i).startDate.toGMTString());
-				        String inputDate = (p.startDate.toGMTString());
-				         Date date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz").parse(inputDate);
-				        
-				         
-				         
-				         
-				         out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z").format(date));
-			         
-						 out.write("\"");
-								 
-						
-						 out.write(" ");		 
-						 out.write("title=\"");
-						 out.write("START");
-						 out.write("\"");out.write(" ");
-						 out.write("icon=\"/public/rer7.png\"");
-						 out.write(">" );
-						  
-						 out.write("</event>");
-						 out.write("\n");
-				
-		         
-		         
-		         
-		        
-						 
-						 
-						 out.write("<event start=\"");
-						  //       out.write(itemsList.get(i).startDate.toGMTString());
-						         inputDate = (p.endDate.toGMTString());
-						         date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz").parse(inputDate);
-						        
-						         
-						         
-						         
-						         out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z").format(date));
-					         
-								 out.write("\"");
-								 out.write(" ");		 
-									 
-								 out.write("title=\"");
-								 out.write("END");
-								 out.write("\"");out.write(" ");
-								 out.write("icon=\"/public/rer7.png\"");
-								 out.write(">" );
-								  
-								 out.write("</event>");
-								 out.write("\n");
-						
-		         
-			        
-		         
-		 for(int i=0;i<itemsList.size();i++){
-			 	 out.write("<event start=\"");
-		  //       out.write(itemsList.get(i).startDate.toGMTString());
-		         inputDate = (itemsList.get(i).startDate.toGMTString());
-		          date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz").parse(inputDate);
-		        
-		         
-		         
-		         
-		         out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z").format(date));
-	         
-				 out.write("\"");
-				 out.write(" ");		 
-				 out.write("end=\"");
-				 
-				 //out.write(itemsList.get(i).endDate.toGMTString());
-				 inputDate = (itemsList.get(i).endDate.toGMTString());
-		         date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz").parse(inputDate);
-		         out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z").format(date));
-		         
-				 out.write("\"");
-				 out.write(" ");		 
-				 out.write("title=\"");
-				 out.write(itemsList.get(i).summary);
-				 out.write("\"");
-				 out.write(">" );
-				 out.write(itemsList.get(i).description); 
-				 out.write("</event>");
-				 out.write("\n");
-		
-	
-	
-		
-		 }
-		 
-		 out.write("</data>");
-		 out.flush();
-		 out.close();
-		
-render(p, itemsList);
-		
-		
-		
-		
+				canEdit = 1;
+			}
+			if (Users.isPermitted(user,
+					"assign one or many users to a to-do item in a plan",
+					p.topic.id, "topic")) {
+
+				canAssign = 1;
+			}
+			if (Users.isPermitted(user,
+					"associate an idea or more to an already existing plan",
+					p.topic.id, "topic")) {
+
+				canIdea = 1;
+			}
+		} 
+
+		FileWriter fstream;
+		fstream = new FileWriter("Ideas-Management/public/xml/out.xml");
+
+		BufferedWriter out = new BufferedWriter(fstream);
+
+		out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		out.write("\n");
+		out.write("<data>");
+		out.write("\n");
+
+		out.write("<event start=\"");
+		// out.write(itemsList.get(i).startDate.toGMTString());
+		String inputDate = (p.startDate.toGMTString());
+		Date date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
+				.parse(inputDate);
+
+		out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z").format(date));
+
+		out.write("\"");
+
+		out.write(" ");
+		out.write("title=\"");
+		out.write("START");
+		out.write("\"");
+		out.write(" ");
+		out.write("icon=\"/public/rer7.png\"");
+		out.write(">");
+
+		out.write("</event>");
+		out.write("\n");
+
+		out.write("<event start=\"");
+		// out.write(itemsList.get(i).startDate.toGMTString());
+		inputDate = (p.endDate.toGMTString());
+		date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
+				.parse(inputDate);
+
+		out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z").format(date));
+
+		out.write("\"");
+		out.write(" ");
+
+		out.write("title=\"");
+		out.write("END");
+		out.write("\"");
+		out.write(" ");
+		out.write("icon=\"/public/rer7.png\"");
+		out.write(">");
+
+		out.write("</event>");
+		out.write("\n");
+
+		for (int i = 0; i < itemsList.size(); i++) {
+			out.write("<event start=\"");
+			// out.write(itemsList.get(i).startDate.toGMTString());
+			inputDate = (itemsList.get(i).startDate.toGMTString());
+			date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
+					.parse(inputDate);
+
+			out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z")
+					.format(date));
+
+			out.write("\"");
+			out.write(" ");
+			out.write("end=\"");
+
+			// out.write(itemsList.get(i).endDate.toGMTString());
+			inputDate = (itemsList.get(i).endDate.toGMTString());
+			date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
+					.parse(inputDate);
+			out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z")
+					.format(date));
+
+			out.write("\"");
+			out.write(" ");
+			out.write("title=\"");
+			out.write(itemsList.get(i).summary);
+			out.write("\"");
+			out.write(">");
+			out.write(itemsList.get(i).description);
+			out.write("</event>");
+			out.write("\n");
+
+		}
+
+		out.write("</data>");
+		out.flush();
+		out.close();
+
+		boolean timeline = true;
+		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea, canAssign, timeline);
+
 	}
-	
-
-
 
 	/**
 	 * @author Yasmine Elsayed
@@ -989,13 +1143,48 @@ render(p, itemsList);
 	 **/
 
 	public static void viewAsCalendar(long planId) {
-
+		User user = Security.getConnected();
 		Plan p = Plan.findById(planId);
 		List<Item> itemsList = p.items;
 
-		render(itemsList);
+		boolean canView = false;
+		boolean isOrganizer = false;
+		int canEdit = 0;
+		int canIdea = 0;
+		int canAssign = 0;
+		if (Users
+				.isPermitted(
+						user,
+						"accept/Reject user request to volunteer to work on action item in a plan",
+						p.topic.id, "topic")) {
+			isOrganizer = true;
+		}
+
+		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
+			canView = true;
+			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+					"topic")) {
+
+				canEdit = 1;
+			}
+			if (Users.isPermitted(user,
+					"assign one or many users to a to-do item in a plan",
+					p.topic.id, "topic")) {
+
+				canAssign = 1;
+			}
+			if (Users.isPermitted(user,
+					"associate an idea or more to an already existing plan",
+					p.topic.id, "topic")) {
+
+				canIdea = 1;
+			}
+		} 
+
+		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea, canAssign);
+
 	}
-	
+
 	public static void relateToEntity(long itemId, long entityId) {
 		// User user = Security.getConnected();
 		Item item = Item.findById(itemId);
@@ -1010,7 +1199,7 @@ render(p, itemsList);
 			}
 		}
 	}
-	
+
 	public static void removeItemEntityRelation(long itemId) {
 		// User user = Security.getConnected();
 		Item item = Item.findById(itemId);
@@ -1019,7 +1208,7 @@ render(p, itemsList);
 		item.relatedEntity.save();
 		item.relatedEntity = null;
 		item.save();
-		
+
 	}
 
 }
