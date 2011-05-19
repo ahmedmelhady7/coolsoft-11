@@ -331,6 +331,12 @@
             </p>
             #{/form}-->
             </div>
+            
+             #{if (canRestrict == 1)}
+		
+		     <input type="submit" value="Restrict/De-Restrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerTopicPath(topicId)}">
+		      <HR>	
+		    #{/if}
             <script type="text/javascript">
                 function requestToPost(id, user){
                     $.post('@{addRequest()}', {
