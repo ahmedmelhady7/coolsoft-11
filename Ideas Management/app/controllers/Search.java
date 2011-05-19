@@ -1225,17 +1225,28 @@ public class Search extends Controller {
 			if (toSort.get(j) instanceof Idea) {
 				Idea temp1 = (Idea) toSort.get(j);
 				rate1 = temp1.rating;
+				if(rate1.equalsIgnoreCase("Not yet rated"))
+					rate1="0";
 			} else {
 				Plan temp1 = (Plan) toSort.get(j);
 				rate1 = temp1.rating;
+
+				if(rate1.equalsIgnoreCase("Not yet rated"))
+					rate1="0";
 			}
 			for (int k = 0; k < toSort.size(); k++) {
 				if (toSort.get(k) instanceof Idea) {
 					Idea temp2 = (Idea) toSort.get(k);
 					rate2 = temp2.rating;
+
+					if(rate2.equalsIgnoreCase("Not yet rated"))
+						rate2="0";
 				} else {
 					Plan temp2 = (Plan) toSort.get(k);
 					rate2 = temp2.rating;
+
+					if(rate2.equalsIgnoreCase("Not yet rated"))
+						rate2="0";
 				}
 
 				if (Integer.parseInt(rate1) > Integer.parseInt(rate2)) { // sorting
@@ -1347,17 +1358,29 @@ public class Search extends Controller {
 			if (toSort.get(j) instanceof Idea) {
 				Idea temp1 = (Idea) toSort.get(j);
 				rate1 = temp1.rating;
+
+				if(rate1.equalsIgnoreCase("Not yet rated"))
+					rate1="0";
 			} else {
 				Plan temp1 = (Plan) toSort.get(j);
 				rate1 = temp1.rating;
+
+				if(rate1.equalsIgnoreCase("Not yet rated"))
+					rate1="0";
 			}
 			for (int k = 0; k < toSort.size(); k++) {
 				if (toSort.get(k) instanceof Idea) {
 					Idea temp2 = (Idea) toSort.get(k);
 					rate2 = temp2.rating;
+
+					if(rate2.equalsIgnoreCase("Not yet rated"))
+						rate2="0";
 				} else {
 					Plan temp2 = (Plan) toSort.get(k);
 					rate2 = temp2.rating;
+
+					if(rate2.equalsIgnoreCase("Not yet rated"))
+						rate2="0";
 				}
 
 				if (Integer.parseInt(rate1) < Integer.parseInt(rate2)) { // sorting
