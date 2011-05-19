@@ -513,10 +513,24 @@ public class Organizations extends CRUD {
 				&& (org.privacyLevel == 2)) {
 			join = true;
 		}
+
+		
+		//Lama Ashraf view logs
+		
+		int logFlag = 0;
+		if(Security.getConnected().equals(org.creator) || Security.getConnected().isAdmin) {
+			logFlag = 1;
+		}
+
 		long pictureId = org.profilePictureId;
+
 		render(user, org, entities, requestToJoin, tags, flag, canInvite,
 				admin, allowed, isMember, settings, creator, alreadyRequested,
-				follower, usernames, join, pictureId);
+
+				follower, usernames, join, logFlag, pictureId);
+
+				
+
 	}
 
 	/**
