@@ -48,6 +48,46 @@ public class Mail extends Mailer {
 		send(user, role, url, organization, entity, id, check);
 
 	}
+	
+	/**
+	 * @Sends a mail to the user informing him that his account has been
+	 *        deactivated
+	 * 
+	 * @author Mai Magdy
+	 * 
+	 * @story C1S5
+	 * 
+	 * 
+	 */
+
+	public static void deactivate() {
+		User user = Security.getConnected();
+		addRecipient(user.email);
+		setFrom("CoolSoft011@gmail.com");
+		setSubject("Deactivation");
+		String url = "http://localhost:9008";
+		send(user, url);
+
+	}
+
+	/**
+	 * @Sends a mail to the user informing him that his account has been
+	 *        reactivated
+	 * 
+	 * @author Mai Magdy
+	 * 
+	 * @story C1S5
+	 * 
+	 */
+
+	public static void reactivate() {
+		User user = Security.getConnected();
+		addRecipient(user.email);
+		setFrom("CoolSoft011@gmail.com");
+		setSubject("Reactivation");
+		send(user);
+
+	}
 
 	/*
 	 * this Method is responsible for sending a mail to the topic organizers
@@ -166,45 +206,6 @@ public class Mail extends Mailer {
 
 	}
 
-	/**
-	 * @Sends a mail to the user informing him that his account has been
-	 *        deactivated
-	 * 
-	 * @author Mai Magdy
-	 * 
-	 * @story C1S5
-	 * 
-	 * 
-	 */
-
-	public static void deactivate() {
-		User user = Security.getConnected();
-		addRecipient(user.email);
-		setFrom("CoolSoft011@gmail.com");
-		setSubject("Deactivation");
-		String url = "http://localhost:9008";
-		send(user, url);
-
-	}
-
-	/**
-	 * @Sends a mail to the user informing him that his account has been
-	 *        reactivated
-	 * 
-	 * @author Mai Magdy
-	 * 
-	 * @story C1S5
-	 * 
-	 * 
-	 */
-
-	public static void reactivate() {
-		User user = Security.getConnected();
-		addRecipient(user.email);
-		setFrom("CoolSoft011@gmail.com");
-		setSubject("Reactivation");
-		send(user);
-
-	}
+	
 
 }
