@@ -235,7 +235,7 @@ public class Organizations extends CRUD {
 			reciever._save();
 		}
 		try {
-			Mail.invite(email, "Idea Devoloper", organization.name, "");
+			Mail.invite(email, "Idea Devoloper", organization.name, "",0);
 		} catch (Exception e) {
 
 		}

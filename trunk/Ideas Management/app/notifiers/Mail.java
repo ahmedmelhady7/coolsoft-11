@@ -13,7 +13,7 @@ public class Mail extends Mailer {
 	 * Send a mail to the registered/unregistered inviting him to be
 	 * organizer/idea developer
 	 * 
-	 * @author ${Mai Magdy}
+	 * @author ${Mai.Magdy},${Fadwa.Sakr}
 	 * 
 	 * @story C1S6
 	 * 
@@ -24,15 +24,18 @@ public class Mail extends Mailer {
 	 *            String email the invitation will be sent to
 	 * 
 	 * @param organization
-	 *            Organization organization name that sends the invitation
+	 *            String organization name that sends the invitation
 	 * 
 	 * @param entity
-	 *            MainEntity entity name that sends the invitation
+	 *            String entity name that sends the invitation whether its an entity/topic
 	 * 
+	 * @param type
+	 *             int type whether the email is sent from topic(1)or entity(0)
+	 *             
 	 */
 
 	public static void invite(String email, String role, String organization,
-			String entity) {
+			String entity,int type) {
 		addRecipient(email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Invitation");
@@ -45,7 +48,7 @@ public class Mail extends Mailer {
 			id = 0;
 		if (entity == "")
 			check = 0;
-		send(user, role, url, organization, entity, id, check);
+		send(user, role, url, organization, entity, id, check,type);
 
 	}
 	

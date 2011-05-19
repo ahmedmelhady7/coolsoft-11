@@ -3,7 +3,7 @@
 <table border="0" bgcolor="#ececec" cellspacing="5">
 <tr><td>Dear #{if id ==1}${user.firstName}#{/if}#{else}Guest#{/else} ,</td><td>
 <tr><td>CoolSoft would like to invite you to join "${organization}" Organization As </td><td>
-<tr><td> "${role}" #{if check ==1}to "${entity}" Entity#{/if}</td><td>
+<tr><td> "${role}" #{if check ==1}to "${entity}" #{if type==0}Entity#{/if}#{else}Topic#{/else}#{/if}</td><td>
 
 <tr><td><font color ="red">To accept/reject the invitation click on the following link : </font> <a href = "${url}">Invitation</a> </td><td>
 </table>
