@@ -128,7 +128,7 @@ public class Mail extends Mailer {
 	 * 
 	 * @author Mostafa Ali
 	 * 
-	 * @story C1S9
+	 * @story C1S9 , C1S10
 	 * 
 	 * @param user
 	 *            :User the user
@@ -138,7 +138,7 @@ public class Mail extends Mailer {
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Welcome to CoolSoft, Reactivate your account ");
-		String url = "http://localhost:9008";
+		String url = "http://localhost:9008/Users/activationPage?userId="+user.id;
 		send(user, url);
 
 	}
