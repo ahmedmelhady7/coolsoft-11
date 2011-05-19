@@ -3,8 +3,9 @@
 <table width="500">
 	#{list items:selectedIdeas, as:'idea'}
 	
-	#{if "shouldAddRow()"}
+	<!--#{if "shouldAddRow()"}
 		<tr>
+	-->
 	#{/if}
 	<td>
 	<fieldset>
@@ -26,10 +27,12 @@
 			
 	</fieldset>
 	</td>	
-	#{if "shouldAddRow()"}
+	
+	<!--#{if "shouldAddRow()"}
 		<tr>
 	#{/if}
 	incrementInsertedIdeas()
+	-->
 	#{/list}
 </table>
 <div style="center">
@@ -81,15 +84,11 @@
 			alert("Please enter the description of the idea");
 			return;
 		}
-		
-		alert("I'm here");
-		
+
 		$.post('@{Ideas.mergeIdeas()}' ,{topicId:topicId, oldIdeas:IdeasIds, 
 						newTitle:title, newDescription:body });
 		
-		alert("i'm here 2");
-
-	}
+		}
 	
 	
 	
