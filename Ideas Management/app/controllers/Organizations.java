@@ -55,13 +55,15 @@ public class Organizations extends CRUD {
 	 * 
 	 * @author Mohamed Hisham
 	 * 
-	 * @story C2S5
+	 * @story C2S32
 	 * 
 	 * @param organizationId
 	 *            : id of the organization to add the relation name in
 	 * 
 	 * @param name
 	 *            : name of the relation to add
+	 * 
+	 * @return boolean
 	 * 
 	 */
 

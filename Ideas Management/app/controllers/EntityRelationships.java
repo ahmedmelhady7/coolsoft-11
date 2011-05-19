@@ -134,10 +134,10 @@ public class EntityRelationships extends CRUD {
 	 * 
 	 * @author Mohamed Hisham
 	 * 
-	 * @param organizationId
-	 *            : the id of the organization that the user belongs to
+	 * @param entityId
+	 *            : the id of the entity that the user belongs to
 	 * 
-	 * @return boolean value whether the user is allowed(True) or not(False)
+	 * @return boolean
 	 */
 
 	public static boolean isAllowedTo(long entityId) {
@@ -159,10 +159,10 @@ public class EntityRelationships extends CRUD {
 	 * @param relationName
 	 *            : name of the relation
 	 * 
-	 * @param relationNames
+	 * @param relationName
 	 *            : list of relation names in the organization
 	 * 
-	 * @return boolean value if duplicate(true) or not(false)
+	 * @return boolean
 	 */
 	public static boolean isDuplicate(String relationName,
 			ArrayList<String> relationNames) {

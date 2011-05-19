@@ -114,10 +114,10 @@ public class TopicRelationships extends CRUD {
 	 * 
 	 * @author Mohamed Hisham
 	 * 
-	 * @param organizationId
+	 * @param topicId
 	 *            : the id of the organization that the user belongs to
 	 * 
-	 * @return boolean value whether the user is allowed(True) or not(False)
+	 * @return boolean
 	 */
 
 	public static boolean isAllowedTo(long topicId) {
@@ -140,7 +140,7 @@ public class TopicRelationships extends CRUD {
 	 * 
 	 * @param relationNames : list of relation names in the organization
 	 * 
-	 * @return boolean value if duplicate(true) or not(false)
+	 * @return boolean
 	 */
 	public static boolean isDuplicate(String relationName, ArrayList<String> relationNames){
 		for(int i = 0; i < relationNames.size(); i++){
