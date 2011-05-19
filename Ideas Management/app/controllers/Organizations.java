@@ -439,10 +439,10 @@ public class Organizations extends CRUD {
 				i++;
 			}
 		}
-//		int canCreateEntity = 0;
-//		if (user.isAdmin || org.creator.equals(user)) {
-//			canCreateEntity = 1;
-//		}
+		int canCreateEntity = 0;
+		if (user.isAdmin || org.creator.equals(user)) {
+			canCreateEntity = 1;
+		}
 		List<MainEntity> entities = org.entitiesList;
 		List<Topic> topics = new ArrayList<Topic>();
 		for (int x = 0; x < entities.size(); x++) {
