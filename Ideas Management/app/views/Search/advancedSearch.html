@@ -1,330 +1,929 @@
-<!--
-@author Mohamed Ghanem
-@story  C4S02
---> <!DOCTYPE html>
+#{extends 'Login/index.html' /} 
+<!DOCTYPE html>
 <html>
-    <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
+    <link type="text/css" href="/public/stylesheets/jquery-ui-.custom.css" rel="Stylesheet" />
+    <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js">
     </script>
-	<i><a href="/">Home Page</a></i>
-	<hr/>
-    <form name="inPuts" id="inPuts">
-        <table>
-            <tr>
-                <th>
-                    Search in&nbsp;&nbsp;&nbsp;::
-                </th>
-                <th>
-                    <select name="searchIn" id="searchIn" style="width:90%">
-                        <option disabled="disabled" selected>Search in:</option>
-                        <option value="1">&nbsp;Public  organizations only</option>
-                        <option value="2">&nbsp;Private organizations only</option>
-                        <option value="3">&nbsp;Secrete organizations only</option>
-                        <option value="4">&nbsp;Public  & private only</option>
-                        <option value="5">&nbsp;Public  & secrete only</option>
-                        <option value="6">&nbsp;Private & secrete only</option>
-                        <option value="7">&nbsp;&nbsp; ALL </option>
-                    </select>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    Search key   ::
-                </th>
-                <th>
-                    <input type="text" id = "wantKey" name="wantKey" required/>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    UnWanted Key ::
-                </th>
-                <th>
-                    <input type="text" id= "unWantKey" name="unWantKey"/>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    show Result of ::
-                </th>
-                <th>
-                    <select name="org">
-                        <option value="0">Organization</option>
-                        <option value="1">No Organization</option>
-                    </select>
-                    <select name="entity">
-                        <option value="0">Entity</option>
-                        <option value="1">No Entities</option>
-                    </select>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                </th>
-                <th>
-                    <select name="topic">
-                        <option value="0">Topic</option>
-                        <option value="1">No Topic</option>
-                    </select>
-                    <select name="plan">
-                        <option value="0">Plan</option>
-                        <option value="1">No Plan</option>
-                    </select>
-                    <select name="idea">
-                        <option value="0">Idea</option>
-                        <option value="1">No Idea</option>
-                    </select>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                </th>
-                <th>
-                    <select name="item">
-                        <option value="0">Item</option>
-                        <option value="1">No Item</option>
-                    </select>
-                    <select name="comm">
-                        <option value="0">To Be</option>
-                        <option value="1">ADDED</option>
-                    </select>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    Before Date  ::
-                </th>
-                <th>
-                    <select name=dayB>
-                        <option disabled="disabled" selected>Day</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                        <option value="21">21</option>
-                        <option value="22">22</option>
-                        <option value="23">23</option>
-                        <option value="24">24</option>
-                        <option value="25">25</option>
-                        <option value="26">26</option>
-                        <option value="27">27</option>
-                        <option value="28">28</option>
-                        <option value="29">29</option>
-                        <option value="30">30</option>
-                        <option value="31">31</option>
-                    </select>
-                    <select name=monthB>
-                        <option value="" disabled="true"selected>Month</option>
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
-                    <select name=yearB>
-                        <option value="" disabled="true" selected>Year</option>
-                        <option value="1">2011</option>
-                        <option value="2">2012</option>
-                        <option value="3">2013</option>
-                        <option value="4">2014</option>
-                        <option value="5">2015</option>
-                    </select>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    After  Date  ::
-                </th>
-                <th>
-                    <select name=dayA>
-                        <option disabled="disabled" selected>Day</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                        <option value="21">21</option>
-                        <option value="22">22</option>
-                        <option value="23">23</option>
-                        <option value="24">24</option>
-                        <option value="25">25</option>
-                        <option value="26">26</option>
-                        <option value="27">27</option>
-                        <option value="28">28</option>
-                        <option value="29">29</option>
-                        <option value="30">30</option>
-                        <option value="31">31</option>
-                    </select>
-                    <select name=monthA>
-                        <option value="" disabled="true"selected>Month</option>
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
-                    <select name=yearA>
-                        <option value="" disabled="true" selected>Year</option>
-                        <option value="1">2011</option>
-                        <option value="2">2012</option>
-                        <option value="3">2013</option>
-                        <option value="4">2014</option>
-                        <option value="5">2015</option>
-                    </select>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    Exact Date/Time ::
-                </th>
-                <th>
-                    <select name=dayE>
-                        <option disabled="disabled" selected>Day</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                        <option value="21">21</option>
-                        <option value="22">22</option>
-                        <option value="23">23</option>
-                        <option value="24">24</option>
-                        <option value="25">25</option>
-                        <option value="26">26</option>
-                        <option value="27">27</option>
-                        <option value="28">28</option>
-                        <option value="29">29</option>
-                        <option value="30">30</option>
-                        <option value="31">31</option>
-                    </select>
-                    <select name=monthE>
-                        <option value="" disabled="true"selected>Month</option>
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
-                    <select name=yearE>
-                        <option value="" disabled="true" selected>Year</option>
-                        <option value="1">2011</option>
-                        <option value="2">2012</option>
-                        <option value="3">2013</option>
-                        <option value="4">2014</option>
-                        <option value="5">2015</option>
-                    </select>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                </th>
-                <th>
-                </th>
-                <th>
-                    <input type="button" name="ok" value="Start Advanced Search" onclick="doo(searchIn, wantKey,unWantKey, org, entity, topic, plan,idea, item, comm, dayB, monthB, yearB,dayA, monthA, yearA, dayE, monthE, yearE);"/>
-                </th>
-            </tr>
-        </table>
-    </form>
-    <script type="text/javascript">
-        
-        function doo(searchIn, wantKey, unWantKey, org, entity, topic, plan, idea, item, comm, dayB, monthB, yearB, dayA, monthA, yearA, dayE, monthE, yearE){
-            if (wantKey.value != "") {
-                $.post('@{Search.advSearch()}', {
-                    searchIn: searchIn.value,
-                    wantKey: wantKey.value,
-                    unWantKey: unWantKey.value,
-                    org: org.value,
-                    entity: entity.value,
-                    topic: topic.value,
-                    plan: plan.value,
-                    idea: idea.value,
-                    item: item.value,
-                    comm: comm.value,
-                    dayB: dayB.value,
-                    monthB: monthB.value,
-                    yearB: yearB.value,
-                    dayA: dayA.value,
-                    monthA: monthA.value,
-                    yearA: yearA.value,
-                    dayE: dayE.value,
-                    monthE: monthE.value,
-                    yearE: yearE.value
-                }, function(){
-                    alert('enter func');
-                    window.location.href = "/searchResult";
-                    alert('enter end');
-                });
-            }
-            else {
-                alert('Plz Enter a Key');
-            }
-        }
+    <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js">
     </script>
+	
+    <head>
+        <script language="javascript">
+            function isNumberKey(evt){
+                var charCode = (evt.which) ? evt.which : evt.keyCode
+                if (charCode == 116) {
+                    window.location.reload();
+                }
+                return true;
+            }
+            
+            function reloadMyPage(){
+                if (document.formSearch.q != null) {
+                    document.formSearch.q.value = "Search for articles,books,and more..";
+                }
+            }
+            
+            function clearInput(e){
+                if (e.value == 'Search for articles,books,and more..') 
+                    e.value = "";
+            }
+        </script>
+        <script language="JavaScript">
+            
+            var currentPanel = 5;
+            
+            function showNewPanel(panelNum){
+                //hide visible panel, show selected panel, set tab
+                if (currentPanel != null) {
+                    hidePanel();
+                }
+                document.getElementById('panel' + panelNum).style.display = 'block';
+                currentPanel = panelNum;
+                setState(panelNum);
+                $('#panel' + panelNum).hide();
+                $('#panel' + panelNum).show(1000);
+            }
+            
+            function hidePanel(){
+                //hide visible panel, unhilite tab
+                document.getElementById('panel' + currentPanel).style.display = 'none';
+                document.getElementById('tab' + currentPanel).className = 'inactiveTab';
+                document.getElementById('tab' + currentPanel).style.color = '#fff';
+                document.getElementById('tab' + currentPanel).style.background = '#c98503';
+            }
+            
+            function setState(tabNum){
+                if (tabNum == currentPanel) {
+                    document.getElementById('tab' + tabNum).style.color = '#000';
+                    document.getElementById('tab' + tabNum).style.background = '#faf3c7';
+                    document.getElementById('tab' + tabNum).className = 'activeTab';
+                }
+                else {
+                    document.getElementById('tab' + tabNum).style.color = '#fff';
+                    document.getElementById('tab' + tabNum).style.background = '#c98503';
+                    document.getElementById('tab' + tabNum).style.backgroundImage = 'url(/plone_chunks/graphics/orangeGradientBG.jpg)';
+                    document.getElementById('tab' + tabNum).className = 'inactiveTab';
+                }
+            }
+            
+            function hover(tab){
+                tab.style.color = '#fff';
+                tab.style.background = '#900';
+            }
+        </script>
+        <style type="text/css">
+            
+            body {
+                margin: 0 .3em 0 1em !important;
+                margin-left: 0em;
+            }
+            * html body {
+                margin: 0 1.1em 0 1.7em !important;
+            }
+            
+            #content {
+                width: 552px;
+                padding-left: 2em;
+            }
+            
+            .content_articles {
+                padding: 0;
+                margin: 3px 0px 0px 0px;
+                z-index: 2;
+                width: 900px; /**?*/
+                background-repeat: no-repeat;
+                border-top-width: 0px;
+                border-right-width: 0px;
+                border-bottom-width: 0px;
+                border-left-width: 0px;
+                border-top-style: none;
+                border-right-style: none;
+                border-bottom-style: none;
+                border-left-style: none;
+                background-color: #faf3c7;
+            }
+            
+            .content_articlesWrapper {
+                padding: 5px 3px 5px 5px;
+                width: 500;
+                font-size: 90%;
+                background-repeat: no-repeat;
+                background-position: center bottom;
+            }
+            
+            #panel1 {
+                display: none;
+                background-repeat: no-repeat;
+                background-position: right top;
+                padding-bottom: 90px;
+                border-top-width: 1px;
+                border-right-width: 1px;
+                border-bottom-width: 1px;
+                border-left-width: 1px;
+                border-top-style: solid;
+                border-right-style: solid;
+                border-bottom-style: solid;
+                border-left-style: solid;
+                border-top-color: #CCC;
+                border-right-color: #CCC;
+                border-left-color: #CCC;
+                border-bottom-color: #CCCCCC;
+            }
+            
+            #panel2 {
+                display: none;
+                background-repeat: no-repeat;
+                background-position: right top;
+                padding-bottom: -25px;
+                border-top-width: 1px;
+                border-right-width: 1px;
+                border-bottom-width: 1px;
+                border-left-width: 1px;
+                border-top-style: solid;
+                border-right-style: solid;
+                border-bottom-style: solid;
+                border-left-style: solid;
+                border-top-color: #CCC;
+                border-right-color: #CCC;
+                border-left-color: #CCC;
+                border-bottom-color: #CCCCCC;
+            }
+            
+            #panel3 {
+                display: none;
+            }
+            
+            #panel4 {
+                display: none;
+            }
+            
+            #panel5 {
+                display: block;
+                background-repeat: no-repeat;
+                background-position: right top;
+                list-style-position: inside;
+                padding-bottom: -25px;
+                border-top-width: 1px;
+                border-right-width: 1px;
+                border-bottom-width: 1px;
+                border-left-width: 1px;
+                border-top-style: solid;
+                border-right-style: solid;
+                border-bottom-style: solid;
+                border-left-style: solid;
+                border-top-color: #CCC;
+                border-right-color: #CCC;
+                border-left-color: #CCC;
+                border-bottom-color: #CCCCCC;
+            }
+            
+            #panel6 {
+                display: none;
+                background-repeat: no-repeat;
+                background-position: right top;
+                padding-bottom: -25px;
+                border-top-width: 1px;
+                border-right-width: 1px;
+                border-bottom-width: 1px;
+                border-left-width: 1px;
+                border-top-style: solid;
+                border-right-style: solid;
+                border-bottom-style: solid;
+                border-left-style: solid;
+                border-top-color: #CCC;
+                border-right-color: #CCC;
+                border-left-color: #CCC;
+                border-bottom-color: #CCCCCC;
+            }
+            
+            span.label {
+                color: #85857F;
+            }
+            
+            span.label_contact {
+                color: #00ff80;
+                font-size: 9pt;
+                margin: 0px;
+            }
+            
+            .tabholder {
+                position: relative;
+                padding-top: 0px;
+                padding-right: 0px;
+                padding-bottom: 0px;
+                padding-left: 0px;
+            }
+            
+            .tabholder_articles {
+                padding: 0px 0px 0px 0px;
+                position: relative;
+                z-index: 2;
+            }
+            
+            .aas {
+                cursor: pointer;
+            }
+            
+            #tabholder_articles span.activeTab {
+                background: #faf3c7;
+                border: 1px solid #c0c0c0;
+                border-bottom: 1px solid #faf3c7;
+                color: #000;
+                /*font-weight: 400;*/
+                padding: 1px 10px 3px 10px;
+                margin: 0px 5px 3px 0px;
+                font-size: 9pt;
+                text-align: left;
+                cursor: pointer;
+            }
+            
+            #tabholder_articles span.inactiveTab {
+                font-size: 12px;
+                color: #fff;
+                /*border: 1px solid #c98503;*/
+                font-weight: 700;
+                border-bottom: none;
+                padding: 1px 10px 3px 10px;
+                margin: 0px 5px 3px 0px;
+                cursor: pointer;
+                background-color: #c98503;
+            }
+            
+            #dblinksWrapper {
+                width: 550px;
+                background-repeat: no-repeat;
+                border-top-width: 0px;
+                border-right-width: 1px;
+                border-bottom-width: 1px;
+                border-left-width: 1px;
+                border-top-style: none;
+                border-right-style: solid;
+                border-bottom-style: solid;
+                border-left-style: solid;
+                border-bottom-color: #CCC;
+                border-left-color: #CCC;
+                border-right-color: #CCC;
+                background-color: #faf3c7;
+            }
+            
+            #dblinksWrapper ul {
+                margin: 0;
+                padding: 0;
+                color: #039;
+            }
+            
+            ul.dblinks li {
+                display: inline;
+                font-weight: bold;
+            }
+            
+            ul.dblinks li a {
+                padding-top: 4px;
+                padding-right: 25px;
+                padding-bottom: 4px;
+                padding-left: 25px;
+            }
+            
+            ul.dblinks li a:hover {
+                color: #900;
+                text-decoration: underline;
+            }
+            
+            #panel4 li {
+                list-style: disc;
+                padding: 0;
+            }
+            
+            .panel-heading, .panel-heading label {
+                padding: 0.5em 0 .5em 0;
+                color: #666;
+                font-weight: 700;
+            }
+            
+            .panel-text {
+                padding-top: 0;
+                padding-right: 0;
+                padding-bottom: 0.3em;
+                padding-left: 0.5em;
+                margin-top: 5px;
+                margin-right: 0px;
+                margin-bottom: 0px;
+                margin-left: 0px;
+            }
+            
+            .wrapperFeatures {
+                font-size: 90%;
+                padding-left: 2em;
+                margin-top: 0.5em;
+                border: 1px solid #CCC;
+            }
+            
+            .headerFeatures {
+                margin: 1em 0 0.5em 0;
+                background-color: #FFFFFF !important;
+                color: #000000 !important;
+                font-weight: 700;
+                letter-spacing: 0.2em;
+                text-transform: uppercase !important;
+                width: 360px;
+            }
+            
+            .headerNewTitles {
+                margin: 1em 0 0.5em 0;
+                background-color: #FFFFFF !important;
+                color: #000000 !important;
+                width: 160px;
+            }
+            
+            .documentActions {
+                display: none;
+            }
+            
+            #home_rotator {
+                position: relative;
+                z-index: 1;
+                float: right;
+                padding: 0 !important;
+                margin-bottom: -20px;
+            }
+            
+            #portal-header_rotate {
+                margin-left: 0em !important;
+                width: 930px;
+            }
+            
+            .home_searchButton {
+                color: #fff !important;
+                text-transform: uppercase !important;
+                border: none !important;
+                background-image: url(/plone_chunks/graphics/search_bg.jpg) !important;
+                padding: 0 2px 0 2px;
+            }
+            
+            #portal-column-one {
+                border-right: none !important;
+            }
+            
+            .style6 {
+                font-family: Arial, Helvetica, sans-serif
+            }
+            
+            .style9 {
+                font-size: 15%
+            }
+            
+            .style10 {
+                font-size: 15px
+            }
+        </style>
+    </head>
+    <body dir="ltr" onLoad="reloadMyPage(); showNewPanel(5); ">
+        <div style="padding-top: 25px; color: #c0c0c0;">
+            <div class="tabholder" id="tabholder_articles">
+                <span class="activeTab" id="tab5" onMouseOver="hover(this);" onClick="showNewPanel(5);" onMouseOut="setState(5);">Advanced Search&nbsp;</span>
+                <span class="inactiveTab" id="tab1" onMouseOver="hover(this);" onClick="showNewPanel(1);" onMouseOut="setState(1);" style="margin-left: 5px; font-size: 12px;">Find User</span>
+                <span class="inactiveTab" id="tab2" onMouseOver="hover(this);" onClick="showNewPanel(2);" onMouseOut="setState(2);" style="margin-left: 5px; font-size: 12px;">Internet Web Search</span>
+                <span class="inactiveTab" id="tab6" onMouseOver="hover(this);" onClick="showNewPanel(6);" onMouseOut="setState(6);" style="margin-left: 5px; font-size: 12px;">TBD !</span>
+            </div>            
+            <div id="panel5" class="content_articles">
+                <!--Advanced Search-->
+                <div class="content_articlesWrapper">
+                    
+                    	<a class="aas" style="float:right; color:#0000a0;" id="reset"><u>Reset</u></a>
+					
+                    <!--script>
+                    $('#reset').click(function(){
+                    });
+                    </script-->
+                    <form name="inPuts" id="inPuts">
+                        <table id="advS">
+                            <tr>
+                                <th align="left">
+                                    All of these words   ::
+                                </th>
+                                <th id="ra" align="left">
+                                    <div class="divR1" id="here">
+                                        <input size="32" type="text" id = "wantKey1" class = "wantKey" name="wantKey"/>
+                                    </div>
+                                </th>
+                                <th align="left">
+                                    <p align="bottom">
+                                        &nbsp;
+                                        <small>
+                                            <small>
+                                                <a class="aas" id="addRaw">
+                                                    <u>
+                                                        Add row
+                                                    </u>
+                                                </a>
+                                            </small>
+                                        </small>
+                                        &nbsp;
+                                        <label id="o">
+                                            | 
+                                        </label>
+                                        &nbsp;
+                                        <small>
+                                            <small>
+                                                <a class="aas" id="remRaw">
+                                                    <u>
+                                                        Remove row
+                                                    </u>
+                                                </a>
+                                            </small>
+                                        </small>
+                                        <br>
+                                        <input type="button" id="more" value="Find In"/><input type="button" id="shw" value="In [All]"/>
+                                    </p>
+                                </th>
+                                <script type="text/javascript">
+                                    $('#shw').hide();
+                                    $('#remRaw').hide();
+                                    $('#o').hide();
+                                    var n = 0; // wantKeyX , in
+                                    var m = 1; // wantKey
+                                    var b = true; // true is not to show more options
+                                    $('#addRaw').click(function(){
+                                        if (m == 1) {
+                                            $('#remRaw').show(1000);
+                                            $('#o').show(1000);
+                                        }
+                                        if (b) {
+                                            $('#ra').append('<div class="divR" vspace ="20"> <select id="h" class="h"><option value="1" selected>&nbsp;AND</option><option value="2">&nbsp;OR</option><option value="3">&nbsp;NOT</option></select> <input type="text" id="wantKey" class = "wantKey" name="wantKey" /> </div>');
+                                            $('.divR:last').hide();
+                                            $('.divR:last').show(1000);
+                                        }
+                                        else {
+                                            $('#ra').append('<div class="divR" vspace ="20"> <select id="h" class="h"><option value="1" selected>&nbsp;AND</option><option value="2">&nbsp;OR</option><option value="3">&nbsp;NOT</option></select> <input type="text" id="wantKey" class = "wantKey" name="wantKey" /> <small><small><label id="in" class = "in"> in </label> </small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option></select> </div>');
+                                            $('.divR:last').hide();
+                                            $('.divR:last').show(1000);
+                                            n++;
+                                        }
+                                        m++;
+                                    });
+                                    $('#more').click(function(){
+										$(".divR1").append(' <small><small><label id="in" class = "in"> in </label></small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option></select> ');
+                                        $(".divR").append(' <small><small><label id="in" class = "in"> in </label></small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option></select> ');
+                                        $('.in').hide();
+                                        $('.in').show(1000);
+                                        $('.wantKeyX').hide();
+                                        $('.wantKeyX').show(1000);
+                                        $('#more').hide();
+                                        $('#shw').show();
+                                        b = false;
+                                        n = m;
+                                    });
+                                    $('#shw').click(function(){
+                                        $('#shw').hide();
+                                        $('#more').show();
+                                        $('.in').remove();
+                                        $('.wantKeyX').remove();
+                                        n = 0;
+                                        b = true;
+                                    });
+                                    $('#remRaw').click(function(){
+                                        if (m == 2) {
+                                            $('#remRaw').hide();
+                                            $('#o').hide(1000);
+                                        }
+                                        $('.divR:last').remove();
+                                        n--;
+                                        m--;
+                                    });
+                                    $('#reset').click(function(){
+										document.getElementById("wantKey1").value = "";
+										document.getElementById("wantKeyEx").value = "";
+										document.getElementById("rAl").checked = true;
+                                        document.getElementById("cbPu").checked = true;
+                                        document.getElementById("cbPr").checked = true;
+                                        document.getElementById("cbSc").checked = true;
+										document.getElementById("rAll").checked = true;
+                                        document.getElementById("cbO").checked = true;
+                                        document.getElementById("cbE").checked = true;
+                                        document.getElementById("cbT").checked = true;
+                                        document.getElementById("cbP").checked = true;
+                                        document.getElementById("cbI").checked = true;
+                                        document.getElementById("cbi").checked = true;
+										document.getElementById("datePickerA").value = "";
+                                        document.getElementById("datePickerB").value = "";
+										document.getElementById("datePickerE").value = "";										
+										$('.divR').remove();
+										$('#shw').hide();
+                                        $('#more').show();
+                                        $('.in').remove();
+                                        $('.wantKeyX').remove();								
+										$('#shw').hide();
+                                    	$('#remRaw').hide();
+                                    	$('#o').hide();
+                                        n = 0;
+                                        m = 1;
+										b = true;
+										$("#addB").hide();
+                                        $("#addA").hide();
+										$("#addE").hide();
+                                        $("#datePickerA").show();
+                                        $("#datePickerB").show();
+										$("#datePickerE").show();
+										$("#na1").hide();
+										$("#na2").hide();
+										$("#na3").hide();
+                                    });
+                                </script>
+                            </tr>
+                            <tr>
+                                <th align="left">
+                                    This exact phrase   ::
+                                    <br>
+                                    <br>
+                                </th>
+                                <th align="left">
+                                    <input type="text" size="31" id = "wantKeyEx" name="wantKeyEx" vspace="20"/>
+                                    <br>
+                                    <br>
+                                </th>
+                            </tr>
+                        </table>
+                        <input type="submit" style="color:#ff0000; float:right;" name="ok" value="Start Advanced Search" onclick="doo(searchIn, wantKey,unWantKey, org, entity, topic, plan,idea, item, comm, dayB, monthB, yearB,dayA, monthA, yearA, dayE, monthE, yearE);"/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <hr style="color:#c0c0c0; -moz-outline-color:#c0c0c0;">&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label>
+                            <small>
+                                <i><b style="color:#0000a0;">Additional Options :</b></i>
+                            </small>
+                        </label>
+                        <hr style="color:#c0c0c0;">
+                        <table>
+                            <tr>
+                                <th align="left">
+                                    <small>
+                                        Organizations
+                                    </small>
+                                    of type&nbsp;::
+                                </th>
+                                <th align="left">
+                                    <br>
+                                    <br>
+                                    <input type="checkbox" class="na" id="cbPu" value="O" onclick="loo2()" checked>Public 
+									&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input type="checkbox" id="rAl" value="Al" onclick="loo()" checked>All
+                                    <br/>
+                                    <input type="checkbox" class="na" id="cbPr" value="E" onclick="loo2()" checked>Private
+                                    <br/>
+                                    <input type="checkbox" class="na" id="cbSc" value="T" onclick="loo2()" checked>Secret
+                                    <br/>
+                                    <script>
+                                        function loo(){
+                                            if (document.getElementById("rAl").checked) {
+                                                document.getElementById("cbPu").checked = true;
+                                                document.getElementById("cbPr").checked = true;
+                                                document.getElementById("cbSc").checked = true;
+                                            }
+                                            else {
+                                                document.getElementById("cbPu").checked = false;
+                                                document.getElementById("cbPr").checked = false;
+                                                document.getElementById("cbSc").checked = false;
+                                            }
+                                        }
+                                        
+                                        function loo2(){
+                                            document.getElementById("rAl").checked = false;
+                                            if (document.getElementById("cbPu").checked &&
+                                            document.getElementById("cbPr").checked &&
+                                            document.getElementById("cbSc").checked) {
+                                                document.getElementById("rAl").checked = true;
+                                            }
+                                        }
+                                    </script>
+                                    <br/>
+                                    <br/>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th align="left">
+                                    show Result of ::
+                                    <br>
+                                </th>
+                                <th>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <br/>
+                                </th>
+                                <th align="left">
+                                    <input type="checkbox" class="nal" id="cbO" value="O" onclick="lo2()" checked>Organization 
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="rAll" value="All" onclick="lo()" checked>All
+                                    <br/>
+                                    <input type="checkbox" class="nal" id="cbE" value="E" onclick="lo2()" checked/>Entity
+                                    <br/>
+                                    <input type="checkbox" class="nal" id="cbT" value="T" onclick="lo2()" checked/>Topic
+                                    <br/>
+                                    <input type="checkbox" class="nal" id="cbP" value="P" onclick="lo2()" checked/>Plan
+                                    <br/>
+                                    <input type="checkbox" class="nal" id="cbI" value="I" onclick="lo2()" checked/>Idea
+                                    <br/>
+                                    <input type="checkbox" class="nal" id="cbi" value="i" onclick="lo2()" checked/>Item
+                                    <br/>
+                                    <script>
+                                        function lo(){
+                                            if (document.getElementById("rAll").checked) {
+                                                document.getElementById("cbO").checked = true;
+                                                document.getElementById("cbE").checked = true;
+                                                document.getElementById("cbT").checked = true;
+                                                document.getElementById("cbP").checked = true;
+                                                document.getElementById("cbI").checked = true;
+                                                document.getElementById("cbi").checked = true;
+                                            }
+                                            else {
+                                                document.getElementById("cbO").checked = false;
+                                                document.getElementById("cbE").checked = false;
+                                                document.getElementById("cbT").checked = false;
+                                                document.getElementById("cbP").checked = false;
+                                                document.getElementById("cbI").checked = false;
+                                                document.getElementById("cbi").checked = false;
+                                            }
+                                        }
+                                        
+                                        function lo2(){
+                                            document.getElementById("rAll").checked = false;
+                                            if (document.getElementById("cbO").checked &&
+                                            document.getElementById("cbE").checked &&
+                                            document.getElementById("cbT").checked &&
+                                            document.getElementById("cbP").checked &&
+                                            document.getElementById("cbI").checked &&
+                                            document.getElementById("cbi").checked) {
+                                                document.getElementById("rAll").checked = true;
+                                            }
+                                        }
+                                    </script>
+                                </th>
+                            </tr>
+                            <tr>
+                            </tr>
+                            <tr>
+                                <th align="left">
+                                    <br/>
+                                    <br/>
+                                    Before Date  ::
+                                </th>
+                                <th align="left">
+                                    <br>
+                                    <br>
+                                    <script>
+                                        $(function(){
+                                            $("#na1").hide();
+                                            if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
+                                            
+                                            }
+                                            $($("#datePickerB").datepicker({
+                                                changeYear: true,
+                                                showButtonPanel: true
+                                            })).change(function(){
+                                            
+                                                if (document.getElementById("datePickerB").value != "") {
+                                                    $("#na1").show(500);
+                                                }
+                                            });
+                                            
+                                            $("#na1").click(function(){
+                                                document.getElementById("datePickerB").value = "";
+                                                $("#na1").hide();
+                                            });
+                                        });
+                                    </script>
+                                    <input type="text" id="datePickerB" vspace="20" readonly/>
+                                    <u class="aas" id="na1">
+                                        clear 
+                                    </u>
+                                    <u class="aas" id="addA">
+                                        add 
+                                    </u>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th align="left">
+                                    After  Date  ::
+                                </th>
+                                <th align="left">
+                                    <script>
+                                        $(function(){
+                                            $("#na2").hide();
+                                            if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
+                                            
+                                            }
+                                            
+                                            $($("#datePickerA").datepicker({
+                                                changeYear: true,
+                                                showButtonPanel: true
+                                            })).change(function(){
+                                                if (document.getElementById("datePickerA").value != "") {
+                                                    $("#na2").show(500);
+                                                }
+                                            });
+                                            
+                                            $("#na2").click(function(){
+                                                document.getElementById("datePickerA").value = "";
+                                                $("#na2").hide();
+                                            });
+                                        });
+                                    </script>
+                                    <input type="text" id="datePickerA" readonly/>
+                                    <u class="aas" id="na2">
+                                        clear 
+                                    </u>
+                                    <u class="aas" id="addB">
+                                        add 
+                                    </u>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th align="left">
+                                    Exact Date ::
+                                </th>
+                                <th align="left">
+                                    <script>
+                                        $(function(){
+                                            $("#na3").hide();
+                                            if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
+                                            
+                                            }
+                                            
+                                            $($("#datePickerE").datepicker({
+                                                changeYear: true,
+                                                showButtonPanel: true
+                                            })).change(function(){
+                                            
+                                                if (document.getElementById("datePickerE").value != "") {
+                                                    $("#na3").show(500);
+                                                }
+                                            });
+                                            
+                                            $("#na3").click(function(){
+                                                document.getElementById("datePickerE").value = "";
+                                                $("#na3").hide();
+                                            });
+                                        });
+                                    </script>
+                                    <input type="text" id="datePickerE" readonly/>
+                                    <u class="aas" id="na3">
+                                        clear 
+                                    </u>
+                                    <u class="aas" id="addE">
+                                        add 
+                                    </u>
+                                </th>
+                            </tr>
+                            <script>
+                                $(function(){
+                                    $("#addA").hide();
+                                    $("#addE").hide();
+                                    $("#addB").hide();
+                                    
+                                    $("#datePickerE").change(function(){
+                                        $("#datePickerA").hide(500);
+                                        $("#addA").show(500);
+                                        $("#datePickerB").hide(500);
+                                        $("#addB").show(500);
+                                    });
+                                    $("#datePickerA").change(function(){
+                                        $("#datePickerE").hide(500);
+                                        $("#addE").show(500);
+                                    });
+                                    $("#datePickerB").change(function(){
+                                        $("#datePickerE").hide(500);
+                                        $("#addE").show(500);
+                                    });
+                                    
+                                    $("#addB").click(function(){
+                                        $("#addB").hide(500);
+                                        $("#addA").hide(500);
+                                        $("#datePickerA").show(500);
+                                        $("#datePickerB").show(500);
+                                        document.getElementById("datePickerE").value = "";
+                                        $("#datePickerE").hide(500);
+                                        $("#na3").hide(500);
+                                        $("#addE").show(500);
+                                    });
+                                    $("#addA").click(function(){
+                                        $("#addB").hide(500);
+                                        $("#addA").hide(500);
+                                        $("#datePickerA").show(500);
+                                        $("#datePickerB").show(500);
+                                        document.getElementById("datePickerE").value = "";
+                                        $("#datePickerE").hide(500);
+                                        $("#na3").hide(500);
+                                        $("#addE").show(500);
+                                    });
+                                    $("#addE").click(function(){
+                                        $("#addB").show(500);
+                                        $("#addA").show(500);
+                                        document.getElementById("datePickerA").value = "";
+                                        document.getElementById("datePickerB").value = "";
+                                        $("#datePickerA").hide(500);
+                                        $("#datePickerB").hide(500);
+                                        $("#datePickerE").show(500);
+                                        $("#na1").hide(500);
+                                        $("#na2").hide(500);
+                                        $("#addE").hide(500);
+                                    });
+                                });
+                            </script>
+                        </table>
+                        <input type="submit" style="color:#ff0000; float:right;" name="ok" value="Start Advanced Search" onclick="doo(searchIn, wantKey,unWantKey, org, entity, topic, plan,idea, item, comm, dayB, monthB, yearB,dayA, monthA, yearA, dayE, monthE, yearE);"/>
+                    </form>
+                </div>
+            </div>
+            <div id="panel1" class="content_articles">
+                <!--Find User-->
+            </div>
+			<div id="panel2" class="content_articles">
+                <!--Internet Web Search-->
+                <form method="get" action="http://google.com">
+                    <!--img src="/public/images/google.png" width="80" height="30" vspace ="25" align="middle" />
+					<input type="text" style="border: 1px solid rgb(126, 157, 185); padding: 2px; background: url(&quot;http://www.google.com/cse/intl/en/images/google_custom_search_watermark.gif&quot;) no-repeat scroll left center rgb(255, 255, 255);" size="31" name="q">
+					<select id="h" align="middle" class="h">
+						
+						<option value="2">OR</option>
+						<option value="3">NOT</option>
+					</select>
+					<!--input type="hidden" name="hl" value="en">
+					<input type="text" name="q" size="50"/>
+					<input class="lsb" type="submit" onclick="this.checked=1" name="btnG" value="Search"-->
+                </form>
+            </div>
+            <div id="panel6" class="content_articles">
+                <!-- add here the 4th one -->
+            </div>
+        </div>
+        <script type="text/javascript">
+            function doo(searchIn, wantKey, unWantKey, org, entity, topic, plan, idea, item, comm, dayB, monthB, yearB, dayA, monthA, yearA, dayE, monthE, yearE){
+                if (wantKey.value != "") {
+                    alert("GO");
+                    $.post('@{Search.advSearch()}', {
+                        searchIn: searchIn.value,
+                        wantKey: wantKey.value,
+                        unWantKey: unWantKey.value,
+                        org: org.value,
+                        entity: entity.value,
+                        topic: topic.value,
+                        plan: plan.value,
+                        idea: idea.value,
+                        item: item.value,
+                        comm: comm.value,
+                        dayB: dayB.value,
+                        monthB: monthB.value,
+                        yearB: yearB.value,
+                        dayA: dayA.value,
+                        monthA: monthA.value,
+                        yearA: yearA.value,
+                        dayE: dayE.value,
+                        monthE: monthE.value,
+                        yearE: yearE.value
+                    }, function(){
+                        alert('enter func');
+                        window.location.href = "/searchResult";
+                        alert('enter end');
+                    });
+                }
+                else {
+                    alert('Plz Enter a Key');
+                }
+            }
+        </script>
+        <script type="text/javascript">
+            (function(){
+                f = document.getElementById('inPuts');
+                if (f && f.wantKey) {
+                    var q = f.wantKeyEx;
+                    var n = navigator;
+                    var l = location;
+                    
+                    if (n.platform == 'Win32') {
+                        q.style.cssText = 'border: 1px solid #7e9db9; padding: 2px;';
+                        f.unWantKey.style.cssText = 'border: 1px solid #7e9db9; padding: 2px;';
+                    }
+                    
+                    var b = function(){
+                        if (q.value == '') {
+                            q.style.background = '#FFFFFF url(http:\x2F\x2Fwww.google.com\x2Fcse\x2Fintl\x2Fen\x2Fimages\x2Fgoogle_custom_search_watermark.gif) left no-repeat';
+                        }
+                    };
+                    
+                    var f = function(){
+                        q.style.background = '#ffffff';
+                    };
+                    
+                    q.onfocus = f;
+                    q.onblur = b;
+                    
+                    
+                    if (!/[&?]q=[^&]/.test(l.search)) {
+                        b();
+                    }
+                }
+            })();
+        </script>
+    </body>
 </html>
