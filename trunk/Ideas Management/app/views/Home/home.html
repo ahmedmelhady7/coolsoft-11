@@ -17,8 +17,9 @@
 					<li><a href="@{Home.index()}">Home</a></li>
 					<li><a href="@{Home.about()}">About</a></li>	
 					<li><a href="@{Home.contact()}">Contact</a></li>
-					<li><a href="@{Login.index()}">Login</a></li>
+					<li><a href="@{Login.homePage()}">Login</a></li>
 					<li><a href="#">Register</a></li>
+					
 				</ul>
 			</div>
 		</div>
@@ -26,6 +27,27 @@
 </div>
 <!-- End of header -->
 <body>
-#{doLayout /}
-</body>
+#{doLayout/}
+</body> 
+<script type="text/javascript" language="javascript">
+		$(function () {
+ 
+			$("#demo01").click(function () {
+				$('#demo01-body').showTopbarMessage();
+			});
+ 
+			$("#demo02").click(function () {
+				$('#demo02-body').showTopbarMessage({ close: 5000 });
+			});
+ 
+			$("#demo03").click(function () {
+				$('#demo03-body').showTopbarMessage({ background: "#093", close: 2000 });
+			});
+ 
+			$("#demo04").click(function () {
+				$('#demo04-body').showTopbarMessage({ height: "150px", close: 2000 });
+			});
+		});	
+</script>
 </html>
+
