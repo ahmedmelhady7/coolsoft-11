@@ -1,4 +1,5 @@
 package jobs;
+
 import java.awt.event.ActionListener;
 import java.util.Date;
 
@@ -149,24 +150,14 @@ public class Bootstrap extends Job {
 			UserRoleInOrganizations.addEnrolledUser(slim, guc, organizer,
 					gucMet.id, "entity");
 
-			// UserRoleInOrganizations.addEnrolledUser(khayat, guc,
-			// ideadeveloper,
-			// gucMet.id, "entity");
-
 			UserRoleInOrganizations.addEnrolledUser(fatma, guc, organizer,
 					gucCs.id, "entity");
-
-			// UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
-			// gucCs.id, "entity");
 
 			UserRoleInOrganizations.addEnrolledUser(sharaf, gov,
 					OrganizationLead);
 
 			UserRoleInOrganizations.addEnrolledUser(gamal, gov, organizer,
 					govHead.id, "entity");
-
-			// UserRoleInOrganizations.addEnrolledUser(khalifa, gov,
-			// ideadeveloper, govHead.id, "entity");
 
 			Topic gucMetStudentUnion = new Topic("Student union",
 					"Suggestions", 2, ashraf, gucMet, true).save();
@@ -176,17 +167,13 @@ public class Bootstrap extends Job {
 
 			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
-			// UserRoleInOrganizations.addEnrolledUser(gom3a, guc,
-			// ideadeveloper,
-			// gucMet.id, "entity");
+
 			UserRoleInOrganizations.addEnrolledUser(gom3a, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
-			// UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
-			// gucMet.id, "entity");
+
 			UserRoleInOrganizations.addEnrolledUser(mai, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
-			// UserRoleInOrganizations.addEnrolledUser(u5, guc, ideadeveloper,
-			// gucMet.id, "entity");
+
 			UserRoleInOrganizations.addEnrolledUser(u5, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
 
@@ -274,28 +261,6 @@ public class Bootstrap extends Job {
 			p1.addIdea(i6);
 			p1.save();
 
-			// p1.usersRated.add(gom3a);
-			// p1.rating = 1;
-			// i2.plan = p1;
-			// i2._save();
-			// i1.plan = p1;
-			// i1._save();
-
-			// p1.addIdea(i2);
-			// p1.addIdea(i1);
-			// p1.save();
-			// // p1._save();
-			//
-			// Comment c1 = new Comment("i prefer new Computers ", i1, ashraf)
-			// .save();
-			// c1.commentedIdea = i2;
-			// c1._save();
-			//
-			// Comment c2 = new Comment("good idea", p1, gom3a).save();
-			// c2.commentedPlan = p1;
-			// c2._save();
-			//
-
 			Item item1 = new Item(
 					new Date(111, 05, 01),
 					new Date(111, 05, 20),
@@ -338,32 +303,6 @@ public class Bootstrap extends Job {
 
 			new Comment("here i accept", i1, gom3a).save();
 			new Comment("i love SE course", p1, hadi).save();
-
-			//
-			// RequestToJoin request = new RequestToJoin(gom3a, null, guc,
-			// "I would like to join your organization..");
-			// request._save();
-			// RequestToJoin request2 = new RequestToJoin(gom3a,
-			// gucMetStudentUnion, null,
-			// "I would like to post on ur topic.");
-			// request2._save();
-			//
-			// Invitation inv1 = new Invitation("Ibrahim@gmail.com", null, guc,
-			// "idea developer", ashraf).save();
-			//
-			// // u6.invitation.add(inv1);
-			// // u6.save();
-			//
-			// // UserRoleInOrganizations.addEnrolledUser(u2,, role,
-			// // entityOrTopicId, type)
-
-			// //////////////////////////////////////////////
-			//
-			// this part for Fadi
-			//
-			// //////////////////////////////////////////////
-		
-			// //////////////////////////////////////////////
 
 		}
 	}
