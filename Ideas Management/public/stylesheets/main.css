@@ -236,7 +236,24 @@ a:hover {
 #page-bgtop {
 	padding: 20px 0px;
 }
+
+
+/*divs to split a page in body (search page*/
+        #div1 { 
+        float:left; 
+        width:50%;
+        }
+        
+        #div2 { 
+        marging-left:50%; 
+        width:50%;
+        }
+
+
+
+
 /* Content */
+
 
 #content {
 	float: left;
