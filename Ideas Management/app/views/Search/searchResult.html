@@ -25,7 +25,6 @@ The Search Results Viewer
         }
     </style>
     <body onLoad="step1()">
-        <form name="myform" action="@{quickSearch()}" method="GET">
         <font size="+3" color="993300">
             Welcome ${u.username}! 
         </font>
@@ -42,9 +41,12 @@ The Search Results Viewer
             </form>
         </div>
         </br>View: 
+		<form name="myform">
         <SELECT NAME="view" onChange='modifyResult()'>
-            <OPTION VALUE="1">Abstract<OPTION VALUE="2">Detailed
+            <OPTION VALUE="1">Abstract
+			<OPTION VALUE="2">Detailed
                 </SELECT>
+		</form>
                 <script type="text/javascript">
                     
                     var marked = new Array();
@@ -167,7 +169,6 @@ The Search Results Viewer
                         });
                     }
                 </script>
-            </form>
             <br/>
             <b>
                 <big>
