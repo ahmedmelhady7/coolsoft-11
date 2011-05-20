@@ -69,8 +69,6 @@ public class Search extends Controller {
 		render(user);
 	}
 
-
-
 	/**
 	 * @author Loaay Alkherbawy
 	 * 
@@ -82,13 +80,12 @@ public class Search extends Controller {
 	 */
 	public static void searchResult() {
 		String connected = Security.connected();
-		User u = Security.getConnected();
+		User user = Security.getConnected();
 		List<Idea> ideasFound = new ArrayList<Idea>();
 		List<Organization> organizationsFound = new ArrayList<Organization>();
 		List<Topic> topicsFound = new ArrayList<Topic>();
 		List<MainEntity> entitiesFound = new ArrayList<MainEntity>();
-		User user = Security.getConnected();
-		toBePassed=listOfResults;
+		toBePassed = listOfResults;
 		try {
 			for (int i = 0; i < listOfResults.size(); i++) {
 				if (listOfResults.get(i) instanceof Idea) {
@@ -104,14 +101,14 @@ public class Search extends Controller {
 					organizationsFound.add((Organization) listOfResults.get(i));
 				}
 			}
-			download(u);
+			download(user);
 			List<Model> lof = listOfResults;
 			System.out.println("Size " + lof.size());
-			render(u, connected, lof, ideasFound, organizationsFound,
+			render(user, connected, lof, ideasFound, organizationsFound,
 					entitiesFound, topicsFound);
 		} catch (NullPointerException e) {
-			render(u, connected, ideasFound, organizationsFound, entitiesFound,
-					topicsFound,user);
+			render(user, connected, ideasFound, organizationsFound,
+					entitiesFound, topicsFound, user);
 		}
 	}
 
@@ -693,8 +690,7 @@ public class Search extends Controller {
 	 *              given
 	 */
 	public static List<Organization> searchForOrganization(String keyword) {
-		String userId = Security.connected();
-		User u = Security.getConnected();
+		User user = Security.getConnected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
@@ -724,15 +720,9 @@ public class Search extends Controller {
 						}
 					}
 				}
-				if (!Users.getEnrolledUsers(listOfOrganizations.get(i))
-						.contains(u)) {
-					switch (listOfOrganizations.get(i).privacyLevel) {
-					case 0:
-						listOfOrgs.remove(listOfOrganizations.get(i));
-						break;
-					default:
-						break;
-					}
+				if (!Users.isPermitted(user, "view",
+						listOfOrganizations.get(i).id, "organization")) {
+					listOfOrgs.remove(listOfOrganizations.get(i));
 				}
 			}
 		}
@@ -753,8 +743,7 @@ public class Search extends Controller {
 	 * @description the method that searches for entities with the keyword given
 	 */
 	public static List<MainEntity> searchForEntity(String keyword) {
-		String userId = Security.connected();
-		User u = Security.getConnected();
+		User user = Security.getConnected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
@@ -782,14 +771,9 @@ public class Search extends Controller {
 						}
 					}
 				}
-				if (!listOfEntities.get(i).followers.contains(u)) {
-					switch (listOfEntities.get(i).organization.privacyLevel) {
-					case 0:
-						listOfEnts.remove(listOfEntities.get(i));
-						break;
-					default:
-						break;
-					}
+				if (!Users.isPermitted(user, "view", listOfEntities.get(i).id,
+						"Entity")) {
+					listOfEnts.remove(listOfEntities.get(i));
 				}
 			}
 		}
@@ -810,8 +794,7 @@ public class Search extends Controller {
 	 * @description the method that searches for ideas with the keyword given
 	 */
 	public static List<Idea> searchForIdea(String keyword) {
-		String userId = Security.connected();
-		User u = Security.getConnected();
+		User user = Security.getConnected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
@@ -839,14 +822,9 @@ public class Search extends Controller {
 						}
 					}
 				}
-				if (!listOfIdeas.get(i).belongsToTopic.followers.contains(u)) {
-					switch (listOfIdeas.get(i).belongsToTopic.entity.organization.privacyLevel) {
-					case 0:
-						listOfIdss.remove(listOfIdeas.get(i));
-						break;
-					default:
-						break;
-					}
+				if (!Users.isPermitted(user, "view",
+						listOfIdeas.get(i).belongsToTopic.id, "topic")) {
+					listOfIdss.remove(listOfIdeas.get(i));
 				}
 
 			}
@@ -868,8 +846,7 @@ public class Search extends Controller {
 	 * @description the method that searches for Topics with the keyword given
 	 */
 	public static List<Topic> searchForTopic(String keyword) {
-		String userId = Security.connected();
-		User u = Security.getConnected();
+		User user = Security.getConnected();
 		String[] keywords = { keyword };
 		try {
 			keywords = keyword.split("\\s+");
@@ -899,14 +876,9 @@ public class Search extends Controller {
 						}
 					}
 				}
-				if (!listOfTopics.get(i).followers.contains(u)) {
-					switch (listOfTopics.get(i).privacyLevel) {
-					case 0:
-						listOfTopis.remove(listOfTopics.get(i));
-						break;
-					default:
-						break;
-					}
+				if (!Users.isPermitted(user, "view", listOfTopics.get(i).id,
+						"topic")) {
+					listOfTopis.remove(listOfTopics.get(i));
 				}
 			}
 		}
@@ -1029,9 +1001,11 @@ public class Search extends Controller {
 			}
 		}
 	}
+
 	/**
 	 * 
-	 * sortA method sorts according to rates (known from input) in ascending order
+	 * sortA method sorts according to rates (known from input) in ascending
+	 * order
 	 * 
 	 * task.
 	 * 
@@ -1075,28 +1049,28 @@ public class Search extends Controller {
 			if (toSort.get(j) instanceof Idea) {
 				Idea temp1 = (Idea) toSort.get(j);
 				rate1 = temp1.rating;
-				if(rate1.equalsIgnoreCase("Not yet rated"))
-					rate1="0";
+				if (rate1.equalsIgnoreCase("Not yet rated"))
+					rate1 = "0";
 			} else {
 				Plan temp1 = (Plan) toSort.get(j);
 				rate1 = temp1.rating;
 
-				if(rate1.equalsIgnoreCase("Not yet rated"))
-					rate1="0";
+				if (rate1.equalsIgnoreCase("Not yet rated"))
+					rate1 = "0";
 			}
 			for (int k = 0; k < toSort.size(); k++) {
 				if (toSort.get(k) instanceof Idea) {
 					Idea temp2 = (Idea) toSort.get(k);
 					rate2 = temp2.rating;
 
-					if(rate2.equalsIgnoreCase("Not yet rated"))
-						rate2="0";
+					if (rate2.equalsIgnoreCase("Not yet rated"))
+						rate2 = "0";
 				} else {
 					Plan temp2 = (Plan) toSort.get(k);
 					rate2 = temp2.rating;
 
-					if(rate2.equalsIgnoreCase("Not yet rated"))
-						rate2="0";
+					if (rate2.equalsIgnoreCase("Not yet rated"))
+						rate2 = "0";
 				}
 
 				if (Integer.parseInt(rate1) > Integer.parseInt(rate2)) { // sorting
@@ -1209,28 +1183,28 @@ public class Search extends Controller {
 				Idea temp1 = (Idea) toSort.get(j);
 				rate1 = temp1.rating;
 
-				if(rate1.equalsIgnoreCase("Not yet rated"))
-					rate1="0";
+				if (rate1.equalsIgnoreCase("Not yet rated"))
+					rate1 = "0";
 			} else {
 				Plan temp1 = (Plan) toSort.get(j);
 				rate1 = temp1.rating;
 
-				if(rate1.equalsIgnoreCase("Not yet rated"))
-					rate1="0";
+				if (rate1.equalsIgnoreCase("Not yet rated"))
+					rate1 = "0";
 			}
 			for (int k = 0; k < toSort.size(); k++) {
 				if (toSort.get(k) instanceof Idea) {
 					Idea temp2 = (Idea) toSort.get(k);
 					rate2 = temp2.rating;
 
-					if(rate2.equalsIgnoreCase("Not yet rated"))
-						rate2="0";
+					if (rate2.equalsIgnoreCase("Not yet rated"))
+						rate2 = "0";
 				} else {
 					Plan temp2 = (Plan) toSort.get(k);
 					rate2 = temp2.rating;
 
-					if(rate2.equalsIgnoreCase("Not yet rated"))
-						rate2="0";
+					if (rate2.equalsIgnoreCase("Not yet rated"))
+						rate2 = "0";
 				}
 
 				if (Integer.parseInt(rate1) < Integer.parseInt(rate2)) { // sorting
