@@ -244,6 +244,7 @@ public class MainEntitys extends CRUD {
 		int canRequest = 0;
 		int canRequestRelationship = 0;
 		int canRestrict = 0;
+		boolean entityIsLocked = entity.createRelationship;
 		List<User> allowed = Users.getEntityOrganizers(entity);
 		if (org.creator.equals(user) || user.isAdmin) {
 			canRestrict = 1;
@@ -278,7 +279,7 @@ public class MainEntitys extends CRUD {
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity, follower, canCreateRelationship,
 				/* canView, */canRequest, canRequestRelationship, check,
-				canRestrict);
+				canRestrict, entityIsLocked);
 	}
 
 	/**
@@ -389,13 +390,20 @@ public class MainEntitys extends CRUD {
 				destination, organisation).first();
 		if (organisation.entityRequestIsDuplicate(source, destination, name)) {
 			System.out.println("Already exists");
-		} else {
+		} else if (Users.getEntityOrganizers(sourceEntity).contains(user)
+				|| Users.getEntityOrganizers(destinationEntity).contains(user)) {
 			CreateRelationshipRequest relationRequest = new CreateRelationshipRequest(
 					user, sourceEntity, destinationEntity, name);
 			relationRequest.save();
 			redirect(request.controller + ".viewEntity", entityId,
 					"Request created");
+		} else {
+			System.out
+					.println("You're not an organiser for any of the entities");
 		}
+		System.out.println(sourceEntity.relationshipRequestsSource.size() + sourceEntity.relationshipRequestsDestination.size());
+		System.out.println(destinationEntity.relationshipRequestsSource.size()+destinationEntity.relationshipRequestsDestination.size());
+		
 	}
 
 }
