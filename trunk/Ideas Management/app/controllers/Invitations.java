@@ -42,12 +42,13 @@ public class Invitations extends CRUD {
 	 * @param type
 	 *            String type either entity (0) or topic(1)
 	 * 
-	 * @param flashError
-	 *            int flashError : 0 if green flash, 1 if red flash
-	 * 
 	 * @param check
 	 *            int check : 0 if viewing the page, 1 if search result, 2 if
 	 *            invite by mail
+	 * 
+	 * @param flashError
+	 *            int flashError : 0 if green flash, 1 if red flash
+	 * 
 	 * 
 	 */
 	public static void invite(long id, int type, int check, int flashError) {
@@ -412,10 +413,16 @@ public class Invitations extends CRUD {
 					// **Fadwa
 
 					for (int j = 0; j < organizers.size(); j++)
-						Notifications.sendNotification(organizers.get(j).id,
-								entity.id, "entity",
-								"New organizer has been added as an organizer to entity  "
-										+ entity.name);
+						Notifications
+								.sendNotification(
+										organizers.get(j).id,
+										entity.id,
+										"entity",
+										user.firstName
+												+ " "
+												+ user.lastName
+												+ " has been added as an organizer to entity  "
+												+ entity.name);
 
 					Log.addUserLog(
 							"User "
@@ -478,11 +485,11 @@ public class Invitations extends CRUD {
 
 			}
 		}
-
+       
+		if(id==1){
 		if (!flag) {
-			organization.invitation.remove(invite);
+			
 			if (entity != null) {
-				entity.invitationList.remove(invite);
 
 				List<User> organizer = Users.getEntityOrganizers(entity);
 				for (int j = 0; j < organizer.size(); j++)
@@ -491,7 +498,7 @@ public class Invitations extends CRUD {
 									organizers.get(j).id,
 									entity.id,
 									"entity",
-									"User "
+	"User "
 											+ user.firstName
 											+ " "
 											+ user.lastName
@@ -508,7 +515,7 @@ public class Invitations extends CRUD {
 			}
 
 		} else {
-			topic.invitations.remove(invite);
+			
 			for (int s = 0; s < organizers.size(); s++)
 				Notifications.sendNotification(organizers.get(s).id, topic.id,
 						"topic", " A new User " + user.username
@@ -518,6 +525,13 @@ public class Invitations extends CRUD {
 					+ " has rejected the invitation to join topic "
 					+ topic.title, organization, topic, user);
 		}
+		}
+		
+		organization.invitation.remove(invite);
+		if (entity != null) 
+			entity.invitationList.remove(invite);
+		if(flag)
+			topic.invitations.remove(invite);
 		User sender = invite.sender;
 		sender.invitation.remove(invite);
 		invite.delete();
