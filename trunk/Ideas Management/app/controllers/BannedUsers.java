@@ -1292,7 +1292,7 @@ public class BannedUsers extends CRUD {
 		renderJSON(json.toString());
 		
 	}
-	
+
 	/**
 	 * render the list of idea developers to be blocked/unblocked
 	 * 
@@ -1372,23 +1372,25 @@ public class BannedUsers extends CRUD {
 	 * 
 	 * @param userId
 	 *            long Id of user that ll be blocked/unblocked
-	 *            
+	 * 
 	 * @param type
 	 *            int type 0 if view and 1 if use
-	 *            
+	 * 
 	 * @param numId
-	 *            long Id of the topic/entity that user ll be blocked/unblocked from
-	 *            
+	 *            long Id of the topic/entity that user ll be blocked/unblocked
+	 *            from
+	 * 
 	 * @param id
 	 *            int id , 0 if entity and 1 if topic
-	 *            
-	 *@param message
+	 * 
+	 * @param message
 	 *            String text that is the text on the button to the action if
-	 *            (block or unblock) 
-	 *            
+	 *            (block or unblock)
+	 * 
 	 * @param text
-	 *           String message that is the reason why this person has been blocked
-	 *            
+	 *            String message that is the reason why this person has been
+	 *            blocked
+	 * 
 	 * 
 	 */
 
@@ -1402,10 +1404,10 @@ public class BannedUsers extends CRUD {
 		System.out.println(type);
 		System.out.println(numId);
 		System.out.println(id);
-		
+
 		User user = User.findById(userId);
-		User organizer=Security.getConnected();
-		
+		User organizer = Security.getConnected();
+
 		List<User> organizers = new ArrayList<User>();
 		MainEntity entity = null;
 		Topic topic = null;
@@ -1418,12 +1420,11 @@ public class BannedUsers extends CRUD {
 
 				if (text.equals("Block from viewing")) {
 					doBlock(userId, numId, 0, 0);
-					Log.addUserLog(
-							organizer.firstName+" "+organizer.lastName
-							+"blocked "
-							+user.firstName+" "+user.lastName
-							+"from viewing Entity "
-							+entity.name,user,organizer,entity,entity.organization);
+					Log.addUserLog(organizer.firstName + " "
+							+ organizer.lastName + "blocked " + user.firstName
+							+ " " + user.lastName + "from viewing Entity "
+							+ entity.name, user, organizer, entity,
+							entity.organization);
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1435,7 +1436,8 @@ public class BannedUsers extends CRUD {
 												+ " "
 												+ user.lastName
 												+ " has been blocked from viewing Entity "
-												+ entity.name+ " because " + message);
+												+ entity.name + " because "
+												+ message);
 					Notifications.sendNotification(userId, numId, "entity",
 							"You have been blocked from viewing entity "
 									+ entity.name + " because " + message);
@@ -1445,13 +1447,12 @@ public class BannedUsers extends CRUD {
 					System.out.println("LAMA");
 					doBlock(userId, numId, 1, 0);
 					System.out.println("HEREEEEEEEEEEE LAMA");
-					Log.addUserLog(
-							organizer.firstName+" "+organizer.lastName
-							+"unblocked "
-							+user.firstName+" "+user.lastName
-							+"from viewing Entity "
-							+entity.name,user,organizer,entity,entity.organization);
-					
+					Log.addUserLog(organizer.firstName + " "
+							+ organizer.lastName + "unblocked "
+							+ user.firstName + " " + user.lastName
+							+ "from viewing Entity " + entity.name, user,
+							organizer, entity, entity.organization);
+
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1472,14 +1473,13 @@ public class BannedUsers extends CRUD {
 			} else {
 				if (text.equals("Block from using")) {
 					doBlock(userId, numId, 0, 1);
-					
-					Log.addUserLog(
-							organizer.firstName+" "+organizer.lastName
-							+"blocked "
-							+user.firstName+" "+user.lastName
-							+"from using Entity "
-							+entity.name,user,organizer,entity,entity.organization);
-					
+
+					Log.addUserLog(organizer.firstName + " "
+							+ organizer.lastName + "blocked " + user.firstName
+							+ " " + user.lastName + "from using Entity "
+							+ entity.name, user, organizer, entity,
+							entity.organization);
+
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1491,19 +1491,19 @@ public class BannedUsers extends CRUD {
 												+ " "
 												+ user.lastName
 												+ " has been blocked from performing any action within Entity "
-												+ entity.name+ " because " + message);
+												+ entity.name + " because "
+												+ message);
 					Notifications.sendNotification(userId, numId, "entity",
 							"You have been blocked from performing any action within entity "
 									+ entity.name + " because " + message);
 				} else {
 					doBlock(userId, numId, 1, 1);
-					Log.addUserLog(
-							organizer.firstName+" "+organizer.lastName
-							+"blocked "
-							+user.firstName+" "+user.lastName
-							+"from using Entity "
-							+entity.name,user,organizer,entity,entity.organization);
-					
+					Log.addUserLog(organizer.firstName + " "
+							+ organizer.lastName + "blocked " + user.firstName
+							+ " " + user.lastName + "from using Entity "
+							+ entity.name, user, organizer, entity,
+							entity.organization);
+
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1524,21 +1524,19 @@ public class BannedUsers extends CRUD {
 		} else {
 			topic = Topic.findById(numId);
 			entity = topic.entity;
-            organizers = Users.getEntityOrganizers(entity);
+			organizers = Users.getEntityOrganizers(entity);
 			if (type == 0) {
 				if (text.equals("Block from viewing")) {
-					
+
 					BannedUser block = new BannedUser(user,
-							topic.entity.organization, "view", "topic",
-							numId);
+							topic.entity.organization, "view", "topic", numId);
 					block.save();
-					Log.addUserLog(
-							organizer.firstName+" "+organizer.lastName
-							+"blocked "
-							+user.firstName+" "+user.lastName
-							+"from viewing Topic "
-							+topic.title,user,organizer,topic,entity.organization);
-					
+					Log.addUserLog(organizer.firstName + " "
+							+ organizer.lastName + "blocked " + user.firstName
+							+ " " + user.lastName + "from viewing Topic "
+							+ topic.title, user, organizer, topic,
+							entity.organization);
+
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1550,27 +1548,25 @@ public class BannedUsers extends CRUD {
 												+ " "
 												+ user.lastName
 												+ " has been blocked from viewing topic "
-												+ topic.title
-												+ " because " + message);
+												+ topic.title + " because "
+												+ message);
 					Notifications.sendNotification(userId, numId, "topic",
 							"You have been blocked from viewing topic "
 									+ topic.title + " because " + message);
 
-				}
-				else{
+				} else {
 					System.out.println("LAMALEEEM");
-					BannedUser unblock = BannedUser.find(
-							"byBannedUserAndActionAndResourceTypeAndResourceID", user,
-							"view", "topic", topic.id).first();
+					BannedUser unblock = BannedUser
+							.find("byBannedUserAndActionAndResourceTypeAndResourceID",
+									user, "view", "topic", topic.id).first();
 					unblock.delete();
-					
-					Log.addUserLog(
-							organizer.firstName+" "+organizer.lastName
-							+"unblocked "
-							+user.firstName+" "+user.lastName
-							+"from viewing Topic "
-							+topic.title,user,organizer,topic,entity.organization);
-					
+
+					Log.addUserLog(organizer.firstName + " "
+							+ organizer.lastName + "unblocked "
+							+ user.firstName + " " + user.lastName
+							+ "from viewing Topic " + topic.title, user,
+							organizer, topic, entity.organization);
+
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1592,13 +1588,12 @@ public class BannedUsers extends CRUD {
 					BannedUser block = new BannedUser(user,
 							topic.entity.organization, "use", "topic", numId);
 					block.save();
-					Log.addUserLog(
-							organizer.firstName+" "+organizer.lastName
-							+"blocked "
-							+user.firstName+" "+user.lastName
-							+"from using Topic "
-							+topic.title,user,organizer,topic,entity.organization);
-					
+					Log.addUserLog(organizer.firstName + " "
+							+ organizer.lastName + "blocked " + user.firstName
+							+ " " + user.lastName + "from using Topic "
+							+ topic.title, user, organizer, topic,
+							entity.organization);
+
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
@@ -1610,25 +1605,23 @@ public class BannedUsers extends CRUD {
 												+ " "
 												+ user.lastName
 												+ " has been blocked from performing any action within topic "
-												+ topic.title+ " because " + message);
+												+ topic.title + " because "
+												+ message);
 					Notifications.sendNotification(userId, numId, "topic",
 							"You have been blocked from performing any action within topic "
 									+ topic.title + " because " + message);
 
-				}
-				else{
-					BannedUser unblock = BannedUser.find(
-							"byBannedUserAndActionAndResourceTypeAndResourceID", user,
-							"use", "topic", topic.id).first();
+				} else {
+					BannedUser unblock = BannedUser
+							.find("byBannedUserAndActionAndResourceTypeAndResourceID",
+									user, "use", "topic", topic.id).first();
 					unblock.delete();
-					Log.addUserLog(
-							organizer.firstName+" "+organizer.lastName
-							+"unblocked "
-							+user.firstName+" "+user.lastName
-							+"from using Topic "
-							+topic.title,user,organizer,topic,entity.organization);
-					
-					
+					Log.addUserLog(organizer.firstName + " "
+							+ organizer.lastName + "unblocked "
+							+ user.firstName + " " + user.lastName
+							+ "from using Topic " + topic.title, user,
+							organizer, topic, entity.organization);
+
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
 								.sendNotification(
