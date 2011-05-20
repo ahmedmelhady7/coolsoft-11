@@ -392,27 +392,6 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * This Method renders a page of all objects followed by a user
-	 * 
-	 * @author Ibrahim al-khayat
-	 * 
-	 * @story C2S12
-	 * 
-	 */
-
-	public static void listFollows() {
-		User user = Security.getConnected();
-		try {
-			List<Organization> organizations = user.followingOrganizations;
-			List<Tag> tags = user.followingTags;
-			List<MainEntity> entities = user.followingEntities;
-			List<Topic> topics = user.topicsIFollow;
-			render(organizations, tags, entities, topics, user);
-		} catch (Exception e) {
-		}
-	}
-
-	/**
 	 * this Method is responsible for reporting an idea as a spam
 	 * 
 	 * @author ${Ahmed El-Hadi}

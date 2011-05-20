@@ -127,7 +127,7 @@
                         <input type="hidden" name="userId" value="${user.id}">
                     </li>
                     <li>
-                        <a href="@{Users.listFollows()}">Follow List</a>
+                        <a href="#" onclick="follows();">Follow List</a>
                     </li>
                     <li>
                         <a href="@{MarkRequest.markDuplicate()}">Duplicate Requests</a>
@@ -201,8 +201,78 @@
 #{/if}
 <body>
     #{doLayout /}
+	<div id="follow">
+		<center>
+		<br />
+		<b>Organizations</b>
+#{ifnot organizations}
+<p>
+    No organizations 
+</p>
+#{/ifnot}
+
+<ul>
+    #{list items:organizations, as:'organization'}
+    <li> 
+        <input type="submit" value="unfollow" onclick="org('${organization.id}');" />
+		<a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>
+    </li>
+	#{/list}
+</ul>
+
+<b>Entities</b>
+#{ifnot entities}
+<p>
+    No entities 
+</p>
+#{/ifnot}
+
+<ul>
+    #{list items:entities, as:'entity'}
+    <li> 
+        <input type="submit" value="unfollow" onclick="entity('${entity.id}');" />
+		<a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>
+    </li>
+	#{/list}
+</ul>
+
+<b>Topics</b>
+#{ifnot topics}
+<p>
+    No topics 
+</p>
+#{/ifnot}
+
+<ul>
+    #{list items:topics, as:'topic'}
+    <li> 
+        <input type="submit" value="unfollow" onclick="topic('${topic.id}');" />
+		<a href="@{Topics.show(topic.id)}">${topic.title}</a>
+    </li>
+	#{/list}
+</ul>
+
+<b>Tags</b>
+#{ifnot tags}
+<p>
+    No tags 
+</p>
+#{/ifnot}
+
+<ul>
+    #{list items:tags, as:'tag'}
+    <li> 
+        <input type="submit" value="unfollow" onclick="tag('${tag.id}');" />
+		<a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
+    </li>
+	#{/list}
+</ul>
+</center>
+	</div>
 </body>
 <script type="text/javascript" language="javascript">
+	$('#follow').hide();
+	var fol = false;
     $(function(){
         var app1 = true;
         $('#o1').hide();
@@ -313,7 +383,41 @@
             window.location.href = "/searchResult";
         });
     }
+	function tag(id){
+		$.post('@{Users.unfollowTag()}', {
+			tagId: id
+		});
+		alert("done!");
+		location.reload(true);
+	}
+	function topic(id){
+		$.post('@{Users.unfollowTopic()}', {
+			topicId: id
+		});
+		alert("done!");
+		location.reload(true);
+	}
+	function org(id){
+		$.post('@{Users.unfollowOrganization()}', {
+			organizationId: id
+		});
+		alert("done!");
+		location.reload(true);
+	}
+	function entity(id){
+		$.post('@{Users.unfollowEntity()}', {
+			entityId: id
+		});
+		alert("done!");
+		location.reload(true);
+	}
+	function follows(){
+		if (!fol) {
+			$('#follow').show(500);
+			fol = true;
+		} else {
+			$('#follow').hide();
+			fol = false;
+		}
+	}
 </script>
-<script type="text/javascript">
-</script>
-
