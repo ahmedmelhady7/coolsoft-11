@@ -195,13 +195,91 @@
                     <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="f" value="false">View ${org.name} Followers <input type="submit" value="Followers">
                     <br/>
                     <HR>
-                </form>#{if canInvite == true}
+                </form>
+				
+				<h4>Create Relationship between <select id="relType" onchange="showRelationForm()">
+						<option>select object</option>
+						<option>Entities</option>
+						<option>Topics</option>
+						<option>Tags</option>
+					</select> :</h4>
+					name: <select id="rels"> 
+					<option>choose name</option>
+					#{list items:org.relationNames, as:'relName'}
+					<option>${relName}</option>
+					#{/list}
+					</select> <input id="rTextForm" type="text" /> <input type="submit" value="add new name" onclick="addName()" />
+				
+				<p><form id="eform" style="display: none;">
+					
+					Source: <select id="ent1">
+					<option>Select Entity</option>
+					#{list items:entities, as:'entityElement'}
+					<option value="${entityElement.id}">${entityElement.name}</option>
+					#{/list}
+					</select>		
+					
+					Destination: <select id="ent2">
+					<option>Select Entity</option>
+					#{list items:entities, as:'entityElement'}
+					<option value="${entityElement.id}">${entityElement.name}</option>
+					#{/list}
+					</select>			
+					
+					<input type="submit" value="Create Relation" onclick="createERelation()"/>
+					
+				</form></p>
+				<p>
+				<form id="tform" action="@{Topics.createRelation()}" style="display: none;">
+										
+					Source: <select id="tpc1"> 
+					<option>Select Topic</option>
+					#{list items:topics, as:'topicElement'}
+					<option value="${topicElement.id}">${topicElement.title}</option>
+					#{/list}
+					</select>
+					
+					Destination: <select id="tpc2"> 
+					<option>Select Topic</option>
+					#{list items:topics, as:'topicElement'}
+					<option value="${topicElement.id}">${topicElement.title}</option>
+					#{/list}
+					</select>
+					
+					<input type="submit" value="Create Relation" />
+					
+				</form></p>
+				
+				
+			<p>	<form id="gform" action="@{Tags.createRelation()}" style="display: none;">
+										
+					Source: <select id="tg1"> 
+					<option>Select Tag</option>
+					#{list items:tags, as:'tagElement'}
+					<option value="${tagElement.id}">${tagElement.name}</option>
+					#{/list}
+					</select>
+
+					Destination: <select id="tg2"> 
+					<option>Select Tag</option>
+					#{list items:tags, as:'tagElement'}
+					<option value="${tagElement.id}">${tagElement.name}</option>
+					#{/list}
+					</select>
+
+					<input type="submit" value="Create Relation" />				
+					
+				</form></p>
+				<HR>
+			
+				
+				#{if canInvite == true}
                 <form onsubmit="help('${org.id}', email.value);" method="post">
                     <input type="hidden" id='users' name="users" value="${usernames}">Invite an Idea Developer 
                     <br>
                     Username/Email: <input type="text" id="email" name="email" autoComplete="group"/>
                     <br>
-                    Invite by:<input type="radio" id="s" name="select" value="username" checked> Username<input type="radio" name="select" value="email">E-Mail   
+                    Invite by:<input type="radio" id="s" name="select" value="username" checked> Username<input type="radio" name="select" value="email">E-Mail
                     <script language="javascript" type="text/javascript">
                         var a = document.getElementById('users');
                         b = a.value + "";
@@ -230,6 +308,64 @@
             </body>
             </html>
             <script type="text/javascript">
+            	
+				function createERelation(){
+					var n = document.getElementById("rels").value;
+					var s = document.getElementById("ent1").value;
+					var d = document.getElementById("ent2").value;
+					
+					if (n == "choose name" || s == "Select Entity" || d == "Select Entity") {
+						alert("Please fill the required filed(s)");
+					}else if (s == d){
+						alert("Cannot relate entity to itself!");
+					}else {
+						$.post('@{EntityRelationships.createRelationship()}', {
+							name: n,
+							sourceId: s,
+							destinationId: d
+						})
+					}
+				}
+				
+				
+				function showRelationForm(){
+					var txt = document.getElementById('relType').value;
+					if(txt == "Entities"){
+						$('#tform').hide();
+						$('#gform').hide();
+						$('#eform').slideToggle();
+					}else if(txt == "Topics"){
+						$('#eform').hide();
+						$('#gform').hide();
+						$('#tform').slideToggle();
+					}else if(txt == "Tags"){
+						$('#eform').hide();
+						$('#tform').hide();
+						$('#gform').slideToggle();
+					}else{
+						$('#eform').hide();
+						$('#tform').hide();
+						$('#gform').hide();
+					}
+				}
+				
+				function addName(){
+					var strg = document.getElementById('rTextForm').value;
+					if (strg != "") {
+						if ($.post('@{Organizations.addRelationName()}',{organizationId:${org.id}, name:strg})) {
+							alert("name added");
+							window.location.reload();
+							document.getElementById('rTextForm').value = "";
+						}
+						else {
+							alert("duplicate name!!");
+						}
+					}else{
+						alert("enter a name!");
+					}
+				}
+				
+				
                                 function echeck(str) {
                                 
                                 		var at="@"
