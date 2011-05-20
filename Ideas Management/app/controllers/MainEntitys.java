@@ -8,6 +8,7 @@ import controllers.CRUD.ObjectType;
 import play.data.validation.Required;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
+import play.mvc.Controller;
 import play.mvc.With;
 import models.CreateRelationshipRequest;
 import models.MainEntity;
@@ -397,11 +398,15 @@ public class MainEntitys extends CRUD {
 				source, organisation).first();
 		MainEntity destinationEntity = MainEntity.find("byNameAndOrganization",
 				destination, organisation).first();
-		CreateRelationshipRequest relationRequest = new CreateRelationshipRequest(
-				user, sourceEntity, destinationEntity, name);
-		relationRequest.save();
-		redirect(request.controller + ".viewEntity", entityId,
-				"Request created");
+		if(organisation.entityRequestIsDuplicate(source, destination, name)) {
+			System.out.println("Already exists");
+		} else {
+			CreateRelationshipRequest relationRequest = new CreateRelationshipRequest(
+					user, sourceEntity, destinationEntity, name);
+			relationRequest.save();
+			redirect(request.controller + ".viewEntity", entityId,
+					"Request created");
+		}
 	}
 
 }

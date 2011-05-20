@@ -97,12 +97,12 @@ public class Organization extends CoolModel {
 	@OneToMany(mappedBy = "organization")
 	// , cascade = CascadeType.ALL)
 	public List<RequestToJoin> joinRequests;
-	
+
 	/**
 	 * list of the created relations names in the organization
 	 */
 	public ArrayList<String> relationNames;
-	
+
 	/**
 	 * *********
 	 */
@@ -114,7 +114,7 @@ public class Organization extends CoolModel {
 	 * id of the profile picture
 	 */
 	public long profilePictureId;
-	
+
 	/**
 	 * The description of an organization
 	 */
@@ -151,17 +151,23 @@ public class Organization extends CoolModel {
 		this.relatedTags = new ArrayList<Tag>();
 		// this.enrolledUsers = new ArrayList<User>();
 		bannedUsers = new ArrayList<BannedUser>();
-		relationNames = new ArrayList<String>(){{add("manages"); add("has many"); add("belongs to");}};
+		relationNames = new ArrayList<String>() {
+			{
+				add("manages");
+				add("has many");
+				add("belongs to");
+			}
+		};
 		profilePictureId = -1;
-		
-//		for testing
-//		relationNames.add("manages");
-//		relationNames.add("hates");
-//		relationNames.add("controlls");
-//		relationNames.add("lead by");
-		
-//		topicRelationNames = new ArrayList<String>();
-//		tagRelationNames = new ArrayList<String>();
+
+		// for testing
+		// relationNames.add("manages");
+		// relationNames.add("hates");
+		// relationNames.add("controlls");
+		// relationNames.add("lead by");
+
+		// topicRelationNames = new ArrayList<String>();
+		// tagRelationNames = new ArrayList<String>();
 
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
 		joinRequests = new ArrayList<RequestToJoin>();
@@ -223,17 +229,23 @@ public class Organization extends CoolModel {
 		this.followers = new ArrayList<User>();
 		this.relatedTags = new ArrayList<Tag>();
 
-		relationNames = new ArrayList<String>(){{add("manages"); add("has many"); add("belongs to");}};
+		relationNames = new ArrayList<String>() {
+			{
+				add("manages");
+				add("has many");
+				add("belongs to");
+			}
+		};
 		profilePictureId = -1;
-//		for testing
-//		relationNames.add("manages");
-//		relationNames.add("hates");
-//		relationNames.add("controlls");
-//		relationNames.add("lead by");
-		
-//		topicRelationNames = new ArrayList<String>();
-//		tagRelationNames = new ArrayList<String>();
-		
+		// for testing
+		// relationNames.add("manages");
+		// relationNames.add("hates");
+		// relationNames.add("controlls");
+		// relationNames.add("lead by");
+
+		// topicRelationNames = new ArrayList<String>();
+		// tagRelationNames = new ArrayList<String>();
+
 		// this.enrolledUsers = new ArrayList<User>();
 		// bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
@@ -255,7 +267,7 @@ public class Organization extends CoolModel {
 
 	public void unfollow(User user) {
 		followers.remove(user);
-	     _save();
+		_save();
 	}
 
 	/**
@@ -268,6 +280,45 @@ public class Organization extends CoolModel {
 
 	public String toString() {
 		return this.name;
+	}
+
+	public boolean entityRequestIsDuplicate(String source, String destination,
+			String name) {
+		for (MainEntity entity : entitiesList) {
+			for (EntityRelationship relation : entity.relationsSource) {
+				if (relation.name.equalsIgnoreCase(name)
+						&& relation.source.name.equalsIgnoreCase(source)
+						&& relation.destination.name
+								.equalsIgnoreCase(destination)) {
+					return true;
+				}
+			}
+			for (EntityRelationship relation : entity.relationsDestination) {
+				if (relation.name.equalsIgnoreCase(name)
+						&& relation.source.name.equalsIgnoreCase(source)
+						&& relation.destination.name
+								.equalsIgnoreCase(destination)) {
+					return true;
+				}
+			}
+			for (CreateRelationshipRequest request : entity.relationshipRequestsSource) {
+				if (request.name.equalsIgnoreCase(name)
+						&& request.sourceEntity.name.equalsIgnoreCase(source)
+						&& request.destinationEntity.name
+								.equalsIgnoreCase(destination)) {
+					return true;
+				}
+			}
+			for (CreateRelationshipRequest request : entity.relationshipRequestsDestination) {
+				if (request.name.equalsIgnoreCase(name)
+						&& request.sourceEntity.name.equalsIgnoreCase(source)
+						&& request.destinationEntity.name
+								.equalsIgnoreCase(destination)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }
