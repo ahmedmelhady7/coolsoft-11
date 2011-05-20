@@ -17,18 +17,20 @@
 		}
 		else {
 		
-			$.post('@{sendRequests()}', {itemId:itemId,userIds:ids});
-				
-				
+			$.post('@{sendRequests()}', {itemId:itemId,userIds:ids}, function() {
+								
 				for (var i = 0; i < ids.length; i = i + 1) {
 					$('#user_' + ids[i]).remove();
 				}
 				
 				//window.location.reload();
 		
-			if(ids.length == users.size()) {
+			if(ids.length == ${users.size()}) {
 					document.getElementById("userLabel").innerHTML = "There are no more users to display";
 				}
+			});
+				
+
 				
 			
 			//alert("Requests sent successfully");
@@ -66,10 +68,10 @@ You can also search for a certain nonblocked user from the plan's topic user by 
 <label id = "userLabel"> </label>
 <br/>
 <ul style="list-style: none; ">
-#{list items:users, as:'user'}
-<li id = "user_${user.id}" >
-<input type="checkbox" id="${user.id}" onclick="toggleUser(${user.id});"> 
-<a href="#">${user.username}</a>
+#{list items:users, as:'user1'}
+<li id = "user_${user1.id}" >
+<input type="checkbox" id="${user1.id}" onclick="toggleUser(${user1.id});"> 
+<a href="#">${user1.username}</a>
 <br/>
 </li>
 #{/list}

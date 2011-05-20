@@ -3,6 +3,7 @@ package controllers;
 import models.Comment;
 import models.Idea;
 import models.Item;
+import models.Log;
 import models.MainEntity;
 import models.Organization;
 import models.Plan;
@@ -110,11 +111,15 @@ public class Plans extends CRUD {
 		item.save();
 		List<User> otherUsers = new ArrayList<User>();
 		otherUsers.addAll(item.getAssignees());
-		otherUsers.addAll(item.plan.topic.getOrganizer());
+		for (User user1 : item.plan.topic.getOrganizer()) {
+			if (!otherUsers.contains(user1)) {
+				otherUsers.add(user1);
+			}
+		}
 		User userToBeNotified;
 		String notificationMsg = "User " + user.username
 				+ " is now working on the item " + item.summary
-				+ " in the plan ";
+				+ " in the plan " + item.plan.title;
 		for (int i = 0; i < otherUsers.size(); i++) {
 			userToBeNotified = otherUsers.get(i);
 			if (userToBeNotified.id.compareTo(user.id) != 0) {
@@ -122,7 +127,12 @@ public class Plans extends CRUD {
 						item.plan.id, "plan", notificationMsg);
 			}
 		}
-
+		String logDescription = "User " + user.firstName + " " + user.lastName
+				+ " is now working on the item " + item.summary
+				+ " in the plan " + item.plan.title + " of the topic "
+				+ item.plan.topic.title;
+		Log.addUserLog(logDescription, user, item,
+				item.plan.topic.entity.organization);
 		// viewAsList(item.plan.id);
 	}
 
@@ -220,8 +230,15 @@ public class Plans extends CRUD {
 					+ plan.title + " of the topic: " + topic.title;
 			Notifications.sendNotification(idea.author.id, plan.id, "plan",
 					notificationContent);
+			String logDescription = "Idea " + idea.title + " that belongs to "
+					+ idea.author.firstName + " " + idea.author.lastName
+					+ " has been promoted to exection in the plan "
+					+ plan.title + " of the topic " + plan.topic.title;
+			Log.addUserLog(logDescription, idea.author, plan, idea,
+					plan.topic.entity.organization);
 
 		}
+
 		planView(planId);
 
 	}
@@ -330,7 +347,7 @@ public class Plans extends CRUD {
 		Idea idea = Idea.findById(ideaId);
 		Plan plan = Plan.findById(planId);
 		idea.plan = null;
-		idea.author.communityContributionCounter = idea.author.communityContributionCounter -13;
+		idea.author.communityContributionCounter = idea.author.communityContributionCounter - 13;
 		idea.author.save();
 		plan.ideas.remove(idea);
 		idea.save();
@@ -340,6 +357,12 @@ public class Plans extends CRUD {
 				+ " of the topic: " + plan.topic.title;
 		Notifications.sendNotification(idea.author.id, plan.id, "plan",
 				notificationMsg);
+		String logDescription = "Idea " + idea.title + " that belongs to "
+				+ idea.author.firstName + " " + idea.author.lastName
+				+ " has been removed from the plan " + plan.title
+				+ " of the topic " + plan.topic.title;
+		Log.addUserLog(logDescription, idea.author, plan, idea,
+				plan.topic.entity.organization);
 
 	}
 
@@ -384,6 +407,14 @@ public class Plans extends CRUD {
 							destination.plan.id, "plan", description);
 				}
 
+				String logDescription = "User " + sender.firstName + " "
+						+ sender.lastName
+						+ " is requesting to volunteer to work on the item "
+						+ destination.summary + " in the plan "
+						+ destination.plan.title + " of the topic "
+						+ destination.plan.topic.title;
+				Log.addUserLog(logDescription, sender, destination.plan,
+						destination, destination.plan.topic.entity.organization);
 				// Plans.viewAsList(dest.plan.id);
 				// justify(itemId, dest.plan.id, 2);
 			}
@@ -421,6 +452,15 @@ public class Plans extends CRUD {
 							notificationDestination.get(i).id, item.plan.id,
 							"plan", description);
 				}
+				String logDescription = "User "
+						+ user.firstName
+						+ " "
+						+ user.lastName
+						+ " canceled his volunteer request to work on the item "
+						+ item.summary + " in the plan " + item.plan.title
+						+ " of the topic " + item.plan.topic.title;
+				Log.addUserLog(logDescription, user, item.plan, item,
+						item.plan.topic.entity.organization);
 			}
 		}
 	}
@@ -500,7 +540,7 @@ public class Plans extends CRUD {
 	/**
 	 * This method takes the parameters from the web page of the plan creation
 	 * to instantiate a plan object, it also sends a notification to the organizers of the topic
-	 * and then calls amethod to view the plan as alist
+	 * and then calls a method to view the plan as alist
 	 * 
 	 * @story C5S1
 	 * 
@@ -874,6 +914,7 @@ public class Plans extends CRUD {
 	 *            The id of the item being deleted
 	 */
 	public static boolean deleteItem(long itemId, int notify) {
+		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
 		Plan plan = Plan.findById(item.plan.id);
 		plan.items.remove(item);
@@ -906,7 +947,13 @@ public class Plans extends CRUD {
 			items.remove(item);
 			tag.save();
 		}
+		String logDescription = "User " + user.firstName + " " + user.lastName
+				+ " deleted the item " + item.summary + " in the plan "
+				+ plan.title + " of the topic " + plan.topic.title;
+		Log.addUserLog(logDescription, user, plan,
+				plan.topic.entity.organization);
 		item.delete();
+
 		return true;
 		// viewAsList(planId);
 	}
@@ -923,14 +970,15 @@ public class Plans extends CRUD {
 	 * 
 	 */
 	public static boolean deletePlan(long planId) {
+		User user = Security.getConnected();
 		List<User> toBeNotified = new ArrayList<User>();
 		Plan plan = Plan.findById(planId);
 		String notificationMsg = "The plan " + plan.title + " has been deleted";
 		for (Item item : plan.items) {
-			for (User user : item.assignees) {
-				if (!toBeNotified.contains(user)) {
-					toBeNotified.add(user);
-					Notifications.sendNotification(user.id, plan.topic.id,
+			for (User user1 : item.assignees) {
+				if (!toBeNotified.contains(user1)) {
+					toBeNotified.add(user1);
+					Notifications.sendNotification(user1.id, plan.topic.id,
 							"topic", notificationMsg);
 				}
 			}
@@ -975,8 +1023,9 @@ public class Plans extends CRUD {
 		}
 		User creator = plan.madeBy;
 		creator.planscreated.remove(plan);
-		for(int i = 0; i< plan.ideas.size(); i++)
-		plan.ideas.get(i).author.communityContributionCounter = plan.ideas.get(i).author.communityContributionCounter  - 13;
+		for (int i = 0; i < plan.ideas.size(); i++)
+			plan.ideas.get(i).author.communityContributionCounter = plan.ideas
+					.get(i).author.communityContributionCounter - 13;
 		creator.save();
 		plan.madeBy = null;
 		plan.save();
@@ -984,6 +1033,11 @@ public class Plans extends CRUD {
 		Topic topic = plan.topic;
 		topic.plan = null;
 		topic.save();
+		String logDescription = "User " + user.firstName + " " + user.lastName
+				+ " deleted the plan " + plan.title + " of the topic "
+				+ topic.title;
+		Log.addUserLog(logDescription, user, topic,
+				topic.entity.organization);
 		plan.delete();
 		System.out.println("the plan has been deletd");
 		return true;
@@ -1194,7 +1248,8 @@ public class Plans extends CRUD {
 
 	/**
 	 * 
-	 * This method relates a given item to the given entity if the item is not related to any entity
+	 * This method relates a given item to the given entity if the item is not
+	 * related to any entity
 	 * 
 	 * @author Mohamed Mohie
 	 * 
@@ -1202,7 +1257,7 @@ public class Plans extends CRUD {
 	 * 
 	 * @param itemId
 	 *            the id of the item
-	 *            
+	 * 
 	 * @param entityId
 	 *            the id of the entity
 	 */

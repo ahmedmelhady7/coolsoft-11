@@ -8,6 +8,7 @@ import play.mvc.With;
 
 import models.AssignRequest;
 import models.Item;
+import models.Log;
 import models.Plan;
 import models.User;
 
@@ -98,32 +99,23 @@ public class AssignRequests extends CRUD {
 	 *            : the id of the plan containing the item that will be assigned
 	 *            to the list of users selected
 	 */
-	public static void sendRequests(long itemId, long[] userIds) {
-		User user;
-		// Date d = new Date();
-		// System.out.println("ana da5alt send requests" + userIds.length);
-		// for (int i = 0; i < userIds.length; i++) {
-		//
-		// System.out.println(userIds[i]);
-		// }
-		Item item = Item.findById(itemId);
+	public static boolean sendRequests(long itemId, long[] userIds) {
+		User destination;
+		User sender = Security.getConnected();
+		Item source = Item.findById(itemId);
 		for (int i = 0; i < userIds.length; i++) {
-			user = User.findById(userIds[i]);
-			if (filter(itemId, item.plan.id).contains(user)) {
-				if (!(item.status == 2) && !item.endDatePassed()) {
+			destination = User.findById(userIds[i]);
+			if (filter(itemId, source.plan.id).contains(destination)) {
+				if (!(source.status == 2) && !source.endDatePassed()) {
 					System.out.println("hab3at " + userIds[i]);
 					// sendAssignRequest(itemId,userIds[i]);
-					User sender = Security.getConnected();
-					User destination = User.findById(userIds[i]);
-					Item source = Item.findById(itemId);
-					String description = "You have been sent a request to work on this item "
-
-						+ source.summary
-						+ "\n "
-						+ " In the plan "
-						+ source.plan.title;
-					AssignRequest assignRequest = new AssignRequest(source, destination,
-							sender, description);
+					String description = "You have been sent a request to work on this item"
+							+ source.summary
+							+ "\n "
+							+ " In the plan "
+							+ source.plan.title;
+					AssignRequest assignRequest = new AssignRequest(source,
+							destination, sender, description);
 
 					assignRequest.save();
 					source.addAssignRequest(assignRequest);
@@ -134,10 +126,21 @@ public class AssignRequests extends CRUD {
 							.contains(assignRequest));
 					Notifications.sendNotification(userIds[i], source.plan.id,
 							"plan", description);
+
+					String logDescription = "User " + sender.firstName + " "
+							+ sender.lastName + " sent an asssignment request"
+							+ destination.firstName + " "
+							+ destination.lastName + " to work on the item "
+							+ source.summary + " in the plan "
+							+ source.plan.title + " of the topic "
+							+ source.plan.topic.title;
+					Log.addUserLog(logDescription, sender, destination,
+							source.plan, source,
+							source.plan.topic.entity.organization);
 				}
 			}
 		}
-
+		return true;
 	}
 
 	/**

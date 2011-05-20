@@ -6,6 +6,9 @@ import java.util.List;
 import play.mvc.With;
 
 import models.Item;
+import models.MainEntity;
+import models.Plan;
+import models.Tag;
 import models.User;
 import models.*;
 

@@ -29,7 +29,7 @@
                     <a href="@{Plans.editPlan(p.id)}" id="demo01">Edit plan</a>
                 </li>
 				<li>
-				  	<a href="#" onclick="delPlan(${p.id}, '${p.topic.id}')">delete plan</a>
+				  	<a href="#" onclick="delPlan(${p.id}, ${p.topic.id})">delete plan</a>
 				</li>
                 #{/if} 
                 <li>
