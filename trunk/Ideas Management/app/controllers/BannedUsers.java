@@ -115,27 +115,27 @@ public class BannedUsers extends CRUD {
 			}
 		}
 		
-		List<BannedUser> sortedByEntity = sortByID(entityBannedUsers);
-		List<BannedUser> sortedByTopic = sortByID(topicBannedUsers);
-		List<BannedUser> sortByUserInEntity = sortByUser(entityBannedUsers);
-		List<BannedUser> sortByUserInTopic = sortByUser(topicBannedUsers);
-		List<BannedUser> sortByActionInEntity = sortByAction(entityBannedUsers);
-		List<BannedUser> sortByActionInTopic = sortByAction(topicBannedUsers);
-		
-		String ids = "";
-		String names = "";
-		for(int  i = 0 ; i < sortedByEntity.size() ; i++){
-			ids = ids + sortedByEntity.get(i).resourceID + ",";
-			
-			MainEntity entity = MainEntity.findById(sortedByEntity.get(i).resourceID);
-			names = names + (entity.name) + ",";
-			
-		}
-		boolean Flag = false; if(user == null ){
-			Flag = true;
-		}
-		System.out.println(Flag + "Yarubbbbbbbbbbbbbbbb");
-		render(user,organizationID, sortedByEntity , sortedByTopic , sortByUserInEntity , sortByUserInTopic , sortByActionInEntity , sortByActionInTopic );
+//		List<BannedUser> sortedByEntity = sortByID(entityBannedUsers);
+//		List<BannedUser> sortedByTopic = sortByID(topicBannedUsers);
+//		List<BannedUser> sortByUserInEntity = sortByUser(entityBannedUsers);
+//		List<BannedUser> sortByUserInTopic = sortByUser(topicBannedUsers);
+//		List<BannedUser> sortByActionInEntity = sortByAction(entityBannedUsers);
+//		List<BannedUser> sortByActionInTopic = sortByAction(topicBannedUsers);
+//		
+//		String ids = "";
+//		String names = "";
+//		for(int  i = 0 ; i < sortedByEntity.size() ; i++){
+//			ids = ids + sortedByEntity.get(i).resourceID + ",";
+//			
+//			MainEntity entity = MainEntity.findById(sortedByEntity.get(i).resourceID);
+//			names = names + (entity.name) + ",";
+//			
+//		}
+//		boolean Flag = false; if(user == null ){
+//			Flag = true;
+//		}
+		//System.out.println(Flag + "Yarubbbbbbbbbbbbbbbb");
+		render(user,organizationID,topicBannedUsers);
 		
  }
 	/**
@@ -900,24 +900,24 @@ public class BannedUsers extends CRUD {
 			}
 		}
 		
-		List<BannedUser> sortedByEntity = sortByID(entityBannedUsers);
-		List<BannedUser> sortedByTopic = sortByID(topicBannedUsers);
-		List<BannedUser> sortByUserInEntity = sortByUser(entityBannedUsers);
-		List<BannedUser> sortByUserInTopic = sortByUser(topicBannedUsers);
-		List<BannedUser> sortByActionInEntity = sortByAction(entityBannedUsers);
-		List<BannedUser> sortByActionInTopic = sortByAction(topicBannedUsers);
+//		List<BannedUser> sortedByEntity = sortByID(entityBannedUsers);
+//		List<BannedUser> sortedByTopic = sortByID(topicBannedUsers);
+//		List<BannedUser> sortByUserInEntity = sortByUser(entityBannedUsers);
+//		List<BannedUser> sortByUserInTopic = sortByUser(topicBannedUsers);
+//		List<BannedUser> sortByActionInEntity = sortByAction(entityBannedUsers);
+//		List<BannedUser> sortByActionInTopic = sortByAction(topicBannedUsers);
+//		
+//		String ids = "";
+//		String names = "";
+//		for(int  i = 0 ; i < sortedByEntity.size() ; i++){
+//			ids = ids + sortedByEntity.get(i).resourceID + ",";
+//			
+//			MainEntity entity = MainEntity.findById(sortedByEntity.get(i).resourceID);
+//			names = names + (entity.name) + ",";
+//			
+//		}
 		
-		String ids = "";
-		String names = "";
-		for(int  i = 0 ; i < sortedByEntity.size() ; i++){
-			ids = ids + sortedByEntity.get(i).resourceID + ",";
-			
-			MainEntity entity = MainEntity.findById(sortedByEntity.get(i).resourceID);
-			names = names + (entity.name) + ",";
-			
-		}
-		System.out.println(ids);
-		render(user,organizationID, sortedByEntity , sortedByTopic , sortByUserInEntity , sortByUserInTopic , sortByActionInEntity , sortByActionInTopic );
+		render(user,organizationID, entityBannedUsers );
 		
 		
 	}
