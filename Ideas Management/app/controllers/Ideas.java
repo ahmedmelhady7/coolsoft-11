@@ -80,9 +80,8 @@ public class Ideas extends CRUD {
 		else
 			System.out.println("NUll ya fale7");
 	}
-	
-	public static void discardIdea(long ideaId)
-	{
+
+	public static void discardIdea(long ideaId) {
 		Idea idea = Idea.findById(ideaId);
 		idea.delete();
 	}
@@ -378,8 +377,11 @@ public class Ideas extends CRUD {
 		// boolean openToEdit = i.openToEdit;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
-		boolean canDelete = Users.isPermitted(user, "hide and delete an idea", topicId, "topic");
+		boolean canDelete = Users.isPermitted(user, "hide and delete an idea",
+				topicId, "topic");
 		boolean alreadyReported = false;
+		// mestani lama
+		boolean canUse = Users.canDelete(user, "use", ideaId, "idea", topicId);
 		System.out.println("false alreadyreoprted");
 		for (int i = 0; i < idea.reporters.size()
 				|| i < user.ideasReported.size(); i++) {
@@ -398,14 +400,17 @@ public class Ideas extends CRUD {
 		try {
 			System.out.println("show() done, about to render");
 			// System.out.println("x is " + x);
-			boolean permittedToTagIdea = Users.isPermitted(user, "tag his/her ideas", ideaId, "idea") || Users.isPermitted(user, "tag ideas in my organization", ideaId, "idea");
+			boolean permittedToTagIdea = Users.isPermitted(user,
+					"tag his/her ideas", ideaId, "idea")
+					|| Users.isPermitted(user, "tag ideas in my organization",
+							ideaId, "idea");
 			render(type, object, /* tags, */user, canDelete, comments, topic,
 					plan, permittedToTagIdea,
-					/* openToEdit, */topicId, alreadyReported, deletemessage, /*
-																			 * deletable
-																			 * ,
-																			 */
-					ideaId, rate, idea,priority);
+					/* openToEdit, */topicId, alreadyReported, canUse,
+					deletemessage, /*
+									 * deletable ,
+									 */
+					ideaId, rate, idea, priority);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -684,8 +689,9 @@ public class Ideas extends CRUD {
 		if (!tag.equals("@@")) {
 
 			if (!Users.isPermitted(user, "tag ideas in my organization",
-					entity.id, "entity") || !Users.isPermitted(user, "tag his/her ideas",
-							topic.id, "topic")) {
+					entity.id, "entity")
+					|| !Users.isPermitted(user, "tag his/her ideas", topic.id,
+							"topic")) {
 				// user not allowed
 				System.out.println("user not allowed");
 				userNotAllowed = true;
@@ -725,7 +731,7 @@ public class Ideas extends CRUD {
 							idea.belongsToTopic.entity.organization, user);
 					idea.tagsList.add(temp);
 					temp.taggedIdeas.add(idea);
-					temp.save();	
+					temp.save();
 					System.out.println("new tag created and added");
 				}
 
@@ -755,18 +761,16 @@ public class Ideas extends CRUD {
 		User user = Security.getConnected();
 		Idea i = Idea.findById(ideaId);
 		long topicId = i.belongsToTopic.id;
-		if(i.usersRated.contains(user))
+		if (i.usersRated.contains(user))
 			System.out.print("user already rated");
-		else
-		{
+		else {
 			System.out.println("user didn't rate yet");
 			i.usersRated.add(user);
-			if (Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic"))
-			{
-				if(i.rating.equals("Not yet rated"))
+			if (Users.isPermitted(user, "rate/prioritize ideas;", topicId,
+					"topic")) {
+				if (i.rating.equals("Not yet rated"))
 					i.rating = Integer.toString(rat);
-				else
-				{
+				else {
 					int oldRating = Integer.parseInt(i.rating);
 					int newRating;
 					newRating = (oldRating + rat) / 2;
@@ -776,9 +780,7 @@ public class Ideas extends CRUD {
 				redirect("/ideas/show?ideaId=" + ideaId);
 			}
 		}
-		
-		
-		
+
 	}
 
 	/**
@@ -795,12 +797,17 @@ public class Ideas extends CRUD {
 		User U = User.find("byUsername", userName).first();
 		String type = "Idea";
 		User user = Security.getConnected();
-		String desc = user.firstName + " " + user.lastName
-				+ " shared an Idea with you" + "\n" + "Copy this link into your address bar to view the shared Idea : http://localhost:9008/ideas/show?ideaId="+ideaId;
+		String desc = user.firstName
+				+ " "
+				+ user.lastName
+				+ " shared an Idea with you"
+				+ "\n"
+				+ "Copy this link into your address bar to view the shared Idea : http://localhost:9008/ideas/show?ideaId="
+				+ ideaId;
 		long notId = ideaId;
 		long userId = U.id;
 		Notifications.sendNotification(userId, notId, type, desc);
-		redirect("/ideas/show?ideaId="+ideaId);
+		redirect("/ideas/show?ideaId=" + ideaId);
 
 	}
 
@@ -819,9 +826,10 @@ public class Ideas extends CRUD {
 		Idea i = Idea.findById(ideaId);
 		long topicId = i.belongsToTopic.id;
 		System.out.println("---------------------------------------");
-		System.out.println("isPermitted raga3et " + Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic"));
-		if (Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic"))
-		{
+		System.out.println("isPermitted raga3et "
+				+ Users.isPermitted(user, "rate/prioritize ideas;", topicId,
+						"topic"));
+		if (Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic")) {
 			i.priority = priority;
 			i.save();
 			redirect("/ideas/show?ideaId=" + ideaId);
@@ -884,14 +892,14 @@ public class Ideas extends CRUD {
 	 * @description: this method sends a notification to the creator telling him
 	 *               who disliked his idea
 	 */
-	
+
 	public static void disLike(long ideaId) {
 		Idea idea = Idea.findById(ideaId);
 		Notifications.sendNotification(idea.author.id, ideaId, "Idea",
 				Security.getConnected().username + " dis liked your idea "
 						+ idea.title);
 	}
-	
+
 	/**
 	 * The method renders the ideas the organizer wants to merge
 	 * 
@@ -900,138 +908,142 @@ public class Ideas extends CRUD {
 	 * @story C3S7
 	 * 
 	 * @param selectedIdeas
-	 * 				: array of the selected ideas ids
+	 *            : array of the selected ideas ids
 	 * 
 	 * @param TopicId
-	 * 				: the id of the topic t which the ideas belongs
+	 *            : the id of the topic t which the ideas belongs
 	 */
-	
+
 	public static void displayIdeasToMerge(long[] selectedIdeasIds, long topicId) {
-		
+
 		Topic targetTopic = Topic.findById(topicId);
 		List<Idea> selectedIdeas = new ArrayList<Idea>();
-		//List<Idea> allIdeas = targetTopic.getIdeas();
+		// List<Idea> allIdeas = targetTopic.getIdeas();
 		String selectedIdeasString = "";
-		
+
 		selectedIdeas = Ideas.getIdeasFromIds(selectedIdeasIds, topicId);
-		
-		for(int i = 0; i < selectedIdeasIds.length; i++) {
-			selectedIdeasString = selectedIdeasString + selectedIdeasIds[i] + "%";
+
+		for (int i = 0; i < selectedIdeasIds.length; i++) {
+			selectedIdeasString = selectedIdeasString + selectedIdeasIds[i]
+					+ "%";
 		}
 		long idd = selectedIdeas.get(0).getId();
 		System.out.println(selectedIdeasString + " " + idd);
 		render(selectedIdeas, topicId, selectedIdeasString, idd);
 	}
-	
-	
+
 	/**
-	 * method to merge ideas, overwrites the first idea with the new description and title
-	 * then deletes the other ideas, the authors of the deleted ideas are added in the description
-	 * as contributors and the merger is added to the description as the merger
+	 * method to merge ideas, overwrites the first idea with the new description
+	 * and title then deletes the other ideas, the authors of the deleted ideas
+	 * are added in the description as contributors and the merger is added to
+	 * the description as the merger
 	 * 
 	 * @author Mostafa Aboul Atta
 	 * 
 	 * @stroy C3S7
 	 * 
 	 * @param topicId
-	 * 			: the id of the topic to which the ideas belong
+	 *            : the id of the topic to which the ideas belong
 	 * @param oldIdeas
-	 * 			: ideas to be merged
+	 *            : ideas to be merged
 	 * @param newTitle
-	 * 			: title of the resulted idea
+	 *            : title of the resulted idea
 	 * @param newDescription
-	 * 			: description of the resulted idea
+	 *            : description of the resulted idea
 	 * 
 	 */
-	public static void mergeIdeas(long topicId, String oldIdeas, String newTitle,String newDescription) {
-		
+	public static void mergeIdeas(long topicId, String oldIdeas,
+			String newTitle, String newDescription) {
+
 		System.out.println("I entered mergeIdeas()");
 		String allContributors = "";
 		Topic targetTopic = Topic.findById(topicId);
 		User merger = Security.getConnected();
-		
+
 		String[] ideasIdsString = oldIdeas.split("%");
 		long[] ideasIds = new long[ideasIdsString.length];
 		List<Idea> selectedIdeas = new ArrayList<Idea>();
 		Idea ideaToKeep;
-		
-		for(int i = 0; i < ideasIdsString.length; i++) {
+
+		for (int i = 0; i < ideasIdsString.length; i++) {
 			ideasIds[i] = Long.parseLong(ideasIdsString[i]);
 		}
-		
+
 		selectedIdeas = Ideas.getIdeasFromIds(ideasIds, topicId);
-		
-		newDescription = newDescription + " " +  "\nContributers: ";
-		
-		for(int i = 1; i < selectedIdeas.size(); i++) {
+
+		newDescription = newDescription + " " + "\nContributers: ";
+
+		for (int i = 1; i < selectedIdeas.size(); i++) {
 			String contributor = selectedIdeas.get(i).author.username;
 			System.out.println("contributor:" + contributor);
-			if(i == selectedIdeas.size() - 1) {
+			if (i == selectedIdeas.size() - 1) {
 				allContributors = allContributors + contributor;
 			}
-			
-			else{
+
+			else {
 				allContributors = allContributors + contributor + ", ";
 			}
 		}
-		
-		allContributors = allContributors + " \n" + "Merger: " + merger.username;
+
+		allContributors = allContributors + " \n" + "Merger: "
+				+ merger.username;
 		newDescription = newDescription + allContributors;
-		
+
 		ideaToKeep = selectedIdeas.get(0);
-		
+
 		ideaToKeep.description = newDescription;
 		ideaToKeep.title = newTitle;
-		
-		
-		for(int i = 1; i < selectedIdeas.size(); i++) {
+
+		for (int i = 1; i < selectedIdeas.size(); i++) {
 			Idea ideaToDelete = selectedIdeas.get(i);
 			ideaToDelete.delete();
 		}
-		
+
 		ideaToKeep.save();
 		targetTopic.save();
 
 		redirect("/topics/show?topicId=" + topicId);
 	}
-	
+
 	/**
-	 * takes an array of ideas ids and the topic id they belong to and 
-	 * returns a list of the ideas
+	 * takes an array of ideas ids and the topic id they belong to and returns a
+	 * list of the ideas
 	 * 
 	 * @author Mostafa Aboul-Atta
 	 * 
 	 * @param selectedIdeasIds
-	 * 				: ideas ids that their ideas to be returned
+	 *            : ideas ids that their ideas to be returned
 	 * @param topicId
-	 * 				: id of the topic to which the ideas belong
-	 * @return
-	 * 				: list of Idea
+	 *            : id of the topic to which the ideas belong
+	 * @return : list of Idea
 	 */
-	public static List<Idea> getIdeasFromIds(long[] selectedIdeasIds, long topicId) {
+	public static List<Idea> getIdeasFromIds(long[] selectedIdeasIds,
+			long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
 		List<Idea> selectedIdeas = new ArrayList<Idea>();
 		List<Idea> allIdeas = targetTopic.getIdeas();
-		//String selectedIdeasString = "";
-		
+		// String selectedIdeasString = "";
+
 		Arrays.sort(selectedIdeasIds);
-		
-		for(int i = 0; i < allIdeas.size(); i++) {
-			
-			//checks if all selected ideas are already in the new list
-			if(selectedIdeas.size() == selectedIdeasIds.length) {
+
+		for (int i = 0; i < allIdeas.size(); i++) {
+
+			// checks if all selected ideas are already in the new list
+			if (selectedIdeas.size() == selectedIdeasIds.length) {
 				break;
 			}
-			
+
 			Idea currentIdea = allIdeas.get(i);
-			System.out.println("selectedIdeasIds bef sort:" + selectedIdeasIds.length);
-			
-			System.out.println("selectedIdeasIds bef sort:" + selectedIdeasIds.length);
-			//checks if the current idea is indeed selected
-			if(Arrays.binarySearch(selectedIdeasIds, currentIdea.getId()) >= 0) {
+			System.out.println("selectedIdeasIds bef sort:"
+					+ selectedIdeasIds.length);
+
+			System.out.println("selectedIdeasIds bef sort:"
+					+ selectedIdeasIds.length);
+			// checks if the current idea is indeed selected
+			if (Arrays.binarySearch(selectedIdeasIds, currentIdea.getId()) >= 0) {
 				selectedIdeas.add(currentIdea);
 			}
-			
+
 		}
 		System.out.println("selectedIdeasIds:");
 		for (int i = 0; i < selectedIdeasIds.length; i++) {
@@ -1041,8 +1053,7 @@ public class Ideas extends CRUD {
 		for (int i = 0; i < selectedIdeas.size(); i++) {
 			System.out.println(selectedIdeas.get(i).getId());
 		}
-			
-			
+
 		return selectedIdeas;
 	}
 

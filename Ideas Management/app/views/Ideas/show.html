@@ -9,6 +9,12 @@
     </label>
 </h3>
 <br/>
+<table id = "success" border="0" bgcolor="#FF0000" cellspacing="0" id ="toFil">
+		<tr><td><font size ="3" color ="black"><i>
+					<font color="#000000"><b><i>Idea Has been Reported As Spam</i></b></font>                
+        </i></font></td><td>
+</table>
+
 <div id="crudShow" class="${type.name}">
     <br/>
     <font color="Red">
@@ -17,15 +23,15 @@
     <br/>
     
     <div class="objectForm">
-    #{if canDelete}
+    #{if canDelete || canUse}
     #{form @delete(object._key())}
 		<p class="crudDelete">
-			<input type="submit" value="&{'Delete Idea', type.modelName}" />
+			<input type="submit" value="&{'Delete Idea                    ', type.modelName}" />
 		</p>
 	#{/form}    
 	#{/if}
 	<div>
-	#{if canDelete}
+	#{if canDelete||canUse}
 	<form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="">
         <p class="crudDelete">
             <input type="submit" onClick="window.prompt('enter a justification note for the author of the idea');" value="&{'Hide Idea', type.modelName}" />
@@ -82,13 +88,20 @@
 		<br/>
         #{/form}
     </div>
-    
 		  #{if alreadyReported==false}
     <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform">
         <input type="hidden" name="ideaId" value="${ideaId}">
-                <input type="submit" value="Report As Spam">
+                <input id="spam" type="submit" value="Report As Spam" onclick="">
             </form>
             #{/if}
+            <script type="text/javascript">
+            	$('#spam').click(function(){
+            	$('#success').show();});
+            </script>
+            <style type="text/css">
+			#success{display: none;}
+		</style>
+            
 	<br>
 	<div>
 	<form action="@{Ideas.shareIdea()}">
