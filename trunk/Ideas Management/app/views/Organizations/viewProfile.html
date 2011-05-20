@@ -135,9 +135,28 @@
             <input type="hidden" name="orgId" value="${org.id}">Request to post: <input type="submit" value="show topics">
         </form>#{/if}
         #{if flag == 1}
+        <hr>
         <form action="@{BannedUsers.restrictOrganizer()}">
-            <input type="hidden" name="orgId" value='${org.id}'>Restrict organizer in this organization: <input type="submit" value="view">
-        </form>#{/if}
+            <input type="hidden" name="orgId" value='${org.id}'>
+            Restrict / De-Restrict organizers in this organization: <input type="submit" value="view">
+        </form>
+         <br />
+         <form action="@{BannedUsers.restrictGroupInSelectedEntity()}">
+            <input type="hidden" name="organizationID" value='${org.id}'>
+            Restrict Group of organizers in a certain Entity or Topic : <input type="submit" value="view">
+        </form>
+        <br />
+        <form action="@{BannedUsers.viewRestrictedOrganizersInOrganization()}">
+            <input type="hidden" name="organizationID" value='${org.id}'>
+            View Restricted Organizers in Entities: <input type="submit" value="view">
+        </form>
+        <br />
+        <form action="@{BannedUsers.viewRestrictedOrganizersTopicPath()}">
+            <input type="hidden" name="organizationID" value='${org.id}'>
+            View Restricted Organizers in Topics: <input type="submit" value="view">
+        </form>
+         
+        #{/if}
         <!--     </body> -->
         <!-- </html> -->
         <!-- <script type="text/javascript"> -->
