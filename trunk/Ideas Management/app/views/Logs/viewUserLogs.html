@@ -6,9 +6,20 @@
 <br/>
 <br/>
 Search Logs <input type="text" size="20" name="name" id="table">
-
 <input type="button" onclick="javascript: show();" value="Search" />
 
+<br/>
+<br/> 
+   <form action="@{Logs.viewLogs()}" method="POST">
+   	<input type="submit" value="Go"/>
+   Organizations List: </font></legend> <br /> <select name = "organizationId" id = "organization">
+  #{list items:organization, as:'org'}
+  <option name = organizationId value=${org.id}>${org.name}</option>
+   #{/list}
+</select>
+</form>
+<br/>
+<br/> 
 <table border="0" bgcolor="#ececec" cellspacing="5">
 	#{if toFilter.isEmpty()}
 </table>
