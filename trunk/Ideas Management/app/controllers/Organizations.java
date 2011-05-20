@@ -15,6 +15,7 @@ import play.exceptions.TemplateNotFoundException;
 import play.mvc.Controller;
 import play.mvc.With;
 import controllers.CRUD.ObjectType;
+import models.BannedUser;
 import models.Invitation;
 import models.MainEntity;
 import models.Organization;
@@ -608,13 +609,21 @@ public class Organizations extends CRUD {
 	 */
 	public static void deleteOrganization(long organizationId) {
 		Organization organization = Organization.findById(organizationId);
-		String name = organization.name;
-		System.out.println(name);
+		List<User> followers = User.findAll();
+		int j = 0;
+		while(j < followers.size()) {
+			if(followers.get(j).followingOrganizations.contains(organization)) {
+				followers.get(j).followingOrganizations.remove(organization);
+				followers.get(j).save();
+			}
+			j++;
+		}
+		
 		//fadwa
 		for(int i =0 ; i <organization.joinRequests.size();i++)
 			organization.joinRequests.get(i).delete();
 		//fadwa
-		Organization.delete("byName", name);
+		organization.delete();
 		Organizations.mainPage();
 	}
 	
