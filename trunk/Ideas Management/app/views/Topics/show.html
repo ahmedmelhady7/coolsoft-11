@@ -353,7 +353,7 @@
 			#{if createRelationship}
 			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
 				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
-				<input type="checkbox" id="createRelationship" name="createRelationship" checked>Allow entity to have relationships<br />
+				<input type="checkbox" id="createRelationship" name="createRelationship" checked>Allow topic to have relationships<br />
 				<input type="submit" onclick="get_Value()" value="Change"><br />
 				<HR>
 			</form>
@@ -361,7 +361,7 @@
 			#{else}
 			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
 				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
-				<input type="checkbox" id="createRelationship" name="createRelationship">Allow entity to have relationships
+				<input type="checkbox" id="createRelationship" name="createRelationship">Allow topic to have relationships
 				<input type="submit" onclick="get_Value()" value="Change"><br />
 				<HR>
 			</form>
