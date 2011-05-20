@@ -147,7 +147,7 @@
 						<a href="@{Documents.newDocument(-1)}">Create a Document</a>
                     </li>
                     <li>
-						<a href="@{Documents.listDocument(-1)}">Show my Documents</a>
+						<a href="#" onclick="showDoc();">Show my Documents</a>
                     </li>
                 </ul>
             </div>
@@ -269,10 +269,32 @@
 </ul>
 </center>
 	</div>
+	
+	<div id="docs">
+		<center>
+			
+<b>Documents</b><br />
+#{ifnot documents}
+<p>
+    No documents 
+</p>
+#{/ifnot}
+<ul>
+    #{list items:documents, as:'document'}
+    <li>
+    	<a href="@{Documents.viewDocument(document.id)}">${document.name}</a>
+   </li>
+	#{/list}
+</ul>
+		</center>
+	</div>
+	
 </body>
 <script type="text/javascript" language="javascript">
 	$('#follow').hide();
 	var fol = false;
+	var doc = false;
+	$('#docs').hide();
     $(function(){
         var app1 = true;
         $('#o1').hide();
@@ -413,11 +435,24 @@
 	}
 	function follows(){
 		if (!fol) {
+			$('#docs').hide();
+			doc = false;
 			$('#follow').show(500);
 			fol = true;
 		} else {
 			$('#follow').hide();
 			fol = false;
+		}
+	}
+	function showDoc(){
+		if (!doc) {
+			$('#follow').hide();
+			fol = false;
+			$('#docs').show(500);
+			doc = true;
+		} else {
+			$('#docs').hide();
+			doc = false;
 		}
 	}
 </script>

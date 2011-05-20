@@ -6,6 +6,7 @@ import java.util.List;
 
 import notifiers.Mail;
 
+import models.Document;
 import models.Idea;
 import models.Invitation;
 import models.MainEntity;
@@ -77,8 +78,15 @@ public class Login extends Controller {
 		List<Tag> tags = user.followingTags;
 		List<MainEntity> entities = user.followingEntities;
 		List<Topic> topics = user.topicsIFollow;
+		
+		List<Document> documents;
+		documents = Document.find("byUserOrganizationId", user.id).fetch();
+		for (int i = 0; i < documents.size(); i++) {
+			if (documents.get(i).isOrganization)
+				documents.remove(i);
+			}
 
-		render(user, admin, drafts, organizations, tags, entities, topics);
+		render(user, admin, drafts, organizations, tags, entities, topics, documents);
 	}
 
 	/**
