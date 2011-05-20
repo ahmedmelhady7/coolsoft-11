@@ -45,6 +45,9 @@ public class BannedUsers extends CRUD {
 		//restrictOrganizerEntityPath(entityId);
 		//restrictOrganizerTopicPath(topicId);
 	}
+	/**
+	 * dummy method
+	 */
 	
 	public static void viewOrganizers(){
 		//viewRestrictedOrganizersInOrganization(1);
@@ -74,8 +77,17 @@ public class BannedUsers extends CRUD {
 	    User user = Security.getConnected();
 		render(users, organizationID , flag , user);
 	}
+
 	/**
+	 * renders a sorted lists of BannedUser to be viewed
 	 * 
+	 * @author Nada Ossama
+	 * 
+	 * @story C1S7
+	 * 
+	 * @param organizationID
+	 *            long id of the organization that the viewed bannedUser belongs
+	 *            to
 	 */
  public static void viewRestrictedOrganizersTopicPath(long organizationID){
 	 Organization organization = Organization.findById(organizationID);
@@ -966,9 +978,18 @@ public class BannedUsers extends CRUD {
 	}
 	/**
 	 * maps the id of an entity or a topic to it's name or title
+	 * 
+	 * @author Nada Ossama
+	 * 
+	 * @story C1S7 
+	 * 
+	 *@param idd , String idd is the of the object to be mapped
+	 *
+	 *@param type , is the type of the object to be mapped
 	 */
+	
 	public static String maps(String idd , String type){
-		System.out.println("idd"+ idd);
+		
 	     long id = Long.parseLong(idd);
 		String name = "";
 	//	JsonObject json = new JsonObject();
@@ -987,11 +1008,30 @@ public class BannedUsers extends CRUD {
 //		renderJSON(json.toString());
 		return(name);
 	}
+
 	/**
+	 * maps the action , banned user name , resource name given a certain type
+	 * (entity/topic) number to know which list to map from and order is the
+	 * index in that list
 	 * 
+	 * @author Nada Ossama
+	 * 
+	 * @story C1S7
+	 * 
+	 * @param order
+	 *            int order is the index in the list to map from
+	 * 
+	 * @param organizationID
+	 *            long organization id that the viewed organizers are restricted
+	 *            in
+	 * @param number
+	 *            int number to know which list to map from
+	 * @param type
+	 *            is the type of the source the organizer is restricted from
+	 *            (entity/topic)
 	 */
 	public static void go(int order , long organizationID , int number , String type){
-		System.out.println("DA5aaaaaaaaaaal hehe");
+		
 		
 		Organization organization = Organization.findById(organizationID);
 		
