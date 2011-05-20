@@ -1079,13 +1079,20 @@ public class Users extends CRUD {
 			Topic topic = Topic.findById(entityTopicId);
 			entity = topic.entity;
 			organization = entity.organization;
+			enrolled = UserRoleInOrganization
+			.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? and uro.role = ? and uro.entityTopicID = ? and type = ?",
+					organization, role, entityTopicId, type).fetch();
 		}
-		enrolled = UserRoleInOrganization
-				.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? and uro.role = ? and uro.entityTopicID = ? and type = ?",
-						organization, role, entityTopicId, type).fetch();
+		else{
+			enrolled = UserRoleInOrganization
+			.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? and uro.role = ? ",
+					organization, role).fetch();
+		}
+
 
 		for (int i = 0; i < enrolled.size(); i++) {
 			if (enrolled.get(i).state.equals("a")) {
+
 				finalEnrolled.add(enrolled.get(i));
 			}
 		}
