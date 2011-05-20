@@ -46,7 +46,7 @@ public class Users extends CRUD {
 	 *            : String criteria to order list by
 	 * 
 	 * @param order
-	 *            : String the order of the list
+	 *            : String the order of the list (asc /desc)
 	 * 
 	 * 
 	 */
@@ -318,8 +318,22 @@ public class Users extends CRUD {
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		Model object = (Model) constructor.newInstance();
+		User user =Security.getConnected();
+		int adminFlag=0;
+		int unregisteredUser = 0 ;
+		try
+		{
+			if(user.isAdmin)
+			{
+				adminFlag=1;
+			}
+		}
+		catch(NullPointerException e)
+		{
+			unregisteredUser = 1;
+		}
 		try {
-			render(type, object);
+			render(type, object,adminFlag,unregisteredUser);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/blank.html", type, object);
 		}
@@ -1289,6 +1303,7 @@ public class Users extends CRUD {
 		}
 
 		System.out.println("create() about to save object");
+		tmp.state = "w";
 		object._save();
 		System.out.println("create() object saved");
 		tmp = (User) object;
@@ -1678,6 +1693,24 @@ public class Users extends CRUD {
 		user.save();
 		Mail.deactivate();
 		logout();
+	}
+	
+	/**
+	 * activates the account of that user by setting the state to "a" and then renders a message
+	 * 
+	 * @story C1S10
+	 * 
+	 * @params userId
+	 * 				long 
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 */
+	public static void activate(long userId) {
+		User user = User.findById(userId);
+		user.state = "a";
+		user._save();
+		render();
 	}
 
 }
