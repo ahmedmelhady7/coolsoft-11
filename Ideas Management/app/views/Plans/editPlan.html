@@ -3,7 +3,7 @@
 #{set title:'Edit Plan' /}
 <h1> Edit Action plan </h1>
 #{form @Plans.edit(), method:'POST', id:'planeditingnForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
-Plan title:<input type= "text" id = "title" name = "title" size= "30"><label id = "titleerror"> </label>
+Plan title:<input type= "text" id = "title" name = "title" size= "30" value="${p.title}"><label id = "titleerror"> </label>
 </br>
 Start Date::
         <select name="startDay" id="startDay">
@@ -124,11 +124,11 @@ End Date::
         </select>
 </br>
 <p><b>Insert the description of the plan</b></p>
-<textarea id = "description" name = "description" rows= "7" cols = "50">
+<textarea id = "description" name = "description" rows= "7" cols = "50">${p.description}
 </textarea><label id = "descriptionerror"> </label>
 </br>
 <p><b>Insert the requirements of the plan</b></p>
-<textarea id = "requirement" name = "requirement" rows = "7" cols = "50" >
+<textarea id = "requirement" name = "requirement" rows = "7" cols = "50" >${p.requirement}
 </textarea><label id = "requirementerror"> </label>
 </br>
 <input type = "hidden" name = "planId" value = '${p.id}' >
