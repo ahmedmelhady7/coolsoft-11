@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import models.Idea;
 import models.Label;
@@ -27,16 +28,25 @@ public class Labels extends CRUD
 		
 		ArrayList<Idea> choosenIdeas = new ArrayList<Idea>();
 		
-		for(long ideaId : ideas)
+		if(ideas != null)
 		{
-			Idea tmpIdea = Idea.findById(ideaId);
-			choosenIdeas.add(tmpIdea);
+			System.out.println("not null");
+			for(long ideaId : ideas)
+			{
+				Idea tmpIdea = Idea.findById(ideaId);
+				choosenIdeas.add(tmpIdea);
+				System.out.println("Idea added to Label "+name+" : "+tmpIdea.id);
+			}
+			
+			Label label = new Label(name,user,choosenIdeas);
+			label.save();
 		}
-		
-		Label label = new Label(name,user,choosenIdeas);
-		label.save();
-		//showAllLabels();
-		//redirect("/Labels/showAllLabels");
+		else
+		{
+			System.out.println("tsadda2 kanet null ya m3alem");
+			Label label = new Label(name,user);
+			label.save();
+		}
 	}
 	
 	public static void deleteLabel(long labelId)
@@ -48,30 +58,42 @@ public class Labels extends CRUD
 	
 	public static void showLabel(long labelId)
 	{
+		User user = Security.getConnected();
 		Label label = Label.findById(labelId);
-		render(label);
+		
+		List<Idea> otherIdeas = user.ideasCreated;
+		
+		for(int i =0;i<otherIdeas.size();i++)
+			if(label.ideas.contains(otherIdeas.get(i)))
+				otherIdeas.remove(i);
+		
+		render(label,otherIdeas);
 	}
 	
-	public static void removeIdeas(long labelId, ArrayList<Idea> ideas)
+	public static void removeIdeas(long labelId, long [] ideas)
 	{
 		Label label = Label.findById(labelId);
 		
-		for(Idea idea : ideas)
-			label.removeIdea(idea);
+		for(long ideaId : ideas)
+		{
+			Idea tmpIdea = Idea.findById(ideaId);
+			label.removeIdea(tmpIdea);
+		}
 		
 		label.save();
-		showLabel(labelId);
 	}
 	
-	public static void addIdeas(long labelId, ArrayList<Idea> ideas)
+	public static void addIdeas(long labelId, long [] ideas)
 	{
 		Label label = Label.findById(labelId);
 		
-		for(Idea idea : ideas)
-			label.addIdea(idea);
+		for(long ideaId : ideas)
+		{
+			Idea tmpIdea = Idea.findById(ideaId);
+			label.addIdea(tmpIdea);
+		}
 		
 		label.save();
-		showLabel(labelId);
 	}
 	
 	public static void changeName(long labelId,String newName)
@@ -79,7 +101,7 @@ public class Labels extends CRUD
 		Label label = Label.findById(labelId);
 		label.name = newName;
 		label.save();
-		//showLabel(labelId);
+		//redirect("/labels/showLabel?labelId="+labelId);
 	}
 	
 	

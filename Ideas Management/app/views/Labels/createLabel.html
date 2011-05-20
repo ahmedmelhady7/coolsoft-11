@@ -2,29 +2,83 @@
 
 <div id="creation">
 	<p>Label Name:</p>
-	<input type="textbox" size = "50" id="name"></input>  
+	<input type="textbox" size = "50" id="name"></input> 
+	<span id="warning"></span> 
+	<br>
 	<input type="submit" value ="create label" onclick="save()"></input>
 </div>
 
-<div id="labels">
-	<p>
-		Choose the Ideas you want to apply the label to:
-	</p>
+<form name="labels">
 	
-	<select id="myIdeas" multiple="yes">
+	<p>Choose the Ideas you want to apply the label to:</p>
+	
+	#{if user.ideasCreated.isEmpty() }
+		<font color="#123456"><p>You don't have any Ideas to Label</p></font>
+	#{/if}
+	#{else}
 		#{list items:user.ideasCreated , as:'idea'}
-    		<option value="${idea.id}">${idea.title}</input><br>
+	    	<input type="checkbox" value="${idea.id}">${idea.title}</input><br>
 		#{/list}
-     </select>
-
-</div> 
+    #{/else}
+</form> 
 
 <script type="text/javascript">
 	function save()
 	{
-		var choosenIdeas = new Array();
-		choosenIdeas = document.getElementById("myIdeas").value;
 		var x = document.getElementById("name").value.toString();
-		$.post('@{Labels.doCreateLabel()}' ,{name:x, ideas: choosenIdeas},function(){window.location.href= "/labels/showAllLabels"});
+		var choosenIdeas = new Array();
+		
+		if(validate())
+		{
+			if(${user.ideasCreated.isEmpty()} == true)
+			{
+				$.post('@{Labels.doCreateLabel()}' ,{name:x, ideas:choosenIdeas},function(){window.location.href= "/labels/showAllLabels"});
+			}
+			else
+			{
+				choosenIdeas = loopForm(document.labels);
+				$.post('@{Labels.doCreateLabel()}' ,{name:x, ideas:choosenIdeas},function(){window.location.href= "/labels/showAllLabels"});
+			}
+			
+		}
+		else
+			showWarning();
 	}
+	
+	function validate()
+	{
+		var x = document.getElementById("name").value.toString();
+		
+		x = jQuery.trim(x);
+		
+		if(x == "")
+			return false;
+		else
+			return true;
+	}
+	
+	function showWarning()
+	{
+		document.getElementById('warning').innerHTML = "Please Enter a valid name for the label";
+	}
+	
+    function loopForm(form)
+	{
+        var j = 0;
+		var choosenIdeas = new Array();
+        
+		for (var i = 0; i < form.elements.length; i++) 
+		{
+			if (form.elements[i].type == 'checkbox') 
+			{
+                if (form.elements[i].checked == true) 
+				{
+                    choosenIdeas[j] = form.elements[i].value ;
+					j++;
+                }
+            }
+        }
+        
+		return choosenIdeas;
+    }
 </script>
