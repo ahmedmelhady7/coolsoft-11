@@ -10,6 +10,7 @@ import models.Idea;
 import models.Invitation;
 import models.MainEntity;
 import models.Organization;
+import models.Tag;
 import models.Topic;
 import models.User;
 import play.mvc.Before;
@@ -71,8 +72,13 @@ public class Login extends Controller {
 			}
 
 		}*/
+		
+		List<Organization> organizations = user.followingOrganizations;
+		List<Tag> tags = user.followingTags;
+		List<MainEntity> entities = user.followingEntities;
+		List<Topic> topics = user.topicsIFollow;
 
-		render(user, admin, drafts);
+		render(user, admin, drafts, organizations, tags, entities, topics);
 	}
 
 	/**
