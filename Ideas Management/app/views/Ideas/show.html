@@ -140,6 +140,8 @@
 		</br>
  		Idea rating : ${rate}
  		<br/>
+ 		
+ 		#{if checkPermitted}
 		<form action="@{Ideas.rate(ideaId,rat)}" method="GET">
     <input type="submit" value="Submit rating"/><input type = "hidden" name = "ideaId" value = ${ideaId}>
     <select name="rat">
@@ -151,6 +153,7 @@
         <option value="5">5</option>
     </select>
 </form>
+		#{/if}
 		<br />
  		<form action="@{Comments.addCommentToIdea()}" method="GET">
 			<input type = "text" name = "comment">
@@ -170,6 +173,7 @@
 		<br/>
 		Idea priority : ${priority}	
 		<br/>
+		#{if checkPermitted}
 		<form action = @{Ideas.setPriority()} method = "GET">
 		<input type ="submit" value = "Submit Priority"/>
 		<br />
@@ -182,6 +186,7 @@
 		<input type = "radio" name = "priority" value = "low"/> low
 		<br />
 		</form>
+		#{/if}
         <br />
         <br />
         </div>

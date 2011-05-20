@@ -3,6 +3,7 @@ package controllers;
 import java.util.*;
 import java.lang.reflect.*;
 import java.lang.annotation.*;
+import java.util.Collections;
 
 import javax.persistence.Id;
 
@@ -383,6 +384,10 @@ public class Ideas extends CRUD {
 		// mestani lama
 		boolean canUse = Users.canDelete(user, "use", ideaId, "idea", topicId);
 		System.out.println("false alreadyreoprted");
+		List<User> allUsers = User.findAll();
+		List <String> userNames = new ArrayList<String>(allUsers.size());
+		Collections.sort(userNames);
+		boolean checkPermitted = Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic");
 		for (int i = 0; i < idea.reporters.size()
 				|| i < user.ideasReported.size(); i++) {
 			System.out.println("gowa el loop");
@@ -411,7 +416,7 @@ public class Ideas extends CRUD {
 					deletemessage, /*
 									 * deletable ,
 									 */
-					ideaId, rate, idea, priority);
+					ideaId, rate, idea, priority,userNames,checkPermitted);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
