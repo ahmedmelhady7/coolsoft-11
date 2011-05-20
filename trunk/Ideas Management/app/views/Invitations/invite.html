@@ -1,7 +1,7 @@
 <!--C1S6  @author : Mai Magdy -->
 #{extends 'main.html' /}
 
-<a href="@{MainEntitys.viewEntity(entity.id)}">Back to ${entity.name} </a>
+
 <br/>
 <br/>
 <div id="errors" style="display:true">
@@ -29,7 +29,12 @@
 <tr><td>Email <input type="text" size="30" id="mail" name="email"></td></tr>
 <input type = "hidden" id="id" name ="userId" value =0>
 <input type = "hidden" name ="type" value = ${type}>
+#{if type==0}
 <input type = "hidden" name ="id" value = ${entity.id}>
+#{/if}
+#{else}
+<input type = "hidden" name ="id" value = ${topic.id}>
+#{/else}
 <tr><td>&nbsp;</td><td><input type="submit" value="send">
 </table>
 </form>
@@ -44,7 +49,12 @@
 <tr><td>Name <input type="text" size="20" name="name"></td></tr>
 <tr><td>&nbsp;</td><td><input type="submit" value="search">
 <input type = "hidden" name ="type" value = ${type}>
+#{if type==0}
 <input type = "hidden" name ="id" value = ${entity.id}>
+#{/if}
+#{else}
+<input type = "hidden" name ="id" value = ${topic.id}>
+#{/else}
 
 </table>
 </form>
@@ -68,9 +78,13 @@
 
 <tr><td><font size ="3" color ="black">Name  : ${u.firstName} ${u.lastName}</font></td><td>
 <tr><td><font size ="3" color ="black">Username  : ${u.username}</font>
+#{if type==0}
+<td  align="right"><a href="@{Invitations.send(type,u.email,entity.id,u.id)}">invite</a></td></td><td>
+#{/if}
+#{else}
+<td  align="right"><a href="@{Invitations.send(type,u.email,topic.id,u.id)}">invite</a></td></td><td>
 
-<td  align="right"><a href="@{Invitations.send(0,u.email,entity.id,u.id)}">invite</a></td></td><td>
-
+#{/else}
 </table>
 </html>
 <br/>
@@ -98,9 +112,6 @@ function show(){
 	$('#errors').hide();
 	$('#block').hide();
 	$('#table').show();
-	
-	
-	
 }
 </script>
 
