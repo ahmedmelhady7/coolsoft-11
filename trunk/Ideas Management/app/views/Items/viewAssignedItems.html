@@ -1,4 +1,4 @@
-#{extends 'main.html' /}
+#{extends 'login/index.html' /}
 #{set title:'View list of assigned items' /}
 #{if assignedItems.size() > 0}<h3>Assigned Items </h3>
 
@@ -15,10 +15,10 @@
             Title: ${assignedItem.summary} &nbsp; &nbsp; &nbsp;
 			#{if !assignedItem.endDatePassed()}
             #{if assignedItem.status == 0} 
-			<input type = "button" value="Start" onclick ="javascript: start_task('${assignedItem.id}');"/> 
+			<input type = "button" value="Start" onclick ="javascript: start_task(${assignedItem.id});"/> 
 			#{/if}
             #{else}
-			<input type="checkbox"  onclick=" javascript: toggle_task('${assignedItem.id}');" ${assignedItem.status == 1 ? '':'checked'} />
+			<input type="checkbox"  onclick=" javascript: toggle_task(${assignedItem.id});" ${assignedItem.status == 1 ? '':'checked'} />
 		    <span>
 			#{if assignedItem.status == 1}
 			 Your item is in progress. Mark it as done.
@@ -71,8 +71,9 @@ function start_task(id)
 
 function toggle_task(id)
   {
-	$.post( '@{toggleItem()}' , {id: id});
-	window.location.reload();
+	$.post( '@{toggleItem()}' , {id: id}, function() {window.location.reload();});
+	
+	//window.location.reload();
   }
 
 </script>

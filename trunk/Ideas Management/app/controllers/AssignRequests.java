@@ -61,22 +61,22 @@ public class AssignRequests extends CRUD {
 	 *            to the list of users selected
 	 */
 	public static void viewUsers(long itemId, long planId) {
-		User loggedUser = Security.getConnected();
+		User user = Security.getConnected();
 		System.out.println(users2.size() + "OFEEEEEEEEEEEEEEEENNN");
 		ArrayList<User> users = new ArrayList<User>();
-		for (User user : users2) {
-			users.add(user);
+		for (User user2 : users2) {
+			users.add(user2);
 		}
-		System.out.println("logged user" + loggedUser.id);
+		System.out.println("logged user" + user.id);
 		for (int i = 0; i < users2.size(); i++) {
 			System.out.println("user ids" + users2.get(i).id);
-			if (users2.get(i).id.compareTo(loggedUser.id) == 0) {
+			if (users2.get(i).id.compareTo(user.id) == 0) {
 				System.out.println(true);
 				users.remove(i);
 			}
 		}
 		Item item = Item.findById(itemId);
-		render(users, itemId, planId, item);
+		render(users, itemId, planId, item, user);
 	}
 
 	/**

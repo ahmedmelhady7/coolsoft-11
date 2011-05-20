@@ -182,8 +182,9 @@ public class Plans extends CRUD {
 			}
 		}
 
-		render(ideas, topic, p, user, canEdit, canView, isOrganizer, canIdea, canAssign);
-		
+		render(ideas, topic, p, user, canEdit, canView, isOrganizer, canIdea,
+				canAssign);
+
 	}
 
 	/**
@@ -307,7 +308,8 @@ public class Plans extends CRUD {
 		}
 		List<Idea> ideas = p.ideas;
 
-		render(ideas, p, user, canEdit, canView, isOrganizer, canIdea, canAssign);
+		render(ideas, p, user, canEdit, canView, isOrganizer, canIdea,
+				canAssign);
 	}
 
 	/**
@@ -359,26 +361,27 @@ public class Plans extends CRUD {
 	 */
 	public static void sendVolunteerRequest(long itemId, String justification) {
 		User sender = Security.getConnected();
-		Item dest = Item.findById(itemId);
+		Item destination = Item.findById(itemId);
 
 		if (sender.canVolunteer(itemId)) {
-			if (!(dest.status == 2) && !dest.endDatePassed()) {
+			if (!(destination.status == 2) && !destination.endDatePassed()) {
 				VolunteerRequest volunteerRequest = new VolunteerRequest(
-						sender, dest, justification).save();
-				dest.addVolunteerRequest(volunteerRequest);
-				dest.save();
+						sender, destination, justification).save();
+				destination.addVolunteerRequest(volunteerRequest);
+				destination.save();
 				sender.addVolunteerRequest(volunteerRequest);
 				sender.save();
 				String description = sender.username
 						+ " has requested to volunteer to work on the following item "
-						+ dest.summary + "in the plan " + dest.plan.title
-						+ "of the topic" + dest.plan.topic.title;
-				List<User> notificationDestination = dest.plan.topic
+						+ destination.summary + "in the plan "
+						+ destination.plan.title + "of the topic"
+						+ destination.plan.topic.title;
+				List<User> notificationDestination = destination.plan.topic
 						.getOrganizer();
 				for (int i = 0; i < notificationDestination.size(); i++) {
 					Notifications.sendNotification(
-							notificationDestination.get(i).id, dest.plan.id,
-							"plan", description);
+							notificationDestination.get(i).id,
+							destination.plan.id, "plan", description);
 				}
 
 				// Plans.viewAsList(dest.plan.id);
@@ -386,6 +389,39 @@ public class Plans extends CRUD {
 			}
 		} else {
 			// justify(itemId, dest.plan.id, 1);
+		}
+	}
+
+	/**
+	 * 
+	 * This Method deletes a volunteer request to work on an item that has been
+	 * sent by the user given the item id
+	 * 
+	 * @author Salma Osama
+	 * 
+	 * @story C5S10
+	 * 
+	 * @param itemId
+	 *            : the id of the item the user wishes to volunteer to work on
+	 */
+	public static void cancelVolunteerRequest(long itemId) {
+		Item item = Item.findById(itemId);
+		User user = Security.getConnected();
+		for (VolunteerRequest volunteerRequest : user.volunteerRequests) {
+			if (volunteerRequest.destination.id == itemId) {
+				volunteerRequest.delete();
+				String description = user.username
+						+ " has cancelled his/her volunteer request to work on the following item "
+						+ item.summary + "in the plan " + item.plan.title
+						+ "of the topic" + item.plan.topic.title;
+				List<User> notificationDestination = item.plan.topic
+						.getOrganizer();
+				for (int i = 0; i < notificationDestination.size(); i++) {
+					Notifications.sendNotification(
+							notificationDestination.get(i).id, item.plan.id,
+							"plan", description);
+				}
+			}
 		}
 	}
 
@@ -418,25 +454,22 @@ public class Plans extends CRUD {
 		planId++;
 		Plan p = Plan.findById(planId);
 		User user = Security.getConnected();
-		if(p.usersRated.contains(user))
+		if (p.usersRated.contains(user))
 			System.out.print("user already rated");
-		else
-		{
+		else {
 			System.out.println("user didn't rate yet");
 			p.usersRated.add(user);
-			if(p.rating.equals("Not yet rated"))
+			if (p.rating.equals("Not yet rated"))
 				p.rating = Integer.toString(rat);
-			else
-			{
+			else {
 				int oldRating = Integer.parseInt(p.rating);
 				int newRating;
 				newRating = (oldRating + rat) / 2;
 				p.rating = Integer.toString(newRating);
 			}
 			p.save();
-			redirect("/plans/viewaslist?planId="+planId);
+			redirect("/plans/viewaslist?planId=" + planId);
 		}
-	
 
 	}
 
@@ -986,7 +1019,7 @@ public class Plans extends CRUD {
 		plan.delete();
 		System.out.println("the plan has been deletd");
 		return true;
-		//Topics.show("" + topic.id);
+		// Topics.show("" + topic.id);
 	}
 
 	/**
@@ -1039,7 +1072,7 @@ public class Plans extends CRUD {
 
 				canIdea = 1;
 			}
-		} 
+		}
 
 		FileWriter fstream;
 		fstream = new FileWriter("Ideas-Management/public/xml/out.xml");
@@ -1131,7 +1164,8 @@ public class Plans extends CRUD {
 		out.close();
 
 		boolean timeline = true;
-		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea, canAssign, timeline);
+		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea,
+				canAssign, timeline);
 
 	}
 
@@ -1183,9 +1217,10 @@ public class Plans extends CRUD {
 
 				canIdea = 1;
 			}
-		} 
+		}
 
-		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea, canAssign);
+		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea,
+				canAssign);
 
 	}
 

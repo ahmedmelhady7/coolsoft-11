@@ -1,16 +1,20 @@
 #{extends 'planLayout.html' /}
-Topic: <a href="@{Topics.show("" + topic.id)}">${topic.title}</a>
+
+<body>
+<b>Topic: </b> <a href="@{Topics.show("" + topic.id)}">${topic.title}</a>
 
 <br/>
 #{if ideas.size() > 0}
+<br/>
 Ideas posted in this topic:
+<br/>
 <br/>
 #{form @Plans.selectedIdeas(), method:'POST', id:'creationForm', onsubmit: 'return validate()',
        enctype:'multipart/form-data' }
 	   
-<ul style="list-style: none; " >
+<ul style="list-style: none;" >
 #{list items:ideas, as:'idea'}
-<li></li>
+<li>
  <fieldset>
         <legend>
             Title: ${idea.title}
@@ -40,7 +44,7 @@ Ideas posted in this topic:
 The topic has no ideas to be promoted to execution
 #{/else}
 <a href="@{Plans.viewAsList(p.id)}">Go back to plan</a>
-
+</body>
 <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
 </script>
 <script type="text/javascript" >
