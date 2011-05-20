@@ -1285,6 +1285,9 @@ public class Topics extends CRUD {
 	 * 
 	 * @param id
 	 *            : the id of the topic to be deleted
+	 *            
+	 * @param justification
+	 *            : the justification message that is sent by the deleter to the creator of the topic
 	 */
 	public static void delete(String id, String justification) {
 		System.out.println("entered my delete");
@@ -1351,6 +1354,9 @@ public class Topics extends CRUD {
 	 * 
 	 * @param id
 	 *            : the id of the topic to be hidden
+	 *            
+	 * @param justification
+	 *            : the justification message that is sent by the deleter to the creator of the topic
 	 */
 	public static void hide(String id, String justification) {
 		ObjectType type = ObjectType.get(getControllerClass());
