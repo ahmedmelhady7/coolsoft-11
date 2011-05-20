@@ -17,8 +17,6 @@ import play.i18n.Messages;
 import play.mvc.With;
 import models.*;
 
-
-
 /**
  * @author Mohamed Hisham
  * 
@@ -57,11 +55,11 @@ public class EntityRelationships extends CRUD {
 		relation.destination.relationsDestination.add(relation);
 		if (!isDuplicate(name, relation.source.organization.relationNames))
 			relation.source.organization.relationNames.add(name);
-		
+
 		relation.save();
 		Organization organization = relation.source.organization;
 		organization.save();
-		
+
 		for (int i = 0; i < Users.getEntityOrganizers(source).size(); i++) {
 			Notifications.sendNotification(Users.getEntityOrganizers(source)
 					.get(i).id, source.organization.id, "Organization",
@@ -71,14 +69,13 @@ public class EntityRelationships extends CRUD {
 							+ "\".");
 		}
 		for (int i = 0; i < Users.getEntityOrganizers(destination).size(); i++) {
-			Notifications.sendNotification(Users.getEntityOrganizers(destination)
-					.get(i).id, source.organization.id, "Organization",
-					"a new relation \"" + name
+			Notifications.sendNotification(Users.getEntityOrganizers(
+					destination).get(i).id, source.organization.id,
+					"Organization", "a new relation \"" + name
 							+ "\" is created now between entities \""
 							+ source.name + "\" and \"" + destination.name
 							+ "\".");
 		}
-		
 
 		System.out.println("Creation DONE!!");
 		// render(name,source, destination);
@@ -159,7 +156,7 @@ public class EntityRelationships extends CRUD {
 	 * @param relationName
 	 *            : name of the relation
 	 * 
-	 * @param relationName
+	 * @param relationNames
 	 *            : list of relation names in the organization
 	 * 
 	 * @return boolean
