@@ -24,7 +24,7 @@
                 #{else}
                 #{if user.notificationsNumber == 1}<h1>user.notifications.get(0).title</h1>
                 <p>
-                    user.notifications.get(0).description
+                    user.notifications.get(notifications.size() - 1).description
                 </p>
                 #{/if}
                 #{else}

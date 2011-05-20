@@ -1665,6 +1665,8 @@ public class Users extends CRUD {
 	 * 
 	 * @author Ahmed Maged
 	 * 
+	 * @stroy C1S18
+	 * 
 	 */
 
 	public static void logout() {
