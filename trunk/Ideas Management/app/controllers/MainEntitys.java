@@ -34,7 +34,6 @@ public class MainEntitys extends CRUD {
 	 */
 	public static void createRelation(long entityId, long organizationId) {
 
-		// System.out.println("2ABEL !!!" + orgId + "," + entityId);
 		MainEntity entity = MainEntity.findById(entityId);
 		Organization organization = Organization.findById(organizationId);
 		List<MainEntity> entityList = new ArrayList<MainEntity>();
