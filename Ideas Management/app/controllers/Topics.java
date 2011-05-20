@@ -758,11 +758,13 @@ public class Topics extends CRUD {
 		boolean hidden = temporaryTopic.hidden;
 		int canClose = 0;
 		int canPlan = 0;
+		int canMerge = 0;
 		int canRestrict = 0;
 		long topicIdLong = topicId;
 		User actor = Security.getConnected();
 		String actionClose = "close a topic and promote it to execution";
 		String actionPlan = "create an action plan to execute an idea";
+		String actionMerge = "merge ideas";
 		Topic targetTopic = Topic.findById(topicIdLong);
 		boolean topicNotClosed = targetTopic.openToEdit;
 		boolean alreadyReported = false;
@@ -831,6 +833,10 @@ public class Topics extends CRUD {
 		if (Users.isPermitted(actor, actionPlan, topicIdLong, "topic")) {
 			canPlan = 1;
 		}
+		
+		if (Users.isPermitted(actor, actionMerge, topicIdLong, "topic")) {
+			canMerge = 1;
+		}
 
 		int permission = 1;
 
@@ -873,7 +879,7 @@ public class Topics extends CRUD {
 					targetTopic, allowed, permission, topicId, canPost,
 					canNotPost, pending, follower, canCreateRelationship,
 					seeRelationStatus, createRelationship, actor, hidden,
-					canRestrict,check);
+					canRestrict,check, canMerge);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
