@@ -1,7 +1,7 @@
 <!-- @author : Mai Magdy -->
 #{extends 'main.html' /}
 
-<a href="@{Login.index()}">Back to Home</a>
+<a href="@{Login.homePage()}">Back to Home</a>
 <hr>          </hr>
 
 <u><font size ="5" color ="blue">Idea Developers Enrolled</font></u>
@@ -25,6 +25,7 @@
 <div id="3_${u}" ></div>
 <textarea rows="2" cols="20" id="6_${u}" style="display:none"></textarea>
 <input type="submit" id="4_${u}"  value="block" style="display:none">
+<input type="submit" id="7_${u}"  value="block" style="display:none">
 <input type="submit" id="5_${u}"  value="cancel" style="display:none">
 </td><td> 
 </table>
@@ -73,7 +74,8 @@ document.getElementById('2_${c}').value="Block from using";
 <script type="text/javascript">
 
 function show(userId,type,numId,id,i){
-	       
+	    
+		   
 	if ( type==0 ) {
 		        
 		       var text=document.getElementById('1_'+i).value;
@@ -156,11 +158,12 @@ function show(userId,type,numId,id,i){
 					  $('#3_' + i).show();
 					  $('#3_' + i).html('<font  size ="2"><i>please specify the reason</i></font>');
 					 
-					 $('#4_' + i).show();
+					 $('#7_' + i).show();
 					 $('#5_' + i).show();
 					 document.getElementById('1_' + i).disabled = true;
 					 document.getElementById('2_' + i).disabled = true;
-					 $('#4_' + i).click(function(){
+					
+					 $('#7_' + i).click(function(){
 					 	
 						if (document.getElementById('6_' + i).value == '') {
 							$('#3_' + i).html('<font color="red"  size ="2"><i>please specify the reason first</i></font>')
@@ -179,7 +182,7 @@ function show(userId,type,numId,id,i){
 								text: text,
 								message: message
 							}, function(){
-								$('#4_' + i).hide();
+								$('#7_' + i).hide();
 								textarea.hide();
 								$('#5_' + i).hide();
 								$('#3_' + i).hide();
@@ -192,7 +195,7 @@ function show(userId,type,numId,id,i){
 					
 					
 					$('#5_' + i).click(function(){
-						    $('#4_' + i).hide();
+						    $('#7_' + i).hide();
 							 $('#5_' + i).hide();
 						     textarea.hide();
 							 $('#3_' + i).hide();
