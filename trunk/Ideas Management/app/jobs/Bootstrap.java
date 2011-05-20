@@ -35,6 +35,7 @@ public class Bootstrap extends Job {
 
 			User rf = new User("aymaestro@gmail.com", "majic", "1234", "Ahmed",
 					"Maged", 0, new Date(1990, 11, 11), "Egypt", "Programmer");
+			// System.out.println(rf.topicsReported.size());
 			rf.save();
 
 			User admin = new User("admin@coolsoft.com", "admin", "1234", "Mr.",
@@ -99,10 +100,11 @@ public class Bootstrap extends Job {
 					"Ashraf", "Mansoor", 0, new Date(1960, 11, 11), "Egypt",
 					"student").save();
 
-			Organization guc = new Organization("GUC", ashraf, 1, true, "The German University in Cairo").save();
+			Organization guc = new Organization("GUC", ashraf, 1, true,
+					"The German University in Cairo").save();
 
-			Organization egypt = new Organization("Egypt", admin, 2, false, "The National Egyptian Organization")
-					.save();
+			Organization egypt = new Organization("Egypt", admin, 2, false,
+					"The National Egyptian Organization").save();
 
 			Organization gov = new Organization("الحكومة المصرية", sharaf, 0,
 					true, "").save();
@@ -227,26 +229,28 @@ public class Bootstrap extends Job {
 					hadi, gucMetStudentUnion);
 			i5.save();
 			hadi.save();
-			Idea i6 = new Idea("SU is Important", "We Can Make our University better", hadi, gucMetStudentUnion);
+			Idea i6 = new Idea("SU is Important",
+					"We Can Make our University better", hadi,
+					gucMetStudentUnion);
 			i6.save();
 			hadi.save();
-			
+
 			Idea i7 = new Idea("Blank", "Blank", sharaf, govImp);
 			i7.save();
 			sharaf.save();
-			
+
 			Idea i8 = new Idea("Blank 2 ", "Blank 2 ", sharaf, govImp);
 			i8.save();
 			sharaf.save();
-			
-			Idea i9 = new Idea("Blank 3 ", "Blank 3 " , sharaf, govImp2);
+
+			Idea i9 = new Idea("Blank 3 ", "Blank 3 ", sharaf, govImp2);
 			i9.save();
 			sharaf.save();
-			
+
 			Idea i10 = new Idea("Blank 4", "Blank 4", sharaf, govImp2);
 			i10.save();
 			sharaf.save();
-			
+
 			Plan p1 = new Plan("S.U. heads", ashraf, new Date(111, 03, 20),
 					new Date(111, 07, 30), "Plan for SU heads elections",
 					gucMetStudentUnion, "summer break").save();
