@@ -1,6 +1,6 @@
 #{extends 'main.html' /}
  
-<a href="@{Login.index()}">Back to Home</a>
+<a href="@{Login.homePage()}">Back to Home</a>
 <hr>          </hr>
 <u><font size ="5" color ="blue">Invitations</font></u>
 <br/>
@@ -19,11 +19,9 @@
 <tr><td><font size ="3" color ="black"><u>From : ${inn.organization.name} Organization</u></font></td><td>
 
 <tr><td><font size ="3" color ="black">You have been invited to join ${inn.organization.name} Organization</font></td><td>
-<tr><td><font size ="3" color ="black"> As ${inn.role} #{if inn.entity!=null}to ${inn.entity.name} Entity#{/if}</font></td><td> 
-
-<input type="button" onclick="javascript: show(1,'${inn.id}');" value="Accept" />
-<input type="button" onclick="javascript: show(0,'${inn.id}');" value="Reject" />
-
+<tr><td><font size ="3" color ="black"> As ${inn.role} #{if inn.entity!=null}to ${inn.entity.name} Entity#{/if}</font> </td><td>
+<a onclick="javascript: show(1,'${inn.id}');" /><img src="/public/images/ranktable-tick.png" title="Confirm" width="40" height="30"/></a>  &nbsp; &nbsp; 
+<a onclick="javascript: show(0,'${inn.id}');" /><img src="/public/images/Cross.png" title="Decline" width="30" height="20"/></a>
 </table>
 </html>
 <br/>
