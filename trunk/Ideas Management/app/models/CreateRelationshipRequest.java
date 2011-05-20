@@ -3,6 +3,8 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import controllers.Users;
+
 import play.data.validation.Required;
 
 /**
@@ -97,10 +99,13 @@ public class CreateRelationshipRequest extends CoolModel {
 		this.sourceEntity = sourceEntity;
 		this.destinationEntity = destinationEntity;
 		this.name = name;
-		this.sourceEntity.relationshipRequestsSource.add(this);
-		this.sourceEntity.save();
-		this.destinationEntity.relationshipRequestsDestination.add(this);
-		this.destinationEntity.save();
+		if (Users.getEntityOrganizers(sourceEntity).contains(requester)) {
+			this.destinationEntity.relationshipRequestsDestination.add(this);
+			this.destinationEntity.save();
+		} else {
+			this.sourceEntity.relationshipRequestsSource.add(this);
+			this.sourceEntity.save();
+		}
 	}
 
 	/**
