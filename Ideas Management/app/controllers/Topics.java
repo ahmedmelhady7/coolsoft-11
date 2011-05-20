@@ -497,11 +497,11 @@ public class Topics extends CRUD {
 		System.out.println("ideas count:" + targetTopic.getIdeas().size()
 				+ " in topic" + targetTopic.getId() + "-" + targetTopic.id);
 
-		// checks if topic is empty
+		/* checks if topic is empty
 		if (targetTopic.getIdeas().size() == 0) {
 			System.out.println("Topic has no ideas");
 			return;
-		}
+		}*/
 
 		// closing the topic to editing
 		targetTopic.openToEdit = false;
