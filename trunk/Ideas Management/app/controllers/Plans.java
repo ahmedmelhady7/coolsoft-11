@@ -1375,7 +1375,7 @@ public class Plans extends CRUD {
 	
 		
 		item.save();
-		render(tagAlreadyExists,newTag);
+		
 	}
 
 }
