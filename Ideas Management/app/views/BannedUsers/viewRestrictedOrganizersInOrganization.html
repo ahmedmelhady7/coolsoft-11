@@ -4,11 +4,11 @@
 <form action="@{Organizations.viewProfile()}">
 
             <input type="hidden" name="id" value='${organizationID}'>
-           <input type="submit" style="background-color:lightblue" value="Back to the organization main profile">
+           <input name = "newww" type="submit" style="background-color:limegreen" value="Back to the organization main profile"  onmouseout = "newww.style.color='black'" onmouseover="newww.style.color='white'">
  </form>
 <br />
 
-#{if sortedByEntity.isEmpty()}
+#{if entityBannedUsers.isEmpty()}
 <font face="Monotype Corsiva, Verdana" size="6" color="#2B60DE">
     <b> There are no restricted organizers !!</b></font>
     
@@ -55,7 +55,7 @@
 	 
 	 
 	 if(first == false){
-		 for( var i  = 0 ; i <${sortByUserInEntity.size()} +1 ; i++){
+		 for( var i  = 0 ; i <${entityBannedUsers.size()} +1 ; i++){
 		 try {       
 //	 		   var table = document.getElementsById("u");      
 //	 			var rowCount = table.rows.length;           
@@ -119,7 +119,7 @@
 	
 	
 	
-	for( var i  = 0 ; i <${sortByUserInEntity.size()} ; i++){
+	for( var i  = 0 ; i <${entityBannedUsers.size()} ; i++){
 		
 		
 			
@@ -176,7 +176,7 @@
 	 
 	 
 	 if(first == false){
-		 for( var i  = 0 ; i <${sortByUserInEntity.size()} +1 ; i++){
+		 for( var i  = 0 ; i <${entityBannedUsers.size()} +1 ; i++){
 		 try {       
 //	 		   var table = document.getElementsById("u");      
 //	 			var rowCount = table.rows.length;           
@@ -238,7 +238,7 @@
 	
 	
 	
-	for( var i  = 0 ; i <${sortByUserInEntity.size()} ; i++){
+	for( var i  = 0 ; i <${entityBannedUsers.size()} ; i++){
 		
 		
 			
@@ -286,7 +286,7 @@
 	 
 	 
 	 if(first == false){
-	 for( var i  = 0 ; i <${sortByUserInEntity.size()} +1 ; i++){
+	 for( var i  = 0 ; i <${entityBannedUsers.size()} +1 ; i++){
 	 try {       
 // 		   var table = document.getElementsById("u");      
 // 			var rowCount = table.rows.length;           
@@ -351,7 +351,7 @@
 		
 		
 		
-		for( var i  = 0 ; i <${sortByUserInEntity.size()} ; i++){
+		for( var i  = 0 ; i <${entityBannedUsers.size()} ; i++){
 	 		
 			
 				
@@ -404,13 +404,3 @@
  </script>
  
  
- <script>
- function(){
-	 $('#entityName').hide();
- }
- 
- function(){
-	 createEntityTable();
-	 $('#entityName').show();
- }
- </script>

@@ -4,7 +4,7 @@
 
 <form action="@{Organizations.viewProfile()}">
             <input type="hidden" name="id" value='${orgId}'>
-           <input type="submit" style="background-color:lightblue" value="Back to the organization main profile">
+           <input name = "back" type="submit" style="background-color:limegreen" value="Back to the organization main profile" onmouseout = "back.style.color='black'" onmouseover="back.style.color='white'">
  </form>
 <br />
 #{if flash.error}
@@ -13,7 +13,8 @@
     </p>
 #{/if}
 
-<input type="submit" style="background-color:lightblue" align = "Right" value="Start new Restriction / De-Restriction Process"  onclick="Restart()" > <br /> <br />
+<input name = "newww" type="submit" style="background-color:lightblue" value="Start new Restriction / De-Restriction Process" align = "Right" onclick="Restart()" onmouseout = "newww.style.color='black'" onmouseover="newww.style.color='white'">
+<br /> <br /> <br />
 
 #{if users.isEmpty()}
   <p style="color:#c00"> No Organizers Found </p>
@@ -23,7 +24,7 @@
 <form name = "organizer">
 <fieldset>  
 <legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
-    <b><u> Users set: </u></b></font></legend> <br />
+    <b><u> Organizers' set: </u></b></font></legend> <br />
        <select name = "userId" id = "userss">
   #{list items:users, as:'user'}
   
@@ -116,7 +117,7 @@
 
 <input type="submit" id = "deRestrictBtn" value="De-Restrict" onclick = "deRestrict()"> <br /> <br />
 
-<input type="submit" style="background-color:lightblue" value="Start new Restriction / De-Restriction Process" align = "Right" onclick="Restart()" >
+<input name = "neww" type="submit" style="background-color:lightblue" value="Start new Restriction / De-Restriction Process" align = "Right" onclick="Restart()" onmouseout = "neww.style.color='black'" onmouseover="neww.style.color='white'">
 
 
 <script >

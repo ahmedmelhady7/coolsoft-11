@@ -1,12 +1,12 @@
 #{extends 'Login/index.html' /} #{set title:'View Restricted Organizers' /}
 <form action="@{Organizations.viewProfile()}">
             <input type="hidden" name="id" value='${organizationID}'>
-           <input type="submit" style="background-color:lightblue" value="Back to the organization main profile">
+           <input name = "back" type="submit" style="background-color:limegreen" value="Back to the organization main profile"  onmouseout = "back.style.color='black'" onmouseover="back.style.color='white'">
  </form>
 <br />
 
 
-#{if sortedByTopic.isEmpty()}
+#{if topicBannedUsers.isEmpty()}
 <font face="Monotype Corsiva, Verdana" size="6" color="#2B60DE">
 	<b> There are no restricted organizers !!</b> </font>
 
@@ -56,7 +56,7 @@
 	 
 	 
 	 if(first == false){
-		 for( var i  = 0 ; i <${sortByActionInTopic.size()} +1 ; i++){
+		 for( var i  = 0 ; i <${topicBannedUsers.size()} +1 ; i++){
 		 try {       
 //	 		   var table = document.getElementsById("u");      
 //	 			var rowCount = table.rows.length;           
@@ -123,7 +123,7 @@
 	
 	
 	
-	for( var i  = 0 ; i <${sortedByTopic.size()} ; i++){
+	for( var i  = 0 ; i <${topicBannedUsers.size()} ; i++){
 		
 		
 			
@@ -176,7 +176,7 @@
 	 
 	 
 	 if(first == false){
-		 for( var i  = 0 ; i <${sortedByTopic.size()} +1 ; i++){
+		 for( var i  = 0 ; i <${topicBannedUsers.size()} +1 ; i++){
 		 try {       
 //	 		   var table = document.getElementsById("u");      
 //	 			var rowCount = table.rows.length;           
@@ -243,7 +243,7 @@
 	
 	
 	
-	for( var i  = 0 ; i <${sortedByTopic.size()} ; i++){
+	for( var i  = 0 ; i <${topicBannedUsers.size()} ; i++){
  		
 		
 			
@@ -287,7 +287,7 @@
 	 
 	 
 	 if(first == false){
-	 for( var i  = 0 ; i <${sortByUserInTopic.size()} +1 ; i++){
+	 for( var i  = 0 ; i <${topicBannedUsers.size()} +1 ; i++){
 	 try {       
 // 		   var table = document.getElementsById("u");      
 // 			var rowCount = table.rows.length;           
@@ -349,7 +349,7 @@
 	
 	
 	
-	for( var i  = 0 ; i <${sortedByTopic.size()} ; i++){
+	for( var i  = 0 ; i <${topicBannedUsers.size()} ; i++){
 		
 		
 			
