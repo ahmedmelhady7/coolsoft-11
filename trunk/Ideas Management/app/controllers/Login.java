@@ -24,24 +24,18 @@ import play.mvc.With;
 @With(Secure.class)
 public class Login extends Controller {
 	
-	/**
-	 * This is method renders the login page, first the user has to login using his user name
-	 * and password and then his profile page will be rendered
-	 * 
-	 * @author Ahmed Maged
-	 * 
-	 * @return void
-	 */
-	
 	/**Reactivates the account if it has been deactivated before
 	 * Redirects the new registered users to the invitation page if 
 	 * they have been invited to be idea developers/organizers
 	 * 
+	 * Renders the login page, first the user has to login using his user name
+	 * and password and then his profile page will be rendered
+	 * 
 	 * @author Mai Magdy
+	 * @author Ahmed Maged
 	 * 
-	 * @Stroy C1S5, C1S11
+	 * @Stroy C1S5, C1S11, C1S18
 	 * 
-	 * @return void
 	 */
 
 	public static void homePage() {
@@ -80,10 +74,26 @@ public class Login extends Controller {
 		render(user,admin,drafts);
 	}
 	
+	/**
+	 * Renders the about view
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S18
+	 */
+	
 	public static void about() {
 		User user = Security.getConnected();
 		render(user);
 	}
+	
+	/**
+	 * Renders the contact view
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S18
+	 */
 	
 	public static void contact() {
 		User user = Security.getConnected();
