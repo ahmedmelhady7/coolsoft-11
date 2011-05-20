@@ -288,12 +288,12 @@
 	<ul class='menu'>
  <a>Show Relationships</a>
    <ul class="blah">
-   	#{if entity.relationsSource != null}
+   	#{if targetTopic.relationsSource != null}
       #{list items:targetTopic.relationsSource, as:'relationElement'}
 			<p><a href="#">${relationElement.name}</a> topic ${relationElement.destination.title}</p>
 	  #{/list}
 	#{/if}
-	#{if entity.relationsDestination != null}
+	#{if targetTopic.relationsDestination != null}
 	  #{list items:targetTopic.relationsDestination, as:'relEelement'}
 			<p><a href="#">${relElement.name}</a> entity ${relElement.source.title}</p>
 	  #{/list}
