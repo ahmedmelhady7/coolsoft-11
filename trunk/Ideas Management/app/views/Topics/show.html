@@ -264,14 +264,14 @@
     #{/if}
 
 
-</div>#{if canClose == 1 && openToEdit == true && numberOfIdeas > 0}
+</div>#{if canClose == 1 && openToEdit == true}
 			#{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
 				<input type = "hidden" name = "topicId" value = ${topicId}>
 				<input type="submit" value="Close Topic" />
 			#{/form} 
 		#{/if} 
 
-		#{if canClose == 1 && openToEdit == false && plan == null}
+		#{if canClose == 1 && openToEdit == false}
 			#{form @Topics.reopen(), method:'POST', enctype:'multipart/form-data' }
 				<input type = "hidden" name = "topicId" value = ${topicId}>
 				<input type="submit" value="Reopen Topic" />
