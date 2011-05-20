@@ -652,27 +652,31 @@ public class Search extends Controller {
 	 */
 	public static void quickSearch(String keyword) {
 		listOfResults = new ArrayList<Model>();
-		// Adding Organizations to search result
-		List<Organization> organizationsList = searchForOrganization(keyword);
-		for (int i = 0; i < organizationsList.size(); i++) {
-			listOfResults.add(organizationsList.get(i));
+		if (keyword.equals("")) {
+			renderHtml("<script type='text/javascript' language='javascript'>alert('Please Enter a keyword');window.location.href='/searchResult'</script>");
+		} else {
+			// Adding Organizations to search result
+			List<Organization> organizationsList = searchForOrganization(keyword);
+			for (int i = 0; i < organizationsList.size(); i++) {
+				listOfResults.add(organizationsList.get(i));
+			}
+			// Adding Entities to search result
+			List<MainEntity> EntitiesList = searchForEntity(keyword);
+			for (int i = 0; i < EntitiesList.size(); i++) {
+				listOfResults.add(EntitiesList.get(i));
+			}
+			// Adding Ideas to search result
+			List<Idea> IdeasList = searchForIdea(keyword);
+			for (int i = 0; i < IdeasList.size(); i++) {
+				listOfResults.add(IdeasList.get(i));
+			}
+			// Adding Topics to search result
+			List<Topic> TopicsList = searchForTopic(keyword);
+			for (int i = 0; i < TopicsList.size(); i++) {
+				listOfResults.add(TopicsList.get(i));
+			}
+			searchResult();
 		}
-		// Adding Entities to search result
-		List<MainEntity> EntitiesList = searchForEntity(keyword);
-		for (int i = 0; i < EntitiesList.size(); i++) {
-			listOfResults.add(EntitiesList.get(i));
-		}
-		// Adding Ideas to search result
-		List<Idea> IdeasList = searchForIdea(keyword);
-		for (int i = 0; i < IdeasList.size(); i++) {
-			listOfResults.add(IdeasList.get(i));
-		}
-		// Adding Topics to search result
-		List<Topic> TopicsList = searchForTopic(keyword);
-		for (int i = 0; i < TopicsList.size(); i++) {
-			listOfResults.add(TopicsList.get(i));
-		}
-		searchResult();
 	}
 
 	/**
