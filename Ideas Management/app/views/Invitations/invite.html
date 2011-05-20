@@ -1,38 +1,108 @@
 <!--C1S6  @author : Mai Magdy -->
 #{extends 'main.html' /}
 
-<form action="@{Invitations.page()}" method="GET">
-	<input type="submit" value="Invite by mail">
-#{if type==0}
-   <input type = "hidden" name ="entId" value = ${entity.id}>
+<a href="@{MainEntitys.viewEntity(entity.id)}">Back to ${entity.name} </a>
+<br/>
+<br/>
+<div id="errors" style="display:true">
+#{if flashError==1}
+#{if flash.error}
+   <b> <p style="color:red">
+              <i><font size=2> ${flash.error} </font></i>
+    </p></b>
 #{/if}
-#{else}
-  <input type = "hidden" name ="topicId" value = ${topic.id}>
-#{/else}	
-  <input type = "hidden" name ="id" value = 0>
-  <input type = "hidden" name ="type" value = type>
-	</form>
+#{/if}
 
-<form action="@{Invitations.searchUser()}" method="GET" name="myform">
-<table border="0" bgcolor="#ececec" cellspacing="5">
-<tr><td><u> You can search by name/email for users to invite </u></td></tr>
-<tr><td>Name <input type="text" size="20" name="name"></td></tr>
-<tr><td>&nbsp;</td><td><input type="submit" value="Next">
-#{if type==0}
-<input type = "hidden" name ="entId" value = ${entity.id}>
+#{if flashError==2}
+#{if flash.error}
+   <b> <p style="color:green">
+              <i><font size=2> ${flash.error} </font></i>
+    </p></b>
 #{/if}
-#{else}
-<input type = "hidden" name ="topicId" value = ${topic.id}>
-#{/else}
+#{/if}
+</div>
+
+
+<form action="@{Invitations.send()}" method="GET" >
+<table border="0" bgcolor="#ececec" cellspacing="5" id="table" style="display:none">
+<tr><td><u>Invite directly by writing the email </u></td></tr>
+<tr><td>Email <input type="text" size="30" id="mail" name="email"></td></tr>
+<input type = "hidden" id="id" name ="id" value =0>
+<input type = "hidden" name ="entId" value = ${entity.id}>
+<tr><td>&nbsp;</td><td><input type="submit" value="send">
 </table>
 </form>
 
+<div id="block" >
+<input type="button" onclick="javascript: show();" value="Invite by mail" id="button1" /> 
 
-#{if flash.error}
-   <b> <p style="color:#c00">
-               ${flash.error}
-    </p></b>
+
+<form action="@{Invitations.searchUser()}" method="GET" name="myform"">
+<table border="0" bgcolor="#ececec" cellspacing="5">
+<tr><td><u> You can search by name/email for users to invite </u></td></tr>
+<tr><td>Name <input type="text" size="20" name="name"></td></tr>
+<tr><td>&nbsp;</td><td><input type="submit" value="search">
+<input type = "hidden" name ="entId" value = ${entity.id}>
+
+</table>
+</form>
+#{if check==1}
+<br/>
+<br/>
+<br/>
+<hr/>
+<u><b><font size ="3" color ="blue">Search Result</font></b></u>
+<br/>
+<br/>
+<table border="0" bgcolor="#ececec" cellspacing="5">
+#{if usersMatched.isEmpty()}
+</table>
+<tr><td><u><font size ="3" color ="black">No user Found</font></u></td><td>
 #{/if}
+#{else}
+#{list items:usersMatched, as:'u'} 
+<html>
+<table border="0" bgcolor="#ececec" cellspacing="5" width="20%" >
+
+<tr><td><font size ="3" color ="black">Name  : ${u.firstName} ${u.lastName}</font></td><td>
+<tr><td><font size ="3" color ="black">Username  : ${u.username}</font>
+
+<td  align="right"><a href="@{Invitations.send(u.email,entity.id,u.id)}">invite</a></td></td><td>
+
+</table>
+</html>
+<br/>
+<br/>
+#{/list}
+#{/else}
+#{/if}
+</div>
+
+
+#{if check==2}
+<script type="text/javascript">
+$('#block').hide();
+	$('#table').show();
+</script>
+#{/if}
+
+<script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
+
+	</script>
+	
+<script type="text/javascript">
+
+function show(){
+	$('#errors').hide();
+	$('#block').hide();
+	$('#table').show();
+	
+	
+	
+}
+</script>
+
+
 
 
 
