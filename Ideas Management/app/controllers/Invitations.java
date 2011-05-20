@@ -185,7 +185,7 @@ public class Invitations extends CRUD {
 			invalidUsers.add(entity.organization.creator);
 		} else {
 			topic = Topic.findById(id);
-			role = "ideadeveloper";
+			role = "idea developer";
 			invalidUsers = Topics.searchByTopic(id);
 			System.out.println("users : " + invalidUsers);
 			name = topic.title;
@@ -260,7 +260,7 @@ public class Invitations extends CRUD {
 			reciever = User.find("byEmail", email).first();
 
 		User user = Security.getConnected();
-		users.remove(user);
+		invalidUsers.remove(user);
 
 		if (type == 0) {
 			Mail.invite(email, role, entity.organization.name, name, type);
@@ -290,7 +290,7 @@ public class Invitations extends CRUD {
 			for (int j = 0; j < invalidUsers.size(); j++)
 				Notifications.sendNotification(invalidUsers.get(j).id,
 						topic.id, "topic",
-						"New user has been invited to be an Idea developer topic  "
+						"New user has been invited to be an Idea developer in topic  "
 								+ name);
 
 			if (reciever != null)
@@ -368,16 +368,18 @@ public class Invitations extends CRUD {
 
 	public static void respond(int id, long i) {
 		System.out.println("here");
+		System.out.println(i);
 		Invitation invite = Invitation.findById(i);
 		System.out.println(invite);
 		String roleName = invite.role.toLowerCase();
+		System.out.println(roleName);
 		Organization organization = null;
 		MainEntity entity = null;
 		Topic topic = null;
 		User user = User.find("byEmail", invite.email).first();
 		Role role = Role.find("byRoleName", roleName).first();
 		boolean flag = true;
-		if (invite.topic != null) {
+		if (invite.topic == null) {
 			organization = invite.organization;
 			entity = invite.entity;
 			flag = false;
@@ -387,7 +389,7 @@ public class Invitations extends CRUD {
 			organization = entity.organization;
 		}
 		List<User> organizers = Users.getEntityOrganizers(entity);
-		organizers.remove(invite.sender);
+		//organizers.remove(invite.sender);
 		organizers.add(organization.creator);
 
 		if (id == 1) {
@@ -472,7 +474,8 @@ public class Invitations extends CRUD {
 
 				}
 			} else {
-
+                System.out.println(role);
+                System.out.println(user);
 				UserRoleInOrganizations.addEnrolledUser(user, organization,
 						role, topic.id, "topic");
 				for (int k = 0; k < organizers.size(); k++)
@@ -483,11 +486,11 @@ public class Invitations extends CRUD {
 				Log.addUserLog("User " + user.firstName + " " + user.lastName
 						+ " has accepted the invitation to join topic "
 						+ topic.title, organization, topic, user);
-
+                System.out.println("logs el 7dl");
 			}
 		}
 
-		if (id == 1) {
+		if (id == 0) {
 			if (!flag) {
 
 				if (entity != null) {
