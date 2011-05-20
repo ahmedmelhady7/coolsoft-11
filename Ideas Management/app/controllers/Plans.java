@@ -53,6 +53,12 @@ public class Plans extends CRUD {
 		int canIdea = 0;
 		boolean canView = true;
 		boolean isOrganizer = false;
+		boolean checkNotRated;
+		if(p.usersRated.contains(user))
+			checkNotRated = false;
+		else
+			checkNotRated = true;
+		
 		if (Users
 				.isPermitted(
 						user,

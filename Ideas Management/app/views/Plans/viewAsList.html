@@ -3,6 +3,7 @@
 ${p.title} - View Plan as List
 #{/set}
 <br/>
+#{if checkNotRated}
 <form action="@{Plans.rate(p.id,rat)}" method="GET">
     <input type="submit" value="Submit rating"/><input type="hidden" name = "planId" value=${p.id}/>
     <select name="rat">
@@ -14,6 +15,10 @@ ${p.title} - View Plan as List
         <option value="5">5</option>
     </select>
 </form>
+#{/if}
+#{else}
+You have already rated this plan
+#{/else}
 <br/>
 <form action="@{Plans.sharePlan()}" method="GET">
     <input type="submit" value="Share with user" /><input type="hidden" name = "planID" value=${p.id}/><input type="text" name="userName" id="userToShareWith"/>
