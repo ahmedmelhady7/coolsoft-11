@@ -273,6 +273,9 @@
 <input type="submit" value="View the plan" />
 #{/form}
 #{/if}
+#{if check == 1}
+ <input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(topicId,1)}">
+#{/if}
 
 <script type ="text/javascript">
 				$(document).ready(function(){
