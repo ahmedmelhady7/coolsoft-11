@@ -15,16 +15,16 @@
 #{else}
 #{list items:0..users.size()-1, as:'u'} 
 <html>
-<table border="0" bgcolor="#ececec" cellspacing="5" >
+<table border="0" bgcolor="#ececec" cellspacing="5"  width="30%">
 
-<tr><td><font size ="3" color ="black">Name  : ${users.get(u).firstName}</font></td><td>
+<tr><td><font size ="3" color ="black">Name  : ${users.get(u).firstName} ${users.get(u).lastName}</font></td><td>
 <tr><td><font size ="3" color ="black">Email  : ${users.get(u).email}</font></td><td>
 
 <tr><td><input type="button" onclick="javascript: show('${users.get(u).id}',0,'${object.id}','${num}','${u}');" id="1_${u}" />
 <input type="button" onclick="javascript: show('${users.get(u).id}',1,'${object.id}','${num}','${u}');"  id="2_${u}" /> 
 <div id="3_${u}" ></div>
 <textarea rows="2" cols="20" id="6_${u}" style="display:none"></textarea>
-<input type="submit" id="4_${u}"  value="block" style="display:none">
+<input type="submit" id="8_${u}"  value="block" style="display:none">
 <input type="submit" id="7_${u}"  value="block" style="display:none">
 <input type="submit" id="5_${u}"  value="cancel" style="display:none">
 </td><td> 
@@ -74,8 +74,9 @@ document.getElementById('2_${c}').value="Block from using";
 <script type="text/javascript">
 
 function show(userId,type,numId,id,i){
-	    
-		   
+		var cancel1=0;
+		var cancel2=0;
+		 
 	if ( type==0 ) {
 		        
 		       var text=document.getElementById('1_'+i).value;
@@ -85,13 +86,26 @@ function show(userId,type,numId,id,i){
 					 $('#3_' + i).show();
 					  $('#3_' + i).html('<font  size ="2"><i>please specify the reason</i></font>');
 					 
-					 $('#4_' + i).show();
+					 $('#8_' + i).show();
 					 $('#5_' + i).show();
 					 document.getElementById('1_' + i).disabled = true;
 					 document.getElementById('2_' + i).disabled = true;
 					 
-					 $('#4_' + i).click(function(){ 
-					 
+					 	$('#5_' + i).click(function(){
+						    $('#8_' + i).hide();
+							 $('#5_' + i).hide();
+						     textarea.hide();
+							 $('#3_' + i).hide();
+						    document.getElementById('1_' + i).disabled = false;
+					        document.getElementById('2_' + i).disabled = false;
+							cancel1=1;
+							 return;
+						});
+						
+					 $('#8_' + i).click(function(){ 
+					    if (cancel1 == 1) {
+							return;
+						}
 					if ( document.getElementById('6_' + i).value== '') {
 						$('#3_' + i).html('<font color="red"  size ="2"><i>please specify the reason first</i></font>')
 	                
@@ -109,25 +123,19 @@ function show(userId,type,numId,id,i){
 							text: text,
 							message: message
 						}, function(){
-							$('#4_' + i).hide();
+							$('#8_' + i).hide();
 							textarea.hide();
 							$('#3_' + i).hide();
 							$('#5_' + i).hide();
 							document.getElementById('1_' + i).disabled = false;
-							
 						});
+						
+						 
 					}
                      
                     });
 					
-					$('#5_' + i).click(function(){
-						    $('#4_' + i).hide();
-							 $('#5_' + i).hide();
-						     textarea.hide();
-							 $('#3_' + i).hide();
-						    document.getElementById('1_' + i).disabled = false;
-					        document.getElementById('2_' + i).disabled = false;
-						});
+				
                     
 				}
 				else{
@@ -163,8 +171,22 @@ function show(userId,type,numId,id,i){
 					 document.getElementById('1_' + i).disabled = true;
 					 document.getElementById('2_' + i).disabled = true;
 					
+					
+						$('#5_' + i).click(function(){
+						    $('#7_' + i).hide();
+							 $('#5_' + i).hide();
+						     textarea.hide();
+							 $('#3_' + i).hide();
+						    document.getElementById('1_' + i).disabled = false;
+					        document.getElementById('2_' + i).disabled = false;
+							cancel2=1;
+							 return;
+						});
+						
 					 $('#7_' + i).click(function(){
-					 	
+					 	 if (cancel2 == 1) {
+						 	return;
+						 }
 						if (document.getElementById('6_' + i).value == '') {
 							$('#3_' + i).html('<font color="red"  size ="2"><i>please specify the reason first</i></font>')
 							
@@ -193,15 +215,8 @@ function show(userId,type,numId,id,i){
 						}
                     });
 					
-					
-					$('#5_' + i).click(function(){
-						    $('#7_' + i).hide();
-							 $('#5_' + i).hide();
-						     textarea.hide();
-							 $('#3_' + i).hide();
-						    document.getElementById('1_' + i).disabled = false;
-					        document.getElementById('2_' + i).disabled = false;
-						});
+				
+				
 					
 				 }
 				 else{
