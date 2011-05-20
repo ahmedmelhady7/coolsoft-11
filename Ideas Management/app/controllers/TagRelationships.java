@@ -9,12 +9,11 @@ import javax.xml.transform.Source;
 import play.db.jpa.Model;
 import models.*;
 
-
 /**
  * @author Mohamed
  * 
  * @story C2S5
- *
+ * 
  */
 public class TagRelationships extends CRUD {
 
@@ -36,20 +35,22 @@ public class TagRelationships extends CRUD {
 	 */
 	public static void createRelationship(String name, long sourceId,
 			long destinationId) {
-		
+
 		Tag source = Tag.findById(sourceId);
-		Tag destination = Topic.findById(destinationId);
+		Tag destination = Tag.findById(destinationId);
 
 		TagRelationship relation = new TagRelationship(name, source,
 				destination);
-		
+
 		relation.source.relationsSource.add(relation);
 		relation.destination.relationsDestination.add(relation);
-		if(!isDuplicate(name, relation.source.createdInOrganization.relationNames))
+
+		if (!isDuplicate(name,
+				relation.source.createdInOrganization.relationNames))
 			relation.source.createdInOrganization.relationNames.add(name);
-		
+		Organization organization = relation.source.createdInOrganization;
+		organization.save();
 		relation.save();
-		
 	}
 
 	/**
@@ -105,28 +106,30 @@ public class TagRelationships extends CRUD {
 	public static boolean isAllowedTo(long tagId) {
 		User user = Security.getConnected();
 		Tag tag = Tag.findById(tagId);
-		if (user == tag.createdInOrganization.creator)
+		if (user == tag.createdInOrganization.creator || user.isAdmin)
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * checks relation name for duplicate
 	 * 
 	 * @author Mohamed Hisham
 	 * 
-	 * @param relationName : name of the relation
+	 * @param relationName
+	 *            : name of the relation
 	 * 
-	 * @param relationNames : list of relation names in the organization
+	 * @param relationNames
+	 *            : list of relation names in the organization
 	 * 
 	 * @return boolean
 	 */
-	public static boolean isDuplicate(String relationName, ArrayList<String> relationNames){
-		for(int i = 0; i < relationNames.size(); i++){
-			if(relationName.equals(relationNames.get(i)))
-				return true;	
+	public static boolean isDuplicate(String relationName,
+			ArrayList<String> relationNames) {
+		for (int i = 0; i < relationNames.size(); i++) {
+			if (relationName.equals(relationNames.get(i)))
+				return true;
 		}
 		return false;
 	}
-
 }
