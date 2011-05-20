@@ -499,7 +499,8 @@ public class Plans extends CRUD {
 
 	/**
 	 * This method takes the parameters from the web page of the plan creation
-	 * to instantiate a plan object
+	 * to instantiate a plan object, it also sends a notification to the organizers of the topic
+	 * and then calls amethod to view the plan as alist
 	 * 
 	 * @story C5S1
 	 * 
@@ -527,33 +528,11 @@ public class Plans extends CRUD {
 	 *            The id of the topic which this plan is based upon
 	 * @param requirement
 	 *            The requirements needed for executing this plan
-	 * @param istartDay
-	 *            The start day of the first item added
-	 * @param istartMonth
-	 *            The start month of the first item added
-	 * @param istartYear
-	 *            The start year of the the first item added
-	 * @param iendDay
-	 *            The end day of the first item added
-	 * @param iendMonth
-	 *            The end month of the first item added
-	 * @param iendYear
-	 *            The end year of the first item added
-	 * @param idescription
-	 *            The description of the first item added
-	 * @param isummary
-	 *            The summary of the first item added
-	 * @param check
-	 *            The value of the checkbox that indicates whether the user
-	 *            wants to add more items or not
 	 */
 
 	public static void myCreate(String title, int startDay, int startMonth,
 			int startYear, int endDay, int endMonth, int endYear,
-			String description, long topicId, String requirement,
-			int istartDay, int istartMonth, int istartYear, int iendDay,
-			int iendMonth, int iendYear, String idescription, String isummary,
-			String check) {
+			String description, long topicId, String requirement) {
 
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
@@ -562,23 +541,12 @@ public class Plans extends CRUD {
 				description, topic, requirement);
 		System.out.println("creation of the plan");
 		p.save();
-		p.addItem(new Date(istartYear - 1900, istartMonth, istartDay),
-				new Date(iendYear - 1900, iendMonth, iendDay), idescription,
-				isummary);
-		p.save();
-
 		List<User> topicOrganizers = p.topic.getOrganizer();
 		for (int i = 0; i < topicOrganizers.size(); i++) {
 			Notifications.sendNotification(topicOrganizers.get(i).id, p.id,
 					"plan", "A new plan has been created");
 		}
-
-		if (check != null && check.equals("checked")) {
-			addItem(p.id);
-		} else {
-			viewAsList(p.id);
-		}
-
+		viewAsList(p.id);
 	}
 
 	/**
