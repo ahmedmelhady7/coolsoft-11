@@ -130,10 +130,6 @@
         </ul>
         #{/else}
         #{/else}
-        #{if isMember == true}
-        <form action="@{Topics.requestToPost()}">
-            <input type="hidden" name="orgId" value="${org.id}">Request to post: <input type="submit" value="show topics">
-        </form>#{/if}
         #{if flag == 1}
         <hr>
         <form action="@{BannedUsers.restrictOrganizer()}">
