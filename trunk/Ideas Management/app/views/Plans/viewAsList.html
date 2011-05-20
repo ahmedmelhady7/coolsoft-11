@@ -2,6 +2,7 @@
 #{set 'title'}
 ${p.title} - View Plan as List
 #{/set}
+<script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js"></script>
 <br/>
 #{if checkNotRated}
 <form action="@{Plans.rate(p.id,rat)}" method="GET">
@@ -96,7 +97,32 @@ To-do items:
             </form>#{/if}
             #{if canEdit == 1}<input type="button" onclick="delItem(${item.id});" value = "delete item">
             <br/>
-            #{/if} 
+            #{/if}
+			 #{if canEdit == 1}
+			 <form onsubmit=$('item.id'); method="post">
+                    <input type="hidden" id='tags' name="tags" value="${listOfTags}">Tag the item
+                    <br>
+                    Tag: <input type="text" id="tag" name="tag" autoComplete="group"/>
+                    <br> 
+			  #{/if}
+			  <script language="javascript" type="text/javascript">
+                        var a = document.getElementById('listOfTags');
+                        b = a.value + "";
+                        c = b.split("|");
+                        autoComplete.Set("group", c);
+                    </script>
+					
+			 <form action="@{Plans.tagItem(item.id,tag)}" method="post">
+					<input type="submit" value="Tag"/>
+				 #{if tagAlreadyExists == true}	
+				 alert('tag already exists');
+				 #{else newTag==true}
+				 alert('New Tag is created');
+				 #{/else}
+				   #{/if}
+				  
+					
+			</form>
             #{if isOrganizer == true}  
             #{if item.isRelatedToEntity() == true} 
             <div id = "removeEntity_${item.id}">
