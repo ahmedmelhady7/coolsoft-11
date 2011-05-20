@@ -1522,12 +1522,18 @@ public class BannedUsers extends CRUD {
 				}
 			}
 		} else {
+			
+			System.out.println("YES");
 			topic = Topic.findById(numId);
 			entity = topic.entity;
 			organizers = Users.getEntityOrganizers(entity);
+			organizers.remove(user);
+			
+			
 			if (type == 0) {
+				System.out.println("view");
 				if (text.equals("Block from viewing")) {
-
+					System.out.println("vvvvvvvvv");
 					BannedUser block = new BannedUser(user,
 							topic.entity.organization, "view", "topic", numId);
 					block.save();
@@ -1558,7 +1564,7 @@ public class BannedUsers extends CRUD {
 					System.out.println("LAMALEEEM");
 					BannedUser unblock = BannedUser
 							.find("byBannedUserAndActionAndResourceTypeAndResourceID",
-									user, "view", "topic", topic.id).first();
+									user, "view", "topic", numId).first();
 					unblock.delete();
 
 					Log.addUserLog(organizer.firstName + " "
@@ -1585,6 +1591,8 @@ public class BannedUsers extends CRUD {
 				}
 			} else {
 				if (text.equals("Block from using")) {
+					
+					System.out.println("use");
 					BannedUser block = new BannedUser(user,
 							topic.entity.organization, "use", "topic", numId);
 					block.save();
@@ -1612,9 +1620,10 @@ public class BannedUsers extends CRUD {
 									+ topic.title + " because " + message);
 
 				} else {
+					System.out.println("useeeeeeeee");
 					BannedUser unblock = BannedUser
 							.find("byBannedUserAndActionAndResourceTypeAndResourceID",
-									user, "use", "topic", topic.id).first();
+									user, "use", "topic", numId).first();
 					unblock.delete();
 					Log.addUserLog(organizer.firstName + " "
 							+ organizer.lastName + "unblocked "
