@@ -556,18 +556,10 @@ public class Plans extends CRUD {
 	 *            The title of the plan
 	 * @param user
 	 *            The user creating the plan
-	 * @param startDay
-	 *            The day when the plan will start
-	 * @param startMonth
-	 *            The month when the plan will start
-	 * @param startYear
-	 *            The year when the plan will start
-	 * @param endDay
-	 *            The day when the plan will end
-	 * @param endMonth
-	 *            The month when the plan will end
-	 * @param endYear
-	 *            The year when the plan will end
+	 * @param startDate
+	 *            The date when the plan will start
+	 * @param endDate
+	 * 			  The date when the plan will end
 	 * @param description
 	 *            The description of the plan
 	 * @param topicId
@@ -576,14 +568,14 @@ public class Plans extends CRUD {
 	 *            The requirements needed for executing this plan
 	 */
 
-	public static void myCreate(String title, int startDay, int startMonth,
-			int startYear, int endDay, int endMonth, int endYear,
+	public static void myCreate(String title, String startDate, String endDate,
 			String description, long topicId, String requirement) {
 
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
-		Plan p = new Plan(title, user, new Date(startYear - 1900, startMonth,
-				startDay), new Date(endYear - 1900, endMonth, endDay),
+		Date sd = new Date(startDate);
+		Date ed = new Date(endDate);
+		Plan p = new Plan(title, user, sd, ed,
 				description, topic, requirement);
 		System.out.println("creation of the plan");
 		p.save();
