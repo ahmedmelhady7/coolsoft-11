@@ -9,6 +9,7 @@ import play.data.validation.Required;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import play.mvc.With;
+import models.CreateRelationshipRequest;
 import models.MainEntity;
 import models.Organization;
 import models.Topic;
@@ -250,20 +251,20 @@ public class MainEntitys extends CRUD {
 		int permission = 1;
 		int invite = 0;
 		int canEdit = 0;
-		//int canView = 0;
+		// int canView = 0;
 		int canRequest = 0;
 		int canRequestRelationship = 0;
 		int canRestrict = 0;
 		List<User> allowed = Users.getEntityOrganizers(entity);
-		if(org.creator.equals(user)|| user.isAdmin){
+		if (org.creator.equals(user) || user.isAdmin) {
 			canRestrict = 1;
 		}
 		if (org.creator.equals(user) || allowed.contains(user) || user.isAdmin)
 			canEdit = 1;
 		if (!Users.isPermitted(user, "post topics", entity.id, "entity"))
 			permission = 0;
-		//if (Users.isPermitted(user, "view", entity.id, "entity"))
-			//canView = 1;
+		// if (Users.isPermitted(user, "view", entity.id, "entity"))
+		// canView = 1;
 		if (Users.isPermitted(user, "use", entity.id, "entity"))
 			canRequest = 1;
 		if (Users
@@ -272,13 +273,14 @@ public class MainEntitys extends CRUD {
 						"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
 						entity.id, "entity"))
 			invite = 1;
-		
-		int check=0;
-		if (Users.isPermitted(user,"block a user from viewing or using a certain entity",entity.id, "entity")) 
+
+		int check = 0;
+		if (Users.isPermitted(user,
+				"block a user from viewing or using a certain entity",
+				entity.id, "entity"))
 			check = 1;
-			//if (Users.isPermitted(user,"use",topicList.get(0).id, "topic")) 
-		     
-		
+		// if (Users.isPermitted(user,"use",topicList.get(0).id, "topic"))
+
 		if (Users.getEntityOrganizers(entity).contains(user)) {
 			canRequestRelationship = 1;
 		}
@@ -286,7 +288,8 @@ public class MainEntitys extends CRUD {
 		boolean canCreateRelationship = EntityRelationships.isAllowedTo(id);
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity, follower, canCreateRelationship,
-				/*canView,*/ canRequest, canRequestRelationship,check, canRestrict);
+				/* canView, */canRequest, canRequestRelationship, check,
+				canRestrict);
 	}
 
 	/**
@@ -335,8 +338,71 @@ public class MainEntitys extends CRUD {
 		redirect(request.controller + ".viewEntity", entity.id,
 				"Entity created");
 	}
-	
-	public static void createRelationship() {
-		System.out.println("HEEEEYYYY");
+
+	/**
+	 * renders the page for requesting relationship creation between entities.
+	 * 
+	 * @author Noha Khater
+	 * 
+	 * @Story C2S18
+	 * 
+	 * @param userId
+	 *            the id of the user making the request
+	 * 
+	 * @param organisationId
+	 *            the id of the organisation
+	 * 
+	 * @param entityId
+	 *            the id of the entity from which the request is made
+	 * 
+	 */
+	public static void requestRelationship(long userId, long organisationId,
+			long entityId) {
+		Organization organisation = Organization.findById(organisationId);
+		User user = User.findById(userId);
+		MainEntity entity = MainEntity.findById(entityId);
+		render(user, organisation, entity);
 	}
+
+	/**
+	 * creates a request for relationship creation between entities.
+	 * 
+	 * @author Noha Khater
+	 * 
+	 * @Story C2S18
+	 * 
+	 * @param userId
+	 *            the id of the user making the request
+	 * 
+	 * @param source
+	 *            the name of the source entity
+	 * 
+	 * @param destination
+	 *            the name of the destination entity
+	 * 
+	 * @param name
+	 *            the name of the relationship
+	 * 
+	 * @param organisationId
+	 *            the id of the organisation
+	 * 
+	 * @param entityId
+	 *            the id of the entity from which the request is made
+	 * 
+	 */
+	public static void createRequest(long userId, String source,
+			String destination, String name, long organisationId, long entityId) {
+		User user = User.findById(userId);
+		Organization organisation = Organization.findById(organisationId);
+		MainEntity sourceEntity = MainEntity.find("byNameAndOrganization",
+				source, organisation).first();
+		MainEntity destinationEntity = MainEntity.find("byNameAndOrganization",
+				destination, organisation).first();
+		CreateRelationshipRequest relationRequest = new CreateRelationshipRequest(
+				user, sourceEntity, destinationEntity, name);
+		relationRequest.save();
+		redirect(request.controller + ".viewEntity", entityId,
+				"Request created");
+	}
+
 }
