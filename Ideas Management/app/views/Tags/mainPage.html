@@ -93,7 +93,7 @@ padding-left:950px;
 		
 		#{list items:followers, as:'follower'}
 		<li>
-			<a href="@{Users.showProfile(follower.id)}">${follower.username}</a>
+			${follower.username}
 		</li>
 		#{/list}
 		<br>
