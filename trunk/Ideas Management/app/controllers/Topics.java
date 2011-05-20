@@ -278,47 +278,6 @@ public class Topics extends CRUD {
 		topict.requestFromUserToPost(user.id);
 	}
 
-	/**
-	 * This renders the RequestToPost.html to show the list of all topics where
-	 * the user is not allowed to post within an organization
-	 * 
-	 * @author ibrahim al-khayat
-	 * 
-	 * @story C2S13
-	 * 
-	 * @param orgId
-	 *            The organization id where the topics are
-	 */
-
-	public static void requestToPost(long orgId) {
-		User user = Security.getConnected();
-		Organization org = Organization.findById(orgId);
-		List<MainEntity> entities = org.entitiesList;
-		List<Topic> topics = new ArrayList<Topic>();
-		List<Topic> temp;
-		List<UserRoleInOrganization> roles = UserRoleInOrganization.find(
-				"byEnrolled", user).fetch();
-		UserRoleInOrganization role;
-
-		for (int i = 0; i < entities.size(); i++) {
-			temp = entities.get(i).topicList;
-			for (int j = 0; j < temp.size(); j++) {
-				if (temp.get(j).creator.id != user.id && !user.isAdmin
-						&& !temp.get(j).hasRequest(user.id)) {
-					topics.add(temp.get(j));
-				}
-			}
-		}
-		for (int k = 0; k < roles.size(); k++) {
-			role = roles.get(k);
-			if (role.type.equalsIgnoreCase("topic")
-					&& role.organization.id == org.id) {
-				topics.remove(Topic.findById(role.entityTopicID));
-			}
-		}
-
-		render(topics, user);
-	}
 
 	/**
 	 * searches for unblocked users who are allowed to post in a certain topic
