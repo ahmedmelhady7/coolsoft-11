@@ -1266,8 +1266,10 @@ public class Plans extends CRUD {
 	 * 
 	 * @param entityId
 	 *            the id of the entity
+	 *            
+	 * @return boolean
 	 */
-	public static void relateToEntity(long itemId, long entityId) {
+	public static boolean relateToEntity(long itemId, long entityId) {
 		// User user = Security.getConnected();
 		Item item = Item.findById(itemId);
 		MainEntity entity = MainEntity.findById(entityId);
@@ -1280,6 +1282,7 @@ public class Plans extends CRUD {
 				item.save();
 			}
 		}
+		return true;
 	}
 
 	/**
@@ -1292,8 +1295,10 @@ public class Plans extends CRUD {
 	 * 
 	 * @param itemId
 	 *            the id of the item
+	 *            
+	 * @return boolean
 	 */
-	public static void removeItemEntityRelation(long itemId) {
+	public static boolean removeItemEntityRelation(long itemId) {
 		// User user = Security.getConnected();
 		Item item = Item.findById(itemId);
 		System.out.println("Test removing");
@@ -1301,7 +1306,7 @@ public class Plans extends CRUD {
 		item.relatedEntity.save();
 		item.relatedEntity = null;
 		item.save();
-
+		return true;
 	}
 
 }
