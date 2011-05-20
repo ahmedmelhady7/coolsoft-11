@@ -1490,8 +1490,17 @@ public class Topics extends CRUD {
 
 		Long topicIdLong = Long.parseLong(topicId);
 		Topic targetTopic = Topic.findById(topicIdLong);
-		List ideas = targetTopic.getIdeas();
-
+		List ideas = new ArrayList<Idea>();
+		List allIdeas = targetTopic.getIdeas();
+		
+		for(int i = 0; i < allIdeas.size(); i++) {
+			Idea currentIdea = (Idea) allIdeas.get(i);
+			
+			if(currentIdea.hidden == false) {
+				ideas.add(currentIdea);
+			}
+		}
+		
 		render(topicId, ideas);
 	}
 }
