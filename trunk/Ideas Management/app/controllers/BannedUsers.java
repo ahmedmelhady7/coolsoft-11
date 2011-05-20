@@ -71,15 +71,15 @@ public class BannedUsers extends CRUD {
 
 	    long organizationID = orgId;
 	    boolean flag = false;
-	    
-		render(users, organizationID , flag);
+	    User user = Security.getConnected();
+		render(users, organizationID , flag , user);
 	}
 	/**
 	 * 
 	 */
  public static void viewRestrictedOrganizersTopicPath(long organizationID){
 	 Organization organization = Organization.findById(organizationID);
-		
+		User user = Security.getConnected();
 		List<BannedUser> bannedUsers = BannedUser.find("select bu from BannedUser bu where bu.organization = ?", organization).fetch();
 		List<BannedUser> finalBannedUsers = new ArrayList<BannedUser>();
 		
@@ -119,8 +119,11 @@ public class BannedUsers extends CRUD {
 			names = names + (entity.name) + ",";
 			
 		}
-		System.out.println(ids);
-		render(organizationID, sortedByEntity , sortedByTopic , sortByUserInEntity , sortByUserInTopic , sortByActionInEntity , sortByActionInTopic );
+		boolean Flag = false; if(user == null ){
+			Flag = true;
+		}
+		System.out.println(Flag + "Yarubbbbbbbbbbbbbbbb");
+		render(user,organizationID, sortedByEntity , sortedByTopic , sortByUserInEntity , sortByUserInTopic , sortByActionInEntity , sortByActionInTopic );
 		
  }
 	/**
@@ -141,7 +144,8 @@ public class BannedUsers extends CRUD {
         Organization organization = entity.organization;
         long organizationID = organization.getId();
 		List<User> users = Users.getEntityOrganizers(entity);
-		render(users , entityId , organizationID);
+		User user = Security.getConnected();
+		render(user,users , entityId , organizationID);
 	}
 	
 	/**
@@ -163,7 +167,8 @@ public class BannedUsers extends CRUD {
 		long organizationID = organization.getId();
 		
 		List <User> users = Users.getEntityOrganizers(entity);
-		render(users,organizationID ,topicId );
+		User user = Security.getConnected();
+		render(user,users,organizationID ,topicId );
 		
 	}
 
@@ -554,7 +559,9 @@ public class BannedUsers extends CRUD {
 			 for (int  i = 0 ; i < actionToDo .length ; i++ ){
 				changed = BannedUser.banFromActionInTopic(userId, organizationId,
 					actionToDo[i], entityTopicId);
-				
+				User restricted = User.findById(userId);
+				User restricter = Security.getConnected();
+				Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic ,org,entity,topic);
 				Notifications.sendNotification(userId, Security.getConnected().getId(),
 						"user", "you have been restricted from the following action :" + actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic );
 
@@ -580,6 +587,12 @@ public class BannedUsers extends CRUD {
 			for (int  i = 0 ; i < actionToDo .length ; i++ ){
 				changed = BannedUser.banFromActionInEntity(userId, organizationId,
 					actionToDo[i], entityTopicId);
+				
+				User restricted = User.findById(userId);
+				User restricter = Security.getConnected();
+				Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity ,org,entity);
+				
+				
 				Notifications.sendNotification(userId, Security.getConnected().getId(),
 						"user", "you have been restricted from the following action :" + actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity );
 
@@ -631,6 +644,10 @@ public class BannedUsers extends CRUD {
 					changed = BannedUser.banFromActionInTopic(userId, organizationId,
 						actionToDo[i], entityTopicId);
 					
+					User restricted = User.findById(userId);
+					User restricter = Security.getConnected();
+					Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic ,org,entity,topic);
+					
 					Notifications.sendNotification(userId, Security.getConnected().getId(),
 							"user", "you have been restricted from the following action :" + actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic );
 			      }
@@ -654,6 +671,11 @@ public class BannedUsers extends CRUD {
 				for (int  i = 0 ; i < actionToDo .length ; i++ ){
 					changed = BannedUser.banFromActionInEntity(userId, organizationId,
 						actionToDo[i], entityTopicId);
+					
+					User restricted = User.findById(userId);
+					User restricter = Security.getConnected();
+					Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity ,org,entity);
+					
 					Notifications.sendNotification(userId, Security.getConnected().getId(),
 							"user", "you have been restricted from the following action :" + actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity );
 
@@ -708,6 +730,11 @@ public class BannedUsers extends CRUD {
 				System.out.println("In BannedUsers : Topic deRest." + actionsRestricted[i] );
 				BannedUser.deRestrictFromTopic(userId, actionsRestricted[i], entityTopicID);
 				
+				
+				User restricted = User.findById(userId);
+				User restricter = Security.getConnected();
+				Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has de-restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic ,org,entity,topic);
+				
 				Notifications.sendNotification(userId, Security.getConnected().getId(),
 						"user", "you have been de-restricted from the following action :" + actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic );
 
@@ -722,6 +749,11 @@ public class BannedUsers extends CRUD {
 			for(int i = 0; i < actionsRestricted.length ; i++){
 				System.out.println("In bannedUsers: Entity de-Restriction" + actionsRestricted[i]);
 				BannedUser.deRestrictFromEntityWithCascading(userId, actionsRestricted[i], entityTopicID);
+				
+				
+				User restricted = User.findById(userId);
+				User restricter = Security.getConnected();
+				Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has de-restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity  ,org,entity);
 				
 				Notifications.sendNotification(userId, Security.getConnected().getId(),
 						"user", "you have been de-restricted from the following action :" + actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity );
@@ -771,6 +803,10 @@ public class BannedUsers extends CRUD {
 				for(int i = 0 ; i < actionsRestricted.length ; i++){
 					System.out.println("In BannedUsers : Topic deRest." + actionsRestricted[i] );
 					BannedUser.deRestrictFromTopic(userId, actionsRestricted[i], entityTopicID);
+                
+					User restricted = User.findById(userId);
+					User restricter = Security.getConnected();
+					Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has de-restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic ,org,entity,topic);
 					
 
 					Notifications.sendNotification(userId, Security.getConnected().getId(),
@@ -792,6 +828,9 @@ public class BannedUsers extends CRUD {
 				for(int i = 0; i < actionsRestricted.length ; i++){
 					System.out.println("In bannedUsers: Entity de-Restriction" + actionsRestricted[i]);
 					BannedUser.deRestrictFromEntityWithCascading(userId, actionsRestricted[i], entityTopicID);
+					User restricted = User.findById(userId);
+					User restricter = Security.getConnected();
+					Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has de-restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity  ,org,entity);
 					
 					Notifications.sendNotification(userId, Security.getConnected().getId(),
 							"user", "you have been de-restricted from the following action :" + actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity );
@@ -821,7 +860,7 @@ public class BannedUsers extends CRUD {
 	
 	public static void viewRestrictedOrganizersInOrganization(long organizationID){
 		Organization organization = Organization.findById(organizationID);
-		
+		User user = Security.getConnected();
 		List<BannedUser> bannedUsers = BannedUser.find("select bu from BannedUser bu where bu.organization = ?", organization).fetch();
 		List<BannedUser> finalBannedUsers = new ArrayList<BannedUser>();
 		
@@ -866,7 +905,7 @@ public class BannedUsers extends CRUD {
 			
 		}
 		System.out.println(ids);
-		render(organizationID, sortedByEntity , sortedByTopic , sortByUserInEntity , sortByUserInTopic , sortByActionInEntity , sortByActionInTopic );
+		render(user,organizationID, sortedByEntity , sortedByTopic , sortByUserInEntity , sortByUserInTopic , sortByActionInEntity , sortByActionInTopic );
 		
 		
 	}
@@ -1181,7 +1220,8 @@ public class BannedUsers extends CRUD {
 		
 		Organization organization = Organization.findById(organizationID);
 		List<MainEntity> organizationEntities = organization.entitiesList;
-		render(organizationEntities , organizationID);
+		User user = Security.getConnected();
+		render(user,organizationEntities , organizationID);
 	}
 	
 	/**
