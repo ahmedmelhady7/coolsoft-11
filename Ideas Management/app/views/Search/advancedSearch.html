@@ -1,12 +1,8 @@
-#{extends 'Login/index.html' /} 
-<!DOCTYPE html>
+#{extends 'Login/index.html' /}  <!DOCTYPE html>
 <html>
     <link type="text/css" href="/public/stylesheets/jquery-ui-.custom.css" rel="Stylesheet" />
-    <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js">
-    </script>
-    <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js">
-    </script>
-	
+    <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
     <head>
         <script language="javascript">
             function isNumberKey(evt){
@@ -375,6 +371,15 @@
             .style10 {
                 font-size: 15px
             }
+            
+            .divR {
+                margin-top: 3px;
+                font-size: 15px;
+            }
+            
+            .divR1 {
+                font-size: 15px;
+            }
         </style>
     </head>
     <body dir="ltr" onLoad="reloadMyPage(); showNewPanel(5); ">
@@ -384,17 +389,15 @@
                 <span class="inactiveTab" id="tab1" onMouseOver="hover(this);" onClick="showNewPanel(1);" onMouseOut="setState(1);" style="margin-left: 5px; font-size: 12px;">Find User</span>
                 <span class="inactiveTab" id="tab2" onMouseOver="hover(this);" onClick="showNewPanel(2);" onMouseOut="setState(2);" style="margin-left: 5px; font-size: 12px;">Internet Web Search</span>
                 <span class="inactiveTab" id="tab6" onMouseOver="hover(this);" onClick="showNewPanel(6);" onMouseOut="setState(6);" style="margin-left: 5px; font-size: 12px;">TBD !</span>
-            </div>            
+            </div>
+			<!--Advanced Search-->
             <div id="panel5" class="content_articles">
-                <!--Advanced Search-->
                 <div class="content_articlesWrapper">
-                    
-                    	<a class="aas" style="float:right; color:#0000a0;" id="reset"><u>Reset</u></a>
-					
-                    <!--script>
-                    $('#reset').click(function(){
-                    });
-                    </script-->
+                    <a class="aas" style="float:right; color:#0000a0;" id="reset">
+                        <u>
+                            Reset
+                        </u>
+                    </a>
                     <form name="inPuts" id="inPuts">
                         <table id="advS">
                             <tr>
@@ -403,7 +406,7 @@
                                 </th>
                                 <th id="ra" align="left">
                                     <div class="divR1" id="here">
-                                        <input size="32" type="text" id = "wantKey1" class = "wantKey" name="wantKey"/>
+                                        <input size="30" type="text" id = "wantKey1" class = "wantKey1" name="wantKey1"/>
                                     </div>
                                 </th>
                                 <th align="left">
@@ -436,99 +439,6 @@
                                         <input type="button" id="more" value="Find In"/><input type="button" id="shw" value="In [All]"/>
                                     </p>
                                 </th>
-                                <script type="text/javascript">
-                                    $('#shw').hide();
-                                    $('#remRaw').hide();
-                                    $('#o').hide();
-                                    var n = 0; // wantKeyX , in
-                                    var m = 1; // wantKey
-                                    var b = true; // true is not to show more options
-                                    $('#addRaw').click(function(){
-                                        if (m == 1) {
-                                            $('#remRaw').show(1000);
-                                            $('#o').show(1000);
-                                        }
-                                        if (b) {
-                                            $('#ra').append('<div class="divR" vspace ="20"> <select id="h" class="h"><option value="1" selected>&nbsp;AND</option><option value="2">&nbsp;OR</option><option value="3">&nbsp;NOT</option></select> <input type="text" id="wantKey" class = "wantKey" name="wantKey" /> </div>');
-                                            $('.divR:last').hide();
-                                            $('.divR:last').show(1000);
-                                        }
-                                        else {
-                                            $('#ra').append('<div class="divR" vspace ="20"> <select id="h" class="h"><option value="1" selected>&nbsp;AND</option><option value="2">&nbsp;OR</option><option value="3">&nbsp;NOT</option></select> <input type="text" id="wantKey" class = "wantKey" name="wantKey" /> <small><small><label id="in" class = "in"> in </label> </small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option></select> </div>');
-                                            $('.divR:last').hide();
-                                            $('.divR:last').show(1000);
-                                            n++;
-                                        }
-                                        m++;
-                                    });
-                                    $('#more').click(function(){
-										$(".divR1").append(' <small><small><label id="in" class = "in"> in </label></small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option></select> ');
-                                        $(".divR").append(' <small><small><label id="in" class = "in"> in </label></small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option></select> ');
-                                        $('.in').hide();
-                                        $('.in').show(1000);
-                                        $('.wantKeyX').hide();
-                                        $('.wantKeyX').show(1000);
-                                        $('#more').hide();
-                                        $('#shw').show();
-                                        b = false;
-                                        n = m;
-                                    });
-                                    $('#shw').click(function(){
-                                        $('#shw').hide();
-                                        $('#more').show();
-                                        $('.in').remove();
-                                        $('.wantKeyX').remove();
-                                        n = 0;
-                                        b = true;
-                                    });
-                                    $('#remRaw').click(function(){
-                                        if (m == 2) {
-                                            $('#remRaw').hide();
-                                            $('#o').hide(1000);
-                                        }
-                                        $('.divR:last').remove();
-                                        n--;
-                                        m--;
-                                    });
-                                    $('#reset').click(function(){
-										document.getElementById("wantKey1").value = "";
-										document.getElementById("wantKeyEx").value = "";
-										document.getElementById("rAl").checked = true;
-                                        document.getElementById("cbPu").checked = true;
-                                        document.getElementById("cbPr").checked = true;
-                                        document.getElementById("cbSc").checked = true;
-										document.getElementById("rAll").checked = true;
-                                        document.getElementById("cbO").checked = true;
-                                        document.getElementById("cbE").checked = true;
-                                        document.getElementById("cbT").checked = true;
-                                        document.getElementById("cbP").checked = true;
-                                        document.getElementById("cbI").checked = true;
-                                        document.getElementById("cbi").checked = true;
-										document.getElementById("datePickerA").value = "";
-                                        document.getElementById("datePickerB").value = "";
-										document.getElementById("datePickerE").value = "";										
-										$('.divR').remove();
-										$('#shw').hide();
-                                        $('#more').show();
-                                        $('.in').remove();
-                                        $('.wantKeyX').remove();								
-										$('#shw').hide();
-                                    	$('#remRaw').hide();
-                                    	$('#o').hide();
-                                        n = 0;
-                                        m = 1;
-										b = true;
-										$("#addB").hide();
-                                        $("#addA").hide();
-										$("#addE").hide();
-                                        $("#datePickerA").show();
-                                        $("#datePickerB").show();
-										$("#datePickerE").show();
-										$("#na1").hide();
-										$("#na2").hide();
-										$("#na3").hide();
-                                    });
-                                </script>
                             </tr>
                             <tr>
                                 <th align="left">
@@ -537,22 +447,38 @@
                                     <br>
                                 </th>
                                 <th align="left">
-                                    <input type="text" size="31" id = "wantKeyEx" name="wantKeyEx" vspace="20"/>
+                                    <div id="divEx">
+                                        <input type="text" size="30" id = "wantKeyEx" name="wantKeyEx" vspace="20"/>
+                                        <label class="aas" id="inEx" style="color:#000000;">
+                                            <u>
+                                                in
+                                            </u>
+                                        </label>
+                                        <select id="inExOp">
+                                            <option value=0 selected>(Optional)  </option>
+                                            <option value=1>Title</option>
+                                            <option value=2>Description</option>
+                                            <option value=3>Comment</option>
+                                        </select>
+                                        <label class="aas" id="remInEx" style="color:#000000;">
+                                            <u>
+                                                remove
+                                            </u>
+                                        </label>
+                                    </div>
                                     <br>
                                     <br>
                                 </th>
                             </tr>
                         </table>
-                        <input type="submit" style="color:#ff0000; float:right;" name="ok" value="Start Advanced Search" onclick="doo(searchIn, wantKey,unWantKey, org, entity, topic, plan,idea, item, comm, dayB, monthB, yearB,dayA, monthA, yearA, dayE, monthE, yearE);"/>
+                        <input type="button" style="color:#ff0000; float:right;" name="ok" value="Start Advanced Search" onclick="doo(inPuts);"/>
                         <br/>
                         <br/>
                         <br/>
                         <br/>
                         <hr style="color:#c0c0c0; -moz-outline-color:#c0c0c0;">&nbsp;&nbsp;&nbsp;&nbsp;
                         <label>
-                            <small>
-                                <i><b style="color:#0000a0;">Additional Options :</b></i>
-                            </small>
+                            <i><b style="color:#0000a0;">Additional Options :</b></i>
                         </label>
                         <hr style="color:#c0c0c0;">
                         <table>
@@ -573,29 +499,9 @@
                                     <br/>
                                     <input type="checkbox" class="na" id="cbSc" value="T" onclick="loo2()" checked>Secret
                                     <br/>
-                                    <script>
-                                        function loo(){
-                                            if (document.getElementById("rAl").checked) {
-                                                document.getElementById("cbPu").checked = true;
-                                                document.getElementById("cbPr").checked = true;
-                                                document.getElementById("cbSc").checked = true;
-                                            }
-                                            else {
-                                                document.getElementById("cbPu").checked = false;
-                                                document.getElementById("cbPr").checked = false;
-                                                document.getElementById("cbSc").checked = false;
-                                            }
-                                        }
-                                        
-                                        function loo2(){
-                                            document.getElementById("rAl").checked = false;
-                                            if (document.getElementById("cbPu").checked &&
-                                            document.getElementById("cbPr").checked &&
-                                            document.getElementById("cbSc").checked) {
-                                                document.getElementById("rAl").checked = true;
-                                            }
-                                        }
-                                    </script>
+                                    <label id="er1" style="color:#ff0000;">
+                                        *There will be no Result for this search* 
+                                    </label>
                                     <br/>
                                     <br/>
                                 </th>
@@ -626,38 +532,9 @@
                                     <br/>
                                     <input type="checkbox" class="nal" id="cbi" value="i" onclick="lo2()" checked/>Item
                                     <br/>
-                                    <script>
-                                        function lo(){
-                                            if (document.getElementById("rAll").checked) {
-                                                document.getElementById("cbO").checked = true;
-                                                document.getElementById("cbE").checked = true;
-                                                document.getElementById("cbT").checked = true;
-                                                document.getElementById("cbP").checked = true;
-                                                document.getElementById("cbI").checked = true;
-                                                document.getElementById("cbi").checked = true;
-                                            }
-                                            else {
-                                                document.getElementById("cbO").checked = false;
-                                                document.getElementById("cbE").checked = false;
-                                                document.getElementById("cbT").checked = false;
-                                                document.getElementById("cbP").checked = false;
-                                                document.getElementById("cbI").checked = false;
-                                                document.getElementById("cbi").checked = false;
-                                            }
-                                        }
-                                        
-                                        function lo2(){
-                                            document.getElementById("rAll").checked = false;
-                                            if (document.getElementById("cbO").checked &&
-                                            document.getElementById("cbE").checked &&
-                                            document.getElementById("cbT").checked &&
-                                            document.getElementById("cbP").checked &&
-                                            document.getElementById("cbI").checked &&
-                                            document.getElementById("cbi").checked) {
-                                                document.getElementById("rAll").checked = true;
-                                            }
-                                        }
-                                    </script>
+                                    <label id="er2" style="color:#ff0000;">
+                                        *There will be no Result for this search* 
+                                    </label>
                                 </th>
                             </tr>
                             <tr>
@@ -671,28 +548,6 @@
                                 <th align="left">
                                     <br>
                                     <br>
-                                    <script>
-                                        $(function(){
-                                            $("#na1").hide();
-                                            if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
-                                            
-                                            }
-                                            $($("#datePickerB").datepicker({
-                                                changeYear: true,
-                                                showButtonPanel: true
-                                            })).change(function(){
-                                            
-                                                if (document.getElementById("datePickerB").value != "") {
-                                                    $("#na1").show(500);
-                                                }
-                                            });
-                                            
-                                            $("#na1").click(function(){
-                                                document.getElementById("datePickerB").value = "";
-                                                $("#na1").hide();
-                                            });
-                                        });
-                                    </script>
                                     <input type="text" id="datePickerB" vspace="20" readonly/>
                                     <u class="aas" id="na1">
                                         clear 
@@ -707,28 +562,6 @@
                                     After  Date  ::
                                 </th>
                                 <th align="left">
-                                    <script>
-                                        $(function(){
-                                            $("#na2").hide();
-                                            if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
-                                            
-                                            }
-                                            
-                                            $($("#datePickerA").datepicker({
-                                                changeYear: true,
-                                                showButtonPanel: true
-                                            })).change(function(){
-                                                if (document.getElementById("datePickerA").value != "") {
-                                                    $("#na2").show(500);
-                                                }
-                                            });
-                                            
-                                            $("#na2").click(function(){
-                                                document.getElementById("datePickerA").value = "";
-                                                $("#na2").hide();
-                                            });
-                                        });
-                                    </script>
                                     <input type="text" id="datePickerA" readonly/>
                                     <u class="aas" id="na2">
                                         clear 
@@ -743,29 +576,6 @@
                                     Exact Date ::
                                 </th>
                                 <th align="left">
-                                    <script>
-                                        $(function(){
-                                            $("#na3").hide();
-                                            if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
-                                            
-                                            }
-                                            
-                                            $($("#datePickerE").datepicker({
-                                                changeYear: true,
-                                                showButtonPanel: true
-                                            })).change(function(){
-                                            
-                                                if (document.getElementById("datePickerE").value != "") {
-                                                    $("#na3").show(500);
-                                                }
-                                            });
-                                            
-                                            $("#na3").click(function(){
-                                                document.getElementById("datePickerE").value = "";
-                                                $("#na3").hide();
-                                            });
-                                        });
-                                    </script>
                                     <input type="text" id="datePickerE" readonly/>
                                     <u class="aas" id="na3">
                                         clear 
@@ -774,156 +584,434 @@
                                         add 
                                     </u>
                                 </th>
-                            </tr>
-                            <script>
-                                $(function(){
-                                    $("#addA").hide();
-                                    $("#addE").hide();
-                                    $("#addB").hide();
-                                    
-                                    $("#datePickerE").change(function(){
-                                        $("#datePickerA").hide(500);
-                                        $("#addA").show(500);
-                                        $("#datePickerB").hide(500);
-                                        $("#addB").show(500);
-                                    });
-                                    $("#datePickerA").change(function(){
-                                        $("#datePickerE").hide(500);
-                                        $("#addE").show(500);
-                                    });
-                                    $("#datePickerB").change(function(){
-                                        $("#datePickerE").hide(500);
-                                        $("#addE").show(500);
-                                    });
-                                    
-                                    $("#addB").click(function(){
-                                        $("#addB").hide(500);
-                                        $("#addA").hide(500);
-                                        $("#datePickerA").show(500);
-                                        $("#datePickerB").show(500);
-                                        document.getElementById("datePickerE").value = "";
-                                        $("#datePickerE").hide(500);
-                                        $("#na3").hide(500);
-                                        $("#addE").show(500);
-                                    });
-                                    $("#addA").click(function(){
-                                        $("#addB").hide(500);
-                                        $("#addA").hide(500);
-                                        $("#datePickerA").show(500);
-                                        $("#datePickerB").show(500);
-                                        document.getElementById("datePickerE").value = "";
-                                        $("#datePickerE").hide(500);
-                                        $("#na3").hide(500);
-                                        $("#addE").show(500);
-                                    });
-                                    $("#addE").click(function(){
-                                        $("#addB").show(500);
-                                        $("#addA").show(500);
-                                        document.getElementById("datePickerA").value = "";
-                                        document.getElementById("datePickerB").value = "";
-                                        $("#datePickerA").hide(500);
-                                        $("#datePickerB").hide(500);
-                                        $("#datePickerE").show(500);
-                                        $("#na1").hide(500);
-                                        $("#na2").hide(500);
-                                        $("#addE").hide(500);
-                                    });
-                                });
-                            </script>
+                            </tr>                            
                         </table>
-                        <input type="submit" style="color:#ff0000; float:right;" name="ok" value="Start Advanced Search" onclick="doo(searchIn, wantKey,unWantKey, org, entity, topic, plan,idea, item, comm, dayB, monthB, yearB,dayA, monthA, yearA, dayE, monthE, yearE);"/>
+                        <input type="button" style="color:#ff0000; float:right;" name="ok" value="Start Advanced Search" onclick="doo(inPuts);"/>
                     </form>
                 </div>
             </div>
+			<!--Find User-->
             <div id="panel1" class="content_articles">
-                <!--Find User-->
             </div>
-			<div id="panel2" class="content_articles">
-                <!--Internet Web Search-->
+			<!--Internet Web Search-->
+            <div id="panel2" class="content_articles">
                 <form method="get" action="http://google.com">
                     <!--img src="/public/images/google.png" width="80" height="30" vspace ="25" align="middle" />
-					<input type="text" style="border: 1px solid rgb(126, 157, 185); padding: 2px; background: url(&quot;http://www.google.com/cse/intl/en/images/google_custom_search_watermark.gif&quot;) no-repeat scroll left center rgb(255, 255, 255);" size="31" name="q">
-					<select id="h" align="middle" class="h">
-						
-						<option value="2">OR</option>
-						<option value="3">NOT</option>
-					</select>
-					<!--input type="hidden" name="hl" value="en">
-					<input type="text" name="q" size="50"/>
-					<input class="lsb" type="submit" onclick="this.checked=1" name="btnG" value="Search"-->
+                    <input type="text" style="border: 1px solid rgb(126, 157, 185); padding: 2px; background: url(&quot;http://www.google.com/cse/intl/en/images/google_custom_search_watermark.gif&quot;) no-repeat scroll left center rgb(255, 255, 255);" size="31" name="q">
+                    <select id="h" align="middle" class="h">
+                    <option value="2">OR</option>
+                    <option value="3">NOT</option>
+                    </select>
+                    <!--input type="hidden" name="hl" value="en">
+                    <input type="text" name="q" size="50"/>
+                    <input class="lsb" type="submit" onclick="this.checked=1" name="btnG" value="Search"-->
                 </form>
             </div>
-            <div id="panel6" class="content_articles">
-                <!-- add here the 4th one -->
+            <!-- add here the 4th one -->
+			<div id="panel6" class="content_articles">
             </div>
         </div>
         <script type="text/javascript">
-            function doo(searchIn, wantKey, unWantKey, org, entity, topic, plan, idea, item, comm, dayB, monthB, yearB, dayA, monthA, yearA, dayE, monthE, yearE){
-                if (wantKey.value != "") {
-                    alert("GO");
-                    $.post('@{Search.advSearch()}', {
-                        searchIn: searchIn.value,
-                        wantKey: wantKey.value,
-                        unWantKey: unWantKey.value,
-                        org: org.value,
-                        entity: entity.value,
-                        topic: topic.value,
-                        plan: plan.value,
-                        idea: idea.value,
-                        item: item.value,
-                        comm: comm.value,
-                        dayB: dayB.value,
-                        monthB: monthB.value,
-                        yearB: yearB.value,
-                        dayA: dayA.value,
-                        monthA: monthA.value,
-                        yearA: yearA.value,
-                        dayE: dayE.value,
-                        monthE: monthE.value,
-                        yearE: yearE.value
+        	
+			/**
+        	 * Date Pickers JS
+        	 */
+        	$(function(){
+				$("#na1").hide();
+                $($("#datePickerB").datepicker({
+                    changeYear: true,
+                    showButtonPanel: true
+                })).change(function(){                
+                    if (document.getElementById("datePickerB").value != "") {
+                        $("#na1").show(500);
+                    }
+                });                                            
+                $("#na1").click(function(){
+                    document.getElementById("datePickerB").value = "";
+                    $("#na1").hide();
+                });
+				$("#na2").hide();                                            
+	            $($("#datePickerA").datepicker({
+	                changeYear: true,
+	                showButtonPanel: true
+	            })).change(function(){
+	                if (document.getElementById("datePickerA").value != "") {
+	                    $("#na2").show(500);
+	                }
+	            });                                            
+	            $("#na2").click(function(){
+	                document.getElementById("datePickerA").value = "";
+	                $("#na2").hide();
+	            });
+	            $("#na3").hide();                                            
+	            $($("#datePickerE").datepicker({
+	                changeYear: true,
+	                showButtonPanel: true
+	            })).change(function(){
+	            
+	                if (document.getElementById("datePickerE").value != "") {
+	                    $("#na3").show(500);
+	                }
+	            });                                            
+	            $("#na3").click(function(){
+	                document.getElementById("datePickerE").value = "";
+	                $("#na3").hide();
+	            });
+				$("#addA").hide();
+                $("#addE").hide();
+                $("#addB").hide();                
+                $("#datePickerE").change(function(){
+                    $("#datePickerA").hide(500);
+                    $("#addA").show(500);
+                    $("#datePickerB").hide(500);
+                    $("#addB").show(500);
+                });
+                $("#datePickerA").change(function(){
+                    $("#datePickerE").hide(500);
+                    $("#addE").show(500);
+                });
+                $("#datePickerB").change(function(){
+                    $("#datePickerE").hide(500);
+                    $("#addE").show(500);
+                });
+                
+                $("#addB").click(function(){
+                    $("#addB").hide(500);
+                    $("#addA").hide(500);
+                    $("#datePickerA").show(500);
+                    $("#datePickerB").show(500);
+                    document.getElementById("datePickerE").value = "";
+                    $("#datePickerE").hide(500);
+                    $("#na3").hide(500);
+                    $("#addE").show(500);
+                });
+                $("#addA").click(function(){
+                    $("#addB").hide(500);
+                    $("#addA").hide(500);
+                    $("#datePickerA").show(500);
+                    $("#datePickerB").show(500);
+                    document.getElementById("datePickerE").value = "";
+                    $("#datePickerE").hide(500);
+                    $("#na3").hide(500);
+                    $("#addE").show(500);
+                });
+                $("#addE").click(function(){
+                    $("#addB").show(500);
+                    $("#addA").show(500);
+                    document.getElementById("datePickerA").value = "";
+                    document.getElementById("datePickerB").value = "";
+                    $("#datePickerA").hide(500);
+                    $("#datePickerB").hide(500);
+                    $("#datePickerE").show(500);
+                    $("#na1").hide(500);
+                    $("#na2").hide(500);
+                    $("#addE").hide(500);
+                });
+            });
+			
+			/**
+			 * part of {All of these words} JS
+			 */
+        	$(function(){
+				$('#shw').hide();
+	            $('#remRaw').hide();
+	            $('#o').hide();
+	            var n = 0; // wantKeyX , in
+	            var m = 1; // wantKey
+	            var b = true; // true is not to show more options
+	            $('#addRaw').click(function(){
+	                if (m == 1) {
+	                    $('#remRaw').show(1000);
+	                    $('#o').show(1000);
+	                }
+	                if (b) {
+	                    $('#ra').append('<div class="divR" vspace ="20"> <select id="h" class="h"><option value="1" selected>&nbsp;AND</option><option value="2">&nbsp;OR</option><option value="3">&nbsp;NOT</option></select> <input type="text" id="wantKey" class ="wantKey" name="wantKey" /> </div>');
+	                    $('.divR:last').hide();
+	                    $('.divR:last').show(1000);
+	                }
+	                else {
+	                    $('#ra').append('<div class="divR" vspace ="20"> <select id="h" class="h"><option value="1" selected>&nbsp;AND</option><option value="2">&nbsp;OR</option><option value="3">&nbsp;NOT</option></select> <input type="text" id="wantKey" class ="wantKey" name="wantKey" /> <small><small><label id="in" class = "in"> in </label> </small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option></select> </div>');
+	                    $('.divR:last').hide();
+	                    $('.divR:last').show(1000);
+	                    n++;
+	                }
+	                m++;
+	            });
+	            $('#more').click(function(){
+	                $(".divR1").append(' <small><small><label id="in" class = "in"> in </label></small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option></select> ');
+	                $(".divR").append(' <small><small><label id="in" class = "in"> in </label></small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option></select> ');
+	                $('.in').hide();
+	                $('.in').show(1000);
+	                $('.wantKeyX').hide();
+	                $('.wantKeyX').show(1000);
+	                $('#more').hide();
+	                $('#shw').show();
+	                b = false;
+	                n = m;
+	            });
+	            $('#shw').click(function(){
+	                $('#shw').hide();
+	                $('#more').show();
+	                $('.in').remove();
+	                $('.wantKeyX').remove();
+	                n = 0;
+	                b = true;
+	            });
+	            $('#remRaw').click(function(){
+	                if (m == 2) {
+	                    $('#remRaw').hide();
+	                    $('#o').hide(1000);
+	                }
+	                $('.divR:last').remove();
+	                n--;
+	                m--;
+	            });
+			});
+			
+			/**
+			 * part of {Exact phrase} JS
+			 */
+			$(function(){
+                $('#inExOp').hide();
+                $('#remInEx').hide();
+                $('#inEx').click(function(){
+                    document.getElementById("inEx").className = '';
+                    $('#inExOp').show(500);
+                    $('#remInEx').show(500);
+                });
+                $('#remInEx').click(function(){
+                    document.getElementById("inExOp").value = 0;
+                    document.getElementById("inEx").className = 'aas';
+                    $('#inExOp').hide(500);
+                    $('#remInEx').hide(500);
+                });
+			});
+			
+			/**
+			 * part of {Organizations type} JS
+			 */
+            $('#er1').hide();
+            function loo(){
+                if (document.getElementById("rAl").checked) {
+                    document.getElementById("cbPu").checked = true;
+                    document.getElementById("cbPr").checked = true;
+                    document.getElementById("cbSc").checked = true;
+                    $('#er1').hide();
+                }
+                else {
+                    document.getElementById("cbPu").checked = false;
+                    document.getElementById("cbPr").checked = false;
+                    document.getElementById("cbSc").checked = false;
+                    $('#er1').show();
+                }
+            }
+            function loo2(){
+                document.getElementById("rAl").checked = false;
+                $('#er1').hide();
+                if (document.getElementById("cbPu").checked &&
+                document.getElementById("cbPr").checked &&
+                document.getElementById("cbSc").checked) {
+                    document.getElementById("rAl").checked = true;
+                }
+                if (!(document.getElementById("cbPu").checked ||
+                document.getElementById("cbPr").checked ||
+                document.getElementById("cbSc").checked)) {
+                    $('#er1').show();
+                }
+            }
+			
+			/**
+			 * part of {show Result of} JS
+			 */
+            $('#er2').hide();
+            function lo(){
+                if (document.getElementById("rAll").checked) {
+                    document.getElementById("cbO").checked = true;
+                    document.getElementById("cbE").checked = true;
+                    document.getElementById("cbT").checked = true;
+                    document.getElementById("cbP").checked = true;
+                    document.getElementById("cbI").checked = true;
+                    document.getElementById("cbi").checked = true;
+                    $('#er2').hide();
+                }
+                else {
+                    document.getElementById("cbO").checked = false;
+                    document.getElementById("cbE").checked = false;
+                    document.getElementById("cbT").checked = false;
+                    document.getElementById("cbP").checked = false;
+                    document.getElementById("cbI").checked = false;
+                    document.getElementById("cbi").checked = false;
+                    $('#er2').show();
+                }
+            }                                        
+            function lo2(){
+                document.getElementById("rAll").checked = false;
+                $('#er2').hide();
+                if (document.getElementById("cbO").checked &&
+                document.getElementById("cbE").checked &&
+                document.getElementById("cbT").checked &&
+                document.getElementById("cbP").checked &&
+                document.getElementById("cbI").checked &&
+                document.getElementById("cbi").checked) {
+                    document.getElementById("rAll").checked = true;
+                }
+                if (!(document.getElementById("cbO").checked ||
+                document.getElementById("cbE").checked ||
+                document.getElementById("cbT").checked ||
+                document.getElementById("cbP").checked ||
+                document.getElementById("cbI").checked ||
+                document.getElementById("cbi").checked)) {
+                    $('#er2').show();
+                }
+            }
+			
+			/**
+			 * part of {Reset} JS
+			 */
+            $('#reset').click(function(){
+                document.getElementById("wantKey1").value = "";
+                document.getElementById("wantKeyEx").value = "";
+                document.getElementById("rAl").checked = true;
+                document.getElementById("cbPu").checked = true;
+                document.getElementById("cbPr").checked = true;
+                document.getElementById("cbSc").checked = true;
+                document.getElementById("rAll").checked = true;
+                document.getElementById("cbO").checked = true;
+                document.getElementById("cbE").checked = true;
+                document.getElementById("cbT").checked = true;
+                document.getElementById("cbP").checked = true;
+                document.getElementById("cbI").checked = true;
+                document.getElementById("cbi").checked = true;
+                document.getElementById("datePickerA").value = "";
+                document.getElementById("datePickerB").value = "";
+                document.getElementById("datePickerE").value = "";
+                $('.divR').remove();
+                $('#shw').hide();
+                $('#more').show();
+                $('.in').remove();
+                $('.wantKeyX').remove();
+                $('#shw').hide();
+                $('#remRaw').hide();
+                $('#o').hide();
+                n = 0;
+                m = 1;
+                b = true;
+                $("#addB").hide();
+                $("#addA").hide();
+                $("#addE").hide();
+                $("#datePickerA").show();
+                $("#datePickerB").show();
+                $("#datePickerE").show();
+                $("#na1").hide();
+                $("#na2").hide();
+                $("#na3").hide();
+                document.getElementById("inExOp").value = 0;
+                document.getElementById("inEx").className = 'aas';
+                $('#inExOp').hide(500);
+                $('#remInEx').hide(500);
+            });
+			
+			/**
+			 * Start Advanced Search ... JS
+			 */
+			function doo(inPuts){
+				if((inPuts.wantKey1.value!=""||document.getElementById("wantKeyEx").value!=""||document.getElementById("wantKey") != null)
+					&&(document.getElementById("cbO").checked ||
+	                document.getElementById("cbE").checked ||
+	                document.getElementById("cbT").checked ||
+	                document.getElementById("cbP").checked ||
+	                document.getElementById("cbI").checked ||
+	                document.getElementById("cbi").checked)
+					&&(document.getElementById("cbPu").checked||
+                    document.getElementById("cbPr").checked||
+                    document.getElementById("cbSc").checked)){
+					var wantedKeys = inPuts.wantKey1.value;
+					var ins = "";
+					var exactKey = document.getElementById("wantKeyEx").value+document.getElementById("inExOp").value;
+					while(document.getElementById("wantKey") != null){
+						wantedKeys+=","+document.getElementById("h").value+","+document.getElementById("wantKey").value.replace(","," ");
+						$('#h').remove();
+						$('#wantKey').remove();
+					};
+					while(document.getElementById("wantKeyX") != null){
+						ins += document.getElementById("wantKeyX").value+"," ;
+						$('#wantKeyX').remove();
+					}
+					var OrgT = ""+document.getElementById("rAl").checked+","+
+	                            document.getElementById("cbPu").checked+","+
+	                            document.getElementById("cbPr").checked+","+
+	                            document.getElementById("cbSc").checked;
+					var ROf = ""+document.getElementById("rAll").checked
+							 +","+document.getElementById("cbO").checked
+							 +","+document.getElementById("cbE").checked
+							 +","+document.getElementById("cbT").checked
+							 +","+document.getElementById("cbP").checked
+                             +","+document.getElementById("cbI").checked
+                             +","+document.getElementById("cbi").checked;		 
+					var dateB = document.getElementById("datePickerB").value;
+					var dateA = document.getElementById("datePickerA").value;
+					var dateE = document.getElementById("datePickerE").value;
+					$.post('@{Search.advSearch()}', {
+                        wKs: wantedKeys,
+                        wKi:ins,
+						eK:exactKey,
+						oT:OrgT,
+						rOfS:ROf,
+						dateB:dateB,
+						dateA:dateA,
+						dateE:dateE
                     }, function(){
                         alert('enter func');
                         window.location.href = "/searchResult";
                         alert('enter end');
                     });
-                }
-                else {
-                    alert('Plz Enter a Key');
-                }
-            }
-        </script>
-        <script type="text/javascript">
-            (function(){
-                f = document.getElementById('inPuts');
-                if (f && f.wantKey) {
-                    var q = f.wantKeyEx;
-                    var n = navigator;
-                    var l = location;
-                    
-                    if (n.platform == 'Win32') {
-                        q.style.cssText = 'border: 1px solid #7e9db9; padding: 2px;';
-                        f.unWantKey.style.cssText = 'border: 1px solid #7e9db9; padding: 2px;';
-                    }
-                    
-                    var b = function(){
-                        if (q.value == '') {
-                            q.style.background = '#FFFFFF url(http:\x2F\x2Fwww.google.com\x2Fcse\x2Fintl\x2Fen\x2Fimages\x2Fgoogle_custom_search_watermark.gif) left no-repeat';
-                        }
-                    };
-                    
-                    var f = function(){
-                        q.style.background = '#ffffff';
-                    };
-                    
-                    q.onfocus = f;
-                    q.onblur = b;
-                    
-                    
-                    if (!/[&?]q=[^&]/.test(l.search)) {
-                        b();
-                    }
-                }
-            })();
-        </script>
+				} else {
+					if(!(document.getElementById("cbPu").checked||
+                        document.getElementById("cbPr").checked||
+                        document.getElementById("cbSc").checked)) {
+							alert("\t\t  EMPTY RESULT !! \n\n Plz check for Ogranization type to search");
+					}else{
+						if(!(document.getElementById("cbO").checked ||
+	                        document.getElementById("cbE").checked ||
+		                    document.getElementById("cbT").checked ||
+		                    document.getElementById("cbP").checked ||
+		                    document.getElementById("cbI").checked ||
+		                    document.getElementById("cbi").checked)) {
+							alert("\t\t\tEMPTY RESULT !! \n\n Plz check for some thing to show in search result");
+						} else {
+							alert("Plz Enter a Key !!");
+						}
+					}
+				}
+			}
+        
+		</script>
+        <!--script type="text/javascript">
+        (function(){
+        f = document.getElementById('inPuts');
+        if (f && f.wantKey) {
+        var q = f.wantKeyEx;
+        var n = navigator;
+        var l = location;
+        if (n.platform == 'Win32') {
+        q.style.cssText = 'border: 1px solid #7e9db9; padding: 2px;';
+        f.unWantKey.style.cssText = 'border: 1px solid #7e9db9; padding: 2px;';
+        }
+        var b = function(){
+        if (q.value == '') {
+        q.style.background = '#FFFFFF url(http:\x2F\x2Fwww.google.com\x2Fcse\x2Fintl\x2Fen\x2Fimages\x2Fgoogle_custom_search_watermark.gif) left no-repeat';
+        }
+        };
+        var f = function(){
+        q.style.background = '#ffffff';
+        };
+        q.onfocus = f;
+        q.onblur = b;
+        if (!/[&?]q=[^&]/.test(l.search)) {
+        b();
+        }
+        }
+        })();
+        </script-->
     </body>
 </html>
