@@ -44,17 +44,6 @@ public class MainEntitys extends CRUD {
 			entityList.remove(entity);
 		}
 
-		if (entity.parent == null) {
-			for (int i = 0; i < entityList.size(); i++) {
-				if (entityList.get(i).parent != null)
-					entityList.remove(entityList.get(i));
-			}
-		} else {
-			for (int i = 0; i < entityList.size(); i++) {
-				if (entityList.get(i).parent == null)
-					entityList.remove(entityList.get(i));
-			}
-		}
 		for (int i = 0; i < entityList.size(); i++) {
 			if (!entityList.get(i).createRelationship)
 				entityList.remove(entityList.get(i));
@@ -398,7 +387,7 @@ public class MainEntitys extends CRUD {
 				source, organisation).first();
 		MainEntity destinationEntity = MainEntity.find("byNameAndOrganization",
 				destination, organisation).first();
-		if(organisation.entityRequestIsDuplicate(source, destination, name)) {
+		if (organisation.entityRequestIsDuplicate(source, destination, name)) {
 			System.out.println("Already exists");
 		} else {
 			CreateRelationshipRequest relationRequest = new CreateRelationshipRequest(
