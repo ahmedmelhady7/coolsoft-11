@@ -102,7 +102,7 @@
         <br/>
         #{if permission == 1}
         <br>
-        <button type="submit" onclick= >  Edit
+        <button type="submit" onlclick="#" >  Edit
         </button>
         <br>
         #{/if}
@@ -277,32 +277,30 @@
  <input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(topicId,1)}">
 #{/if}
 
-<script type ="text/javascript">
-				$(document).ready(function(){
-    $('ul.menu ul').slideUp();
-    $('ul.menu>a').click(function(){
-        $(this).next('ul').slideToggle();
-        
-    });
-	})
-</script>
-
 <HR>
-	<ul class='menu'>
- <a>Show Relationships</a>
-   <ul class="blah">
+
+#{if (targetTopic.createRelationship == true)}
+			#{if (canCreateRelationship == true)}
+			<p>
+				<a href="@{Topics.createRelation(object.id,object.entity.id)}">Create Relation</a>
+			</p>
+			#{/if}
+			#{/if}
+
+ <a onclick="$('#lista').slideToggle();">Show Relationships</a>
+   <div id="lista" style="display: none;">
    	#{if targetTopic.relationsSource != null}
       #{list items:targetTopic.relationsSource, as:'relationElement'}
-			<p><a href="#">${relationElement.name}</a> topic ${relationElement.destination.title}</p>
+			<p>Name: <a href="#">${relationElement.name}</a> With: <a href="/topics/show?topicId=${relationElement.destination.id}">${relationElement.destination.title}</a></p>
 	  #{/list}
 	#{/if}
 	#{if targetTopic.relationsDestination != null}
-	  #{list items:targetTopic.relationsDestination, as:'relEelement'}
-			<p><a href="#">${relElement.name}</a> entity ${relElement.source.title}</p>
+	  #{list items:targetTopic.relationsDestination, as:'relElement'}
+			<p>Name: <a href="#">${relElement.name}</a> With: <a href="/topics/show?topicId=${relElement.source.id}"> ${relElement.source.title}</a></p>
 	  #{/list}
 	#{/if}
-   </ul>
-</ul>
+   </div>
+
 
 <form action="@{Topics.viewFollowers()}">
     <HR><input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">#{if (!targetTopic.followers.contains(user))} 
@@ -333,14 +331,6 @@
 			
             #{/if}
 			<br />
-			
-			#{if (targetTopic.createRelationship == true)}
-			#{if (canCreateRelationship == true)}
-			<p>
-				<a href="@{Topics.createRelation(object.id,object.entity.id)}">Create Relation</a>
-			</p>
-			#{/if}
-			#{/if}
 			
 			#{if seeRelationStatus}
 			#{if createRelationship}
