@@ -9,13 +9,22 @@ import play.mvc.With;
 import models.Log;
 import models.User;
 
+/**
+ * Manages the login actions, and the password recovery
+ * 
+ * @author Ahmed Maged
+ *
+ */
+
 public class Security extends Secure.Security {
 
 	/**
-	 * Used to get the user how is already connected on the
+	 * Used to get the user who is already connected on the
 	 * session.
 	 * 
-	 * @author C1
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S18
 	 * 
 	 * @return User
 	 * 
@@ -27,15 +36,17 @@ public class Security extends Secure.Security {
 
 	/**
 	 * Needed to check that the logging user has access to the
-	 * website
+	 * web site
 	 * 
-	 * @author C1
+	 * @author Ahmed Maged
 	 * 
-	 * @param username String
-	 * 			the username of the logging user
+	 * @stroy C1S18
 	 * 
-	 * @param password String
-	 * 			the password of the user
+	 * @param username 
+	 * 			String the username of the logging user
+	 * 
+	 * @param password 
+	 * 			String the password of the user
 	 * 
 	 * @return boolean 
 	 * 			true if the user is authorised false otherwise
@@ -71,15 +82,15 @@ public class Security extends Secure.Security {
 	}
 	
 	/**
-	 * chedcks that the entered username or e-mail belongs to an existing
-	 * user, and if so dispalys the user's security question.
+	 * checks that the entered username or e-mail belongs to an existing
+	 * user, and if so displays the user's security question.
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S21
 	 * 
-	 * @param username String
-	 *			the username or the e-mail of the user who forgot his password 
+	 * @param username 
+	 *			String the username or the e-mail of the user who forgot his password 
 	 *
 	 */
 	
@@ -106,10 +117,10 @@ public class Security extends Secure.Security {
 	 * 
 	 * @story C1S21
 	 * 
-	 * @param username String 
-	 * 			the username or the e-mail of the user who forgot his password
-	 * @param answer String
-	 * 			the answer of the security question
+	 * @param username 
+	 * 			String the username or the e-mail of the user who forgot his password
+	 * @param answer
+	 * 			String the answer of the security question
 	 * 	
 	 */
 	
@@ -148,7 +159,7 @@ public class Security extends Secure.Security {
 	 * 
 	 * @story C1S21
 	 * 	 
-	 * @return string
+	 * @return String
 	 * 			the new generated password
 	 */
 	

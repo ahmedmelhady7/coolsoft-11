@@ -17,8 +17,9 @@ import play.mvc.Controller;
 import play.mvc.With;
 
 /**
- * This is just a controller class for the login page and it still requires a
- * lot of modifications
+ *Manages the home page after logging in
+ * 
+ * @author Ahmed Maged
  */
 
 @With(Secure.class)
