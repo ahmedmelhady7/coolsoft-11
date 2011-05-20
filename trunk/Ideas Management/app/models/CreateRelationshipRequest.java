@@ -98,7 +98,9 @@ public class CreateRelationshipRequest extends CoolModel {
 		this.destinationEntity = destinationEntity;
 		this.name = name;
 		this.sourceEntity.relationshipRequestsSource.add(this);
+		this.sourceEntity.save();
 		this.destinationEntity.relationshipRequestsDestination.add(this);
+		this.destinationEntity.save();
 	}
 
 	/**
@@ -128,7 +130,9 @@ public class CreateRelationshipRequest extends CoolModel {
 		this.destinationTopic = destinationTopic;
 		this.name = name;
 		this.sourceTopic.relationshipRequestsSource.add(this);
+		this.sourceTopic.save();
 		this.destinationTopic.relationshipRequestsDestination.add(this);
+		this.destinationTopic.save();
 	}
 
 	/**
@@ -158,7 +162,9 @@ public class CreateRelationshipRequest extends CoolModel {
 		this.destinationTag = destinationTag;
 		this.name = name;
 		this.sourceTag.relationshipRequestsSource.add(this);
+		this.sourceTag.save();
 		this.destinationTag.relationshipRequestsDestination.add(this);
+		this.destinationTag.save();
 	}
 
 }
