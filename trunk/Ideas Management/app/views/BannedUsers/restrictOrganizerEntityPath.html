@@ -1,5 +1,5 @@
 
-#{extends 'main.html' /}
+#{extends 'Login/index.html' /}
 #{set title:'Restrict Organizer' /}
 
 
@@ -29,11 +29,12 @@
 <br />
 #{/else}
 
-<hr> <br /><br /> 
+ 
 
 
 
 <form id ="topicz" name = "topics"  >
+<br />
 <fieldset>
 <legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
     <b><u> Options set: </u></b></font></legend>
@@ -47,9 +48,10 @@
 <input  type="submit" value="Submit" onclick = "getTopic()">
 
 
-<hr> <br />
+
 
 <form id = "topicsListId" name = "topicsList">
+<hr> <br />
 <fieldset>  
 <legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
     <b><u> Topics Set : </u></b></font></legend> <br />
@@ -63,9 +65,9 @@
       
 <br />
 
-<hr> <br />
 
  <form id = "enabledActions" name = "actionsList" >
+<hr> <br />
 
     <p> <font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
     <b><u> Actions that the organizer is not restricted from : </u></b></font></p>
@@ -76,11 +78,11 @@
 
 
 <br />
-<hr> <br />
+
 
 
  <form id = "disabledActions" name = "disabledActionsList" >
-
+<hr> <br />
     <p> <font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
     <b><u> Actions that the organizer is restricted from : </u></b></font></p>
        

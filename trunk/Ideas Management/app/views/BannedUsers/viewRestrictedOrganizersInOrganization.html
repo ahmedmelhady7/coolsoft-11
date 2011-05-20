@@ -1,5 +1,12 @@
-#{extends 'main.html' /}
+#{extends 'Login/index.html' /}
 #{set title:'View Restricted Organizers' /}
+
+<form action="@{Organizations.viewProfile()}">
+
+            <input type="hidden" name="id" value='${organizationID}'>
+           <input type="submit" style="background-color:lightblue" value="Back to the organization main profile">
+ </form>
+<br />
 
 #{if sortedByEntity.isEmpty()}
 <font face="Monotype Corsiva, Verdana" size="6" color="#2B60DE">
