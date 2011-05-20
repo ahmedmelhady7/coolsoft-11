@@ -1405,8 +1405,9 @@ public class Topics extends CRUD {
 		Topic topic = Topic.findById(topicId);
 		topic.createRelationship = createRelationship;
 		topic.save();
-		String topiccId = topicId + "";
-		Topics.show(topiccId);
+//		String topiccId = topicId + "";
+		redirect("Topics.show", topic.id);
+//		Topics.show(topiccId);
 	}
 
 	/**
