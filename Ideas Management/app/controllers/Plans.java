@@ -1293,5 +1293,78 @@ public class Plans extends CRUD {
 		item.save();
 		return true;
 	}
+	/**
+	 * This method first checks if the user is allowed to edit in the plan so he can tag the item, searches
+	 * for the tag in the global list of tags, if found it checks if
+	 * the item had the same tag already or add the new one to the list if not
+	 * it creates a new tag, save it and add it to the list 
+	 * 
+	 * @author Yasmine Elsayed
+	 * 
+	 * @story C5S15
+	 * 
+	 * @param itemID
+	 *            : the item that is being tagged
+	 * 
+	 * @param tag
+	 *            : the tag that is being added
+	 * 
+	 */
+	public static void tagItem(long itemId, String tag) {
+
+	
+
+		boolean tagAlreadyExists = false;
+		boolean newTag= false;
+		List<Tag> listOfTags = new ArrayList<Tag>();
+		List<Tag> globalListOfTags = new ArrayList<Tag>();
+		globalListOfTags = Tag.findAll();
+
+		User user = (User) Security.getConnected();
+		Item item = (Item) Item.findById(itemId);
+		Plan plan = item.plan;
+		MainEntity entity = plan.topic.entity;
+
+				for (int i = 0; i < globalListOfTags.size(); i++) {
+					if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
+							|| plan.topic.entity.organization
+									.equals(globalListOfTags.get(i).createdInOrganization)) {
+						listOfTags.add(globalListOfTags.get(i));
+					}
+				}
+				
+				for (int i = 0; i < listOfTags.size(); i++) {
+					if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
+						if (!item.tags.contains(listOfTags.get(i))) {
+							item.tags.add(listOfTags.get(i));
+							listOfTags.get(i).taggedItems.add(item);
+							listOfTags.get(i).save();
+							System.out.println("existing tag added");
+							
+							
+						} else {
+							// tag already exists error message
+							System.out.println("tag already exists");
+							tagAlreadyExists = true;
+						}
+						newTag=true;;
+					}
+				}
+
+				if (newTag) {
+					Tag temp = new Tag(tag,
+							plan.topic.entity.organization, user);
+					item.tags.add(temp);
+					temp.taggedItems.add(item);
+					temp.save();
+					System.out.println("new tag created and added");
+				}
+
+				
+	
+		
+		item.save();
+		render(tagAlreadyExists,newTag);
+	}
 
 }
