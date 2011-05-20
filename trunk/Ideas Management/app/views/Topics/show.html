@@ -189,7 +189,7 @@
         </form>
         #{/if}
         		
-		#{if numberOfIdeas > 1}
+		#{if numberOfIdeas > 1 && canMerge == 1}
 		#{form @Topics.getIdeasToMerge(), method:'POST', enctype:'multipart/form-data' }
 				<input type = "hidden" name = "topicId" value = ${topicId}>
 				<input type="submit" value="Merge Ideas" />
