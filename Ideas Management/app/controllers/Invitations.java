@@ -20,11 +20,12 @@ import play.data.validation.Required;
 import play.mvc.With;
 import models.Log;
 import com.google.gson.JsonObject;
+
 //import com.mysql.jdbc.log.Log;
 
 @With(Secure.class)
 public class Invitations extends CRUD {
-	public static List <User> users = new ArrayList<User>();
+	public static List<User> users = new ArrayList<User>();
 
 	/**
 	 * 
@@ -42,27 +43,27 @@ public class Invitations extends CRUD {
 	 *            String type either entity (0) or topic(1)
 	 * 
 	 * @param flashError
-	 *               int flashError : 0 if green flash, 1 if red flash
-	 *               
+	 *            int flashError : 0 if green flash, 1 if red flash
+	 * 
 	 * @param check
-	 *               int check : 0 if viewing the page, 
-	 *               1 if search result, 2 if invite by mail
+	 *            int check : 0 if viewing the page, 1 if search result, 2 if
+	 *            invite by mail
 	 * 
 	 */
-	public static void invite( long id,int type,int check,int flashError) {
+	public static void invite(long id, int type, int check, int flashError) {
 		System.out.println("ya rab");
 		System.out.println(id);
-		 List <User> usersMatched=new ArrayList<User>();
-	        for (User user : users) {
-				usersMatched.add(user);
-			}
+		List<User> usersMatched = new ArrayList<User>();
+		for (User user : users) {
+			usersMatched.add(user);
+		}
 		if (type == 0) {
 			MainEntity entity = MainEntity.findById(id);
-			render(type,check ,entity,usersMatched,flashError);
+			render(type, check, entity, usersMatched, flashError);
 		} else {
 			Topic topic = Topic.findById(id);
 			notFoundIfNull(topic);
-			render(type,check, topic,usersMatched,flashError);
+			render(type, check, topic, usersMatched, flashError);
 		}
 
 	}
@@ -99,7 +100,7 @@ public class Invitations extends CRUD {
 
 		if (validation.hasErrors()) {
 			flash.error("Please enter a name first!");
-			invite(id,type,0,1);
+			invite(id, type, 0, 1);
 		}
 
 		if (type == 0) {
@@ -125,12 +126,18 @@ public class Invitations extends CRUD {
 			}
 			System.out.println(userFilter);
 		}
-		  
-			System.out.println("LAMA");
-			users=userFilter;
-			invite(id,type,1,1);
-	}
 
+		for (int i = 0; i < userFilter.size(); i++) {
+			Invitation sent = Invitation.find("byEmail",
+					userFilter.get(i).email).first();
+			if (sent != null)
+				userFilter.remove(i);
+		}
+		System.out.println("LAMA");
+		users = userFilter;
+		invite(id, type, 1, 1);
+
+	}
 
 	/**
 	 * 
@@ -190,7 +197,7 @@ public class Invitations extends CRUD {
 		if (!rfc2822.matcher(email).matches()) {
 			System.out.println("3'lat!!");
 			flash.error("Invalid address");
-			   invite(id,type,2,1);
+			invite(id, type, 2, 1);
 		}
 
 		System.out.println("fadwa");
@@ -210,16 +217,18 @@ public class Invitations extends CRUD {
 		}
 		if (check == true) {
 			flash.error("Invitation has already been sent to that user before");
-			 invite(id,type,2,1);
+			invite(id, type, 2, 1);
 		}
 
 		boolean isRegistered = false;
 		User reciever = null;
+
 		if (userId == 0) {
-System.out.println("check!!");
+
 			boolean flag = true;
 			isRegistered = true;
 			reciever = User.find("byEmail", email).first();
+
 			if (reciever != null) {
 
 				System.out.println("CONDITION");
@@ -230,38 +239,52 @@ System.out.println("check!!");
 				System.out.println(flag);
 
 				if (!flag) {
-					if (entity!=null)
+					if (entity != null)
 						flash.error("This user is already an organizer to this entity");
 					else
 						flash.error("This user is already an idea developer in that topic");
-					 invite(id,type,2,1);
+					invite(id, type, 2, 1);
 				}
 
 				if (reciever.state.equals("n") || reciever.state.equals("d")) {
 					flash.error("This user is not available");
-					 invite(id,type,2,1);
+					invite(id, type, 2, 1);
 				}
 
 			}
 		}
+
 		if (!isRegistered)
 			reciever = User.find("byEmail", email).first();
-		System.out.println(reciever);
+
 		User user = Security.getConnected();
 		users.remove(user);
-		
-		if (type==0) {
-			Mail.invite(email, role, entity.organization.name, name,type);
+
+		if (type == 0) {
+			Mail.invite(email, role, entity.organization.name, name, type);
 			user.addInvitation(email, role, entity.organization, entity, null);
 			for (int j = 0; j < users.size(); j++)
 				Notifications.sendNotification(users.get(j).id, entity.id,
 						"entity",
 						"New organizer has been invited to be an organizer to entity  "
 								+ name);
+
+			if (reciever != null)
+				Log.addUserLog("User " + user.firstName + " " + user.lastName
+						+ " has invited user " + reciever.firstName + " "
+						+ reciever.lastName + " to be organizer to "
+						+ entity.name, entity, entity.organization, user);
+			else
+
+				Log.addUserLog("User " + user.firstName + " " + user.lastName
+						+ " has invited unregiseterd user with email  " + email
+						+ " to be organizer to " + entity.name, entity,
+						entity.organization, user);
+
 		} else {
 			Organization organization = topic.entity.organization;
-			Mail.invite(email, role, organization.name, name,type);
-			user.addInvitation(email, role,organization, null, topic);
+			Mail.invite(email, role, organization.name, name, type);
+			user.addInvitation(email, role, organization, null, topic);
 			for (int j = 0; j < users.size(); j++)
 				Notifications.sendNotification(users.get(j).id, topic.id,
 						"topic",
@@ -282,7 +305,7 @@ System.out.println("check!!");
 		}
 
 		if (reciever != null) {
-			if (entity!=null)
+			if (entity != null)
 				Notifications.sendNotification(reciever.id, entity.id,
 						"organization",
 						"You have received a new invitation from " + name);
@@ -292,7 +315,7 @@ System.out.println("check!!");
 		}
 
 		flash.error("Invitation has been sent successfuly");
-		 invite(id,type,0,2);
+		invite(id, type, 0, 2);
 
 	}
 
@@ -341,9 +364,10 @@ System.out.println("check!!");
 	 * 
 	 */
 
-	public static void respond(int id, long invId) {
-
-		Invitation invite = Invitation.findById(invId);
+	public static void respond(int id, long i) {
+		System.out.println("here");
+		Invitation invite = Invitation.findById(i);
+		System.out.println(invite);
 		String roleName = invite.role.toLowerCase();
 		Organization organization = null;
 		MainEntity entity = null;
@@ -354,7 +378,7 @@ System.out.println("check!!");
 		if (invite.topic != null) {
 			organization = invite.organization;
 			entity = invite.entity;
-			flag=false;
+			flag = false;
 		} else {
 			topic = invite.topic;
 			entity = topic.entity;
@@ -392,6 +416,15 @@ System.out.println("check!!");
 								entity.id, "entity",
 								"New organizer has been added as an organizer to entity  "
 										+ entity.name);
+
+					Log.addUserLog(
+							"User "
+									+ user.firstName
+									+ " "
+									+ user.lastName
+									+ " has accepted the invitation to be organizer to Entity "
+									+ entity.name, entity.organization, user);
+
 					// **
 
 				} else {
@@ -434,33 +467,57 @@ System.out.println("check!!");
 
 				UserRoleInOrganizations.addEnrolledUser(user, organization,
 						role, topic.id, "topic");
-				for (int i = 0; i < organizers.size(); i++)
-					Notifications.sendNotification(organizers.get(i).id,
+				for (int k = 0; k < organizers.size(); k++)
+					Notifications.sendNotification(organizers.get(k).id,
 							topic.id, "topic", " A new User " + user.username
 									+ " has joined topic " + topic.title);
-				
+
 				Log.addUserLog("User " + user.firstName + " " + user.lastName
 						+ " has accepted the invitation to join topic "
 						+ topic.title, organization, topic, user);
-				
+
 			}
 		}
 
-		// **
-          if(!flag){
-		organization.invitation.remove(invite);
-			entity.invitationList.remove(invite);
+		if (!flag) {
+			organization.invitation.remove(invite);
+			if (entity != null) {
+				entity.invitationList.remove(invite);
+
+				List<User> organizer = Users.getEntityOrganizers(entity);
+				for (int j = 0; j < organizer.size(); j++)
+					Notifications
+							.sendNotification(
+									organizers.get(j).id,
+									entity.id,
+									"entity",
+									"User "
+											+ user.firstName
+											+ " "
+											+ user.lastName
+											+ "has rejected the invitation to be an organizer to Entity  "
+											+ entity.name);
+
+				Log.addUserLog(
+						"User "
+								+ user.firstName
+								+ " "
+								+ user.lastName
+								+ " has rejected the invitation to be organizer to Entity "
+								+ entity.name, organization, user);
+			}
+
+		} else {
+			topic.invitations.remove(invite);
+			for (int s = 0; s < organizers.size(); s++)
+				Notifications.sendNotification(organizers.get(s).id, topic.id,
+						"topic", " A new User " + user.username
+								+ " has rejected the invitation to join topic "
+								+ topic.title);
+			Log.addUserLog("User " + user.firstName + " " + user.lastName
+					+ " has rejected the invitation to join topic "
+					+ topic.title, organization, topic, user);
 		}
-          else{
-        	  topic.invitations.remove(invite);
-        	  for (int i = 0; i < organizers.size(); i++)
-					Notifications.sendNotification(organizers.get(i).id,
-							topic.id, "topic", " A new User " + user.username
-									+ " has rejected the invitation to join topic " + topic.title);
-        	  Log.addUserLog("User " + user.firstName + " " + user.lastName
-						+ " has rejected the invitation to join topic "
-						+ topic.title, organization, topic, user);
-          }
 		User sender = invite.sender;
 		sender.invitation.remove(invite);
 		invite.delete();
