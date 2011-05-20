@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 
 @With(Secure.class)
 public class Invitations extends CRUD {
+	public static List <User> users = new ArrayList<User>();
 
 	/**
 	 * 
@@ -34,22 +35,34 @@ public class Invitations extends CRUD {
 	 * 
 	 * @story C1S6,C2S22
 	 * 
-	 * @param type
-	 *            type either entity (0) or topic(1)
-	 * 
 	 * @param id
 	 *            long id of entity/topic that sends the invitation
 	 * 
+	 * @param type
+	 *            String type either entity (0) or topic(1)
+	 * 
+	 * @param flashError
+	 *               int flashError : 0 if green flash, 1 if red flash
+	 *               
+	 * @param check
+	 *               int check : 0 if viewing the page, 
+	 *               1 if search result, 2 if invite by mail
+	 * 
 	 */
-	public static void invite(int type, long id) {
-		System.out.println(type);
+	public static void invite( long id,int type,int check,int flashError) {
+		System.out.println("ya rab");
+		System.out.println(id);
+		 List <User> usersMatched=new ArrayList<User>();
+	        for (User user : users) {
+				usersMatched.add(user);
+			}
 		if (type == 0) {
 			MainEntity entity = MainEntity.findById(id);
-			render(type, entity);
+			render(type,check ,entity,usersMatched,flashError);
 		} else {
 			Topic topic = Topic.findById(id);
 			notFoundIfNull(topic);
-			render(type, topic);
+			render(type,check, topic,usersMatched,flashError);
 		}
 
 	}
@@ -65,7 +78,7 @@ public class Invitations extends CRUD {
 	 * 
 	 * 
 	 * @param type
-	 *            type either entity (0) or topic(1)
+	 *            String type either entity (0) or topic(1)
 	 * 
 	 * @param id
 	 *            long id of the entity/topic that sends the invitation.
@@ -77,7 +90,7 @@ public class Invitations extends CRUD {
 	public static void searchUser(int type, long id, @Required String name) {
 
 		List<User> filter = Users.searchUser(name);
-		List<User> users = new ArrayList<User>();
+		List<User> userFilter = new ArrayList<User>();
 		List<User> postsInTopic = new ArrayList<User>();
 
 		System.out.println("type :" + type);
@@ -86,7 +99,7 @@ public class Invitations extends CRUD {
 
 		if (validation.hasErrors()) {
 			flash.error("Please enter a name first!");
-			invite(type, id);
+			invite(id,type,0,1);
 		}
 
 		if (type == 0) {
@@ -96,81 +109,28 @@ public class Invitations extends CRUD {
 			for (int i = 0; i < filter.size(); i++) {
 				if (!organizers.contains(filter.get(i))
 						|| filter.get(i).isAdmin)
-					users.add(filter.get(i));
+					userFilter.add(filter.get(i));
 			}
 
 		} else {
-			System.out.println(users);
+			System.out.println(userFilter);
 			postsInTopic = Topics.searchByTopic(id);
 			System.out.println(filter);
 			System.out.println(postsInTopic);
 			for (int i = 0; i < filter.size(); i++) {
 				if (!postsInTopic.contains(filter.get(i))) {
 					System.out.println(postsInTopic.contains(filter.get(i)));
-					users.add(filter.get(i));
+					userFilter.add(filter.get(i));
 				}
 			}
-			System.out.println(users);
+			System.out.println(userFilter);
 		}
-		JsonObject json = new JsonObject();
-		String names = "";
-		String ids = "";
-		String emails = "";
-		for (int i = 0; i < users.size(); i++) {
-			names = names + users.get(i).username + ",";
-			ids = ids + users.get(i).id + ",";
-			emails = emails + users.get(i).email + ",";
-		}
-
-		json.addProperty("type", type);
-		json.addProperty("names", names);
-		json.addProperty("ids", ids);
-		json.addProperty("emails", emails);
-		if (type == 0)
-			json.addProperty("entity", id);
-		else
-			json.addProperty("topic", id);
-		renderJSON(json.toString());
+		  
+			System.out.println("LAMA");
+			users=userFilter;
+			invite(id,type,1,1);
 	}
 
-	/**
-	 * 
-	 * Renders the organization, the entity and the user to the invitation page
-	 * , if no user selected the view will enable a text box to enter the email
-	 * 
-	 * @author ${Mai.Magdy},${Fadwa.Sakr}
-	 * 
-	 * 
-	 * @story C1S6,C2S22
-	 * 
-	 * @param type
-	 *            type either entity (0) or topic(1)
-	 * 
-	 * @param id
-	 *            long id of entity/topic that sends the invitation
-	 * 
-	 * @param userId
-	 *            long id of the selected user to send the invitation to , 0 if
-	 *            inviting by mail
-	 * 
-	 */
-	public static void page(int type, long id, long userId) {
-		System.out.println("YA RAAAB");
-		User user = User.findById(userId);
-		System.out.println("typoo" + type);
-		System.out.println(userId);
-		System.out.println(user);
-		if (type == 0) {
-			System.out.println(id);
-			MainEntity entity = MainEntity.findById(id);
-
-			render(type, entity, userId, user);
-			System.out.println("mai");
-		} else {
-			Topic topic = Topic.findById(id);
-			render(type, topic, userId, user);
-		}
-	}
 
 	/**
 	 * 
@@ -183,7 +143,7 @@ public class Invitations extends CRUD {
 	 * @story C1S6,C2S22
 	 * 
 	 * @param type
-	 *            type either entity (0) or topic(1)
+	 *            String type either entity (0) or topic(1)
 	 * 
 	 * @param email
 	 *            String email of the destination of the invitation
@@ -229,7 +189,7 @@ public class Invitations extends CRUD {
 		if (!rfc2822.matcher(email).matches()) {
 			System.out.println("3'lat!!");
 			flash.error("Invalid address");
-			page(type, id, userId);
+			   invite(id,type,2,1);
 		}
 
 		System.out.println("fadwa");
@@ -249,7 +209,7 @@ public class Invitations extends CRUD {
 		}
 		if (check == true) {
 			flash.error("Invitation has already been sent to that user before");
-			page(type, id, userId);
+			 invite(id,type,2,1);
 		}
 
 		boolean isRegistered = false;
@@ -272,12 +232,12 @@ public class Invitations extends CRUD {
 						flash.error("This user is already an organizer to this entity");
 					else
 						flash.error("This user is already an idea developer in that topic");
-					page(type, id, userId);
+					 invite(id,type,2,1);
 				}
 
 				if (reciever.state.equals("n") || reciever.state.equals("d")) {
 					flash.error("This user is not available");
-					page(type, id, userId);
+					 invite(id,type,2,1);
 				}
 
 			}
@@ -327,7 +287,7 @@ public class Invitations extends CRUD {
 		}
 
 		flash.error("Invitation has been sent successfuly");
-		invite(type, id);
+		 invite(id,type,0,2);
 
 	}
 
