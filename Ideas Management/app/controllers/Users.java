@@ -485,15 +485,15 @@ public class Users extends CRUD {
 		System.out.println("hadiiiiiiiiiiiiiiii");
 		Topic topic = Topic.findById(topicId);
 		User reporter = Security.getConnected();
-		reporter.topicsReported.add(topic);
-		topic.reporters.add(reporter);
+//		reporter.topicsReported.add(topic);
+//		topic.reporters.add(reporter);
 		topic.save();
 		reporter.save();
 		// for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
 		Mail.reportTopicMail(/* dee 3'lt */topic.creator, reporter, topic,
 				topic.description, topic.title);
 		// }
-		System.out.println(topic.reporters.toString());
+//		System.out.println(topic.reporters.toString());
 		TopicSpamView(topicId);
 
 	}
@@ -514,10 +514,10 @@ public class Users extends CRUD {
 		boolean alreadyReported = false;
 		Topic topic = Topic.findById(topicId);
 		User reporter = Security.getConnected();
-		for (int i = 0; i < topic.reporters.size(); i++) {
-			if (reporter.username.equals(topic.reporters.get(i).username))
-				alreadyReported = true;
-		}
+//		for (int i = 0; i < topic.reporters.size(); i++) {
+//			if (reporter.username.equals(topic.reporters.get(i).username))
+//				alreadyReported = true;
+//		}
 		redirect("/topics/show?topicId=" + topic.getId(), alreadyReported);
 		// render(alreadyReported);
 	}

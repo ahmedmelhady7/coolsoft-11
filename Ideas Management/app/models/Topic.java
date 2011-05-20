@@ -46,13 +46,13 @@ public class Topic extends CoolModel {
 	 */
 	@OneToMany(mappedBy = "source")
 	public List<TopicRelationship> relationsSource;
-	
-	 /**
-	  * The list of relations where the topic is the destination
-	  */
-	 @OneToMany(mappedBy = "destination")
-	 public List<TopicRelationship> relationsDestination;
-	 
+
+	/**
+	 * The list of relations where the topic is the destination
+	 */
+	@OneToMany(mappedBy = "destination")
+	public List<TopicRelationship> relationsDestination;
+
 	/**
 	 * the list of tags the topic is tagged with
 	 */
@@ -121,7 +121,7 @@ public class Topic extends CoolModel {
 	/**
 	 * the list of invitations to join the topic
 	 */
-    @OneToMany(mappedBy = "topic")
+	@OneToMany(mappedBy = "topic")
 	public List<Invitation> invitations;
 
 	/**
@@ -129,7 +129,7 @@ public class Topic extends CoolModel {
 	 */
 	@OneToMany(mappedBy = "sourceTopic")
 	public List<CreateRelationshipRequest> relationshipRequestsSource;
-	
+
 	@OneToMany(mappedBy = "destinationTopic")
 	public List<CreateRelationshipRequest> relationshipRequestsDestination;
 
@@ -145,12 +145,12 @@ public class Topic extends CoolModel {
 	@ManyToOne
 	public MainEntity entity;
 
-	/**
-	 * the Repoters of the topic
-	 */
-	@ManyToMany(mappedBy = "topicsReported")
-	public List<User> reporters;
-	
+//	/**
+//	 * the Repoters of the topic
+//	 */
+//	@ManyToMany(mappedBy = "topicsReported")
+//	public List<User> reporters;
+
 	/**
 	 * the plan that the topic is promoted to
 	 */
@@ -165,7 +165,8 @@ public class Topic extends CoolModel {
 	public boolean openToEdit;
 
 	/**
-	 * This variable checks whether this entity allows the creation of relationships in it
+	 * This variable checks whether this entity allows the creation of
+	 * relationships in it
 	 * 
 	 * @author Omar Faruki
 	 * 
@@ -173,17 +174,15 @@ public class Topic extends CoolModel {
 	 */
 	public boolean createRelationship;
 
-	
 	/**
 	 * shows whether the topic is visible or hidden
 	 */
 	public boolean hidden;
-	
+
 	/**
 	 * the user who hid the topic
 	 */
 	public User hider;
-
 
 	/**
 	 * Default constructor that creates a topic with name, description,privacy
@@ -215,6 +214,7 @@ public class Topic extends CoolModel {
 		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
 		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		this.tags = new ArrayList<Tag>();
+//		this.reporters = new ArrayList<User>();
 		// relationships = new ArrayList<Relationship>();
 		// organizers = new ArrayList<User>();
 		this.followers = new ArrayList<User>();
@@ -252,7 +252,8 @@ public class Topic extends CoolModel {
 		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
 		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		this.tags = new ArrayList<Tag>();
-		//organizers = new ArrayList<User>();
+//		this.reporters = new ArrayList<User>();
+		// organizers = new ArrayList<User>();
 		this.followers = new ArrayList<User>();
 		this.ideas = new ArrayList<Idea>();
 		this.commentsOn = new ArrayList<Comment>();
@@ -462,20 +463,20 @@ public class Topic extends CoolModel {
 
 		return true;
 	}
-	
+
 	/**
 	 * Checks wether a certain user can view this topic
 	 * 
 	 * @author Alia El Bolock
 	 * 
 	 * @param user
-	 *          : the user upon which the ckeck should be done
+	 *            : the user upon which the ckeck should be done
 	 * 
 	 * @return boolean
 	 */
-	public boolean canView(User user){
+	public boolean canView(User user) {
 		boolean canView = false;
-		if(Users.isPermitted(user, "view", this.id, "topic"))
+		if (Users.isPermitted(user, "view", this.id, "topic"))
 			canView = true;
 		return canView;
 	}

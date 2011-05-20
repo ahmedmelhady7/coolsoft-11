@@ -825,21 +825,21 @@ public class Topics extends CRUD {
 			}
 		}
 
-		for (int i = 0; i < targetTopic.reporters.size()
-				|| i < actor.topicsReported.size(); i++) {
-			if (targetTopic.reporters.size() > 0
-					&& (actor.toString().equals(
-							targetTopic.reporters.get(i).toString()) || targetTopic
-							.toString().equals(
-									actor.topicsReported.get(i).toString()))) {
-				alreadyReportedTopic = true;
-				System.out
-						.println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
-
-			} else
-				alreadyReportedTopic = false;
-
-		}
+//		for (int i = 0; i < targetTopic.reporters.size()
+//				|| i < actor.topicsReported.size(); i++) {
+//			if (targetTopic.reporters.size() > 0
+//					&& (actor.toString().equals(
+//							targetTopic.reporters.get(i).toString()) || targetTopic
+//							.toString().equals(
+//									actor.topicsReported.get(i).toString()))) {
+//				alreadyReportedTopic = true;
+//				System.out
+//						.println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
+//
+//			} else
+//				alreadyReportedTopic = false;
+//
+//		}
 
 		int allowed = 0;
 		for (int k = 0; k < ideas.size(); k++) {
