@@ -53,6 +53,9 @@ public class Plans extends CRUD {
 		int canIdea = 0;
 		boolean canView = true;
 		boolean isOrganizer = false;
+		String listOfTags = "";
+		List<Tag> globalListOfTags = new ArrayList<Tag>();
+		globalListOfTags = Tag.findAll();
 		boolean checkNotRated;
 		if(p.usersRated.contains(user))
 			checkNotRated = false;
@@ -86,9 +89,17 @@ public class Plans extends CRUD {
 
 				canIdea = 1;
 			}
+			
+			for (int i = 0; i < globalListOfTags.size(); i++) {
+				if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
+						|| p.topic.entity.organization
+								.equals(globalListOfTags.get(i).createdInOrganization)) {
+					listOfTags+=globalListOfTags.get(i)+"|";
+				}
+			}
 			List<MainEntity> entitiesList = p.topic.entity.organization.entitiesList;
 			render(p, itemsList, user, canAssign, canEdit, canView,
-					isOrganizer, canIdea, comments, entitiesList);
+					isOrganizer, canIdea, comments, entitiesList,listOfTags);
 		} else {
 			canView = false;
 			render(canView, isOrganizer);
