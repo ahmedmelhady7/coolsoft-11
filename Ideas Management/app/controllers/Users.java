@@ -189,8 +189,7 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * renders the form for editing and viewing a
-	 * user
+	 * renders the form for editing and viewing a user
 	 * 
 	 * @author Lama Ashraf
 	 * 
@@ -280,22 +279,18 @@ public class Users extends CRUD {
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		Model object = (Model) constructor.newInstance();
-		User user =Security.getConnected();
-		int adminFlag=0;
-		int unregisteredUser = 0 ;
-		try
-		{
-			if(user.isAdmin)
-			{
-				adminFlag=1;
+		User user = Security.getConnected();
+		int adminFlag = 0;
+		int unregisteredUser = 0;
+		try {
+			if (user.isAdmin) {
+				adminFlag = 1;
 			}
-		}
-		catch(NullPointerException e)
-		{
+		} catch (NullPointerException e) {
 			unregisteredUser = 1;
 		}
 		try {
-			render(type, object,adminFlag,unregisteredUser);
+			render(type, object, adminFlag, unregisteredUser);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/blank.html", type, object);
 		}
@@ -427,8 +422,6 @@ public class Users extends CRUD {
 	 * @param ideaId
 	 *            : the ID of the idea to be reported
 	 * 
-	 * @param reporter
-	 *            : the user who wants to report the idea
 	 * 
 	 */
 	public static void reportIdeaAsSpam(long ideaId) {
@@ -440,7 +433,7 @@ public class Users extends CRUD {
 		idea.reporters.add(reporter);
 		System.out.println(idea.reporters.get(0).toString());
 		// for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
-		Mail.reportAsSpamMail(idea.belongsToTopic.creator, reporter, idea.id,
+		Mail.reportAsSpamMail(idea.belongsToTopic.creator, reporter, idea,
 				idea.description, idea.title);
 		// }
 		System.out.println(idea.spamCounter
@@ -459,6 +452,9 @@ public class Users extends CRUD {
 	 * 
 	 * @story C3S12
 	 * 
+	 * @param ideaId
+	 *            : the ID of the idea to be reported
+	 * 
 	 */
 
 	public static void ideaSpamView(long ideaId) {
@@ -471,6 +467,58 @@ public class Users extends CRUD {
 		}
 		redirect("/ideas/show?ideaId=" + idea.getId(), alreadyReported);
 		// render(alreadyReported);
+	}
+
+	/**
+	 * this Method is responsible for reporting a Topic as a spam
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S12
+	 * 
+	 * @param topicId
+	 *            : the ID of the topic to be reported
+	 * 
+	 * 
+	 */
+	public static void reportTopicAsSpam(long topicId) {
+		System.out.println("hadiiiiiiiiiiiiiiii");
+		Topic topic = Topic.findById(topicId);
+		User reporter = Security.getConnected();
+		topic.reporters.add(reporter);
+		topic.save();
+		reporter.topicsReported.add(topic);
+		// for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
+		Mail.reportTopicMail(/* dee 3'lt */topic.creator, reporter, topic,
+				topic.description, topic.title);
+		// }
+		System.out.println(topic.reporters.toString());
+		TopicSpamView(topicId);
+
+	}
+
+	/**
+	 * this Method is responsible for the view of reporting the idea as spam
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S12
+	 * 
+	 * @param topicId
+	 *            : the ID of the topic to be reported
+	 * 
+	 */
+
+	public static void TopicSpamView(long topicId) {
+		boolean alreadyReported = false;
+		Topic topic = Topic.findById(topicId);
+		User reporter = Security.getConnected();
+		for (int i = 0; i < topic.reporters.size(); i++) {
+			if (reporter.username.equals(topic.reporters.get(i).username))
+				alreadyReported = true;
+		}
+		redirect("/topics/show?topicId=" + topic.getId(), alreadyReported);
+		//render(alreadyReported);
 	}
 
 	/**
@@ -498,15 +546,15 @@ public class Users extends CRUD {
 		List<User> users = BannedUser
 				.find("select bu.bannedUser from BannedUser where bu.organization = ? and bu.action = ? and bu.resourceType = ? and bu.resourceID = ? ",
 						organization, action, type, sourceID).fetch();
-		
-		for(int i = 0 ; i < users.size() ; i++){
-			
-			if (!users.get(i).state.equals("a")){
+
+		for (int i = 0; i < users.size(); i++) {
+
+			if (!users.get(i).state.equals("a")) {
 				users.remove(i);
 				i--;
 			}
 		}
-		
+
 		return (users);
 	}
 
@@ -722,16 +770,15 @@ public class Users extends CRUD {
 					}
 				}
 			} else {
-				if(action.equals("view")){
+				if (action.equals("view")) {
 					return true;
 				}
 				List<UserRoleInOrganization> allowed = UserRoleInOrganization
-				.find("byEnrolledAndOrganization", user, org).fetch();
-		        if (allowed == null) {
-			return false;
-		}
-		else
-			return true;
+						.find("byEnrolledAndOrganization", user, org).fetch();
+				if (allowed == null) {
+					return false;
+				} else
+					return true;
 			}
 
 		}
@@ -788,20 +835,19 @@ public class Users extends CRUD {
 					}
 				}
 				if (org.privacyLevel == 2) {
-					if(action.equals("view")){
+					if (action.equals("view")) {
 						return true;
 					}
 					List<UserRoleInOrganization> allowed = UserRoleInOrganization
-					.find("byEnrolledAndOrganization", user, topic).fetch();
-			        if (allowed == null) {
-				return false;
-			}
-			else
-				return true;
+							.find("byEnrolledAndOrganization", user, topic)
+							.fetch();
+					if (allowed == null) {
+						return false;
+					} else
+						return true;
 				}
-				}
 			}
-		
+		}
 
 		if (placeType.equalsIgnoreCase("entity")) {
 			MainEntity entity = MainEntity.findById(placeId);
@@ -858,8 +904,8 @@ public class Users extends CRUD {
 	}
 
 	/**
-	 * gets the list of organizers of a certain topic such that all the users in 
-	 * the returned list are active 
+	 * gets the list of organizers of a certain topic such that all the users in
+	 * the returned list are active
 	 * 
 	 * @author: Nada Ossama
 	 * 
@@ -871,7 +917,7 @@ public class Users extends CRUD {
 	 * 
 	 * @return List<User> of Organizers in that topic
 	 */
-	
+
 	public List<User> getTopicOrganizers(Topic topic) {
 		List<User> enrolled = new ArrayList<User>();
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
@@ -882,14 +928,13 @@ public class Users extends CRUD {
 					.find("select uro from UserRoleInOrganization uro  where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?",
 							organization, topic.getId(), "topic").fetch();
 			for (int i = 0; i < organizers.size(); i++) {
-				
-				if ((organizers.get(i).role.roleName.equals("organizer")) && organizers.get(i).enrolled.state.equals("a")) {
+
+				if ((organizers.get(i).role.roleName.equals("organizer"))
+						&& organizers.get(i).enrolled.state.equals("a")) {
 					enrolled.add(organizers.get(i).enrolled);
-				} 
-				
+				}
+
 			}
-			
-			
 
 		}
 		return enrolled;
@@ -919,7 +964,8 @@ public class Users extends CRUD {
 					.find("select uro from UserRoleInOrganization uro where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?",
 							organization, entityId, "entity").fetch();
 			for (int i = 0; i < organizers.size(); i++) {
-				if (((organizers.get(i).role.roleName).equals("organizer")) && (organizers.get(i).enrolled.state.equals("a"))) {
+				if (((organizers.get(i).role.roleName).equals("organizer"))
+						&& (organizers.get(i).enrolled.state.equals("a"))) {
 
 					enrolled.add(organizers.get(i).enrolled);
 				}
@@ -954,8 +1000,7 @@ public class Users extends CRUD {
 	 **/
 	public static boolean canDelete(User user, String action, long placeId,
 			String placeType, long topicId) {
-		
-		
+
 		BannedUser bannedView = BannedUser.find(
 				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 				"view", placeType, placeId).first();
@@ -992,7 +1037,8 @@ public class Users extends CRUD {
 	/**
 	 * gets all the users enrolled in an organization these users are: 1- the
 	 * Organization lead 2- the organizers (even if blocked) 3- Idea Developers
-	 * in secret or private topics and the state of all the returned users is active
+	 * in secret or private topics and the state of all the returned users is
+	 * active
 	 * 
 	 * @author : Nada Ossama
 	 * 
@@ -1012,9 +1058,9 @@ public class Users extends CRUD {
 			enrolled = UserRoleInOrganization
 					.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? ",
 							organization).fetch();
-			
-			for (int i = 0 ; i < enrolled.size() ; i++){
-				if (enrolled.get(i).state.equals("a")){
+
+			for (int i = 0; i < enrolled.size(); i++) {
+				if (enrolled.get(i).state.equals("a")) {
 					finalEnrolled.add(enrolled.get(i));
 				}
 			}
@@ -1045,7 +1091,7 @@ public class Users extends CRUD {
 
 	public static List<User> getIdeaDevelopers(long entityTopicId, String type) {
 		List<User> enrolled = new ArrayList<User>();
-        List<User> finalEnrolled = new ArrayList<User>();
+		List<User> finalEnrolled = new ArrayList<User>();
 		Role role = Roles.getRoleByName("idea developer");
 		MainEntity entity = MainEntity.findById(entityTopicId);
 		Organization organization = entity.organization;
@@ -1057,15 +1103,15 @@ public class Users extends CRUD {
 		enrolled = UserRoleInOrganization
 				.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? and uro.role = ? and uro.entityTopicID = ? and type = ?",
 						organization, role, entityTopicId, type).fetch();
-		
-		for (int  i = 0 ; i < enrolled.size() ; i++){
-			if (enrolled.get(i).state.equals("a")){
+
+		for (int i = 0; i < enrolled.size(); i++) {
+			if (enrolled.get(i).state.equals("a")) {
 				finalEnrolled.add(enrolled.get(i));
 			}
 		}
-		
+
 		return finalEnrolled;
-		
+
 	}
 
 	/**
@@ -1214,12 +1260,9 @@ public class Users extends CRUD {
 		boolean flag = false;
 		String communityCounterString = tmp.communityContributionCounter + "";
 		boolean communityCounterFlag = false;
-		try 
-		{
+		try {
 			Integer.parseInt(communityCounterString);
-		}
-		catch(NumberFormatException e)
-		{
+		} catch (NumberFormatException e) {
 			communityCounterFlag = true;
 		}
 		if (User.find("ByEmail", tmp.email) != null
@@ -1245,10 +1288,10 @@ public class Users extends CRUD {
 				message = "Username cannot exceed 20 characters";
 			} else if (tmp.password.length() >= 25) {
 				message = "First name cannot exceed 25 characters";
-			} else if(communityCounterFlag){
+			} else if (communityCounterFlag) {
 				message = "Community contributuion counter must be a number";
 			} /*
-			 *else if (User.find("ByEmail", tmp.email) != null) { message =
+			 * else if (User.find("ByEmail", tmp.email) != null) { message =
 			 * "This Email already exists !"; } else if (User.find("ByUsername",
 			 * tmp.username) != null) { message =
 			 * "This username already exists !"; }
@@ -1377,9 +1420,9 @@ public class Users extends CRUD {
 
 		System.out.println(object.toString() + "before save");
 		object._save();
-		if(Security.getConnected().isAdmin) {
-		Notifications.sendNotification(tmp.id, Security.getConnected().id,
-				"User", "The admin has edited your profile");
+		if (Security.getConnected().isAdmin) {
+			Notifications.sendNotification(tmp.id, Security.getConnected().id,
+					"User", "The admin has edited your profile");
 		}
 		if (oldEmail.equals(tmp.email))
 			;
@@ -1433,7 +1476,10 @@ public class Users extends CRUD {
 			if (Security.getConnected().isAdmin) {
 				redirect(request.controller + ".list");
 			} else {
-				Log.addUserLog("User" + Security.getConnected().firstName + " " + Security.getConnected().lastName + " has edites his/her profile", Security.getConnected());
+				Log.addUserLog("User" + Security.getConnected().firstName + " "
+						+ Security.getConnected().lastName
+						+ " has edites his/her profile",
+						Security.getConnected());
 				redirect("/Users/viewProfile?userId=" + id); // was showProfile
 			}
 		}
@@ -1506,9 +1552,11 @@ public class Users extends CRUD {
 				user.state = "d";
 				user._save();
 				x = "deletion successful";
-/*>>>>> Added by Salma Osama to: delete the volunteerRequests and the receivedAssignRequests of the user
-							   : remove the user from the list of assignees of the items he's assigned to
-*/			
+				/*
+				 * >>>>> Added by Salma Osama to: delete the volunteerRequests
+				 * and the receivedAssignRequests of the user : remove the user
+				 * from the list of assignees of the items he's assigned to
+				 */
 				for (int i = 0; i < user.volunteerRequests.size(); i++) {
 					user.volunteerRequests.get(i).delete();
 				}
@@ -1522,7 +1570,7 @@ public class Users extends CRUD {
 					item.save();
 					user.save();
 				}
-//>>>>>> end of Salma's part :)				
+				// >>>>>> end of Salma's part :)
 				System.out.println(x + "  first if");
 				Mail.deletion(user, deletionMessage);
 			} else {
@@ -1656,14 +1704,14 @@ public class Users extends CRUD {
 		Mail.deactivate();
 		logout();
 	}
-	
+
 	/**
-	 * activates the account of that user by setting the state to "a" and then renders a message
+	 * activates the account of that user by setting the state to "a" and then
+	 * renders a message
 	 * 
 	 * @story C1S10
 	 * 
-	 * @params userId
-	 * 				long 
+	 * @params userId long
 	 * 
 	 * @author Mostafa Ali
 	 * 

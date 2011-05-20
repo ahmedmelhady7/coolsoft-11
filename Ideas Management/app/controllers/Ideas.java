@@ -389,14 +389,15 @@ public class Ideas extends CRUD {
 			if (idea.reporters.size() > 0
 					&& (user.toString()
 							.equals(idea.reporters.get(i).toString()) || idea
-							.toString()
-							.equals(idea.reporters.get(i).toString()))) {
+							.toString().equals(
+									user.ideasReported.get(i).toString()))) {
 				alreadyReported = true;
 				System.out
 						.println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
 			} else
 				alreadyReported = false;
 		}
+
 		try {
 			System.out.println("show() done, about to render");
 			// System.out.println("x is " + x);

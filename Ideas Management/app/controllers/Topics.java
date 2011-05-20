@@ -175,57 +175,6 @@ public class Topics extends CRUD {
 	}
 
 	/**
-	 * this Method is responsible for reporting a topic as a spam
-	 * 
-	 * @author ${Ahmed El-Hadi}
-	 * 
-	 * @story C3S16
-	 * 
-	 * @param ideaId
-	 *            : the ID of the idea to be reported
-	 * 
-	 * 
-	 */
-	public static void reportTopicAsSpam(long ideaId) {
-		Topic topic = Topic.findById(ideaId);
-		User reporter = Security.getConnected();
-		reporter.topicsReported.add(topic);
-		topic.reporters.add(reporter);
-		System.out.println(topic.reporters.get(0).toString());
-		// for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
-		Mail.reportAsSpamMail(
-		/* 3'lt w 3ayz el foo2 el topic */topic.creator, reporter, topic.id,
-				topic.description, topic.title);
-		// }
-		topic.save();
-		reporter.save();
-		System.out.println(reporter.ideasReported.get(0).toString());
-		TopicSpamView(ideaId);
-
-	}
-
-	/**
-	 * this Method is responsible for the view of reporting the topic as spam
-	 * 
-	 * @author ${Ahmed El-Hadi}
-	 * 
-	 * @story C3S16
-	 * 
-	 */
-
-	public static void TopicSpamView(long ideaId) {
-		boolean alreadyReported = false;
-		Idea idea = Idea.findById(ideaId);
-		User reporter = Security.getConnected();
-		for (int i = 0; i < idea.reporters.size(); i++) {
-			if (reporter.username.equals(idea.reporters.get(i).username))
-				alreadyReported = true;
-		}
-		redirect("/ideas/show?ideaId=" + idea.getId(), alreadyReported);
-		// render(alreadyReported);
-	}
-
-	/**
 	 * 
 	 * This method is responsible for posting an idea to a topic by a certain
 	 * user
@@ -856,12 +805,11 @@ public class Topics extends CRUD {
 		String actionClose = "close a topic and promote it to execution";
 		String actionPlan = "create an action plan to execute an idea";
 		Topic targetTopic = Topic.findById(topicIdLong);
+		boolean topicNotClosed = targetTopic.openToEdit;
 		boolean alreadyReported = false;
 		boolean canDelete = Users.isPermitted(actor, "hide and delete an idea",
 				topicIdLong, "topic");
-		// mestani lama
-		boolean canUse = Users.canDelete(actor, "use", ideas.get(0).id, "idea",
-				topicId);
+		boolean alreadyReportedTopic = false;
 		for (int i = 0; i < ideas.size(); i++) {
 			Idea idea = ideas.get(i);
 
@@ -876,6 +824,23 @@ public class Topics extends CRUD {
 					alreadyReported = true;
 			}
 		}
+
+		for (int i = 0; i < targetTopic.reporters.size()
+				|| i < actor.topicsReported.size(); i++) {
+			if (targetTopic.reporters.size() > 0
+					&& (actor.toString().equals(
+							targetTopic.reporters.get(i).toString()) || targetTopic
+							.toString().equals(
+									actor.topicsReported.get(i).toString()))) {
+				alreadyReportedTopic = true;
+				System.out
+						.println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
+
+			} else
+				alreadyReportedTopic = false;
+
+		}
+
 		int allowed = 0;
 		for (int k = 0; k < ideas.size(); k++) {
 			if (ideas.get(k).hidden)
@@ -942,9 +907,9 @@ public class Topics extends CRUD {
 		}
 		try {
 
-			render(type, object, tags, canUse, creator, followers, ideas,
-					numberOfIdeas, comments, entity, canDelete,
-					alreadyReported, plan, openToEdit, privacyLevel,
+			render(type, object, tags, /* canUse, */alreadyReportedTopic,
+					creator, followers, ideas, numberOfIdeas, comments, entity,
+					canDelete, alreadyReported, plan, openToEdit, privacyLevel,
 					deleteMessage, deletable, topicIdLong, canClose, canPlan,
 					targetTopic, allowed, permission, topicId, canPost,
 					canNotPost, pending, follower, canCreateRelationship,
@@ -1291,9 +1256,10 @@ public class Topics extends CRUD {
 	 * 
 	 * @param id
 	 *            : the id of the topic to be deleted
-	 *            
+	 * 
 	 * @param justification
-	 *            : the justification message that is sent by the deleter to the creator of the topic
+	 *            : the justification message that is sent by the deleter to the
+	 *            creator of the topic
 	 */
 	public static void delete(String id, String justification) {
 		System.out.println("entered my delete");
@@ -1360,9 +1326,10 @@ public class Topics extends CRUD {
 	 * 
 	 * @param id
 	 *            : the id of the topic to be hidden
-	 *            
+	 * 
 	 * @param justification
-	 *            : the justification message that is sent by the deleter to the creator of the topic
+	 *            : the justification message that is sent by the deleter to the
+	 *            creator of the topic
 	 */
 	public static void hide(String id, String justification) {
 		ObjectType type = ObjectType.get(getControllerClass());

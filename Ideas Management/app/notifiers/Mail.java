@@ -27,15 +27,16 @@ public class Mail extends Mailer {
 	 *            String organization name that sends the invitation
 	 * 
 	 * @param entity
-	 *            String entity name that sends the invitation whether its an entity/topic
+	 *            String entity name that sends the invitation whether its an
+	 *            entity/topic
 	 * 
 	 * @param type
-	 *             int type whether the email is sent from topic(1)or entity(0)
-	 *             
+	 *            int type whether the email is sent from topic(1)or entity(0)
+	 * 
 	 */
 
 	public static void invite(String email, String role, String organization,
-			String entity,int type) {
+			String entity, int type) {
 		addRecipient(email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Invitation");
@@ -48,10 +49,10 @@ public class Mail extends Mailer {
 			id = 0;
 		if (entity == "")
 			check = 0;
-		send(user, role, url, organization, entity, id, check,type);
+		send(user, role, url, organization, entity, id, check, type);
 
 	}
-	
+
 	/**
 	 * @Sends a mail to the user informing him that his account has been
 	 *        deactivated
@@ -112,16 +113,43 @@ public class Mail extends Mailer {
 	 */
 
 	public static void reportAsSpamMail(User topicOrganizer, User reporter,
-			long reportedIdeaOrTopicOrCommentId, String description, String title) {
-		long id = reportedIdeaOrTopicOrCommentId;
+			Idea reportedIdea, String description, String title) {
+		long id = reportedIdea.id;
 		System.out.println("maiiiiiiiiii");
 		addRecipient("elhadiahmed3@gmail.com");
 		setFrom("coolsoft-11@gmail.com");
-		setSubject("An Idea is Reported as a Spam");
-		send(topicOrganizer, reporter,id,description, title);
+		setSubject("An Idea has been Reported as a Spam");
+		send(topicOrganizer, reporter, id, description, title);
 	}
 	
-	
+	/*
+	 * this Method is responsible for sending a mail to the topic organizers
+	 * when a Topic inside the topic is reported as a spam
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S16
+	 * 
+	 * @param topicOrganizer : the organizer of be topic
+	 * 
+	 * @param reporter : the user who reported the idea
+	 * 
+	 * @param reportedIdea : the reported idea
+	 * 
+	 * @param description : description of the idea
+	 * 
+	 * @param title : title of idea
+	 */
+
+	public static void reportTopicMail(User reciever, User reporter,
+			Topic reportedTopic, String description, String title) {
+		long id = reportedTopic.id;
+		System.out.println("maiiiiiiiiii");
+		addRecipient("elhadiahmed3@gmail.com");
+		setFrom("coolsoft-11@gmail.com");
+		setSubject("A Topic has been Reported as a Spam");
+		send(reciever, reporter, id, description, title);
+	}
 
 	/**
 	 * Sends an e-mail to the user with a new generated password and gives him a
@@ -150,7 +178,7 @@ public class Mail extends Mailer {
 	}
 
 	/**
-	 *  used to send a mail to the person who was added by the admin
+	 * used to send a mail to the person who was added by the admin
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -168,8 +196,9 @@ public class Mail extends Mailer {
 		send(user, url);
 
 	}
+
 	/**
-	 *  used to send a mail to the person who was added by the admin
+	 * used to send a mail to the person who was added by the admin
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -183,12 +212,14 @@ public class Mail extends Mailer {
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Welcome to CoolSoft, Reactivate your account ");
-		String url = "http://localhost:9008/Users/activationPage?userId="+user.id;
+		String url = "http://localhost:9008/Users/activationPage?userId="
+				+ user.id;
 		send(user, url);
 
 	}
+
 	/**
-	 *  used to send a mail to the person who was deleted by the admin
+	 * used to send a mail to the person who was deleted by the admin
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -200,15 +231,13 @@ public class Mail extends Mailer {
 	 * @param message
 	 *            :String the reason for which the user has been deleted
 	 */
-	public static void deletion(User user,String message) {
+	public static void deletion(User user, String message) {
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Your account has been deleted ! ");
-		//String url = "http://localhost:9008";
+		// String url = "http://localhost:9008";
 		send(user, message);
 
 	}
-
-	
 
 }
