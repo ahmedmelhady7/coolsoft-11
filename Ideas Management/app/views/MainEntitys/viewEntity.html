@@ -3,72 +3,88 @@
 		<script src="http://1.2.3.4/bmi-int-js/bmi.js" language="javascript"></script>	
 
     <head>
-    	<style type="text/css">body{font-size:80%;font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;}.accordionItem h3{margin:0;font-size:1.1em;border-bottom:1px solid #66d color:"#150517";}.accordionItem h3:hover{cursor:pointer;}.accordionItem div{margin:0;padding:1em 0.4em;}.accordionItem.hide h3{}.accordionItem.hide div{display:none;}</style> 
+    	<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+		.accordionItem h3 {
+			margin:0;
+			font-size:1.1em;
+			border-bottom:1px solid #66d color:"#150517";
+		}
+		.accordionItem h3:hover {
+			cursor:pointer;
+		}
+		.accordionItem div {
+			margin:0;
+			padding:1em 0.4em;
+		}
+		.accordionItem.hide h3 {
+		}
+		.accordionItem.hide div {
+			display:none;
+		}</style> 
 			
         <title>Entity View</title>
-				<script type="text/javascript">
-			function unfollow(id){
-		$.post('@{Users.unfollowEntity()}', {
-			entityId: id
-		});
-		alert("done!");
-		location.reload(true);
-	}
-	
+				<script type="text/javascript">function unfollow(id) {
+				$.post('@{Users.unfollowEntity()}', {
+					entityId: id
+				});
+				alert("done!");
+				location.reload(true);
+			}
 
-	 var accordionItems = new Array();
-	 
-	 function init() {
+			var accordionItems = new Array();
 
-      // Grab the accordion items from the page
-      var divs = document.getElementsByTagName( 'div' );
-      for ( var i = 0; i < divs.length; i++ ) {
-        if ( divs[i].className == 'accordionItem' ) accordionItems.push( divs[i] );
-      }
+			function init() {
 
-      // Assign onclick events to the accordion item headings
-      for ( var i = 0; i < accordionItems.length; i++ ) {
-        var h3 = getFirstChildWithTagName( accordionItems[i], 'H3' );
-        h3.onclick = toggleItem;
-      }
+				// Grab the accordion items from the page
+				var divs = document.getElementsByTagName( 'div' );
+				for ( var i = 0; i < divs.length; i++ ) {
+					if ( divs[i].className == 'accordionItem' )
+						accordionItems.push( divs[i] );
+				}
 
-      // Hide all accordion item bodies except the first
-      for ( var i = 1; i < accordionItems.length; i++ ) {
-        accordionItems[i].className = 'accordionItem hide';
-      }
-    }
-	
-	function toggleItem() {
-      var itemClass = this.parentNode.className;
+				// Assign onclick events to the accordion item headings
+				for ( var i = 0; i < accordionItems.length; i++ ) {
+					var h3 = getFirstChildWithTagName( accordionItems[i], 'H3' );
+					h3.onclick = toggleItem;
+				}
 
-      // Hide all items
-      for ( var i = 0; i < accordionItems.length; i++ ) {
-        accordionItems[i].className = 'accordionItem hide';
-      }
+				// Hide all accordion item bodies except the first
+				for ( var i = 1; i < accordionItems.length; i++ ) {
+					accordionItems[i].className = 'accordionItem hide';
+				}
+			}
 
-      // Show this item if it was previously hidden
-      if ( itemClass == 'accordionItem hide' ) {
-        this.parentNode.className = 'accordionItem';
+			function toggleItem() {
+				var itemClass = this.parentNode.className;
 
-      }
-    }
-	
-	  function getFirstChildWithTagName( element, tagName ) {
-      for ( var i = 0; i < element.childNodes.length; i++ ) {
-        if ( element.childNodes[i].nodeName == tagName ) return element.childNodes[i];
-      }
-    }
-	
-	$(document).ready(function(){
-    $('ul.menu ul').slideUp();
-    $('ul.menu>a').click(function(){
-        $(this).next('ul').slideToggle();
+				// Hide all items
+				for ( var i = 0; i < accordionItems.length; i++ ) {
+					accordionItems[i].className = 'accordionItem hide';
+				}
+
+				// Show this item if it was previously hidden
+				if ( itemClass == 'accordionItem hide' ) {
+					this.parentNode.className = 'accordionItem';
+
+				}
+			}
+
+			function getFirstChildWithTagName( element, tagName ) {
+				for ( var i = 0; i < element.childNodes.length; i++ ) {
+					if ( element.childNodes[i].nodeName == tagName )
+						return element.childNodes[i];
+				}
+				$(document).ready(function(){
+    			$('ul.menu ul').slideUp();
+    			$('ul.menu>a').click(function(){
+        		$(this).next('ul').slideToggle();
         
-    });
-	})
-	
-	
-		</script>
+    			});
+			})
+			}</script>
     </head>
 
     <body onload="init()">
@@ -132,7 +148,13 @@
           <input type="submit" value="Followers">
           <br/>
           <HR>
-       </form>		
+       </form>
+       
+       #{if canRequestRelationship == 1}				
+		<form action="@{MainEntitys.createRelationship()}" method="post">
+		Request Relationship Creation: <input type="submit" value="Request">
+		</form>
+		#{/if}
 		
 		<p>
 		
@@ -220,13 +242,23 @@
 		<input type="submit" value="Edit" onclick=location.href="@{MainEntitys.editEntityPage(entity.id)}">
 		<HR>	
 		#{/if}
+		<form action="@{MainEntitys.requestRelationship(user.id, org.id, entity.id)}" method="post">
+			<input type="submit" value="Request Relationship Creation">
+		</form>
+		
+		<script type="text/javascript">function unfollow(id) {
+				$.post('@{Users.unfollowEntity()}', {
+					entityId: id
+				});
+				alert("done!");
+				location.reload(true);
+			}</script>
 		#{if (canRestrict == 1)}
 		
 		<input type="submit" value="Restrict/De-Restrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerEntityPath(entity.id)}">
 		<HR>	
 		#{/if}
-         
-	
+
     </body>
 </html>
 
