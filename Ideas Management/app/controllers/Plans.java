@@ -328,6 +328,8 @@ public class Plans extends CRUD {
 		Idea idea = Idea.findById(ideaId);
 		Plan plan = Plan.findById(planId);
 		idea.plan = null;
+		idea.author.communityContributionCounter = idea.author.communityContributionCounter -13;
+		idea.author.save();
 		plan.ideas.remove(idea);
 		idea.save();
 		plan.save();
@@ -972,6 +974,8 @@ public class Plans extends CRUD {
 		}
 		User creator = plan.madeBy;
 		creator.planscreated.remove(plan);
+		for(int i = 0; i< plan.ideas.size(); i++)
+		plan.ideas.get(i).author.communityContributionCounter = plan.ideas.get(i).author.communityContributionCounter  - 13;
 		creator.save();
 		plan.madeBy = null;
 		plan.save();
