@@ -242,9 +242,12 @@
 		<input type="submit" value="Edit" onclick=location.href="@{MainEntitys.editEntityPage(entity.id)}">
 		<HR>	
 		#{/if}
+		
+		#{if (canRequestRelationship == 1)}
 		<form action="@{MainEntitys.requestRelationship(user.id, org.id, entity.id)}" method="post">
 			<input type="submit" value="Request Relationship Creation">
 		</form>
+		#{/if}
 		
 		<script type="text/javascript">function unfollow(id) {
 				$.post('@{Users.unfollowEntity()}', {
