@@ -279,7 +279,7 @@ function getTopic(){
         
         var restrictedActionz = {};
         restrictedActionz = data.restrictedActions.split(",");
-        alert(restrictedActionz.length + " restrictedActions" + data.restrictedActions);
+     
         for( var i = 0 ; i < restrictedActionz.length-1 ; i++){
 		     
         	var text = restrictedActionz[i];
@@ -448,8 +448,6 @@ function getSelectedCheckboxValue(buttonGroup) {
 			
 // 			alert("restrictedActions.length" + field.length);
 			var enabledActions = getSelectedCheckboxValue(field2);
-			alert(enabledActions[0]);
-			alert(enabledActions.length);
 			
 
 			if(enabledActions.length == 0 ) {
@@ -487,7 +485,7 @@ function getSelectedCheckboxValue(buttonGroup) {
 						
 						
 						if(field2.checked){
-							alert("henna");
+							
 							field2.disabled = true;
 							field2.checked = false;
 							$('#enabledActions').append('<input type="checkbox" id = "c" name = "actionToDo"  value = "'+field2.value +'" class = "enabled"/> ' + field2.value + '<br />'); 
