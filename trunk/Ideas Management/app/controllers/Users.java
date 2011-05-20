@@ -485,9 +485,10 @@ public class Users extends CRUD {
 		System.out.println("hadiiiiiiiiiiiiiiii");
 		Topic topic = Topic.findById(topicId);
 		User reporter = Security.getConnected();
+		reporter.topicsReported.add(topic);
 		topic.reporters.add(reporter);
 		topic.save();
-		reporter.topicsReported.add(topic);
+		reporter.save();
 		// for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
 		Mail.reportTopicMail(/* dee 3'lt */topic.creator, reporter, topic,
 				topic.description, topic.title);
@@ -518,7 +519,7 @@ public class Users extends CRUD {
 				alreadyReported = true;
 		}
 		redirect("/topics/show?topicId=" + topic.getId(), alreadyReported);
-		//render(alreadyReported);
+		// render(alreadyReported);
 	}
 
 	/**
@@ -1664,8 +1665,6 @@ public class Users extends CRUD {
 	 * Ends the session of the current user and logs out
 	 * 
 	 * @author Ahmed Maged
-	 * 
-	 * @stroy C1S18
 	 * 
 	 */
 

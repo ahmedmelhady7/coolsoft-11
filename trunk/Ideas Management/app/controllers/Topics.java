@@ -857,7 +857,7 @@ public class Topics extends CRUD {
 			allowed = 1;
 		// Note isPermitted has a bug here!
 		boolean canPost = Users.isPermitted(Security.getConnected(),
-				"can post ideas to a Topic", temporaryTopic.id, "topic");
+				"use", temporaryTopic.id, "topic");
 
 		int check =0; 
 		if(Users.isPermitted(Security.getConnected(),
