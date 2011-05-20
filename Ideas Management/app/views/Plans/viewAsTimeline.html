@@ -1,37 +1,48 @@
  #{extends 'login/index.html' /}
  #{if canView == true}
 <div id="leftSidebar">
-		<ul>
-		<div style="clear: both;">&nbsp;</div>
-		<li>
-			<ul>
-			#{if isOrganizer == true}
-
-			<li><a href="@{VolunteerRequests.viewVolunteerRequests(p.id)}" >Volunteer Requests</a></li>
-			#{/if}
-
-			#{if canIdea == 1}												     							
-			<li><a href="@{Plans.addIdea(p.id)}" >Associate ideas to plan</a></li>
-			#{/if}
-
-			<li><a href="@{Plans.planView(p.id)}" > Promoted Ideas </a></li>
-
-			#{if canEdit == 1}
-			<li><a href="@{Plans.addItem(p.id)}">Add item(s)</a></li>
-			<li><a href="@{Plans.editPlan(p.id)}" id="demo01">Edit plan</a></li>
-			<li ><a href="@{Plans.deletePlan(p.id)}" onclick="confirmDel(${p.id})">Delete plan</a></li>
-			#{/if}	
-			<li><a href="@{Plans.viewAsList(p.id)}">View list of to-do items</a></li>
-			<li><a href="@{Plans.viewAsCalendar(p.id)}">View plan calendar</a></li>
-			<li><a href="@{Plans.viewAsTimeline(p.id)}">View plan timeline</a></li>
-			 #{if canEdit == 1}
-				  <li>
-				<input type="button" value= "delete plan" onclick="delPlan(${p.id}, '${p.topic.id}')">
+ <ul>
+        <div style="clear: both;">
+            &nbsp;
+        </div>
+        <li>
+            <ul>
+                #{if isOrganizer == true}
+                <li>
+                    <a href="@{VolunteerRequests.viewVolunteerRequests(p.id)}">Volunteer Requests</a>
+                </li>
+                #{/if} 
+                #{if canIdea == 1} 
+                <li>
+                    <a href="@{Plans.addIdea(p.id)}">Associate ideas to plan</a>
+                </li>
+                #{/if}
+                <li>
+                    <a href="@{Plans.planView(p.id)}">Promoted Ideas </a>
+                </li>
+                #{if canEdit == 1}
+                <li>
+                    <a href="@{Plans.addItem(p.id)}">Add item(s)</a>
+                </li>
+                <li>
+                    <a href="@{Plans.editPlan(p.id)}" id="demo01">Edit plan</a>
+                </li>
+				<li>
+				  	<a href="#" onclick="delPlan(${p.id}, ${p.topic.id})">delete plan</a>
 				</li>
-				#{/if}
-			</ul>
-		</li>
-		</ul>
+                #{/if} 
+                <li>
+                    <a href="@{Plans.viewAsList(p.id)}">View list of to-do items</a>
+                </li>
+                <li>
+                    <a href="@{Plans.viewAsCalendar(p.id)}">View plan calendar</a>
+                </li>
+                <li>
+                    <a href="@{Plans.viewAsTimeline(p.id)}">View plan timeline</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </div>
 <body >
 	<h1 align="center"> ${p.title}
