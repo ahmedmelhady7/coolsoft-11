@@ -77,13 +77,7 @@
 					if ( element.childNodes[i].nodeName == tagName )
 						return element.childNodes[i];
 				}
-				$(document).ready(function(){
-    			$('ul.menu ul').slideUp();
-    			$('ul.menu>a').click(function(){
-        		$(this).next('ul').slideToggle();
-        
-    			});
-			})
+				
 			}</script>
     </head>
 
@@ -123,6 +117,23 @@
 		<br />
 		#{/if}
 		#{/if}
+		<div>
+<a onclick="$('#lista').slideToggle()">Show Relationships</a>
+   <div id="lista" style="display: none;">
+   	#{if entity.relationsSource != null}
+      #{list items:entity.relationsSource, as:'relationElement'}
+			<ul>Name: <a href="#">${relationElement.name}</a> With: <a href="/mainentitys/viewentity?id=${relationElement.destination.id}">${relationElement.destination.name}</a></ul>
+	  #{/list}	
+	#{/if}
+	#{if entity.relationsDestination != null}
+	  
+	  #{list items:entity.relationsDestination, as:'relElement'}
+			<ul>Name: <a href="#">${relElement.name}</a> With: <a href="/mainentitys/viewentity?id=${relElement.source.id}">${relElement.source.name}</a></ul>
+	  #{/list}
+   	#{/if}
+   </div>
+</div>
+		
 		<form action="@{MainEntitys.viewFollowers()}">
             <HR>
             	<input type="hidden" name="entityId" value="${entity.id}">
@@ -197,24 +208,6 @@
 		#{else}
 		No topics available for this entity!
 		#{/else}
-		
-	
-	<ul class='menu'>
- <a>Show Relationships</a>
-   <ul class="blah">
-   	#{if entity.relationsSource != null}
-      #{list items:entity.relationsSource, as:'relationElement'}
-			<p><a href="#">${relationElement.name}</a> entity ${relationElement.destination.name}</p>
-	  #{/list}	
-	#{/if}
-	#{if entity.relationsDestination != null}
-	  
-	  #{list items:entity.relationsDestination, as:'relEelement'}
-			<p><a href="#">${relElement.name}</a> entity ${relElement.source.name}</p>
-	  #{/list}
-   	#{/if}
-   </ul>
-</ul>
 		
 #{if invite == 1}		
  <input type="submit" value="Invite Organizers" onclick=location.href="@{Invitations.invite(entity.id)}">

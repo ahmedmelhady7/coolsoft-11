@@ -66,6 +66,27 @@ padding-left:950px;
             </p>
 		</form>
 		#{/if}
+		
+		#{if canCreateRelationship == true}
+		<p><b>
+			<a href="@{Tags.createRelation(tag.id,tag.createdInOrganization.id)}">create relation</a>
+		</b></p>
+		#{/if}
+		
+		<a onclick="$('#lista').slideToggle();">Show Relationships</a>
+	<div id="lista" style="display:none;">
+		#{if tag.relationsSource != null}
+		#{list items:tag.relationsSource, as:'relationElement'}
+				<ul>Name: <a href="#">${relationElement.name}</a> With: <a href="/tags/mainpage?tagId=${relationElement.destination.id}">${relationElement.destination.name}</a></ul>
+		#{/list}
+		#{/if}
+		#{if tag.relationsDestination != null}
+		#{list items:tag.relationsDestination, as:'relElement'}
+				<ul>Name: <a href="#">${relElement.name}</a> With: <a href="/tags/mainpage?tagId=${relElement.source.id}">${relElement.source.name}</a></ul>
+		#{/list}
+		#{/if}
+	</div>
+		
         <center><big><b>${tag.name}</b></big></center><br><br>
 		List of Followers:
 		<br>
@@ -107,7 +128,18 @@ padding-left:950px;
 			<a href="@{Ideas.show(idea.id)}">${idea.title}</a>
 		</li>
 		#{/list}
+		
+	
+	
+	<!--	<b>
+			<a onclick="@{Users.followTag(tag.id)}" href="/organizations/viewprofile?id=${tag.createdInOrganization.id}">Follow</a>
+		</b>
 		<script type="text/javascript">
+			alert("you are now following " + tag);
+		</script>   -->
+
+		<script type="text/javascript">
+			
 			function unfollow(id){
 		$.post('@{Users.unfollowTag()}', {
 			tagId: id
@@ -124,6 +156,7 @@ padding-left:950px;
 	}
 		</script>
 		
+
     </body>
 </html>
 
