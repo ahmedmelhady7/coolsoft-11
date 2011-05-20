@@ -308,15 +308,31 @@
    <div id="lista" style="display: none;">
    	#{if targetTopic.relationsSource != null}
       #{list items:targetTopic.relationsSource, as:'relationElement'}
-			<p>Name: <a href="#">${relationElement.name}</a> With: <a href="/topics/show?topicId=${relationElement.destination.id}">${relationElement.destination.title}</a> <input type="button" value="end relationship" onclick="endRelation(${relationElement.id})" /></p>
+			<p>Name: <a id="${relationElement.id}">${relationElement.name}</a> With: <a href="/topics/show?topicId=${relationElement.destination.id}">${relationElement.destination.title}</a> <input type="button" value="rename" onclick="showRename(${relationElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relationElement.id})" /></p>
 	  #{/list}
 	#{/if}
 	#{if targetTopic.relationsDestination != null}
 	  #{list items:targetTopic.relationsDestination, as:'relElement'}
-			<p>Name: <a href="#">${relElement.name}</a> With: <a href="/topics/show?topicId=${relElement.source.id}"> ${relElement.source.title}</a> <input type="button" value="end relationship" onclick="endRelation(${relElement.id})" /></p>
+			<p>Name: <a id="${relElement.id}">${relElement.name}</a> With: <a href="/topics/show?topicId=${relElement.source.id}"> ${relElement.source.title}</a> <input type="button" value="rename" onclick="showRename(${relElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relElement.id})" /></p>
 	  #{/list}
 	#{/if}
    </div>
+   
+   <script type="text/javascript">
+   	function showRename(relId)
+	{
+	var newRelName = prompt("Please enter the new name:", document.getElementById(relId).textContent);
+	location.reload();
+	if (newRelName!=null && newRelName!="")
+  	{
+  	$.post('@{TopicRelationships.renameRelationship()}', {
+		relationToBeRenamedId: relId,
+		newName: newRelName
+	});
+	
+  	}
+	}
+   </script>
 
 
 <form action="@{Topics.viewFollowers()}">
