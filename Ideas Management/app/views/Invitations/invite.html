@@ -27,8 +27,9 @@
 <table border="0" bgcolor="#ececec" cellspacing="5" id="table" style="display:none">
 <tr><td><u>Invite directly by writing the email </u></td></tr>
 <tr><td>Email <input type="text" size="30" id="mail" name="email"></td></tr>
-<input type = "hidden" id="id" name ="id" value =0>
-<input type = "hidden" name ="entId" value = ${entity.id}>
+<input type = "hidden" id="id" name ="userId" value =0>
+<input type = "hidden" name ="type" value = ${type}>
+<input type = "hidden" name ="id" value = ${entity.id}>
 <tr><td>&nbsp;</td><td><input type="submit" value="send">
 </table>
 </form>
@@ -42,7 +43,8 @@
 <tr><td><u> You can search by name/email for users to invite </u></td></tr>
 <tr><td>Name <input type="text" size="20" name="name"></td></tr>
 <tr><td>&nbsp;</td><td><input type="submit" value="search">
-<input type = "hidden" name ="entId" value = ${entity.id}>
+<input type = "hidden" name ="type" value = ${type}>
+<input type = "hidden" name ="id" value = ${entity.id}>
 
 </table>
 </form>
@@ -67,7 +69,7 @@
 <tr><td><font size ="3" color ="black">Name  : ${u.firstName} ${u.lastName}</font></td><td>
 <tr><td><font size ="3" color ="black">Username  : ${u.username}</font>
 
-<td  align="right"><a href="@{Invitations.send(u.email,entity.id,u.id)}">invite</a></td></td><td>
+<td  align="right"><a href="@{Invitations.send(0,u.email,entity.id,u.id)}">invite</a></td></td><td>
 
 </table>
 </html>
