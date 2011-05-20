@@ -83,7 +83,7 @@ public class Organization extends CoolModel {
 	public List<Tag> createdTags;
 
 	/**
-	 * List of banned users from the organization
+	 * **********
 	 */
 	@OneToMany(mappedBy = "organization")
 	public List<BannedUser> bannedUsers;
