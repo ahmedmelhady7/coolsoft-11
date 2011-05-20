@@ -301,6 +301,13 @@
 				Show Gallery: <input type="submit" value="show">
 				</form>
 				#{/if}
+				
+				#{if isMember == true || org.privacyLevel == 2 || admin}
+                <form action="@{Contribution.contribution()}" method="post">
+                    <input type="hidden" name="id" value="${org.id}">Contribution Points: <input type="submit" value="View">
+                </form>
+				#{/if}
+				
             </body>
             </html>
             <script type="text/javascript">
