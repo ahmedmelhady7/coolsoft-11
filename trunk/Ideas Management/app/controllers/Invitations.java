@@ -471,7 +471,21 @@ public class Invitations extends CRUD {
 		// **
 		if (!flag) {
 			organization.invitation.remove(invite);
-			entity.invitationList.remove(invite);
+			if(entity != null){
+				entity.invitationList.remove(invite);
+				
+				List <User> organizer=Users.getEntityOrganizers(entity);
+				for (int j = 0; j < organizer.size(); j++)
+					Notifications.sendNotification(organizers.get(j).id,
+							entity.id, "entity",
+							"User "+ user.firstName +" "+ user.lastName
+							+"has rejected the invitation to be an organizer to Entity  "
+									+ entity.name);
+			      
+			      Log.addUserLog("User " + user.firstName + " " + user.lastName
+							+ " has rejected the invitation to be organizer to Entity "
+							+ entity.name, organization, user);
+			      }
 		} else {
 			topic.invitations.remove(invite);
 			for (int j = 0; j < organizers.size(); j++)
