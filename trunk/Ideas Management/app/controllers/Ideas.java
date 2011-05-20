@@ -387,7 +387,12 @@ public class Ideas extends CRUD {
 		List<User> allUsers = User.findAll();
 		List <String> userNames = new ArrayList<String>(allUsers.size());
 		Collections.sort(userNames);
-		boolean checkPermitted = Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic");
+		boolean checkPermitted = Users.isPermitted(user, "rate/prioritize ideas", topicId, "topic");
+		boolean checkNotRated;
+		if(idea.usersRated.contains(user))
+			checkNotRated = false;
+		else
+			checkNotRated = true;
 		for (int i = 0; i < idea.reporters.size()
 				|| i < user.ideasReported.size(); i++) {
 			System.out.println("gowa el loop");
@@ -416,7 +421,7 @@ public class Ideas extends CRUD {
 					deletemessage, /*
 									 * deletable ,
 									 */
-					ideaId, rate, idea, priority,userNames,checkPermitted);
+					ideaId, rate, idea, priority,userNames,checkPermitted,checkNotRated);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -766,14 +771,8 @@ public class Ideas extends CRUD {
 	public static void rate(long ideaId, int rat) {
 		User user = Security.getConnected();
 		Idea i = Idea.findById(ideaId);
-		long topicId = i.belongsToTopic.id;
-		if (i.usersRated.contains(user))
-			System.out.print("user already rated");
-		else {
 			System.out.println("user didn't rate yet");
 			i.usersRated.add(user);
-			if (Users.isPermitted(user, "rate/prioritize ideas;", topicId,
-					"topic")) {
 				if (i.rating.equals("Not yet rated"))
 					i.rating = Integer.toString(rat);
 				else {
@@ -784,9 +783,6 @@ public class Ideas extends CRUD {
 				}
 				i.save();
 				redirect("/ideas/show?ideaId=" + ideaId);
-			}
-		}
-
 	}
 
 	/**

@@ -142,6 +142,7 @@
  		<br/>
  		
  		#{if checkPermitted}
+ 		#{if checkNotRated}
 		<form action="@{Ideas.rate(ideaId,rat)}" method="GET">
     <input type="submit" value="Submit rating"/><input type = "hidden" name = "ideaId" value = ${ideaId}>
     <select name="rat">
@@ -153,6 +154,10 @@
         <option value="5">5</option>
     </select>
 </form>
+		#{/if}
+		#{else}
+		You have already rated this idea
+		#{/else}
 		#{/if}
 		<br />
  		<form action="@{Comments.addCommentToIdea()}" method="GET">
