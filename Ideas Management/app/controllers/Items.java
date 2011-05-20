@@ -26,7 +26,7 @@ public class Items extends CRUD {
 		User user = Security.getConnected();
 		long userId = user.id;
 		List<Item> assignedItems = user.itemsAssigned;
-		render(assignedItems, userId);
+		render(assignedItems, userId, user);
 	}
 
 	/**
@@ -41,10 +41,10 @@ public class Items extends CRUD {
 	 * @param id
 	 *            : the id of the item to be started
 	 */
-	public static void startItem(String id) {
+	public static void startItem(long id) {
 		User user = Security.getConnected();
-		long itemId = Long.parseLong(id);
-		Item item = Item.findById(itemId);
+//		long itemId = Long.parseLong(id);
+		Item item = Item.findById(id);
 		List<User> userToNotifyList = new ArrayList<User>();
 		userToNotifyList.addAll(item.plan.topic.getOrganizer());
 		for (int i = 0; i < item.assignees.size(); i++) {
@@ -76,10 +76,10 @@ public class Items extends CRUD {
 	 * @param id
 	 *            : the id of the item to be marked as done or in progress.
 	 */
-	public static void toggleItem(String id) {
+	public static boolean toggleItem(long id) {
 		User user = Security.getConnected();
-		long itemId = Long.parseLong(id);
-		Item item = Item.findById(itemId);
+//		long itemId = Long.parseLong(id);
+		Item item = Item.findById(id);
 		List<User> userToNotifyList = new ArrayList<User>();
 		userToNotifyList.addAll(item.plan.topic.getOrganizer());
 		for (int i = 0; i < item.assignees.size(); i++) {
@@ -107,5 +107,6 @@ public class Items extends CRUD {
 			break;
 		}
 		item.save();
+        return true;
 	}
 }

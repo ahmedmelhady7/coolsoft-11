@@ -28,6 +28,9 @@
                 <li>
                     <a href="@{Plans.editPlan(p.id)}" id="demo01">Edit plan</a>
                 </li>
+				<li>
+				  	<a href="#" onclick="delPlan(${p.id}, '${p.topic.id}')">delete plan</a>
+				</li>
                 #{/if} 
                 <li>
                     <a href="@{Plans.viewAsList(p.id)}">View list of to-do items</a>
@@ -38,17 +41,12 @@
                 <li>
                     <a href="@{Plans.viewAsTimeline(p.id)}">View plan timeline</a>
                 </li>
-                #{if canEdit == 1}
-				  <li>
-				<input type="button" value= "delete plan" onclick="delPlan(${p.id}, '${p.topic.id}')">
-				</li>
-				#{/if}
             </ul>
         </li>
     </ul>
 </div>
 <body>
-    <h1 align="center">${p.title}</h1>
+    <h1 align="center" style="font-size:xx-large; ">${p.title}</h1>
     <br/>
     <p>
         <b>Created by: </b>

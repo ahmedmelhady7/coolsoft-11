@@ -34,6 +34,9 @@ ${p.title} - View Plan as List
 <div id='div1' align='left'>
 </div>
 #{if itemsList.size() > 0}
+<br>
+To-do items: 
+<br>
 <ul style="list-style: none; ">
     #{list items:itemsList, as:'item'}
     <li id = "listItem_${item.id}">
@@ -107,14 +110,20 @@ ${p.title} - View Plan as List
             </div>
 			#{/else}
             #{/if}
-            #{if user.pendingVolunteerRequest(item.id)}
-            <label>
-                Pending volunteer Request
-            </label>
+                <div id = "pend_${item.id}" hidden = true>
+				Pending volunteer Request &nbsp;&nbsp;&nbsp;
+				 <input type = "button" value = "Cancel request" onclick="cancelReq(${item.id});">
+				 </div>
+		 #{if user.pendingVolunteerRequest(item.id)&& !(item.status == 2) && !item.endDatePassed()}
+		 			<script type="text/javascript">
+				$('#pend_' + ${item.id}).show();			
+				</script>
             #{/if}
-            <label id = "label_${item.id}">
-            </label>
-            #{if user.canVolunteer(item.id) && !(item.status == 2) && !item.endDatePassed()}<input type="button" onclick="show1(${item.id});" id = "button_${item.id}" value = "volunteer">
+            <div id = "label_${item.id}">
+            </div>
+            
+			<div id = "vr_${item.id}" hidden = true>
+			<input type="button" onclick="show1(${item.id});" id = "button_${item.id}" value = "volunteer">
             <div id = "item_${item.id}" class = "req">
                 Please state why you want to work on this item.
                 <br/>
@@ -129,14 +138,20 @@ ${p.title} - View Plan as List
                 <input type="button" onclick="send(${item.id});" value = "send request">&nbsp;&nbsp;&nbsp;<input type="button" onclick="cancel(${item.id});" value = "cancel">
             </div>
             <br/>
+			</div>
+			#{if user.canVolunteer(item.id) && !(item.status == 2) && !item.endDatePassed()}
+			<script type="text/javascript">
+				$('#vr_' + ${item.id}).show();			
+				</script>
             #{/if}
         </fieldset>
     </li>
     #{/list}
 </ul>
-#{/if} 
-#{else}  
-No items exist in plan. Please contact 
+
+#{/if}  
+#{else} 
+No items exist in plan. Please contact  
 #{if p.topic.getOrganizer().size() > 1} 
 <ul style="list-style: none; ">
     #{list items:p.topic.getOrganizer(), as:'organizer'}
@@ -151,71 +166,79 @@ ${p.topic.getOrganizer().get(0).username}
 #{/else}
 #{/else}
 <script type="text/javascript">
-                                    	$(".req").hide();
-                                    	  var count = ${itemsList.size()};
-                                    	function show1(id) {
-                                    
-                                    	    $("#item_" + id).show();
-                                    		$("#button_" + id).hide();
-                                    
-                                    	}
-                                    	
-                                    		function send(id) {
-                                    					var x = $("#text_" + id).val();
-                                    		if (x == null || x.trim() == "") {
-                                    			alert("you have to enter a justification");
-                                    		}
-                                    		else {
-                                    			$.post('@{sendVolunteerRequest()}', {
-                                    				itemId: id,
-                                    				justification: x
-                                    			});
-                                    			$("#item_" + id).remove();
-                                    			document.getElementById("label_" + id).innerHTML = "pending volunteer request";	
-                                    		}	
-                                    	}	
-                                    	
-                                    		
-                                    		function cancel(id) {
-                                    		$("#item_" + id).hide();
-                                    	    $("#button_" + id).show();		
-                                    	}
-                                    	
-                                    		function workItem(id,name) {
-                                    			$.post('@{workOnItem()}', {itemId:id});
-                                    			$("#buttonWork_" + id).remove();
-                                    		    $("#assignees_" + id).append('<li> <a href="#">'+name+'</a> </li>');
-                                    	}	
-                                    	
-                                    	function delItem(id){
-                                    		var r = confirm("Are You sure you want to delete this item from the plan?");
-                                    		if (r == true) {
-                                    			$.post('@{deleteItem()}', {itemId: id, notify:1});
-                                    			$("#listItem_" + id).remove();
-                                    			  count--;
-                                    			  if(count == 0) {
-                                    			  	 alert("you have deleted all the items in the plan");
-                                    			  }
-                                    	            
-                                    		}
-                                    
-                                    	}
-                                    
-                                   
-                                    function relate_entity(item)
-                                      {
-                                      	var entity = document.getElementById('entitySelect').value;
-                                    	$.post('@{Plans.relateToEntity()}' , {itemId: item, entityId: entity});
-										alert("Related successfully!");
-                                    	$("#relateEntity_" + item).hide();
-                    					window.location.reload();
-                                      }
+                	$(".req").hide();
+                	  var count = ${itemsList.size()};
+                	function show1(id) {
+                
+                	    $("#item_" + id).show();
+                		$("#button_" + id).hide();
+                
+                	}
+                	
+                		function send(id) {
+                					var x = $("#text_" + id).val();
+                		if (x == null || x.trim() == "") {
+                			alert("you have to enter a justification");
+                		}
+                		else {
+                			$.post('@{sendVolunteerRequest()}', {
+                				itemId: id,
+                				justification: x
+                			});
+                			$("#item_" + id).hide();
+							$('#pend_' + id).show();
+                			//document.getElementById("label_" + id).innerHTML = "pending volunteer request" + " <input type = \"button\" value =\"Cancel request\" onclick=\"cancelReq(${item.id});\">";	
+                		}	
+                	}	
+                	
+					function cancelReq(id) {
+				     var r = confirm("Are You sure you want to cancel your request?");
+                		if (r == true) {
+                			$.post('@{cancelVolunteerRequest()}', {itemId: id});
+                			$('#vr_' + id).show();	
+							$('#pend_' + id).hide();
+                		}
+					}
+                		
+                		function cancel(id) {
+                		$("#item_" + id).hide();
+                	    $("#button_" + id).show();		
+                	}
+                	
+                		function workItem(id,name) {
+                			$.post('@{workOnItem()}', {itemId:id});
+                			$("#buttonWork_" + id).remove();
+                		    $("#assignees_" + id).append('<li> <a href="#">'+name+'</a> </li>');
+                	}	
+                	
+                	function delItem(id){
+                		var r = confirm("Are You sure you want to delete this item from the plan?");
+                		if (r == true) {
+                			$.post('@{deleteItem()}', {itemId: id, notify:1});
+                			$("#listItem_" + id).remove();
+                			  count--;
+                			  if(count == 0) {
+                			  	 alert("you have deleted all the items in the plan");
+                			  }
+                	            
+                		}
+                
+                	}
+               
+ function relate_entity(item)
+      {
+         var entity = document.getElementById('entitySelect').value;
+          $.post('@{Plans.relateToEntity()}' , {itemId: item, entityId: entity});
+				alert("Related successfully!");
+          	$("#relateEntity_" + item).hide();
+        	window.location.reload();
+      }
                                       
-                                    function remove_entity(item)
-                                      {
-                                      	$.post('@{removeItemEntityRelation()}' , {itemId: item});
-                                    	$("#removeEntity_" + item).hide();
-										alert("Relation removed.");
-                    					window.location.reload();
-                                      }
+     function remove_entity(item)
+       {
+       	$.post('@{removeItemEntityRelation()}' , {itemId: item});
+         $("#removeEntity_" + item).hide();
+		alert("Relation removed.");
+        window.location.reload();
+   }
 </script>
