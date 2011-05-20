@@ -180,12 +180,17 @@
 	<ul class='menu'>
  <a>Show Relationships</a>
    <ul class="blah">
+   	#{if entity.relationsSource != null}
       #{list items:entity.relationsSource, as:'relationElement'}
 			<p><a href="#">${relationElement.name}</a> entity ${relationElement.destination.name}</p>
-	  #{/list}
+	  #{/list}	
+	#{/if}
+	#{if entity.relationsDestination != null}
+	  
 	  #{list items:entity.relationsDestination, as:'relEelement'}
 			<p><a href="#">${relElement.name}</a> entity ${relElement.source.name}</p>
 	  #{/list}
+   	#{/if}
    </ul>
 </ul>
 		
