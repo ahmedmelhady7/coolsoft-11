@@ -230,20 +230,17 @@ ${p.topic.getOrganizer().get(0).username}
                 
                 	}
                
- function relate_entity(item)
-      {
-         var entity = document.getElementById('entitySelect').value;
-          $.post('@{Plans.relateToEntity()}' , {itemId: item, entityId: entity});
-				alert("Related successfully!");
-          	$("#relateEntity_" + item).hide();
-        	window.location.reload();
-      }
+ 					 function relate_entity(item)
+ 						{
+                           var entity = document.getElementById('entitySelect').value;
+                           $.post('@{relateToEntity()}' , {itemId: item, entityId: entity}, function(){window.location.reload();});        	
+                         }
                                       
-     function remove_entity(item)
-       {
-       	$.post('@{removeItemEntityRelation()}' , {itemId: item});
-         $("#removeEntity_" + item).hide();
-		alert("Relation removed.");
-        window.location.reload();
-   }
+					 function remove_entity(item)
+                        {
+                       		var r = confirm("Are You sure you want to remove this relationship?");
+                            if (r == true) {
+								$.post('@{removeItemEntityRelation()}', {itemId: item}, function(){window.location.reload();});
+							}
+                          }
 </script>

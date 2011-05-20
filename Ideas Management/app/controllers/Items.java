@@ -79,6 +79,8 @@ public class Items extends CRUD {
 	 * 
 	 * @param id
 	 *            : the id of the item to be marked as done or in progress.
+	 *        
+	 * @return boolean
 	 */
 	public static boolean toggleItem(long id) {
 		User user = Security.getConnected();
