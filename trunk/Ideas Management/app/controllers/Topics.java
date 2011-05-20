@@ -826,7 +826,7 @@ public class Topics extends CRUD {
 	 * @description This method renders the form for editing and viewing a topic
 	 * 
 	 */
-	public static void show(String topicId) {
+	public static void show(long topicId) {
 
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -851,7 +851,7 @@ public class Topics extends CRUD {
 		int canClose = 0;
 		int canPlan = 0;
 		int canRestrict = 0;
-		long topicIdLong = Long.parseLong(topicId);
+		long topicIdLong = topicId;
 		User actor = Security.getConnected();
 		String actionClose = "close a topic and promote it to execution";
 		String actionPlan = "create an action plan to execute an idea";
@@ -860,6 +860,8 @@ public class Topics extends CRUD {
 		boolean canDelete = Users.isPermitted(actor, "hide and delete an idea",
 				topicIdLong, "topic");
 		// mestani lama
+		boolean canUse = Users.canDelete(actor, "use", ideas.get(0).id, "idea",
+				topicId);
 		for (int i = 0; i < ideas.size(); i++) {
 			Idea idea = ideas.get(i);
 
@@ -929,18 +931,19 @@ public class Topics extends CRUD {
 		boolean follower = actor.topicsIFollow.contains(targetTopic);
 		boolean canCreateRelationship = TopicRelationships
 				.isAllowedTo(topicIdLong);
-		if (actor.isAdmin || entity.organization.creator.equals(actor) ){
+		if (actor.isAdmin || entity.organization.creator.equals(actor)) {
 			canRestrict = 1;
 		}
 		try {
 
-			render(type, object, tags, creator, followers, ideas,
+			render(type, object, tags, canUse, creator, followers, ideas,
 					numberOfIdeas, comments, entity, canDelete,
 					alreadyReported, plan, openToEdit, privacyLevel,
 					deleteMessage, deletable, topicIdLong, canClose, canPlan,
 					targetTopic, allowed, permission, topicId, canPost,
 					canNotPost, pending, follower, canCreateRelationship,
-					seeRelationStatus, createRelationship, actor, hidden , canRestrict);
+					seeRelationStatus, createRelationship, actor, hidden,
+					canRestrict);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
