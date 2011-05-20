@@ -91,18 +91,16 @@ public class User extends CoolModel {
 	// , cascade = CascadeType.ALL)
 	public List<Idea> ideasCreated;
 	/**
-	 * ideas reported by the user	 
+	 * ideas reported by the user
 	 **/
 	@ManyToMany
 	// (mappedBy = "reporters")
 	// , cascade = CascadeType.ALL)
 	public List<Idea> ideasReported;
 	/**
-	 * topics reported by the user	 
+	 * topics reported by the user
 	 **/
 	@ManyToMany
-	// (mappedBy = "reporters")
-	// , cascade = CascadeType.ALL)
 	public List<Topic> topicsReported;
 
 	@ManyToMany(mappedBy = "usersRated")

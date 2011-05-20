@@ -11,6 +11,11 @@
     </label>
 </h3>
 <br/>
+<table id = "success" border="0" bgcolor="#FF0000" cellspacing="0" id ="toFil">
+		<tr><td><font size ="3" color ="black"><i>
+					<font color="#000000"><b><i>Topic Has been Reported As Spam</i></b></font>                
+        </i></font></td><td>
+</table>
 <div id="crudShow" class="${type.name}">
     <br/>
     <font color="Red">
@@ -115,7 +120,19 @@
         <br>
        
 	    #{/form}
-		
+		#{if alreadyReportedTopic==false}
+    	<form action="@{Users.reportTopicAsSpam()}" method="GET" name="myform">
+        <input type="hidden" name="topicId" value="${topicId}">
+        <input id="spam" type="submit" value="Report Topic As Spam">
+            </form>
+            #{/if}
+            <script type="text/javascript">
+            	$('#spam').click(function(){
+            	$('#success').show();});
+            </script>
+            <style type="text/css">
+			#success{display: none;}
+		</style>
 		<form action="@{Topics.tagTopic()}" method="post">
         	<input type="hidden" value=${topicId} name='topicId'>
 			<input type="hidden" value='@@' name='tag'>
@@ -147,10 +164,7 @@
                 </i></font></td><td>
                 </tr>
                 </table>
-
-                 <p>
-    				===================================================================================================
-    			 </p>
+                 <p>===================================================================================================</p>
                 </li>
                 
 				#{/if}
@@ -186,10 +200,13 @@
 <!--        <form action="@{Ideas.blank(topicId)}" method="post">-->
 <!--            <input id="postIdea" type="hidden" name"topicId" value="${topicId}"><HR><input type="submit" value="Post Idea to this topic">-->
 <!--        </form>-->
+        #{if topicNotClosed==true}
         <input id="postIdea" type="button" value="Post Idea to this topic">
+        #{/if}
         <div id="postIdeaform">
         	<p>
-            <label>Title</label><input type="text" id="ideaTitle" cols="30" rows="1" class="" name="object.title" required>
+            <label>Title</label>
+            						<input type="text" id="ideaTitle" cols="30" rows="1" class="" name="object.title" required>
             <span id = "ideaTitleError">
                 <font color="Red">
                     *
