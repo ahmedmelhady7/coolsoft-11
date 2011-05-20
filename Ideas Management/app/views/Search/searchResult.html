@@ -73,7 +73,7 @@ The Search Results Viewer
             font-size: 12px;
             color: #ffffff;
             font-weight: 700;
-			border: 2px solid #000000;
+            border: 2px solid #000000;
             border-bottom: none;
             padding: 1px 10px 3px 10px;
             margin: 0px 5px 3px 0px;
@@ -136,10 +136,10 @@ The Search Results Viewer
                     unchecked is what is removed 
                     <br>
                     </br>
-                    <input type="checkbox" id ='I' name="type" value="idea" onclick="filteridea()" checked="checked"/>Ideas
-                    </br><input type="checkbox" id='E' name="type" value="entity" onclick="filterentity()"checked="checked"/>Entities
-                    </br><input type="checkbox" id='T' name="tupe" value="topic" onclick="filttopic()"checked="checked"/>Topics
-                    </br><input type="checkbox" id='O' name="type" value="organization" onclick="filtorganization()"checked="checked"/>Organizations
+                    <input type="checkbox" id ='I' name="type" value="idea" onclick="check()" checked="checked"/>Ideas
+                    </br><input type="checkbox" id='E' name="type" value="entity" onclick="check()"checked="checked"/>Entities
+                    </br><input type="checkbox" id='T' name="tupe" value="topic" onclick="check()"checked="checked"/>Topics
+                    </br><input type="checkbox" id='O' name="type" value="organization" onclick="check()"checked="checked"/>Organizations
                     </br>
                 </font>
             </div>
@@ -205,8 +205,8 @@ The Search Results Viewer
     <a href='/public/searchResults.csv'><img src='/public/images/download.jpg'/></a>
 </div>
 </div>
-<div id='panel2'>
-    <div id='divO'>
+<div id='panel2')>
+    <div id='divO1'>
     #{if lof}
     #{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}
     </br>
@@ -223,7 +223,7 @@ The Search Results Viewer
 #{/if}
 #{/if}
 </div>
-<div id='divT'>
+<div id='divT1'>
 #{if lof}
 #{if topicsFound}
 Found ${topicsFound.size()} topic${topicsFound.pluralize()}
@@ -241,7 +241,7 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
 #{/if}
 #{/if}
 </div>
-<div id='divE'>
+<div id='divE1'>
 #{if lof}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}
 </br>
 <ul>
@@ -255,7 +255,7 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
 </ul>
 #{/if}#{/if}
 </div>
-<div id='divI'>
+<div id='divI1'>
 #{if lof}#{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}
 </br>
 <ul>
@@ -293,6 +293,57 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
         setTimeout('showNewPanel(5)', 2500);
     }
     
+    function check(){
+        if (document.getElementById('O').checked == false) {
+            document.getElementById('divO').style.display = 'none';
+        }
+        else {
+            document.getElementById('divO').style.display = 'block';
+        }
+        if (document.getElementById('O').checked == false) {
+            document.getElementById('divO1').style.display = 'none';
+        }
+        else {
+            document.getElementById('divO1').style.display = 'block';
+        }
+        if (document.getElementById('T').checked == false) {
+            document.getElementById('divT').style.display = 'none';
+        }
+        else {
+            document.getElementById('divT').style.display = 'block';
+        }
+        if (document.getElementById('T').checked == false) {
+            document.getElementById('divT1').style.display = 'none';
+        }
+        else {
+            document.getElementById('divT1').style.display = 'block';
+        }
+        if (document.getElementById('E').checked == false) {
+            document.getElementById('divE').style.display = 'none';
+        }
+        else {
+            document.getElementById('divE').style.display = 'block';
+        }
+        if (document.getElementById('E').checked == false) {
+            document.getElementById('divE1').style.display = 'none';
+        }
+        else {
+            document.getElementById('divE1').style.display = 'block';
+        }
+        if (document.getElementById('I').checked == false) {
+            document.getElementById('divI').style.display = 'none';
+        }
+        else {
+            document.getElementById('divI').style.display = 'block';
+        }
+        if (document.getElementById('I').checked == false) {
+            document.getElementById('divI1').style.display = 'none';
+        }
+        else {
+            document.getElementById('divI1').style.display = 'block';
+        }
+    }
+    
     var currentPanel = 5;
     
     function showNewPanel(panelNum){
@@ -306,6 +357,7 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
         setState(panelNum);
         $('#panel' + panelNum).hide();
         $('#panel' + panelNum).show(1000);
+        check();
     }
     
     function hidePanel(){
@@ -391,52 +443,6 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
                 alert("The requests have been sent to the Topic organizer");
             });
         }
-    }
-    
-    function filterplan(){
-    
-    
-        $.post('@{filterP}', {}, function(){
-        
-            document.getElementById('divP').style.display = 'none';
-            
-            document.getElementById("P").style.visibility = "hidden";
-        });
-        
-    }
-    
-    function filteridea(){
-        $.post('@{filterI}', {}, function(){
-        
-            document.getElementById('divI').style.display = 'none';
-            
-            document.getElementById("I").style.visibility = "hidden";
-        });
-    }
-    
-    function filterentity(){
-        $.post('@{filterE}', {}, function(){
-        
-            document.getElementById('divE').style.display = 'none';
-            
-            document.getElementById("E").style.visibility = "hidden";
-        });
-    }
-    
-    function filttopic(){
-        $.post('@{filterT}', {}, function(){
-            document.getElementById('divT').style.display = 'none';
-            
-            document.getElementById("T").style.visibility = "hidden";
-        });
-    }
-    
-    function filtorganization(){
-        $.post('@{filterO}', {}, function(){
-            document.getElementById('divO').style.display = 'none';
-            
-            document.getElementById("O").style.visibility = "hidden";
-        });
     }
 </script>
 <br/>
