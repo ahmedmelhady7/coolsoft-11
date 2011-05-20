@@ -894,6 +894,12 @@ public class Topics extends CRUD {
 		boolean canPost = Users.isPermitted(Security.getConnected(),
 				"can post ideas to a Topic", temporaryTopic.id, "topic");
 
+		int check =0; 
+		if(Users.isPermitted(Security.getConnected(),
+				"block a user from viewing or using a certain entity", topicIdLong, "topic"))
+				check=1;
+
+		
 		if (Users.isPermitted(actor, actionClose, topicIdLong, "topic")) {
 			canClose = 1;
 		}
@@ -943,7 +949,7 @@ public class Topics extends CRUD {
 					targetTopic, allowed, permission, topicId, canPost,
 					canNotPost, pending, follower, canCreateRelationship,
 					seeRelationStatus, createRelationship, actor, hidden,
-					canRestrict);
+					canRestrict,check);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
