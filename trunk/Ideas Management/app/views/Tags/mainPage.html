@@ -73,16 +73,32 @@ padding-left:950px;
 		</b></p>
 		#{/if}
 		
+		<script type="text/javascript">
+   	function showRename(relId)
+	{
+	var newRelName = prompt("Please enter the new name:", document.getElementById(relId).textContent);
+	location.reload();
+	if (newRelName!=null && newRelName!="")
+  	{
+  	$.post('@{TagRelationships.renameRelationship()}', {
+		relationToBeRenamedId: relId,
+		newName: newRelName
+	});
+	
+  	}
+	}
+   </script>
+		
 		<a onclick="$('#lista').slideToggle();">Show Relationships</a>
 	<div id="lista" style="display:none;">
 		#{if tag.relationsSource != null}
 		#{list items:tag.relationsSource, as:'relationElement'}
-				<ul>Name: <a href="#">${relationElement.name}</a> With: <a href="/tags/mainpage?tagId=${relationElement.destination.id}">${relationElement.destination.name}</a> <input type="button" value="end relationship" onclick="endRelation(${relationElement.id})" /></ul>
+				<ul>Name: <a id="relationElement.id">${relationElement.name}</a> With: <a href="/tags/mainpage?tagId=${relationElement.destination.id}">${relationElement.destination.name}</a> <input type="button" value="rename" onclick="showRename(${relationElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relationElement.id})" /></ul>
 		#{/list}
 		#{/if}
 		#{if tag.relationsDestination != null}
 		#{list items:tag.relationsDestination, as:'relElement'}
-				<ul>Name: <a href="#">${relElement.name}</a> With: <a href="/tags/mainpage?tagId=${relElement.source.id}">${relElement.source.name}</a> <input type="button" value="end relationship" onclick="endRelation(${relElement.id})" /></ul>
+				<ul>Name: <a id="relElement,id">${relElement.name}</a> With: <a href="/tags/mainpage?tagId=${relElement.source.id}">${relElement.source.name}</a> <input type="button" value="rename" onclick="showRename(${relElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relElement.id})" /></ul>
 		#{/list}
 		#{/if}
 	</div>
