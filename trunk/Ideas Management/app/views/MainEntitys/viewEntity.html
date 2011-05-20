@@ -168,15 +168,8 @@
           <br/>
           <HR>
        </form>
-       
-       #{if canRequestRelationship == 1}				
-		<form action="@{MainEntitys.createRelationship()}" method="post">
-		Request Relationship Creation: <input type="submit" value="Request">
-		</form>
-		#{/if}
 		
-		<p>
-		
+		<p>		
 		    #{if topicList.size() > 0}
 			<br />
 		<p>List of Topics:</p>
