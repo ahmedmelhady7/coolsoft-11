@@ -5,99 +5,96 @@
 <script type='text/javascript' src="@{'/public/javascripts/jquery-1.5.2.min.js'}"></script>
 <script type='text/javascript' src="@{'/public/javascripts/jquery-ui-1.8.11.custom.min.js'}"></script>
 <script type='text/javascript' src="@{'/public/javascripts/fullcalendar.min.js'}"></script>
+<script type='text/javascript'>
+ var titles = new Array();
+ var startDates = new Array();
+ var endDates = new Array();
+   var ids = new Array();
+ </script>
+ 
+ <input type="hidden" id = "planTitle" value='${p.title}'>
+  <input type="hidden" id = "planStart" value=${p.startDate}>
+   <input type="hidden" id = "planEnd" value=${p.endDate}>
   #{list items:itemsList, as:'item'}
   
-        <li >${item.summary}</li> 
-		 <li>${item.startDate.format('y M d')}</li> 
-		  <li>${item.endDate.format('y M d')}</li> 
-		  #{/list}
+ 
+  <input type="hidden" id = "sum_${item.id}" value='${item.summary}'> 
+
+   <input type="hidden" id = "start_${item.id}" value=${item.startDate}>
+
+    <input type="hidden" id = "end_${item.id}" value=${item.endDate}>
+    
+    <script type='text/javascript'>
+
+           ids.push(${item.id});
+
+ </script>
+    #{/list}
+    
 <script type='text/javascript'>
-	
-	
+ 
+for(var i =0; i<ids.length; i++) {
+ titles.push($('#sum_'+ ids[i]).val());
+}
 
-	$(document).ready(function() {
-	
-		var date = new Date();
-		var d = date.getDate();
-		var m = date.getMonth();
-		var y = date.getFullYear();
-		
-		$('#calendar').fullCalendar({
-			editable: false,
-			events: 
-			/*
-$('li').each(function(index) {
-    alert($(this).text());
-  })
-*/
-			
-			
-			
-[
-			
-				{
-					title: 'All Day Event',
-					start: new Date(y, m, 1)
-				},
-				{
-					title: 'Long Event',
-					start: new Date(y, m, d-5),
-					end: new Date(y, m, d-2)
-				},
-				{
-					id: 999,
-					title: 'Repeating Event',
-					start: new Date(y, m, d-3, 16, 0),
-					allDay: false
-				},
-				{
-					id: 999,
-					title: 'Repeating Event',
-					start: new Date(y, m, d+4, 16, 0),
-					allDay: false
-				},
-				{
-					title: 'Meeting',
-					start: new Date(y, m, d, 10, 30),
-					allDay: false
-				},
-				{
-					title: 'Lunch',
-					start: new Date(y, m, d, 12, 0),
-					end: new Date(y, m, d, 14, 0),
-					allDay: false
-				},
-				{
-					title: 'Birthday Party',
-					start: new Date(y, m, d+1, 19, 0),
-					end: new Date(y, m, d+1, 22, 30),
-					allDay: false
-				},
-				{
-					title: 'Click for Google',
-					start: new Date(y, m, 28),
-					end: new Date(y, m, 29),
-					url: ''
-				}
-			]
+for(var i =0; i<ids.length; i++) {
+ startDates.push($('#start_'+ ids[i]).val());
+}
 
-		});
-		
-	});
+for(var i =0; i<ids.length; i++) {
+ endDates.push($('#end_'+ ids[i]).val());
+}
+
+
+var planTitle = $('#planTitle').val();
+var planStart = $('#planStart').val();
+var planEnd = $('#planEnd').val();
+ $(document).ready(function() {
+ 
+
+eventss = [{
+     title: planTitle + ":start",
+     start: planStart
+    },{
+     title: planTitle + ":end",
+     start: planEnd
+    } 
+    ];
+    
+for(var i = 0; i<ids.length; i++) {
+  eventss.push({
+        title: titles[i] + ": start",
+     start: startDates[i]
+    }) ;
+  eventss.push({
+        title: titles[i] + ": end",
+     start: endDates[i]
+    }) ;  
+    
+    }
+    
+ 
+
+
+    $('#calendar').fullCalendar({
+   editable: false,
+   events: eventss});
+  
+ });
 
 </script>
 <style type='text/css'>
 
-	body {
-		margin-top: 20px;
-		text-align: left;
-		font-size: 14px;
-		}
+ body {
+  margin-top: 20px;
+  text-align: left;
+  font-size: 14px;
+  }
 
-	#calendar {
-		width: 600px;
-		margin: 0 auto;
-		}
+ #calendar {
+  width: 600px;
+  margin: 0 auto;
+  }
 
 </style>
 </head>
