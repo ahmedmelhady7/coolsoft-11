@@ -144,7 +144,7 @@
 		
 		<li>
 			#{if topic.hidden == false}
-			#{if canView == 1}
+			#{if topic.canView(user)}
 			<div class="accordionItem">
 			<h3><a href="@{Topics.show(topic.id)}">${topic.title}</a>    <font color ="#FF0000" size =4>    ⊕</font><h3>
 				<div>

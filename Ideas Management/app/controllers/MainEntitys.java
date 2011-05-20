@@ -250,7 +250,7 @@ public class MainEntitys extends CRUD {
 		int permission = 1;
 		int invite = 0;
 		int canEdit = 0;
-		int canView = 0;
+		//int canView = 0;
 		int canRequest = 0;
 		int canRequestRelationship = 0;
 		int canRestrict = 0;
@@ -262,8 +262,8 @@ public class MainEntitys extends CRUD {
 			canEdit = 1;
 		if (!Users.isPermitted(user, "post topics", entity.id, "entity"))
 			permission = 0;
-		if (Users.isPermitted(user, "view", entity.id, "entity"))
-			canView = 1;
+		//if (Users.isPermitted(user, "view", entity.id, "entity"))
+			//canView = 1;
 		if (Users.isPermitted(user, "use", entity.id, "entity"))
 			canRequest = 1;
 		if (Users
@@ -286,7 +286,7 @@ public class MainEntitys extends CRUD {
 		boolean canCreateRelationship = EntityRelationships.isAllowedTo(id);
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity, follower, canCreateRelationship,
-				canView, canRequest, canRequestRelationship,check, canRestrict);
+				/*canView,*/ canRequest, canRequestRelationship,check, canRestrict);
 	}
 
 	/**

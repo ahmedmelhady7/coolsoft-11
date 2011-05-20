@@ -5,6 +5,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import controllers.Users;
+
 import play.data.validation.*;
 
 import play.db.jpa.*;
@@ -459,5 +461,22 @@ public class Topic extends CoolModel {
 			return false;
 
 		return true;
+	}
+	
+	/**
+	 * Checks wether a certain user can view this topic
+	 * 
+	 * @author Alia El Bolock
+	 * 
+	 * @param user
+	 *          : the user upon which the ckeck should be done
+	 * 
+	 * @return boolean
+	 */
+	public boolean canView(User user){
+		boolean canView = false;
+		if(Users.isPermitted(user, "view", this.id, "topic"))
+			canView = true;
+		return canView;
 	}
 }

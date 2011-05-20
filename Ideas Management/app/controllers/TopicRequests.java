@@ -33,6 +33,10 @@ public class TopicRequests extends CRUD{
 	 * @description This method checks for the Validation of the info inserted
 	 *              in the Request form of a TopicRequest and if they are valid the object
 	 *              is created and saved.
+	 *              
+	 * @param entityId
+	 *             : the id of the entity the request is in
+	 *             
 	 * @throws Exception
 	 * 
 	 */
