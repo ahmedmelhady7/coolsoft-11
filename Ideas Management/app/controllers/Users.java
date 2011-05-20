@@ -250,51 +250,13 @@ public class Users extends CRUD {
 	}
 
 	/**
+	 * Renders the profile page of the user.
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S1
 	 * 
-	 * @param userId
 	 */
-
-	public static void showProfile(String userId) {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		Model object = type.findById(userId);
-		notFoundIfNull(object);
-		User tmp = (User) object;
-		int communityContributionCounter = tmp.communityContributionCounter;
-		String name = tmp.firstName + " " + tmp.lastName;
-		String profession = tmp.profession;
-		String username = tmp.username;
-		String birthDate = "" + tmp.dateofBirth;
-		int flag = 0;
-		if (Security.getConnected().equals(tmp)
-				|| Security.getConnected().isAdmin) {
-			flag = 1;
-		}
-		try {
-			render(type, object, username, name, communityContributionCounter,
-					profession, birthDate, userId, flag);
-		} catch (TemplateNotFoundException e) {
-			render("CRUD/show.html", type, object);
-		}
-	}
-
-	/**
-	 * Gets the Id of the current logged in user and calls the method
-	 * showProfile
-	 * 
-	 * @author Ahmed Maged
-	 * 
-	 * @story C1S1
-	 */
-
-	public static void myProfile() {
-		User user = Security.getConnected();
-		showProfile(user.id + "");
-	}
 
 	public static void viewProfile() {
 		User user = Security.getConnected();
