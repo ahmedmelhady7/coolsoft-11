@@ -170,18 +170,11 @@
             </div>
         </li>
         <li>
-            <h2 id="a5">
+            <h2>
                 <u>
-                    Drafts
+                    <a href="@{Ideas.getDrafts()}">Drafts (${user.getDraftsCount()})</a>
                 </u>
             </h2>
-            <div id="o5">
-                <ul>
-                    <li>
-                        <a href="@{Ideas.getDrafts()}">Drafts (${user.getDraftsCount()})</a>
-                    </li>
-                </ul>
-            </div>
         </li>
         <li>
             <h2 id="a6">
@@ -266,17 +259,6 @@
         });
         
         var app5 = true;
-        $('#o5').hide();
-        $('#a5').click(function(){
-            if (app5) {
-                $('#o5').show(500);
-                app5 = false;
-            }
-            else {
-                $('#o5').hide(500);
-                app5 = true;
-            }
-        });
         
         var app6 = true;
         $('#o6').hide();
