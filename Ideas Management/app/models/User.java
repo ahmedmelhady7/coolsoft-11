@@ -237,6 +237,7 @@ public class User extends CoolModel {
 		followingOrganizations = new ArrayList<Organization>();
 		planscreated = new ArrayList<Plan>();
 		this.ideasReported = new ArrayList<Idea>();
+		this.topicsReported = new ArrayList<Topic>();
 		followingEntities = new ArrayList<MainEntity>();
 		topicsIFollow = new ArrayList<Topic>();
 		this.ideasRated = new ArrayList<Idea>();
