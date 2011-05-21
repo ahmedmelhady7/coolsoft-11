@@ -34,6 +34,43 @@
                 <b>${org.name}</b>
             </big>
         </center>&nbsp;&nbsp;
+		<div id="leftSidebar">
+        <ul>
+           <div style="clear: both;"></div>
+		#{if plans.size()>0}
+        <li>
+           <a id="planLink" href="#"> Plans </a>
+			 <div id="plansLinks">
+            <ul>
+            	#{list items:plans, as:'plan'}
+				<li>
+				     <a href="@{Plans.viewAsList(plan.id)}">${plan.title} </a>
+                </li>
+				#{/list}
+			</ul>
+			</div>
+		</li>
+		#{/if}
+        
+		</ul>
+		</div>	
+<script type="text/javascript">
+	        var planFlag = true;
+        $('#plansLinks').hide();
+        $('#planLink').click(function(){
+            if (planFlag) {
+                $('#plansLinks').show(500);
+                planFlag = false;
+            }
+            else {
+                $('#plansLinks').hide(500);
+                planFlag = true;
+            }
+        });
+
+	</script>		
+		
+		
 		<p>${org.description}</p>
 		#{if admin || creator}
 		<form action="@{Organizations.deleteOrganization()}" method="post">

@@ -95,6 +95,41 @@
         <center><big><b>${entity.name}</b></big></center><br><br>
 		
 		 <br/>
+		 		<div id="leftSidebar">
+        <ul>
+           <div style="clear: both;"></div>
+		#{if plans.size()>0}
+        <li>
+           <a id="planLink" href="#"> Plans </a>
+			 <div id="plansLinks">
+            <ul>
+            	#{list items:plans, as:'plan'}
+				<li>
+				     <a href="@{Plans.viewAsList(plan.id)}">${plan.title} </a>
+                </li>
+				#{/list}
+			</ul>
+			</div>
+		</li>
+		#{/if}
+        
+		</ul>
+		</div>	
+<script type="text/javascript">
+	        var planFlag = true;
+        $('#plansLinks').hide();
+        $('#planLink').click(function(){
+            if (planFlag) {
+                $('#plansLinks').show(500);
+                planFlag = false;
+            }
+            else {
+                $('#plansLinks').hide(500);
+                planFlag = true;
+            }
+        });
+
+	</script>	
     <font color="Red">
         ${message}
     </font>
@@ -207,6 +242,7 @@
 			#{/if}
 			#{else}
 			#{if topic.hider.username == user.username && topic.hidden == true}
+			#{if canView == 1}
 			<div class="accordionItem">
 			<h3><a href="@{Topics.show(topic.id)}">${topic.title}</a>    <font color ="#FF0000" size =4>    ⊕</font>     <font color ="#FF0000" size =2>       hidden</font><h3>
 				<div>
@@ -214,6 +250,7 @@
 					<p><font size=2>Creator: ${topic.creator}</font></p>
 				</div>
 			</div>
+			#{/if}
 			#{/if}
 			#{/else}
 		</li>

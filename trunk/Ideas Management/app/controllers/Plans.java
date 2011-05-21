@@ -53,6 +53,7 @@ public class Plans extends CRUD {
 		int canIdea = 0;
 		boolean canView = true;
 		boolean isOrganizer = false;
+		boolean canDelete = false;
 		String listOfTags = "";
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
 		globalListOfTags = Tag.findAll();
@@ -76,6 +77,12 @@ public class Plans extends CRUD {
 
 				canEdit = 1;
 			}
+
+				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+						"topic")) {
+
+					canDelete = true;
+				}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -98,11 +105,13 @@ public class Plans extends CRUD {
 				}
 			}
 			List<MainEntity> entitiesList = p.topic.entity.organization.entitiesList;
-			render(p, itemsList, user, canAssign, canEdit, canView,
+			render(p, itemsList, user, canAssign, canEdit, canView, canDelete,
 					isOrganizer, canIdea, comments, entitiesList,listOfTags);
 		} else {
 			canView = false;
-			render(canView, isOrganizer);
+			System.out.println("he is not allowed to view");
+			render(p,itemsList, user, canAssign, canEdit, canView, canDelete,
+					isOrganizer, canIdea);
 		}
 
 	}
@@ -174,6 +183,7 @@ public class Plans extends CRUD {
 		int canIdea = 0;
 		boolean canView = false;
 		boolean isOrganizer = false;
+		boolean canDelete = false;
 		if (Users
 				.isPermitted(
 						user,
@@ -189,6 +199,12 @@ public class Plans extends CRUD {
 
 				canEdit = 1;
 			}
+
+				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+						"topic")) {
+
+					canDelete = true;
+				}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -209,7 +225,7 @@ public class Plans extends CRUD {
 			}
 		}
 
-		render(ideas, topic, p, user, canEdit, canView, isOrganizer, canIdea,
+		render(ideas, topic, p, user, canEdit, canView, isOrganizer, canIdea,canDelete,
 				canAssign);
 
 	}
@@ -260,7 +276,7 @@ public class Plans extends CRUD {
 
 	}
 
-	public static void planList(String type, long id) {
+	public static List<Plan> planList(String type, long id) {
 		User user = Security.getConnected();
 		List<Plan> plans = new ArrayList<Plan>();
 		if (type == "entity") {
@@ -289,7 +305,7 @@ public class Plans extends CRUD {
 				}
 			}
 		}
-		render(plans);
+		return(plans);
 	}
 
 	/**
@@ -311,6 +327,7 @@ public class Plans extends CRUD {
 		int canIdea = 0;
 		boolean canView = false;
 		boolean isOrganizer = false;
+		boolean canDelete = false;
 		if (Users
 				.isPermitted(
 						user,
@@ -326,6 +343,12 @@ public class Plans extends CRUD {
 
 				canEdit = 1;
 			}
+
+				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+						"topic")) {
+
+					canDelete = true;
+				}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -342,7 +365,7 @@ public class Plans extends CRUD {
 		}
 		List<Idea> ideas = p.ideas;
 
-		render(ideas, p, user, canEdit, canView, isOrganizer, canIdea,
+		render(ideas, p, user, canEdit, canView, isOrganizer, canIdea,canDelete,
 				canAssign);
 	}
 
@@ -647,6 +670,7 @@ public class Plans extends CRUD {
 		int canIdea = 0;
 		boolean canView = false;
 		boolean isOrganizer = false;
+		boolean canDelete = false;
 		if (Users
 				.isPermitted(
 						user,
@@ -662,6 +686,12 @@ public class Plans extends CRUD {
 
 				canEdit = 1;
 			}
+
+				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+						"topic")) {
+
+					canDelete = true;
+				}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -677,7 +707,7 @@ public class Plans extends CRUD {
 			}
 		}
 
-		render(p, user, canEdit, canView, isOrganizer, canIdea, canAssign);
+		render(p, user, canEdit, canView, isOrganizer, canIdea, canAssign,canDelete);
 	}
 
 	/**
@@ -742,6 +772,7 @@ public class Plans extends CRUD {
 		int canIdea = 0;
 		boolean canView = false;
 		boolean isOrganizer = false;
+		boolean canDelete = false;
 		if (Users
 				.isPermitted(
 						user,
@@ -757,6 +788,12 @@ public class Plans extends CRUD {
 
 				canEdit = 1;
 			}
+
+				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+						"topic")) {
+
+					canDelete = true;
+				}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -771,7 +808,7 @@ public class Plans extends CRUD {
 				canIdea = 1;
 			}
 		}
-		render(p, user, canEdit, canView, isOrganizer, canIdea, canAssign);
+		render(p, user, canEdit, canView, isOrganizer, canIdea,canDelete, canAssign);
 	}
 
 	/**
@@ -1062,6 +1099,7 @@ public class Plans extends CRUD {
 		int canEdit = 0;
 		int canIdea = 0;
 		int canAssign = 0;
+		boolean canDelete = false;
 		if (Users
 				.isPermitted(
 						user,
@@ -1077,6 +1115,12 @@ public class Plans extends CRUD {
 
 				canEdit = 1;
 			}
+
+				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+						"topic")) {
+
+					canDelete = true;
+				}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -1181,7 +1225,7 @@ public class Plans extends CRUD {
 		out.close();
 
 		boolean timeline = true;
-		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea,
+		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea,canDelete,
 				canAssign, timeline);
 
 	}
@@ -1207,6 +1251,7 @@ public class Plans extends CRUD {
 		int canEdit = 0;
 		int canIdea = 0;
 		int canAssign = 0;
+		boolean canDelete = false;
 		if (Users
 				.isPermitted(
 						user,
@@ -1222,6 +1267,12 @@ public class Plans extends CRUD {
 
 				canEdit = 1;
 			}
+
+				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+						"topic")) {
+
+					canDelete = true;
+				}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -1236,7 +1287,7 @@ public class Plans extends CRUD {
 			}
 		}
 
-		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea,
+		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea,canDelete,
 				canAssign);
 
 	}

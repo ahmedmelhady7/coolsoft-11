@@ -14,6 +14,7 @@ import models.CreateRelationshipRequest;
 import models.EntityRelationship;
 import models.MainEntity;
 import models.Organization;
+import models.Plan;
 import models.RenameEndRelationshipRequest;
 import models.Topic;
 import models.User;
@@ -278,10 +279,11 @@ public class MainEntitys extends CRUD {
 		}
 		boolean follower = user.followingEntities.contains(entity);
 		boolean canCreateRelationship = EntityRelationships.isAllowedTo(id);
+		List<Plan> plans = Plans.planList("entity", entity.id);
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity, follower, canCreateRelationship,
 				/* canView, */canRequest, canRequestRelationship, check,
-				canRestrict, entityIsLocked);
+				canRestrict, entityIsLocked, plans);
 	}
 
 	/**

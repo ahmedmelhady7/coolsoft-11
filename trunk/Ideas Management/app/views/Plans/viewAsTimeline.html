@@ -27,6 +27,8 @@
                 <li>
                     <a href="@{Plans.editPlan(p.id)}" id="demo01">Edit plan</a>
                 </li>
+				#{/if} 
+				#{if canDelete}
 				<li>
 				  	<a href="#" onclick="delPlan(${p.id}, ${p.topic.id})">delete plan</a>
 				</li>
