@@ -1708,10 +1708,11 @@ public class Topics extends CRUD {
 	 *            can the relationships be created
 	 */
 
-	public static void saveDraft(long topicIdId, String title,
-			String description, int privacyLevel, boolean createRelationship) {
 
-		Topic targetTopic = Topic.findById(topicIdId);
+	public static void saveDraft(long topicId, String title, String description,
+			int privacyLevel, boolean createRelationship) {
+		
+		Topic targetTopic = Topic.findById(topicId);
 
 		targetTopic.title = title;
 		targetTopic.description = description;
@@ -1720,6 +1721,9 @@ public class Topics extends CRUD {
 		targetTopic.intializedIn = new Date();
 
 		targetTopic.save();
+		
+		System.out.println(targetTopic.title + targetTopic.description + targetTopic.privacyLevel +
+				targetTopic.createRelationship + targetTopic.intializedIn);
 	}
 
 	/**
@@ -1749,12 +1753,16 @@ public class Topics extends CRUD {
 			String description, int privacyLevel, boolean createRelationship) {
 
 		Topic targetTopic = Topic.findById(topicIdId);
-
-		saveDraft(topicIdId, title, description, privacyLevel,
-				createRelationship);
+		User user = Security.getConnected();
+		MainEntity entity = targetTopic.entity;
+		
+		saveDraft(topicIdId, title, description,
+				 privacyLevel, createRelationship);
 
 		targetTopic.isDraft = false;
 		targetTopic.save();
+		user.save();
+		entity.save();
 	}
 
 	/**
@@ -1767,12 +1775,14 @@ public class Topics extends CRUD {
 	 * @param topicId
 	 *            Id of the draft topic to be edited
 	 */
-
+	
 	public static void editDraft(long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
-		// User actor = Security.getConnected();
 
-		render(targetTopic);
+
+		User user = Security.getConnected();
+	//	System.out.println("Topic title:" + targetTopic.title);
+		render(targetTopic, user);
 	}
 
 	/**
@@ -1813,6 +1823,12 @@ public class Topics extends CRUD {
 	 */
 	public static void discardDraftTopic(long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
+		User user = Security.getConnected();
+		//MainEntity entity = targetTopic.entity;
+		
 		targetTopic.delete();
+		user.save();
+		//entity.save();
+		
 	}
 }
