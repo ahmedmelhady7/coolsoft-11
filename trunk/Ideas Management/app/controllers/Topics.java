@@ -842,7 +842,16 @@ public class Topics extends CRUD {
 				"block a user from viewing or using a certain entity",
 				topicIdLong, "topic"))
 			check = 1;
-
+		int check1 =0; 
+		if(Users.isPermitted(Security.getConnected(),
+				"view", topicIdLong, "topic"))
+				check1=1;
+		
+		int check2 =0; 
+		if(Users.isPermitted(Security.getConnected(),
+				"use", topicIdLong, "topic"))
+				check2=1;
+		
 		if (Users.isPermitted(actor, actionClose, topicIdLong, "topic")) {
 			canClose = 1;
 		}
@@ -902,7 +911,7 @@ public class Topics extends CRUD {
 					canNotPost, pending, follower, canCreateRelationship,
 					seeRelationStatus, createRelationship, actor, hidden,
 					canRestrict, check, canMerge, canRequestRelationship,
-					topicIsLocked, organisation);
+					topicIsLocked, organisation,check1,check2);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
