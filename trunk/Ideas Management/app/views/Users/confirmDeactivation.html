@@ -1,7 +1,7 @@
 <!-- @author : Mai Magdy -->
 #{extends 'main.html' /}
 
-<form action="@{Login.index()}" method="GET" name="myform">
+<form action="@{Login.homePage()}" method="GET" name="myform">
 <table border="0" bgcolor="#ececec" cellspacing="5">
 <tr><td>You are about to deactivate your account</td></tr>
 <tr><td><u><font color ="red">note:</font></u> </td></tr>
@@ -9,7 +9,7 @@
 <tr><td> and to reactivate your account again you have to sign in!</td></tr>
 <tr><td><p align="right"><a href="@{Users.deactivate()}">deactivate</a> 
 &nbsp;  
-<a href="@{Login.index()}">cancel</a></p></td><td>
+<a href="@{Login.homePage()}">cancel</a></p></td><td>
 </table>
 </form>
 
