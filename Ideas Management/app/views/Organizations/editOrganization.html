@@ -8,7 +8,7 @@
 
     <body>
         #{extends 'main.html' /}
-		#{set title: 'Create Organization' /}
+		#{set title: 'Edit Organization' /}
         
 		<form name="orderform" action="@{Organizations.edit()}" method="POST">
         <input type="hidden" id="organizationId" name="organizationId" value=${organization.id}>
