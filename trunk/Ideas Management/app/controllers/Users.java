@@ -792,7 +792,7 @@ public class Users extends CRUD {
 				List<UserRoleInOrganization> allowed = UserRoleInOrganization
 						.find("byEnrolledAndEntityTopicIDAndType", user,
 								topic.id, "topic").fetch();
-				if (allowed == null) {
+				if (allowed.size() == 0) {
 					return false;
 				} else {
 					if (Roles.getRoleActions("idea developer").contains(action)) {
@@ -1700,18 +1700,29 @@ public class Users extends CRUD {
 	 * activates the account of that user by setting the state to "a" and then
 	 * renders a message
 	 * 
-	 * @story C1S10
+	 * checks if the new user has been invited before or not , if yes
+	 * it redirects him to the invitation page
 	 * 
-	 * @params userId long
+	 * @author Mostafa Ali , Mai Magdy
 	 * 
-	 * @author Mostafa Ali
+	 * @story C1S10,C1S11
+	 * 
+	 * @params userId 
+	 *                long Id of the user that his account ll be activated
 	 * 
 	 */
+	
 	public static void activate(long userId) {
 		User user = User.findById(userId);
 		user.state = "a";
 		user._save();
-		render();
+
+		Invitation invite = Invitation.find("byEmail", user.email).first();
+
+		if (invite != null)
+			Invitations.view();
+		else
+			render();
 	}
 
 }
