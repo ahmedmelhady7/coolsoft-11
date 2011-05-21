@@ -1618,7 +1618,7 @@ public class Topics extends CRUD {
 		for (int i = 0; i < allIdeas.size(); i++) {
 			Idea currentIdea = (Idea) allIdeas.get(i);
 
-			if (currentIdea.hidden == false) {
+			if (currentIdea.hidden == false && currentIdea.isDraft == false) {
 				ideas.add(currentIdea);
 			}
 		}
