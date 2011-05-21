@@ -56,13 +56,13 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 */
 	@Required
 	public int type;
-	
+
 	@ManyToOne
 	public MainEntity destinationEntity;
-	
+
 	@ManyToOne
 	public Topic destinationTopic;
-	
+
 	@ManyToOne
 	public Tag destinationTag;
 
@@ -93,8 +93,10 @@ public class RenameEndRelationshipRequest extends CoolModel {
 		this.entityRelationship = entityRelationship;
 		this.type = type;
 		this.newName = name;
-		if(Users.getEntityOrganizers(entityRelationship.source).contains(requester)) {
-			entityRelationship.destination.renameEndRelationshipRequest.add(this);
+		if (Users.getEntityOrganizers(entityRelationship.source).contains(
+				requester)) {
+			entityRelationship.destination.renameEndRelationshipRequest
+					.add(this);
 			entityRelationship.destination.save();
 		} else {
 			entityRelationship.source.renameEndRelationshipRequest.add(this);
@@ -129,6 +131,14 @@ public class RenameEndRelationshipRequest extends CoolModel {
 		this.topicRelationship = topicRelationship;
 		this.type = type;
 		this.newName = name;
+		if (topicRelationship.source.getOrganizer().contains(requester)) {
+			topicRelationship.destination.renameEndRelationshipRequest
+					.add(this);
+			topicRelationship.destination.save();
+		} else {
+			topicRelationship.source.renameEndRelationshipRequest.add(this);
+			topicRelationship.source.save();
+		}
 	}
 
 	/**

@@ -1,0 +1,53 @@
+#{extends 'main.html' /}
+#{set title:'View Topic Relationships' /}
+
+<html>
+	<title> View Topic Relationships </title>
+	<body>
+		<head>
+			<p>
+				#{if (topic.relationsSource.isEmpty() && topic.relationsDestination.isEmpty())}
+				No relationships are available for this topic.				
+				#{/if}
+				#{else}
+				List of relationships:
+			</br>
+		</br>
+		#{list items: topic.relationsSource, as: 'relation'}
+		<li>
+			<fieldset>
+				<legend>
+					${relation.source} ${relation.name} ${relation.destination}
+				</legend>	
+				
+							
+				<form action="@{Topics.renameRequest(user.id, relation.id, 1, name)}" method="post"
+				onsubmit="return validate()">
+				<input type="text" id="name" name="name">
+				<input type = "submit" value = "Request Rename">
+			</form>
+			<form action="@{Topics.deleteRequest(user.id, relation.id, 0)}" method="post">
+				<input type = "submit" value = "Request Delete">
+			</form>
+			
+				
+					
+			</fieldset>
+		</li>
+		
+		#{/list}
+				#{/else}
+					
+			<script type="text/javascript">
+			
+			function validate() {
+				var n = document.getElementById('name').value;
+				if(n == "") {
+					alert("Please insert the new name");
+					return false;
+				}
+			}		
+			</script>
+		</head>
+	</body>
+</html>

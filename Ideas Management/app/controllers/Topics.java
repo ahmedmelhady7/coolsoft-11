@@ -6,9 +6,11 @@ import java.util.List;
 
 import models.BannedUser;
 import models.CreateRelationshipRequest;
+import models.EntityRelationship;
 import models.Idea;
 import models.MainEntity;
 import models.Organization;
+import models.RenameEndRelationshipRequest;
 import models.Tag;
 import models.Topic;
 import models.User;
@@ -884,7 +886,7 @@ public class Topics extends CRUD {
 					targetTopic, allowed, permission, topicId, canPost,
 					canNotPost, pending, follower, canCreateRelationship,
 					seeRelationStatus, createRelationship, actor, hidden,
-					canRestrict, check, canMerge, canCreateRelationship, topicIsLocked,
+					canRestrict, check, canMerge, canRequestRelationship, topicIsLocked,
 					organisation);
 
 		} catch (TemplateNotFoundException exception) {
@@ -926,10 +928,33 @@ public class Topics extends CRUD {
 //			System.out
 //					.println("You're not an organiser for any of the topics");
 //		}
-		System.out.println(sourceTopic.relationshipRequestsSource.size()
-				+ sourceTopic.relationshipRequestsDestination.size());
-		System.out.println(destinationTopic.relationshipRequestsSource.size()
-				+ destinationTopic.relationshipRequestsDestination.size());
+//		System.out.println(sourceTopic.relationshipRequestsSource.size()
+//				+ sourceTopic.relationshipRequestsDestination.size());
+//		System.out.println(destinationTopic.relationshipRequestsSource.size()
+//				+ destinationTopic.relationshipRequestsDestination.size());
+	}
+	
+	public static void viewRelationships(long userId, long organisationId,
+			long entityId, long topicId, boolean canRequestRelationship) {
+		User user = User.findById(userId);
+		Organization organisation = Organization.findById(organisationId);
+		MainEntity entity = MainEntity.findById(entityId);
+		Topic topic = Topic.findById(topicId);
+		render(user, organisation, entity, canRequestRelationship, topic);
+	}
+	
+	public static void deleteRequest(long userId, long relationId, int type) {
+		User user = User.findById(userId);
+		TopicRelationship relation = TopicRelationship.findById(relationId);
+		RenameEndRelationshipRequest deleteRequest = new RenameEndRelationshipRequest(user, relation, type, null);
+		deleteRequest.save();
+	}
+	
+	public static void renameRequest(long userId, long relationId, int type, String newName) {
+		User user = User.findById(userId);
+		TopicRelationship relation = TopicRelationship.findById(relationId);
+		RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(user, relation, type, newName);
+		renameRequest.save();
 	}
 
 	public static boolean topicRequestIsDuplicate(Topic topic, String source,
