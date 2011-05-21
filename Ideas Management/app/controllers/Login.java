@@ -62,17 +62,6 @@ public class Login extends Controller {
 			flash.error("Your account has been reactivated successfuly");
 		}
 
-		/*if (user.state.equals("c")) {
-			Invitation invite = Invitation.find("byEmail", user.email).first();
-			user.state = "a";
-			user.save();
-			Mail.activation(user);
-
-			if (invite != null) {
-				Invitations.view();
-			}
-
-		}*/
 		
 		List<Organization> organizations = user.followingOrganizations;
 		List<Tag> tags = user.followingTags;
