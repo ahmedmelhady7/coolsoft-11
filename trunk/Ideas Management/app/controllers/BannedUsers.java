@@ -1294,17 +1294,18 @@ public class BannedUsers extends CRUD {
 	}
 
 	/**
-	 * render the list of idea developers to be blocked/unblocked
+	 * Renders the list of idea developers enrolled in the entity/topic
+	 * to the organizer/lead/admin to be blocked/unblocked
 	 * 
 	 * @author Mai Magdy
 	 * 
 	 * @story C1S16
 	 * 
 	 * @param numId
-	 *            long Id of the topic/entity that ll view the ideadevelopers
+	 *            long Id of the topic/entity that has the ideadevelopers
 	 * 
 	 * @param num
-	 *            int num as 1 if the source is topic or 0 if entity
+	 *            int num , 1 if the button in topic page / 0 if entity page
 	 * 
 	 */
 
@@ -1363,8 +1364,8 @@ public class BannedUsers extends CRUD {
 	}
 
 	/**
-	 * block/unblock an idea developer from viewing/using a certain topic calls
-	 * doBlock() to block from entity
+	 * block/unblock an idea developer from viewing/using a certain topic 
+	 * calls doBlock() to block from entity
 	 * 
 	 * @author Mai Magdy
 	 * 
@@ -1374,23 +1375,22 @@ public class BannedUsers extends CRUD {
 	 *            long Id of user that ll be blocked/unblocked
 	 * 
 	 * @param type
-	 *            int type 0 if view and 1 if use
+	 *            int type, 0 if view/1 if use
 	 * 
 	 * @param numId
-	 *            long Id of the topic/entity that user ll be blocked/unblocked
+	 *            long Id of the topic/entity that the user ll be blocked/unblocked
 	 *            from
 	 * 
 	 * @param id
-	 *            int id , 0 if entity and 1 if topic
-	 * 
-	 * @param message
-	 *            String text that is the text on the button to the action if
-	 *            (block or unblock)
+	 *            int id , 0 if entity/1 if topic
 	 * 
 	 * @param text
+	 *            String text that is the text on the button represents the action if
+	 *            (block or unblock)
+	 * 
+	 * @param message
 	 *            String message that is the reason why this person has been
 	 *            blocked
-	 * 
 	 * 
 	 */
 
@@ -1421,8 +1421,8 @@ public class BannedUsers extends CRUD {
 				if (text.equals("Block from viewing")) {
 					doBlock(userId, numId, 0, 0);
 					Log.addUserLog(organizer.firstName + " "
-							+ organizer.lastName + "blocked " + user.firstName
-							+ " " + user.lastName + "from viewing Entity "
+							+ organizer.lastName + " blocked " + user.firstName
+							+ " " + user.lastName + " from viewing Entity "
 							+ entity.name, user, organizer, entity,
 							entity.organization);
 					for (int i = 0; i < organizers.size(); i++)
@@ -1475,8 +1475,8 @@ public class BannedUsers extends CRUD {
 					doBlock(userId, numId, 0, 1);
 
 					Log.addUserLog(organizer.firstName + " "
-							+ organizer.lastName + "blocked " + user.firstName
-							+ " " + user.lastName + "from using Entity "
+							+ organizer.lastName + " blocked " + user.firstName
+							+ " " + user.lastName + " from using Entity "
 							+ entity.name, user, organizer, entity,
 							entity.organization);
 
@@ -1538,8 +1538,8 @@ public class BannedUsers extends CRUD {
 							topic.entity.organization, "view", "topic", numId);
 					block.save();
 					Log.addUserLog(organizer.firstName + " "
-							+ organizer.lastName + "blocked " + user.firstName
-							+ " " + user.lastName + "from viewing Topic "
+							+ organizer.lastName + " blocked " + user.firstName
+							+ " " + user.lastName + " from viewing Topic "
 							+ topic.title, user, organizer, topic,
 							entity.organization);
 
@@ -1568,9 +1568,9 @@ public class BannedUsers extends CRUD {
 					unblock.delete();
 
 					Log.addUserLog(organizer.firstName + " "
-							+ organizer.lastName + "unblocked "
+							+ organizer.lastName + " unblocked "
 							+ user.firstName + " " + user.lastName
-							+ "from viewing Topic " + topic.title, user,
+							+ " from viewing Topic " + topic.title, user,
 							organizer, topic, entity.organization);
 
 					for (int i = 0; i < organizers.size(); i++)
@@ -1597,8 +1597,8 @@ public class BannedUsers extends CRUD {
 							topic.entity.organization, "use", "topic", numId);
 					block.save();
 					Log.addUserLog(organizer.firstName + " "
-							+ organizer.lastName + "blocked " + user.firstName
-							+ " " + user.lastName + "from using Topic "
+							+ organizer.lastName + " blocked " + user.firstName
+							+ " " + user.lastName + " from using Topic "
 							+ topic.title, user, organizer, topic,
 							entity.organization);
 
@@ -1626,9 +1626,9 @@ public class BannedUsers extends CRUD {
 									user, "use", "topic", numId).first();
 					unblock.delete();
 					Log.addUserLog(organizer.firstName + " "
-							+ organizer.lastName + "unblocked "
+							+ organizer.lastName + " unblocked "
 							+ user.firstName + " " + user.lastName
-							+ "from using Topic " + topic.title, user,
+							+ " from using Topic " + topic.title, user,
 							organizer, topic, entity.organization);
 
 					for (int i = 0; i < organizers.size(); i++)
@@ -1664,13 +1664,13 @@ public class BannedUsers extends CRUD {
 	 *            long Id of user that ll be blocked/unblocked
 	 * 
 	 * @param entId
-	 *            long Id of entity that user ll be blocked/unblocked from
+	 *            long Id of entity that the user ll be blocked/unblocked from
 	 * 
 	 * @param choice
-	 *            int choice as 0 if view or 1 if use
+	 *            int choice, 0 if block/1 if unblock
 	 * 
 	 * @param type
-	 *            int type view of 0 or use if 1 ,that user ll be
+	 *            int type (0 if view/1 if use) represnts the action the user ll be
 	 *            blocked/unblocked from
 	 * 
 	 */
