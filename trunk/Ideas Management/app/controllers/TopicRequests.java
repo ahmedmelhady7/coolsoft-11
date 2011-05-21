@@ -10,6 +10,7 @@ import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import controllers.CRUD.ObjectType;
+import models.Log;
 import models.MainEntity;
 import models.Organization;
 import models.RequestToJoin;
@@ -133,6 +134,9 @@ public class TopicRequests extends CRUD{
 		
 		System.out
 		.println("333");
+		String message2 = "User " + requester.firstName + " " + requester.lastName+ "has requested a topic " + temporaryTopicRequest.title+ " in entity " + entity; 
+		Log.addUserLog(message2,
+				temporaryTopicRequest, requester, entity, entity.organization);
 
 		System.out.println("create() about to save object");
 		object._save();
