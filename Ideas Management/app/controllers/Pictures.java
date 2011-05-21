@@ -52,7 +52,7 @@ public class Pictures extends Controller {
 					|| user.isAdmin;
 
 		}
-		render(pictures, id, isOrganization, canDelete);
+		render(pictures, id, isOrganization, canDelete, user);
 	}
 
 	/**

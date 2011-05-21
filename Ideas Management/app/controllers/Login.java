@@ -63,19 +63,7 @@ public class Login extends Controller {
 		}
 
 		
-		List<Organization> organizations = user.followingOrganizations;
-		List<Tag> tags = user.followingTags;
-		List<MainEntity> entities = user.followingEntities;
-		List<Topic> topics = user.topicsIFollow;
-		
-		List<Document> documents;
-		documents = Document.find("byUserOrganizationId", user.id).fetch();
-		for (int i = 0; i < documents.size(); i++) {
-			if (documents.get(i).isOrganization)
-				documents.remove(i);
-			}
-
-		render(user, admin, drafts, organizations, tags, entities, topics, documents);
+		render(user, admin, drafts);
 	}
 
 	/**

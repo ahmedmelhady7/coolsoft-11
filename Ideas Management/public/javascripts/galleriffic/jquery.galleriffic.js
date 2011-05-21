@@ -502,6 +502,7 @@
 			// This function is garaunteed to be called anytime a gallery slide changes.
 			// @param {Object} imageData An object holding the image metadata of the image to navigate to.
 			gotoImage: function(imageData) {
+				try {
 				var index = imageData.index;
 
 				if (this.onSlideChange)
@@ -511,7 +512,9 @@
 				this.preloadRelocate(index);
 				
 				this.refresh();
-				
+				}catch(e){
+					
+				}
 				return this;
 			},
 
