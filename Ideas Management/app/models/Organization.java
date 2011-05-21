@@ -104,10 +104,9 @@ public class Organization extends CoolModel {
 	public ArrayList<String> relationNames;
 
 	/**
-	 * *********
+	 *  list of invitations that sent by the organization
 	 */
 	@OneToMany(mappedBy = "organization")
-	// , cascade = CascadeType.ALL)
 	public List<Invitation> invitation;
 
 	/**
