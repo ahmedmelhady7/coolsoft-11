@@ -47,6 +47,7 @@ public class Bootstrap extends Job {
 					"notreal", "Ahmed", "El-Hadi", "What is our company's name?", "coolsoft",
 					0, new Date(1991, 3, 20),
 					null, "");
+			
 			hadi._save();
 
 			User barnasa = new User("brns@gmail.com", "brns", "1234",

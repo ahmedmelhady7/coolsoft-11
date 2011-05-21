@@ -274,6 +274,7 @@ public class Topic extends CoolModel {
 		this.commentsOn = new ArrayList<Comment>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
 		this.hidden = false;
+		this.reporters="";
 		this.createRelationship = createRelationship;
 		this.openToEdit = true;
 		this.isDraft = false;

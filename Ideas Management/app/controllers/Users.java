@@ -464,8 +464,10 @@ public class Users extends CRUD {
 		System.out.println("hadiiiiiiiiiiiiiiii");
 		Topic topic = Topic.findById(topicId);
 		User reporter = Security.getConnected();
+		if(topic.reporters==null)
+		topic.reporters="";
 		topic.reporters+=reporter.id+",";
-		System.out.println(reporter+" howa da ");
+		System.out.println(topic.reporters+" howa da ");
 //		reporter.topicsReported.add(topic);
 //		topic.reporters.add(reporter);
 //		System.out.println(topic.reporters.get(0).toString());
