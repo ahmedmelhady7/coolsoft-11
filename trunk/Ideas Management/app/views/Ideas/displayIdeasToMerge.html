@@ -43,8 +43,9 @@
 		<textarea cols="50" rows="5" id="body"></textarea>  
 		<br></br>
 		
-		<input type="submit" value ="Merge" onclick="callMerge(${topicId})"></input>
+		
 </fieldset>
+<input type="submit" value ="Merge" onclick="callMerge(${topicId})"></input>
 </div>
 
 		<textarea cols="50" rows="5" id="hiddenIdeasId">${selectedIdeasString}</textarea> 
@@ -84,10 +85,10 @@
 			alert("Please enter the description of the idea");
 			return;
 		}
-
+		var link = "/topics/show?topicId="+topicId;
 		$.post('@{Ideas.mergeIdeas()}' ,{topicId:topicId, oldIdeas:IdeasIds, 
-						newTitle:title, newDescription:body });
-		
+						newTitle:title, newDescription:body },function(){window.location.href=link});
+
 		}
 	
 	
