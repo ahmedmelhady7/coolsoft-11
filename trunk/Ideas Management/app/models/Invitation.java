@@ -7,7 +7,9 @@ import play.db.jpa.*;
  import javax.persistence.Entity;
 import play.db.jpa.Model;
 
-
+/**
+ *  Model Invitation by Mai Magdy
+ */
 
 
 @Entity
@@ -47,6 +49,7 @@ public class Invitation extends CoolModel{
      */ 
     @ManyToOne
     public MainEntity entity;
+    
     /**
      *   Topic topic that sends the invitation    
      */ 
@@ -65,16 +68,19 @@ public class Invitation extends CoolModel{
 	 *              String email that represents the destination
 	 *
 	 * @param entity
-	 *             MainEntity that sents the invitation
+	 *             MainEntity that sends the invitation
 	 *             
 	 * @param organization
 	 *             Organization that sends the invitation
 	 *             
 	 * @param role
-	 *            String role that ll be assigned to the user if accept
+	 *            String role that will be assigned to the user if accept
 	 *                         
 	 * @param sender
 	 *              User that has sent the invitations
+	 *              
+	 * @param topic
+	 *             Topic that sends the invitation
 	 */
    
     public Invitation(String email,MainEntity entity,Organization organization,String role,
