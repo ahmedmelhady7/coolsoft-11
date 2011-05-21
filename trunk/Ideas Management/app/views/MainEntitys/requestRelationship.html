@@ -16,7 +16,9 @@
 				Source Entity:
 				<select name="source" id="sourceEntity">
 					#{list items: organisation.entitiesList, as:'entity'}
-					<option>${entity.name}</option>
+					#{if (entity.createRelationship == true)}
+						<option>${entity.name}</option>
+					#{/if}
 					#{/list}
 				</select>
 				</br>
@@ -34,7 +36,9 @@
 				Destination Entity:
 				<select name="destination" id="destinationEntity">
 					#{list items: organisation.entitiesList, as:'entity'}
-					<option>${entity.name}</option>
+					#{if (entity.createRelationship == true)}
+						<option>${entity.name}</option>
+					#{/if}
 					#{/list}
 				</select>
 				</br>
