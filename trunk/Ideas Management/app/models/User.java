@@ -620,6 +620,19 @@ public class User extends CoolModel {
 		}
 		return notificationCount;
 	}
+
+	
+	public List<Notification> getLatest() {
+		User user = Security.getConnected();
+		List<Notification> list = new ArrayList<Notification>();
+		for (int i = 0; i < user.notifications.size(); i++) {
+			if (user.notifications.get(i).status.equals("New")) {
+				list.add(user.notifications.get(i));
+			}
+		}
+		return list;
+	}
+
 	
 	/**
 	 * gets the list of documents owned by the user 
@@ -638,5 +651,6 @@ public class User extends CoolModel {
 		}
 		return documents;
 	}
+
 
 }

@@ -10,7 +10,11 @@ a
 	color: #0066CC;
 	text-decoration: none;
 }
-
+p
+{
+	font-family: "Trebuchet MS", Arial, Sans-Serif;
+    font-size: 8px;
+}
 a:hover
 {
 	color: #CC0000;
