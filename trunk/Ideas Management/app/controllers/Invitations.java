@@ -1,5 +1,5 @@
 /**
- * @author Mai Magdy
+ * @author Mai Magdy , Fadwa Sakr
  */
 
 package controllers;
@@ -40,7 +40,7 @@ public class Invitations extends CRUD {
 	 *            long id of entity/topic that sends the invitation
 	 * 
 	 * @param type
-	 *            String type either entity (0) or topic(1)
+	 *            int type either entity (0) or topic(1)
 	 * 
 	 * @param check
 	 *            int check : 0 if viewing the page, 1 if search result, 2 if
@@ -72,7 +72,8 @@ public class Invitations extends CRUD {
 	/**
 	 * 
 	 * Searches for a user to invite. The result is a list not containing the
-	 * organizers of this entity
+	 * organizers of this entity or the users that have been invited 
+	 * and didn't respond yet
 	 * 
 	 * @author ${Mai.Magdy}, ${Fadwa.Sakr}
 	 * 
@@ -80,7 +81,7 @@ public class Invitations extends CRUD {
 	 * 
 	 * 
 	 * @param type
-	 *            String type either entity (0) or topic(1)
+	 *            int type either entity (0) or topic(1)
 	 * 
 	 * @param id
 	 *            long id of the entity/topic that sends the invitation.
@@ -151,17 +152,16 @@ public class Invitations extends CRUD {
 	 * @story C1S6,C2S22
 	 * 
 	 * @param type
-	 *            String type either entity (0) or topic(1)
+	 *            int type either entity (0) or topic(1)
 	 * 
 	 * @param email
 	 *            String email of the destination of the invitation
-	 * 
 	 * 
 	 * @param id
 	 *            long id of entity/topic that sends the invitation
 	 * 
 	 * @param userId
-	 *            long userId that the invitation is to be send to
+	 *            long userId that the invitation is to be sent to
 	 * 
 	 */
 
@@ -328,9 +328,9 @@ public class Invitations extends CRUD {
 	 * 
 	 * Views the received invitations and renders the invitation list
 	 * 
-	 * @author ${Mai.Magdy}
+	 * @author ${Mai.Magdy} , ${Fadwa.Sakr}
 	 * 
-	 * @story C1S4
+	 * @story C1S4,C2S17
 	 * 
 	 */
 
@@ -348,8 +348,6 @@ public class Invitations extends CRUD {
 	 * 
 	 * Responds to the user (accept/reject) to the invitation.
 	 * 
-	 * 
-	 * 
 	 * @author ${Mai.Magdy} > if flag is false and role is organizer
 	 * @author ${Fadwa.Sakr} > if flag is true
 	 * @author ${Ibrahim.Khayat} > if flag is false and role is idea developer
@@ -358,11 +356,11 @@ public class Invitations extends CRUD {
 	 * 
 	 * 
 	 * @param id
-	 *            int id represents the clicked button, 0 if reject or 1 if
+	 *           int id represents the clicked button, 0 if reject or 1 if
 	 *            accept
 	 * 
 	 * @param i
-	 *            long id of the invitation
+	 *           long id of the invitation that will be removed
 	 * 
 	 */
 
