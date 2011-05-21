@@ -829,13 +829,11 @@ public class Ideas extends CRUD {
 		long topicId = i.belongsToTopic.id;
 		System.out.println("---------------------------------------");
 		System.out.println("isPermitted raga3et "
-				+ Users.isPermitted(user, "rate/prioritize ideas;", topicId,
+				+ Users.isPermitted(user, "rate/prioritize ideas", topicId,
 						"topic"));
-		if (Users.isPermitted(user, "rate/prioritize ideas;", topicId, "topic")) {
 			i.priority = priority;
 			i.save();
 			redirect("/ideas/show?ideaId=" + ideaId);
-		}
 	}
 
 	/**
