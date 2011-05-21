@@ -100,7 +100,7 @@ The Search Results Viewer
             -25px;
         }
     </style>
-    <body dir="ltr" onLoad="step1()">
+    <body dir="ltr" onload="step1()">
         <div id ='load'>
         </div>
         <div class="tabholder" id="tabholder_articles">
@@ -136,10 +136,9 @@ The Search Results Viewer
                     unchecked is what is removed 
                     <br>
                     </br>
-                    <input type="checkbox" id ='I' name="type" value="idea" onclick="check()" checked="checked"/>Ideas
-                    </br><input type="checkbox" id='E' name="type" value="entity" onclick="check()"checked="checked"/>Entities
-                    </br><input type="checkbox" id='T' name="tupe" value="topic" onclick="check()"checked="checked"/>Topics
-                    </br><input type="checkbox" id='O' name="type" value="organization" onclick="check()"checked="checked"/>Organizations
+                    <input type="checkbox" id ='I' name="type" value="idea" onclick="check()" checked="checked"/>Ideas<input type="checkbox" id='E' name="type" value="entity" onclick=check() checked="checked"/>Entities
+                    </br><input type="checkbox" id='T' name="type" value="topic" onclick=check() checked="checked"/>Topics<input type="checkbox" id='O' name="type" value='organization' onclick="check()" checked="checked"/>Organizations
+                    </br><input type="checkbox" id='P' name="type" value="plans" onclick=check() checked="checked"/>Plans<input type="checkbox" id='It' name="type" value="items" onclick="check()" checked="checked"/>Items
                     </br>
                 </font>
             </div>
@@ -158,17 +157,45 @@ The Search Results Viewer
             </ul>
             #{/if}#{/if}
         </div>
-        <div id='divE'>
-        #{if lof}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}
+        <div id='divIt'>
+        #{if lof} 
+        #{if itemsFound} 
+        Found ${itemsFound.size()} item{itemsFound.pluralize()}
         </br>
         <ul>
-        #{list items:entitiesFound, as:'item'}
+        #{list items:itemFound, as:'item'}
         <li>
-            <a href='@{MainEntitys.show(item.id)}'>${item.toString()}</a>
+            <a href='@{item.viewAssignedItems(item.id)}'>${item.summary}</a>
         </li>#{/list}
         </br>
     </ul>
     #{/if}#{/if}
+</div>
+<div id='divE'>
+#{if lof}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}
+</br>
+<ul>
+#{list items:entitiesFound, as:'item'}
+<li>
+    <a href='@{MainEntitys.viewEntity(item.id)}'>${item.toString()}</a>
+</li>#{/list}
+</br>
+</ul>
+#{/if}#{/if}
+</div>
+<div id='divP'>
+#{if lof} 
+#{if plansFound} 
+Found ${plansFound.size()} item{plansFound.pluralize()}
+</br>
+<ul>
+#{list items:itemFound, as:'plan'}
+<li>
+    <a href='@{plan.planView(plan.id)}'>${plan.title}</a>
+</li>#{/list}
+</br>
+</ul>
+#{/if}#{/if}
 </div>
 <div id='divT'>
 #{if lof}#{if topicsFound} Found ${topicsFound.size()} topic${topicsFound.pluralize()}
@@ -189,7 +216,7 @@ The Search Results Viewer
 <ul>
 #{list items:ideasFound, as:'item'}
 <li>
-    <input type='checkbox' id =${item.id} onclick='mark(${item.id})'/><a href=@{Ideas.show(item.id)}>${item.title}</a>
+    <input type='checkbox' id =${item.id} onclick='mark(this.id)'/><a href=@{Ideas.show(item.id)}>${item.title}</a>
 </li>
 #{/list}
 </br>
@@ -197,8 +224,8 @@ The Search Results Viewer
 <input type='image' src='/public/images/Mark.png' value = 'Mark two ideas as duplicate' onclick=markDuplicate()>#{/if}#{/if}
 #{else}
 <center>
-    <img src='/public/images/nothing.gif'>
-    </br>Sorry! My dog might be sick he can't smell anything :@
+    <img src='/public/images/noresults.jpg'>
+    </br>No results found
 </center>#{/else}
 </div>
 <div id='down'>
@@ -222,6 +249,21 @@ The Search Results Viewer
 </ul>
 #{/if}
 #{/if}
+</div>
+<div id='divIt1'>
+#{if lof} 
+#{if itemsFound} 
+Found ${itemsFound.size()} item{itemsFound.pluralize()}
+</br>
+<ul>
+#{list items:itemFound, as:'item'}
+<li>
+<a href='@{item.viewAssignedItems(item.id)}'>${item.summary}</a>
+</br>${item.description}
+</li>#{/list}
+</br>
+</ul>
+#{/if}#{/if}
 </div>
 <div id='divT1'>
 #{if lof}
@@ -255,13 +297,28 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
 </ul>
 #{/if}#{/if}
 </div>
+<div id='divP1'>
+#{if lof} 
+#{if plansFound} 
+Found ${plansFound.size()} item{plansFound.pluralize()}
+</br>
+<ul>
+#{list items:itemFound, as:'plan'}
+<li>
+<a href='@{plan.planView(plan.id)}'>${plan.title}</a>
+</br>${plan.description}
+</li>#{/list}
+</br>
+</ul>
+#{/if}#{/if}
+</div>
 <div id='divI1'>
 #{if lof}#{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}
 </br>
 <ul>
 #{list items:ideasFound, as:'item'}
 <li>
-<input type='checkbox' id=${item.id} onclick='mark(${item.id})'/><a href='@{Ideas.show(item.id)}'>${item.title}</a>
+<input type='checkbox' id=${item.id} onclick='mark(this.id)'/><a href='@{Ideas.show(item.id)}'>${item.title}</a>
 </br>Description:
 </br>${item.description}
 </li>
@@ -270,8 +327,8 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
 </ul>
 <input type='image' src='/public/images/Mark.png' value = 'Mark two ideas as duplicate' onclick=markDuplicate()>#{/if}#{/if} #{else}
 <center>
-    <img src='/public/images/nothing.gif'>
-    </br>Sorry! My dog might be sick he can't smell anything :@
+    <img src='/public/images/noresults.jpg'>
+    </br>No Results Found
 </center>#{/else}
 </div>
 <div id='down'>
@@ -285,11 +342,10 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
     var marked = new Array();
     
     function step1(){
-        document.getElementById('load').innerHTML = '<center>Searching</br><img src="/public/images/Loading.gif"/></center>';
         document.getElementById('panel5').style.display = 'none';
         document.getElementById('panel2').style.display = 'none';
         document.getElementById('tabholder_articles').style.display = 'none';
-        document.getElementById('load')
+        document.getElementById('load').innerHTML = '<center><img src="/public/images/Searching.gif"/></center>';
         setTimeout('showNewPanel(5)', 2500);
     }
     
@@ -341,6 +397,30 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
         }
         else {
             document.getElementById('divI1').style.display = 'block';
+        }
+        if (document.getElementById('P').checked == false) {
+            document.getElementById('divP').style.display = 'none';
+        }
+        else {
+            document.getElementById('divP').style.display = 'block';
+        }
+        if (document.getElementById('P').checked == false) {
+            document.getElementById('divP1').style.display = 'none';
+        }
+        else {
+            document.getElementById('divP1').style.display = 'block';
+        }
+        if (document.getElementById('It').checked == false) {
+            document.getElementById('divIt').style.display = 'none';
+        }
+        else {
+            document.getElementById('divIt').style.display = 'block';
+        }
+        if (document.getElementById('It').checked == false) {
+            document.getElementById('divIt1').style.display = 'none';
+        }
+        else {
+            document.getElementById('divIt1').style.display = 'block';
         }
     }
     
@@ -423,9 +503,12 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
                 marked.pop(id);
             }
             else {
+                marked.push(id);
                 alert("you could only mark two ideas");
+                for (i = 0; i < marked.length; i++) {
+                    document.getElementById(marked[i] + '').checked = false;
+                }
                 marked = new Array();
-                window.location.reload(true);
             }
         }
     }
@@ -441,6 +524,9 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
                 des: "Sending a request to mark"
             }, function(){
                 alert("The requests have been sent to the Topic organizer");
+                for (i = 0; i < marked.length; i++) {
+                    document.getElementById(marked[i] + '').disabled = true;
+                }
             });
         }
     }
