@@ -152,8 +152,10 @@ public class User extends CoolModel {
 	// , cascade = CascadeType.ALL)
 	public List<Invitation> invitation;
 
+	/**
+	 *  list of invitations that have been sent by that user
+	 */
 	@OneToMany(mappedBy = "sender")
-	// , cascade = CascadeType.ALL)
 	public List<VolunteerRequest> volunteerRequests;
 
 	@OneToMany(mappedBy = "sender")
@@ -266,25 +268,27 @@ public class User extends CoolModel {
 
 	/**
 	 * 
-	 * Creates a new invitation and adds it to the list of invitations in
-	 * organization and entity
+	 * Creates a new invitation and adds it to the list of invitations
+	 *  of organization/entity/topic
 	 * 
 	 * @author ${Mai.Magdy}
 	 * 
 	 * @story C1S6
 	 * 
-	 * 
 	 * @param email
 	 *            String email the destination of the invitation
 	 * 
 	 * @param role
-	 *            String role that ll be assigned to the user if accept
+	 *            String role that will be assigned to the user if accept
 	 * 
 	 * @param organization
 	 *            Organization organization that sends the invitation
 	 * 
 	 * @param entity
 	 *            MainEntity entity that sends the invitation
+	 * 
+	 * @param topic
+	 *            Topic topic that sends the invitation
 	 * 
 	 */
 
