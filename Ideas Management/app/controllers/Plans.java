@@ -1315,7 +1315,7 @@ public class Plans extends CRUD {
 	 * @story C5S15
 	 * 
 	 * @param itemID
-	 *            : the item that is being tagged
+	 *            : the id of the item that is being tagged
 	 * 
 	 * @param tag
 	 *            : the tag that is being added
