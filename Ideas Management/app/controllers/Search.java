@@ -85,6 +85,8 @@ public class Search extends Controller {
 		List<Organization> organizationsFound = new ArrayList<Organization>();
 		List<Topic> topicsFound = new ArrayList<Topic>();
 		List<MainEntity> entitiesFound = new ArrayList<MainEntity>();
+		List<Item> itemsFound = new ArrayList<Item>();
+		List<Plan> plansFound = new ArrayList<Plan>();
 		toBePassed = listOfResults;
 		try {
 			for (int i = 0; i < listOfResults.size(); i++) {
@@ -100,6 +102,12 @@ public class Search extends Controller {
 				if (listOfResults.get(i) instanceof Organization) {
 					organizationsFound.add((Organization) listOfResults.get(i));
 				}
+				if (listOfResults.get(i) instanceof Item) {
+					itemsFound.add((Item) listOfResults.get(i));
+				}
+				if (listOfResults.get(i) instanceof Plan) {
+					plansFound.add((Plan) listOfResults.get(i));
+				}
 			}
 			download(user);
 			List<Model> lof = listOfResults;
@@ -108,7 +116,7 @@ public class Search extends Controller {
 					entitiesFound, topicsFound);
 		} catch (NullPointerException e) {
 			render(user, connected, ideasFound, organizationsFound,
-					entitiesFound, topicsFound, user);
+					entitiesFound, topicsFound, plansFound, itemsFound, user);
 		}
 	}
 
