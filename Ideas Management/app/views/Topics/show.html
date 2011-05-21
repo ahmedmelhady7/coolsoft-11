@@ -1,6 +1,6 @@
 #{extends 'main.html' /}
 #{script src:"jquery-1.5.2.min.js" /}
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="/public/javascripts/jquery-1.4.1.js"></script>
 <br/>
 <input type="submit" value="Back to Entity" onclick=location.href="@{MainEntitys.viewEntity(entity.id)}">
 <br/>
@@ -206,7 +206,8 @@
         <div id="postIdeaform">
         	<p>
             <label>Title</label>
-            						<input type="text" id="ideaTitle" cols="30" rows="1" class="" name="object.title" required>
+            <br>	
+       		<input type="text" id="ideaTitle" cols="30" rows="1" class="" name="object.title" required>
             <span id = "ideaTitleError">
                 <font color="Red">
                     *
@@ -217,6 +218,7 @@
             <label>
                 Description
             </label>
+            <br>
             <textarea id="ideaDescription" cols="50" rows="5" class="" name="object.description" required></textarea>
             <span id="ideaDescriptionError">
                 <font color="Red">

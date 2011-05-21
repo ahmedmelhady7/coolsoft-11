@@ -148,12 +148,12 @@ public class Topic extends CoolModel {
 	@ManyToOne
 	public MainEntity entity;
 
-	// /**
-	// * the Repoters of the topic
-	// */
-	// @ManyToMany(mappedBy = "topicsReported")
-	// public List<User> reporters;
-
+//	/**
+//	 * the Repoters of the topic
+//	 */
+//	@ManyToMany(mappedBy = "topicsReported")
+//	public List<User> reporters;
+//
 	/**
 	 * the plan that the topic is promoted to
 	 */
@@ -217,7 +217,7 @@ public class Topic extends CoolModel {
 		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
 		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		this.tags = new ArrayList<Tag>();
-		// this.reporters = new ArrayList<User>();
+//		this.reporters = new ArrayList<User>();
 		// relationships = new ArrayList<Relationship>();
 		// organizers = new ArrayList<User>();
 		this.followers = new ArrayList<User>();
@@ -255,7 +255,7 @@ public class Topic extends CoolModel {
 		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
 		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		this.tags = new ArrayList<Tag>();
-		// this.reporters = new ArrayList<User>();
+//		this.reporters = new ArrayList<User>();
 		// organizers = new ArrayList<User>();
 		this.followers = new ArrayList<User>();
 		this.ideas = new ArrayList<Idea>();
