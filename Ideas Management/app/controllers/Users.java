@@ -1612,6 +1612,23 @@ public class Users extends CRUD {
 		}
 		render(user, nList);
 	}
+	
+	public static void showNotifications() {
+		User user = Security.getConnected();
+		for (int i = 0; i < user.notifications.size(); i++) {
+			if (user.notifications.get(i).seen) {
+				Notification notification = user.notifications.get(i);
+				notification.status = "Old";
+				notification.save();
+			} else {
+				Notification notification = user.notifications.get(i);
+				notification.status = "*New";
+				notification.seen = true;
+				notification.save();
+			}
+		}
+		user.save();
+	}
 
 	/**
 	 * Renders the list of notification profiles for the user to view and edit
@@ -1628,6 +1645,7 @@ public class Users extends CRUD {
 		List<NotificationProfile> npList = user.notificationProfiles;
 		render(user, npList);
 	}
+	
 
 	/**
 	 * Deletes the notifications of the users which he checked from the

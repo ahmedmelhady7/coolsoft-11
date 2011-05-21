@@ -189,6 +189,28 @@ a:hover {
 	color: #000000;
 }
 
+/* Notification Menu */
+
+#notmenu {
+	float: bottom-left;
+	width: 400px;
+	height: 200px;
+	margin: 0 auto;
+	padding: 0;
+	backgroud: #FF00000;
+}
+
+#notmenu ul {
+	margin: 0;
+	padding: 60px 0px 0px 0px;
+	list-style: none;
+	line-height: normal;
+}
+
+#notmenu li {
+	float: left;
+}
+
 /* Menu */
 
 #menu {
@@ -339,7 +361,9 @@ a:hover {
 
 #sidebar li ul {
 	margin: 0px 0px;
-	padding-bottom: 30px;
+	padding-bottom: 5px;
+	border: none;
+	
 }
 
 #sidebar li li {
@@ -347,6 +371,8 @@ a:hover {
 	border-bottom: 1px dotted #E7E2DC;
 	margin: 0px 30px;
 	border-left: none;
+	border: none;
+	
 }
 
 #sidebar li li span {
