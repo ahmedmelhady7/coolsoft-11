@@ -1625,4 +1625,166 @@ public class Topics extends CRUD {
 
 		render(topicId, ideas);
 	}
+	
+	/**
+	 * @description This method created a draft
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @param title
+	 * 			: The title of the topic
+	 * @param description
+	 * 			: the description of the topic
+	 * @param entityId
+	 * 			: the id
+	 */
+	public static void createDraft(String title, String description, 
+		int privacyLevel, boolean createRelationship, long entityId) {
+		
+		User user = Security.getConnected();
+		MainEntity targetEntity = MainEntity.findById(entityId);
+		boolean isDraft = true;
+		
+		Topic draftTopic = new Topic(title, description, 
+				privacyLevel, user, targetEntity, createRelationship, isDraft);
+		
+		draftTopic.save();
+	
+	}
+	
+	/**
+	 * @description publish a topic
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @story C3S23
+	 *  
+	 * @param topicId
+	 *            the id of the topic
+	 *            
+ 	 * @param title
+	 *            the title of the topic
+	 * 
+	 * @param description
+	 *            the description of the topic
+	 *            
+	 * @param privacyLevel
+	 * 			  the privacy level of the topic
+	 * 
+	 * @param createRelationship
+	 * 			  can the relationships be created
+	 */
+
+	public static void saveDraft(long topicIdId, String title, String description,
+			int privacyLevel, boolean createRelationship) {
+		
+		Topic targetTopic = Topic.findById(topicIdId);
+		
+		targetTopic.title = title;
+		targetTopic.description = description;
+		targetTopic.privacyLevel = privacyLevel;
+		targetTopic.createRelationship = createRelationship;
+		targetTopic.intializedIn = new Date();
+		
+		targetTopic.save();
+	}
+
+	/**
+	 * @description publish a topic
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @story C3S23
+	 *  
+	 * @param topicId
+	 *            the id of the topic
+	 *            
+ 	 * @param title
+	 *            the title of the topic
+	 * 
+	 * @param description
+	 *            the description of the topic
+	 *            
+	 * @param privacyLevel
+	 * 			  the privacy level of the topic
+	 * 
+	 * @param createRelationship
+	 * 			  can the relationships be created
+	 */
+
+	public static void postDraftTopic(long topicIdId, String title, String description,
+			int privacyLevel, boolean createRelationship) {
+
+		Topic targetTopic = Topic.findById(topicIdId);
+		
+		saveDraft(topicIdId, title, description,
+				 privacyLevel, createRelationship);
+		
+		targetTopic.isDraft = false;
+		targetTopic.save();
+	}
+
+
+	
+	/**
+	 * @description 
+	 * 		This method renders to editing a draft page
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @story C3S23
+	 * 
+	 * @param topicId
+	 * 		Id of the draft topic to be edited
+	 */
+
+	public static void editDraft(long topicId) {
+		Topic targetTopic = Topic.findById(topicId);
+		//User actor = Security.getConnected();
+		
+		render(targetTopic);
+	}
+
+	/**
+	 * @description 
+	 * 		This method shows the draft Topics of the connected user
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @story C3S23
+	 * 
+	 */
+
+	public static void getDraftTopics() {
+
+		//User actor = Security.getConnected();
+
+		List<Topic> draftTopics = new ArrayList<Topic>();
+		List<Topic> allTopics = new ArrayList<Topic>();
+		
+		for (int i = 0; i < allTopics.size(); i++) {
+			Topic currentTopic = allTopics.get(i);
+			
+			if(currentTopic.isDraft) {
+				draftTopics.add(currentTopic);
+			}
+		}
+
+		render(draftTopics);
+	}
+	
+	
+	/**
+	 * @Description This method discards a draft
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @param topicId
+	 * 			The id of the draft that to be deleted
+	 * 
+	 */		
+	public static void discardDraftTopic(long topicId) {
+		Topic targetTopic = Topic.findById(topicId);
+		targetTopic.delete();
+	}
 }
