@@ -68,7 +68,7 @@ public class MarkRequest extends Controller {
 		Idea i1 = Idea.findById(idea1ID);
 		Idea i2 = Idea.findById(idea2ID);
 		Long ideaOrg1 = i1.belongsToTopic.id;
-		Long ideaOrg2 = i1.belongsToTopic.id;
+		Long ideaOrg2 = i2.belongsToTopic.id;
 		if (ideaOrg1 == ideaOrg2) {
 			LinkDuplicatesRequest req = new LinkDuplicatesRequest(u, i1, i2,
 					des);
