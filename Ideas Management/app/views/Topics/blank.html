@@ -31,7 +31,7 @@
 			#{crud.custom 'privacyLevel'}
 			<p> 
  			<label for="object_privacyLevel">Privacy Level</label> 
-			<select name="object.privacyLevel">
+			<select name="object.privacyLevel" id="object_privacyLevel">
  				<option value = "1">private</option>
 				<option value = "2">public</option>
  			</select>
@@ -53,11 +53,39 @@
 			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
 		</p>
 	#{/form}
+			
+			<input type="submit" id ="saveAsDraftButton" value="Save as Draft" onclick="saveAsDraft()" ></input>
 	</div>
 
 </div>
 
-
-	
+<script type="text/javascript">
+				
+	function saveAsDraft() {
+		
+		var entityId = ${entityId};
+		var topicTitle = document.getElementById("object_title").value.toString();
+		var topicDescription = document.getElementById("object_description").value.toString();
+		var privacyLevelString = document.getElementById("object_privacyLevel").value.toString();
+		var privacyLevel;
+		var createRelationship = document.getElementById("object_createRelationship").checked;
+		
+		if(topicTitle == "" && topicDescription == "") {
+			alert("Nothing to save");
+			return;
+		}
+		
+		if(privacyLevelString == "1") {
+			privacyLevel = 1;
+		} else {
+			privacyLevel = 2;
+		}
+					
+		var link = "/mainentitys/viewentity?id="+entityId;
+		$.post('@{Topics.createDraft()}' ,{title:topicTitle, description:topicDescription, 
+			privacyLevel: privacyLevel, createRelationship: createRelationship,
+			entityId:entityId}, function(){window.location.href=link});					
+	}
+</script>
 	
 			
