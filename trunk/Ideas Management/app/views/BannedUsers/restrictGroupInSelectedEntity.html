@@ -1,12 +1,14 @@
 #{extends 'Login/index.html' /}
 #{set title:'Restrict Group of Organizers' /}
 
-<form action="@{Organizations.viewProfile()}">
-            <input type="hidden" name="id" value='${organizationID}'>
-           <input name = "back" type="submit" style="background-color:limegreen" value="Back to the organization main profile"  onmouseout = "back.style.color='black'" onmouseover="back.style.color='white'">
- </form>
-<br />
-<input name = "newww" type="submit" style="background-color:lightblue" align = "Right" value="Start new Restriction / De-Restriction Process"  onclick="Restart()"  onmouseout = "newww.style.color='black'" onmouseover="newww.style.color='white'">
+<!-- <form action="@{Organizations.viewProfile()}"> -->
+<!--             <input type="hidden" name="id" value='${organizationID}'> -->
+<!--            <input name = "back" type="submit" style="background-color:limegreen" value="Back to the organization main profile"  onmouseout = "back.style.color='black'" onmouseover="back.style.color='white'"> -->
+<!--  </form> -->
+         <img src="/public/images/arrow_prev.gif"/>   <a href = "@{Organizations.viewProfile(organizationID)}" name = "back" type="submit" style="color:blue" onmouseout = "back.style.color='blue'" onmouseover="back.style.color='darkblue'">Back to the organization main profile</a>
+ 
+<br /><br />
+<!-- <input name = "newww" type="submit" style="background-color:lightblue" align = "Right" value="Start new Restriction / De-Restriction Process"  onclick="Restart()"  onmouseout = "newww.style.color='black'" onmouseover="newww.style.color='white'"> -->
 <br /> <br />
 #{if organizationEntities.isEmpty()}
   <p style="color:#2B60DE"> Oops No Entities Found !! </p>

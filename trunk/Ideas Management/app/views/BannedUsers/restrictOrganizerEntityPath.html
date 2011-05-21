@@ -3,11 +3,12 @@
 #{set title:'Restrict Organizer' /}
 
 
-<input name = "back" type="submit" style="background-color:limegreen" align = "Right" value="Back to the Entity Main Page"  onclick=location.href="@{MainEntitys.viewEntity(entityId)}"  onmouseout = "back.style.color='black'" onmouseover="back.style.color='white'" > <br /> <br />
+<!-- <input name = "back" type="submit" style="background-color:limegreen" align = "Right" value="Back to the Entity Main Page"  onclick=location.href="@{MainEntitys.viewEntity(entityId)}"  onmouseout = "back.style.color='black'" onmouseover="back.style.color='white'" > <br /> <br /> -->
+<img src="/public/images/arrow_prev.gif"/> <a href = "@{MainEntitys.viewEntity(entityId)}" name = "back" type="submit" style="color:blue" onmouseout = "back.style.color='blue'" onmouseover="back.style.color='darkblue'">Back to Entity main profile</a>
 
 
-<input name = "neww" type="submit" style="background-color:lightblue" align = "Right" value="Start new Restriction / De-Restriction Process"  onclick="Restart()"  onmouseout = "neww.style.color='black'" onmouseover="neww.style.color='white'"> <br /> <br />
-
+<!-- <input name = "neww" type="submit" style="background-color:lightblue" align = "Right" value="Start new Restriction / De-Restriction Process"  onclick="Restart()"  onmouseout = "neww.style.color='black'" onmouseover="neww.style.color='white'"> <br /> <br /> -->
+<br /> <br />
 #{if users.isEmpty()}
   <p style="color:#c00"> No Organizers Found !! </p>
 #{/if}
