@@ -321,7 +321,7 @@ public class Ideas extends CRUD {
 			// Logs.addLog( myUser, "delete", "Task", temporaryTopic.id,
 			// temporaryTopic.taskStory.componentID.project, cal.getTime() );
 			String message = user.username + " has hidden the idea "
-					+ idea.title + "Justification : " + justification;
+					+ idea.title + " Justification : " + justification;
 			List<User> users = Users.getEntityOrganizers(topic.entity);
 			Notifications.sendNotification(idea.author.id, idea.id, "Idea",
 					message);
