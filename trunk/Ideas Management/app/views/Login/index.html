@@ -101,7 +101,9 @@
                 #{if !user.isAdmin}<a href="@{Users.confirmDeactivation()}">Deactivate</a>
                 <br>
                 #{/if} 
-                #{if user.isAdmin} <a href="http://localhost:9008/admin">Admin View</a>
+                #{if user.isAdmin}<a href="http://localhost:9008/admin">Admin View</a>
+                <br>
+                <a href="@{Logs.viewUserLogs()}">View Logs</a>
                 <br>
                 #{/if}
             </div>
