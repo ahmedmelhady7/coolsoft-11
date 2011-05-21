@@ -152,25 +152,20 @@
                 #{list items:ideas, as:'idea'}
                 #{if idea.isDraft == false}
 				<li id="idea_${idea.id}">
-                <a id = "LOL" href="@{Ideas.show(idea.id)}">${idea.title}</a>
+				<fieldset>
+                <a id = "LOL" href="@{Ideas.show(idea.id)}"><font size=3>${idea.title}</font></a>
 				#{if canDelete}
 				<input type="button" name="hide" value="Hide Idea" onclick="hides(${idea.id});">
 				<input type="button" name="delete" value="x" onclick="deletes(${idea.id});">
 				#{/if}
-				<h2 id= "showdetails_${idea.id}"><input value="show details" id="${idea.id}" type="button" onclick="showOrHide(this.id);"/></h2>
-				<h2 id= "hidedetails_${idea.id}"><input id="${idea.id}" value="hide details" type="button" onclick="showOrHide(this.id);"/></h2>
-                <table id = "table_${idea.id}" border="0" bgcolor="#FAF8CC" cellspacing="0" id ="toFil">
-                <tr><td><font size ="3" color ="black"><i>
-                <label>Description : ${idea.description}</label>
-                </i></font></td><td>
-               	<tr><td><font size ="3" color ="black"><i>
-                <label>by : ${idea.author}</label>
-                </i></font></td><td>
+                <div id = "table_${idea.id}">
+                <label><font size=3>Description : ${idea.description}</font></label>
+                </br>
+                <label><font size=3>by : ${idea.author}</font></label>
                 </tr>
-                </table>
-                 <p>===================================================================================================</p>
+                </div>
+                </fieldset>
                 </li>
-                
 				#{/if}
                 #{/list}
                         <script type ="text/javascript">
@@ -196,7 +191,7 @@
 		#{if numberOfIdeas > 1 && canMerge == 1}
 		#{form @Topics.getIdeasToMerge(), method:'POST', enctype:'multipart/form-data' }
 				<input type = "hidden" name = "topicId" value = ${topicId}>
-				<input type="submit" value="Merge Ideas" />
+				<input type="button" value="Merge Ideas" />
 		#{/form}
 		#{/if}
         #{if numberOfIdeas == 0}<h4>no ideas posted to this topic</h4>
@@ -216,7 +211,7 @@
                 <label>Description : ${idea.description}</label>
                 </br>
                 <label>by : ${idea.author}</label>
-                <input type="submit" value="unhide" onclick="">
+                <input type="submit" value="unhide" onclick="unhide(${idea.id})">
                 </fieldset>
         #{/list}
         </div>
@@ -565,6 +560,11 @@
 					});
 					$('#idea_' + id).hide();
 			}
+				function unhide(id){
+					$.post('@{unhideIdea()}', {
+						ideaId: id
+					});
+				}	
 				function deletes(id){
 					$.post('@{Ideas.delete()}', {
 						ideaId: id
