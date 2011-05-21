@@ -32,9 +32,10 @@
 	#{/if}
 	<div>
 	#{if canDelete||canUse}
-	<form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="">
+	<form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         <p class="crudDelete">
-            <input type="submit" onClick="window.prompt('enter a justification note for the author of the idea');" value="&{'Hide Idea', type.modelName}" />
+        	<input type="hidden" name = "justification" id = "justText">
+            <input type="submit"  value="&{'Hide Idea', type.modelName}" />
         </p>
     </form>
     #{/if}
@@ -88,15 +89,32 @@
 		<br/>
         #{/form}
     </div>
+    <br>
 		  #{if ideaAlreadyReported==false}
     <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform">
         <input type="hidden" name="ideaId" value="${ideaId}">
-                <input id="spam" type="submit" value="Report As Spam" onclick="">
+                <input id="spam" type="submit" value="Report Idea As Spam">
             </form>
+            #{/if}
+            #{if ideaAlreadyReported==true}
+        <input id="spam" disabled="disabled" type="submit" value="Report Idea As Spam">
+        <b><font color="Red">you have already reported this idea</font><b>
             #{/if}
             <script type="text/javascript">
             	$('#spam').click(function(){
             	$('#success').show();});
+            	function prompt1(){
+					var text = prompt("Why do you want to hide this idea?");
+					
+					if(text){
+						document.getElementById("justText").value=text;
+						return true;
+					}
+					else{
+						return false;
+					}
+					
+				}
             </script>
             <style type="text/css">
 			#success{display: none;}

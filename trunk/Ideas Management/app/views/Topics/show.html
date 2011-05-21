@@ -126,6 +126,10 @@
         <input id="spam" type="submit" value="Report Topic As Spam">
             </form>
             #{/if}
+        #{if alreadyReportedTopic==true}
+        <input id="spam" disabled="disabled" type="submit" value="Report Topic As Spam">
+        <b><font color="Red">you have already reported this topic</font><b>
+            #{/if}    
             <script type="text/javascript">
             	$('#spam').click(function(){
             	$('#success').show();});
@@ -408,14 +412,7 @@
 		      <HR>	
 		    #{/if}
 		    
-	
-			<form action="@{Topics.requestRelationship(actor.id, organisation.id, entity.id, targetTopic.id)}" method="post">
-				<input type="submit" value="Request Relationship Creation">
-			</form>
-			
-			<form action="@{Topics.viewRelationships(actor.id, organisation.id, entity.id, targetTopic.id, canRequestRelationship)}" method="post">
-			<input type="submit" value="View Relationships">
-			</form>		    
+		    
 		    
             <script type="text/javascript">
             	

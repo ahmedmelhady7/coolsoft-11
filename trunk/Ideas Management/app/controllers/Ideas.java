@@ -309,7 +309,7 @@ public class Ideas extends CRUD {
 	 * @param id
 	 *            : the id of the idea to be hidden
 	 */
-	public static void hide(long id) {
+	public static void hide(long id,String justification) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(id);
@@ -322,16 +322,10 @@ public class Ideas extends CRUD {
 			// Logs.addLog( myUser, "delete", "Task", temporaryTopic.id,
 			// temporaryTopic.taskStory.componentID.project, cal.getTime() );
 			String message = user.username + " has hidden the idea "
-					+ idea.title;
+					+ idea.title+"Justification : "+justification;
 			List<User> users = Users.getEntityOrganizers(topic.entity);
-			// for (int i = 0; i < users.size(); i++)
-			Notifications.sendNotification(idea.author.id/*
-														 * users.get(i).id
-														 */, idea.id, "Idea",
-					message);
-			// for (int i = 0; i < topic.followers.size(); i++)
-			// Notifications.sendNotification(topic.followers.get(i).getId(),
-			// topic.getId(), "entity", message);
+			Notifications.sendNotification(idea.author.id, idea.id, "Idea",message);
+			System.out.println(idea.toString()+"aywa ba2aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 			idea.hidden = true;
 			idea.save();
 			System.out.println("hidden");
@@ -382,7 +376,7 @@ public class Ideas extends CRUD {
 		boolean canDelete = Users.isPermitted(user, "hide and delete an idea",
 				topicId, "topic");
 		boolean ideaAlreadyReported = false;
-		// mestani lama
+		// mestani lama w lama 5alaset-ha :):)
 		boolean canUse = Users.canDelete(user, "use", ideaId, "idea", topicId);
 		System.out.println("false alreadyreoprted");
 		List<User> allUsers = User.findAll();

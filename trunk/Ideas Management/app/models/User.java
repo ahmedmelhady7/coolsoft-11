@@ -104,7 +104,6 @@ public class User extends CoolModel {
 	// (mappedBy = "reporters")
 	// , cascade = CascadeType.ALL)
 	public List<Idea> ideasReported;
-
 //	/**
 //	 * topics reported by the user
 //	 **/
@@ -606,14 +605,14 @@ public class User extends CoolModel {
 	public int getDraftsCount() {
 		return this.getDrafts().size();
 	}
-	
+
 	public int getNotificationNumber() {
 		User user = Security.getConnected();
 		int notificationCount = 0;
 		for (int i = 0; i < user.notifications.size(); i++) {
 			if (!user.notifications.get(i).seen) {
 				notificationCount++;
-			} 
+			}
 		}
 		return notificationCount;
 	}
