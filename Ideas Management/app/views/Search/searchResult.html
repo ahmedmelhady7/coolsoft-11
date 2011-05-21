@@ -526,7 +526,9 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
                 alert("The requests have been sent to the Topic organizer");
                 for (i = 0; i < marked.length; i++) {
                     document.getElementById(marked[i] + '').disabled = true;
+                    document.getElementById(marked[i] + '').checked = false;
                 }
+                marked = new Array();
             });
         }
     }
