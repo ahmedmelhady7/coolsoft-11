@@ -19,6 +19,7 @@ import models.BannedUser;
 import models.Invitation;
 import models.MainEntity;
 import models.Organization;
+import models.Plan;
 import models.RequestToJoin;
 import models.Role;
 import models.Tag;
@@ -536,9 +537,9 @@ public class Organizations extends CRUD {
 		}
 
 		long pictureId = org.profilePictureId;
-
+		List<Plan> plans = Plans.planList("organization", org.id);
 		render(user, org, entities, requestToJoin, tags, flag, canInvite,
-				admin, allowed, isMember, settings, creator, alreadyRequested,
+				admin, allowed, isMember, settings, creator, alreadyRequested, plans,
 
 				follower, usernames, join, logFlag, pictureId);
 
