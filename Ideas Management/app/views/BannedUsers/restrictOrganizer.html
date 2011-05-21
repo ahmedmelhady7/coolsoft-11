@@ -2,10 +2,11 @@
 #{extends 'Login/index.html' /}
 #{set title:'Restrict Organizer' /}
 
-<form action="@{Organizations.viewProfile()}">
-            <input type="hidden" name="id" value='${orgId}'>
-           <input name = "back" type="submit" style="background-color:limegreen" value="Back to the organization main profile" onmouseout = "back.style.color='black'" onmouseover="back.style.color='white'">
- </form>
+<!--  <form action="@{Organizations.viewProfile()}">  -->
+<!--              <input type="hidden" name="id" value='${orgId}'>  -->
+          <img src="/public/images/arrow_prev.gif"/> <a href = "@{Organizations.viewProfile(orgId)}" name = "back" type="submit" style="color:blue" onmouseout = "back.style.color='blue'" onmouseover="back.style.color='darkblue'">Back to the organization main profile</a>
+           <br />
+<!-- </form> -->
 <br />
 #{if flash.error}
     <p style="color:#c00">
@@ -13,8 +14,7 @@
     </p>
 #{/if}
 
-<input name = "newww" type="submit" style="background-color:lightblue" value="Start new Restriction / De-Restriction Process" align = "Right" onclick="Restart()" onmouseout = "newww.style.color='black'" onmouseover="newww.style.color='white'">
-<br /> <br /> <br />
+<br /> <br />
 
 #{if users.isEmpty()}
   <p style="color:#c00"> No Organizers Found </p>
