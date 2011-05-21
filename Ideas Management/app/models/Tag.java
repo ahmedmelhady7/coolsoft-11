@@ -89,6 +89,9 @@ public class Tag extends CoolModel {
 
 	@OneToMany(mappedBy = "sourceTag")
 	public List<CreateRelationshipRequest> relationshipRequestsSource;
+	
+	@OneToMany(mappedBy = "destinationTag")
+	public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
 
 	// ERD change : organization can create many tags, a tag can be created in a
 	// single org

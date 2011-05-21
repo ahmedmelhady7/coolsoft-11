@@ -125,6 +125,9 @@ public class MainEntity extends CoolModel {
 	@OneToMany(mappedBy = "destinationEntity")
 	public List<CreateRelationshipRequest> relationshipRequestsDestination;
 	
+	@OneToMany(mappedBy = "destinationEntity")
+	public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
+	
 	/**
 	 * The list of items related to this entity
 	 * 

@@ -3,6 +3,8 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import controllers.Users;
+
 import play.data.validation.Required;
 
 /**
@@ -54,6 +56,15 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 */
 	@Required
 	public int type;
+	
+	@ManyToOne
+	public MainEntity destinationEntity;
+	
+	@ManyToOne
+	public Topic destinationTopic;
+	
+	@ManyToOne
+	public Tag destinationTag;
 
 	/**
 	 * Default constructor for the request to rename or delete an entity
@@ -62,6 +73,9 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 * @author Noha Khater
 	 * 
 	 * @Story C2S18
+	 * 
+	 * @param requester
+	 *            the user who made the request
 	 * 
 	 * @param entityRelationship
 	 *            the entity relationship to be renamed or deleted
@@ -73,11 +87,19 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 *            the new name for renaming
 	 * 
 	 */
-	public RenameEndRelationshipRequest(EntityRelationship entityRelationship,
-			int type, String name) {
+	public RenameEndRelationshipRequest(User requester,
+			EntityRelationship entityRelationship, int type, String name) {
+		this.requester = requester;
 		this.entityRelationship = entityRelationship;
 		this.type = type;
 		this.newName = name;
+		if(Users.getEntityOrganizers(entityRelationship.source).contains(requester)) {
+			entityRelationship.destination.renameEndRelationshipRequest.add(this);
+			entityRelationship.destination.save();
+		} else {
+			entityRelationship.source.renameEndRelationshipRequest.add(this);
+			entityRelationship.source.save();
+		}
 	}
 
 	/**
@@ -87,6 +109,9 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 * @author Noha Khater
 	 * 
 	 * @Story C2S18
+	 * 
+	 * @param requester
+	 *            the user who made the request
 	 * 
 	 * @param topicRelationship
 	 *            the topic relationship to be renamed or deleted
@@ -98,8 +123,9 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 *            the new name for renaming
 	 * 
 	 */
-	public RenameEndRelationshipRequest(TopicRelationship topicRelationship,
-			int type, String name) {
+	public RenameEndRelationshipRequest(User requester,
+			TopicRelationship topicRelationship, int type, String name) {
+		this.requester = requester;
 		this.topicRelationship = topicRelationship;
 		this.type = type;
 		this.newName = name;
@@ -113,6 +139,9 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 * 
 	 * @Story C2S18
 	 * 
+	 * @param requester
+	 *            the user who made the request
+	 * 
 	 * @param tagRelationship
 	 *            the tag relationship to be renamed or deleted
 	 * 
@@ -123,8 +152,9 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 *            the new name for renaming
 	 * 
 	 */
-	public RenameEndRelationshipRequest(TagRelationship tagRelationship,
-			int type, String name) {
+	public RenameEndRelationshipRequest(User requester,
+			TagRelationship tagRelationship, int type, String name) {
+		this.requester = requester;
 		this.tagRelationship = tagRelationship;
 		this.type = type;
 		this.newName = name;
