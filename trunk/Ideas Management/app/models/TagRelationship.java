@@ -41,11 +41,11 @@ public class TagRelationship extends CoolModel {
 	@ManyToOne
 	public Tag destination;
 
-	/**
-	 * List of requests to rename or end a relationship
-	 */
-	@OneToMany(mappedBy = "tagRelationship")
-	public List<RenameEndRelationshipRequest> renameEndRequests;
+//	/**
+//	 * List of requests to rename or end a relationship
+//	 */
+//	@OneToMany(mappedBy = "tagRelationship")
+//	public List<RenameEndRelationshipRequest> renameEndRequests;
 
 	/**
 	 * The constructor for assigning Relationships

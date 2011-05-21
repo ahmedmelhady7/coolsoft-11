@@ -907,7 +907,8 @@ public class Topics extends CRUD {
 		if (actor.isAdmin || entity.organization.creator.equals(actor)) {
 			canRestrict = 1;
 		}
-		if (targetTopic.getOrganizer().contains(actor)) {
+		if (Users.getEntityOrganizers(entity).contains(actor) &&
+				Users.isPermitted(actor, "Request to start a relationship with other items;", topicId, "Topic")) {
 			canRequestRelationship = true;
 		}
 		try {
@@ -936,37 +937,6 @@ public class Topics extends CRUD {
 		MainEntity entity = MainEntity.findById(entityId);
 		Topic topic = Topic.findById(topicId);
 		render(user, organisation, entity, topic);
-	}
-
-	public static void createRequest(long userId, String source,
-			String destination, String name, long organisationId,
-			long entityId, long topicId) {
-		User user = User.findById(userId);
-		MainEntity entity = MainEntity.findById(entityId);
-		Topic sourceTopic = Topic.find("byTitleAndEntity", source, entity)
-				.first();
-		Topic destinationTopic = Topic.find("byTitleAndEntity", destination,
-				entity).first();
-		if (topicRequestIsDuplicate(sourceTopic, source, destination, name)
-				|| topicRequestIsDuplicate(destinationTopic, source,
-						destination, name)) {
-			System.out.println("Already exists");
-		} else // if (sourceTopic.getOrganizer().contains(user)
-				// || destinationTopic.getOrganizer().contains(user)) {
-		{
-			CreateRelationshipRequest relationRequest = new CreateRelationshipRequest(
-					user, sourceTopic, destinationTopic, name);
-			relationRequest.save();
-			redirect("Topics.show", topicId, "Request created");
-		}
-		// else {
-		// System.out
-		// .println("You're not an organiser for any of the topics");
-		// }
-		// System.out.println(sourceTopic.relationshipRequestsSource.size()
-		// + sourceTopic.relationshipRequestsDestination.size());
-		// System.out.println(destinationTopic.relationshipRequestsSource.size()
-		// + destinationTopic.relationshipRequestsDestination.size());
 	}
 
 	public static void viewRelationships(long userId, long organisationId,

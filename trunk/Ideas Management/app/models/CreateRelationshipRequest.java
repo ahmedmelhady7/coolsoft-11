@@ -31,6 +31,14 @@ public class CreateRelationshipRequest extends CoolModel {
 	@Required
 	public String name;
 
+	@Required
+	@ManyToOne
+	public Organization organisation;
+
+	// 0-->entity, 1--> topic
+	@Required
+	public int type;
+
 	/**
 	 * The source of the entity relationship
 	 */
@@ -59,19 +67,19 @@ public class CreateRelationshipRequest extends CoolModel {
 	@ManyToOne
 	public Topic destinationTopic;
 
-	/**
-	 * The source of the tag relationship
-	 */
-	@Required
-	@ManyToOne
-	public Tag sourceTag;
-
-	/**
-	 * The destination of the tag relationship
-	 */
-	@Required
-	@ManyToOne
-	public Tag destinationTag;
+	// /**
+	// * The source of the tag relationship
+	// */
+	// @Required
+	// @ManyToOne
+	// public Tag sourceTag;
+	//
+	// /**
+	// * The destination of the tag relationship
+	// */
+	// @Required
+	// @ManyToOne
+	// public Tag destinationTag;
 
 	/**
 	 * Default constructor for creating an entity relationship creation request
@@ -94,18 +102,16 @@ public class CreateRelationshipRequest extends CoolModel {
 	 * 
 	 */
 	public CreateRelationshipRequest(User requester, MainEntity sourceEntity,
-			MainEntity destinationEntity, String name) {
+			MainEntity destinationEntity, String name,
+			Organization organisation, int type) {
 		this.requester = requester;
 		this.sourceEntity = sourceEntity;
 		this.destinationEntity = destinationEntity;
 		this.name = name;
-		if (Users.getEntityOrganizers(sourceEntity).contains(requester)) {
-			this.destinationEntity.relationshipRequestsDestination.add(this);
-			this.destinationEntity.save();
-		} else {
-			this.sourceEntity.relationshipRequestsSource.add(this);
-			this.sourceEntity.save();
-		}
+		this.organisation = organisation;
+		this.type = type;
+		this.organisation.createRelationshipRequest.add(this);
+		this.organisation.save();
 	}
 
 	/**
@@ -129,50 +135,48 @@ public class CreateRelationshipRequest extends CoolModel {
 	 * 
 	 */
 	public CreateRelationshipRequest(User requester, Topic sourceTopic,
-			Topic destinationTopic, String name) {
+			Topic destinationTopic, String name, Organization organisation,
+			int type) {
 		this.requester = requester;
 		this.sourceTopic = sourceTopic;
 		this.destinationTopic = destinationTopic;
 		this.name = name;
-		if (sourceTopic.getOrganizer().contains(requester)) {
-			this.destinationTopic.relationshipRequestsDestination.add(this);
-			this.destinationTopic.save();
-		} else {
-			this.sourceTopic.relationshipRequestsSource.add(this);
-			this.sourceTopic.save();
-		}
+		this.organisation = organisation;
+		this.type = type;
+		this.organisation.createRelationshipRequest.add(this);
+		this.organisation.save();
 	}
 
-	/**
-	 * Default constructor for creating a tag relationship creation request
-	 * 
-	 * @author Noha Khater
-	 * 
-	 * @Story C2S18
-	 * 
-	 * @param requester
-	 *            the user who made the relationship request
-	 * 
-	 * @param sourceTag
-	 *            the source of the tag relationship
-	 * 
-	 * @param destinationTag
-	 *            the destination for the tag relationship
-	 * 
-	 * @param name
-	 *            the name of the relationship to be created
-	 * 
-	 */
-	public CreateRelationshipRequest(User requester, Tag sourceTag,
-			Tag destinationTag, String name) {
-		this.requester = requester;
-		this.sourceTag = sourceTag;
-		this.destinationTag = destinationTag;
-		this.name = name;
-		this.sourceTag.relationshipRequestsSource.add(this);
-		this.sourceTag.save();
-		this.destinationTag.relationshipRequestsDestination.add(this);
-		this.destinationTag.save();
-	}
+	// /**
+	// * Default constructor for creating a tag relationship creation request
+	// *
+	// * @author Noha Khater
+	// *
+	// * @Story C2S18
+	// *
+	// * @param requester
+	// * the user who made the relationship request
+	// *
+	// * @param sourceTag
+	// * the source of the tag relationship
+	// *
+	// * @param destinationTag
+	// * the destination for the tag relationship
+	// *
+	// * @param name
+	// * the name of the relationship to be created
+	// *
+	// */
+	// public CreateRelationshipRequest(User requester, Tag sourceTag,
+	// Tag destinationTag, String name) {
+	// this.requester = requester;
+	// this.sourceTag = sourceTag;
+	// this.destinationTag = destinationTag;
+	// this.name = name;
+	// this.sourceTag.relationshipRequestsSource.add(this);
+	// this.sourceTag.save();
+	// this.destinationTag.relationshipRequestsDestination.add(this);
+	// this.destinationTag.save();
+	// }
 
 }

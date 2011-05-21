@@ -16,6 +16,7 @@ import play.mvc.Controller;
 import play.mvc.With;
 import controllers.CRUD.ObjectType;
 import models.BannedUser;
+import models.CreateRelationshipRequest;
 import models.Invitation;
 import models.MainEntity;
 import models.Organization;
@@ -69,10 +70,10 @@ public class Organizations extends CRUD {
 	 * 
 	 */
 
-	public static boolean addRelationName(long organizationId, String name){
+	public static boolean addRelationName(long organizationId, String name) {
 		Organization organization = Organization.findById(organizationId);
 		boolean isDuplicate = true;
-		if(!isDuplicate(name, organization.relationNames)){
+		if (!isDuplicate(name, organization.relationNames)) {
 			isDuplicate = false;
 			organization.relationNames.add(name);
 			organization.save();
@@ -237,7 +238,7 @@ public class Organizations extends CRUD {
 			reciever._save();
 		}
 		try {
-			Mail.invite(email, "Idea Devoloper", organization.name, "",0);
+			Mail.invite(email, "Idea Devoloper", organization.name, "", 0);
 		} catch (Exception e) {
 
 		}
@@ -423,36 +424,36 @@ public class Organizations extends CRUD {
 		System.out.println(settings);
 		System.out.println(user);
 		System.out.println(org);
-		
-//		while (i < org.createdTags.size()) {
-//			tags.add(org.createdTags.get(i));
-//			i++;
-//		}
-//		i = 0;
+
+		// while (i < org.createdTags.size()) {
+		// tags.add(org.createdTags.get(i));
+		// i++;
+		// }
+		// i = 0;
 		while (i < org.relatedTags.size()) {
 			tags.add(org.relatedTags.get(i));
 			i++;
 		}
-//		System.out.println(org.relatedTags.get(0).name);
-//		boolean loop = false;
-//		if (tags.isEmpty()) {
-//			while (i < allTags.size()) {
-//				if (allTags.get(i).createdInOrganization.privacyLevel == 2) {
-//					tags.add(allTags.get(i));
-//					loop = true;
-//				}
-//				i++;
-//			}
-//		}
-//		if (loop == false) {
-//			while (i < allTags.size()) {
-//				if (!tags.contains(allTags.get(i))
-//						&& (allTags.get(i).createdInOrganization.privacyLevel == 2)) {
-//					tags.add(allTags.get(i));
-//				}
-//				i++;
-//			}
-//		}
+		// System.out.println(org.relatedTags.get(0).name);
+		// boolean loop = false;
+		// if (tags.isEmpty()) {
+		// while (i < allTags.size()) {
+		// if (allTags.get(i).createdInOrganization.privacyLevel == 2) {
+		// tags.add(allTags.get(i));
+		// loop = true;
+		// }
+		// i++;
+		// }
+		// }
+		// if (loop == false) {
+		// while (i < allTags.size()) {
+		// if (!tags.contains(allTags.get(i))
+		// && (allTags.get(i).createdInOrganization.privacyLevel == 2)) {
+		// tags.add(allTags.get(i));
+		// }
+		// i++;
+		// }
+		// }
 		int canCreateEntity = 0;
 		if (user.isAdmin || org.creator.equals(user)) {
 			canCreateEntity = 1;
@@ -528,22 +529,21 @@ public class Organizations extends CRUD {
 			join = true;
 		}
 
-		
-		//Lama Ashraf view logs
-		
+		// Lama Ashraf view logs
+
 		int logFlag = 0;
-		if(Security.getConnected().equals(org.creator) || Security.getConnected().isAdmin) {
+		if (Security.getConnected().equals(org.creator)
+				|| Security.getConnected().isAdmin) {
 			logFlag = 1;
 		}
 
 		long pictureId = org.profilePictureId;
 		List<Plan> plans = Plans.planList("organization", org.id);
 		render(user, org, entities, requestToJoin, tags, flag, canInvite,
-				admin, allowed, isMember, settings, creator, alreadyRequested, plans,
+				admin, allowed, isMember, settings, creator, alreadyRequested,
+				plans,
 
 				follower, usernames, join, logFlag, pictureId);
-
-				
 
 	}
 
@@ -612,22 +612,22 @@ public class Organizations extends CRUD {
 		Organization organization = Organization.findById(organizationId);
 		List<User> followers = User.findAll();
 		int j = 0;
-		while(j < followers.size()) {
-			if(followers.get(j).followingOrganizations.contains(organization)) {
+		while (j < followers.size()) {
+			if (followers.get(j).followingOrganizations.contains(organization)) {
 				followers.get(j).followingOrganizations.remove(organization);
 				followers.get(j).save();
 			}
 			j++;
 		}
-		
-		//fadwa
-		for(int i =0 ; i <organization.joinRequests.size();i++)
+
+		// fadwa
+		for (int i = 0; i < organization.joinRequests.size(); i++)
 			organization.joinRequests.get(i).delete();
-		//fadwa
+		// fadwa
 		organization.delete();
 		Organizations.mainPage();
 	}
-	
+
 	/**
 	 * This method only render the view for editing the
 	 * 
@@ -636,7 +636,7 @@ public class Organizations extends CRUD {
 	 * @story C2S8
 	 * 
 	 * @param organizationId
-	 * 				The id of the organization that will be edited
+	 *            The id of the organization that will be edited
 	 */
 	public static void editOrganization(long organizationId) {
 		Organization organization = Organization.findById(organizationId);
@@ -651,18 +651,20 @@ public class Organizations extends CRUD {
 	 * @story C2S8
 	 * 
 	 * @param organizationId
-	 * 				The id of the edited organization
+	 *            The id of the edited organization
 	 * 
 	 * @param createTag
-	 * 				A String to determine if the organization allows its users to create tags
+	 *            A String to determine if the organization allows its users to
+	 *            create tags
 	 * 
 	 * @param privacyLevel
-	 * 				The privacy level of the organization
+	 *            The privacy level of the organization
 	 * 
 	 * @param description
-	 * 				The description of the organization
+	 *            The description of the organization
 	 */
-	public static void edit(long organizationId, String createTag, String privacyLevel, String description) {
+	public static void edit(long organizationId, String createTag,
+			String privacyLevel, String description) {
 		Organization organization = Organization.findById(organizationId);
 		int privacyLevell = 0;
 		if (privacyLevel.equalsIgnoreCase("Public")) {
@@ -681,5 +683,29 @@ public class Organizations extends CRUD {
 		organization.description = description;
 		organization.save();
 		Organizations.viewProfile(organizationId);
-	}	
+	}
+
+	public static boolean isDuplicateRequest(String source, String destination,
+			String relationshipName, long organisationId, int type) {
+		Organization organisation = Organization.findById(organisationId);
+		for (CreateRelationshipRequest request : organisation.createRelationshipRequest) {
+			if (request.type == 0) {
+				if (request.sourceEntity.name.equalsIgnoreCase(source)
+						&& request.destinationEntity.name
+								.equalsIgnoreCase(destination)
+						&& request.name.equalsIgnoreCase(relationshipName)) {
+					return true;
+				}
+			} else {
+				if (request.sourceTopic.title.equalsIgnoreCase(source)
+						&& request.destinationTopic.title
+								.equalsIgnoreCase(destination)
+						&& request.name.equalsIgnoreCase(relationshipName)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 }

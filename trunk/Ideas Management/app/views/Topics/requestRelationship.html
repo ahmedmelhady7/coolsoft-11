@@ -5,7 +5,7 @@
 	<title> Request Relationship Creation </title>
 	<body>
 		<head>
-			<form action="@{Topics.createRequest(user.id, source, destination, name, organisation.id, entity.id, topic.id)}" method="post"
+			<form action="@{CreateRelationshipRequests.createRequest(user.id, source, destination, name, organisation.id, entity.id, topic.id, 1)}" method="post"
 			onsubmit= "return validate()">
 				<p>
 				<h4>Create Relationship:</h4>
