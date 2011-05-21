@@ -204,6 +204,24 @@
 <!--        <form action="@{Ideas.blank(topicId)}" method="post">-->
 <!--            <input id="postIdea" type="hidden" name"topicId" value="${topicId}"><HR><input type="submit" value="Post Idea to this topic">-->
 <!--        </form>-->
+		
+		#{if canDelete}
+		<input id="showhidden" type="submit" value="show hidden Ideas">
+		<div id="hidden">
+		#{list items:hiddenIdeas, as:'idea'}
+				<fieldset>
+				</br>
+                <label>${idea.title}</label>
+                </br>
+                <label>Description : ${idea.description}</label>
+                </br>
+                <label>by : ${idea.author}</label>
+                <input type="submit" value="unhide" onclick="">
+                </fieldset>
+        #{/list}
+        </div>
+		#{/if}
+        
         #{if topicNotClosed==true}
         <input id="postIdea" type="button" value="Post Idea to this topic">
         #{/if}
@@ -245,8 +263,13 @@
 		$("#postIdea").click(function(){
           	 $("#postIdeaform").toggle();
            });
+		$("#showhidden").click(function(){
+          	 $("#hidden").toggle();
+           });
                  </script>
-                 
+		<style type="text/css">
+			#hidden{display: none;}
+		</style>                 
 <!--        #{if canPost == true}-->
 <!--        #{/if }-->
     </div>

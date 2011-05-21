@@ -372,6 +372,7 @@ public class Ideas extends CRUD {
 		Topic topic = idea.belongsToTopic;
 		long topicId = topic.id;
 		// boolean openToEdit = i.openToEdit;
+		boolean isAuthor = user.toString().equals(idea.author.toString());
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
 		boolean canDelete = Users.isPermitted(user, "hide and delete an idea",
@@ -648,22 +649,27 @@ public class Ideas extends CRUD {
 	 * 
 	 * 
 	 */
-	public static void delete(long ideaId) {
+	public static void delete(long ideaId,String justification) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(ideaId);
 		notFoundIfNull(object);
 		Idea idea = (Idea) object;
+		String message = Security.getConnected().username + " has deleted the idea "
+		+ idea.title + " Justification "+justification;
 		try {
 			idea.author.communityContributionCounter--;
 			idea.author.save();
 			object._delete();
+			Notifications.sendNotification(idea.author.id,
+					idea.id, "Idea", message);
 		} catch (Exception e) {
 			flash.error(Messages.get("crud.delete.error", type.modelName));
 			redirect(request.controller + ".show", object._key());
 		}
 		flash.success(Messages.get("crud.deleted", type.modelName));
-		redirect(request.controller + ".list");
+		//redirect(request.controller + ".list");
+		redirect("/topics/show?topicId="+idea.belongsToTopic.id);
 	}
 
 	/**
