@@ -38,12 +38,12 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	@ManyToOne
 	public TopicRelationship topicRelationship;
 
-	/**
-	 * The tag relationship to be renamed or deleted
-	 */
-	@Required
-	@ManyToOne
-	public TagRelationship tagRelationship;
+//	/**
+//	 * The tag relationship to be renamed or deleted
+//	 */
+//	@Required
+//	@ManyToOne
+//	public TagRelationship tagRelationship;
 
 	/**
 	 * The new name for renaming the relationship
@@ -62,9 +62,9 @@ public class RenameEndRelationshipRequest extends CoolModel {
 
 	@ManyToOne
 	public Topic destinationTopic;
-
-	@ManyToOne
-	public Tag destinationTag;
+//
+//	@ManyToOne
+//	public Tag destinationTag;
 
 	/**
 	 * Default constructor for the request to rename or delete an entity
@@ -141,33 +141,33 @@ public class RenameEndRelationshipRequest extends CoolModel {
 		}
 	}
 
-	/**
-	 * Default constructor for the request to rename or delete a tag
-	 * relationship
-	 * 
-	 * @author Noha Khater
-	 * 
-	 * @Story C2S18
-	 * 
-	 * @param requester
-	 *            the user who made the request
-	 * 
-	 * @param tagRelationship
-	 *            the tag relationship to be renamed or deleted
-	 * 
-	 * @param type
-	 *            the type of the request (rename or delete)
-	 * 
-	 * @param name
-	 *            the new name for renaming
-	 * 
-	 */
-	public RenameEndRelationshipRequest(User requester,
-			TagRelationship tagRelationship, int type, String name) {
-		this.requester = requester;
-		this.tagRelationship = tagRelationship;
-		this.type = type;
-		this.newName = name;
-	}
+//	/**
+//	 * Default constructor for the request to rename or delete a tag
+//	 * relationship
+//	 * 
+//	 * @author Noha Khater
+//	 * 
+//	 * @Story C2S18
+//	 * 
+//	 * @param requester
+//	 *            the user who made the request
+//	 * 
+//	 * @param tagRelationship
+//	 *            the tag relationship to be renamed or deleted
+//	 * 
+//	 * @param type
+//	 *            the type of the request (rename or delete)
+//	 * 
+//	 * @param name
+//	 *            the new name for renaming
+//	 * 
+//	 */
+//	public RenameEndRelationshipRequest(User requester,
+//			TagRelationship tagRelationship, int type, String name) {
+//		this.requester = requester;
+//		this.tagRelationship = tagRelationship;
+//		this.type = type;
+//		this.newName = name;
+//	}
 
 }

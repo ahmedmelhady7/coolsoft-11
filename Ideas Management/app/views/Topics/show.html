@@ -438,8 +438,13 @@
 		      <HR>	
 		    #{/if}
 		    
-		    
-		    
+		    <form action="@{Topics.requestRelationship(actor.id, organisation.id, entity.id, targetTopic.id)}" method="post">
+ 				<input type="submit" value="Request Relationship Creation">
+  				</form>
+ 			<form action="@{Topics.viewRelationships(actor.id, organisation.id, entity.id, targetTopic.id, canRequestRelationship)}" method="post">
+  				<input type="submit" value="View Relationships">
+  				</form>
+
             <script type="text/javascript">
             	
             	function endRelation(relId){

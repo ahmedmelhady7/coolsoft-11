@@ -119,6 +119,11 @@ public class Organization extends CoolModel {
 	 */
 	@Lob
 	public String description;
+	
+	@OneToMany (mappedBy = "organisation")
+	public List<CreateRelationshipRequest> createRelationshipRequest;
+	
+	
 
 	/**
 	 * Organization Class Constructor
@@ -280,44 +285,4 @@ public class Organization extends CoolModel {
 	public String toString() {
 		return this.name;
 	}
-
-	public boolean entityRequestIsDuplicate(String source, String destination,
-			String name) {
-		for (MainEntity entity : entitiesList) {
-			for (EntityRelationship relation : entity.relationsSource) {
-				if (relation.name.equalsIgnoreCase(name)
-						&& relation.source.name.equalsIgnoreCase(source)
-						&& relation.destination.name
-								.equalsIgnoreCase(destination)) {
-					return true;
-				}
-			}
-			for (EntityRelationship relation : entity.relationsDestination) {
-				if (relation.name.equalsIgnoreCase(name)
-						&& relation.source.name.equalsIgnoreCase(source)
-						&& relation.destination.name
-								.equalsIgnoreCase(destination)) {
-					return true;
-				}
-			}
-			for (CreateRelationshipRequest request : entity.relationshipRequestsSource) {
-				if (request.name.equalsIgnoreCase(name)
-						&& request.sourceEntity.name.equalsIgnoreCase(source)
-						&& request.destinationEntity.name
-								.equalsIgnoreCase(destination)) {
-					return true;
-				}
-			}
-			for (CreateRelationshipRequest request : entity.relationshipRequestsDestination) {
-				if (request.name.equalsIgnoreCase(name)
-						&& request.sourceEntity.name.equalsIgnoreCase(source)
-						&& request.destinationEntity.name
-								.equalsIgnoreCase(destination)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 }

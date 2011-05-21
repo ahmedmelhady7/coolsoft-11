@@ -392,30 +392,6 @@ public class MainEntitys extends CRUD {
 	 *            the id of the entity from which the request is made
 	 * 
 	 */
-	public static void createRequest(long userId, String source,
-			String destination, String name, long organisationId, long entityId) {
-		User user = User.findById(userId);
-		Organization organisation = Organization.findById(organisationId);
-		MainEntity sourceEntity = MainEntity.find("byNameAndOrganization",
-				source, organisation).first();
-		MainEntity destinationEntity = MainEntity.find("byNameAndOrganization",
-				destination, organisation).first();
-		if (organisation.entityRequestIsDuplicate(source, destination, name)) {
-			System.out.println("Already exists");
-		} else if (Users.getEntityOrganizers(sourceEntity).contains(user)
-				|| Users.getEntityOrganizers(destinationEntity).contains(user)) {
-			CreateRelationshipRequest relationRequest = new CreateRelationshipRequest(
-					user, sourceEntity, destinationEntity, name);
-			relationRequest.save();
-			redirect(request.controller + ".viewEntity", entityId,
-					"Request created");
-		} else {
-			System.out
-					.println("You're not an organiser for any of the entities");
-		}
-		System.out.println(sourceEntity.relationshipRequestsSource.size() + sourceEntity.relationshipRequestsDestination.size());
-		System.out.println(destinationEntity.relationshipRequestsSource.size()+destinationEntity.relationshipRequestsDestination.size());	
-	}
 	
 	public static void viewRelationships(long userId, long organisationId,
 			long entityId, boolean canRequestRelationship) {

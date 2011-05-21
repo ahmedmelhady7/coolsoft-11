@@ -5,7 +5,7 @@
 	<title> Request Relationship Creation </title>
 	<body>
 		<head>
-			<form action="@{MainEntitys.createRequest(user.id, source, destination, name, organisation.id, entity.id)}" method="post"
+			<form action="@{CreateRelationshipRequests.createRequest(user.id, source, destination, name, organisation.id, entity.id, 0, 0)}" method="post"
 			onsubmit= "return validate()">
 				<p>
 				<h4>Create Relationship:</h4>
@@ -54,9 +54,8 @@
 				if (src == dst) {
 					alert("The source and destination should be different");
 					return false;
-				} else {
-					alert("Your request has been sent.");
-				}
+				} 
+				alert("Your request has been sent");				
 			}
 			</script>
 		</head>

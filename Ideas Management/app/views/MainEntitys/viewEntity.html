@@ -295,10 +295,12 @@
 		<HR>	
 		#{/if}
 		
-		#{if (canRequestRelationship == 1 && entityIsLocked == false)}
+		
 		<form action="@{MainEntitys.requestRelationship(user.id, org.id, entity.id)}" method="post">
 			<input type="submit" value="Request Relationship Creation">
 		</form>
+		
+		#{if (canRequestRelationship == 1 && entityIsLocked == false)}
 		#{/if}
 		
 		<form action="@{MainEntitys.viewRelationships(user.id, org.id, entity.id, canRequestRelationship)}" method="post">

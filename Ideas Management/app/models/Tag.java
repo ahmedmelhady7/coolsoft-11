@@ -81,17 +81,17 @@ public class Tag extends CoolModel {
 	@ManyToMany(mappedBy = "tagsList")
 	public List<Idea> taggedIdeas;
 
-	/**
-	 * List of relationship requests for the Tag
-	 */
-	@OneToMany(mappedBy = "destinationTag")
-	public List<CreateRelationshipRequest> relationshipRequestsDestination;
-
-	@OneToMany(mappedBy = "sourceTag")
-	public List<CreateRelationshipRequest> relationshipRequestsSource;
-	
-	@OneToMany(mappedBy = "destinationTag")
-	public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
+//	/**
+//	 * List of relationship requests for the Tag
+//	 */
+//	@OneToMany(mappedBy = "destinationTag")
+//	public List<CreateRelationshipRequest> relationshipRequestsDestination;
+//
+//	@OneToMany(mappedBy = "sourceTag")
+//	public List<CreateRelationshipRequest> relationshipRequestsSource;
+//	
+//	@OneToMany(mappedBy = "destinationTag")
+//	public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
 
 	// ERD change : organization can create many tags, a tag can be created in a
 	// single org
@@ -128,8 +128,8 @@ public class Tag extends CoolModel {
 		this.taggedTopics = new ArrayList<Topic>();
 		this.relationsSource = new ArrayList<TagRelationship>();
 		this.relationsDestination = new ArrayList<TagRelationship>();
-		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
-		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
+//		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
+//		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		this.taggedIdeas = new ArrayList<Idea>();
 		// this.relatedTags = new ArrayList<Tag>();
 		// ERD change
