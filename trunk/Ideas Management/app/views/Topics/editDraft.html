@@ -1,0 +1,85 @@
+#{extends 'main.html' /} 
+<fieldset>
+<p>
+	Title: </br>
+	<input type="textbox" size = "50" id="titleTextBox"></input>
+</p>
+
+<p>
+	Description: <br>
+	<textarea cols="50" rows="5" id="descriptionTextArea"></textarea>
+</p>
+<p>
+	Privacy Level: 
+	<select id="privacyLevelSelect">
+ 		<option value = "1">private</option>
+		<option value = "2">public</option>
+ 	</select>
+</p>
+<p>
+	CreateRelationship
+	<input type="checkbox" id="createRelationshipCheckbox" name="object.createRelationship">
+</p>
+</fieldset>
+
+<input type="submit" id ="saveButton" value="Save" onclick="save()" ></input>
+<input type="submit" id ="discardButton" value="Discard" onclick="discard()" ></input>
+<input type="submit" id ="postButton" value="Post" onclick="post()" ></input>
+
+<script type="text/javascript"> 
+	document.getElementById("titleTextBox").value = "${targetTopic.title}";
+	document.getElementById("descriptionTextArea").innerHTML = "${targetTopic.description}";
+	document.getElementById("privacyLevelSelect").value = "${targetTopic.privacyLevel}";
+	document.getElementById("createRelationshipCheckbox").checked = ${targetTopic.createRelationship};
+	
+	var topicTitle;
+	var topicDescription;
+	var privacyLevel;
+	var createRelationship
+	
+	function setValues() {
+		topicTitle = document.getElementById("titleTextBox").value.toString();
+		topicDescription = document.getElementById("descriptionTextArea").value.toString();
+		var privacyLevelString = document.getElementById("privacyLevelSelect").value.toString();
+		createRelationship = document.getElementById("createRelationshipCheckbox").checked; 
+		
+		if(privacyLevelString == "1") {
+			privacyLevel = 1;
+		} else if(privacyLevelString == "2"){
+			privacyLevel = 2;
+		}
+		
+	}
+	
+	function save() {
+		setValues();
+		
+		if(topicTitle == "" && topicDescription == "") {
+			alert("Nothing to save");
+			return;
+		}
+
+		$.post('@{Topics.saveDraft()}' ,{topicId:${targetTopic.getId()}, title:topicTitle, description:topicDescription, 
+			privacyLevel: privacyLevel, createRelationship: createRelationship});
+		
+	}
+	
+	function discard() {
+		var link = "/ideas/getdrafts";
+		$.post('@{Topics.discardDraftTopic()}' ,{topicId:${targetTopic.getId()}}, function(){window.location.href=link});
+	}
+	
+	function post() {
+		setValues();
+		
+		if(topicTitle == "" && topicDescription == "") {
+			alert("Title and Description must be entered");
+			return;
+		}
+		
+		var link = "/ideas/getdrafts";
+		$.post('@{Topics.postDraftTopic()}' ,{topicId:${targetTopic.getId()}, title:topicTitle, description:topicDescription, 
+			privacyLevel: privacyLevel, createRelationship: createRelationship},
+			function(){window.location.href=link});
+	}
+</script>
