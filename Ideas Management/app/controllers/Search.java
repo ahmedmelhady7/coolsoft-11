@@ -111,7 +111,6 @@ public class Search extends Controller {
 			}
 			download(user);
 			List<Model> lof = listOfResults;
-			System.out.println("Size " + lof.size());
 			render(user, connected, lof, ideasFound, organizationsFound,
 					entitiesFound, topicsFound);
 		} catch (NullPointerException e) {
@@ -661,7 +660,7 @@ public class Search extends Controller {
 	public static void quickSearch(String keyword) {
 		listOfResults = new ArrayList<Model>();
 		if (keyword.equals("")) {
-			renderHtml("<script type='text/javascript' language='javascript'>alert('Please Enter a keyword');window.location.href='/searchResult'</script>");
+			renderHtml("<script type='text/javascript' language='javascript'>alert('Please Enter a keyword');history.go(-1);</script>");
 		} else {
 			// Adding Organizations to search result
 			List<Organization> organizationsList = searchForOrganization(keyword);
