@@ -20,6 +20,33 @@
 		#{else }
 			<p><h3>You don't have any drafts</h3></p>
 		#{/else}
+		
+		<fieldset>
+			<legend>
+				Draft Topics
+			</legend>
+			#{list items: draftTopics , as:'draftTopic'}
+               <li>
+			   <fieldset>
+               		<legend>
+               			#{form @Topics.editDraft(), method:'POST', enctype:'multipart/form-data' }
+							<input type = "hidden" name = "topicId" value = ${topicId}>
+							<input type="submit" value="Edit Topic" />
+						#{/form}
+               		</legend>
+				<p>Title: ${draftTopic.title}</p>	
+				<p>Description: <br>
+				${draftTopic.description}
+				</p>
+				</fieldset>
+                </li>
+				
+			#{/list} 
+			
+			#{if draftTopics.size() == 0}
+				You don't have any draft topics:)
+			#{/if}
+		</fieldset>
  </body>
 </html>
 
