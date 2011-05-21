@@ -272,8 +272,16 @@ public class MainEntitys extends CRUD {
 				"block a user from viewing or using a certain entity",
 				entity.id, "entity"))
 			check = 1;
-		// if (Users.isPermitted(user,"use",topicList.get(0).id, "topic"))
-
+		int check1 = 0;
+		if (Users.isPermitted(user,
+				"view",
+				entity.id, "entity"))
+			check1 = 1;
+		int check2 = 0;
+		if (Users.isPermitted(user,
+				"use",
+				entity.id, "entity"))
+			check2 = 1;
 		if (Users.getEntityOrganizers(entity).contains(user)) {
 			canRequestRelationship = 1;
 		}
@@ -283,7 +291,7 @@ public class MainEntitys extends CRUD {
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity, follower, canCreateRelationship,
 				/* canView, */canRequest, canRequestRelationship, check,
-				canRestrict, entityIsLocked, plans);
+				canRestrict, entityIsLocked, plans,check1,check2);
 	}
 
 	/**
