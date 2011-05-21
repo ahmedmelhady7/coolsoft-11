@@ -186,6 +186,11 @@ public class Topic extends CoolModel {
 	 * the user who hid the topic
 	 */
 	public User hider;
+	
+	/**
+	 * flag to determine if the topic is a draft or not
+	 */
+	public boolean isDraft;
 
 	/**
 	 * Default constructor that creates a topic with name, description,privacy
@@ -227,6 +232,7 @@ public class Topic extends CoolModel {
 		this.requestsToJoin = new ArrayList<RequestToJoin>();
 		this.createRelationship = createRelationship;
 		this.openToEdit = true;
+		this.isDraft = false;
 	}
 
 	/**
@@ -265,6 +271,34 @@ public class Topic extends CoolModel {
 		this.hidden = false;
 		this.createRelationship = createRelationship;
 		this.openToEdit = true;
+		this.isDraft = false;
+	}
+	
+	/**
+	 * @Description Constructor for drafts that creates a topic with name, 
+	 * description,privacylevel, creator and entity and sets isDraft flag
+	 * to true
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @param title
+	 *            title of the topic
+	 * @param description
+	 *            description of the topic
+	 * @param privacyLevel
+	 *            the privacy level of the topic
+	 * @param creator
+	 *            Author of the topic
+	 * @param entity
+	 *            Entity that the topic belongs/added to
+	 * @param createRelationship
+	 * 			  If it's allowed to have relationships
+	 */
+	public Topic(String title, String description, int privacyLevel,
+			User creator, MainEntity entity, boolean createRelationship, boolean isDraft) {
+		
+		this(title, description, privacyLevel, creator, entity, createRelationship);
+		this.isDraft = true;
 	}
 
 	/**
