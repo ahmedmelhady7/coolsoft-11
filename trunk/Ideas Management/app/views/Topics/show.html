@@ -310,6 +310,9 @@
  <input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(topicId,1)}">
 #{/if}
 
+#{if check2 == 1}
+ <input type="submit" value="use" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}">
+#{/if}
 <HR>
 
 #{if (targetTopic.createRelationship == true)}
