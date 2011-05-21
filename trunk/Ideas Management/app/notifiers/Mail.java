@@ -6,11 +6,16 @@ import java.util.*;
 import controllers.Security;
 
 import models.*;
-
+/**
+ * This class is for sending the emails
+ * 
+ * @author Mai Magdy
+ *
+ */
 public class Mail extends Mailer {
 
 	/**
-	 * Send a mail to the registered/unregistered inviting him to be
+	 * Sends a mail to the registered/unregistered inviting him to be
 	 * organizer/idea developer
 	 * 
 	 * @author ${Mai.Magdy},${Fadwa.Sakr}
@@ -56,8 +61,8 @@ public class Mail extends Mailer {
 	}
 
 	/**
-	 * @Sends a mail to the user informing him that his account has been
-	 *        deactivated
+	 * Sends a mail to the user informing him that his account has been
+	 *  deactivated
 	 * 
 	 * @author Mai Magdy
 	 * 
@@ -77,8 +82,8 @@ public class Mail extends Mailer {
 	}
 
 	/**
-	 * @Sends a mail to the user informing him that his account has been
-	 *        reactivated
+	 * Sends a mail to the user informing him that his account has been
+	 * reactivated
 	 * 
 	 * @author Mai Magdy
 	 * 
