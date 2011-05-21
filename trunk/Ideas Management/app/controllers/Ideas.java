@@ -274,7 +274,6 @@ public class Ideas extends CRUD {
 			}
 		}
 
-		
 		author.communityContributionCounter++;
 		author.save();
 		object._save();
@@ -309,7 +308,7 @@ public class Ideas extends CRUD {
 	 * @param id
 	 *            : the id of the idea to be hidden
 	 */
-	public static void hide(long id,String justification) {
+	public static void hide(long id, String justification) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(id);
@@ -322,10 +321,12 @@ public class Ideas extends CRUD {
 			// Logs.addLog( myUser, "delete", "Task", temporaryTopic.id,
 			// temporaryTopic.taskStory.componentID.project, cal.getTime() );
 			String message = user.username + " has hidden the idea "
-					+ idea.title+"Justification : "+justification;
+					+ idea.title + "Justification : " + justification;
 			List<User> users = Users.getEntityOrganizers(topic.entity);
-			Notifications.sendNotification(idea.author.id, idea.id, "Idea",message);
-			System.out.println(idea.toString()+"aywa ba2aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+			Notifications.sendNotification(idea.author.id, idea.id, "Idea",
+					message);
+			System.out.println(idea.toString()
+					+ "aywa ba2aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 			idea.hidden = true;
 			idea.save();
 			System.out.println("hidden");
@@ -418,7 +419,8 @@ public class Ideas extends CRUD {
 					deletemessage, /*
 									 * deletable ,
 									 */
-					ideaId, rate, idea, priority,userNames,checkPermitted,checkNotRated);
+					ideaId, rate, idea, priority, userNames, checkPermitted,
+					checkNotRated);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -771,18 +773,18 @@ public class Ideas extends CRUD {
 	public static void rate(long ideaId, int rat) {
 		User user = Security.getConnected();
 		Idea i = Idea.findById(ideaId);
-			System.out.println("user didn't rate yet");
-			i.usersRated.add(user);
-				if (i.rating.equals("Not yet rated"))
-					i.rating = Integer.toString(rat);
-				else {
-					int oldRating = Integer.parseInt(i.rating);
-					int newRating;
-					newRating = (oldRating + rat) / 2;
-					i.rating = Integer.toString(newRating);
-				}
-				i.save();
-				redirect("/ideas/show?ideaId=" + ideaId);
+		System.out.println("user didn't rate yet");
+		i.usersRated.add(user);
+		if (i.rating.equals("Not yet rated"))
+			i.rating = Integer.toString(rat);
+		else {
+			int oldRating = Integer.parseInt(i.rating);
+			int newRating;
+			newRating = (oldRating + rat) / 2;
+			i.rating = Integer.toString(newRating);
+		}
+		i.save();
+		redirect("/ideas/show?ideaId=" + ideaId);
 	}
 
 	/**
@@ -831,9 +833,9 @@ public class Ideas extends CRUD {
 		System.out.println("isPermitted raga3et "
 				+ Users.isPermitted(user, "rate/prioritize ideas", topicId,
 						"topic"));
-			i.priority = priority;
-			i.save();
-			redirect("/ideas/show?ideaId=" + ideaId);
+		i.priority = priority;
+		i.save();
+		redirect("/ideas/show?ideaId=" + ideaId);
 	}
 
 	/**
@@ -960,7 +962,7 @@ public class Ideas extends CRUD {
 		Topic targetTopic = Topic.findById(topicId);
 		User merger = Security.getConnected();
 		ArrayList<String> contributorsList = new ArrayList<String>();
-		
+
 		String[] ideasIdsString = oldIdeas.split("%");
 		long[] ideasIds = new long[ideasIdsString.length];
 		List<Idea> selectedIdeas = new ArrayList<Idea>();
@@ -971,19 +973,22 @@ public class Ideas extends CRUD {
 		}
 
 		selectedIdeas = Ideas.getIdeasFromIds(ideasIds, topicId);
-
+		ideaToKeep = selectedIdeas.get(0);
+		contributorsList.add(ideaToKeep.author.username);
+		
+		
 		newDescription = newDescription + " " + "\nContributers: ";
 
 		for (int i = 1; i < selectedIdeas.size(); i++) {
 			String contributor = selectedIdeas.get(i).author.username;
 			System.out.println("contributor:" + contributor);
 			if (i == selectedIdeas.size() - 1) {
-				if(contributorsList.indexOf(contributor) == -1) {
+				if (contributorsList.indexOf(contributor) == -1) {
 					allContributors = allContributors + contributor;
 					contributorsList.add(contributor);
 				}
 			} else {
-				if(contributorsList.indexOf(contributor) == -1) {
+				if (contributorsList.indexOf(contributor) == -1) {
 					allContributors = allContributors + contributor + ", ";
 					contributorsList.add(contributor);
 				}
@@ -994,7 +999,7 @@ public class Ideas extends CRUD {
 				+ merger.username;
 		newDescription = newDescription + allContributors;
 
-		ideaToKeep = selectedIdeas.get(0);
+		
 
 		ideaToKeep.description = newDescription;
 		ideaToKeep.title = newTitle;
@@ -1006,8 +1011,8 @@ public class Ideas extends CRUD {
 
 		ideaToKeep.save();
 		targetTopic.save();
-		
-		System.out.println("done merging");		
+
+		System.out.println("done merging");
 	}
 
 	/**
