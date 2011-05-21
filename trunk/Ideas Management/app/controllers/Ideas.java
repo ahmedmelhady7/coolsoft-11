@@ -959,7 +959,8 @@ public class Ideas extends CRUD {
 		String allContributors = "";
 		Topic targetTopic = Topic.findById(topicId);
 		User merger = Security.getConnected();
-
+		ArrayList<String> contributorsList = new ArrayList<String>();
+		
 		String[] ideasIdsString = oldIdeas.split("%");
 		long[] ideasIds = new long[ideasIdsString.length];
 		List<Idea> selectedIdeas = new ArrayList<Idea>();
@@ -977,11 +978,15 @@ public class Ideas extends CRUD {
 			String contributor = selectedIdeas.get(i).author.username;
 			System.out.println("contributor:" + contributor);
 			if (i == selectedIdeas.size() - 1) {
-				allContributors = allContributors + contributor;
-			}
-
-			else {
-				allContributors = allContributors + contributor + ", ";
+				if(contributorsList.indexOf(contributor) == -1) {
+					allContributors = allContributors + contributor;
+					contributorsList.add(contributor);
+				}
+			} else {
+				if(contributorsList.indexOf(contributor) == -1) {
+					allContributors = allContributors + contributor + ", ";
+					contributorsList.add(contributor);
+				}
 			}
 		}
 
