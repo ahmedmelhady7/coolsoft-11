@@ -138,7 +138,7 @@ public class Idea extends CoolModel {
 		this.rating = "Not yet rated";
 		this.priority = "Not yet prioritized";
 		this.hidden = false;
-
+		this.isDraft=false;
 	}
 
 	/**

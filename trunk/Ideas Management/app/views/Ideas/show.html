@@ -88,7 +88,7 @@
 		<br/>
         #{/form}
     </div>
-		  #{if alreadyReported==false}
+		  #{if ideaAlreadyReported==false}
     <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform">
         <input type="hidden" name="ideaId" value="${ideaId}">
                 <input id="spam" type="submit" value="Report As Spam" onclick="">

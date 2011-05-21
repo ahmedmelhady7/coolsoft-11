@@ -320,14 +320,14 @@ public class Ideas extends CRUD {
 		try {
 			// Logs.addLog( myUser, "delete", "Task", temporaryTopic.id,
 			// temporaryTopic.taskStory.componentID.project, cal.getTime() );
-			String message = user.username + " has hidden the topic "
+			String message = user.username + " has hidden the idea "
 					+ idea.title;
 			List<User> users = Users.getEntityOrganizers(topic.entity);
 			// for (int i = 0; i < users.size(); i++)
-			Notifications.sendNotification(topic.creator.id/*
-															 * users.get(i).id
-															 */, idea.id,
-					"Idea", message);
+			Notifications.sendNotification(idea.author.id/*
+														 * users.get(i).id
+														 */, idea.id, "Idea",
+					message);
 			// for (int i = 0; i < topic.followers.size(); i++)
 			// Notifications.sendNotification(topic.followers.get(i).getId(),
 			// topic.getId(), "entity", message);
@@ -380,32 +380,34 @@ public class Ideas extends CRUD {
 		// boolean deletable = i.isDeletable();
 		boolean canDelete = Users.isPermitted(user, "hide and delete an idea",
 				topicId, "topic");
-		boolean alreadyReported = false;
+		boolean ideaAlreadyReported = false;
 		// mestani lama
 		boolean canUse = Users.canDelete(user, "use", ideaId, "idea", topicId);
 		System.out.println("false alreadyreoprted");
 		List<User> allUsers = User.findAll();
-		List <String> userNames = new ArrayList<String>(allUsers.size());
+		List<String> userNames = new ArrayList<String>(allUsers.size());
 		Collections.sort(userNames);
-		boolean checkPermitted = Users.isPermitted(user, "rate/prioritize ideas", topicId, "topic");
+		boolean checkPermitted = Users.isPermitted(user,
+				"rate/prioritize ideas;", topicId, "topic");
 		boolean checkNotRated;
-		if(idea.usersRated.contains(user))
+		if (idea.usersRated.contains(user))
 			checkNotRated = false;
 		else
 			checkNotRated = true;
-		for (int i = 0; i < idea.reporters.size()
-				|| i < user.ideasReported.size(); i++) {
+		for (int i = 0; i < idea.reporters.size(); i++) {
+			System.out.println(idea.reporters.get(i).toString());
 			System.out.println("gowa el loop");
+			System.out.println("Ana meen ?! " + user.toString());
+			System.out.println(ideaAlreadyReported);
 			if (idea.reporters.size() > 0
 					&& (user.toString()
-							.equals(idea.reporters.get(i).toString()) || idea
-							.toString().equals(
-									user.ideasReported.get(i).toString()))) {
-				alreadyReported = true;
+							.equals(idea.reporters.get(i).toString()))) {
+				ideaAlreadyReported = true;
 				System.out
 						.println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
+				break;
 			} else
-				alreadyReported = false;
+				ideaAlreadyReported = false;
 		}
 
 		try {
@@ -417,7 +419,7 @@ public class Ideas extends CRUD {
 							ideaId, "idea");
 			render(type, object, /* tags, */user, canDelete, comments, topic,
 					plan, permittedToTagIdea,
-					/* openToEdit, */topicId, alreadyReported, canUse,
+					/* openToEdit, */topicId, ideaAlreadyReported, canUse,
 					deletemessage, /*
 									 * deletable ,
 									 */

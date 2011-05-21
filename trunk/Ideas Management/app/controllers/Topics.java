@@ -788,21 +788,21 @@ public class Topics extends CRUD {
 			}
 		}
 
-		// for (int i = 0; i < targetTopic.reporters.size()
-		// || i < actor.topicsReported.size(); i++) {
-		// if (targetTopic.reporters.size() > 0
-		// && (actor.toString().equals(
-		// targetTopic.reporters.get(i).toString()) || targetTopic
-		// .toString().equals(
-		// actor.topicsReported.get(i).toString()))) {
-		// alreadyReportedTopic = true;
-		// System.out
-		// .println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
-		//
-		// } else
-		// alreadyReportedTopic = false;
-		//
-		// }
+//		 for (int i = 0; i < targetTopic.reporters.size()
+//		 || i < actor.topicsReported.size(); i++) {
+//		 if (targetTopic.reporters.size() > 0
+//		 && (actor.toString().equals(
+//		 targetTopic.reporters.get(i).toString()) || targetTopic
+//		 .toString().equals(
+//		 actor.topicsReported.get(i).toString()))) {
+//		 alreadyReportedTopic = true;
+//		 System.out
+//		 .println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
+//		
+//		 } else
+//		 alreadyReportedTopic = false;
+//		
+//		 }
 
 		int allowed = 0;
 		for (int k = 0; k < ideas.size(); k++) {
@@ -835,7 +835,7 @@ public class Topics extends CRUD {
 		if (Users.isPermitted(actor, actionPlan, topicIdLong, "topic")) {
 			canPlan = 1;
 		}
-		
+
 		if (Users.isPermitted(actor, actionMerge, topicIdLong, "topic")) {
 			canMerge = 1;
 		}
@@ -886,8 +886,8 @@ public class Topics extends CRUD {
 					targetTopic, allowed, permission, topicId, canPost,
 					canNotPost, pending, follower, canCreateRelationship,
 					seeRelationStatus, createRelationship, actor, hidden,
-					canRestrict, check, canMerge, canRequestRelationship, topicIsLocked,
-					organisation);
+					canRestrict, check, canMerge, canRequestRelationship,
+					topicIsLocked, organisation);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
@@ -917,23 +917,24 @@ public class Topics extends CRUD {
 				|| topicRequestIsDuplicate(destinationTopic, source,
 						destination, name)) {
 			System.out.println("Already exists");
-		} else //if (sourceTopic.getOrganizer().contains(user)
-			//	|| destinationTopic.getOrganizer().contains(user)) {
-			{ CreateRelationshipRequest relationRequest = new CreateRelationshipRequest(
+		} else // if (sourceTopic.getOrganizer().contains(user)
+				// || destinationTopic.getOrganizer().contains(user)) {
+		{
+			CreateRelationshipRequest relationRequest = new CreateRelationshipRequest(
 					user, sourceTopic, destinationTopic, name);
 			relationRequest.save();
 			redirect("Topics.show", topicId, "Request created");
 		}
-//			else {
-//			System.out
-//					.println("You're not an organiser for any of the topics");
-//		}
-//		System.out.println(sourceTopic.relationshipRequestsSource.size()
-//				+ sourceTopic.relationshipRequestsDestination.size());
-//		System.out.println(destinationTopic.relationshipRequestsSource.size()
-//				+ destinationTopic.relationshipRequestsDestination.size());
+		// else {
+		// System.out
+		// .println("You're not an organiser for any of the topics");
+		// }
+		// System.out.println(sourceTopic.relationshipRequestsSource.size()
+		// + sourceTopic.relationshipRequestsDestination.size());
+		// System.out.println(destinationTopic.relationshipRequestsSource.size()
+		// + destinationTopic.relationshipRequestsDestination.size());
 	}
-	
+
 	public static void viewRelationships(long userId, long organisationId,
 			long entityId, long topicId, boolean canRequestRelationship) {
 		User user = User.findById(userId);
@@ -942,18 +943,21 @@ public class Topics extends CRUD {
 		Topic topic = Topic.findById(topicId);
 		render(user, organisation, entity, canRequestRelationship, topic);
 	}
-	
+
 	public static void deleteRequest(long userId, long relationId, int type) {
 		User user = User.findById(userId);
 		TopicRelationship relation = TopicRelationship.findById(relationId);
-		RenameEndRelationshipRequest deleteRequest = new RenameEndRelationshipRequest(user, relation, type, null);
+		RenameEndRelationshipRequest deleteRequest = new RenameEndRelationshipRequest(
+				user, relation, type, null);
 		deleteRequest.save();
 	}
-	
-	public static void renameRequest(long userId, long relationId, int type, String newName) {
+
+	public static void renameRequest(long userId, long relationId, int type,
+			String newName) {
 		User user = User.findById(userId);
 		TopicRelationship relation = TopicRelationship.findById(relationId);
-		RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(user, relation, type, newName);
+		RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
+				user, relation, type, newName);
 		renameRequest.save();
 	}
 
