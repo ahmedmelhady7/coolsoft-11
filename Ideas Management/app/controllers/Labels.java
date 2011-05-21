@@ -67,7 +67,7 @@ public class Labels extends CRUD
 			if(label.ideas.contains(otherIdeas.get(i)))
 				otherIdeas.remove(i);
 		
-		render(label,otherIdeas);
+		render(user,label,otherIdeas);
 	}
 	
 	public static void removeIdeas(long labelId, long [] ideas)
