@@ -1626,6 +1626,8 @@ public class Users extends CRUD {
 		List<NotificationProfile> npList = user.notificationProfiles;
 		render(user, npList);
 	}
+	
+	
 
 	/**
 	 * Deletes the notifications of the users which he checked from the

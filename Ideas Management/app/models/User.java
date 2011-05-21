@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import controllers.Security;
 import controllers.Topics;
 import controllers.Users;
 import controllers.VolunteerRequests;
@@ -596,6 +598,17 @@ public class User extends CoolModel {
 
 	public int getDraftsCount() {
 		return this.getDrafts().size();
+	}
+	
+	public int getNotificationNumber() {
+		User user = Security.getConnected();
+		int notificationCount = 0;
+		for (int i = 0; i < user.notifications.size(); i++) {
+			if (!user.notifications.get(i).seen) {
+				notificationCount++;
+			} 
+		}
+		return notificationCount;
 	}
 
 }

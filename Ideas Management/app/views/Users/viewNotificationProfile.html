@@ -1,35 +1,45 @@
 #{extends 'Login/index.html' /}
 #{set title:'Notification Profile' /}
 
-<big><u>Notification Profile</u></big>
-<br>
-<hr>
-<br>
-#{if npList.size() == 0}
-    <i>You have no notification profiles!!</i>
-#{/if}
-<br>
-<ul>
-#{list items:npList, as:'notifi'}
-    <li>
-    	<fieldset>
-    		<b>Notification from: </b> ${notifi.notifiableType}  
-    		&nbsp; ${notifi.title}
-    		<br> 
-    		<b>Enabled: </b>
-    		#{if notifi.enabled}
-    		<i>yes</i>
-    		#{/if}
-    		#{else}
-    		<i>no</i>
-    		#{/else}
-    	</fieldset>
-    </li>
-#{/list}
-</ul>
-#{if npList.size() != 0}
-   <form action="@{NotificationProfiles.alterPreferences()}" method="post">
+<div id="page">
+		<div id="page-bgtop">
+			<div id="page-bgbtm">
+				<div id="content">
+					<div class="post">
+					<h2>Notification Profile</h2>
+					<br>
+					<hr>
+					<br>
+					#{if npList.size() == 0}
+    				<i>You have no notification profiles!!</i>
+					#{/if}
+					<br>
+					<ul>
+					#{list items:npList, as:'notifi'}
+				    <li>
+    				<fieldset>
+    				<b>Notification from: </b> ${notifi.notifiableType}  
+    				&nbsp; ${notifi.title}
+    				<br> 
+    				<b>Enabled: </b>
+    				#{if notifi.enabled}
+    				<i>yes</i>
+    				#{/if}
+    				#{else}
+    				<i>no</i>
+    				#{/else}
+    				</fieldset>
+    				</li>
+					#{/list}
+					</ul>
+					#{if npList.size() != 0}
+   		<form action="@{NotificationProfiles.alterPreferences()}" method="post">
 		Change Preferences: <input type="submit" value="Edit">
-	</form>
-#{/if}
+		</form>
+		#{/if}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 

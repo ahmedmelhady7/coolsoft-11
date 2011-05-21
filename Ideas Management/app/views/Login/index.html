@@ -17,32 +17,38 @@
         </li>
         <li>
             <a href="@{Browse.browse()}">Browse All</a>
+        </li>        
+        <li>
+            <a href="@{Users.viewNotifications()}">Notifications 
+            #{if user.getNotificationNumber() == 0}
+            (No New)
+            #{/if}
+            #{else}
+            (New ${user.getNotificationNumber()})
+            #{/else}</a>
         </li>
         <li>
             <a href="javascript:void(0)" id="demo01">Latest Notifications</a>
             <div id="demo01-body" style="display: none;">
-                #{if user.notificationsNumber == 0}
+                #{if user.notifications.size() == 0}
                 You have no notifications!!
                 #{/if}
-                #{else}
-                #{if user.notificationsNumber == 1}<h1>user.notifications.get(0).title</h1>
+                #{if user.notifications.size() ==  1}
                 <p>
-                    user.notifications.get(notifications.size() - 1).description
+                	<b>${user.notifications.get(0).title}</b> &nbsp;&nbsp;
+                    ${user.notifications.get(0).description}
                 </p>
-                #{/if}
-                #{else}
-                #{if user.notificationsNumber == 2}
-                #{/if}
-                #{else}
-                #{if user.notificationsNumber == 3}
-                #{/if}
-                #{/else}
-                #{/else}
-                #{/else}
+                #{/if}               
+                #{if user.notifications.size() == 2}
+                <p>
+                	<b>${user.notifications.get(0).title}</b> &nbsp;&nbsp;
+                    ${user.notifications.get(0).description}
+                    <br>                               
+                	<b>${user.notifications.get(1).title}</b> &nbsp;&nbsp;
+                    ${user.notifications.get(1).description}
+                </p>
+                #{/if}                                                       
             </div>
-        </li>
-        <li>
-            <a href="@{Users.viewNotifications()}">Notifications(${user.notificationsNumber})</a>
         </li>
         <li>
             <a href="@{Users.viewNotificationProfile()}">Notification Profile</a>
