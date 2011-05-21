@@ -1028,8 +1028,6 @@ public class Search extends Controller {
 	public static void sortA() {// char voteOrRate) {// ascending
 		List<Model> toSort = new ArrayList<Model>();
 		List<Model> notToSort = new ArrayList<Model>();
-
-		System.out.println("2ooo2oooiiii 2ooo 2aaa2aa 2na hena f sort A");
 		// if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
 
 		/*
@@ -1160,8 +1158,6 @@ public class Search extends Controller {
 
 		List<Model> toSort = new ArrayList<Model>();
 		List<Model> notToSort = new ArrayList<Model>();
-
-		System.out.print("in sortD");
 
 		// if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
 
