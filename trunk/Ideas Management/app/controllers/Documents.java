@@ -13,6 +13,7 @@ import play.data.binding.Binder;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
+import sun.net.www.content.text.plain;
 import controllers.CRUD.ObjectType;
 
 public class Documents extends CRUD {
@@ -163,5 +164,4 @@ public class Documents extends CRUD {
 		Document document = Document.findById(id);
 		document.delete();
 	}
-
 }

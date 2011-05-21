@@ -620,5 +620,23 @@ public class User extends CoolModel {
 		}
 		return notificationCount;
 	}
+	
+	/**
+	 * gets the list of documents owned by the user 
+	 * 
+	 * @author Ibrahim Al-Kahayat
+	 * 
+	 * @story C2S28
+	 * 
+	 */
+	public List<Document> getDocuments() {
+		List<Document> documents = Document.find("byUserOrganizationId", id).fetch();
+		for (int i = 0; i < documents.size(); i++) {
+			if (documents.get(i).isOrganization) {
+				documents.remove(i);
+			}
+		}
+		return documents;
+	}
 
 }

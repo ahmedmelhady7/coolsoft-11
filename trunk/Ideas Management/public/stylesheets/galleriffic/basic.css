@@ -3,7 +3,6 @@ html, body {
 	padding:0;
 }
 body{
-	text-align: center;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Helvetica, Arial, sans-serif;
 	background-color: #eee;
 	color: #444;
@@ -46,9 +45,11 @@ div#page {
 	border-color: #ddd;
 	border-style: none solid solid;
 	border-width: medium 1px 1px;
+	float: left;
 }
 div#container {
 	padding: 20px;
+	
 }
 div#ads {
 	clear: both;
