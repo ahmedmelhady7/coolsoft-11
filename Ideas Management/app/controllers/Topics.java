@@ -5,13 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import models.BannedUser;
-import models.CreateRelationshipRequest;
-import models.EntityRelationship;
 import models.Idea;
-import models.Log;
 import models.MainEntity;
 import models.Organization;
-import models.RenameEndRelationshipRequest;
 import models.Tag;
 import models.Topic;
 import models.User;
@@ -203,8 +199,6 @@ public class Topics extends CRUD {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
 		Idea idea = new Idea(title, description, user, topic);
-		user.communityContributionCounter++;
-		user.save();
 		idea.save();
 	}
 
@@ -283,6 +277,7 @@ public class Topics extends CRUD {
 		Topic topict = Topic.findById(topicId);
 		topict.requestFromUserToPost(user.id);
 	}
+
 
 	/**
 	 * searches for unblocked users who are allowed to post in a certain topic
@@ -502,10 +497,11 @@ public class Topics extends CRUD {
 		System.out.println("ideas count:" + targetTopic.getIdeas().size()
 				+ " in topic" + targetTopic.getId() + "-" + targetTopic.id);
 
-		/*
-		 * checks if topic is empty if (targetTopic.getIdeas().size() == 0) {
-		 * System.out.println("Topic has no ideas"); return; }
-		 */
+		/* checks if topic is empty
+		if (targetTopic.getIdeas().size() == 0) {
+			System.out.println("Topic has no ideas");
+			return;
+		}*/
 
 		// closing the topic to editing
 		targetTopic.openToEdit = false;
@@ -623,12 +619,13 @@ public class Topics extends CRUD {
 		System.out.println(myUser.communityContributionCounter);
 		System.out.println("create() object saved");
 		temporaryTopic = (Topic) object;
+		Calendar claendar = new GregorianCalendar();
+		// Logs.addLog( temporaryTopic.creator, "add", "Task",
+		// temporaryTopic.id,
+		// temporaryTopic.entity.organization, calendar.getTime() );
 		String message2 = temporaryTopic.creator.username
-		+ " has Created the topic " + temporaryTopic.title + " in "
-		+ temporaryTopic.entity;
-		Log.addUserLog(message2,
-				temporaryTopic, myUser, topicEntity, topicEntity.organization);
-		
+				+ " has Created the topic " + temporaryTopic.title + " in "
+				+ temporaryTopic.entity;
 		if (temporaryTopic.followers != null) {
 			for (int i = 0; i < temporaryTopic.followers.size(); i++)
 				Notifications.sendNotification(temporaryTopic.followers.get(i)
@@ -774,7 +771,6 @@ public class Topics extends CRUD {
 		boolean canDelete = Users.isPermitted(actor, "hide and delete an idea",
 				topicIdLong, "topic");
 		boolean alreadyReportedTopic = false;
-		boolean canRequestRelationship = false;
 		for (int i = 0; i < ideas.size(); i++) {
 			Idea idea = ideas.get(i);
 
@@ -790,21 +786,21 @@ public class Topics extends CRUD {
 			}
 		}
 
-//		 for (int i = 0; i < targetTopic.reporters.size()
-//		 || i < actor.topicsReported.size(); i++) {
-//		 if (targetTopic.reporters.size() > 0
-//		 && (actor.toString().equals(
-//		 targetTopic.reporters.get(i).toString()) || targetTopic
-//		 .toString().equals(
-//		 actor.topicsReported.get(i).toString()))) {
-//		 alreadyReportedTopic = true;
-//		 System.out
-//		 .println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
-//		
-//		 } else
-//		 alreadyReportedTopic = false;
-//		
-//		 }
+//		for (int i = 0; i < targetTopic.reporters.size()
+//				|| i < actor.topicsReported.size(); i++) {
+//			if (targetTopic.reporters.size() > 0
+//					&& (actor.toString().equals(
+//							targetTopic.reporters.get(i).toString()) || targetTopic
+//							.toString().equals(
+//									actor.topicsReported.get(i).toString()))) {
+//				alreadyReportedTopic = true;
+//				System.out
+//						.println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
+//
+//			} else
+//				alreadyReportedTopic = false;
+//
+//		}
 
 		int allowed = 0;
 		for (int k = 0; k < ideas.size(); k++) {
@@ -821,15 +817,15 @@ public class Topics extends CRUD {
 						temporaryTopic.id, "topic"))
 			allowed = 1;
 		// Note isPermitted has a bug here!
-		boolean canPost = Users.isPermitted(Security.getConnected(), "use",
-				temporaryTopic.id, "topic");
+		boolean canPost = Users.isPermitted(Security.getConnected(),
+				"use", temporaryTopic.id, "topic");
 
-		int check = 0;
-		if (Users.isPermitted(Security.getConnected(),
-				"block a user from viewing or using a certain entity",
-				topicIdLong, "topic"))
-			check = 1;
+		int check =0; 
+		if(Users.isPermitted(Security.getConnected(),
+				"block a user from viewing or using a certain entity", topicIdLong, "topic"))
+				check=1;
 
+		
 		if (Users.isPermitted(actor, actionClose, topicIdLong, "topic")) {
 			canClose = 1;
 		}
@@ -837,7 +833,7 @@ public class Topics extends CRUD {
 		if (Users.isPermitted(actor, actionPlan, topicIdLong, "topic")) {
 			canPlan = 1;
 		}
-
+		
 		if (Users.isPermitted(actor, actionMerge, topicIdLong, "topic")) {
 			canMerge = 1;
 		}
@@ -871,13 +867,8 @@ public class Topics extends CRUD {
 		boolean follower = actor.topicsIFollow.contains(targetTopic);
 		boolean canCreateRelationship = TopicRelationships
 				.isAllowedTo(topicIdLong);
-		boolean topicIsLocked = targetTopic.createRelationship;
-		Organization organisation = targetTopic.entity.organization;
 		if (actor.isAdmin || entity.organization.creator.equals(actor)) {
 			canRestrict = 1;
-		}
-		if (targetTopic.getOrganizer().contains(actor)) {
-			canRequestRelationship = true;
 		}
 		try {
 
@@ -888,114 +879,12 @@ public class Topics extends CRUD {
 					targetTopic, allowed, permission, topicId, canPost,
 					canNotPost, pending, follower, canCreateRelationship,
 					seeRelationStatus, createRelationship, actor, hidden,
-					canRestrict, check, canMerge, canRequestRelationship,
-					topicIsLocked, organisation);
+					canRestrict,check, canMerge);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
 					canCreateRelationship);
 		}
-	}
-
-	public static void requestRelationship(long userId, long organisationId,
-			long entityId, long topicId) {
-		Organization organisation = Organization.findById(organisationId);
-		User user = User.findById(userId);
-		MainEntity entity = MainEntity.findById(entityId);
-		Topic topic = Topic.findById(topicId);
-		render(user, organisation, entity, topic);
-	}
-
-	public static void createRequest(long userId, String source,
-			String destination, String name, long organisationId,
-			long entityId, long topicId) {
-		User user = User.findById(userId);
-		MainEntity entity = MainEntity.findById(entityId);
-		Topic sourceTopic = Topic.find("byTitleAndEntity", source, entity)
-				.first();
-		Topic destinationTopic = Topic.find("byTitleAndEntity", destination,
-				entity).first();
-		if (topicRequestIsDuplicate(sourceTopic, source, destination, name)
-				|| topicRequestIsDuplicate(destinationTopic, source,
-						destination, name)) {
-			System.out.println("Already exists");
-		} else // if (sourceTopic.getOrganizer().contains(user)
-				// || destinationTopic.getOrganizer().contains(user)) {
-		{
-			CreateRelationshipRequest relationRequest = new CreateRelationshipRequest(
-					user, sourceTopic, destinationTopic, name);
-			relationRequest.save();
-			redirect("Topics.show", topicId, "Request created");
-		}
-		// else {
-		// System.out
-		// .println("You're not an organiser for any of the topics");
-		// }
-		// System.out.println(sourceTopic.relationshipRequestsSource.size()
-		// + sourceTopic.relationshipRequestsDestination.size());
-		// System.out.println(destinationTopic.relationshipRequestsSource.size()
-		// + destinationTopic.relationshipRequestsDestination.size());
-	}
-
-	public static void viewRelationships(long userId, long organisationId,
-			long entityId, long topicId, boolean canRequestRelationship) {
-		User user = User.findById(userId);
-		Organization organisation = Organization.findById(organisationId);
-		MainEntity entity = MainEntity.findById(entityId);
-		Topic topic = Topic.findById(topicId);
-		render(user, organisation, entity, canRequestRelationship, topic);
-	}
-
-	public static void deleteRequest(long userId, long relationId, int type) {
-		User user = User.findById(userId);
-		TopicRelationship relation = TopicRelationship.findById(relationId);
-		RenameEndRelationshipRequest deleteRequest = new RenameEndRelationshipRequest(
-				user, relation, type, null);
-		deleteRequest.save();
-	}
-
-	public static void renameRequest(long userId, long relationId, int type,
-			String newName) {
-		User user = User.findById(userId);
-		TopicRelationship relation = TopicRelationship.findById(relationId);
-		RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
-				user, relation, type, newName);
-		renameRequest.save();
-	}
-
-	public static boolean topicRequestIsDuplicate(Topic topic, String source,
-			String destination, String name) {
-		for (CreateRelationshipRequest request : topic.relationshipRequestsSource) {
-			if (request.sourceTopic.title.equalsIgnoreCase(source)
-					&& request.destinationTopic.title
-							.equalsIgnoreCase(destination)
-					&& request.name.equalsIgnoreCase(name)) {
-				return true;
-			}
-		}
-		for (CreateRelationshipRequest request : topic.relationshipRequestsDestination) {
-			if (request.sourceTopic.title.equalsIgnoreCase(source)
-					&& request.destinationTopic.title
-							.equalsIgnoreCase(destination)
-					&& request.name.equalsIgnoreCase(name)) {
-				return true;
-			}
-		}
-		for (TopicRelationship relation : topic.relationsSource) {
-			if (relation.source.title.equalsIgnoreCase(source)
-					&& relation.destination.title.equalsIgnoreCase(destination)
-					&& relation.name.equalsIgnoreCase(name)) {
-				return true;
-			}
-		}
-		for (TopicRelationship relation : topic.relationsDestination) {
-			if (relation.source.title.equalsIgnoreCase(source)
-					&& relation.destination.title.equalsIgnoreCase(destination)
-					&& relation.name.equalsIgnoreCase(name)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -1245,18 +1134,21 @@ public class Topics extends CRUD {
 		System.out.println(temporaryTopic.createRelationship);
 
 		object._save();
-		String message2 = "User: '" + myUser.firstName
-		+ "' has edited topic  '" + temporaryTopic.title
-		+ "' in entity '" + temporaryTopic.entity.name
-		+ "'";
-		Log.addUserLog(message2,
-				temporaryTopic, myUser, entity, entity.organization);
+
+		Calendar calendar = new GregorianCalendar();
+		// Logs.addLog( myUser, "add", "Task", temporaryTopic.id,
+		// temporaryTopic.entity.organization,
+		// calendar.getTime() );
+		// String message3 = myUser.username + " has editted the topic " +
 		List<User> users = Users.getEntityOrganizers(temporaryTopic.entity);
 		if (!users.contains(temporaryTopic.entity.organization.creator))
 			users.add(temporaryTopic.entity.organization.creator);
 		for (int i = 0; i < users.size(); i++)
 			Notifications.sendNotification(users.get(i).id, temporaryTopic.id,
-					"Topic", message2);
+					"Topic", "User: '" + myUser.firstName
+							+ "' has edited topic  '" + temporaryTopic.title
+							+ "' in entity '" + temporaryTopic.entity.name
+							+ "'");
 
 		System.out.println("save() done, not redirected yet");
 
@@ -1375,9 +1267,6 @@ public class Topics extends CRUD {
 			for (int i = 0; i < temporaryTopic.invitations.size(); i++)
 				temporaryTopic.invitations.get(i).delete();
 			// fadwa
-			
-			Log.addUserLog(message,
-					temporaryTopic, myUser, entity, entity.organization);
 			object._delete();
 			System.out.println("deleted");
 			System.out.println("leaving try");
@@ -1433,8 +1322,6 @@ public class Topics extends CRUD {
 						.getId(), entity.getId(), "entity", message);
 			Notifications.sendNotification(temporaryTopic.creator.getId(),
 					entity.getId(), "entity", justification);
-			Log.addUserLog(message,
-					temporaryTopic, myUser, entity, entity.organization);
 			System.out.println(justification);
 			temporaryTopic.hidden = true;
 			temporaryTopic.hider = myUser;
@@ -1487,9 +1374,6 @@ public class Topics extends CRUD {
 			for (int i = 0; i < temporaryTopic.followers.size(); i++)
 				Notifications.sendNotification(temporaryTopic.followers.get(i)
 						.getId(), entity.getId(), "entity", message);
-			
-			Log.addUserLog(message,
-					temporaryTopic, myUser, entity, entity.organization);
 
 			temporaryTopic.hidden = false;
 			temporaryTopic.save();
@@ -1527,9 +1411,9 @@ public class Topics extends CRUD {
 		Topic topic = Topic.findById(topicId);
 		topic.createRelationship = createRelationship;
 		topic.save();
-		// String topiccId = topicId + "";
+//		String topiccId = topicId + "";
 		redirect("Topics.show", topic.id);
-		// Topics.show(topiccId);
+//		Topics.show(topiccId);
 	}
 
 	/**
@@ -1614,15 +1498,180 @@ public class Topics extends CRUD {
 		Topic targetTopic = Topic.findById(topicIdLong);
 		List ideas = new ArrayList<Idea>();
 		List allIdeas = targetTopic.getIdeas();
-
-		for (int i = 0; i < allIdeas.size(); i++) {
+		
+		for(int i = 0; i < allIdeas.size(); i++) {
 			Idea currentIdea = (Idea) allIdeas.get(i);
-
-			if (currentIdea.hidden == false) {
+			
+			if(currentIdea.hidden == false && currentIdea.isDraft == false) {
 				ideas.add(currentIdea);
 			}
 		}
-
+		
 		render(topicId, ideas);
 	}
+	
+	/**
+	 * @description This method created a draft
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @param title
+	 * 			: The title of the topic
+	 * @param description
+	 * 			: the description of the topic
+	 * @param entityId
+	 * 			: the id
+	 */
+	public static void createDraft(String title, String description, 
+		int privacyLevel, boolean createRelationship, long entityId) {
+		
+		User user = Security.getConnected();
+		MainEntity targetEntity = MainEntity.findById(entityId);
+		boolean isDraft = true;
+		
+		Topic draftTopic = new Topic(title, description, 
+				privacyLevel, user, targetEntity, createRelationship, isDraft);
+		
+		draftTopic.save();
+	
+	}
+	
+	/**
+	 * @description publish a topic
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @story C3S23
+	 *  
+	 * @param topicId
+	 *            the id of the topic
+	 *            
+ 	 * @param title
+	 *            the title of the topic
+	 * 
+	 * @param description
+	 *            the description of the topic
+	 *            
+	 * @param privacyLevel
+	 * 			  the privacy level of the topic
+	 * 
+	 * @param createRelationship
+	 * 			  can the relationships be created
+	 */
+
+	public static void saveDraft(long topicIdId, String title, String description,
+			int privacyLevel, boolean createRelationship) {
+		
+		Topic targetTopic = Topic.findById(topicIdId);
+		
+		targetTopic.title = title;
+		targetTopic.description = description;
+		targetTopic.privacyLevel = privacyLevel;
+		targetTopic.createRelationship = createRelationship;
+		targetTopic.intializedIn = new Date();
+		
+		targetTopic.save();
+	}
+
+	/**
+	 * @description publish a topic
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @story C3S23
+	 *  
+	 * @param topicId
+	 *            the id of the topic
+	 *            
+ 	 * @param title
+	 *            the title of the topic
+	 * 
+	 * @param description
+	 *            the description of the topic
+	 *            
+	 * @param privacyLevel
+	 * 			  the privacy level of the topic
+	 * 
+	 * @param createRelationship
+	 * 			  can the relationships be created
+	 */
+
+	public static void postDraftTopic(long topicIdId, String title, String description,
+			int privacyLevel, boolean createRelationship) {
+
+		Topic targetTopic = Topic.findById(topicIdId);
+		
+		saveDraft(topicIdId, title, description,
+				 privacyLevel, createRelationship);
+		
+		targetTopic.isDraft = false;
+		targetTopic.save();
+	}
+
+
+	
+	/**
+	 * @description 
+	 * 		This method renders to editing a draft page
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @story C3S23
+	 * 
+	 * @param topicId
+	 * 		Id of the draft topic to be edited
+	 */
+
+	public static void editDraft(long topicId) {
+		Topic targetTopic = Topic.findById(topicId);
+		//User actor = Security.getConnected();
+		
+		render(targetTopic);
+	}
+
+	/**
+	 * @description 
+	 * 		This method shows the draft Topics of the connected user
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @story C3S23
+	 * 
+	 */
+
+	public static void getDraftTopics() {
+
+		//User actor = Security.getConnected();
+
+		List<Topic> draftTopics = new ArrayList<Topic>();
+		List<Topic> allTopics = new ArrayList<Topic>();
+		
+		for (int i = 0; i < allTopics.size(); i++) {
+			Topic currentTopic = allTopics.get(i);
+			
+			if(currentTopic.isDraft) {
+				draftTopics.add(currentTopic);
+			}
+		}
+
+		render(draftTopics);
+	}
+	
+	
+	/**
+	 * @Description This method discards a draft
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @param topicId
+	 * 			The id of the draft that to be deleted
+	 * 
+	 */		
+	public static void discardDraftTopic(long topicId) {
+		Topic targetTopic = Topic.findById(topicId);
+		targetTopic.delete();
+	}
+
+
+	
 }
