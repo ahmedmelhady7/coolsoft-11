@@ -64,39 +64,48 @@ function submit() {
 	
 }
 </script>
-
-<big><u>Notifications List</u></big>
-<br>
-<hr>
-<br>
-#{if nList.size() == 0}
-    <i>You have no notifications!!</i>
-#{/if}
-<form name='myform'>
-<ul>
-#{list items:nList, as:'notifi'}
-    <li id="not_${notifi.id}">
-    	<fieldset>
-    		<big><b>${notifi.status}</b></big>
-    		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    		<b><i>Delete Notification</i></b> &nbsp; 
-    		<input type="checkbox" name="checkfield" id="${notifi.id}" onclick="toggleCheck(${notifi.id})" class="enabled"> 
-    		<br>
-    		<b>Source Type: </b> ${notifi.type}
-    		<br>
-    		${notifi.title}
-    		<br>
-    		<b>Message: </b> ${notifi.description}
-    	</fieldset>
-    </li>
-#{/list}
-</ul>
-</form>
-#{if nList.size() != 0}  
-	<a onclick="markAll();" href="#"> Check All </a>
-	&nbsp;&nbsp;&nbsp;&nbsp;
-	<a onclick="unmarkAll();" href="#"> Uncheck All</a>
-	<br>	
-	Delete Notifications: <input type="submit" value="Delete" onclick="submit()">
-	<br>	
-#{/if}
+<div id="page">
+		<div id="page-bgtop">
+			<div id="page-bgbtm">
+				<div id="content">
+					<div class="post">
+					<h2>Notifications List</h2>
+					<br>
+					<hr>
+					<br>
+					#{if nList.size() == 0}
+    				<i>You have no notifications!!</i>
+					#{/if}
+					<form name='myform'>
+					<ul>
+					#{list items:nList, as:'notifi'}
+    				<li id="not_${notifi.id}">
+    				<fieldset>
+    				<big><b>${notifi.status}</b></big>
+    				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    				<b><i>Delete Notification</i></b> &nbsp; 
+    				<input type="checkbox" name="checkfield" id="${notifi.id}" onclick="toggleCheck(${notifi.id})" class="enabled"> 
+    				<br>
+    				<b>Source Type: </b> ${notifi.type}
+    				<br>
+    				${notifi.title}
+    				<br>
+    				<b>Message: </b> ${notifi.description}
+    				</fieldset>
+   			 		</li>
+					#{/list}
+					</ul>
+					</form>
+					#{if nList.size() != 0}  
+					<a onclick="markAll();" href="#"> Check All </a>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<a onclick="unmarkAll();" href="#"> Uncheck All</a>
+					<br>	
+					Delete Notifications: <input type="submit" value="Delete" onclick="submit()">
+					<br>	
+					#{/if}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
