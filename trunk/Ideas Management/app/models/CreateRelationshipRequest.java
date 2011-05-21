@@ -134,10 +134,13 @@ public class CreateRelationshipRequest extends CoolModel {
 		this.sourceTopic = sourceTopic;
 		this.destinationTopic = destinationTopic;
 		this.name = name;
-		this.sourceTopic.relationshipRequestsSource.add(this);
-		this.sourceTopic.save();
-		this.destinationTopic.relationshipRequestsDestination.add(this);
-		this.destinationTopic.save();
+		if (sourceTopic.getOrganizer().contains(requester)) {
+			this.destinationTopic.relationshipRequestsDestination.add(this);
+			this.destinationTopic.save();
+		} else {
+			this.sourceTopic.relationshipRequestsSource.add(this);
+			this.sourceTopic.save();
+		}
 	}
 
 	/**

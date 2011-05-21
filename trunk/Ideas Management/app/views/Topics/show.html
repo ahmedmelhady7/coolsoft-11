@@ -388,13 +388,21 @@
             <input type="submit" value="&{'crud.delete', type.modelName}" />
             </p>
             #{/form}-->
-            </div>
+            </div>       
             
              #{if (canRestrict == 1)}
 		
 		     <input type="submit" value="Restrict/De-Restrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerTopicPath(topicId)}">
 		      <HR>	
 		    #{/if}
+		    
+	
+			<form action="@{Topics.requestRelationship(actor.id, organisation.id, entity.id, targetTopic.id)}" method="post">
+				<input type="submit" value="Request Relationship Creation">
+			</form>
+		
+		    
+		    
             <script type="text/javascript">
             	
             	function endRelation(relId){

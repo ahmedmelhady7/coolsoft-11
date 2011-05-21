@@ -1,0 +1,64 @@
+#{extends 'main.html' /}
+#{set title:'Request Relationship Creation' /}
+
+<html>
+	<title> Request Relationship Creation </title>
+	<body>
+		<head>
+			<form action="@{Topics.createRequest(user.id, source, destination, name, organisation.id, entity.id, topic.id)}" method="post"
+			onsubmit= "return validate()">
+				<p>
+				<h4>Create Relationship:</h4>
+				</p>
+				</br>
+				</br>
+				<p>
+				Source Topic:
+				<select name="source" id="sourceTopic">
+					#{list items: entity.topicList, as:'topic'}
+					#{if (topic.createRelationship == true)}
+						<option>${topic.title}</option>
+					#{/if}
+					#{/list}
+				</select>
+				</br>
+				</p>
+				<p>
+				Relationship Name:
+				<select name="name" id="relationName">
+					#{list items: organisation.relationNames, as:'name'}
+					<option>${name}</option>
+					#{/list}
+				</select>
+				</br>
+				</p>
+				<p>
+				Destination Entity:
+				<select name="destination" id="destinationTopic">
+					#{list items: entity.topicList, as:'topic'}
+					#{if (topic.createRelationship == true)}
+						<option>${topic.title}</option>
+					#{/if}
+					#{/list}
+				</select>
+				</br>
+				</br>
+				</p>
+				<input type="submit" value="Request Creation" />
+			</form>
+			<script type="text/javascript">
+			
+			function validate() {
+				var src = document.getElementById('sourceTopic').value;
+				var dst = document.getElementById('destinationTopic').value;
+				if (src == dst) {
+					alert("The source and destination should be different");
+					return false;
+				} else {
+					alert("Your request has been sent.");
+				}
+			}
+			</script>
+		</head>
+	</body>
+</html>
