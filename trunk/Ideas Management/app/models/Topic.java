@@ -132,6 +132,9 @@ public class Topic extends CoolModel {
 
 	@OneToMany(mappedBy = "destinationTopic")
 	public List<CreateRelationshipRequest> relationshipRequestsDestination;
+	
+	@OneToMany(mappedBy = "destinationTopic")
+	public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
 
 	/**
 	 * the list of invitations to the topic?

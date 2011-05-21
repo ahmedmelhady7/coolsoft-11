@@ -11,8 +11,10 @@ import play.exceptions.TemplateNotFoundException;
 import play.mvc.Controller;
 import play.mvc.With;
 import models.CreateRelationshipRequest;
+import models.EntityRelationship;
 import models.MainEntity;
 import models.Organization;
+import models.RenameEndRelationshipRequest;
 import models.Topic;
 import models.User;
 
@@ -402,8 +404,29 @@ public class MainEntitys extends CRUD {
 					.println("You're not an organiser for any of the entities");
 		}
 		System.out.println(sourceEntity.relationshipRequestsSource.size() + sourceEntity.relationshipRequestsDestination.size());
-		System.out.println(destinationEntity.relationshipRequestsSource.size()+destinationEntity.relationshipRequestsDestination.size());
-		
+		System.out.println(destinationEntity.relationshipRequestsSource.size()+destinationEntity.relationshipRequestsDestination.size());	
+	}
+	
+	public static void viewRelationships(long userId, long organisationId,
+			long entityId, boolean canRequestRelationship) {
+		User user = User.findById(userId);
+		Organization organisation = Organization.findById(organisationId);
+		MainEntity entity = MainEntity.findById(entityId);
+		render(user, organisation, entity, canRequestRelationship);
+	}
+	
+	public static void deleteRequest(long userId, long relationId, int type) {
+		User user = User.findById(userId);
+		EntityRelationship relation = EntityRelationship.findById(relationId);
+		RenameEndRelationshipRequest deleteRequest = new RenameEndRelationshipRequest(user, relation, type, null);
+		deleteRequest.save();
+	}
+	
+	public static void renameRequest(long userId, long relationId, int type, String newName) {
+		User user = User.findById(userId);
+		EntityRelationship relation = EntityRelationship.findById(relationId);
+		RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(user, relation, type, newName);
+		renameRequest.save();
 	}
 
 }
