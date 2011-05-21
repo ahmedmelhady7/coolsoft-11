@@ -1322,6 +1322,14 @@ public class Search extends Controller {
 					MainEntity item = (MainEntity) listOfResults.get(i);
 					out.write("Entity," + item.name + "," + item.description);
 				}
+				if (listOfResults.get(i) instanceof Plan) {
+					Plan item = (Plan) listOfResults.get(i);
+					out.write("Entity," + item.title + "," + item.description);
+				}
+				if (listOfResults.get(i) instanceof Item) {
+					Item item = (Item) listOfResults.get(i);
+					out.write("Entity," + item.summary + "," + item.description);
+				}
 				out.newLine();
 			}
 			out.close();
