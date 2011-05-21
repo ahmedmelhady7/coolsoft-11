@@ -274,9 +274,10 @@ public class Ideas extends CRUD {
 			}
 		}
 
-		object._save();
+		
 		author.communityContributionCounter++;
 		author.save();
+		object._save();
 		System.out.println("3ada el save");
 		String anothermessage = "you have created a new idea with title "
 				+ idea.title + " and with description " + idea.description;
@@ -656,7 +657,10 @@ public class Ideas extends CRUD {
 		notFoundIfNull(type);
 		Model object = type.findById(ideaId);
 		notFoundIfNull(object);
+		Idea idea = (Idea) object;
 		try {
+			idea.author.communityContributionCounter--;
+			idea.author.save();
 			object._delete();
 		} catch (Exception e) {
 			flash.error(Messages.get("crud.delete.error", type.modelName));

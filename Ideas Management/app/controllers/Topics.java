@@ -8,6 +8,7 @@ import models.BannedUser;
 import models.CreateRelationshipRequest;
 import models.EntityRelationship;
 import models.Idea;
+import models.Log;
 import models.MainEntity;
 import models.Organization;
 import models.RenameEndRelationshipRequest;
@@ -202,6 +203,8 @@ public class Topics extends CRUD {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
 		Idea idea = new Idea(title, description, user, topic);
+		user.communityContributionCounter++;
+		user.save();
 		idea.save();
 	}
 
@@ -620,13 +623,12 @@ public class Topics extends CRUD {
 		System.out.println(myUser.communityContributionCounter);
 		System.out.println("create() object saved");
 		temporaryTopic = (Topic) object;
-		Calendar claendar = new GregorianCalendar();
-		// Logs.addLog( temporaryTopic.creator, "add", "Task",
-		// temporaryTopic.id,
-		// temporaryTopic.entity.organization, calendar.getTime() );
 		String message2 = temporaryTopic.creator.username
-				+ " has Created the topic " + temporaryTopic.title + " in "
-				+ temporaryTopic.entity;
+		+ " has Created the topic " + temporaryTopic.title + " in "
+		+ temporaryTopic.entity;
+		Log.addUserLog(message2,
+				temporaryTopic, myUser, topicEntity, topicEntity.organization);
+		
 		if (temporaryTopic.followers != null) {
 			for (int i = 0; i < temporaryTopic.followers.size(); i++)
 				Notifications.sendNotification(temporaryTopic.followers.get(i)
@@ -1243,21 +1245,18 @@ public class Topics extends CRUD {
 		System.out.println(temporaryTopic.createRelationship);
 
 		object._save();
-
-		Calendar calendar = new GregorianCalendar();
-		// Logs.addLog( myUser, "add", "Task", temporaryTopic.id,
-		// temporaryTopic.entity.organization,
-		// calendar.getTime() );
-		// String message3 = myUser.username + " has editted the topic " +
+		String message2 = "User: '" + myUser.firstName
+		+ "' has edited topic  '" + temporaryTopic.title
+		+ "' in entity '" + temporaryTopic.entity.name
+		+ "'";
+		Log.addUserLog(message2,
+				temporaryTopic, myUser, entity, entity.organization);
 		List<User> users = Users.getEntityOrganizers(temporaryTopic.entity);
 		if (!users.contains(temporaryTopic.entity.organization.creator))
 			users.add(temporaryTopic.entity.organization.creator);
 		for (int i = 0; i < users.size(); i++)
 			Notifications.sendNotification(users.get(i).id, temporaryTopic.id,
-					"Topic", "User: '" + myUser.firstName
-							+ "' has edited topic  '" + temporaryTopic.title
-							+ "' in entity '" + temporaryTopic.entity.name
-							+ "'");
+					"Topic", message2);
 
 		System.out.println("save() done, not redirected yet");
 
@@ -1376,6 +1375,9 @@ public class Topics extends CRUD {
 			for (int i = 0; i < temporaryTopic.invitations.size(); i++)
 				temporaryTopic.invitations.get(i).delete();
 			// fadwa
+			
+			Log.addUserLog(message,
+					temporaryTopic, myUser, entity, entity.organization);
 			object._delete();
 			System.out.println("deleted");
 			System.out.println("leaving try");
@@ -1431,6 +1433,8 @@ public class Topics extends CRUD {
 						.getId(), entity.getId(), "entity", message);
 			Notifications.sendNotification(temporaryTopic.creator.getId(),
 					entity.getId(), "entity", justification);
+			Log.addUserLog(message,
+					temporaryTopic, myUser, entity, entity.organization);
 			System.out.println(justification);
 			temporaryTopic.hidden = true;
 			temporaryTopic.hider = myUser;
@@ -1483,6 +1487,9 @@ public class Topics extends CRUD {
 			for (int i = 0; i < temporaryTopic.followers.size(); i++)
 				Notifications.sendNotification(temporaryTopic.followers.get(i)
 						.getId(), entity.getId(), "entity", message);
+			
+			Log.addUserLog(message,
+					temporaryTopic, myUser, entity, entity.organization);
 
 			temporaryTopic.hidden = false;
 			temporaryTopic.save();
