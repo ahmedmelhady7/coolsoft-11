@@ -688,18 +688,10 @@ public class Plans extends CRUD {
 	 * 
 	 * @author Hassan Ziko
 	 * 
-	 * @param startDay
-	 *            The day on which the item start
-	 * @param startMonth
-	 *            The month when the item starts
-	 * @param startYear
-	 *            The year when the item starts
-	 * @param endDay
-	 *            The day on which the item ends
-	 * @param endMonth
-	 *            The month when the item ends
-	 * @param endYear
-	 *            The year when the item ends
+	 * @param startDate
+	 *            The date on which the item start
+	 * @param endDate
+	 * 			  The date on which the item ends
 	 * @param descriprtion
 	 *            The description of the item
 	 * @param planId
@@ -711,12 +703,13 @@ public class Plans extends CRUD {
 	 *            The checkbox value that checks whether the user wants to add
 	 *            another item or not
 	 */
-	public static void add(int startDay, int startMonth, int startYear,
-			int endDay, int endMonth, int endYear, String description,
+	public static void add(String startDate, String endDate, String description,
 			long planId, String summary, String check) {
+		Date sd = new Date(startDate);
+		Date ed = new Date(endDate);
 		Plan plan = Plan.findById(planId);
-		plan.addItem(new Date(startYear - 1900, startMonth, startDay),
-				new Date(endYear - 1900, endMonth, endDay), description,
+		plan.addItem(sd,
+				ed, description,
 				summary);
 		if (check != null && check.equals("checked")) {
 			addItem(plan.id);
