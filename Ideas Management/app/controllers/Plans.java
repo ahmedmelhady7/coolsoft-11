@@ -885,18 +885,10 @@ public class Plans extends CRUD {
 	 * 
 	 * @author Hassan Ziko
 	 * 
-	 * @param startDay
-	 *            The day on which the item starts
-	 * @param startMonth
-	 *            The month when the item starts
-	 * @param startYear
-	 *            The year when the item starts
-	 * @param endDay
-	 *            The day on which the item ends
-	 * @param endMonth
-	 *            The month when the item ends
-	 * @param endYear
-	 *            The year when the item ends
+	 * @param startDate
+	 *            The date on which the item starts
+	 * @param endDate
+	 * 			  The date on which the item ends
 	 * @param description
 	 *            The description of the item
 	 * @param planId
@@ -907,12 +899,13 @@ public class Plans extends CRUD {
 	 *            The id of the item being edit
 	 */
 
-	public static void edit2(int startDay, int startMonth, int startYear,
-			int endDay, int endMonth, int endYear, String description,
+	public static void edit2(String startDate, String endDate, String description,
 			long planId, String summary, long itemId) {
+		Date sd = new Date(startDate);
+		Date ed = new Date(endDate);
 		Item item = Item.findById(itemId);
-		item.startDate = new Date(startYear - 1900, startMonth, startDay);
-		item.endDate = new Date(endYear - 1900, endMonth, endDay);
+		item.startDate = sd;
+		item.endDate = ed;
 		item.description = description;
 		item.summary = summary;
 		item.save();
