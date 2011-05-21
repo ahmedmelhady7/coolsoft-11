@@ -22,11 +22,11 @@
 Ideas associated to this plan:
 </span>
 <br/>
-<ul style="list-style: none; ">
+
     #{list items:ideas, as:'idea'}
-    <li id = "idea_${idea.id}">
+    <div id = "idea_${idea.id}">
     	<script type="text/javascript"> count = count+1;   </script>
-        <fieldset style="width:650px;">
+        <fieldset style="width:600px;">
             <legend>
                 Title: ${idea.title}
             </legend>
@@ -46,15 +46,11 @@ Ideas associated to this plan:
 			<input type="button" value="remove from plan" onclick="submit(${idea.id}, ${p.id})"/>
        		#{/if}
 	    </fieldset>
-    </li>#{/list}
-</ul> #{/if}
+    </div>#{/list}
+#{/if}
 #{else}
 There are no ideas associated to this plan
 #{/else}
-#{if canIdea == 1}
-<form action="@{Plans.addIdea()}" method="post">
-    <input type = "hidden" name = "planId" value = ${p.id}><input type="submit" value="Associate ideas to this plan">
-</form>
-#{/if}
+
 <a href="@{Plans.viewAsList(p.id)}">Go back to plan</a>
 

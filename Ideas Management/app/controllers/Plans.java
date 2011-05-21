@@ -58,11 +58,11 @@ public class Plans extends CRUD {
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
 		globalListOfTags = Tag.findAll();
 		boolean checkNotRated;
-		if(p.usersRated.contains(user))
+		if (p.usersRated.contains(user))
 			checkNotRated = false;
 		else
 			checkNotRated = true;
-		
+
 		if (Users
 				.isPermitted(
 						user,
@@ -78,11 +78,11 @@ public class Plans extends CRUD {
 				canEdit = 1;
 			}
 
-				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
-						"topic")) {
+			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+					"topic")) {
 
-					canDelete = true;
-				}
+				canDelete = true;
+			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -96,21 +96,21 @@ public class Plans extends CRUD {
 
 				canIdea = 1;
 			}
-			
+
 			for (int i = 0; i < globalListOfTags.size(); i++) {
 				if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
-						|| p.topic.entity.organization
-								.equals(globalListOfTags.get(i).createdInOrganization)) {
-					listOfTags+=globalListOfTags.get(i)+"|";
+						|| p.topic.entity.organization.equals(globalListOfTags
+								.get(i).createdInOrganization)) {
+					listOfTags += globalListOfTags.get(i) + "|";
 				}
 			}
 			List<MainEntity> entitiesList = p.topic.entity.organization.entitiesList;
 			render(p, itemsList, user, canAssign, canEdit, canView, canDelete,
-					isOrganizer, canIdea, comments, entitiesList,listOfTags);
+					isOrganizer, canIdea, comments, entitiesList, listOfTags);
 		} else {
 			canView = false;
 			System.out.println("he is not allowed to view");
-			render(p,itemsList, user, canAssign, canEdit, canView, canDelete,
+			render(p, itemsList, user, canAssign, canEdit, canView, canDelete,
 					isOrganizer, canIdea);
 		}
 
@@ -163,7 +163,7 @@ public class Plans extends CRUD {
 	}
 
 	/**
-	 * This Method renders the page addItem where the user selects the ideas
+	 * This Method renders the page addIdea where the user selects the ideas
 	 * that will be promoted to execution in the plan
 	 * 
 	 * @story C5S4
@@ -171,7 +171,7 @@ public class Plans extends CRUD {
 	 * @author Salma Osama
 	 * 
 	 * @param planId
-	 *            The ID of the topic that this action plan is based upon
+	 *            The id of the plan that the ideas will be associated to
 	 */
 	public static void addIdea(long planId) {
 		User user = Security.getConnected();
@@ -200,11 +200,11 @@ public class Plans extends CRUD {
 				canEdit = 1;
 			}
 
-				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
-						"topic")) {
+			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+					"topic")) {
 
-					canDelete = true;
-				}
+				canDelete = true;
+			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -225,15 +225,16 @@ public class Plans extends CRUD {
 			}
 		}
 
-		render(ideas, topic, p, user, canEdit, canView, isOrganizer, canIdea,canDelete,
-				canAssign);
+		render(ideas, topic, p, user, canEdit, canView, isOrganizer, canIdea,
+				canDelete, canAssign);
 
 	}
 
 	/**
 	 * This Method associates the list of selected ideas to the plan and
 	 * increments the community contribution counter of the authors of these
-	 * plans
+	 * plans and then calls the planView method that renders the list of ideas
+	 * promoted to execution
 	 * 
 	 * @story C5S4
 	 * 
@@ -242,7 +243,8 @@ public class Plans extends CRUD {
 	 * @param checkedIdeas
 	 *            The list of ideas selected to be associated to the plan
 	 * @param planId
-	 *            The ID of the topic that this action plan is based upon
+	 *            The id of the plan that the selected ideas will be associated
+	 *            to
 	 */
 	public static void selectedIdeas(long[] checkedIdeas, long planId) {
 		Plan plan = Plan.findById(planId);
@@ -274,38 +276,6 @@ public class Plans extends CRUD {
 
 		planView(planId);
 
-	}
-
-	public static List<Plan> planList(String type, long id) {
-		User user = Security.getConnected();
-		List<Plan> plans = new ArrayList<Plan>();
-		if (type == "entity") {
-			MainEntity entity = MainEntity.findById(id);
-			List<Topic> topics = entity.topicList;
-			for (int i = 0; i < topics.size(); i++) {
-				if (topics.get(i).plan != null
-						&& Users.isPermitted(user, "view", topics.get(i).id,
-								"topic")) {
-					plans.add(topics.get(i).plan);
-				}
-			}
-		} else {
-			Organization organization = Organization.findById(id);
-			List<MainEntity> entities = organization.entitiesList;
-			MainEntity entity;
-			for (int i = 0; i < entities.size(); i++) {
-				entity = entities.get(i);
-				List<Topic> topics = entity.topicList;
-				for (int j = 0; j < topics.size(); j++) {
-					if (topics.get(j).plan != null
-							&& Users.isPermitted(user, "view",
-									topics.get(j).id, "topic")) {
-						plans.add(topics.get(j).plan);
-					}
-				}
-			}
-		}
-		return(plans);
 	}
 
 	/**
@@ -344,11 +314,11 @@ public class Plans extends CRUD {
 				canEdit = 1;
 			}
 
-				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
-						"topic")) {
+			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+					"topic")) {
 
-					canDelete = true;
-				}
+				canDelete = true;
+			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -365,8 +335,8 @@ public class Plans extends CRUD {
 		}
 		List<Idea> ideas = p.ideas;
 
-		render(ideas, p, user, canEdit, canView, isOrganizer, canIdea,canDelete,
-				canAssign);
+		render(ideas, p, user, canEdit, canView, isOrganizer, canIdea,
+				canDelete, canAssign);
 	}
 
 	/**
@@ -404,6 +374,56 @@ public class Plans extends CRUD {
 		Log.addUserLog(logDescription, idea.author, plan, idea,
 				plan.topic.entity.organization);
 
+	}
+
+	/**
+	 * This method returns the list of plans that belongs to a certain organization or entity
+	 * which is determined by the parameter type give the id of the organization
+	 * or entity
+	 * 
+	 * @story C5S18
+	 * 
+	 * @author Salma Osama
+	 * 
+	 * @param type
+	 *            the type of the place from which the method gets the list of
+	 *            plans it could be either organization or entity
+	 * @param id
+	 *            the id of the organization or entity that the methods returns
+	 *            the list of plans that belongs to it
+	 *        
+	 *@return List<Plan>
+	 */
+	public static List<Plan> planList(String type, long id) {
+		User user = Security.getConnected();
+		List<Plan> plans = new ArrayList<Plan>();
+		if (type == "entity") {
+			MainEntity entity = MainEntity.findById(id);
+			List<Topic> topics = entity.topicList;
+			for (int i = 0; i < topics.size(); i++) {
+				if (topics.get(i).plan != null
+						&& Users.isPermitted(user, "view", topics.get(i).id,
+								"topic")) {
+					plans.add(topics.get(i).plan);
+				}
+			}
+		} else {
+			Organization organization = Organization.findById(id);
+			List<MainEntity> entities = organization.entitiesList;
+			MainEntity entity;
+			for (int i = 0; i < entities.size(); i++) {
+				entity = entities.get(i);
+				List<Topic> topics = entity.topicList;
+				for (int j = 0; j < topics.size(); j++) {
+					if (topics.get(j).plan != null
+							&& Users.isPermitted(user, "view",
+									topics.get(j).id, "topic")) {
+						plans.add(topics.get(j).plan);
+					}
+				}
+			}
+		}
+		return (plans);
 	}
 
 	/**
@@ -579,8 +599,8 @@ public class Plans extends CRUD {
 
 	/**
 	 * This method takes the parameters from the web page of the plan creation
-	 * to instantiate a plan object, it also sends a notification to the organizers of the topic
-	 * and then calls a method to view the plan as alist
+	 * to instantiate a plan object, it also sends a notification to the
+	 * organizers of the topic and then calls a method to view the plan as alist
 	 * 
 	 * @story C5S1
 	 * 
@@ -593,7 +613,7 @@ public class Plans extends CRUD {
 	 * @param startDate
 	 *            The date when the plan will start
 	 * @param endDate
-	 * 			  The date when the plan will end
+	 *            The date when the plan will end
 	 * @param description
 	 *            The description of the plan
 	 * @param topicId
@@ -609,8 +629,7 @@ public class Plans extends CRUD {
 		Topic topic = Topic.findById(topicId);
 		Date sd = new Date(startDate);
 		Date ed = new Date(endDate);
-		Plan p = new Plan(title, user, sd, ed,
-				description, topic, requirement);
+		Plan p = new Plan(title, user, sd, ed, description, topic, requirement);
 		System.out.println("creation of the plan");
 		p.save();
 		List<User> topicOrganizers = p.topic.getOrganizer();
@@ -687,11 +706,11 @@ public class Plans extends CRUD {
 				canEdit = 1;
 			}
 
-				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
-						"topic")) {
+			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+					"topic")) {
 
-					canDelete = true;
-				}
+				canDelete = true;
+			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -707,7 +726,8 @@ public class Plans extends CRUD {
 			}
 		}
 
-		render(p, user, canEdit, canView, isOrganizer, canIdea, canAssign,canDelete);
+		render(p, user, canEdit, canView, isOrganizer, canIdea, canAssign,
+				canDelete);
 	}
 
 	/**
@@ -721,7 +741,7 @@ public class Plans extends CRUD {
 	 * @param startDate
 	 *            The date on which the item start
 	 * @param endDate
-	 * 			  The date on which the item ends
+	 *            The date on which the item ends
 	 * @param descriprtion
 	 *            The description of the item
 	 * @param planId
@@ -733,14 +753,12 @@ public class Plans extends CRUD {
 	 *            The checkbox value that checks whether the user wants to add
 	 *            another item or not
 	 */
-	public static void add(String startDate, String endDate, String description,
-			long planId, String summary, String check) {
+	public static void add(String startDate, String endDate,
+			String description, long planId, String summary, String check) {
 		Date sd = new Date(startDate);
 		Date ed = new Date(endDate);
 		Plan plan = Plan.findById(planId);
-		plan.addItem(sd,
-				ed, description,
-				summary);
+		plan.addItem(sd, ed, description, summary);
 		if (check != null && check.equals("checked")) {
 			addItem(plan.id);
 		} else {
@@ -789,11 +807,11 @@ public class Plans extends CRUD {
 				canEdit = 1;
 			}
 
-				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
-						"topic")) {
+			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+					"topic")) {
 
-					canDelete = true;
-				}
+				canDelete = true;
+			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -808,7 +826,8 @@ public class Plans extends CRUD {
 				canIdea = 1;
 			}
 		}
-		render(p, user, canEdit, canView, isOrganizer, canIdea,canDelete, canAssign);
+		render(p, user, canEdit, canView, isOrganizer, canIdea, canDelete,
+				canAssign);
 	}
 
 	/**
@@ -841,7 +860,7 @@ public class Plans extends CRUD {
 	 * @param startDate
 	 *            The date on which the plan starts
 	 * @param endDate
-	 * 			  The date on which the plan ends
+	 *            The date on which the plan ends
 	 * @param description
 	 *            The description of the plan
 	 * @param requirement
@@ -849,7 +868,7 @@ public class Plans extends CRUD {
 	 * @param planId
 	 *            The id of the plan being edit
 	 */
-	public static void edit(String title,String startDate, String endDate,
+	public static void edit(String title, String startDate, String endDate,
 			String description, String requirement, long planId) {
 		Date sd = new Date(startDate);
 		Date ed = new Date(endDate);
@@ -888,7 +907,7 @@ public class Plans extends CRUD {
 	 * @param startDate
 	 *            The date on which the item starts
 	 * @param endDate
-	 * 			  The date on which the item ends
+	 *            The date on which the item ends
 	 * @param description
 	 *            The description of the item
 	 * @param planId
@@ -899,8 +918,8 @@ public class Plans extends CRUD {
 	 *            The id of the item being edit
 	 */
 
-	public static void edit2(String startDate, String endDate, String description,
-			long planId, String summary, long itemId) {
+	public static void edit2(String startDate, String endDate,
+			String description, long planId, String summary, long itemId) {
 		Date sd = new Date(startDate);
 		Date ed = new Date(endDate);
 		Item item = Item.findById(itemId);
@@ -926,17 +945,21 @@ public class Plans extends CRUD {
 	}
 
 	/**
-	 * This methods deletes an item from the item list of a plan
+	 * This methods deletes an item and from the item list of a plan and delete
+	 * all its volunteer requests and assign requests given the item id and the
+	 * variable that to indicate whether to notify or not
 	 * 
-	 * @story C5S3
+	 * @story C5S19
 	 * 
-	 * @author Hassan Ziko
-	 * 
-	 * @param planId
-	 *            The id of the plan that contains the item
+	 * @author Salma Osama
 	 * 
 	 * @param itemId
 	 *            The id of the item being deleted
+	 * @param notify
+	 *            variable to indicate whether to send notifications to the
+	 *            assigned users and topic organizers or not
+	 * 
+	 * @return boolean
 	 */
 	public static boolean deleteItem(long itemId, int notify) {
 		User user = Security.getConnected();
@@ -984,7 +1007,9 @@ public class Plans extends CRUD {
 	}
 
 	/**
-	 * This methods deletes a plan given the plan id
+	 * This methods deletes a plan with all its items and comments of the plan
+	 * and sends notifications to all the users working on items in the plan and
+	 * the plan's topic organizers given the plan id
 	 * 
 	 * @story C5S2
 	 * 
@@ -993,6 +1018,7 @@ public class Plans extends CRUD {
 	 * @param planId
 	 *            The id of the plan that will be deleted
 	 * 
+	 * @return boolean
 	 */
 	public static boolean deletePlan(long planId) {
 		User user = Security.getConnected();
@@ -1001,7 +1027,7 @@ public class Plans extends CRUD {
 		String notificationMsg = "The plan " + plan.title + " has been deleted";
 		for (Item item : plan.items) {
 			for (User user1 : item.assignees) {
-				if (!toBeNotified.contains(user1)) {
+				if (!toBeNotified.contains(user1) && user.id!=user1.id) {
 					toBeNotified.add(user1);
 					Notifications.sendNotification(user1.id, plan.topic.id,
 							"topic", notificationMsg);
@@ -1009,7 +1035,7 @@ public class Plans extends CRUD {
 			}
 		}
 		for (User organizer : plan.topic.getOrganizer()) {
-			if (!toBeNotified.contains(organizer)) {
+			if (!toBeNotified.contains(organizer)&& user.id!=organizer.id) {
 				toBeNotified.add(organizer);
 				Notifications.sendNotification(organizer.id, plan.topic.id,
 						"topic", notificationMsg);
@@ -1061,8 +1087,7 @@ public class Plans extends CRUD {
 		String logDescription = "User " + user.firstName + " " + user.lastName
 				+ " deleted the plan " + plan.title + " of the topic "
 				+ topic.title;
-		Log.addUserLog(logDescription, user, topic,
-				topic.entity.organization);
+		Log.addUserLog(logDescription, user, topic, topic.entity.organization);
 		plan.delete();
 		System.out.println("the plan has been deletd");
 		return true;
@@ -1109,11 +1134,11 @@ public class Plans extends CRUD {
 				canEdit = 1;
 			}
 
-				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
-						"topic")) {
+			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+					"topic")) {
 
-					canDelete = true;
-				}
+				canDelete = true;
+			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -1218,8 +1243,8 @@ public class Plans extends CRUD {
 		out.close();
 
 		boolean timeline = true;
-		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea,canDelete,
-				canAssign, timeline);
+		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea,
+				canDelete, canAssign, timeline);
 
 	}
 
@@ -1261,11 +1286,11 @@ public class Plans extends CRUD {
 				canEdit = 1;
 			}
 
-				if (Users.isPermitted(user, "delete an action plan", p.topic.id,
-						"topic")) {
+			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+					"topic")) {
 
-					canDelete = true;
-				}
+				canDelete = true;
+			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
 					p.topic.id, "topic")) {
@@ -1280,8 +1305,8 @@ public class Plans extends CRUD {
 			}
 		}
 
-		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea,canDelete,
-				canAssign);
+		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea,
+				canDelete, canAssign);
 
 	}
 
@@ -1299,7 +1324,7 @@ public class Plans extends CRUD {
 	 * 
 	 * @param entityId
 	 *            the id of the entity
-	 *            
+	 * 
 	 * @return boolean
 	 */
 	public static boolean relateToEntity(long itemId, long entityId) {
@@ -1328,7 +1353,7 @@ public class Plans extends CRUD {
 	 * 
 	 * @param itemId
 	 *            the id of the item
-	 *            
+	 * 
 	 * @return boolean
 	 */
 	public static boolean removeItemEntityRelation(long itemId) {
@@ -1341,11 +1366,12 @@ public class Plans extends CRUD {
 		item.save();
 		return true;
 	}
+
 	/**
-	 * This method first checks if the user is allowed to edit in the plan so he can tag the item, searches
-	 * for the tag in the global list of tags, if found it checks if
-	 * the item had the same tag already or add the new one to the list if not
-	 * it creates a new tag, save it and add it to the list 
+	 * This method first checks if the user is allowed to edit in the plan so he
+	 * can tag the item, searches for the tag in the global list of tags, if
+	 * found it checks if the item had the same tag already or add the new one
+	 * to the list if not it creates a new tag, save it and add it to the list
 	 * 
 	 * @author Yasmine Elsayed
 	 * 
@@ -1360,10 +1386,8 @@ public class Plans extends CRUD {
 	 */
 	public static void tagItem(long itemId, String tag) {
 
-	
-
 		boolean tagAlreadyExists = false;
-		boolean newTag= false;
+		boolean newTag = false;
 		List<Tag> listOfTags = new ArrayList<Tag>();
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
 		globalListOfTags = Tag.findAll();
@@ -1373,46 +1397,42 @@ public class Plans extends CRUD {
 		Plan plan = item.plan;
 		MainEntity entity = plan.topic.entity;
 
-				for (int i = 0; i < globalListOfTags.size(); i++) {
-					if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
-							|| plan.topic.entity.organization
-									.equals(globalListOfTags.get(i).createdInOrganization)) {
-						listOfTags.add(globalListOfTags.get(i));
-					}
-				}
-				
-				for (int i = 0; i < listOfTags.size(); i++) {
-					if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
-						if (!item.tags.contains(listOfTags.get(i))) {
-							item.tags.add(listOfTags.get(i));
-							listOfTags.get(i).taggedItems.add(item);
-							listOfTags.get(i).save();
-							System.out.println("existing tag added");
-							
-							
-						} else {
-							// tag already exists error message
-							System.out.println("tag already exists");
-							tagAlreadyExists = true;
-						}
-						newTag=true;;
-					}
-				}
+		for (int i = 0; i < globalListOfTags.size(); i++) {
+			if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
+					|| plan.topic.entity.organization.equals(globalListOfTags
+							.get(i).createdInOrganization)) {
+				listOfTags.add(globalListOfTags.get(i));
+			}
+		}
 
-				if (newTag) {
-					Tag temp = new Tag(tag,
-							plan.topic.entity.organization, user);
-					item.tags.add(temp);
-					temp.taggedItems.add(item);
-					temp.save();
-					System.out.println("new tag created and added");
-				}
+		for (int i = 0; i < listOfTags.size(); i++) {
+			if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
+				if (!item.tags.contains(listOfTags.get(i))) {
+					item.tags.add(listOfTags.get(i));
+					listOfTags.get(i).taggedItems.add(item);
+					listOfTags.get(i).save();
+					System.out.println("existing tag added");
 
-				
-	
-		
+				} else {
+					// tag already exists error message
+					System.out.println("tag already exists");
+					tagAlreadyExists = true;
+				}
+				newTag = true;
+				;
+			}
+		}
+
+		if (newTag) {
+			Tag temp = new Tag(tag, plan.topic.entity.organization, user);
+			item.tags.add(temp);
+			temp.taggedItems.add(item);
+			temp.save();
+			System.out.println("new tag created and added");
+		}
+
 		item.save();
-		
+
 	}
 
 }

@@ -43,11 +43,11 @@ You have already rated this plan
 <br>
 To-do items: 
 <br>
-<ul style="list-style: none; ">
+
     #{list items:itemsList, as:'item'}
-    <li id = "listItem_${item.id}">
+    <div id = "listItem_${item.id}">
         <br/>
-        <fieldset style="width:650px;">
+        <fieldset style="width:600px;">
             <legend>
                 <h2>
                 ${item.summary}
@@ -99,30 +99,20 @@ To-do items:
             <br/>
             #{/if}
 			 #{if canEdit == 1}
-			 <form onsubmit=$('item.id'); method="post">
+			 <form action="@{Plans.tagItem(item.id,tag)}" method="post">
                     <input type="hidden" id='tags' name="tags" value="${listOfTags}">Tag the item
                     <br>
                     Tag: <input type="text" id="tag" name="tag" autoComplete="group"/>
-                    <br> 
+                    <input type="submit" value="Tag"/>
+						</form>
 			  #{/if}
 			  <script language="javascript" type="text/javascript">
-                        var a = document.getElementById('listOfTags');
+                        var a = document.getElementById('tags');
                         b = a.value + "";
                         c = b.split("|");
                         autoComplete.Set("group", c);
                     </script>
-					
-			 <form action="@{Plans.tagItem(item.id,tag)}" method="post">
-					<input type="submit" value="Tag"/>
-				 #{if tagAlreadyExists == true}	
-				 alert('tag already exists');
-				 #{else newTag==true}
-				 alert('New Tag is created');
-				 #{/else}
-				   #{/if}
-				  
-					
-			</form>
+
             #{if isOrganizer == true}  
             #{if item.isRelatedToEntity() == true} 
             <div id = "removeEntity_${item.id}">
@@ -158,8 +148,7 @@ To-do items:
             <div id = "item_${item.id}" class = "req">
                 Please state why you want to work on this item.
                 <br/>
-                <textarea id = "text_${item.id}" rows="7" cols="50">
-                </textarea>
+                <textarea id = "text_${item.id}" rows="7" cols="50"></textarea>
                 <span>
                     <font color="Red">
                         *
@@ -176,9 +165,9 @@ To-do items:
 				</script>
             #{/if}
         </fieldset>
-    </li>
+    </div>
     #{/list}
-</ul>
+
 
 #{/if}  
 #{else} 
@@ -218,17 +207,19 @@ ${p.topic.getOrganizer().get(0).username}
                 			});
                 			$("#item_" + id).hide();
 							$('#pend_' + id).show();
-                			//document.getElementById("label_" + id).innerHTML = "pending volunteer request" + " <input type = \"button\" value =\"Cancel request\" onclick=\"cancelReq(${item.id});\">";	
+                			
                 		}	
                 	}	
                 	
 					function cancelReq(id) {
-				     var r = confirm("Are You sure you want to cancel your request?");
-                		if (r == true) {
+				    // var r = confirm("Are You sure you want to cancel your request?");
+                		//if (r == true) {
                 			$.post('@{cancelVolunteerRequest()}', {itemId: id});
-                			$('#vr_' + id).show();	
+                			
 							$('#pend_' + id).hide();
-                		}
+								$("#button_" + id).show();
+								$("#vr_" + id).show();
+                		//}
 					}
                 		
                 		function cancel(id) {

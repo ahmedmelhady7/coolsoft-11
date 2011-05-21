@@ -110,10 +110,15 @@ public class Plan extends CoolModel {
 
 		this.items = new ArrayList<Item>();
 		this.ideas = new ArrayList<Idea>();
-		this.topic = topic;
+		
 		this.rating = "Not yet rated";
 		this.commentsList = new ArrayList<Comment>();
 		this.usersRated = new ArrayList<User>();
+		this.save();
+		this.topic = topic;
+		topic.plan = this;
+		topic.save();
+		this.save();
 
 	}
 
@@ -184,15 +189,20 @@ public class Plan extends CoolModel {
 	
 	public String calculateProgress() {
 		double sum = 0;
+		String s = "";
+		if(!items.isEmpty()) {
 		for (Item item : items) {
 			sum += item.status;
 		}
 		double p = sum / (2 * items.size()) * 100;
-		String s = "" + p;
+		 s = s + p;
 		if(s.length()>=4) {
 		s = s.substring(0,4);
 		if(s.endsWith("."))
 			s = s.substring(0,3);
+		}
+		} else {
+			s = "0";
 		}
 		s +=  "%";
 		return s;
