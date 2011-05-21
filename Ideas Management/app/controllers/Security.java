@@ -137,7 +137,8 @@ public class Security extends Secure.Security {
 			flash.error("You must answer the security question!");
 			Security.checkUsername(username);
 		}
-		if(answer.equalsIgnoreCase("rogerfederer")) {
+		String userAnswer = user.answer;
+		if(answer.equalsIgnoreCase(userAnswer)) {
 			// should send a generated password by mail
 			String newPassword = generatePassword();
 			user.password = newPassword;

@@ -46,6 +46,11 @@ public class User extends CoolModel {
 	public String country;
 	public Date dateofBirth;
 	public int communityContributionCounter;
+	/**
+	 * Added by Ahmed Maged
+	 */
+	public String securityQuestion;
+	public String answer;
 	// added to know whether a user is an Admin or not
 	public boolean isAdmin;
 	/**
@@ -209,7 +214,7 @@ public class User extends CoolModel {
 	 * @author Mostafa Ali
 	 */
 	public User(String email, String username, String password,
-			String firstName, String lastName,
+			String firstName, String lastName, String securityQuestion, String answer,
 			int communityContributionCounter, Date dateofBirth, String country,
 			String profession) {
 		this.email = email;
@@ -217,6 +222,8 @@ public class User extends CoolModel {
 		this.password = password;
 		this.firstName = firstName;
 		this.communityContributionCounter = communityContributionCounter;
+		this.securityQuestion = securityQuestion;
+		this.answer = answer;
 		this.dateofBirth = dateofBirth;
 		this.country = country;
 		this.lastName = lastName;
