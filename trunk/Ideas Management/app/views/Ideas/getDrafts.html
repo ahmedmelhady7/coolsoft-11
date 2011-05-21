@@ -30,14 +30,19 @@
 			   <fieldset>
                		<legend>
                			#{form @Topics.editDraft(), method:'POST', enctype:'multipart/form-data' }
-							<input type = "hidden" name = "topicId" value = ${topicId}>
-							<input type="submit" value="Edit Topic" />
-						#{/form}
+							<input type = "hidden" name = "topicId" value = ${draftTopic.getId()}>
+							<input type="submit" value="Edit" />
+						#{/form} 
+						
                		</legend>
 				<p>Title: ${draftTopic.title}</p>	
 				<p>Description: <br>
 				${draftTopic.description}
 				</p>
+				PrivacyLevel: ${draftTopic.privacyLevel}
+				<br>
+				CreateRelationship: ${draftTopic.createRelationship}
+				<br>
 				</fieldset>
                 </li>
 				
