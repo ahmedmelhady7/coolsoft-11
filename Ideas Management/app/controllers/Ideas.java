@@ -1003,8 +1003,16 @@ public class Ideas extends CRUD {
 
 		ideaToKeep.save();
 		targetTopic.save();
-
-		redirect("/topics/show?topicId=" + topicId);
+		
+		
+		System.out.println("about to render");
+		//redirect("/ideas/list");
+		//redirect("/topics/show?topicId=" + topicId);
+		System.out.println("just rendered");
+		//redirect("topics.show", topicId);
+		
+		
+		
 	}
 
 	/**
