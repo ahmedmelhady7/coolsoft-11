@@ -464,16 +464,17 @@ public class Users extends CRUD {
 		System.out.println("hadiiiiiiiiiiiiiiii");
 		Topic topic = Topic.findById(topicId);
 		User reporter = Security.getConnected();
-		System.out.println(reporter.id);
+		topic.reporters+=reporter.id+",";
+		System.out.println(reporter+" howa da ");
 //		reporter.topicsReported.add(topic);
-		reporter.save();
 //		topic.reporters.add(reporter);
-		topic.save();
+//		System.out.println(topic.reporters.get(0).toString());
 		// for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
-		Mail.reportTopicMail(/* dee 3'lt */topic.creator, reporter, topic,
-				topic.description, topic.title);
+		Mail.reportTopicMail(topic.creator, reporter, topic, topic.description, topic.title);
 		// }
-		// System.out.println(topic.reporters.toString());
+		topic.save();
+		reporter.save();
+//		System.out.println(reporter.ideasReported.get(0).toString());
 		TopicSpamView(topicId);
 
 	}
@@ -494,10 +495,10 @@ public class Users extends CRUD {
 		boolean alreadyReported = false;
 		Topic topic = Topic.findById(topicId);
 		User reporter = Security.getConnected();
-//		for (int i = 0; i < topic.reporters.size(); i++) {
-//			if (reporter.username.equals(topic.reporters.get(i).username))
-//				alreadyReported = true;
-//		}
+		// for (int i = 0; i < topic.reporters.size(); i++) {
+		// if (reporter.username.equals(topic.reporters.get(i).username))
+		// alreadyReported = true;
+		// }
 		redirect("/topics/show?topicId=" + topic.getId(), alreadyReported);
 		// render(alreadyReported);
 	}
@@ -1081,15 +1082,13 @@ public class Users extends CRUD {
 			entity = topic.entity;
 			organization = entity.organization;
 			enrolled = UserRoleInOrganization
-			.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? and uro.role = ? and uro.entityTopicID = ? and type = ?",
-					organization, role, entityTopicId, type).fetch();
-		}
-		else{
+					.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? and uro.role = ? and uro.entityTopicID = ? and type = ?",
+							organization, role, entityTopicId, type).fetch();
+		} else {
 			enrolled = UserRoleInOrganization
-			.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? and uro.role = ? ",
-					organization, role).fetch();
+					.find("select uro.enrolled from UserRoleInOrganization uro where uro.organization = ? and uro.role = ? ",
+							organization, role).fetch();
 		}
-
 
 		for (int i = 0; i < enrolled.size(); i++) {
 			if (enrolled.get(i).state.equals("a")) {
@@ -1627,8 +1626,6 @@ public class Users extends CRUD {
 		List<NotificationProfile> npList = user.notificationProfiles;
 		render(user, npList);
 	}
-	
-	
 
 	/**
 	 * Deletes the notifications of the users which he checked from the

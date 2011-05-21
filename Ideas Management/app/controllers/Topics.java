@@ -203,6 +203,8 @@ public class Topics extends CRUD {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
 		Idea idea = new Idea(title, description, user, topic);
+		topic.ideas.add(idea);
+		topic.save();
 		user.communityContributionCounter++;
 		user.save();
 		idea.save();
@@ -789,22 +791,33 @@ public class Topics extends CRUD {
 					alreadyReported = true;
 			}
 		}
+		ArrayList<User> reporters = new ArrayList<User>();
+		String[] reportersId = { "" };
+		if (!targetTopic.reporters.isEmpty())
+			reportersId = targetTopic.reporters.split(",");
+		User reporter = Security.getConnected();
+		long reporterId = 0;
+		for (int i = 0; i < reportersId.length
+				&& !targetTopic.reporters.isEmpty(); i++) {
+			reporterId = Integer.parseInt(reportersId[i]);
+			if (reporterId == reporter.id) {
+				reporters.add(reporter);
+			}
+		}
 
-//		 for (int i = 0; i < targetTopic.reporters.size()
-//		 || i < actor.topicsReported.size(); i++) {
-//		 if (targetTopic.reporters.size() > 0
-//		 && (actor.toString().equals(
-//		 targetTopic.reporters.get(i).toString()) || targetTopic
-//		 .toString().equals(
-//		 actor.topicsReported.get(i).toString()))) {
-//		 alreadyReportedTopic = true;
-//		 System.out
-//		 .println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
-//		
-//		 } else
-//		 alreadyReportedTopic = false;
-//		
-//		 }
+		for (int i = 0; i < reporters.size(); i++) {
+			System.out.println(reporters.get(i).toString());
+			System.out.println("gowa el loop");
+			System.out.println("Ana meen ?! " + reporter.toString());
+			System.out.println(alreadyReportedTopic);
+			if (reporter.toString().equals(reporters.get(i).toString())) {
+				alreadyReportedTopic = true;
+				System.out
+						.println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
+				break;
+			} else
+				alreadyReportedTopic = false;
+		}
 
 		int allowed = 0;
 		for (int k = 0; k < ideas.size(); k++) {
@@ -1632,11 +1645,11 @@ public class Topics extends CRUD {
 	 * @author Mostafa Aboul Atta
 	 * 
 	 * @param title
-	 * 			: The title of the topic
+	 *            : The title of the topic
 	 * @param description
-	 * 			: the description of the topic
+	 *            : the description of the topic
 	 * @param entityId
-	 * 			: the id
+	 *            : the id
 	 */
 	public static void createDraft(String title, String description, 
 		int privacyLevel, boolean createRelationship, long entityId) {
@@ -1649,9 +1662,9 @@ public class Topics extends CRUD {
 				privacyLevel, user, targetEntity, createRelationship, isDraft);
 		
 		draftTopic.save();
-	
+		
 	}
-	
+
 	/**
 	 * @description publish a topic
 	 * 
@@ -1662,30 +1675,30 @@ public class Topics extends CRUD {
 	 * @param topicId
 	 *            the id of the topic
 	 *            
- 	 * @param title
+	 * @param title
 	 *            the title of the topic
 	 * 
 	 * @param description
 	 *            the description of the topic
-	 *            
+	 *		      
 	 * @param privacyLevel
-	 * 			  the privacy level of the topic
+	 *            the privacy level of the topic
 	 * 
 	 * @param createRelationship
-	 * 			  can the relationships be created
+	 *            can the relationships be created
 	 */
 
-	public static void saveDraft(long topicIdId, String title, String description,
-			int privacyLevel, boolean createRelationship) {
-		
+	public static void saveDraft(long topicIdId, String title,
+			String description, int privacyLevel, boolean createRelationship) {
+
 		Topic targetTopic = Topic.findById(topicIdId);
-		
+
 		targetTopic.title = title;
 		targetTopic.description = description;
 		targetTopic.privacyLevel = privacyLevel;
 		targetTopic.createRelationship = createRelationship;
 		targetTopic.intializedIn = new Date();
-		
+
 		targetTopic.save();
 	}
 
@@ -1695,59 +1708,55 @@ public class Topics extends CRUD {
 	 * @author Mostafa Aboul Atta
 	 * 
 	 * @story C3S23
-	 *  
+	 * 
 	 * @param topicId
 	 *            the id of the topic
-	 *            
- 	 * @param title
+	 * 
+	 * @param title
 	 *            the title of the topic
 	 * 
 	 * @param description
 	 *            the description of the topic
-	 *            
+	 * 
 	 * @param privacyLevel
-	 * 			  the privacy level of the topic
+	 *            the privacy level of the topic
 	 * 
 	 * @param createRelationship
-	 * 			  can the relationships be created
+	 *            can the relationships be created
 	 */
 
-	public static void postDraftTopic(long topicIdId, String title, String description,
-			int privacyLevel, boolean createRelationship) {
+	public static void postDraftTopic(long topicIdId, String title,
+			String description, int privacyLevel, boolean createRelationship) {
 
 		Topic targetTopic = Topic.findById(topicIdId);
-		
-		saveDraft(topicIdId, title, description,
-				 privacyLevel, createRelationship);
-		
+
+		saveDraft(topicIdId, title, description, privacyLevel,
+				createRelationship);
+
 		targetTopic.isDraft = false;
 		targetTopic.save();
 	}
 
-
-	
 	/**
-	 * @description 
-	 * 		This method renders to editing a draft page
+	 * @description This method renders to editing a draft page
 	 * 
 	 * @author Mostafa Aboul Atta
 	 * 
 	 * @story C3S23
 	 * 
 	 * @param topicId
-	 * 		Id of the draft topic to be edited
+	 *            Id of the draft topic to be edited
 	 */
 
 	public static void editDraft(long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
-		//User actor = Security.getConnected();
-		
+		// User actor = Security.getConnected();
+
 		render(targetTopic);
 	}
 
 	/**
-	 * @description 
-	 * 		This method shows the draft Topics of the connected user
+	 * @description This method shows the draft Topics of the connected user
 	 * 
 	 * @author Mostafa Aboul Atta
 	 * 
@@ -1757,32 +1766,31 @@ public class Topics extends CRUD {
 
 	public static void getDraftTopics() {
 
-		//User actor = Security.getConnected();
+		// User actor = Security.getConnected();
 
 		List<Topic> draftTopics = new ArrayList<Topic>();
 		List<Topic> allTopics = new ArrayList<Topic>();
-		
+
 		for (int i = 0; i < allTopics.size(); i++) {
 			Topic currentTopic = allTopics.get(i);
-			
-			if(currentTopic.isDraft) {
+
+			if (currentTopic.isDraft) {
 				draftTopics.add(currentTopic);
 			}
 		}
 
 		render(draftTopics);
 	}
-	
-	
+
 	/**
 	 * @Description This method discards a draft
 	 * 
 	 * @author Mostafa Aboul Atta
 	 * 
 	 * @param topicId
-	 * 			The id of the draft that to be deleted
+	 *            The id of the draft that to be deleted
 	 * 
-	 */		
+	 */
 	public static void discardDraftTopic(long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
 		targetTopic.delete();

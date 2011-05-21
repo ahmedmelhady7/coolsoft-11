@@ -104,6 +104,18 @@ public class Topic extends CoolModel {
 	// , cascade = CascadeType.ALL)
 	public List<Idea> ideas;
 
+	// /**
+	// * the list of reporters of the topic
+	// */
+	// @ManyToMany(mappedBy = "topicsReported")
+	// public List<User> reporters;
+
+	/**
+	 * the reporters of the topic
+	 */
+
+	public String reporters;
+
 	/**
 	 * the list of comments on the topic
 	 */
@@ -132,7 +144,7 @@ public class Topic extends CoolModel {
 
 	@OneToMany(mappedBy = "destinationTopic")
 	public List<CreateRelationshipRequest> relationshipRequestsDestination;
-	
+
 	@OneToMany(mappedBy = "destinationTopic")
 	public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
 
@@ -148,12 +160,6 @@ public class Topic extends CoolModel {
 	@ManyToOne
 	public MainEntity entity;
 
-//	/**
-//	 * the Repoters of the topic
-//	 */
-//	@ManyToMany(mappedBy = "topicsReported")
-//	public List<User> reporters;
-//
 	/**
 	 * the plan that the topic is promoted to
 	 */
@@ -222,13 +228,14 @@ public class Topic extends CoolModel {
 		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
 		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		this.tags = new ArrayList<Tag>();
-//		this.reporters = new ArrayList<User>();
 		// relationships = new ArrayList<Relationship>();
 		// organizers = new ArrayList<User>();
 		this.followers = new ArrayList<User>();
 		this.ideas = new ArrayList<Idea>();
+		// this.reporters = new ArrayList<User>();
 		this.commentsOn = new ArrayList<Comment>();
 		// canAccess = new ArrayList<User>();
+		this.reporters="";
 		this.requestsToJoin = new ArrayList<RequestToJoin>();
 		this.createRelationship = createRelationship;
 		this.openToEdit = true;
@@ -261,12 +268,10 @@ public class Topic extends CoolModel {
 		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
 		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		this.tags = new ArrayList<Tag>();
-//		this.reporters = new ArrayList<User>();
 		// organizers = new ArrayList<User>();
 		this.followers = new ArrayList<User>();
 		this.ideas = new ArrayList<Idea>();
 		this.commentsOn = new ArrayList<Comment>();
-
 		// requestsToJoin = new ArrayList<RequestToJoin>();
 		this.hidden = false;
 		this.createRelationship = createRelationship;
