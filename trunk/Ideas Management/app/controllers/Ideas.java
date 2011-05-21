@@ -153,12 +153,20 @@ public class Ideas extends CRUD {
 		User user = Security.getConnected();
 
 		List<Idea> drafts = new ArrayList<Idea>();
-
+		List<Topic> draftTopics = new ArrayList<Topic>();
+		List<Topic> allTopics = user.topicsCreated;
+		
 		for (Idea idea : user.ideasCreated)
 			if (idea.isDraft)
 				drafts.add(idea);
-
-		render(drafts, user);
+		
+		for (int i = 0; i < allTopics.size(); i++) {
+			Topic currentTopic = allTopics.get(i);
+			if(currentTopic.isDraft == true) {
+				draftTopics.add(currentTopic);
+			}
+		}
+		render(drafts, draftTopics, user);
 	}
 
 	/**
