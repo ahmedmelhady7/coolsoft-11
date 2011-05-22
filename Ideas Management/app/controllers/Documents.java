@@ -72,16 +72,16 @@ public class Documents extends CRUD {
 	public static void viewDocument(long id) {
 		Document document = Document.findById(id);
 		boolean canEdit = false;
-		long userId = Security.getConnected().id;
+		User user = Security.getConnected();
 		if (document.isOrganization) {
 			if (((Organization) Organization
-					.findById(document.userOrganizationId)).creator.id == userId)
+					.findById(document.userOrganizationId)).creator.id == user.id)
 				canEdit = true;
 		} else {
-			if (userId == document.userOrganizationId)
+			if (user.id == document.userOrganizationId)
 				canEdit = true;
 		}
-		render(document, canEdit);
+		render(document, canEdit, user);
 	}
 
 	/**
