@@ -345,12 +345,12 @@
    <div id="lista" style="display: none;">
    	#{if targetTopic.relationsSource != null}
       #{list items:targetTopic.relationsSource, as:'relationElement'}
-			<p>Name: <a id="${relationElement.id}">${relationElement.name}</a> With: <a href="/topics/show?topicId=${relationElement.destination.id}">${relationElement.destination.title}</a> <input type="button" value="rename" onclick="showRename(${relationElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relationElement.id})" /></p>
+			<ul><a href="/topics/show?topicId=${relationElement.source.id}">${relationElement.source.title}</a> <q id=${relationElement.id}>${relationElement.name}</q> <a href="/topics/show?topicId=${relationElement.destination.id}">${relationElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relationElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relationElement.id})" />#{/if}</ul>
 	  #{/list}
 	#{/if}
 	#{if targetTopic.relationsDestination != null}
 	  #{list items:targetTopic.relationsDestination, as:'relElement'}
-			<p>Name: <a id="${relElement.id}">${relElement.name}</a> With: <a href="/topics/show?topicId=${relElement.source.id}"> ${relElement.source.title}</a> <input type="button" value="rename" onclick="showRename(${relElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relElement.id})" /></p>
+			<ul><a href="/topics/show?topicId=${relElement.source.id}">${relElement.source.title}</a> <q id=${relElement.id}>${relElement.name}</q> <a href="/topics/show?topicId=${relElement.destination.id}"> ${relElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relElement.id})" />#{/if}</ul>
 	  #{/list}
 	#{/if}
    </div>
