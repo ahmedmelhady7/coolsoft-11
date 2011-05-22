@@ -191,7 +191,7 @@
 		#{if numberOfIdeas > 1 && canMerge == 1}
 		#{form @Topics.getIdeasToMerge(), method:'POST', enctype:'multipart/form-data' }
 				<input type = "hidden" name = "topicId" value = ${topicId}>
-				<input type="button" value="Merge Ideas" />
+				<input type="submit" value="Merge Ideas" />
 		#{/form}
 		#{/if}
         #{if numberOfIdeas == 0}<h4>no ideas posted to this topic</h4>
