@@ -32,6 +32,25 @@
 					</fieldset>
 				</li>
 				#{/list}
+				#{list items: entity.relationsDestination, as: 'relation'}
+				<li>
+					<fieldset>
+						<legend>
+							${relation.source} ${relation.name} ${relation.destination}
+						</legend>
+						<form action="@{RenameEndRelationshipRequests.renameRequest(user.id, organisation.id, entity.id, 0, relation.id, 0, 1, newName)}" method="post"
+						onsubmit="return validate()">
+							<input type="text" id="newName" name="newName">
+							<input type = "submit" value = "Request Rename">
+						</form>
+						<form action="@{RenameEndRelationshipRequests.deleteRequest(user.id, organisation.id, entity.id, 0, relation.id, 0, 0)}" method="post">
+							<input type = "submit" value = "Request Delete">
+						</form>
+						#{if (canRequestRelationship == true)}
+						#{/if}
+					</fieldset>
+				</li>
+				#{/list}
 				#{/else}
 
 				<script type="text/javascript">function validate() {
