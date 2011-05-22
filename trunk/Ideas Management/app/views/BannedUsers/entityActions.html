@@ -21,7 +21,8 @@ window.location.reload();
 #{/if}
 
 #{if entityActions.isEmpty() || entityActions == null}
-  <p style="color:#c00"> Sorry No Actions found !! </p>
+  <p> <font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
+    <b><u> No Actions Found !! </u></b></font></p>
 #{/if}
 #{else}
 #{form  @BannedUsers.restrictFinal(), method:'POST', id:'creationForm',
