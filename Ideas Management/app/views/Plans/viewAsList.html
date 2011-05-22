@@ -3,6 +3,7 @@
 ${p.title} - View Plan as List
 #{/set}
 <script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js"></script>
+
 <br/>
 #{if checkNotRated}
 <form action="@{Plans.rate(p.id,rat)}" method="GET">
@@ -112,7 +113,7 @@ To-do items:
                         c = b.split("|");
                         autoComplete.Set("group", c);
                     </script>
-
+                <br/>
             #{if isOrganizer == true}  
             #{if item.isRelatedToEntity() == true} 
             <div id = "removeEntity_${item.id}">

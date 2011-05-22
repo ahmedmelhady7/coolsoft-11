@@ -248,7 +248,7 @@ public class Plans extends CRUD {
 	 */
 	public static void selectedIdeas(long[] checkedIdeas, long planId) {
 		Plan plan = Plan.findById(planId);
-		Topic topic = Topic.findById(plan.topic.id);
+	
 		Idea idea;
 		String notificationContent = "";
 
@@ -260,9 +260,9 @@ public class Plans extends CRUD {
 			idea.author.communityContributionCounter = idea.author.communityContributionCounter + 13;
 			idea.author.save();
 			plan.save();
-			notificationContent = "Congratulayions!! your idea: " + idea.title
+			notificationContent = "Congratulations!! your idea: " + idea.title
 					+ "have been promoted to execution in the following plan "
-					+ plan.title + " of the topic: " + topic.title;
+					+ plan.title + " of the topic: " + plan.topic.title;
 			Notifications.sendNotification(idea.author.id, plan.id, "plan",
 					notificationContent);
 			String logDescription = "Idea " + idea.title + " that belongs to "
@@ -1026,7 +1026,7 @@ public class Plans extends CRUD {
 		Plan plan = Plan.findById(planId);
 		String notificationMsg = "The plan " + plan.title + " has been deleted";
 		for (Item item : plan.items) {
-			for (User user1 : item.assignees) {
+			for (User user1 : item.getAssignees()) {
 				if (!toBeNotified.contains(user1) && user.id!=user1.id) {
 					toBeNotified.add(user1);
 					Notifications.sendNotification(user1.id, plan.topic.id,
@@ -1044,21 +1044,18 @@ public class Plans extends CRUD {
 
 		while (!plan.items.isEmpty()) {
 			deleteItem(plan.items.get(0).id, 0);
-			System.out.println("items " + plan.items.size());
 			plan.save();
 		}
 		Idea idea;
 		while (!plan.ideas.isEmpty()) {
 			idea = plan.ideas.remove(0);
 			idea.plan = null;
-			System.out.println("ideas " + plan.items.size());
 			idea.save();
 			plan.save();
 		}
 		Comment comment;
 		while (!plan.commentsList.isEmpty()) {
 			comment = plan.commentsList.remove(0);
-			System.out.println("comments " + plan.items.size());
 			plan.save();
 			comment.delete();
 		}
@@ -1067,7 +1064,6 @@ public class Plans extends CRUD {
 		while (!plan.usersRated.isEmpty()) {
 			userRated = plan.usersRated.remove(0);
 			userRated.ratedPlans.remove(plan);
-			System.out.println("rated " + plan.usersRated.size());
 			userRated.save();
 			plan.save();
 
