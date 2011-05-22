@@ -4,7 +4,7 @@
     <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js"></script>
     <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
     <head>
-        <script language="javascript">
+        <script language="javascript"> 
             function isNumberKey(evt){
                 var charCode = (evt.which) ? evt.which : evt.keyCode
                 if (charCode == 116) {
@@ -455,7 +455,7 @@
                                             </u>
                                         </label>
                                         <select id="inExOp">
-                                            <option value=0 selected>(Optional)  </option>
+                                            <option value=0 style="counter-increment:none;" selected>(Optional)  </option>
                                             <option value=1>Title</option>
                                             <option value=2>Description</option>
                                             <option value=3>Comment</option>
@@ -607,7 +607,7 @@
                     <input class="lsb" type="submit" onclick="this.checked=1" name="btnG" value="Search"-->
                 </form>
             </div>
-            <!-- add here the 4th one -->
+            <!--Add here the 4th one -->
 			<div id="panel6" class="content_articles">
             </div>
         </div>
@@ -925,29 +925,34 @@
 					&&(document.getElementById("cbPu").checked||
                     document.getElementById("cbPr").checked||
                     document.getElementById("cbSc").checked)){
-					var wantedKeys = inPuts.wantKey1.value;
+					var wantedKeys = inPuts.wantKey1.value.replace(","," ");
 					var ins = "";
 					var exactKey = document.getElementById("wantKeyEx").value+document.getElementById("inExOp").value;
+					alert(exactKey);
 					while(document.getElementById("wantKey") != null){
 						wantedKeys+=","+document.getElementById("h").value+","+document.getElementById("wantKey").value.replace(","," ");
 						$('#h').remove();
 						$('#wantKey').remove();
 					};
+					alert(wantedKeys);
 					while(document.getElementById("wantKeyX") != null){
 						ins += document.getElementById("wantKeyX").value+"," ;
 						$('#wantKeyX').remove();
 					}
+					alert(ins);
 					var OrgT = ""+document.getElementById("rAl").checked+","+
 	                            document.getElementById("cbPu").checked+","+
 	                            document.getElementById("cbPr").checked+","+
 	                            document.getElementById("cbSc").checked;
+					alert(OrgT);
 					var ROf = ""+document.getElementById("rAll").checked
 							 +","+document.getElementById("cbO").checked
 							 +","+document.getElementById("cbE").checked
 							 +","+document.getElementById("cbT").checked
 							 +","+document.getElementById("cbP").checked
                              +","+document.getElementById("cbI").checked
-                             +","+document.getElementById("cbi").checked;		 
+                             +","+document.getElementById("cbi").checked;
+					alert(ROf);		 
 					var dateB = document.getElementById("datePickerB").value;
 					var dateA = document.getElementById("datePickerA").value;
 					var dateE = document.getElementById("datePickerE").value;
