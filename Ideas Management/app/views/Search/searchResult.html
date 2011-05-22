@@ -2,7 +2,7 @@
 @author Loaay Alkherbawy
 @story  C4S01
 The Search Results Viewer
---> #{extends 'login/index.html' /} 
+-->
 #{set title:'Your results'/}  <!DOCTYPE html>
 <html>
     <head>
@@ -151,7 +151,7 @@ The Search Results Viewer
                 <ul>
                 #{list items:organizationsFound, as:'org'}
                 <li>
-                    <a href='@{Organizations.viewProfile(org.id)}'>${org.toString()}</a>
+                    <a href='@{Organizations.viewProfile(org.id)}' target="_parent">${org.toString()}</a>
                 </li>#{/list}
                 </br>
             </ul>
@@ -165,7 +165,7 @@ The Search Results Viewer
         <ul>
         #{list items:itemFound, as:'item'}
         <li>
-            <a href='@{item.viewAssignedItems(item.id)}'>${item.summary}</a>
+            <a href='@{item.viewAssignedItems(item.id)}' target="_parent">${item.summary}</a>
         </li>#{/list}
         </br>
     </ul>
@@ -177,7 +177,7 @@ The Search Results Viewer
 <ul>
 #{list items:entitiesFound, as:'item'}
 <li>
-    <a href='@{MainEntitys.viewEntity(item.id)}'>${item.toString()}</a>
+    <a href='@{MainEntitys.viewEntity(item.id)}' target="_parent">${item.toString()}</a>
 </li>#{/list}
 </br>
 </ul>
@@ -191,7 +191,7 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
 <ul>
 #{list items:itemFound, as:'plan'}
 <li>
-    <a href='@{plan.planView(plan.id)}'>${plan.title}</a>
+    <a href='@{plan.planView(plan.id)}' target="_parent">${plan.title}</a>
 </li>#{/list}
 </br>
 </ul>
@@ -203,7 +203,7 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
 <ul>
 #{list items:topicsFound, as:'item'}
 <li>
-    <a href='@{Topics.show(item.id)}'>${item.toString()}</a>
+    <a href='@{Topics.show(item.id)}' target="_parent">${item.toString()}</a>
 </li>
 #{/list}
 </br>
@@ -216,7 +216,7 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
 <ul>
 #{list items:ideasFound, as:'item'}
 <li>
-    <input type='checkbox' id =${item.id} onclick='mark(this.id)'/><a href=@{Ideas.show(item.id)}>${item.title}</a>
+    <input type='checkbox' id =${item.id} onclick='mark(this.id)'/><a href=@{Ideas.show(item.id)} target="_parent">${item.title}</a>
 </li>
 #{/list}
 </br>
@@ -229,7 +229,7 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
 </center>#{/else}
 </div>
 <div id='down'>
-    <a href='/public/searchResults.csv'><img src='/public/images/download.jpg'/></a>
+    <a href='/public/searchResults.csv' target="_parent"><img src='/public/images/download.jpg'/></a>
 </div>
 </div>
 <div id='panel2')>
@@ -240,7 +240,7 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
     <ul>
     #{list items:organizationsFound, as:'org'}
     <li>
-    <a href='@{Organizations.viewProfile(org.id)}'>${org.toString()}</a>
+    <a href='@{Organizations.viewProfile(org.id)}' target="_parent">${org.toString()}</a>
     </br>Description:
     </br>
     No description for organizations
@@ -258,7 +258,7 @@ Found ${itemsFound.size()} item{itemsFound.pluralize()}
 <ul>
 #{list items:itemFound, as:'item'}
 <li>
-<a href='@{item.viewAssignedItems(item.id)}'>${item.summary}</a>
+<a href='@{item.viewAssignedItems(item.id)}' target="_parent">${item.summary}</a>
 </br>${item.description}
 </li>#{/list}
 </br>
@@ -273,7 +273,7 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
 <ul>
 #{list items:topicsFound, as:'item'}
 <li>
-<a href='@{Topics.show(item.id)}'>${item.toString()}</a>
+<a href='@{Topics.show(item.id)}' target="_parent">${item.toString()}</a>
 </br>Description:
 </br>${item.description}
 </li>
@@ -289,7 +289,7 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
 <ul>
 #{list items:entitiesFound, as:'item'}
 <li>
-<a href='@{MainEntitys.show(item.id)}'>${item.toString()}</a>
+<a href='@{MainEntitys.show(item.id)}' target="_parent">${item.toString()}</a>
 </br>Description:
 </br>${item.description}
 </li>#{/list}
@@ -305,7 +305,7 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
 <ul>
 #{list items:itemFound, as:'plan'}
 <li>
-<a href='@{plan.planView(plan.id)}'>${plan.title}</a>
+<a href='@{plan.planView(plan.id)}' target="_parent">${plan.title}</a>
 </br>${plan.description}
 </li>#{/list}
 </br>
@@ -318,7 +318,7 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
 <ul>
 #{list items:ideasFound, as:'item'}
 <li>
-<input type='checkbox' id=${item.id} onclick='mark(this.id)'/><a href='@{Ideas.show(item.id)}'>${item.title}</a>
+<input type='checkbox' id=${item.id} onclick='mark(this.id)'/><a href='@{Ideas.show(item.id)}' target="_parent">${item.title}</a>
 </br>Description:
 </br>${item.description}
 </li>
@@ -346,7 +346,7 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
         document.getElementById('panel2').style.display = 'none';
         document.getElementById('tabholder_articles').style.display = 'none';
         document.getElementById('load').innerHTML = '<center><img src="/public/images/Searching.gif"/></center>';
-        setTimeout('showNewPanel(5)', 2500);
+        setTimeout('showNewPanel(5)', 1000);
     }
     
     function check(){
