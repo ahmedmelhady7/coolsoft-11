@@ -1,16 +1,15 @@
-#{extends 'main.html' /}
+#{extends 'Login/index.html' /}
 #{set title:'Edit Item' /}
 <link type="text/css" href="/public/stylesheets/jquery-ui-.custom.css" rel="Stylesheet" />
     <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js"></script>
     <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
 </br>
-${item.plan.startDate.format('mm dd yyyy')}
 <h1>${item.summary}</h1>
 #{form @Plans.edit2(), method:'POST', id:'edititemForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
 </br>
-Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()" value="${item.startDate}"/>
+Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()" value="${item.startDate.format('MM/dd/yyyy')}"/>
 </br>
-End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()" value="${item.endDate}"/>
+End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()" value="${item.endDate.format('MM/dd/yyyy')}"/>
 </br>
 <p><b>Insert the description of the plan</b></p>
 <textarea id="description" name="description" rows="7" cols="50">${item.description}</textarea>
@@ -43,11 +42,11 @@ function checkall(){
 		var desc = document.getElementById("description").value;
 		var sum = document.getElementById("summamry").value;
 		if(start == "" || start == null){
-			alert("Please Insert the date on which the plan starts");
+			alert("Please Insert the date on which the item starts");
 			return false;
 		}
 		if(end == "" || end == null){
-			alert("Please Insert the date on which the plan ends");
+			alert("Please Insert the date on which the item ends");
 			return false;
 		}
 		if (desc == null || desc == "") {
@@ -64,7 +63,7 @@ function checkall(){
 		var ped = new date("" +document.getElementById("planend").value.toString());
 		alert(psd);
 		if(ed <sd){
-			alert("Start date must be greater than end date");
+			alert("Start date must be later than end date");
 			return false;
 		}
 		if(sd< new Date()){
@@ -75,7 +74,6 @@ function checkall(){
 			alert("The item's start date must be later than the plan's start date");
 			return false;
 		}
-		alert("7elwa el batta 5");
 		if(ed>ped){
 			alert("The item's end date must be earlier than teh plan's end date");
 			return false;
