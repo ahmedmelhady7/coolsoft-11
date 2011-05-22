@@ -35,19 +35,15 @@ public class RequestToJoins extends CRUD {
 	public static void viewRequests(int type, long id) {
 		// type=1;
 		System.out.println("will view");
-		List<RequestToJoin> requests;
+		List<RequestToJoin> requests = new ArrayList<RequestToJoin>();
 		String name;
+		User user = Security.getConnected();
 		if (type == 1) {
 			Topic topic = Topic.findById(id);
 			notFoundIfNull(topic);
+			if(!topic.hidden)
 			requests = topic.requestsToJoin;
 			name = topic.title;
-			for(int i =0;i<requests.size();i++){
-				if(requests.get(i).topic.hidden){
-					requests.remove(i);
-					i--;
-				}
-		}
 		} else {
 			Organization organization = Organization.findById(id);
 			System.out.println(organization);
@@ -56,16 +52,16 @@ public class RequestToJoins extends CRUD {
 			name = organization.name;
 		
 		}
-		User user;
+		User requester;
 		for (int i = 0; i < requests.size(); i++) {
-			user = requests.get(i).source;
-			if (user.state.equals("n")) {
+			requester = requests.get(i).source;
+			if (requester.state.equals("n")) {
 				requests.remove(i);
 				i--;
 			}
 		}
 
-		render(requests, type, id, name);
+		render(requests, type, id, name,user);
 	}
 
 	/**
