@@ -13,7 +13,7 @@
 #crud #crudHeader {
 	background: #111111;
 	padding: 10px 20px;
-	width: 800px;
+	width: 80%;
 }
 
 #crud #crudHeader h1 {
@@ -32,7 +32,7 @@
 	padding: 5px 20px;
 	font-size: 80%;
 	border-bottom: 1px solid #ddd;
-	width: 800px;
+	width: 80%;
 }
 
 #crudBreadcrumb ul {
@@ -60,7 +60,7 @@
 	padding: 5px 20px;
 	border-bottom: 1px solid #ddd;
 	color: #fff;
-	width: 800px;
+	width: 80%;
 }
 
 .flashError {
@@ -75,7 +75,7 @@
 
 #crud #crudContent {
 	padding: 10px 20px;
-	width: 800px;
+	width: 80%;
 }
 
 #crud #crudContent h2 {
@@ -232,7 +232,7 @@ form .removeAttachment {
 	border-top: 1px dashed #ccc;
 	border-bottom: 1px dashed #ccc;
 	margin-top: 20px;
-	width: 800px;
+	width: 80%;
 }
 
 #crud #crudFooter a {
@@ -322,7 +322,7 @@ form .removeAttachment {
 
 #crudShow {
 	position: relative;
-	width: 800px;
+	width: 80%;
 }
 
 .crudDelete input {
