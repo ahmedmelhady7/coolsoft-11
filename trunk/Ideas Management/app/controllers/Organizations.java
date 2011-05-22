@@ -637,6 +637,15 @@ public class Organizations extends CoolCRUD {
 		for (int i = 0; i < organization.joinRequests.size(); i++)
 			organization.joinRequests.get(i).delete();
 		// fadwa
+		
+		
+		//Mai Magdy
+		List <Invitation> invite=Invitation.find("byOrganization", organization).fetch();
+		for(int i=0;i<invite.size();i++)
+			invite.get(i).delete();
+		//
+		
+		
 		organization.delete();
 		Log.addUserLog("User " + user.username + " deleted the Organization \"" + organization.name + "\"", user,organization);
 		Organizations.mainPage();
