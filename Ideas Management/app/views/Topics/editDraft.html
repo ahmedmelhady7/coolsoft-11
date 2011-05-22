@@ -1,4 +1,10 @@
 #{extends 'main.html' /} 
+
+<p class="success" id="SaveSuccess"></p>
+
+<style type="text/css">.success {background: #FFF1A8 !important;}
+</style>
+
 <fieldset>
 <p>
 	Title: </br>
@@ -61,6 +67,7 @@
 
 		$.post('@{Topics.saveDraft()}' ,{topicId:${targetTopic.getId()}, title:topicTitle, description:topicDescription, 
 			privacyLevel: privacyLevel, createRelationship: createRelationship});
+			
 		
 	}
 	
@@ -80,4 +87,6 @@
 		$.post('@{Topics.postDraftTopic()}' ,{topicId:${targetTopic.getId()}, title:topicTitle, description:topicDescription, 
 			privacyLevel: privacyLevel, createRelationship: createRelationship}, function(){window.location.href=link});
 	}
+	
+	
 </script>
