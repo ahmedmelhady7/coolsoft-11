@@ -1,0 +1,103 @@
+#{extends 'login/index.html' /}
+
+  <a href="@{Organizations.viewProfile(id)}">Back to ${name}</a>  	
+<br />
+<br />
+<tr><td><u><font size ="3" color ="black">Create Relationship Requests : </font></u></td><td>
+<br />
+<br />
+#{if requests.isEmpty()}
+<i><font size ="3" color ="blue">No new Requests</font></i>
+#{/if}
+#{else}
+ #{list items:requests, as:'request'}
+    <li>
+        <fieldset id="request_0_${request.id}">
+        <tr><td><font size ="3" color ="black">
+			#{if request.type==0}
+          
+    	User ${request.requester.username} Wants to start relationship "${request.name}" between entities ${request.sourceEntity.name} and ${request.destinationEntity.name}</font></td><td>
+            
+			#{/if}
+			#{else}
+           User ${request.requester.username} Wants to start relationship ${request.name} between topics ${request.sourceTopic.title} and ${request.destinationTopic.title}
+			#{/else}
+      <input type = "button" value = "Accept" onclick="javascript: respond(1,${request.id},${request.type},0,0)">
+			<input type = "button" value = "Reject" onclick="javascript: respond(0,${request.id},${request.type},0,0)">
+        </fieldset>
+    </li>
+    #{/list}
+#{/else}
+<br />
+<br />
+<tr><td><u><font size ="3" color ="black">Rename Relationship Requests :</font></u></td><td>
+<br />
+<br />
+#{if renamingRequests.isEmpty()}
+<i><font size ="3" color ="blue">No new Requests</font></i>
+#{/if}
+#{else}
+ #{list items:renamingRequests, as:'request1'}
+    <li>
+        <fieldset id="request_1_${request1.id}">
+        <tr><td><font size ="3" color ="black">  
+		#{if request1.type==0}
+    	User ${request1.requester.username} Wants to rename relationship ${request1.entityRelationship.name} to ${request1.newName}</font></td><td>
+            #{/if}
+			#{else}
+    	User ${request1.requester.username} Wants to rename relationship ${request1.topicRelationship.name} to ${request1.newName}</font></td><td>
+			#{/else}        
+	      <input type = "button" value = "Accept" onclick="javascript: respond(1,${request1.id},${request1.type},1,1)">
+			<input type = "button" value = "Reject" onclick="javascript: respond(0,${request1.id},${request1.type},1,1)">
+        </fieldset>
+    </li>
+    #{/list}
+#{/else}
+<br />
+<br />
+<tr><td><u><font size ="3" color ="black">End Relationship Requests :</font></u></td><td>
+<br />
+<br />
+#{if deletionRequests.isEmpty()}
+<i><font size ="3" color ="blue">No new Requests</font></i>
+#{/if}
+#{else}
+ #{list items:deletionRequests, as:'request'}
+    <li>
+        <fieldset id="request_2_${request.id}">
+        <tr><td><font size ="3" color ="black">  
+		
+    	#{if request.type==0}
+      User ${request.requester.username} Wants to end relationship ${request.entityRelationship.name}</font></td><td>
+            #{/if}
+			#{else}
+     User ${request.requester.username} Wants to end relationship ${request.topicRelationship.name}</font></td><td>
+			#{/else}        
+	      <input type = "button" value = "Accept" onclick="javascript: respond(1,${request.id},${request.type},1,2)">
+			<input type = "button" value = "Reject" onclick="javascript: respond(0,${request.id},${request.type},1,2)">
+        </fieldset>
+    </li>
+    #{/list}
+#{/else}
+<script type="text/javascript">
+function respond(stat, id,type,i,c){
+	if (stat == 1) {
+		$.post('@{respondToRequests()}',{status:stat,id:id,type:type,whichList:i}, function()
+			 {
+			// alert("Accepted");
+			$('#request_'+c+'_'+id).html('<i>Request has been accepted<\i>');
+			});
+	}
+	else {
+		$.post('@{respondToRequests()}', {
+		status:stat, id: id,type:type,whichList:i
+		}, function()
+			 {
+			// alert("Accepted");
+			$('#request_'+c+'_'+id).html('<i>Request has been rejected<\i>');
+			});	
+	}
+}
+
+
+</script>

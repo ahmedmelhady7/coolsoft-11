@@ -104,13 +104,10 @@
 		#{if logFlag == 1}		
  <input type="submit" value="View Logs" onclick=location.href="@{Logs.viewLogs(org.id)}">
 #{/if}	
+<br>
+        <br>
         #{if settings==1}
-        Creation Of Tags :
-        <select id="selec" onchange="test();">
-            <option>Tags</option>
-            <option id="e" value="0">enable </option>
-            <option id="d" value="1">disable </option>
-        </select>
+     <a href="@{CreateRelationshipRequests.viewRequests(org.id)}">Relationship Requests</a>
         #{/if}
         <br>
         <br>
