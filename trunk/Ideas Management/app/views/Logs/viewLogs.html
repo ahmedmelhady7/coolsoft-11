@@ -16,7 +16,7 @@ Search Logs <input type="text" size="20" name="name" id="table">
 #{/if}
 #{else}
 <table border="0" bgcolor="#ececec" cellspacing="5" id ="toFil">	
-
+<tr><td width="100%"><font size ="2" color ="black"> </font></td><td>
 #{list items:toFilter, as:'filter'} 
 <tr><td width="100%"><font size ="2" color ="black">${filter.actionDescription} &nbsp;&nbsp;&nbsp;&nbsp; ${filter.time}</font></td><td>
 #{/list}
@@ -30,7 +30,7 @@ Search Logs <input type="text" size="20" name="name" id="table">
 	<script type="text/javascript"><!--
 
 
-    var pager = new Pager('toFil', 10); 
+    var pager = new Pager('toFil', 2); 
     pager.init(); 
     pager.showPageNav('pager', 'pageNavPosition'); 
     pager.showPage(1);
@@ -58,10 +58,11 @@ function show(id){
 	          times = data.time.split(",");
 	        
 		     
-			  	var text = action[0];
-			  	var tex = times[0];
-				$('#toFil').html('<tr><td><font size=2>  ' + text + tex + '</font></td><td>');
-				 for (var i = 1; i < action.length - 1; i++) {
+			  	
+				$('#toFil').html('<tr><td><font size=2>  </font></td><td>');
+				 for (var i = 0; i < action.length; i++) {
+				 	var text = action[i];
+			  	var tex = times[i];
 				 	$('#toFil').append('<tr><td><font size=2> ' + text +'&nbsp;&nbsp;&nbsp;&nbsp;'+ tex + '</font></td><td>');
 				 	$('#toFil').show();
 				 }
