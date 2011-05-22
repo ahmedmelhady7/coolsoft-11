@@ -610,6 +610,18 @@ public class User extends CoolModel {
 		return this.getDrafts().size();
 	}
 
+	/**
+	 * returns the number of new notifications that the user has.
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S20
+	 * 
+	 * 
+	 * @return int
+	 * 			the number of notifications that the user has
+	 */
+	
 	public int getNotificationNumber() {
 		User user = Security.getConnected();
 		int notificationCount = 0;
