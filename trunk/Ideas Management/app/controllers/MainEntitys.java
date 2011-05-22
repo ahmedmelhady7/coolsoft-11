@@ -12,6 +12,7 @@ import play.mvc.Controller;
 import play.mvc.With;
 import models.CreateRelationshipRequest;
 import models.EntityRelationship;
+import models.Log;
 import models.MainEntity;
 import models.Organization;
 import models.Plan;
@@ -77,6 +78,9 @@ public class MainEntitys extends CRUD {
 			entity.save();
 			user.followingEntities.add(entity);
 			user.save();
+			Log.addUserLog("User " + user.firstName + " " + user.lastName
+					+ " has followed the entity (" + entity.name + ")", entity,
+					entity.organization, user);
 			redirect(request.controller + ".viewEntity", entity.id,
 					"You are now a follower");
 		}
@@ -127,6 +131,7 @@ public class MainEntitys extends CRUD {
 			long orgId, boolean createRelationship) {
 		boolean canCreate = true;
 		System.out.println(createRelationship);
+		User user = Security.getConnected();
 		Organization org = Organization.findById(orgId);
 		for (int i = 0; i < org.entitiesList.size(); i++) {
 			if (org.entitiesList.get(i).name.equalsIgnoreCase(name))
@@ -136,6 +141,9 @@ public class MainEntitys extends CRUD {
 			MainEntity entity = new MainEntity(name, description, org,
 					createRelationship);
 			entity.save();
+			Log.addUserLog("User " + user.firstName + " " + user.lastName
+					+ " has created the entity (" + entity.name + ")", entity,
+					org, user);
 		}
 		redirect("Organizations.viewProfile", org.id, "Entity created");
 	}
@@ -168,6 +176,7 @@ public class MainEntitys extends CRUD {
 		boolean canCreate = true;
 		MainEntity parent = MainEntity.findById(parentId);
 		Organization org = Organization.findById(orgId);
+		User user = Security.getConnected();
 		for (int i = 0; i < parent.subentities.size(); i++) {
 			if (parent.subentities.get(i).name.equalsIgnoreCase(name))
 				canCreate = false;
@@ -176,6 +185,10 @@ public class MainEntitys extends CRUD {
 			MainEntity entity = new MainEntity(name, description, parent, org,
 					createRelationship);
 			entity.save();
+			Log.addUserLog("User " + user.firstName + " " + user.lastName
+					+ " has created the subentity (" + entity.name + ")"
+					+ " for the entity (" + parent.name + ")", entity, parent,
+					org, user);
 		}
 		redirect("Organizations.viewProfile", org.id, "SubEntity created");
 	}
@@ -273,14 +286,10 @@ public class MainEntitys extends CRUD {
 				entity.id, "entity"))
 			check = 1;
 		int check1 = 0;
-		if (Users.isPermitted(user,
-				"view",
-				entity.id, "entity"))
+		if (Users.isPermitted(user, "view", entity.id, "entity"))
 			check1 = 1;
 		int check2 = 0;
-		if (Users.isPermitted(user,
-				"use",
-				entity.id, "entity"))
+		if (Users.isPermitted(user, "use", entity.id, "entity"))
 			check2 = 1;
 		if (Users.getEntityOrganizers(entity).contains(user)) {
 			canRequestRelationship = 1;
@@ -291,7 +300,7 @@ public class MainEntitys extends CRUD {
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity, follower, canCreateRelationship,
 				/* canView, */canRequest, canRequestRelationship, check,
-				canRestrict, entityIsLocked, plans,check1,check2);
+				canRestrict, entityIsLocked, plans, check1, check2);
 	}
 
 	/**
@@ -332,11 +341,15 @@ public class MainEntitys extends CRUD {
 	 */
 	public static void editEntity(long entityId, String name,
 			String description, boolean createRelationship) {
+		User user = Security.getConnected();
 		MainEntity entity = MainEntity.findById(entityId);
 		entity.name = name;
 		entity.description = description;
 		entity.createRelationship = createRelationship;
 		entity.save();
+		Log.addUserLog("User " + user.firstName + " " + user.lastName
+				+ " has edited the entity (" + entity.name + ")", entity,
+				entity.organization, user);
 		redirect(request.controller + ".viewEntity", entity.id,
 				"Entity created");
 	}
@@ -394,5 +407,5 @@ public class MainEntitys extends CRUD {
 		MainEntity entity = MainEntity.findById(entityId);
 		render(user, organisation, entity, canRequestRelationship);
 	}
-	
+
 }

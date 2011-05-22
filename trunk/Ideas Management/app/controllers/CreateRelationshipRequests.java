@@ -1,6 +1,7 @@
 package controllers;
 
 import models.CreateRelationshipRequest;
+import models.Log;
 import models.MainEntity;
 import models.Organization;
 import models.Topic;
@@ -65,6 +66,15 @@ public class CreateRelationshipRequests extends CRUD {
 					user, sourceEntity, destinationEntity, name, organisation,
 					type);
 			relationRequest.save();
+			Log.addUserLog(
+					"User "
+							+ user.firstName
+							+ " "
+							+ user.lastName
+							+ " has requested to create the following relationship between"
+							+ " entities: (" + sourceEntity.name + " " + name
+							+ " " + destinationEntity.name + ")", sourceEntity,
+					destinationEntity, relationRequest, organisation, user);
 			System.out.println(organisation.createRelationshipRequest.size());
 			redirect("MainEntitys.viewEntity", entityId, "Request created");
 		} else {
@@ -84,6 +94,15 @@ public class CreateRelationshipRequests extends CRUD {
 					user, sourceTopic, destinationTopic, name, organisation,
 					type);
 			relationRequest.save();
+			Log.addUserLog(
+					"User "
+							+ user.firstName
+							+ " "
+							+ user.lastName
+							+ " has requested to create the following relationship between"
+							+ " topics: (" + sourceTopic.title + " " + name
+							+ " " + destinationTopic.title + ")", sourceTopic,
+					destinationTopic, relationRequest, organisation, user);
 			System.out.println(organisation.createRelationshipRequest.size());
 			redirect("Topics.show", topicId, "Request created");
 

@@ -1285,15 +1285,18 @@ public class Topics extends CRUD {
 	 */
 	public static void followTopic(long topicId) {
 		User user = Security.getConnected();
-		Topic t = Topic.findById(topicId);
-		if (t.followers.contains(user))
+		Topic topic = Topic.findById(topicId);
+		if (topic.followers.contains(user))
 			System.out.println("You are already a follower");
 		else {
-			t.followers.add(user);
-			t.save();
-			user.topicsIFollow.add(t);
+			topic.followers.add(user);
+			topic.save();
+			user.topicsIFollow.add(topic);
 			user.save();
-			redirect(request.controller + ".show", t.id,
+			Log.addUserLog("User " + user.firstName + " " + user.lastName
+					+ " has followed the topic (" + topic.title + ")", topic,
+					topic.entity, topic.entity.organization, user);
+			redirect(request.controller + ".show", topic.id,
 					"You are now a follower");
 		}
 	}
