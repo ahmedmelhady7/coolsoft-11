@@ -841,7 +841,7 @@ public class Topics extends CRUD {
 				ideas.remove(k);
 		}
 		int numberOfIdeas = ideas.size();
-		if ((temporaryTopic.privacyLevel == 2)
+		if ((temporaryTopic.privacyLevel == 1)
 				&& Users.isPermitted(
 						actor,
 						"Accept/Reject requests to post in a private topic in entities he/she manages",
