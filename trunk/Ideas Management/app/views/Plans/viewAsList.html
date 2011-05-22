@@ -74,6 +74,16 @@ To-do items:
             #{if item.endDatePassed()}
             The end date has passed!
             #{/if}
+			 <ul id = "tags_${item.id}" style="list-style: none; ">
+                #{if item.tags.size() > 0} 
+                Tags: 
+                #{list items:item.tags, as:'tag'}
+                <li>
+                    <a href="#">${tag.name}</a>
+                </li>
+                #{/list}
+                #{/if}
+            </ul>
             <br/>
             <ul id = "assignees_${item.id}" style="list-style: none; ">
                 #{if item.assignees.size() > 0} 
@@ -100,10 +110,10 @@ To-do items:
             <br/>
             #{/if}
 			 #{if canEdit == 1}
-			 <form action="@{Plans.tagItem(item.id,tag)}" method="post">
+			 <form onsubmit="tagitem(${item.id});" method="post">
                     <input type="hidden" id='tags' name="tags" value="${listOfTags}">Tag the item
                     <br>
-                    Tag: <input type="text" id="tag" name="tag" autoComplete="group"/>
+                    Tag: <input type="text" id="tag_${item.id}" name="tag" autoComplete="group"/>
                     <input type="submit" value="Tag"/>
 						</form>
 			  #{/if}
@@ -261,4 +271,13 @@ ${p.topic.getOrganizer().get(0).username}
 								$.post('@{removeItemEntityRelation()}', {itemId: item}, function(){window.location.reload();});
 							}
                           }
+						  function tagitem(id){
+						  	var tagt= document.getElementById("tag_" + id).value;
+							$.post('@{tagItem()}', {
+                                		     itemId:id,
+                                			tag:tagt
+                           
+                                		});
+						  	
+						  }
 </script>
