@@ -24,7 +24,9 @@
 							<input type="text" id="name" name="name">
 							<input type = "submit" value = "Request Rename">
 						</form>
-						
+						<form action="@{RenameEndRelationshipRequests.deleteRequest(user.id, organisation.id, 0, topic.id, relation.id, 1, 0)}" method="post">
+							<input type = "submit" value = "Request Delete">
+						</form>
 					</fieldset>
 				</li>
 				#{/list}
