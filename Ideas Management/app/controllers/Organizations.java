@@ -734,7 +734,7 @@ public class Organizations extends CoolCRUD {
 			}
 		} else {
 			for (RenameEndRelationshipRequest request : organisation.renameEndRelationshipRequest) {
-				if (request.type == requestType) {
+				if (request.requestType == requestType) {
 					if (request.type == 0) {
 						EntityRelationship entityRelation = EntityRelationship
 								.findById(relationId);
