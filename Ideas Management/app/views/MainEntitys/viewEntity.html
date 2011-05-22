@@ -289,6 +289,11 @@
 		#{/if}
 		#{/else}
 		
+		<form action="@{TopicRequests.list()}">
+			<input type="hidden" value=${entity.id} name='entityId'>
+			<input type="submit" value="View topic requests">
+		</form>
+		
 		#{if (canEdit == 1)}
 		<HR>
 		<input type="submit" value="Edit" onclick=location.href="@{MainEntitys.editEntityPage(entity.id)}">

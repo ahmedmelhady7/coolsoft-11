@@ -95,6 +95,7 @@ public class TopicRequest extends CoolModel{
 			String topicRequest = "Title: " + this.title + " Requester: " + this.requester;
 			return topicRequest;
 		}
+		
 	}
 
 

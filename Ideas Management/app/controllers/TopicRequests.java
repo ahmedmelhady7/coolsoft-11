@@ -1,6 +1,7 @@
 package controllers;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -186,6 +187,73 @@ public class TopicRequests extends CRUD{
 		}
 
 	}
+
+
+/**
+ * Overriding the CRUD method list.
+ * 
+ * @author Mostafa Yasser El Monayer
+ * 
+ * @story C3S5
+ * 
+ * @param entityId
+ *            : id of the entity the request is in
+ * 
+ * @description This method renders the form for requesting a topic in the
+ *              entity
+ * 
+ */
+public static void list(long entityId) {
+	System.out.println(entityId);
+	ObjectType type = ObjectType.get(getControllerClass());
+	notFoundIfNull(type);
+	MainEntity entity = MainEntity.findById(entityId);
+	User user = Security.getConnected();
+	List<TopicRequest> listOfTopicsToBeRendered = new ArrayList<TopicRequest>(); 
+	List<TopicRequest> listOfTopicRequests = TopicRequest.findAll();
+	System.out.println("size global = " + listOfTopicRequests.size());
+	for (int i =0; i < listOfTopicRequests.size(); i++){
+		System.out.println("1 : " + listOfTopicRequests.get(i).entity.toString());
+		System.out.println("2 : " + entity.toString());
+		if (listOfTopicRequests.get(i).entity.equals(entity)){
+			listOfTopicsToBeRendered.add(listOfTopicRequests.get(i));
+			System.out.println(listOfTopicRequests.get(i).toString());
+		}
+	}
+	System.out.println("list() for TopicRequests entered entity " + entityId + " and user "
+			+ user.toString());
+	try {
+		System.out.println("list() for TopicRequests done about to render");
+		System.out.println("size = " + listOfTopicsToBeRendered.size());
+		render(type, entityId, user, listOfTopicsToBeRendered);
+
+	} catch (TemplateNotFoundException exception) {
+		System.out
+				.println("list() for TopicRequests done with exception about to render CRUD/list.html");
+		render("CRUD/list.html", type, entityId);
+	}
+
 }
 
+public static boolean acceptRequest(TopicRequest topicRequest) {
+	System.out.println("wasal el accept");
+	Topic topic = new Topic(topicRequest.title, topicRequest.description, topicRequest.privacyLevel, topicRequest.requester, topicRequest.entity, true);
+	topic.save();
+	topicRequest.delete();
+//	redirect("/topicrequests/list?entityId=" + topicRequest.entity.id);
+	return true;
+}
+
+public static boolean rejectRequest(TopicRequest topicRequest) {
+	System.out.println("wasal el reject");
+	topicRequest._delete();
+	return true;
+}
+
+public static boolean rephrase(TopicRequest topicRequest) {
+	System.out.println("rephrase");
+	return true;
+}
+
+}
 
