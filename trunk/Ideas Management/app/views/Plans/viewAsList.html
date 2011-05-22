@@ -48,7 +48,7 @@ To-do items:
     #{list items:itemsList, as:'item'}
     <div id = "listItem_${item.id}">
         <br/>
-        <fieldset style="width:600px;">
+        <fieldset style="width:650px;">
             <legend>
                 <h2>
                 ${item.summary}
@@ -85,23 +85,31 @@ To-do items:
                 #{/if}
             </ul>
             <br/>
+			 Assigned Users:  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			            #{if canAssign == 1 && !(item.status == 2)&& !item.endDatePassed()}
+            <a href="@{AssignRequests.assign(item.id, p.id)}" >assign a user to this item</a>
+            #{/if}
+						&nbsp;&nbsp;&nbsp;&nbsp;
+			  #{if user.canWork(item.id) && !(item.status == 2) && !item.endDatePassed()}
+			  <input class = "linkButton" type="button" id = "buttonWork_${item.id}" onclick="workItem(${item.id},'${user.username}');" value = "work on this item">
+			  #{/if}
+
+ 
             <ul id = "assignees_${item.id}" style="list-style: none; ">
                 #{if item.assignees.size() > 0} 
-                Assigned Users: 
                 #{list items:item.getAssignees(), as:'assignedUser'}
                 <li>
                     <a href="#">${assignedUser.username}</a>
                 </li>
                 #{/list}
                 #{/if}
+				#{else}
+				<li id = "noUserLabel_${item.id}">
+				<label >There are no users assigned to this item</label>
+				</li>
+				#{/else}
             </ul>
-            #{if user.canWork(item.id) && !(item.status == 2) && !item.endDatePassed()}<input type="button" id = "buttonWork_${item.id}" onclick="workItem(${item.id},'${user.username}');" value = "work on this item">
-            <br/>
-            #{/if}
-            #{if canAssign == 1 && !(item.status == 2)&& !item.endDatePassed()}
-            <form action="@{AssignRequests.assign(item.id, p.id)}" method="post">
-                <input type="submit" value="assign a user to this item">
-            </form>#{/if}
+           
             #{if canEdit == 1}
             <form action="@{Plans.editItem(item.id)}" method="post">
                 <input type="submit" value="Edit this item">
@@ -241,7 +249,9 @@ ${p.topic.getOrganizer().get(0).username}
                 		function workItem(id,name) {
                 			$.post('@{workOnItem()}', {itemId:id});
                 			$("#buttonWork_" + id).remove();
+							$("#noUserLabel_" + id).remove();
                 		    $("#assignees_" + id).append('<li> <a href="#">'+name+'</a> </li>');
+						
                 	}	
                 	
                 	function delItem(id){
