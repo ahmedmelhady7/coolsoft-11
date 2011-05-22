@@ -23,7 +23,7 @@ import java.util.*;
 
 import com.sun.mail.iap.Response;
 
-import controllers.CoolCRUD.ObjectType;
+//import controllers.CoolCRUD.ObjectType;
 
 import play.data.binding.*;
 import play.db.*;
@@ -34,7 +34,7 @@ import models.*;
 import notifiers.Mail;
 
 @With(Secure.class)
-public class Topics extends CoolCRUD {
+public class Topics extends CRUD {
 
 	/**
 	 * renders the related topic, entity the topic belongs to and the list of
@@ -1744,16 +1744,23 @@ public class Topics extends CoolCRUD {
 	 *            can the relationships be created
 	 */
 
-	public static void postDraftTopic(long topicIdId, String title,
+	public static void postDraftTopic(long topicId, String title,
 			String description, int privacyLevel, boolean createRelationship) {
 
-		Topic targetTopic = Topic.findById(topicIdId);
+		System.out.println("I entered postDraft controller");
+		System.out.println("TopicId:" + topicId);
+		Topic targetTopic = Topic.findById(topicId);
 		User user = Security.getConnected();
 
-		saveDraft(topicIdId, title, description, privacyLevel,
-				createRelationship);
-
+		targetTopic.title = title;
+		targetTopic.description = description;
+		targetTopic.privacyLevel = privacyLevel;
+		targetTopic.createRelationship = createRelationship;
+		targetTopic.intializedIn = new Date();
 		targetTopic.isDraft = false;
+		
+		System.out.println("targetTopic.isDraft:" + targetTopic.isDraft);
+		
 		targetTopic.save();
 		user.save();
 	}
