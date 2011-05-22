@@ -72,7 +72,7 @@
 	function post() {
 		setValues();
 		
-		if(topicTitle == "" && topicDescription == "") {
+		if(topicTitle == "" || topicDescription == "") {
 			alert("Title and Description must be entered");
 			return;
 		}
