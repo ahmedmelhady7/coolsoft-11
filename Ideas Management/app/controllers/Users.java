@@ -1613,6 +1613,16 @@ public class Users extends CRUD {
 		render(user, nList);
 	}
 	
+	/**
+	 * Changes the status of the notifications when the user views
+	 * the latest notifications.
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S20
+	 * 
+	 */
+	
 	public static void showNotifications() {
 		User user = Security.getConnected();
 		for (int i = 0; i < user.notifications.size(); i++) {

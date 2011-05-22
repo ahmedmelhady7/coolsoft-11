@@ -621,6 +621,17 @@ public class User extends CoolModel {
 		return notificationCount;
 	}
 
+	/**
+	 * Returns the latest notifications
+	 * i.e. having their status as new
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S20
+	 * 
+	 * @return List
+	 * 			List<Notification> the list of the latest notifications
+	 */
 	
 	public List<Notification> getLatest() {
 		User user = Security.getConnected();
