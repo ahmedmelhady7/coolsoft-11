@@ -17,7 +17,8 @@
 <br /> <br />
 
 #{if users.isEmpty()}
-  <p style="color:#c00"> No Organizers Found </p>
+ <p> <font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
+    <b> No Organizers Found !!</b></font></p>
 #{/if}
 #{else}
 
@@ -36,7 +37,7 @@
 </form>
 <br />
 <input type="submit" value="Select Entity" onclick="submit()">
-#{/else}
+
 
 
 
@@ -71,7 +72,7 @@
 </form>
 
 <input  type="submit" value="Submit" onclick = "getTopic()">
-
+#{/else}
 
 
 <form id = "topicsListId" name = "topicsList">
@@ -262,7 +263,7 @@ function getTopic(){
     var entityIdd = document.getElementById('e').value;
      entityID = entityIdd;
      if(topicc == false){
-    $.getJSON( '@{BannedUsers.entityActions()}', { entityId: entityIdd ,topic :topicc, organizationId: ${organizationID} ,userId: userIDD} ,  function(data) { 
+    $.getJSON( '@{BannedUsers.entityActions()}', { entityId: entityIdd, organizationId: ${organizationID} ,userId: userIDD} ,  function(data) { 
 		
          //alert("Data Loaded :)"  + data.actions);
 	    
