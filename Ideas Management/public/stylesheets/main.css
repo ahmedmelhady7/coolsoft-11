@@ -76,6 +76,18 @@ a:hover {
 	padding: 0px 0px 0px 30px;
 }
 
+#list ul{
+border: 1px solid #eee;}
+
+
+#list ul li{
+color: #333333;
+list-style: inside;
+font-family: tahoma; font-weight: strong; font-size: small; text-align:left;
+line-height:17px;}
+
+
+
 /* Logo */
 
 #logo {
