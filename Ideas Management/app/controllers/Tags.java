@@ -230,6 +230,7 @@ public class Tags extends CoolCRUD {
 	 * 			The new name of the tag
 	 */
 	public static void edit(long tagId, String name) {
+		if(!name.equals("")) {
 		Tag tag = Tag.findById(tagId);
 		Organization tagOrganization = tag.createdInOrganization;
 		List<Tag> tags = new ArrayList<Tag>();
@@ -273,6 +274,10 @@ public class Tags extends CoolCRUD {
 		else {
 			flash.error("There is already a tag with the same name");
 		}
+		}
+		else {
+			flash.error("Please insert a valid name");
+		}
 		Tags.mainPage(tagId);
 	}
 	
@@ -286,7 +291,7 @@ public class Tags extends CoolCRUD {
 	 * @param tagId
 	 * 			The id of the tag that will be deleted
 	 */
-	public static void delete(long tagId) {
+	public static boolean delete(long tagId) {
 		Tag tag = Tag.findById(tagId);
 		List<Organization> allOrganizations = Organization.findAll();
 		List<Topic> topics = Topic.findAll();
@@ -342,6 +347,21 @@ public class Tags extends CoolCRUD {
 		}
 		
 		tag.delete();
+		return true;
+	}
+	
+	/**
+	 * This method is used to call the delete method and then renders the organization page
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @story C2S38
+	 * 
+	 * @param tagId
+	 * 			The id of the deleted tag
+	 */
+	public static void deleteTag(long tagId) {
+		Tags.delete(tagId);
 		Organizations.mainPage();
 	}
 }
