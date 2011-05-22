@@ -17,14 +17,17 @@ import play.mvc.With;
 import controllers.CRUD.ObjectType;
 import models.BannedUser;
 import models.CreateRelationshipRequest;
+import models.EntityRelationship;
 import models.Invitation;
 import models.MainEntity;
 import models.Organization;
 import models.Plan;
+import models.RenameEndRelationshipRequest;
 import models.RequestToJoin;
 import models.Role;
 import models.Tag;
 import models.Topic;
+import models.TopicRelationship;
 import models.User;
 
 @With(Secure.class)
@@ -686,24 +689,61 @@ public class Organizations extends CRUD {
 	}
 
 	public static boolean isDuplicateRequest(String source, String destination,
-			String relationshipName, long organisationId, int type) {
+			String relationshipName, long organisationId, int type,
+			 int flag, int requestType, long relationId) {
 		Organization organisation = Organization.findById(organisationId);
-		for (CreateRelationshipRequest request : organisation.createRelationshipRequest) {
-			if (request.type == 0) {
-				if (request.sourceEntity.name.equalsIgnoreCase(source)
-						&& request.destinationEntity.name
-								.equalsIgnoreCase(destination)
-						&& request.name.equalsIgnoreCase(relationshipName)) {
-					return true;
-				}
-			} else {
-				if (request.sourceTopic.title.equalsIgnoreCase(source)
-						&& request.destinationTopic.title
-								.equalsIgnoreCase(destination)
-						&& request.name.equalsIgnoreCase(relationshipName)) {
-					return true;
+		if (flag == 1) {
+			for (CreateRelationshipRequest request : organisation.createRelationshipRequest) {
+				if (request.type == 0) {
+					if (request.sourceEntity.name.equalsIgnoreCase(source)
+							&& request.destinationEntity.name
+									.equalsIgnoreCase(destination)
+							&& request.name.equalsIgnoreCase(relationshipName)) {
+						return true;
+					}
+				} else {
+					if (request.sourceTopic.title.equalsIgnoreCase(source)
+							&& request.destinationTopic.title
+									.equalsIgnoreCase(destination)
+							&& request.name.equalsIgnoreCase(relationshipName)) {
+						return true;
+					}
 				}
 			}
+		} else {
+			for (RenameEndRelationshipRequest request : organisation.renameEndRelationshipRequest) {
+				if (request.type == requestType) {
+					if (request.type == 0) {
+						EntityRelationship entityRelation = EntityRelationship
+								.findById(relationId);
+						if (requestType == 1) {
+							if (request.entityRelationship.equals(entityRelation)
+									&& request.newName.equalsIgnoreCase(relationshipName)) {
+								return true;
+							}
+						} else {
+							if (request.entityRelationship.equals(entityRelation)) {
+								return true;
+							}
+						}
+					} else {
+						TopicRelationship topicRelation = TopicRelationship
+								.findById(relationId);
+						if (requestType == 1) {
+							if (request.topicRelationship.equals(topicRelation)
+									&& request.newName.equalsIgnoreCase(relationshipName)) {
+								return true;
+							} 
+						}else {
+								if (request.topicRelationship.equals(topicRelation)) {
+									return true;
+								}
+							}
+					}
+				}
+				
+			}
+
 		}
 		return false;
 	}

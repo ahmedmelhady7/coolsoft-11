@@ -952,22 +952,22 @@ public class Topics extends CRUD {
 		render(user, organisation, entity, canRequestRelationship, topic);
 	}
 
-	public static void deleteRequest(long userId, long relationId, int type) {
-		User user = User.findById(userId);
-		TopicRelationship relation = TopicRelationship.findById(relationId);
-		RenameEndRelationshipRequest deleteRequest = new RenameEndRelationshipRequest(
-				user, relation, type, null);
-		deleteRequest.save();
-	}
-
-	public static void renameRequest(long userId, long relationId, int type,
-			String newName) {
-		User user = User.findById(userId);
-		TopicRelationship relation = TopicRelationship.findById(relationId);
-		RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
-				user, relation, type, newName);
-		renameRequest.save();
-	}
+//	public static void deleteRequest(long userId, long relationId, int type) {
+//		User user = User.findById(userId);
+//		TopicRelationship relation = TopicRelationship.findById(relationId);
+//		RenameEndRelationshipRequest deleteRequest = new RenameEndRelationshipRequest(
+//				user, relation, type, null);
+//		deleteRequest.save();
+//	}
+//
+//	public static void renameRequest(long userId, long relationId, int type,
+//			String newName) {
+//		User user = User.findById(userId);
+//		TopicRelationship relation = TopicRelationship.findById(relationId);
+//		RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
+//				user, relation, type, newName);
+//		renameRequest.save();
+//	}
 
 	public static boolean topicRequestIsDuplicate(Topic topic, String source,
 			String destination, String name) {

@@ -401,18 +401,11 @@ public class MainEntitys extends CRUD {
 		render(user, organisation, entity, canRequestRelationship);
 	}
 	
-	public static void deleteRequest(long userId, long relationId, int type) {
-		User user = User.findById(userId);
-		EntityRelationship relation = EntityRelationship.findById(relationId);
-		RenameEndRelationshipRequest deleteRequest = new RenameEndRelationshipRequest(user, relation, type, null);
-		deleteRequest.save();
-	}
-	
-	public static void renameRequest(long userId, long relationId, int type, String newName) {
-		User user = User.findById(userId);
-		EntityRelationship relation = EntityRelationship.findById(relationId);
-		RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(user, relation, type, newName);
-		renameRequest.save();
-	}
+//	public static void deleteRequest(long userId, long relationId, int type) {
+//		User user = User.findById(userId);
+//		EntityRelationship relation = EntityRelationship.findById(relationId);
+//		RenameEndRelationshipRequest deleteRequest = new RenameEndRelationshipRequest(user, relation, type, null);
+//		deleteRequest.save();
+//	}
 
 }
