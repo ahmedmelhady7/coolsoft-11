@@ -73,9 +73,9 @@ public class BannedUsers extends CRUD {
 		List<User> users = Users.searchOrganizer(organization);
 
 	    long organizationID = orgId;
-	    boolean flag = false;
+	  //  boolean flag = false;
 	    User user = Security.getConnected();
-		render(users, organizationID , flag , user);
+		render(users, organizationID , user);
 	}
 
 	/**
@@ -446,7 +446,7 @@ public class BannedUsers extends CRUD {
 		
 		for(int i = 0; i<entityActions.size() ; i++){
 			if (restricted.contains(entityActions.get(i))){
-				System.out.println(entityActions.get(i));
+				
 				entityActions.remove(i);
 				i--;
 			}
@@ -605,7 +605,7 @@ public class BannedUsers extends CRUD {
 				Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity ,org,entity);
 				
 				
-				Notifications.sendNotification(userId, Security.getConnected().getId(),
+				Notifications.sendNotification(userId, restricter.getId(),
 						"user", "you have been restricted from the following action :" + actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity );
 
 				
