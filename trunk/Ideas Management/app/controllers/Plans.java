@@ -57,6 +57,7 @@ public class Plans extends CoolCRUD {
 		String listOfTags = "";
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
 		globalListOfTags = Tag.findAll();
+		
 		boolean checkNotRated;
 		if (p.usersRated.contains(user))
 			checkNotRated = false;
@@ -1388,10 +1389,11 @@ public class Plans extends CoolCRUD {
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
 		globalListOfTags = Tag.findAll();
 
-		User user = (User) Security.getConnected();
-		Item item = (Item) Item.findById(itemId);
+		User user =  Security.getConnected();
+		Item item = Item.findById(itemId);
 		Plan plan = item.plan;
 		MainEntity entity = plan.topic.entity;
+
 
 		for (int i = 0; i < globalListOfTags.size(); i++) {
 			if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
@@ -1400,34 +1402,36 @@ public class Plans extends CoolCRUD {
 				listOfTags.add(globalListOfTags.get(i));
 			}
 		}
-
-		for (int i = 0; i < listOfTags.size(); i++) {
-			if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
-				if (!item.tags.contains(listOfTags.get(i))) {
-					item.tags.add(listOfTags.get(i));
-					listOfTags.get(i).taggedItems.add(item);
-					listOfTags.get(i).save();
-					System.out.println("existing tag added");
-
-				} else {
-					// tag already exists error message
-					System.out.println("tag already exists");
-					tagAlreadyExists = true;
-				}
-				newTag = true;
-				;
+		Tag tagTemp = null;
+		for(int i=0;i<listOfTags.size();i++){
+			if(listOfTags.get(i).name.equalsIgnoreCase(tag)){
+				tagTemp=listOfTags.get(i);
+			break;	
+				
 			}
 		}
-
-		if (newTag) {
-			Tag temp = new Tag(tag, plan.topic.entity.organization, user);
-			item.tags.add(temp);
-			temp.taggedItems.add(item);
-			temp.save();
-			System.out.println("new tag created and added");
+		if(tagTemp == null) {
+			newTag=true;
+			tagTemp= new Tag(tag, plan.topic.entity.organization, user);
+			tagTemp.save();
+			
 		}
+		if(item.tags.contains(tagTemp)){
+			tagAlreadyExists=true;
+			
+		}else{
+		item.tags.add(tagTemp);
+		item.save();
+		tagTemp.taggedItems.add(item);
+		tagTemp.save();
+		}
+			
 
 		item.save();
+		viewAsList(plan.id);
+
+
+
 
 	}
 
