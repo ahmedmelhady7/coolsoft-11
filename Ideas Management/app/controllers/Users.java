@@ -9,7 +9,6 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
-
 import controllers.CRUD.ObjectType;
 import notifiers.Mail;
 import play.data.binding.Binder;
@@ -21,6 +20,7 @@ import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import play.mvc.With;
 import models.*;
+import java.util.Arrays;
 
 @With(Secure.class)
 public class Users extends CRUD {
@@ -1254,12 +1254,12 @@ public class Users extends CRUD {
 		} catch (NumberFormatException e) {
 			communityCounterFlag = true;
 		}
-		if (User.find("ByEmail", tmp.email) != null
+		/*if (User.find("ByEmail", tmp.email) != null
 				|| User.find("ByUsername", tmp.username) != null) {
 			flag = true;
 		}
-
-		if (validation.hasErrors() || flag) {
+		System.out.println(flag );*/
+		if (validation.hasErrors()) {
 			System.out.println("lol");
 			if (tmp.email.equals("")) {
 				message = "A User must have an email";
@@ -1351,11 +1351,16 @@ public class Users extends CRUD {
 		Model object = type.findById(id);
 		User oldUser = (User) object;
 		String oldEmail = oldUser.email;
+		char [] oldemailArray = oldEmail.toCharArray();
 		String oldFirstName = oldUser.firstName;
+		char [] oldFirstNameArray = oldFirstName.toCharArray();
 		String oldLastName = oldUser.lastName;
+		char [] oldLastNameArray = oldLastName.toCharArray();
 		int oldCommunityContributionCounter = oldUser.communityContributionCounter;
 		String oldCountry = oldUser.country;
-		String oldProfession = oldUser.country;
+		char [] oldCountryArray = oldCountry.toCharArray();
+		String oldProfession = oldUser.profession;
+		char [] oldProfessionArray = oldProfession.toCharArray();
 		Binder.bind(object, "object", params.all());
 		System.out.println(object.toString() + "begin");
 		validation.valid(object);
@@ -1383,13 +1388,13 @@ public class Users extends CRUD {
 			if (tmp.email.equals("")) {
 				message = "A User must have an email";
 				System.out.println(message);
-			} else if (tmp.username.trim().equals("")) {
+			} /*else if (tmp.username.trim().equals("")) {
 				message = "A User must have a username";
 				System.out.println(message);
 			} else if (tmp.password.trim().equals("")) {
 				message = "A User must have a password";
 				System.out.println(message);
-			} else if (tmp.username.length() >= 20) {
+			}*/ else if (tmp.username.length() >= 20) {
 				message = "Username cannot exceed 20 characters";
 			} else if (tmp.password.length() >= 25) {
 				message = "First name cannot exceed 25 characters";
@@ -1398,7 +1403,7 @@ public class Users extends CRUD {
 			}
 			try {
 				System.out.println("show user try ");
-				render(request.controller.replace(".", "/") + "/save.html",
+				render(request.controller.replace(".", "/") + "/view.html",object,
 						type, message);
 
 			} catch (TemplateNotFoundException e) {
@@ -1409,29 +1414,20 @@ public class Users extends CRUD {
 
 		System.out.println(object.toString() + "before save");
 		object._save();
-		if (Security.getConnected().isAdmin) {
+		if (Security.getConnected().isAdmin&&Security.getConnected().id != tmp.id) {
 			Notifications.sendNotification(tmp.id, Security.getConnected().id,
 					"User", "The admin has edited your profile");
 		}
-		if (oldEmail.equals(tmp.email))
-			;
-		if (Security.getConnected().isAdmin) {
-			Notifications.sendNotification(tmp.id, Security.getConnected().id,
-					"User", "The admin has edited your profile");
-		}
-		if (oldEmail.equals(tmp.email))
-			;
+		if (!(Arrays.equals(oldemailArray, tmp.email.toCharArray())))
 		{
-			editedMessage += oldEmail + "  changed to -->  " + tmp.email + "\n";
+			editedMessage += oldemailArray.toString() + "Email changed to -->  " + tmp.email + "\n";
 		}
-		if (oldFirstName.equalsIgnoreCase(tmp.firstName))
-			;
+		if (!(Arrays.equals(oldFirstNameArray, tmp.firstName.toCharArray())))
 		{
-			editedMessage += oldFirstName + "  changed to -->  "
+			editedMessage += oldFirstName + " First Name changed to -->  "
 					+ tmp.firstName + "\n";
 		}
-		if (oldUser.lastName.equalsIgnoreCase(tmp.lastName))
-			;
+		if (!(Arrays.equals(oldLastNameArray, tmp.lastName.toCharArray())))
 		{
 			editedMessage += oldLastName + "  changed to -->  " + tmp.lastName
 					+ "\n";
@@ -1445,20 +1441,21 @@ public class Users extends CRUD {
 		 * if(oldUser.dateofBirth !=(tmp.dateofBirth)); { editedMessage +=
 		 * dateofBirth + "  changed to -->  " + tmp.dateofBirth +"\n"; }
 		 */
-		if (oldUser.country.equalsIgnoreCase(tmp.country))
-			;
+		if (!(Arrays.equals(oldCountryArray, tmp.country.toCharArray())))
 		{
 			editedMessage += oldUser.country + "  changed to -->  "
 					+ tmp.country + "\n";
 		}
-		if (oldProfession.equalsIgnoreCase(tmp.profession))
-			;
+		if (!(Arrays.equals(oldProfessionArray, tmp.profession.toCharArray())))
 		{
 			editedMessage += oldProfession + " changed to --> "
 					+ tmp.profession + "\n";
 		}
-		System.out.println("eidted" + editedMessage + " all");
-		Log.addUserLog(editedMessage, tmp);
+		System.out.println("edited" + editedMessage + " all");
+		Log.addUserLog("Admin " + Security.getConnected().firstName + " "
+				+ Security.getConnected().lastName
+				+ " has edited " + tmp.username +  "'s profile" + "\n" + editedMessage,
+				tmp);
 		System.out.println(object.toString() + "after the save");
 		flash.success(Messages.get("crud.saved", type.modelName));
 		if (params.get("_save") != null) {
@@ -1518,9 +1515,9 @@ public class Users extends CRUD {
 	// }
 
 	/**
-	 * overrides the CRUD view method ,is responsible for deleting a user by the
-	 * System admin after specifying that user's id , and then it renders a
-	 * message confirming whether the delete was successful or not
+	 * deletes a user after the system admin ( the one who's requesting the delete) specifies the user's 
+	 * id and the reason for the deletion , then it sends a mail to the deleted user notifying him of both
+	 * the event and the reason
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1529,6 +1526,8 @@ public class Users extends CRUD {
 	 * @param id
 	 *            :String the user's id
 	 * 
+	 * @param deletionMessage
+	 * 			:String the reason the user was deleted for
 	 * 
 	 * */
 	public static void delete(String id, String deletionMessage) {
@@ -1561,6 +1560,7 @@ public class Users extends CRUD {
 				}
 				// >>>>>> end of Salma's part :)
 				System.out.println(x + "  first if");
+				System.out.println("message" + deletionMessage);
 				Mail.deletion(user, deletionMessage);
 			} else {
 				x = "You can not delete a user who's deactivated his account !";
@@ -1728,18 +1728,15 @@ public class Users extends CRUD {
 	 * activates the account of that user by setting the state to "a" and then
 	 * renders a message
 	 * 
-	 * checks if the new user has been invited before or not , if yes
-	 * it redirects him to the invitation page
-	 * 
-	 * @author Mostafa Ali , Mai Magdy
+	 @author Mostafa Ali , Mai Magdy
 	 * 
 	 * @story C1S10,C1S11
 	 * 
 	 * @params userId 
 	 *                long Id of the user that his account ll be activated
 	 * 
+	 * 
 	 */
-	
 	public static void activate(long userId) {
 		User user = User.findById(userId);
 		user.state = "a";
