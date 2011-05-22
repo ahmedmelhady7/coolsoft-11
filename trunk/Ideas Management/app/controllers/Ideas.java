@@ -7,7 +7,7 @@ import java.util.Collections;
 
 import javax.persistence.Id;
 
-import controllers.CRUD.ObjectType;
+import controllers.CoolCRUD.ObjectType;
 
 import play.*;
 import play.data.binding.*;
@@ -24,7 +24,7 @@ import models.*;
  * 
  */
 @With(Secure.class)
-public class Ideas extends CRUD {
+public class Ideas extends CoolCRUD {
 
 	/**
 	 * @author Abdalrahman Ali

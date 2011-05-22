@@ -7,7 +7,7 @@ import models.Idea;
 import models.Label;
 import models.User;
 
-public class Labels extends CRUD
+public class Labels extends CoolCRUD
 {
 	
 	/**

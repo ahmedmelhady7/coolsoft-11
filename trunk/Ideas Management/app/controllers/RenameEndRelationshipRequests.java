@@ -11,7 +11,7 @@ import models.User;
 import play.mvc.With;
 
 @With(Secure.class)
-public class RenameEndRelationshipRequests extends CRUD {
+public class RenameEndRelationshipRequests extends CoolCRUD {
 
 	/**
 	 * creates a request for renaming an entity or topic relationship

@@ -8,7 +8,7 @@ import play.mvc.With;
 import models.*;
 
 @With(Secure.class)
-public class Roles extends CRUD {
+public class Roles extends CoolCRUD {
 
 	/**
 	 * retrieve the role by it's name

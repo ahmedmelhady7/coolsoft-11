@@ -15,7 +15,7 @@ import models.*;
  * @story C2S5
  * 
  */
-public class TopicRelationships extends CRUD {
+public class TopicRelationships extends CoolCRUD {
 
 	/**
 	 * creates a new relationship between two Topics

@@ -12,7 +12,7 @@ import javax.swing.Timer;
 
 import models.*;
 
-public class Application extends CRUD {
+public class Application extends CoolCRUD {
 
 	public static void index() {
 		render();		

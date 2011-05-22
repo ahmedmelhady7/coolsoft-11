@@ -10,7 +10,7 @@ import play.data.binding.Binder;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
-import controllers.CRUD.ObjectType;
+import controllers.CoolCRUD.ObjectType;
 import models.Log;
 import models.MainEntity;
 import models.Organization;
@@ -20,7 +20,7 @@ import models.TopicRequest;
 import models.User;
 import models.UserRoleInOrganization;
 
-public class TopicRequests extends CRUD{
+public class TopicRequests extends CoolCRUD{
 	
 	
 

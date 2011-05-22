@@ -14,7 +14,7 @@ import models.*;
  
 
 @With(Secure.class)
-public class Logs extends CRUD {
+public class Logs extends CoolCRUD {
 	
 	
 public static void passId() {

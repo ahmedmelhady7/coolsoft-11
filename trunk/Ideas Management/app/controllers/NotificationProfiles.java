@@ -21,7 +21,7 @@ import play.mvc.With;
  */
 
 @With(Secure.class)
-public class NotificationProfiles extends CRUD {
+public class NotificationProfiles extends CoolCRUD {
 	
 	/**
 	 * Renders the view were the user can change his preferences.

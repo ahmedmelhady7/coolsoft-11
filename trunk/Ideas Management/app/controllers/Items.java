@@ -13,7 +13,7 @@ import models.User;
 import models.*;
 
 @With(Secure.class)
-public class Items extends CRUD {
+public class Items extends CoolCRUD {
 
 	/**
 	 * 

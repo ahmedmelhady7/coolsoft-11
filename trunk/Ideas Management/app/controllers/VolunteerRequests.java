@@ -13,7 +13,7 @@ import models.User;
 import models.VolunteerRequest;
 
 @With(Secure.class)
-public class VolunteerRequests extends CRUD {
+public class VolunteerRequests extends CoolCRUD {
 
 	/**
 	 * 

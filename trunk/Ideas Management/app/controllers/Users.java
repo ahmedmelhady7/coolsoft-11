@@ -9,7 +9,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
-import controllers.CRUD.ObjectType;
+import controllers.CoolCRUD.ObjectType;
 import notifiers.Mail;
 import play.data.binding.Binder;
 import play.data.validation.Validation;
@@ -23,7 +23,7 @@ import models.*;
 import java.util.Arrays;
 
 @With(Secure.class)
-public class Users extends CRUD {
+public class Users extends CoolCRUD {
 
 	/**
 	 * 

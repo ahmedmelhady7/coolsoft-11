@@ -23,7 +23,7 @@ import java.util.*;
 
 import com.sun.mail.iap.Response;
 
-import controllers.CRUD.ObjectType;
+import controllers.CoolCRUD.ObjectType;
 
 import play.data.binding.*;
 import play.db.*;
@@ -34,7 +34,7 @@ import models.*;
 import notifiers.Mail;
 
 @With(Secure.class)
-public class Topics extends CRUD {
+public class Topics extends CoolCRUD {
 
 	/**
 	 * renders the related topic, entity the topic belongs to and the list of

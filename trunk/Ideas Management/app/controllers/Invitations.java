@@ -24,7 +24,7 @@ import com.google.gson.JsonObject;
 //import com.mysql.jdbc.log.Log;
 
 @With(Secure.class)
-public class Invitations extends CRUD {
+public class Invitations extends CoolCRUD {
 	public static List<User> users = new ArrayList<User>();
 
 	/**

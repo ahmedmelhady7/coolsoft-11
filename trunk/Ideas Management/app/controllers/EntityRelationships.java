@@ -8,7 +8,7 @@ import groovy.ui.text.FindReplaceUtility;
 
 import javax.xml.transform.Source;
 
-import controllers.CRUD.ObjectType;
+import controllers.CoolCRUD.ObjectType;
 
 import play.data.binding.Binder;
 import play.db.jpa.Model;
@@ -24,7 +24,7 @@ import models.*;
  * 
  */
 @With(Secure.class)
-public class EntityRelationships extends CRUD {
+public class EntityRelationships extends CoolCRUD {
 
 	/**
 	 * creates a new relationship between two Entities
