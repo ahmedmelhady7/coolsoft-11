@@ -66,14 +66,16 @@
 			alert("Please enter the Missing field(s)");
 		}
 		else {
-			$.post('@{TagRelationships.createRelationship()}', {
+		
+		$.post('@{TagRelationships.createRelationship()}', {
 				name: x,
 				sourceId: a,
 				destinationId: b
 			});
 			alert("you have created a relation:" + x);
-			var link = "/Tags/mainpage?tagId="+a;
+			var link = "/tags/mainpage?tagId="+a;
 			window.location.href= link
-			}
+			
+		}
 		}
 </script>
