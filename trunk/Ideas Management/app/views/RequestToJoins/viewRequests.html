@@ -1,9 +1,6 @@
- #{extends 'main.html' /}
+#{extends 'login/index.html' /}
  #{if type==1}
-            <legend>
-            <h2>
        <a href="@{Topics.show(id)}">Back to ${name}</a>           
-            </legend>
 			#{/if}
 			#{else}
   <a href="@{Organizations.viewProfile(id)}">Back to ${name}</a>  			
@@ -20,13 +17,10 @@
 #{else}
  #{list items:requests, as:'request'}
     <li>
-        <fieldset>
+        <fieldset id="request_${request.id}">
+        	        <tr><td><font size ="3" color ="black">
         	#{if type==1}
-            <legend>
-            <h2>
             	A new user ${request.source.username} Wants to join Topic ${request.topic.title}
-            </h2>
-            </legend>
 			#{/if}
 			#{else}
               A new user ${request.source.username} Wants to join Organization ${request.organization.name}
@@ -45,16 +39,24 @@ function respondGalal(stat, id){
 	if (stat == 1) {
 		//alert(stat + "" + id);
 		//id = id + 1;
-		$.post('@{RequestToJoins.respondToRequest()}',{status:stat,requestId:id});
-		alert("Request Accepted!");
-		window.location.reload();
+		$.post('@{RequestToJoins.respondToRequest()}',{status:stat,requestId:id},function()
+			 {
+			// alert("Accepted");
+			$('#request_'+id).html('<i>Request has been accepted<\i>');
+			});
+		//alert("Request Accepted!");
+		//window.location.reload();
 	}
 	else {
 		$.post('@{RequestToJoins.respondToRequest()}', {
-		status:stat, requestId: id
-		});
-		alert("Request rejected!");
-		window.location.reload();	
+		status:stat, requestId: id},function()
+			 {
+			// alert("Accepted");
+			$('#request_'+id).html('<i>Request has been rejected<\i>');
+			});
+		
+		//alert("Request rejected!");
+		//window.location.reload();	
 	}
 }
 
