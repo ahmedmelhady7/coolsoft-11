@@ -43,13 +43,12 @@ public class Ideas extends CRUD {
 	 *            the topic that the idea belongs to
 	 */
 
-	public static void createDraft(String title, String description,
+	public static long createDraft(String title, String description,
 			long topicId) {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
 		Idea idea = new Idea(title, description, user, topic, true).save();
-		// String message = "you have saved the idea with title successfully";
-		// redirect(request.controller + ".show", idea.getId(),message);
+		return idea.id;
 	}
 
 	/**
