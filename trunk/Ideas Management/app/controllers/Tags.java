@@ -8,6 +8,7 @@ import play.mvc.Controller;
 import play.mvc.With;
 import models.Idea;
 import models.Item;
+import models.Log;
 import models.MainEntity;
 import models.Organization;
 import models.Tag;
@@ -177,6 +178,7 @@ public class Tags extends CoolCRUD {
 			tag.save();
 			org.relatedTags.add(tag);
 			org.save();
+			Log.addUserLog("User " + user.username + " created a new Tag \"" + name + "\" in Organization \"" + org.name + "\"", user,org,tag);
 			System.out.println(tag.id);
 			String description = user.username + " has created a new tag \""
 					+ name + "\" in organization " + org.name;
@@ -230,6 +232,7 @@ public class Tags extends CoolCRUD {
 	 * 			The new name of the tag
 	 */
 	public static void edit(long tagId, String name) {
+		User user = Security.getConnected();
 		if(!name.equals("")) {
 		Tag tag = Tag.findById(tagId);
 		Organization tagOrganization = tag.createdInOrganization;
@@ -267,8 +270,10 @@ public class Tags extends CoolCRUD {
 			}
 		}
 		if(!duplicate) {
+			String oldName = tag.name;
 			tag.name = name;
 			tag.save();
+			Log.addUserLog("User " + user.username + " changed the name of the Tag \"" + oldName + "\" to \"" + tag.name + "\"", user,tag,tagOrganization);
 			flash.success("DONE");
 		}
 		else {
@@ -293,6 +298,8 @@ public class Tags extends CoolCRUD {
 	 */
 	public static boolean delete(long tagId) {
 		Tag tag = Tag.findById(tagId);
+		Organization organization = tag.createdInOrganization;
+		User user = Security.getConnected();
 		List<Organization> allOrganizations = Organization.findAll();
 		List<Topic> topics = Topic.findAll();
 		List<Item> items = Item.findAll();
@@ -345,7 +352,7 @@ public class Tags extends CoolCRUD {
 		for(int j = 0; j < tag.relationsDestination.size(); j++){
 			TagRelationships.delete(tag.relationsDestination.get(j).id);
 		}
-		
+		Log.addUserLog("User " + user.username + " deleted the Tag \"" + tag.name + "\"", user,organization);
 		tag.delete();
 		return true;
 	}
