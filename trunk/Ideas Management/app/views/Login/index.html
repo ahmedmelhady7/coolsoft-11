@@ -304,8 +304,10 @@
 </b>
 #{/if}
 <body onload=step1()>
-    #{doLayout /}
-    <iframe id="searchview" src="/searchResult" scripts="/public/javascripts/SearchScript.js" class="/public/stylesheets/searchStyle.css" language="text/javascript" frameborder='no' allowtransparency='yes'] height=900  width=980">
+    <div id = 'layout'>
+        #{doLayout /}
+    </div>
+	<iframe id="searchview" src="/searchResult" scripts="/public/javascripts/SearchScript.js" class="/public/stylesheets/searchStyle.css" language="text/javascript" frameborder='no' allowtransparency='yes' style='display:none' height = 100% width=75%>
     </iframe>
 </body>
 <script type="text/javascript" language="javascript">
@@ -434,22 +436,23 @@
 <script type="text/javascript">
     
     function step1(){
-        document.getElementById('searchview').style.visibility = 'hidden';
+        document.getElementById('searchview').style.display = 'none';
     }
     
     function quickSearchScript(){
         var s = document.getElementById('keywords').value;
         if (s.length < 2) {
-            document.getElementById('searchview').style.visibility = 'hidden';
+            document.getElementById('searchview').style.display = 'none';
         }
         else {
             $.post('@{Search.quickSearch()}', {
                 keyword: document.getElementById('keywords').value
             }, function(){
             });
-            document.getElementById('searchview').style.visibility = 'visible';
+            document.getElementById('searchview').style.display = 'block';
             document.getElementById('searchview').canHaveChildren = false;
             document.getElementById('searchview').src = '/searchResult';
+            document.getElementById('layout').style.display = 'none';
         }
     }
     
