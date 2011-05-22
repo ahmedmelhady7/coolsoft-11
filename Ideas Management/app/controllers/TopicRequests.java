@@ -204,9 +204,7 @@ public class TopicRequests extends CoolCRUD{
  * 
  */
 public static void list(long entityId) {
-	System.out.println(entityId);
-	ObjectType type = ObjectType.get(getControllerClass());
-	notFoundIfNull(type);
+	System.out.println("entity = " + entityId);
 	MainEntity entity = MainEntity.findById(entityId);
 	User user = Security.getConnected();
 	List<TopicRequest> listOfTopicsToBeRendered = new ArrayList<TopicRequest>(); 
@@ -225,34 +223,42 @@ public static void list(long entityId) {
 	try {
 		System.out.println("list() for TopicRequests done about to render");
 		System.out.println("size = " + listOfTopicsToBeRendered.size());
-		render(type, entityId, user, listOfTopicsToBeRendered);
+		render(entityId, user, listOfTopicsToBeRendered);
 
 	} catch (TemplateNotFoundException exception) {
 		System.out
 				.println("list() for TopicRequests done with exception about to render CRUD/list.html");
-		render("CRUD/list.html", type, entityId, user);
+		render("CRUD/list.html", entityId, user);
 	}
 
 }
 
-public static boolean acceptRequest(TopicRequest topicRequest) {
-	System.out.println("wasal el accept");
-	Topic topic = new Topic(topicRequest.title, topicRequest.description, topicRequest.privacyLevel, topicRequest.requester, topicRequest.entity, true);
+public static void acceptRequest(long topicRequestId, String topicDescription) {
+	System.out.println("wasal el accept" + topicRequestId);
+	System.out.println(topicDescription);
+	TopicRequest request = (TopicRequest) TopicRequest.findById(topicRequestId);
+	System.out.println(request.toString());
+	Topic topic = new Topic(request.title, topicDescription, request.privacyLevel, request.requester, request.entity, true);
+	System.out.println(topic.toString());
 	topic.save();
-	topicRequest.delete();
-//	redirect("/topicrequests/list?entityId=" + topicRequest.entity.id);
-	return true;
+	System.out.println("topic saved");
+	MainEntity entity = request.entity;
+	System.out.println(entity.toString());
+	request.delete();
+	System.out.println("request deleted");
+	entity.save();
+	System.out.println("entity saved");
 }
 
-public static boolean rejectRequest(TopicRequest topicRequest) {
-	System.out.println("wasal el reject");
-	topicRequest._delete();
-	return true;
-}
-
-public static boolean rephrase(TopicRequest topicRequest) {
-	System.out.println("rephrase");
-	return true;
+public static void rejectRequest(long topicRequestId) {
+	System.out.println("wasal el reject" + topicRequestId);
+	TopicRequest request = (TopicRequest) TopicRequest.findById(topicRequestId);
+	MainEntity entity = request.entity;
+	System.out.println(entity.toString());
+	request.delete();
+	System.out.println("request deleted");
+	entity.save();
+	System.out.println("entity saved");
 }
 
 }
