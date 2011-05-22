@@ -1639,7 +1639,8 @@ public class Topics extends CRUD {
 	 * 
 	 */
 	public static void getIdeasToMerge(String topicId) {
-
+		System.out.println("I'm in");
+		
 		Long topicIdLong = Long.parseLong(topicId);
 		Topic targetTopic = Topic.findById(topicIdLong);
 		List ideas = new ArrayList<Idea>();
@@ -1751,7 +1752,6 @@ public class Topics extends CRUD {
 
 		Topic targetTopic = Topic.findById(topicIdId);
 		User user = Security.getConnected();
-		MainEntity entity = targetTopic.entity;
 
 		saveDraft(topicIdId, title, description, privacyLevel,
 				createRelationship);
@@ -1759,7 +1759,6 @@ public class Topics extends CRUD {
 		targetTopic.isDraft = false;
 		targetTopic.save();
 		user.save();
-		entity.save();
 	}
 
 	/**
