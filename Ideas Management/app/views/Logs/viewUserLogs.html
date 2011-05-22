@@ -11,12 +11,13 @@ Search Logs <input type="text" size="20" name="name" id="table">
 <br/>
 <br/> 
    <form action="@{Logs.viewLogs()}" method="POST">
-   	<input type="submit" value="Go"/>
+   	
    Organizations List: </font></legend> <br /> <select name = "organizationId" id = "organization">
   #{list items:organization, as:'org'}
   <option name = organizationId value=${org.id}>${org.name}</option>
    #{/list}
 </select>
+<input type="submit" value="Go"/>
 </form>
 <br/>
 <br/> 
@@ -41,7 +42,7 @@ Search Logs <input type="text" size="20" name="name" id="table">
 	<script type="text/javascript"><!--
 
 
-    var pager = new Pager('toFil', 3); 
+    var pager = new Pager('toFil', 10); 
     pager.init(); 
     pager.showPageNav('pager', 'pageNavPosition'); 
     pager.showPage(1);
