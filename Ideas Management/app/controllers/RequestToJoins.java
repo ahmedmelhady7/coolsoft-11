@@ -203,6 +203,7 @@ public class RequestToJoins extends CoolCRUD {
 			RequestToJoin request = new RequestToJoin(requester, null,
 					organization, description).save();
 			organization.joinRequests.add(request);
+			Log.addUserLog("User " + requester.username + " has requested to join the Organization \"" + organization.name + "\"", requester,organization);
 			Login.homePage();
 		}
 	}

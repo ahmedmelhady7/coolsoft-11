@@ -316,6 +316,7 @@ public class Organizations extends CoolCRUD {
 			}
 			Organization org = new Organization(name, creator, privacyLevell,
 					createTagg, description).save();
+			Log.addUserLog("User " + creator.username + " created a new Organization \"" + name + "\"", creator,org);
 			Role role = Roles.getRoleByName("organizationLead");
 			UserRoleInOrganizations.addEnrolledUser(creator, org, role);
 			MainEntity defaultEntity = new MainEntity("Default", "", org, false);
@@ -412,7 +413,7 @@ public class Organizations extends CoolCRUD {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(id);
 		List<Tag> tags = new ArrayList<Tag>();
-		List<Tag> allTags = Tag.findAll();
+//		List<Tag> allTags = Tag.findAll();
 		int i = 0;
 		int allowed = 0;
 		int settings = 0;
@@ -598,6 +599,7 @@ public class Organizations extends CoolCRUD {
 	public static void join(long organizationId) {
 		Organization organization = Organization.findById(organizationId);
 		User user = Security.getConnected();
+		Log.addUserLog("User " + user.username + " has joined Organization \"" + organization.name + "\"",user,organization);
 		Role role = Roles.getRoleByName("idea developer");
 		UserRoleInOrganizations.addEnrolledUser(user, organization, role);
 		Organizations.viewProfile(organizationId);
@@ -614,6 +616,7 @@ public class Organizations extends CoolCRUD {
 	 *            The id of the organization that the user wishes to join
 	 */
 	public static void deleteOrganization(long organizationId) {
+		User user = Security.getConnected();
 		Organization organization = Organization.findById(organizationId);
 		List<User> followers = User.findAll();
 		List<Tag> createdTags = organization.createdTags;
@@ -635,6 +638,7 @@ public class Organizations extends CoolCRUD {
 			organization.joinRequests.get(i).delete();
 		// fadwa
 		organization.delete();
+		Log.addUserLog("User " + user.username + " deleted the Organization \"" + organization.name + "\"", user,organization);
 		Organizations.mainPage();
 	}
 
@@ -675,6 +679,7 @@ public class Organizations extends CoolCRUD {
 	 */
 	public static void edit(long organizationId, String createTag,
 			String privacyLevel, String description) {
+		User user = Security.getConnected();
 		Organization organization = Organization.findById(organizationId);
 		int privacyLevell = 0;
 		if (privacyLevel.equalsIgnoreCase("Public")) {
@@ -692,6 +697,7 @@ public class Organizations extends CoolCRUD {
 		organization.createTag = createTagg;
 		organization.description = description;
 		organization.save();
+		Log.addUserLog("User " + user.username + " edited the Organization \"" + organization.name + "\"", user,organization);
 		Organizations.viewProfile(organizationId);
 	}
 
