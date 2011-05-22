@@ -6,7 +6,9 @@
             </div>
 #{/if}
 #{/if}
-
+<link type="text/css" href="/public/stylesheets/jquery-ui-.custom.css" rel="Stylesheet" />
+    <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
 <div id="crudShow" class="${type.name}">
 
 	<h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
@@ -15,15 +17,38 @@
 	</font>
 	<div class="objectForm">
 		#{form action:@save(object._key()), enctype:'multipart/form-data'}
-
-		#{crud.form fields: ['email','firstName','lastName',  'communityContributionCounter','dateofBirth',  'country', 'profession']}
-
+		#{crud.form fields: ['email','firstName','lastName','communityContributionCounter','dateofBirth',  'country', 'profession']}
+		
+		#{crud.custom 'email'}
+		Email
+			<textarea id="object_email" cols="30" rows="1" class="" name="object.email" required>${object.email}</textarea>
+		#{/crud.custom }
+		
+		#{crud.custom 'firstName'}
+		<p>
+			<label for="object_firstName">
+				First Name
+			</label>
+			<textarea id="object_firstName" cols="25" rows="1" class="" name="object.firstName" required>${object.firstName}</textarea>
+		</p>
+		#{/crud.custom }
+		
+		#{crud.custom 'dateofBirth'}
+		<label for="object_dateofBirth">
+				Date Of Birth
+			</label>
+		<p>
+			<input type="text" id="object_dateofBirth" name= "object.dateofBirth"  readonly />
+		</p>
+		#{/crud.custom }
+		
 		#{crud.custom 'country'}
 		<p>
 			<label for="object_country">
 				Country
 			</label> 
-			<select name="object.country" size="1">
+			<select name="object.country" value = ${object.country} size="1">
+				<option value="Egypt">Egypt</option>
 				<option value="Afghanistan">Afghanistan</option>
 				<option value="�land Islands">�land Islands</option>
 				<option value="Albania">Albania</option>
@@ -93,7 +118,6 @@
 				<option value="Dominican Republic">Dominican Republic</option>
 				<option value="East Timor">East Timor</option>
 				<option value="Ecuador">Ecuador</option>
-				<option value="Egypt">Egypt</option>
 				<option value="El Salvador">El Salvador</option>
 				<option value="Equatorial Guinea">Equatorial Guinea</option>
 				<option value="Eritrea">Eritrea</option>
@@ -289,7 +313,6 @@
 			</select>
 		</p>
 		#{/crud.custom }
-
 		#{/crud.form }
     
 		<p class="crudButtons">
@@ -302,10 +325,39 @@
 		#{/form}
 	</div>
 	#{if adminFlag == 1}
-	#{form @delete(object._key())}
-	<p class="crudDelete">
-		<input type="submit" value="&{'crud.delete', type.modelName}" />
-	</p>
-	#{/form}
+	<form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+        <p class="crudDelete">
+        	<input type="hidden" name = "deletionMessage" id = "justText">
+            <input type="submit" value="&{'crud.delete', type.modelName}" />
+        </p>
+    </form>
 	#{/if}
+	
+	
 </div>
+<script type="text/javascript">
+ 	
+					function prompt1(){
+					var text = prompt("Why do you want to delete this user ? ");
+					
+					if(text && text!=""){
+						
+						document.getElementById("justText").value=text;
+						return true;
+					}
+					else{
+						return false;
+					}
+					
+				}
+            </script>
+            
+            <script>
+    $(function(){
+		$("#object_dateofBirth").datepicker({ minDate:"-90Y -1M -5D",
+			maxDate:+32,
+			changeYear: true,
+            showButtonPanel: true});
+	});
+	
+	</script>
