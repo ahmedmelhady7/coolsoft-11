@@ -17,7 +17,7 @@ import models.*;
 /**
  * 
  * @author DebugTeam
- * @version 1.9
+ * @version 2.0
  * 
  */
 
@@ -184,6 +184,12 @@ public class Bootstrap extends Job {
 			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
 
+			UserRoleInOrganizations.addEnrolledUser(hadi, gov, ideadeveloper,
+					gucMetStudentUnion.id, "topic");
+			
+			UserRoleInOrganizations.addEnrolledUser(hadi, guc, ideadeveloper,
+					gucMetStudentUnion.id, "topic");
+			
 			UserRoleInOrganizations.addEnrolledUser(gom3a, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
 
