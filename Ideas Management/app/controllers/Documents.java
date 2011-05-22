@@ -74,13 +74,11 @@ public class Documents extends CoolCRUD {
 		boolean canEdit = false;
 		User user = Security.getConnected();
 		if (document.isOrganization) {
-			if (((Organization) Organization
-					.findById(document.userOrganizationId)).creator.id == user.id)
-				canEdit = true;
+			canEdit = (((Organization) Organization
+					.findById(document.userOrganizationId)).creator.id == user.id) || user.isAdmin;
 		} else {
-			if (user.id == document.userOrganizationId)
-				canEdit = true;
-		}
+			canEdit = (user.id == document.userOrganizationId) || user.isAdmin;
+			} 
 		render(document, canEdit, user);
 	}
 
