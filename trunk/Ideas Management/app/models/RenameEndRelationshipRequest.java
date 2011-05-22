@@ -23,7 +23,10 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	@Required
 	@ManyToOne
 	public User requester;
-	
+
+	/**
+	 * The organisation to which the relationship requests belong to.
+	 */
 	@Required
 	@ManyToOne
 	public Organization organisation;
@@ -42,12 +45,12 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	@ManyToOne
 	public TopicRelationship topicRelationship;
 
-//	/**
-//	 * The tag relationship to be renamed or deleted
-//	 */
-//	@Required
-//	@ManyToOne
-//	public TagRelationship tagRelationship;
+	// /**
+	// * The tag relationship to be renamed or deleted
+	// */
+	// @Required
+	// @ManyToOne
+	// public TagRelationship tagRelationship;
 
 	/**
 	 * The new name for renaming the relationship
@@ -60,21 +63,21 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 */
 	@Required
 	public int requestType;
-	
+
 	/**
 	 * The type of the request (0=entity, 1=topic)
 	 */
 	@Required
 	public int type;
 
-//	@ManyToOne
-//	public MainEntity destinationEntity;
-//
-//	@ManyToOne
-//	public Topic destinationTopic;
-//
-//	@ManyToOne
-//	public Tag destinationTag;
+	// @ManyToOne
+	// public MainEntity destinationEntity;
+	//
+	// @ManyToOne
+	// public Topic destinationTopic;
+	//
+	// @ManyToOne
+	// public Tag destinationTag;
 
 	/**
 	 * Default constructor for the request to rename or delete an entity
@@ -87,8 +90,14 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 * @param requester
 	 *            the user who made the request
 	 * 
+	 * @param organisation
+	 *            the organisation to which the request belongs to.
+	 * 
 	 * @param entityRelationship
 	 *            the entity relationship to be renamed or deleted
+	 * 
+	 * @param type
+	 *            the type of the request whether for an entity or a topic.
 	 * 
 	 * @param requestType
 	 *            the type of the request (rename or delete)
@@ -97,9 +106,9 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 *            the new name for renaming
 	 * 
 	 */
-	public RenameEndRelationshipRequest(User requester, Organization organisation,
-			EntityRelationship entityRelationship, int type, 
-			int requestType, String name) {
+	public RenameEndRelationshipRequest(User requester,
+			Organization organisation, EntityRelationship entityRelationship,
+			int type, int requestType, String name) {
 		this.requester = requester;
 		this.organisation = organisation;
 		this.entityRelationship = entityRelationship;
@@ -121,8 +130,14 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 * @param requester
 	 *            the user who made the request
 	 * 
+	 * @param organisation
+	 *            the organisation to which the request belongs to.
+	 * 
 	 * @param topicRelationship
 	 *            the topic relationship to be renamed or deleted
+	 * 
+	 * @param type
+	 *            the type of the request whether for an entity or a topic.
 	 * 
 	 * @param requestType
 	 *            the type of the request (rename or delete)
@@ -131,9 +146,9 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 *            the new name for renaming
 	 * 
 	 */
-	public RenameEndRelationshipRequest(User requester, Organization organisation,
-			TopicRelationship topicRelationship, int type,
-			int requestType, String name) {
+	public RenameEndRelationshipRequest(User requester,
+			Organization organisation, TopicRelationship topicRelationship,
+			int type, int requestType, String name) {
 		this.requester = requester;
 		this.organisation = organisation;
 		this.topicRelationship = topicRelationship;
@@ -144,33 +159,33 @@ public class RenameEndRelationshipRequest extends CoolModel {
 		this.organisation.save();
 	}
 
-//	/**
-//	 * Default constructor for the request to rename or delete a tag
-//	 * relationship
-//	 * 
-//	 * @author Noha Khater
-//	 * 
-//	 * @Story C2S18
-//	 * 
-//	 * @param requester
-//	 *            the user who made the request
-//	 * 
-//	 * @param tagRelationship
-//	 *            the tag relationship to be renamed or deleted
-//	 * 
-//	 * @param type
-//	 *            the type of the request (rename or delete)
-//	 * 
-//	 * @param name
-//	 *            the new name for renaming
-//	 * 
-//	 */
-//	public RenameEndRelationshipRequest(User requester,
-//			TagRelationship tagRelationship, int type, String name) {
-//		this.requester = requester;
-//		this.tagRelationship = tagRelationship;
-//		this.type = type;
-//		this.newName = name;
-//	}
+	// /**
+	// * Default constructor for the request to rename or delete a tag
+	// * relationship
+	// *
+	// * @author Noha Khater
+	// *
+	// * @Story C2S18
+	// *
+	// * @param requester
+	// * the user who made the request
+	// *
+	// * @param tagRelationship
+	// * the tag relationship to be renamed or deleted
+	// *
+	// * @param type
+	// * the type of the request (rename or delete)
+	// *
+	// * @param name
+	// * the new name for renaming
+	// *
+	// */
+	// public RenameEndRelationshipRequest(User requester,
+	// TagRelationship tagRelationship, int type, String name) {
+	// this.requester = requester;
+	// this.tagRelationship = tagRelationship;
+	// this.type = type;
+	// this.newName = name;
+	// }
 
 }

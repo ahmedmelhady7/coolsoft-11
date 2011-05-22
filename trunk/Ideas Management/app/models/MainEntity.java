@@ -117,17 +117,20 @@ public class MainEntity extends CoolModel {
 	public boolean createRelationship;
 
 	/**
-	 * List of relationship requests for the Entity
+	 * List of relationship requests for the Entity where it's the source.
 	 */
 	@OneToMany(mappedBy = "sourceEntity")
 	public List<CreateRelationshipRequest> relationshipRequestsSource;
 
+	/**
+	 * List of relationship requests for the Entity where it's the destination.
+	 */
 	@OneToMany(mappedBy = "destinationEntity")
 	public List<CreateRelationshipRequest> relationshipRequestsDestination;
-	
-//	@OneToMany(mappedBy = "destinationEntity")
-//	public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
-	
+
+	// @OneToMany(mappedBy = "destinationEntity")
+	// public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
+
 	/**
 	 * The list of items related to this entity
 	 * 

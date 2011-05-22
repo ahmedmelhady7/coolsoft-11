@@ -10,8 +10,8 @@ import play.data.validation.Required;
 /**
  * @author Noha Khater
  * 
- *         The Relationship Requests to start a relationship between entities,
- *         topics or tags.
+ *         The Relationship Requests to start a relationship between entities or
+ *         topics.
  * 
  */
 
@@ -31,11 +31,17 @@ public class CreateRelationshipRequest extends CoolModel {
 	@Required
 	public String name;
 
+	/**
+	 * The organisation to which the relationship requests belong to.
+	 */
 	@Required
 	@ManyToOne
 	public Organization organisation;
 
-	// 0-->entity, 1--> topic
+	/**
+	 * The type of the request whether for an entity or a topic (0=entity,
+	 * 1=topic).
+	 */
 	@Required
 	public int type;
 
@@ -100,6 +106,12 @@ public class CreateRelationshipRequest extends CoolModel {
 	 * @param name
 	 *            the name of the relationship to be created
 	 * 
+	 * @param organisation
+	 *            the organisation to which the request belongs to.
+	 * 
+	 * @param type
+	 *            the type of the request whether for an entity or a topic.
+	 * 
 	 */
 	public CreateRelationshipRequest(User requester, MainEntity sourceEntity,
 			MainEntity destinationEntity, String name,
@@ -132,6 +144,12 @@ public class CreateRelationshipRequest extends CoolModel {
 	 * 
 	 * @param name
 	 *            the name of the relationship to be created
+	 * 
+	 * @param organisation
+	 *            the organisation to which the request belongs to.
+	 * 
+	 * @param type
+	 *            the type of the request whether for an entity or a topic.
 	 * 
 	 */
 	public CreateRelationshipRequest(User requester, Topic sourceTopic,
