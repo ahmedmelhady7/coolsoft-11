@@ -7,45 +7,39 @@
 		<head>
 			<p>
 				#{if (entity.relationsSource.isEmpty() && entity.relationsDestination.isEmpty())}
-				No relationships are available for this entity.				
+				No relationships are available for this entity.
 				#{/if}
 				#{else}
 				List of relationships:
-			</br>
-		</br>
-		#{list items: entity.relationsSource, as: 'relation'}
-		<li>
-			<fieldset>
-				<legend>
-					${relation.source} ${relation.name} ${relation.destination}
-				</legend>	
-				
-								
-				<form action="@{RenameEndRelationshipRequests.renameRequest(user.id, organisation.id, entity.id, 0, relation.id, 0, 1, name)}" method="post"
-				onsubmit="return validate()">
-				<input type="text" id="name" name="name">
-				<input type = "submit" value = "Request Rename">
-			</form>
-			
-			#{if (canRequestRelationship == true)}	
-			#{/if}
-				
-					
-			</fieldset>
-		</li>
-		
-		#{/list}
+				</br>
+				</br>
+				#{list items: entity.relationsSource, as: 'relation'}
+				<li>
+					<fieldset>
+						<legend>
+							${relation.source} ${relation.name} ${relation.destination}
+						</legend>
+						<form action="@{RenameEndRelationshipRequests.renameRequest(user.id, organisation.id, entity.id, 0, relation.id, 0, 1, name)}" method="post"
+						onsubmit="return validate()">
+							<input type="text" id="name" name="name">
+							<input type = "submit" value = "Request Rename">
+						</form>
+						<form action="@{RenameEndRelationshipRequests.deleteRequest(user.id, organisation.id, entity.id, 0, relation.id, 0, 0)}" method="post">
+							<input type = "submit" value = "Request Delete">
+						</form>
+						#{if (canRequestRelationship == true)}
+						#{/if}
+					</fieldset>
+				</li>
+				#{/list}
 				#{/else}
-					
-			<script type="text/javascript">
-			
-			function validate() {
-				var n = document.getElementById('name').value;
-				if(n == "") {
-					return false;
-				}
-			}		
-			</script>
+
+				<script type="text/javascript">function validate() {
+						var n = document.getElementById('name').value;
+						if(n == "") {
+							return false;
+						}
+					}</script>
 		</head>
 	</body>
 </html>

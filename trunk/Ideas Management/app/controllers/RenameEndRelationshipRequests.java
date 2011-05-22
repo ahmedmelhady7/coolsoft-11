@@ -46,6 +46,28 @@ public class RenameEndRelationshipRequests extends CRUD {
 		}		
 	}
 	
+	public static void deleteRequest(long userId, long organisationId,
+			long entityId, long topicId,
+			long relationId, int type, int requestType) {
+		User user = User.findById(userId);
+		Organization organisation = Organization.findById(organisationId);
+		if (type == 0) {
+			EntityRelationship relation = EntityRelationship.findById(relationId);
+			RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(user, organisation,
+					relation, type, requestType, null);
+			renameRequest.save();
+			System.out.println(organisation.renameEndRelationshipRequest.size());
+			redirect("MainEntitys.viewEntity", entityId, "Request created");
+		} else {
+			TopicRelationship relation = TopicRelationship.findById(relationId);
+			RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
+					user, organisation,relation, type, requestType,null);
+			renameRequest.save();
+			System.out.println(organisation.renameEndRelationshipRequest.size());
+			redirect("Topics.show", topicId, "Request created");
+		}
+	}
+	
 	
 
 }
