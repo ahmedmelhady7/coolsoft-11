@@ -744,7 +744,7 @@ public class Users extends CRUD {
 
 				List<UserRoleInOrganization> allowed = UserRoleInOrganization
 						.find("byEnrolledAndOrganization", user, org).fetch();
-				if (allowed == null) {
+				if (allowed.size() == 0) {
 					return false;
 				} else {
 					if (Roles.getRoleActions("idea developer").contains(action)) {
@@ -759,7 +759,7 @@ public class Users extends CRUD {
 				}
 				List<UserRoleInOrganization> allowed = UserRoleInOrganization
 						.find("byEnrolledAndOrganization", user, org).fetch();
-				if (allowed == null) {
+				if (allowed.size() == 0) {
 					return false;
 				} else
 					return true;
@@ -807,7 +807,7 @@ public class Users extends CRUD {
 					List<UserRoleInOrganization> allowed = UserRoleInOrganization
 							.find("byEnrolledAndOrganization", user, org)
 							.fetch();
-					if (allowed == null) {
+					if (allowed.size() == 0) {
 						return false;
 					} else {
 						if (Roles.getRoleActions("idea developer").contains(
@@ -825,7 +825,7 @@ public class Users extends CRUD {
 					List<UserRoleInOrganization> allowed = UserRoleInOrganization
 							.find("byEnrolledAndOrganization", user, topic)
 							.fetch();
-					if (allowed == null) {
+					if (allowed.size() == 0) {
 						return false;
 					} else
 						return true;
@@ -857,7 +857,7 @@ public class Users extends CRUD {
 
 				List<UserRoleInOrganization> allowed = UserRoleInOrganization
 						.find("byEnrolledAndOrganization", user, org).fetch();
-				if (allowed == null) {
+				if (allowed.size() == 0) {
 					return false;
 				} else {
 					if (Roles.getRoleActions("idea developer").contains(action)) {
