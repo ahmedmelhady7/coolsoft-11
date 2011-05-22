@@ -255,30 +255,22 @@ public class Users extends CoolCRUD {
 	 * 
 	 * @story C1S1
 	 * 
+	 * @param userId
+	 * 			long the Id of the user who's profile will be displayed
+	 * 
 	 */
 
-	public static void viewProfile() {
-		User user = Security.getConnected();
-		int x = 1;
-		render(user, x);
-	}
-	
-	/**
-	 * Gets the ID of a user and renders his profile
-	 * 
-	 * @author Ahmed Maged
-	 * 
-	 * @story C1S1
-	 * 	 
-	 * @param userId
-	 * 			long the ID of the user whose profile will be viewed
-	 * 
-	 */
-	
-	public static void getProfile(long userId) {
-		User user = User.findById(userId);
-		int x = 0;
-		render(user, x);
+	public static void viewProfile(long userId) {
+		if (userId == 0) {
+			User user = Security.getConnected();
+			int x = 1;
+			render(user, x);
+		} else {
+			User user = User.findById(userId);
+			int x = 0;
+			render(user, x);
+		}
+		
 	}
 
 	/**
