@@ -2,6 +2,10 @@
 
 <h3>${user.username} Labels</h3>
 	
+	 #{if user.myLabels.isEmpty()==true}
+		<p>You dont have any labels, you can create a label by clicking <a href="/labels/createlabel">here</a></p>
+	 #{/if}
+
 	<div id="labels">
 		#{list items:user.myLabels , as:'label'}
 	    	<ul>
