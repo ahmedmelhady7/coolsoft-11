@@ -227,6 +227,7 @@
                     <HR>
                 </form>
 				
+				#{if (admin || creator)}
 				<h4>Create Relationship between <select id="relType" onchange="showRelationForm()">
 						<option>select object</option>
 						<option>Entities</option>
@@ -256,11 +257,11 @@
 					#{/list}
 					</select>			
 					
-					<input type="submit" value="Create Relation" onclick="createERelation()"/>
+					<input type="button" value="Create Relation" onclick="createERelation()"/>
 					
 				</form></p>
 				<p>
-				<form id="tform" action="@{Topics.createRelation()}" style="display: none;">
+				<form id="tform" style="display: none;">
 										
 					Source: <select id="tpc1"> 
 					<option>Select Topic</option>
@@ -276,12 +277,12 @@
 					#{/list}
 					</select>
 					
-					<input type="submit" value="Create Relation" />
+					<input type="button" value="Create Relation" onclick="createTRelation()" />
 					
 				</form></p>
 				
 				
-			<p>	<form id="gform" action="@{Tags.createRelation()}" style="display: none;">
+			<p>	<form id="gform" style="display: none;">
 										
 					Source: <select id="tg1"> 
 					<option>Select Tag</option>
@@ -297,11 +298,11 @@
 					#{/list}
 					</select>
 
-					<input type="submit" value="Create Relation" />				
+					<input type="button" value="Create Relation" onclick="createGRelation()" />				
 					
 				</form></p>
 				<HR>
-			
+				#{/if}
 				
 				#{if canInvite == true}
                 <form onsubmit="help('${org.id}', email.value);" method="post">
@@ -360,7 +361,68 @@
 							name: n,
 							sourceId: s,
 							destinationId: d
-						})
+						}, function(data){
+							if(data == "true"){
+								alert("you have created relation: " + n);
+								location.reload();
+							}else if(data == "false"){
+								alert("relation already exists!!");
+							}
+						});
+					}
+				}
+				
+				function createTRelation(){
+					var n = document.getElementById("rels").value;
+					var s = document.getElementById("tpc1").value;
+					var d = document.getElementById("tpc2").value;
+					
+					if (n == "choose name" || s == "Select Topic" || d == "Select Topic") {
+						alert("Please fill the required filed(s)");
+					}else if (s == d){
+						alert("Cannot relate topic to itself!");
+					}else {
+						$.post('@{TopicRelationships.createRelationship()}', {
+							name: n,
+							sourceId: s,
+							destinationId: d
+						}, function(data){
+							if (data == "true") {
+								alert("you have created relation: " + n);
+								location.reload();
+							}
+							else 
+								if (data == "false") {
+									alert("relation already exists!!");
+							}
+						});
+					}
+				}
+				
+				function createGRelation(){
+					var n = document.getElementById("rels").value;
+					var s = document.getElementById("tg1").value;
+					var d = document.getElementById("tg2").value;
+					
+					if (n == "choose name" || s == "Select Tag" || d == "Select Tag") {
+						alert("Please fill the required filed(s)");
+					}else if (s == d){
+						alert("Cannot relate tag to itself!");
+					}else {
+						$.post('@{TagRelationships.createRelationship()}', {
+							name: n,
+							sourceId: s,
+							destinationId: d
+						}, function(data){
+							if (data == "true") {
+								alert("you have created relation: " + n);
+								location.reload();
+							}
+							else 
+								if (data == "false") {
+									alert("relation already exists!!");
+							}
+						});
 					}
 				}
 				
@@ -389,14 +451,17 @@
 				function addName(){
 					var strg = document.getElementById('rTextForm').value;
 					if (strg != "") {
-						if ($.post('@{Organizations.addRelationName()}',{organizationId:${org.id}, name:strg})) {
+						$.post('@{Organizations.addRelationName()}',{organizationId:${org.id}, name:strg},
+						function(data){
+							if (data == "false") {
 							alert("name added");
 							window.location.reload();
 							document.getElementById('rTextForm').value = "";
 						}
-						else {
+						else if(data == "true"){
 							alert("duplicate name!!");
 						}
+						});
 					}else{
 						alert("enter a name!");
 					}
