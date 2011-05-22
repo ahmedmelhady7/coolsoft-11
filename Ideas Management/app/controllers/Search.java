@@ -238,7 +238,7 @@ public class Search extends Controller {
 				}
 			}
 		}
-		
+
 		switch (searchIn) {
 		case 1: {
 			for (int i = 0; i < orgs.size(); i++) {
@@ -279,10 +279,10 @@ public class Search extends Controller {
 			for (int i = 0; i < orgs.size(); i++) {
 				if (((Organization) orgs.get(i)).privacyLevel == 1) {
 					orgs.remove(i);
-				}else{
+				} else {
 					if (!(((Organization) orgs.get(i)).privacyLevel == 0 && Users
-							.getEnrolledUsers((Organization) orgs.get(i)).contains(
-									Security.getConnected()))
+							.getEnrolledUsers((Organization) orgs.get(i))
+							.contains(Security.getConnected()))
 							|| !Security.getConnected().isAdmin) {
 						orgs.remove(i);
 					}
@@ -294,10 +294,10 @@ public class Search extends Controller {
 			for (int i = 0; i < orgs.size(); i++) {
 				if (((Organization) orgs.get(i)).privacyLevel == 2) {
 					orgs.remove(i);
-				}else{
+				} else {
 					if (!(((Organization) orgs.get(i)).privacyLevel == 0 && Users
-							.getEnrolledUsers((Organization) orgs.get(i)).contains(
-									Security.getConnected()))
+							.getEnrolledUsers((Organization) orgs.get(i))
+							.contains(Security.getConnected()))
 							|| !Security.getConnected().isAdmin) {
 						orgs.remove(i);
 					}
@@ -309,61 +309,79 @@ public class Search extends Controller {
 			break;
 		}
 		}
-		
-		//// ....  ////
+
+		// // .... ////
 
 		str = rOfS.split(",");
-		
-		System.out.println("this is wKi"+wKi.getClass()+"###");
-		
-		boolean isIn = (wKi.compareTo("")!=0);
+
+		System.out.println("this is wKi" + wKi.getClass() + "###");
+
+		boolean isIn = (wKi.compareTo("") != 0);
 		System.out.println(isIn);
-		
-		wKs = "2,"+eK.substring(0, eK.length()-1)+",2,"+wKs;
-		wKi = Integer.parseInt(""+eK.charAt(eK.length()-1))+","+wKi;
+
+		wKs = "2," + eK.substring(0, eK.length() - 1) + ",2," + wKs;
+		wKi = Integer.parseInt("" + eK.charAt(eK.length() - 1)) + "," + wKi;
 		String[] keyWords = wKs.split(",");
-		String[] keyWordsIn = wKi.split(",",0);
-		
-		System.out.println("+++++++++++++>>>"+keyWords.length+"  "+keyWordsIn.length);
+		String[] keyWordsIn = wKi.split(",", 0);
+
+		System.out.println("+++++++++++++>>>" + keyWords.length + "  "
+				+ keyWordsIn.length);
 		System.out.println(orgs.size());
-		for(int k=0;k<orgs.size();k++){
+		for (int k = 0; k < orgs.size(); k++) {
 			System.out.println(orgs.get(k).name);
 		}
-		
+
 		List<Model> tOrgs = null;
-		
+
 		tOrgs = new ArrayList<Model>();
 		tOrgs.addAll(orgs);
-		if (Boolean.parseBoolean(str[1])&&tOrgs.size()>0) { // Organizations.....
+		if (Boolean.parseBoolean(str[1]) && tOrgs.size() > 0) { // Organizations.....
 			// Or parts
-			for(int i=0;i<keyWords.length;i+=2){
-				if(Integer.parseInt(keyWords[i]) == 2){
+			for (int i = 0; i < keyWords.length; i += 2) {
+				if (Integer.parseInt(keyWords[i]) == 2) {
 					System.out.println("pooooooooooo");
-					if(keyWords[i+1].trim().compareTo("")!=0){
+					if (keyWords[i + 1].trim().compareTo("") != 0) {
 						System.out.println("1");
-						if(isIn){
-							System.out.println("2");						
-							AdvancedSearch.searchingOrganization(listOfResults, tOrgs, keyWords[i+1], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);}
-						else{
+						if (isIn) {
+							System.out.println("2");
+							AdvancedSearch.searchingOrganization(listOfResults,
+									tOrgs, keyWords[i + 1], (i == 0),
+									Integer.parseInt(keyWordsIn[i / 2]), true);
+						} else {
 							System.out.println("3");
-							AdvancedSearch.searchingOrganization(listOfResults, tOrgs, keyWords[i+1], (i==0), 0, true);}
+							AdvancedSearch.searchingOrganization(listOfResults,
+									tOrgs, keyWords[i + 1], (i == 0), 0, true);
+						}
 					}
 				}
 			}
-			
+
 			// And parts
-			if(listOfResults.size()==0){
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 1){
-						if(keyWords[i+1].trim()!=""){
-							AdvancedSearch.searchingOrganization(listOfResults, tOrgs, keyWords[i], false, Integer.parseInt(keyWordsIn[i/2]), true);
-							for(int j=i;j<keyWords.length;j+=2){
-								if(Integer.parseInt(keyWords[j]) == 1){
-									if(keyWords[j+1].trim()!=""){
-										if(isIn)
-											AdvancedSearch.searchingOrganization(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			if (listOfResults.size() == 0) {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 1) {
+						if (keyWords[i + 1].trim() != "") {
+							AdvancedSearch.searchingOrganization(listOfResults,
+									tOrgs, keyWords[i], false,
+									Integer.parseInt(keyWordsIn[i / 2]), true);
+							for (int j = i; j < keyWords.length; j += 2) {
+								if (Integer.parseInt(keyWords[j]) == 1) {
+									if (keyWords[j + 1].trim() != "") {
+										if (isIn)
+											AdvancedSearch
+													.searchingOrganization(
+															listOfResults,
+															tOrgs,
+															keyWords[i],
+															(i == 0),
+															Integer.parseInt(keyWordsIn[i / 2]),
+															true);
 										else
-											AdvancedSearch.searchingOrganization(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+											AdvancedSearch
+													.searchingOrganization(
+															listOfResults,
+															tOrgs, keyWords[i],
+															(i == 0), 0, true);
 									}
 								}
 							}
@@ -371,67 +389,93 @@ public class Search extends Controller {
 						}
 					}
 				}
-			}else{
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 1){
-						if(keyWords[i+1].trim()!=""){
-							if(isIn)
-								AdvancedSearch.searchingOrganization(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			} else {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 1) {
+						if (keyWords[i + 1].trim() != "") {
+							if (isIn)
+								AdvancedSearch.searchingOrganization(
+										listOfResults, tOrgs, keyWords[i],
+										(i == 0),
+										Integer.parseInt(keyWordsIn[i / 2]),
+										true);
 							else
-								AdvancedSearch.searchingOrganization(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+								AdvancedSearch.searchingOrganization(
+										listOfResults, tOrgs, keyWords[i],
+										(i == 0), 0, true);
 						}
 					}
 				}
 			}
-			
+
 			// Not parts
-			if(listOfResults.size()!=0){
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 3){
-						if(keyWords[i+1].trim()!=""){
-							if(isIn)
-								AdvancedSearch.searchingOrganization(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			if (listOfResults.size() != 0) {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 3) {
+						if (keyWords[i + 1].trim() != "") {
+							if (isIn)
+								AdvancedSearch.searchingOrganization(
+										listOfResults, tOrgs, keyWords[i],
+										(i == 0),
+										Integer.parseInt(keyWordsIn[i / 2]),
+										true);
 							else
-								AdvancedSearch.searchingOrganization(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+								AdvancedSearch.searchingOrganization(
+										listOfResults, tOrgs, keyWords[i],
+										(i == 0), 0, true);
 						}
 					}
 				}
 			}
 		}
-		
-		
+
 		if (Boolean.parseBoolean(str[2])) { // Entities
 			tOrgs = new ArrayList<Model>();
 
 			for (int i = 0; i < orgs.size(); i++) {
 				tOrgs.addAll(orgs.get(i).entitiesList);
 			}
-			
+
 			// Or parts
-			for(int i=0;i<keyWords.length;i+=2){
-				if(Integer.parseInt(keyWords[i]) == 2){
-					if(keyWords[i+1].trim()!=""){
-						if(isIn)
-							AdvancedSearch.searchingMainEntity(listOfResults, tOrgs, keyWords[i+1], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			for (int i = 0; i < keyWords.length; i += 2) {
+				if (Integer.parseInt(keyWords[i]) == 2) {
+					if (keyWords[i + 1].trim() != "") {
+						if (isIn)
+							AdvancedSearch.searchingMainEntity(listOfResults,
+									tOrgs, keyWords[i + 1], (i == 0),
+									Integer.parseInt(keyWordsIn[i / 2]), true);
 						else
-							AdvancedSearch.searchingMainEntity(listOfResults, tOrgs, keyWords[i+1], (i==0), 0, true);
+							AdvancedSearch.searchingMainEntity(listOfResults,
+									tOrgs, keyWords[i + 1], (i == 0), 0, true);
 					}
 				}
 			}
-			
+
 			// And parts
-			if(listOfResults.size()==0){
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 1){
-						if(keyWords[i+1].trim()!=""){
-							AdvancedSearch.searchingMainEntity(listOfResults, tOrgs, keyWords[i], false, Integer.parseInt(keyWordsIn[i/2]), true);
-							for(int j=i;j<keyWords.length;j+=2){
-								if(Integer.parseInt(keyWords[j]) == 1){
-									if(keyWords[j+1].trim()!=""){
-										if(isIn)
-											AdvancedSearch.searchingMainEntity(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			if (listOfResults.size() == 0) {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 1) {
+						if (keyWords[i + 1].trim() != "") {
+							AdvancedSearch.searchingMainEntity(listOfResults,
+									tOrgs, keyWords[i], false,
+									Integer.parseInt(keyWordsIn[i / 2]), true);
+							for (int j = i; j < keyWords.length; j += 2) {
+								if (Integer.parseInt(keyWords[j]) == 1) {
+									if (keyWords[j + 1].trim() != "") {
+										if (isIn)
+											AdvancedSearch
+													.searchingMainEntity(
+															listOfResults,
+															tOrgs,
+															keyWords[i],
+															(i == 0),
+															Integer.parseInt(keyWordsIn[i / 2]),
+															true);
 										else
-											AdvancedSearch.searchingMainEntity(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+											AdvancedSearch.searchingMainEntity(
+													listOfResults, tOrgs,
+													keyWords[i], (i == 0), 0,
+													true);
 									}
 								}
 							}
@@ -439,28 +483,40 @@ public class Search extends Controller {
 						}
 					}
 				}
-			}else{
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 1){
-						if(keyWords[i+1].trim()!=""){
-							if(isIn)
-								AdvancedSearch.searchingMainEntity(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			} else {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 1) {
+						if (keyWords[i + 1].trim() != "") {
+							if (isIn)
+								AdvancedSearch.searchingMainEntity(
+										listOfResults, tOrgs, keyWords[i],
+										(i == 0),
+										Integer.parseInt(keyWordsIn[i / 2]),
+										true);
 							else
-								AdvancedSearch.searchingMainEntity(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+								AdvancedSearch.searchingMainEntity(
+										listOfResults, tOrgs, keyWords[i],
+										(i == 0), 0, true);
 						}
 					}
 				}
 			}
-			
+
 			// Not parts
-			if(listOfResults.size()!=0){
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 3){
-						if(keyWords[i+1].trim()!=""){
-							if(isIn)
-								AdvancedSearch.searchingMainEntity(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			if (listOfResults.size() != 0) {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 3) {
+						if (keyWords[i + 1].trim() != "") {
+							if (isIn)
+								AdvancedSearch.searchingMainEntity(
+										listOfResults, tOrgs, keyWords[i],
+										(i == 0),
+										Integer.parseInt(keyWordsIn[i / 2]),
+										true);
 							else
-								AdvancedSearch.searchingMainEntity(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+								AdvancedSearch.searchingMainEntity(
+										listOfResults, tOrgs, keyWords[i],
+										(i == 0), 0, true);
 						}
 					}
 				}
@@ -468,7 +524,6 @@ public class Search extends Controller {
 
 		}
 
-		
 		if (Boolean.parseBoolean(str[3])) { // Topic
 			tOrgs = new ArrayList<Model>();
 
@@ -476,32 +531,47 @@ public class Search extends Controller {
 				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++)
 					tOrgs.addAll(orgs.get(i).entitiesList.get(j).topicList);
 			}
-			
+
 			// Or parts
-			for(int i=0;i<keyWords.length;i+=2){
-				if(Integer.parseInt(keyWords[i]) == 2){
-					if(keyWords[i+1].trim()!=""){
-						if(isIn)
-							AdvancedSearch.searchingTopic(listOfResults, tOrgs, keyWords[i+1], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			for (int i = 0; i < keyWords.length; i += 2) {
+				if (Integer.parseInt(keyWords[i]) == 2) {
+					if (keyWords[i + 1].trim() != "") {
+						if (isIn)
+							AdvancedSearch.searchingTopic(listOfResults, tOrgs,
+									keyWords[i + 1], (i == 0),
+									Integer.parseInt(keyWordsIn[i / 2]), true);
 						else
-							AdvancedSearch.searchingTopic(listOfResults, tOrgs, keyWords[i+1], (i==0), 0, true);
+							AdvancedSearch.searchingTopic(listOfResults, tOrgs,
+									keyWords[i + 1], (i == 0), 0, true);
 					}
 				}
 			}
-			
+
 			// And parts
-			if(listOfResults.size()==0){
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 1){
-						if(keyWords[i+1].trim()!=""){
-							AdvancedSearch.searchingTopic(listOfResults, tOrgs, keyWords[i], false, Integer.parseInt(keyWordsIn[i/2]), true);
-							for(int j=i;j<keyWords.length;j+=2){
-								if(Integer.parseInt(keyWords[j]) == 1){
-									if(keyWords[j+1].trim()!=""){
-										if(isIn)
-											AdvancedSearch.searchingTopic(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			if (listOfResults.size() == 0) {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 1) {
+						if (keyWords[i + 1].trim() != "") {
+							AdvancedSearch.searchingTopic(listOfResults, tOrgs,
+									keyWords[i], false,
+									Integer.parseInt(keyWordsIn[i / 2]), true);
+							for (int j = i; j < keyWords.length; j += 2) {
+								if (Integer.parseInt(keyWords[j]) == 1) {
+									if (keyWords[j + 1].trim() != "") {
+										if (isIn)
+											AdvancedSearch
+													.searchingTopic(
+															listOfResults,
+															tOrgs,
+															keyWords[i],
+															(i == 0),
+															Integer.parseInt(keyWordsIn[i / 2]),
+															true);
 										else
-											AdvancedSearch.searchingTopic(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+											AdvancedSearch.searchingTopic(
+													listOfResults, tOrgs,
+													keyWords[i], (i == 0), 0,
+													true);
 									}
 								}
 							}
@@ -509,70 +579,94 @@ public class Search extends Controller {
 						}
 					}
 				}
-			}else{
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 1){
-						if(keyWords[i+1].trim()!=""){
-							if(isIn)
-								AdvancedSearch.searchingTopic(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			} else {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 1) {
+						if (keyWords[i + 1].trim() != "") {
+							if (isIn)
+								AdvancedSearch.searchingTopic(listOfResults,
+										tOrgs, keyWords[i], (i == 0),
+										Integer.parseInt(keyWordsIn[i / 2]),
+										true);
 							else
-								AdvancedSearch.searchingTopic(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+								AdvancedSearch.searchingTopic(listOfResults,
+										tOrgs, keyWords[i], (i == 0), 0, true);
 						}
 					}
 				}
 			}
-			
+
 			// Not parts
-			if(listOfResults.size()!=0){
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 3){
-						if(keyWords[i+1].trim()!=""){
-							if(isIn)
-								AdvancedSearch.searchingTopic(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			if (listOfResults.size() != 0) {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 3) {
+						if (keyWords[i + 1].trim() != "") {
+							if (isIn)
+								AdvancedSearch.searchingTopic(listOfResults,
+										tOrgs, keyWords[i], (i == 0),
+										Integer.parseInt(keyWordsIn[i / 2]),
+										true);
 							else
-								AdvancedSearch.searchingTopic(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+								AdvancedSearch.searchingTopic(listOfResults,
+										tOrgs, keyWords[i], (i == 0), 0, true);
 						}
 					}
 				}
 			}
 
 		}
-		
-		
-		if (Boolean.parseBoolean(str[4])) {  //  Plan
+
+		if (Boolean.parseBoolean(str[4])) { // Plan
 			tOrgs = new ArrayList<Model>();
 
 			for (int i = 0; i < orgs.size(); i++) {
 				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++)
-					for(int k=0; k<orgs.get(i).entitiesList.get(j).topicList.size();k++)
-						tOrgs.add(orgs.get(i).entitiesList.get(j).topicList.get(k).plan);
+					for (int k = 0; k < orgs.get(i).entitiesList.get(j).topicList
+							.size(); k++)
+						tOrgs.add(orgs.get(i).entitiesList.get(j).topicList
+								.get(k).plan);
 			}
-			
+
 			// Or parts
-			for(int i=0;i<keyWords.length;i+=2){
-				if(Integer.parseInt(keyWords[i]) == 2){
-					if(keyWords[i+1].trim()!=""){
-						if(isIn)
-							AdvancedSearch.searchingPlan(listOfResults, tOrgs, keyWords[i+1], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			for (int i = 0; i < keyWords.length; i += 2) {
+				if (Integer.parseInt(keyWords[i]) == 2) {
+					if (keyWords[i + 1].trim() != "") {
+						if (isIn)
+							AdvancedSearch.searchingPlan(listOfResults, tOrgs,
+									keyWords[i + 1], (i == 0),
+									Integer.parseInt(keyWordsIn[i / 2]), true);
 						else
-							AdvancedSearch.searchingPlan(listOfResults, tOrgs, keyWords[i+1], (i==0), 0, true);
+							AdvancedSearch.searchingPlan(listOfResults, tOrgs,
+									keyWords[i + 1], (i == 0), 0, true);
 					}
 				}
 			}
-			
+
 			// And parts
-			if(listOfResults.size()==0){
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 1){
-						if(keyWords[i+1].trim()!=""){
-							AdvancedSearch.searchingPlan(listOfResults, tOrgs, keyWords[i], false, Integer.parseInt(keyWordsIn[i/2]), true);
-							for(int j=i;j<keyWords.length;j+=2){
-								if(Integer.parseInt(keyWords[j]) == 1){
-									if(keyWords[j+1].trim()!=""){
-										if(isIn)
-											AdvancedSearch.searchingPlan(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			if (listOfResults.size() == 0) {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 1) {
+						if (keyWords[i + 1].trim() != "") {
+							AdvancedSearch.searchingPlan(listOfResults, tOrgs,
+									keyWords[i], false,
+									Integer.parseInt(keyWordsIn[i / 2]), true);
+							for (int j = i; j < keyWords.length; j += 2) {
+								if (Integer.parseInt(keyWords[j]) == 1) {
+									if (keyWords[j + 1].trim() != "") {
+										if (isIn)
+											AdvancedSearch
+													.searchingPlan(
+															listOfResults,
+															tOrgs,
+															keyWords[i],
+															(i == 0),
+															Integer.parseInt(keyWordsIn[i / 2]),
+															true);
 										else
-											AdvancedSearch.searchingPlan(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+											AdvancedSearch.searchingPlan(
+													listOfResults, tOrgs,
+													keyWords[i], (i == 0), 0,
+													true);
 									}
 								}
 							}
@@ -580,70 +674,93 @@ public class Search extends Controller {
 						}
 					}
 				}
-			}else{
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 1){
-						if(keyWords[i+1].trim()!=""){
-							if(isIn)
-								AdvancedSearch.searchingPlan(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			} else {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 1) {
+						if (keyWords[i + 1].trim() != "") {
+							if (isIn)
+								AdvancedSearch.searchingPlan(listOfResults,
+										tOrgs, keyWords[i], (i == 0),
+										Integer.parseInt(keyWordsIn[i / 2]),
+										true);
 							else
-								AdvancedSearch.searchingPlan(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+								AdvancedSearch.searchingPlan(listOfResults,
+										tOrgs, keyWords[i], (i == 0), 0, true);
 						}
 					}
 				}
 			}
-			
+
 			// Not parts
-			if(listOfResults.size()!=0){
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 3){
-						if(keyWords[i+1].trim()!=""){
-							if(isIn)
-								AdvancedSearch.searchingPlan(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			if (listOfResults.size() != 0) {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 3) {
+						if (keyWords[i + 1].trim() != "") {
+							if (isIn)
+								AdvancedSearch.searchingPlan(listOfResults,
+										tOrgs, keyWords[i], (i == 0),
+										Integer.parseInt(keyWordsIn[i / 2]),
+										true);
 							else
-								AdvancedSearch.searchingPlan(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+								AdvancedSearch.searchingPlan(listOfResults,
+										tOrgs, keyWords[i], (i == 0), 0, true);
 						}
 					}
 				}
 			}
 		}
-		
-		
-		
-		if (Boolean.parseBoolean(str[5])) {  //  Idea
+
+		if (Boolean.parseBoolean(str[5])) { // Idea
 			tOrgs = new ArrayList<Model>();
 
 			for (int i = 0; i < orgs.size(); i++) {
 				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++)
-					for (int k = 0; k < orgs.get(i).entitiesList.get(j).topicList.size(); k++)
-					tOrgs.addAll(orgs.get(i).entitiesList.get(j).topicList.get(i).ideas);
+					for (int k = 0; k < orgs.get(i).entitiesList.get(j).topicList
+							.size(); k++)
+						tOrgs.addAll(orgs.get(i).entitiesList.get(j).topicList
+								.get(i).ideas);
 			}
-			
+
 			// Or parts
-			for(int i=0;i<keyWords.length;i+=2){
-				if(Integer.parseInt(keyWords[i]) == 2){
-					if(keyWords[i+1].trim()!=""){
-						if(isIn)
-							AdvancedSearch.searchingIdea(listOfResults, tOrgs, keyWords[i+1], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			for (int i = 0; i < keyWords.length; i += 2) {
+				if (Integer.parseInt(keyWords[i]) == 2) {
+					if (keyWords[i + 1].trim() != "") {
+						if (isIn)
+							AdvancedSearch.searchingIdea(listOfResults, tOrgs,
+									keyWords[i + 1], (i == 0),
+									Integer.parseInt(keyWordsIn[i / 2]), true);
 						else
-							AdvancedSearch.searchingIdea(listOfResults, tOrgs, keyWords[i+1], (i==0), 0, true);
+							AdvancedSearch.searchingIdea(listOfResults, tOrgs,
+									keyWords[i + 1], (i == 0), 0, true);
 					}
 				}
 			}
-			
+
 			// And parts
-			if(listOfResults.size()==0){
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 1){
-						if(keyWords[i+1].trim()!=""){
-							AdvancedSearch.searchingIdea(listOfResults, tOrgs, keyWords[i], false, Integer.parseInt(keyWordsIn[i/2]), true);
-							for(int j=i;j<keyWords.length;j+=2){
-								if(Integer.parseInt(keyWords[j]) == 1){
-									if(keyWords[j+1].trim()!=""){
-										if(isIn)
-											AdvancedSearch.searchingIdea(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			if (listOfResults.size() == 0) {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 1) {
+						if (keyWords[i + 1].trim() != "") {
+							AdvancedSearch.searchingIdea(listOfResults, tOrgs,
+									keyWords[i], false,
+									Integer.parseInt(keyWordsIn[i / 2]), true);
+							for (int j = i; j < keyWords.length; j += 2) {
+								if (Integer.parseInt(keyWords[j]) == 1) {
+									if (keyWords[j + 1].trim() != "") {
+										if (isIn)
+											AdvancedSearch
+													.searchingIdea(
+															listOfResults,
+															tOrgs,
+															keyWords[i],
+															(i == 0),
+															Integer.parseInt(keyWordsIn[i / 2]),
+															true);
 										else
-											AdvancedSearch.searchingIdea(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+											AdvancedSearch.searchingIdea(
+													listOfResults, tOrgs,
+													keyWords[i], (i == 0), 0,
+													true);
 									}
 								}
 							}
@@ -651,28 +768,36 @@ public class Search extends Controller {
 						}
 					}
 				}
-			}else{
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 1){
-						if(keyWords[i+1].trim()!=""){
-							if(isIn)
-								AdvancedSearch.searchingIdea(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			} else {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 1) {
+						if (keyWords[i + 1].trim() != "") {
+							if (isIn)
+								AdvancedSearch.searchingIdea(listOfResults,
+										tOrgs, keyWords[i], (i == 0),
+										Integer.parseInt(keyWordsIn[i / 2]),
+										true);
 							else
-								AdvancedSearch.searchingIdea(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+								AdvancedSearch.searchingIdea(listOfResults,
+										tOrgs, keyWords[i], (i == 0), 0, true);
 						}
 					}
 				}
 			}
-			
+
 			// Not parts
-			if(listOfResults.size()!=0){
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 3){
-						if(keyWords[i+1].trim()!=""){
-							if(isIn)
-								AdvancedSearch.searchingIdea(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			if (listOfResults.size() != 0) {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 3) {
+						if (keyWords[i + 1].trim() != "") {
+							if (isIn)
+								AdvancedSearch.searchingIdea(listOfResults,
+										tOrgs, keyWords[i], (i == 0),
+										Integer.parseInt(keyWordsIn[i / 2]),
+										true);
 							else
-								AdvancedSearch.searchingIdea(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+								AdvancedSearch.searchingIdea(listOfResults,
+										tOrgs, keyWords[i], (i == 0), 0, true);
 						}
 					}
 				}
@@ -704,20 +829,32 @@ public class Search extends Controller {
 					}
 				}
 			}
-			
+
 			// And parts
-			if(listOfResults.size()==0){
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 1){
-						if(keyWords[i+1].trim()!=""){
-							AdvancedSearch.searchingItem(listOfResults, tOrgs, keyWords[i], false, Integer.parseInt(keyWordsIn[i/2]), true);
-							for(int j=i;j<keyWords.length;j+=2){
-								if(Integer.parseInt(keyWords[j]) == 1){
-									if(keyWords[j+1].trim()!=""){
-										if(isIn)
-											AdvancedSearch.searchingItem(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			if (listOfResults.size() == 0) {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 1) {
+						if (keyWords[i + 1].trim() != "") {
+							AdvancedSearch.searchingItem(listOfResults, tOrgs,
+									keyWords[i], false,
+									Integer.parseInt(keyWordsIn[i / 2]), true);
+							for (int j = i; j < keyWords.length; j += 2) {
+								if (Integer.parseInt(keyWords[j]) == 1) {
+									if (keyWords[j + 1].trim() != "") {
+										if (isIn)
+											AdvancedSearch
+													.searchingItem(
+															listOfResults,
+															tOrgs,
+															keyWords[i],
+															(i == 0),
+															Integer.parseInt(keyWordsIn[i / 2]),
+															true);
 										else
-											AdvancedSearch.searchingItem(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+											AdvancedSearch.searchingItem(
+													listOfResults, tOrgs,
+													keyWords[i], (i == 0), 0,
+													true);
 									}
 								}
 							}
@@ -725,36 +862,44 @@ public class Search extends Controller {
 						}
 					}
 				}
-			}else{
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 1){
-						if(keyWords[i+1].trim()!=""){
-							if(isIn)
-								AdvancedSearch.searchingItem(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			} else {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 1) {
+						if (keyWords[i + 1].trim() != "") {
+							if (isIn)
+								AdvancedSearch.searchingItem(listOfResults,
+										tOrgs, keyWords[i], (i == 0),
+										Integer.parseInt(keyWordsIn[i / 2]),
+										true);
 							else
-								AdvancedSearch.searchingItem(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+								AdvancedSearch.searchingItem(listOfResults,
+										tOrgs, keyWords[i], (i == 0), 0, true);
 						}
 					}
 				}
 			}
-			
+
 			// Not parts
-			if(listOfResults.size()!=0){
-				for(int i=0;i<keyWords.length;i+=2){
-					if(Integer.parseInt(keyWords[i]) == 3){
-						if(keyWords[i+1].trim()!=""){
-							if(isIn)
-								AdvancedSearch.searchingItem(listOfResults, tOrgs, keyWords[i], (i==0), Integer.parseInt(keyWordsIn[i/2]), true);
+			if (listOfResults.size() != 0) {
+				for (int i = 0; i < keyWords.length; i += 2) {
+					if (Integer.parseInt(keyWords[i]) == 3) {
+						if (keyWords[i + 1].trim() != "") {
+							if (isIn)
+								AdvancedSearch.searchingItem(listOfResults,
+										tOrgs, keyWords[i], (i == 0),
+										Integer.parseInt(keyWordsIn[i / 2]),
+										true);
 							else
-								AdvancedSearch.searchingItem(listOfResults, tOrgs, keyWords[i], (i==0), 0, true);
+								AdvancedSearch.searchingItem(listOfResults,
+										tOrgs, keyWords[i], (i == 0), 0, true);
 						}
 					}
 				}
 			}
 		}
-/*		
-		 constrainTime(before, after, exact);   
-		 * */
+		/*
+		 * constrainTime(before, after, exact);
+		 */
 
 	}
 
@@ -1057,7 +1202,10 @@ public class Search extends Controller {
 						listOfIdeas.get(i).belongsToTopic.id, "topic")) {
 					listOfIdss.remove(listOfIdeas.get(i));
 				}
-
+				if (listOfIdeas.get(i).isDraft
+						&& listOfIdeas.get(i).author.id != user.id) {
+					listOfIdss.remove(listOfIdeas.get(i));
+				}
 			}
 		}
 		return listOfIdss;
