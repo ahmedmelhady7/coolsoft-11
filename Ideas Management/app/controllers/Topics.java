@@ -1547,15 +1547,21 @@ public class Topics extends CRUD {
 	 * 
 	 * 
 	 */
-	public static void deleteIdea(long ideaId) {
+	public static void deleteIdea(long ideaId, String justification) {
+		System.out.println("delete bta3ti");
 		Idea idea = Idea.findById(ideaId);
+		String message = "your idea " + idea.title + " has been deleted by "
+				+ Security.getConnected().username + " Justification : "+justification;
+
 		try {
 			idea.delete();
+			Notifications.sendNotification(idea.author.id, idea.id, "Idea",
+					message);
+
 		} catch (Exception e) {
 			redirect(request.controller + ".show");
 		}
-		flash.success(Messages.get("crud.deleted"));
-		redirect(request.controller + ".list");
+		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
 	/**
@@ -1574,7 +1580,7 @@ public class Topics extends CRUD {
 		idea.hidden = false;
 		idea.save();
 
-		String message = "you idea " + idea.title + " is now visible";
+		String message = "your idea " + idea.title + " is now visible";
 
 		Notifications
 				.sendNotification(idea.author.id, idea.id, "Idea", message);
@@ -1596,23 +1602,17 @@ public class Topics extends CRUD {
 	 *            : the id of the idea to be hidden
 	 */
 	public static void hideIdea(Long ideaId, String justification) {
+		System.out.println("hide bta3ti");
 		Idea idea = Idea.findById(ideaId);
 		Topic topic = idea.belongsToTopic;
 		User user = Security.getConnected();
 		try {
 			// Logs.addLog( myUser, "delete", "Task", temporaryTopic.id,
 			// temporaryTopic.taskStory.componentID.project, cal.getTime() );
-			String message = user.username + " has hidden the topic "
-					+ idea.title;
-			List<User> users = Users.getEntityOrganizers(topic.entity);
-			// for (int i = 0; i < users.size(); i++)
-			Notifications.sendNotification(idea.author.id/*
-														 * users.get(i).id
-														 */, idea.id, "Idea",
+			String message = user.username + " has hidden the idea "
+					+ idea.title + " Justification : " + justification;
+			Notifications.sendNotification(idea.author.id, idea.id, "Idea",
 					message);
-			// for (int i = 0; i < topic.followers.size(); i++)
-			// Notifications.sendNotification(topic.followers.get(i).getId(),
-			// topic.getId(), "entity", message);
 			idea.hidden = true;
 			idea.save();
 			System.out.println("hidden");

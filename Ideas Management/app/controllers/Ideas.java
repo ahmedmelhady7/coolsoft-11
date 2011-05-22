@@ -313,7 +313,9 @@ public class Ideas extends CRUD {
 	 * @param id
 	 *            : the id of the idea to be hidden
 	 */
-	public static void hide(long id, String justification) {
+	public static void hide(long id) {
+		String justification="";
+		System.out.println("hide bta3t crud");
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(id);
@@ -327,7 +329,6 @@ public class Ideas extends CRUD {
 			// temporaryTopic.taskStory.componentID.project, cal.getTime() );
 			String message = user.username + " has hidden the idea "
 					+ idea.title + " Justification : " + justification;
-			List<User> users = Users.getEntityOrganizers(topic.entity);
 			Notifications.sendNotification(idea.author.id, idea.id, "Idea",
 					message);
 			System.out.println(idea.toString()
@@ -664,20 +665,18 @@ public class Ideas extends CRUD {
 	 * 
 	 * 
 	 */
-	public static void delete(long ideaId,String justification) {
+	public static void delete(long ideaId) {
+		System.out.println("delete bta3t crud");
+		String justification="";
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(ideaId);
 		notFoundIfNull(object);
 		Idea idea = (Idea) object;
-		String message = Security.getConnected().username + " has deleted the idea "
-		+ idea.title + " Justification "+justification;
 		try {
 			idea.author.communityContributionCounter--;
 			idea.author.save();
 			object._delete();
-			Notifications.sendNotification(idea.author.id,
-					idea.id, "Idea", message);
 		} catch (Exception e) {
 			flash.error(Messages.get("crud.delete.error", type.modelName));
 			redirect(request.controller + ".show", object._key());
