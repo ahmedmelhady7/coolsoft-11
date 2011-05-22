@@ -222,7 +222,7 @@
         #{/if}
         <div id="postIdeaform">
         	<p>
-            <label>Title</label>
+            <label>Title  <font color="#123456"><span id="flashAmessage"></span></font>
             <br>	
        		<input type="text" id="ideaTitle" cols="30" rows="1" class="" name="object.title" required>
             <span id = "ideaTitleError">
@@ -244,7 +244,7 @@
             </span>
             </p>
 			<input id ="draftSaver" type="submit"  value="Save as Draft" onclick="save()" ></input>
-           	<input type="submit" value="post" onclick="postIt()"/>
+           	<input type="submit" value="post" onclick="postIt()"></input<
 		</div>
 		<style type="text/css">
 			#postIdeaform{display: none;}
@@ -256,7 +256,8 @@
 		#{/if}
 		<script type="text/javascript">
 		$("#postIdea").click(function(){
-          	 $("#postIdeaform").toggle();
+			$("#postIdeaform").toggle();
+			auto();
            });
 		$("#showhidden").click(function(){
           	 $("#hidden").toggle();
@@ -497,61 +498,186 @@
 					
 					if(validate())
 					{
-						$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/ideas/getdrafts"}  );
+						$.post('@{Ideas.saveDraft()}', {ideaId: auto.kill, title: x,description: y},function(){window.location.href= "/ideas/getdrafts"}  );
 					}					
 				}
-				
-				function validate()
+				function takeFirstSave()
 				{
+					var id;
+					var z = ${topicId};
 					var x = document.getElementById("ideaTitle").value.toString();
 					var y = document.getElementById("ideaDescription").value;
-					var Tflag = true;
-					var Dflag = true;
-					
-					x = jQuery.trim(x);
-					y = jQuery.trim(y);
-					
-					if(x=="")
-					{
-						document.getElementById("ideaTitleError").innerHTML = "please enter a title for the idea";
-						Tflag = false;
-					}
+						
+
+					if(!validate2())
+						setTimeout("takeFirstSave()",'1000');
 					else
 					{
-						document.getElementById("ideaTitleError").innerHTML = "";
-						Tflag = true;
+						$.post('@{Ideas.createDraft()}', {
+						title: x,
+						description: y,
+						topicId: z
+						}, function(data){
+							id = data;
+							auto.kill = id;
+							var currentTime = new Date();
+							var hours = currentTime.getHours();
+							var minutes = currentTime.getMinutes();
+			
+							if (minutes < 10)	
+								minutes = "0" + minutes;
+			
+							var write =(hours + ":" + minutes /*+ ":" + secs + " "*/ );
+							
+							document.getElementById("flashAmessage").innerHTML = "Idea auto saved as a draft at " + write;
+							setTimeout("myFader()", '3000');
+						});
+						
 					}
-					if(y=="")
-					{
-						document.getElementById("ideaDescriptionError").innerHTML = "please enter a body for the idea";
-						Dflag = false;
-					}
-					else
-					{
-						document.getElementById("ideaDescriptionError").innerHTML = "";
-						Dflag = true;
-					}
-					
-					if(Tflag && Dflag)
-					{
-						return true;
-					}
-					else
-					{
-						return false;
-					}
+					auto.c = 1;
 				}
+				
+				function auto()
+				{
+					if(!auto.c) auto.c = 0;
+					if(!auto.t) auto.t = document.getElementById("ideaTitle").value;
+	            	if(!auto.b)	auto.b = document.getElementById("ideaDescription").value;
+					if(!auto.kill) auto.kill = 0;
+					
+	                if (auto.c == 0) 
+					{
+                    	takeFirstSave();    
+                    }
+					else
+					{
+						var x = document.getElementById("ideaTitle").value.toString();
+		               	var y = document.getElementById("ideaDescription").value;			   
+				   		
+						var currentTime = new Date();
+						var hours = currentTime.getHours();
+						var minutes = currentTime.getMinutes();
+		
+						if (minutes < 10)	
+							minutes = "0" + minutes;
+		
+						var write =(hours + ":" + minutes /*+ ":" + secs + " "*/ );
+						
+						var xx = jQuery.trim(x);
+						var yy = jQuery.trim(y);
+						
+						if(((x != auto.t) || (y != auto.b)) && ((xx != "") && (yy != "") ) )
+						{
+							
+							$('#flashAmessage').fadeIn('10');
+							
+							$.post('@{Ideas.saveDraft()}', {ideaId: auto.kill, title: x,description: y });
+							
+							auto.t = document.getElementById("ideaTitle").value;
+		            		auto.b = document.getElementById("ideaDescription").value;
+							
+							document.getElementById("flashAmessage").innerHTML = "draft auto saved at " + write;
+							setTimeout("myFader()",'3000');
+						}
+					
+					}
+					setTimeout("auto()",'10000');
+				}
+				
+					function myFader()
+					{
+						$('#flashAmessage').fadeOut('500');
+					}
+					
+					
+						
+					function validate()
+					{
+						var x = document.getElementById("ideaTitle").value.toString();
+						var y = document.getElementById("ideaDescription").value;
+						var Tflag = true;
+						var Dflag = true;
+						
+						x = jQuery.trim(x);
+						y = jQuery.trim(y);
+						
+						if(x=="")
+						{
+							document.getElementById("ideaTitleError").innerHTML = "please enter a title for the idea";
+							Tflag = false;
+						}
+						else
+						{
+							document.getElementById("ideaTitleError").innerHTML = "";
+							Tflag = true;
+						}
+						if(y=="")
+						{
+							document.getElementById("ideaDescriptionError").innerHTML = "please enter a body for the idea";
+							Dflag = false;
+						}
+						else
+						{
+							document.getElementById("ideaDescriptionError").innerHTML = "";
+							Dflag = true;
+						}
+						
+						if(Tflag && Dflag)
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+					
+					function validate2()
+					{
+						var x = document.getElementById("ideaTitle").value.toString();
+						var y = document.getElementById("ideaDescription").value;
+						var Tflag = true;
+						var Dflag = true;
+						
+						x = jQuery.trim(x);
+						y = jQuery.trim(y);
+						
+						if(x=="")
+						{
+							Tflag = false;
+						}
+						else
+						{
+							Tflag = true;
+						}
+						if(y=="")
+						{
+							Dflag = false;
+						}
+						else
+						{
+							Dflag = true;
+						}
+						
+						if(Tflag && Dflag)
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					}
 			</script>
 			<script type="text/javascript">
 				function postIt()
 				{
-					var id = ${topicId};
+					var id = auto.kill;
 					var x = document.getElementById("ideaTitle").value.toString();
 					var y = document.getElementById("ideaDescription").value;
 					
 					if(validate())
 					{
-						$.post('@{Topics.postIdea()}' ,{topicId:id, title:x, description:y},function(){window.location.href = "/topics/show?topicId="+id});
+						$.post('@{Ideas.postDraft()}' ,{ideaId: id, title: x, description: y },function(){location.reload();});
 					}
 				}
 				function hides(id){
