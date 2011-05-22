@@ -7,6 +7,9 @@
 <link href="/public/javascripts/jnotify/jquery.jnotify.css" rel="stylesheet" type="text/css" />
 <script src="/public/javascripts/jnotify/jquery.jnotify.js" type="text/javascript">
 </script>
+<script src="/public/javascripts/SearchScript.js" type="text/javascript">
+</script>
+<link href="/public/stylesheets/searchStyle.css" type="text/css" />
 <!-- side bar -->
 <div id="hmenu">
     <ul>
@@ -17,13 +20,13 @@
             <a href="@{Browse.browse()}">Browse All</a>
         </li>
         <li>
-            <a id="not">Notifications                         
-            #{if user.getNotificationNumber() == 0}
-            (No New)
-            #{/if}
-            #{else}
-            (${user.getNotificationNumber()} New)
-            #{/else}</a>
+            <a id="not">Notifications 
+                #{if user.getNotificationNumber() == 0}
+                (No New)
+                #{/if}
+                #{else}
+                (${user.getNotificationNumber()} New)
+                #{/else}</a>
         </li>
         <li>
             <a href="@{Users.viewNotificationProfile()}">Notification Profile</a>
@@ -34,45 +37,37 @@
         </li>
     </ul>
 </div>
-
 <div id="leftSidebar">
-	
-
 </div>
 <div id="sidebar">
     <ul>
-    	<li>
-    	<div id="not-body">
-    	<h2>Notifications</h2>
-    	<div id="list">
-    	#{if user.getLatest().size() == 0}
-    	<span>No new notifications.</span>
-    	<br>
-    	#{/if}
-        #{list items:user.getLatest(), as:'notifi'}        		
-        		<ul style>
-        			<li>    					  				
-    					<b>From: </b> ${notifi.type}: <b>${notifi.title}</b> 
-    					<br>
-    					<b>Message:</b>${notifi.description}    					   					
-   			 		</li>        
-        		</ul>        	
-        #{/list} 
-        </div>       
-        <a href="@{Users.viewNotifications()}">All Notifications</a>
-        </div>
-    	</li>
+        <li>
+            <div id="not-body">
+                <h2>Notifications</h2>
+                #{if user.getLatest().size() == 0}<span>No new notifications.</span>
+                <br>
+                #{/if} 
+                #{list items:user.getLatest(), as:'notifi'} 
+                <ul>
+                    <li>
+                        <b>From: </b>
+                        ${notifi.type}: <b>${notifi.title}</b>
+                        <br>
+                        &nbsp;&nbsp; ${notifi.description} 
+                    </li>
+                </ul>
+                #{/list}<a href="@{Users.viewNotifications()}">All Notifications</a>
+            </div>
+        </li>
         <li>
             <div id="search">
-                <form action="@{Search.quickSearch()}" method='post'>
-                    Search: 
-                    <br>
-                    <input type="text" name="keyword" id="keyword" value = "Enter a keyword here" onfocus=this.value="" onfocusout='' /><input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick="quickSearch(this.form)"/>
-                    <br>
-                    <small>
-                        <i><a href="/AdvancedSearch">Advanced Search</a></i>
-                    </small>
-                </form>
+                Search: 
+                <br>
+                <input type="text" name="keywords" id="keywords" value = "Enter a keyword here" onfocus="this.value=''" " onfocusout='' onkeypress='javaScript: quickSearchScript()' /><input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick='javaScript: quickSearchScript()'/>
+                <br>
+                <small>
+                    <i><a href="/AdvancedSearch">Advanced Search</a></i>
+                </small>
             </div>
             <div style="clear: both;">
                 &nbsp;
@@ -107,7 +102,8 @@
                 <a href="@{Logs.viewUserLogs()}">View Logs</a>
                 <br>
                 #{/if}
-                <div style="clear: both;"></div>
+                <div style="clear: both;">
+                </div>
             </div>
         </li>
         <!--div style="clear: both;">
@@ -139,71 +135,65 @@
                     <li>
                         <a href="#" onclick="follows();">Follow List</a>
                     </li>
-						<div id="follow">
-		<center>
-		<br />
-		<b>Organizations</b>
-#{ifnot user.followingOrganizations}
-<br />No organizations 
-#{/ifnot}
-
-<ul>
-    #{list items:user.followingOrganizations, as:'organization'}
-    <li> 
-        <input type="submit" value="unfollow" onclick="org('${organization.id}');" />
-		<a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>
-    </li>
-	#{/list}
-</ul>
-
-<b>Entities</b>
-#{ifnot user.followingEntities}
-<br />No entities 
-#{/ifnot}
-
-<ul>
-    #{list items:user.followingEntities, as:'entity'}
-    <li> 
-        <input type="submit" value="unfollow" onclick="entity('${entity.id}');" />
-		<a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>
-    </li>
-	#{/list}
-</ul>
-
-<b>Topics</b>
-#{ifnot user.topicsIFollow}
-<br />No topics 
-#{/ifnot}
-
-<ul>
-    #{list items:user.topicsIFollow, as:'topic'}
-    <li> 
-        <input type="submit" value="unfollow" onclick="topic('${topic.id}');" />
-		<a href="@{Topics.show(topic.id)}">${topic.title}</a>
-    </li>
-	#{/list}
-</ul>
-
-<b>Tags</b>
-#{ifnot user.followingTags}
-<br />No tags 
-#{/ifnot}
-
-<ul>
-    #{list items:user.followingTags, as:'tag'}
-    <li> 
-        <input type="submit" value="unfollow" onclick="tag('${tag.id}');" />
-		<a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
-    </li>
-	#{/list}
-</ul>
-</center>
-	</div>
+                    <div id="follow">
+                        <center>
+                            <br/>
+                            <b>Organizations</b>
+                            #{ifnot user.followingOrganizations}
+                            <br/>
+                            No organizations 
+                            #{/ifnot}
+                            <ul>
+                                #{list items:user.followingOrganizations, as:'organization'}
+                                <li>
+                                    <input type="submit" value="unfollow" onclick="org('${organization.id}');"/><a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>
+                                </li>
+                                #{/list}
+                            </ul>
+                            <b>Entities</b>
+                            #{ifnot user.followingEntities}
+                            <br/>
+                            No entities 
+                            #{/ifnot}
+                            <ul>
+                                #{list items:user.followingEntities, as:'entity'}
+                                <li>
+                                    <input type="submit" value="unfollow" onclick="entity('${entity.id}');"/><a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>
+                                </li>
+                                #{/list}
+                            </ul>
+                            <b>Topics</b>
+                            #{ifnot user.topicsIFollow}
+                            <br/>
+                            No topics 
+                            #{/ifnot}
+                            <ul>
+                                #{list items:user.topicsIFollow, as:'topic'}
+                                <li>
+                                    <input type="submit" value="unfollow" onclick="topic('${topic.id}');"/><a href="@{Topics.show(topic.id)}">${topic.title}</a>
+                                </li>
+                                #{/list}
+                            </ul>
+                            <b>Tags</b>
+                            #{ifnot user.followingTags}
+                            <br/>
+                            No tags 
+                            #{/ifnot}
+                            <ul>
+                                #{list items:user.followingTags, as:'tag'}
+                                <li>
+                                    <input type="submit" value="unfollow" onclick="tag('${tag.id}');"/><a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
+                                </li>
+                                #{/list}
+                            </ul>
+                        </center>
+                    </div>
                     <li>
                         <a href="@{MarkRequest.markDuplicate()}">Duplicate Requests</a>
                     </li>
                 </ul>
-                <div style="clear: both;"></div>
+                <div style="clear: both;">
+                </div>
             </div>
         </li>
         <li>
@@ -220,24 +210,26 @@
                     <li>
                         <a href="#" onclick="showDoc();">Show my Documents</a>
                     </li>
-					<div id="docs">
-		<center>
-			
-<b>Documents</b><br />
-#{ifnot user.getDocuments()}
-<br />No documents 
-#{/ifnot}
-<ul>
-    #{list items:user.getDocuments(), as:'document'}
-    <li>
-    	<a href="@{Documents.viewDocument(document.id)}">${document.name}</a>
-   </li>
-	#{/list}
-</ul>
-		</center>
-	</div>
+                    <div id="docs">
+                        <center>
+                            <b>Documents</b>
+                            <br/>
+                            #{ifnot user.getDocuments()}
+                            <br/>
+                            No documents 
+                            #{/ifnot}
+                            <ul>
+                                #{list items:user.getDocuments(), as:'document'}
+                                <li>
+                                    <a href="@{Documents.viewDocument(document.id)}">${document.name}</a>
+                                </li>
+                                #{/list}
+                            </ul>
+                        </center>
+                    </div>
                 </ul>
-                <div style="clear: both;"></div>
+                <div style="clear: both;">
+                </div>
             </div>
         </li>
         <li>
@@ -253,7 +245,8 @@
                     </li>
                 </ul>
             </div>
-            <div style="clear: both;"></div>
+            <div style="clear: both;">
+            </div>
         </li>
         <li>
             <h2>
@@ -278,7 +271,8 @@
                     </li>
                 </ul>
             </div>
-            <div style="clear: both;"></div>
+            <div style="clear: both;">
+            </div>
         </li>
     </ul>
 </div>
@@ -288,16 +282,18 @@
     </p>
 </b>
 #{/if}
-<body>
+<body onload=step1()>
     #{doLayout /}
+    <iframe id="searchview" src="/searchResult" scripts="/public/javascripts/SearchScript.js" class="/public/stylesheets/searchStyle.css" language="text/javascript" frameborder='no' allowtransparency='yes'] height=900  width=980">
+    </iframe>
 </body>
 <script type="text/javascript" language="javascript">
     $('#follow').hide();
     var fol = false;
     var doc = false;
     $('#docs').hide();
-	$('#not-body').hide();
-	$('#viewed').hide();
+    $('#not-body').hide();
+    $('#viewed').hide();
     $(function(){
         var app1 = true;
         $('#o1').hide();
@@ -371,17 +367,18 @@
             $('#demo01-body').showTopbarMessage();
         });
         var show = true;
-        $("#not").click(function() {
-        	if (show) {
-        		$('#not-body').show(500);
-        		$.post('@{Users.showNotifications()}');        		
-        		document.getElementById("not").text = 'Notifications (No New)';
-        		show = false;
-        	} else {
-        		$('#not-body').hide(500);
-        		show = true;
-        	}
-        	
+        $("#not").click(function(){
+            if (show) {
+                $('#not-body').show(500);
+                $.post('@{Users.showNotifications()}');
+                document.getElementById("not").text = 'Notifications (No New)';
+                show = false;
+            }
+            else {
+                $('#not-body').hide(500);
+                show = true;
+            }
+            
         });
         
         $("#demo02").click(function(){
@@ -414,6 +411,26 @@
     }
 </style>
 <script type="text/javascript">
+    
+    function step1(){
+        document.getElementById('searchview').style.visibility = 'hidden';
+    }
+    
+    function quickSearchScript(){
+        var s = document.getElementById('keywords').value;
+        if (s.length < 2) {
+            document.getElementById('searchview').style.visibility = 'hidden';
+        }
+        else {
+            $.post('@{Search.quickSearch()}', {
+                keyword: document.getElementById('keywords').value
+            }, function(){
+            });
+            document.getElementById('searchview').style.visibility = 'visible';
+            document.getElementById('searchview').canHaveChildren = false;
+            document.getElementById('searchview').src = '/searchResult';
+        }
+    }
     
     function tag(id){
         $.post('@{Users.unfollowTag()}', {
