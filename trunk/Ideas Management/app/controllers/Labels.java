@@ -10,18 +10,38 @@ import models.User;
 public class Labels extends CRUD
 {
 	
+	/**
+	 * @author Abdalrahman Ali
+	 * 
+	 * This method renders a page that shows all the user's labels
+	 */
 	public static void showAllLabels()
 	{
 		User user = Security.getConnected();
 		render(user);
 	}
 	
+	/**
+	 * @author Abdalrahman Ali
+	 * 
+	 * This method renders the page that allows the user to create a label
+	 */
 	public static void createLabel()
 	{
 		User user = Security.getConnected();
 		render(user);
 	}
 	
+	/**
+	 * @author Abdalrahman Ali
+	 * 
+	 * This method creates a label
+	 * 
+	 * @param name
+	 * 		the name of the label to be created
+	 * @param ideas
+	 * 		array of the ids of the Ideas added to this label
+	 */
 	public static void doCreateLabel(String name,long [] ideas)
 	{
 		User user = Security.getConnected();
@@ -49,6 +69,14 @@ public class Labels extends CRUD
 		}
 	}
 	
+	/**
+	 * @author Abdalrahman Ali
+	 * 
+	 * This method deletes a label 
+	 * 
+	 * @param labelId
+	 * 		the id of the label to be deleted
+	 */
 	public static void deleteLabel(long labelId)
 	{
 		Label label = Label.findById(labelId);
@@ -56,6 +84,14 @@ public class Labels extends CRUD
 		showAllLabels();
 	}
 	
+	/**
+	 * @author Abdalrahman Ali
+	 * 
+	 * this method renders the page that shows a label 
+	 * 
+	 * @param labelId
+	 * 		the id of the label to be shown
+	 */
 	public static void showLabel(long labelId)
 	{
 		User user = Security.getConnected();
@@ -70,6 +106,16 @@ public class Labels extends CRUD
 		render(user,label,otherIdeas);
 	}
 	
+	/**
+	 * @author Abdalrahman Ali
+	 * 
+	 * this method removes Ideas from a label
+	 * 
+	 * @param labelId
+	 * 		the label to remove the ideas from
+	 * @param ideas
+	 * 		an array of the ids of the ideas to be removed from the label
+	 */
 	public static void removeIdeas(long labelId, long [] ideas)
 	{
 		Label label = Label.findById(labelId);
@@ -83,6 +129,16 @@ public class Labels extends CRUD
 		label.save();
 	}
 	
+	/**
+	 * @author Abdalrahman Ali
+	 * 
+	 * this method adds ideas to a label
+	 * 
+	 * @param labelId
+	 * 		the label to add the ideas to
+	 * @param ideas
+	 * 		an array of the ids of the ideas to be added to the label
+	 */
 	public static void addIdeas(long labelId, long [] ideas)
 	{
 		Label label = Label.findById(labelId);
@@ -96,12 +152,21 @@ public class Labels extends CRUD
 		label.save();
 	}
 	
+	/**
+	 * @author Abdalrahman Ali
+	 * 
+	 * this method changes a label's name
+	 * 
+	 * @param labelId
+	 * 		the label to change it's name
+	 * @param newName
+	 * 		the new name to assign to the label
+	 */
 	public static void changeName(long labelId,String newName)
 	{
 		Label label = Label.findById(labelId);
 		label.name = newName;
 		label.save();
-		//redirect("/labels/showLabel?labelId="+labelId);
 	}
 	
 	
