@@ -29,13 +29,8 @@ public abstract class CoolCRUD extends CRUD {
     }
 
     public static void index() {
-    	System.out.println("HHHHHHHH");
-        if (getControllerClass() == CoolCRUD.class) {
-      //      forbidden();
-        }
         User user = Security.getConnected();
-        //render("CoolCRUD/index.html", user);
-        render(user);
+        render("CoolCRUD/index.html", user);
 
     }
 
