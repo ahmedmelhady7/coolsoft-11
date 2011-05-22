@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.Date;
+
 import models.User;
 import play.mvc.Controller;
 
@@ -52,5 +54,65 @@ public class Home extends Controller {
 	public static void contact() {
 		render();
 	}
+	
+	/**
+	 * renders the page responsible for the registration
+	 * 
+	 * @story C1S10
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 */
+	public static void register() {
+		render();
+	}
+	
+	/**
+	 * 
+	 * This method is responsible for adding an unregistered user
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * @param email
+	 * 				: the user's email
+	 * 
+	 * @param firstName
+	 * 				: the user's first name
+	 * 
+	 * @param lastName
+	 * 				: the user's last name
+	 * 
+	 * @param username
+	 *              : the user's username
+	 * 
+	 * @param password
+	 * 				: the user's password
+	 * 
+	 * @param profession
+	 * 				: the user's profession
+	 * 
+	 * @param communityContributionCounter
+	 * 	            : the user's community contribution counter
+	 * 
+	 * @param dateofBirth
+	 * 				: the user's date of birth
+	 * 
+	 * @param country
+	 * 				: the user's country
+	 * 
+	 */
+	
+	public static void addUser(String email, String password, String firstName,
+			String lastName, String username, int communityContributionCounter,
+			Date dateofBirth, String country, String profession)
+	{
+			User u = new User(email, password, firstName, lastName, username, communityContributionCounter, dateofBirth, country, profession);
+			u._save();
+		
+		//render(email,username,password);
+	}
+
 
 }
