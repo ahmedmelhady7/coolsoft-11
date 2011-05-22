@@ -88,7 +88,24 @@ function submit() {
     				<br>
     				<b>Source Type: </b> ${notifi.type}
     				<br>
-    				${notifi.title}
+    				#{if notifi.type == 'Plan'}
+    				<a href="@{Plans.viewAsList(notifi.sourceID)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.type == 'Topic'}
+    				<a href="@{Topics.show(notifi.sourceID)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.type == 'Idea'}
+    				<a href="@{Ideas.show(notifi.sourceID)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.type == 'Entity'}
+    				<a href="@{MainEntitys.viewEntity(notifi.sourceID)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.type == 'Organization'}
+    				<a href="@{Organizations.viewProfile(notifi.sourceID)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.type == 'Tag'}
+    				<a href="@{Tags.mainPage(notifi.sourceID)}">${notifi.title}</a>
+    				#{/if} 
     				<br>
     				<b>Message: </b> ${notifi.description}
     				</fieldset>

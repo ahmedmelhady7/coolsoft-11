@@ -41,24 +41,45 @@
 </div>
 <div id="sidebar">
     <ul>
-        <li>
-            <div id="not-body">
-                <h2>Notifications</h2>
-                #{if user.getLatest().size() == 0}<span>No new notifications.</span>
-                <br>
-                #{/if} 
-                #{list items:user.getLatest(), as:'notifi'} 
-                <ul>
-                    <li>
-                        <b>From: </b>
-                        ${notifi.type}: <b>${notifi.title}</b>
-                        <br>
-                        &nbsp;&nbsp; ${notifi.description} 
-                    </li>
-                </ul>
-                #{/list}<a href="@{Users.viewNotifications()}">All Notifications</a>
-            </div>
-        </li>
+    	<li>
+    	<div id="not-body">
+    	<h2>Notifications</h2>
+    	<div id="list">
+    	#{if user.getLatest().size() == 0}
+    	<span>No new notifications.</span>
+    	<br>
+    	#{/if}
+        #{list items:user.getLatest(), as:'notifi'}        		
+        		<ul style>
+        			<li>    					  				
+    					<b>From: </b> ${notifi.type}: <b>
+    					#{if notifi.type == 'Plan'}
+    				<a href="@{Plans.viewAsList(notifi.sourceID)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.type == 'Topic'}
+    				<a href="@{Topics.show(notifi.sourceID)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.type == 'Idea'}
+    				<a href="@{Ideas.show(notifi.sourceID)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.type == 'Entity'}
+    				<a href="@{MainEntitys.viewEntity(notifi.sourceID)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.type == 'Organization'}
+    				<a href="@{Organizations.viewProfile(notifi.sourceID)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.type == 'Tag'}
+    				<a href="@{Tags.mainPage(notifi.sourceID)}">${notifi.title}</a>
+    				#{/if} 
+    					<br>
+    					<b>Message:</b>${notifi.description}    					   					
+   			 		</li>        
+        		</ul>        	
+        #{/list} 
+        </div>       
+        <a href="@{Users.viewNotifications()}">All Notifications</a>
+        </div>
+    	</li>
         <li>
             <div id="search">
                 Search: 

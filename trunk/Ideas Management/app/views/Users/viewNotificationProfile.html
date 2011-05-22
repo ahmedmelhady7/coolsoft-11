@@ -18,8 +18,25 @@
 					#{list items:npList, as:'notifi'}
 				    <li>
     				<fieldset>
-    				<b>Notification from: </b> ${notifi.notifiableType}  
-    				&nbsp; ${notifi.title}
+    				<b>Notification from: </b> ${notifi.notifiableType} 
+    				#{if notifi.notifiableType == 'Plan'}
+    				<a href="@{Plans.viewAsList(notifi.notifiableId)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.notifiableType == 'Topic'}
+    				<a href="@{Topics.show(notifi.notifiableId)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.notifiableType == 'Idea'}
+    				<a href="@{Ideas.show(notifi.notifiableId)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.notifiableType == 'Entity'}
+    				<a href="@{MainEntitys.viewEntity(notifi.notifiableId)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.notifiableType == 'Organization'}
+    				<a href="@{Organizations.viewProfile(notifi.notifiableId)}">${notifi.title}</a>
+    				#{/if} 
+    				#{if notifi.notifiableType == 'Tag'}
+    				<a href="@{Tags.mainPage(notifi.notifiableId)}">${notifi.title}</a>
+    				#{/if} 
     				<br> 
     				<b>Enabled: </b>
     				#{if notifi.enabled}
