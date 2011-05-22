@@ -48,7 +48,7 @@ public class CreateRelationshipRequests extends CRUD {
 		Organization organization = Organization.findById(id);
 		String name = organization.name;
 		List<CreateRelationshipRequest> requests = organization.createRelationshipRequest;
-		List<RenameEndRelationshipRequest> allRequests = organization.renameEndRelationshipRequest;
+		List<RenameEndRelationshipRequest> allRequests =organization.renameEndRelationshipRequest;
 
 		for (int i = 0; i < requests.size(); i++) {
 			if (requests.get(i).requester.state.equals("n")) {
@@ -56,25 +56,25 @@ public class CreateRelationshipRequests extends CRUD {
 				i--;
 			}
 		}
-		for (int i = 0; i < allRequests.size(); i++) {
-			if (allRequests.get(i).requestType == 0)
-				deletionRequests.add(allRequests.get(i));
-			else
-				renamingRequests.add(allRequests.get(i));
+		for(int i=0;i<allRequests.size();i++){
+		if(allRequests.get(i).requestType==0)
+			deletionRequests.add(allRequests.get(i));
+		else
+			renamingRequests.add(allRequests.get(i));
 		}
-		for (int i = 0; i < renamingRequests.size(); i++) {
-			if (renamingRequests.get(i).requester.state.equals("n")) {
-				renamingRequests.remove(i);
-				i--;
-			}
+			for (int i = 0; i < renamingRequests.size(); i++) {
+				if (renamingRequests.get(i).requester.state.equals("n")) {
+					renamingRequests.remove(i);
+					i--;
+				}
 		}
-		for (int i = 0; i < deletionRequests.size(); i++) {
-			if (deletionRequests.get(i).requester.state.equals("n")) {
-				deletionRequests.remove(i);
-				i--;
-			}
+			for (int i = 0; i < deletionRequests.size(); i++) {
+				if (deletionRequests.get(i).requester.state.equals("n")) {
+					deletionRequests.remove(i);
+					i--;
+				}
 		}
-		render(requests, name, id, user, deletionRequests, renamingRequests);
+		render(requests, name, id, user,deletionRequests,renamingRequests);
 
 	}
 
@@ -305,7 +305,7 @@ public class CreateRelationshipRequests extends CRUD {
 		else {
 			renameRequest = RenameEndRelationshipRequest.findById(id);
 			System.out.println(renameRequest);
-			organization = renameRequest.organisation;
+            organization=renameRequest.organisation;
 			if (type == 0) {
 				EntityRelationship relation = renameRequest.entityRelationship;
 				String oldName = relation.name;
@@ -313,21 +313,21 @@ public class CreateRelationshipRequests extends CRUD {
 				if (status == 1) {
 					if (renameRequest.requestType == 0) {
 						System.out.println(relation);
-						for (int i = 0; i < relation.renameEndRequests.size(); i++) {
-							if (!relation.renameEndRequests.get(i).equals(
-									renameRequest))
-								relation.renameEndRequests.get(i).delete();
-						}
-						relation.source.relationsSource.remove(relation);
-						relation.destination.relationsDestination
-								.remove(relation);
-						relation.delete();
-						// EntityRelationships.delete(relation.id);
-						Log.addLog("User " + user.firstName + " "
-								+ user.lastName
-								+ " accepted request to end relationship  "
-								+ oldName, user, organization);
-
+					for(int i=0;i<relation.renameEndRequests.size();i++){
+						if(!relation.renameEndRequests.get(i).equals(renameRequest))
+							relation.renameEndRequests.get(i).delete();
+					}
+					relation.source.relationsSource.remove(relation);
+					relation.source.save();
+					relation.destination.relationsDestination.remove(relation);
+					relation.destination.save();
+					//	relation.delete();
+						//EntityRelationships.delete(relation.id);
+					Log.addLog("User " + user.firstName + " "
+							+ user.lastName
+							+ " accepted request to end relationship  "
+								+ oldName, user,organization);
+						
 					} else {
 						EntityRelationships.renameRelationship(relation.id,
 								renameRequest.newName);
@@ -338,17 +338,16 @@ public class CreateRelationshipRequests extends CRUD {
 										+ user.lastName
 										+ " accepted request to change the name of relationship  "
 										+ oldName + " to "
-										+ renameRequest.newName, user,
-								organization, relation);
-
+										+ renameRequest.newName, user,organization,relation);
+					
 					}
 				} else {
 					if (renameRequest.requestType == 0) {
 						Log.addLog("User " + user.firstName + " "
 								+ user.lastName
 								+ " rejected request to end relationship  "
-								+ oldName, user, organization, relation);
-
+								+ oldName, user,organization,relation);
+					
 					} else {
 						Log.addLog(
 								"User "
@@ -357,8 +356,7 @@ public class CreateRelationshipRequests extends CRUD {
 										+ user.lastName
 										+ " rejected request to change the name of relationship  "
 										+ oldName + " to "
-										+ renameRequest.newName, user,
-								organization, relation);
+										+ renameRequest.newName, user,organization,relation);
 					}
 
 				}
@@ -367,11 +365,20 @@ public class CreateRelationshipRequests extends CRUD {
 				String oldName = relation.name;
 				if (status == 1) {
 					if (renameRequest.requestType == 0) {
-						TopicRelationships.delete(relation.id);
+						
+							System.out.println(relation);
+						for(int i=0;i<relation.renameEndRequests.size();i++){
+							if(!relation.renameEndRequests.get(i).equals(renameRequest))
+								relation.renameEndRequests.get(i).delete();
+						}
+						relation.source.relationsSource.remove(relation);
+						relation.source.save();
+						relation.destination.relationsDestination.remove(relation);
+						relation.destination.save();
 						Log.addLog("User " + user.firstName + " "
 								+ user.lastName
 								+ " accepted request to end relationship  "
-								+ oldName, user, organization, relation);
+								+ oldName, user,organization,relation);
 					} else {
 						TopicRelationships.renameRelationship(relation.id,
 								renameRequest.newName);
@@ -382,17 +389,16 @@ public class CreateRelationshipRequests extends CRUD {
 										+ user.lastName
 										+ " accepted request to change the name of relationship  "
 										+ oldName + " to "
-										+ renameRequest.newName, user,
-								organization, relation);
-
+										+ renameRequest.newName, user,organization,relation);
+	
 					}
 				} else {
 					if (renameRequest.requestType == 0) {
 						Log.addLog("User " + user.firstName + " "
 								+ user.lastName
 								+ " rejected request to end relationship  "
-								+ oldName, user, organization, relation);
-
+								+ oldName, user,organization,relation);
+			
 					} else {
 						Log.addLog(
 								"User "
@@ -401,61 +407,29 @@ public class CreateRelationshipRequests extends CRUD {
 										+ user.lastName
 										+ " rejected request to change the name of relationship  "
 										+ oldName + " to "
-										+ renameRequest.newName, user,
-								organization, relation);
+										+ renameRequest.newName, user,organization,relation);
 					}
 
 				}
 
 			}
 			if (status == 1) {
-				Notifications.sendNotification(renameRequest.requester.id,
-						organization.id, "organization",
-						"Your Request has been accepted");
+				 Notifications.sendNotification(renameRequest.requester.id,
+				 organization.id, "organization",
+				 "Your Request has been accepted");
 			} else {
-				Notifications.sendNotification(renameRequest.requester.id,
-						organization.id, "organization",
-						"Your Request has been rejected");
+				 Notifications.sendNotification(renameRequest.requester.id,
+				 organization.id, "organization",
+				 "Your Request has been rejected");
 			}
 
 			renameRequest.delete();
 
+			}
 		}
-	}
+	
 
-	/**
-	 * creates a request for creating a relationship between entities or topics.
-	 * 
-	 * @author Noha Khater
-	 * 
-	 * @Story C2S18
-	 * 
-	 * @param userId
-	 *            the id of the user making the request.
-	 * 
-	 * @param source
-	 *            the name of the source entity or topic.
-	 * 
-	 * @param destination
-	 *            the name of the destination entity or topic.
-	 * 
-	 * @param name
-	 *            the name of the relationship.
-	 * 
-	 * @param organisationId
-	 *            the id of the organisation in which the request was made.
-	 * 
-	 * @param entityId
-	 *            the id of the entity from which the request page was accessed.
-	 * 
-	 * @param topicId
-	 *            the id of the topic from which the request page was accessed.
-	 * 
-	 * @param type
-	 *            the type of the request whether it's for an entity or topic
-	 *            (0=entity, 1=topic).
-	 * 
-	 */
+
 	public static void createRequest(long userId, String source,
 			String destination, String name, long organisationId,
 			long entityId, long topicId, int type) {
@@ -463,10 +437,9 @@ public class CreateRelationshipRequests extends CRUD {
 		Organization organisation = Organization.findById(organisationId);
 		if (type == 0) {
 
-			if (Organizations.isDuplicateRequest(source, destination, name,
-					organisationId, type, 1, 0, 0)) {
-				System.out.println(organisation.createRelationshipRequest
-						.size());
+			if (Organizations.isDuplicateRequest(source, destination, name, organisationId, type, 1,
+					0, 0)) {
+				System.out.println(organisation.createRelationshipRequest.size());
 
 				redirect("MainEntitys.viewEntity", entityId, "Request created");
 				return;
@@ -492,10 +465,9 @@ public class CreateRelationshipRequests extends CRUD {
 			System.out.println(organisation.createRelationshipRequest.size());
 			redirect("MainEntitys.viewEntity", entityId, "Request created");
 		} else {
-			if (Organizations.isDuplicateRequest(source, destination, name,
-					organisationId, type, 1, 0, 0)) {
-				System.out.println(organisation.createRelationshipRequest
-						.size());
+			if (Organizations.isDuplicateRequest(source, destination, name, organisationId, type, 1,
+					0, 0)) {
+				System.out.println(organisation.createRelationshipRequest.size());
 
 				redirect("MainEntitys.viewEntity", entityId, "Request created");
 				return;
@@ -524,4 +496,4 @@ public class CreateRelationshipRequests extends CRUD {
 		}
 	}
 
-}
+	}
