@@ -41,476 +41,464 @@
 </div>
 <div id="sidebar">
     <ul>
-    	<li>
-    	<div id="not-body">
-    	<h2>Notifications</h2>
-    	<div id="list">
-    	#{if user.getLatest().size() == 0}
-    	<span>No new notifications.</span>
-    	<br>
-    	#{/if}
-        #{list items:user.getLatest(), as:'notifi'}        		
-        		<ul style>
-        			<li>    					  				
-    					<b>From: </b> ${notifi.type}: <b>
-    					#{if notifi.type == 'Plan'}
-    				<a href="@{Plans.viewAsList(notifi.sourceID)}">${notifi.title}</a>
-    				#{/if} 
-    				#{if notifi.type == 'Topic'}
-    				<a href="@{Topics.show(notifi.sourceID)}">${notifi.title}</a>
-    				#{/if} 
-    				#{if notifi.type == 'Idea'}
-    				<a href="@{Ideas.show(notifi.sourceID)}">${notifi.title}</a>
-    				#{/if} 
-    				#{if notifi.type == 'Entity'}
-    				<a href="@{MainEntitys.viewEntity(notifi.sourceID)}">${notifi.title}</a>
-    				#{/if} 
-    				#{if notifi.type == 'Organization'}
-    				<a href="@{Organizations.viewProfile(notifi.sourceID)}">${notifi.title}</a>
-    				#{/if} 
-    				#{if notifi.type == 'Tag'}
-    				<a href="@{Tags.mainPage(notifi.sourceID)}">${notifi.title}</a>
-    				#{/if} 
-    					<br>
-    					<b>Message:</b>${notifi.description}    					   					
-   			 		</li>        
-        		</ul>        	
-        #{/list} 
-        </div>       
-        <a href="@{Users.viewNotifications()}">All Notifications</a>
-        </div>
-    	</li>
         <li>
-            <div id="search">
-                Search: 
-                <br>
-                <input type="text" name="keywords" id="keywords" value = "Enter a keyword here" onfocus="this.value=''" " onfocusout='' onkeypress='javaScript: quickSearchScript()' /><input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick='javaScript: quickSearchScript()'/>
-                <br>
-                <small>
-                    <i><a href="/AdvancedSearch">Advanced Search</a></i>
-                </small>
-            </div>
-            <div style="clear: both;">
-                &nbsp;
-            </div>
-        </li>
-        <div style="clear: both;">
-            &nbsp;
-        </div>
-        <li>
-            <h2 id="a1">
-                <u>
-                    ${user.username}
-                </u>
-            </h2>
-            <div id="o1">
-                #{if user.profilePictureId != -1} 
-                #{list items:user.profilePictureId, as:'id'}<img src="@{Pictures.getPicture(id)}" width="40" height="40"/>#{/list}
+            <div id="not-body">
+                <h2>Notifications</h2>
+                <div id="list">
+                    #{if user.getLatest().size() == 0}<span>No new notifications.</span>
+                    <br>
+                    #{/if} 
+                    #{list items:user.getLatest(), as:'notifi'} 
+                    <ul style>
+                        <li>
+                            <b>From: </b>
+                            ${notifi.type}: <b>#{if notifi.type == 'Plan'}<a href="@{Plans.viewAsList(notifi.sourceID)}">${notifi.title}</a> #{/if} 
+                                #{if notifi.type == 'Topic'}<a href="@{Topics.show(notifi.sourceID)}">${notifi.title}</a> #{/if} 
+                                #{if notifi.type == 'Idea'}<a href="@{Ideas.show(notifi.sourceID)}">${notifi.title}</a> #{/if} 
+                                #{if notifi.type == 'Entity'}<a href="@{MainEntitys.viewEntity(notifi.sourceID)}">${notifi.title}</a> #{/if} 
+                                #{if notifi.type == 'Organization'}<a href="@{Organizations.viewProfile(notifi.sourceID)}">${notifi.title}</a> #{/if} 
+                                #{if notifi.type == 'Tag'}<a href="@{Tags.mainPage(notifi.sourceID)}">${notifi.title}</a> #{/if} 
+                                <br>
+                                <b>Message:</b>${notifi.description} 
+                                </li>
+                            </ul>
+                            #{/list} 
+                            </div>
+                            <a href="@{Users.viewNotifications()}">All Notifications</a>
+                        </div>
+                        </li>
+                        <li>
+                            <div id="search">
+                                Search: 
+                                <br>
+                                <input type="text" name="keywords" id="keywords" value = "Enter a keyword here" onfocus="this.value=''" " onfocusout='' onkeypress='javaScript: quickSearchScript()' /><input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick='javaScript: quickSearchScript()'/>
+                                <br>
+                                <small>
+                                    <i><a href="/AdvancedSearch">Advanced Search</a></i>
+                                </small>
+                            </div>
+                            <div style="clear: both;">
+                                &nbsp;
+                            </div>
+                        </li>
+                        <div style="clear: both;">
+                            &nbsp;
+                        </div>
+                        <li>
+                            <h2 id="a1">
+                                <u>
+                                    ${user.username}
+                                </u>
+                            </h2>
+                            <div id="o1">
+                                #{if user.profilePictureId != -1} 
+                                #{list items:user.profilePictureId, as:'id'}<img src="@{Pictures.getPicture(id)}" width="40" height="40"/>#{/list}
+                                #{/if}
+                                #{if user.profilePictureId == -1}<img src="/public/images/user.png" width="40" height="40"/>#{/if}
+                                <br>
+                                <b>E-Mail: </b>
+                                ${user.email} 
+                                <br>
+                                <b>Community Contribution Counter: </b>
+                                ${user.communityContributionCounter} 
+                                <br>
+                                #{if !user.isAdmin}<a href="@{Users.confirmDeactivation()}">Deactivate</a>
+                                <br>
+                                #{/if} 
+                                #{if user.isAdmin}<a href="http://localhost:9008/admin">Admin View</a>
+                                <br>
+                                <a href="@{Logs.viewUserLogs()}">View Logs</a>
+                                <br>
+                                #{/if}
+                                <div style="clear: both;">
+                                </div>
+                            </div>
+                        </li>
+                        <!--div style="clear: both;">
+                        &nbsp;
+                        </div-->
+                        <li>
+                            <h2 id="a2">
+                                <u>
+                                    My Links
+                                </u>
+                            </h2>
+                            <div id="o2">
+                                <ul>
+                                    <li>
+                                        <a href="@{Organizations.mainPage()}">My Organisations</a>
+                                    </li>
+                                    <li>
+                                        <a href="@{Organizations.viewAllOrganizations()}">All Organisations</a>
+                                    </li>
+                                    <li>
+                                        <a href="@{Items.viewAssignedItems()}">Assigned Items</a>
+                                    </li>
+                                    <li>
+                                        <a href="@{AssignRequests.view()}">Assigned Requests</a>
+                                    </li>
+                                    <li>
+                                        <input type="hidden" name="userId" value="${user.id}">
+                                    </li>
+                                    <li>
+                                        <a href="#" onclick="follows();">Follow List</a>
+                                    </li>
+                                    <div id="follow">
+                                        <center>
+                                            <br/>
+                                            <b>Organizations</b>
+                                            #{ifnot user.followingOrganizations}
+                                            <br/>
+                                            No organizations 
+                                            #{/ifnot}
+                                            <ul>
+                                                #{list items:user.followingOrganizations, as:'organization'}
+                                                <li>
+                                                    <input type="submit" value="unfollow" onclick="org('${organization.id}');"/><a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>
+                                                </li>
+                                                #{/list}
+                                            </ul>
+                                            <b>Entities</b>
+                                            #{ifnot user.followingEntities}
+                                            <br/>
+                                            No entities 
+                                            #{/ifnot}
+                                            <ul>
+                                                #{list items:user.followingEntities, as:'entity'}
+                                                <li>
+                                                    <input type="submit" value="unfollow" onclick="entity('${entity.id}');"/><a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>
+                                                </li>
+                                                #{/list}
+                                            </ul>
+                                            <b>Topics</b>
+                                            #{ifnot user.topicsIFollow}
+                                            <br/>
+                                            No topics 
+                                            #{/ifnot}
+                                            <ul>
+                                                #{list items:user.topicsIFollow, as:'topic'}
+                                                <li>
+                                                    <input type="submit" value="unfollow" onclick="topic('${topic.id}');"/><a href="@{Topics.show(topic.id)}">${topic.title}</a>
+                                                </li>
+                                                #{/list}
+                                            </ul>
+                                            <b>Tags</b>
+                                            #{ifnot user.followingTags}
+                                            <br/>
+                                            No tags 
+                                            #{/ifnot}
+                                            <ul>
+                                                #{list items:user.followingTags, as:'tag'}
+                                                <li>
+                                                    <input type="submit" value="unfollow" onclick="tag('${tag.id}');"/><a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
+                                                </li>
+                                                #{/list}
+                                            </ul>
+                                        </center>
+                                    </div>
+                                    <li>
+                                        <a href="@{MarkRequest.markDuplicate()}">Duplicate Requests</a>
+                                    </li>
+                                </ul>
+                                <div style="clear: both;">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <h2 id="a3">
+                                <u>
+                                    My Documents
+                                </u>
+                            </h2>
+                            <div id="o3">
+                                <ul>
+                                    <li>
+                                        <a href="@{Documents.newDocument(-1)}">Create a Document</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" onclick="showDoc();">Show my Documents</a>
+                                    </li>
+                                    <div id="docs">
+                                        <center>
+                                            <b>Documents</b>
+                                            <br/>
+                                            #{ifnot user.getDocuments()}
+                                            <br/>
+                                            No documents 
+                                            #{/ifnot}
+                                            <ul>
+                                                #{list items:user.getDocuments(), as:'document'}
+                                                <li>
+                                                    <a href="@{Documents.viewDocument(document.id)}">${document.name}</a>
+                                                </li>
+                                                #{/list}
+                                            </ul>
+                                        </center>
+                                    </div>
+                                </ul>
+                                <div style="clear: both;">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <h2 id="a4">
+                                <u>
+                                    My Gallery
+                                </u>
+                            </h2>
+                            <div id="o4">
+                                <ul>
+                                    <li>
+                                        <a href="@{Pictures.index(-1)}">Show my Gallery</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div style="clear: both;">
+                            </div>
+                        </li>
+                        <li>
+                            <h2>
+                                <u>
+                                    <a href="@{Ideas.getDrafts()}">Drafts (${user.getDraftsCount()})</a>
+                                </u>
+                            </h2>
+                        </li>
+                        <li>
+                            <h2 id="a6">
+                                <u>
+                                    My Labels
+                                </u>
+                            </h2>
+                            <div id="o6">
+                                <ul>
+                                    <li>
+                                        <a href="@{Labels.createLabel()}">Create Label</a>
+                                    </li>
+                                    <li>
+                                        <a href="@{Labels.showAllLabels()}">Manage Labels</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div style="clear: both;">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                #{if flash.error}<b>
+                    <p style="color:green">
+                        ${flash.error}
+                    </p>
+                </b>
                 #{/if}
-                #{if user.profilePictureId == -1}<img src="/public/images/user.png" width="40" height="40"/>#{/if}
-                <br>
-                <b>E-Mail: </b>
-                ${user.email} 
-                <br>
-                <b>Community Contribution Counter: </b>
-                ${user.communityContributionCounter} 
-                <br>
-                #{if !user.isAdmin}<a href="@{Users.confirmDeactivation()}">Deactivate</a>
-                <br>
-                #{/if} 
-                #{if user.isAdmin}<a href="http://localhost:9008/admin">Admin View</a>
-                <br>
-                <a href="@{Logs.viewUserLogs()}">View Logs</a>
-                <br>
-                #{/if}
-                <div style="clear: both;">
-                </div>
-            </div>
-        </li>
-        <!--div style="clear: both;">
-        &nbsp;
-        </div-->
-        <li>
-            <h2 id="a2">
-                <u>
-                    My Links
-                </u>
-            </h2>
-            <div id="o2">
-                <ul>
-                    <li>
-                        <a href="@{Organizations.mainPage()}">My Organisations</a>
-                    </li>
-                    <li>
-                        <a href="@{Organizations.viewAllOrganizations()}">All Organisations</a>
-                    </li>
-                    <li>
-                        <a href="@{Items.viewAssignedItems()}">Assigned Items</a>
-                    </li>
-                    <li>
-                        <a href="@{AssignRequests.view()}">Assigned Requests</a>
-                    </li>
-                    <li>
-                        <input type="hidden" name="userId" value="${user.id}">
-                    </li>
-                    <li>
-                        <a href="#" onclick="follows();">Follow List</a>
-                    </li>
-                    <div id="follow">
-                        <center>
-                            <br/>
-                            <b>Organizations</b>
-                            #{ifnot user.followingOrganizations}
-                            <br/>
-                            No organizations 
-                            #{/ifnot}
-                            <ul>
-                                #{list items:user.followingOrganizations, as:'organization'}
-                                <li>
-                                    <input type="submit" value="unfollow" onclick="org('${organization.id}');"/><a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>
-                                </li>
-                                #{/list}
-                            </ul>
-                            <b>Entities</b>
-                            #{ifnot user.followingEntities}
-                            <br/>
-                            No entities 
-                            #{/ifnot}
-                            <ul>
-                                #{list items:user.followingEntities, as:'entity'}
-                                <li>
-                                    <input type="submit" value="unfollow" onclick="entity('${entity.id}');"/><a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>
-                                </li>
-                                #{/list}
-                            </ul>
-                            <b>Topics</b>
-                            #{ifnot user.topicsIFollow}
-                            <br/>
-                            No topics 
-                            #{/ifnot}
-                            <ul>
-                                #{list items:user.topicsIFollow, as:'topic'}
-                                <li>
-                                    <input type="submit" value="unfollow" onclick="topic('${topic.id}');"/><a href="@{Topics.show(topic.id)}">${topic.title}</a>
-                                </li>
-                                #{/list}
-                            </ul>
-                            <b>Tags</b>
-                            #{ifnot user.followingTags}
-                            <br/>
-                            No tags 
-                            #{/ifnot}
-                            <ul>
-                                #{list items:user.followingTags, as:'tag'}
-                                <li>
-                                    <input type="submit" value="unfollow" onclick="tag('${tag.id}');"/><a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
-                                </li>
-                                #{/list}
-                            </ul>
-                        </center>
+                <body onload=step1()>
+                    <div id = 'layout'>
+                        #{doLayout /}
                     </div>
-                    <li>
-                        <a href="@{MarkRequest.markDuplicate()}">Duplicate Requests</a>
-                    </li>
-                </ul>
-                <div style="clear: both;">
-                </div>
-            </div>
-        </li>
-        <li>
-            <h2 id="a3">
-                <u>
-                    My Documents
-                </u>
-            </h2>
-            <div id="o3">
-                <ul>
-                    <li>
-                        <a href="@{Documents.newDocument(-1)}">Create a Document</a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="showDoc();">Show my Documents</a>
-                    </li>
-                    <div id="docs">
-                        <center>
-                            <b>Documents</b>
-                            <br/>
-                            #{ifnot user.getDocuments()}
-                            <br/>
-                            No documents 
-                            #{/ifnot}
-                            <ul>
-                                #{list items:user.getDocuments(), as:'document'}
-                                <li>
-                                    <a href="@{Documents.viewDocument(document.id)}">${document.name}</a>
-                                </li>
-                                #{/list}
-                            </ul>
-                        </center>
-                    </div>
-                </ul>
-                <div style="clear: both;">
-                </div>
-            </div>
-        </li>
-        <li>
-            <h2 id="a4">
-                <u>
-                    My Gallery
-                </u>
-            </h2>
-            <div id="o4">
-                <ul>
-                    <li>
-                        <a href="@{Pictures.index(-1)}">Show my Gallery</a>
-                    </li>
-                </ul>
-            </div>
-            <div style="clear: both;">
-            </div>
-        </li>
-        <li>
-            <h2>
-                <u>
-                    <a href="@{Ideas.getDrafts()}">Drafts (${user.getDraftsCount()})</a>
-                </u>
-            </h2>
-        </li>
-        <li>
-            <h2 id="a6">
-                <u>
-                    My Labels
-                </u>
-            </h2>
-            <div id="o6">
-                <ul>
-                    <li>
-                        <a href="@{Labels.createLabel()}">Create Label</a>
-                    </li>
-                    <li>
-                        <a href="@{Labels.showAllLabels()}">Manage Labels</a>
-                    </li>
-                </ul>
-            </div>
-            <div style="clear: both;">
-            </div>
-        </li>
-    </ul>
-</div>
-#{if flash.error}<b>
-    <p style="color:green">
-        ${flash.error}
-    </p>
-</b>
-#{/if}
-<body onload=step1()>
-    <div id = 'layout'>
-        #{doLayout /}
-    </div>
-	<iframe id="searchview" src="/searchResult" scripts="/public/javascripts/SearchScript.js" class="/public/stylesheets/searchStyle.css" language="text/javascript" frameborder='no' allowtransparency='yes' style='display:none' height = 100% width=75%>
-    </iframe>
-</body>
-<script type="text/javascript" language="javascript">
-    $('#follow').hide();
-    var fol = false;
-    var doc = false;
-    $('#docs').hide();
-    $('#not-body').hide();
-    $('#viewed').hide();
-    $(function(){
-        var app1 = true;
-        $('#o1').hide();
-        $('#a1').click(function(){
-            if (app1) {
-                $('#o1').show(500);
-                app1 = false;
-            }
-            else {
-                $('#o1').hide(500);
-                app1 = true;
-            }
-        });
-        
-        var app2 = true;
-        $('#o2').hide();
-        $('#a2').click(function(){
-            if (app2) {
-                $('#o2').show(500);
-                app2 = false;
-            }
-            else {
-                $('#o2').hide(500);
-                app2 = true;
-            }
-        });
-        
-        var app3 = true;
-        $('#o3').hide();
-        $('#a3').click(function(){
-            if (app3) {
-                $('#o3').show(500);
-                app3 = false;
-            }
-            else {
-                $('#o3').hide(500);
-                app3 = true;
-            }
-        });
-        
-        var app4 = true;
-        $('#o4').hide();
-        $('#a4').click(function(){
-            if (app4) {
-                $('#o4').show(500);
-                app4 = false;
-            }
-            else {
-                $('#o4').hide(500);
-                app4 = true;
-            }
-        });
-        
-        var app5 = true;
-        
-        
-        var app6 = true;
-        $('#o6').hide();
-        $('#a6').click(function(){
-            if (app6) {
-                $('#o6').show(500);
-                app6 = false;
-            }
-            else {
-                $('#o6').hide(500);
-                app6 = true;
-            }
-        });
-        
-        $("#demo01").click(function(){
-            $('#demo01-body').showTopbarMessage();
-        });
-        var show = true;
-        $("#not").click(function(){
-            if (show) {
-                $('#not-body').show(500);
-                $.post('@{Users.showNotifications()}');
-                document.getElementById("not").text = 'Notifications (No New)';
-                show = false;
-            }
-            else {
-                $('#not-body').hide(500);
-                show = true;
-            }
-            
-        });
-        
-        $("#demo02").click(function(){
-            $('#demo02-body').showTopbarMessage({
-                close: 5000
-            });
-        });
-        
-        $("#demo03").click(function(){
-            $('#demo03-body').showTopbarMessage({
-                background: "#093",
-                close: 2000
-            });
-        });
-        
-        $("#demo04").click(function(){
-            $('#demo04-body').showTopbarMessage({
-                height: "150px",
-                close: 2000
-            });
-        });
-    });
-</script>
-<style>
-    h2 {
-        cursor: pointer;
-        color: #003366;
-        font-family: Georgia, "Times New Roman", Times, serif;
-        padding: 0 !important;
-    }
-</style>
-<script type="text/javascript">
-    
-    function step1(){
-        document.getElementById('searchview').style.display = 'none';
-    }
-    
-    function quickSearchScript(){
-        var s = document.getElementById('keywords').value;
-        if (s.length < 2) {
-            document.getElementById('searchview').style.display = 'none';
-        }
-        else {
-            $.post('@{Search.quickSearch()}', {
-                keyword: document.getElementById('keywords').value
-            }, function(){
-            });
-            document.getElementById('searchview').style.display = 'block';
-            document.getElementById('searchview').canHaveChildren = false;
-            document.getElementById('searchview').src = '/searchResult';
-            document.getElementById('layout').style.display = 'none';
-        }
-    }
-    
-    function tag(id){
-        $.post('@{Users.unfollowTag()}', {
-            tagId: id
-        });
-        alert("done!");
-        location.reload(true);
-    }
-    
-    function topic(id){
-        $.post('@{Users.unfollowTopic()}', {
-            topicId: id
-        });
-        alert("done!");
-        location.reload(true);
-    }
-    
-    function org(id){
-        $.post('@{Users.unfollowOrganization()}', {
-            organizationId: id
-        });
-        alert("done!");
-        location.reload(true);
-    }
-    
-    function entity(id){
-        $.post('@{Users.unfollowEntity()}', {
-            entityId: id
-        });
-        alert("done!");
-        location.reload(true);
-    }
-    
-    function follows(){
-        if (!fol) {
-            $('#docs').hide();
-            doc = false;
-            $('#follow').show(500);
-            fol = true;
-        }
-        else {
-            $('#follow').hide();
-            fol = false;
-        }
-    }
-    
-    function showDoc(){
-        if (!doc) {
-            $('#follow').hide();
-            fol = false;
-            $('#docs').show(500);
-            doc = true;
-        }
-        else {
-            $('#docs').hide();
-            doc = false;
-        }
-    }
-</script>
+                    <iframe id="searchview" src="/searchResult" scripts="/public/javascripts/SearchScript.js" class="/public/stylesheets/searchStyle.css" language="text/javascript" frameborder='no' allowtransparency='yes' style='display:none' height = 100% width=75%>
+                    </iframe>
+                </body>
+                <script type="text/javascript" language="javascript">
+                    $('#follow').hide();
+                    var fol = false;
+                    var doc = false;
+                    $('#docs').hide();
+                    $('#not-body').hide();
+                    $('#viewed').hide();
+                    $(function(){
+                        var app1 = true;
+                        $('#o1').hide();
+                        $('#a1').click(function(){
+                            if (app1) {
+                                $('#o1').show(500);
+                                app1 = false;
+                            }
+                            else {
+                                $('#o1').hide(500);
+                                app1 = true;
+                            }
+                        });
+                        
+                        var app2 = true;
+                        $('#o2').hide();
+                        $('#a2').click(function(){
+                            if (app2) {
+                                $('#o2').show(500);
+                                app2 = false;
+                            }
+                            else {
+                                $('#o2').hide(500);
+                                app2 = true;
+                            }
+                        });
+                        
+                        var app3 = true;
+                        $('#o3').hide();
+                        $('#a3').click(function(){
+                            if (app3) {
+                                $('#o3').show(500);
+                                app3 = false;
+                            }
+                            else {
+                                $('#o3').hide(500);
+                                app3 = true;
+                            }
+                        });
+                        
+                        var app4 = true;
+                        $('#o4').hide();
+                        $('#a4').click(function(){
+                            if (app4) {
+                                $('#o4').show(500);
+                                app4 = false;
+                            }
+                            else {
+                                $('#o4').hide(500);
+                                app4 = true;
+                            }
+                        });
+                        
+                        var app5 = true;
+                        
+                        
+                        var app6 = true;
+                        $('#o6').hide();
+                        $('#a6').click(function(){
+                            if (app6) {
+                                $('#o6').show(500);
+                                app6 = false;
+                            }
+                            else {
+                                $('#o6').hide(500);
+                                app6 = true;
+                            }
+                        });
+                        
+                        $("#demo01").click(function(){
+                            $('#demo01-body').showTopbarMessage();
+                        });
+                        var show = true;
+                        $("#not").click(function(){
+                            if (show) {
+                                $('#not-body').show(500);
+                                $.post('@{Users.showNotifications()}');
+                                document.getElementById("not").text = 'Notifications (No New)';
+                                show = false;
+                            }
+                            else {
+                                $('#not-body').hide(500);
+                                show = true;
+                            }
+                            
+                        });
+                        
+                        $("#demo02").click(function(){
+                            $('#demo02-body').showTopbarMessage({
+                                close: 5000
+                            });
+                        });
+                        
+                        $("#demo03").click(function(){
+                            $('#demo03-body').showTopbarMessage({
+                                background: "#093",
+                                close: 2000
+                            });
+                        });
+                        
+                        $("#demo04").click(function(){
+                            $('#demo04-body').showTopbarMessage({
+                                height: "150px",
+                                close: 2000
+                            });
+                        });
+                    });
+                </script>
+                <style>
+                    h2 {
+                        cursor: pointer;
+                        color: #003366;
+                        font-family: Georgia, "Times New Roman", Times, serif;
+                        padding: 0 !important;
+                    }
+                </style>
+                <script type="text/javascript">
+                    
+                    function step1(){
+                        document.getElementById('searchview').style.display = 'none';
+                    }
+                    
+                    function quickSearchScript(){
+                        var s = document.getElementById('keywords').value;
+                        if (s.length < 2) {
+                            document.getElementById('searchview').style.display = 'none';
+							document.getElementById('layout').style.display = 'block';
+                        }
+                        else {
+                            $.post('@{Search.quickSearch()}', {
+                                keyword: document.getElementById('keywords').value
+                            }, function(){
+                            });
+                            document.getElementById('searchview').canHaveChildren = false;
+                            document.getElementById('searchview').src = '/searchResult';
+                            document.getElementById('searchview').style.display = 'block';
+							document.getElementById('layout').style.display = 'none';
+                        }
+                    }
+                    
+                    function tag(id){
+                        $.post('@{Users.unfollowTag()}', {
+                            tagId: id
+                        });
+                        alert("done!");
+                        location.reload(true);
+                    }
+                    
+                    function topic(id){
+                        $.post('@{Users.unfollowTopic()}', {
+                            topicId: id
+                        });
+                        alert("done!");
+                        location.reload(true);
+                    }
+                    
+                    function org(id){
+                        $.post('@{Users.unfollowOrganization()}', {
+                            organizationId: id
+                        });
+                        alert("done!");
+                        location.reload(true);
+                    }
+                    
+                    function entity(id){
+                        $.post('@{Users.unfollowEntity()}', {
+                            entityId: id
+                        });
+                        alert("done!");
+                        location.reload(true);
+                    }
+                    
+                    function follows(){
+                        if (!fol) {
+                            $('#docs').hide();
+                            doc = false;
+                            $('#follow').show(500);
+                            fol = true;
+                        }
+                        else {
+                            $('#follow').hide();
+                            fol = false;
+                        }
+                    }
+                    
+                    function showDoc(){
+                        if (!doc) {
+                            $('#follow').hide();
+                            fol = false;
+                            $('#docs').show(500);
+                            doc = true;
+                        }
+                        else {
+                            $('#docs').hide();
+                            doc = false;
+                        }
+                    }
+                </script>
