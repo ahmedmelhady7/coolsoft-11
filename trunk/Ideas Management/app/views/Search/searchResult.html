@@ -2,8 +2,7 @@
 @author Loaay Alkherbawy
 @story  C4S01
 The Search Results Viewer
--->
-#{set title:'Your results'/}  <!DOCTYPE html>
+--> #{set title:'Your results'/}  <!DOCTYPE html>
 <html>
     <head>
         <title></title>
@@ -103,7 +102,7 @@ The Search Results Viewer
     <body dir="ltr" onload="step1()">
         <div id ='load'>
         </div>
-        <div class="tabholder" id="tabholder_articles">
+        <div class="tabholder" id="tabholder_articles" style='display:none;'>
             <span class="activeTab" id="tab5" onMouseOver="hover(this);" onClick="showNewPanel(5);" onMouseOut="setState(5);">Abstract View&nbsp;</span>
             <span class="inactiveTab" id="tab2" onMouseOver="hover(this);" onClick="showNewPanel(2);" onMouseOut="setState(2);" style="margin-left: 5px; font-size: 12px;">Detailed View</span>
             <div id = 'holder' class = "content_articles">
@@ -142,7 +141,7 @@ The Search Results Viewer
                     </br>
                 </font>
             </div>
-            <div id='panel5'>
+            <div id='panel5' style='display:none'>
                 <div id='divO'>
                 #{if lof} 
                 #{if organizationsFound} 
@@ -221,7 +220,7 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
 #{/list}
 </br>
 </ul>
-<input type='image' src='/public/images/Mark.png' value = 'Mark two ideas as duplicate' onclick=markDuplicate()>#{/if}#{/if}
+<input type='image' src='/public/images/link2.gif' value = 'Mark two ideas as duplicate' onclick=markDuplicate() width='15%' height=50/>#{/if}#{/if}
 #{else}
 <center>
     <img src='/public/images/noresults.jpg'>
@@ -229,10 +228,10 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
 </center>#{/else}
 </div>
 <div id='down'>
-    <a href='/public/searchResults.csv' target="_parent"><img src='/public/images/download.jpg'/></a>
+    <a href='/public/searchResults.csv'><img src='/public/images/download.gif' width=15% height=30/></a>
 </div>
 </div>
-<div id='panel2')>
+<div id='panel2' style='display:none'>
     <div id='divO1'>
     #{if lof}
     #{if organizationsFound} Found ${organizationsFound.size()} organization${organizationsFound.pluralize()}
@@ -325,14 +324,14 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
 #{/list}
 </br>
 </ul>
-<input type='image' src='/public/images/Mark.png' value = 'Mark two ideas as duplicate' onclick=markDuplicate()>#{/if}#{/if} #{else}
+<input type='image' src='/public/images/link2.gif' value = 'Mark two ideas as duplicate' onclick=markDuplicate() width='15%' height=40/>#{/if}#{/if} #{else}
 <center>
     <img src='/public/images/noresults.jpg'>
     </br>No Results Found
 </center>#{/else}
 </div>
-<div id='down'>
-    <a href='/public/searchResults.csv'><img src='/public/images/download.jpg'/></a>
+<div id='down' align='justify'>
+    <a href='/public/searchResults.csv'><img src='/public/images/download.gif' width='15%' height=30/></a>
 </div>
 </div>
 </div>
