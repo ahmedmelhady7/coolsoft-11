@@ -185,64 +185,61 @@ public class Idea extends CoolModel {
 	 *            the idea that we check its date
 	 * 
 	 */
-	
-	//@On("0 0 12 0 0 ?")
+
+	// @On("0 0 12 0 0 ?")
 	/*
-	public static void checkDate(Idea idea) {
-
-		Comment lastComment = idea.commentsList
-				.get(idea.commentsList.size() - 1);
-
-		Date now = new Date();
-
-		Date lastCommentDate = lastComment.commentDate;
-
-		lastCommentDate.setDate(lastCommentDate.getDate() + 14);
-
-		if (lastCommentDate.after(now)) {
-			List<User> user = new ArrayList<User>();
-			user.add(idea.author);
-
-			String type = "idea ";
-			String desc = "This idea is inactive";
-			// Send notification
-
-			for (int i = 0; i < user.size(); i++) {
-				Notifications.sendNotification(user.get(i).id, idea.id, type,
-						desc);
-			}
-		}
-
-	}
-
-	/**
+	 * public static void checkDate(Idea idea) {
+	 * 
+	 * Comment lastComment = idea.commentsList .get(idea.commentsList.size() -
+	 * 1);
+	 * 
+	 * Date now = new Date();
+	 * 
+	 * Date lastCommentDate = lastComment.commentDate;
+	 * 
+	 * lastCommentDate.setDate(lastCommentDate.getDate() + 14);
+	 * 
+	 * if (lastCommentDate.after(now)) { List<User> user = new
+	 * ArrayList<User>(); user.add(idea.author);
+	 * 
+	 * String type = "idea "; String desc = "This idea is inactive"; // Send
+	 * notification
+	 * 
+	 * for (int i = 0; i < user.size(); i++) {
+	 * Notifications.sendNotification(user.get(i).id, idea.id, type, desc); } }
+	 * 
+	 * }
+	 * 
+	 * /**
 	 * 
 	 * @author ${Fady Amir}
 	 * 
-	 *         checking the dates of all ideas
+	 * checking the dates of all ideas
 	 * 
-	 
-
-	public static void getAllIdeas() {
-		List<Organization> listOfOrganizations = Organization.findAll();
-		for (int i = 0; i < listOfOrganizations.size(); i++) {
-			Organization org = listOfOrganizations.get(i);
-			List<User> users = Users.getEnrolledUsers(org);
-
-			for (int j = 0; j < users.size(); j++) {
-				User user = users.get(j);
-				List<Idea> ideas = user.ideasCreated;
-
-				for (int k = 0; k < ideas.size(); k++) {
-					Idea idea = ideas.get(k);
-					checkDate(idea);
-				}
-			}
-		}
-	}
-
+	 * 
+	 * 
+	 * public static void getAllIdeas() { List<Organization> listOfOrganizations
+	 * = Organization.findAll(); for (int i = 0; i < listOfOrganizations.size();
+	 * i++) { Organization org = listOfOrganizations.get(i); List<User> users =
+	 * Users.getEnrolledUsers(org);
+	 * 
+	 * for (int j = 0; j < users.size(); j++) { User user = users.get(j);
+	 * List<Idea> ideas = user.ideasCreated;
+	 * 
+	 * for (int k = 0; k < ideas.size(); k++) { Idea idea = ideas.get(k);
+	 * checkDate(idea); } } } }
+	 */
+	
+	/**
+	 * The method toString for the idea
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @return String :
+	 * 				The title of the description
+	 * 
+	 * */
 	public String toString() {
 		return this.title;
 	}
-*/
 }
