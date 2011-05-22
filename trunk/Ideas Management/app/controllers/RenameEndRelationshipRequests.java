@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.List;
+
 import models.EntityRelationship;
 import models.Log;
 import models.MainEntity;
@@ -53,13 +55,13 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 		User user = User.findById(userId);
 		Organization organisation = Organization.findById(organisationId);
 		if (type == 0) {
-			// if (Organizations.isDuplicateRequest(null, null, null,
-			// organisationId, type, 0,
-			// requestType, relationId)) {
-			// System.out.println(organisation.renameEndRelationshipRequest.size());
-			// redirect("MainEntitys.viewEntity", entityId, "Request created");
-			// return;
-			// }
+			if (Organizations.isDuplicateRequest(null, null, newName,
+					organisationId, type, 0, requestType, relationId)) {
+				System.out.println(organisation.renameEndRelationshipRequest
+						.size());
+				redirect("MainEntitys.viewEntity", entityId, "Request created");
+				return;
+			}
 			EntityRelationship relation = EntityRelationship
 					.findById(relationId);
 			RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
@@ -80,13 +82,13 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 					.println(organisation.renameEndRelationshipRequest.size());
 			redirect("MainEntitys.viewEntity", entityId, "Request created");
 		} else {
-			// if (Organizations.isDuplicateRequest(null, null, null,
-			// organisationId, type, 0,
-			// requestType, relationId)) {
-			// System.out.println(organisation.renameEndRelationshipRequest.size());
-			// redirect("Topics.show", topicId, "Request created");
-			// return;
-			// }
+			if (Organizations.isDuplicateRequest(null, null, newName,
+					organisationId, type, 0, requestType, relationId)) {
+				System.out.println(organisation.renameEndRelationshipRequest
+						.size());
+				redirect("Topics.show", topicId, "Request created");
+				return;
+			}
 			TopicRelationship relation = TopicRelationship.findById(relationId);
 			RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
 					user, organisation, relation, type, requestType, newName);
@@ -180,6 +182,45 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 					.println(organisation.renameEndRelationshipRequest.size());
 			redirect("Topics.show", topicId, "Request created");
 		}
+	}
+
+	public static boolean delete(Long id) {
+		RenameEndRelationshipRequest request = RenameEndRelationshipRequest
+				.findById(id);
+		List<User> users = User.findAll();
+		List<Organization> organizations = Organization.findAll();
+		List<EntityRelationship> entityRelations = EntityRelationship.findAll();
+		List<TopicRelationship> topicRelations = TopicRelationship.findAll();
+		int size = users.size();
+		for (int i = 0; i < size; i++) {
+			if(users.get(i).myRenameEndRelationshipRequests.contains(request)) {
+				users.get(i).myRenameEndRelationshipRequests.remove(request);
+				users.get(i).save();
+			}
+		}
+		size = organizations.size();
+		for (int i = 0; i < size; i++) {
+			if (organizations.get(i).renameEndRelationshipRequest.contains(request)) {
+				organizations.get(i).renameEndRelationshipRequest.remove(request);
+				organizations.get(i).save();
+			}
+		}
+		size = entityRelations.size();
+		for (int i = 0; i < size; i++) {
+			if(entityRelations.get(i).renameEndRequests.contains(request)) {
+				entityRelations.get(i).renameEndRequests.remove(request);
+				entityRelations.get(i).save();
+			}
+		}
+		size = topicRelations.size();
+		for (int i = 0; i < size; i++) {
+			if(topicRelations.get(i).renameEndRequests.contains(request)) {
+				topicRelations.get(i).renameEndRequests.remove(request);
+				topicRelations.get(i).save();
+			}
+		}
+		request.delete();
+		return true;
 	}
 
 }

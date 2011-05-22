@@ -422,9 +422,8 @@ public class MainEntitys extends CoolCRUD {
 	 * @param entityId
 	 *            the id of the entity to be deleted.
 	 */
-	public static void deleteEntity(long entityId) {
+	public static boolean deleteEntity(long entityId) {
 		MainEntity entity = MainEntity.findById(entityId);
-		Organization organisation = entity.organization;
 		List<Organization> allOrganizations = Organization.findAll();
 		List<MainEntity> allEntities = MainEntity.findAll();
 		List<Tag> tags = Tag.findAll();
@@ -452,21 +451,26 @@ public class MainEntitys extends CoolCRUD {
 		}
 		size = entity.relationsSource.size();
 		for (int j = 0; j < size; j++) {
-			EntityRelationships.delete(entity.relationsSource.get(j).id);
+			EntityRelationships.deleteER(entity.relationsSource.get(j).id);
 		}
 		size = entity.relationsDestination.size();
 		for (int j = 0; j < size; j++) {
-			EntityRelationships.delete(entity.relationsDestination.get(j).id);
+			EntityRelationships.deleteER(entity.relationsDestination.get(j).id);
 		}
 		size = entity.relationshipRequestsSource.size();
 		for (int j = 0; j < size; j++) {
-			EntityRelationships
+			CreateRelationshipRequests
 					.delete(entity.relationshipRequestsSource.get(j).id);
 		}
 		size = entity.relationshipRequestsDestination.size();
 		for (int j = 0; j < size; j++) {
-			EntityRelationships.delete(entity.relationshipRequestsDestination
+			CreateRelationshipRequests.delete(entity.relationshipRequestsDestination
 					.get(j).id);
+		}
+		size = entity.topicList.size();
+		for (int j = 0; j < size; j++) {
+//			Topic.delete(""+ entity.topicList
+//					.get(j).id, "msg"); 
 		}
 		size = allEntities.size();
 		for (int i = 0; i < size; i++) {
@@ -475,8 +479,24 @@ public class MainEntitys extends CoolCRUD {
 				allEntities.get(i).save();
 			}
 		}
+		size = entity.invitationList.size();
+		for (int i = 0; i< size;i++) {
+			//Invitations.delete(entity.invitationList.get(i).id);
+		}
+		size = entity.topicRequests.size();
+		for (int i = 0; i<size;i++) {
+			//TopicRequests.delete(entity.topicRequests.get(i).id);
+		}
+		size = entity.relatedItems.size();
+		for (int i = 0; i<size;i++) {
+			//Items.delete(entity.relatedItems.get(i).id);
+		}
+		size = entity.subentities.size();
+		for (int i = 0; i<size;i++) {
+			MainEntitys.deleteEntity(entity.subentities.get(i).id);
+		}		
 		entity.delete();
-		redirect("Organizations.viewProfile", organisation.id, "Entity deleted");
+		return true;
 	}
 
 }
