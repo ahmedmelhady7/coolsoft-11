@@ -59,7 +59,7 @@ padding-left:950px;
             </p>
 		</form>
 		<br />
-		<form action="@{Tags.delete()}" method="post">
+		<form action="@{Tags.deleteTag()}" method="post">
 			<p>
 			<input type="hidden" id="tagId" name="tagId" value="${tag.id}" />Delete Tag 
                 <input type="submit" value="Delete" />

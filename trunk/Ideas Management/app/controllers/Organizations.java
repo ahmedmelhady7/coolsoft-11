@@ -416,6 +416,7 @@ public class Organizations extends CoolCRUD {
 		int i = 0;
 		int allowed = 0;
 		int settings = 0;
+		System.out.println(user);
 		if (org.privacyLevel == 1
 				&& Users.isPermitted(
 						user,
@@ -615,6 +616,7 @@ public class Organizations extends CoolCRUD {
 	public static void deleteOrganization(long organizationId) {
 		Organization organization = Organization.findById(organizationId);
 		List<User> followers = User.findAll();
+		List<Tag> createdTags = organization.createdTags;
 		int j = 0;
 		while (j < followers.size()) {
 			if (followers.get(j).followingOrganizations.contains(organization)) {
@@ -623,7 +625,11 @@ public class Organizations extends CoolCRUD {
 			}
 			j++;
 		}
-
+		j = 0;
+		while (j < createdTags.size()) {
+			Tags.delete(createdTags.get(j).id);
+			j++;
+		}
 		// fadwa
 		for (int i = 0; i < organization.joinRequests.size(); i++)
 			organization.joinRequests.get(i).delete();
