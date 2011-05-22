@@ -3,6 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.chainsaw.Main;
+
 import models.CreateRelationshipRequest;
 
 import models.EntityRelationship;
@@ -48,7 +50,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 		Organization organization = Organization.findById(id);
 		String name = organization.name;
 		List<CreateRelationshipRequest> requests = organization.createRelationshipRequest;
-		List<RenameEndRelationshipRequest> allRequests =organization.renameEndRelationshipRequest;
+		List<RenameEndRelationshipRequest> allRequests = organization.renameEndRelationshipRequest;
 
 		for (int i = 0; i < requests.size(); i++) {
 			if (requests.get(i).requester.state.equals("n")) {
@@ -56,25 +58,25 @@ public class CreateRelationshipRequests extends CoolCRUD {
 				i--;
 			}
 		}
-		for(int i=0;i<allRequests.size();i++){
-		if(allRequests.get(i).requestType==0)
-			deletionRequests.add(allRequests.get(i));
-		else
-			renamingRequests.add(allRequests.get(i));
+		for (int i = 0; i < allRequests.size(); i++) {
+			if (allRequests.get(i).requestType == 0)
+				deletionRequests.add(allRequests.get(i));
+			else
+				renamingRequests.add(allRequests.get(i));
 		}
-			for (int i = 0; i < renamingRequests.size(); i++) {
-				if (renamingRequests.get(i).requester.state.equals("n")) {
-					renamingRequests.remove(i);
-					i--;
-				}
+		for (int i = 0; i < renamingRequests.size(); i++) {
+			if (renamingRequests.get(i).requester.state.equals("n")) {
+				renamingRequests.remove(i);
+				i--;
+			}
 		}
-			for (int i = 0; i < deletionRequests.size(); i++) {
-				if (deletionRequests.get(i).requester.state.equals("n")) {
-					deletionRequests.remove(i);
-					i--;
-				}
+		for (int i = 0; i < deletionRequests.size(); i++) {
+			if (deletionRequests.get(i).requester.state.equals("n")) {
+				deletionRequests.remove(i);
+				i--;
+			}
 		}
-		render(requests, name, id, user,deletionRequests,renamingRequests);
+		render(requests, name, id, user, deletionRequests, renamingRequests);
 
 	}
 
@@ -305,7 +307,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 		else {
 			renameRequest = RenameEndRelationshipRequest.findById(id);
 			System.out.println(renameRequest);
-            organization=renameRequest.organisation;
+			organization = renameRequest.organisation;
 			if (type == 0) {
 				EntityRelationship relation = renameRequest.entityRelationship;
 				String oldName = relation.name;
@@ -313,21 +315,23 @@ public class CreateRelationshipRequests extends CoolCRUD {
 				if (status == 1) {
 					if (renameRequest.requestType == 0) {
 						System.out.println(relation);
-					for(int i=0;i<relation.renameEndRequests.size();i++){
-						if(!relation.renameEndRequests.get(i).equals(renameRequest))
-							relation.renameEndRequests.get(i).delete();
-					}
-					relation.source.relationsSource.remove(relation);
-					relation.source.save();
-					relation.destination.relationsDestination.remove(relation);
-					relation.destination.save();
-					//	relation.delete();
-						//EntityRelationships.delete(relation.id);
-					Log.addLog("User " + user.firstName + " "
-							+ user.lastName
-							+ " accepted request to end relationship  "
-								+ oldName, user,organization);
-						
+						for (int i = 0; i < relation.renameEndRequests.size(); i++) {
+							if (!relation.renameEndRequests.get(i).equals(
+									renameRequest))
+								relation.renameEndRequests.get(i).delete();
+						}
+						relation.source.relationsSource.remove(relation);
+						relation.source.save();
+						relation.destination.relationsDestination
+								.remove(relation);
+						relation.destination.save();
+						// relation.delete();
+						// EntityRelationships.delete(relation.id);
+						Log.addLog("User " + user.firstName + " "
+								+ user.lastName
+								+ " accepted request to end relationship  "
+								+ oldName, user, organization);
+
 					} else {
 						EntityRelationships.renameRelationship(relation.id,
 								renameRequest.newName);
@@ -338,16 +342,17 @@ public class CreateRelationshipRequests extends CoolCRUD {
 										+ user.lastName
 										+ " accepted request to change the name of relationship  "
 										+ oldName + " to "
-										+ renameRequest.newName, user,organization,relation);
-					
+										+ renameRequest.newName, user,
+								organization, relation);
+
 					}
 				} else {
 					if (renameRequest.requestType == 0) {
 						Log.addLog("User " + user.firstName + " "
 								+ user.lastName
 								+ " rejected request to end relationship  "
-								+ oldName, user,organization,relation);
-					
+								+ oldName, user, organization, relation);
+
 					} else {
 						Log.addLog(
 								"User "
@@ -356,7 +361,8 @@ public class CreateRelationshipRequests extends CoolCRUD {
 										+ user.lastName
 										+ " rejected request to change the name of relationship  "
 										+ oldName + " to "
-										+ renameRequest.newName, user,organization,relation);
+										+ renameRequest.newName, user,
+								organization, relation);
 					}
 
 				}
@@ -365,20 +371,22 @@ public class CreateRelationshipRequests extends CoolCRUD {
 				String oldName = relation.name;
 				if (status == 1) {
 					if (renameRequest.requestType == 0) {
-						
-							System.out.println(relation);
-						for(int i=0;i<relation.renameEndRequests.size();i++){
-							if(!relation.renameEndRequests.get(i).equals(renameRequest))
+
+						System.out.println(relation);
+						for (int i = 0; i < relation.renameEndRequests.size(); i++) {
+							if (!relation.renameEndRequests.get(i).equals(
+									renameRequest))
 								relation.renameEndRequests.get(i).delete();
 						}
 						relation.source.relationsSource.remove(relation);
 						relation.source.save();
-						relation.destination.relationsDestination.remove(relation);
+						relation.destination.relationsDestination
+								.remove(relation);
 						relation.destination.save();
 						Log.addLog("User " + user.firstName + " "
 								+ user.lastName
 								+ " accepted request to end relationship  "
-								+ oldName, user,organization,relation);
+								+ oldName, user, organization, relation);
 					} else {
 						TopicRelationships.renameRelationship(relation.id,
 								renameRequest.newName);
@@ -389,16 +397,17 @@ public class CreateRelationshipRequests extends CoolCRUD {
 										+ user.lastName
 										+ " accepted request to change the name of relationship  "
 										+ oldName + " to "
-										+ renameRequest.newName, user,organization,relation);
-	
+										+ renameRequest.newName, user,
+								organization, relation);
+
 					}
 				} else {
 					if (renameRequest.requestType == 0) {
 						Log.addLog("User " + user.firstName + " "
 								+ user.lastName
 								+ " rejected request to end relationship  "
-								+ oldName, user,organization,relation);
-			
+								+ oldName, user, organization, relation);
+
 					} else {
 						Log.addLog(
 								"User "
@@ -407,28 +416,27 @@ public class CreateRelationshipRequests extends CoolCRUD {
 										+ user.lastName
 										+ " rejected request to change the name of relationship  "
 										+ oldName + " to "
-										+ renameRequest.newName, user,organization,relation);
+										+ renameRequest.newName, user,
+								organization, relation);
 					}
 
 				}
 
 			}
 			if (status == 1) {
-				 Notifications.sendNotification(renameRequest.requester.id,
-				 organization.id, "organization",
-				 "Your Request has been accepted");
+				Notifications.sendNotification(renameRequest.requester.id,
+						organization.id, "organization",
+						"Your Request has been accepted");
 			} else {
-				 Notifications.sendNotification(renameRequest.requester.id,
-				 organization.id, "organization",
-				 "Your Request has been rejected");
+				Notifications.sendNotification(renameRequest.requester.id,
+						organization.id, "organization",
+						"Your Request has been rejected");
 			}
 
 			renameRequest.delete();
 
-			}
 		}
-	
-
+	}
 
 	public static void createRequest(long userId, String source,
 			String destination, String name, long organisationId,
@@ -437,9 +445,10 @@ public class CreateRelationshipRequests extends CoolCRUD {
 		Organization organisation = Organization.findById(organisationId);
 		if (type == 0) {
 
-			if (Organizations.isDuplicateRequest(source, destination, name, organisationId, type, 1,
-					0, 0)) {
-				System.out.println(organisation.createRelationshipRequest.size());
+			if (Organizations.isDuplicateRequest(source, destination, name,
+					organisationId, type, 1, 0, 0)) {
+				System.out.println(organisation.createRelationshipRequest
+						.size());
 
 				redirect("MainEntitys.viewEntity", entityId, "Request created");
 				return;
@@ -465,9 +474,10 @@ public class CreateRelationshipRequests extends CoolCRUD {
 			System.out.println(organisation.createRelationshipRequest.size());
 			redirect("MainEntitys.viewEntity", entityId, "Request created");
 		} else {
-			if (Organizations.isDuplicateRequest(source, destination, name, organisationId, type, 1,
-					0, 0)) {
-				System.out.println(organisation.createRelationshipRequest.size());
+			if (Organizations.isDuplicateRequest(source, destination, name,
+					organisationId, type, 1, 0, 0)) {
+				System.out.println(organisation.createRelationshipRequest
+						.size());
 
 				redirect("MainEntitys.viewEntity", entityId, "Request created");
 				return;
@@ -496,4 +506,49 @@ public class CreateRelationshipRequests extends CoolCRUD {
 		}
 	}
 
+	public static boolean delete(Long id) {
+		CreateRelationshipRequest request = CreateRelationshipRequest
+				.findById(id);
+		List<User> users = User.findAll();
+		List<Organization> organizations = Organization.findAll();
+		List<MainEntity> entities = MainEntity.findAll();
+		List<Topic> topics = Topic.findAll();
+
+		int size = users.size();
+		for (int i = 0; i < size; i++) {
+			if(users.get(i).myRelationshipRequests.contains(request)) {
+				users.get(i).myRelationshipRequests.remove(request);
+				users.get(i).save();
+			}
+		}
+		for (int i = 0; i < size; i++) {
+			if (organizations.get(i).createRelationshipRequest.contains(request)) {
+				organizations.get(i).createRelationshipRequest.remove(request);
+				organizations.get(i).save();
+			}
+		}
+		for (int i = 0; i < size; i++) {
+			if(entities.get(i).relationshipRequestsSource.contains(request)) {
+				entities.get(i).relationshipRequestsSource.remove(request);
+				entities.get(i).save();
+			}
+			if(entities.get(i).relationshipRequestsDestination.contains(request)) {
+				entities.get(i).relationshipRequestsDestination.remove(request);
+				entities.get(i).save();
+			}
+		}
+		for (int i = 0; i < size; i++) {
+			if(topics.get(i).relationshipRequestsSource.contains(request)) {
+				topics.get(i).relationshipRequestsSource.remove(request);
+				topics.get(i).save();
+			}
+			if(topics.get(i).relationshipRequestsDestination.contains(request)) {
+				topics.get(i).relationshipRequestsDestination.remove(request);
+				topics.get(i).save();
+			}
+		}
+		request.delete();
+		return true;
 	}
+
+}

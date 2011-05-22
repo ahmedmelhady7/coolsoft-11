@@ -191,4 +191,26 @@ public class EntityRelationships extends CoolCRUD {
 		}
 		return false;
 	}
+	
+	public static boolean deleteER(long rId) {
+		EntityRelationship er = EntityRelationship.findById(rId);
+		List<MainEntity> entities = MainEntity.findAll();
+		int size = entities.size();
+		for (int i = 0; i< size; i++) {
+			if (entities.get(i).relationsSource.contains(er)) {
+				entities.get(i).relationsSource.remove(er);
+				entities.get(i).save();
+			}
+			if (entities.get(i).relationsDestination.contains(er)) {
+				entities.get(i).relationsDestination.remove(er);
+				entities.get(i).save();
+			}
+		}
+		size = er.renameEndRequests.size();
+		for (int i = 0; i< size; i++) {
+			RenameEndRelationshipRequests.delete(er.renameEndRequests.get(i).id);
+		}
+		er.delete();
+		return true;
+	}
 }

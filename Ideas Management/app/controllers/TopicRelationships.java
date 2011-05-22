@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import groovy.ui.text.FindReplaceUtility;
 
@@ -185,6 +186,29 @@ public class TopicRelationships extends CoolCRUD {
 				return true;
 		}
 		return false;
+	}
+	
+	public static boolean deleteTR(long id) {
+		
+		TopicRelationship tr = TopicRelationship.findById(id);
+		List<MainEntity> entities = MainEntity.findAll();
+		int size = entities.size();
+		for (int i = 0; i< size; i++) {
+			if (entities.get(i).relationsSource.contains(tr)) {
+				entities.get(i).relationsSource.remove(tr);
+				entities.get(i).save();
+			}
+			if (entities.get(i).relationsDestination.contains(tr)) {
+				entities.get(i).relationsDestination.remove(tr);
+				entities.get(i).save();
+			}
+		}
+		size = tr.renameEndRequests.size();
+		for (int i = 0; i< size; i++) {
+			RenameEndRelationshipRequests.delete(tr.renameEndRequests.get(i).id);
+		}
+		tr.delete();		
+		return true;
 	}
 
 }
