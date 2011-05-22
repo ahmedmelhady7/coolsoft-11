@@ -3,10 +3,14 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import play.mvc.With;
+
 import models.Idea;
 import models.Label;
 import models.User;
 
+
+@With(Secure.class)
 public class Labels extends CoolCRUD
 {
 	
@@ -42,9 +46,13 @@ public class Labels extends CoolCRUD
 	 * @param ideas
 	 * 		array of the ids of the Ideas added to this label
 	 */
-	public static void doCreateLabel(String name,long [] ideas)
+	public static int doCreateLabel(String name,long [] ideas)
 	{
 		User user = Security.getConnected();
+		
+		for(Label label : user.myLabels)
+			if(label.name.equals(name))
+				return 0;
 		
 		ArrayList<Idea> choosenIdeas = new ArrayList<Idea>();
 		
@@ -59,13 +67,13 @@ public class Labels extends CoolCRUD
 			}
 			
 			Label label = new Label(name,user,choosenIdeas);
-			label.save();
+			label.save();return 1;
 		}
 		else
 		{
 			System.out.println("tsadda2 kanet null ya m3alem");
 			Label label = new Label(name,user);
-			label.save();
+			label.save();return 1;
 		}
 	}
 	
