@@ -104,7 +104,7 @@ public class Organization extends CoolModel {
 	public ArrayList<String> relationNames;
 
 	/**
-	 *  list of invitations that sent by the organization
+	 * list of invitations that sent by the organization
 	 */
 	@OneToMany(mappedBy = "organization")
 	public List<Invitation> invitation;
@@ -119,14 +119,18 @@ public class Organization extends CoolModel {
 	 */
 	@Lob
 	public String description;
-	
-	@OneToMany (mappedBy = "organisation")
+
+	/**
+	 * The list of relationship creation requests.
+	 */
+	@OneToMany(mappedBy = "organisation")
 	public List<CreateRelationshipRequest> createRelationshipRequest;
-	
-	@OneToMany (mappedBy = "organisation")
+
+	/**
+	 * The list of relationship renaming or deletion requests.
+	 */
+	@OneToMany(mappedBy = "organisation")
 	public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
-	
-	
 
 	/**
 	 * Organization Class Constructor

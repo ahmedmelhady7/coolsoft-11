@@ -137,16 +137,19 @@ public class Topic extends CoolModel {
 	public List<Invitation> invitations;
 
 	/**
-	 * List of relationship requests for the Topic
+	 * List of relationship requests for the Topic where it's a source.
 	 */
 	@OneToMany(mappedBy = "sourceTopic")
 	public List<CreateRelationshipRequest> relationshipRequestsSource;
 
+	/**
+	 * List of relationship requests for the Topic where it's a destination.
+	 */
 	@OneToMany(mappedBy = "destinationTopic")
 	public List<CreateRelationshipRequest> relationshipRequestsDestination;
 
-//	@OneToMany(mappedBy = "destinationTopic")
-//	public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
+	// @OneToMany(mappedBy = "destinationTopic")
+	// public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
 
 	/**
 	 * the list of invitations to the topic?
@@ -192,7 +195,7 @@ public class Topic extends CoolModel {
 	 * the user who hid the topic
 	 */
 	public User hider;
-	
+
 	/**
 	 * flag to determine if the topic is a draft or not
 	 */
@@ -235,7 +238,7 @@ public class Topic extends CoolModel {
 		// this.reporters = new ArrayList<User>();
 		this.commentsOn = new ArrayList<Comment>();
 		// canAccess = new ArrayList<User>();
-		this.reporters="";
+		this.reporters = "";
 		this.requestsToJoin = new ArrayList<RequestToJoin>();
 		this.createRelationship = createRelationship;
 		this.openToEdit = true;
@@ -274,16 +277,16 @@ public class Topic extends CoolModel {
 		this.commentsOn = new ArrayList<Comment>();
 		// requestsToJoin = new ArrayList<RequestToJoin>();
 		this.hidden = false;
-		this.reporters="";
+		this.reporters = "";
 		this.createRelationship = createRelationship;
 		this.openToEdit = true;
 		this.isDraft = false;
 	}
-	
+
 	/**
-	 * @Description Constructor for drafts that creates a topic with name, 
-	 * description,privacylevel, creator and entity and sets isDraft flag
-	 * to true
+	 * @Description Constructor for drafts that creates a topic with name,
+	 *              description,privacylevel, creator and entity and sets
+	 *              isDraft flag to true
 	 * 
 	 * @author Mostafa Aboul Atta
 	 * 
@@ -298,12 +301,14 @@ public class Topic extends CoolModel {
 	 * @param entity
 	 *            Entity that the topic belongs/added to
 	 * @param createRelationship
-	 * 			  If it's allowed to have relationships
+	 *            If it's allowed to have relationships
 	 */
 	public Topic(String title, String description, int privacyLevel,
-			User creator, MainEntity entity, boolean createRelationship, boolean isDraft) {
-		
-		this(title, description, privacyLevel, creator, entity, createRelationship);
+			User creator, MainEntity entity, boolean createRelationship,
+			boolean isDraft) {
+
+		this(title, description, privacyLevel, creator, entity,
+				createRelationship);
 		this.isDraft = true;
 	}
 
