@@ -228,6 +228,7 @@
         <ul style="list-style: none;">   
 		#{list items:topicList, as:'topic'}
 		
+		#{if topic.isDraft == false}
 		<li>
 			#{if topic.hidden == false}
 			#{if topic.canView(user)}
@@ -254,7 +255,7 @@
 			#{/if}
 			#{/else}
 		</li>
-		
+		#{/if}
 		#{/list}
 		</ul>
 		#{/if}
