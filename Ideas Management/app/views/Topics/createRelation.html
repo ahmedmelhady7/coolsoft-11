@@ -70,10 +70,15 @@
 				name: x,
 				sourceId: a,
 				destinationId: b
+			}, function(data){
+				if (data == "true") {
+					alert("you have created a relation:" + x);
+					var link = "/Topics/show?topicId=" + a;
+					window.location.href = link;
+				}else if( data == "false"){
+					alert("this relation already exists!!");
+				}
 			});
-			alert("you have created a relation:" + x);
-			var link = "/Topics/show?topicId="+a;
-			window.location.href= link
 			}
 		}
 </script>

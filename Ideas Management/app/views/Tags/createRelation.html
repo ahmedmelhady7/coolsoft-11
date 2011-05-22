@@ -71,11 +71,15 @@
 				name: x,
 				sourceId: a,
 				destinationId: b
-			});
-			alert("you have created a relation:" + x);
-			var link = "/tags/mainpage?tagId="+a;
-			window.location.href= link
-			
+			}, function(data){
+				if(data == "true"){
+					alert("you have created a relation:" + x);
+					var link = "/tags/mainpage?tagId="+a;
+					window.location.href= link
+				}else if(data == "false"){
+					alert("this relation already exists!!");
+				}
+			});			
 		}
 		}
 </script>
