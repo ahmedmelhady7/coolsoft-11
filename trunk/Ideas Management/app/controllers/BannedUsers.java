@@ -1414,12 +1414,11 @@ public class BannedUsers extends CRUD {
 
 		if (id == 0) {
 			entity = MainEntity.findById(numId);
-			organizers = Users.getEntityOrganizers(entity);
+//			organizers = Users.getEntityOrganizers(entity);
 
 			if (type == 0) {
 
 				if (text.equals("Block from viewing")) {
-					doBlock(userId, numId, 0, 0);
 					Log.addUserLog(organizer.firstName + " "
 							+ organizer.lastName + " blocked " + user.firstName
 							+ " " + user.lastName + " from viewing Entity "
@@ -1441,12 +1440,12 @@ public class BannedUsers extends CRUD {
 					Notifications.sendNotification(userId, numId, "entity",
 							"You have been blocked from viewing entity "
 									+ entity.name + " because " + message);
+					doBlock(userId, numId, 0, 0);
+					
 
 				} else {
 
 					System.out.println("LAMA");
-					doBlock(userId, numId, 1, 0);
-					System.out.println("HEREEEEEEEEEEE LAMA");
 					Log.addUserLog(organizer.firstName + " "
 							+ organizer.lastName + "unblocked "
 							+ user.firstName + " " + user.lastName
@@ -1468,12 +1467,13 @@ public class BannedUsers extends CRUD {
 					Notifications.sendNotification(userId, numId, "entity",
 							"You have been unblocked from viewing entity "
 									+ entity.name);
+					doBlock(userId, numId, 1, 0);
+					System.out.println("HEREEEEEEEEEEE LAMA");
+					
 
 				}
 			} else {
 				if (text.equals("Block from using")) {
-					doBlock(userId, numId, 0, 1);
-
 					Log.addUserLog(organizer.firstName + " "
 							+ organizer.lastName + " blocked " + user.firstName
 							+ " " + user.lastName + " from using Entity "
@@ -1496,8 +1496,10 @@ public class BannedUsers extends CRUD {
 					Notifications.sendNotification(userId, numId, "entity",
 							"You have been blocked from performing any action within entity "
 									+ entity.name + " because " + message);
+					doBlock(userId, numId, 0, 1);
+
+					
 				} else {
-					doBlock(userId, numId, 1, 1);
 					Log.addUserLog(organizer.firstName + " "
 							+ organizer.lastName + "blocked " + user.firstName
 							+ " " + user.lastName + "from using Entity "
@@ -1519,6 +1521,8 @@ public class BannedUsers extends CRUD {
 					Notifications.sendNotification(userId, numId, "entity",
 							"You have been ublocked from performing any action within entity "
 									+ entity.name + " because " + message);
+					doBlock(userId, numId, 1, 1);
+					
 				}
 			}
 		} else {
