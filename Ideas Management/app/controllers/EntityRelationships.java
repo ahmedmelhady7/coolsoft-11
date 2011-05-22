@@ -41,50 +41,72 @@ public class EntityRelationships extends CRUD {
 	 * 
 	 * @param destinationId
 	 *            : id of the second Entity to be related
+	 * 
+	 * @return boolean
 	 */
-	public static void createRelationship(String name, long sourceId,
+	public static boolean createRelationship(String name, long sourceId,
 			long destinationId) {
-		// System.out.println("WASALNA!! " + sourceId + "|" + destinationId);
 
 		MainEntity source = MainEntity.findById(sourceId);
 		MainEntity destination = MainEntity.findById(destinationId);
 
 		EntityRelationship relation = new EntityRelationship(name, source,
 				destination);
-		relation.source.relationsSource.add(relation);
-		relation.destination.relationsDestination.add(relation);
-		if (!isDuplicate(name, relation.source.organization.relationNames))
-			relation.source.organization.relationNames.add(name);
+		if (!relationDuplicate(relation)) {
+			relation.source.relationsSource.add(relation);
+			relation.destination.relationsDestination.add(relation);
+			if (!isDuplicate(name, relation.source.organization.relationNames))
+				relation.source.organization.relationNames.add(name);
 
-		relation.save();
-		Organization organization = relation.source.organization;
-		organization.save();
+			relation.save();
+			Organization organization = relation.source.organization;
+			organization.save();
 
-		for (int i = 0; i < Users.getEntityOrganizers(source).size(); i++) {
-			Notifications.sendNotification(Users.getEntityOrganizers(source)
-					.get(i).id, source.organization.id, "Organization",
-					"a new relation \"" + name
-							+ "\" is created now between entities \""
-							+ source.name + "\" and \"" + destination.name
-							+ "\".");
+			for (int i = 0; i < Users.getEntityOrganizers(source).size(); i++) {
+				Notifications.sendNotification(Users
+						.getEntityOrganizers(source).get(i).id,
+						source.organization.id, "Organization",
+						"a new relation \"" + name
+								+ "\" is created now between entities \""
+								+ source.name + "\" and \"" + destination.name
+								+ "\".");
+			}
+			for (int i = 0; i < Users.getEntityOrganizers(destination).size(); i++) {
+				Notifications.sendNotification(Users.getEntityOrganizers(
+						destination).get(i).id, source.organization.id,
+						"Organization", "a new relation \"" + name
+								+ "\" is created now between entities \""
+								+ source.name + "\" and \"" + destination.name
+								+ "\".");
+			}
+			System.out.println("Creation DONE!!");
+			return true;
 		}
-		for (int i = 0; i < Users.getEntityOrganizers(destination).size(); i++) {
-			Notifications.sendNotification(Users.getEntityOrganizers(
-					destination).get(i).id, source.organization.id,
-					"Organization", "a new relation \"" + name
-							+ "\" is created now between entities \""
-							+ source.name + "\" and \"" + destination.name
-							+ "\".");
+		System.out.println("Duplicate relation!!!");
+		return false;
+	}
+
+	/**
+	 * checks if a relation is duplicate(returns true) or not(returns false)
+	 * 
+	 * @author Mohamed Hisham
+	 * 
+	 * @param relation : the relation being checked for duplicate
+	 * 
+	 * @return boolean
+	 */
+	public static boolean relationDuplicate(EntityRelationship relation) {
+		for (int i = 0; i < relation.source.relationsSource.size(); i++) {
+			if (relation.source.relationsSource.get(i).source
+					.equals(relation.source)
+					&& relation.source.relationsSource.get(i).destination
+							.equals(relation.destination)
+					&& relation.source.relationsSource.get(i).name
+							.equals(relation.name)) {
+				return true;
+			}
 		}
-
-		System.out.println("Creation DONE!!");
-		// render(name,source, destination);
-
-		// } else {
-		// System.out.println("Cannot relate Entity to Sub-Entity!!");
-		// return;
-		// }
-
+		return false;
 	}
 
 	/**

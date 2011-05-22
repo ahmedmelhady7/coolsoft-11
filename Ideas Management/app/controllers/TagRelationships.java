@@ -32,8 +32,10 @@ public class TagRelationships extends CRUD {
 	 * 
 	 * @param destinationId
 	 *            : id of the second Tag to be related
+	 *            
+	 * @return boolean
 	 */
-	public static void createRelationship(String name, long sourceId,
+	public static boolean createRelationship(String name, long sourceId,
 			long destinationId) {
 
 		Tag source = Tag.findById(sourceId);
@@ -41,16 +43,59 @@ public class TagRelationships extends CRUD {
 
 		TagRelationship relation = new TagRelationship(name, source,
 				destination);
+		if (!relationDuplicate(relation)) {
+			relation.source.relationsSource.add(relation);
+			relation.destination.relationsDestination.add(relation);
 
-		relation.source.relationsSource.add(relation);
-		relation.destination.relationsDestination.add(relation);
+			if (!isDuplicate(name,
+					relation.source.createdInOrganization.relationNames))
+				relation.source.createdInOrganization.relationNames.add(name);
+			
+			Organization organization = relation.source.createdInOrganization;
+			organization.save();
+			relation.save();
 
-		if (!isDuplicate(name,
-				relation.source.createdInOrganization.relationNames))
-			relation.source.createdInOrganization.relationNames.add(name);
-		Organization organization = relation.source.createdInOrganization;
-		organization.save();
-		relation.save();
+			if (!source.creator.equals(destination.creator)) {
+				Notifications.sendNotification(source.creator.id,
+						source.createdInOrganization.id, "Organization",
+						"a new relation \"" + name
+								+ "\" is created now between tags \""
+								+ source.name + "\" and \"" + destination.name
+								+ "\".");
+			}
+
+			Notifications.sendNotification(destination.creator.id,
+					source.createdInOrganization.id, "Organization",
+					"a new relation \"" + name
+							+ "\" is created now between tags \"" + source.name
+							+ "\" and \"" + destination.name + "\".");
+
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * checks if a relation is duplicate(returns true) or not(returns false)
+	 * 
+	 * @author Mohamed Hisham
+	 * 
+	 * @param relation : the relation being checked for duplicate
+	 * 
+	 * @return boolean
+	 */
+	public static boolean relationDuplicate(TagRelationship relation) {
+		for (int i = 0; i < relation.source.relationsSource.size(); i++) {
+			if (relation.source.relationsSource.get(i).source
+					.equals(relation.source)
+					&& relation.source.relationsSource.get(i).destination
+							.equals(relation.destination)
+					&& relation.source.relationsSource.get(i).name
+							.equals(relation.name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
