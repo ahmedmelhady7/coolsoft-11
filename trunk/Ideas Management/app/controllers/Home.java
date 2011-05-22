@@ -108,7 +108,7 @@ public class Home extends Controller {
 			String lastName, String username, int communityContributionCounter,
 			Date dateofBirth, String country, String profession)
 	{
-			User u = new User(email, password, firstName, lastName, username, communityContributionCounter, dateofBirth, country, profession);
+			User u = new User(email,username, password, firstName, lastName," "," ",  communityContributionCounter, dateofBirth, country, profession);
 			u._save();
 		
 		//render(email,username,password);
