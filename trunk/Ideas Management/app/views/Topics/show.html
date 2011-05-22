@@ -391,7 +391,7 @@
            </form>
 		    <br/>
             <HR>#{if canNotPost == true}
-            <p>
+            <p id="req">
                 <a onclick="requestToPost('${topicId}');" href="#">request to post on this topic</a>
             </p>
             #{/if}
@@ -399,8 +399,10 @@
             <p>
                 Request To Post status: Pending
             </p>
-			
             #{/if}
+			<p id="pen">
+                Request To Post status: Pending
+            </p>
 			<br />
 			
 			#{if seeRelationStatus}
@@ -442,7 +444,7 @@
   				</form>
 
             <script type="text/javascript">
-            	
+            	 $('#pen').hide();
             	function endRelation(relId){
 				$.post('@{TopicRelationships.delete()}', {relationId: relId});
 				alert("relation deleted succesfully!");
@@ -453,8 +455,8 @@
                     $.post('@{addRequest()}', {
                         topicId: id
                     });
-                    alert("done!");
-                    location.reload(true);
+					 $('#req').hide();
+					 $('#pen').show(500);
                 }
                 
                 function unfollow(topic, user){
