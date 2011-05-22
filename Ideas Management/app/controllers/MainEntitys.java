@@ -367,32 +367,26 @@ public class MainEntitys extends CRUD {
 	}
 
 	/**
-	 * creates a request for relationship creation between entities.
+	 * renders the page for viewing the relationships for an entity.
 	 * 
 	 * @author Noha Khater
 	 * 
 	 * @Story C2S18
 	 * 
 	 * @param userId
-	 *            the id of the user making the request
-	 * 
-	 * @param source
-	 *            the name of the source entity
-	 * 
-	 * @param destination
-	 *            the name of the destination entity
-	 * 
-	 * @param name
-	 *            the name of the relationship
+	 *            the id of the user viewing the requests.
 	 * 
 	 * @param organisationId
-	 *            the id of the organisation
+	 *            the id of the organisation.
 	 * 
 	 * @param entityId
-	 *            the id of the entity from which the request is made
+	 *            the id of the topic's entity.
+	 * 
+	 * @param canRequestRelationship
+	 *            boolean variable whether this user is allowed to make
+	 *            relationship requests or not.
 	 * 
 	 */
-	
 	public static void viewRelationships(long userId, long organisationId,
 			long entityId, boolean canRequestRelationship) {
 		User user = User.findById(userId);
@@ -401,11 +395,4 @@ public class MainEntitys extends CRUD {
 		render(user, organisation, entity, canRequestRelationship);
 	}
 	
-//	public static void deleteRequest(long userId, long relationId, int type) {
-//		User user = User.findById(userId);
-//		EntityRelationship relation = EntityRelationship.findById(relationId);
-//		RenameEndRelationshipRequest deleteRequest = new RenameEndRelationshipRequest(user, relation, type, null);
-//		deleteRequest.save();
-//	}
-
 }

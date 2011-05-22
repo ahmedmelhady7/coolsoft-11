@@ -203,7 +203,8 @@ public class Topics extends CRUD {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
 		for (int i = 0; i < topic.ideas.size(); i++) {
-			if(topic.ideas.get(i).title.equals(title)&& topic.ideas.get(i).description.equals(description))
+			if (topic.ideas.get(i).title.equals(title)
+					&& topic.ideas.get(i).description.equals(description))
 				return;
 		}
 		Idea idea = new Idea(title, description, user, topic);
@@ -911,8 +912,10 @@ public class Topics extends CRUD {
 		if (actor.isAdmin || entity.organization.creator.equals(actor)) {
 			canRestrict = 1;
 		}
-		if (Users.getEntityOrganizers(entity).contains(actor) &&
-				Users.isPermitted(actor, "Request to start a relationship with other items;", topicId, "Topic")) {
+		if (Users.getEntityOrganizers(entity).contains(actor)
+				&& Users.isPermitted(actor,
+						"Request to start a relationship with other items;",
+						topicId, "Topic")) {
 			canRequestRelationship = true;
 		}
 		try {
@@ -934,6 +937,26 @@ public class Topics extends CRUD {
 		}
 	}
 
+	/**
+	 * renders the page for requesting topic relationship creation.
+	 * 
+	 * @author Noha Khater
+	 * 
+	 * @Story C2S18
+	 * 
+	 * @param userId
+	 *            the id of the user making the request.
+	 * 
+	 * @param organisationId
+	 *            the id of the organisation from which the request is made.
+	 * 
+	 * @param entityId
+	 *            the id of the topic's entity.
+	 * 
+	 * @param topicId
+	 *            the id of the topic from which the request page is accessed.
+	 * 
+	 */
 	public static void requestRelationship(long userId, long organisationId,
 			long entityId, long topicId) {
 		Organization organisation = Organization.findById(organisationId);
@@ -943,6 +966,30 @@ public class Topics extends CRUD {
 		render(user, organisation, entity, topic);
 	}
 
+	/**
+	 * renders the page for viewing the relationships for a topic.
+	 * 
+	 * @author Noha Khater
+	 * 
+	 * @Story C2S18
+	 * 
+	 * @param userId
+	 *            the id of the user viewing the requests.
+	 * 
+	 * @param organisationId
+	 *            the id of the organisation.
+	 * 
+	 * @param entityId
+	 *            the id of the topic's entity.
+	 * 
+	 * @param topicId
+	 *            the id of the topic whose relationships are viewed.
+	 * 
+	 * @param canRequestRelationship
+	 *            boolean variable whether this user is allowed to make
+	 *            relationship requests or not.
+	 * 
+	 */
 	public static void viewRelationships(long userId, long organisationId,
 			long entityId, long topicId, boolean canRequestRelationship) {
 		User user = User.findById(userId);
@@ -950,58 +997,6 @@ public class Topics extends CRUD {
 		MainEntity entity = MainEntity.findById(entityId);
 		Topic topic = Topic.findById(topicId);
 		render(user, organisation, entity, canRequestRelationship, topic);
-	}
-
-//	public static void deleteRequest(long userId, long relationId, int type) {
-//		User user = User.findById(userId);
-//		TopicRelationship relation = TopicRelationship.findById(relationId);
-//		RenameEndRelationshipRequest deleteRequest = new RenameEndRelationshipRequest(
-//				user, relation, type, null);
-//		deleteRequest.save();
-//	}
-//
-//	public static void renameRequest(long userId, long relationId, int type,
-//			String newName) {
-//		User user = User.findById(userId);
-//		TopicRelationship relation = TopicRelationship.findById(relationId);
-//		RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
-//				user, relation, type, newName);
-//		renameRequest.save();
-//	}
-
-	public static boolean topicRequestIsDuplicate(Topic topic, String source,
-			String destination, String name) {
-		for (CreateRelationshipRequest request : topic.relationshipRequestsSource) {
-			if (request.sourceTopic.title.equalsIgnoreCase(source)
-					&& request.destinationTopic.title
-							.equalsIgnoreCase(destination)
-					&& request.name.equalsIgnoreCase(name)) {
-				return true;
-			}
-		}
-		for (CreateRelationshipRequest request : topic.relationshipRequestsDestination) {
-			if (request.sourceTopic.title.equalsIgnoreCase(source)
-					&& request.destinationTopic.title
-							.equalsIgnoreCase(destination)
-					&& request.name.equalsIgnoreCase(name)) {
-				return true;
-			}
-		}
-		for (TopicRelationship relation : topic.relationsSource) {
-			if (relation.source.title.equalsIgnoreCase(source)
-					&& relation.destination.title.equalsIgnoreCase(destination)
-					&& relation.name.equalsIgnoreCase(name)) {
-				return true;
-			}
-		}
-		for (TopicRelationship relation : topic.relationsDestination) {
-			if (relation.source.title.equalsIgnoreCase(source)
-					&& relation.destination.title.equalsIgnoreCase(destination)
-					&& relation.name.equalsIgnoreCase(name)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -1568,26 +1563,25 @@ public class Topics extends CRUD {
 	 * @story C3S8
 	 * 
 	 * @param ideaId
-	 *            : the id of the idea to be unhidden           
+	 *            : the id of the idea to be unhidden
 	 */
-	
+
 	public static void unhideIdea(Long ideaId) {
 		Idea idea = Idea.findById(ideaId);
-		idea.hidden=false;
+		idea.hidden = false;
 		idea.save();
-		
-		String message =  "you idea "+ idea.title +" is now visible";
-		
-		Notifications.sendNotification(idea.author.id, idea.id, "Idea", message);
-		
+
+		String message = "you idea " + idea.title + " is now visible";
+
+		Notifications
+				.sendNotification(idea.author.id, idea.id, "Idea", message);
+
 		System.out.println("abo hadiiiiiiiiiiiiiiiiii");
-		
-		redirect("topics/show?topicId="+idea.belongsToTopic.id);
-		
+
+		redirect("topics/show?topicId=" + idea.belongsToTopic.id);
+
 	}
-	
-	
-	
+
 	/**
 	 * Hide an idea
 	 * 
@@ -1598,7 +1592,7 @@ public class Topics extends CRUD {
 	 * @param ideaId
 	 *            : the id of the idea to be hidden
 	 */
-	public static void hideIdea(Long ideaId,String justification) {
+	public static void hideIdea(Long ideaId, String justification) {
 		Idea idea = Idea.findById(ideaId);
 		Topic topic = idea.belongsToTopic;
 		User user = Security.getConnected();
@@ -1610,9 +1604,9 @@ public class Topics extends CRUD {
 			List<User> users = Users.getEntityOrganizers(topic.entity);
 			// for (int i = 0; i < users.size(); i++)
 			Notifications.sendNotification(idea.author.id/*
-															 * users.get(i).id
-															 */, idea.id,
-					"Idea", message);
+														 * users.get(i).id
+														 */, idea.id, "Idea",
+					message);
 			// for (int i = 0; i < topic.followers.size(); i++)
 			// Notifications.sendNotification(topic.followers.get(i).getId(),
 			// topic.getId(), "entity", message);
@@ -1708,10 +1702,9 @@ public class Topics extends CRUD {
 	 *            can the relationships be created
 	 */
 
+	public static void saveDraft(long topicId, String title,
+			String description, int privacyLevel, boolean createRelationship) {
 
-	public static void saveDraft(long topicId, String title, String description,
-			int privacyLevel, boolean createRelationship) {
-		
 		Topic targetTopic = Topic.findById(topicId);
 
 		targetTopic.title = title;
@@ -1721,9 +1714,10 @@ public class Topics extends CRUD {
 		targetTopic.intializedIn = new Date();
 
 		targetTopic.save();
-		
-		System.out.println(targetTopic.title + targetTopic.description + targetTopic.privacyLevel +
-				targetTopic.createRelationship + targetTopic.intializedIn);
+
+		System.out.println(targetTopic.title + targetTopic.description
+				+ targetTopic.privacyLevel + targetTopic.createRelationship
+				+ targetTopic.intializedIn);
 	}
 
 	/**
@@ -1755,9 +1749,9 @@ public class Topics extends CRUD {
 		Topic targetTopic = Topic.findById(topicIdId);
 		User user = Security.getConnected();
 		MainEntity entity = targetTopic.entity;
-		
-		saveDraft(topicIdId, title, description,
-				 privacyLevel, createRelationship);
+
+		saveDraft(topicIdId, title, description, privacyLevel,
+				createRelationship);
 
 		targetTopic.isDraft = false;
 		targetTopic.save();
@@ -1775,13 +1769,12 @@ public class Topics extends CRUD {
 	 * @param topicId
 	 *            Id of the draft topic to be edited
 	 */
-	
+
 	public static void editDraft(long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
 
-
 		User user = Security.getConnected();
-	//	System.out.println("Topic title:" + targetTopic.title);
+		// System.out.println("Topic title:" + targetTopic.title);
 		render(targetTopic, user);
 	}
 
@@ -1824,11 +1817,11 @@ public class Topics extends CRUD {
 	public static void discardDraftTopic(long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
 		User user = Security.getConnected();
-		//MainEntity entity = targetTopic.entity;
-		
+		// MainEntity entity = targetTopic.entity;
+
 		targetTopic.delete();
 		user.save();
-		//entity.save();
-		
+		// entity.save();
+
 	}
 }
