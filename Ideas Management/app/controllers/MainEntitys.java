@@ -12,11 +12,13 @@ import play.mvc.Controller;
 import play.mvc.With;
 import models.CreateRelationshipRequest;
 import models.EntityRelationship;
+import models.Item;
 import models.Log;
 import models.MainEntity;
 import models.Organization;
 import models.Plan;
 import models.RenameEndRelationshipRequest;
+import models.Tag;
 import models.Topic;
 import models.User;
 
@@ -250,9 +252,12 @@ public class MainEntitys extends CRUD {
 		List<Topic> topicList = entity.topicList;
 		List<User> organizers = Users.getEntityOrganizers(entity);
 		int canCreateEntity = 0;
+		int canDeleteEntity = 0;
 		if (user.isAdmin || org.creator.equals(user)
 				|| organizers.contains(user))
 			canCreateEntity = 1;
+		if (user.isAdmin || org.creator.equals(user))
+			canDeleteEntity = 1;
 		int permission = 1;
 		int invite = 0;
 		int canEdit = 0;
@@ -300,7 +305,8 @@ public class MainEntitys extends CRUD {
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity, follower, canCreateRelationship,
 				/* canView, */canRequest, canRequestRelationship, check,
-				canRestrict, entityIsLocked, plans, check1, check2);
+				canRestrict, entityIsLocked, plans, check1, check2,
+				canDeleteEntity);
 	}
 
 	/**
@@ -406,6 +412,71 @@ public class MainEntitys extends CRUD {
 		Organization organisation = Organization.findById(organisationId);
 		MainEntity entity = MainEntity.findById(entityId);
 		render(user, organisation, entity, canRequestRelationship);
+	}
+
+	/**
+	 * deletes the entity.
+	 * 
+	 * @author Noha Khater
+	 * 
+	 * @param entityId
+	 *            the id of the entity to be deleted.
+	 */
+	public static void deleteEntity(long entityId) {
+		MainEntity entity = MainEntity.findById(entityId);
+		Organization organisation = entity.organization;
+		List<Organization> allOrganizations = Organization.findAll();
+		List<MainEntity> allEntities = MainEntity.findAll();
+		List<Tag> tags = Tag.findAll();
+		List<User> followers = User.findAll();
+		int size = allOrganizations.size();
+		for (int i = 0; i < size; i++) {
+			if (allOrganizations.get(i).entitiesList.contains(entity)) {
+				allOrganizations.get(i).entitiesList.remove(entity);
+				allOrganizations.get(i).save();
+			}
+		}
+		size = followers.size();
+		for (int i = 0; i < size; i++) {
+			if (followers.get(i).followingEntities.contains(entity)) {
+				followers.get(i).followingEntities.remove(entity);
+				followers.get(i).save();
+			}
+		}
+		size = tags.size();
+		for (int i = 0; i < size; i++) {
+			if (tags.get(i).entities.contains(entity)) {
+				tags.get(i).entities.remove(entity);
+				tags.get(i).save();
+			}
+		}
+		size = entity.relationsSource.size();
+		for (int j = 0; j < size; j++) {
+			EntityRelationships.delete(entity.relationsSource.get(j).id);
+		}
+		size = entity.relationsDestination.size();
+		for (int j = 0; j < size; j++) {
+			EntityRelationships.delete(entity.relationsDestination.get(j).id);
+		}
+		size = entity.relationshipRequestsSource.size();
+		for (int j = 0; j < size; j++) {
+			TagRelationships
+					.delete(entity.relationshipRequestsSource.get(j).id);
+		}
+		size = entity.relationshipRequestsDestination.size();
+		for (int j = 0; j < size; j++) {
+			TagRelationships.delete(entity.relationshipRequestsDestination
+					.get(j).id);
+		}
+		size = allEntities.size();
+		for (int i = 0; i < size; i++) {
+			if (allEntities.get(i).subentities.contains(entity)) {
+				allEntities.get(i).subentities.remove(entity);
+				allEntities.get(i).save();
+			}
+		}
+		entity.delete();
+		redirect("Organizations.viewProfile", organisation.id, "Entity deleted");
 	}
 
 }
