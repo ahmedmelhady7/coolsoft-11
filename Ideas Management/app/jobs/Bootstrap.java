@@ -196,7 +196,7 @@ public class Bootstrap extends Job {
 
 			Topic govImp = new Topic("التعديلات الدستورية", "اقتراحات", 1,
 					sharaf, govHead, false).save();
-			Topic govImp2 = new Topic("ثوره 25 يناير", "اقتراحات", 0, sharaf,
+			Topic govImp2 = new Topic("ثوره 25 يناير", "اقتراحات", 1, sharaf,
 					govHead, true).save();
 			govHead.topicList.add(govImp);
 			govHead.topicList.add(govImp2);
