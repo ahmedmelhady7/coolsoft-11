@@ -18,7 +18,7 @@ public class Logs extends CRUD {
 	
 	
 public static void passId() {
-		viewUserLogs(8);
+		viewUserLogs();
 }
 		/**
  		* 
@@ -123,27 +123,19 @@ public static void passId() {
  		*            : long id of the user
  		*            
  		*/
-        public static void viewUserLogs(long userId) {
+        public static void viewUserLogs() {
         	User user = Security.getConnected();
-            User myUser = User.findById(userId);
-            System.out.println(userId + "3aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-             List<Log> toFilter = new ArrayList<Log> ();
-             if (myUser == null) {
+            
+              List<Log> toFilter = new ArrayList<Log> ();
+            
                   if(Security.getConnected().isAdmin)
                    toFilter = Log.findAll();
-             } else {
-             	 
-                    if(Security.getConnected().isAdmin)
-                 	   toFilter = myUser.logs;
-                    
-                    else {
-                 	   System.out.println("you are not authorized to view....................");
-                    }
-             }
+          List<Organization> organization = Organization.findAll(); 
+             
              
              
             
-             render(toFilter,userId, user);
+             render(toFilter, user, organization);
      }
         /**
  		* 
@@ -160,29 +152,20 @@ public static void passId() {
  		*            : long user id
  		*            
  		*/
-     public static void searchUserLog(@Required String keyword, long id) {
+     public static void searchUserLog(@Required String keyword) {
      	ArrayList<Log> filtered = new ArrayList <Log> () ;
-     	User user = User.findById(id);
-         System.out.println(id + "searchLog");
+     	
           List<Log> toFilter = new ArrayList<Log> ();
-          if (user == null) {
+         
          	 
-               if(Security.getConnected().isAdmin)
+             
                 toFilter = Log.findAll();
-          } else {
-          	 
-                 if(Security.getConnected().isAdmin)
-              	   toFilter = user.logs;
-                 
-                 else {
-              	   System.out.println("you are not authorized to view....................");
-                 }
-          }
-          System.out.println(id + "user id");
+          
+          
           	System.out.println("111111"+ toFilter.size());
          	 for(int i = 0; i < toFilter.size(); i++) {
          		 if((toFilter.get(i).actionDescription).toLowerCase().contains(keyword.toLowerCase())) {
-         			 System.out.println("mohsen" + toFilter.get(i).actionDescription);
+         			 
          			 filtered.add(toFilter.get(i));
          		 }
          	 }
