@@ -383,6 +383,16 @@ public class Ideas extends CRUD {
 		boolean canDelete = Users.isPermitted(user, "hide and delete an idea",
 				topicId, "topic");
 		boolean ideaAlreadyReported = false;
+		
+		ArrayList<Label> ideasLabels = new ArrayList<Label>();
+		
+		for(Label label : user.myLabels)
+			if(label.ideas.contains(object))
+				ideasLabels.add(label);
+			
+				
+		
+		
 		// mestani lama w lama 5alaset-ha :):)
 		boolean canUse = Users.canDelete(user, "use", ideaId, "idea", topicId);
 		System.out.println("false alreadyreoprted");
@@ -419,7 +429,7 @@ public class Ideas extends CRUD {
 					"tag his/her ideas", ideaId, "idea")
 					|| Users.isPermitted(user, "tag ideas in my organization",
 							ideaId, "idea");
-			render(type, object, /* tags, */user, canDelete, comments, topic,
+			render(type, ideasLabels,object, /* tags, */user, canDelete, comments, topic,
 					plan, permittedToTagIdea,
 					/* openToEdit, */topicId, ideaAlreadyReported, canUse,
 					deletemessage, /*
