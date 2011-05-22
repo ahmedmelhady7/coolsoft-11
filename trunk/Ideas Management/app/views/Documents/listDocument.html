@@ -1,5 +1,5 @@
 #{extends 'Login/index.html' /}
-
+<div id="page"> <center>
 <b>Documents</b><br />
 #{ifnot documents}
 <p>
@@ -9,10 +9,9 @@
 <ul>
     #{list items:documents, as:'document'}
     <li>
-    	<form action="@{Documents.viewDocument(document.id)}" method="post">
-        <input type="submit" value="show" />
-		${document.name}
-		</form>
-    </li>
+    	<a href="@{Documents.viewDocument(document.id)}">${document.name}</a>
+	</li>
 	#{/list}
 </ul>
+</center>
+</div>

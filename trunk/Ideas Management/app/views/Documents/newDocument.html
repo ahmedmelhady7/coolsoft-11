@@ -67,14 +67,14 @@
     });
 </script>
 <!-- to here -->
-    <p>
+   <div id="page"> <center> <p>
         Title: <input type="text" id="title">   <input type="submit" value="save" onclick="create('${id}','${isOrganization}');">
         <br>
         <br>
         <textarea id="data" name="data" rows="30" cols="80" style="width: 40%">
 		</textarea>
-        
-    </p>
+        </center>
+    </p></div>
 <script type="text/javascript">
     function create(id, b){
         var name = document.getElementById("title").value;
