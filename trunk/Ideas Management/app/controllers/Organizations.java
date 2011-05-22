@@ -548,10 +548,7 @@ public class Organizations extends CRUD {
 		List<Plan> plans = Plans.planList("organization", org.id);
 		render(user, org, entities, requestToJoin, tags, flag, canInvite,
 				admin, allowed, isMember, settings, creator, alreadyRequested,
-				plans,
-
-				follower, usernames, join, logFlag, pictureId);
-
+				plans, follower, usernames, join, logFlag, pictureId, topics);
 	}
 
 	/**
