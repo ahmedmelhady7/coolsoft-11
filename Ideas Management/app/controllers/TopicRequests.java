@@ -57,8 +57,8 @@ public class TopicRequests extends CRUD{
 		System.out.println("create() entered");
 		MainEntity entity = MainEntity.findById(entityId);
 		temporaryTopicRequest.entity = entity;
-		User requester = Security.getConnected();
-		temporaryTopicRequest.requester = requester;
+		User user = Security.getConnected();
+		temporaryTopicRequest.requester = user;
 		System.out
 				.println("the topic before validation check" + temporaryTopicRequest.toString());
 
@@ -135,15 +135,15 @@ public class TopicRequests extends CRUD{
 		
 		System.out
 		.println("333");
-		String message2 = "User " + requester.firstName + " " + requester.lastName+ "has requested a topic " + temporaryTopicRequest.title+ " in entity " + entity; 
+		String message2 = "User " + user.firstName + " " + user.lastName+ "has requested a topic " + temporaryTopicRequest.title+ " in entity " + entity; 
 		Log.addUserLog(message2,
-				temporaryTopicRequest, requester, entity, entity.organization);
+				temporaryTopicRequest, user, entity, entity.organization);
 
 		System.out.println("create() about to save object");
 		object._save();
 		TopicRequest topicRequest = (TopicRequest) object;
 		entity.topicRequests.add(topicRequest);
-		requester.topicRequests.add(topicRequest);
+		user.topicRequests.add(topicRequest);
 		System.out.println("create() object saved");
 		message = "Your request has been sent... an organizer will review it shortly";
 		
@@ -230,7 +230,7 @@ public static void list(long entityId) {
 	} catch (TemplateNotFoundException exception) {
 		System.out
 				.println("list() for TopicRequests done with exception about to render CRUD/list.html");
-		render("CRUD/list.html", type, entityId);
+		render("CRUD/list.html", type, entityId, user);
 	}
 
 }
