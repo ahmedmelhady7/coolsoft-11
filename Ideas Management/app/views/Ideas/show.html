@@ -1,4 +1,14 @@
 #{extends '/ideas/layout.html' /}
+
+
+<style type="text/css">
+	#labels li
+	{
+		display: inline;
+		list-style-type: none;
+		padding-right: 20px;
+	}
+</style>
 <br/>
 <input type="submit" value="Back to topic" onclick=location.href="@{Topics.show(topic.id)}">
 <br/>
@@ -8,6 +18,16 @@
         View idea
     </label>
 </h3>
+<div id="labelsContainer">
+	<ul id="labels">
+	 	#{if ideasLabels.isEmpty()==false}
+			<li><font color="#123456">Labels:</font></li>
+		#{/if}
+		#{list items:ideasLabels, as:'label'}
+			<li><a href='@{Labels.showLabel(label.id)}'>${label.name}</a></li>
+		#{/list}
+	</ul>
+</div>
 <br/>
 <table id = "success" border="0" bgcolor="#FF0000" cellspacing="0" id ="toFil">
 		<tr><td><font size ="3" color ="black"><i>
