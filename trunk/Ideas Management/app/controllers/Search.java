@@ -881,8 +881,7 @@ public class Search extends Controller {
 	 */
 	public static void quickSearch(String keyword) {
 		listOfResults = new ArrayList<Model>();
-		if (keyword.equals("")) {
-			renderHtml("<script type='text/javascript' language='javascript'>alert('Please Enter a keyword');history.go(-1);</script>");
+		if (keyword.equals(" ")) {
 		} else {
 			// Adding Organizations to search result
 			List<Organization> organizationsList = searchForOrganization(keyword);
@@ -904,7 +903,6 @@ public class Search extends Controller {
 			for (int i = 0; i < TopicsList.size(); i++) {
 				listOfResults.add(TopicsList.get(i));
 			}
-			searchResult();
 		}
 	}
 
