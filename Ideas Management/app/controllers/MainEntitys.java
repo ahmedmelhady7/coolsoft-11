@@ -460,12 +460,12 @@ public class MainEntitys extends CRUD {
 		}
 		size = entity.relationshipRequestsSource.size();
 		for (int j = 0; j < size; j++) {
-			TagRelationships
+			EntityRelationships
 					.delete(entity.relationshipRequestsSource.get(j).id);
 		}
 		size = entity.relationshipRequestsDestination.size();
 		for (int j = 0; j < size; j++) {
-			TagRelationships.delete(entity.relationshipRequestsDestination
+			EntityRelationships.delete(entity.relationshipRequestsDestination
 					.get(j).id);
 		}
 		size = allEntities.size();
