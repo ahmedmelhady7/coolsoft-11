@@ -1,134 +1,156 @@
-#{extends 'login/index.html' /}
-<script src="/public/javascripts/bmi.js" language="javascript"></script>	
-
-    <head>
-    	<style type="text/css">body {
-			font-size:80%;
-			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
-		}
-		.accordionItem h3 {
-			margin:0;
-			font-size:1.1em;
-			border-bottom:1px solid #66d color:"#150517";
-		}
-		.accordionItem h3:hover {
-			cursor:pointer;
-		}
-		.accordionItem div {
-			margin:0;
-			padding:1em 0.4em;
-		}
-		.accordionItem.hide h3 {
-		}
-		.accordionItem.hide div {
-			display:none;
-		}</style> 
-			
-        <title>Topic Requests</title>
-				<script type="text/javascript">
-					var accordionItems = new Array();
-
-			function init() {
-
-				// Grab the accordion items from the page
-				var divs = document.getElementsByTagName( 'div' );
-				for ( var i = 0; i < divs.length; i++ ) {
-					if ( divs[i].className == 'accordionItem' )
-						accordionItems.push( divs[i] );
-				}
-
-				// Assign onclick events to the accordion item headings
-				for ( var i = 0; i < accordionItems.length; i++ ) {
-					var h3 = getFirstChildWithTagName( accordionItems[i], 'H3' );
-					h3.onclick = toggleItem;
-				}
-
-				// Hide all accordion item bodies except the first
-				for ( var i = 1; i < accordionItems.length; i++ ) {
-					accordionItems[i].className = 'accordionItem hide';
-				}
-			}
-						function toggleItem() {
-				var itemClass = this.parentNode.className;
-
-				// Hide all items
-				for ( var i = 0; i < accordionItems.length; i++ ) {
-					accordionItems[i].className = 'accordionItem hide';
-				}
-
-				// Show this item if it was previously hidden
-				if ( itemClass == 'accordionItem hide' ) {
-					this.parentNode.className = 'accordionItem';
-
-				}
-			}
-
-			function getFirstChildWithTagName( element, tagName ) {
-				for ( var i = 0; i < element.childNodes.length; i++ ) {
-					if ( element.childNodes[i].nodeName == tagName )
-						return element.childNodes[i];
-				}
-				
-			}
-			
-			function endRelation(relId){
-				$.post('@{EntityRelationships.delete()}', {relationId: relId});
-				alert("relation deleted succesfully!");
-				window.location.reload();
-			}
-			</script>
-			</head>
-			
-			<body onload="init()">
-				#{extends 'main.html' /}
-				
-        		#{if listOfTopicsToBeRendered.size() > 0}
-			<br />
-		<p>List of Topics Requests:</p>
-        <ul style="list-style: none;">   
-		#{list items:listOfTopicsToBeRendered, as:'topicRequest'}
-		
-		<li>
-		
-			<div class="accordionItem">
-			<h3>Title: ${topicRequest.title}	<font size=2>By: ${topicRequest.requester}</font>
-			<font color ="#FF0000" size =4>    ⊕</font><h3>
-			<form action='@{TopicRequests.acceptRequest()}' method='post'>
-			<input type='hidden' value='${topicRequest}' name='topicRequest'>
-			<input type='submit' value='Accept'>
-			</form>
-			<form action='@{TopicRequests.rejectRequest()}' method='post'>
-			<input type='hidden' value='${topicRequest}' name='topicRequest'>
-			<input type='submit' value='Reject'>
-			</form>
-			<form action='@{TopicRequests.rephrase()}' method='post'>
-			<input type='hidden' value='${topicRequest}' name='topicRequest'>
-			<input type='submit' value='Rephrase'>
-			</form>
-				<div>
-					<p><font size=2>Description: ${topicRequest.description}</font></p>
-				</div>
-			</div>
-			
-		</li>
-		
-		#{/list}
-		</ul>
-		#{/if}
-		#{else}
-		No topic requests available for this entity!
-		#{/else}
-		</body>
-			
-			<script>
-				function accept(topicRequestId){
-					alert('asdf');
-					$.post('@{TopicRequests.acceptRequest()}', {
-                        topicRequest:topicRequest
-                    }, function(){
-                        alert('request accepted');
-//                        window.location.href = "/searchResult";
-//                        alert('enter end');
-                    });
-				}
-			</script>
+#{extends '/login/index.html' /}
+<script src="/public/javascripts/bmi.js" language="javascript">
+</script>
+<head>
+    <style type="text/css">
+        body {
+            font-size: 80%;
+            font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+        }
+        
+        .accordionItem h3 {
+            margin: 0;
+            font-size: 1.1em;
+            border-bottom: 1px solid #66d color: "#150517";
+        }
+        
+        .accordionItem h3:hover {
+            cursor: pointer;
+        }
+        
+        .accordionItem div {
+            margin: 0;
+            padding: 1em 0.4em;
+        }
+        
+        .accordionItem.hide h3 {
+        }
+        
+        .accordionItem.hide div {
+            display: none;
+        }
+    </style>
+    <title>Topic Requests</title>
+    <script type="text/javascript">
+        var accordionItems = new Array();
+        
+        function init(){
+        
+            // Grab the accordion items from the page
+            var divs = document.getElementsByTagName('div');
+            for (var i = 0; i < divs.length; i++) {
+                if (divs[i].className == 'accordionItem') 
+                    accordionItems.push(divs[i]);
+            }
+            
+            // Assign onclick events to the accordion item headings
+            for (var i = 0; i < accordionItems.length; i++) {
+                var h3 = getFirstChildWithTagName(accordionItems[i], 'H3');
+                h3.onclick = toggleItem;
+            }
+            
+            // Hide all accordion item bodies except the first
+            for (var i = 1; i < accordionItems.length; i++) {
+                accordionItems[i].className = 'accordionItem hide';
+            }
+        }
+        
+        function toggleItem(){
+            var itemClass = this.parentNode.className;
+            
+            // Hide all items
+            for (var i = 0; i < accordionItems.length; i++) {
+                accordionItems[i].className = 'accordionItem hide';
+            }
+            
+            // Show this item if it was previously hidden
+            if (itemClass == 'accordionItem hide') {
+                this.parentNode.className = 'accordionItem';
+                
+            }
+        }
+        
+        function getFirstChildWithTagName(element, tagName){
+            for (var i = 0; i < element.childNodes.length; i++) {
+                if (element.childNodes[i].nodeName == tagName) 
+                    return element.childNodes[i];
+            }
+            
+        }
+        
+        function endRelation(relId){
+            $.post('@{EntityRelationships.delete()}', {
+                relationId: relId
+            });
+            alert("relation deleted succesfully!");
+            window.location.reload();
+        }
+        
+        function acceptRequest(topicRequestId){
+            $.post('@{TopicRequests.acceptRequest()}', {
+                topicRequestId: topicRequestId,
+                topicDescription: document.getElementById("topicDescription").value
+            }, function(){
+                alert('request accepted');
+                //                        window.location.href = "topicRequests/list";
+            });
+        }
+        
+        function rejectRequest(topicRequestId){
+            alert(topicRequestId);
+            $.post('@{TopicRequests.rejectRequest()}', {
+                topicRequestId: topicRequestId
+            }, function(){
+                alert('request rejected');
+                document.getElementById()
+                //                        window.location.href = "topicRequests/list";
+            });
+        }
+        
+        function rephraseRequest(){
+            document.getElementById("topicDescription").disabled = false;
+            document.getElementById("donebutton").disabled = false;
+        }
+        
+        function doneRephrasing(){
+            document.getElementById("topicDescription").disabled = true;
+            document.getElementById("donebutton").disabled = true;
+        }
+    </script>
+</head>
+<body onload="init()">
+    #{if listOfTopicsToBeRendered.size() > 0}
+    <br/>
+    <p>
+        List of Topics Requests:
+    </p>
+    <ul style="list-style: none;">
+        #{list items:listOfTopicsToBeRendered, as:'topicRequest'}
+        <li>
+            <div class="accordionItem">
+                <h3>Title: ${topicRequest.title} 
+                    <font size=2>
+                        By: ${topicRequest.requester}
+                    </font>
+                    <font color ="#FF0000" size =4>
+                        ⊕
+                    </font>
+                    <input type="button" value="Rephrase" onclick="rephraseRequest();"><h3><input type="button" value="Accept" onclick="acceptRequest('${topicRequest.id}');"><input type="button" value="Reject" onclick="rejectRequest('${topicRequest.id}');">
+                        <div>
+                            <p>
+                                Description:
+								<br>
+                                <textarea id="topicDescription" disabled='true'>
+                                    ${topicRequest.description}
+                                </textarea>
+								<br>
+                                <input type='submit' id='donebutton' value='Done Rephrasing' disabled='true' onclick="doneRephrasing();">
+                            </p>
+                        </div>
+                        </div>
+                    </li> #{/list}
+                    </ul>#{/if}
+                    #{else}
+                    No topic requests available for this entity!
+                    #{/else}
+                </body>
