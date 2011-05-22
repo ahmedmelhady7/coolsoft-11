@@ -1,7 +1,7 @@
 #{extends '/login/index.html' /}
 
 <div id="creation">
-	<p>Label Name:</p>
+	<p>Label Name: <font color="red"><span id="flashAmessage"></span></font></p> 
 	<input type="textbox" size = "50" id="name"></input> 
 	<span id="warning"></span> 
 	<br>
@@ -32,17 +32,38 @@
 		{
 			if(${user.ideasCreated.isEmpty()} == true)
 			{
-				$.post('@{Labels.doCreateLabel()}' ,{name:x, ideas:choosenIdeas},function(){window.location.href= "/labels/showAllLabels"});
+                $.post('@{Labels.doCreateLabel()}', {
+                    name: x,
+                    ideas: choosenIdeas
+                }, function(data){
+					if(data == 0)
+                    	error(x);
+					else
+                    	window.location.href = "/labels/showAllLabels"
+                });
 			}
 			else
 			{
 				choosenIdeas = loopForm(document.labels);
-				$.post('@{Labels.doCreateLabel()}' ,{name:x, ideas:choosenIdeas},function(){window.location.href= "/labels/showAllLabels"});
+                $.post('@{Labels.doCreateLabel()}', {
+                    name: x,
+                    ideas: choosenIdeas
+                }, function(data){
+                    if(data == 0)
+                    	error(x);
+					else
+                    	window.location.href = "/labels/showAllLabels"
+                });
 			}
 			
 		}
 		else
 			showWarning();
+	}
+	
+	function error(huh)
+	{
+		document.getElementById("flashAmessage").innerHTML = "There exists a label with the name "+huh+" Please choose another name";
 	}
 	
 	function validate()
