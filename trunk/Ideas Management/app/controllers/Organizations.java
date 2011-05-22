@@ -633,7 +633,7 @@ public class Organizations extends CRUD {
 	}
 
 	/**
-	 * This method only render the view for editing the
+	 * This method only renders the view for editing the organization
 	 * 
 	 * @author Omar Faruki
 	 * 
