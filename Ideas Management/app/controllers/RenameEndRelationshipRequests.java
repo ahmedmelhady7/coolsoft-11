@@ -1,6 +1,7 @@
 package controllers;
 
 import models.EntityRelationship;
+import models.Log;
 import models.MainEntity;
 import models.Organization;
 import models.RenameEndRelationshipRequest;
@@ -64,6 +65,17 @@ public class RenameEndRelationshipRequests extends CRUD {
 			RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
 					user, organisation, relation, type, requestType, newName);
 			renameRequest.save();
+			Log.addUserLog(
+					"User "
+							+ user.firstName
+							+ " "
+							+ user.lastName
+							+ " has requested to rename the following relationship between"
+							+ " entities: (" + relation.source.name + " "
+							+ relation.name + " " + relation.destination.name
+							+ ") with " + newName, relation, renameRequest,
+					organisation, user);
+
 			System.out
 					.println(organisation.renameEndRelationshipRequest.size());
 			redirect("MainEntitys.viewEntity", entityId, "Request created");
@@ -79,6 +91,16 @@ public class RenameEndRelationshipRequests extends CRUD {
 			RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
 					user, organisation, relation, type, requestType, newName);
 			renameRequest.save();
+			Log.addUserLog(
+					"User "
+							+ user.firstName
+							+ " "
+							+ user.lastName
+							+ " has requested to rename the following relationship between"
+							+ " topics: (" + relation.source.title + " "
+							+ relation.name + " " + relation.destination.title
+							+ ") with " + newName, relation, renameRequest,
+					organisation, user);
 			System.out
 					.println(organisation.renameEndRelationshipRequest.size());
 			redirect("Topics.show", topicId, "Request created");
@@ -115,7 +137,7 @@ public class RenameEndRelationshipRequests extends CRUD {
 	 * @param requestType
 	 *            the type of the request whether rename or delete. (0=delete,
 	 *            1=rename).
-	 *
+	 * 
 	 */
 	public static void deleteRequest(long userId, long organisationId,
 			long entityId, long topicId, long relationId, int type,
@@ -128,6 +150,15 @@ public class RenameEndRelationshipRequests extends CRUD {
 			RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
 					user, organisation, relation, type, requestType, null);
 			renameRequest.save();
+			Log.addUserLog(
+					"User "
+							+ user.firstName
+							+ " "
+							+ user.lastName
+							+ " has requested to delete the following relationship between"
+							+ " entities: (" + relation.source.name + " "
+							+ relation.name + " " + relation.destination.name
+							+ ")", relation, renameRequest, organisation, user);
 			System.out
 					.println(organisation.renameEndRelationshipRequest.size());
 			redirect("MainEntitys.viewEntity", entityId, "Request created");
@@ -136,6 +167,15 @@ public class RenameEndRelationshipRequests extends CRUD {
 			RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
 					user, organisation, relation, type, requestType, null);
 			renameRequest.save();
+			Log.addUserLog(
+					"User "
+							+ user.firstName
+							+ " "
+							+ user.lastName
+							+ " has requested to delete the following relationship between"
+							+ " topics: (" + relation.source.title + " "
+							+ relation.name + " " + relation.destination.title
+							+ ")", relation, renameRequest, organisation, user);
 			System.out
 					.println(organisation.renameEndRelationshipRequest.size());
 			redirect("Topics.show", topicId, "Request created");

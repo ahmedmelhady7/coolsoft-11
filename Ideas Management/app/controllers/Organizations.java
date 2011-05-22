@@ -19,6 +19,7 @@ import models.BannedUser;
 import models.CreateRelationshipRequest;
 import models.EntityRelationship;
 import models.Invitation;
+import models.Log;
 import models.MainEntity;
 import models.Organization;
 import models.Plan;
@@ -348,6 +349,9 @@ public class Organizations extends CRUD {
 			org.save();
 			user.followingOrganizations.add(org);
 			user.save();
+			Log.addUserLog("User " + user.firstName + " " + user.lastName
+					+ " has followed the organisation (" + org.name + ")", org,
+					user);
 			redirect(request.controller + ".viewProfile", org.id,
 					"You are now a follower");
 		}
@@ -689,8 +693,8 @@ public class Organizations extends CRUD {
 	}
 
 	public static boolean isDuplicateRequest(String source, String destination,
-			String relationshipName, long organisationId, int type,
-			 int flag, int requestType, long relationId) {
+			String relationshipName, long organisationId, int type, int flag,
+			int requestType, long relationId) {
 		Organization organisation = Organization.findById(organisationId);
 		if (flag == 1) {
 			for (CreateRelationshipRequest request : organisation.createRelationshipRequest) {
@@ -717,12 +721,15 @@ public class Organizations extends CRUD {
 						EntityRelationship entityRelation = EntityRelationship
 								.findById(relationId);
 						if (requestType == 1) {
-							if (request.entityRelationship.equals(entityRelation)
-									&& request.newName.equalsIgnoreCase(relationshipName)) {
+							if (request.entityRelationship
+									.equals(entityRelation)
+									&& request.newName
+											.equalsIgnoreCase(relationshipName)) {
 								return true;
 							}
 						} else {
-							if (request.entityRelationship.equals(entityRelation)) {
+							if (request.entityRelationship
+									.equals(entityRelation)) {
 								return true;
 							}
 						}
@@ -731,17 +738,18 @@ public class Organizations extends CRUD {
 								.findById(relationId);
 						if (requestType == 1) {
 							if (request.topicRelationship.equals(topicRelation)
-									&& request.newName.equalsIgnoreCase(relationshipName)) {
+									&& request.newName
+											.equalsIgnoreCase(relationshipName)) {
 								return true;
-							} 
-						}else {
-								if (request.topicRelationship.equals(topicRelation)) {
-									return true;
-								}
 							}
+						} else {
+							if (request.topicRelationship.equals(topicRelation)) {
+								return true;
+							}
+						}
 					}
 				}
-				
+
 			}
 
 		}
