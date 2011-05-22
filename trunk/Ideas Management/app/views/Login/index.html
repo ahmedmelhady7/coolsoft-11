@@ -44,20 +44,21 @@
     	<li>
     	<div id="not-body">
     	<h2>Notifications</h2>
+    	<div id="list">
     	#{if user.getLatest().size() == 0}
     	<span>No new notifications.</span>
     	<br>
     	#{/if}
         #{list items:user.getLatest(), as:'notifi'}        		
-        		<ul>
+        		<ul style>
         			<li>    					  				
     					<b>From: </b> ${notifi.type}: <b>${notifi.title}</b> 
     					<br>
-    					&nbsp;&nbsp; ${notifi.description}    					   					
+    					<b>Message:</b>${notifi.description}    					   					
    			 		</li>        
         		</ul>        	
-        #{/list}
-        
+        #{/list} 
+        </div>       
         <a href="@{Users.viewNotifications()}">All Notifications</a>
         </div>
     	</li>
