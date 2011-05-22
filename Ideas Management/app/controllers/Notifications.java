@@ -22,7 +22,7 @@ import play.mvc.Controller;
 import play.mvc.With;
 
 @With(Secure.class)
-public class Notifications extends CRUD {
+public class Notifications extends CoolCRUD {
 	
 	/**
 	 * Renders the view sending a notification to the user

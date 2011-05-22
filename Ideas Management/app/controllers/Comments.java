@@ -14,7 +14,7 @@ import models.User;
  *
  */
 @With(Secure.class)
-public class Comments extends CRUD {
+public class Comments extends CoolCRUD {
 	
 	/**
 	 * @author ${Ibrahim safwat}

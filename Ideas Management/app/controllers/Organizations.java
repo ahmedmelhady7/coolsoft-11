@@ -14,7 +14,7 @@ import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import play.mvc.Controller;
 import play.mvc.With;
-import controllers.CRUD.ObjectType;
+import controllers.CoolCRUD.ObjectType;
 import models.BannedUser;
 import models.CreateRelationshipRequest;
 import models.EntityRelationship;
@@ -32,7 +32,7 @@ import models.TopicRelationship;
 import models.User;
 
 @With(Secure.class)
-public class Organizations extends CRUD {
+public class Organizations extends CoolCRUD {
 
 	/**
 	 * checks relation name for duplicate

@@ -28,10 +28,10 @@ import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import play.mvc.With;
-import controllers.CRUD.ObjectType;
+import controllers.CoolCRUD.ObjectType;
 
 @With(Secure.class)
-public class Plans extends CRUD {
+public class Plans extends CoolCRUD {
 
 	/**
 	 * This method renders the page for viewing the plan as a to-do list.

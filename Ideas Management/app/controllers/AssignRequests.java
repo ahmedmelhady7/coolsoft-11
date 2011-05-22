@@ -13,7 +13,7 @@ import models.Plan;
 import models.User;
 
 @With(Secure.class)
-public class AssignRequests extends CRUD {
+public class AssignRequests extends CoolCRUD {
 	public static ArrayList<User> users2 = new ArrayList<User>();
 
 	/**

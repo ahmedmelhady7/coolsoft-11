@@ -13,7 +13,7 @@ import models.User;
 import models.UserRoleInOrganization;
 
 @With(Secure.class)
-public class UserRoleInOrganizations extends CRUD {
+public class UserRoleInOrganizations extends CoolCRUD {
 
 	/**
 	 * adds a new enrolled user in the organization where his role

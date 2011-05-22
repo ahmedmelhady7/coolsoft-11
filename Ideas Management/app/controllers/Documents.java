@@ -14,9 +14,9 @@ import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import sun.net.www.content.text.plain;
-import controllers.CRUD.ObjectType;
+import controllers.CoolCRUD.ObjectType;
 
-public class Documents extends CRUD {
+public class Documents extends CoolCRUD {
 
 	/**
 	 * Renders the page for creating a new document

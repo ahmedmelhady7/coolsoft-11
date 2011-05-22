@@ -3,7 +3,7 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import controllers.CRUD.ObjectType;
+import controllers.CoolCRUD.ObjectType;
 
 import play.data.validation.Required;
 import play.db.Model;
@@ -23,7 +23,7 @@ import models.Topic;
 import models.User;
 
 @With(Secure.class)
-public class MainEntitys extends CRUD {
+public class MainEntitys extends CoolCRUD {
 
 	/**
 	 * renders the related entity and the list of other entities in the

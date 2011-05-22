@@ -18,7 +18,7 @@ import models.Role;
 import models.Topic;
 import models.User;
 @With(Secure.class)
-public class BannedUsers extends CRUD {
+public class BannedUsers extends CoolCRUD {
 	@Before
 	public static void restrictOrganizerrr(){
 //		User u = (User) User.findAll().get(0);

@@ -15,7 +15,7 @@ import models.Topic;
 import models.User;
 
 @With(Secure.class)
-public class Tags extends CRUD {
+public class Tags extends CoolCRUD {
 
 	/**
 	 * renders the related tag and the list of other tags in the organization to the view
