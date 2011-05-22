@@ -1439,7 +1439,7 @@ public class Users extends CoolCRUD {
 		}
 		if (!(Arrays.equals(oldemailArray, tmp.email.toCharArray())))
 		{
-			editedMessage += oldemailArray.toString() + "Email changed to -->  " + tmp.email + "\n";
+			editedMessage +=  "Email changed to -->  " + tmp.email + "\n";
 		}
 		if (!(Arrays.equals(oldFirstNameArray, tmp.firstName.toCharArray())))
 		{
