@@ -23,6 +23,10 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	@Required
 	@ManyToOne
 	public User requester;
+	
+	@Required
+	@ManyToOne
+	public Organization organisation;
 
 	/**
 	 * The entity relationship to be renamed or deleted
@@ -55,13 +59,19 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 * The type of the request (0=delete, 1=rename)
 	 */
 	@Required
+	public int requestType;
+	
+	/**
+	 * The type of the request (0=entity, 1=topic)
+	 */
+	@Required
 	public int type;
 
-	@ManyToOne
-	public MainEntity destinationEntity;
-
-	@ManyToOne
-	public Topic destinationTopic;
+//	@ManyToOne
+//	public MainEntity destinationEntity;
+//
+//	@ManyToOne
+//	public Topic destinationTopic;
 //
 //	@ManyToOne
 //	public Tag destinationTag;
@@ -80,28 +90,24 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 * @param entityRelationship
 	 *            the entity relationship to be renamed or deleted
 	 * 
-	 * @param type
+	 * @param requestType
 	 *            the type of the request (rename or delete)
 	 * 
 	 * @param name
 	 *            the new name for renaming
 	 * 
 	 */
-	public RenameEndRelationshipRequest(User requester,
-			EntityRelationship entityRelationship, int type, String name) {
+	public RenameEndRelationshipRequest(User requester, Organization organisation,
+			EntityRelationship entityRelationship, int type, 
+			int requestType, String name) {
 		this.requester = requester;
+		this.organisation = organisation;
 		this.entityRelationship = entityRelationship;
 		this.type = type;
+		this.requestType = requestType;
 		this.newName = name;
-		if (Users.getEntityOrganizers(entityRelationship.source).contains(
-				requester)) {
-			entityRelationship.destination.renameEndRelationshipRequest
-					.add(this);
-			entityRelationship.destination.save();
-		} else {
-			entityRelationship.source.renameEndRelationshipRequest.add(this);
-			entityRelationship.source.save();
-		}
+		this.organisation.renameEndRelationshipRequest.add(this);
+		this.organisation.save();
 	}
 
 	/**
@@ -118,27 +124,24 @@ public class RenameEndRelationshipRequest extends CoolModel {
 	 * @param topicRelationship
 	 *            the topic relationship to be renamed or deleted
 	 * 
-	 * @param type
+	 * @param requestType
 	 *            the type of the request (rename or delete)
 	 * 
 	 * @param name
 	 *            the new name for renaming
 	 * 
 	 */
-	public RenameEndRelationshipRequest(User requester,
-			TopicRelationship topicRelationship, int type, String name) {
+	public RenameEndRelationshipRequest(User requester, Organization organisation,
+			TopicRelationship topicRelationship, int type,
+			int requestType, String name) {
 		this.requester = requester;
+		this.organisation = organisation;
 		this.topicRelationship = topicRelationship;
 		this.type = type;
+		this.requestType = requestType;
 		this.newName = name;
-		if (topicRelationship.source.getOrganizer().contains(requester)) {
-			topicRelationship.destination.renameEndRelationshipRequest
-					.add(this);
-			topicRelationship.destination.save();
-		} else {
-			topicRelationship.source.renameEndRelationshipRequest.add(this);
-			topicRelationship.source.save();
-		}
+		this.organisation.renameEndRelationshipRequest.add(this);
+		this.organisation.save();
 	}
 
 //	/**

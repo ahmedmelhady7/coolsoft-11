@@ -123,6 +123,9 @@ public class Organization extends CoolModel {
 	@OneToMany (mappedBy = "organisation")
 	public List<CreateRelationshipRequest> createRelationshipRequest;
 	
+	@OneToMany (mappedBy = "organisation")
+	public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
+	
 	
 
 	/**

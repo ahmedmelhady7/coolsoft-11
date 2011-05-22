@@ -16,7 +16,8 @@ public class CreateRelationshipRequests extends CRUD {
 		User user = User.findById(userId);
 		Organization organisation = Organization.findById(organisationId);
 		if (type == 0) {
-			if (Organizations.isDuplicateRequest(source, destination, name, organisationId, type)) {
+			if (Organizations.isDuplicateRequest(source, destination, name, organisationId, type, 1,
+					0, 0)) {
 				System.out.println(organisation.createRelationshipRequest.size());
 				redirect("MainEntitys.viewEntity", entityId, "Request created");
 				return;
@@ -33,7 +34,8 @@ public class CreateRelationshipRequests extends CRUD {
 			System.out.println(organisation.createRelationshipRequest.size());
 			redirect("MainEntitys.viewEntity", entityId, "Request created");
 		} else {
-			if (Organizations.isDuplicateRequest(source, destination, name, organisationId, type)) {
+			if (Organizations.isDuplicateRequest(source, destination, name, organisationId, type, 1,
+					0, 0)) {
 				System.out.println(organisation.createRelationshipRequest.size());
 				redirect("MainEntitys.viewEntity", entityId, "Request created");
 				return;

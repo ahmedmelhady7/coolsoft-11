@@ -20,15 +20,14 @@
 					${relation.source} ${relation.name} ${relation.destination}
 				</legend>	
 				
-				#{if (canRequestRelationship == true)}					
-				<form action="@{MainEntitys.renameRequest(user.id, relation.id, 1, name)}" method="post"
+								
+				<form action="@{RenameEndRelationshipRequests.renameRequest(user.id, organisation.id, entity.id, 0, relation.id, 0, 1, name)}" method="post"
 				onsubmit="return validate()">
 				<input type="text" id="name" name="name">
 				<input type = "submit" value = "Request Rename">
 			</form>
-			<form action="@{MainEntitys.deleteRequest(user.id, relation.id, 0)}" method="post">
-				<input type = "submit" value = "Request Delete">
-			</form>
+			
+			#{if (canRequestRelationship == true)}	
 			#{/if}
 				
 					
