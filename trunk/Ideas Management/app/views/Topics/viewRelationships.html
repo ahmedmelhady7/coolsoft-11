@@ -19,9 +19,9 @@
 						<legend>
 							${relation.source} ${relation.name} ${relation.destination}
 						</legend>
-						<form action="@{RenameEndRelationshipRequests.renameRequest(user.id, organisation.id, 0, topic.id, relation.id, 1, 1, name)}" method="post"
+						<form action="@{RenameEndRelationshipRequests.renameRequest(user.id, organisation.id, 0, topic.id, relation.id, 1, 1, newName)}" method="post"
 						onsubmit="return validate()">
-							<input type="text" id="name" name="name">
+							<input type="text" id="newName" name="newName">
 							<input type = "submit" value = "Request Rename">
 						</form>
 						<form action="@{RenameEndRelationshipRequests.deleteRequest(user.id, organisation.id, 0, topic.id, relation.id, 1, 0)}" method="post">
