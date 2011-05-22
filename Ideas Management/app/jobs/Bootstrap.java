@@ -184,11 +184,6 @@ public class Bootstrap extends Job {
 			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
 
-			UserRoleInOrganizations.addEnrolledUser(hadi, gov, ideadeveloper,
-					gucMetStudentUnion.id, "topic");
-			
-			UserRoleInOrganizations.addEnrolledUser(hadi, guc, ideadeveloper,
-					gucMetStudentUnion.id, "topic");
 			
 			UserRoleInOrganizations.addEnrolledUser(gom3a, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
@@ -271,6 +266,12 @@ public class Bootstrap extends Job {
 			i10.save();
 			sharaf.save();
 
+			UserRoleInOrganizations.addEnrolledUser(hadi, egypt, ideadeveloper,
+					matchChaos.id, "topic");
+			
+			UserRoleInOrganizations.addEnrolledUser(hadi, guc, ideadeveloper,
+					gucMetStudentUnion.id, "topic");
+			
 			Plan p1 = new Plan("S.U. heads", ashraf, new Date(111, 03, 20),
 					new Date(111, 07, 30), "Plan for SU heads elections",
 					gucMetStudentUnion, "summer break").save();
@@ -279,7 +280,7 @@ public class Bootstrap extends Job {
 			gucMetStudentUnion.save();
 			ashraf.planscreated.add(p1);
 			ashraf.save();
-
+			
 			i6.plan = p1;
 			i6._save();
 			p1.addIdea(i6);
