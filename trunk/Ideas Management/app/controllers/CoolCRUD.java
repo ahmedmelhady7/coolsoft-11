@@ -16,7 +16,7 @@ import play.i18n.*;
 
 /**
  * 
- * @author DepugTeam
+ * @author DebugTeam
  *
  */
 @With(Security.class)
@@ -29,11 +29,14 @@ public abstract class CoolCRUD extends CRUD {
     }
 
     public static void index() {
+    	System.out.println("HHHHHHHH");
         if (getControllerClass() == CoolCRUD.class) {
       //      forbidden();
         }
         User user = Security.getConnected();
-        render("CRUD/index.html", user);
+        //render("CoolCRUD/index.html", user);
+        render(user);
+
     }
 
     public static void list(int page, String search, String searchFields, String orderBy, String order) {
@@ -49,7 +52,7 @@ public abstract class CoolCRUD extends CRUD {
         try {
             render(type, objects, count, totalCount, page, orderBy, order, user);
         } catch (TemplateNotFoundException e) {
-            render("CRUD/list.html", type, objects, count, totalCount, page, orderBy, order, user);
+            render("CoolCRUD/list.html", type, objects, count, totalCount, page, orderBy, order, user);
         }
     }
 
@@ -62,7 +65,7 @@ public abstract class CoolCRUD extends CRUD {
         try {
             render(type, object, user);
         } catch (TemplateNotFoundException e) {
-            render("CRUD/show.html", type, object, user);
+            render("CoolCRUD/show.html", type, object, user);
         }
     }
 
@@ -104,7 +107,7 @@ public abstract class CoolCRUD extends CRUD {
             try {
                 render(request.controller.replace(".", "/") + "/show.html", type, object, user);
             } catch (TemplateNotFoundException e) {
-                render("CRUD/show.html", type, object, user);
+                render("CoolCRUD/show.html", type, object, user);
             }
         }
         object._save();
@@ -125,7 +128,7 @@ public abstract class CoolCRUD extends CRUD {
         try {
             render(type, object, user);
         } catch (TemplateNotFoundException e) {
-            render("CRUD/blank.html", type, object, user);
+            render("CoolCRUD/blank.html", type, object, user);
         }
     }
 
@@ -143,7 +146,7 @@ public abstract class CoolCRUD extends CRUD {
             try {
                 render(request.controller.replace(".", "/") + "/blank.html", type, object, user);
             } catch (TemplateNotFoundException e) {
-                render("CRUD/blank.html", type, object, user);
+                render("CoolCRUD/blank.html", type, object, user);
             }
         }
         object._save();

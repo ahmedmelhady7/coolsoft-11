@@ -1,0 +1,28 @@
+#{extends 'login/index.html' /}
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="${lang}" lang="${lang}">
+    <head>
+        <title>#{get 'title' /}</title>		
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/crud.css'}" />
+    </head>
+	<div id="page">
+	<body id="crud">
+		
+		
+		#{if flash.success}
+			<div class="crudFlash flashSuccess">
+				${flash.success}
+			</div>
+		#{/if}
+		#{if flash.error || error}
+			<div class="crudFlash flashError">
+				${error ?: flash.error}
+			</div>
+		#{/if}
+		
+		<div id="crudContent">
+			#{doLayout /}
+		</div>
+		
+	</body>
+</div></html>
