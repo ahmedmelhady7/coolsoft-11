@@ -1,12 +1,18 @@
 package controllers;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.mail.search.SearchTerm;
 
@@ -1701,6 +1707,24 @@ public class Search extends Controller {
 				out.newLine();
 			}
 			out.close();
+			File zip = new File(root, "results.zip");
+			if (!zip.exists()) {
+				zip.createNewFile();
+			}
+			ZipOutputStream zOut = new ZipOutputStream(
+					new BufferedOutputStream(new FileOutputStream(zip)));
+			byte[] data = new byte[1000];
+			BufferedInputStream in = new BufferedInputStream(
+					new FileInputStream(file));
+			int count;
+			zOut.putNextEntry(new ZipEntry(file.getName()));
+			while ((count = in.read(data, 0, 1000)) != -1) {
+				zOut.write(data, 0, count);
+			}
+			in.close();
+			zOut.flush();
+			zOut.close();
+			System.out.println("File written");
 			return file;
 		} catch (IOException e) {
 			return null;
