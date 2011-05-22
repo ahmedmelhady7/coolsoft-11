@@ -1,11 +1,5 @@
 #{extends '/users/layout.html' /}
-#{if adminFlag == 1}
-#{if request.actionMethod != 'index'}
-            <div id="crudBreadcrumb">
-                #{crud.navigation /}
-            </div>
-#{/if}
-#{/if}
+
 
 <div id="crudShow" class="${type.name}">
 
@@ -290,22 +284,31 @@
 		</p>
 		#{/crud.custom }
 
+         #{crud.custom 'username'}
+		Username : 
+		<input type="text" name=object.username value = ${object.username} id="username" required/>
+		#{/crud.custom }
+		
+		#{crud.custom 'password'}
+		Password : 
+		<input type="text" name=object.password value = ${object.password} id="password" required/>
+		#{/crud.custom }
+		
+		#{crud.custom 'email'}
+		Email : 
+		<input type="text" name=object.email value = ${object.email} id="mail" required/>
+		#{/crud.custom }
 		#{/crud.form }
     
+			
 		<p class="crudButtons">
-			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
-			#{if adminFlag == 1}
-			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
-				#{/if}
-		</p>
+            <input type="submit" name="_save" value="&{'crud.save', object.id}" />
+        </p>
+	 
+	 
 		
 		#{/form}
 	</div>
-	#{if adminFlag == 1}
-	#{form @delete(object._key())}
-	<p class="crudDelete">
-		<input type="submit" value="&{'crud.delete', type.modelName}" />
-	</p>
-	#{/form}
-	#{/if}
+	
+
 </div>
