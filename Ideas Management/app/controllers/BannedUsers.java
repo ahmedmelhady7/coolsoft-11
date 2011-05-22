@@ -1256,6 +1256,8 @@ public class BannedUsers extends CoolCRUD {
 	public static void dummy(){
 		restrictGroupInSelectedEntity(1);	
 	}
+	
+	
 	public static void restrictGroupInSelectedEntity(long organizationID){
 		
 		Organization organization = Organization.findById(organizationID);
