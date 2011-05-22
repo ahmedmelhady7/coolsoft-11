@@ -300,6 +300,14 @@
 		<HR>	
 		#{/if}
 		
+		#{if (canDeleteEntity == 1)}
+		<HR>
+		<form action="@{MainEntitys.deleteEntity(entity.id)}" method="post">
+		<input type="submit" value="Delete">
+		</form>
+		<HR>	
+		#{/if}
+		
 		
 		<form action="@{MainEntitys.requestRelationship(user.id, org.id, entity.id)}" method="post">
 			<input type="submit" value="Request Relationship Creation">
