@@ -22,7 +22,7 @@ public class NotificationProfile extends CoolModel {
 	public String notifiableType;
 	
 	// The title of the notification related to the profile
-	public String title;
+	public String title;		
 	
 	@ManyToOne
 	public User user;
@@ -36,7 +36,7 @@ public class NotificationProfile extends CoolModel {
 		this.notifiableId = notifiableId;
 		this.notifiableType = notifiableType;
 		this.title = title;
-		this.user = user;
+		this.user = user;	
 		this.enabled = true;
 	}
 }

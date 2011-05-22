@@ -57,40 +57,61 @@ public class Notifications extends CoolCRUD {
 	 */
 	
 	public static boolean sendNotification(long userId, long notificationId, String type, String description) {
-		User user = User.findById(userId);
-		if(user == null) {
+		User user = User.findById(userId);		
+		if (user == null) {
 			return false;
 		}
-		if(user.state.equals("d")) {
+		if (user.state.equals("d")) {
 			return false;
+		}
+		if (user.state.equals("n")) {
+			return false;
+		}
+		/**
+		 * If the source type is a user then send the notification
+		 */
+		if (type.equalsIgnoreCase("User")) {
+			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
+			Notification notification = new Notification(notificationId, "Notification System", type, user, description);
+			notification.save();
+			user.notificationsNumber++;
+			return true;
 		}
 		List<NotificationProfile> nProfiles = user.notificationProfiles;
-		boolean contains = false;
-		boolean isenabled = true;
+		boolean contains = false; // contains the profile
+		boolean isenabled = true; // preference enabled
 		String title = "No title!";
-		if(type.equalsIgnoreCase("Idea")) {
+		if (type.equalsIgnoreCase("Idea")) {
 			Idea idea = Idea.findById(notificationId);
-			if(idea != null)
+			if(idea != null) {				
 				title = idea.toString();
+			}
+				
 		} else {
-			if(type.equalsIgnoreCase("Organization") || type.equalsIgnoreCase("Organisation")) {
+			if (type.equalsIgnoreCase("Organization") || type.equalsIgnoreCase("Organisation")) {
 				Organization organization = Organization.findById(notificationId);
-				if(organization != null)
+				if (organization != null) {					
 					title = organization.toString();
+				}
+					
 			} else {
 				if(type.equalsIgnoreCase("Topic")) {
 					Topic topic = Topic.findById(notificationId);
-					if(topic != null)
+					if(topic != null) {						
 						title = topic.toString();
+					}
+						
 				} else {
 					if(type.equalsIgnoreCase("Plan")) {
 						Plan plan = Plan.findById(notificationId);
-						if(plan != null)
+						if(plan != null) {							
 							title = plan.toString();
+						}
+							
 					} else {
 						if(type.equalsIgnoreCase("Tag")) {
 							Tag tag = Tag.findById(notificationId);
-							if(tag != null) {
+							if(tag != null) {								
 								title = tag.toString();
 							}
 						} else {
@@ -102,7 +123,7 @@ public class Notifications extends CoolCRUD {
 							} else {
 								if(type.equalsIgnoreCase("Entity")) {
 									MainEntity mainEntity = MainEntity.findById(notificationId);
-									if(mainEntity != null) {
+									if(mainEntity != null) {										
 										title = mainEntity.toString();
 									}
 								}
@@ -114,32 +135,25 @@ public class Notifications extends CoolCRUD {
 		}
 		/**
 		 * check that the notification profile has the sending source
-		 * if not then add it, if present the check if enabled or not.
+		 * if not then add it, if present then check if enabled or not.
 		 */
-		if(type.equalsIgnoreCase("User")) {
-			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
-			Notification notification = new Notification(notificationId, type, title, user, description);
-			notification.save();
-			user.notificationsNumber++;
-			return true;
-		}
 		for (int i = 0; i < nProfiles.size(); i++) {
 			if(nProfiles.get(i).notifiableId == notificationId 
-					&& nProfiles.get(i).notifiableType.equals(type)) {
+					&& nProfiles.get(i).notifiableType.equalsIgnoreCase(type)) {
 				isenabled = nProfiles.get(i).enabled;
 				contains = true;
 				break;
 			}
 		}		
 		// Adding the NP if not there
-		if(!contains) {
+		if (!contains) {
 			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
 			NotificationProfile notificationProfile = new NotificationProfile(notificationId, type, title, user);
 			notificationProfile.save();
 			isenabled = true;
 		}
 		// Send the notification if enabled
-		if(isenabled) {
+		if (isenabled) {
 			Notification notification = new Notification(notificationId, type, title, user, description);
 			notification.save();
 			user.notificationsNumber++;
@@ -170,40 +184,65 @@ public class Notifications extends CoolCRUD {
 	
 	public static void sendNotify(String directed, long notId,
 			String type, String description) {
-		User user = User.find("byUsername", directed).first();;
-		if(user == null) {
-			render();
+		User user = User.find("byUsername", directed).first();
+		if (user == null) {
+			String result = "Not Sent";
+			render(result);
 		}
-		if(user.state.equals("d")) {
-			render();
+		if (user.state.equals("d")) {
+			String result = "Not Sent";
+			render(result);
+		}
+		if (user.state.equals("n")) {
+			String result = "Not Sent";
+			render(result);
+		}
+		/**
+		 * If the source type is a user then send the notification
+		 */
+		if (type.equalsIgnoreCase("User")) {
+			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
+			Notification notification = new Notification(notId, "Notification System", type, user, description);
+			notification.save();
+			user.notificationsNumber++;
+			String result = "Sent Successfully";
+			render(result);
 		}
 		List<NotificationProfile> nProfiles = user.notificationProfiles;
-		boolean contains = false;
-		boolean isenabled = true;
+		boolean contains = false; // contains the profile
+		boolean isenabled = true; // preference enabled
 		String title = "No title!";
-		if(type.equalsIgnoreCase("Idea")) {
+		if (type.equalsIgnoreCase("Idea")) {
 			Idea idea = Idea.findById(notId);
-			if(idea != null)
+			if(idea != null) {				
 				title = idea.toString();
+			}
+				
 		} else {
-			if(type.equalsIgnoreCase("Organization") || type.equalsIgnoreCase("Organisation")) {
+			if (type.equalsIgnoreCase("Organization") || type.equalsIgnoreCase("Organisation")) {
 				Organization organization = Organization.findById(notId);
-				if(organization != null)
+				if (organization != null) {					
 					title = organization.toString();
+				}
+					
 			} else {
 				if(type.equalsIgnoreCase("Topic")) {
 					Topic topic = Topic.findById(notId);
-					if(topic != null)
+					if(topic != null) {						
 						title = topic.toString();
+					}
+						
 				} else {
 					if(type.equalsIgnoreCase("Plan")) {
 						Plan plan = Plan.findById(notId);
-						if(plan != null)
+						if(plan != null) {							
 							title = plan.toString();
+						}
+							
 					} else {
 						if(type.equalsIgnoreCase("Tag")) {
 							Tag tag = Tag.findById(notId);
-							if(tag != null) {
+							if(tag != null) {								
 								title = tag.toString();
 							}
 						} else {
@@ -215,49 +254,44 @@ public class Notifications extends CoolCRUD {
 							} else {
 								if(type.equalsIgnoreCase("Entity")) {
 									MainEntity mainEntity = MainEntity.findById(notId);
-									if(mainEntity != null) {
+									if(mainEntity != null) {										
 										title = mainEntity.toString();
 									}
 								}
 							}
-						} 
+						}
 					}
 				}
 			}
 		}
 		/**
 		 * check that the notification profile has the sending source
-		 * if not then add it, if present the check if enabled or not.
+		 * if not then add it, if present then check if enabled or not.
 		 */
-		if(type.equalsIgnoreCase("User")) {
-			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
-			Notification n = new Notification(notId, type, title, user, description);
-			n.save();
-			user.notificationsNumber++;
-			render();
-		}
 		for (int i = 0; i < nProfiles.size(); i++) {
 			if(nProfiles.get(i).notifiableId == notId 
-					&& nProfiles.get(i).notifiableType.equals(type)) {
+					&& nProfiles.get(i).notifiableType.equalsIgnoreCase(type)) {
 				isenabled = nProfiles.get(i).enabled;
 				contains = true;
 				break;
 			}
 		}		
 		// Adding the NP if not there
-		if(!contains) {
+		if (!contains) {
 			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
 			NotificationProfile notificationProfile = new NotificationProfile(notId, type, title, user);
-			notificationProfile.save();			
+			notificationProfile.save();
 			isenabled = true;
 		}
 		// Send the notification if enabled
-		if(isenabled) {
+		if (isenabled) {
 			Notification notification = new Notification(notId, type, title, user, description);
 			notification.save();
 			user.notificationsNumber++;
-			render();
+			String result = "Sent Successfully";
+			render(result);
 		}
-		render();
+		String result = "Sent Successfully";
+		render(result);
 	}
 }

@@ -44,7 +44,7 @@ public class Notification extends CoolModel {
 		this.title = title;
 		this.directedTo = user;
 		this.description = description;
-		this.seen = false;
+		this.seen = false;		
 		this.status = "New";
 	}
 }
