@@ -1447,9 +1447,9 @@ public class BannedUsers extends CRUD {
 
 					System.out.println("LAMA");
 					Log.addUserLog(organizer.firstName + " "
-							+ organizer.lastName + "unblocked "
+							+ organizer.lastName + " unblocked "
 							+ user.firstName + " " + user.lastName
-							+ "from viewing Entity " + entity.name, user,
+							+ " from viewing Entity " + entity.name, user,
 							organizer, entity, entity.organization);
 
 					for (int i = 0; i < organizers.size(); i++)
@@ -1501,8 +1501,8 @@ public class BannedUsers extends CRUD {
 					
 				} else {
 					Log.addUserLog(organizer.firstName + " "
-							+ organizer.lastName + "blocked " + user.firstName
-							+ " " + user.lastName + "from using Entity "
+							+ organizer.lastName + " unblocked " + user.firstName
+							+ " " + user.lastName + " from using Entity "
 							+ entity.name, user, organizer, entity,
 							entity.organization);
 
