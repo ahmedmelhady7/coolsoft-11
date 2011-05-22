@@ -1,4 +1,4 @@
-#{extends 'main.html' /}<!-- copy from here -->
+#{extends 'Login/index.html' /}<!-- copy from here -->
 <script type="text/javascript" src="/public/javascripts/tiny_mce/tiny_mce.js">
 </script>
 <script type="text/javascript">
@@ -16,6 +16,13 @@
 		readonly : 1,
         theme_advanced_resizing: false,
     });
+	function del(id){
+        $.post('@{Documents.deleteDocument()}', {
+            id: id
+        });
+        alert("document is deleted");
+		window.location = "http://localhost:9008";
+    }
 </script>
 <b>${document.name}</b><br /><br />
 
@@ -29,4 +36,5 @@
 	<input type="hidden" name="id" value="${document.id}">
 	<input type="submit" value="edit">
 	</form>
+	<br /><input type="submit" value="delete" onclick="del('${document.id}');">
 	#{/if}
