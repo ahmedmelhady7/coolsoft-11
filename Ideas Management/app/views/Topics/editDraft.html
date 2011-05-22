@@ -76,10 +76,8 @@
 			alert("Title and Description must be entered");
 			return;
 		}
-		
 		var link = "/ideas/getdrafts";
 		$.post('@{Topics.postDraftTopic()}' ,{topicId:${targetTopic.getId()}, title:topicTitle, description:topicDescription, 
-			privacyLevel: privacyLevel, createRelationship: createRelationship},
-			function(){window.location.href=link});
+			privacyLevel: privacyLevel, createRelationship: createRelationship}, function(){window.location.href=link});
 	}
 </script>
