@@ -1,7 +1,8 @@
 #{extends '/login/index.html' /}
 
-	<p id="labelname">${label.name}</p>
+	<h3 id="labelname">${label.name}</h3><a href="#" onclick="deletel(${label.id})">delete this label</a>
 	
+	<br>
 	<a onclick = "$('#editName').show()" href="#">Change this Label name</a>
 	
 	<div id = "editName" style="display:none;" >
@@ -55,6 +56,12 @@
 			{
 				showWarning();
 			}
+		}
+		
+		function deletel(id)
+		{
+			var link = "/labels/showAllLabels";
+			$.post('@{deleteLabel()}' ,{labelId:id},function(){window.location.href=link});
 		}
 		
 		function removeSelected(id)
