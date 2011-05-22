@@ -1341,8 +1341,8 @@ public class Topics extends CRUD {
 	 *            : the justification message that is sent by the deleter to the
 	 *            creator of the topic
 	 */
-	public static void delete(String id, String justification) {
-		System.out.println("entered my delete");
+	public static boolean deleteTopic(String id, String justification) {
+		
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(id);
@@ -1352,7 +1352,6 @@ public class Topics extends CRUD {
 		Plan plan = temporaryTopic.plan;
 		System.out.println("entering try");
 		User user = Security.getConnected();
-		try {
 			System.out.println("entered try");
 			String message = user.username + " has deleted the topic "
 					+ temporaryTopic.title;
@@ -1382,10 +1381,22 @@ public class Topics extends CRUD {
 			Log.addUserLog(message, temporaryTopic, user, entity,
 					entity.organization);
 			object._delete();
-			System.out.println("deleted");
-			System.out.println("leaving try");
-
-		} catch (Exception exception) {
+			return true;
+	}
+	
+	public static void delete (String id, String justification){
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Model object = type.findById(id);
+		notFoundIfNull(object);
+		Topic temporaryTopic = (Topic) object;
+		MainEntity entity = temporaryTopic.entity;
+		
+		try{
+			deleteTopic(id, justification);
+		}
+		
+		catch (Exception exception) {
 			System.out.println("entered catch");
 			flash.error(Messages.get("crud.delete.error", type.modelName));
 			redirect(request.controller + ".show", object._key());
