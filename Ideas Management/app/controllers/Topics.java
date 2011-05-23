@@ -777,6 +777,7 @@ public class Topics extends CRUD {
 		String actionPlan = "create an action plan to execute an idea";
 		String actionMerge = "merge ideas";
 		Topic targetTopic = Topic.findById(topicIdLong);
+		boolean canReport = Users.isPermitted(user, "use", topicIdLong, "topic");
 		boolean topicNotClosed = targetTopic.openToEdit;
 		boolean alreadyReported = false;
 		boolean canDelete = Users.isPermitted(actor, "hide and delete an idea",
@@ -1561,7 +1562,12 @@ public class Topics extends CRUD {
 				+ Security.getConnected().username + " Justification : "+justification;
 
 		try {
-			idea.delete();
+			if (idea.plan != null) {
+				idea.delete();
+				idea.author.communityContributionCounter--;
+				idea.author.save();
+
+			}
 			Notifications.sendNotification(idea.author.id, idea.id, "Idea",
 					message);
 
