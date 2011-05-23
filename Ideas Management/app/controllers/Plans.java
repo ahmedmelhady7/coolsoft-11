@@ -57,7 +57,7 @@ public class Plans extends CoolCRUD {
 		String listOfTags = "";
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
 		globalListOfTags = Tag.findAll();
-		
+		boolean notBlockedFromUsing = Users.isPermitted(user, "use", p.topic.id, "topic");
 		boolean checkNotRated;
 		if (p.usersRated.contains(user))
 			checkNotRated = false;
@@ -107,7 +107,7 @@ public class Plans extends CoolCRUD {
 			}
 			List<MainEntity> entitiesList = p.topic.entity.organization.entitiesList;
 			render(p, itemsList, user, canAssign, canEdit, canView, canDelete,
-					isOrganizer, canIdea, comments, entitiesList, listOfTags);
+					isOrganizer, canIdea, comments, entitiesList, listOfTags,notBlockedFromUsing);
 		} else {
 			canView = false;
 			System.out.println("he is not allowed to view");

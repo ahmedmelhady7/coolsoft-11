@@ -383,7 +383,7 @@ public class Ideas extends CoolCRUD {
 		boolean canDelete = Users.isPermitted(user, "hide and delete an idea",
 				topicId, "topic");
 		boolean ideaAlreadyReported = false;
-		
+		boolean notBlockedFromUsing = Users.isPermitted(user, "use", topicId, "topic");
 		ArrayList<Label> ideasLabels = new ArrayList<Label>();
 		
 		for(Label label : user.myLabels)
@@ -436,7 +436,7 @@ public class Ideas extends CoolCRUD {
 									 * deletable ,
 									 */
 					ideaId, rate, idea, priority, userNames, checkPermitted,
-					checkNotRated);
+					checkNotRated,notBlockedFromUsing);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
