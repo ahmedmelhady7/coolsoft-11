@@ -165,7 +165,7 @@
                                             <ul>
                                                 #{list items:user.followingOrganizations, as:'organization'}
                                                 <li>
-                                                    <input type="submit" value="unfollow" onclick="org('${organization.id}');"/><a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>
+                                                 <a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>  <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="org('${organization.id}');"/>
                                                 </li>
                                                 #{/list}
                                             </ul>
@@ -177,7 +177,7 @@
                                             <ul>
                                                 #{list items:user.followingEntities, as:'entity'}
                                                 <li>
-                                                    <input type="submit" value="unfollow" onclick="entity('${entity.id}');"/><a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>
+                                                   <a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>   <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="entity('${entity.id}');"/>
                                                 </li>
                                                 #{/list}
                                             </ul>
@@ -189,7 +189,7 @@
                                             <ul>
                                                 #{list items:user.topicsIFollow, as:'topic'}
                                                 <li>
-                                                    <input type="submit" value="unfollow" onclick="topic('${topic.id}');"/><a href="@{Topics.show(topic.id)}">${topic.title}</a>
+                                                    <a href="@{Topics.show(topic.id)}">${topic.title}</a>  <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="topic('${topic.id}');"/>
                                                 </li>
                                                 #{/list}
                                             </ul>
@@ -201,7 +201,7 @@
                                             <ul>
                                                 #{list items:user.followingTags, as:'tag'}
                                                 <li>
-                                                    <input type="submit" value="unfollow" onclick="tag('${tag.id}');"/><a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
+                                                    <a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>  <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="tag('${tag.id}');"/>
                                                 </li>
                                                 #{/list}
                                             </ul>
@@ -498,8 +498,6 @@
                     
                     function follows(){
                         if (!fol) {
-                            $('#docs').hide(500);
-                            doc = false;
                             $('#follow').show(500);
                             fol = true;
                         }
@@ -511,8 +509,6 @@
                     
                     function showDoc(){
                         if (!doc) {
-                            $('#follow').hide(500);
-                            fol = false;
                             $('#docs').show(500);
                             doc = true;
                         }

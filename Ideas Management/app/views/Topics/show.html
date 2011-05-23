@@ -113,53 +113,39 @@
 				 #{if (!targetTopic.followers.contains(user))} 
 			     #{if follower == false} 
 				<li>
-					<p>
 						<form action="@{Topics.viewFollowers()}">
 			   				 <input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">
 			       		     <input type="submit" value="Follow ${targetTopic.title}" class = "linkButton">
 			   	 		</form>
-					</p>
 				</li>
 			    #{/if}
 			    #{/if}
 				 
 				#{if follower == true}
-		        <li>
-			      <p>
-			      	<form action="@{Topics.viewFollowers()}">
-			   			<input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">
-			       		<input type="submit" value="Unfollow ${targetTopic.title} " onclick="unfollow('${topicId}');" class = "linkButton"/>
-				 	</form>
-			      </p>
+		        <li id="unfollo">
+			    <input type="submit" value="Unfollow ${targetTopic.title} " onclick="unfollow('${topicId}');" class = "linkButton"/>
 				</li>
 			    #{/if}
 			      
-				<li>
+				<li id="follo">
 				    <form action="@{Topics.viewFollowers()}">
 				     	 <input type="hidden" name="topicId" value="${targetTopic.id} Followers"><input type="hidden" name="f" value="false"> <input type="submit" value="Followers" class = "linkButton">
 				 	</form>
 			    </li>
 				
 				#{if canNotPost == true}
-				<li>
-		            <p id="req">
-		                <a onclick="requestToPost('${topicId}');" href="#">request to post on this topic</a>
-		            </p>
-				</li>
+				<li id="req"><input type="submit" value="Request to post on this topic" onclick="requestToPost('${topicId}');" class="linkButton"></li>
                #{/if}
 			
            	   #{if pending == true && canNotPost == false}
-			   <li>
-		            <p>
-		                Request To Post status: Pending
-		            </p>
-			   </li>
+			   <li>Request To Post status: Pending</li>
            	   #{/if}
 			
-			   <li>
-					<p id="pen">
+			   <li id="pen">
 	                Request To Post status: Pending
-	                </p>
+					<script type="text/javascript">
+						 $('#pen').hide();
+					</script>
 			   </li>
 			   
 			   #{if (canRestrict == 1)}
@@ -245,8 +231,8 @@
         </li>
     </ul>
 </div>
-
-<div style="float:1000px" >#{script src:"jquery-1.5.2.min.js" /}
+<!--  better use id = "page" -->
+<div id ="page"style="float:1000px" >#{script src:"jquery-1.5.2.min.js" /}
 <script type="text/javascript" src="/public/javascripts/jquery-1.4.1.js"></script>
 <br/>
 <a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a>
@@ -552,7 +538,7 @@
 			<div name= "scripts">
 				
             <script type="text/javascript">
-            	 $('#pen').hide();
+            	
             	function endRelation(relId){
 				$.post('@{TopicRelationships.delete()}', {relationId: relId});
 				alert("relation deleted succesfully!");
