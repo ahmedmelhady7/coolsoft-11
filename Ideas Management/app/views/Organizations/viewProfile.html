@@ -41,6 +41,14 @@
 		   </div>
 		   <li>
 		   <ul>
+		   	#{if admin || creator}
+			<li>
+		<a href="@{Organizations.deleteOrganization(org.id)}">Delete</a>
+            </li>
+			<li>
+		<a href="@{Organizations.editOrganization(org.id)}" >Edit</a>            
+		</li>
+		#{/if}
 		#{if plans.size()>0}
         <li>
            <a id="planLink" href="#">Plans</a>
@@ -83,21 +91,7 @@
 
 	</script>		
 		
-		#{if admin || creator}
-		<form action="@{Organizations.deleteOrganization()}" method="post">
-            <input type="hidden" id="organizationId" name="organizationId" value="${org.id}" />Delete Organization 
-            <p>
-                <input type="submit" value="Delete" />
-            </p>
-        </form>
-		<form action="@{Organizations.editOrganization()}" method="post">
-            <input type="hidden" id="organizationId" name="organizationId" value="${org.id}" />Edit Organization 
-            <p>
-                <input type="submit" value="Edit" />
-            </p>
-        </form>
-		<br>
-		#{/if}
+		
         #{if join}
         <form action="@{Organizations.join()}" method="post">
             <input type="hidden" id="organizationId" name="organizationId" value="${org.id}" />Join Organization 
