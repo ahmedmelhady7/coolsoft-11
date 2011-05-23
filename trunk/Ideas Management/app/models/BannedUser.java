@@ -288,11 +288,6 @@ public class BannedUser extends CoolModel {
 		BannedUser restricted = BannedUser.find( "select bu from BannedUser bu where bu.organization = ? and bu.bannedUser = ?" +
 				" and bu.action like ? and bu.resourceType = ? and bu.resourceID = ? "  ,organization,user,action,"topic",topicID ).first();
 		
-		boolean flag = false;
-		if(restricted == null){
-			flag = true;
-		}
-		System.out.println( "null restricted" +flag+ "user:"+userID + "action" + action +"topicID:" + topicID );
 		
 		if(restricted != null){
 			user.bannedUsers.remove(restricted);
@@ -341,11 +336,6 @@ public class BannedUser extends CoolModel {
 		BannedUser restricted = BannedUser.find( "select bu from BannedUser bu where bu.organization = ? and bu.bannedUser = ?" +
 				" and bu.action like ? and bu.resourceType = ? and bu.resourceID = ? "  ,organization,user,action,"entity",entityID).first();
 		
-		boolean flag = false;
-		if(restricted == null){
-			flag = true;
-		}
-		System.out.println( "null restricted" +flag+ "user:"+userID + "action" + action +"entityID:" + entityID );
 		
 		if(restricted !=null){
 			user.bannedUsers.remove(restricted);
@@ -403,11 +393,6 @@ public class BannedUser extends CoolModel {
 		BannedUser restricted = BannedUser.find( "select bu from BannedUser bu where bu.organization = ? and bu.bannedUser = ?" +
 				" and bu.action like ? and bu.resourceType = ? and bu.resourceID = ? "  ,organization,user,action,"entity",entityID).first();
 		
-		boolean flag = false;
-		if(restricted == null){
-			flag = true;
-		}
-		System.out.println( "null restricted" +flag+ "user:"+userID + "action" + action +"entityID:" + entityID );
 		
 		if(restricted != null){
 			user.bannedUsers.remove(restricted);
@@ -415,7 +400,7 @@ public class BannedUser extends CoolModel {
 			restricted.delete();
 		}
 		
-		System.out.println("DELETEDDDD");
+		
 		
 		/**
 		 * cascade the de-restriction from the sub-entities
