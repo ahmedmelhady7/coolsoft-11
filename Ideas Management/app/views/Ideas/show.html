@@ -218,11 +218,20 @@
 		</form>
 		<br/>
 		#{/if}
-		<input type = "submit" value = "Show Comments" onclick="viewComments()" >
+		<input type = "submit" id = "commentsd" value = "Show Comments" onclick="viewComments()" >
 		<br/>
 		<script type="text/javascript">
 			function viewComments(){
-				
+				if(document.getElementById("commentsd").value == "Show Comments")
+					{
+						document.getElementById('div1').style.display = 'inline';
+						document.getElementById("commentsd").value = "Hide Comments";
+					}
+				else
+					{
+						document.getElementById('div1').style.display = 'none';
+						document.getElementById("commentsd").value = "Show Comments";
+					}
 				document.getElementById('div1').innerHTML = "#{if comments} Comments <br/> <ul> #{list comments, as:'comment'} <li><a>${comment.toString()}</a></li> #{/list} <br/></ul> #{/if} #{else}No comments posted#{/else}"
 			}
 			</script>
@@ -257,5 +266,5 @@
 			<input type="hidden" value='@@' name='tag'>
 			<input type="submit" value="Add tags">
         </form>
-      	  <div id='div1' align='left'>
+      	  <div id='div1' align='left' style="display: none">
 </div>
