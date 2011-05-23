@@ -2,10 +2,14 @@
 #{extends 'Login/index.html' /}
 #{set title:'Block/Unblock Page' /}
 
+
+#{if check==0}
+<u><font size ="3" color ="red">You are not allowed to view this page</font></u>
+#{/if}
+#{if check==1}
 <a href="@{Login.homePage()}">Back to Home</a>
 <hr>          </hr>
-
-<u><font size ="5" color ="blue">Idea Developers Enrolled</font></u>
+<u><font size ="4" color ="blue">Enrolled Idea Developers</font></u>
 <br/>
 <br/>
 <table border="0" bgcolor="#ececec" cellspacing="5">
@@ -76,7 +80,7 @@ document.getElementById('2_${c}').value="Block from using";
 #{/if}
 #{/list}
 #{/else}
-
+#{/if}
 
 
 <script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
