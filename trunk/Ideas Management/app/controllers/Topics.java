@@ -496,7 +496,6 @@ public class Topics extends CRUD {
 	 */
 	public static void closeTopic(String topicId) {
 
-		System.out.println("entered closeTopic for topic:" + topicId);
 		long topicIdLong = Long.parseLong(topicId);
 		Topic targetTopic = Topic.findById(topicIdLong);
 		User actor = User.findById(Security.getConnected().id);
@@ -506,9 +505,6 @@ public class Topics extends CRUD {
 		String action = "close a topic and promote it to execution";
 		String notificationDescription = "Topic " + targetTopic.title
 				+ " has been closed and promoted to execution.";
-
-		System.out.println("ideas count:" + targetTopic.getIdeas().size()
-				+ " in topic" + targetTopic.getId() + "-" + targetTopic.id);
 
 		/*
 		 * checks if topic is empty if (targetTopic.getIdeas().size() == 0) {
@@ -1652,7 +1648,6 @@ public class Topics extends CRUD {
 	 * 
 	 */
 	public static void getIdeasToMerge(String topicId) {
-		System.out.println("I'm in");
 		
 		User user = Security.getConnected();
 		Long topicIdLong = Long.parseLong(topicId);
@@ -1733,9 +1728,6 @@ public class Topics extends CRUD {
 
 		targetTopic.save();
 
-		System.out.println(targetTopic.title + targetTopic.description
-				+ targetTopic.privacyLevel + targetTopic.createRelationship
-				+ targetTopic.intializedIn);
 	}
 
 	/**
@@ -1840,6 +1832,8 @@ public class Topics extends CRUD {
 		targetTopic.delete();
 		user.save();
 		// entity.save();
+		
+		redirect("/ideas/getdrafts");
 
 	}
 	
