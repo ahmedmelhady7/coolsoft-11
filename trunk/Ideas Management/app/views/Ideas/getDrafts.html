@@ -23,17 +23,35 @@
 		
 		<fieldset>
 			<legend>
-				Draft Topics
+				<big><b>Draft Topics</b></big>
 			</legend>
 			#{list items: draftTopics , as:'draftTopic'}
                <li>
 			   <fieldset>
                		<legend>
-               			#{form @Topics.editDraft(), method:'POST', enctype:'multipart/form-data' }
+               			<table>
+						<tr>
+						<td>
+						#{form @Topics.postWithoutEdit(), method:'POST', enctype:'multipart/form-data' }
 							<input type = "hidden" name = "topicId" value = ${draftTopic.getId()}>
-							<input type="submit" value="Edit" />
-						#{/form} 
-						
+							<input type="submit" value="Post" />
+						#{/form}
+						</td>
+						<td>or</td>
+						<td>
+						#{form @Topics.editDraft(), method:'POST', enctype:'multipart/form-data' }
+							<input type = "hidden" name = "topicId" value = ${draftTopic.getId()}>
+							<input type="submit" value="Edit" class = "linkButton"/>
+						#{/form}
+						</td>
+						<td>
+							#{form @Topics.discardDraftTopic(), method:'POST', enctype:'multipart/form-data' }
+							<input type = "hidden" name = "topicId" value = ${draftTopic.getId()}>
+							<input type="submit" value="Discard" class = "linkButton"/>
+						#{/form}
+						</td>
+						</tr>
+						</table>
                		</legend>
 				<p>Title: ${draftTopic.title}</p>	
 				<p>Description: <br>
