@@ -17,54 +17,64 @@ import models.Organization;
 import models.Role;
 import models.Topic;
 import models.User;
+
 @With(Secure.class)
 public class BannedUsers extends CoolCRUD {
 	@Before
-	public static void restrictOrganizerrr(){
-//		User u = (User) User.findAll().get(0);
-//		Organization org = new Organization("coooolSoft", u);
-//		MainEntity e = (MainEntity) MainEntity.findAll().get(0);
-//		long id = e.getId();
-//		System.out.println(id);
-       List<Organization> organizations = Organization.findAll();
-     //  System.out.println(o.isEmpty() + "yaaaaaaaaaaaaaaaaaaaaaaaaaaaah");
-       Organization organization = organizations.get(0);
-		System.out.println(organizations .isEmpty());
-	//	System.out.println("ya raaaaaaaaaaaab" + organization.name + "  " );
+	/**
+	 * just for testing
+	 */
+	public static void restrictOrganizerrr() {
+		// User u = (User) User.findAll().get(0);
+		// Organization org = new Organization("coooolSoft", u);
+		// MainEntity e = (MainEntity) MainEntity.findAll().get(0);
+		// long id = e.getId();
+		// System.out.println(id);
+		List<Organization> organizations = Organization.findAll();
+		// System.out.println(o.isEmpty() + "yaaaaaaaaaaaaaaaaaaaaaaaaaaaah");
+		Organization organization = organizations.get(0);
+
+		// System.out.println("ya raaaaaaaaaaaab" + organization.name + "  " );
 		long organizationID = organizations.get(0).getId();
-	//	MainEntity entity = organization.entitiesList.get(1);
-	//	long entityId = entity.getId();
-	//	Topic topic = entity.topicList.get(0);
-	//	System.out.println(organizationID);
-	//	long topicId = topic.getId();
-		
+		// MainEntity entity = organization.entitiesList.get(1);
+		// long entityId = entity.getId();
+		// Topic topic = entity.topicList.get(0);
+		// System.out.println(organizationID);
+		// long topicId = topic.getId();
+
 		/**
 		 * testing area
 		 */
-		restrictOrganizer(organizationID );
-		//restrictOrganizerEntityPath(entityId);
-		//restrictOrganizerTopicPath(topicId);
+		restrictOrganizer(organizationID);
+		// restrictOrganizerEntityPath(entityId);
+		// restrictOrganizerTopicPath(topicId);
 	}
+
 	/**
-	 * dummy method
+	 * just for testing
 	 */
-	
-	public static void viewOrganizers(){
-		//viewRestrictedOrganizersInOrganization(1);
+
+	public static void viewOrganizers() {
+		// viewRestrictedOrganizersInOrganization(1);
 		viewRestrictedOrganizersTopicPath(1);
 	}
-	
+
 	/**
-	 * to moved
+	 * This method renders the unauthorized page
+	 * 
+	 * @author Nada Ossama
+	 * 
+	 * @story C1S7
+	 * 
 	 */
-	public static void unauthorized(){
+	public static void unauthorized() {
 		User user = Security.getConnected();
 		render(user);
 	}
+
 	/**
-	 *  
-	 * renders the list of organizers in an
-	 * organization
+	 * 
+	 * renders the list of organizers in an organization
 	 * 
 	 * @author Nada-Ossama
 	 * 
@@ -74,44 +84,51 @@ public class BannedUsers extends CoolCRUD {
 	 * @param orgID
 	 *            long id of the organization
 	 */
-	public static void restrictOrganizersList (long orgId){
-		
-		
+	public static void restrictOrganizersList(long orgId) {
+
 		Organization organization = Organization.findById(orgId);
-		
+
 		List<User> users = Users.searchOrganizer(organization);
 
-	    long organizationID = orgId;
-	  //  boolean flag = false;
-	    User user = Security.getConnected();
-	    if(user.isAdmin || organization.creator.equals(user)){
-	    	render(users, organizationID , user);
-		}
-		else{
+		long organizationID = orgId;
+		// boolean flag = false;
+		User user = Security.getConnected();
+		if (user.isAdmin || organization.creator.equals(user)) {
+			render(users, organizationID, user);
+		} else {
 			unauthorized();
 		}
-	    
-	    
-		
+
 	}
-	public static void restrictOrganizer(long orgId ) {
-		
+
+	/**
+	 * 
+	 * renders the list of organizers in an organization
+	 * 
+	 * @author Nada-Ossama
+	 * 
+	 * @story C1S7 , C1S19
+	 * 
+	 * 
+	 * @param orgID
+	 *            long id of the organization
+	 */
+	public static void restrictOrganizer(long orgId) {
+
 		Organization organization = Organization.findById(orgId);
-	
+
 		List<User> users = Users.searchOrganizer(organization);
 
-	    long organizationID = orgId;
-	  //  boolean flag = false;
-	    User user = Security.getConnected();
-	    
-	    if(user.isAdmin || organization.creator.equals(user)){
-	    	render(users, organizationID , user);
-		}
-		else{
+		long organizationID = orgId;
+		// boolean flag = false;
+		User user = Security.getConnected();
+
+		if (user.isAdmin || organization.creator.equals(user)) {
+			render(users, organizationID, user);
+		} else {
 			unauthorized();
 		}
-	    
-		
+
 	}
 
 	/**
@@ -125,64 +142,66 @@ public class BannedUsers extends CoolCRUD {
 	 *            long id of the organization that the viewed bannedUser belongs
 	 *            to
 	 */
- public static void viewRestrictedOrganizersTopicPath(long organizationID){
-	 Organization organization = Organization.findById(organizationID);
+	public static void viewRestrictedOrganizersTopicPath(long organizationID) {
+		Organization organization = Organization.findById(organizationID);
 		User user = Security.getConnected();
-		List<BannedUser> bannedUsers = BannedUser.find("select bu from BannedUser bu where bu.organization = ?", organization).fetch();
+		List<BannedUser> bannedUsers = BannedUser.find(
+				"select bu from BannedUser bu where bu.organization = ?",
+				organization).fetch();
 		List<BannedUser> finalBannedUsers = new ArrayList<BannedUser>();
-		
-		for(int i = 0 ; i < bannedUsers.size() ; i++){
+
+		for (int i = 0; i < bannedUsers.size(); i++) {
 			User banned = bannedUsers.get(i).bannedUser;
 			List<User> searchResult = Users.searchOrganizer(organization);
-			if(searchResult.contains(banned)){
+			if (searchResult.contains(banned)) {
 				finalBannedUsers.add(bannedUsers.get(i));
 			}
 		}
 		List<BannedUser> entityBannedUsers = new ArrayList<BannedUser>();
 		List<BannedUser> topicBannedUsers = new ArrayList<BannedUser>();
-		
-		for(int i = 0 ; i < finalBannedUsers.size() ; i++){
+
+		for (int i = 0; i < finalBannedUsers.size(); i++) {
 			BannedUser bannedUser = finalBannedUsers.get(i);
-			if(bannedUser.resourceType.equalsIgnoreCase("topic")){
+			if (bannedUser.resourceType.equalsIgnoreCase("topic")) {
 				topicBannedUsers.add(bannedUser);
 			}
-			if(bannedUser.resourceType.equalsIgnoreCase("entity")){
+			if (bannedUser.resourceType.equalsIgnoreCase("entity")) {
 				entityBannedUsers.add(bannedUser);
 			}
 		}
-		
-//		List<BannedUser> sortedByEntity = sortByID(entityBannedUsers);
-//		List<BannedUser> sortedByTopic = sortByID(topicBannedUsers);
-//		List<BannedUser> sortByUserInEntity = sortByUser(entityBannedUsers);
-//		List<BannedUser> sortByUserInTopic = sortByUser(topicBannedUsers);
-//		List<BannedUser> sortByActionInEntity = sortByAction(entityBannedUsers);
-//		List<BannedUser> sortByActionInTopic = sortByAction(topicBannedUsers);
-//		
-//		String ids = "";
-//		String names = "";
-//		for(int  i = 0 ; i < sortedByEntity.size() ; i++){
-//			ids = ids + sortedByEntity.get(i).resourceID + ",";
-//			
-//			MainEntity entity = MainEntity.findById(sortedByEntity.get(i).resourceID);
-//			names = names + (entity.name) + ",";
-//			
-//		}
-//		boolean Flag = false; if(user == null ){
-//			Flag = true;
-//		}
-		//System.out.println(Flag + "Yarubbbbbbbbbbbbbbbb");
-		
-		
-		if(user.isAdmin || organization.creator.equals(user)){
-			render(user,organizationID,topicBannedUsers);
-		}
-		else{
+
+		// List<BannedUser> sortedByEntity = sortByID(entityBannedUsers);
+		// List<BannedUser> sortedByTopic = sortByID(topicBannedUsers);
+		// List<BannedUser> sortByUserInEntity = sortByUser(entityBannedUsers);
+		// List<BannedUser> sortByUserInTopic = sortByUser(topicBannedUsers);
+		// List<BannedUser> sortByActionInEntity =
+		// sortByAction(entityBannedUsers);
+		// List<BannedUser> sortByActionInTopic =
+		// sortByAction(topicBannedUsers);
+		//
+		// String ids = "";
+		// String names = "";
+		// for(int i = 0 ; i < sortedByEntity.size() ; i++){
+		// ids = ids + sortedByEntity.get(i).resourceID + ",";
+		//
+		// MainEntity entity =
+		// MainEntity.findById(sortedByEntity.get(i).resourceID);
+		// names = names + (entity.name) + ",";
+		//
+		// }
+		// boolean Flag = false; if(user == null ){
+		// Flag = true;
+		// }
+		// System.out.println(Flag + "Yarubbbbbbbbbbbbbbbb");
+
+		if (user.isAdmin || organization.creator.equals(user)) {
+			render(user, organizationID, topicBannedUsers);
+		} else {
 			unauthorized();
 		}
-		
-		
-		
- }
+
+	}
+
 	/**
 	 * Renders the set of organizers within a certain entity
 	 * 
@@ -194,26 +213,23 @@ public class BannedUsers extends CoolCRUD {
 	 *            :long entityId is the id of the entity that list of organizers
 	 *            are enrolled in
 	 */
-	
-	public static void restrictOrganizerEntityPath(long entityId){
-		
-		MainEntity entity  = MainEntity.findById(entityId);
-        Organization organization = entity.organization;
-        long organizationID = organization.getId();
+
+	public static void restrictOrganizerEntityPath(long entityId) {
+
+		MainEntity entity = MainEntity.findById(entityId);
+		Organization organization = entity.organization;
+		long organizationID = organization.getId();
 		List<User> users = Users.getEntityOrganizers(entity);
 		User user = Security.getConnected();
-		
-		if(user.isAdmin || organization.creator.equals(user)){
-			render(user,users , entityId , organizationID);
-		}
-		else{
+
+		if (user.isAdmin || organization.creator.equals(user)) {
+			render(user, users, entityId, organizationID);
+		} else {
 			unauthorized();
 		}
-		
-		
-		
+
 	}
-	
+
 	/**
 	 * Renders the set of organizers in a certain topic
 	 * 
@@ -225,125 +241,122 @@ public class BannedUsers extends CoolCRUD {
 	 *            : long topicId is the Id of the topic that the organizer will
 	 *            be restricted in
 	 */
-	public static void restrictOrganizerTopicPath(long topicId){
-		
+	public static void restrictOrganizerTopicPath(long topicId) {
+
 		Topic topic = Topic.findById(topicId);
 		MainEntity entity = topic.entity;
-		Organization organization  = entity.organization;
+		Organization organization = entity.organization;
 		long organizationID = organization.getId();
-		
-		List <User> users = Users.getEntityOrganizers(entity);
+
+		List<User> users = Users.getEntityOrganizers(entity);
 		User user = Security.getConnected();
-		
-		if(user.isAdmin || organization.creator.equals(user)){
-			render(user,users,organizationID ,topicId );
-		}
-		else{
+
+		if (user.isAdmin || organization.creator.equals(user)) {
+			render(user, users, organizationID, topicId);
+		} else {
 			unauthorized();
 		}
-		
-		
-		
-		
+
 	}
 
 	/**
-	 * takes the Id of the organization (the same as the previous
-	 * method) and the ID of the User to be restricted,and renders the list of
-	 * entities the selected user is enrolled in and it will give the
-	 * organization lead to restrict him from the whole selected entity or from
-	 * a specific topic
+	 * takes the Id of the organization and the list of ID of the User to be
+	 * restricted,and renders the list of common entities the selected users are
+	 * enrolled in and it will give the organization lead to restrict him from
+	 * the whole selected entity or from a specific topic
 	 * 
 	 * @story C1S7 , C1S19
 	 * 
 	 * @author Nada Ossama
 	 * 
-	 * @param  userID
-	 *              long id of the user to be restricted
-	 * @param  organizationId 
-	 *               long id of the organization he will be
-	 *        restricted in
+	 * @param userID
+	 *            long id of the user to be restricted
+	 * @param organizationId
+	 *            long id of the organization he will be restricted in
 	 */
-	
-	
+
 	public static void entitiesEnrolledInGroup(@Required long[] userId,
 			long organizationId) {
 		JsonObject json = new JsonObject();
-		
-		
-		
-		List<MainEntity> entities  = new ArrayList<MainEntity>();
+
+		List<MainEntity> entities = new ArrayList<MainEntity>();
 		List<MainEntity> finalEntities = new ArrayList<MainEntity>();
-		if (validation.hasErrors()|| userId.length == 0) {
+		if (validation.hasErrors() || userId.length == 0) {
 			flash.error("Oops, please select one the Organizers");
 			restrictOrganizer(organizationId);
-		}
-		else{
-			
-			
-         
-		Organization organization = Organization.findById(organizationId);
-		User user = User.findById(userId[0]);
-		 finalEntities = Users.getEntitiesOfOrganizer(organization, user);
-		 System.out.println("IDD" + finalEntities.size());
-		for (int i = 1 ; i < userId.length ; i++){
-		     user = User.findById(userId[i]);
-			 entities = Users.getEntitiesOfOrganizer(organization, user);
-			 for(int j = 0 ; j < finalEntities.size() ; j++){
-				 if (!entities.contains(finalEntities.get(j))){
-					 
-					 finalEntities.remove(j);
-				 }
-			 }
-		}
-		
-	
-		
+		} else {
+
+			Organization organization = Organization.findById(organizationId);
+			User user = User.findById(userId[0]);
+			finalEntities = Users.getEntitiesOfOrganizer(organization, user);
+
+			for (int i = 1; i < userId.length; i++) {
+				user = User.findById(userId[i]);
+				entities = Users.getEntitiesOfOrganizer(organization, user);
+				for (int j = 0; j < finalEntities.size(); j++) {
+					if (!entities.contains(finalEntities.get(j))) {
+						finalEntities.remove(j);
+					}
+				}
+			}
 
 		}
-         System.out.println("SIZZ" + finalEntities.size());
+
 		String entity = "";
 		String entityIds = "";
 
-		for(int  i = 0 ; i < finalEntities.size() ; i++){
-			entity +=  finalEntities.get(i).name + ",";
+		for (int i = 0; i < finalEntities.size(); i++) {
+			entity += finalEntities.get(i).name + ",";
 			entityIds += finalEntities.get(i).getId() + ",";
 		}
-		System.out.println(entity + " :: " + entityIds);
+
 		json.addProperty("entityIds", entityIds);
 		json.addProperty("entityList", entity);
 		renderJSON(json.toString());
 	}
 
+	/**
+	 * takes the Id of the organization (the same as the previous method) and
+	 * the ID of the User to be restricted,and renders the list of entities the
+	 * selected user is enrolled in and it will give the organization lead to
+	 * restrict him from the whole selected entity or from a specific topic
+	 * 
+	 * @story C1S7 , C1S19
+	 * 
+	 * @author Nada Ossama
+	 * 
+	 * @param userID
+	 *            long id of the user to be restricted
+	 * @param organizationId
+	 *            long id of the organization he will be restricted in
+	 */
+
 	public static void entitiesEnrolledIn(@Required long userId,
 			long organizationId) {
 		JsonObject json = new JsonObject();
-		
-		List<MainEntity> entities  = new ArrayList<MainEntity>();
-		if (validation.hasErrors()|| userId == 0) {
+
+		List<MainEntity> entities = new ArrayList<MainEntity>();
+		if (validation.hasErrors() || userId == 0) {
 			flash.error("Oops, please select one the Organizers");
 			restrictOrganizer(organizationId);
+		} else {
+
+			// System.out.println(organizationId);
+			Organization organization = Organization.findById(organizationId);
+			User user = User.findById(userId);
+			entities = Users.getEntitiesOfOrganizer(organization, user);
+			// System.out.println("++++" + entities.isEmpty());
+
+			// render(user, organizationId, entities);
+			// MainEntity x = new MainEntity("MET", "fjfkj", organization);
+			// entities.add(x);
 		}
-		else{
-			
-			
-    // System.out.println(organizationId);
-		Organization organization = Organization.findById(organizationId);
-		User user = User.findById(userId);
-		 entities = Users.getEntitiesOfOrganizer(organization, user);
-	//	System.out.println("++++" + entities.isEmpty());
-		
-		//render(user, organizationId, entities);
-//		 MainEntity x  = new  MainEntity("MET", "fjfkj", organization);
-//		 entities.add(x);
-		}
-//		String nada = "nadaz";
-//		return nada;
+
 		String entity = "";
 		String entityIds = "";
-//		System.out.println(entities.size() + "FFFFFFFFFFFF");
-		for(int  i = 0 ; i < entities.size() ; i++){
-			entity +=  entities.get(i).name + ",";
+
+		for (int i = 0; i < entities.size(); i++) {
+			entity += entities.get(i).name + ",";
 			entityIds += entities.get(i).getId() + ",";
 		}
 		json.addProperty("entityIds", entityIds);
@@ -352,10 +365,10 @@ public class BannedUsers extends CoolCRUD {
 	}
 
 	/**
-	 * checks if the organization lead has chosen to restrict
-	 * the organizer from the whole selected entity or from a topic in it and
-	 * accordingly it will render the list of actions related or it will
-	 * redirect to other page to select the topic
+	 * checks if the organization lead has chosen to restrict the organizer from
+	 * the whole selected entity or from a topic in it and accordingly it will
+	 * render the list of actions related or it will redirect to other page to
+	 * select the topic
 	 * 
 	 * @author Nada ossama
 	 * 
@@ -364,20 +377,20 @@ public class BannedUsers extends CoolCRUD {
 	 * @param entityId
 	 *            : the selected entity id
 	 * @param topic
-	 *            : String flag if it is equal to true then restrict from a certain
-	 *            topic o.w.from the whole entity
+	 *            : String flag if it is equal to true then restrict from a
+	 *            certain topic o.w.from the whole entity
 	 * @param organizationId
 	 *            :long id of the organization entered as before
 	 * @param userId
 	 *            : long userId to be restricted
 	 */
 
-	public static void topicsEnrolledInOrRedirect(@Required long entityId, @Required String topic,
-			long organizationId, long userId) {
+	public static void topicsEnrolledInOrRedirect(@Required long entityId,
+			@Required String topic, long organizationId, long userId) {
 
 		if (validation.hasErrors() || entityId == 0) {
 			flash.error("Oops, please select atleast one choise ");
-			entitiesEnrolledIn(userId,organizationId);
+			entitiesEnrolledIn(userId, organizationId);
 		}
 		if (topic.equalsIgnoreCase("true")) {
 			MainEntity entity = MainEntity.findById(entityId);
@@ -388,7 +401,7 @@ public class BannedUsers extends CoolCRUD {
 		}
 
 	}
-	
+
 	/**
 	 * Renders the List of Topics within the specified entity
 	 * 
@@ -405,65 +418,62 @@ public class BannedUsers extends CoolCRUD {
 	 * @param userId
 	 *            : long userId is the id of the user to be restricted
 	 */
-	
-	
 
 	public static void topicsEnrolledIn(@Required long entityId,
 			long organizationId, long userId) {
 
 		JsonObject json = new JsonObject();
-		
-//		if (validation.hasErrors() || entityId == 0) {
-//			flash.error("Oops, please select atleast one choise ");
-//			entitiesEnrolledIn(userId,organizationId);
-//		}
-		
-			MainEntity entity = MainEntity.findById(entityId);
-			List<Topic> entityTopics = entity.topicList;
-			String topicsNames = "";
-			String topicsIds = "";
-			for(int i = 0 ; i < entityTopics.size() ; i++){
-				topicsNames += entityTopics.get(i).title + ",";
-				topicsIds += entityTopics.get(i).getId() + ",";
-			}
-			System.out.println(topicsNames);
-			json.addProperty("topicsIds", topicsIds);
-			json.addProperty("topicsNames", topicsNames);
-			renderJSON(json.toString());
-		
+
+		// if (validation.hasErrors() || entityId == 0) {
+		// flash.error("Oops, please select atleast one choise ");
+		// entitiesEnrolledIn(userId,organizationId);
+		// }
+
+		MainEntity entity = MainEntity.findById(entityId);
+		List<Topic> entityTopics = entity.topicList;
+		String topicsNames = "";
+		String topicsIds = "";
+		for (int i = 0; i < entityTopics.size(); i++) {
+			topicsNames += entityTopics.get(i).title + ",";
+			topicsIds += entityTopics.get(i).getId() + ",";
+		}
+
+		json.addProperty("topicsIds", topicsIds);
+		json.addProperty("topicsNames", topicsNames);
+		renderJSON(json.toString());
 
 	}
-	
-/**
- * gets the list of topics in a certain entity
- * 
- * @author Nada Ossama
- * 
- * @story C1S7 , C1S19
- * 
- * @param entityId :long entityId the id of the entity that the topics belongs to
- */
-	
+
+	/**
+	 * gets the list of topics in a certain entity
+	 * 
+	 * @author Nada Ossama
+	 * 
+	 * @story C1S7 , C1S19
+	 * 
+	 * @param entityId
+	 *            :long entityId the id of the entity that the topics belongs to
+	 */
+
 	public static void getEntityTopics(long entityId) {
 
 		JsonObject json = new JsonObject();
-		
-		
-			MainEntity entity = MainEntity.findById(entityId);
-			List<Topic> entityTopics = entity.topicList;
-			String topicsNames = "";
-			String topicsIds = "";
-			for(int i = 0 ; i < entityTopics.size() ; i++){
-				topicsNames += entityTopics.get(i).title + ",";
-				topicsIds += entityTopics.get(i).getId() + ",";
-			}
-			System.out.println(topicsNames);
-			json.addProperty("topicsIds", topicsIds);
-			json.addProperty("topicsNames", topicsNames);
-			renderJSON(json.toString());
-		
+
+		MainEntity entity = MainEntity.findById(entityId);
+		List<Topic> entityTopics = entity.topicList;
+		String topicsNames = "";
+		String topicsIds = "";
+		for (int i = 0; i < entityTopics.size(); i++) {
+			topicsNames += entityTopics.get(i).title + ",";
+			topicsIds += entityTopics.get(i).getId() + ",";
+		}
+		System.out.println(topicsNames);
+		json.addProperty("topicsIds", topicsIds);
+		json.addProperty("topicsNames", topicsNames);
+		renderJSON(json.toString());
 
 	}
+
 	/**
 	 * gets all the actions of the organizer
 	 * 
@@ -472,25 +482,23 @@ public class BannedUsers extends CoolCRUD {
 	 * @story C1S7 , C1S19
 	 * 
 	 */
-	public static void getAllEntityActions(){
-		
+	public static void getAllEntityActions() {
+
 		JsonObject json = new JsonObject();
 		List<String> entityActions = Roles.getRoleActions("organizer");
-		
+
 		String stringActions = "";
-		for(int  i = 0 ; i < entityActions.size() ; i++){
-			stringActions +=  entityActions.get(i)+ ",";
-			
-			
+		for (int i = 0; i < entityActions.size(); i++) {
+			stringActions += entityActions.get(i) + ",";
+
 		}
-	
+
 		json.addProperty("actions", stringActions);
-		
+
 		renderJSON(json.toString());
-		
-		
-		
+
 	}
+
 	/**
 	 * gets all the actions of the organizer role
 	 * 
@@ -498,35 +506,28 @@ public class BannedUsers extends CoolCRUD {
 	 * 
 	 * @story C1S7 , C1S19
 	 */
-	
-	public static void getTopicActions(){
-		
-	
+
+	public static void getTopicActions() {
+
 		JsonObject json = new JsonObject();
-		
+
 		List<String> topicActions = Roles.getOrganizerTopicActions();
-		
+
 		String topicsActions = "";
-		for(int  i = 0 ; i < topicActions.size() ; i++ ){
+		for (int i = 0; i < topicActions.size(); i++) {
 			topicsActions += topicActions.get(i) + ",";
-			}
-		
-         json.addProperty("topicsActions", topicsActions);
-        
-		
+		}
+
+		json.addProperty("topicsActions", topicsActions);
+
 		renderJSON(json.toString());
 
-		
-		
 	}
 
-
-	
-	
 	/**
-	 * block the organizer from the whole entity so the method will render two lists
-	 * one for the list of actions the organizer is allowed to do and another a list of
-	 * actions the organizer is not allowed to do
+	 * block the organizer from the whole entity so the method will render two
+	 * lists one for the list of actions the organizer is allowed to do and
+	 * another a list of actions the organizer is not allowed to do
 	 * 
 	 * @author Nada Ossama
 	 * 
@@ -542,52 +543,49 @@ public class BannedUsers extends CoolCRUD {
 
 	public static void entityActions(long entityId, long organizationId,
 			long userId) {
-		
-		//System.out.println("NADAaaaAAA" + entityId + "org" + organizationId + "user"  + userId);
+
+		// System.out.println("NADAaaaAAA" + entityId + "org" + organizationId +
+		// "user" + userId);
 		JsonObject json = new JsonObject();
 		List<String> entityActions = Roles.getRoleActions("organizer");
 		MainEntity entity = MainEntity.findById(entityId);
 		Organization organization = entity.organization;
 		User user = User.findById(userId);
-		
-		
 
 		List<BannedUser> restrictedUser = BannedUser
 				.find("select bu from BannedUser bu where bu.organization = ? and bu.bannedUser = ? and bu.resourceType like ? and resourceID = ? ",
 						organization, user, "entity", entityId).fetch();
 		List<String> restricted = new ArrayList<String>();
-		for(int k = 0 ; k < restrictedUser.size() ; k++){
+		for (int k = 0; k < restrictedUser.size(); k++) {
 			restricted.add(restrictedUser.get(k).action);
 		}
-		
-		for(int i = 0; i<entityActions.size() ; i++){
-			if (restricted.contains(entityActions.get(i))){
-				
+
+		for (int i = 0; i < entityActions.size(); i++) {
+			if (restricted.contains(entityActions.get(i))) {
+
 				entityActions.remove(i);
 				i--;
 			}
 		}
 		String restrictedActions = "";
-		for(int i = 0 ; i < restricted.size() ; i++){
-			restrictedActions += restricted.get(i)+ ",";
+		for (int i = 0; i < restricted.size(); i++) {
+			restrictedActions += restricted.get(i) + ",";
 		}
 		String stringActions = "";
-		for(int  i = 0 ; i < entityActions.size() ; i++){
-			stringActions +=  entityActions.get(i)+ ",";
-			System.out.println("entity Action:" + entityActions.get(i));
-			
+		for (int i = 0; i < entityActions.size(); i++) {
+			stringActions += entityActions.get(i) + ",";
+
 		}
 		json.addProperty("restrictedActions", restrictedActions);
 		json.addProperty("actions", stringActions);
-		
+
 		renderJSON(json.toString());
-		
-		
+
 	}
 
 	/**
-	 * render a list of actions the organizer is allowed to do in that topic and another
-	 * list of actions the organizers is not allowed to do
+	 * render a list of actions the organizer is allowed to do in that topic and
+	 * another list of actions the organizers is not allowed to do
 	 * 
 	 * @author Nada Ossama
 	 * 
@@ -597,20 +595,19 @@ public class BannedUsers extends CoolCRUD {
 	 * @param topicId
 	 *            : long Id of the topic to be restricted in
 	 * @param userId
-	 *            :long Id of the user  to be restricted
+	 *            :long Id of the user to be restricted
 	 */
 
 	public static void topicActions(@Required long topicId, long userId) {
-		
+
 		JsonObject json = new JsonObject();
-		
+
 		List<String> topicActions = Roles.getOrganizerTopicActions();
 		Topic topic = (Topic.findById(topicId));
 		MainEntity entity = topic.entity;
 		Organization organization = entity.organization;
 		User user = User.findById(userId);
-		
-		
+
 		if (validation.hasErrors() || topicId == 0) {
 			flash.error("Oops, please select atleast one choise ");
 			topicsEnrolledInOrRedirect(entity.getId(), "topic",
@@ -620,37 +617,34 @@ public class BannedUsers extends CoolCRUD {
 		List<String> restricted = BannedUser
 				.find("select bu.action from BannedUser bu where bu.organization = ? and bu.bannedUser = ? and bu.resourceType like ? and resourceID = ? ",
 						organization, user, "topic", topicId).fetch();
-	  
-		
-		for(int i = 0; i<  topicActions.size(); i++){
-			
-			if (restricted.contains(topicActions.get(i))){
-			    topicActions.remove(i);
-			    i--;
-			
+
+		for (int i = 0; i < topicActions.size(); i++) {
+
+			if (restricted.contains(topicActions.get(i))) {
+				topicActions.remove(i);
+				i--;
+
 			}
 		}
 		String topicsActions = "";
-		for(int  i = 0 ; i < topicActions.size() ; i++ ){
+		for (int i = 0; i < topicActions.size(); i++) {
 			topicsActions += topicActions.get(i) + ",";
-			}
+		}
 		String restrictedTopicActions = "";
-		for(int i = 0 ; i < restricted.size() ; i++){
+		for (int i = 0; i < restricted.size(); i++) {
 			restrictedTopicActions += restricted.get(i) + ",";
 		}
-		
-		System.out.println(topicsActions.length());
-         json.addProperty("topicsActions", topicsActions);
-         json.addProperty("restrictedTopicActions",restrictedTopicActions);
-		
+
+		json.addProperty("topicsActions", topicsActions);
+		json.addProperty("restrictedTopicActions", restrictedTopicActions);
+
 		renderJSON(json.toString());
 
-	
 	}
 
 	/**
-	 * restricts the user from a list of actions according to the selection from the whole entity
-	 * or from a certain topic according to the type
+	 * restricts the user from a list of actions according to the selection from
+	 * the whole entity or from a certain topic according to the type
 	 * 
 	 * @author Nada Ossama
 	 * 
@@ -666,76 +660,84 @@ public class BannedUsers extends CoolCRUD {
 	 *            : long Id of the user to be restricted
 	 */
 
-	public static boolean restrictFinal(@Required String []actionToDo, String type,
-			long entityTopicId, long userId) {
-		
-      
-     
+	public static boolean restrictFinal(@Required String[] actionToDo,
+			String type, long entityTopicId, long userId) {
+
 		boolean changed = true;
 		if (type.equalsIgnoreCase("topic")) {
-    
+
 			Topic topic = Topic.findById(entityTopicId);
 			MainEntity entity = topic.entity;
 			Organization org = entity.organization;
 			long organizationId = org.getId();
-			
+
 			if (validation.hasErrors() || actionToDo == null) {
 				flash.error("Oops, please select atleast one choise ");
 				topicActions(entityTopicId, userId);
 			}
-			
-			 for (int  i = 0 ; i < actionToDo .length ; i++ ){
-				changed = BannedUser.banFromActionInTopic(userId, organizationId,
-					actionToDo[i], entityTopicId);
+
+			for (int i = 0; i < actionToDo.length; i++) {
+				changed = BannedUser.banFromActionInTopic(userId,
+						organizationId, actionToDo[i], entityTopicId);
 				User restricted = User.findById(userId);
 				User restricter = Security.getConnected();
-				Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic ,org,entity,topic);
-				Notifications.sendNotification(userId, Security.getConnected().getId(),
-						"user", "you have been restricted from the following action :" + actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic );
+				Log.addUserLog(
+						"User " + restricter.firstName + " "
+								+ restricter.lastName
+								+ " has restricted the Organizer: "
+								+ restricted.firstName + " "
+								+ restricted.lastName + " from "
+								+ actionToDo[i] + " In organization  : " + org
+								+ " In Entity :" + entity + " In Topic :"
+								+ topic, org, entity, topic);
+				Notifications.sendNotification(userId, Security.getConnected()
+						.getId(), "user",
+						"you have been restricted from the following action :"
+								+ actionToDo[i] + " In organization  : " + org
+								+ " In Entity :" + entity + " In Topic :"
+								+ topic);
 
-		      }
-			
+			}
 
-			
-			
 		}
 
 		else {
-			
+
 			MainEntity entity = MainEntity.findById(entityTopicId);
 			Organization org = entity.organization;
 			long organizationId = org.getId();
-			
-			
-			if (validation.hasErrors()|| actionToDo == null) {
+
+			if (validation.hasErrors() || actionToDo == null) {
 				flash.error("Oops, please select atleast one choise ");
-				entityActions(entityTopicId,organizationId, userId);
+				entityActions(entityTopicId, organizationId, userId);
 			}
-			
-			for (int  i = 0 ; i < actionToDo .length ; i++ ){
-				changed = BannedUser.banFromActionInEntity(userId, organizationId,
-					actionToDo[i], entityTopicId);
-				
+
+			for (int i = 0; i < actionToDo.length; i++) {
+				changed = BannedUser.banFromActionInEntity(userId,
+						organizationId, actionToDo[i], entityTopicId);
+
 				User restricted = User.findById(userId);
 				User restricter = Security.getConnected();
-				Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity ,org,entity);
-				
-				
+				Log.addUserLog("User " + restricter.firstName + " "
+						+ restricter.lastName
+						+ " has restricted the Organizer: "
+						+ restricted.firstName + " " + restricted.lastName
+						+ " from " + actionToDo[i] + " In organization  : "
+						+ org + " In Entity :" + entity, org, entity);
+
 				Notifications.sendNotification(userId, restricter.getId(),
-						"user", "you have been restricted from the following action :" + actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity );
+						"user",
+						"you have been restricted from the following action :"
+								+ actionToDo[i] + " In organization  : " + org
+								+ " In Entity :" + entity);
 
-				
-		      }
-					
-			
+			}
+
 		}
-		
-		
-		return true;
-		
-	}
-	
 
+		return true;
+
+	}
 
 	/**
 	 * restricts a list of users in a certain entity or topic from a list of
@@ -754,76 +756,84 @@ public class BannedUsers extends CoolCRUD {
 	 *            : long id of the topic or entity to be restricted in
 	 */
 
-	public static boolean restrictGroupFinal(@Required String []actionToDo, String type,
-			long entityTopicId) {
-		
+	public static boolean restrictGroupFinal(@Required String[] actionToDo,
+			String type, long entityTopicId) {
+
 		boolean changed = true;
 		if (type.equalsIgnoreCase("topic")) {
-    
+
 			Topic topic = Topic.findById(entityTopicId);
 			MainEntity entity = topic.entity;
 			Organization org = entity.organization;
 			long organizationId = org.getId();
 			List<User> organizers = Users.getEntityOrganizers(entity);
-			
-			for(int j = 0 ; j < organizers.size() ; j++){
+
+			for (int j = 0; j < organizers.size(); j++) {
 				long userId = organizers.get(j).getId();
-				for (int  i = 0 ; i < actionToDo .length ; i++ ){
-					changed = BannedUser.banFromActionInTopic(userId, organizationId,
-						actionToDo[i], entityTopicId);
-					
+				for (int i = 0; i < actionToDo.length; i++) {
+					changed = BannedUser.banFromActionInTopic(userId,
+							organizationId, actionToDo[i], entityTopicId);
+
 					User restricted = User.findById(userId);
 					User restricter = Security.getConnected();
-					Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic ,org,entity,topic);
-					
-					Notifications.sendNotification(userId, Security.getConnected().getId(),
-							"user", "you have been restricted from the following action :" + actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic );
-			      }
-				
-				
+					Log.addUserLog("User " + restricter.firstName + " "
+							+ restricter.lastName
+							+ " has restricted the Organizer: "
+							+ restricted.firstName + " " + restricted.lastName
+							+ " from " + actionToDo[i] + " In organization  : "
+							+ org + " In Entity :" + entity + " In Topic :"
+							+ topic, org, entity, topic);
+
+					Notifications.sendNotification(userId, Security
+							.getConnected().getId(), "user",
+							"you have been restricted from the following action :"
+									+ actionToDo[i] + " In organization  : "
+									+ org + " In Entity :" + entity
+									+ " In Topic :" + topic);
+				}
+
 			}
-			 
-			
+
 		}
 
 		else {
-			
+
 			MainEntity entity = MainEntity.findById(entityTopicId);
 			Organization org = entity.organization;
 			long organizationId = org.getId();
 			List<User> organizers = Users.getEntityOrganizers(entity);
-			
-			
-			for(int j = 0 ; j < organizers.size() ; j++){
+
+			for (int j = 0; j < organizers.size(); j++) {
 				long userId = organizers.get(j).getId();
-				for (int  i = 0 ; i < actionToDo .length ; i++ ){
-					changed = BannedUser.banFromActionInEntity(userId, organizationId,
-						actionToDo[i], entityTopicId);
-					
+				for (int i = 0; i < actionToDo.length; i++) {
+					changed = BannedUser.banFromActionInEntity(userId,
+							organizationId, actionToDo[i], entityTopicId);
+
 					User restricted = User.findById(userId);
 					User restricter = Security.getConnected();
-					Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity ,org,entity);
-					
-					Notifications.sendNotification(userId, Security.getConnected().getId(),
-							"user", "you have been restricted from the following action :" + actionToDo[i]  +" In organization  : " + org +" In Entity :" + entity );
+					Log.addUserLog("User " + restricter.firstName + " "
+							+ restricter.lastName
+							+ " has restricted the Organizer: "
+							+ restricted.firstName + " " + restricted.lastName
+							+ " from " + actionToDo[i] + " In organization  : "
+							+ org + " In Entity :" + entity, org, entity);
 
-					
-			      }
-				
-				
+					Notifications.sendNotification(userId, Security
+							.getConnected().getId(), "user",
+							"you have been restricted from the following action :"
+									+ actionToDo[i] + " In organization  : "
+									+ org + " In Entity :" + entity);
+
+				}
+
 			}
-			
-		}
-		
-		
-		return changed;
-		
-	}
-	
-	
-	
 
-	
+		}
+
+		return changed;
+
+	}
+
 	/**
 	 * De-Restricts a certain user from a list of actions according to the
 	 * selection in the whole entity or in a certain topic according to the type
@@ -844,56 +854,72 @@ public class BannedUsers extends CoolCRUD {
 	 *            : String type that specifies whether to de-restrict the user
 	 *            in an entity or topic
 	 */
-	
-	public static void deRestrict(long userId  ,String[] actionsRestricted , long entityTopicID , String type ){
-		
-	
-		if(type.equals("topic")){
-			
+
+	public static void deRestrict(long userId, String[] actionsRestricted,
+			long entityTopicID, String type) {
+
+		if (type.equals("topic")) {
+
 			Topic topic = Topic.findById(entityTopicID);
 			MainEntity entity = topic.entity;
 			Organization org = entity.organization;
-			
-			for(int i = 0 ; i < actionsRestricted.length ; i++){
-				System.out.println("In BannedUsers : Topic deRest." + actionsRestricted[i] );
-				BannedUser.deRestrictFromTopic(userId, actionsRestricted[i], entityTopicID);
-				
-				
+
+			for (int i = 0; i < actionsRestricted.length; i++) {
+				System.out.println("In BannedUsers : Topic deRest."
+						+ actionsRestricted[i]);
+				BannedUser.deRestrictFromTopic(userId, actionsRestricted[i],
+						entityTopicID);
+
 				User restricted = User.findById(userId);
 				User restricter = Security.getConnected();
-				Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has de-restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic ,org,entity,topic);
-				
-				Notifications.sendNotification(userId, Security.getConnected().getId(),
-						"user", "you have been de-restricted from the following action :" + actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic );
+				Log.addUserLog("User " + restricter.firstName + " "
+						+ restricter.lastName
+						+ " has de-restricted the Organizer: "
+						+ restricted.firstName + " " + restricted.lastName
+						+ " from " + actionsRestricted[i]
+						+ " In organization  : " + org + " In Entity :"
+						+ entity + " In Topic :" + topic, org, entity, topic);
 
-				
+				Notifications.sendNotification(userId, Security.getConnected()
+						.getId(), "user",
+						"you have been de-restricted from the following action :"
+								+ actionsRestricted[i] + " In organization  : "
+								+ org + " In Entity :" + entity + " In Topic :"
+								+ topic);
+
 			}
-		}
-		else{
-		
+		} else {
+
 			MainEntity entity = MainEntity.findById(entityTopicID);
 			Organization org = entity.organization;
-			
-			for(int i = 0; i < actionsRestricted.length ; i++){
-				System.out.println("In bannedUsers: Entity de-Restriction" + actionsRestricted[i]);
-				BannedUser.deRestrictFromEntityWithCascading(userId, actionsRestricted[i], entityTopicID);
-				
-				
+
+			for (int i = 0; i < actionsRestricted.length; i++) {
+				System.out.println("In bannedUsers: Entity de-Restriction"
+						+ actionsRestricted[i]);
+				BannedUser.deRestrictFromEntityWithCascading(userId,
+						actionsRestricted[i], entityTopicID);
+
 				User restricted = User.findById(userId);
 				User restricter = Security.getConnected();
-				Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has de-restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity  ,org,entity);
-				
-				Notifications.sendNotification(userId, Security.getConnected().getId(),
-						"user", "you have been de-restricted from the following action :" + actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity );
+				Log.addUserLog("User " + restricter.firstName + " "
+						+ restricter.lastName
+						+ " has de-restricted the Organizer: "
+						+ restricted.firstName + " " + restricted.lastName
+						+ " from " + actionsRestricted[i]
+						+ " In organization  : " + org + " In Entity :"
+						+ entity, org, entity);
+
+				Notifications.sendNotification(userId, Security.getConnected()
+						.getId(), "user",
+						"you have been de-restricted from the following action :"
+								+ actionsRestricted[i] + " In organization  : "
+								+ org + " In Entity :" + entity);
 
 			}
 		}
-		
-		
+
 	}
-	
-	
-	
+
 	/**
 	 * De-Restricts a group of users from a list of actions according to the
 	 * selection in the whole entity or in a certain topic according to the type
@@ -914,137 +940,158 @@ public class BannedUsers extends CoolCRUD {
 	 *            : String type that specifies whether to de-restrict the user
 	 *            in an entity or topic
 	 */
-	
-	public static void deRestrictGroup(String[] actionsRestricted , long entityTopicID , String type ){
-	
-		if(type.equals("topic")){
-			
+
+	public static void deRestrictGroup(String[] actionsRestricted,
+			long entityTopicID, String type) {
+
+		if (type.equals("topic")) {
+
 			Topic topic = Topic.findById(entityTopicID);
 			MainEntity entity = topic.entity;
 			List<User> organizers = Users.getEntityOrganizers(entity);
 			Organization org = entity.organization;
-			
-		
-			
-			for(int j = 0 ; j < organizers.size() ; j++){
-				long userId  = organizers.get(j).getId();
-				for(int i = 0 ; i < actionsRestricted.length ; i++){
-					System.out.println("In BannedUsers : Topic deRest." + actionsRestricted[i] );
-					BannedUser.deRestrictFromTopic(userId, actionsRestricted[i], entityTopicID);
-                
+
+			for (int j = 0; j < organizers.size(); j++) {
+				long userId = organizers.get(j).getId();
+				for (int i = 0; i < actionsRestricted.length; i++) {
+					System.out.println("In BannedUsers : Topic deRest."
+							+ actionsRestricted[i]);
+					BannedUser.deRestrictFromTopic(userId,
+							actionsRestricted[i], entityTopicID);
+
 					User restricted = User.findById(userId);
 					User restricter = Security.getConnected();
-					Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has de-restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic ,org,entity,topic);
-					
+					Log.addUserLog("User " + restricter.firstName + " "
+							+ restricter.lastName
+							+ " has de-restricted the Organizer: "
+							+ restricted.firstName + " " + restricted.lastName
+							+ " from " + actionsRestricted[i]
+							+ " In organization  : " + org + " In Entity :"
+							+ entity + " In Topic :" + topic, org, entity,
+							topic);
 
-					Notifications.sendNotification(userId, Security.getConnected().getId(),
-							"user", "you have been de-restricted from the following action :" + actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity + " In Topic :" + topic );
+					Notifications.sendNotification(userId, Security
+							.getConnected().getId(), "user",
+							"you have been de-restricted from the following action :"
+									+ actionsRestricted[i]
+									+ " In organization  : " + org
+									+ " In Entity :" + entity + " In Topic :"
+									+ topic);
 
-					
+				}
+
 			}
-			
-				
-			}
-		}
-		else{
+		} else {
 			MainEntity entity = MainEntity.findById(entityTopicID);
 			List<User> organizers = Users.getEntityOrganizers(entity);
 			Organization org = entity.organization;
-			
-			for(int j = 0 ; j < organizers.size() ; j++){
-			long userId = organizers.get(j).getId();
-				for(int i = 0; i < actionsRestricted.length ; i++){
-					System.out.println("In bannedUsers: Entity de-Restriction" + actionsRestricted[i]);
-					BannedUser.deRestrictFromEntityWithCascading(userId, actionsRestricted[i], entityTopicID);
+
+			for (int j = 0; j < organizers.size(); j++) {
+				long userId = organizers.get(j).getId();
+				for (int i = 0; i < actionsRestricted.length; i++) {
+					System.out.println("In bannedUsers: Entity de-Restriction"
+							+ actionsRestricted[i]);
+					BannedUser.deRestrictFromEntityWithCascading(userId,
+							actionsRestricted[i], entityTopicID);
 					User restricted = User.findById(userId);
 					User restricter = Security.getConnected();
-					Log.addUserLog("User " + restricter.firstName + " " + restricter.lastName + " has de-restricted the Organizer: "+restricted.firstName + " " + restricted.lastName + " from " +actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity  ,org,entity);
-					
-					Notifications.sendNotification(userId, Security.getConnected().getId(),
-							"user", "you have been de-restricted from the following action :" + actionsRestricted[i]  +" In organization  : " + org +" In Entity :" + entity );
+					Log.addUserLog("User " + restricter.firstName + " "
+							+ restricter.lastName
+							+ " has de-restricted the Organizer: "
+							+ restricted.firstName + " " + restricted.lastName
+							+ " from " + actionsRestricted[i]
+							+ " In organization  : " + org + " In Entity :"
+							+ entity, org, entity);
+
+					Notifications.sendNotification(userId, Security
+							.getConnected().getId(), "user",
+							"you have been de-restricted from the following action :"
+									+ actionsRestricted[i]
+									+ " In organization  : " + org
+									+ " In Entity :" + entity);
 
 				}
-				
+
 			}
-			
+
 		}
-		
-		
+
 	}
-	
-	
-	
-	
+
 	/**
-	 * Displays the list of organizers that are restricted from certain actions in 
-	 * a certain organization
+	 * Displays the list of organizers that are restricted from certain actions
+	 * in a certain organization
 	 * 
 	 * @author Nada Ossama
 	 * 
 	 * @story C1S7
 	 * 
-	 * @param organizationID long id of the organization that the organizer is restricted in
+	 * @param organizationID
+	 *            long id of the organization that the organizer is restricted
+	 *            in
 	 */
-	
-	public static void viewRestrictedOrganizersInOrganization(long organizationID){
+
+	public static void viewRestrictedOrganizersInOrganization(
+			long organizationID) {
 		Organization organization = Organization.findById(organizationID);
 		User user = Security.getConnected();
-		List<BannedUser> bannedUsers = BannedUser.find("select bu from BannedUser bu where bu.organization = ?", organization).fetch();
+		List<BannedUser> bannedUsers = BannedUser.find(
+				"select bu from BannedUser bu where bu.organization = ?",
+				organization).fetch();
 		List<BannedUser> finalBannedUsers = new ArrayList<BannedUser>();
-		
-		for(int i = 0 ; i < bannedUsers.size() ; i++){
+
+		for (int i = 0; i < bannedUsers.size(); i++) {
 			User banned = bannedUsers.get(i).bannedUser;
 			List<User> searchResult = Users.searchOrganizer(organization);
-			if(searchResult.contains(banned)){
+			if (searchResult.contains(banned)) {
 				finalBannedUsers.add(bannedUsers.get(i));
 			}
 		}
-		
+
 		List<BannedUser> entityBannedUsers = new ArrayList<BannedUser>();
 		List<BannedUser> topicBannedUsers = new ArrayList<BannedUser>();
-		
-		for(int i = 0 ; i < finalBannedUsers.size() ; i++){
+
+		for (int i = 0; i < finalBannedUsers.size(); i++) {
 			BannedUser bannedUser = finalBannedUsers.get(i);
-			
-			if(bannedUser.resourceType.equalsIgnoreCase("topic")){
+
+			if (bannedUser.resourceType.equalsIgnoreCase("topic")) {
 				topicBannedUsers.add(bannedUser);
-				
+
 			}
-			if(bannedUser.resourceType.equalsIgnoreCase("entity")){
+			if (bannedUser.resourceType.equalsIgnoreCase("entity")) {
 				entityBannedUsers.add(bannedUser);
-				System.out.println("Da5aaaal");
+
 			}
 		}
-		
-//		List<BannedUser> sortedByEntity = sortByID(entityBannedUsers);
-//		List<BannedUser> sortedByTopic = sortByID(topicBannedUsers);
-//		List<BannedUser> sortByUserInEntity = sortByUser(entityBannedUsers);
-//		List<BannedUser> sortByUserInTopic = sortByUser(topicBannedUsers);
-//		List<BannedUser> sortByActionInEntity = sortByAction(entityBannedUsers);
-//		List<BannedUser> sortByActionInTopic = sortByAction(topicBannedUsers);
-//		
-//		String ids = "";
-//		String names = "";
-//		for(int  i = 0 ; i < sortedByEntity.size() ; i++){
-//			ids = ids + sortedByEntity.get(i).resourceID + ",";
-//			
-//			MainEntity entity = MainEntity.findById(sortedByEntity.get(i).resourceID);
-//			names = names + (entity.name) + ",";
-//			
-//		}
-		
-		if(user.isAdmin || organization.creator.equals(user)){
-			render(user,organizationID, entityBannedUsers );
-		}
-		else{
+
+		// List<BannedUser> sortedByEntity = sortByID(entityBannedUsers);
+		// List<BannedUser> sortedByTopic = sortByID(topicBannedUsers);
+		// List<BannedUser> sortByUserInEntity = sortByUser(entityBannedUsers);
+		// List<BannedUser> sortByUserInTopic = sortByUser(topicBannedUsers);
+		// List<BannedUser> sortByActionInEntity =
+		// sortByAction(entityBannedUsers);
+		// List<BannedUser> sortByActionInTopic =
+		// sortByAction(topicBannedUsers);
+		//
+		// String ids = "";
+		// String names = "";
+		// for(int i = 0 ; i < sortedByEntity.size() ; i++){
+		// ids = ids + sortedByEntity.get(i).resourceID + ",";
+		//
+		// MainEntity entity =
+		// MainEntity.findById(sortedByEntity.get(i).resourceID);
+		// names = names + (entity.name) + ",";
+		//
+		// }
+
+		if (user.isAdmin || organization.creator.equals(user)) {
+			render(user, organizationID, entityBannedUsers);
+		} else {
 			unauthorized();
 		}
-		
-		
-		
-		
-		
+
 	}
+
 	/**
 	 * Sorts the list of banned users by the resource id
 	 * 
@@ -1052,85 +1099,88 @@ public class BannedUsers extends CoolCRUD {
 	 * 
 	 * @story C1S7 , C1S19
 	 * 
-	 * @param toBeSorted :List<BannedUser> that requires sorting
+	 * @param toBeSorted
+	 *            :List<BannedUser> that requires sorting
 	 * @return List<BannedUser> :sorted list
 	 */
-	public static List<BannedUser> sortByID(List<BannedUser> toBeSorted){
+	public static List<BannedUser> sortByID(List<BannedUser> toBeSorted) {
 		List<BannedUser> sorted = new ArrayList<BannedUser>();
 		String type = "";
-		for(int i = 0 ; i< toBeSorted.size() ; i++){
+		for (int i = 0; i < toBeSorted.size(); i++) {
 			BannedUser banned = toBeSorted.get(i);
 			type = toBeSorted.get(0).resourceType;
-			if(sorted.isEmpty()){
+			if (sorted.isEmpty()) {
 				sorted.add(banned);
-				}
-			else{
+			} else {
 				boolean added = false;
-				for(int j = 0 ; j < sorted.size(); j++){
-	                if(type.equalsIgnoreCase("entity")){
-	                	MainEntity entityOne = MainEntity.findById(banned.resourceID);
+				for (int j = 0; j < sorted.size(); j++) {
+					if (type.equalsIgnoreCase("entity")) {
+						MainEntity entityOne = MainEntity
+								.findById(banned.resourceID);
 						System.out.println("test" + banned.resourceID);
-						MainEntity entityTwo = MainEntity.findById(sorted.get(j).resourceID);
-						if(entityOne.name.compareToIgnoreCase(entityTwo.name)<0 ){
+						MainEntity entityTwo = MainEntity.findById(sorted
+								.get(j).resourceID);
+						if (entityOne.name.compareToIgnoreCase(entityTwo.name) < 0) {
 							added = true;
 							sorted.add(j, banned);
 							break;
 						}
-	                }
-	                else{
-	                	
-	                	
-	                	Topic topicOne = Topic.findById(banned.resourceID);
+					} else {
+
+						Topic topicOne = Topic.findById(banned.resourceID);
 						System.out.println("test" + banned.resourceID);
-						Topic topicTwo = Topic.findById(sorted.get(j).resourceID);
-						
-						if(topicOne.title.compareToIgnoreCase(topicTwo.title)<0 ){
+						Topic topicTwo = Topic
+								.findById(sorted.get(j).resourceID);
+
+						if (topicOne.title.compareToIgnoreCase(topicTwo.title) < 0) {
 							added = true;
 							sorted.add(j, banned);
 							break;
 						}
-	                }
-					
+					}
+
 				}
-				if(!added){
+				if (!added) {
 					sorted.add(banned);
 				}
 			}
-			
+
 		}
 		return sorted;
 	}
+
 	/**
 	 * maps the id of an entity or a topic to it's name or title
 	 * 
 	 * @author Nada Ossama
 	 * 
-	 * @story C1S7 
+	 * @story C1S7
 	 * 
-	 *@param idd , String idd is the of the object to be mapped
-	 *
-	 *@param type , is the type of the object to be mapped
+	 * @param idd
+	 *            , String idd is the of the object to be mapped
+	 * 
+	 * @param type
+	 *            , is the type of the object to be mapped
 	 */
-	
-	public static String maps(String idd , String type){
-		
-	     long id = Long.parseLong(idd);
+
+	public static String maps(String idd, String type) {
+
+		long id = Long.parseLong(idd);
 		String name = "";
-	//	JsonObject json = new JsonObject();
-		if (type.equalsIgnoreCase("entity")){
+		// JsonObject json = new JsonObject();
+		if (type.equalsIgnoreCase("entity")) {
 			MainEntity entity = MainEntity.findById(id);
-			name = entity.name ;
-			
-		}
-		else{
+			name = entity.name;
+
+		} else {
 			Topic topic = Topic.findById(id);
 			name = topic.title;
 		}
-		System.out.println(name);
-//		json.addProperty("namee", name);
-//		System.out.println(name);
-//		renderJSON(json.toString());
-		return(name);
+
+		// json.addProperty("namee", name);
+		// System.out.println(name);
+		// renderJSON(json.toString());
+		return (name);
 	}
 
 	/**
@@ -1154,146 +1204,148 @@ public class BannedUsers extends CoolCRUD {
 	 *            is the type of the source the organizer is restricted from
 	 *            (entity/topic)
 	 */
-	public static void go(int order , long organizationID , int number , String type){
-		
-		
+	public static void go(int order, long organizationID, int number,
+			String type) {
+
 		Organization organization = Organization.findById(organizationID);
-		
-		
-		
-		
-		List<BannedUser> bannedUsers = BannedUser.find("select bu from BannedUser bu where bu.organization = ?", organization).fetch();
+
+		List<BannedUser> bannedUsers = BannedUser.find(
+				"select bu from BannedUser bu where bu.organization = ?",
+				organization).fetch();
 		List<BannedUser> finalBannedUsers = new ArrayList<BannedUser>();
-		
-		for(int i = 0 ; i < bannedUsers.size() ; i++){
+
+		for (int i = 0; i < bannedUsers.size(); i++) {
 			User banned = bannedUsers.get(i).bannedUser;
 			List<User> searchResult = Users.searchOrganizer(organization);
-			if(searchResult.contains(banned)){
+			if (searchResult.contains(banned)) {
 				finalBannedUsers.add(bannedUsers.get(i));
 			}
 		}
 		List<BannedUser> entityBannedUsers = new ArrayList<BannedUser>();
 		List<BannedUser> topicBannedUsers = new ArrayList<BannedUser>();
-		
-		for(int i = 0 ; i < finalBannedUsers.size() ; i++){
+
+		for (int i = 0; i < finalBannedUsers.size(); i++) {
 			BannedUser bannedUser = finalBannedUsers.get(i);
-			if(bannedUser.resourceType.equalsIgnoreCase("topic")){
+			if (bannedUser.resourceType.equalsIgnoreCase("topic")) {
 				topicBannedUsers.add(bannedUser);
 			}
-			if(bannedUser.resourceType.equalsIgnoreCase("entity")){
+			if (bannedUser.resourceType.equalsIgnoreCase("entity")) {
 				entityBannedUsers.add(bannedUser);
 			}
 		}
-		
+
 		List<BannedUser> sortedByEntity = sortByID(entityBannedUsers);
 		List<BannedUser> sortedByTopic = sortByID(topicBannedUsers);
 		List<BannedUser> sortByUserInEntity = sortByUser(entityBannedUsers);
 		List<BannedUser> sortByUserInTopic = sortByUser(topicBannedUsers);
 		List<BannedUser> sortByActionInEntity = sortByAction(entityBannedUsers);
 		List<BannedUser> sortByActionInTopic = sortByAction(topicBannedUsers);
-		
-//		String ids = "";
-//		String names = "";
-//		for(int  i = 0 ; i < sortedByEntity.size() ; i++){
-//			ids = ids + sortedByEntity.get(i).resourceID + ",";
-//			
-//			MainEntity entity = MainEntity.findById(sortedByEntity.get(i).resourceID);
-//			names = names + (entity.name) + ",";
-//			
-//		}
-//		System.out.println(ids);	
-//		
-		
-		if(number == 4){
+
+		// String ids = "";
+		// String names = "";
+		// for(int i = 0 ; i < sortedByEntity.size() ; i++){
+		// ids = ids + sortedByEntity.get(i).resourceID + ",";
+		//
+		// MainEntity entity =
+		// MainEntity.findById(sortedByEntity.get(i).resourceID);
+		// names = names + (entity.name) + ",";
+		//
+		// }
+		// System.out.println(ids);
+		//
+
+		if (number == 4) {
 			JsonObject json = new JsonObject();
-			String myname = sortByActionInTopic.get(order).bannedUser.firstName + " " + sortByActionInTopic.get(order).bannedUser.lastName;
+			String myname = sortByActionInTopic.get(order).bannedUser.firstName
+					+ " " + sortByActionInTopic.get(order).bannedUser.lastName;
 			String myaction = sortByActionInTopic.get(order).action;
-			String myresourceId = sortByActionInTopic.get(order).resourceID + "";
+			String myresourceId = sortByActionInTopic.get(order).resourceID
+					+ "";
 			json.addProperty("name", myname);
 			json.addProperty("action", myaction);
-			json.addProperty("resourceId",myresourceId);
-			String name = maps(myresourceId , type); 
-			json.addProperty("namee",name);
-			System.out.println("5alasssssssssss");
+			json.addProperty("resourceId", myresourceId);
+			String name = maps(myresourceId, type);
+			json.addProperty("namee", name);
 			renderJSON(json.toString());
 		}
-		if(number == 5){
-			
+		if (number == 5) {
+
 			JsonObject json = new JsonObject();
-			String myname = sortedByTopic.get(order).bannedUser.firstName + " " + sortedByTopic.get(order).bannedUser.lastName;
+			String myname = sortedByTopic.get(order).bannedUser.firstName + " "
+					+ sortedByTopic.get(order).bannedUser.lastName;
 			String myaction = sortedByTopic.get(order).action;
 			String myresourceId = sortedByTopic.get(order).resourceID + "";
 			json.addProperty("name", myname);
 			json.addProperty("action", myaction);
-			json.addProperty("resourceId",myresourceId);
-			String name = maps(myresourceId , type); 
-			json.addProperty("namee",name);
-			System.out.println("5alasssssssssss");
+			json.addProperty("resourceId", myresourceId);
+			String name = maps(myresourceId, type);
+			json.addProperty("namee", name);
 			System.out.println(myresourceId);
 			renderJSON(json.toString());
 		}
-		if(number == 6){
+		if (number == 6) {
 			JsonObject json = new JsonObject();
-			String myname = sortByUserInTopic.get(order).bannedUser.firstName + " " + sortByUserInTopic.get(order).bannedUser.lastName;
+			String myname = sortByUserInTopic.get(order).bannedUser.firstName
+					+ " " + sortByUserInTopic.get(order).bannedUser.lastName;
 			String myaction = sortByUserInTopic.get(order).action;
 			String myresourceId = sortByUserInTopic.get(order).resourceID + "";
 			json.addProperty("name", myname);
 			json.addProperty("action", myaction);
-			json.addProperty("resourceId",myresourceId);
-			String name = maps(myresourceId , type); 
-			json.addProperty("namee",name);
-			System.out.println("5alasssssssssss");
+			json.addProperty("resourceId", myresourceId);
+			String name = maps(myresourceId, type);
+			json.addProperty("namee", name);
 			renderJSON(json.toString());
 		}
-		if(number == 1){
+		if (number == 1) {
 			JsonObject json = new JsonObject();
-			String myname = sortedByEntity.get(order).bannedUser.firstName + " " + sortedByEntity.get(order).bannedUser.lastName;
+			String myname = sortedByEntity.get(order).bannedUser.firstName
+					+ " " + sortedByEntity.get(order).bannedUser.lastName;
 			String myaction = sortedByEntity.get(order).action;
 			String myresourceId = sortedByEntity.get(order).resourceID + "";
 			json.addProperty("name", myname);
 			json.addProperty("action", myaction);
-			json.addProperty("resourceId",myresourceId);
-			System.out.println("5alasssssssssss");
-			String name = maps(myresourceId , type); 
-			json.addProperty("namee",name);
+			json.addProperty("resourceId", myresourceId);
+			String name = maps(myresourceId, type);
+			json.addProperty("namee", name);
 			renderJSON(json.toString());
+		} else {
+			if (number == 2) {
+				JsonObject json = new JsonObject();
+				String myname = sortByUserInEntity.get(order).bannedUser.firstName
+						+ " "
+						+ sortByUserInEntity.get(order).bannedUser.lastName;
+				String myaction = sortByUserInEntity.get(order).action;
+				String myresourceId = sortByUserInEntity.get(order).resourceID
+						+ "";
+				json.addProperty("name", myname);
+				json.addProperty("action", myaction);
+				json.addProperty("resourceId", myresourceId);
+				String name = maps(myresourceId, type);
+				json.addProperty("namee", name);
+				renderJSON(json.toString());
+			} else {
+
+				JsonObject json = new JsonObject();
+				String myname = sortByActionInEntity.get(order).bannedUser.firstName
+						+ " "
+						+ sortByActionInEntity.get(order).bannedUser.lastName;
+				String myaction = sortByActionInEntity.get(order).action;
+				String myresourceId = sortByActionInEntity.get(order).resourceID
+						+ "";
+				json.addProperty("name", myname);
+				json.addProperty("action", myaction);
+				json.addProperty("resourceId", myresourceId);
+				String name = maps(myresourceId, type);
+				json.addProperty("namee", name);
+
+				renderJSON(json.toString());
+
+			}
+
 		}
-		else{ if (number == 2){
-			JsonObject json = new JsonObject();
-			String myname = sortByUserInEntity.get(order).bannedUser.firstName + " " + sortByUserInEntity.get(order).bannedUser.lastName;
-			String myaction = sortByUserInEntity.get(order).action;
-			String myresourceId = sortByUserInEntity.get(order).resourceID + "";
-			json.addProperty("name", myname);
-			json.addProperty("action", myaction);
-			json.addProperty("resourceId",myresourceId);
-			String name = maps(myresourceId , type); 
-			json.addProperty("namee",name);
-			System.out.println("5alasssssssssss");
-			renderJSON(json.toString());
-		   }
-		else{
-			System.out.println("HELOOOOOOOOOOOOOOOOOOOOOOoo");
-			JsonObject json = new JsonObject();
-			String myname = sortByActionInEntity.get(order).bannedUser.firstName + " " + sortByActionInEntity.get(order).bannedUser.lastName;
-			String myaction = sortByActionInEntity.get(order).action;
-			String myresourceId = sortByActionInEntity.get(order).resourceID + "";
-			json.addProperty("name", myname);
-			json.addProperty("action", myaction);
-			json.addProperty("resourceId",myresourceId);
-			String name = maps(myresourceId , type); 
-			json.addProperty("namee",name);
-			System.out.println("5alasssssssssss");
-			renderJSON(json.toString());
-			
-		}
-			
-		}
-		
-		
-		
-		
-		
+
 	}
+
 	/**
 	 * sorts the BannedUser list by the first Name of the user
 	 * 
@@ -1301,33 +1353,35 @@ public class BannedUsers extends CoolCRUD {
 	 * 
 	 * @story C1S7 , C1S19
 	 * 
-	 * @param toBeSorted :List<BannedUser> that requires sorting
+	 * @param toBeSorted
+	 *            :List<BannedUser> that requires sorting
 	 * @return List<BannedUser> : sorted List
 	 */
-	public static List<BannedUser> sortByUser(List<BannedUser> toBeSorted){
+	public static List<BannedUser> sortByUser(List<BannedUser> toBeSorted) {
 		List<BannedUser> sorted = new ArrayList<BannedUser>();
-		for(int i = 0 ; i< toBeSorted.size() ; i++){
+		for (int i = 0; i < toBeSorted.size(); i++) {
 			BannedUser banned = toBeSorted.get(i);
-			if(sorted.isEmpty()){
+			if (sorted.isEmpty()) {
 				sorted.add(banned);
-				}
-			else{
+			} else {
 				boolean added = false;
-				for(int j = 0 ; j < sorted.size(); j++){
-					if(banned.bannedUser.firstName .compareTo(sorted.get(j).bannedUser.firstName)  < 0){
+				for (int j = 0; j < sorted.size(); j++) {
+					if (banned.bannedUser.firstName
+							.compareTo(sorted.get(j).bannedUser.firstName) < 0) {
 						added = true;
 						sorted.add(j, banned);
 						break;
 					}
 				}
-				if(!added){
+				if (!added) {
 					sorted.add(banned);
 				}
 			}
-			
+
 		}
 		return sorted;
 	}
+
 	/**
 	 * sorted a list of BannedUser by Action
 	 * 
@@ -1335,39 +1389,39 @@ public class BannedUsers extends CoolCRUD {
 	 * 
 	 * @story C1S7 , C1S19
 	 * 
-	 * @param toBeSorted : List<BannedUser> that requires sorting
+	 * @param toBeSorted
+	 *            : List<BannedUser> that requires sorting
 	 * 
 	 * @return List<BannedUser> sorted List
 	 */
-	
-	public static List<BannedUser> sortByAction(List<BannedUser> toBeSorted){
+
+	public static List<BannedUser> sortByAction(List<BannedUser> toBeSorted) {
 		List<BannedUser> sorted = new ArrayList<BannedUser>();
-		System.out.println(toBeSorted.size() + "Size");
-		for(int i = 0 ; i< toBeSorted.size() ; i++){
+
+		for (int i = 0; i < toBeSorted.size(); i++) {
 			BannedUser banned = toBeSorted.get(i);
-			if(sorted.isEmpty()){
+			if (sorted.isEmpty()) {
 				sorted.add(banned);
-				}
-			else{
+			} else {
 				boolean added = false;
-				for(int j = 0 ; j < sorted.size(); j++){
-					if(banned.action .compareToIgnoreCase(sorted.get(j).action)  < 0){
+				for (int j = 0; j < sorted.size(); j++) {
+					if (banned.action.compareToIgnoreCase(sorted.get(j).action) < 0) {
 						added = true;
 						sorted.add(j, banned);
-						System.out.println(j + "j");
+
 						break;
-						
+
 					}
 				}
-				if(!added){
+				if (!added) {
 					sorted.add(banned);
 				}
 			}
-			
+
 		}
 		return sorted;
 	}
-	
+
 	/**
 	 * renders the list of entities in a certain organization
 	 * 
@@ -1375,59 +1429,60 @@ public class BannedUsers extends CoolCRUD {
 	 * 
 	 * @story C1S7 , C1S16
 	 * 
-	 * @param organizationID : long id of the organization
+	 * @param organizationID
+	 *            : long id of the organization
 	 */
-	public static void dummy(){
-		restrictGroupInSelectedEntity(1);	
+	public static void dummy() {
+		restrictGroupInSelectedEntity(1);
 	}
-	
-	
-	public static void restrictGroupInSelectedEntity(long organizationID){
-		
+
+	public static void restrictGroupInSelectedEntity(long organizationID) {
+
 		Organization organization = Organization.findById(organizationID);
 		List<MainEntity> organizationEntities = organization.entitiesList;
 		User user = Security.getConnected();
-		if(user.isAdmin || organization.creator.equals(user)){
-			render(user,organizationEntities , organizationID);
-		}
-		else{
+		if (user.isAdmin || organization.creator.equals(user)) {
+			render(user, organizationEntities, organizationID);
+		} else {
 			unauthorized();
 		}
-		
+
 	}
-	
+
 	/**
 	 * gets the list of organizers of a certain entity
 	 * 
 	 * @author Nada Ossama
 	 * 
-	 * @story C1S7 , C1S16
+	 * @story C1S7 , C1S19
 	 * 
-	 * @param entityId : long id of the entity that the organizers are enrolled in
+	 * @param entityId
+	 *            : long id of the entity that the organizers are enrolled in
 	 */
-	public static void getOrganizersInEntity(long entityId){
-		
+	public static void getOrganizersInEntity(long entityId) {
+
 		JsonObject json = new JsonObject();
-		
+
 		MainEntity entity = MainEntity.findById(entityId);
 		List<User> organizers = Users.getEntityOrganizers(entity);
 		String organizersNames = "";
 		String organizersIDs = "";
-		
-		for(int i = 0 ; i < organizers.size() ; i++){
-			organizersNames += organizers.get(i).firstName + " " + organizers.get(i).lastName + ",";
+
+		for (int i = 0; i < organizers.size(); i++) {
+			organizersNames += organizers.get(i).firstName + " "
+					+ organizers.get(i).lastName + ",";
 			organizersIDs += organizers.get(i).getId() + ",";
 		}
 		json.addProperty("organizersNames", organizersNames);
 		json.addProperty("organizersIDs", organizersIDs);
-		
+
 		renderJSON(json.toString());
-		
+
 	}
 
 	/**
-	 * Renders the list of idea developers enrolled in the entity/topic
-	 * to the organizer/lead/admin to be blocked/unblocked
+	 * Renders the list of idea developers enrolled in the entity/topic to the
+	 * organizer/lead/admin to be blocked/unblocked
 	 * 
 	 * @author Mai Magdy
 	 * 
@@ -1488,7 +1543,7 @@ public class BannedUsers extends CoolCRUD {
 					count.add(1);
 
 			}
-             
+
 			render(users, count, object, num);
 
 		}
@@ -1496,8 +1551,8 @@ public class BannedUsers extends CoolCRUD {
 	}
 
 	/**
-	 * block/unblock an idea developer from viewing/using a certain topic 
-	 * calls doBlock() to block from entity
+	 * block/unblock an idea developer from viewing/using a certain topic calls
+	 * doBlock() to block from entity
 	 * 
 	 * @author Mai Magdy
 	 * 
@@ -1510,15 +1565,15 @@ public class BannedUsers extends CoolCRUD {
 	 *            int type, 0 if view/1 if use
 	 * 
 	 * @param numId
-	 *            long Id of the topic/entity that the user ll be blocked/unblocked
-	 *            from
+	 *            long Id of the topic/entity that the user ll be
+	 *            blocked/unblocked from
 	 * 
 	 * @param id
 	 *            int id , 0 if entity/1 if topic
 	 * 
 	 * @param text
-	 *            String text that is the text on the button represents the action if
-	 *            (block or unblock)
+	 *            String text that is the text on the button represents the
+	 *            action if (block or unblock)
 	 * 
 	 * @param message
 	 *            String message that is the reason why this person has been
@@ -1546,7 +1601,7 @@ public class BannedUsers extends CoolCRUD {
 
 		if (id == 0) {
 			entity = MainEntity.findById(numId);
-//			organizers = Users.getEntityOrganizers(entity);
+			// organizers = Users.getEntityOrganizers(entity);
 
 			if (type == 0) {
 
@@ -1573,7 +1628,6 @@ public class BannedUsers extends CoolCRUD {
 							"You have been blocked from viewing entity "
 									+ entity.name + " because " + message);
 					doBlock(userId, numId, 0, 0);
-					
 
 				} else {
 
@@ -1601,7 +1655,6 @@ public class BannedUsers extends CoolCRUD {
 									+ entity.name);
 					doBlock(userId, numId, 1, 0);
 					System.out.println("HEREEEEEEEEEEE LAMA");
-					
 
 				}
 			} else {
@@ -1630,13 +1683,12 @@ public class BannedUsers extends CoolCRUD {
 									+ entity.name + " because " + message);
 					doBlock(userId, numId, 0, 1);
 
-					
 				} else {
 					Log.addUserLog(organizer.firstName + " "
-							+ organizer.lastName + " unblocked " + user.firstName
-							+ " " + user.lastName + " from using Entity "
-							+ entity.name, user, organizer, entity,
-							entity.organization);
+							+ organizer.lastName + " unblocked "
+							+ user.firstName + " " + user.lastName
+							+ " from using Entity " + entity.name, user,
+							organizer, entity, entity.organization);
 
 					for (int i = 0; i < organizers.size(); i++)
 						Notifications
@@ -1654,18 +1706,17 @@ public class BannedUsers extends CoolCRUD {
 							"You have been ublocked from performing any action within entity "
 									+ entity.name + " because " + message);
 					doBlock(userId, numId, 1, 1);
-					
+
 				}
 			}
 		} else {
-			
+
 			System.out.println("YES");
 			topic = Topic.findById(numId);
 			entity = topic.entity;
 			organizers = Users.getEntityOrganizers(entity);
 			organizers.remove(user);
-			
-			
+
 			if (type == 0) {
 				System.out.println("view");
 				if (text.equals("Block from viewing")) {
@@ -1727,7 +1778,7 @@ public class BannedUsers extends CoolCRUD {
 				}
 			} else {
 				if (text.equals("Block from using")) {
-					
+
 					System.out.println("use");
 					BannedUser block = new BannedUser(user,
 							topic.entity.organization, "use", "topic", numId);
@@ -1806,8 +1857,8 @@ public class BannedUsers extends CoolCRUD {
 	 *            int choice, 0 if block/1 if unblock
 	 * 
 	 * @param type
-	 *            int type (0 if view/1 if use) represnts the action the user ll be
-	 *            blocked/unblocked from
+	 *            int type (0 if view/1 if use) represnts the action the user ll
+	 *            be blocked/unblocked from
 	 * 
 	 */
 
