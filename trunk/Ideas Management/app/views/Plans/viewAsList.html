@@ -5,6 +5,7 @@ ${p.title} - View Plan as List
 <script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js"></script>
 
 <br/>
+#{if notBlockedFromUsing}
 #{if checkNotRated}
 <form action="@{Plans.rate(p.id,rat)}" method="GET">
     <input type="submit" value="Submit rating"/><input type="hidden" name = "planId" value=${p.id}/>
@@ -30,6 +31,7 @@ You have already rated this plan
     <input type = "text" name = "comment"><input type = "hidden" name = "planId" value = ${p.id}><input type = "submit" value = "Comment">
 </form>
 <br/>
+#{/if}
 <input type = "submit" value = "Show Comments" onclick="viewComments()">
 <br/>
 <script type="text/javascript">
