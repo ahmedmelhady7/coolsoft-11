@@ -1,135 +1,424 @@
 #{extends 'login/index.html' /}
-#{script src:"jquery-1.5.2.min.js" /}
+<div id="leftSidebar">
+    <ul>
+        <div style="clear: both;">
+            &nbsp;
+        </div>
+        <li>
+            <ul>
+            	#{if permission == 1}
+                <li>
+                <input type="submit" value="Edit topic" onclick=location.href="@{Topics.view(topicId)}" class="linkButton"> 
+                </li>
+				 #{/if}
+                
+				#{if allowed==1}
+				<li>
+					<input type="submit" value="Requests" onclick=location.href="@{RequestToJoins.viewRequests(1,object.id)}" class="linkButton">
+                </li>
+                #{/if}
+				
+				#{if allowed==1}
+				<li>
+					<input type="submit" value="Invite" onclick=location.href="@{Invitations.invite(object.id,1,0,0)}" class="linkButton">
+                </li>
+                #{/if}
+       
+				#{if alreadyReportedTopic==false}
+				<li>
+                    <form action="@{Users.reportTopicAsSpam()}" method="GET" name="myform">
+                          <input type="hidden" name="topicId" value="${topicId}">
+                          <input id="spam" type="submit" value="Report Topic As Spam" class = "linkButton">
+                    </form>
+                </li>
+				#{/if}
+				
+				#{if alreadyReportedTopic==true}
+                <li>
+                    <font color="Red">Already reported as spam</font>
+                </li>
+				#{/if}
+				
+				
+				<li>
+				  	<form action="@{Topics.tagTopic()}" method="post">
+        	             <input type="hidden" value=${topicId} name='topicId'>
+			             <input type="hidden" value='@@' name='tag'>
+						 <input type="submit" value="Add tags" class = "linkButton">
+        			</form>
+				</li>
+				
+				 #{if numberOfIdeas > 1 && canMerge == 1}
+                <li>
+                   #{form @Topics.getIdeasToMerge(), method:'POST', enctype:'multipart/form-data' }
+				       <input type = "hidden" name = "topicId" value = ${topicId}>
+				       <input type="submit" value="Merge Ideas" class = "linkButton"/>
+				   #{/form}
+                </li>
+				#{/if}
+				
+				#{if canClose == 1 && openToEdit == true}
+                <li> 
+					#{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "topicId" value = ${topicId}>
+						<input type="submit" value="Close Topic" class = "linkButton"/>
+					#{/form} 
+		        </li>
+				#{/if} 
+				
+				#{if canClose == 1 && openToEdit == false}
+                <li>
+                    #{form @Topics.reopen(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "topicId" value = ${topicId}>
+						<input type="submit" value="Reopen Topic" class = "linkButton"/>
+					#{/form}
+                </li>
+				#{/if} 
+				
+				
+				#{if canPlan == 1 && plan == null}
+				<li>
+					#{form @Plans.planCreate(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "topicId" value = ${topicIdLong}>
+						<input type="submit" value="Create A plan" class = "linkButton"/>
+					#{/form}
+				</li>
+				#{/if}
+					
+				#{if plan != null}
+				<li>
+					#{form @Plans.viewAsList(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "planId" value = ${plan.id}>
+						<input type="submit" value="View the plan" class = "linkButton"/>
+					#{/form}
+				</li>
+				#{/if}
+					
+				#{if check == 1}
+				<li>
+					 <input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(topicId,1)}" class = "linkButton">
+				</li>
+				#{/if}
+					
+				#{if (targetTopic.createRelationship == true)}
+				#{if (canCreateRelationship == true)}
+				<li>
+					<p>
+						<input type="submit" value="Create Relation" onclick=location.href="@{Topics.createRelation(object.id,object.entity.id)}" class="linkButton">
+					</p>
+				</li>
+				#{/if}
+				#{/if}
+				
+				 #{if (!targetTopic.followers.contains(user))} 
+			     #{if follower == false} 
+				<li>
+					<p>
+						<form action="@{Topics.viewFollowers()}">
+			   				 <input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">
+			       		     <input type="submit" value="Follow ${targetTopic.title}" class = "linkButton">
+			   	 		</form>
+					</p>
+				</li>
+			    #{/if}
+			    #{/if}
+				 
+				#{if follower == true}
+		        <li>
+			      <p>
+			      	<form action="@{Topics.viewFollowers()}">
+			   			<input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">
+			       		<input type="submit" value="Unfollow ${targetTopic.title} " onclick="unfollow('${topicId}');" class = "linkButton"/>
+				 	</form>
+			      </p>
+				</li>
+			    #{/if}
+			      
+				<li>
+				    <form action="@{Topics.viewFollowers()}">
+				     	 <input type="hidden" name="topicId" value="${targetTopic.id} Followers"><input type="hidden" name="f" value="false"> <input type="submit" value="Followers" class = "linkButton">
+				 	</form>
+			    </li>
+				
+				#{if canNotPost == true}
+				<li>
+		            <p id="req">
+		                <a onclick="requestToPost('${topicId}');" href="#">request to post on this topic</a>
+		            </p>
+				</li>
+               #{/if}
+			
+           	   #{if pending == true && canNotPost == false}
+			   <li>
+		            <p>
+		                Request To Post status: Pending
+		            </p>
+			   </li>
+           	   #{/if}
+			
+			   <li>
+					<p id="pen">
+	                Request To Post status: Pending
+	                </p>
+			   </li>
+			   
+			   #{if (canRestrict == 1)}
+			   <li>
+		           <input type="submit" value="Restrict/De-Restrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerTopicPath(topicId)}" class = "linkButton">	
+			   </li>
+			   #{/if}
+			   
+			   <li>
+			    	<form action="@{Topics.requestRelationship(actor.id, organisation.id, entity.id, targetTopic.id)}" method="post">
+	 					<input type="submit" value="Request Relationship Creation" class = "linkButton">
+	  				</form>
+				</li>	
+					
+	 			<li>
+	 				<form action="@{Topics.viewRelationships(actor.id, organisation.id, entity.id, targetTopic.id, canRequestRelationship)}" method="post">
+	  					<input type="submit" value="View Relationships" class = "linkButton">
+	  				</form>
+				</li>
+				
+				
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div style="float:1000px" >#{script src:"jquery-1.5.2.min.js" /}
 <script type="text/javascript" src="/public/javascripts/jquery-1.4.1.js"></script>
 <br/>
-<input type="submit" value="Back to Entity" onclick=location.href="@{MainEntitys.viewEntity(entity.id)}">
-<br/>
-<br/>
-<h3>
-    <label>
-        View Topic
-    </label>
-</h3>
-<br/>
+<a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a>
+
 <table id = "success" border="0" bgcolor="#FF0000" cellspacing="0" id ="toFil">
 		<tr><td><font size ="3" color ="black"><i>
 					<font color="#000000"><b><i>Topic Has been Reported As Spam</i></b></font>                
         </i></font></td><td>
 </table>
 <div id="crudShow" class="${type.name}">
-    <br/>
-    <font color="Red">
-        ${message}
-    </font>
-    <br/>
+    
     <div class="objectForm">
-        #{form action:@view(object._key()), enctype:'multipart/form-data'}
-        <br/>
-        #{crud.form fields: ['title', 'creator', 'entity', 'description', 'privacyLevel', 'createRelationship']}
-        <br/>
-        #{crud.custom 'title'}
+		<br />
         <p>
-            <!--<label for="object_title">Title</label>-->
-            <label id="object_title" cols="30" rows="1" class="" name="object.title">
-                ${object.title}
-            </label>
-        </p>
-        #{/crud.custom}
-        <br/>
-        <br/>
-        #{crud.custom 'creator'}
-        <p>
-            <label for="object_creator">
+		   <h3> <label id="object_title" cols="30" rows="1" class="" name="object.title" >
+              <font size = "6">  ${object.title} </font> 
+				<font size= "4">
+			<label for="object_creator" style = "font:2">
                 by
             </label>
-            <label id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">
-                ${object.creator}
+            <label id="object_creator" cols="30" rows="1" class="" name="object.creator">
+            	<a href="@{Users.viewProfile(object.creator.username)}">${object.creator.username}</a>
             </label>
+			</font>
+            </label>
+			#{if permission == 1}
+  			   #{if !hidden}
+   				 #{if deletable}
+   				   <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+       				 <p class="crudDelete">
+        				<input type="hidden" name = "justification" id = "justText">
+           			    <input type="submit" value="&{'crud.delete', type.modelName}" class = "linkButton" />
+      			    </p>
+    			   </form> 
+		        #{/if}
+                #{if !deletable}
+                  <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+                    <p class="crudDelete">
+                      	<input type="hidden" name = "justification" id = "justText">
+                       <input type="submit" value="&{'Hide Topic', type.modelName}" class = "linkButton"/>
+                   </p>
+                 </form> 
+            	#{/if}
+             #{/if}
+             #{if hidden}		
+                #{if object.hider.username == actor.username}		
+		           <form action="@{unhide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
+	                  <p class="crudDelete">		
+                         <input type="submit" value="Unhide" class = "linkButton"/>		
+                      </p>		
+                  </form>			
+                #{/if}		
+            #{/if}
+          #{/if}
+		</h3>
         </p>
-        #{/crud.custom }
-        <br/>
-        <br/>
-        #{crud.custom 'entity'}
+        
         <p>
+            <h3>
+            <font size= "4">	
             <label for="object_entity">
                 in
             </label>
-            <label id="object_entity" cols="30" rows="1" class="" name="object.privacyLevel">
-                ${object.entity}
+            <label id="object_entity" cols="30" rows="1" class="" name="object.entity">
+            	<a href="@{MainEntitys.viewEntity(entity.id)}"> ${object.entity}</a>
+                
             </label>
+			</font>
+			</h3>
         </p>
-        #{/crud.custom }
+       
         <br/>
-        <br/>
-        #{crud.custom 'description'}
         <p>
-            <label for="object_description">
-                Description
-            </label>
-            <label id="object_description" cols="50" rows="5" class="" name="object.description">
+           <h3>
+           	<font size= "4">
+            <label id="object_description" class="" name="object.description">
                 ${object.description}
             </label>
+			</font>
+			</h3>
             <!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
         </p>
-        #{/crud.custom}
         <br/>
-        <br/>
-        #{crud.custom 'privacyLevel'}
         <p>
-            <label for="object_privacyLevel">
-                Privacy Level
-            </label>
+           <h3>
+           	<font size="3">
             #{if object.privacyLevel ==1} 
             <label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
-                private
+                Private
             </label>
             #{/if}
             #{else}
             <label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
-                public
+                Public
             </label>
             #{/else}
+			<label for="object_privacyLevel">
+                topic
+            </label>
+			</font>
+			</h3>
         </p>
-        #{/crud.custom }
 		
-		#{crud.custom 'createRelationship'}
         <p>
-            <label for="object_createRelationship">
-                createRelationship
-            </label>
+            <h3>
+            	<font size="3">
             <label id="object_createRelationship" cols="50" rows="5" class="" name="object.createRelationship">
-                ${object.createRelationship}
+                #{if object.createRelationship}
+				Relationship creation allowed
+				#{/if}
+				#{else}
+				Relationship creation not allowed
+				#{/else}
             </label>
+			</font>
+			</h3>
             <!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
         </p>
-        #{/crud.custom}
-        #{/crud.form }
-        <br/>
-        #{if permission == 1}
-        <br>
-        <button type="submit" onlclick="#" >  Edit
-        </button>
-        <br>
-        #{/if}
-        <br/>
-        #{if allowed==1}<a href="@{RequestToJoins.viewRequests(1,object.id)}">Requests</a>
-		<br>
-		<br>
-		   <a href="@{Invitations.invite(object.id,1,0,0)}">Invite</a>
-        #{/if}
-        <br>
-       
-	    #{/form}
-		#{if alreadyReportedTopic==false}
-    	<form action="@{Users.reportTopicAsSpam()}" method="GET" name="myform">
-        <input type="hidden" name="topicId" value="${topicId}">
-        <input id="spam" type="submit" value="Report Topic As Spam">
-            </form>
-            #{/if}
-        #{if alreadyReportedTopic==true}
-        <input id="spam" disabled="disabled" type="submit" value="Report Topic As Spam">
-        <b><font color="Red">you have already reported this topic</font><b>
-            #{/if}    
+		</div>
+		
+		<div name="relationships">
+           				
+			 <a onclick="$('#lista').slideToggle();">Show Relationships</a>
+			   <div id="lista" style="display: none;">
+			   	#{if targetTopic.relationsSource != null}
+			      #{list items:targetTopic.relationsSource, as:'relationElement'}
+						<ul><a href="/topics/show?topicId=${relationElement.source.id}">${relationElement.source.title}</a> <q id=${relationElement.id}>${relationElement.name}</q> <a href="/topics/show?topicId=${relationElement.destination.id}">${relationElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relationElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relationElement.id})" />#{/if}</ul>
+				  #{/list}
+				#{/if}
+				#{if targetTopic.relationsDestination != null}
+				  #{list items:targetTopic.relationsDestination, as:'relElement'}
+						<ul><a href="/topics/show?topicId=${relElement.source.id}">${relElement.source.title}</a> <q id=${relElement.id}>${relElement.name}</q> <a href="/topics/show?topicId=${relElement.destination.id}"> ${relElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relElement.id})" />#{/if}</ul>
+				  #{/list}
+				#{/if}
+			   </div>
+			   
+			   <script type="text/javascript">
+			   	function showRename(relId)
+				{
+				var newRelName = prompt("Please enter the new name:", document.getElementById(relId).textContent);
+				location.reload();
+				if (newRelName!=null && newRelName!="")
+			  	{
+			  	$.post('@{TopicRelationships.renameRelationship()}', {
+					relationToBeRenamedId: relId,
+					newName: newRelName
+				});
+				
+			  	}
+				}
+			   </script>
+			   
+			#{if seeRelationStatus}
+			#{if createRelationship}
+			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
+				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
+				<input type="checkbox" id="createRelationship" name="createRelationship" checked>Allow topic to have relationships </input>
+				<input type="submit" onclick="get_Value()" value="Change" class = "linkButton"><br />
+			</form>
+			#{/if}
+			#{else}
+			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
+				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
+				<input type="checkbox" id="createRelationship" name="createRelationship">Allow topic to have relationships
+				<input type="submit" onclick="get_Value()" value="Change" class = "linkButton"><br />
+			</form>
+			#{/else}
+			#{/if}
+			
+            </div>   
+		
+		 
             <script type="text/javascript">
             	$('#spam').click(function(){
             	$('#success').show();});
@@ -137,16 +426,12 @@
             <style type="text/css">
 			#success{display: none;}
 		</style>
-		<form action="@{Topics.tagTopic()}" method="post">
-        	<input type="hidden" value=${topicId} name='topicId'>
-			<input type="hidden" value='@@' name='tag'>
-			<input type="submit" value="Add tags">
-        </form>
 		
-		<h4>List of ideas within this topic : </h4>
-        <div>
+		<br />
+        <div>		
+        <h4>List of ideas within this topic : </h4>
         
-        #{if numberOfIdeas > 0}
+		#{if numberOfIdeas > 0}
         <form action=@{Ideas.show(ideaId)}>
                 #{if ideas}
                 #{list items:ideas, as:'idea'}
@@ -155,8 +440,8 @@
 				<fieldset>
                 <a id = "LOL" href="@{Ideas.show(idea.id)}"><font size=3>${idea.title}</font></a>
 				#{if canDelete}
-				<input type="button" name="hide" value="Hide Idea" onclick="hides(${idea.id});">
-				<input type="button" name="delete" value="x" onclick="deletes(${idea.id});">
+				<input type="button" name="hide" value="Hide Idea" onclick="hides(${idea.id});" class = "linkButton">
+				<input type="button" name="delete" value="x" onclick="deletes(${idea.id});" class = "linkButton">
 				#{/if}
                 <div id = "table_${idea.id}">
                 <label><font size=3>Description : ${idea.description}</font></label>
@@ -187,21 +472,12 @@
                 #{/else}    
         </form>
         #{/if}
-        		
-		#{if numberOfIdeas > 1 && canMerge == 1}
-		#{form @Topics.getIdeasToMerge(), method:'POST', enctype:'multipart/form-data' }
-				<input type = "hidden" name = "topicId" value = ${topicId}>
-				<input type="submit" value="Merge Ideas" />
-		#{/form}
-		#{/if}
+      
         #{if numberOfIdeas == 0}<h4>no ideas posted to this topic</h4>
         #{/if}
-<!--        <form action="@{Ideas.blank(topicId)}" method="post">-->
-<!--            <input id="postIdea" type="hidden" name"topicId" value="${topicId}"><HR><input type="submit" value="Post Idea to this topic">-->
-<!--        </form>-->
-		
+		<br />
 		#{if canDelete}
-		<input id="showhidden" type="submit" value="show hidden Ideas">
+		<input id="showhidden" type="submit" value="show hidden Ideas" class = "linkButton">
 		<div id="hidden">
 		#{list items:hiddenIdeas, as:'idea'}
 				<fieldset>
@@ -211,14 +487,14 @@
                 <label>Description : ${idea.description}</label>
                 </br>
                 <label>by : ${idea.author}</label>
-                <input type="submit" value="unhide" onclick="unhide(${idea.id})">
+                <input type="submit" value="unhide" onclick="unhide(${idea.id})" class = "linkButton">
                 </fieldset>
         #{/list}
         </div>
 		#{/if}
         
         #{if topicNotClosed==true}
-        <input id="postIdea" type="button" value="Post Idea to this topic">
+        <input id="postIdea" type="button" value="Post Idea to this topic" class = "linkButton">
         #{/if}
         <div id="postIdeaform">
         	<p>
@@ -243,9 +519,8 @@
                 </font>Required
             </span>
             </p>
-			<input id ="draftSaver" type="submit"  value="Save as Draft" onclick="save()" ></input>
-           	<input type="submit" value="post" onclick="postIt()"></input<
-		</div>
+			<input id ="draftSaver" type="submit"  value="Save as Draft" onclick="save()" class = "linkButton"></input>
+           	<input type="submit" value="post" onclick="postIt()" class = "linkButton"></input>
 		<style type="text/css">
 			#postIdeaform{display: none;}
 		</style>
@@ -265,184 +540,17 @@
                  </script>
 		<style type="text/css">
 			#hidden{display: none;}
-		</style>                 
-<!--        #{if canPost == true}-->
-<!--        #{/if }-->
-    </div>
-    #{if permission == 1}
-    #{if !hidden}
-    #{if deletable}
-    <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-        <p class="crudDelete">
-        	<input type="hidden" name = "justification" id = "justText">
-            <input type="submit" value="&{'crud.delete', type.modelName}" />
-        </p>
-    </form> #{/if}
-    #{if !deletable}
-    <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-        <p class="crudDelete">
-        	<input type="hidden" name = "justification" id = "justText">
-            <input type="submit" value="&{'Hide Topic', type.modelName}" />
-        </p>
-    </form> #{/if}
-    #{/if}
-	#{if hidden}		
-		#{if object.hider.username == actor.username}		
-		   <form action="@{unhide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
-	        <p class="crudDelete">		
-           <input type="submit" value="Unhide" />		
-       </p>		
-    </form>		
-		
-    #{/if}		
-	#{/if}
-    #{/if}
-
-
-</div>#{if canClose == 1 && openToEdit == true}
-			#{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
-				<input type = "hidden" name = "topicId" value = ${topicId}>
-				<input type="submit" value="Close Topic" />
-			#{/form} 
-		#{/if} 
-
-		#{if canClose == 1 && openToEdit == false}
-			#{form @Topics.reopen(), method:'POST', enctype:'multipart/form-data' }
-				<input type = "hidden" name = "topicId" value = ${topicId}>
-				<input type="submit" value="Reopen Topic" />
-			#{/form}
-		#{/if}
-
-#{if canPlan == 1 && plan == null}
-#{form @Plans.planCreate(), method:'POST', enctype:'multipart/form-data' }
-<input type = "hidden" name = "topicId" value = ${topicIdLong}>
-<input type="submit" value="Create A plan" />
-#{/form}
-#{/if}
-#{if plan != null}
-#{form @Plans.viewAsList(), method:'POST', enctype:'multipart/form-data' }
-<input type = "hidden" name = "planId" value = ${plan.id}>
-<input type="submit" value="View the plan" />
-#{/form}
-#{/if}
-#{if check == 1}
- <input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(topicId,1)}">
-#{/if}
-
-#{if check2 == 1}
- <input type="submit" value="use" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}">
-#{/if}
-<HR>
-
-#{if (targetTopic.createRelationship == true)}
-			#{if (canCreateRelationship == true)}
-			<p>
-				<a href="@{Topics.createRelation(object.id,object.entity.id)}">Create Relation</a>
-			</p>
-			#{/if}
-			#{/if}
-
- <a onclick="$('#lista').slideToggle();">Show Relationships</a>
-   <div id="lista" style="display: none;">
-   	#{if targetTopic.relationsSource != null}
-      #{list items:targetTopic.relationsSource, as:'relationElement'}
-			<ul><a href="/topics/show?topicId=${relationElement.source.id}">${relationElement.source.title}</a> <q id=${relationElement.id}>${relationElement.name}</q> <a href="/topics/show?topicId=${relationElement.destination.id}">${relationElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relationElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relationElement.id})" />#{/if}</ul>
-	  #{/list}
-	#{/if}
-	#{if targetTopic.relationsDestination != null}
-	  #{list items:targetTopic.relationsDestination, as:'relElement'}
-			<ul><a href="/topics/show?topicId=${relElement.source.id}">${relElement.source.title}</a> <q id=${relElement.id}>${relElement.name}</q> <a href="/topics/show?topicId=${relElement.destination.id}"> ${relElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relElement.id})" />#{/if}</ul>
-	  #{/list}
-	#{/if}
-   </div>
-   
-   <script type="text/javascript">
-   	function showRename(relId)
-	{
-	var newRelName = prompt("Please enter the new name:", document.getElementById(relId).textContent);
-	location.reload();
-	if (newRelName!=null && newRelName!="")
-  	{
-  	$.post('@{TopicRelationships.renameRelationship()}', {
-		relationToBeRenamedId: relId,
-		newName: newRelName
-	});
-	
-  	}
-	}
-   </script>
-
-
-<form action="@{Topics.viewFollowers()}">
-    <HR><input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">#{if (!targetTopic.followers.contains(user))} 
-    <p>
-        #{if follower == false} 
-        Follow ${targetTopic.title} <input type="submit" value="Follow">#{/if}
-        <br/>
-        #{/if}
-        </form>
-        #{if follower == true}
-        <p>
-            Unfollow ${targetTopic.title} <input type="submit" value="unfollow" onclick="unfollow('${topicId}');"/>
-        </p>#{/if}
-        </br>
-        <form action="@{Topics.viewFollowers()}">
-            <input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="false">View ${targetTopic.title} Followers <input type="submit" value="Followers">
-           </form>
-		    <br/>
-            <HR>#{if canNotPost == true}
-            <p id="req">
-                <a onclick="requestToPost('${topicId}');" href="#">request to post on this topic</a>
-            </p>
-            #{/if}
-            #{if pending == true && canNotPost == false}
-            <p>
-                Request To Post status: Pending
-            </p>
-            #{/if}
-			<p id="pen">
-                Request To Post status: Pending
-            </p>
-			<br />
-			
-			#{if seeRelationStatus}
-			#{if createRelationship}
-			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
-				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
-				<input type="checkbox" id="createRelationship" name="createRelationship" checked>Allow topic to have relationships<br />
-				<input type="submit" onclick="get_Value()" value="Change"><br />
-				<HR>
-			</form>
-			#{/if}
-			#{else}
-			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
-				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
-				<input type="checkbox" id="createRelationship" name="createRelationship">Allow topic to have relationships
-				<input type="submit" onclick="get_Value()" value="Change"><br />
-				<HR>
-			</form>
-			#{/else}
-			#{/if}
-			<!--#{form @delete(object._key())}
-            <p class="crudDelete">
-            <input type="submit" value="&{'crud.delete', type.modelName}" />
-            </p>
-            #{/form}-->
-            </div>       
-            
-             #{if (canRestrict == 1)}
-		
-		     <input type="submit" value="Restrict/De-Restrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerTopicPath(topicId)}">
-		      <HR>	
-		    #{/if}
-		    
-		    <form action="@{Topics.requestRelationship(actor.id, organisation.id, entity.id, targetTopic.id)}" method="post">
- 				<input type="submit" value="Request Relationship Creation">
-  				</form>
- 			<form action="@{Topics.viewRelationships(actor.id, organisation.id, entity.id, targetTopic.id, canRequestRelationship)}" method="post">
-  				<input type="submit" value="View Relationships">
-  				</form>
-
+		</style> 
+	</div> 
+</div>
+  
+  <br />
+  <br />
+ 
+               
+            	
+			<div name= "scripts">
+				
             <script type="text/javascript">
             	 $('#pen').hide();
             	function endRelation(relId){
@@ -463,6 +571,7 @@
                     $.post('@{Users.unfollowTopic()}', {
                         topicId: topic
                     });
+                    alert("done!");
                     location.reload(true);
                 }
 				function get_Value() {
@@ -486,9 +595,7 @@
 				}
 				
             </script>
-            <script type ="text/javascript">
-            
-            </script>
+
 			<script type="text/javascript">
 				
 				function save()
@@ -669,7 +776,8 @@
 						}
 					}
 			</script>
-			<script type="text/javascript">
+			
+            <script type="text/javascript">
 				function postIt()
 				{
 					var id = auto.kill;
@@ -699,3 +807,7 @@
 					$('#idea_' + id).hide();
 			}
 			</script>
+			
+			</div>
+			
+			<br />
