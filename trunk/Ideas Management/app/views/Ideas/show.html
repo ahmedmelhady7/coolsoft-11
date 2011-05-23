@@ -122,7 +122,7 @@
 	<div>
 	#{if notBlockedFromUsing}
 	<form action="@{Ideas.shareIdea()}">
-			<input type="submit" class="linkButton" value="Share with user" />
+			<input type="submit" class="linkButton" style="color: #4CC417" value="Share with user" />
 			<input type="hidden" name="ideaId" value="${ideaId}">
 			<select id="userName" name = "userName"> 
 					#{list userNames, as:'name'}
@@ -130,14 +130,18 @@
 					#{/list}
 					</select>
 		</form>
+		</br>
+		</br>
 		#{/if}
-			<input type="button" id ='like' value="Like" onclick="like()" />
-			<input type="button" id ='dislike' value="Dislike" onclick="disLike()" />
+			<input type="button" class="linkButton" style="color: #4CC417" id ='like' value="Like" onclick="like()" />
+			<input type="button" class="linkButton" style="color: #4CC417" id ='dislike' value="Dislike" onclick="disLike()" />
+		</br>
+		</br>
 		<form>
-			<big><b>List Of Duplicates</b></big>
+			<big><b><font color="#4E4848">List Of Duplicates</font></b></big>
 			#{list items:idea.duplicateIdeas , as:'idea'}
 			<li>
-				<a href='@{Ideas.show(idea.id)}' ><b>${idea.title}</b></a>
+				<a href='@{Ideas.show(idea.id)}' ><b><font color="#4E4848">${idea.title}</font></b></a>
 			</li>
 			#{/list}
 		</form>
@@ -160,7 +164,7 @@
 			}
 		</script>
 		</br>
- 		Idea rating : ${rate}
+ 		<font color="#4E4848">Idea rating : ${rate}</font>
  		<br/>
  		<br/>
  		#{if notBlockedFromUsing}
@@ -189,10 +193,13 @@
 			<input type = "submit" value = "Comment"  >
 		</form>
 		<br/>
-		<input type = "submit" id="comm" class="linkButton" value = "Show Comments" onclick="viewComments()" >
 		#{/if}
-		<input type = "submit" id = "commentsd"  value = "Show Comments" onclick="viewComments()" >
+		<input type = "submit" id = "commentsd" class="linkButton" style="color: #4CC417"  value = "Show Comments" onclick="viewComments()" >
 		<br/>
+		<br/>
+		<div id='div1' align='left' style="display: none"></div>
+		<br/>
+		<div class"title">
 		<script type="text/javascript">
                         function viewComments(){
                                 if(document.getElementById("commentsd").value == "Show Comments")
@@ -208,14 +215,22 @@
                                 document.getElementById('div1').innerHTML = "#{if comments} Comments <br/> <ul> #{list comments, as:'comment'} <li><a>${comment.toString()}</a></li> #{/list} <br/></ul> #{/if} #{else}No comments posted#{/else}"
                         }
                         </script>
-			
+         </div>
 		<br/>
-		Idea priority : ${priority}	
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<font color="#4E4848">Idea priority : ${priority}</font>	
+		<br/>
 		<br/>
 		#{if notBlockedFromUsing}
 		#{if checkPermitted}
 		<form action = @{Ideas.setPriority()} method = "GET">
-		<input type ="submit" value = "Submit Priority"/>
+		<input type ="submit" style="color: #4CC417" class="linkButton" value = "Submit Priority"/>
 		<input type = "hidden" name = "ideaId" value = ${ideaId} >
 		<br />
 		<input type = "radio" name = "priority" value = "critical" checked ="checked"/> critical
@@ -239,7 +254,6 @@
 			<input type="hidden" value='@@' name='tag'>
 			<input type="submit" value="Add tags">
         </form>
-      	  <div id='div1' align='left' style="display: none">
 </div>
 </div>    
 </div>
