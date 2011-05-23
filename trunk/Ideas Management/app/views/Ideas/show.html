@@ -157,7 +157,11 @@
 	<form action="@{Ideas.shareIdea()}">
 			<input type="submit" value="Share with user" />
 			<input type="hidden" name="ideaId" value="${ideaId}">
-			<input type="text" name="userName" id="userName"/>
+			<select id="userName" name = "userName"> 
+					#{list userNames, as:'name'}
+					<option>${name}</option>
+					#{/list}
+					</select>
 		</form>
 		#{/if}
 			<input type="button" id ='like' value="Like" onclick="like()" />

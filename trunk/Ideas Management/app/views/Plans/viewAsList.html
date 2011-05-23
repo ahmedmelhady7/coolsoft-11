@@ -24,7 +24,12 @@ You have already rated this plan
 #{/else}
 <br/>
 <form action="@{Plans.sharePlan()}" method="GET">
-    <input type="submit" value="Share with user" /><input type="hidden" name = "planID" value=${p.id}/><input type="text" name="userName" id="userToShareWith"/>
+    <input type="submit" value="Share with user" /><input type="hidden" name = "planID" value=${p.id}/>
+	<select id="userName" name = "userName"> 
+					#{list userNames, as:'name'}
+					<option>${name}</option>
+					#{/list}
+					</select>
 </form>
 <br/>
 <form action="@{Comments.addCommentToPlan()}" method="GET">
