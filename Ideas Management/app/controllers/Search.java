@@ -1724,7 +1724,6 @@ public class Search extends Controller {
 			in.close();
 			zOut.flush();
 			zOut.close();
-			System.out.println("File written");
 			return file;
 		} catch (IOException e) {
 			return null;
