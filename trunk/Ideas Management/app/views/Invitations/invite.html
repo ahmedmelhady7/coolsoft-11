@@ -1,14 +1,15 @@
 <!--C1S6  @author : Mai Magdy -->
-#{extends 'main.html' /}
-#{if type==0}
-<a href="@{MainEntitys.viewEntity(entity.id)}">Back to ${entity.name} </a>
-#{/if}
-#{else}
-<a href="@{Topics.show(topic.id)}">Back to ${topic.title} </a>
-#{/else}
+#{extends 'Login/index.html' /}
+#{set title:'invite Page' /}
 
-<br/>
-<br/>
+#{if type==0}
+<a href="@{MainEntitys.viewEntity(entity.id)}">Back to &{entity.name}</a>
+#{/if}
+
+#{if permitted==0}
+<u><font size ="3" color ="red">You are not allowed to view this page</font></u>
+#{/if}
+#{if permitted==1}
 
 <br/>
 <br/>
@@ -29,8 +30,12 @@
 #{/if}
 #{/if}
 </div>
-
-
+#{if type==0}
+<input class = "linkButton" type="button" id="back" onclick="javascript: show1();" style="display:none" value="Back to search">
+#{/if}
+#{else}
+<input class = "linkButton" type="button" id="back" onclick="javascript: show1();" style="display:none" value="Back to search">
+#{/else}
 <form action="@{Invitations.send()}" method="GET" >
 <table border="0" bgcolor="#ececec" cellspacing="5" id="table" style="display:none">
 <tr><td><u>Invite directly by writing the email </u></td></tr>
@@ -43,19 +48,19 @@
 #{else}
 <input type = "hidden" name ="id" value = ${topic.id}>
 #{/else}
-<tr><td>&nbsp;</td><td><input type="submit" value="send">
+<tr><td>&nbsp;</td><td><input class = "linkButton" type="submit" value="send">
 </table>
 </form>
 
 <div id="block" >
-<input type="button" onclick="javascript: show();" value="Invite by mail" id="button1" /> 
+<input class = "linkButton" type="button" onclick="javascript: show();" value="Invite by mail" id="button1" /> 
 
 
 <form action="@{Invitations.searchUser()}" method="GET" name="myform"">
 <table border="0" bgcolor="#ececec" cellspacing="5">
 <tr><td><u> You can search by name/email for users to invite </u></td></tr>
 <tr><td>Name <input type="text" size="20" name="name"></td></tr>
-<tr><td>&nbsp;</td><td><input type="submit" value="search">
+<tr><td>&nbsp;</td><td><input  class = "linkButton" type="submit" value="search">
 <input type = "hidden" name ="type" value = ${type}>
 #{if type==0}
 <input type = "hidden" name ="id" value = ${entity.id}>
@@ -67,6 +72,7 @@
 </table>
 </form>
 #{if check==1}
+<div id="appear">
 <br/>
 <br/>
 <br/>
@@ -101,6 +107,7 @@
 #{/else}
 #{/if}
 </div>
+</div>
 
 
 #{if check==2}
@@ -108,6 +115,7 @@
 $('#block').hide();
 	$('#table').show();
 </script>
+#{/if}
 #{/if}
 
 <script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
@@ -117,9 +125,19 @@ $('#block').hide();
 <script type="text/javascript">
 
 function show(){
+	$('#back').show();
 	$('#errors').hide();
 	$('#block').hide();
 	$('#table').show();
+	
+}
+function show1(){
+	$('#back').hide();
+	$('#errors').show();
+	$('#block').show();
+	$('#table').hide();
+	$('#appear').hide();
+	
 }
 </script>
 
