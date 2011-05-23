@@ -1,5 +1,6 @@
 <!-- @author : Mai Magdy -->
-#{extends 'main.html' /}
+#{extends 'Login/index.html' /}
+#{set title:'Block/Unblock Page' /}
 
 <a href="@{Login.homePage()}">Back to Home</a>
 <hr>          </hr>
@@ -13,62 +14,64 @@
 <tr><td><u><font size ="3" color ="black">No user Found</font></u></td><td>
 #{/if}
 #{else}
+<div id="leftSidebar">
+    <ul>
+        
+        <li>
+        	  <ul>
 #{list items:0..users.size()-1, as:'u'} 
-<html>
-<table border="0" bgcolor="#ececec" cellspacing="5"  width="25%">
-
-<tr><td><font size ="3" color ="black">Name  : ${users.get(u).firstName} ${users.get(u).lastName}</font></td><td width="120"><a onclick="javascript: hide('${u}');" id="9_${u}"/><img src="/public/images/block.png" title="Block/Unblock" width="30" height="20" align="right"/></a><a onclick="javascript: view('${u}');" id="10_${u}"  style="display:none"/><img src="/public/images/block.png" title="Block/Unblock" width="30" height="20" align="right"/></a></td>
-<tr><td><font size ="3" color ="black">${users.get(u).email}</font></td>
-
-<tr><td></td><td><a href="javascript:void(0)" onclick="show('${users.get(u).id}',0,'${object.id}','${num}','${u}');" id="1_${u}"  style="display:none"/>Block from viewing</a></tr>
-<tr><td></td><td><a href="javascript:void(0)" onclick="show('${users.get(u).id}',1,'${object.id}','${num}','${u}');"  id="2_${u}"  style="display:none"/>Block from using</a></tr>
-
-<td>
+<li>
+<a href="@{Users.viewProfile(users.get(u).id)}">${users.get(u).username}</a>
+<br/>
+<font size ="3" color ="black">${users.get(u).firstName} ${users.get(u).lastName}</font><a onclick="javascript: hide('${u}');" id="9_${u}"/><img src="/public/images/block.png" title="Block/Unblock" width="30" height="20" align="right"/></a><a onclick="javascript: view('${u}');" id="10_${u}"  style="display:none"/><img src="/public/images/block.png" title="Block/Unblock" width="30" height="20" align="right"/></a>
+<br/>
+<input class = "linkButton" type="button" onclick="show('${users.get(u).id}',0,'${object.id}','${num}','${u}');" id="1_${u}" value="Block from viewing" style="display:none"/>
+<input class = "linkButton" type="button" onclick="show('${users.get(u).id}',1,'${object.id}','${num}','${u}');"  id="2_${u}" value="Block from using" style="display:none"/>
 <div id="3_${u}" ></div>
-<textarea rows="2" cols="20" id="6_${u}" style="display:none"></textarea></td>
-<tr><td><a href="javascript:void(0)" id="8_${u}"  style="display:none"/>Block</a><a href="javascript:void(0)" id="7_${u}"  style="display:none"/>Block</a>
-<a href="javascript:void(0)" id="5_${u}"  style="display:none"/>Cancel</a><tr/></td> 
-</table>
-
-</html>
-<br/>
-<br/>
-
+<textarea rows="2" cols="20" id="6_${u}" style="display:none"></textarea>
+<a href="javascript:void(0)" id="8_${u}"  style="display:none"/>Block</a><a href="javascript:void(0)" id="7_${u}"  style="display:none"/>Block</a>
+<a href="javascript:void(0)" id="5_${u}"  style="display:none"/>Cancel</a>
+</li>
+<li></li>
 #{/list}
+</ul>
+      </li>
+    </ul>
+</div>
 #{list items:0..count.size()-1, as:'c'}
 #{if count.get(c)==3}
 <script type="text/javascript">
-$('#1_' + '${c}').html('Unblock from viewing');
-$('#2_' + '${c}').html('Unblock from using');
-//document.getElementById('1_${c}').text="Unblock from viewing";
-//document.getElementById('2_${c}').text="Unblock from using";
+//$('#1_' + '${c}').html('Unblock from viewing');
+//$('#2_' + '${c}').html('Unblock from using');
+document.getElementById('1_${c}').value="Unblock from viewing";
+document.getElementById('2_${c}').value="Unblock from using";
 document.getElementById('2_${c}').disabled = true;
 </script>
 #{/if}
 #{if count.get(c)==2}
 <script type="text/javascript">
-$('#1_' + '${c}').html('Block from viewing');
-$('#2_' + '${c}').html('Unblock from using');
-//document.getElementById('1_${c}').text="Block from viewing";
-//document.getElementById('2_${c}').text="Unblock from using";
+//$('#1_' + '${c}').html('Block from viewing');
+//$('#2_' + '${c}').html('Unblock from using');
+document.getElementById('1_${c}').value="Block from viewing";
+document.getElementById('2_${c}').value="Unblock from using";
 </script>
 #{/if}
 #{if count.get(c)==1}
 <script type="text/javascript">
-//document.getElementById('1_${c}').text="Unblock from viewing";
-//document.getElementById('2_${c}').text="Block from using";
-$('#1_' + '${c}').html('Unblock from viewing');
-$('#2_' + '${c}').html('Block from using');
+document.getElementById('1_${c}').value="Unblock from viewing";
+document.getElementById('2_${c}').value="Block from using";
+//$('#1_' + '${c}').html('Unblock from viewing');
+//$('#2_' + '${c}').html('Block from using');
 
 document.getElementById('2_${c}').disabled = true;
 </script>
 #{/if}
 #{if count.get(c)==0}
 <script type="text/javascript">
-$('#1_' + '${c}').html('Block from viewing');
-$('#2_' + '${c}').html('Block from using');
-//document.getElementById('1_${c}').text="Block from viewing";
-//document.getElementById('2_${c}').text="Block from using";
+//$('#1_' + '${c}').html('Block from viewing');
+//$('#2_' + '${c}').html('Block from using');
+document.getElementById('1_${c}').value="Block from viewing";
+document.getElementById('2_${c}').value="Block from using";
 </script>
 #{/if}
 #{/list}
@@ -108,10 +111,9 @@ function show(userId,type,numId,id,i){
 		 
 	if ( type==0 ) {
 		        
-		       var text=document.getElementById('1_'+i).text;
-			   alert(text);
+		       var text=document.getElementById('1_'+i).value;
 			    if (text == "Block from viewing") {
-					alert('yes');
+			
                      var textarea = $('#6_' + i);
 					 textarea.show();
 					 $('#3_' + i).show();
@@ -143,10 +145,10 @@ function show(userId,type,numId,id,i){
 					
 					}else{
 						alert("User has been blocked from viewing");
-					//	document.getElementById('1_' + i).text = "Unblock from viewing";
-						$('#1_' + i).html('Unblock from viewing');
-						alert($('#1_' + i).text());
-					//	document.getElementById('2_' + i).disabled = true;
+						document.getElementById('1_' + i).value = "Unblock from viewing";
+						//$('#1_' + i).html('Unblock from viewing');
+						//alert($('#1_' + i).text());
+						document.getElementById('2_' + i).disabled = true;
 						var message = textarea.val();
 						$.post('@{block()}', {
 							userId: userId,
@@ -160,7 +162,7 @@ function show(userId,type,numId,id,i){
 							textarea.hide();
 							$('#3_' + i).hide();
 							$('#5_' + i).hide();
-					//		document.getElementById('1_' + i).disabled = false;
+							document.getElementById('1_' + i).disabled = false;
 						});
 						
 						 
@@ -174,8 +176,8 @@ function show(userId,type,numId,id,i){
 				else{
 					
 					alert("User has been unblocked from viewing");
-					$('#1_' + i).html('Block from viewing');
-				//	document.getElementById('1_' + i).value = "Block from viewing";
+				//	$('#1_' + i).html('Block from viewing');
+					document.getElementById('1_' + i).value = "Block from viewing";
 					document.getElementById('2_' + i).disabled = false;
 					var message=document.getElementById('1_'+i).value;
 					$.post('@{block()}', {userId :userId,
