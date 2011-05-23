@@ -117,6 +117,51 @@ public class UserRoleInOrganization extends CoolModel {
 	    return role.role;
 						
 	}
+	
+	/**
+	 * deletes a certain record in the table
+	 * 
+	 *  @author Nada Ossama
+	 *  
+	 *  @story C1S7
+	 *  
+	 * @param userRoleInOrg UserRoleInOrganiztion record to be deleted
+	 */
+	
+
+	public static void delete(UserRoleInOrganization userRoleInOrg) {
+		User user = userRoleInOrg.enrolled;
+		Organization organiztion = userRoleInOrg.organization;
+		Role role = userRoleInOrg.role;
+
+		user.userRolesInOrganization.remove(userRoleInOrg);
+		organiztion.userRoleInOrg.remove(userRoleInOrg);
+		role.userRoleInOrganization.remove(userRoleInOrg);
+		userRoleInOrg.delete();
+
+	}
+	/**
+	 * given a certain topic or entity that will be deleted this method cascades the deletion
+	 * 
+	 * @author Nada Ossama
+	 * 
+	 * @story C1S7 
+	 * 
+	 * @param entityTopicID long id of the entity or topic to be deleted
+	 * @param type String type that determines whether the passed id belongs to a topic or entity
+	 */
+	
+	public static void deleteEntityOrTopic (long entityTopicID ,String type){
+		 
+		List <UserRoleInOrganization> toBeDeleted = UserRoleInOrganization.find("select uro from UserRoleInOrganiztion uro where uro.entityTopicID = ? and uro.type like ?", entityTopicID , type).fetch();
+		if(toBeDeleted != null && !toBeDeleted.isEmpty()){
+			for(int i = 0 ; i < toBeDeleted.size() ; i++){
+				UserRoleInOrganization record = toBeDeleted.get(i);
+				UserRoleInOrganization.delete(record);
+			}
+		}
+		
+	}
 	//
 	//
 	// /*
