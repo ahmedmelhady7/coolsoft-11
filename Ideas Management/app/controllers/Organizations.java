@@ -325,7 +325,7 @@ public class Organizations extends CoolCRUD {
 		} else {
 			flash.error("Organization name already in use..");
 		}
-		Organizations.mainPage();
+		Login.homePage();
 
 	}
 
