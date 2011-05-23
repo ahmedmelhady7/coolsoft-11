@@ -1737,7 +1737,8 @@ public class Users extends CoolCRUD {
 	 * 
 	 */
 	public static void confirmDeactivation() {
-		render();
+		User user=Security.getConnected();
+		render(user);
 
 	}
 
