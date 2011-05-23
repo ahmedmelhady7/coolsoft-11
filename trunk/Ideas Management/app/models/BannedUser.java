@@ -75,7 +75,51 @@ public class BannedUser extends CoolModel {
 		this.action = action;
 		organization = org;
 	}
+	
+	/**
+	 * this method deletes a certain record from the table
+	 * 
+	 * @author Nada Ossama
+	 * 
+	 * @story C1S7 , C1S19
+	 * 
+	 * @param toBeDeleted
+	 *            BannedUser is the record to be deleted
+	 */
+	public static void delete(BannedUser toBeDeleted) {
+		Organization organization = toBeDeleted.organization;
+		User deletedUser = toBeDeleted.bannedUser;
+		deletedUser.bannedUsers.remove(toBeDeleted);
+		organization.bannedUsers.remove(toBeDeleted);
+		toBeDeleted.delete();
+	}
 
+	/**
+	 * deleted all the records that are related to a certain entity or topic
+	 * 
+	 * @author Nada Ossama
+	 * 
+	 * @story C1S7
+	 * 
+	 * @param entityTopicID
+	 *            : long id of the entity or topic
+	 * @param type
+	 *            String that determines whether the passed value belongs to a
+	 *            topic or entity
+	 */
+	public static void deleteEntityOrTopic(long entityTopicID, String type) {
+
+		List<BannedUser> toBeDeleted = BannedUser
+				.find("select bu from BannedUser bu where bu.resourceID = ? and bu.resourceType like ?",
+						entityTopicID, type).fetch();
+		if (toBeDeleted != null && !toBeDeleted.isEmpty()) {
+			for (int i = 0; i < toBeDeleted.size(); i++) {
+				BannedUser record = toBeDeleted.get(i);
+				BannedUser.delete(record);
+			}
+		}
+	}
+    
 	/**
 	 *  used so as to block a user from a certain entity
 	 * 
