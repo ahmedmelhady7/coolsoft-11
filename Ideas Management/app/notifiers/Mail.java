@@ -238,10 +238,12 @@ public class Mail extends Mailer {
 	 *            :String the reason for which the user has been deleted
 	 */
 	public static void deletion(User user, String message) {
+		System.out.println(user.email);
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Your account has been deleted ! ");
 		// String url = "http://localhost:9008";
+		System.out.println(user);
 		send(user, message);
 
 	}
