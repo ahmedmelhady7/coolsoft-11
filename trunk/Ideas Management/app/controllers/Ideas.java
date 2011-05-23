@@ -157,11 +157,11 @@ public class Ideas extends CoolCRUD {
 		for (Idea idea : user.ideasCreated)
 			if (idea.isDraft)
 				drafts.add(idea);
-		
-		for(Topic topic : user.topicsCreated)
-			if(topic.isDraft)
+
+		for (Topic topic : user.topicsCreated)
+			if (topic.isDraft)
 				draftTopics.add(topic);
-			
+
 		render(drafts, draftTopics, user);
 	}
 
@@ -313,7 +313,7 @@ public class Ideas extends CoolCRUD {
 	 *            : the id of the idea to be hidden
 	 */
 	public static void hide(long id) {
-		String justification="";
+		String justification = "";
 		System.out.println("hide bta3t crud");
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -377,23 +377,21 @@ public class Ideas extends CoolCRUD {
 		Topic topic = idea.belongsToTopic;
 		long topicId = topic.id;
 		// boolean openToEdit = i.openToEdit;
+		boolean canReport = Users.isPermitted(user, "use", topicId, "topic");
 		boolean isAuthor = user.toString().equals(idea.author.toString());
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
 		boolean canDelete = Users.isPermitted(user, "hide and delete an idea",
 				topicId, "topic");
 		boolean ideaAlreadyReported = false;
-		boolean notBlockedFromUsing = Users.isPermitted(user, "use", topicId, "topic");
+		String username = idea.author.username;
+		long userId = idea.author.id;
+		boolean notBlockedFromUsing = Users.isPermitted(user, "use", topicId,
+				"topic");
 		ArrayList<Label> ideasLabels = new ArrayList<Label>();
-		
-		for(Label label : user.myLabels)
-			if(label.ideas.contains(object))
+		for (Label label : user.myLabels)
+			if (label.ideas.contains(object))
 				ideasLabels.add(label);
-			
-				
-		
-		
-		// mestani lama w lama 5alaset-ha :):)
 		boolean canUse = Users.canDelete(user, "use", ideaId, "idea", topicId);
 		System.out.println("false alreadyreoprted");
 		List<User> allUsers = User.findAll();
@@ -436,14 +434,15 @@ public class Ideas extends CoolCRUD {
 					"tag his/her ideas", ideaId, "idea")
 					|| Users.isPermitted(user, "tag ideas in my organization",
 							ideaId, "idea");
-			render(type, ideasLabels,object, /* tags, */user, canDelete, comments, topic,
-					plan, permittedToTagIdea,
+			render(type, ideasLabels, object, /* tags, */user, username, userId,
+					canReport, canDelete, comments, topic, plan,
+					permittedToTagIdea,
 					/* openToEdit, */topicId, ideaAlreadyReported, canUse,
 					deletemessage, /*
 									 * deletable ,
 									 */
 					ideaId, rate, idea, priority, userNames, checkPermitted,
-					checkNotRated,notBlockedFromUsing);
+					checkNotRated, notBlockedFromUsing);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -673,23 +672,26 @@ public class Ideas extends CoolCRUD {
 	 */
 	public static void delete(long ideaId) {
 		System.out.println("delete bta3t crud");
-		String justification="";
+		String justification = "";
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(ideaId);
 		notFoundIfNull(object);
 		Idea idea = (Idea) object;
 		try {
-			idea.author.communityContributionCounter--;
-			idea.author.save();
-			object._delete();
+			if (idea.plan != null) {
+				object._delete();
+				idea.author.communityContributionCounter--;
+				idea.author.save();
+
+			}
 		} catch (Exception e) {
 			flash.error(Messages.get("crud.delete.error", type.modelName));
 			redirect(request.controller + ".show", object._key());
 		}
 		flash.success(Messages.get("crud.deleted", type.modelName));
-		//redirect(request.controller + ".list");
-		redirect("/topics/show?topicId="+idea.belongsToTopic.id);
+		// redirect(request.controller + ".list");
+		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
 	/**
@@ -997,8 +999,7 @@ public class Ideas extends CoolCRUD {
 		selectedIdeas = Ideas.getIdeasFromIds(ideasIds, topicId);
 		ideaToKeep = selectedIdeas.get(0);
 		contributorsList.add(ideaToKeep.author.username);
-		
-		
+
 		newDescription = newDescription + " " + "\nContributers: ";
 
 		for (int i = 1; i < selectedIdeas.size(); i++) {
@@ -1020,8 +1021,6 @@ public class Ideas extends CoolCRUD {
 		allContributors = allContributors + " \n" + "Merger: "
 				+ merger.username;
 		newDescription = newDescription + allContributors;
-
-		
 
 		ideaToKeep.description = newDescription;
 		ideaToKeep.title = newTitle;

@@ -1,6 +1,5 @@
-#{extends '/ideas/layout.html' /}
-
-
+#{extends 'login/index.html' /}
+#{stylesheet src:"ideas.css" /}
 <style type="text/css">
 	#labels li
 	{
@@ -10,7 +9,8 @@
 	}
 </style>
 <br/>
-<input type="submit" value="Back to topic" onclick=location.href="@{Topics.show(topic.id)}">
+<div id="main" class ="post">
+<a href="@{Topics.show(topic.id)}"><font color="#4CC417">Back to topic</a>
 <br/>
 <br/>
 <h3>
@@ -18,6 +18,7 @@
         View idea
     </label>
 </h3>
+<div>
 <div id="labelsContainer">
 	<ul id="labels">
 	 	#{if ideasLabels.isEmpty()==false}
@@ -34,8 +35,6 @@
 					<font color="#000000"><b><i>Idea Has been Reported As Spam</i></b></font>                
         </i></font></td><td>
 </table>
-
-<div id="crudShow" class="${type.name}">
     <br/>
     <font color="Red">
         ${message}
@@ -46,90 +45,60 @@
     
     #{if isAuthor}
     #{form @delete(object._key())}
-		<p class="crudDelete">
-			<input type="submit" value="&{'Delete Idea                  ', type.modelName}" />
-		</p>
+			<input type="submit" class="linkButton" style="color: red;" value="&{'Delete My Idea', type.modelName}" />
 	#{/form}    
 	#{/if}
 	
 	#{if canDelete && !isAuthor}
 		<form action="@{Topics.deleteIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-        <p class="crudDelete">
         	<input type="hidden" name = "justification" id = "justText">
-            <input type="submit"  value="&{'Delete Idea                  ', type.modelName}" />
-        </p>
+            <input type="submit"  class="linkButton" style="color: red;" align="right" value="&{'Delete Idea', type.modelName}" />
     </form>
 	#{/if}
-	<div>
 	#{if canDelete && !isAuthor}
 	<form action="@{Topics.hideIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-        <p class="crudDelete">
         	<input type="hidden" name = "justification" id = "justText2">
-            <input type="submit"  value="&{'Hide Idea', type.modelName}" />
-        </p>
+            <input type="submit" class="linkButton" style="color: red;"  value="&{'Hide Idea', type.modelName}" />
     </form>
     #{/if}
     </div>
-        #{form action:@show(object._key()), enctype:'multipart/form-data'}
-		<br/>
-        #{crud.form fields: ['author','belongsToTopic','title','description']}
-		<br/>
-        #{crud.custom 'author'}
-        <p>
-            <label for="object_creator">
-                by
-            </label>
-            <label disabled= true id="object_creator" cols="30" rows="1" class="" name="object.author">${object.author}</label>
-        </p>
-        #{/crud.custom }
-		<br/>
-        <br/>
-        #{crud.custom 'belongsToTopic'}
-        <p>
-            <label for="object_topic">
-                Idea belong to topic 
-            </label>
-            <label disabled= true id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">${object.belongsToTopic}</label>
-        </p>
-        #{/crud.custom }
-		<br/>
-        <br/>
-        #{crud.custom 'title'}
-        <p>
-            <label for="object_title">
-                Title
-            </label>
-            <label disabled= true id="object_title" cols="25" rows="2" class="" name="object.title">${object.title}</label>
-        </p>
-        #{/crud.custom}
-		<br/>
-        <br/>
-        #{crud.custom 'description'}
-        <p>
-            <label for="object_description">
-                Description
-            </label>
-            <label disabled= true id="object_description" cols="60" rows="5" class="" name="object.description" required>${object.description}</label>
-        </p>
-        #{/crud.custom}
-		<br/>
-        <br/>
-        </p>
-        #{/crud.form }
-		<br/>
-        #{/form}
     </div>
-    <br>
-		  #{if ideaAlreadyReported==false}
-    <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform">
-        <input type="hidden" name="ideaId" value="${ideaId}">
-                <input id="spam" type="submit" value="Report Idea As Spam">
+    <div id="main2">
+        <p>
+            <h2 class="post-title">
+            ${object.title}
+            	<h3 class"post-metadata">
+            	<span class "post-author">
+            	by <a href="@{Users.viewProfile(userId)}"><font color="#4CC417">${username}</font></a>
+            	</span>
+            	<span class "post-tags">
+
+            	</span>
+            </h3>
+            </h2>
+        </p>
+        <p>
+            
+        </p>
+        <div class="post-content">
+<!--          <div class="about">Detail:</div>-->
+		  <h3>${object.description}</h3>
+        </div>
+
+		  #{if ideaAlreadyReported==false && CanReport}
+		    <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform">
+        		<input type="hidden" name="ideaId" value="${ideaId}">
+                <input id="spam" align="right" type="submit" class="linkButton" value="Report Idea As Spam">
             </form>
-            #{/if}
-            #{if ideaAlreadyReported==true}
-        <input id="spam" disabled="disabled" type="submit" value="Report Idea As Spam">
-        <b><font color="Red">you have already reported this idea</font><b>
-            #{/if}
+          #{/if}
+          </br>
+          </br>
+          #{if ideaAlreadyReported==true}
+		        <input id="spam" disabled="disabled" class="linkButton" type="hidden" value="Report Idea As Spam">
+        				<b><font color="Red">you have already reported this idea</font><b>
+          #{/if}
+          </br>
+          </br>
             <script type="text/javascript">
             	$('#spam').click(function(){
             	$('#success').show();});
@@ -148,14 +117,12 @@
 				}
             </script>
             <style type="text/css">
-			#success{display: none;}
-		</style>
-            
-	<br>
+					#success{display: none;}
+			</style>            
 	<div>
 	#{if notBlockedFromUsing}
 	<form action="@{Ideas.shareIdea()}">
-			<input type="submit" value="Share with user" />
+			<input type="submit" class="linkButton" value="Share with user" />
 			<input type="hidden" name="ideaId" value="${ideaId}">
 			<select id="userName" name = "userName"> 
 					#{list userNames, as:'name'}
@@ -195,6 +162,7 @@
 		</br>
  		Idea rating : ${rate}
  		<br/>
+ 		<br/>
  		#{if notBlockedFromUsing}
  		#{if checkPermitted}
  		#{if checkNotRated}
@@ -216,29 +184,30 @@
 		#{/if}
 		<br />
  		<form action="@{Comments.addCommentToIdea()}" method="GET">
-			<input type = "text" name = "comment">
+			<textarea name = "comment"></textarea>
       	 	<input type = "hidden" name = "ideaID" value = ${ideaId} >
 			<input type = "submit" value = "Comment"  >
 		</form>
 		<br/>
+		<input type = "submit" id="comm" class="linkButton" value = "Show Comments" onclick="viewComments()" >
 		#{/if}
-		<input type = "submit" id = "commentsd" value = "Show Comments" onclick="viewComments()" >
+		<input type = "submit" id = "commentsd"  value = "Show Comments" onclick="viewComments()" >
 		<br/>
 		<script type="text/javascript">
-			function viewComments(){
-				if(document.getElementById("commentsd").value == "Show Comments")
-					{
-						document.getElementById('div1').style.display = 'inline';
-						document.getElementById("commentsd").value = "Hide Comments";
-					}
-				else
-					{
-						document.getElementById('div1').style.display = 'none';
-						document.getElementById("commentsd").value = "Show Comments";
-					}
-				document.getElementById('div1').innerHTML = "#{if comments} Comments <br/> <ul> #{list comments, as:'comment'} <li><a>${comment.toString()}</a></li> #{/list} <br/></ul> #{/if} #{else}No comments posted#{/else}"
-			}
-			</script>
+                        function viewComments(){
+                                if(document.getElementById("commentsd").value == "Show Comments")
+                                        {
+                                                document.getElementById('div1').style.display = 'inline';
+                                                document.getElementById("commentsd").value = "Hide Comments";
+                                        }
+                                else
+                                        {
+                                                document.getElementById('div1').style.display = 'none';
+                                                document.getElementById("commentsd").value = "Show Comments";
+                                        }
+                                document.getElementById('div1').innerHTML = "#{if comments} Comments <br/> <ul> #{list comments, as:'comment'} <li><a>${comment.toString()}</a></li> #{/list} <br/></ul> #{/if} #{else}No comments posted#{/else}"
+                        }
+                        </script>
 			
 		<br/>
 		Idea priority : ${priority}	
@@ -271,4 +240,6 @@
 			<input type="submit" value="Add tags">
         </form>
       	  <div id='div1' align='left' style="display: none">
+</div>
+</div>    
 </div>
