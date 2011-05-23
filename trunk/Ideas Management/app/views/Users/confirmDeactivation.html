@@ -1,16 +1,27 @@
 <!-- @author : Mai Magdy -->
 #{extends 'main.html' /}
 
-<form action="@{Login.homePage()}" method="GET" name="myform">
+<form action="@{Users.deactivate()}" method="get" onsubmit="return confirm();">
 <table border="0" bgcolor="#ececec" cellspacing="5">
-<tr><td>You are about to deactivate your account</td></tr>
-<tr><td><u><font color ="red">note:</font></u> </td></tr>
+<tr></tr>
+<tr><td><font color="blue"  size ="2">You are about to deactivate your account</font></td></tr>
+<tr><td><label for="object_password">
+   password
+   </label> &nbsp;&nbsp;&nbsp; <label align="right" id="text1" style="display:none"><font color="red"  size ="2"><i>*Required Field</i></font></label></td></tr>
+   
+   <tr><td>
+   <input type="password" size="25" class="" name="user.password" id="pass" onkeyup="oldPass(); return false;"><tr></tr>
+    <tr><td> <label id="text"><font color="black"  size ="2"><i>specify the reason</i></font></label>&nbsp;&nbsp;&nbsp;<label align="right" id="text2" style="display:none"><font color="red"  size ="2"><i>*Required Field</i></font></label>
+   <tr><td><textarea rows="2" cols="20" id="check"></textarea></td></tr>
+<br/>
+<tr><td><u><font color ="blue">note:</font></u> </td></tr>
 <tr><td> you won't be receiving any notifications/invitations during the deactivation period</td></tr>
 <tr><td> and to reactivate your account again you have to sign in!</td></tr>
-<tr><td><p align="right"><a href="@{Users.deactivate()}">deactivate</a> 
+<tr><td><p align="right"><input class = "linkButton" type="submit" value="deactivate"/>
 &nbsp;  
 <a href="@{Login.homePage()}">cancel</a></p></td><td>
 </table>
+
 </form>
 
 <script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
@@ -19,17 +30,63 @@
 <script type="text/javascript">
 
 function confirm(){
-	$.post('@{deactivate()}',{});
-	
-}
-
-
-function confirmation() {
-	var answer = confirm("You are about to deactivate your acountyou can reactivate it by signing in again")
-	if (answer){
-		$.post('@{deactivate()}',{});
+	  var pass = document.getElementById('pass');
+	if (document.getElementById('check').value == '' && document.getElementById('pass').value == '') {
+		alert("here");
+		$('#text2').show();
+		$('#text1').show();
+		return false;
 	}
 	
+		if (document.getElementById('pass').value == '') {
+			$('#text1').show();
+			$('#text2').hide();
+			return false
+		}
+			
+			if (document.getElementById('check').value == '') {
+				$('#text2').show();
+				if (document.getElementById('text1').value == '*Required Field') {
+					$('#text1').hide();
+				}
+				return false;
+			}
+			
+			if (document.getElementById('pass').value != '${user.password}') {
+				$('#text1').show();
+				$('#text2').hide();
+				return false
+			}
+			
+			if (document.getElementById('pass').value == '${user.password}' && document.getElementById('check').value != '') {
+				alert("Your account has been deactivated");
+				return true;
+			}
+		
+	
+	
 }
+
+
+function oldPass() {
+  var pass = document.getElementById('pass');
+  var message = document.getElementById('text1');
+      $('#text1').show();
+      var goodColor = "#66cc66";
+      var badColor = "#ff6666";
+  if (pass.value == '${user.password}') {
+  	pass.style.backgroundColor = goodColor;
+  	message.style.color = goodColor;
+  	message.innerHTML = "Correct!"
+  }
+  else {
+  		pass.style.backgroundColor = badColor;
+		var bad = "#red";
+		message.style.color = bad;
+  		message.innerHTML = "Password Dose Not Match!"
+  	}
+  
+  
+ }
 
 </script>
