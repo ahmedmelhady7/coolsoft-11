@@ -17,12 +17,9 @@ public class Role extends CoolModel {
 	@Required
 	public String roleName;
 
-
 	@Required
 	@Lob
 	public String actions;
-
-	
 
 	@OneToMany(mappedBy = "role")
 	// , cascade = CascadeType.ALL)
@@ -36,7 +33,7 @@ public class Role extends CoolModel {
 	 * @story C1S7
 	 * 
 	 * @param role
-	 *           String role name
+	 *            String role name
 	 * @param actions
 	 *            String actions string
 	 */
@@ -49,14 +46,14 @@ public class Role extends CoolModel {
 	}
 
 	/**
-	 * creates the Organizer role 
+	 * creates the Organizer role
 	 * 
 	 * @ author nada ossama
 	 * 
 	 * @story C1S7
 	 */
 	public static void createOrganizerRole() {
-	//	ArrayList<String> action = new ArrayList();
+		// ArrayList<String> action = new ArrayList();
 		String actions = "invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages;"
 				+ "block a user from viewing or using a certain entity;"
 				+ "Request to start a relationship with other items;"
@@ -91,9 +88,7 @@ public class Role extends CoolModel {
 				+ "Accept/Reject requests to post in a private topic in entities he/she manages;"
 				+ "close a topic and promote it to execution";
 
-	      new Role("organizer", actions).save();
-		
-		
+		new Role("organizer", actions).save();
 
 	}
 
@@ -107,45 +102,32 @@ public class Role extends CoolModel {
 	 */
 
 	public static void createIdeaDeveloperRole() {
-		
-		
-		String actions = 
-			                  "use;"
-							+ "view";  
 
-		/*String actions1 = 
-				
-				
-				 "can post ideas to a Topic;"
-				+ "create a certain tag;"
-				+ "can follow organization, entitie or topic;"
-				+ "follow tags of his/her choice;"
-				+ "request to join a private topic;"
-				+ "request to join a private organization;"
-				+ "tag his/her ideas;"
-				+ "report an idea as a spam or abuse;"
-				+ "leave an idea or topic in draft mode while creating it and publish it;"
-				+ "request a topic suitable for positing his/her idea;"
-				+ "report a topic or comment as spam;"
-				+ "delete his/her ideas;"
-				+ "add labels;"
-				+ "delete labels;"
-				+ "change labels;"
-				+ "View it;"
-				+ "comment or share any idea, plan;"
-				+ "rate plans;"
-				+ "request marking an idea as a duplicate;"
-				+ "view an action plan;"
-				+ "request to volunteer to work on an action item in a plan;"
-				+ "view his/her assigned to-do items;"
-				+ "mark his/her to-do item as done;";*/
+		String actions = "use;" + "view";
 
-	
-		        
+		/*
+		 * String actions1 =
+		 * 
+		 * 
+		 * "can post ideas to a Topic;" + "create a certain tag;" +
+		 * "can follow organization, entitie or topic;" +
+		 * "follow tags of his/her choice;" + "request to join a private topic;"
+		 * + "request to join a private organization;" + "tag his/her ideas;" +
+		 * "report an idea as a spam or abuse;" +
+		 * "leave an idea or topic in draft mode while creating it and publish it;"
+		 * + "request a topic suitable for positing his/her idea;" +
+		 * "report a topic or comment as spam;" + "delete his/her ideas;" +
+		 * "add labels;" + "delete labels;" + "change labels;" + "View it;" +
+		 * "comment or share any idea, plan;" + "rate plans;" +
+		 * "request marking an idea as a duplicate;" + "view an action plan;" +
+		 * "request to volunteer to work on an action item in a plan;" +
+		 * "view his/her assigned to-do items;" +
+		 * "mark his/her to-do item as done;";
+		 */
 
 		Role ideaDeveloper = new Role("idea developer", actions);
 		ideaDeveloper.save();
-		
+
 	}
 
 	/**
@@ -155,17 +137,18 @@ public class Role extends CoolModel {
 	 * 
 	 * @story C1S7
 	 */
-	
-	public static void createOrganizationLeadRole(){
-		  String action = "restrict the permission of an organizer;view the logs;create an organization and specify it's type;create organization profile;create entities;" +
-		    "accept/reject join requests from users to join a private organization;" +
-		    "enable/disable the user to create their own tags within an organization; " +
-		    "rename any relationship within the organization;" +
-		    "create relationships between entities/sub-entities/topics/tags;" +
-		    "end a relationship between entities/sub-entities/topics/tags;";
-		  Role OrganizationLead  = new Role("organizationLead" , action);
-		     OrganizationLead.save();
-		 }
+
+	public static void createOrganizationLeadRole() {
+		String action = "restrict the permission of an organizer;view the logs;create an organization and specify it's type;create organization profile;create entities;"
+				+ "accept/reject join requests from users to join a private organization;"
+				+ "enable/disable the user to create their own tags within an organization; "
+				+ "rename any relationship within the organization;"
+				+ "create relationships between entities/sub-entities/topics/tags;"
+				+ "end a relationship between entities/sub-entities/topics/tags;";
+		Role OrganizationLead = new Role("organizationLead", action);
+		OrganizationLead.save();
+	}
+
 	/**
 	 * creates the admin role
 	 * 
@@ -173,18 +156,14 @@ public class Role extends CoolModel {
 	 * 
 	 * @story C1S7
 	 */
-		 
-		 public static void createAdminRole(){
-		  String action = "add a user;edit a user;delete a user;edit ideas/rates/requests/marks;" +
-		    "Use all browsing and searching kinds;";
-		  Role admin  = new Role("admin" , action);
-		  admin.save();
-		 }
-	
-	
-	
-	
-	
+
+	public static void createAdminRole() {
+		String action = "add a user;edit a user;delete a user;edit ideas/rates/requests/marks;"
+				+ "Use all browsing and searching kinds;";
+		Role admin = new Role("admin", action);
+		admin.save();
+	}
+
 	/**
 	 * prints the role by role name
 	 * 
@@ -197,10 +176,11 @@ public class Role extends CoolModel {
 	public String toString() {
 		return this.roleName;
 	}
-	public boolean equals(Object o){
-		Role r = (Role)o;
-		
-		if(this.roleName .equals(r.roleName)){
+
+	public boolean equals(Object o) {
+		Role r = (Role) o;
+
+		if (this.roleName.equals(r.roleName)) {
 			return true;
 		}
 		return false;
