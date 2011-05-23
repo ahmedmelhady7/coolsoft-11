@@ -230,6 +230,7 @@
 		#{if checkPermitted}
 		<form action = @{Ideas.setPriority()} method = "GET">
 		<input type ="submit" value = "Submit Priority"/>
+		<input type = "hidden" name = "ideaId" value = ${ideaId} >
 		<br />
 		<input type = "radio" name = "priority" value = "critical" checked ="checked"/> critical
 		<br />
