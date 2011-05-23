@@ -12,6 +12,7 @@ import play.mvc.Controller;
 import play.mvc.With;
 import models.CreateRelationshipRequest;
 import models.EntityRelationship;
+import models.Invitation;
 import models.Item;
 import models.Log;
 import models.MainEntity;
@@ -479,10 +480,13 @@ public class MainEntitys extends CoolCRUD {
 				allEntities.get(i).save();
 			}
 		}
-		size = entity.invitationList.size();
-		for (int i = 0; i< size;i++) {
-			//Invitations.delete(entity.invitationList.get(i).id);
-		}
+		
+		//Mai Magdy
+		List <Invitation> invite=Invitation.find("byEntity", entity).fetch();
+		for(int i=0;i<invite.size();i++)
+			invite.get(i).delete();
+		//
+		
 		size = entity.topicRequests.size();
 		for (int i = 0; i<size;i++) {
 			//TopicRequests.delete(entity.topicRequests.get(i).id);
