@@ -66,13 +66,15 @@
         }
     });
 </script>
-<p>
-    Title: <input type="text" id="title" Name="title" value="${document.name}">    <input type="submit" value="save" onclick="save('${document.id}');">
-    <textarea id="data" name="data" rows="30" cols="80" style="width: 40%">${document.data}</textarea>
-<br /><input type="submit" value="delete" onclick="del('${document.id}');">
-    
-</p>
-<script type="text/javascript">
+<div id="page">
+<center>
+    Title: <input type="text" id="title" Name="title" value="${document.name}">    <input type="submit" value="save" onclick="save('${document.id}');">   <input type="image" src="/public/images/Cross.png" width="15" height="15" onclick="del('${document.id}');">
+    </center><textarea id="data" name="data" rows="30" cols="80" style="width: 40%">${document.data}</textarea>
+<input type="hidden" id= "b" value="${document.isOrganization}">
+<input type="hidden" id= "i" value="${document.userOrganizationId}">
+</div><script type="text/javascript">
+	var b = document.getElementById('b').value;
+	var OwnerId = document.getElementById('i').value +"";
     function save(id){
         var name = document.getElementById("title").value;
 		if (name.length == 0) {
@@ -86,13 +88,21 @@
             data: data
         });
 		alert("changes has been saved");
-        window.location = "http://localhost:9008";
+        if (b == "false") {
+			window.location = "http://localhost:9008/";	
+		} else {		 
+			window.location = "http://localhost:9008/organizations/viewProfile?id=" + OwnerId;
+		}
     }
 	function del(id){
         $.post('@{Documents.deleteDocument()}', {
             id: id
         });
         alert("document is deleted");
-		window.location = "http://localhost:9008";
+		if (b == "false") {
+			window.location = "http://localhost:9008/";	
+		} else {		 
+			window.location = "http://localhost:9008/organizations/viewProfile?id=" + id;
+		}
     }
 </script>
