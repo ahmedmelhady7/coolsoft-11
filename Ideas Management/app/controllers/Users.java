@@ -1131,12 +1131,10 @@ public class Users extends CoolCRUD {
 	public static List<MainEntity> getEntitiesOfOrganizer(Organization org,
 			User user) {
 		List<MainEntity> entities = new ArrayList<MainEntity>();
-		System.out.println(org == null);
-		System.out.println(user);
+		
 		List<UserRoleInOrganization> userRoleInOrg = UserRoleInOrganization
 				.find("byOrganizationAndEnrolled", org, user).fetch();
-		// System.out.println(userRoleInOrganization.isEmpty() +
-		// "haaaaaaaaaaaaaaaaay");
+		
 		for (int i = 0; i < userRoleInOrg.size(); i++) {
 			if (userRoleInOrg.get(i).role.roleName.equals("organizer")) {
 				entities.add((MainEntity) MainEntity.findById(userRoleInOrg
