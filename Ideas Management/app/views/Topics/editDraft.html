@@ -7,6 +7,9 @@
 </style>
 
 <fieldset>
+	<legend>
+		<big><b>Edit Draft</b></big>
+	</legend>
 <p>
 	Title: </br>
 	<input type="textbox" size = "50" id="titleTextBox"></input>
@@ -29,9 +32,10 @@
 </p>
 </fieldset>
 
-<input type="submit" id ="saveButton" value="Save" onclick="save()" ></input>
-<input type="submit" id ="discardButton" value="Discard" onclick="discard()" ></input>
-<input type="submit" id ="postButton" value="Post" onclick="post()" ></input>
+<input type="submit" id ="postButton" value="Post" onclick="post()"></input> or
+<input type="submit" id ="saveButton" value="Save" onclick="save()" class="linkButton"></input>
+<input type="submit" id ="discardButton" value="Discard" onclick="discard()" class="linkButton"></input>
+
 
 <script type="text/javascript"> 
 	document.getElementById("titleTextBox").value = "${targetTopic.title}";
@@ -65,9 +69,10 @@
 			alert("Nothing to save");
 			return;
 		}
-
+		
+		var link = "/ideas/getdrafts";
 		$.post('@{Topics.saveDraft()}' ,{topicId:${targetTopic.getId()}, title:topicTitle, description:topicDescription, 
-			privacyLevel: privacyLevel, createRelationship: createRelationship});
+			privacyLevel: privacyLevel, createRelationship: createRelationship}, function(){window.location.href=link});
 			
 		
 	}
