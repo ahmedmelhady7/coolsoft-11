@@ -76,7 +76,7 @@
        
 </form>
 <br />
-<input type="submit" id = "restrictBtn" value="Restrict" onclick = "restrict()">
+<input type="submit" id = "restrictBtn" value="Restrict" onclick = "restrict()"> <div id = "rd"> <p style = "color:#c00">You did not choose any actions !!!</p></div>
 
 
 <br />
@@ -90,7 +90,7 @@
        
 </form>
 <br />
-<input type="submit" id = "deRestrictBtn" value="De-Restrict" onclick = "deRestrict()"> <br /> <br />
+<input type="submit" id = "deRestrictBtn" value="De-Restrict" onclick = "deRestrict()"> <div id = "dd"> <p style = "color:#c00">You did not choose any actions !!!</p></div><br /> <br />
 
 <input name = "newww" type="submit" style="background-color:lightblue" value="Start new Restriction / De-Restriction Process" align = "Right" onclick="Restart()"  onmouseout = "newww.style.color='black'" onmouseover="newww.style.color='white'" >
 
@@ -110,6 +110,14 @@ function Restart(){
 	
 	window.location.reload();
 }
+function RHide(){
+	
+    $('#dd').hide();
+}
+function DHide(){
+	$('#rd').hide();
+}
+
 
 // function submit(){
 	
@@ -375,9 +383,10 @@ function getSelectedCheckboxValue(buttonGroup) {
       
 		
 		if(restrictedActions.length == 0 ) {
-			alert("You did not even choose a single action !!!");
+			//alert("You did not even choose a single action !!!");
+			$('#rd').show();
 		} else {
-			
+			$('#rd').hide();
 			var r=confirm("Are You sure you want to proceed ? ");
 			if (r == true) {
 				if(topicFlag == false){
@@ -429,9 +438,10 @@ function getSelectedCheckboxValue(buttonGroup) {
 			
 
 			if(enabledActions.length == 0 ) {
-				alert("You did not even choose a single action !!!");
+				//alert("You did not even choose a single action !!!");
+				$('#dd').show();
 			} else {
-				
+				$('#dd').hide();
 				var r=confirm("Are You sure you want to proceed ? ");
 				if (r == true) {
 					if(topicFlag == false){
@@ -507,6 +517,13 @@ function getSelectedCheckboxValue(buttonGroup) {
 	$(function(){
 		$('#deRestrictBtn').hide();
 	});
+	$(function(){
+		$('#dd').hide();
+	});
+	$(function(){
+		$('#rd').hide();
+	});
+	
 	
 </script>
 <script type="text/javascript"> 

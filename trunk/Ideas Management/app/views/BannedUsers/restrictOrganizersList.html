@@ -26,13 +26,12 @@
 <fieldset>  
 <legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
     <b><u> Organizers' set: </u></b></font></legend> <br />
-       <select name = "userId" id = "userss">
+      
   #{list items:users, as:'user'}
   
-  <option name = ${user.id} value=${user.id}>${user.firstName} ${user.lastName}</option>
-  
+  <input type="checkbox" id = "o" name = "org"  value = ${user.id} class = "enabled"/> ${user.firstName} ${user.lastName}<br />
    #{/list}
-        </select>
+       
 </fieldset>
 </form>
 <br />
@@ -101,7 +100,7 @@
        
 </form>
 <br />
-<input type="submit" id = "restrictBtn" value="Restrict" onclick = "restrict()"> &nbsp;<div id ="rd"> <p style = "color:#c00">You did not choose any actions !!!</p></div>
+<input type="submit" id = "restrictBtn" value="Restrict" onclick = "restrict()"> <div id = "rd"> <p style = "color:#c00">You did not choose any actions !!!</p></div>
 
 
 <br />
@@ -116,8 +115,7 @@
        
 </form>
 
-<input type="submit" id = "deRestrictBtn" value="De-Restrict" onclick = "deRestrict()"> &nbsp;<div id = "dd"> <p style = "color:#c00">You did not choose any actions !!!</p></div>
- <br /> <br />
+<input type="submit" id = "deRestrictBtn" value="De-Restrict" onclick = "deRestrict()"> <div id = "dd"> <p style = "color:#c00">You did not choose any actions !!!</p></div><br /> <br />
 
 <input name = "neww" type="submit" style="background-color:lightblue" value="Start new Restriction / De-Restriction Process" align = "Right" onclick="Restart()" onmouseout = "neww.style.color='black'" onmouseover="neww.style.color='white'">
 
@@ -132,7 +130,7 @@ var organizationID = ${organizationID};
 var submitBtnFlag = false;
 var selectEntityBtnFlag = false;
 var submitTopicBtnFlag = false;
-
+var selectedOrganizers ={};
 
 function Restart(){
 	
@@ -146,44 +144,31 @@ function DHide(){
 	$('#rd').hide();
 }
 
+
 function submit(){
 	
 	
 	if (selectEntityBtnFlag == false){
 		selectEntityBtnFlag = true;
-	 userID = document.getElementById('userss').value;
+		 organizersField = document.organizer.org;
+		//alert("restrictedActions.length" + field.length);
+	  selectedOrganizers = getSelectedCheckboxValue(organizersField);
 	organizationID = ${organizationID};
-	$.getJSON( '@{BannedUsers.entitiesEnrolledIn()}', { userId: userID , organizationId: ${organizationID}} , function(data) { 
+	$.getJSON( '@{BannedUsers.entitiesEnrolledInGroup()}', { userId: selectedOrganizers , organizationId: ${organizationID}} , function(data) { 
 		
-// 		var temp =  ${flag};
-// 		var H[] = entities;
-//  		 var content = $( data ).find( '#entities' ); 
-//           $( "#msg" ).html( content ); 
-            
-            
-//  	     for
+
          var text = "";
 	     
 	     var List;
-	    // <% entities = entities.split(';') %>
-	   
 	    
-//          for( var i=0; i<List.length; i++ ) {  
-        	
-//         		 text = text + "[" + i + "]" + list[i];
-        	 
-        	
-//     	  }
-       //  alert("Data Loaded: " + data.entityList);
-	    //  String [] entitiesL = entities.split(,);
 	     var s={};
         s=data.entityList.split(",");
-      //  alert("Data Loaded: " + data.entityList);
+        
         var d={};
         d=data.entityIds.split(",");
   
 	    
-	    // document.getElementById("dynamic").innerHTML= counter;
+	    
 	    for( var i = 0 ; i < s.length-1 ; i++){
 	    	myOption= new Option();
 	    	
@@ -212,35 +197,33 @@ function submit(){
 		  submitTopicBtnFlag = true;
 	 
 	  topicID = document.getElementById('topic').value;
-	 
-	  $.getJSON( '@{BannedUsers.topicActions()}', { topicId: topicID ,userId: userID} ,  function(data) { 
+	  
+	  
+	  
+	  
+	  $.getJSON( '@{BannedUsers.getTopicActions()}',{},  function(data) { 
 			
 		    
 		     var actions={};
 	        actions=data.topicsActions.split(",");
-	         var  restrictedActions = {};
-	         restrictedActions = data.restrictedTopicActions.split(",");
-	        
+	         
 	        for( var i = 0 ; i < actions.length-1 ; i++){
 		     
 	        	var text = actions[i];
-	        	$('#enabledActions').append('<input type="checkbox" id = "c" name = "actionToDo"  value = "'+text+'" class = "enabled" onCheck ="'+ RHide() +'"/> ' + text + '<br />'); 
-		    
+	        	$('#enabledActions').append('<input type="checkbox" id = "c" name = "actionToDo"  value = "'+text+'" class = "enabled"/> ' + text + '<br />'); 
+	        	$('#disabledActions').append('<input type="checkbox" id = "dc" name = "actionNotToDo"  value = "'+text+'" class = "enabled"/> ' + text + '<br />'); 
+			    
 	        }
 	        
 	        
-	        for( var i = 0 ; i < restrictedActions.length-1 ; i++){
-			     
-	        	var text = restrictedActions[i];
-	        	$('#disabledActions').append('<input type="checkbox" id = "dc" name = "actionNotToDo"  value = "'+text+'" class = "enabled" onChange = "'+DHide()+'"/> ' + text + '<br />'); 
-		    
-	        }
 	        $('#enabledActions').show();
 	        $('#restrictBtn').show();
 	        $('#disabledActions').show();
 	        $('#deRestrictBtn').show();
 		
 		});
+	  
+	 
 	  
   }
 	  else{
@@ -258,7 +241,7 @@ function getTopic(){
 	if (submitBtnFlag == false){
 		submitBtnFlag = true;
 	
-	userIDD = document.getElementById('userss').value;
+	
 	var topicc = true;
 
 	topicFlag = true;
@@ -271,7 +254,7 @@ function getTopic(){
     var entityIdd = document.getElementById('e').value;
      entityID = entityIdd;
      if(topicc == false){
-    $.getJSON( '@{BannedUsers.entityActions()}', { entityId: entityIdd, organizationId: ${organizationID} ,userId: userIDD} ,  function(data) { 
+    $.getJSON( '@{BannedUsers.getAllEntityActions()}',  function(data) { 
 		
          //alert("Data Loaded :)"  + data.actions);
 	    
@@ -288,7 +271,7 @@ function getTopic(){
         
         
         var restrictedActionz = {};
-        restrictedActionz = data.restrictedActions.split(",");
+        restrictedActionz = data.actions.split(",");
      
         for( var i = 0 ; i < restrictedActionz.length-1 ; i++){
 		     
@@ -308,9 +291,9 @@ function getTopic(){
      }
      
      else{
-    	  	 
+    	  	 if(selectedOrganizers[0]){
     	 
-    	 $.getJSON('@{BannedUsers.topicsEnrolledIn()}', { entityId: entityIdd , organizationId: ${organizationID} ,userId: userIDD} ,  function(data) { 
+    	 $.getJSON('@{BannedUsers.topicsEnrolledIn()}', { entityId: entityIdd , organizationId: ${organizationID} ,userId: selectedOrganizers[0]} ,  function(data) { 
     			
     	     var names ={};
             names=data.topicsNames.split(",");
@@ -333,6 +316,39 @@ function getTopic(){
             $('#topicBtn').show();
     	
     	});
+    	 
+    	 
+    	  	 }
+    	  	 else{
+    	  		 
+    	  		$.getJSON('@{BannedUsers.topicsEnrolledIn()}', { entityId: entityIdd , organizationId: ${organizationID} ,userId: selectedOrganizers} ,  function(data) { 
+    	 			
+    	    	     var names ={};
+    	            names=data.topicsNames.split(",");
+    	           var  ids = {};
+    	           ids = data.topicsIds.split(",");
+    	            if(names.length == 1){
+    	            	alert("Oops there are no topics within this entity !!!");
+    	            	window.location.reload();
+    	            }
+    	            for( var i = 0 ; i < names.length-1 ; i++){
+    	    	      	        
+    	    	        topicOption= new Option();
+    	    	        topicOption.text= names[i];
+    	    	        topicOption.value= ids[i]; 
+    	    	        document.topicsList.topicName.options[document.topicsList.topicName.options.length]=topicOption;
+    	    	        
+    	            }
+    	    	
+    	            $('#topicsListId').show();
+    	            $('#topicBtn').show();
+    	    	
+    	    	});
+    	  		 
+    	  	 }
+    	 
+    	 
+    	 
     	 
     	 
      } 
@@ -410,21 +426,52 @@ function getSelectedCheckboxValue(buttonGroup) {
 		
 		if(restrictedActions.length == 0 ) {
 			//alert("You did not even choose a single action !!!");
-			
-				$('#rd').show();
-			
+			$('#rd').show();
 		} else {
-			 $('#rd').hide();
+			$('#rd').hide();
 			var r=confirm("Are You sure you want to proceed ? ");
 			if (r == true) {
+				
 				if(topicFlag == false){
-					$.post('@{BannedUsers.restrictFinal()}', {actionToDo:restrictedActions ,type: "entity",
-						entityTopicId: entityID, userId:userID});
+					if (selectedOrganizers[0]){
+					
+						for (var j = 0 ; j < selectedOrganizers.length ; j++ ){
+							var userID = selectedOrganizers[j];
+							
+							$.post('@{BannedUsers.restrictFinal()}', {actionToDo:restrictedActions ,type: "entity",
+								entityTopicId: entityID, userId:userID});	
+						}
+						
+					}else{
+						
+						$.post('@{BannedUsers.restrictFinal()}', {actionToDo:restrictedActions ,type: "entity",
+							entityTopicId: entityID, userId:selectedOrganizers});	
+					
+					}
 				}
 				
 				else{
-					$.post('@{BannedUsers.restrictFinal()}', {actionToDo:restrictedActions ,type: "topic",
-						entityTopicId: topicID, userId:userID});
+					
+					
+					if (selectedOrganizers[0]){
+						
+						for (var j = 0 ; j < selectedOrganizers.length ; j++ ){
+							var userID = selectedOrganizers[j];
+							
+							$.post('@{BannedUsers.restrictFinal()}', {actionToDo:restrictedActions ,type: "topic",
+								entityTopicId: entityID, userId:userID});	
+						}
+						
+					}else{
+						
+						$.post('@{BannedUsers.restrictFinal()}', {actionToDo:restrictedActions ,type: "topic",
+							entityTopicId: entityID, userId:selectedOrganizers});	
+					
+					}
+					
+					
+					
+					
 				}
 				var selected ={};
 				selected = getSelectedCheckbox(field);
@@ -439,7 +486,7 @@ function getSelectedCheckboxValue(buttonGroup) {
 // 				    		  c.parentNode.removeChild(c);
 //				    		  $('#enabledActions').removeChild(field[i]);
  //				    		  $('#disabledActions').append(filed[i]);
-				    		  $('#disabledActions').append('<input type="checkbox" id = "dc" name = "actionNotToDo"  value = "'+field[i].value+'" class = "enabled"/> ' + field[i].value + '<br />'); 
+//				    		  $('#disabledActions').append('<input type="checkbox" id = "dc" name = "actionNotToDo"  value = "'+field[i].value+'" class = "enabled"/> ' + field[i].value + '<br />'); 
 				    	  }
 				      }
 				
@@ -465,21 +512,54 @@ function getSelectedCheckboxValue(buttonGroup) {
 
 			if(enabledActions.length == 0 ) {
 				//alert("You did not even choose a single action !!!");
-				
-					$('#dd').show();
-				
+				$('#dd').show();
 			} else {
 				$('#dd').hide();
 				var r=confirm("Are You sure you want to proceed ? ");
 				if (r == true) {
+				
 					if(topicFlag == false){
+						
+						if (selectedOrganizers[0]){
 							
-						$.post('@{BannedUsers.deRestrict()}', { userId:userID, actionsRestricted:enabledActions ,entityTopicID: entityID,type: "entity"});
+							for (var j = 0 ; j < selectedOrganizers.length ; j++ ){
+								var userID = selectedOrganizers[j];
+								
+								$.post('@{BannedUsers.deRestrict()}', { userId:userID, actionsRestricted:enabledActions ,entityTopicID: entityID,type: "entity"});
+
+							}
+							
+						}else{
+							
+							$.post('@{BannedUsers.deRestrict()}', { userId:selectedOrganizers, actionsRestricted:enabledActions ,entityTopicID: entityID,type: "entity"});
+	
+						
+						}
+						
+						
+							
 					}
 					
 					else{
 						
-						$.post('@{BannedUsers.deRestrict()}', { userId:userID, actionsRestricted:enabledActions ,entityTopicID: topicID,type: "topic"});
+						
+					     if (selectedOrganizers[0]){
+							
+							for (var j = 0 ; j < selectedOrganizers.length ; j++ ){
+								var userID = selectedOrganizers[j];
+								
+								$.post('@{BannedUsers.deRestrict()}', { userId:userID, actionsRestricted:enabledActions ,entityTopicID: topicID,type: "topic"});
+
+							}
+							
+						}else{
+							
+							$.post('@{BannedUsers.deRestrict()}', { userId:selectedOrganizers, actionsRestricted:enabledActions ,entityTopicID: topicID,type: "topic"});
+	
+						
+						}
+						
+					
 						
 					}
 					
@@ -492,7 +572,7 @@ function getSelectedCheckboxValue(buttonGroup) {
 					    		  field2[i].disabled = true;
 					              field2[i].checked = false;
                                 
-					    		  $('#enabledActions').append('<input type="checkbox" id = "c" name = "actionToDo"  value = "'+field2[i].value+'" class = "enabled"/> ' + field2[i].value + '<br />'); 
+					    		//  $('#enabledActions').append('<input type="checkbox" id = "c" name = "actionToDo"  value = "'+field2[i].value+'" class = "enabled"/> ' + field2[i].value + '<br />'); 
 					    	  }
 					      }
 					
@@ -553,7 +633,6 @@ function getSelectedCheckboxValue(buttonGroup) {
 	$(function(){
 		$('#rd').hide();
 	});
-	
 	
 </script>
 <script type="text/javascript"> 
