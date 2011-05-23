@@ -24,7 +24,7 @@
                 </li>
                 #{/if}
        
-				#{if alreadyReportedTopic==false}
+				#{if alreadyReportedTopic==false && canReport}
 				<li>
                     <form action="@{Users.reportTopicAsSpam()}" method="GET" name="myform">
                           <input type="hidden" name="topicId" value="${topicId}">

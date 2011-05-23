@@ -10,7 +10,7 @@
 </style>
 <br/>
 <div id="main" class ="post">
-<a href="@{Topics.show(topic.id)}"><font color="#4CC417">Back to topic</a>
+<a href="@{Topics.show(topic.id)}"><font color="#4CC417">Back to ${topic.title}</a>
 <br/>
 <br/>
 <h3>
@@ -29,23 +29,18 @@
 		#{/list}
 	</ul>
 </div>
-<br/>
 <table id = "success" border="0" bgcolor="#FF0000" cellspacing="0" id ="toFil">
-		<tr><td><font size ="3" color ="black"><i>
-					<font color="#000000"><b><i>Idea Has been Reported As Spam</i></b></font>                
+		<tr><td><font size ="3" color ="black" style="display: none;"><i>
+					<font color="#000000"><b><i>Idea Has been Reported As Spam styl</i></b></font>                
         </i></font></td><td>
 </table>
-    <br/>
     <font color="Red">
         ${message}
     </font>
-    <br/>
-    
     <div class="objectForm">
-    
     #{if isAuthor}
     #{form @delete(object._key())}
-			<input type="submit" class="linkButton" style="color: red;" value="&{'Delete My Idea', type.modelName}" />
+			<input type="submit"  class="linkButton" style="color: red;" value="&{'Delete My Idea', type.modelName}" />
 	#{/form}    
 	#{/if}
 	
