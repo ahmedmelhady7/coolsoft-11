@@ -1,0 +1,216 @@
+#{extends 'Login/index.html' /}
+#{set title:'Notifications' /}
+<script type="text/javascript">
+var ids = new Array();
+var counter = 0;
+function toggleCheck(id) {			
+	if(ids.indexOf(id) == -1) {
+		ids.push(id);
+	}else {
+		ids.pop(id);
+	}			
+}
+function markAll(){
+	if(counter == 1) {
+		oneMark();
+	} else {
+		var field = document.myform.checkfield;	
+		for (i = 0; i < field.length; i++) {
+			field[i].checked = true ;
+			ids.push(field[i].id);
+		}
+	}	
+}
+function oneMark() {
+	var field = document.myform.checkfield;
+	field.checked = true;
+	ids.push(field.id);
+}
+function unmarkAll(){
+	if(counter == 1) {
+		oneUnMark();
+	} else {
+		var field = document.myform.checkfield;	
+		for (i = 0; i < field.length; i++) {
+			field[i].checked = false ;
+		}
+	}
+	ids = new Array();
+}
+function oneUnMark() {
+	var field = document.myform.checkfield;
+	field.checked = false;
+}
+function submit() {
+	if(ids.length == 0) {
+		alert('No notifications to be deleted!!');
+	} else {
+		var r=confirm("Are You sure you want to delete notifications?");
+		if (r == true) {
+			$.post('@{deleteNotifications()}', {a:ids});
+			for(var i=0;i<ids.length;i++) {
+				$('#not_' + ids[i]).remove();
+			}
+		} else {
+			//window.location.reload();
+		}
+		ids = new Array();
+		var field = document.myform.checkfield;
+		for (i = 0; i < field.length; i++){
+			field[i].checked = false ;
+		}
+		//window.location.reload();
+	}
+	
+}
+</script>
+<div id="page">
+		<div id="page-bgtop">
+			<div id="page-bgbtm">
+				<div id="content">
+					<div class="post">
+					<h2>Notifications List</h2>
+					<br>
+					<hr>
+					<br>
+					<ul>
+						<li>
+						<fieldset>
+						<legend><h4>Organization</h4></legend>
+						#{if user.getNotificationsFrom("Organization").size() == 0}
+						<i>You have no notifications from any Organization!!</i>
+						#{/if}						
+						#{list items:user.getNotificationsFrom("Organization"), as:'notifi'}
+							<ul>
+							<li>							
+    						<a href="@{Organizations.viewProfile(notifi.sourceID)}">${notifi.title}</a>    						     					
+    						<br>
+    						<b>Message: </b> ${notifi.description}
+    						<br>
+    						</li>
+							</ul>
+						#{/list}
+						</fieldset>
+						</li>
+						
+						<li>
+						<fieldset>
+						<legend><h4>Entities</h4></legend>
+						#{if user.getNotificationsFrom("Entity").size() == 0}
+						<i>You have no notifications from any Entities!!</i>
+						#{/if}						
+						#{list items:user.getNotificationsFrom("Entity"), as:'notifi'}
+							<ul>
+							<li>							
+    						<a href="@{MainEntitys.viewEntity(notifi.sourceID)}">${notifi.title}</a>    						     					
+    						<br>
+    						<b>Message: </b> ${notifi.description}
+    						<br>
+    						</li>
+							</ul>
+						#{/list}
+						</fieldset>
+						</li>
+						
+						<li>
+						<fieldset>
+						<legend><h4>Topics</h4></legend>
+						#{if user.getNotificationsFrom("Topic").size() == 0}
+						<i>You have no notifications from any Topics!!</i>
+						#{/if}						
+						#{list items:user.getNotificationsFrom("Topic"), as:'notifi'}
+							<ul>
+							<li>							
+    						<a href="@{Topics.show(notifi.sourceID)}">${notifi.title}</a>    						     					
+    						<br>
+    						<b>Message: </b> ${notifi.description}
+    						<br>
+    						</li>
+							</ul>
+						#{/list}
+						</fieldset>
+						</li>
+						
+						<li>
+						<fieldset>
+						<legend><h4>Idea</h4></legend>
+						#{if user.getNotificationsFrom("Idea").size() == 0}
+						<i>You have no notifications from any Ideas!!</i>
+						#{/if}						
+						#{list items:user.getNotificationsFrom("Idea"), as:'notifi'}
+							<ul>
+							<li>							
+    						<a href="@{Ideas.show(notifi.sourceID)}">${notifi.title}</a>    						     					
+    						<br>
+    						<b>Message: </b> ${notifi.description}
+    						<br>
+    						</li>
+							</ul>
+						#{/list}
+						</fieldset>
+						</li>
+						
+						<li>
+						<fieldset>
+						<legend><h4>Plans</h4></legend>
+						#{if user.getNotificationsFrom("Plan").size() == 0}
+						<i>You have no notifications from any Plans!!</i>
+						#{/if}						
+						#{list items:user.getNotificationsFrom("Plan"), as:'notifi'}
+							<ul>
+							<li>							
+    						<a href="@{Plans.viewAsList(notifi.sourceID)}">${notifi.title}</a>    						     					
+    						<br>
+    						<b>Message: </b> ${notifi.description}
+    						<br>
+    						</li>
+							</ul>
+						#{/list}
+						</fieldset>
+						</li>
+						
+						<li>
+						<fieldset>
+						<legend><h4>Tags</h4></legend>
+						#{if user.getNotificationsFrom("Tag").size() == 0}
+						<i>You have no notifications from any Tags!!</i>
+						#{/if}						
+						#{list items:user.getNotificationsFrom("Tag"), as:'notifi'}
+							<ul>
+							<li>							
+    						<a href="@{Tags.mainPage(notifi.sourceID)}">${notifi.title}</a>    						    					
+    						<br>
+    						<b>Message: </b> ${notifi.description}
+    						<br>
+    						</li>
+							</ul>
+						#{/list}
+						</fieldset>
+						</li>
+						
+						<li>
+						<fieldset>
+						<legend><h4>Users</h4></legend>
+						#{if user.getNotificationsFrom("User").size() == 0}
+						<i>You have no notifications from any Users!!</i>
+						#{/if}						
+						#{list items:user.getNotificationsFrom("User"), as:'notifi'}
+							<ul>
+							<li>							
+    						<a href="@{Users.viewProfile(notifi.sourceID)}">${notifi.title}</a>    						     		
+    						<br>
+    						<b>Message: </b> ${notifi.description}
+    						<br>
+    						</li>
+							</ul>
+						#{/list}
+						</fieldset>
+						</li>
+						
+					</ul>
+					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
