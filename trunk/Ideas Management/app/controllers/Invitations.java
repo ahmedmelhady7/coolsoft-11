@@ -52,19 +52,35 @@ public class Invitations extends CoolCRUD {
 	 * 
 	 */
 	public static void invite(long id, int type, int check, int flashError) {
+		
+		User user=Security.getConnected();
 		System.out.println("ya rab");
 		System.out.println(id);
 		List<User> usersMatched = new ArrayList<User>();
-		for (User user : users) {
-			usersMatched.add(user);
+		for (User user1: users) {
+			usersMatched.add(user1);
 		}
 		if (type == 0) {
+			int permitted=0;
+			if (Users
+					.isPermitted(
+							user,
+							"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
+							id, "entity"))
+				permitted = 1;
 			MainEntity entity = MainEntity.findById(id);
-			render(type, check, entity, usersMatched, flashError);
+			render(type, check, entity, usersMatched, flashError,permitted,user);
 		} else {
+			int permitted=0;
+			if (Users
+					.isPermitted(
+							user,
+							"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
+							id, "entity"))
+				permitted = 1;
 			Topic topic = Topic.findById(id);
 			notFoundIfNull(topic);
-			render(type, check, topic, usersMatched, flashError);
+			render(type, check, topic, usersMatched, flashError,user,permitted);
 		}
 
 	}
@@ -339,6 +355,7 @@ public class Invitations extends CoolCRUD {
 		User user = Security.getConnected();
 		List<Invitation> invitation = Invitation.find("byEmail", user.email)
 				.fetch();
+		MainEntitys.deleteEntity(1);
 
 		render(invitation);
 
