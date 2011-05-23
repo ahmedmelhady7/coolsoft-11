@@ -43,12 +43,17 @@
 		   <ul>
 		   	#{if admin || creator}
 			<li>
-		<a href="@{Organizations.deleteOrganization(org.id)}">Delete</a>
+		<a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
             </li>
 			<li>
-		<a href="@{Organizations.editOrganization(org.id)}" >Edit</a>            
+		<a href="@{Organizations.editOrganization(org.id)}" title="Edit Organization">Edit</a>            
 		</li>
 		#{/if}
+		#{if allowed==1}
+		<li>
+		<a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>
+		</li>
+        #{/if}
 		#{if plans.size()>0}
         <li>
            <a id="planLink" href="#">Plans</a>
@@ -64,10 +69,10 @@
 		</li>
 		#{/if}
         <li>
-        	#{if (admin || creator)}<a href="@{Tags.createTag(org.id)}">Create a Tag</a>
+        	#{if (admin || creator)}<a href="@{Tags.createTag(org.id)}" title="Create a new Tag">Create a Tag</a>
         #{/if}
         #{else}
-        #{if (org.createTag) && (!join)}<a href="@{Tags.createTag(org.id)}">Create a Tag</a>
+        #{if (org.createTag) && (!join)}<a href="@{Tags.createTag(org.id)}" title="Create a new Tag">Create a Tag</a>
         #{/if}
         #{/else}
         </li>
@@ -101,10 +106,7 @@
         </form>#{/if}
         <br>
         <br>
-        #{if allowed==1}<a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>
-        <br>
-        <br>
-        #{/if}
+        
 		
 		#{if logFlag == 1}		
  <input type="submit" value="View Logs" onclick=location.href="@{Logs.viewLogs(org.id)}">
