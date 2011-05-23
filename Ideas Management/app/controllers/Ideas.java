@@ -397,8 +397,15 @@ public class Ideas extends CoolCRUD {
 		boolean canUse = Users.canDelete(user, "use", ideaId, "idea", topicId);
 		System.out.println("false alreadyreoprted");
 		List<User> allUsers = User.findAll();
-		List<String> userNames = new ArrayList<String>(allUsers.size());
+		List<String> userNames = new ArrayList<String>();
+		String s;
+		for(int i = 0; i<allUsers.size();i++)
+		{
+			s = allUsers.get(i).username;
+			userNames.add(s);
+		}
 		Collections.sort(userNames);
+		userNames.remove(user.username);
 		boolean checkPermitted = Users.isPermitted(user,
 				"rate/prioritize ideas", topicId, "topic");
 		boolean checkNotRated;
@@ -823,10 +830,7 @@ public class Ideas extends CoolCRUD {
 		String desc = user.firstName
 				+ " "
 				+ user.lastName
-				+ " shared an Idea with you"
-				+ "\n"
-				+ "Copy this link into your address bar to view the shared Idea : http://localhost:9008/ideas/show?ideaId="
-				+ ideaId;
+				+ " shared an Idea with you";
 		long notId = ideaId;
 		long userId = U.id;
 		Notifications.sendNotification(userId, notId, type, desc);

@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -59,6 +60,16 @@ public class Plans extends CoolCRUD {
 		globalListOfTags = Tag.findAll();
 		boolean notBlockedFromUsing = Users.isPermitted(user, "use", p.topic.id, "topic");
 		boolean checkNotRated;
+		List<User> allUsers = User.findAll();
+		List<String> userNames = new ArrayList<String>();
+		String s;
+		for(int i = 0; i<allUsers.size();i++)
+		{
+			s = allUsers.get(i).username;
+			userNames.add(s);
+		}
+		Collections.sort(userNames);
+		userNames.remove(user.username);
 		if (p.usersRated.contains(user))
 			checkNotRated = false;
 		else
@@ -107,12 +118,12 @@ public class Plans extends CoolCRUD {
 			}
 			List<MainEntity> entitiesList = p.topic.entity.organization.entitiesList;
 			render(p, itemsList, user, canAssign, canEdit, canView, canDelete,
-					isOrganizer, canIdea, comments, entitiesList, listOfTags,notBlockedFromUsing);
+					isOrganizer, canIdea, comments, entitiesList, listOfTags,notBlockedFromUsing,userNames);
 		} else {
 			canView = false;
 			System.out.println("he is not allowed to view");
 			render(p, itemsList, user, canAssign, canEdit, canView, canDelete,
-					isOrganizer, canIdea);
+					isOrganizer, canIdea, userNames);
 		}
 
 	}
@@ -660,10 +671,7 @@ public class Plans extends CoolCRUD {
 		String desc = user.firstName
 				+ " "
 				+ user.lastName
-				+ " shared a plan with you"
-				+ "\n"
-				+ "Copy this link into your address bar to view the shared Idea : http://localhost:9008/plans/viewaslist?planId="
-				+ p.id;
+				+ " shared a plan with you";
 		long notId = planID;
 		long userId = U.id;
 		Notifications.sendNotification(userId, notId, type, desc);
