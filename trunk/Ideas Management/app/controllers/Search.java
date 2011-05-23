@@ -1154,7 +1154,7 @@ public class Search extends Controller {
 					}
 				}
 				if (!Users.isPermitted(user, "view", listOfEntities.get(i).id,
-						"Entity")) {
+						"entity")) {
 					listOfEnts.remove(listOfEntities.get(i));
 				}
 			}
