@@ -58,12 +58,10 @@ public class Labels extends CoolCRUD
 		
 		if(ideas != null)
 		{
-			System.out.println("not null");
 			for(long ideaId : ideas)
 			{
 				Idea tmpIdea = Idea.findById(ideaId);
 				choosenIdeas.add(tmpIdea);
-				System.out.println("Idea added to Label "+name+" : "+tmpIdea.id);
 			}
 			
 			Label label = new Label(name,user,choosenIdeas);
@@ -71,7 +69,6 @@ public class Labels extends CoolCRUD
 		}
 		else
 		{
-			System.out.println("tsadda2 kanet null ya m3alem");
 			Label label = new Label(name,user);
 			label.save();return 1;
 		}
