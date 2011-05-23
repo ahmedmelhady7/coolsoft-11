@@ -686,6 +686,13 @@ public class User extends CoolModel {
 		return documents;
 	}
 
+	/**
+	 * This method gets all Organizations that the user is enrolled in
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @return List<Organization>
+	 */
 	public List<Organization> getOrganizations() {
 		List<Organization> organizations = new ArrayList<Organization>();
 		int i = 0;
