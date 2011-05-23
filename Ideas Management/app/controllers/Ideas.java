@@ -400,7 +400,7 @@ public class Ideas extends CoolCRUD {
 		List<String> userNames = new ArrayList<String>(allUsers.size());
 		Collections.sort(userNames);
 		boolean checkPermitted = Users.isPermitted(user,
-				"rate/prioritize ideas;", topicId, "topic");
+				"rate/prioritize ideas", topicId, "topic");
 		boolean checkNotRated;
 		if (idea.usersRated.contains(user))
 			checkNotRated = false;
@@ -845,7 +845,6 @@ public class Ideas extends CoolCRUD {
 	 */
 	public static void setPriority(String priority, long ideaId) {
 		User user = Security.getConnected();
-		ideaId++;
 		Idea i = Idea.findById(ideaId);
 		long topicId = i.belongsToTopic.id;
 		System.out.println("---------------------------------------");
