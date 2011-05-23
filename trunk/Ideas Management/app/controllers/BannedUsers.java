@@ -53,6 +53,14 @@ public class BannedUsers extends CoolCRUD {
 		//viewRestrictedOrganizersInOrganization(1);
 		viewRestrictedOrganizersTopicPath(1);
 	}
+	
+	/**
+	 * to moved
+	 */
+	public static void unauthorized(){
+		User user = Security.getConnected();
+		render(user);
+	}
 	/**
 	 *  
 	 * renders the list of organizers in an
@@ -66,6 +74,26 @@ public class BannedUsers extends CoolCRUD {
 	 * @param orgID
 	 *            long id of the organization
 	 */
+	public static void restrictOrganizersList (long orgId){
+		
+		
+		Organization organization = Organization.findById(orgId);
+		
+		List<User> users = Users.searchOrganizer(organization);
+
+	    long organizationID = orgId;
+	  //  boolean flag = false;
+	    User user = Security.getConnected();
+	    if(user.isAdmin || organization.creator.equals(user)){
+	    	render(users, organizationID , user);
+		}
+		else{
+			unauthorized();
+		}
+	    
+	    
+		
+	}
 	public static void restrictOrganizer(long orgId ) {
 		
 		Organization organization = Organization.findById(orgId);
@@ -75,7 +103,15 @@ public class BannedUsers extends CoolCRUD {
 	    long organizationID = orgId;
 	  //  boolean flag = false;
 	    User user = Security.getConnected();
-		render(users, organizationID , user);
+	    
+	    if(user.isAdmin || organization.creator.equals(user)){
+	    	render(users, organizationID , user);
+		}
+		else{
+			unauthorized();
+		}
+	    
+		
 	}
 
 	/**
@@ -135,7 +171,16 @@ public class BannedUsers extends CoolCRUD {
 //			Flag = true;
 //		}
 		//System.out.println(Flag + "Yarubbbbbbbbbbbbbbbb");
-		render(user,organizationID,topicBannedUsers);
+		
+		
+		if(user.isAdmin || organization.creator.equals(user)){
+			render(user,organizationID,topicBannedUsers);
+		}
+		else{
+			unauthorized();
+		}
+		
+		
 		
  }
 	/**
@@ -157,7 +202,16 @@ public class BannedUsers extends CoolCRUD {
         long organizationID = organization.getId();
 		List<User> users = Users.getEntityOrganizers(entity);
 		User user = Security.getConnected();
-		render(user,users , entityId , organizationID);
+		
+		if(user.isAdmin || organization.creator.equals(user)){
+			render(user,users , entityId , organizationID);
+		}
+		else{
+			unauthorized();
+		}
+		
+		
+		
 	}
 	
 	/**
@@ -180,7 +234,16 @@ public class BannedUsers extends CoolCRUD {
 		
 		List <User> users = Users.getEntityOrganizers(entity);
 		User user = Security.getConnected();
-		render(user,users,organizationID ,topicId );
+		
+		if(user.isAdmin || organization.creator.equals(user)){
+			render(user,users,organizationID ,topicId );
+		}
+		else{
+			unauthorized();
+		}
+		
+		
+		
 		
 	}
 
@@ -201,6 +264,57 @@ public class BannedUsers extends CoolCRUD {
 	 *               long id of the organization he will be
 	 *        restricted in
 	 */
+	
+	
+	public static void entitiesEnrolledInGroup(@Required long[] userId,
+			long organizationId) {
+		JsonObject json = new JsonObject();
+		
+		
+		
+		List<MainEntity> entities  = new ArrayList<MainEntity>();
+		List<MainEntity> finalEntities = new ArrayList<MainEntity>();
+		if (validation.hasErrors()|| userId.length == 0) {
+			flash.error("Oops, please select one the Organizers");
+			restrictOrganizer(organizationId);
+		}
+		else{
+			
+			
+         
+		Organization organization = Organization.findById(organizationId);
+		User user = User.findById(userId[0]);
+		 finalEntities = Users.getEntitiesOfOrganizer(organization, user);
+		 System.out.println("IDD" + finalEntities.size());
+		for (int i = 1 ; i < userId.length ; i++){
+		     user = User.findById(userId[i]);
+			 entities = Users.getEntitiesOfOrganizer(organization, user);
+			 for(int j = 0 ; j < finalEntities.size() ; j++){
+				 if (!entities.contains(finalEntities.get(j))){
+					 
+					 finalEntities.remove(j);
+				 }
+			 }
+		}
+		
+	
+		
+
+		}
+         System.out.println("SIZZ" + finalEntities.size());
+		String entity = "";
+		String entityIds = "";
+
+		for(int  i = 0 ; i < finalEntities.size() ; i++){
+			entity +=  finalEntities.get(i).name + ",";
+			entityIds += finalEntities.get(i).getId() + ",";
+		}
+		System.out.println(entity + " :: " + entityIds);
+		json.addProperty("entityIds", entityIds);
+		json.addProperty("entityList", entity);
+		renderJSON(json.toString());
+	}
+
 	public static void entitiesEnrolledIn(@Required long userId,
 			long organizationId) {
 		JsonObject json = new JsonObject();
@@ -291,16 +405,18 @@ public class BannedUsers extends CoolCRUD {
 	 * @param userId
 	 *            : long userId is the id of the user to be restricted
 	 */
+	
+	
 
 	public static void topicsEnrolledIn(@Required long entityId,
 			long organizationId, long userId) {
 
 		JsonObject json = new JsonObject();
 		
-		if (validation.hasErrors() || entityId == 0) {
-			flash.error("Oops, please select atleast one choise ");
-			entitiesEnrolledIn(userId,organizationId);
-		}
+//		if (validation.hasErrors() || entityId == 0) {
+//			flash.error("Oops, please select atleast one choise ");
+//			entitiesEnrolledIn(userId,organizationId);
+//		}
 		
 			MainEntity entity = MainEntity.findById(entityId);
 			List<Topic> entityTopics = entity.topicList;
@@ -917,7 +1033,15 @@ public class BannedUsers extends CoolCRUD {
 //			
 //		}
 		
-		render(user,organizationID, entityBannedUsers );
+		if(user.isAdmin || organization.creator.equals(user)){
+			render(user,organizationID, entityBannedUsers );
+		}
+		else{
+			unauthorized();
+		}
+		
+		
+		
 		
 		
 	}
@@ -1263,7 +1387,13 @@ public class BannedUsers extends CoolCRUD {
 		Organization organization = Organization.findById(organizationID);
 		List<MainEntity> organizationEntities = organization.entitiesList;
 		User user = Security.getConnected();
-		render(user,organizationEntities , organizationID);
+		if(user.isAdmin || organization.creator.equals(user)){
+			render(user,organizationEntities , organizationID);
+		}
+		else{
+			unauthorized();
+		}
+		
 	}
 	
 	/**
@@ -1358,7 +1488,7 @@ public class BannedUsers extends CoolCRUD {
 					count.add(1);
 
 			}
-
+             
 			render(users, count, object, num);
 
 		}
