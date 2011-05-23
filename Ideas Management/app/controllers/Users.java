@@ -261,16 +261,15 @@ public class Users extends CoolCRUD {
 	 */
 
 	public static void viewProfile(long userId) {
-		if (userId == 0) {
-			User user = Security.getConnected();
-			int x = 1;
-			render(user, x);
+		User userConnected = Security.getConnected();
+		User user = User.findById(userId);
+		boolean flag = true;
+		if (user.id == userConnected.id) {
+			render(user, flag);
 		} else {
-			User user = User.findById(userId);
-			int x = 0;
-			render(user, x);
+			flag = false;
+			render(user, flag);
 		}
-		
 	}
 
 	/**
