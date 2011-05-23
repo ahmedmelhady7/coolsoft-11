@@ -947,7 +947,7 @@ public class Ideas extends CoolCRUD {
 		List<Idea> selectedIdeas = new ArrayList<Idea>();
 		// List<Idea> allIdeas = targetTopic.getIdeas();
 		String selectedIdeasString = "";
-
+		User user = Security.getConnected();
 		selectedIdeas = Ideas.getIdeasFromIds(selectedIdeasIds, topicId);
 
 		for (int i = 0; i < selectedIdeasIds.length; i++) {
@@ -956,7 +956,8 @@ public class Ideas extends CoolCRUD {
 		}
 		long idd = selectedIdeas.get(0).getId();
 		System.out.println(selectedIdeasString + " " + idd);
-		render(selectedIdeas, topicId, selectedIdeasString, idd);
+		
+		render(selectedIdeas, topicId, selectedIdeasString, idd, user);
 	}
 
 	/**
