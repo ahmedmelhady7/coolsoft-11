@@ -918,7 +918,7 @@ public class Topics extends CRUD {
 		try {
 
 			render(type, object, tags, /* canUse, */alreadyReportedTopic,
-					creator, followers, ideas, hiddenIdeas, numberOfIdeas,
+					creator, followers, ideas,canReport,hiddenIdeas, numberOfIdeas,
 					comments, entity, canDelete, alreadyReported, plan,
 					openToEdit, privacyLevel, deleteMessage, deletable,
 					topicIdLong, canClose, canPlan, targetTopic, allowed,

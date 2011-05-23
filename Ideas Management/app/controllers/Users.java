@@ -256,7 +256,7 @@ public class Users extends CoolCRUD {
 	 * @story C1S1
 	 * 
 	 * @param userId
-	 * 			long the Id of the user who's profile will be displayed
+	 *            long the Id of the user who's profile will be displayed
 	 * 
 	 */
 
@@ -420,13 +420,14 @@ public class Users extends CoolCRUD {
 		idea.spamCounter++;
 		reporter.ideasReported.add(idea);
 		idea.reporters.add(reporter);
+		List<User> organizers = Users
+				.getEntityOrganizers(idea.belongsToTopic.entity);
+		System.out.println(organizers);
 		System.out.println(idea.reporters.get(0).toString());
-		// for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
-		Mail.reportAsSpamMail(idea.belongsToTopic.creator, reporter, idea,
-				idea.description, idea.title);
-		// }
-		System.out.println(idea.spamCounter
-				+ "****************************************************");
+		for (int j = 0; j < organizers.size(); j++) {
+			Mail.reportAsSpamMail(organizers.get(j), reporter, idea,
+					idea.description, idea.title);
+		}
 		idea.save();
 		reporter.save();
 		System.out.println(reporter.ideasReported.get(0).toString());
@@ -474,19 +475,18 @@ public class Users extends CoolCRUD {
 		System.out.println("hadiiiiiiiiiiiiiiii");
 		Topic topic = Topic.findById(topicId);
 		User reporter = Security.getConnected();
-		if(topic.reporters==null)
-		topic.reporters="";
-		topic.reporters+=reporter.id+",";
-		System.out.println(topic.reporters+" howa da ");
-//		reporter.topicsReported.add(topic);
-//		topic.reporters.add(reporter);
-//		System.out.println(topic.reporters.get(0).toString());
-		// for (int j = 0; j < idea.belongsToTopic.getOrganizer().size(); j++) {
-		Mail.reportTopicMail(topic.creator, reporter, topic, topic.description, topic.title);
-		// }
+		if (topic.reporters == null)
+			topic.reporters = "";
+		topic.reporters += reporter.id + ",";
+		System.out.println(topic.reporters + " howa da ");
+		List<User> organizers = Users.getEntityOrganizers(topic.entity);
+		for (int j = 0; j < organizers.size(); j++) {
+			Mail.reportTopicMail(topic.creator, reporter, topic,
+					topic.description, topic.title);
+		}
 		topic.save();
 		reporter.save();
-//		System.out.println(reporter.ideasReported.get(0).toString());
+		// System.out.println(reporter.ideasReported.get(0).toString());
 		TopicSpamView(topicId);
 
 	}
@@ -1130,10 +1130,10 @@ public class Users extends CoolCRUD {
 	public static List<MainEntity> getEntitiesOfOrganizer(Organization org,
 			User user) {
 		List<MainEntity> entities = new ArrayList<MainEntity>();
-		
+
 		List<UserRoleInOrganization> userRoleInOrg = UserRoleInOrganization
 				.find("byOrganizationAndEnrolled", org, user).fetch();
-		
+
 		for (int i = 0; i < userRoleInOrg.size(); i++) {
 			if (userRoleInOrg.get(i).role.roleName.equals("organizer")) {
 				entities.add((MainEntity) MainEntity.findById(userRoleInOrg
@@ -1262,11 +1262,11 @@ public class Users extends CoolCRUD {
 		} catch (NumberFormatException e) {
 			communityCounterFlag = true;
 		}
-		/*if (User.find("ByEmail", tmp.email) != null
-				|| User.find("ByUsername", tmp.username) != null) {
-			flag = true;
-		}
-		System.out.println(flag );*/
+		/*
+		 * if (User.find("ByEmail", tmp.email) != null ||
+		 * User.find("ByUsername", tmp.username) != null) { flag = true; }
+		 * System.out.println(flag );
+		 */
 		if (validation.hasErrors()) {
 			System.out.println("lol");
 			if (tmp.email.equals("")) {
@@ -1359,16 +1359,16 @@ public class Users extends CoolCRUD {
 		Model object = type.findById(id);
 		User oldUser = (User) object;
 		String oldEmail = oldUser.email;
-		char [] oldemailArray = oldEmail.toCharArray();
+		char[] oldemailArray = oldEmail.toCharArray();
 		String oldFirstName = oldUser.firstName;
-		char [] oldFirstNameArray = oldFirstName.toCharArray();
+		char[] oldFirstNameArray = oldFirstName.toCharArray();
 		String oldLastName = oldUser.lastName;
-		char [] oldLastNameArray = oldLastName.toCharArray();
+		char[] oldLastNameArray = oldLastName.toCharArray();
 		int oldCommunityContributionCounter = oldUser.communityContributionCounter;
 		String oldCountry = oldUser.country;
-		char [] oldCountryArray = oldCountry.toCharArray();
+		char[] oldCountryArray = oldCountry.toCharArray();
 		String oldProfession = oldUser.profession;
-		char [] oldProfessionArray = oldProfession.toCharArray();
+		char[] oldProfessionArray = oldProfession.toCharArray();
 		Binder.bind(object, "object", params.all());
 		System.out.println(object.toString() + "begin");
 		validation.valid(object);
@@ -1396,13 +1396,12 @@ public class Users extends CoolCRUD {
 			if (tmp.email.equals("")) {
 				message = "A User must have an email";
 				System.out.println(message);
-			} /*else if (tmp.username.trim().equals("")) {
-				message = "A User must have a username";
-				System.out.println(message);
-			} else if (tmp.password.trim().equals("")) {
-				message = "A User must have a password";
-				System.out.println(message);
-			}*/ else if (tmp.username.length() >= 20) {
+			} /*
+			 * else if (tmp.username.trim().equals("")) { message =
+			 * "A User must have a username"; System.out.println(message); }
+			 * else if (tmp.password.trim().equals("")) { message =
+			 * "A User must have a password"; System.out.println(message); }
+			 */else if (tmp.username.length() >= 20) {
 				message = "Username cannot exceed 20 characters";
 			} else if (tmp.password.length() >= 25) {
 				message = "First name cannot exceed 25 characters";
@@ -1411,8 +1410,8 @@ public class Users extends CoolCRUD {
 			}
 			try {
 				System.out.println("show user try ");
-				render(request.controller.replace(".", "/") + "/view.html",object,
-						type, message);
+				render(request.controller.replace(".", "/") + "/view.html",
+						object, type, message);
 
 			} catch (TemplateNotFoundException e) {
 				System.out.println("show user catch ");
@@ -1422,21 +1421,19 @@ public class Users extends CoolCRUD {
 
 		System.out.println(object.toString() + "before save");
 		object._save();
-		if (Security.getConnected().isAdmin&&Security.getConnected().id != tmp.id) {
+		if (Security.getConnected().isAdmin
+				&& Security.getConnected().id != tmp.id) {
 			Notifications.sendNotification(tmp.id, Security.getConnected().id,
 					"User", "The admin has edited your profile");
 		}
-		if (!(Arrays.equals(oldemailArray, tmp.email.toCharArray())))
-		{
-			editedMessage +=  "Email changed to -->  " + tmp.email + "\n";
+		if (!(Arrays.equals(oldemailArray, tmp.email.toCharArray()))) {
+			editedMessage += "Email changed to -->  " + tmp.email + "\n";
 		}
-		if (!(Arrays.equals(oldFirstNameArray, tmp.firstName.toCharArray())))
-		{
+		if (!(Arrays.equals(oldFirstNameArray, tmp.firstName.toCharArray()))) {
 			editedMessage += oldFirstName + " First Name changed to -->  "
 					+ tmp.firstName + "\n";
 		}
-		if (!(Arrays.equals(oldLastNameArray, tmp.lastName.toCharArray())))
-		{
+		if (!(Arrays.equals(oldLastNameArray, tmp.lastName.toCharArray()))) {
 			editedMessage += oldLastName + "  changed to -->  " + tmp.lastName
 					+ "\n";
 		}
@@ -1449,21 +1446,18 @@ public class Users extends CoolCRUD {
 		 * if(oldUser.dateofBirth !=(tmp.dateofBirth)); { editedMessage +=
 		 * dateofBirth + "  changed to -->  " + tmp.dateofBirth +"\n"; }
 		 */
-		if (!(Arrays.equals(oldCountryArray, tmp.country.toCharArray())))
-		{
+		if (!(Arrays.equals(oldCountryArray, tmp.country.toCharArray()))) {
 			editedMessage += oldUser.country + "  changed to -->  "
 					+ tmp.country + "\n";
 		}
-		if (!(Arrays.equals(oldProfessionArray, tmp.profession.toCharArray())))
-		{
+		if (!(Arrays.equals(oldProfessionArray, tmp.profession.toCharArray()))) {
 			editedMessage += oldProfession + " changed to --> "
 					+ tmp.profession + "\n";
 		}
 		System.out.println("edited" + editedMessage + " all");
 		Log.addUserLog("Admin " + Security.getConnected().firstName + " "
-				+ Security.getConnected().lastName
-				+ " has edited " + tmp.username +  "'s profile" + "\n" + editedMessage,
-				tmp);
+				+ Security.getConnected().lastName + " has edited "
+				+ tmp.username + "'s profile" + "\n" + editedMessage, tmp);
 		System.out.println(object.toString() + "after the save");
 		flash.success(Messages.get("crud.saved", type.modelName));
 		if (params.get("_save") != null) {
@@ -1523,9 +1517,10 @@ public class Users extends CoolCRUD {
 	// }
 
 	/**
-	 * deletes a user after the system admin ( the one who's requesting the delete) specifies the user's 
-	 * id and the reason for the deletion , then it sends a mail to the deleted user notifying him of both
-	 * the event and the reason
+	 * deletes a user after the system admin ( the one who's requesting the
+	 * delete) specifies the user's id and the reason for the deletion , then it
+	 * sends a mail to the deleted user notifying him of both the event and the
+	 * reason
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1535,7 +1530,7 @@ public class Users extends CoolCRUD {
 	 *            :String the user's id
 	 * 
 	 * @param deletionMessage
-	 * 			:String the reason the user was deleted for
+	 *            :String the reason the user was deleted for
 	 * 
 	 * */
 	public static void delete(String id, String deletionMessage) {
@@ -1620,17 +1615,17 @@ public class Users extends CoolCRUD {
 		}
 		render(user, nList);
 	}
-	
+
 	/**
-	 * Changes the status of the notifications when the user views
-	 * the latest notifications.
+	 * Changes the status of the notifications when the user views the latest
+	 * notifications.
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S20
 	 * 
 	 */
-	
+
 	public static void showNotifications() {
 		User user = Security.getConnected();
 		for (int i = 0; i < user.notifications.size(); i++) {
@@ -1663,7 +1658,6 @@ public class Users extends CoolCRUD {
 		List<NotificationProfile> npList = user.notificationProfiles;
 		render(user, npList);
 	}
-	
 
 	/**
 	 * Deletes the notifications of the users which he checked from the
@@ -1684,37 +1678,37 @@ public class Users extends CoolCRUD {
 			notification.delete();
 		}
 	}
-	
+
 	public static void notifications() {
 		User user = Security.getConnected();
-		//List<NotificationProfile> npList = user.notificationProfiles;
-		List<ArrayList> list = new ArrayList<ArrayList>(); 
-		//List<String> titles = new ArrayList<String>();
-		//List<Long> ids = new ArrayList<Long>();
-		//List<String> types = new ArrayList<String>();
-		for (int i = 0; i <user.notifications.size(); i++) {
+		// List<NotificationProfile> npList = user.notificationProfiles;
+		List<ArrayList> list = new ArrayList<ArrayList>();
+		// List<String> titles = new ArrayList<String>();
+		// List<Long> ids = new ArrayList<Long>();
+		// List<String> types = new ArrayList<String>();
+		for (int i = 0; i < user.notifications.size(); i++) {
 			boolean flag = true;
 			for (int j = 0; j < list.size(); j++) {
 				if (list.get(j).get(0).equals(user.notifications.get(i).title)
-						&& list.get(j).get(1).equals(user.notifications.get(i).type)) {
+						&& list.get(j).get(1)
+								.equals(user.notifications.get(i).type)) {
 					flag = false;
 					break;
 				}
 			}
-			if (flag) {	
+			if (flag) {
 				ArrayList<String> temp = new ArrayList<String>();
 				temp.add(user.notifications.get(i).title);
-				//temp.add(user.notifications.get(i).sourceID);
+				// temp.add(user.notifications.get(i).sourceID);
 				temp.add(user.notifications.get(i).type);
 				list.add(temp);
-				//titles.add(user.notifications.get(i).title);
-				//ids.add(user.notifications.get(i).sourceID);
-				//types.add(user.notifications.get(i).type);
-			}			
+				// titles.add(user.notifications.get(i).title);
+				// ids.add(user.notifications.get(i).sourceID);
+				// types.add(user.notifications.get(i).type);
+			}
 		}
 		render(user, list);
 	}
-	
 
 	/**
 	 * Ends the session of the current user and logs out
@@ -1767,12 +1761,11 @@ public class Users extends CoolCRUD {
 	 * activates the account of that user by setting the state to "a" and then
 	 * renders a message
 	 * 
-	 @author Mostafa Ali , Mai Magdy
+	 * @author Mostafa Ali , Mai Magdy
 	 * 
 	 * @story C1S10,C1S11
 	 * 
-	 * @params userId 
-	 *                long Id of the user that his account ll be activated
+	 * @params userId long Id of the user that his account ll be activated
 	 * 
 	 * 
 	 */
