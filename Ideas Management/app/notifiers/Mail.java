@@ -184,7 +184,7 @@ public class Mail extends Mailer {
 	}
 
 	/**
-	 * used to send a mail to the person who was added by the admin
+	 *sends an email to the person who was added by the admin
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -204,7 +204,7 @@ public class Mail extends Mailer {
 	}
 
 	/**
-	 * used to send a mail to the person who was added by the admin
+	 *  sends an email to the person who was added by the admin to activate his account
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -217,15 +217,16 @@ public class Mail extends Mailer {
 	public static void activation(User user) {
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
-		setSubject("Welcome to CoolSoft, Reactivate your account ");
-		String url = "http://localhost:9008/Users/activationPage?userId="
+		setSubject("Welcome to CoolSoft, activate your account ");
+		String url = "http://localhost:9008/Users/activate?userId="
 				+ user.id;
 		send(user, url);
 
 	}
 
 	/**
-	 * used to send a mail to the person who was deleted by the admin
+	 * sends an email to the person who was deleted by the admin , notifying him he was deleted and 
+	 * displaying the reason he was deleted for
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -242,9 +243,29 @@ public class Mail extends Mailer {
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Your account has been deleted ! ");
-		// String url = "http://localhost:9008";
 		System.out.println(user);
 		send(user, message);
+
+	}
+	
+	/**
+	 * sends an email to the person who was deleted by the admin , notifying him he was brought
+	 *  back(undeleted)
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * @param user
+	 *            :User the user
+	 */
+	public static void undeletion(User user) {
+		System.out.println(user.email);
+		addRecipient(user.email);
+		setFrom("CoolSoft011@gmail.com");
+		setSubject("Welcome back ! ");
+		String url = "http://localhost:9008";
+		send(user,url);
 
 	}
 
