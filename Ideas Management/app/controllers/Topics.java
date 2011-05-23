@@ -1764,8 +1764,6 @@ public class Topics extends CRUD {
 	public static void postDraftTopic(long topicId, String title,
 			String description, int privacyLevel, boolean createRelationship) {
 
-		System.out.println("I entered postDraft controller");
-		System.out.println("TopicId:" + topicId);
 		Topic targetTopic = Topic.findById(topicId);
 		User user = Security.getConnected();
 
@@ -1775,8 +1773,6 @@ public class Topics extends CRUD {
 		targetTopic.createRelationship = createRelationship;
 		targetTopic.intializedIn = new Date();
 		targetTopic.isDraft = false;
-		
-		System.out.println("targetTopic.isDraft:" + targetTopic.isDraft);
 		
 		targetTopic.save();
 		user.save();
@@ -1845,5 +1841,15 @@ public class Topics extends CRUD {
 		user.save();
 		// entity.save();
 
+	}
+	
+	public static void postWithoutEdit(long topicId) {
+		Topic targetTopic = Topic.findById(topicId);
+		
+		targetTopic.isDraft = false;
+		targetTopic.intializedIn = new Date();
+		targetTopic.save();
+		
+		redirect("/ideas/getdrafts");
 	}
 }
