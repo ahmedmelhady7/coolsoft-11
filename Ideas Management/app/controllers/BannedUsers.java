@@ -1497,9 +1497,15 @@ public class BannedUsers extends CoolCRUD {
 	 */
 
 	public static void viewUsers(long numId, int num) {
-
+          User user=Security.getConnected();
+		
 		if (num == 0) {
-
+			int check = 0;
+			if (Users.isPermitted(user,
+					"block a user from viewing or using a certain entity",
+					numId, "entity"))
+				check = 1;
+			
 			List<User> users = Users.getIdeaDevelopers(numId, "entity");
 			MainEntity object = MainEntity.findById(numId);
 			List<Integer> count = new ArrayList<Integer>();
@@ -1521,8 +1527,14 @@ public class BannedUsers extends CoolCRUD {
 
 			}
 
-			render(users, count, object, num);
+			render(users, count, object, num,user,check);
 		} else {
+			
+			int check = 0;
+			if (Users.isPermitted(user,
+					"block a user from viewing or using a certain entity",
+					numId, "entity"))
+				check = 1;
 			List<User> users = Users.getIdeaDevelopers(numId, "topic");
 			Topic object = Topic.findById(numId);
 			List<Integer> count = new ArrayList<Integer>();
@@ -1544,7 +1556,7 @@ public class BannedUsers extends CoolCRUD {
 
 			}
 
-			render(users, count, object, num);
+			render(users, count, object, num,user,check);
 
 		}
 
