@@ -227,6 +227,8 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
     </br>No results found
 </center>#{/else}
 </div>
+<div id='errors'>
+</div>
 <div id='down'>
     <a href='/public/results.zip'><img src='/public/images/download.gif' width=15% height=30/></a>
 </div>
@@ -329,6 +331,8 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
     <img src='/public/images/noresults.jpg'>
     </br>No Results Found
 </center>#{/else}
+</div>
+<div id='errors'>
 </div>
 <div id='down' align='justify'>
     <a href='/public/results.zip'><img src='/public/images/download.gif' width='15%' height=30/></a>
@@ -503,7 +507,7 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
             }
             else {
                 marked.push(id);
-                alert("you could only mark two ideas");
+                document.getElementById('errors').innerHTML = '<font color="red">You could only mark two ideas</font>';
                 for (i = 0; i < marked.length; i++) {
                     document.getElementById(marked[i] + '').checked = false;
                 }
@@ -514,7 +518,11 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
     
     function markDuplicate(){
         if (marked.length < 2) {
-            alert("Mark two ideas");
+            document.getElementById('errors').innerHTML = '<font color="red">Mark two ideas</font>';
+            for (i = 0; i < marked.length; i++) {
+                document.getElementById(marked[i] + '').checked = false;
+            }
+            marked = new Array();
         }
         else {
             $.post('@{MarkRequest.sendRequest}', {
@@ -522,7 +530,7 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
                 idea2ID: marked[1],
                 des: "Sending a request to mark"
             }, function(){
-                alert("The requests have been sent to the Topic organizer");
+                document.getElementById('errors').innerHTML = '<font color="green">Your request have been successfuly sent to the Topic organizers</font>';
                 for (i = 0; i < marked.length; i++) {
                     document.getElementById(marked[i] + '').disabled = true;
                     document.getElementById(marked[i] + '').checked = false;
