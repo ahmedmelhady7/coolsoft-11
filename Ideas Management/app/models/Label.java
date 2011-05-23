@@ -53,6 +53,16 @@ public class Label extends CoolModel
 		this.ideas = new ArrayList<Idea>();
 	}
 	
+	/**
+	 * @author Abdalrahman Ali
+	 * 
+	 * @param name
+	 * 		the label name
+	 * @param user
+	 * 		the user created this label
+	 * @param ideas
+	 * 		list of ideas to be added to the label
+	 */
 	public Label(String name, User user, ArrayList<Idea> ideas)
 	{
 		this.name = name;
@@ -62,6 +72,8 @@ public class Label extends CoolModel
 	
 	/**
 	 * @author Abdalrahman Ali
+	 * this method adds an idea to the label
+	 * 
 	 * @param idea
 	 * 		idea to be labeled by this label
 	 */
@@ -72,6 +84,8 @@ public class Label extends CoolModel
 	
 	/**
 	 * @author Abdalrahman Ali
+	 * this method removes an idea from the label
+	 * 
 	 * @param idea
 	 * 		idea to be removed from this label
 	 * @return
@@ -87,6 +101,11 @@ public class Label extends CoolModel
 		else return false;
 	}
 	
+	/**
+	 * the method just deletes the label
+	 * @author Abdalrahman Ali
+	 * 
+	 */
 	public void deleteLabel()
 	{
 		this.user.myLabels.remove(this);
