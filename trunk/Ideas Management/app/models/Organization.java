@@ -299,7 +299,8 @@ public class Organization extends CoolModel {
 	 * @author Ibrahim Al-Kahayat
 	 * 
 	 * @story C2S28
-	 * 
+	 *  
+	 * @return List<Document>
 	 */
 	
 	public List<Document> getDocuments() {

@@ -675,6 +675,8 @@ public class User extends CoolModel {
 	 * 
 	 * @story C2S28
 	 * 
+	 * @return List<Document>
+	 * 
 	 */
 	public List<Document> getDocuments() {
 		List<Document> documents = Document.find("byUserOrganizationId", id).fetch();
