@@ -46,10 +46,11 @@ public class NotificationProfiles extends CoolCRUD {
 	 * 
 	 * @story C1S14
 	 * 
-	 * @param b long[]
-	 * 		The list of notification sources to be disabled.	
+	 * @param b 
+	 * 		long[] The list of notification sources to be disabled.	
 	 * 
 	 */
+	
 	public static void enablePreferences(long[] b) {
 		for(int i = 0; i < b.length; i++) {
 			NotificationProfile np = NotificationProfile.findById(b[i]);
@@ -66,15 +67,15 @@ public class NotificationProfiles extends CoolCRUD {
 	 * 
 	 * @story C1S14
 	 * 
-	 * @param a long[]
-	 * 		The list of notification sources to be disabled.
+	 * @param a 
+	 * 		long[] The list of notification sources to be disabled.
 	 * 
 	 */
 	public static void disablePreferences(long[] a) {
 		for(int i = 0; i < a.length; i++) {
-			NotificationProfile np = NotificationProfile.findById(a[i]);
-			np.enabled = false;
-			np.save();
+			NotificationProfile notificationProfile = NotificationProfile.findById(a[i]);
+			notificationProfile.enabled = false;
+			notificationProfile.save();
 		}
 	}
 }

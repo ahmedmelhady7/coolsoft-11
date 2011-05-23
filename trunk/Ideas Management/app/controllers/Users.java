@@ -1684,6 +1684,37 @@ public class Users extends CoolCRUD {
 			notification.delete();
 		}
 	}
+	
+	public static void notifications() {
+		User user = Security.getConnected();
+		//List<NotificationProfile> npList = user.notificationProfiles;
+		List<ArrayList> list = new ArrayList<ArrayList>(); 
+		//List<String> titles = new ArrayList<String>();
+		//List<Long> ids = new ArrayList<Long>();
+		//List<String> types = new ArrayList<String>();
+		for (int i = 0; i <user.notifications.size(); i++) {
+			boolean flag = true;
+			for (int j = 0; j < list.size(); j++) {
+				if (list.get(j).get(0).equals(user.notifications.get(i).title)
+						&& list.get(j).get(1).equals(user.notifications.get(i).type)) {
+					flag = false;
+					break;
+				}
+			}
+			if (flag) {	
+				ArrayList<String> temp = new ArrayList<String>();
+				temp.add(user.notifications.get(i).title);
+				//temp.add(user.notifications.get(i).sourceID);
+				temp.add(user.notifications.get(i).type);
+				list.add(temp);
+				//titles.add(user.notifications.get(i).title);
+				//ids.add(user.notifications.get(i).sourceID);
+				//types.add(user.notifications.get(i).type);
+			}			
+		}
+		render(user, list);
+	}
+	
 
 	/**
 	 * Ends the session of the current user and logs out

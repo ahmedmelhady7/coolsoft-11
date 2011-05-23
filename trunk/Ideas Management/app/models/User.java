@@ -655,6 +655,17 @@ public class User extends CoolModel {
 		}
 		return list;
 	}
+	
+	public List<Notification> getNotificationsFrom(String type) {
+		User user = Security.getConnected();
+		List<Notification> notificationList = new ArrayList<Notification>();
+		for (int i = 0; i < user.notifications.size(); i++) {
+			if (user.notifications.get(i).type.equalsIgnoreCase(type)) {
+				notificationList.add(user.notifications.get(i));
+			}
+		}
+		return notificationList;
+	}
 
 	
 	/**

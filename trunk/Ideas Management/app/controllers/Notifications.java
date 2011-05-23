@@ -71,8 +71,8 @@ public class Notifications extends CoolCRUD {
 		 * If the source type is a user then send the notification
 		 */
 		if (type.equalsIgnoreCase("User")) {
-			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
-			Notification notification = new Notification(notificationId, "Notification System", type, user, description);
+			User sender = User.findById(notificationId);
+			Notification notification = new Notification(notificationId, "User", sender.username, user, description);
 			notification.save();
 			user.notificationsNumber++;
 			return true;
@@ -200,9 +200,9 @@ public class Notifications extends CoolCRUD {
 		/**
 		 * If the source type is a user then send the notification
 		 */
-		if (type.equalsIgnoreCase("User")) {
-			type = (type.charAt(0) + "").toUpperCase() + type.substring(1).toLowerCase();
-			Notification notification = new Notification(notId, "Notification System", type, user, description);
+		if (type.equalsIgnoreCase("User")) {			
+			User sender = User.findById(notId);
+			Notification notification = new Notification(notId, "User", sender.username, user, description);			
 			notification.save();
 			user.notificationsNumber++;
 			String result = "Sent Successfully";
