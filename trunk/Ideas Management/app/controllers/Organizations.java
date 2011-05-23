@@ -648,7 +648,7 @@ public class Organizations extends CoolCRUD {
 		
 		organization.delete();
 		Log.addUserLog("User " + user.username + " deleted the Organization \"" + organization.name + "\"", user,organization);
-		Organizations.mainPage();
+		Login.homePage();
 	}
 
 	/**
