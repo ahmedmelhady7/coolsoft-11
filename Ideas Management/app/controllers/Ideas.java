@@ -378,6 +378,7 @@ public class Ideas extends CoolCRUD {
 		long topicId = topic.id;
 		// boolean openToEdit = i.openToEdit;
 		boolean canReport = Users.isPermitted(user, "use", topicId, "topic");
+		System.out.println("canReport ba2et b "+canReport);
 		boolean isAuthor = user.toString().equals(idea.author.toString());
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();

@@ -85,10 +85,10 @@
 		  <h3>${object.description}</h3>
         </div>
 
-		  #{if ideaAlreadyReported==false && CanReport}
+		  #{if ideaAlreadyReported==false && canReport}
 		    <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform">
-        		<input type="hidden" name="ideaId" value="${ideaId}">
-                <input id="spam" align="right" type="submit" class="linkButton" value="Report Idea As Spam">
+        		<input type="hidden"  name="ideaId" value="${ideaId}">
+                <input id="spam" align="right" style="color: #4CC417" type="submit" class="linkButton" value="Report Idea As Spam">
             </form>
           #{/if}
           </br>
