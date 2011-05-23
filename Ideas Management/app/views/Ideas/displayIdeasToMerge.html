@@ -1,4 +1,5 @@
 #{extends 'main.html' /} 
+#{extends '/login/index.html' /}
 
 <table width="500">
 	#{list items:selectedIdeas, as:'idea'}
@@ -44,9 +45,10 @@
 		<textarea cols="50" rows="5" id="body"></textarea>  
 		<br></br>
 		
+		<input type="submit" value ="Merge" onclick="callMerge(${topicId})"></input>
 		
 </fieldset>
-<input type="submit" value ="Merge" onclick="callMerge(${topicId})"></input>
+
 </div>
 
 		<textarea cols="50" rows="5" id="hiddenIdeasId">${selectedIdeasString}</textarea> 
