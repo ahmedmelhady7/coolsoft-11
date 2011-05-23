@@ -55,14 +55,14 @@ padding-left:950px;
 			<p>
 			<input type="hidden" id="tagId" name="tagId" value="${tag.id}" />Edit Tag Name
 			<input type="text" id="name" name="name" value="${tag.name}" /> 
-                <input type="submit" value="Edit" />
+                <input class="linkButton" type="submit" value="Edit" />
             </p>
 		</form>
 		<br />
 		<form action="@{Tags.deleteTag()}" method="post">
 			<p>
-			<input type="hidden" id="tagId" name="tagId" value="${tag.id}" />Delete Tag 
-                <input type="submit" value="Delete" />
+			<input type="hidden" id="tagId" name="tagId" value="${tag.id}" />
+			<input class="linkButton" type="submit" value="Delete" />
             </p>
 		</form>
 		#{/if}
@@ -109,7 +109,7 @@ padding-left:950px;
 		
 		#{list items:followers, as:'follower'}
 		<li>
-			${follower.username}
+			<a href="@{Users.viewProfile(follower.id)}">${follower.username}</a>
 		</li>
 		#{/list}
 		<br>

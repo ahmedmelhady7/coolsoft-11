@@ -675,5 +675,14 @@ public class User extends CoolModel {
 		return documents;
 	}
 
+	public List<Organization> getOrganizations() {
+		List<Organization> organizations = new ArrayList<Organization>();
+		int i = 0;
+		while (i < this.userRolesInOrganization.size()) {
+				organizations.add(userRolesInOrganization.get(i).organization);
+			i++;
+		}
+		return organizations;
+	}
 
 }

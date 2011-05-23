@@ -126,11 +126,22 @@
                             <div id="o2">
                                 <ul>
                                     <li>
-                                        <a href="@{Organizations.mainPage()}">My Organisations</a>
+                                        <a href="#" onclick="enrolledOrganizations();">My Organizations</a>
                                     </li>
-                                    <li>
-                                        <a href="@{Organizations.viewAllOrganizations()}">All Organisations</a>
-                                    </li>
+                                    <div id="enrolledInOrganizations">
+                                    	<center>
+                                    		#{ifnot user.getOrganizations()}
+											<b>You are currently not enrolled in any organizations</b>
+											#{/ifnot}
+											<ul>
+												#{list items:user.getOrganizations(), as:'org'}
+												<li>
+													<a href="@{Organizations.viewProfile(org.id)}">${org.name}</a>
+												</li>
+												#{/list}
+											</ul>
+                                    	</center>
+                                    </div>
                                     <li>
                                         <a href="@{Items.viewAssignedItems()}">Assigned Items</a>
                                     </li>
@@ -308,6 +319,8 @@
                     $('#follow').hide();
                     var fol = false;
                     var doc = false;
+					var organ = false;
+					$('#enrolledInOrganizations').hide();
                     $('#docs').hide();
                     $('#not-body').hide();
                     $('#viewed').hide();
@@ -485,27 +498,40 @@
                     
                     function follows(){
                         if (!fol) {
-                            $('#docs').hide();
+                            $('#docs').hide(500);
                             doc = false;
                             $('#follow').show(500);
                             fol = true;
                         }
                         else {
-                            $('#follow').hide();
+                            $('#follow').hide(500);
                             fol = false;
                         }
                     }
                     
                     function showDoc(){
                         if (!doc) {
-                            $('#follow').hide();
+                            $('#follow').hide(500);
                             fol = false;
                             $('#docs').show(500);
                             doc = true;
                         }
                         else {
-                            $('#docs').hide();
+                            $('#docs').hide(500);
                             doc = false;
+                        }
+                    }
+					
+					function enrolledOrganizations(){
+                        if (!organ) {
+                            $('#docs').hide(500);
+                            doc = false;
+                            $('#enrolledInOrganizations').show(500);
+                            organ = true;
+                        }
+                        else {
+                            $('#enrolledInOrganizations').hide(500);
+                            organ = false;
                         }
                     }
                 </script>
