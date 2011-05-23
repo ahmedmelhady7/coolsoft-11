@@ -74,7 +74,7 @@
        
 </form>
 <br />
-<input type="submit" id = "restrictBtn" value="Restrict" onclick = "restrict()">
+<input type="submit" id = "restrictBtn" value="Restrict" onclick = "restrict()"> <div id = "rd"> <p style = "color:#c00">You did not choose any actions !!!</p></div>
 
 
 <br />
@@ -88,7 +88,7 @@
        
 </form>
 
-<input type="submit" id = "deRestrictBtn" value="De-Restrict" onclick = "deRestrict()"> <br /> <br />
+<input type="submit" id = "deRestrictBtn" value="De-Restrict" onclick = "deRestrict()"> <div id = "dd"> <p style = "color:#c00">You did not choose any actions !!!</p></div><br /> <br />
 
 <input name = "neww" type="submit" style="background-color:lightblue" value="Start new Restriction / De-Restriction Process" align = "Right" onclick="Restart()"  onmouseout = "neww.style.color='black'" onmouseover="neww.style.color='white'" >
 
@@ -110,6 +110,14 @@ function Restart(){
 	
 	window.location.reload();
 }
+function RHide(){
+	
+    $('#dd').hide();
+}
+function DHide(){
+	$('#rd').hide();
+}
+
 
 function getTopic(){
 	
@@ -290,9 +298,10 @@ function getTopic(){
   
   		
   		if(restrictedActions.length == 0 ) {
-  			alert("You did not even choose a single action !!!");
+  			//alert("You did not even choose a single action !!!");
+  			$('#rd').show();
   		} else {
-  			
+  			$('#rd').hide();
   			var r=confirm("Are You sure you want to proceed ? ");
   			if (r == true) {
   				if(topicFlag == false){
@@ -334,9 +343,10 @@ function getTopic(){
   			
 
   			if(enabledActions.length == 0 ) {
-  				alert("You did not even choose a single action !!!");
+  				//alert("You did not even choose a single action !!!");
+  				$('#dd').show();
   			} else {
-  				
+  				$('#dd').hide();
   				var r=confirm("Are You sure you want to proceed ? ");
   				if (r == true) {
   					if(topicFlag == false){
@@ -411,6 +421,13 @@ function getTopic(){
 	});
 	$(function(){
 		$('#deRestrictBtn').hide();
+	});
+	
+	$(function(){
+		$('#dd').hide();
+	});
+	$(function(){
+		$('#rd').hide();
 	});
 	
 </script>
