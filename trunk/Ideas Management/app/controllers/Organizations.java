@@ -30,6 +30,7 @@ import models.Tag;
 import models.Topic;
 import models.TopicRelationship;
 import models.User;
+import models.UserRoleInOrganization;
 
 @With(Secure.class)
 public class Organizations extends CoolCRUD {
@@ -624,6 +625,10 @@ public class Organizations extends CoolCRUD {
 		Organization organization = Organization.findById(organizationId);
 		List<User> followers = User.findAll();
 		List<Tag> createdTags = organization.createdTags;
+		List<BannedUser> bannedUsers = organization.bannedUsers;
+		List<UserRoleInOrganization> users = organization.userRoleInOrg;
+		List<MainEntity> entities = organization.entitiesList;
+		List<Tag> relatedTags = organization.relatedTags; 
 		int j = 0;
 		while (j < followers.size()) {
 			if (followers.get(j).followingOrganizations.contains(organization)) {
@@ -634,9 +639,34 @@ public class Organizations extends CoolCRUD {
 		}
 		j = 0;
 		while (j < createdTags.size()) {
+			relatedTags.remove(createdTags.get(j));
 			Tags.delete(createdTags.get(j).id);
 			j++;
 		}
+		if (!relatedTags.isEmpty()) {
+			j = 0;
+			while (j < relatedTags.size()) {
+				relatedTags.get(j).organizations.remove(organization);
+				relatedTags.get(j).save();
+				j++;
+			}
+		}
+		j = 0;
+		while (j < bannedUsers.size()) {
+			BannedUser.delete(bannedUsers.get(j));
+			j++;
+		}
+		j = 0;
+		while (j < users.size()) {
+			UserRoleInOrganization.delete(users.get(j));
+			j++;
+		}
+		j = 0;
+		while (j < entities.size()) {
+			MainEntitys.deleteEntity(entities.get(j).id);
+			j++;
+		}
+		organization.creator.createdOrganization.remove(organization);
 		// fadwa
 		for (int i = 0; i < organization.joinRequests.size(); i++)
 			organization.joinRequests.get(i).delete();
@@ -651,7 +681,7 @@ public class Organizations extends CoolCRUD {
 		
 		
 		organization.delete();
-		Log.addUserLog("User " + user.username + " deleted the Organization \"" + organization.name + "\"", user,organization);
+		Log.addUserLog("User " + user.username + " deleted the Organization \"" + organization.name + "\"", user);
 		Login.homePage();
 	}
 
