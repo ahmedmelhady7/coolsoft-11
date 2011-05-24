@@ -61,13 +61,13 @@ public class Plans extends CoolCRUD {
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
 		globalListOfTags = Tag.findAll();
 
-		boolean notBlockedFromUsing = Users.isPermitted(user, "use", plan.topic.id, "topic");
+		boolean notBlockedFromUsing = Users.isPermitted(user, "use",
+				plan.topic.id, "topic");
 		boolean checkNotRated;
 		List<User> allUsers = User.findAll();
 		List<String> userNames = new ArrayList<String>();
 		String s;
-		for(int i = 0; i<allUsers.size();i++)
-		{
+		for (int i = 0; i < allUsers.size(); i++) {
 			s = allUsers.get(i).username;
 			userNames.add(s);
 		}
@@ -114,18 +114,20 @@ public class Plans extends CoolCRUD {
 
 			for (int i = 0; i < globalListOfTags.size(); i++) {
 				if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
-						|| plan.topic.entity.organization.equals(globalListOfTags
-								.get(i).createdInOrganization)) {
+						|| plan.topic.entity.organization
+								.equals(globalListOfTags.get(i).createdInOrganization)) {
 					listOfTags += globalListOfTags.get(i) + "|";
 				}
 			}
 			List<MainEntity> entitiesList = plan.topic.entity.organization.entitiesList;
-			render(plan, itemsList, user, canAssign, canEdit, canView, canDelete,
-					isOrganizer, canIdea, comments, entitiesList, listOfTags,notBlockedFromUsing,userNames);
+			render(plan, itemsList, user, canAssign, canEdit, canView,
+					canDelete, isOrganizer, canIdea, comments, entitiesList,
+					listOfTags, notBlockedFromUsing, userNames);
 		} else {
 			canView = false;
-//			render(p, itemsList, user, canAssign, canEdit, canView, canDelete,
-//					isOrganizer, canIdea, userNames);
+			// render(p, itemsList, user, canAssign, canEdit, canView,
+			// canDelete,
+			// isOrganizer, canIdea, userNames);
 			BannedUsers.unauthorized();
 		}
 
@@ -145,7 +147,7 @@ public class Plans extends CoolCRUD {
 	public static void workOnItem(long itemId) {
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
-		
+
 		user.itemsAssigned.add(item);
 		user.save();
 		item.assignees.add(user);
@@ -203,7 +205,6 @@ public class Plans extends CoolCRUD {
 		boolean isOrganizer = false;
 		boolean canDelete = false;
 
-
 		if (Users.isPermitted(user, "view", plan.topic.id, "topic")) {
 			canView = true;
 			if (Users.isPermitted(user,
@@ -218,14 +219,14 @@ public class Plans extends CoolCRUD {
 								plan.topic.id, "topic")) {
 					isOrganizer = true;
 				}
-				if (Users.isPermitted(user, "edit an action plan", plan.topic.id,
-						"topic")) {
+				if (Users.isPermitted(user, "edit an action plan",
+						plan.topic.id, "topic")) {
 
 					canEdit = 1;
 				}
 
-				if (Users.isPermitted(user, "delete an action plan", plan.topic.id,
-						"topic")) {
+				if (Users.isPermitted(user, "delete an action plan",
+						plan.topic.id, "topic")) {
 
 					canDelete = true;
 				}
@@ -240,8 +241,8 @@ public class Plans extends CoolCRUD {
 						ideas.add(idea);
 					}
 				}
-				render(ideas, topic, plan, user, canEdit, canView, isOrganizer, canIdea,
-						canDelete, canAssign);
+				render(ideas, topic, plan, user, canEdit, canView, isOrganizer,
+						canIdea, canDelete, canAssign);
 			} else {
 				BannedUsers.unauthorized();
 			}
@@ -356,10 +357,10 @@ public class Plans extends CoolCRUD {
 
 			render(ideas, plan, user, canEdit, canView, isOrganizer, canIdea,
 					canDelete, canAssign);
-		}else{
+		} else {
 			BannedUsers.unauthorized();
 		}
-		
+
 	}
 
 	/**
@@ -390,8 +391,8 @@ public class Plans extends CoolCRUD {
 				+ " of the topic: " + plan.topic.title;
 		Notifications.sendNotification(idea.author.id, plan.id, "plan",
 				notificationMsg);
-		
-		final String url = "http://localhost:9008/topics/show?topicId=1"; 
+
+		final String url = "http://localhost:9008/topics/show?topicId=1";
 		String logDescription = "Idea " + idea.title + " that belongs to "
 				+ idea.author.firstName + " " + idea.author.lastName
 				+ " has been removed from the plan " + plan.title
@@ -654,7 +655,8 @@ public class Plans extends CoolCRUD {
 		Topic topic = Topic.findById(topicId);
 		Date sd = new Date(startDate);
 		Date ed = new Date(endDate);
-		Plan plan = new Plan(title, user, sd, ed, description, topic, requirement);
+		Plan plan = new Plan(title, user, sd, ed, description, topic,
+				requirement);
 		System.out.println("creation of the plan");
 		plan.save();
 		List<User> topicOrganizers = plan.topic.getOrganizer();
@@ -681,9 +683,7 @@ public class Plans extends CoolCRUD {
 		Plan plan = Plan.findById(planID);
 		String type = "Plan";
 		User user = Security.getConnected();
-		String desc = user.firstName
-				+ " "
-				+ user.lastName
+		String desc = user.firstName + " " + user.lastName
 				+ " shared a plan with you";
 		long notId = planID;
 		long userId = U.id;
@@ -1128,7 +1128,7 @@ public class Plans extends CoolCRUD {
 
 		User user = Security.getConnected();
 		Plan plan = Plan.findById(planId);
-		//notFoundIfNull(p);
+		// notFoundIfNull(p);
 
 		List<Item> itemsList = plan.items;
 
@@ -1171,103 +1171,103 @@ public class Plans extends CoolCRUD {
 
 				canIdea = 1;
 			}
-		
-		FileWriter fstream;
-		fstream = new FileWriter("Ideas-Management/public/xml/out.xml");
-		BufferedWriter out = new BufferedWriter(fstream);
 
-		out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-		out.write("\n");	
-		out.write("<data>");
-		out.write("\n");
+			FileWriter fstream;
+			fstream = new FileWriter("Ideas-Management/public/xml/out.xml");
+			BufferedWriter out = new BufferedWriter(fstream);
 
-		out.write("<event start=\"");
-		// out.write(itemsList.get(i).startDate.toGMTString());
-		String inputDate = (plan.startDate.toGMTString());
-		Date date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
-				.parse(inputDate);
+			out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+			out.write("\n");
+			out.write("<data>");
+			out.write("\n");
 
-		out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z").format(date));
-
-		out.write("\"");
-
-		out.write(" ");
-		out.write("title=\"");
-		out.write("START");
-		out.write("\"");
-		out.write(" ");
-		out.write("icon=\"/public/rer7.png\"");
-		out.write(">");
-
-		out.write("</event>");
-		out.write("\n");
-
-		out.write("<event start=\"");
-		// out.write(itemsList.get(i).startDate.toGMTString());
-		inputDate = (plan.endDate.toGMTString());
-		date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
-				.parse(inputDate);
-
-		out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z").format(date));
-
-		out.write("\"");
-		out.write(" ");
-
-		out.write("title=\"");
-		out.write("END");
-		out.write("\"");
-		out.write(" ");
-		out.write("icon=\"/public/rer7.png\"");
-		out.write(">");
-
-		out.write("</event>");
-		out.write("\n");
-
-		for (int i = 0; i < itemsList.size(); i++) {
 			out.write("<event start=\"");
 			// out.write(itemsList.get(i).startDate.toGMTString());
-			inputDate = (itemsList.get(i).startDate.toGMTString());
-			date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
+			String inputDate = (plan.startDate.toGMTString());
+			Date date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
 					.parse(inputDate);
 
 			out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z")
 					.format(date));
 
 			out.write("\"");
-			out.write(" ");
-			out.write("end=\"");
 
-			// out.write(itemsList.get(i).endDate.toGMTString());
-			inputDate = (itemsList.get(i).endDate.toGMTString());
-			date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
-					.parse(inputDate);
-			out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z")
-					.format(date));
-
-			out.write("\"");
 			out.write(" ");
 			out.write("title=\"");
-			out.write(itemsList.get(i).summary);
+			out.write("START");
 			out.write("\"");
+			out.write(" ");
+			out.write("icon=\"/public/rer7.png\"");
 			out.write(">");
-			out.write(itemsList.get(i).description);
+
 			out.write("</event>");
 			out.write("\n");
 
-		}
+			out.write("<event start=\"");
+			// out.write(itemsList.get(i).startDate.toGMTString());
+			inputDate = (plan.endDate.toGMTString());
+			date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
+					.parse(inputDate);
 
-		out.write("</data>");
-		out.flush();
-		out.close();
-		
-		boolean timeline = true;
-		render(plan, itemsList, user, canEdit, canView, isOrganizer, canIdea,
-				canDelete, canAssign, timeline);
-		} else{
+			out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z")
+					.format(date));
+
+			out.write("\"");
+			out.write(" ");
+
+			out.write("title=\"");
+			out.write("END");
+			out.write("\"");
+			out.write(" ");
+			out.write("icon=\"/public/rer7.png\"");
+			out.write(">");
+
+			out.write("</event>");
+			out.write("\n");
+
+			for (int i = 0; i < itemsList.size(); i++) {
+				out.write("<event start=\"");
+				// out.write(itemsList.get(i).startDate.toGMTString());
+				inputDate = (itemsList.get(i).startDate.toGMTString());
+				date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
+						.parse(inputDate);
+
+				out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z")
+						.format(date));
+
+				out.write("\"");
+				out.write(" ");
+				out.write("end=\"");
+
+				// out.write(itemsList.get(i).endDate.toGMTString());
+				inputDate = (itemsList.get(i).endDate.toGMTString());
+				date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
+						.parse(inputDate);
+				out.write(new SimpleDateFormat("MMM dd yyyy HH:mm:ss Z")
+						.format(date));
+
+				out.write("\"");
+				out.write(" ");
+				out.write("title=\"");
+				out.write(itemsList.get(i).summary);
+				out.write("\"");
+				out.write(">");
+				out.write(itemsList.get(i).description);
+				out.write("</event>");
+				out.write("\n");
+
+			}
+
+			out.write("</data>");
+			out.flush();
+			out.close();
+
+			boolean timeline = true;
+			render(plan, itemsList, user, canEdit, canView, isOrganizer,
+					canIdea, canDelete, canAssign, timeline);
+		} else {
 			BannedUsers.unauthorized();
 		}
-		
-		
 
 	}
 
@@ -1328,11 +1328,10 @@ public class Plans extends CoolCRUD {
 
 				canIdea = 1;
 			}
-		
 
-		render(plan, itemsList, user, canEdit, canView, isOrganizer, canIdea,
-				canDelete, canAssign);
-		} else{
+			render(plan, itemsList, user, canEdit, canView, isOrganizer,
+					canIdea, canDelete, canAssign);
+		} else {
 			BannedUsers.unauthorized();
 		}
 	}
@@ -1355,10 +1354,10 @@ public class Plans extends CoolCRUD {
 	 * @return boolean
 	 */
 	public static boolean relateToEntity(long itemId, long entityId) {
-		// User user = Security.getConnected();
+		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
+		notFoundIfNull(item);
 		MainEntity entity = MainEntity.findById(entityId);
-		System.out.println("Testeeeeeeeeeeeeeeeeeeee");
 		if (!entity.relatedItems.contains(item)) {
 			if (item.relatedEntity == null) {
 				entity.relatedItems.add(item);
@@ -1367,6 +1366,20 @@ public class Plans extends CoolCRUD {
 				item.save();
 			}
 		}
+		Log.addLog(
+				"User <a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ user.id
+						+ "\">"
+						+ user.username
+						+ "</a> has related item: <a href=\"http://localhost:9008/plans/viewaslist?planId="
+						+ item.plan.id
+						+ "\">"
+						+ item.summary
+						+ "</a> to entity: <a href=\"http://localhost:9008/mainentitys/viewentity?id="
+						+ item.relatedEntity.id + "\">"
+						+ item.relatedEntity.name + "</a>", item, item.plan,
+				item.plan.topic, item.plan.topic.entity,
+				item.plan.topic.entity.organization);
 		return true;
 	}
 
@@ -1384,9 +1397,23 @@ public class Plans extends CoolCRUD {
 	 * @return boolean
 	 */
 	public static boolean removeItemEntityRelation(long itemId) {
-		// User user = Security.getConnected();
+		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
-		System.out.println("Test removing");
+		notFoundIfNull(item);
+		Log.addLog(
+				"User <a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ user.id
+						+ "\">"
+						+ user.username
+						+ "</a> removed relation between item: <a href=\"http://localhost:9008/plans/viewaslist?planId="
+						+ item.plan.id
+						+ "\">"
+						+ item.summary
+						+ "</a> and entity: <a href=\"http://localhost:9008/mainentitys/viewentity?id="
+						+ item.relatedEntity.id + "\">"
+						+ item.relatedEntity.name + "</a>", item, item.plan,
+				item.plan.topic, item.plan.topic.entity,
+				item.plan.topic.entity.organization);
 		item.relatedEntity.relatedItems.remove(item);
 		item.relatedEntity.save();
 		item.relatedEntity = null;
@@ -1456,18 +1483,18 @@ public class Plans extends CoolCRUD {
 		}
 
 		item.save();
-		 JsonObject json = new JsonObject();
-		 if(!tagAlreadyExists) {
-		 json.addProperty("name", tagTemp.name);
-		 json.addProperty("id", tagTemp.id + "");
-		 json.addProperty("success", "1");
-		 } else {
-			 json.addProperty("success", "0");
-		 }
-		 
-    	 renderJSON(json.toString());
-    	
-		//viewAsList(plan.id);
+		JsonObject json = new JsonObject();
+		if (!tagAlreadyExists) {
+			json.addProperty("name", tagTemp.name);
+			json.addProperty("id", tagTemp.id + "");
+			json.addProperty("success", "1");
+		} else {
+			json.addProperty("success", "0");
+		}
+
+		renderJSON(json.toString());
+
+		// viewAsList(plan.id);
 
 	}
 

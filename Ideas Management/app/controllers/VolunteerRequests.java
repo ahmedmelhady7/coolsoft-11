@@ -8,6 +8,7 @@ import play.data.validation.MinSize;
 import play.data.validation.Required;
 import play.mvc.With;
 import models.Item;
+import models.Log;
 import models.Plan;
 import models.User;
 import models.VolunteerRequest;
@@ -116,11 +117,11 @@ public class VolunteerRequests extends CoolCRUD {
 	 *            viewed.
 	 */
 	public static void viewVolunteerRequests(long planId) {
-		
+
 		User user = Security.getConnected();
 		Plan plan = Plan.findById(planId);
+		notFoundIfNull(plan);
 		List<VolunteerRequest> planVolunteerRequests = new ArrayList<VolunteerRequest>();
-		boolean error = false;
 
 		if (Users
 				.isPermitted(
@@ -138,20 +139,24 @@ public class VolunteerRequests extends CoolCRUD {
 									.contains(currentRequest.sender)
 							&& Topics.searchByTopic(plan.topic.id).contains(
 									user)
-							&& currentRequest.destination.status != 2 && currentRequest.sender.state == "a") {
+							&& currentRequest.destination.status != 2
+							&& currentRequest.sender.state == "a"
+							&& Users.isPermitted(currentRequest.sender, "use",
+									currentRequest.destination.plan.topic.id,
+									"topic")) {
 						planVolunteerRequests.add(currentRequest);
 					}
 				}
 			}
-			render(user, plan, planVolunteerRequests, error);
+			render(user, plan, planVolunteerRequests);
 		} else {
-			error = true;
-			render(error);
+			BannedUsers.unauthorized();
 		}
 	}
 
 	/**
-	 * This method accepts the volunteer request with the given id.
+	 * This method accepts the volunteer request with the given id and sends
+	 * notification to the volunteers and organizers informing them about this.
 	 * 
 	 * @story C5S6
 	 * 
@@ -160,16 +165,28 @@ public class VolunteerRequests extends CoolCRUD {
 	 * @param requestId
 	 *            : ID of the volunteer request to be accepted.
 	 */
-	public static void accept(String requestId) {
-		long reqId = Long.parseLong(requestId);
-		VolunteerRequest request = VolunteerRequest.findById(reqId);
-		User org = Security.getConnected();
+	public static void accept(long requestId) {
+		// long reqId = Long.parseLong(requestId);
+		VolunteerRequest request = VolunteerRequest.findById(requestId);
+		User organizer = Security.getConnected();
 		User user = request.sender;
 		user.volunteerRequests.remove(request);
 		Item item = request.destination;
 		List<User> userToNotifyList = new ArrayList<User>();
 		for (int i = 0; i < item.assignees.size(); i++)
 			userToNotifyList.add(item.assignees.get(i));
+		String logDescription = "Organizer <a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ organizer.id
+				+ "\">"
+				+ organizer.username
+				+ "</a> has accepted user <a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.username
+				+ "'s </a> volunteer request on item <a href=\"http://localhost:9008/plans/viewaslist?planId="
+				+ item.plan.id + "\">" + item.summary + "</a>.";
+		Log.addLog(logDescription, item, item.plan, item.plan.topic,
+				item.plan.topic.entity, item.plan.topic.entity.organization);
 		item.volunteerRequests.remove(request);
 		user.itemsAssigned.add(item);
 		item.assignees.add(user);
@@ -183,7 +200,7 @@ public class VolunteerRequests extends CoolCRUD {
 		Notifications.sendNotification(user.id, item.plan.id, "plan",
 				descriptionToNewVolunteer);
 		for (int i = 0; i < item.plan.topic.getOrganizer().size(); i++) {
-			if (org.id != item.plan.topic.getOrganizer().get(i).id) {
+			if (organizer.id != item.plan.topic.getOrganizer().get(i).id) {
 				if (!userToNotifyList.contains(item.plan.topic.getOrganizer()
 						.get(i)))
 					userToNotifyList.add(item.plan.topic.getOrganizer().get(i));
@@ -198,7 +215,8 @@ public class VolunteerRequests extends CoolCRUD {
 	}
 
 	/**
-	 * This method rejects the volunteer request with the given id.
+	 * This method rejects the volunteer request with the given id and sends
+	 * notification to the volunteers and organizers informing them about this.
 	 * 
 	 * @story C5S6
 	 * 
@@ -207,13 +225,24 @@ public class VolunteerRequests extends CoolCRUD {
 	 * @param requestId
 	 *            : ID of the volunteer request to be rejected.
 	 */
-	public static void reject(String requestId) {
-		long reqId = Long.parseLong(requestId);
-		VolunteerRequest request = VolunteerRequest.findById(reqId);
-		User org = Security.getConnected();
+	public static void reject(long requestId) {
+		VolunteerRequest request = VolunteerRequest.findById(requestId);
+		User organizer = Security.getConnected();
 		User user = request.sender;
-		user.volunteerRequests.remove(request);
 		Item item = request.destination;
+		String logDescription = "Organizer <a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ organizer.id
+				+ "\">"
+				+ organizer.username
+				+ "</a> has rejected user <a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.username
+				+ "'s </a> volunteer request on item <a href=\"http://localhost:9008/plans/viewaslist?planId="
+				+ item.plan.id + "\">" + item.summary + "</a>.";
+		Log.addLog(logDescription, request, item, item.plan, item.plan.topic,
+				item.plan.topic.entity, item.plan.topic.entity.organization);
+		user.volunteerRequests.remove(request);
 		item.volunteerRequests.remove(request);
 		user.save();
 		item.save();
@@ -223,7 +252,7 @@ public class VolunteerRequests extends CoolCRUD {
 		List<User> userToNotifyList = new ArrayList<User>();
 		userToNotifyList.add(user);
 		for (int i = 0; i < item.plan.topic.getOrganizer().size(); i++) {
-			if (org.id != item.plan.topic.getOrganizer().get(i).id) {
+			if (organizer.id != item.plan.topic.getOrganizer().get(i).id) {
 				if (!userToNotifyList.contains(item.plan.topic.getOrganizer()
 						.get(i)))
 					userToNotifyList.add(item.plan.topic.getOrganizer().get(i));
