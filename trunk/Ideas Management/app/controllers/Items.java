@@ -3,8 +3,9 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import play.mvc.With;
+import com.google.gson.JsonObject;
 
+import play.mvc.With;
 import models.Item;
 import models.MainEntity;
 import models.Plan;
@@ -82,7 +83,7 @@ public class Items extends CoolCRUD {
 	 *        
 	 * @return boolean
 	 */
-	public static boolean toggleItem(long id) {
+	public static void toggleItem(long id) {
 		User user = Security.getConnected();
 //		long itemId = Long.parseLong(id);
 		Item item = Item.findById(id);
@@ -113,7 +114,14 @@ public class Items extends CoolCRUD {
 			break;
 		}
 		item.save();
-        return true;
+		JsonObject json = new JsonObject();
+		if(item.status==1) {
+		 json.addProperty("name", "Your item is in progress. Mark it as done");
+		} else {
+			 json.addProperty("name", "Your item is done. Mark it as in progress");
+		}
+		renderJSON(json.toString());
+       // return true;
 	}
 	
 }

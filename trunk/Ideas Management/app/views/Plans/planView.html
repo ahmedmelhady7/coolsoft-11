@@ -28,12 +28,12 @@ Ideas associated to this plan:
     	<script type="text/javascript"> count = count+1;   </script>
         <fieldset style="width:600px;">
             <legend>
-                Title: ${idea.title}
+              <b> Title:</b> <a href="@{Ideas.show(idea.id)}"> ${idea.title}</a>
             </legend>
             Description: ${idea.description}
             <br/>
             Author: 
-            #{if idea.author.state == "a"}<a href="#">${idea.author.username}</a>
+            #{if idea.author.state == "a"}<a href="@{Users.viewProfile(idea.author.id)}">${idea.author.username}</a>
             #{/if}
             #{else}
             ${idea.author.username}
@@ -42,8 +42,9 @@ Ideas associated to this plan:
             Rating: ${idea.rating}
             <br/>
 			#{if canIdea == 1}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="button" value="remove from plan" onclick="submit(${idea.id}, ${p.id})"/>
+           
+			<a onclick="submit(${idea.id}, ${plan.id})" style="cursor:pointer; float:right;">
+			<img src="/public/images/Cross.png" title="Remove from plan" width="25" height="20"/></a>
        		#{/if}
 	    </fieldset>
     </div>#{/list}
@@ -52,5 +53,5 @@ Ideas associated to this plan:
 There are no ideas associated to this plan
 #{/else}
 
-<a href="@{Plans.viewAsList(p.id)}">Go back to plan</a>
+<a href="@{Plans.viewAsList(plan.id)}">Go back to plan</a>
 

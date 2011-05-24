@@ -1,4 +1,4 @@
-#{extends 'Login/index.html' /}
+#{extends 'main.html' /}
 #{extends 'planLayout.html' /}
 #{set title:'Edit Plan' /}
 <link type="text/css" href="/public/stylesheets/jquery-ui-.custom.css" rel="Stylesheet" />
@@ -6,21 +6,21 @@
     <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
 <h1> Edit Action plan </h1>
 #{form @Plans.edit(), method:'POST', id:'planeditingnForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
-Plan title:<input type= "text" id = "title" name = "title" size= "30" value="${p.title}"><label id = "titleerror"> </label>
+Plan title:<input type= "text" id = "title" name = "title" size= "30" value="${plan.title}"><label id = "titleerror"> </label>
 </br>
-Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"value="${p.startDate}"/>
+Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"value="${plan.startDate}"/>
 </br>
-End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"value="${p.endDate}"/>
+End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"value="${plan.endDate}"/>
 </br>
 <p><b>Insert the description of the plan</b></p>
-<textarea id = "description" name = "description" rows= "7" cols = "50">${p.description}
+<textarea id = "description" name = "description" rows= "7" cols = "50">${plan.description}
 </textarea><label id = "descriptionerror"> </label>
 </br>
 <p><b>Insert the requirements of the plan</b></p>
-<textarea id = "requirement" name = "requirement" rows = "7" cols = "50" >${p.requirement}
+<textarea id = "requirement" name = "requirement" rows = "7" cols = "50" >${plan.requirement}
 </textarea><label id = "requirementerror"> </label>
 </br>
-<input type = "hidden" name = "planId" value = '${p.id}' >
+<input type = "hidden" name = "planId" value = '${plan.id}' >
 <input type = "submit" value ="Edit">
 #{/form}
 <br>

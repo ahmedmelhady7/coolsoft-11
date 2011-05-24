@@ -1,14 +1,14 @@
 #{extends 'planLayout.html' /}
 #{set 'title'}
-${p.title} - View Plan as List
+${plan.title} - View Plan as List
 #{/set}
 <script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js"></script>
 
 <br/>
 #{if notBlockedFromUsing}
 #{if checkNotRated}
-<form action="@{Plans.rate(p.id,rat)}" method="GET">
-    <input type="submit" value="Submit rating"/><input type="hidden" name = "planId" value=${p.id}/>
+<form action="@{Plans.rate(plan.id,rat)}" method="GET">
+    <input type="submit" value="Submit rating"/><input type="hidden" name = "planId" value=${plan.id}/>
     <select name="rat">
         <option value="0">0</option>
         <option value="1">1</option>
@@ -24,7 +24,7 @@ You have already rated this plan
 #{/else}
 <br/>
 <form action="@{Plans.sharePlan()}" method="GET">
-    <input type="submit" value="Share with user" /><input type="hidden" name = "planID" value=${p.id}/>
+    <input type="submit" value="Share with user" /><input type="hidden" name = "planID" value=${plan.id}/>
 	<select id="userName" name = "userName"> 
 					#{list userNames, as:'name'}
 					<option>${name}</option>
@@ -33,7 +33,7 @@ You have already rated this plan
 </form>
 <br/>
 <form action="@{Comments.addCommentToPlan()}" method="GET">
-    <input type = "text" name = "comment"><input type = "hidden" name = "planId" value = ${p.id}><input type = "submit" value = "Comment">
+    <input type = "text" name = "comment"><input type = "hidden" name = "planId" value = ${plan.id}><input type = "submit" value = "Comment">
 </form>
 <br/>
 #{/if}
@@ -58,9 +58,9 @@ You have already rated this plan
 </div>
 #{if itemsList.size() > 0}
 <br>
-To-do items: 
-<br>
-
+<label id="itemsLabel">
+<h3>To-do items:</h3> 
+</label>
     #{list items:itemsList, as:'item'}
     <div id = "listItem_${item.id}">
         <br/>
@@ -90,32 +90,29 @@ To-do items:
             #{if item.endDatePassed()}
             The end date has passed!
             #{/if}
-			 <ul id = "tags_${item.id}" style="list-style: none; ">
-                #{if item.tags.size() > 0} 
-                Tags: 
-                #{list items:item.tags, as:'tag'}
-                <li>
-                    <a href="#">${tag.name}</a>
-                </li>
-                #{/list}
-                #{/if}
-            </ul>
+			 
             <br/>
-			 Assigned Users:  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			            #{if canAssign == 1 && !(item.status == 2)&& !item.endDatePassed()}
-            <a href="@{AssignRequests.assign(item.id, p.id)}" >assign a user to this item</a>
-            #{/if}
-						&nbsp;&nbsp;&nbsp;&nbsp;
+			 Assigned Users: 
+			 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 			  #{if user.canWork(item.id) && !(item.status == 2) && !item.endDatePassed()}
 			  <input class = "linkButton" type="button" id = "buttonWork_${item.id}" onclick="workItem(${item.id},'${user.username}');" value = "work on this item">
-			  #{/if}
+			  #{/if} 
+			            #{if canAssign == 1 && !(item.status == 2)&& !item.endDatePassed()}
+            <a href="@{AssignRequests.assign(item.id, plan.id)}" style="float:right;">assign a user to this item</a>
+            #{/if}
+
 
  
             <ul id = "assignees_${item.id}" style="list-style: none; ">
                 #{if item.assignees.size() > 0} 
                 #{list items:item.getAssignees(), as:'assignedUser'}
                 <li>
-                    <a href="#">${assignedUser.username}</a>
+                    <a href="@{Users.viewProfile(assignedUser.id)}">${assignedUser.username}</a>
                 </li>
                 #{/list}
                 #{/if}
@@ -125,21 +122,13 @@ To-do items:
 				</li>
 				#{/else}
             </ul>
-           
-            #{if canEdit == 1}
-            <form action="@{Plans.editItem(item.id)}" method="post">
-                <input type="submit" value="Edit this item">
-            </form>#{/if}
-            #{if canEdit == 1}<input type="button" onclick="delItem(${item.id});" value = "delete item">
-            <br/>
-            #{/if}
-			 #{if canEdit == 1}
-			 <form onsubmit="tagitem(${item.id});" method="post">
-                    <input type="hidden" id='tags' name="tags" value="${listOfTags}">Tag the item
-                    <br>
-                    Tag: <input type="text" id="tag_${item.id}" name="tag" autoComplete="group"/>
-                    <input type="submit" value="Tag"/>
-						</form>
+			Tags: 			 
+			#{if canEdit == 1}
+			 
+                    <input type="hidden" id='tags' name="tags" value="${listOfTags}">
+                    <input type="text" id="tag_${item.id}" name="tag" autoComplete="group"/>
+                    <input type="button" value="Tag" onclick="tagitem(${item.id});"/>
+					<label id = "tagSuccess_${item.id}"> </label>	
 			  #{/if}
 			  <script language="javascript" type="text/javascript">
                         var a = document.getElementById('tags');
@@ -147,6 +136,27 @@ To-do items:
                         c = b.split("|");
                         autoComplete.Set("group", c);
                     </script>
+           <ul id = "tags_${item.id}" style="list-style: none; ">
+                #{if item.tags.size() > 0} 
+                #{list items:item.tags, as:'tag'}
+                <li>
+                    <a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
+                </li>
+                #{/list}
+                #{/if}
+				#{else}
+				<li id = "noTagLabel_${item.id}">
+				<label >The item has no tags</label>
+				</li>
+				#{/else}
+            </ul>
+            #{if canEdit == 1}
+			 <a href="@{Plans.editItem(item.id)}" >Edit this item</a>#{/if}
+            #{if canEdit == 1}
+            <a onclick="delItem(${item.id})" style="cursor:pointer; float:right;">
+			<img src="/public/images/Cross.png" title="Delete item" width="25" height="20"/></a>
+            #{/if}
+
                 <br/>
             #{if isOrganizer == true}  
             #{if item.isRelatedToEntity() == true} 
@@ -168,7 +178,8 @@ To-do items:
             #{/if}
                 <div id = "pend_${item.id}" hidden = true>
 				Pending volunteer Request &nbsp;&nbsp;&nbsp;
-				 <input type = "button" value = "Cancel request" onclick="cancelReq(${item.id});">
+				<a onclick="cancelReq(${item.id});" style="cursor:pointer;">
+			<img src="/public/images/Cross.png" title="Cancel request" width="25" height="20"/></a>
 				 </div>
 		 #{if user.pendingVolunteerRequest(item.id)&& !(item.status == 2) && !item.endDatePassed()}
 		 			<script type="text/javascript">
@@ -179,7 +190,8 @@ To-do items:
             </div>
             
 			<div id = "vr_${item.id}" hidden = true>
-			<input type="button" onclick="show1(${item.id});" id = "button_${item.id}" value = "volunteer">
+			<input class="linkButton" type="button" onclick="show1(${item.id});" id = "button_${item.id}" value = "volunteer">
+			
             <div id = "item_${item.id}" class = "req">
                 Please state why you want to work on this item.
                 <br/>
@@ -206,19 +218,18 @@ To-do items:
 
 #{/if}  
 #{else} 
-No items exist in plan. Please contact  
-#{if p.topic.getOrganizer().size() > 1} 
+No items exist in plan.   
+#{if plan.topic.getOrganizer().size() > 0} 
 <ul style="list-style: none; ">
-    #{list items:p.topic.getOrganizer(), as:'organizer'}
+Please contact
+    #{list items:plan.topic.getOrganizer(), as:'organizer'}
     <li>
         <a href="#">${organizer.username}</a>
     </li>
     #{/list}
 </ul>
 #{/if} 
-#{else}
-${p.topic.getOrganizer().get(0).username}
-#{/else}
+
 #{/else}
 <script type="text/javascript">
                 	$(".req").hide();
@@ -240,6 +251,7 @@ ${p.topic.getOrganizer().get(0).username}
                 				itemId: id,
                 				justification: x
                 			});
+							$("#text_" + id).val("");
                 			$("#item_" + id).hide();
 							$('#pend_' + id).show();
                 			
@@ -247,17 +259,19 @@ ${p.topic.getOrganizer().get(0).username}
                 	}	
                 	
 					function cancelReq(id) {
-				    // var r = confirm("Are You sure you want to cancel your request?");
-                		//if (r == true) {
+				     var r = confirm("Are You sure you want to cancel your request?");
+                		if (r == true) {
                 			$.post('@{cancelVolunteerRequest()}', {itemId: id});
-                			
+                				
 							$('#pend_' + id).hide();
 								$("#button_" + id).show();
 								$("#vr_" + id).show();
-                		//}
+							
+                		}
 					}
                 		
                 		function cancel(id) {
+						$("#text_" + id).val("");
                 		$("#item_" + id).hide();
                 	    $("#button_" + id).show();		
                 	}
@@ -266,7 +280,7 @@ ${p.topic.getOrganizer().get(0).username}
                 			$.post('@{workOnItem()}', {itemId:id});
                 			$("#buttonWork_" + id).remove();
 							$("#noUserLabel_" + id).remove();
-                		    $("#assignees_" + id).append('<li> <a href="#">'+name+'</a> </li>');
+                		    $("#assignees_" + id).append("<li> <a href=\"http://localhost:9008/users/viewprofile?userId=" + ${user.id} + "\">"+name+"</a> </li>");
 						
                 	}	
                 	
@@ -277,7 +291,7 @@ ${p.topic.getOrganizer().get(0).username}
                 			$("#listItem_" + id).remove();
                 			  count--;
                 			  if(count == 0) {
-                			  	 alert("you have deleted all the items in the plan");
+                			  	 document.getElementById("itemsLabel").innerHTML="There are no items in the plan";
                 			  }
                 	            
                 		}
@@ -299,11 +313,24 @@ ${p.topic.getOrganizer().get(0).username}
                           }
 						  function tagitem(id){
 						  	var tagt= document.getElementById("tag_" + id).value;
-							$.post('@{tagItem()}', {
+							$("#tag_" + id).val("");
+							$.getJSON('@{tagItem()}', {
                                 		     itemId:id,
                                 			tag:tagt
                            
-                                		});
+                                		}, function(tagTemp) {
+											$("#noTagLabel_" + id).remove();
+											if( tagTemplan.success == "1") {
+											var tagId = tagTemplan.id;
+											var url = "<li> <a href=\"http://localhost:9008/tags/mainpage?tagId=" + tagId + "\">"+tagTemplan.name+"</a> </li>";
+											 $("#tags_" + id).append(url);
+											$("#tagSuccess_" + id).html("Item tagged successfuly");
+											 } else {
+										   $("#tagSuccess_" + id).html("Tag already exists");
+
+											 }
+										});
+										
 						  	
 						  }
 </script>

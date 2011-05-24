@@ -5,10 +5,10 @@
 <ul style="list-style: none; ">
     #{list items:assignedItems, as:'assignedItem'}
     <li >
-        <fieldset>
+        <fieldset style="width:750px;">
             <legend>
             	
-				<h2>Plan: <a href="@{Plans.viewAsList(assignedItem.plan.id)}">${assignedItem.plan.title}</a></h2>
+				<h3>Plan: <a href="@{Plans.viewAsList(assignedItem.plan.id)}">${assignedItem.plan.title}</a></h3>
                
             </legend>
 
@@ -20,11 +20,16 @@
             #{else}
 			<input type="checkbox"  onclick=" javascript: toggle_task(${assignedItem.id});" ${assignedItem.status == 1 ? '':'checked'} />
 		    <span>
+		    	<label id = "itemLabel_${assignedItem.id}"></label>
 			#{if assignedItem.status == 1}
-			 Your item is in progress. Mark it as done.
+			<script>
+				$("#itemLabel_" + ${assignedItem.id}).html("Your item is in progress. Mark it as done");
+			 </script>
 			#{/if}
 			#{else}
-			 Your item is done. Mark it as in progress
+			<script>
+				$("#itemLabel_" + ${assignedItem.id}).html("Your item is done. Mark it as in progress");
+			 </script>
 			#{/else}
 			#{/else}
 			#{/if}
@@ -45,7 +50,7 @@
                 #{list items:assignedItem.getAssignees(), as:'assignedUser'}
 				
                 <li>
-                    <a href="#">${assignedUser.username}</a>
+                    <a href="@{Users.viewProfile(assignedUser.id)}">${assignedUser.username}</a>
                 </li>
                 #{/list}
             </ul>
@@ -71,7 +76,9 @@ function start_task(id)
 
 function toggle_task(id)
   {
-	$.post( '@{toggleItem()}' , {id: id}, function() {window.location.reload();});
+	$.getJSON( '@{toggleItem()}' , {id: id}, function(obj) {	
+				$("#itemLabel_" + id).html(obj.name);
+});
 	
 	//window.location.reload();
   }

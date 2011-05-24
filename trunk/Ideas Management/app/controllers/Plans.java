@@ -22,12 +22,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gson.JsonObject;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import play.data.binding.Binder;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
+import play.mvc.Router;
 import play.mvc.With;
 import controllers.CoolCRUD.ObjectType;
 
@@ -46,9 +48,9 @@ public class Plans extends CoolCRUD {
 	 */
 	public static void viewAsList(long planId) {
 		User user = Security.getConnected();
-		Plan p = Plan.findById(planId);
-		List<Comment> comments = p.commentsList;
-		List<Item> itemsList = p.items;
+		Plan plan = Plan.findById(planId);
+		List<Comment> comments = plan.commentsList;
+		List<Item> itemsList = plan.items;
 		int canAssign = 0;
 		int canEdit = 0;
 		int canIdea = 0;
@@ -58,7 +60,8 @@ public class Plans extends CoolCRUD {
 		String listOfTags = "";
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
 		globalListOfTags = Tag.findAll();
-		boolean notBlockedFromUsing = Users.isPermitted(user, "use", p.topic.id, "topic");
+
+		boolean notBlockedFromUsing = Users.isPermitted(user, "use", plan.topic.id, "topic");
 		boolean checkNotRated;
 		List<User> allUsers = User.findAll();
 		List<String> userNames = new ArrayList<String>();
@@ -70,7 +73,7 @@ public class Plans extends CoolCRUD {
 		}
 		Collections.sort(userNames);
 		userNames.remove(user.username);
-		if (p.usersRated.contains(user))
+		if (plan.usersRated.contains(user))
 			checkNotRated = false;
 		else
 			checkNotRated = true;
@@ -79,51 +82,51 @@ public class Plans extends CoolCRUD {
 				.isPermitted(
 						user,
 						"accept/Reject user request to volunteer to work on action item in a plan",
-						p.topic.id, "topic")) {
+						plan.topic.id, "topic")) {
 			isOrganizer = true;
 		}
 
-		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
-			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+		if (Users.isPermitted(user, "view", plan.topic.id, "topic")) {
+			if (Users.isPermitted(user, "edit an action plan", plan.topic.id,
 					"topic")) {
 
 				canEdit = 1;
 			}
 
-			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+			if (Users.isPermitted(user, "delete an action plan", plan.topic.id,
 					"topic")) {
 
 				canDelete = true;
 			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
-					p.topic.id, "topic")) {
+					plan.topic.id, "topic")) {
 
 				canAssign = 1;
 			}
 
 			if (Users.isPermitted(user,
 					"associate an idea or more to an already existing plan",
-					p.topic.id, "topic")) {
+					plan.topic.id, "topic")) {
 
 				canIdea = 1;
 			}
 
 			for (int i = 0; i < globalListOfTags.size(); i++) {
 				if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
-						|| p.topic.entity.organization.equals(globalListOfTags
+						|| plan.topic.entity.organization.equals(globalListOfTags
 								.get(i).createdInOrganization)) {
 					listOfTags += globalListOfTags.get(i) + "|";
 				}
 			}
-			List<MainEntity> entitiesList = p.topic.entity.organization.entitiesList;
-			render(p, itemsList, user, canAssign, canEdit, canView, canDelete,
+			List<MainEntity> entitiesList = plan.topic.entity.organization.entitiesList;
+			render(plan, itemsList, user, canAssign, canEdit, canView, canDelete,
 					isOrganizer, canIdea, comments, entitiesList, listOfTags,notBlockedFromUsing,userNames);
 		} else {
 			canView = false;
-			System.out.println("he is not allowed to view");
-			render(p, itemsList, user, canAssign, canEdit, canView, canDelete,
-					isOrganizer, canIdea, userNames);
+//			render(p, itemsList, user, canAssign, canEdit, canView, canDelete,
+//					isOrganizer, canIdea, userNames);
+			BannedUsers.unauthorized();
 		}
 
 	}
@@ -142,7 +145,7 @@ public class Plans extends CoolCRUD {
 	public static void workOnItem(long itemId) {
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
-		System.out.println("ana hena");
+		
 		user.itemsAssigned.add(item);
 		user.save();
 		item.assignees.add(user);
@@ -187,8 +190,11 @@ public class Plans extends CoolCRUD {
 	 */
 	public static void addIdea(long planId) {
 		User user = Security.getConnected();
-		Plan p = Plan.findById(planId);
-		Topic topic = Topic.findById(p.topic.id);
+		Plan plan = Plan.findById(planId);
+		notFoundIfNull(plan);
+		Topic topic = Topic.findById(plan.topic.id);
+		notFoundIfNull(topic);
+
 		List<Idea> ideas = new ArrayList<Idea>();
 		int canAssign = 0;
 		int canEdit = 0;
@@ -196,50 +202,50 @@ public class Plans extends CoolCRUD {
 		boolean canView = false;
 		boolean isOrganizer = false;
 		boolean canDelete = false;
-		if (Users
-				.isPermitted(
-						user,
-						"accept/Reject user request to volunteer to work on action item in a plan",
-						p.topic.id, "topic")) {
-			isOrganizer = true;
-		}
 
-		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
+
+		if (Users.isPermitted(user, "view", plan.topic.id, "topic")) {
 			canView = true;
-			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
-					"topic")) {
-
-				canEdit = 1;
-			}
-
-			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
-					"topic")) {
-
-				canDelete = true;
-			}
-			if (Users.isPermitted(user,
-					"assign one or many users to a to-do item in a plan",
-					p.topic.id, "topic")) {
-
-				canAssign = 1;
-			}
-
 			if (Users.isPermitted(user,
 					"associate an idea or more to an already existing plan",
-					p.topic.id, "topic")) {
+					plan.topic.id, "topic")) {
 
 				canIdea = 1;
+				if (Users
+						.isPermitted(
+								user,
+								"accept/Reject user request to volunteer to work on action item in a plan",
+								plan.topic.id, "topic")) {
+					isOrganizer = true;
+				}
+				if (Users.isPermitted(user, "edit an action plan", plan.topic.id,
+						"topic")) {
+
+					canEdit = 1;
+				}
+
+				if (Users.isPermitted(user, "delete an action plan", plan.topic.id,
+						"topic")) {
+
+					canDelete = true;
+				}
+				if (Users.isPermitted(user,
+						"assign one or many users to a to-do item in a plan",
+						plan.topic.id, "topic")) {
+
+					canAssign = 1;
+				}
+				for (Idea idea : topic.ideas) {
+					if (idea.plan == null) {
+						ideas.add(idea);
+					}
+				}
+				render(ideas, topic, plan, user, canEdit, canView, isOrganizer, canIdea,
+						canDelete, canAssign);
+			} else {
+				BannedUsers.unauthorized();
 			}
 		}
-		for (Idea idea : topic.ideas) {
-			if (idea.plan == null) {
-				ideas.add(idea);
-			}
-		}
-
-		render(ideas, topic, p, user, canEdit, canView, isOrganizer, canIdea,
-				canDelete, canAssign);
-
 	}
 
 	/**
@@ -260,7 +266,7 @@ public class Plans extends CoolCRUD {
 	 */
 	public static void selectedIdeas(long[] checkedIdeas, long planId) {
 		Plan plan = Plan.findById(planId);
-	
+
 		Idea idea;
 		String notificationContent = "";
 
@@ -302,7 +308,9 @@ public class Plans extends CoolCRUD {
 	 *            the id of the plan whose list of ideas will be viewed
 	 */
 	public static void planView(long planId) {
-		Plan p = Plan.findById(planId);
+		Plan plan = Plan.findById(planId);
+		notFoundIfNull(plan);
+
 		User user = Security.getConnected();
 		int canAssign = 0;
 		int canEdit = 0;
@@ -314,41 +322,44 @@ public class Plans extends CoolCRUD {
 				.isPermitted(
 						user,
 						"accept/Reject user request to volunteer to work on action item in a plan",
-						p.topic.id, "topic")) {
+						plan.topic.id, "topic")) {
 			isOrganizer = true;
 		}
 
-		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
+		if (Users.isPermitted(user, "view", plan.topic.id, "topic")) {
 			canView = true;
-			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+			if (Users.isPermitted(user, "edit an action plan", plan.topic.id,
 					"topic")) {
 
 				canEdit = 1;
 			}
 
-			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+			if (Users.isPermitted(user, "delete an action plan", plan.topic.id,
 					"topic")) {
 
 				canDelete = true;
 			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
-					p.topic.id, "topic")) {
+					plan.topic.id, "topic")) {
 
 				canAssign = 1;
 			}
 
 			if (Users.isPermitted(user,
 					"associate an idea or more to an already existing plan",
-					p.topic.id, "topic")) {
+					plan.topic.id, "topic")) {
 
 				canIdea = 1;
 			}
-		}
-		List<Idea> ideas = p.ideas;
+			List<Idea> ideas = plan.ideas;
 
-		render(ideas, p, user, canEdit, canView, isOrganizer, canIdea,
-				canDelete, canAssign);
+			render(ideas, plan, user, canEdit, canView, isOrganizer, canIdea,
+					canDelete, canAssign);
+		}else{
+			BannedUsers.unauthorized();
+		}
+		
 	}
 
 	/**
@@ -379,19 +390,21 @@ public class Plans extends CoolCRUD {
 				+ " of the topic: " + plan.topic.title;
 		Notifications.sendNotification(idea.author.id, plan.id, "plan",
 				notificationMsg);
+		
+		final String url = "http://localhost:9008/topics/show?topicId=1"; 
 		String logDescription = "Idea " + idea.title + " that belongs to "
 				+ idea.author.firstName + " " + idea.author.lastName
 				+ " has been removed from the plan " + plan.title
-				+ " of the topic " + plan.topic.title;
+				+ " of the topic " + url + plan.topic.title;
 		Log.addUserLog(logDescription, idea.author, plan, idea,
 				plan.topic.entity.organization);
 
 	}
 
 	/**
-	 * This method returns the list of plans that belongs to a certain organization or entity
-	 * which is determined by the parameter type give the id of the organization
-	 * or entity
+	 * This method returns the list of plans that belongs to a certain
+	 * organization or entity which is determined by the parameter type give the
+	 * id of the organization or entity
 	 * 
 	 * @story C5S18
 	 * 
@@ -403,8 +416,8 @@ public class Plans extends CoolCRUD {
 	 * @param id
 	 *            the id of the organization or entity that the methods returns
 	 *            the list of plans that belongs to it
-	 *        
-	 *@return List<Plan>
+	 * 
+	 * @return List<Plan>
 	 */
 	public static List<Plan> planList(String type, long id) {
 		User user = Security.getConnected();
@@ -564,22 +577,22 @@ public class Plans extends CoolCRUD {
 
 	public static void rate(long planId, int rat) {
 		planId++;
-		Plan p = Plan.findById(planId);
+		Plan plan = Plan.findById(planId);
 		User user = Security.getConnected();
-		if (p.usersRated.contains(user))
+		if (plan.usersRated.contains(user))
 			System.out.print("user already rated");
 		else {
 			System.out.println("user didn't rate yet");
-			p.usersRated.add(user);
-			if (p.rating.equals("Not yet rated"))
-				p.rating = Integer.toString(rat);
+			plan.usersRated.add(user);
+			if (plan.rating.equals("Not yet rated"))
+				plan.rating = Integer.toString(rat);
 			else {
-				int oldRating = Integer.parseInt(p.rating);
+				int oldRating = Integer.parseInt(plan.rating);
 				int newRating;
 				newRating = (oldRating + rat) / 2;
-				p.rating = Integer.toString(newRating);
+				plan.rating = Integer.toString(newRating);
 			}
-			p.save();
+			plan.save();
 			redirect("/plans/viewaslist?planId=" + planId);
 		}
 
@@ -641,15 +654,15 @@ public class Plans extends CoolCRUD {
 		Topic topic = Topic.findById(topicId);
 		Date sd = new Date(startDate);
 		Date ed = new Date(endDate);
-		Plan p = new Plan(title, user, sd, ed, description, topic, requirement);
+		Plan plan = new Plan(title, user, sd, ed, description, topic, requirement);
 		System.out.println("creation of the plan");
-		p.save();
-		List<User> topicOrganizers = p.topic.getOrganizer();
+		plan.save();
+		List<User> topicOrganizers = plan.topic.getOrganizer();
 		for (int i = 0; i < topicOrganizers.size(); i++) {
-			Notifications.sendNotification(topicOrganizers.get(i).id, p.id,
+			Notifications.sendNotification(topicOrganizers.get(i).id, plan.id,
 					"plan", "A new plan has been created");
 		}
-		viewAsList(p.id);
+		viewAsList(plan.id);
 	}
 
 	/**
@@ -665,7 +678,7 @@ public class Plans extends CoolCRUD {
 	public static void sharePlan(String userName, long planID) {
 		User U = User.find("byUsername", userName).first();
 		planID++;
-		Plan p = Plan.findById(planID);
+		Plan plan = Plan.findById(planID);
 		String type = "Plan";
 		User user = Security.getConnected();
 		String desc = user.firstName
@@ -675,7 +688,7 @@ public class Plans extends CoolCRUD {
 		long notId = planID;
 		long userId = U.id;
 		Notifications.sendNotification(userId, notId, type, desc);
-		redirect("/plans/viewaslist?planId=" + p.id);
+		redirect("/plans/viewaslist?planId=" + plan.id);
 	}
 
 	/**
@@ -691,7 +704,7 @@ public class Plans extends CoolCRUD {
 	 */
 
 	public static void addItem(long planId) {
-		Plan p = Plan.findById(planId);
+		Plan plan = Plan.findById(planId);
 		User user = Security.getConnected();
 		int canAssign = 0;
 		int canEdit = 0;
@@ -703,39 +716,39 @@ public class Plans extends CoolCRUD {
 				.isPermitted(
 						user,
 						"accept/Reject user request to volunteer to work on action item in a plan",
-						p.topic.id, "topic")) {
+						plan.topic.id, "topic")) {
 			isOrganizer = true;
 		}
 
-		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
+		if (Users.isPermitted(user, "view", plan.topic.id, "topic")) {
 			canView = true;
-			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+			if (Users.isPermitted(user, "edit an action plan", plan.topic.id,
 					"topic")) {
 
 				canEdit = 1;
 			}
 
-			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+			if (Users.isPermitted(user, "delete an action plan", plan.topic.id,
 					"topic")) {
 
 				canDelete = true;
 			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
-					p.topic.id, "topic")) {
+					plan.topic.id, "topic")) {
 
 				canAssign = 1;
 			}
 
 			if (Users.isPermitted(user,
 					"associate an idea or more to an already existing plan",
-					p.topic.id, "topic")) {
+					plan.topic.id, "topic")) {
 
 				canIdea = 1;
 			}
 		}
 
-		render(p, user, canEdit, canView, isOrganizer, canIdea, canAssign,
+		render(plan, user, canEdit, canView, isOrganizer, canIdea, canAssign,
 				canDelete);
 	}
 
@@ -792,7 +805,7 @@ public class Plans extends CoolCRUD {
 	 * 
 	 */
 	public static void editPlan(long planId) {
-		Plan p = Plan.findById(planId);
+		Plan plan = Plan.findById(planId);
 		User user = Security.getConnected();
 		int canAssign = 0;
 		int canEdit = 0;
@@ -804,38 +817,38 @@ public class Plans extends CoolCRUD {
 				.isPermitted(
 						user,
 						"accept/Reject user request to volunteer to work on action item in a plan",
-						p.topic.id, "topic")) {
+						plan.topic.id, "topic")) {
 			isOrganizer = true;
 		}
 
-		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
+		if (Users.isPermitted(user, "view", plan.topic.id, "topic")) {
 			canView = true;
-			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+			if (Users.isPermitted(user, "edit an action plan", plan.topic.id,
 					"topic")) {
 
 				canEdit = 1;
 			}
 
-			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+			if (Users.isPermitted(user, "delete an action plan", plan.topic.id,
 					"topic")) {
 
 				canDelete = true;
 			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
-					p.topic.id, "topic")) {
+					plan.topic.id, "topic")) {
 
 				canAssign = 1;
 			}
 
 			if (Users.isPermitted(user,
 					"associate an idea or more to an already existing plan",
-					p.topic.id, "topic")) {
+					plan.topic.id, "topic")) {
 
 				canIdea = 1;
 			}
 		}
-		render(p, user, canEdit, canView, isOrganizer, canIdea, canDelete,
+		render(plan, user, canEdit, canView, isOrganizer, canIdea, canDelete,
 				canAssign);
 	}
 
@@ -881,28 +894,28 @@ public class Plans extends CoolCRUD {
 			String description, String requirement, long planId) {
 		Date sd = new Date(startDate);
 		Date ed = new Date(endDate);
-		Plan p = Plan.findById(planId);
-		p.title = title;
-		p.startDate = sd;
-		p.endDate = ed;
-		p.description = description;
-		p.requirement = requirement;
-		p.save();
+		Plan plan = Plan.findById(planId);
+		plan.title = title;
+		plan.startDate = sd;
+		plan.endDate = ed;
+		plan.description = description;
+		plan.requirement = requirement;
+		plan.save();
 
-		List<User> topicOrganizers = p.topic.getOrganizer();
+		List<User> topicOrganizers = plan.topic.getOrganizer();
 		for (int i = 0; i < topicOrganizers.size(); i++) {
-			Notifications.sendNotification(topicOrganizers.get(i).id, p.id,
+			Notifications.sendNotification(topicOrganizers.get(i).id, plan.id,
 					"plan", "A new plan has been created");
 		}
 		List<User> assignees = new ArrayList<User>();
-		for (int i = 0; i < p.items.size(); i++) {
-			assignees = p.items.get(i).assignees;
+		for (int i = 0; i < plan.items.size(); i++) {
+			assignees = plan.items.get(i).assignees;
 			for (int j = 0; j < assignees.size(); j++) {
-				Notifications.sendNotification(assignees.get(j).id, p.id,
+				Notifications.sendNotification(assignees.get(j).id, plan.id,
 						"plan", "This action plan has been edited");
 			}
 		}
-		viewAsList(p.id);
+		viewAsList(plan.id);
 	}
 
 	/**
@@ -1036,7 +1049,7 @@ public class Plans extends CoolCRUD {
 		String notificationMsg = "The plan " + plan.title + " has been deleted";
 		for (Item item : plan.items) {
 			for (User user1 : item.getAssignees()) {
-				if (!toBeNotified.contains(user1) && user.id!=user1.id) {
+				if (!toBeNotified.contains(user1) && user.id != user1.id) {
 					toBeNotified.add(user1);
 					Notifications.sendNotification(user1.id, plan.topic.id,
 							"topic", notificationMsg);
@@ -1044,7 +1057,7 @@ public class Plans extends CoolCRUD {
 			}
 		}
 		for (User organizer : plan.topic.getOrganizer()) {
-			if (!toBeNotified.contains(organizer)&& user.id!=organizer.id) {
+			if (!toBeNotified.contains(organizer) && user.id != organizer.id) {
 				toBeNotified.add(organizer);
 				Notifications.sendNotification(organizer.id, plan.topic.id,
 						"topic", notificationMsg);
@@ -1114,8 +1127,10 @@ public class Plans extends CoolCRUD {
 			ParseException, java.text.ParseException {
 
 		User user = Security.getConnected();
-		Plan p = Plan.findById(planId);
-		List<Item> itemsList = p.items;
+		Plan plan = Plan.findById(planId);
+		//notFoundIfNull(p);
+
+		List<Item> itemsList = plan.items;
 
 		boolean canView = false;
 		boolean isOrganizer = false;
@@ -1127,50 +1142,48 @@ public class Plans extends CoolCRUD {
 				.isPermitted(
 						user,
 						"accept/Reject user request to volunteer to work on action item in a plan",
-						p.topic.id, "topic")) {
+						plan.topic.id, "topic")) {
 			isOrganizer = true;
 		}
 
-		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
+		if (Users.isPermitted(user, "view", plan.topic.id, "topic")) {
 			canView = true;
-			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+			if (Users.isPermitted(user, "edit an action plan", plan.topic.id,
 					"topic")) {
 
 				canEdit = 1;
 			}
 
-			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+			if (Users.isPermitted(user, "delete an action plan", plan.topic.id,
 					"topic")) {
 
 				canDelete = true;
 			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
-					p.topic.id, "topic")) {
+					plan.topic.id, "topic")) {
 
 				canAssign = 1;
 			}
 			if (Users.isPermitted(user,
 					"associate an idea or more to an already existing plan",
-					p.topic.id, "topic")) {
+					plan.topic.id, "topic")) {
 
 				canIdea = 1;
 			}
-		}
-
+		
 		FileWriter fstream;
 		fstream = new FileWriter("Ideas-Management/public/xml/out.xml");
-
 		BufferedWriter out = new BufferedWriter(fstream);
 
 		out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-		out.write("\n");
+		out.write("\n");	
 		out.write("<data>");
 		out.write("\n");
 
 		out.write("<event start=\"");
 		// out.write(itemsList.get(i).startDate.toGMTString());
-		String inputDate = (p.startDate.toGMTString());
+		String inputDate = (plan.startDate.toGMTString());
 		Date date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
 				.parse(inputDate);
 
@@ -1191,7 +1204,7 @@ public class Plans extends CoolCRUD {
 
 		out.write("<event start=\"");
 		// out.write(itemsList.get(i).startDate.toGMTString());
-		inputDate = (p.endDate.toGMTString());
+		inputDate = (plan.endDate.toGMTString());
 		date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz")
 				.parse(inputDate);
 
@@ -1246,10 +1259,15 @@ public class Plans extends CoolCRUD {
 		out.write("</data>");
 		out.flush();
 		out.close();
-
+		
 		boolean timeline = true;
-		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea,
+		render(plan, itemsList, user, canEdit, canView, isOrganizer, canIdea,
 				canDelete, canAssign, timeline);
+		} else{
+			BannedUsers.unauthorized();
+		}
+		
+		
 
 	}
 
@@ -1266,8 +1284,10 @@ public class Plans extends CoolCRUD {
 
 	public static void viewAsCalendar(long planId) {
 		User user = Security.getConnected();
-		Plan p = Plan.findById(planId);
-		List<Item> itemsList = p.items;
+		Plan plan = Plan.findById(planId);
+		notFoundIfNull(plan);
+
+		List<Item> itemsList = plan.items;
 
 		boolean canView = false;
 		boolean isOrganizer = false;
@@ -1279,40 +1299,42 @@ public class Plans extends CoolCRUD {
 				.isPermitted(
 						user,
 						"accept/Reject user request to volunteer to work on action item in a plan",
-						p.topic.id, "topic")) {
+						plan.topic.id, "topic")) {
 			isOrganizer = true;
 		}
 
-		if (Users.isPermitted(user, "view", p.topic.id, "topic")) {
+		if (Users.isPermitted(user, "view", plan.topic.id, "topic")) {
 			canView = true;
-			if (Users.isPermitted(user, "edit an action plan", p.topic.id,
+			if (Users.isPermitted(user, "edit an action plan", plan.topic.id,
 					"topic")) {
 
 				canEdit = 1;
 			}
 
-			if (Users.isPermitted(user, "delete an action plan", p.topic.id,
+			if (Users.isPermitted(user, "delete an action plan", plan.topic.id,
 					"topic")) {
 
 				canDelete = true;
 			}
 			if (Users.isPermitted(user,
 					"assign one or many users to a to-do item in a plan",
-					p.topic.id, "topic")) {
+					plan.topic.id, "topic")) {
 
 				canAssign = 1;
 			}
 			if (Users.isPermitted(user,
 					"associate an idea or more to an already existing plan",
-					p.topic.id, "topic")) {
+					plan.topic.id, "topic")) {
 
 				canIdea = 1;
 			}
-		}
+		
 
-		render(p, itemsList, user, canEdit, canView, isOrganizer, canIdea,
+		render(plan, itemsList, user, canEdit, canView, isOrganizer, canIdea,
 				canDelete, canAssign);
-
+		} else{
+			BannedUsers.unauthorized();
+		}
 	}
 
 	/**
@@ -1397,11 +1419,10 @@ public class Plans extends CoolCRUD {
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
 		globalListOfTags = Tag.findAll();
 
-		User user =  Security.getConnected();
+		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
 		Plan plan = item.plan;
 		MainEntity entity = plan.topic.entity;
-
 
 		for (int i = 0; i < globalListOfTags.size(); i++) {
 			if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
@@ -1411,35 +1432,42 @@ public class Plans extends CoolCRUD {
 			}
 		}
 		Tag tagTemp = null;
-		for(int i=0;i<listOfTags.size();i++){
-			if(listOfTags.get(i).name.equalsIgnoreCase(tag)){
-				tagTemp=listOfTags.get(i);
-			break;	
-				
+		for (int i = 0; i < listOfTags.size(); i++) {
+			if (listOfTags.get(i).name.equalsIgnoreCase(tag)) {
+				tagTemp = listOfTags.get(i);
+				break;
+
 			}
 		}
-		if(tagTemp == null) {
-			newTag=true;
-			tagTemp= new Tag(tag, plan.topic.entity.organization, user);
+		if (tagTemp == null) {
+			newTag = true;
+			tagTemp = new Tag(tag, plan.topic.entity.organization, user);
 			tagTemp.save();
-			
+
 		}
-		if(item.tags.contains(tagTemp)){
-			tagAlreadyExists=true;
-			
-		}else{
-		item.tags.add(tagTemp);
-		item.save();
-		tagTemp.taggedItems.add(item);
-		tagTemp.save();
+		if (item.tags.contains(tagTemp)) {
+			tagAlreadyExists = true;
+
+		} else {
+			item.tags.add(tagTemp);
+			item.save();
+			tagTemp.taggedItems.add(item);
+			tagTemp.save();
 		}
-			
 
 		item.save();
-		viewAsList(plan.id);
-
-
-
+		 JsonObject json = new JsonObject();
+		 if(!tagAlreadyExists) {
+		 json.addProperty("name", tagTemp.name);
+		 json.addProperty("id", tagTemp.id + "");
+		 json.addProperty("success", "1");
+		 } else {
+			 json.addProperty("success", "0");
+		 }
+		 
+    	 renderJSON(json.toString());
+    	
+		//viewAsList(plan.id);
 
 	}
 

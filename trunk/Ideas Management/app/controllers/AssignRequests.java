@@ -36,7 +36,6 @@ public class AssignRequests extends CoolCRUD {
 	public static void assign(long itemId, long planId) {
 		users2 = filter(itemId, planId);
 
-		System.out.println(users2.size() + "A5ER OBBBBAAAAAAAAAA");
 		viewUsers(itemId, planId);
 
 	}
@@ -63,21 +62,33 @@ public class AssignRequests extends CoolCRUD {
 	 */
 	public static void viewUsers(long itemId, long planId) {
 		User user = Security.getConnected();
-		System.out.println(users2.size() + "OFEEEEEEEEEEEEEEEENNN");
-		ArrayList<User> users = new ArrayList<User>();
-		for (User user2 : users2) {
-			users.add(user2);
-		}
-		System.out.println("logged user" + user.id);
-		for (int i = 0; i < users2.size(); i++) {
-			System.out.println("user ids" + users2.get(i).id);
-			if (users2.get(i).id.compareTo(user.id) == 0) {
-				System.out.println(true);
-				users.remove(i);
+		Plan plan = Plan.findById(planId);
+		notFoundIfNull(plan);
+
+		if (Users.isPermitted(user,
+				"assign one or many users to a to-do item in a plan",
+				plan.topic.id, "topic")) {
+
+			ArrayList<User> users = new ArrayList<User>();
+			for (User user2 : users2) {
+				users.add(user2);
 			}
+			
+			for (int i = 0; i < users2.size(); i++) {
+				System.out.println("user ids" + users2.get(i).id);
+				if (users2.get(i).id.compareTo(user.id) == 0) {
+					
+					users.remove(i);
+				}
+			}
+			Item item = Item.findById(itemId);
+			notFoundIfNull(item);
+
+			render(users, itemId, planId, item, user);
+		} else{
+			BannedUsers.unauthorized();
 		}
-		Item item = Item.findById(itemId);
-		render(users, itemId, planId, item, user);
+
 	}
 
 	/**
@@ -107,7 +118,7 @@ public class AssignRequests extends CoolCRUD {
 			destination = User.findById(userIds[i]);
 			if (filter(itemId, source.plan.id).contains(destination)) {
 				if (!(source.status == 2) && !source.endDatePassed()) {
-					System.out.println("hab3at " + userIds[i]);
+					
 					// sendAssignRequest(itemId,userIds[i]);
 					String description = "You have been sent a request to work on this item"
 							+ source.summary
@@ -209,7 +220,7 @@ public class AssignRequests extends CoolCRUD {
 		List<User> nonBlockedUsers = Topics.searchByTopic(plan.topic.id);
 		Item item = Item.findById(itemId);
 		int size = nonBlockedUsers.size();
-		System.out.println(size + "OBBBAAAAAAAAAAA");
+		
 		ArrayList<User> finalResult = new ArrayList<User>();
 		boolean flag = false;
 		User user;
@@ -238,7 +249,7 @@ public class AssignRequests extends CoolCRUD {
 			}
 			flag = false;
 		}
-		System.out.println(finalResult.size() + "OFFFFFFFFFFFFFFFFFFFFF");
+		
 		return finalResult;
 	}
 
