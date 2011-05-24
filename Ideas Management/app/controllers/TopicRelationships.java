@@ -76,6 +76,13 @@ public class TopicRelationships extends CoolCRUD {
 								+ source.title + "\" and \""
 								+ destination.title + "\".");
 			}
+			Log.addUserLog("User \"" + Security.getConnected().firstName + " "
+					+ Security.getConnected().lastName + "\" "
+					+ "created a relationship \"" + name
+					+ "\" between topics \"" + source.title + "\" and \""
+					+ destination.title + "\"", Security.getConnected(),
+					source, destination, source.entity,
+					source.entity.organization);
 			return true;
 		}
 		return false;
@@ -125,12 +132,21 @@ public class TopicRelationships extends CoolCRUD {
 		TopicRelationship relation = TopicRelationship
 				.findById(relationToBeRenamedId);
 		if (relation.name != newName) {
+			Log.addUserLog("User \"" + Security.getConnected().firstName + " "
+					+ Security.getConnected().lastName + "\" "
+					+ "renamed the relationship \"" + relation.name
+					+ "\" between topics \"" + relation.source.title
+					+ "\" and \"" + relation.destination.title + "\" to \""
+					+ newName + "\"", Security.getConnected(), relation.source,
+					relation.destination, relation.source.entity,
+					relation.source.entity.organization);
 			relation.name = newName;
 			for (int i = 0; i < relation.renameEndRequests.size(); i++) {
 				RenameEndRelationshipRequests.delete(relation.renameEndRequests
 						.get(i).id);
 			}
 			relation.save();
+
 			return true;
 		}
 		return false;
@@ -149,6 +165,13 @@ public class TopicRelationships extends CoolCRUD {
 	 */
 	public static boolean delete(long relationId) {
 		TopicRelationship relation = TopicRelationship.findById(relationId);
+		Log.addUserLog("User \"" + Security.getConnected().firstName + " "
+				+ Security.getConnected().lastName + "\" "
+				+ "deleted the relationship \"" + relation.name
+				+ "\" between topics \"" + relation.source.title + "\" and \""
+				+ relation.destination.title + "\"", Security.getConnected(),
+				relation.source, relation.destination, relation.source.entity,
+				relation.source.entity.organization);
 		relation.source.relationsSource.remove(relation);
 		relation.destination.relationsDestination.remove(relation);
 		for (int i = 0; i < relation.renameEndRequests.size(); i++) {

@@ -79,11 +79,14 @@ public class EntityRelationships extends CoolCRUD {
 								+ source.name + "\" and \"" + destination.name
 								+ "\".");
 			}
-			// Log.addUserLog("User " + Security.getConnected().firstName+" "+
-			// Security.getConnected().lastName+" " , models)
+			Log.addUserLog("User \"" + Security.getConnected().firstName + " "
+					+ Security.getConnected().lastName + "\" "
+					+ "created a relationship \"" + name
+					+ "\" between entities \"" + source.name + "\" and \""
+					+ destination.name + "\"", Security.getConnected(), source,
+					destination, source.organization);
 			return true;
 		}
-		System.out.println("Duplicate relation!!!");
 		return false;
 	}
 
@@ -131,6 +134,13 @@ public class EntityRelationships extends CoolCRUD {
 		EntityRelationship relation = EntityRelationship
 				.findById(relationToBeRenamedId);
 		if (relation.name != newName) {
+			Log.addUserLog("User \"" + Security.getConnected().firstName + " "
+					+ Security.getConnected().lastName + "\" "
+					+ "renamed the relationship \"" + relation.name
+					+ "\" between entities \"" + relation.source.name
+					+ "\" and \"" + relation.destination.name + "\" to \""
+					+ newName + "\"", Security.getConnected(), relation.source,
+					relation.destination, relation.source.organization);
 			relation.name = newName;
 			for (int i = 0; i < relation.renameEndRequests.size(); i++) {
 				RenameEndRelationshipRequests.delete(relation.renameEndRequests
@@ -156,6 +166,13 @@ public class EntityRelationships extends CoolCRUD {
 	 */
 	public static boolean delete(long relationId) {
 		EntityRelationship relation = EntityRelationship.findById(relationId);
+		Log.addUserLog("User \"" + Security.getConnected().firstName + " "
+				+ Security.getConnected().lastName + "\" "
+				+ "deleted the relationship \"" + relation.name
+				+ "\" between entities \"" + relation.source.name + "\" and \""
+				+ relation.destination.name + "\"", Security.getConnected(),
+				relation.source, relation.destination,
+				relation.source.organization);
 		relation.source.relationsSource.remove(relation);
 		relation.destination.relationsDestination.remove(relation);
 		for (int i = 0; i < relation.renameEndRequests.size(); i++) {
@@ -210,26 +227,26 @@ public class EntityRelationships extends CoolCRUD {
 		return false;
 	}
 
-//	public static boolean deleteER(long rId) {
-//		EntityRelationship er = EntityRelationship.findById(rId);
-//		List<MainEntity> entities = MainEntity.findAll();
-//		int size = entities.size();
-//		for (int i = 0; i < size; i++) {
-//			if (entities.get(i).relationsSource.contains(er)) {
-//				entities.get(i).relationsSource.remove(er);
-//				entities.get(i).save();
-//			}
-//			if (entities.get(i).relationsDestination.contains(er)) {
-//				entities.get(i).relationsDestination.remove(er);
-//				entities.get(i).save();
-//			}
-//		}
-//		size = er.renameEndRequests.size();
-//		for (int i = 0; i < size; i++) {
-//			RenameEndRelationshipRequests
-//					.delete(er.renameEndRequests.get(i).id);
-//		}
-//		er.delete();
-//		return true;
-//	}
+	// public static boolean deleteER(long rId) {
+	// EntityRelationship er = EntityRelationship.findById(rId);
+	// List<MainEntity> entities = MainEntity.findAll();
+	// int size = entities.size();
+	// for (int i = 0; i < size; i++) {
+	// if (entities.get(i).relationsSource.contains(er)) {
+	// entities.get(i).relationsSource.remove(er);
+	// entities.get(i).save();
+	// }
+	// if (entities.get(i).relationsDestination.contains(er)) {
+	// entities.get(i).relationsDestination.remove(er);
+	// entities.get(i).save();
+	// }
+	// }
+	// size = er.renameEndRequests.size();
+	// for (int i = 0; i < size; i++) {
+	// RenameEndRelationshipRequests
+	// .delete(er.renameEndRequests.get(i).id);
+	// }
+	// er.delete();
+	// return true;
+	// }
 }
