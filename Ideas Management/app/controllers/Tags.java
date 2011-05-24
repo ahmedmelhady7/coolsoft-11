@@ -175,11 +175,14 @@ public class Tags extends CoolCRUD {
 //		}
 		if (!duplicate) {
 			Tag tag = new Tag(name, org, user);
+			tag.organizations.add(org);
 			tag.save();
 			org.relatedTags.add(tag);
+			org.createdTags.add(tag);
 			org.save();
+			user.createdTags.add(tag);
+			user.save();
 			Log.addUserLog("User " + user.username + " created a new Tag \"" + name + "\" in Organization \"" + org.name + "\"", user,org,tag);
-			System.out.println(tag.id);
 			String description = user.username + " has created a new tag \""
 					+ name + "\" in organization " + org.name;
 			Notifications.sendNotification(org.creator.id, tag.id, "Tag",
