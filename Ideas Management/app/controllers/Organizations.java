@@ -424,7 +424,6 @@ public class Organizations extends CoolCRUD {
 		int i = 0;
 		int allowed = 0;
 		int settings = 0;
-		System.out.println(user);
 		if (org.privacyLevel == 1
 				&& Users.isPermitted(
 						user,
@@ -699,6 +698,8 @@ public class Organizations extends CoolCRUD {
 		for (int i = 0; i < invite.size(); i++)
 			invite.get(i).delete();
 		//
+
+		organization.logs.clear();
 
 		organization.delete();
 		Log.addUserLog("User " + user.username + " deleted the Organization \""
