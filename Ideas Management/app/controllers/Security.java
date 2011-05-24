@@ -53,13 +53,13 @@ public class Security extends Secure.Security {
 	 */
 
 	public static boolean authenticate(String username, String password) {
-		String hashedPassword = Application.hash(password);
+		//String hashedPassword = Application.hash(password);
 		/*User user = User.find(
 				"select u from User u where (u.username=? and u.password = ?)",
 				username, password).first();*/
 		User user = User.find(
 				"select u from User u where (u.username=? and u.password = ?)",
-				username, hashedPassword).first();
+				username, password).first();
 		if (user != null) {
 			if(user.state.equals("d")) {
 				flash.error("Your account has been deleted");
