@@ -1613,4 +1613,86 @@ public class Search extends Controller {
 
 	}
 
+
+	/**
+	 * 
+	 * sortA_Views method sorts according to views in ascending order
+	 * 
+	 * task.
+	 * 
+	 * 
+	 * @author Monica Yousry
+	 * 
+	 * @story C4S04 sort ascending the search result according to views
+	 * 
+	 * 
+	 * @return void
+	 * 
+	 * 
+	 */
+
+	public static void sortA_Views() {// descending
+
+		List<Model> toSort = new ArrayList<Model>();
+		List<Model> notToSort = new ArrayList<Model>();
+
+		/*
+		 * a for loop to find all objects having attribute rate and add them to
+		 * a list called to sort and the rest of the search results are to be in
+		 * a list not to be sorted
+		 */
+
+		for (int i = 0; i < listOfResults.size(); i++) {
+			if (listOfResults.get(i) instanceof Idea
+					|| listOfResults.get(i) instanceof Topic) {
+				toSort.add(listOfResults.get(i));
+			} else {
+				notToSort.add(listOfResults.get(i));
+			}
+		}
+
+		for (int j = 0; j < toSort.size(); j++) {
+			int view1 = 0;
+			int view2 = 0;
+			if (toSort.get(j) instanceof Idea) {
+				Idea temp1 = (Idea) toSort.get(j);
+				view1 = temp1.viewed;
+			} else {
+				Topic temp1 = (Topic) toSort.get(j);
+				view1 = temp1.viewed;
+			}
+			for (int k = 0; k < toSort.size(); k++) {
+				if (toSort.get(k) instanceof Idea) {
+					Idea temp2 = (Idea) toSort.get(k);
+					view2 = temp2.viewed;
+
+				} else {
+					Topic temp2 = (Topic) toSort.get(k);
+					view2 = temp2.viewed;
+
+				}
+
+				if (view1 > view2) { // sorting
+					Model temp = (Model) toSort.get(k);
+					toSort.set(k, toSort.get(j));
+					toSort.set(j, temp);
+				}
+			}
+		}
+
+		sorted = new ArrayList<Model>();// final sorted list
+		for (int m = 0; m < toSort.size(); m++) {
+			sorted.add(toSort.get((m)));
+		}
+		for (int m = 0; m < notToSort.size(); m++) {
+			sorted.add(notToSort.get((m)));
+		}
+
+		listOfResults = toSort;
+		searchResult();
+
+	}
+
+
+
 }
