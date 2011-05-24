@@ -79,12 +79,25 @@ public class EntityRelationships extends CoolCRUD {
 								+ source.name + "\" and \"" + destination.name
 								+ "\".");
 			}
-			Log.addUserLog("User \"" + Security.getConnected().firstName + " "
-					+ Security.getConnected().lastName + "\" "
-					+ "created a relationship \"" + name
-					+ "\" between entities \"" + source.name + "\" and \""
-					+ destination.name + "\"", Security.getConnected(), source,
-					destination, source.organization);
+			Log
+					.addUserLog(
+							"User \"<a href=\"/users/viewprofile?userId="
+									+ Security.getConnected().id
+									+ "\">"
+									+ Security.getConnected().firstName
+									+ " "
+									+ Security.getConnected().lastName
+									+ "</a>\" "
+									+ "created a relationship \""
+									+ name
+									+ "\" between entities \"<a href=\"/mainentitys/viewentity?id="
+									+ source.id
+									+ "\">"
+									+ source.name
+									+ "\"</a> and \"<a href=\"/mainentitys/viewentity?id="
+									+ destination.id + "\">" + destination.name
+									+ "</a>\"", Security.getConnected(),
+							source, destination, source.organization);
 			return true;
 		}
 		return false;
@@ -134,13 +147,27 @@ public class EntityRelationships extends CoolCRUD {
 		EntityRelationship relation = EntityRelationship
 				.findById(relationToBeRenamedId);
 		if (relation.name != newName) {
-			Log.addUserLog("User \"" + Security.getConnected().firstName + " "
-					+ Security.getConnected().lastName + "\" "
-					+ "renamed the relationship \"" + relation.name
-					+ "\" between entities \"" + relation.source.name
-					+ "\" and \"" + relation.destination.name + "\" to \""
-					+ newName + "\"", Security.getConnected(), relation.source,
-					relation.destination, relation.source.organization);
+			Log
+					.addUserLog(
+							"User \"<a href=\"/users/viewprofile?userId="
+									+ Security.getConnected().id
+									+ "\">"
+									+ Security.getConnected().firstName
+									+ " "
+									+ Security.getConnected().lastName
+									+ "</a>\" "
+									+ "renamed the relationship \""
+									+ relation.name
+									+ "\" between entities \"<a href=\"/mainentitys/viewentity?id="
+									+ relation.source.id
+									+ "\">"
+									+ relation.source.name
+									+ "</a>\" and \"<a href=\"/mainentitys/viewentity?id="
+									+ relation.destination.id + "\">"
+									+ relation.destination.name
+									+ "</a>\" to \"" + newName + "\"", Security
+									.getConnected(), relation.source,
+							relation.destination, relation.source.organization);
 			relation.name = newName;
 			for (int i = 0; i < relation.renameEndRequests.size(); i++) {
 				RenameEndRelationshipRequests.delete(relation.renameEndRequests
@@ -166,13 +193,17 @@ public class EntityRelationships extends CoolCRUD {
 	 */
 	public static boolean delete(long relationId) {
 		EntityRelationship relation = EntityRelationship.findById(relationId);
-		Log.addUserLog("User \"" + Security.getConnected().firstName + " "
-				+ Security.getConnected().lastName + "\" "
+		Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
+				+ Security.getConnected().id + "\">"
+				+ Security.getConnected().firstName + " "
+				+ Security.getConnected().lastName + "</a>\" "
 				+ "deleted the relationship \"" + relation.name
-				+ "\" between entities \"" + relation.source.name + "\" and \""
-				+ relation.destination.name + "\"", Security.getConnected(),
-				relation.source, relation.destination,
-				relation.source.organization);
+				+ "\" between entities \"<a href=\"/mainentitys/viewentity?id="
+				+ "\">" + relation.source.name
+				+ "</a>\" and \"<a href=\"/mainentitys/viewentity?id="
+				+ relation.destination.id + "\">" + relation.destination.name
+				+ "</a>\"", Security.getConnected(), relation.source,
+				relation.destination, relation.source.organization);
 		relation.source.relationsSource.remove(relation);
 		relation.destination.relationsDestination.remove(relation);
 		for (int i = 0; i < relation.renameEndRequests.size(); i++) {

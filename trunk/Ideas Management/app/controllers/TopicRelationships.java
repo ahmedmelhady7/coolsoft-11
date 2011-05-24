@@ -76,13 +76,17 @@ public class TopicRelationships extends CoolCRUD {
 								+ source.title + "\" and \""
 								+ destination.title + "\".");
 			}
-			Log.addUserLog("User \"" + Security.getConnected().firstName + " "
-					+ Security.getConnected().lastName + "\" "
+			Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
+					+ Security.getConnected().id + "\">"
+					+ Security.getConnected().firstName + " "
+					+ Security.getConnected().lastName + "</a>\" "
 					+ "created a relationship \"" + name
-					+ "\" between topics \"" + source.title + "\" and \""
-					+ destination.title + "\"", Security.getConnected(),
-					source, destination, source.entity,
-					source.entity.organization);
+					+ "\" between topics \"<a href=\"/Topics/show?topicId="
+					+ source.id + "\">" + source.title
+					+ "</a>\" and \"<a href=\"/Topics/show?topicId="
+					+ destination.id + "\">" + destination.title + "</a>\"",
+					Security.getConnected(), source, destination,
+					source.entity, source.entity.organization);
 			return true;
 		}
 		return false;
@@ -132,12 +136,17 @@ public class TopicRelationships extends CoolCRUD {
 		TopicRelationship relation = TopicRelationship
 				.findById(relationToBeRenamedId);
 		if (relation.name != newName) {
-			Log.addUserLog("User \"" + Security.getConnected().firstName + " "
-					+ Security.getConnected().lastName + "\" "
+			Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
+					+ Security.getConnected().id + "\">"
+					+ Security.getConnected().firstName + " "
+					+ Security.getConnected().lastName + "</a>\" "
 					+ "renamed the relationship \"" + relation.name
-					+ "\" between topics \"" + relation.source.title
-					+ "\" and \"" + relation.destination.title + "\" to \""
-					+ newName + "\"", Security.getConnected(), relation.source,
+					+ "\" between topics \"<a href=\"/Topics/show?topicId="
+					+ relation.source.id + "\">" + relation.source.title
+					+ "</a>\" and \"<a href=\"/Topics/show?topicId="
+					+ relation.destination.id + "\">"
+					+ relation.destination.title + "</a>\" to \"" + newName
+					+ "\"", Security.getConnected(), relation.source,
 					relation.destination, relation.source.entity,
 					relation.source.entity.organization);
 			relation.name = newName;
@@ -165,12 +174,17 @@ public class TopicRelationships extends CoolCRUD {
 	 */
 	public static boolean delete(long relationId) {
 		TopicRelationship relation = TopicRelationship.findById(relationId);
-		Log.addUserLog("User \"" + Security.getConnected().firstName + " "
-				+ Security.getConnected().lastName + "\" "
+		Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
+				+ Security.getConnected().id + "\">"
+				+ Security.getConnected().firstName + " "
+				+ Security.getConnected().lastName + "</a>\" "
 				+ "deleted the relationship \"" + relation.name
-				+ "\" between topics \"" + relation.source.title + "\" and \""
-				+ relation.destination.title + "\"", Security.getConnected(),
-				relation.source, relation.destination, relation.source.entity,
+				+ "\" between topics \"<a href=\"/Topics/show?topicId="
+				+ relation.source.id + "\">" + relation.source.title
+				+ "</a>\" and \"<a href=\"/Topics/show?topicId="
+				+ relation.destination.id + "\">" + relation.destination.title
+				+ "</a>\"", Security.getConnected(), relation.source,
+				relation.destination, relation.source.entity,
 				relation.source.entity.organization);
 		relation.source.relationsSource.remove(relation);
 		relation.destination.relationsDestination.remove(relation);
