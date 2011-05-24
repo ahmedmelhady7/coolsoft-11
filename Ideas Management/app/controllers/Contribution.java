@@ -12,15 +12,16 @@ import models.User;
 public class Contribution extends Controller
 {
 	/**
-	 * 
-	 * @author Fady Amir
-	 * 
-	 * @story c4s11 : contribution
-	 * @param Id
-	 * @return list
-	 * 
-	 */
-	
+	  * 
+	  * @author Fady Amir
+	  * 
+	  * this method renders a list of users 
+	  * @story c4s11 : contribution
+	  * 
+	  *@param Id
+	  * @return void
+	  * 
+	  */
 	
 	public static void contribution(long id)
 	{
