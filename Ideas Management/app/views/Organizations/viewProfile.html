@@ -18,6 +18,19 @@
 			#{if org.profilePictureId == -1}
 			<img src="/public/images/org.png" width="75" height="75"/>
 			#{/if}
+			<div style="float: left;">#{if canInvite == true}
+                <form onsubmit="help('${org.id}', email.value);" method="post">
+                    <input type="hidden" id='users' name="users" value="${usernames}">
+					Invite an Idea Developer 
+                    <br>Username/Email: <input type="text" id="email" name="email" autoComplete="group"/>
+                    <br>Invite by: <input type="radio" id="s" name="select" value="username" checked> Username <input type="radio" name="select" value="email"> E-Mail  <input type="submit" value="Invite"/>
+                    <script language="javascript" type="text/javascript">
+                        var a = document.getElementById('users');
+                        b = a.value + "";
+                        c = b.split("|");
+                        autoComplete.Set("group", c);
+                    </script>
+                </form>#{/if}</div>
             <big>
                 <h2><b>${org.name}</b></h2>
             </big>
@@ -342,22 +355,6 @@
 			
 				#{/if}
 				
-				#{if canInvite == true}
-                <form onsubmit="help('${org.id}', email.value);" method="post">
-                    <input type="hidden" id='users' name="users" value="${usernames}">Invite an Idea Developer 
-                    <br>
-                    Username/Email: <input type="text" id="email" name="email" autoComplete="group"/>
-                    <br>
-                    Invite by:<input type="radio" id="s" name="select" value="username" checked> Username<input type="radio" name="select" value="email">E-Mail
-                    <script language="javascript" type="text/javascript">
-                        var a = document.getElementById('users');
-                        b = a.value + "";
-                        c = b.split("|");
-                        autoComplete.Set("group", c);
-                    </script>
-                    <input type="submit" value="Invite"/>
-                </form>#{/if}
-				
 				<HR>
 				#{if isMember == true || org.privacyLevel == 2 || admin}
                 <form action="@{Contribution.contribution()}" method="post">
@@ -597,6 +594,7 @@
                                 			email:e,
                                 			byMail:b
                                 		});
+										alert("invitation sent");
                                 		document.getElementById("email").value = "Invitation has been sent";
                                 	}
                                 	function username() {
