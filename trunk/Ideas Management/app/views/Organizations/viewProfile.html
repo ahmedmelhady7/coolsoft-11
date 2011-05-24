@@ -35,12 +35,12 @@
             </big>
         </center>
 		<div id="leftSidebar">
-        <ul>
            <div style="clear: both;">
 		   				
 		   </div>
 		   <li>
 		   <ul>
+		   	
 		   	#{if admin || creator}
 			<li>
 		<a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
@@ -54,6 +54,10 @@
 		<a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>
 		</li>
         #{/if}
+		#{if isMember == true || org.privacyLevel == 2 || admin}
+<li>
+		<a href="@{Pictures.index(org.id)}">Gallery</a></li>
+				#{/if}
 		#{if plans.size()>0}
         <li>
            <a id="planLink" href="#">Plans</a>
@@ -68,6 +72,28 @@
 			</div>
 		</li>
 		#{/if}
+<li>
+		<a id="docLink" href="#">Documents</a>
+<div id="documen">
+	<ul>
+	#{if creator == true || admin == true}
+	<li><a href="@{Documents.newDocument(org.id)}">Add new</a></li>
+	#{/if}
+	#{if isMember == true || org.privacyLevel == 2 || admin}
+#{ifnot org.getDocuments()}
+<li>No documents</li>
+#{/ifnot}
+    #{list items:org.getDocuments(), as:'document'}
+    <li>
+    	<a href="@{Documents.viewDocument(document.id)}">${document.name}</a>
+	</li>
+	#{/list}
+	#{/if}#{else}
+	<li>No public documents</li>
+	#{/else}
+	</ul>
+</div>
+</li>
         <li>
         	#{if (admin || creator)}<a href="@{Tags.createTag(org.id)}" title="Create a new Tag">Create a Tag</a>
         #{/if}
@@ -76,12 +102,27 @@
         #{/if}
         #{/else}
         </li>
+		
 		</ul>
 		</li>
-		</ul>
+		
 		</div>	
+		
 <script type="text/javascript">
-	        var planFlag = true;
+	var bdocs = false;
+	$('#documen').hide();	
+	 $('#docLink').click(function(){
+            if (bdocs) {
+                $('#documen').show(500);
+                bdocs = false;
+            }
+            else {
+                $('#documen').hide(500);
+                bdocs = true;
+            }
+        });
+	        
+			var planFlag = true;
         $('#plansLinks').hide();
         $('#planLink').click(function(){
             if (planFlag) {
@@ -95,8 +136,7 @@
         });
 
 	</script>		
-		
-		
+			<div id="page">
         #{if join}
         <form action="@{Organizations.join()}" method="post">
             <input type="hidden" id="organizationId" name="organizationId" value="${org.id}" />Join Organization 
@@ -325,23 +365,6 @@
                     </script>
                     <input type="submit" value="Invite"/>
                 </form>#{/if}
-				#{if isMember == true || org.privacyLevel == 2 || admin}
-                <form action="@{Documents.listDocument()}" method="post">
-                    <input type="hidden" name="id" value="${org.id}">Documents: <input type="submit" value="show">
-                </form>
-				#{/if}
-				#{if creator == true || admin == true}
-                <form action="@{Documents.newDocument()}" method="post">
-                    <input type="hidden" name="id" value="${org.id}">Create a Document: <input type="submit" value="Create">
-                </form>
-				#{/if}
-				#{if isMember == true || org.privacyLevel == 2 || admin}
-                <form action="@{Pictures.index()}" method="post">
-				<input type="hidden" name="id" value="${org.id}">
-				Show Gallery: <input type="submit" value="show">
-				</form>
-				#{/if}
-				
 				
 				<HR>
 				#{if isMember == true || org.privacyLevel == 2 || admin}
@@ -350,7 +373,7 @@
                 </form>
 				#{/if}
 				<HR>
-            </body>
+</div>            </body>
             </html>
             <script type="text/javascript">
             	
