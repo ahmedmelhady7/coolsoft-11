@@ -41,6 +41,9 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 * @param topicId
 	 *            the topic that the idea belongs to
+	 *            
+	 * @return long
+	 *  		the method returns the id of the created draft idea
 	 */
 
 	public static long createDraft(String title, String description,
@@ -69,16 +72,10 @@ public class Ideas extends CoolCRUD {
 	}
 
 	public static void doCreateIdea(long topicId, String title, String body) {
-		System.out.println("De Te Kill " + topicId);
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
-		System.out.println(topic.title + " b " + user.email);
 		Idea idea = new Idea(title, body, user, topic);
 		idea.isDraft = false;
-		if (idea != null)
-			System.out.println("mesh null");
-		else
-			System.out.println("NUll ya fale7");
 	}
 
 	public static void discardIdea(long ideaId) {
