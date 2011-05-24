@@ -317,7 +317,9 @@ public class Organizations extends CoolCRUD {
 			}
 			Organization org = new Organization(name, creator, privacyLevell,
 					createTagg, description).save();
-			Log.addUserLog("User " + creator.username + " created a new Organization \"" + name + "\"", creator,org);
+			Log.addUserLog("User " + creator.username
+					+ " created a new Organization \"" + name + "\"", creator,
+					org);
 			Role role = Roles.getRoleByName("organizationLead");
 			UserRoleInOrganizations.addEnrolledUser(creator, org, role);
 			MainEntity defaultEntity = new MainEntity("Default", "", org, false);
@@ -405,7 +407,7 @@ public class Organizations extends CoolCRUD {
 	/**
 	 * This method render the main Profile Page of a specific organization
 	 * 
-	 * @author Omar Faruki
+	 * @author Omar Faruki, Noha Khater
 	 * 
 	 * @param id
 	 *            The id of the organization that you wish to view
@@ -413,8 +415,9 @@ public class Organizations extends CoolCRUD {
 	public static void viewProfile(long id) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(id);
+		List<MainEntity> allEntities = MainEntity.findAll();
 		List<Tag> tags = new ArrayList<Tag>();
-//		List<Tag> allTags = Tag.findAll();
+		// List<Tag> allTags = Tag.findAll();
 		int i = 0;
 		int allowed = 0;
 		int settings = 0;
@@ -465,12 +468,21 @@ public class Organizations extends CoolCRUD {
 		// }
 		// }
 		int canCreateEntity = 0;
-		if (user.isAdmin || org.creator.equals(user)) {
+		if (user.isAdmin
+				|| Users.isPermitted(user, "create entities", id,
+						"organization")) {
 			canCreateEntity = 1;
 		}
+		List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
+		for (MainEntity entity : allEntities) {
+			if (Users.isPermitted(user, "view", entity.id, "entity")) {
+				entitiesICanView.add(entity);
+			}
+		}
+
 		List<MainEntity> entities = org.entitiesList;
 		List<MainEntity> entitiesCanBeRelated = new ArrayList<MainEntity>();
-		for(int x = 0; x < entities.size(); x++){
+		for (int x = 0; x < entities.size(); x++) {
 			entitiesCanBeRelated.add(entities.get(x));
 		}
 		List<Topic> topics = new ArrayList<Topic>();
@@ -479,8 +491,8 @@ public class Organizations extends CoolCRUD {
 				topics.add(entities.get(x).topicList.get(y));
 			}
 		}
-		for(int x = 0; x < entitiesCanBeRelated.size(); x++){
-			if(!entitiesCanBeRelated.get(x).createRelationship)
+		for (int x = 0; x < entitiesCanBeRelated.size(); x++) {
+			if (!entitiesCanBeRelated.get(x).createRelationship)
 				entitiesCanBeRelated.remove(entitiesCanBeRelated.get(x));
 		}
 		boolean enrolled = false;
@@ -557,9 +569,10 @@ public class Organizations extends CoolCRUD {
 
 		long pictureId = org.profilePictureId;
 		List<Plan> plans = Plans.planList("organization", org.id);
-		render(user, org, entities, requestToJoin, tags, flag, canInvite,
-				admin, allowed, isMember, settings, creator, alreadyRequested,
-				plans, follower, usernames, join, logFlag, pictureId, topics, entitiesCanBeRelated);
+		render(user, org, entities, requestToJoin, canCreateEntity, tags, flag,
+				canInvite, admin, allowed, isMember, settings, creator,
+				alreadyRequested, plans, follower, usernames, join, logFlag,
+				pictureId, topics, entitiesCanBeRelated, entitiesICanView);
 	}
 
 	/**
@@ -608,7 +621,8 @@ public class Organizations extends CoolCRUD {
 	public static void join(long organizationId) {
 		Organization organization = Organization.findById(organizationId);
 		User user = Security.getConnected();
-		Log.addUserLog("User " + user.username + " has joined Organization \"" + organization.name + "\"",user,organization);
+		Log.addUserLog("User " + user.username + " has joined Organization \""
+				+ organization.name + "\"", user, organization);
 		Role role = Roles.getRoleByName("idea developer");
 		UserRoleInOrganizations.addEnrolledUser(user, organization, role);
 		Organizations.viewProfile(organizationId);
@@ -632,7 +646,7 @@ public class Organizations extends CoolCRUD {
 		List<BannedUser> bannedUsers = organization.bannedUsers;
 		List<UserRoleInOrganization> users = organization.userRoleInOrg;
 		List<MainEntity> entities = organization.entitiesList;
-		List<Tag> relatedTags = organization.relatedTags; 
+		List<Tag> relatedTags = organization.relatedTags;
 		int j = 0;
 		while (j < followers.size()) {
 			if (followers.get(j).followingOrganizations.contains(organization)) {
@@ -675,17 +689,17 @@ public class Organizations extends CoolCRUD {
 		for (int i = 0; i < organization.joinRequests.size(); i++)
 			organization.joinRequests.get(i).delete();
 		// fadwa
-		
-		
-		//Mai Magdy
-		List <Invitation> invite=Invitation.find("byOrganization", organization).fetch();
-		for(int i=0;i<invite.size();i++)
+
+		// Mai Magdy
+		List<Invitation> invite = Invitation.find("byOrganization",
+				organization).fetch();
+		for (int i = 0; i < invite.size(); i++)
 			invite.get(i).delete();
 		//
-		
-		
+
 		organization.delete();
-		Log.addUserLog("User " + user.username + " deleted the Organization \"" + organization.name + "\"", user);
+		Log.addUserLog("User " + user.username + " deleted the Organization \""
+				+ organization.name + "\"", user);
 		Login.homePage();
 	}
 
@@ -744,7 +758,8 @@ public class Organizations extends CoolCRUD {
 		organization.createTag = createTagg;
 		organization.description = description;
 		organization.save();
-		Log.addUserLog("User " + user.username + " edited the Organization \"" + organization.name + "\"", user,organization);
+		Log.addUserLog("User " + user.username + " edited the Organization \""
+				+ organization.name + "\"", user, organization);
 		Organizations.viewProfile(organizationId);
 	}
 

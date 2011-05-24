@@ -184,11 +184,17 @@
         <ul style="list-style: none;">
             #{list items:entities, as:'entity'}
             <li>
+            	#{if (entitiesICanView.contains(entity))}
                 <a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>
+                #{/if}
+                #{else}
+                ${entity.name}
+                #{/else}
             </li>
             #{/list}
         </ul>
-        #{if (canCreateEntity == 1)}<a href="@{MainEntitys.goToCreateEntity(org.id)}">Create a new Entity</a>
+        #{if (canCreateEntity == 1)}
+        <a href="@{MainEntitys.goToCreateEntity(org.id)}">Create a new Entity</a>
         #{/if}
         <br/>
         <br>

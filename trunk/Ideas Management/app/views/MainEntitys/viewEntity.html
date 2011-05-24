@@ -150,7 +150,7 @@
 		No subentities available for this entity!
 		#{/else}
 		<br />
-		#{if (canCreateEntity == 1)}
+		#{if (canCreateSubEntity == 1)}
 		<a href="@{MainEntitys.goToCreateSubEntity(org.id,entity.id)}">Create new SubEntity</a>
 		#{/if}
 		<br />
@@ -299,26 +299,27 @@
 		<HR>	
 		#{/if}
 		
+		
 		#{if (canDeleteEntity == 1)}
 		<HR>
 		<form action="@{MainEntitys.deleteEntity(entity.id)}" method="post">
 		<input type="submit" value="Delete">
 		</form>
 		<HR>	
-		#{/if}
+		#{/if}	
 		
 		
+		#{if (canRequestRelationship == 1)}
+				
 		<form action="@{MainEntitys.requestRelationship(user.id, org.id, entity.id)}" method="post">
 			<input type="submit" value="Request Relationship Creation">
-		</form>
-		
-		#{if (canRequestRelationship == 1 && entityIsLocked == false)}
-		#{/if}
+		</form>		
 		
 		<form action="@{MainEntitys.viewRelationships(user.id, org.id, entity.id, canRequestRelationship)}" method="post">
 			<input type="submit" value="View Relationships">
-		</form>
+		</form>		
 		
+		#{/if}
 		
 		<script type="text/javascript">function unfollow(id) {
 				$.post('@{Users.unfollowEntity()}', {
