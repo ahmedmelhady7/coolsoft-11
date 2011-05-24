@@ -81,8 +81,14 @@
 #crud #crudContent h2 {
 	color: #333;
 	font-weight: normal;
-	font-size-adjust: none;
+	font-size: x-large;
 	margin-top: 10px;
+	height: 80%;
+}
+
+#crud #crudListAdd a {
+	font-size: xx-small;
+	color: #444;
 }
 
 #crud #crudContent a {
@@ -263,6 +269,7 @@ form .removeAttachment {
 /** List **/
 
 #crudList {
+	width:125%;
 	position: relative;
 }
 
@@ -343,4 +350,12 @@ form .removeAttachment {
 
 .crudDelete input:hover {
 	opacity: .7;
+}
+
+#page{
+	width: 70%;
+}
+
+#crudIndex{
+	width:125%;
 }
