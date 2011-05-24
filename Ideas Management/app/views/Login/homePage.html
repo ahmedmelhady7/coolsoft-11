@@ -1,6 +1,13 @@
 #{extends 'Login/index.html' /}
 #{set title:'Home Page' /}
 
+
+#{if flash.success}
+   <p style="color:green">
+    <font size=4>${flash.success}</font>
+   </p>
+#{/if}
+
 <h1>Welcome</h1>
 
 <form action="@{Notifications.notificationIndex()}" method="post">
