@@ -218,7 +218,7 @@ public class Mail extends Mailer {
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Welcome to CoolSoft, activate your account ");
-		String url = "http://localhost:9008/Users/activate?userId="
+		String url = "http://localhost:9008/Home/activate?userId="
 				+ user.id;
 		send(user, url);
 
