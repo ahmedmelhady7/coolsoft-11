@@ -469,15 +469,19 @@ public class Organizations extends CoolCRUD {
 			canCreateEntity = 1;
 		}
 		List<MainEntity> entities = org.entitiesList;
+		List<MainEntity> entitiesCanBeRelated = new ArrayList<MainEntity>();
+		for(int x = 0; x < entities.size(); x++){
+			entitiesCanBeRelated.add(entities.get(x));
+		}
 		List<Topic> topics = new ArrayList<Topic>();
 		for (int x = 0; x < entities.size(); x++) {
 			for (int y = 0; y < entities.get(x).topicList.size(); y++) {
 				topics.add(entities.get(x).topicList.get(y));
 			}
 		}
-		for(int x = 0; x < entities.size(); x++){
-			if(!entities.get(x).createRelationship)
-				entities.remove(entities.get(x));
+		for(int x = 0; x < entitiesCanBeRelated.size(); x++){
+			if(!entitiesCanBeRelated.get(x).createRelationship)
+				entitiesCanBeRelated.remove(entitiesCanBeRelated.get(x));
 		}
 		boolean enrolled = false;
 		boolean canInvite = false;
@@ -555,7 +559,7 @@ public class Organizations extends CoolCRUD {
 		List<Plan> plans = Plans.planList("organization", org.id);
 		render(user, org, entities, requestToJoin, tags, flag, canInvite,
 				admin, allowed, isMember, settings, creator, alreadyRequested,
-				plans, follower, usernames, join, logFlag, pictureId, topics);
+				plans, follower, usernames, join, logFlag, pictureId, topics, entitiesCanBeRelated);
 	}
 
 	/**
