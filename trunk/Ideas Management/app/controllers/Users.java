@@ -233,7 +233,6 @@ public class Users extends CoolCRUD {
 	 * 
 	 * @story C1S2-1
 	 * 
-	 * @param String
 	 * 
 	 */
 	public static void editProfile() {
@@ -770,6 +769,7 @@ public class Users extends CoolCRUD {
 
 		}
 		if (placeType.equalsIgnoreCase("topic")) {
+			
 			System.out.println("aloooooooooo1");
 			Topic topic = Topic.findById(placeId);
 			MainEntity m = topic.entity;
@@ -1778,6 +1778,13 @@ public class Users extends CoolCRUD {
 			Invitations.view();
 		else
 			render();
+	}
+	
+	public static void changePassword(String pass2) {
+		User user = Security.getConnected();
+		user.password = pass2;
+		user.save();
+		viewProfile(user.id);
 	}
 
 }
