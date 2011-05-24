@@ -251,14 +251,14 @@
 					
 					Source: <select id="ent1">
 					<option>Select Entity</option>
-					#{list items:entities, as:'entityElement'}
+					#{list items:entitiesCanBeRelated, as:'entityElement'}
 					<option value="${entityElement.id}">${entityElement.name}</option>
 					#{/list}
 					</select>		
 					
 					Destination: <select id="ent2">
 					<option>Select Entity</option>
-					#{list items:entities, as:'entityElement'}
+					#{list items:entitiesCanBeRelated, as:'entityElement'}
 					<option value="${entityElement.id}">${entityElement.name}</option>
 					#{/list}
 					</select>			
