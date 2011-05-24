@@ -109,6 +109,38 @@ public class Tags extends CoolCRUD {
 	 */
 	public static void createTagg(String name, long orgId) {
 		User user = Security.getConnected();
+		try {
+			Tag tag = Tags.createTag(name, user, orgId);
+			String namee = tag.name;
+			System.out.println(namee);
+			flash.success("Your tag has been created!!");
+		}
+		catch(NullPointerException e) {
+			flash.error("There is already a tag with that same name!!");
+		}
+		finally{
+			Organizations.viewProfile(orgId);
+		}
+	}
+	
+	/**
+	 * This method creates a new tag
+	 * 
+	 * @author Omar Faruki
+	 * 
+	 * @param name
+	 *            The name of the tag
+	 * 
+	 * @param user
+	 * 			The creator of the tag
+	 * 
+	 * @param orgId
+	 *            The organization id of the organization where the tag will
+	 *            be created
+	 * 
+	 * @return Tag
+	 */
+	public static Tag createTag(String name, User user, long orgId) {
 		Organization org = Organization.findById(orgId);
 		List<Organization> allOrg = Organization.findAll();
 //		List<Tag> allTags = new ArrayList<Tag>();
@@ -187,12 +219,9 @@ public class Tags extends CoolCRUD {
 					+ name + "\" in organization " + org.name;
 			Notifications.sendNotification(org.creator.id, tag.id, "Tag",
 					description);
-			flash.success("Your tag has been created!!");
+			return tag;
 		}
-		else {
-			flash.error("There is already a tag with that same name!!");
-		}
-		Organizations.viewProfile(orgId);
+		return null;
 	}
 
 	/**
