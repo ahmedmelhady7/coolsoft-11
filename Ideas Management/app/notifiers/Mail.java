@@ -47,7 +47,6 @@ public class Mail extends Mailer {
 		setSubject("Invitation");
 		String url = "http://localhost:9008/invitations/view";
 		User user = User.find("byEmail", email).first();
-		System.out.println(entity);
 		int id = 1;
 		int check = 1;
 		if (user == null)
