@@ -1,9 +1,5 @@
-#{extends 'main.html' /}
+#{extends 'login/index.html' /}
 #{set title:'View Volunteer Requests' /}
-#{if error == true}
-<h3>You do not have enough permissions to view volunteer requests for this plan.</h3>
-#{/if}
-#{else}
 #{if planVolunteerRequests.size() > 0}<h3>Volunteer Requests </h3>
 <ul>
     #{list items:planVolunteerRequests, as:'request'}
@@ -14,12 +10,12 @@
                 <a href="@{Plans.viewAsList(request.destination.plan.id)}">${request.destination.summary}</a>
             </h2>
             </legend>
-            Sender: ${request.sender}
+            Sender: <a href = "@{Users.viewProfile(request.sender.id)}">${request.sender.username}</a>
             <br/>
             Justification:  ${request.justification}
             <br/>
-			<input type = "button" value = "Accept" onclick="accept_request('${request.id}')">
-			<input type = "button" value = "Reject" onclick="reject_request('${request.id}')">
+			<input class = "linkButton" type = "button" value = "Accept" onclick="accept_request('${request.id}')">
+			<input class = "linkButton" type = "button" value = "Reject" onclick="reject_request('${request.id}')">
         </fieldset>
     </li></div>
     #{/list}
@@ -27,7 +23,6 @@
 #{/if}
 #{else}
 No volunteer requests for this plan exist.
-#{/else}
 #{/else}
 
 
@@ -38,7 +33,7 @@ No volunteer requests for this plan exist.
 function accept_request(id)
   {
 	$.post('@{accept()}' , {requestId: id});
-	alert("Request accepted!");
+	alert("Request rejected!");
 	$("#request_" + id).remove();
   }
 

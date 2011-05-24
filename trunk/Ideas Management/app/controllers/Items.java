@@ -48,20 +48,30 @@ public class Items extends CoolCRUD {
 	 */
 	public static void startItem(long id) {
 		User user = Security.getConnected();
-//		long itemId = Long.parseLong(id);
 		Item item = Item.findById(id);
+		notFoundIfNull(item);
 		List<User> userToNotifyList = new ArrayList<User>();
 		userToNotifyList.addAll(item.plan.topic.getOrganizer());
 		for (int i = 0; i < item.assignees.size(); i++) {
-			if (item.assignees.get(i).id != user.id && !userToNotifyList.contains(item.assignees.get(i)))
+			if (item.assignees.get(i).id != user.id
+					&& !userToNotifyList.contains(item.assignees.get(i)))
 				userToNotifyList.add(item.assignees.get(i));
 		}
 		if (item.status == 0) {
 			System.out.println("it is started");
 			item.status = 1;
 			item.save();
-			String description = "Work has started on the following item: " + item.summary
-					+ " by user" + user.username + ".";
+			String description = "Work has started on the following item: "
+					+ item.summary + " by user" + user.username + ".";
+			String logDescription = "Work has started on the following item: <a href=\"http://localhost:9008/plans/viewaslist?planId="
+					+ item.plan.id
+					+ "\">"
+					+ item.summary
+					+ "</a>"
+					+ " by user <a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ user.id + "\">" + user.username + "</a>.";
+			Log.addLog(logDescription, item, item.plan, item.plan.topic,
+					item.plan.topic.entity, item.plan.topic.entity.organization);
 			for (User userToNotify : userToNotifyList) {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,
 						"plan", description);
@@ -80,48 +90,69 @@ public class Items extends CoolCRUD {
 	 * 
 	 * @param id
 	 *            : the id of the item to be marked as done or in progress.
-	 *        
-	 * @return boolean
 	 */
 	public static void toggleItem(long id) {
 		User user = Security.getConnected();
-//		long itemId = Long.parseLong(id);
 		Item item = Item.findById(id);
+		notFoundIfNull(item);
 		List<User> userToNotifyList = new ArrayList<User>();
 		userToNotifyList.addAll(item.plan.topic.getOrganizer());
 		for (int i = 0; i < item.assignees.size(); i++) {
-			if (item.assignees.get(i).id != user.id && !userToNotifyList.contains(item.assignees.get(i)))
+			if (item.assignees.get(i).id != user.id
+					&& !userToNotifyList.contains(item.assignees.get(i)))
 				userToNotifyList.add(item.assignees.get(i));
 		}
 		switch (item.status) {
 		case 1:
 			item.status = 2;
-			String description = item.summary + ": Item now marked done by user: " + user.username + "!";
+			String description = item.summary
+					+ ": Item now marked done by user: " + user.username + "!";
 			for (User userToNotify : userToNotifyList) {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,
 						"plan", description);
 			}
+			String logDescription = "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+					+ item.plan.id
+					+ "\">"
+					+ item.summary
+					+ ": Item now marked done by user <a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ user.id + "\">" + user.username + "</a>.";
+			Log.addLog(logDescription, item, item.plan, item.plan.topic,
+					item.plan.topic.entity, item.plan.topic.entity.organization);
 			break;
 		case 2:
 			item.status = 1;
-			String descriptionIfInProgress = item.summary + ": Item now marked in progress by user: " + user.username + ".";
+			String descriptionIfInProgress = item.summary
+					+ ": Item now marked in progress by user: " + user.username
+					+ ".";
+			String logDescriptionIfInProgress = "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+					+ item.plan.id
+					+ "\">"
+					+ item.summary
+					+ ": Item now marked in progress by user <a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ user.id + "\">" + user.username + "</a>.";
 			for (User userToNotify : userToNotifyList) {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,
 						"plan", descriptionIfInProgress);
 			}
+			Log.addLog(logDescriptionIfInProgress, item, item.plan,
+					item.plan.topic, item.plan.topic.entity,
+					item.plan.topic.entity.organization);
 			break;
 		default:
 			break;
 		}
 		item.save();
 		JsonObject json = new JsonObject();
-		if(item.status==1) {
-		 json.addProperty("name", "Your item is in progress. Mark it as done");
+		if (item.status == 1) {
+			json.addProperty("name",
+					"Your item is in progress. Mark it as done");
 		} else {
-			 json.addProperty("name", "Your item is done. Mark it as in progress");
+			json.addProperty("name",
+					"Your item is done. Mark it as in progress");
 		}
 		renderJSON(json.toString());
-       // return true;
+		// return true;
 	}
-	
+
 }

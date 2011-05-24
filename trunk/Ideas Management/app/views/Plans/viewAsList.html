@@ -162,7 +162,7 @@ You have already rated this plan
             #{if item.isRelatedToEntity() == true} 
             <div id = "removeEntity_${item.id}">
                 Related to entity: <a href="@{MainEntitys.viewEntity(item.relatedEntity.id)}">${item.relatedEntity}</a>
-                <input type = "button" value = "Remove" onclick="remove_entity(${item.id});">
+                <a onclick="javascript: remove_entity(${item.id});" style="cursor:pointer;" /><img src="/public/images/Cross.png" title="Remove relationship" width="23" height="20"/></a>
             </div>
 			#{/if} 
             #{else} 
@@ -172,7 +172,7 @@ You have already rated this plan
                     #{list items:entitiesList, as:'ent'}<option value = ${ent.id}>${ent.name}</option>
                     #{/list}
                 </select>
-                <input type = "button" value = "Relate" onclick="relate_entity(${item.id});">
+                <a onclick="javascript: relate_entity(${item.id});" style="cursor:pointer;" /><img src="/public/images/ranktable-tick.png" title="Relate" width="25" height="25"/></a>
             </div>
 			#{/else}
             #{/if}

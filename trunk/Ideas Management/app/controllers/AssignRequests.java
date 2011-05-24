@@ -73,11 +73,11 @@ public class AssignRequests extends CoolCRUD {
 			for (User user2 : users2) {
 				users.add(user2);
 			}
-			
+
 			for (int i = 0; i < users2.size(); i++) {
 				System.out.println("user ids" + users2.get(i).id);
 				if (users2.get(i).id.compareTo(user.id) == 0) {
-					
+
 					users.remove(i);
 				}
 			}
@@ -85,7 +85,7 @@ public class AssignRequests extends CoolCRUD {
 			notFoundIfNull(item);
 
 			render(users, itemId, planId, item, user);
-		} else{
+		} else {
 			BannedUsers.unauthorized();
 		}
 
@@ -118,7 +118,7 @@ public class AssignRequests extends CoolCRUD {
 			destination = User.findById(userIds[i]);
 			if (filter(itemId, source.plan.id).contains(destination)) {
 				if (!(source.status == 2) && !source.endDatePassed()) {
-					
+
 					// sendAssignRequest(itemId,userIds[i]);
 					String description = "You have been sent a request to work on this item"
 							+ source.summary
@@ -220,7 +220,7 @@ public class AssignRequests extends CoolCRUD {
 		List<User> nonBlockedUsers = Topics.searchByTopic(plan.topic.id);
 		Item item = Item.findById(itemId);
 		int size = nonBlockedUsers.size();
-		
+
 		ArrayList<User> finalResult = new ArrayList<User>();
 		boolean flag = false;
 		User user;
@@ -249,7 +249,7 @@ public class AssignRequests extends CoolCRUD {
 			}
 			flag = false;
 		}
-		
+
 		return finalResult;
 	}
 
@@ -309,10 +309,11 @@ public class AssignRequests extends CoolCRUD {
 					&& Topics
 							.searchByTopic(currentRequest.source.plan.topic.id)
 							.contains(user)
-					&& currentRequest.source.status != 2) {
-				if (!user.itemsAssigned.contains(currentRequest.source)) {
-					assignRequests.add(currentRequest);
-				}
+					&& currentRequest.source.status != 2
+					&& Users.isPermitted(user, "use",
+							currentRequest.source.plan.topic.id, "topic")
+					&& !user.itemsAssigned.contains(currentRequest.source)) {
+				assignRequests.add(currentRequest);
 			}
 		}
 		render(user, assignRequests);
@@ -333,8 +334,18 @@ public class AssignRequests extends CoolCRUD {
 		long reqId = Long.parseLong(id);
 		List<AssignRequest> assignRequests = user.receivedAssignRequests;
 		AssignRequest request = AssignRequest.findById(reqId);
+		notFoundIfNull(request);
 		assignRequests.remove(request);
 		Item item = request.source;
+		String logDescription = "User <a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.username
+				+ "</a> has accepted the assignment to work on item <a href=\"http://localhost:9008/plans/viewaslist?planId="
+				+ item.plan.id + "\">" + item.summary + "</a>.";
+		Log.addLog(logDescription, request.source, request.source.plan,
+				request.source.plan.topic, request.source.plan.topic.entity,
+				request.source.plan.topic.entity.organization);
 		request.destination.receivedAssignRequests.remove(request);
 		request.sender.sentAssignRequests.remove(request);
 		item.assignRequests.remove(request);
@@ -352,8 +363,7 @@ public class AssignRequests extends CoolCRUD {
 		request.delete();
 		String description = "User " + user.username
 				+ " has accepted the assignment to work on item: "
-				+ request.source.summary + ".";
-
+				+ item.summary + ".";
 		for (User userToNotify : userToNotifyList) {
 			Notifications.sendNotification(userToNotify.id, item.plan.id,
 					"plan", description);
@@ -376,6 +386,20 @@ public class AssignRequests extends CoolCRUD {
 		long reqId = Long.parseLong(id);
 		List<AssignRequest> assignRequests = user.receivedAssignRequests;
 		AssignRequest request = AssignRequest.findById(reqId);
+		notFoundIfNull(request);
+		String logDescription = "User <a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.username
+				+ "</a> has rejected the assignment to work on item <a href=\"http://localhost:9008/plans/viewaslist?planId="
+				+ request.source.plan.id
+				+ "\">"
+				+ request.source.summary
+				+ "</a>.";
+		Log.addLog(logDescription, request.source,
+				request.source.plan, request.source.plan.topic,
+				request.source.plan.topic.entity,
+				request.source.plan.topic.entity.organization);
 		assignRequests.remove(request);
 		request.destination.receivedAssignRequests.remove(request);
 		request.sender.sentAssignRequests.remove(request);
@@ -386,7 +410,6 @@ public class AssignRequests extends CoolCRUD {
 		String description = "User " + user.username
 				+ " has rejected the assignment to work on item: "
 				+ request.source.summary + ".";
-
 		for (User userToNotify : request.source.plan.topic.getOrganizer()) {
 			Notifications.sendNotification(userToNotify.id,
 					request.source.plan.id, "plan", description);
