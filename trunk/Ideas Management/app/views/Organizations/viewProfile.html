@@ -245,7 +245,7 @@
 					#{list items:org.relationNames, as:'relName'}
 					<option>${relName}</option>
 					#{/list}
-					</select> <input id="rTextForm" type="text" /> <input type="submit" value="add new name" onclick="addName()" />
+					</select> <input id="rTextForm" type="text" /> <input type="button" value="add new name" onclick="addName()" /><span id="duplicate"></span>
 				
 				<p><form id="eform" style="display: none;">
 					
@@ -461,12 +461,14 @@
 						$.post('@{Organizations.addRelationName()}',{organizationId:${org.id}, name:strg},
 						function(data){
 							if (data == "false") {
-							alert("name added");
-							window.location.reload();
+							document.getElementById('duplicate').textContent="";
+							var option = document.createElement("option");
+							option.textContent = strg;
+							document.getElementById('rels').options.add(option);
 							document.getElementById('rTextForm').value = "";
 						}
 						else if(data == "true"){
-							alert("duplicate name!!");
+							document.getElementById('duplicate').textContent=" Duplicate!!";
 						}
 						});
 					}else{
