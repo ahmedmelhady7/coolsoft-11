@@ -64,7 +64,7 @@ You have already rated this plan
     #{list items:itemsList, as:'item'}
     <div id = "listItem_${item.id}">
         <br/>
-        <fieldset style="width:650px;">
+        <fieldset>
             <legend>
                 <h2>
                 ${item.summary}
@@ -320,9 +320,10 @@ Please contact
                            
                                 		}, function(tagTemp) {
 											$("#noTagLabel_" + id).remove();
-											if( tagTemplan.success == "1") {
-											var tagId = tagTemplan.id;
-											var url = "<li> <a href=\"http://localhost:9008/tags/mainpage?tagId=" + tagId + "\">"+tagTemplan.name+"</a> </li>";
+											if( tagTemp.success == "1") {
+											var tagId = tagTemp.id;
+											
+											var url = "<li><a href=\"http://localhost:9008/tags/mainpage?tagId=" + tagId + "\">"+tagTemp.name+"</a></li>";
 											 $("#tags_" + id).append(url);
 											$("#tagSuccess_" + id).html("Item tagged successfuly");
 											 } else {
