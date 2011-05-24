@@ -764,6 +764,11 @@ public class Topics extends CRUD {
 				topicIdLong, "topic");
 		boolean alreadyReportedTopic = false;
 		boolean canRequestRelationship = false;
+		
+		
+		temporaryTopic.incrmentViewed();
+		temporaryTopic.save();
+		
 		for (int i = 0; i < ideas.size(); i++) {
 			Idea idea = ideas.get(i);
 
