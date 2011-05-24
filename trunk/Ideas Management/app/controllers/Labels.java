@@ -9,14 +9,15 @@ import models.Idea;
 import models.Label;
 import models.User;
 
+/**
+ * @author Abdalrahman Ali
+ */
 
 @With(Secure.class)
 public class Labels extends CoolCRUD
 {
 	
 	/**
-	 * @author Abdalrahman Ali
-	 * 
 	 * This method renders a page that shows all the user's labels
 	 */
 	public static void showAllLabels()
@@ -26,8 +27,6 @@ public class Labels extends CoolCRUD
 	}
 	
 	/**
-	 * @author Abdalrahman Ali
-	 * 
 	 * This method renders the page that allows the user to create a label
 	 */
 	public static void createLabel()
@@ -37,14 +36,14 @@ public class Labels extends CoolCRUD
 	}
 	
 	/**
-	 * @author Abdalrahman Ali
-	 * 
 	 * This method creates a label
 	 * 
 	 * @param name
 	 * 		the name of the label to be created
 	 * @param ideas
 	 * 		array of the ids of the Ideas added to this label
+	 * @return
+	 * 		returns 1 upon creating a label and 0 if exists a label with the same name
 	 */
 	public static int doCreateLabel(String name,long [] ideas)
 	{
@@ -75,8 +74,6 @@ public class Labels extends CoolCRUD
 	}
 	
 	/**
-	 * @author Abdalrahman Ali
-	 * 
 	 * This method deletes a label 
 	 * 
 	 * @param labelId
@@ -90,8 +87,6 @@ public class Labels extends CoolCRUD
 	}
 	
 	/**
-	 * @author Abdalrahman Ali
-	 * 
 	 * this method renders the page that shows a label 
 	 * 
 	 * @param labelId
@@ -112,8 +107,6 @@ public class Labels extends CoolCRUD
 	}
 	
 	/**
-	 * @author Abdalrahman Ali
-	 * 
 	 * this method removes Ideas from a label
 	 * 
 	 * @param labelId
@@ -135,8 +128,6 @@ public class Labels extends CoolCRUD
 	}
 	
 	/**
-	 * @author Abdalrahman Ali
-	 * 
 	 * this method adds ideas to a label
 	 * 
 	 * @param labelId
@@ -158,8 +149,6 @@ public class Labels extends CoolCRUD
 	}
 	
 	/**
-	 * @author Abdalrahman Ali
-	 * 
 	 * this method changes a label's name
 	 * 
 	 * @param labelId
