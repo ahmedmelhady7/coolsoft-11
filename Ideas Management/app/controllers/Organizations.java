@@ -668,6 +668,7 @@ public class Organizations extends CoolCRUD {
 		j = 0;
 		while (j < createdTags.size()) {
 			relatedTags.remove(createdTags.get(j));
+			organization.save();
 			Tags.delete(createdTags.get(j).id);
 			j++;
 		}
