@@ -107,6 +107,11 @@ public class Idea extends CoolModel {
 	 */
 	public String priority; // priority could equal
 							// "Critical"/"High"/"Medium"/"Low
+	/**
+	 * @auther monica counter to check how many times this idea is viewed to be
+	 *         used in sorting
+	 */
+	public int viewed;
 
 	/**
 	 * Default constructor
@@ -138,6 +143,7 @@ public class Idea extends CoolModel {
 		this.rating = "Not yet rated";
 		this.priority = "Not yet prioritized";
 		this.hidden = false;
+		this.viewed = 0;
 	}
 
 	/**
@@ -241,5 +247,13 @@ public class Idea extends CoolModel {
 	 * */
 	public String toString() {
 		return this.title;
+	}
+
+	/**
+	 * @author monica yousry this method increments the counter viewed
+	 * @return:void
+	 */
+	public void incrmentViewed() {
+		this.viewed++;
 	}
 }
