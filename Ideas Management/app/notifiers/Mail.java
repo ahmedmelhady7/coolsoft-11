@@ -218,7 +218,7 @@ public class Mail extends Mailer {
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Welcome to CoolSoft, activate your account ");
-		String url = "http://localhost:9008/Home/activate?userId="
+		String url = "http://localhost:9008/Accounts/activate?userId="
 				+ user.id;
 		send(user, url);
 
@@ -259,7 +259,7 @@ public class Mail extends Mailer {
 	 * @param user
 	 *            :User the user
 	 */
-	public static void undeletion(User user) {
+	public static void forgiven(User user) {
 		System.out.println(user.email);
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
