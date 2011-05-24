@@ -202,6 +202,12 @@ public class Topic extends CoolModel {
 	public boolean isDraft;
 
 	/**
+	 * @auther monica counter to check how many times this topic is viewed to be
+	 *         used in sorting
+	 */
+	public int viewed;
+
+	/**
 	 * Default constructor that creates a topic with name, description,privacy
 	 * level, creator and entity
 	 * 
@@ -243,6 +249,7 @@ public class Topic extends CoolModel {
 		this.createRelationship = createRelationship;
 		this.openToEdit = true;
 		this.isDraft = false;
+		this.viewed = 0;
 	}
 
 	/**
@@ -515,5 +522,13 @@ public class Topic extends CoolModel {
 		if (Users.isPermitted(user, "view", this.id, "topic"))
 			canView = true;
 		return canView;
+	}
+
+	/**
+	 * @author monica yousry this method increments the counter viewed
+	 * @return:void
+	 */
+	public void incrmentViewed() {
+		this.viewed++;
 	}
 }
