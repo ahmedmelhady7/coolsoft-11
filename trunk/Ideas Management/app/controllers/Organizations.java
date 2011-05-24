@@ -240,6 +240,9 @@ public class Organizations extends CoolCRUD {
 		invitation._save();
 		if (reciever != null) {
 			reciever.invitation.add(invitation);
+			Notifications.sendNotification(reciever.id,
+					organizationId, "organization",
+					"you have recived an ivitation to join" + organization.name);
 			reciever._save();
 		}
 		try {
