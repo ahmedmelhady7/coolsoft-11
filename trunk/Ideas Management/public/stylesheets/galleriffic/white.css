@@ -1,5 +1,5 @@
 body{
-	background-color: #eee;
+	background-color: #fff;
 	color: #444;
 }
 a{
@@ -10,13 +10,14 @@ h2 {
 }
 div#page {
 	background-color: #fff;
-	border-color: #ddd;
+	border-color: #fff;
 }
 div#footer {
 	color: #777;
 }
 div.caption-container {
 	color: #111;
+	width:13%;
 }
 div.image-title {
 	font-weight: bold;
