@@ -256,6 +256,7 @@ public class User extends CoolModel {
 		this.profession = profession;
 		profilePictureId = -1;
 		notificationsNumber = notifications.size();
+		followingTags = new ArrayList();
 		// requests=new ArrayList<Request>();
 		// commentsPosted = new ArrayList<Comment>();
 		// linkDuplicates = new ArrayList<LinkDuplicates>();
