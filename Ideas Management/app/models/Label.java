@@ -11,6 +11,11 @@ import javax.persistence.UniqueConstraint;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 
+/**
+ * @author Abdalrahman Ali
+ * 
+ */
+
 @Entity
 public class Label extends CoolModel
 {
@@ -18,8 +23,6 @@ public class Label extends CoolModel
 	public String name;
 	
 	/**
-	 * @author Abdalrahman Ali
-	 * 
 	 * the User created this Label
 	 * */
 	
@@ -28,8 +31,6 @@ public class Label extends CoolModel
 	public User user;
 	
 	/**
-	 * @author Abdalrahman Ali
-	 * 
 	 * Ideas mapped to this label
 	 * */
 	
@@ -38,8 +39,6 @@ public class Label extends CoolModel
 	
 	
 	/**
-	 * @author Abdalrahman Ali
-	 * 
 	 * @param name
 	 * 		the label name
 	 * @param user
@@ -54,8 +53,6 @@ public class Label extends CoolModel
 	}
 	
 	/**
-	 * @author Abdalrahman Ali
-	 * 
 	 * @param name
 	 * 		the label name
 	 * @param user
@@ -71,7 +68,6 @@ public class Label extends CoolModel
 	}
 	
 	/**
-	 * @author Abdalrahman Ali
 	 * this method adds an idea to the label
 	 * 
 	 * @param idea
@@ -83,7 +79,6 @@ public class Label extends CoolModel
 	}
 	
 	/**
-	 * @author Abdalrahman Ali
 	 * this method removes an idea from the label
 	 * 
 	 * @param idea
@@ -103,7 +98,6 @@ public class Label extends CoolModel
 	
 	/**
 	 * the method just deletes the label
-	 * @author Abdalrahman Ali
 	 * 
 	 */
 	public void deleteLabel()
