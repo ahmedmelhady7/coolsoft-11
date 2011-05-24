@@ -16,7 +16,7 @@ public class Contribution extends Controller
 	  * @author Fady Amir
 	  * 
 	  * this method renders a list of users 
-	  * @story c4s11 : contribution
+	  * @story c4s11 : view contribution counter
 	  * 
 	  *@param Id
 	  * @return void
