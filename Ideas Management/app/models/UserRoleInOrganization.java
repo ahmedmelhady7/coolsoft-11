@@ -153,7 +153,7 @@ public class UserRoleInOrganization extends CoolModel {
 	
 	public static void deleteEntityOrTopic (long entityTopicID ,String type){
 		 
-		List <UserRoleInOrganization> toBeDeleted = UserRoleInOrganization.find("select uro from UserRoleInOrganiztion uro where uro.entityTopicID = ? and uro.type like ?", entityTopicID , type).fetch();
+		List <UserRoleInOrganization> toBeDeleted = UserRoleInOrganization.find("select uro from UserRoleInOrganization uro where uro.entityTopicID = ? and uro.type like ?", entityTopicID , type).fetch();
 		if(toBeDeleted != null && !toBeDeleted.isEmpty()){
 			for(int i = 0 ; i < toBeDeleted.size() ; i++){
 				UserRoleInOrganization record = toBeDeleted.get(i);
