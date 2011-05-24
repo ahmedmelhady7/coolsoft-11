@@ -103,6 +103,10 @@
         #{/else}
         </li>
 		
+		#{if follower == true}
+        <li><a href="#" onclick="unfollow('${org.id}');">Unfollow ${org.name}</a></li>
+		#{/if}
+		
 		</ul>
 		</li>
 		
@@ -260,13 +264,7 @@
                 Follow ${org.name} <input type="submit" value="Follow">
                 <br/>
                 #{/if}
-                </form>
-                #{if follower == true}
-                <form onsubmit="unfollow('${org.id}');" method="post">
-                    <p>
-                        Unfollow ${org.name} <input type="submit" value="unfollow" />
-                    </p>
-                </form>#{/if} 
+                </form> 
                 <form action="@{Organizations.viewFollowers()}">
                     <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="f" value="false">View ${org.name} Followers <input type="submit" value="Followers">
                     <br/>
@@ -584,7 +582,7 @@
                                 		$.post('@{Users.unfollowOrganization()}', {
                                 			organizationId: id
                                 		});
-										alert("done");
+                                		alert("done");
                                 		location.reload(true);
                                 	}
                                     function help(id, e){
