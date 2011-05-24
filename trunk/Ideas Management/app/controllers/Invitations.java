@@ -67,8 +67,7 @@ public class Invitations extends CoolCRUD {
 							id, "entity"))
 				permitted = 1;
 			MainEntity entity = MainEntity.findById(id);
-			render(type, check, entity, usersMatched,permitted,
-					user);
+			render(type, check, entity, usersMatched, permitted, user);
 		} else {
 			int permitted = 0;
 			if (Users
@@ -79,8 +78,8 @@ public class Invitations extends CoolCRUD {
 				permitted = 1;
 			Topic topic = Topic.findById(id);
 			notFoundIfNull(topic);
-			render(type, check, topic, usersMatched,user,
-					permitted, usersInvited);
+			render(type, check, topic, usersMatched, user, permitted,
+					usersInvited);
 		}
 
 	}
@@ -334,16 +333,16 @@ public class Invitations extends CoolCRUD {
 		User user = Security.getConnected();
 		List<Invitation> invitation = Invitation.find("byEmail", user.email)
 				.fetch();
-		for(int i=0;i<invitation.size();i++){
-			if(invitation.get(i).entity!=null){
-			if(! Users.isPermitted(user,"view",invitation.get(i).entity.id,"entity"))
-				 invitation.remove(i);
+		for (int i = 0; i < invitation.size(); i++) {
+			if (invitation.get(i).entity != null) {
+				if (!Users.isPermitted(user, "view",
+						invitation.get(i).entity.id, "entity"))
+					invitation.remove(i);
+			} else if (invitation.get(i).topic != null) {
+				if (!Users.isPermitted(user, "view",
+						invitation.get(i).topic.id, "topic"))
+					invitation.remove(i);
 			}
-			else
-		     if(invitation.get(i).topic!=null){
-				if(! Users.isPermitted(user,"view",invitation.get(i).topic.id,"topic"))
-					 invitation.remove(i);
-				}
 		}
 		render(invitation);
 
@@ -370,7 +369,7 @@ public class Invitations extends CoolCRUD {
 	 */
 
 	public static void respond(int id, long i) {
-		
+
 		Invitation invite = Invitation.findById(i);
 		String roleName = invite.role.toLowerCase();
 		Organization organization = null;
