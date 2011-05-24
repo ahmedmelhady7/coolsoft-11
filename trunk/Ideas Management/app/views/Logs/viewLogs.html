@@ -1,7 +1,10 @@
-#{extends 'main.html' /}
+#{extends 'login/index.html' /}
+<br/>
+<br/>
 
 
-
+<br/>
+<br/>
 <u><font size ="5" color ="blue">Logs</font></u>
 <br/>
 <br/>
@@ -18,7 +21,7 @@ Search Logs <input type="text" size="20" name="name" id="table">
 <table border="0" bgcolor="#ececec" cellspacing="5" id ="toFil">	
 <tr><td width="100%"><font size ="2" color ="black"> </font></td><td>
 #{list items:toFilter, as:'filter'} 
-<tr><td width="100%"><font size ="2" color ="black">${filter.actionDescription} &nbsp;&nbsp;&nbsp;&nbsp; ${filter.time}</font></td><td>
+<tr><td width="100%"><font size ="2" color ="black">${filter.actionDescription.raw()} &nbsp;&nbsp;&nbsp;&nbsp; ${filter.time}</font></td><td>
 #{/list}
 </table>
 <div id="pageNavPosition"></div>
@@ -27,14 +30,14 @@ Search Logs <input type="text" size="20" name="name" id="table">
 	
 <script src="@{'/public/javascripts/paging.js'}"></script>
 	
-	<script type="text/javascript"><!--
+	<script type="text/javascript">
 
 
     var pager = new Pager('toFil', 2); 
     pager.init(); 
     pager.showPageNav('pager', 'pageNavPosition'); 
     pager.showPage(1);
-    //--></script>
+    </script>
 #{/else}
 
 <br/>
@@ -44,6 +47,7 @@ Search Logs <input type="text" size="20" name="name" id="table">
 
 <script type="text/javascript">
 function show(id){
+	window.location.reload();
 	var name = document.getElementById('table').value;
 
 	      
@@ -59,12 +63,13 @@ function show(id){
 	        
 		     
 			  	
-				$('#toFil').html('<tr><td><font size=2>  </font></td><td>');
+				$('#toFil').html('<tr><td><font size=2> </font></td><td>');
 				 for (var i = 0; i < action.length; i++) {
-				 	var text = action[i];
+				 	var text = action[i].raw();
 			  	var tex = times[i];
 				 	$('#toFil').append('<tr><td><font size=2> ' + text +'&nbsp;&nbsp;&nbsp;&nbsp;'+ tex + '</font></td><td>');
 				 	$('#toFil').show();
+					
 				 }
 			  
 			 
