@@ -410,7 +410,9 @@ public class Tags extends CoolCRUD {
 	 * 			The id of the deleted tag
 	 */
 	public static void deleteTag(long tagId) {
+		Tag tag = Tag.findById(tagId);
+		Organization organization = tag.createdInOrganization;
 		Tags.delete(tagId);
-		Organizations.mainPage();
+		Organizations.viewProfile(organization.id);
 	}
 }
