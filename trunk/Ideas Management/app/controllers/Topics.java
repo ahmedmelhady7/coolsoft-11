@@ -237,22 +237,6 @@ public class Topics extends CRUD {
 		redirect("/topics/show?topicId=" + topicId);
 	}
 
-	/**
-	 * This Method returns a list of all closed topics
-	 * 
-	 * @author Alia el Bolock
-	 * 
-	 * @story C3S21
-	 * 
-	 * @return ArrayList<Topics>
-	 */
-	public static ArrayList<Topic> closedTopics() {
-		// renamed from closedtopics to closedTopics;
-		List closedTopics = (List) new ArrayList<Topic>();
-		closedTopics = (List) Topic.find("openToEdit", false).fetch();
-		return (ArrayList<Topic>) closedTopics;
-	}
-
 	// /**
 	// *
 	// * This method gets a list of followers for a certain topic
@@ -1120,51 +1104,6 @@ public class Topics extends CRUD {
 	}
 
 	/**
-	 * closedTopicsList
-	 * 
-	 * @author Alia el Bolock
-	 * 
-	 * @story C3S21
-	 * 
-	 * @param page
-	 *            : page of the list we are in
-	 * 
-	 * @param search
-	 *            : search string
-	 * 
-	 * @param searchFields
-	 *            : the fields we want to search
-	 * 
-	 * @param orderBy
-	 *            : criteria to order list by
-	 * 
-	 * @param order
-	 *            : the order of the list
-	 * 
-	 * @description This method renders the list of closed topics, with search
-	 *              and sort options
-	 * 
-	 */
-	public static void closedTopicsList(int page, String search,
-			String searchFields, String orderBy, String order) {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		User user = Security.getConnected();
-		if (page < 1) {
-			page = 1;
-		}
-		List<Topic> openTopics = Topic.find("openToEdit", false).fetch();
-		Long totalCount = (long) openTopics.size();
-		Long count = (long) openTopics.size();
-		try {
-			render(type, openTopics, count, totalCount, page, orderBy, order, user);
-		} catch (TemplateNotFoundException exception) {
-			render("CRUD/list.html", type, openTopics, count, totalCount, page,
-					orderBy, order, user);
-		}
-	}
-
-	/**
 	 * Overriding the CRUD method save.
 	 * 
 	 * @author Alia el Bolock
@@ -1325,7 +1264,7 @@ public class Topics extends CRUD {
 	}
 
 	/**
-	 * Overrides CRUD's delete() and deletes a topic
+	 * Deletes a topic and returns whether the topic was successfully deleted
 	 * 
 	 * @author Alia El Bolock
 	 * 
@@ -1337,6 +1276,8 @@ public class Topics extends CRUD {
 	 * @param justification
 	 *            : the justification message that is sent by the deleter to the
 	 *            creator of the topic
+	 *            
+	 * @return boolean
 	 */
 	public static boolean deleteTopic(String id, String justification) {
 		
@@ -1384,6 +1325,8 @@ public class Topics extends CRUD {
 			for (int i = 0; i < temporaryTopic.invitations.size(); i++)
 				temporaryTopic.invitations.get(i).delete();
 			// fadwa
+			
+			//UserdeleteEntityOrTopic(temporaryTopic.id, "topic");
 
 			Log.addUserLog(message, temporaryTopic, user, entity,
 					entity.organization);
@@ -1391,6 +1334,20 @@ public class Topics extends CRUD {
 			return true;
 	}
 	
+	/**
+	 * Ovverides CRUD's delete and deletes a topic
+	 * 
+	 * @author Alia El Bolock
+	 * 
+	 * @story C3S9
+	 * 
+	 * @param id
+	 *            : the id of the topic to be deleted
+	 * 
+	 * @param justification
+	 *            : the justification message that is sent by the deleter to the
+	 *            creator of the topic
+	 */
 	public static void delete (String id, String justification){
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -1663,7 +1620,7 @@ public class Topics extends CRUD {
 		Long topicIdLong = Long.parseLong(topicId);
 		Topic targetTopic = Topic.findById(topicIdLong);
 		List ideas = new ArrayList<Idea>();
-		List allIdeas = targetTopic.getIdeas();
+		List allIdeas = targetTopic.ideas;
 
 		for (int i = 0; i < allIdeas.size(); i++) {
 			Idea currentIdea = (Idea) allIdeas.get(i);

@@ -1054,7 +1054,7 @@ public class Ideas extends CoolCRUD {
 			long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
 		List<Idea> selectedIdeas = new ArrayList<Idea>();
-		List<Idea> allIdeas = targetTopic.getIdeas();
+		List<Idea> allIdeas = targetTopic.ideas;
 		// String selectedIdeasString = "";
 
 		Arrays.sort(selectedIdeasIds);
