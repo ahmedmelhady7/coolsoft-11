@@ -4,7 +4,7 @@
 		<div id="page-bgtop">
 			<div id="page-bgbtm">
 				<div id="content">
-					<div class="post">
+					<div id="profile" class="post">
 						<h2 class="title">Profile Page</h2>						
 					<div style="clear: both;">&nbsp;</div>
 					<h1>${user.username}</h1>
@@ -39,7 +39,110 @@
 	</div>
 </div>
 #{if flag}
+
+
 <form action="@{Users.editProfile()}" method="post">
-<input type="submit" value="Edit" />
+<input type="submit" value="Edit Profile" />
 </form>
+<div id="captcha" >
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <!-- all content by Jonathan Feaster (http://www.bitdesigner.com/) -->
+    <script src="@{'/public/javascripts/md5.js'}"></script>
+    <script src="@{'/public/javascripts/jcap.js'}"></script>    
+    <body>
+        <div style="text-align: left;">
+           
+            <form action="@{Users.changePassword()}" method="get" onsubmit="return jcap();">
+                <p>
+                    This field helps prevent automated access.
+                </p>
+                <script type="text/javascript">
+                    sjcap();
+                </script>
+                	<p>
+                		
+		    <label for="object_password">
+			old password
+			</label>
+			
+			<input type="password" size="25" class="" name="user.password" id="pass" onkeyup="oldPass(); return false;" required/>
+			
+			<label for="object_password">
+			 New password
+			</label>
+			<input type="password" size="25" class="" name="user.password" id="pass1" onkeyup="checkPass(); return false;" required/>
+			<span class="crudHelp" >
+				<font color="Red">
+					*
+				</font>Required
+			</span>
+		</p>
+		<p>
+			<label>
+				Confirm Password
+			</label>
+			<input type="password" size="25" name="pass2" id="pass2" onkeyup="checkPass(); return false;" required/>
+        <span id="confirmMessage" class="confirmMessage"></span>
+		</p>
+			 
+                    <input type="submit" id="submit" name="submit" value="Submit">
+                
+            </form>
+            <noscript>
+            </noscript>
+        </div>
+    </body>
+	</div>
+	
+	<style type="text/css">
+			#captcha{display: none;}
+		</style>
+
+<input type="submit" id="cap" value="Edit password">
+	<script type="text/javascript">
+		$("#cap").click(function(){
+			$("#captcha").show();
+			$("#profile").hide();
+			$("#cap").hide();});
+	</script>
+</div>
+
+<script type="text/javascript">
+    function checkPass(){
+      var pass1 = document.getElementById('pass1');
+      var pass2 = document.getElementById('pass2');
+      var message = document.getElementById('confirmMessage');
+      var goodColor = "#66cc66";
+      var badColor = "#ff6666";
+      if(pass1.value == pass2.value){
+        pass2.style.backgroundColor = goodColor;
+        message.style.color = goodColor;
+        message.innerHTML = "Passwords Match!"
+      }else{
+        pass2.style.backgroundColor = badColor;
+        message.style.color = badColor;
+        message.innerHTML = "Passwords Do Not Match!"
+      }
+    }
+	
+	function oldPass() {
+		var pass = document.getElementById('pass');
+		var message = document.getElementById('confirmMessage');
+      var goodColor = "#66cc66";
+      var badColor = "#ff6666";
+		if(pass.value == '${user.password}') {
+	pass.style.backgroundColor = goodColor;
+        message.style.color = goodColor;
+		message.innerHTML = "correct"
+		}else{
+        pass.style.backgroundColor = badColor;
+        message.style.color = badColor;
+        message.innerHTML = "Passwords Do Not Match!"
+      }
+		
+	}
+	</script>
+
 #{/if}
