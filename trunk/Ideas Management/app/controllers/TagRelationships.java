@@ -70,6 +70,13 @@ public class TagRelationships extends CoolCRUD {
 							+ "\" is created now between tags \"" + source.name
 							+ "\" and \"" + destination.name + "\".");
 
+			Log.addUserLog("User \"" + Security.getConnected().firstName + " "
+					+ Security.getConnected().lastName + "\" "
+					+ "created a relationship \"" + name + "\" between tags \""
+					+ source.name + "\" and \"" + destination.name + "\"",
+					Security.getConnected(), source, destination,
+					source.createdInOrganization);
+
 			return true;
 		}
 		return false;
@@ -119,6 +126,16 @@ public class TagRelationships extends CoolCRUD {
 		TagRelationship relation = TagRelationship
 				.findById(relationToBeRenamedId);
 		if (relation.name != newName) {
+			Log
+					.addUserLog("User \"" + Security.getConnected().firstName
+							+ " " + Security.getConnected().lastName + "\" "
+							+ "renamed the relationship \"" + relation.name
+							+ "\" between tags \"" + relation.source.name
+							+ "\" and \"" + relation.destination.name
+							+ "\" to \"" + newName + "\"", Security
+							.getConnected(), relation.source,
+							relation.destination,
+							relation.source.createdInOrganization);
 			relation.name = newName;
 			relation.save();
 			return true;
@@ -139,6 +156,13 @@ public class TagRelationships extends CoolCRUD {
 	 */
 	public static boolean delete(long relationId) {
 		TagRelationship relation = TagRelationship.findById(relationId);
+		Log.addUserLog("User \"" + Security.getConnected().firstName + " "
+				+ Security.getConnected().lastName + "\" "
+				+ "deleted the relationship \"" + relation.name
+				+ "\" between tags \"" + relation.source.name + "\" and \""
+				+ relation.destination.name + "\"", Security.getConnected(),
+				relation.source, relation.destination,
+				relation.source.createdInOrganization);
 		relation.source.relationsSource.remove(relation);
 		relation.destination.relationsDestination.remove(relation);
 		relation.delete();
