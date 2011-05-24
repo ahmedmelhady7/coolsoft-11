@@ -14,9 +14,9 @@
 		
 			#{crud.custom 'title'}
 	  		<p> 
- 			<label for="object_title">Title</label> 
-			<textarea id="object_title" cols="30" rows="1" class="" name="object.title" required></textarea> 
- 			<span class="crudHelp" ><font color="Red">*</font>Required</span>
+ 			<label for="object_title">Title</label>
+			<input type="text" id="object_title" cols="30" rows="1" class="" name="object.title" required/> 
+ 			<span class="crudHelp" ><font color="Red">*</font></span>
 			</p> 
 			#{/crud.custom}
 		
@@ -24,7 +24,7 @@
 			<p> 
  			<label for="object_description">Description</label> 
 			<textarea id="object_description" cols="50" rows="5" class="" name="object.description" required></textarea> 
-			<span class="crudHelp" ><font color="Red">*</font>Required</span> 
+			<span class="crudHelp" ><font color="Red">*</font></span> 
  			</p> 
 			#{/crud.custom}
 			

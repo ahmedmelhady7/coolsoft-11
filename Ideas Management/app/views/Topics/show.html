@@ -1,4 +1,55 @@
 #{extends 'login/index.html' /}
+<style type="text/css">
+#login-box {
+	width:333px;
+	height: 352px;
+	padding: 58px 76px 0 76px;
+	color: #ebebeb;
+	font: 12px Arial, Helvetica, sans-serif;
+	background: url(/public/images/login-box-backg.png) no-repeat left top;
+}
+
+#deleteHide{
+	margin-top:-1%;
+	text-align:right;
+}
+
+#topicShow2{
+	margin-top: 2%;
+	margin-right: 17%;
+	margin-bottom: 4%;
+	margin-left: 8%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #FFFFFF;
+	padding-top: 5px;
+	padding-right: 20px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+
+.login-box-options a {
+	color: #ebebeb;
+	font-size: 11px;
+}
+</style>
+
 <div id="leftSidebar">
     <ul>
         <div style="clear: both;">
@@ -232,39 +283,42 @@
     </ul>
 </div>
 <!--  better use id = "page" -->
-<div id ="page"style="float:1000px" >#{script src:"jquery-1.5.2.min.js" /}
+<div id ="page">#{script src:"jquery-1.5.2.min.js" /}
 <script type="text/javascript" src="/public/javascripts/jquery-1.4.1.js"></script>
 <br/>
-<a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a>
+
+
 
 <table id = "success" border="0" bgcolor="#FF0000" cellspacing="0" id ="toFil">
 		<tr><td><font size ="3" color ="black"><i>
 					<font color="#000000"><b><i>Topic Has been Reported As Spam</i></b></font>                
         </i></font></td><td>
 </table>
+
+
 <div id="crudShow" class="${type.name}">
-    
-    <div class="objectForm">
-		<br />
+	<br />
+    <a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a>
+    <div id="topicShow2" class="objectForm">
         <p>
 		   <h3> <label id="object_title" cols="30" rows="1" class="" name="object.title" >
               <font size = "6">  ${object.title} </font> 
 				<font size= "4">
-			<label for="object_creator" style = "font:2">
+			<label for="object_creator">
                 by
             </label>
             <label id="object_creator" cols="30" rows="1" class="" name="object.creator">
-            	<a href="@{Users.viewProfile(object.creator.username)}">${object.creator.username}</a>
+            	<a href="@{Users.viewProfile(object.creator.id)}">${object.creator.username}</a>
             </label>
 			</font>
             </label>
-			#{if permission == 1}
+			<div id="deleteHide">#{if permission == 1}
   			   #{if !hidden}
    				 #{if deletable}
    				   <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
        				 <p class="crudDelete">
         				<input type="hidden" name = "justification" id = "justText">
-           			    <input type="submit" value="&{'crud.delete', type.modelName}" class = "linkButton" />
+           			    <input type="image" src="/public/images/back.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
       			    </p>
     			   </form> 
 		        #{/if}
@@ -286,7 +340,7 @@
                   </form>			
                 #{/if}		
             #{/if}
-          #{/if}
+          #{/if}</div>
 		</h3>
         </p>
         
@@ -352,7 +406,6 @@
             <!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
         </p>
 		</div>
-		
 		<div name="relationships">
            				
 			 <a onclick="$('#lista').slideToggle();">Show Relationships</a>

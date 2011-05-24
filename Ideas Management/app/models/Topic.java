@@ -346,19 +346,6 @@ public class Topic extends CoolModel {
 	}
 
 	/**
-	 * This Method returns the list of ideas in a certain topic
-	 * 
-	 * @author Alia el Bolock
-	 * 
-	 * @story C3S20
-	 * 
-	 * @return ArrayList<Idea>
-	 */
-	public List<Idea> getIdeas() {
-		return (List<Idea>) ideas;
-	}
-
-	/**
 	 * This Method removes a user from the list of followers
 	 * 
 	 * @author Ibrahim al-khayat
@@ -478,7 +465,7 @@ public class Topic extends CoolModel {
 	}
 
 	/**
-	 * Checks wether a topic can be deleted
+	 * Checks whether a topic can be deleted
 	 * 
 	 * @author Alia El Bolock
 	 * 
@@ -495,25 +482,26 @@ public class Topic extends CoolModel {
 		return true;
 	}
 
-	/**
-	 * Checks wether a topic can be hidden
+	/*
+	 
+	 * Checks whether a topic can be hidden
 	 * 
 	 * @author Alia El Bolock
 	 * 
 	 * @story C3S9
 	 * 
 	 * @return boolean
-	 */
+	 *
 	public boolean isHideable() {
 		// TODO Auto-generated method stub
 		if (openToEdit == false)
 			return false;
 
 		return true;
-	}
+	}*/
 
 	/**
-	 * Checks wether a certain user can view this topic
+	 * Checks whether a certain user can view this topic
 	 * 
 	 * @author Alia El Bolock
 	 * 
