@@ -168,22 +168,15 @@ public class Users extends CoolCRUD {
 		notFoundIfNull(object);
 		System.out.println("entered show() for user " + userId);
 		User tmp = (User) object;
-
-		System.out.println("entered view() for User " + tmp.username);
-		System.out.println(tmp.email);
-		System.out.println(tmp.username);
 		int communityContributionCounter = tmp.communityContributionCounter;
 		String name = tmp.firstName + " " + tmp.lastName;
 		String profession = tmp.profession;
 		String username = tmp.username;
-		String birthDate = "" + tmp.dateofBirth;
+		String dateofBirth = "" + tmp.dateofBirth;
 		try {
-			System.out.println("show() done, about to render");
 			render(type, object, username, name, communityContributionCounter,
-					profession, birthDate, userId);
+					profession, dateofBirth, userId);
 		} catch (TemplateNotFoundException e) {
-			System.out
-					.println("show() done with exception, rendering to CRUD/show.html");
 			render("CRUD/show.html", type, object);
 		}
 	}
@@ -1250,7 +1243,7 @@ public class Users extends CoolCRUD {
 		String message = "";
 		User tmp = (User) object;
 		System.out.println("create() entered");
-		tmp.email = tmp.email.trim();
+		tmp.email = tmp.email.trim().toLowerCase();
 		tmp.username = tmp.username.trim();
 		tmp.password = tmp.password.trim();
 		tmp.firstName = tmp.firstName.trim();
@@ -1772,6 +1765,10 @@ public class Users extends CoolCRUD {
 	 */
 	public static void activate(long userId) {
 		User user = User.findById(userId);
+		if(user.state.equals("a"))
+		{
+			return;
+		}
 		user.state = "a";
 		user._save();
 
