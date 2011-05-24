@@ -1497,15 +1497,15 @@ public class BannedUsers extends CoolCRUD {
 	 */
 
 	public static void viewUsers(long numId, int num) {
-          User user=Security.getConnected();
-		
+		User user = Security.getConnected();
+
 		if (num == 0) {
 			int check = 0;
 			if (Users.isPermitted(user,
 					"block a user from viewing or using a certain entity",
 					numId, "entity"))
 				check = 1;
-			
+
 			List<User> users = Users.getIdeaDevelopers(numId, "entity");
 			MainEntity object = MainEntity.findById(numId);
 			List<Integer> count = new ArrayList<Integer>();
@@ -1527,9 +1527,9 @@ public class BannedUsers extends CoolCRUD {
 
 			}
 
-			render(users, count, object, num,user,check);
+			render(users, count, object, num, user, check);
 		} else {
-			
+
 			int check = 0;
 			if (Users.isPermitted(user,
 					"block a user from viewing or using a certain entity",
@@ -1556,7 +1556,7 @@ public class BannedUsers extends CoolCRUD {
 
 			}
 
-			render(users, count, object, num,user,check);
+			render(users, count, object, num, user, check);
 
 		}
 
@@ -1595,14 +1595,6 @@ public class BannedUsers extends CoolCRUD {
 
 	public static void block(long userId, int type, long numId, int id,
 			String text, String message) {
-		System.out.println("OK");
-		System.out.println(message);
-		System.out.println("here");
-		System.out.println(text);
-		System.out.println(userId);
-		System.out.println(type);
-		System.out.println(numId);
-		System.out.println(id);
 
 		User user = User.findById(userId);
 		User organizer = Security.getConnected();
@@ -1613,7 +1605,6 @@ public class BannedUsers extends CoolCRUD {
 
 		if (id == 0) {
 			entity = MainEntity.findById(numId);
-			// organizers = Users.getEntityOrganizers(entity);
 
 			if (type == 0) {
 
@@ -1642,8 +1633,6 @@ public class BannedUsers extends CoolCRUD {
 					doBlock(userId, numId, 0, 0);
 
 				} else {
-
-					System.out.println("LAMA");
 					Log.addUserLog(organizer.firstName + " "
 							+ organizer.lastName + " unblocked "
 							+ user.firstName + " " + user.lastName
@@ -1666,7 +1655,6 @@ public class BannedUsers extends CoolCRUD {
 							"You have been unblocked from viewing entity "
 									+ entity.name);
 					doBlock(userId, numId, 1, 0);
-					System.out.println("HEREEEEEEEEEEE LAMA");
 
 				}
 			} else {
@@ -1722,17 +1710,13 @@ public class BannedUsers extends CoolCRUD {
 				}
 			}
 		} else {
-
-			System.out.println("YES");
 			topic = Topic.findById(numId);
 			entity = topic.entity;
 			organizers = Users.getEntityOrganizers(entity);
 			organizers.remove(user);
 
 			if (type == 0) {
-				System.out.println("view");
 				if (text.equals("Block from viewing")) {
-					System.out.println("vvvvvvvvv");
 					BannedUser block = new BannedUser(user,
 							topic.entity.organization, "view", "topic", numId);
 					block.save();
@@ -1760,7 +1744,6 @@ public class BannedUsers extends CoolCRUD {
 									+ topic.title + " because " + message);
 
 				} else {
-					System.out.println("LAMALEEEM");
 					BannedUser unblock = BannedUser
 							.find("byBannedUserAndActionAndResourceTypeAndResourceID",
 									user, "view", "topic", numId).first();
@@ -1790,8 +1773,6 @@ public class BannedUsers extends CoolCRUD {
 				}
 			} else {
 				if (text.equals("Block from using")) {
-
-					System.out.println("use");
 					BannedUser block = new BannedUser(user,
 							topic.entity.organization, "use", "topic", numId);
 					block.save();
@@ -1819,7 +1800,6 @@ public class BannedUsers extends CoolCRUD {
 									+ topic.title + " because " + message);
 
 				} else {
-					System.out.println("useeeeeeeee");
 					BannedUser unblock = BannedUser
 							.find("byBannedUserAndActionAndResourceTypeAndResourceID",
 									user, "use", "topic", numId).first();
