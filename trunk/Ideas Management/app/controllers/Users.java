@@ -1743,10 +1743,19 @@ public class Users extends CoolCRUD {
 	 * @author Mai Magdy
 	 * 
 	 */
-	public static void deactivate() {
+	public static void deactivate(String reason) {
 		User user = Security.getConnected();
 		user.state = "n";
 		user.save();
+		List<User> admins = User.findAll();
+		for (int i = 0; i < admins.size(); i++) {
+			if (admins.get(i).isAdmin) {
+				Notifications.sendNotification(admins.get(i).id, user.id,
+						"user", user.firstName + " " + user.lastName
+								+ " has deactivated his account, reason: "
+								+ "' " + reason + " '");
+			}
+		}
 		Mail.deactivate();
 		logout();
 	}
