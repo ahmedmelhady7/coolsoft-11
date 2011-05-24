@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 @With(Secure.class)
 public class Invitations extends CoolCRUD {
 	public static List<User> users = new ArrayList<User>();
+	public static List<Integer> done = new ArrayList<Integer>();
 
 	/**
 	 * 
@@ -56,6 +57,10 @@ public class Invitations extends CoolCRUD {
 		for (User user1 : users) {
 			usersMatched.add(user1);
 		}
+		List<Integer> usersInvited = new ArrayList<Integer>();
+		for (Integer item : done) {
+			usersInvited.add(item);
+		}
 		if (type == 0) {
 			int permitted = 0;
 			if (Users
@@ -78,7 +83,7 @@ public class Invitations extends CoolCRUD {
 			Topic topic = Topic.findById(id);
 			notFoundIfNull(topic);
 			render(type, check, topic, usersMatched, flashError, user,
-					permitted);
+					permitted, usersInvited);
 		}
 
 	}
@@ -109,9 +114,10 @@ public class Invitations extends CoolCRUD {
 		List<User> filter = Users.searchUser(name);
 		List<User> userFilter = new ArrayList<User>();
 		List<User> postsInTopic = new ArrayList<User>();
+		List<Integer> invited = new ArrayList<Integer>();
 
 		if (validation.hasErrors()) {
-			flash.error("Please enter a name first!");
+			flash.error("Please enter name/email first!");
 			invite(id, type, 0, 1);
 		}
 
@@ -137,9 +143,12 @@ public class Invitations extends CoolCRUD {
 			Invitation sent = Invitation.find("byEmail",
 					userFilter.get(i).email).first();
 			if (sent != null)
-				userFilter.remove(i);
+				invited.add(1); // userFilter.remove(i);
+			else
+				invited.add(0);
 		}
 		users = userFilter;
+		done = invited;
 		invite(id, type, 1, 1);
 
 	}
@@ -238,7 +247,7 @@ public class Invitations extends CoolCRUD {
 				}
 
 				if (reciever.state.equals("n") || reciever.state.equals("d")) {
-					flash.error("This user is not available");
+					flash.error("This account has been deactivated");
 					invite(id, type, 2, 1);
 				}
 
@@ -328,8 +337,6 @@ public class Invitations extends CoolCRUD {
 		User user = Security.getConnected();
 		List<Invitation> invitation = Invitation.find("byEmail", user.email)
 				.fetch();
-		MainEntitys.deleteEntity(1);
-
 		render(invitation);
 
 	}
@@ -355,7 +362,7 @@ public class Invitations extends CoolCRUD {
 	 */
 
 	public static void respond(int id, long i) {
-
+		
 		Invitation invite = Invitation.findById(i);
 		String roleName = invite.role.toLowerCase();
 		Organization organization = null;
@@ -383,17 +390,32 @@ public class Invitations extends CoolCRUD {
 					UserRoleInOrganizations.addEnrolledUser(user, organization,
 							role, entity.id, "entity");
 
-					List<MainEntity> subentity = new ArrayList<MainEntity>();
-					subentity = MainEntity.find("byParent", entity).fetch();
+					for (int c = 0; c < entity.topicList.size(); c++) {
+						UserRoleInOrganizations.addEnrolledUser(user,
+								organization, role, entity.topicList.get(c).id,
+								"topic");
+					}
 
-					if (subentity.size() != 0) {
-						for (int j = 0; j < subentity.size(); j++) {
+					List<MainEntity> subEntity = new ArrayList<MainEntity>();
+					subEntity = MainEntity.find("byParent", entity).fetch();
+
+					if (subEntity.size() != 0) {
+						for (int j = 0; j < subEntity.size(); j++) {
 							List<User> entityOrganizers = Users
-									.getEntityOrganizers(subentity.get(j));
-							if (!entityOrganizers.contains(user))
+									.getEntityOrganizers(subEntity.get(j));
+							if (!entityOrganizers.contains(user)) {
 								UserRoleInOrganizations.addEnrolledUser(user,
 										organization, role,
-										subentity.get(j).id, "entity");
+										subEntity.get(j).id, "entity");
+								for (int s = 0; s < subEntity.get(j).topicList
+										.size(); s++) {
+									UserRoleInOrganizations
+											.addEnrolledUser(user,
+													organization, role,
+													subEntity.get(j).topicList
+															.get(s).id, "topic");
+								}
+							}
 
 						}
 					}
