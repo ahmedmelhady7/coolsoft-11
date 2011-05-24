@@ -1,37 +1,355 @@
 #{extends 'login/index.html' /}
 
-<div id="crudShow" class="${type.name}">
-	<br />
-<input type="submit" value="Back to Entity" onclick=location.href="@{MainEntitys.viewEntity(entity.id)}">
-        <br />
+<style>
+#deleteHide{
+	text-align:right;
+}
+
+#crudShow{
+	margin-top: 2%;
+	margin-right: 30%;
+	margin-bottom: 4%;
+	margin-left: 21%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+
+#descriptionShow{
+	margin-top: 2%;
+	margin-right: 17%;
+	margin-bottom: 4%;
+	margin-left: 8%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #FFFFFF;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+
+.arrow {
+   
+    height: 15px;
+    left: -7px;
+    position: absolute;
+    top: 25px;
+    width: 8px;
+}
+
+#backToEntity{
+	margin-right: 17%;
+	margin-left: 8%;
+	text-align:left;
+}
+</style>
+
+<div id="leftSidebar">
+    <ul>
+        <div style="clear: both;">
+            &nbsp;
+        </div>
+        <li>
+            <ul>
+            	
+				#{if allowed==1}
+				<li>
+					<input type="submit" value="Requests" onclick=location.href="@{RequestToJoins.viewRequests(1,object.id)}" class="linkButton">
+                </li>
+                #{/if}
+				
+				#{if allowed==1}
+				<li>
+					<input type="submit" value="Invite" onclick=location.href="@{Invitations.invite(object.id,1,0,0)}" class="linkButton">
+                </li>
+                #{/if}
+       
+				#{if alreadyReportedTopic==false && canReport}
+				<li>
+                    <form action="@{Users.reportTopicAsSpam()}" method="GET" name="myform">
+                          <input type="hidden" name="topicId" value="${topicId}">
+                          <input id="spam" type="submit" value="Report Topic As Spam" class = "linkButton">
+                    </form>
+                </li>
+				#{/if}
+				
+				#{if alreadyReportedTopic==true}
+                <li>
+                    <font color="Red">Already reported as spam</font>
+                </li>
+				#{/if}
+				
+				
+				<li>
+				  	<form action="@{Topics.tagTopic()}" method="post">
+        	             <input type="hidden" value=${topicId} name='topicId'>
+			             <input type="hidden" value='@@' name='tag'>
+						 <input type="submit" value="Add tags" class = "linkButton">
+        			</form>
+				</li>
+				
+				 #{if numberOfIdeas > 1 && canMerge == 1}
+                <li>
+                   #{form @Topics.getIdeasToMerge(), method:'POST', enctype:'multipart/form-data' }
+				       <input type = "hidden" name = "topicId" value = ${topicId}>
+				       <input type="submit" value="Merge Ideas" class = "linkButton"/>
+				   #{/form}
+                </li>
+				#{/if}
+				
+				#{if canClose == 1 && openToEdit == true}
+                <li> 
+					#{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "topicId" value = ${topicId}>
+						<input type="submit" value="Close Topic" class = "linkButton"/>
+					#{/form} 
+		        </li>
+				#{/if} 
+				
+				#{if canClose == 1 && openToEdit == false}
+                <li>
+                    #{form @Topics.reopen(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "topicId" value = ${topicId}>
+						<input type="submit" value="Reopen Topic" class = "linkButton"/>
+					#{/form}
+                </li>
+				#{/if} 
+				
+				
+				#{if canPlan == 1 && plan == null}
+				<li>
+					#{form @Plans.planCreate(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "topicId" value = ${topicIdLong}>
+						<input type="submit" value="Create A plan" class = "linkButton"/>
+					#{/form}
+				</li>
+				#{/if}
+					
+				#{if plan != null}
+				<li>
+					#{form @Plans.viewAsList(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "planId" value = ${plan.id}>
+						<input type="submit" value="View the plan" class = "linkButton"/>
+					#{/form}
+				</li>
+				#{/if}
+					
+				#{if check == 1}
+				<li>
+					 <input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(topicId,1)}" class = "linkButton">
+				</li>
+				#{/if}
+					
+				#{if (targetTopic.createRelationship == true)}
+				#{if (canCreateRelationship == true)}
+				<li>
+					<p>
+						<input type="submit" value="Create Relation" onclick=location.href="@{Topics.createRelation(object.id,object.entity.id)}" class="linkButton">
+					</p>
+				</li>
+				#{/if}
+				#{/if}
+				
+				 #{if (!targetTopic.followers.contains(user))} 
+			     #{if follower == false} 
+				<li>
+						<form action="@{Topics.viewFollowers()}">
+			   				 <input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">
+			       		     <input type="submit" value="Follow ${targetTopic.title}" class = "linkButton">
+			   	 		</form>
+				</li>
+			    #{/if}
+			    #{/if}
+				 
+				#{if follower == true}
+		        <li id="unfollo">
+			    <input type="submit" value="Unfollow ${targetTopic.title} " onclick="unfollow('${topicId}');" class = "linkButton"/>
+				</li>
+			    #{/if}
+			      
+				<li id="follo">
+				    <form action="@{Topics.viewFollowers()}">
+				     	 <input type="hidden" name="topicId" value="${targetTopic.id} Followers"><input type="hidden" name="f" value="false"> <input type="submit" value="Followers" class = "linkButton">
+				 	</form>
+			    </li>
+				
+				#{if canNotPost == true}
+				<li id="req"><input type="submit" value="Request to post on this topic" onclick="requestToPost('${topicId}');" class="linkButton"></li>
+               #{/if}
+			
+           	   #{if pending == true && canNotPost == false}
+			   <li>Request To Post status: Pending</li>
+           	   #{/if}
+			
+			   <li id="pen">
+	                Request To Post status: Pending
+					<script type="text/javascript">
+						 $('#pen').hide();
+					</script>
+			   </li>
+			   
+			   #{if (canRestrict == 1)}
+			   <li>
+		           <input type="submit" value="Restrict/De-Restrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerTopicPath(topicId)}" class = "linkButton">	
+			   </li>
+			   #{/if}
+			   
+			   <li>
+			    	<form action="@{Topics.requestRelationship(user.id, organization.id, entity.id, object.id)}" method="post">
+	 					<input type="submit" value="Request Relationship Creation" class = "linkButton">
+	  				</form>
+				</li>	
+					
+	 			<li>
+	 				<form action="@{Topics.viewRelationships(user.id, organization.id, entity.id, object.id, canRequestRelationship)}" method="post">
+	  					<input type="submit" value="View Relationships" class = "linkButton">
+	  				</form>
+				</li>
+				
+				
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+
+<div id = "backToEntity"><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a> </div>
+<div id="crudShow">
+    
+	<div id="topicShow" class="objectForm">
+	<form action:@save(object._key())>
 	
-	<br />
-	
-	<h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
-	
-	 <font color="Red">${message}</font>	
-	
-	<div class="objectForm">
-	#{form action:@save(object._key()), enctype:'multipart/form-data'}
-	
-		#{crud.form fields: ['title', 'description', 'privacyLevel']}
-		
-		   #{crud.custom 'title'}
-			<p> 
- 			<label for="object_title">Title</label> 
-			<label id="object_title" cols="30" rows="1" class="" name="object.title">${object.title}</label>
- 			</p> 
-			#{/crud.custom}
-		
-			#{crud.custom 'description'}
+			     <p>
+		   <h3> <label id="object_title" cols="30" rows="1" class="" name="object.title" >
+              <font size = "6"> 
+			  <a href="@{Topics.show(object.id)}"> ${object.title}</a></font> 
+				<font size= "4">
+			<label for="object_creator">
+                by
+            </label>
+            <label id="object_creator" cols="30" rows="1" class="" name="object.creator">
+            	<a href="@{Users.viewProfile(object.creator.id)}">${object.creator.username}</a>
+            </label>
+			</font>
+            </label>
+			
+		</h3>
+            <h3>
+            <font size= "4">	
+            <label for="object_entity">
+                in
+            </label>
+            <label id="object_entity" cols="30" rows="1" class="" name="object.entity">
+            	<a href="@{MainEntitys.viewEntity(entity.id)}"> ${object.entity}</a>
+                
+            </label>
+			</font>
+			</h3>
+        </p> 
+			
 			<p> 
  			<label for="object_description">Description</label> 
 			<textarea id="object_description" cols="50" rows="5" class="" name="object.description" required>${object.description}</textarea> 
 			<span class="crudHelp" ><font color="Red">*</font>Required</span> 
  			</p> 
-			#{/crud.custom}
 			
-			#{crud.custom 'privacyLevel'}
 			<p> 
  			<label for="object_privacyLevel">Privacy Level</label> 
 			<select name="object.privacyLevel">
@@ -40,44 +358,34 @@
  			</select>
  			<span class="crudHelp" ><font color="Red">*</font>Required</span> 
 			</p> 
-			#{/crud.custom }
 		
-		
-		#{/crud.form }
 		<p class="crudButtons">
-			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
-			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}"  class="linkButton" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}"  class="linkButton" />
 		</p>
-	#{/form}
+	</form>
 	</div>
 	
 	
- #{if !hidden}
+ <div id="deleteHide">#{if !hidden}
     #{if deletable}
     <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         <p class="crudDelete">
         	<input type="hidden" name = "justification" id = "justText">
-            <input type="submit" value="&{'crud.delete', type.modelName}" />
+            <input type="image" src="/public/images/delete.png" value="&{'crud.delete', type.modelName}" />
         </p>
     </form> #{/if}
     #{if !deletable}
+	#{if object.plan == null}
     <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         <p class="crudDelete">
         	<input type="hidden" name = "justification" id = "justText">
-            <input type="submit" value="&{'Hide', type.modelName}" />
+            <input type="submit" value="&{'Hide', type.modelName}"  class="linkButton"/>
         </p>
     </form> #{/if}
+	 #{/if}
     #{/if}
-
-
-
-	
-	<!--#{form @delete(object._key())}
-		<p class="crudDelete">
-			<input type="submit" value="&{'crud.delete', type.modelName}" />
-		</p>
-	#{/form}-->
-
+</div>
 </div>
 
  <script type="text/javascript">

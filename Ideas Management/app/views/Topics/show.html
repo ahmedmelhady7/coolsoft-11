@@ -1,20 +1,39 @@
-#{extends 'login/index.html' /}
-<style type="text/css">
-#login-box {
-	width:333px;
-	height: 352px;
-	padding: 58px 76px 0 76px;
-	color: #ebebeb;
-	font: 12px Arial, Helvetica, sans-serif;
-	background: url(/public/images/login-box-backg.png) no-repeat left top;
-}
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+		<script src="/public/javascripts/bmi.js" language="javascript"></script>	
+
+
+#{extends 'login/index.html' /}
+<head>
+		<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+		.accordionItem h3 {
+			margin:0;
+			font-size:1.1em;
+			border-bottom:1px solid #66d color:"#150517";
+		}
+		.accordionItem h3:hover {
+			cursor:pointer;
+		}
+		.accordionItem div {
+			margin:0;
+			padding:1em 0.4em;
+		}
+		.accordionItem.hide h3 {
+		}
+		.accordionItem.hide div {
+			display:none;
+		}</style> 
+	
+<style>
 #deleteHide{
-	margin-top:-1%;
 	text-align:right;
 }
 
-#topicShow2{
+#crudShow{
 	margin-top: 2%;
 	margin-right: 17%;
 	margin-bottom: 4%;
@@ -23,11 +42,11 @@
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
 	border-bottom-left-radius: 10px;
-	background-color: #FFFFFF;
-	padding-top: 5px;
-	padding-right: 20px;
-	padding-bottom: 10px;
-	padding-left: 20px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
 	position: relative;
 	border-bottom-width: 2px;
 	border-bottom-style: solid;
@@ -44,551 +63,59 @@
 	word-wrap: break-word;
 }
 
-.login-box-options a {
-	color: #ebebeb;
-	font-size: 11px;
+#descriptionShow{
+	margin-top: 2%;
+	margin-right: 17%;
+	margin-bottom: 4%;
+	margin-left: 8%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #FFFFFF;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
 }
+
+.arrow {
+   
+    height: 15px;
+    left: -7px;
+    position: absolute;
+    top: 25px;
+    width: 8px;
+}
+
+#backToEntity{
+	margin-right: 17%;
+	margin-left: 8%;
+	text-align:left;
+}
+
 </style>
 
-<div id="leftSidebar">
-    <ul>
-        <div style="clear: both;">
-            &nbsp;
-        </div>
-        <li>
-            <ul>
-            	#{if permission == 1}
-                <li>
-                <input type="submit" value="Edit topic" onclick=location.href="@{Topics.view(topicId)}" class="linkButton"> 
-                </li>
-				 #{/if}
-                
-				#{if allowed==1}
-				<li>
-					<input type="submit" value="Requests" onclick=location.href="@{RequestToJoins.viewRequests(1,object.id)}" class="linkButton">
-                </li>
-                #{/if}
-				
-				#{if allowed==1}
-				<li>
-					<input type="submit" value="Invite" onclick=location.href="@{Invitations.invite(object.id,1,0,0)}" class="linkButton">
-                </li>
-                #{/if}
-       
-				#{if alreadyReportedTopic==false && canReport}
-				<li>
-                    <form action="@{Users.reportTopicAsSpam()}" method="GET" name="myform">
-                          <input type="hidden" name="topicId" value="${topicId}">
-                          <input id="spam" type="submit" value="Report Topic As Spam" class = "linkButton">
-                    </form>
-                </li>
-				#{/if}
-				
-				#{if alreadyReportedTopic==true}
-                <li>
-                    <font color="Red">Already reported as spam</font>
-                </li>
-				#{/if}
-				
-				
-				<li>
-				  	<form action="@{Topics.tagTopic()}" method="post">
-        	             <input type="hidden" value=${topicId} name='topicId'>
-			             <input type="hidden" value='@@' name='tag'>
-						 <input type="submit" value="Add tags" class = "linkButton">
-        			</form>
-				</li>
-				
-				 #{if numberOfIdeas > 1 && canMerge == 1}
-                <li>
-                   #{form @Topics.getIdeasToMerge(), method:'POST', enctype:'multipart/form-data' }
-				       <input type = "hidden" name = "topicId" value = ${topicId}>
-				       <input type="submit" value="Merge Ideas" class = "linkButton"/>
-				   #{/form}
-                </li>
-				#{/if}
-				
-				#{if canClose == 1 && openToEdit == true}
-                <li> 
-					#{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
-						<input type = "hidden" name = "topicId" value = ${topicId}>
-						<input type="submit" value="Close Topic" class = "linkButton"/>
-					#{/form} 
-		        </li>
-				#{/if} 
-				
-				#{if canClose == 1 && openToEdit == false}
-                <li>
-                    #{form @Topics.reopen(), method:'POST', enctype:'multipart/form-data' }
-						<input type = "hidden" name = "topicId" value = ${topicId}>
-						<input type="submit" value="Reopen Topic" class = "linkButton"/>
-					#{/form}
-                </li>
-				#{/if} 
-				
-				
-				#{if canPlan == 1 && plan == null}
-				<li>
-					#{form @Plans.planCreate(), method:'POST', enctype:'multipart/form-data' }
-						<input type = "hidden" name = "topicId" value = ${topicIdLong}>
-						<input type="submit" value="Create A plan" class = "linkButton"/>
-					#{/form}
-				</li>
-				#{/if}
-					
-				#{if plan != null}
-				<li>
-					#{form @Plans.viewAsList(), method:'POST', enctype:'multipart/form-data' }
-						<input type = "hidden" name = "planId" value = ${plan.id}>
-						<input type="submit" value="View the plan" class = "linkButton"/>
-					#{/form}
-				</li>
-				#{/if}
-					
-				#{if check == 1}
-				<li>
-					 <input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(topicId,1)}" class = "linkButton">
-				</li>
-				#{/if}
-					
-				#{if (targetTopic.createRelationship == true)}
-				#{if (canCreateRelationship == true)}
-				<li>
-					<p>
-						<input type="submit" value="Create Relation" onclick=location.href="@{Topics.createRelation(object.id,object.entity.id)}" class="linkButton">
-					</p>
-				</li>
-				#{/if}
-				#{/if}
-				
-				 #{if (!targetTopic.followers.contains(user))} 
-			     #{if follower == false} 
-				<li>
-						<form action="@{Topics.viewFollowers()}">
-			   				 <input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">
-			       		     <input type="submit" value="Follow ${targetTopic.title}" class = "linkButton">
-			   	 		</form>
-				</li>
-			    #{/if}
-			    #{/if}
-				 
-				#{if follower == true}
-		        <li id="unfollo">
-			    <input type="submit" value="Unfollow ${targetTopic.title} " onclick="unfollow('${topicId}');" class = "linkButton"/>
-				</li>
-			    #{/if}
-			      
-				<li id="follo">
-				    <form action="@{Topics.viewFollowers()}">
-				     	 <input type="hidden" name="topicId" value="${targetTopic.id} Followers"><input type="hidden" name="f" value="false"> <input type="submit" value="Followers" class = "linkButton">
-				 	</form>
-			    </li>
-				
-				#{if canNotPost == true}
-				<li id="req"><input type="submit" value="Request to post on this topic" onclick="requestToPost('${topicId}');" class="linkButton"></li>
-               #{/if}
-			
-           	   #{if pending == true && canNotPost == false}
-			   <li>Request To Post status: Pending</li>
-           	   #{/if}
-			
-			   <li id="pen">
-	                Request To Post status: Pending
-					<script type="text/javascript">
-						 $('#pen').hide();
-					</script>
-			   </li>
-			   
-			   #{if (canRestrict == 1)}
-			   <li>
-		           <input type="submit" value="Restrict/De-Restrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerTopicPath(topicId)}" class = "linkButton">	
-			   </li>
-			   #{/if}
-			   
-			   <li>
-			    	<form action="@{Topics.requestRelationship(actor.id, organisation.id, entity.id, targetTopic.id)}" method="post">
-	 					<input type="submit" value="Request Relationship Creation" class = "linkButton">
-	  				</form>
-				</li>	
-					
-	 			<li>
-	 				<form action="@{Topics.viewRelationships(actor.id, organisation.id, entity.id, targetTopic.id, canRequestRelationship)}" method="post">
-	  					<input type="submit" value="View Relationships" class = "linkButton">
-	  				</form>
-				</li>
-				
-				
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-            </ul>
-        </li>
-    </ul>
-</div>
-<!--  better use id = "page" -->
-<div id ="page">#{script src:"jquery-1.5.2.min.js" /}
-<script type="text/javascript" src="/public/javascripts/jquery-1.4.1.js"></script>
-<br/>
-
-
-
-<table id = "success" border="0" bgcolor="#FF0000" cellspacing="0" id ="toFil">
-		<tr><td><font size ="3" color ="black"><i>
-					<font color="#000000"><b><i>Topic Has been Reported As Spam</i></b></font>                
-        </i></font></td><td>
-</table>
-
-
-<div id="crudShow" class="${type.name}">
-	<br />
-    <a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a>
-    <div id="topicShow2" class="objectForm">
-        <p>
-		   <h3> <label id="object_title" cols="30" rows="1" class="" name="object.title" >
-              <font size = "6">  ${object.title} </font> 
-				<font size= "4">
-			<label for="object_creator">
-                by
-            </label>
-            <label id="object_creator" cols="30" rows="1" class="" name="object.creator">
-            	<a href="@{Users.viewProfile(object.creator.id)}">${object.creator.username}</a>
-            </label>
-			</font>
-            </label>
-			<div id="deleteHide">#{if permission == 1}
-  			   #{if !hidden}
-   				 #{if deletable}
-   				   <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-       				 <p class="crudDelete">
-        				<input type="hidden" name = "justification" id = "justText">
-           			    <input type="image" src="/public/images/back.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
-      			    </p>
-    			   </form> 
-		        #{/if}
-                #{if !deletable}
-                  <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-                    <p class="crudDelete">
-                      	<input type="hidden" name = "justification" id = "justText">
-                       <input type="submit" value="&{'Hide Topic', type.modelName}" class = "linkButton"/>
-                   </p>
-                 </form> 
-            	#{/if}
-             #{/if}
-             #{if hidden}		
-                #{if object.hider.username == actor.username}		
-		           <form action="@{unhide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
-	                  <p class="crudDelete">		
-                         <input type="submit" value="Unhide" class = "linkButton"/>		
-                      </p>		
-                  </form>			
-                #{/if}		
-            #{/if}
-          #{/if}</div>
-		</h3>
-        </p>
-        
-        <p>
-            <h3>
-            <font size= "4">	
-            <label for="object_entity">
-                in
-            </label>
-            <label id="object_entity" cols="30" rows="1" class="" name="object.entity">
-            	<a href="@{MainEntitys.viewEntity(entity.id)}"> ${object.entity}</a>
-                
-            </label>
-			</font>
-			</h3>
-        </p>
-       
-        <br/>
-        <p>
-           <h3>
-           	<font size= "4">
-            <label id="object_description" class="" name="object.description">
-                ${object.description}
-            </label>
-			</font>
-			</h3>
-            <!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
-        </p>
-        <br/>
-        <p>
-           <h3>
-           	<font size="3">
-            #{if object.privacyLevel ==1} 
-            <label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
-                Private
-            </label>
-            #{/if}
-            #{else}
-            <label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
-                Public
-            </label>
-            #{/else}
-			<label for="object_privacyLevel">
-                topic
-            </label>
-			</font>
-			</h3>
-        </p>
+<div name= "scripts">
 		
-        <p>
-            <h3>
-            	<font size="3">
-            <label id="object_createRelationship" cols="50" rows="5" class="" name="object.createRelationship">
-                #{if object.createRelationship}
-				Relationship creation allowed
-				#{/if}
-				#{else}
-				Relationship creation not allowed
-				#{/else}
-            </label>
-			</font>
-			</h3>
-            <!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
-        </p>
-		</div>
-		<div name="relationships">
-           				
-			 <a onclick="$('#lista').slideToggle();">Show Relationships</a>
-			   <div id="lista" style="display: none;">
-			   	#{if targetTopic.relationsSource != null}
-			      #{list items:targetTopic.relationsSource, as:'relationElement'}
-						<ul><a href="/topics/show?topicId=${relationElement.source.id}">${relationElement.source.title}</a> <q id=${relationElement.id}>${relationElement.name}</q> <a href="/topics/show?topicId=${relationElement.destination.id}">${relationElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relationElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relationElement.id})" />#{/if}</ul>
-				  #{/list}
-				#{/if}
-				#{if targetTopic.relationsDestination != null}
-				  #{list items:targetTopic.relationsDestination, as:'relElement'}
-						<ul><a href="/topics/show?topicId=${relElement.source.id}">${relElement.source.title}</a> <q id=${relElement.id}>${relElement.name}</q> <a href="/topics/show?topicId=${relElement.destination.id}"> ${relElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relElement.id})" />#{/if}</ul>
-				  #{/list}
-				#{/if}
-			   </div>
-			   
-			   <script type="text/javascript">
-			   	function showRename(relId)
-				{
-				var newRelName = prompt("Please enter the new name:", document.getElementById(relId).textContent);
-				location.reload();
-				if (newRelName!=null && newRelName!="")
-			  	{
-			  	$.post('@{TopicRelationships.renameRelationship()}', {
-					relationToBeRenamedId: relId,
-					newName: newRelName
-				});
-				
-			  	}
-				}
-			   </script>
-			   
-			#{if seeRelationStatus}
-			#{if createRelationship}
-			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
-				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
-				<input type="checkbox" id="createRelationship" name="createRelationship" checked>Allow topic to have relationships </input>
-				<input type="submit" onclick="get_Value()" value="Change" class = "linkButton"><br />
-			</form>
-			#{/if}
-			#{else}
-			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
-				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
-				<input type="checkbox" id="createRelationship" name="createRelationship">Allow topic to have relationships
-				<input type="submit" onclick="get_Value()" value="Change" class = "linkButton"><br />
-			</form>
-			#{/else}
-			#{/if}
-			
-            </div>   
-		
-		 
-            <script type="text/javascript">
+		    <script type="text/javascript">
             	$('#spam').click(function(){
             	$('#success').show();});
             </script>
-            <style type="text/css">
-			#success{display: none;}
-		</style>
-		
-		<br />
-        <div>		
-        <h4>List of ideas within this topic : </h4>
-        
-		#{if numberOfIdeas > 0}
-        <form action=@{Ideas.show(ideaId)}>
-                #{if ideas}
-                #{list items:ideas, as:'idea'}
-                #{if idea.isDraft == false}
-				<li id="idea_${idea.id}">
-				<fieldset>
-                <a id = "LOL" href="@{Ideas.show(idea.id)}"><font size=3>${idea.title}</font></a>
-				#{if canDelete}
-				<input type="button" name="hide" value="Hide Idea" onclick="hides(${idea.id});" class = "linkButton">
-				<input type="button" name="delete" value="x" onclick="deletes(${idea.id});" class = "linkButton">
-				#{/if}
-                <div id = "table_${idea.id}">
-                <label><font size=3>Description : ${idea.description}</font></label>
-                </br>
-                <label><font size=3>by : ${idea.author}</font></label>
-                </tr>
-                </div>
-                </fieldset>
-                </li>
-				#{/if}
-                #{/list}
-                        <script type ="text/javascript">
-        				$("#hide").click(function(){
-						$("#idea").hide();});
-                        
-
-                        var showOrHide = function(id) {
-                        		$("#table_"+id).toggle();
-                        		$("#hidedetails_"+id).toggle();
-                        		$("#showdetails_"+id).toggle();
-                        	
-                        }
-		
-      		    </script>
-                #{/if}
-                #{else}
-                no ideas posted to this topic
-                #{/else}    
-        </form>
-        #{/if}
-      
-        #{if numberOfIdeas == 0}<h4>no ideas posted to this topic</h4>
-        #{/if}
-		<br />
-		#{if canDelete}
-		<input id="showhidden" type="submit" value="show hidden Ideas" class = "linkButton">
-		<div id="hidden">
-		#{list items:hiddenIdeas, as:'idea'}
-				<fieldset>
-				</br>
-                <label>${idea.title}</label>
-                </br>
-                <label>Description : ${idea.description}</label>
-                </br>
-                <label>by : ${idea.author}</label>
-                <input type="submit" value="unhide" onclick="unhide(${idea.id})" class = "linkButton">
-                </fieldset>
-        #{/list}
-        </div>
-		#{/if}
-        
-        #{if topicNotClosed==true}
-        <input id="postIdea" type="button" value="Post Idea to this topic" class = "linkButton">
-        #{/if}
-        <div id="postIdeaform">
-        	<p>
-            <label>Title  <font color="#123456"><span id="flashAmessage"></span></font>
-            <br>	
-       		<input type="text" id="ideaTitle" cols="30" rows="1" class="" name="object.title" required>
-            <span id = "ideaTitleError">
-                <font color="Red">
-                    *
-                </font>Required
-            </span>
-            </p>
-            <p>
-            <label>
-                Description
-            </label>
-            <br>
-            <textarea id="ideaDescription" cols="50" rows="5" class="" name="object.description" required></textarea>
-            <span id="ideaDescriptionError">
-                <font color="Red">
-                    *
-                </font>Required
-            </span>
-            </p>
-			<input id ="draftSaver" type="submit"  value="Save as Draft" onclick="save()" class = "linkButton"></input>
-           	<input type="submit" value="post" onclick="postIt()" class = "linkButton"></input>
-		<style type="text/css">
-			#postIdeaform{display: none;}
-		</style>
-		#{if numberOfIdeas > 0}
-		<style type="text/css">
-			#showdetails_${idea.id}{display: none;}
-		</style>
-		#{/if}
-		<script type="text/javascript">
-		$("#postIdea").click(function(){
-			$("#postIdeaform").toggle();
-			auto();
-           });
-		$("#showhidden").click(function(){
-          	 $("#hidden").toggle();
-           });
-                 </script>
-		<style type="text/css">
-			#hidden{display: none;}
-		</style> 
-	</div> 
-</div>
-  
-  <br />
-  <br />
- 
-               
-            	
-			<div name= "scripts">
 				
             <script type="text/javascript">
             	
@@ -845,8 +372,515 @@
 					});
 					$('#idea_' + id).hide();
 			}
+			
+			</script>
+			
+			<script type="text/javascript">
+				var accordionItems = new Array();
+
+			function init() {
+				
+				alert("init");
+
+				// Grab the accordion items from the page
+				var divs = document.getElementsByTagName( 'div' );
+				for ( var i = 0; i < divs.length; i++ ) {
+					if ( divs[i].className == 'accordionItem' )
+						accordionItems.push( divs[i] );
+				}
+
+				// Assign onclick events to the accordion item headings
+				for ( var i = 0; i < accordionItems.length; i++ ) {
+					var h3 = getFirstChildWithTagName( accordionItems[i], 'H3' );
+					h3.onclick = toggleItem;
+				}
+
+				// Hide all accordion item bodies except the first
+				for ( var i = 1; i < accordionItems.length; i++ ) {
+					accordionItems[i].className = 'accordionItem hide';
+				}
+			}
+
+			function toggleItem() {
+				alert("toggleItem");
+				var itemClass = this.parentNode.className;
+
+				// Hide all items
+				for ( var i = 0; i < accordionItems.length; i++ ) {
+					accordionItems[i].className = 'accordionItem hide';
+				}
+
+				// Show this item if it was previously hidden
+				if ( itemClass == 'accordionItem hide' ) {
+					this.parentNode.className = 'accordionItem';
+
+				}
+			}
+
+			function getFirstChildWithTagName( element, tagName ) {
+				for ( var i = 0; i < element.childNodes.length; i++ ) {
+					if ( element.childNodes[i].nodeName == tagName )
+						return element.childNodes[i];
+				}
+				
+			}
 			</script>
 			
 			</div>
+	
+
+</head>
+
+<div id="leftSidebar">
+    <ul>
+        <div style="clear: both;">
+            &nbsp;
+        </div>
+        <li>
+            <ul>
+            	#{if permission == 1}
+                <li>
+                <input type="submit" value="Edit topic" onclick=location.href="@{Topics.view(topicId)}" class="linkButton"> 
+                </li>
+				 #{/if}
+                
+				#{if allowed==1}
+				<li>
+					<input type="submit" value="Requests" onclick=location.href="@{RequestToJoins.viewRequests(1,object.id)}" class="linkButton">
+                </li>
+                #{/if}
+				
+				#{if allowed==1}
+				<li>
+					<input type="submit" value="Invite" onclick=location.href="@{Invitations.invite(object.id,1,0,0)}" class="linkButton">
+                </li>
+                #{/if}
+       
+				#{if alreadyReportedTopic==false && canReport}
+				<li>
+                    <form action="@{Users.reportTopicAsSpam()}" method="GET" name="myform">
+                          <input type="hidden" name="topicId" value="${topicId}">
+                          <input id="spam" type="submit" value="Report Topic As Spam" class = "linkButton">
+                    </form>
+                </li>
+				#{/if}
+				
+				#{if alreadyReportedTopic==true}
+                <li>
+                    <font color="Red">Already reported as spam</font>
+                </li>
+				#{/if}
+				
+				
+				<li>
+				  	<form action="@{Topics.tagTopic()}" method="post">
+        	             <input type="hidden" value=${topicId} name='topicId'>
+			             <input type="hidden" value='@@' name='tag'>
+						 <input type="submit" value="Add tags" class = "linkButton">
+        			</form>
+				</li>
+				
+				 #{if numberOfIdeas > 1 && canMerge == 1}
+                <li>
+                   #{form @Topics.getIdeasToMerge(), method:'POST', enctype:'multipart/form-data' }
+				       <input type = "hidden" name = "topicId" value = ${topicId}>
+				       <input type="submit" value="Merge Ideas" class = "linkButton"/>
+				   #{/form}
+                </li>
+				#{/if}
+				
+				#{if canClose == 1 && openToEdit == true}
+                <li> 
+					#{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "topicId" value = ${topicId}>
+						<input type="submit" value="Close Topic" class = "linkButton"/>
+					#{/form} 
+		        </li>
+				#{/if} 
+				
+				#{if canClose == 1 && openToEdit == false}
+                <li>
+                    #{form @Topics.reopen(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "topicId" value = ${topicId}>
+						<input type="submit" value="Reopen Topic" class = "linkButton"/>
+					#{/form}
+                </li>
+				#{/if} 
+				
+				
+				#{if canPlan == 1 && plan == null}
+				<li>
+					#{form @Plans.planCreate(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "topicId" value = ${topicIdLong}>
+						<input type="submit" value="Create A plan" class = "linkButton"/>
+					#{/form}
+				</li>
+				#{/if}
+					
+				#{if plan != null}
+				<li>
+					#{form @Plans.viewAsList(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "planId" value = ${plan.id}>
+						<input type="submit" value="View the plan" class = "linkButton"/>
+					#{/form}
+				</li>
+				#{/if}
+					
+				#{if check == 1}
+				<li>
+					 <input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(topicId,1)}" class = "linkButton">
+				</li>
+				#{/if}
+					
+				#{if (targetTopic.createRelationship == true)}
+				#{if (canCreateRelationship == true)}
+				<li>
+					<p>
+						<input type="submit" value="Create Relation" onclick=location.href="@{Topics.createRelation(object.id,object.entity.id)}" class="linkButton">
+					</p>
+				</li>
+				#{/if}
+				#{/if}
+				
+				 #{if (!targetTopic.followers.contains(user))} 
+			     #{if follower == false} 
+				<li>
+						<form action="@{Topics.viewFollowers()}">
+			   				 <input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">
+			       		     <input type="submit" value="Follow ${targetTopic.title}" class = "linkButton">
+			   	 		</form>
+				</li>
+			    #{/if}
+			    #{/if}
+				 
+				#{if follower == true}
+		        <li id="unfollo">
+			    <input type="submit" value="Unfollow ${targetTopic.title} " onclick="unfollow('${topicId}');" class = "linkButton"/>
+				</li>
+			    #{/if}
+			      
+				<li id="follo">
+				    <form action="@{Topics.viewFollowers()}">
+				     	 <input type="hidden" name="topicId" value="${targetTopic.id} Followers"><input type="hidden" name="f" value="false"> <input type="submit" value="Followers" class = "linkButton">
+				 	</form>
+			    </li>
+				
+				#{if canNotPost == true}
+				<li id="req"><input type="submit" value="Request to post on this topic" onclick="requestToPost('${topicId}');" class="linkButton"></li>
+               #{/if}
 			
+           	   #{if pending == true && canNotPost == false}
+			   <li>Request To Post status: Pending</li>
+           	   #{/if}
+			
+			   <li id="pen">
+	                Request To Post status: Pending
+					<script type="text/javascript">
+						 $('#pen').hide();
+					</script>
+			   </li>
+			   
+			   #{if (canRestrict == 1)}
+			   <li>
+		           <input type="submit" value="Restrict/De-Restrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerTopicPath(topicId)}" class = "linkButton">	
+			   </li>
+			   #{/if}
+			   
+			   <li>
+			    	<form action="@{Topics.requestRelationship(actor.id, organisation.id, entity.id, targetTopic.id)}" method="post">
+	 					<input type="submit" value="Request Relationship Creation" class = "linkButton">
+	  				</form>
+				</li>	
+					
+	 			<li>
+	 				<form action="@{Topics.viewRelationships(actor.id, organisation.id, entity.id, targetTopic.id, canRequestRelationship)}" method="post">
+	  					<input type="submit" value="View Relationships" class = "linkButton">
+	  				</form>
+				</li>
+				
+				
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+
+<body onload="init()">
+<div id ="page">#{script src:"jquery-1.5.2.min.js" /}
+<script type="text/javascript" src="/public/javascripts/jquery-1.4.1.js"></script>
+<br/>
+
+
+
+<table id = "success" border="0" bgcolor="#FF0000" cellspacing="0" id ="toFil">
+		<tr><td><font size ="3" color ="black"><i>
+					<font color="#000000"><b><i>Topic Has been Reported As Spam</i></b></font>                
+        </i></font></td></tr>
+</table>
+
+<div id="backToEntity" ><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a></div>
+
+<div id="crudShow" class="${type.name}">
+	<br />
+    
+    <div id="topicShow" class="objectForm">
+        <p>
+		   <h3> <label id="object_title" cols="30" rows="1" class="" name="object.title" >
+              <font size = "6">  ${object.title} </font> 
+				<font size= "4">
+			<label for="object_creator">
+                by
+            </label>
+            <label id="object_creator" cols="30" rows="1" class="" name="object.creator">
+            	<a href="@{Users.viewProfile(object.creator.id)}">${object.creator.username}</a>
+            </label>
+			</font>
+            </label>
+			
+		</h3>
+            <h3>
+            <font size= "4">	
+            <label for="object_entity">
+                in
+            </label>
+            <label id="object_entity" cols="30" rows="1" class="" name="object.entity">
+            	<a href="@{MainEntitys.viewEntity(entity.id)}"> ${object.entity}</a>
+                
+            </label>
+			</font>
+			</h3>
+        </p>
+       
+        <br/>
+        <p>
+           <div id="descriptionShow">
+           	<span class="arrow"></span>
+           	<font size= "4">
+            <label id="object_description" class="" name="object.description">
+                ${object.description}
+            </label>
+			</font>
 			<br />
+			<div id="deleteHide">#{if permission == 1}
+  			   #{if !hidden}
+   				 #{if deletable}
+   				   <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+       				 <p class="crudDelete">
+        				<input type="hidden" name = "justification" id = "justText">
+           			    <input type="image" src="/public/images/trash.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
+      			    </p>
+    			   </form> 
+		        #{/if}
+                #{if !deletable}
+				#{if object.plan == null}
+                  <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+                    <p class="crudDelete">
+                      	<input type="hidden" name = "justification" id = "justText">
+                       <input type="submit" value="&{'Hide Topic', type.modelName}" class = "linkButton"/>
+                   </p>
+                 </form> 
+				#{/if}
+            	#{/if}
+             #{/if}
+             #{if hidden}		
+                #{if object.hider.username == actor.username}		
+		           <form action="@{unhide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
+	                  <p class="crudDelete">		
+                         <input type="submit" value="Unhide" class = "linkButton"/>		
+                      </p>		
+                  </form>			
+                #{/if}		
+            #{/if}
+          #{/if}</div>
+			</div>
+            <!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
+        </p>
+        <br/>
+        <p>
+           <h3>
+           	<font size="3">
+            #{if object.privacyLevel ==1} 
+            <label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
+                Private
+            </label>
+            #{/if}
+            #{else}
+            <label id="object_privacyLevel" cols="3" rows="1" class="" name="object.privacyLevel">
+                Public
+            </label>
+            #{/else}
+			<label for="object_privacyLevel">
+                topic
+            </label>
+			</font>
+			</h3>
+        </p>
+		
+        <p>
+            <h3>
+            	<font size="3">
+            <label id="object_createRelationship" cols="50" rows="5" class="" name="object.createRelationship">
+                #{if object.createRelationship}
+				Relationship creation allowed
+				#{/if}
+				#{else}
+				Relationship creation not allowed
+				#{/else}
+            </label>
+			</font>
+			</h3>
+            <!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
+        </p>
+		
+		</div>
+		
+    <div id="relationships">
+           				
+			 <a onclick="$('#lista').slideToggle();">Show Relationships</a>
+			   <div id="lista" style="display: none;">
+			   	#{if targetTopic.relationsSource != null}
+			      #{list items:targetTopic.relationsSource, as:'relationElement'}
+						<ul><a href="/topics/show?topicId=${relationElement.source.id}">${relationElement.source.title}</a> <q id=${relationElement.id}>${relationElement.name}</q> <a href="/topics/show?topicId=${relationElement.destination.id}">${relationElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relationElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relationElement.id})" />#{/if}</ul>
+				  #{/list}
+				#{/if}
+				#{if targetTopic.relationsDestination != null}
+				  #{list items:targetTopic.relationsDestination, as:'relElement'}
+						<ul><a href="/topics/show?topicId=${relElement.source.id}">${relElement.source.title}</a> <q id=${relElement.id}>${relElement.name}</q> <a href="/topics/show?topicId=${relElement.destination.id}"> ${relElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relElement.id})" />#{/if}</ul>
+				  #{/list}
+				#{/if}
+			   </div>
+			   
+			   <script type="text/javascript">
+			   	function showRename(relId)
+				{
+				var newRelName = prompt("Please enter the new name:", document.getElementById(relId).textContent);
+				location.reload();
+				if (newRelName!=null && newRelName!="")
+			  	{
+			  	$.post('@{TopicRelationships.renameRelationship()}', {
+					relationToBeRenamedId: relId,
+					newName: newRelName
+				});
+				
+			  	}
+				}
+			   </script>
+			   
+			#{if seeRelationStatus}
+			#{if createRelationship}
+			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
+				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
+				<input type="checkbox" id="createRelationship" name="createRelationship" checked>Allow topic to have relationships </input>
+				<input type="submit" onclick="get_Value()" value="Change" class = "linkButton"><br />
+			</form>
+			#{/if}
+			#{else}
+			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
+				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
+				<input type="checkbox" id="createRelationship" name="createRelationship">Allow topic to have relationships
+				<input type="submit" onclick="get_Value()" value="Change" class = "linkButton"><br />
+			</form>
+			#{/else}
+			#{/if}
+			
+            </div>   
+		
+            <style type="text/css">
+			#success{display: none;}
+		</style>
+		
+		<br />
+    
+    <div>
+    	 #{if numberOfIdeas > 0}
+			<br />
+		<p>List of Ideas:</p>
+        <ul style="list-style: none;">   
+		#{list items:ideas, as:'idea'}
+		
+		#{if idea.isDraft == false}
+		<li>
+			<div class="accordionItem">
+			<h3><a href="@{Ideas.show(idea.id)}">${idea.title}</a>    <font color ="#FF0000" size =4>    ⊕</font></h3>
+				<div>
+					<p><font size=2>Description: ${idea.description}</font></p>
+					<p><font size=2>Creator: ${idea.author}</font></p>
+				</div>
+			</div>
+		</li>
+		#{/if}
+		#{/list}
+		</ul>
+		#{/if}
+		#{else}
+		No ideas available for this topic!
+		#{/else}
+		
+    </div>    
+		<br />
+        <br />
+ </div>
+ 
+ </div>
+ </body>
+               		
