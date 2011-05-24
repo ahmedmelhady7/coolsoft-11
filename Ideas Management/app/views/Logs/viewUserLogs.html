@@ -30,7 +30,10 @@ Search Logs <input type="text" size="20" name="name" id="table">
 <table border="0" bgcolor="#ececec" cellspacing="5" id ="toFil">	
 <tr><td width="100%"><font size ="2" color ="black"> </font></td><td>
 #{list items:toFilter, as:'filter'} 
-<tr><td width="100%"><font size ="2" color ="black">${filter.actionDescription} &nbsp;&nbsp;&nbsp;&nbsp; ${filter.time}</font></td><td>
+
+<tr><td width="100%"><font size ="2" color ="black">${filter.actionDescription.raw()} &nbsp;&nbsp;&nbsp;&nbsp; ${filter.time}</font></td><td>
+	
+	
 #{/list}
 </table>
 <div id="pageNavPosition"></div>
@@ -73,7 +76,7 @@ function show(){
 			  	
 				$('#toFil').html('<tr><td><font size=2>  </font></td><td>');
 				 for (var i = 0; i < action.length; i++) {
-				 	var text = action[i];
+				 	var text = action[i].raw();
 			  	var tex = times[i];
 				 	$('#toFil').append('<tr><td><font size=2> ' + text +'&nbsp;&nbsp;&nbsp;&nbsp;'+ tex + '</font></td><td>');
 				 	$('#toFil').show();
