@@ -61,8 +61,8 @@ public class Accounts extends Controller{
 			String profession)
 	{
 		
-		String hashedPassword =Application.hash(password);
-		User user = new User(email,username,hashedPassword , firstName, lastName,securityQuestion, answer, 0, dateofBirth, country, profession);
+		//String hashedPassword =Application.hash(password);
+		User user = new User(email,username,password , firstName, lastName,securityQuestion, answer, 0, dateofBirth, country, profession);
 		user.state = "w";
 		Mail.activation(user);
 		user._save();
