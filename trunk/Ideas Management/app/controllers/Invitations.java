@@ -334,6 +334,17 @@ public class Invitations extends CoolCRUD {
 		User user = Security.getConnected();
 		List<Invitation> invitation = Invitation.find("byEmail", user.email)
 				.fetch();
+		for(int i=0;i<invitation.size();i++){
+			if(invitation.get(i).entity!=null){
+			if(! Users.isPermitted(user,"view",invitation.get(i).entity.id,"entity"))
+				 invitation.remove(i);
+			}
+			else
+		     if(invitation.get(i).topic!=null){
+				if(! Users.isPermitted(user,"view",invitation.get(i).topic.id,"topic"))
+					 invitation.remove(i);
+				}
+		}
 		render(invitation);
 
 	}
