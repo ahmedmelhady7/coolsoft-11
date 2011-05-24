@@ -81,7 +81,7 @@
 /** Main content **/
 
 #main {
-    background: #2554C7;
+    background: #488AC7;
     background: -webkit-gradient(linear, left top, left 30%, from(#314660), to(#364B66));
     -webkit-border-radius: 16px;
     -moz-border-radius: 16px;
@@ -197,14 +197,17 @@ h3 span {
 }
 
 .comment {
-    width: 70%;
+	margin-top
     clear: both;
+    position: inherit;
+    margin: auto;
+    
 }
 
 .comment .comment-metadata {
-    color: #869AB1;
+    color: #FFFFF;
     display: block;
-    font-size: 50%;
+    font-size: 58%;
     display: block;
     float: left;
     width: 80px;
@@ -225,7 +228,7 @@ h3 span {
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 100px;
-    padding: 10px;
+    padding: 18px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
 }

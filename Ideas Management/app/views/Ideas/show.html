@@ -8,11 +8,125 @@
 		padding-right: 20px;
 	}
 </style>
-<br/>
+<div id="leftSidebar">
+  	<br/>
+	<br/>
+  <div class="objectForm">
+  	<br/>
+    <br/>
+    #{if isAuthor}
+    #{form @delete(object._key())}
+			<input type="submit"  class="linkButton" style="color: red;" value="&{'Delete My Idea', type.modelName}" />
+	#{/form}    
+	#{/if}
+	<br/>
+    <br/>
+	#{if canDelete && !isAuthor}
+		<form action="@{Topics.deleteIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+        	<input type="hidden" name = "justification" id = "justText">
+            <input type="submit"  class="linkButton" style="color: red;" align="right" value="&{'Delete Idea', type.modelName}" />
+    </form>
+	#{/if}
+	<br/>
+    <br/>
+	#{if canDelete && !isAuthor}
+	<form action="@{Topics.hideIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+        	<input type="hidden" name = "justification" id = "justText2">
+            <input type="submit" class="linkButton" style="color: red;"  value="&{'Hide Idea', type.modelName}" />
+    </form>
+    #{/if}
+  </div>
+  	<br/>
+    <br/>
+  #{if ideaAlreadyReported==false && canReport}
+		    <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform">
+        		<input type="hidden"  name="ideaId" value="${ideaId}">
+                <input id="spam" align="right" style="color: #4CC417" type="submit" class="linkButton" value="Report Idea As Spam">
+            </form>
+          #{/if}
+          #{if ideaAlreadyReported==true}
+		        <input id="spam" disabled="disabled" class="linkButton" type="hidden" value="Report Idea As Spam">
+        				<b><font color="Red">you have already reported this idea</font><b>
+          #{/if}
+     <br/>     
+     <br/>
+    <input type="button" class="linkButton" style="color: #4CC417" id ='like' value="Like" onclick="like()" />
+    <br/>
+    <br/>
+	<input type="button" class="linkButton" style="color: #4CC417" id ='dislike' value="Dislike" onclick="disLike()" />
+	<br/>
+	<br/>
+	<form action="@{Ideas.tagIdea()}" method="post">
+        	<input type="hidden" value=${ideaId} name='ideaId'>
+			<input type="hidden" value='@@' name='tag'>
+			<input type="submit" class="linkButton" style="color: #4CC417" value="Add tags">
+    </form>
+    <br/>
+    <br/>
+    <input type = "submit" id = "commentsd" class="linkButton" style="color: #4CC417"  value = "Show Comments" onclick="viewComments()" >
+	<br/>
+    <br/>
+    <input type="button" class="linkButton" style="color: #4CC417" id ='share' value="Share idea"/>
+    #{if notBlockedFromUsing}
+	<form id="shareidea" action="@{Ideas.shareIdea()}">
+			<input type="submit" class="linkButton" style="color: #4CC417" value="Share with user" />
+			<input type="hidden" name="ideaId" value="${ideaId}">
+			<select id="userName" name = "userName"> 
+					#{list userNames, as:'name'}
+					<option>${name}</option>
+					#{/list}
+					</select>
+		</form>
+		</br>
+		</br>
+		#{/if}
+	<input type="button" class="linkButton" style="color: #4CC417" id ='rate' value="Rate idea"/>
+	<font color="#4E4848">Idea rating : ${rate}</font>
+ 		<br/>
+ 		<br/>
+ 		#{if notBlockedFromUsing}
+ 		#{if checkPermitted}
+ 		#{if checkNotRated}
+		<form id="rateidea" action="@{Ideas.rate(ideaId,rat)}" method="GET">
+    <input type="submit" class="linkButton" style="color: #4CC417" value="Submit rating"/><input type = "hidden" name = "ideaId" value = ${ideaId}>
+    <select name="rat">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+</form>
+		#{/if}
+		#{else}
+		<font style="display: none;" id='rated'>You have already rated this idea</font>
+		#{/else}
+		#{/if}	
+		<input type="button" class="linkButton" style="color: #4CC417" id ='prior' value="Prioritize idea"/>
+		<font color="#4E4848">Idea priority : ${priority}</font>	
+		<br/>
+		<br/>
+		#{if notBlockedFromUsing}
+		#{if checkPermitted}
+		<form id="prioritizeidea" action = @{Ideas.setPriority()} method = "GET">
+		<input type = "hidden" name = "ideaId" value = ${ideaId} >
+		<br />
+		<input type = "radio" name = "priority" value = "critical" checked ="checked"/> critical
+		<br />
+		<input type = "radio" name = "priority" value = "high"/> high
+		<br />
+		<input type = "radio" name = "priority" value = "medium"/> medium
+		<br />
+		<input type = "radio" name = "priority" value = "low"/> low
+		<br />
+		<input type ="submit" style="color: #4CC417" class="linkButton" value = "Submit Priority"/>
+		</form>
+		#{/if}
+		#{/if}
+</div>
 <div id="main" class ="post">
 <a href="@{Topics.show(topic.id)}"><font color="#4CC417">Back to ${topic.title}</a>
-<br/>
-<br/>
 <h3>
     <label>
         View idea
@@ -29,34 +143,10 @@
 		#{/list}
 	</ul>
 </div>
-<table id = "success" border="0" bgcolor="#FF0000" cellspacing="0" id ="toFil">
-		<tr><td><font size ="3" color ="black" style="display: none;"><i>
-					<font color="#000000"><b><i>Idea Has been Reported As Spam styl</i></b></font>                
-        </i></font></td><td>
-</table>
     <font color="Red">
         ${message}
     </font>
-    <div class="objectForm">
-    #{if isAuthor}
-    #{form @delete(object._key())}
-			<input type="submit"  class="linkButton" style="color: red;" value="&{'Delete My Idea', type.modelName}" />
-	#{/form}    
-	#{/if}
-	
-	#{if canDelete && !isAuthor}
-		<form action="@{Topics.deleteIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-        	<input type="hidden" name = "justification" id = "justText">
-            <input type="submit"  class="linkButton" style="color: red;" align="right" value="&{'Delete Idea', type.modelName}" />
-    </form>
-	#{/if}
-	#{if canDelete && !isAuthor}
-	<form action="@{Topics.hideIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-        	<input type="hidden" name = "justification" id = "justText2">
-            <input type="submit" class="linkButton" style="color: red;"  value="&{'Hide Idea', type.modelName}" />
-    </form>
-    #{/if}
-    </div>
+    
     </div>
     <div id="main2">
         <p>
@@ -79,24 +169,26 @@
           <div class="about">Detail:</div>
 		  <h3>${object.description}</h3>
         </div>
-
-		  #{if ideaAlreadyReported==false && canReport}
-		    <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform">
-        		<input type="hidden"  name="ideaId" value="${ideaId}">
-                <input id="spam" align="right" style="color: #4CC417" type="submit" class="linkButton" value="Report Idea As Spam">
-            </form>
-          #{/if}
-          </br>
-          </br>
-          #{if ideaAlreadyReported==true}
-		        <input id="spam" disabled="disabled" class="linkButton" type="hidden" value="Report Idea As Spam">
-        				<b><font color="Red">you have already reported this idea</font><b>
-          #{/if}
-          </br>
-          </br>
+        <div class="comment">
+ 		#{if comments} 
+ 			<font color="black">Comments</font> 
+ 			<br/> 
+ 					#{list comments, as:'comment'} 
+ 					<div class="comment-metadata">
+						<span class="comment-author">by ${comment.commenter.username}</span>
+						<span class="comment-date">${comment.commentDate}</span>
+					</div>
+ 					<div class="comment-content">
+ 						<div class="about">Detail:</div>
+ 						<li><a>${comment.comment}</a></li>
+ 						<input align="right" style="float: right;" type="button" value="Report" class="linkButton" />
+ 					</div>
+ 					#{/list} 
+ 					<br/>
+ 		#{/if} 
+ 		#{else}No comments posted#{/else}
+ 		</div>
             <script type="text/javascript">
-            	$('#spam').click(function(){
-            	$('#success').show();});
             	function prompt1(){
 					var text = prompt("Why do you want to delete/hide this idea?");
 					
@@ -110,36 +202,27 @@
 					}
 					
 				}
+            	$('#share').click(function(){
+                	$('#shareidea').toggle();});
+            	$('#rate').click(function(){
+                	$('#rateidea').toggle();
+                	$('#rated').toggle();});
+            	$('#prior').click(function(){
+                	$('#prioritizeidea').toggle();});
+            	
             </script>
-            <style type="text/css">
-					#success{display: none;}
-			</style>            
+			<style type="text/css">
+					#shareidea{display: none;}
+			</style>
+			<style type="text/css">
+					#rateidea{display: none;}
+			</style>
+			<style type="text/css">
+					#prioritizeidea{display: none;}
+			</style>
+			             
 	<div>
-	#{if notBlockedFromUsing}
-	<form action="@{Ideas.shareIdea()}">
-			<input type="submit" class="linkButton" style="color: #4CC417" value="Share with user" />
-			<input type="hidden" name="ideaId" value="${ideaId}">
-			<select id="userName" name = "userName"> 
-					#{list userNames, as:'name'}
-					<option>${name}</option>
-					#{/list}
-					</select>
-		</form>
-		</br>
-		</br>
-		#{/if}
-			<input type="button" class="linkButton" style="color: #4CC417" id ='like' value="Like" onclick="like()" />
-			<input type="button" class="linkButton" style="color: #4CC417" id ='dislike' value="Dislike" onclick="disLike()" />
-		</br>
-		</br>
-		<form>
-			<big><b><font color="#4E4848">List Of Duplicates</font></b></big>
-			#{list items:idea.duplicateIdeas , as:'idea'}
-			<li>
-				<a href='@{Ideas.show(idea.id)}' ><b><font color="#4E4848">${idea.title}</font></b></a>
-			</li>
-			#{/list}
-		</form>
+		
 				<script type='text/javascript'>
 			;
 			function like(){
@@ -158,38 +241,13 @@
 				});
 			}
 		</script>
-		</br>
- 		<font color="#4E4848">Idea rating : ${rate}</font>
- 		<br/>
- 		<br/>
- 		#{if notBlockedFromUsing}
- 		#{if checkPermitted}
- 		#{if checkNotRated}
-		<form action="@{Ideas.rate(ideaId,rat)}" method="GET">
-    <input type="submit" value="Submit rating"/><input type = "hidden" name = "ideaId" value = ${ideaId}>
-    <select name="rat">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select>
-</form>
-		#{/if}
-		#{else}
-		You have already rated this idea
-		#{/else}
-		#{/if}
-		<br />
  		<form action="@{Comments.addCommentToIdea()}" method="GET">
-			<textarea name = "comment"></textarea>
+			<div id="comment-content"><textarea name = "comment"></textarea></div>
       	 	<input type = "hidden" name = "ideaID" value = ${ideaId} >
 			<input type = "submit" value = "Comment"  >
 		</form>
 		<br/>
 		#{/if}
-		<input type = "submit" id = "commentsd" class="linkButton" style="color: #4CC417"  value = "Show Comments" onclick="viewComments()" >
 		<br/>
 		<br/>
 		<div id='div1' align='left' style="display: none"></div>
@@ -211,44 +269,25 @@
                         }
                         </script>
          </div>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<font color="#4E4848">Idea priority : ${priority}</font>	
-		<br/>
-		<br/>
-		#{if notBlockedFromUsing}
-		#{if checkPermitted}
-		<form action = @{Ideas.setPriority()} method = "GET">
-		<input type ="submit" style="color: #4CC417" class="linkButton" value = "Submit Priority"/>
-		<input type = "hidden" name = "ideaId" value = ${ideaId} >
-		<br />
-		<input type = "radio" name = "priority" value = "critical" checked ="checked"/> critical
-		<br />
-		<input type = "radio" name = "priority" value = "high"/> high
-		<br />
-		<input type = "radio" name = "priority" value = "medium"/> medium
-		<br />
-		<input type = "radio" name = "priority" value = "low"/> low
-		<br />
+		<form>
+			<big><b><font color="#4E4848">List Of Duplicates</font></b></big>
+			#{list items:idea.duplicateIdeas , as:'idea'}
+			<li>
+				<a href='@{Ideas.show(idea.id)}' ><b><font color="#4E4848">${idea.title}</font></b></a>
+			</li>
+			#{/list}
 		</form>
-		#{/if}
-		#{/if}
-        <br />
-        <br />
-        </div>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		</div>
         </br>
         </div>
-		<form action="@{Ideas.tagIdea()}" method="post">
-        	<input type="hidden" value=${ideaId} name='ideaId'>
-			<input type="hidden" value='@@' name='tag'>
-			<input type="submit" value="Add tags">
-        </form>
 </div>
 </div>    
 </div>
