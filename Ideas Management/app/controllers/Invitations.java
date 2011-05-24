@@ -21,8 +21,6 @@ import play.mvc.With;
 import models.Log;
 import com.google.gson.JsonObject;
 
-//import com.mysql.jdbc.log.Log;
-
 @With(Secure.class)
 public class Invitations extends CoolCRUD {
 	public static List<User> users = new ArrayList<User>();
@@ -52,16 +50,14 @@ public class Invitations extends CoolCRUD {
 	 * 
 	 */
 	public static void invite(long id, int type, int check, int flashError) {
-		
-		User user=Security.getConnected();
-		System.out.println("ya rab");
-		System.out.println(id);
+
+		User user = Security.getConnected();
 		List<User> usersMatched = new ArrayList<User>();
-		for (User user1: users) {
+		for (User user1 : users) {
 			usersMatched.add(user1);
 		}
 		if (type == 0) {
-			int permitted=0;
+			int permitted = 0;
 			if (Users
 					.isPermitted(
 							user,
@@ -69,9 +65,10 @@ public class Invitations extends CoolCRUD {
 							id, "entity"))
 				permitted = 1;
 			MainEntity entity = MainEntity.findById(id);
-			render(type, check, entity, usersMatched, flashError,permitted,user);
+			render(type, check, entity, usersMatched, flashError, permitted,
+					user);
 		} else {
-			int permitted=0;
+			int permitted = 0;
 			if (Users
 					.isPermitted(
 							user,
@@ -80,7 +77,8 @@ public class Invitations extends CoolCRUD {
 				permitted = 1;
 			Topic topic = Topic.findById(id);
 			notFoundIfNull(topic);
-			render(type, check, topic, usersMatched, flashError,user,permitted);
+			render(type, check, topic, usersMatched, flashError, user,
+					permitted);
 		}
 
 	}
@@ -88,8 +86,8 @@ public class Invitations extends CoolCRUD {
 	/**
 	 * 
 	 * Searches for a user to invite. The result is a list not containing the
-	 * organizers of this entity or the users that have been invited 
-	 * and didn't respond yet
+	 * organizers of this entity or the users that have been invited and didn't
+	 * respond yet
 	 * 
 	 * @author ${Mai.Magdy}, ${Fadwa.Sakr}
 	 * 
@@ -112,10 +110,6 @@ public class Invitations extends CoolCRUD {
 		List<User> userFilter = new ArrayList<User>();
 		List<User> postsInTopic = new ArrayList<User>();
 
-		System.out.println("type :" + type);
-		System.out.println(id);
-		System.out.println(name);
-
 		if (validation.hasErrors()) {
 			flash.error("Please enter a name first!");
 			invite(id, type, 0, 1);
@@ -132,17 +126,11 @@ public class Invitations extends CoolCRUD {
 			}
 
 		} else {
-			System.out.println(userFilter);
-			postsInTopic = Topics.searchByTopic(id);
-			System.out.println(filter);
-			System.out.println(postsInTopic);
 			for (int i = 0; i < filter.size(); i++) {
 				if (!postsInTopic.contains(filter.get(i))) {
-					System.out.println(postsInTopic.contains(filter.get(i)));
 					userFilter.add(filter.get(i));
 				}
 			}
-			System.out.println(userFilter);
 		}
 
 		for (int i = 0; i < userFilter.size(); i++) {
@@ -151,7 +139,6 @@ public class Invitations extends CoolCRUD {
 			if (sent != null)
 				userFilter.remove(i);
 		}
-		System.out.println("LAMA");
 		users = userFilter;
 		invite(id, type, 1, 1);
 
@@ -183,11 +170,6 @@ public class Invitations extends CoolCRUD {
 
 	public static void send(int type, @Required String email, long id,
 			long userId) {
-		System.out.println("here");
-		System.out.println(email);
-		System.out.println(userId);
-		System.out.println();
-
 		MainEntity entity = null;
 		Topic topic = null;
 		String role = "";
@@ -203,21 +185,14 @@ public class Invitations extends CoolCRUD {
 			topic = Topic.findById(id);
 			role = "idea developer";
 			invalidUsers = Topics.searchByTopic(id);
-			System.out.println("users : " + invalidUsers);
 			name = topic.title;
 		}
-		System.out.println(topic);
-		System.out.println(role);
-		System.out.println(users);
-		System.out.println(name);
 
 		if (!rfc2822.matcher(email).matches()) {
-			System.out.println("3'lat!!");
 			flash.error("Invalid address");
 			invite(id, type, 2, 1);
 		}
 
-		System.out.println("fadwa");
 		boolean check = false;
 		List<Invitation> invitation = Invitation.findAll();
 		for (int i = 0; i < invitation.size(); i++) {
@@ -248,13 +223,11 @@ public class Invitations extends CoolCRUD {
 
 			if (reciever != null) {
 
-				System.out.println("CONDITION");
 				for (int i = 0; i < invalidUsers.size(); i++) {
 					if (invalidUsers.get(i).equals(reciever)
 							|| reciever.isAdmin)
 						flag = false;
 				}
-				System.out.println(flag);
 
 				if (!flag) {
 					if (entity != null)
@@ -373,21 +346,18 @@ public class Invitations extends CoolCRUD {
 	 * 
 	 * 
 	 * @param id
-	 *           int id represents the clicked button, 0 if reject or 1 if
+	 *            int id represents the clicked button, 0 if reject or 1 if
 	 *            accept
 	 * 
 	 * @param i
-	 *           long id of the invitation that will be removed
+	 *            long id of the invitation that will be removed
 	 * 
 	 */
 
 	public static void respond(int id, long i) {
-		System.out.println("here");
-		System.out.println(i);
+
 		Invitation invite = Invitation.findById(i);
-		System.out.println(invite);
 		String roleName = invite.role.toLowerCase();
-		System.out.println(roleName);
 		Organization organization = null;
 		MainEntity entity = null;
 		Topic topic = null;
@@ -404,7 +374,6 @@ public class Invitations extends CoolCRUD {
 			organization = entity.organization;
 		}
 		List<User> organizers = Users.getEntityOrganizers(entity);
-		//organizers.remove(invite.sender);
 		organizers.add(organization.creator);
 
 		if (id == 1) {
@@ -414,21 +383,20 @@ public class Invitations extends CoolCRUD {
 					UserRoleInOrganizations.addEnrolledUser(user, organization,
 							role, entity.id, "entity");
 
-					List<MainEntity> sub = new ArrayList<MainEntity>();
-					sub = MainEntity.find("byParent", entity).fetch();
+					List<MainEntity> subentity = new ArrayList<MainEntity>();
+					subentity = MainEntity.find("byParent", entity).fetch();
 
-					if (sub.size() != 0) {
-						for (int j = 0; j < sub.size(); j++) {
+					if (subentity.size() != 0) {
+						for (int j = 0; j < subentity.size(); j++) {
 							List<User> entityOrganizers = Users
-									.getEntityOrganizers(sub.get(j));
+									.getEntityOrganizers(subentity.get(j));
 							if (!entityOrganizers.contains(user))
 								UserRoleInOrganizations.addEnrolledUser(user,
-										organization, role, sub.get(j).id,
-										"entity");
+										organization, role,
+										subentity.get(j).id, "entity");
 
 						}
 					}
-					// **Fadwa
 
 					for (int j = 0; j < organizers.size(); j++)
 						Notifications
@@ -450,10 +418,10 @@ public class Invitations extends CoolCRUD {
 									+ " has accepted the invitation to be organizer to Entity "
 									+ entity.name, entity.organization, user);
 
-					// **
-
 				} else {
-					// * idea devoloper by ibrahim adel
+					/**
+					 * * idea devoloper by ibrahim adel
+					 */
 					role = Roles.getRoleByName("idea developer");
 					UserRoleInOrganization roleInOrg = new UserRoleInOrganization(
 							user, organization, role);
@@ -489,8 +457,6 @@ public class Invitations extends CoolCRUD {
 
 				}
 			} else {
-                System.out.println(role);
-                System.out.println(user);
 				UserRoleInOrganizations.addEnrolledUser(user, organization,
 						role, topic.id, "topic");
 				for (int k = 0; k < organizers.size(); k++)
@@ -501,7 +467,6 @@ public class Invitations extends CoolCRUD {
 				Log.addUserLog("User " + user.firstName + " " + user.lastName
 						+ " has accepted the invitation to join topic "
 						+ topic.title, organization, topic, user);
-                System.out.println("logs el 7dl");
 			}
 		}
 
