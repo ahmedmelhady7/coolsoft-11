@@ -120,7 +120,7 @@ public class Search extends Controller {
 			download(user);
 			List<Model> lof = listOfResults;
 			render(user, connected, lof, ideasFound, organizationsFound,
-					entitiesFound, topicsFound);
+					entitiesFound, topicsFound, plansFound, itemsFound);
 		} catch (NullPointerException e) {
 			render(user, connected, ideasFound, organizationsFound,
 					entitiesFound, topicsFound, plansFound, itemsFound, user);
@@ -1613,7 +1613,6 @@ public class Search extends Controller {
 
 	}
 
-
 	/**
 	 * 
 	 * sortA_Views method sorts according to views in ascending order
@@ -1692,7 +1691,5 @@ public class Search extends Controller {
 		searchResult();
 
 	}
-
-
 
 }
