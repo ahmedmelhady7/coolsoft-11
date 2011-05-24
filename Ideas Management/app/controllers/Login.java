@@ -59,7 +59,7 @@ public class Login extends Controller {
 			user.state = "a";
 			user.save();
 			Mail.reactivate();
-			flash.error("Your account has been reactivated successfuly");
+			flash.success("Your account has been reactivated successfuly");
 		}
 		render(user, admin, drafts);
 	}
