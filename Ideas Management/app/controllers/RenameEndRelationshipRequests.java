@@ -68,19 +68,20 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 					user, organisation, relation, type, requestType, newName);
 			renameRequest.save();
 			Log.addUserLog(
-					"User "
+					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
 							+ user.firstName
 							+ " "
 							+ user.lastName
+							+ "</a>"
 							+ " has requested to rename the following relationship between"
-							+ " entities: (" + relation.source.name + " "
-							+ relation.name + " " + relation.destination.name
-							+ ") with " + newName, relation, renameRequest,
-					organisation, user);
-
-			System.out
-					.println(organisation.renameEndRelationshipRequest.size());
-			redirect("MainEntitys.viewEntity", entityId, "Request created");
+							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
+							+ relation.source.id + "\">" + relation.source.name + "</a>" +" " + relation.name
+							+ " " + "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
+							+ relation.destination.id + "\">" + relation.destination.name + "</a>" 
+							+ ") with " + newName, organisation);
+						redirect("MainEntitys.viewEntity", entityId, "Request created");
 		} else {
 			if (Organizations.isDuplicateRequest(null, null, newName,
 					organisationId, type, 0, requestType, relationId)) {
@@ -94,17 +95,19 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 					user, organisation, relation, type, requestType, newName);
 			renameRequest.save();
 			Log.addUserLog(
-					"User "
+					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
 							+ user.firstName
 							+ " "
 							+ user.lastName
-							+ " has requested to rename the following relationship between"
-							+ " topics: (" + relation.source.title + " "
-							+ relation.name + " " + relation.destination.title
-							+ ") with " + newName, relation, renameRequest,
-					organisation, user);
-			System.out
-					.println(organisation.renameEndRelationshipRequest.size());
+							+ "</a>"
+							+ " has requested to rename the following relationship between topics: ("
+							+ "<a href=\"http://localhost:9008/topics/show?topicId="
+							+ relation.source.id + "\">" + relation.source.title + "</a>" +" " + relation.name
+							+ " " + "<a href=\"http://localhost:9008/topics/show?topicId="
+							+ relation.destination.id + "\">" + relation.destination.title + "</a>" 
+							+ ") with " + newName, organisation);
 			redirect("Topics.show", topicId, "Request created");
 		}
 	}
@@ -153,16 +156,19 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 					user, organisation, relation, type, requestType, null);
 			renameRequest.save();
 			Log.addUserLog(
-					"User "
+					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
 							+ user.firstName
 							+ " "
 							+ user.lastName
+							+ "</a>"
 							+ " has requested to delete the following relationship between"
-							+ " entities: (" + relation.source.name + " "
-							+ relation.name + " " + relation.destination.name
-							+ ")", relation, renameRequest, organisation, user);
-			System.out
-					.println(organisation.renameEndRelationshipRequest.size());
+							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
+							+ relation.source.id + "\">" + relation.source.name + "</a>" +" " + relation.name
+							+ " " + "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
+							+ relation.destination.id + "\">" + relation.destination.name + "</a>" 
+							+ ")", organisation);		
 			redirect("MainEntitys.viewEntity", entityId, "Request created");
 		} else {
 			TopicRelationship relation = TopicRelationship.findById(relationId);
@@ -170,16 +176,19 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 					user, organisation, relation, type, requestType, null);
 			renameRequest.save();
 			Log.addUserLog(
-					"User "
+					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
 							+ user.firstName
 							+ " "
 							+ user.lastName
-							+ " has requested to delete the following relationship between"
-							+ " topics: (" + relation.source.title + " "
-							+ relation.name + " " + relation.destination.title
-							+ ")", relation, renameRequest, organisation, user);
-			System.out
-					.println(organisation.renameEndRelationshipRequest.size());
+							+ "</a>"
+							+ " has requested to delete the following relationship between topics: ("
+							+ "<a href=\"http://localhost:9008/topics/show?topicId="
+							+ relation.source.id + "\">" + relation.source.title + "</a>" +" " + relation.name
+							+ " " + "<a href=\"http://localhost:9008/topics/show?topicId="
+							+ relation.destination.id + "\">" + relation.destination.title + "</a>" 
+							+ ")", organisation);
 			redirect("Topics.show", topicId, "Request created");
 		}
 	}
