@@ -45,12 +45,9 @@ public class Invitations extends CoolCRUD {
 	 *            int check : 0 if viewing the page, 1 if search result, 2 if
 	 *            invite by mail
 	 * 
-	 * @param flashError
-	 *            int flashError : 0 if green flash, 1 if red flash
-	 * 
 	 * 
 	 */
-	public static void invite(long id, int type, int check, int flashError) {
+	public static void invite(long id, int type, int check) {
 
 		User user = Security.getConnected();
 		List<User> usersMatched = new ArrayList<User>();
@@ -70,7 +67,7 @@ public class Invitations extends CoolCRUD {
 							id, "entity"))
 				permitted = 1;
 			MainEntity entity = MainEntity.findById(id);
-			render(type, check, entity, usersMatched, flashError, permitted,
+			render(type, check, entity, usersMatched,permitted,
 					user);
 		} else {
 			int permitted = 0;
@@ -82,7 +79,7 @@ public class Invitations extends CoolCRUD {
 				permitted = 1;
 			Topic topic = Topic.findById(id);
 			notFoundIfNull(topic);
-			render(type, check, topic, usersMatched, flashError, user,
+			render(type, check, topic, usersMatched,user,
 					permitted, usersInvited);
 		}
 
@@ -118,7 +115,7 @@ public class Invitations extends CoolCRUD {
 
 		if (validation.hasErrors()) {
 			flash.error("Please enter name/email first!");
-			invite(id, type, 0, 1);
+			invite(id, type, 0);
 		}
 
 		if (type == 0) {
@@ -149,7 +146,7 @@ public class Invitations extends CoolCRUD {
 		}
 		users = userFilter;
 		done = invited;
-		invite(id, type, 1, 1);
+		invite(id, type, 1);
 
 	}
 
@@ -199,7 +196,7 @@ public class Invitations extends CoolCRUD {
 
 		if (!rfc2822.matcher(email).matches()) {
 			flash.error("Invalid address");
-			invite(id, type, 2, 1);
+			invite(id, type, 2);
 		}
 
 		boolean check = false;
@@ -218,7 +215,7 @@ public class Invitations extends CoolCRUD {
 		}
 		if (check == true) {
 			flash.error("Invitation has already been sent to that user before");
-			invite(id, type, 2, 1);
+			invite(id, type, 2);
 		}
 
 		boolean isRegistered = false;
@@ -243,12 +240,12 @@ public class Invitations extends CoolCRUD {
 						flash.error("This user is already an organizer to this entity");
 					else
 						flash.error("This user is already an idea developer in that topic");
-					invite(id, type, 2, 1);
+					invite(id, type, 2);
 				}
 
 				if (reciever.state.equals("n") || reciever.state.equals("d")) {
 					flash.error("This account has been deactivated");
-					invite(id, type, 2, 1);
+					invite(id, type, 2);
 				}
 
 			}
@@ -314,8 +311,8 @@ public class Invitations extends CoolCRUD {
 						"You have received a new invitation from " + name);
 		}
 
-		flash.error("Invitation has been sent successfuly");
-		invite(id, type, 0, 2);
+		flash.success("Invitation has been sent successfuly");
+		invite(id, type, 0);
 
 	}
 
