@@ -9,18 +9,6 @@
     <body>
         #{extends 'Login/index.html' /}		
         #{set title: 'Organization Profile' /}
-		#{if flash.success}
-		<p style="color:#00ff40">
-			${flash.success}
-			</p>
-		</style>
-		#{/if}
-		#{if flash.error}
-		<p style="color:#ff0000">
-			${flash.error}
-			</p>
-		</style>
-		#{/if}
         <center>
         	#{if org.profilePictureId != -1}
 			#{list items:pictureId, as:'id'}
