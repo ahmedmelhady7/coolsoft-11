@@ -356,9 +356,17 @@ public class Organizations extends CoolCRUD {
 			org.save();
 			user.followingOrganizations.add(org);
 			user.save();
-			Log.addUserLog("User " + user.firstName + " " + user.lastName
-					+ " has followed the organisation (" + org.name + ")", org,
-					user);
+			Log.addUserLog(
+					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
+							+ user.firstName
+							+ " "
+							+ user.lastName
+							+ "</a>"
+							+ " has followed the organisation ("
+							+ "<a href=\"http://localhost:9008/organizations/viewprofile?organizationId="
+							+ org.id + "\">" + org.name + "</a>" + ")", org);
 			redirect(request.controller + ".viewProfile", org.id,
 					"You are now a follower");
 		}

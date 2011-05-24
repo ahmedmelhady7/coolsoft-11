@@ -229,9 +229,8 @@ public class Topics extends CRUD {
 	 */
 	public static void reopen(long topicId) {
 
-		
 		Topic targetTopic = Topic.findById(topicId);
-        targetTopic.openToEdit = true;
+		targetTopic.openToEdit = true;
 		targetTopic.save();
 
 		redirect("/topics/show?topicId=" + topicId);
@@ -580,7 +579,8 @@ public class Topics extends CRUD {
 				render(request.controller.replace(".", "/") + "/blank.html",
 						entityId, type, temporaryTopic.title,
 						temporaryTopic.entity, temporaryTopic.description,
-						temporaryTopic.followers, temporaryTopic.tags, message, user);
+						temporaryTopic.followers, temporaryTopic.tags, message,
+						user);
 			} catch (TemplateNotFoundException exception) {
 				render("CRUD/blank.html", type, entityId, user);
 			}
@@ -592,7 +592,8 @@ public class Topics extends CRUD {
 				render(request.controller.replace(".", "/") + "/blank.html",
 						entityId, type, temporaryTopic.title,
 						temporaryTopic.entity, temporaryTopic.description,
-						temporaryTopic.followers, temporaryTopic.tags, message, user);
+						temporaryTopic.followers, temporaryTopic.tags, message,
+						user);
 			} catch (TemplateNotFoundException exception) {
 				render("CRUD/blank.html", type, entityId, user);
 			}
@@ -757,7 +758,8 @@ public class Topics extends CRUD {
 		String actionPlan = "create an action plan to execute an idea";
 		String actionMerge = "merge ideas";
 		Topic targetTopic = Topic.findById(topicIdLong);
-		boolean canReport = Users.isPermitted(user, "use", topicIdLong, "topic");
+		boolean canReport = Users
+				.isPermitted(user, "use", topicIdLong, "topic");
 		boolean topicNotClosed = targetTopic.openToEdit;
 		boolean alreadyReported = false;
 		boolean canDelete = Users.isPermitted(actor, "hide and delete an idea",
@@ -907,15 +909,15 @@ public class Topics extends CRUD {
 		try {
 
 			render(type, object, tags, /* canUse, */alreadyReportedTopic,
-					creator, followers, ideas,canReport,hiddenIdeas, numberOfIdeas,
-					comments, entity, canDelete, alreadyReported, plan,
-					openToEdit, privacyLevel, deleteMessage, deletable,
-					topicIdLong, canClose, canPlan, targetTopic, allowed,
-					permission, topicId, canPost, canNotPost, pending,
-					follower, canCreateRelationship, seeRelationStatus,
-					createRelationship, actor, hidden, canRestrict, check,
-					canMerge, canRequestRelationship, topicIsLocked,
-					organisation, check1, check2, user);
+					creator, followers, ideas, canReport, hiddenIdeas,
+					numberOfIdeas, comments, entity, canDelete,
+					alreadyReported, plan, openToEdit, privacyLevel,
+					deleteMessage, deletable, topicIdLong, canClose, canPlan,
+					targetTopic, allowed, permission, topicId, canPost,
+					canNotPost, pending, follower, canCreateRelationship,
+					seeRelationStatus, createRelationship, actor, hidden,
+					canRestrict, check, canMerge, canRequestRelationship,
+					topicIsLocked, organisation, check1, check2, user);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
@@ -1190,9 +1192,9 @@ public class Topics extends CRUD {
 		System.out.println(temporaryTopic.createRelationship);
 
 		object._save();
-		String message2 = "User: '" + user.firstName
-				+ "' has edited topic  '" + temporaryTopic.title
-				+ "' in entity '" + temporaryTopic.entity.name + "'";
+		String message2 = "User: '" + user.firstName + "' has edited topic  '"
+				+ temporaryTopic.title + "' in entity '"
+				+ temporaryTopic.entity.name + "'";
 		Log.addUserLog(message2, temporaryTopic, user, entity,
 				entity.organization);
 		List<User> users = Users.getEntityOrganizers(temporaryTopic.entity);
@@ -1237,9 +1239,18 @@ public class Topics extends CRUD {
 			topic.save();
 			user.topicsIFollow.add(topic);
 			user.save();
-			Log.addUserLog("User " + user.firstName + " " + user.lastName
-					+ " has followed the topic (" + topic.title + ")", topic,
-					topic.entity, topic.entity.organization, user);
+			Log.addUserLog(
+					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
+							+ user.firstName
+							+ " "
+							+ user.lastName
+							+ "</a>"
+							+ " has followed the topic ("
+							+ "<a href=\"http://localhost:9008/topics/show?topicId="
+							+ topic.id + "\">" + topic.title + "</a>" + ")",
+					topic.entity.organization);
 			redirect(request.controller + ".show", topic.id,
 					"You are now a follower");
 		}
@@ -1281,11 +1292,11 @@ public class Topics extends CRUD {
 	 * @param justification
 	 *            : the justification message that is sent by the deleter to the
 	 *            creator of the topic
-	 *            
+	 * 
 	 * @return boolean
 	 */
 	public static boolean deleteTopic(String id, String justification) {
-		
+
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(id);
@@ -1295,50 +1306,52 @@ public class Topics extends CRUD {
 		Plan plan = temporaryTopic.plan;
 		System.out.println("entering try");
 		User user = Security.getConnected();
-			System.out.println("entered try");
-			String message = user.username + " has deleted the topic "
-					+ temporaryTopic.title;
-			List<User> users = Users.getEntityOrganizers(entity);
-			for (int i = 0; i < users.size(); i++)
-				Notifications.sendNotification(users.get(i).id,
-						temporaryTopic.id, "Topic", message);
-			for (int i = 0; i < temporaryTopic.followers.size(); i++)
-				Notifications.sendNotification(temporaryTopic.followers.get(i)
-						.getId(), entity.getId(), "entity", message);
-			Notifications.sendNotification(temporaryTopic.creator.getId(),
-					entity.getId(), "entity", justification);
-			System.out.println(justification);
-			
-			// added by Mohamed Hisham to delete the topic's relationships whenever its deleted
-			//{
-			for (int i = 0; i < temporaryTopic.relationsSource.size(); i++){
-				TopicRelationships.delete(temporaryTopic.relationsSource.get(i).id);
-			}
-			for (int i = 0; i < temporaryTopic.relationsDestination.size(); i++){
-				TopicRelationships.delete(temporaryTopic.relationsDestination.get(i).id);
-			}
-			//}
-			
-			// >>>>added by Salma Osama to delete the topic's plan if the topic
-			// is deleted
-			if (plan != null) {
-				Plans.deletePlan(plan.id);
-			}
-			// fadwa
-			for (int i = 0; i < temporaryTopic.requestsToJoin.size(); i++)
-				temporaryTopic.requestsToJoin.get(i).delete();
-			for (int i = 0; i < temporaryTopic.invitations.size(); i++)
-				temporaryTopic.invitations.get(i).delete();
-			// fadwa
-			
-			//UserdeleteEntityOrTopic(temporaryTopic.id, "topic");
+		System.out.println("entered try");
+		String message = user.username + " has deleted the topic "
+				+ temporaryTopic.title;
+		List<User> users = Users.getEntityOrganizers(entity);
+		for (int i = 0; i < users.size(); i++)
+			Notifications.sendNotification(users.get(i).id, temporaryTopic.id,
+					"Topic", message);
+		for (int i = 0; i < temporaryTopic.followers.size(); i++)
+			Notifications.sendNotification(temporaryTopic.followers.get(i)
+					.getId(), entity.getId(), "entity", message);
+		Notifications.sendNotification(temporaryTopic.creator.getId(),
+				entity.getId(), "entity", justification);
+		System.out.println(justification);
 
-			Log.addUserLog(message, temporaryTopic, user, entity,
-					entity.organization);
-			object._delete();
-			return true;
+		// added by Mohamed Hisham to delete the topic's relationships whenever
+		// its deleted
+		// {
+		for (int i = 0; i < temporaryTopic.relationsSource.size(); i++) {
+			TopicRelationships.delete(temporaryTopic.relationsSource.get(i).id);
+		}
+		for (int i = 0; i < temporaryTopic.relationsDestination.size(); i++) {
+			TopicRelationships.delete(temporaryTopic.relationsDestination
+					.get(i).id);
+		}
+		// }
+
+		// >>>>added by Salma Osama to delete the topic's plan if the topic
+		// is deleted
+		if (plan != null) {
+			Plans.deletePlan(plan.id);
+		}
+		// fadwa
+		for (int i = 0; i < temporaryTopic.requestsToJoin.size(); i++)
+			temporaryTopic.requestsToJoin.get(i).delete();
+		for (int i = 0; i < temporaryTopic.invitations.size(); i++)
+			temporaryTopic.invitations.get(i).delete();
+		// fadwa
+
+		// UserdeleteEntityOrTopic(temporaryTopic.id, "topic");
+
+		Log.addUserLog(message, temporaryTopic, user, entity,
+				entity.organization);
+		object._delete();
+		return true;
 	}
-	
+
 	/**
 	 * Ovverides CRUD's delete and deletes a topic
 	 * 
@@ -1353,18 +1366,18 @@ public class Topics extends CRUD {
 	 *            : the justification message that is sent by the deleter to the
 	 *            creator of the topic
 	 */
-	public static void delete (String id, String justification){
+	public static void delete(String id, String justification) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(id);
 		notFoundIfNull(object);
 		Topic temporaryTopic = (Topic) object;
 		MainEntity entity = temporaryTopic.entity;
-		
-		try{
+
+		try {
 			deleteTopic(id, justification);
 		}
-		
+
 		catch (Exception exception) {
 			System.out.println("entered catch");
 			flash.error(Messages.get("crud.delete.error", type.modelName));
@@ -1527,7 +1540,8 @@ public class Topics extends CRUD {
 		System.out.println("delete bta3ti");
 		Idea idea = Idea.findById(ideaId);
 		String message = "your idea " + idea.title + " has been deleted by "
-				+ Security.getConnected().username + " Justification : "+justification;
+				+ Security.getConnected().username + " Justification : "
+				+ justification;
 
 		try {
 			if (idea.plan != null) {
@@ -1620,7 +1634,7 @@ public class Topics extends CRUD {
 	 * 
 	 */
 	public static void getIdeasToMerge(String topicId) {
-		
+
 		User user = Security.getConnected();
 		Long topicIdLong = Long.parseLong(topicId);
 		Topic targetTopic = Topic.findById(topicIdLong);
@@ -1737,7 +1751,7 @@ public class Topics extends CRUD {
 		targetTopic.createRelationship = createRelationship;
 		targetTopic.intializedIn = new Date();
 		targetTopic.isDraft = false;
-		
+
 		targetTopic.save();
 		user.save();
 	}
@@ -1804,18 +1818,18 @@ public class Topics extends CRUD {
 		targetTopic.delete();
 		user.save();
 		// entity.save();
-		
+
 		redirect("/ideas/getdrafts");
 
 	}
-	
+
 	public static void postWithoutEdit(long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
-		
+
 		targetTopic.isDraft = false;
 		targetTopic.intializedIn = new Date();
 		targetTopic.save();
-		
+
 		redirect("/ideas/getdrafts");
 	}
 }

@@ -79,9 +79,18 @@ public class MainEntitys extends CoolCRUD {
 			entity.save();
 			user.followingEntities.add(entity);
 			user.save();
-			Log.addUserLog("User " + user.firstName + " " + user.lastName
-					+ " has followed the entity (" + entity.name + ")", entity,
-					entity.organization, user);
+			Log.addUserLog(
+					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
+							+ user.firstName
+							+ " "
+							+ user.lastName
+							+ "</a>"
+							+ " has followed the entity ("
+							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
+							+ entity.id + "\">" + entity.name + "</a>" + ")",
+					entity.organization);
 			redirect(request.controller + ".viewEntity", entity.id,
 					"You are now a follower");
 		}
@@ -132,20 +141,29 @@ public class MainEntitys extends CoolCRUD {
 			long orgId, boolean createRelationship) {
 		boolean canCreate = true;
 		User user = Security.getConnected();
-		Organization org = Organization.findById(orgId);
-		for (int i = 0; i < org.entitiesList.size(); i++) {
-			if (org.entitiesList.get(i).name.equalsIgnoreCase(name))
+		Organization organisation = Organization.findById(orgId);
+		for (int i = 0; i < organisation.entitiesList.size(); i++) {
+			if (organisation.entitiesList.get(i).name.equalsIgnoreCase(name))
 				canCreate = false;
 		}
 		if (canCreate) {
-			MainEntity entity = new MainEntity(name, description, org,
+			MainEntity entity = new MainEntity(name, description, organisation,
 					createRelationship);
 			entity.save();
-			Log.addUserLog("User " + user.firstName + " " + user.lastName
-					+ " has created the entity (" + entity.name + ")", entity,
-					org, user);
+			Log.addUserLog(
+					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
+							+ user.firstName
+							+ " "
+							+ user.lastName
+							+ "</a>"
+							+ " has created the entity ("
+							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
+							+ entity.id + "\">" + entity.name + "</a>" + ")",
+					organisation);
 		}
-		redirect("Organizations.viewProfile", org.id, "Entity created");
+		redirect("Organizations.viewProfile", organisation.id, "Entity created");
 	}
 
 	/**
@@ -175,22 +193,37 @@ public class MainEntitys extends CoolCRUD {
 			long parentId, long orgId, boolean createRelationship) {
 		boolean canCreate = true;
 		MainEntity parent = MainEntity.findById(parentId);
-		Organization org = Organization.findById(orgId);
+		Organization organisation = Organization.findById(orgId);
 		User user = Security.getConnected();
 		for (int i = 0; i < parent.subentities.size(); i++) {
 			if (parent.subentities.get(i).name.equalsIgnoreCase(name))
 				canCreate = false;
 		}
 		if (canCreate) {
-			MainEntity entity = new MainEntity(name, description, parent, org,
-					createRelationship);
+			MainEntity entity = new MainEntity(name, description, parent,
+					organisation, createRelationship);
 			entity.save();
-			Log.addUserLog("User " + user.firstName + " " + user.lastName
-					+ " has created the subentity (" + entity.name + ")"
-					+ " for the entity (" + parent.name + ")", entity, parent,
-					org, user);
+			Log.addUserLog(
+					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
+							+ user.firstName
+							+ " "
+							+ user.lastName
+							+ "</a>"
+							+ " has created the subentity ("
+							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
+							+ entity.id
+							+ "\">"
+							+ entity.name
+							+ "</a>"
+							+ ") for the entity ("
+							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
+							+ parent.id + "\">" + parent.name + "</a>" + ")",
+					organisation);
 		}
-		redirect("Organizations.viewProfile", org.id, "SubEntity created");
+		redirect("Organizations.viewProfile", organisation.id,
+				"SubEntity created");
 	}
 
 	/**
@@ -356,9 +389,18 @@ public class MainEntitys extends CoolCRUD {
 		entity.description = description;
 		entity.createRelationship = createRelationship;
 		entity.save();
-		Log.addUserLog("User " + user.firstName + " " + user.lastName
-				+ " has edited the entity (" + entity.name + ")", entity,
-				entity.organization, user);
+		Log.addUserLog(
+				"<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ user.id
+						+ "\">"
+						+ user.firstName
+						+ " "
+						+ user.lastName
+						+ "</a>"
+						+ " has edited the entity ("
+						+ "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
+						+ entity.id + "\">" + entity.name + "</a>" + ")",
+				entity.organization);
 		redirect(request.controller + ".viewEntity", entity.id,
 				"Entity created");
 	}
@@ -424,7 +466,7 @@ public class MainEntitys extends CoolCRUD {
 	 * 
 	 * @param entityId
 	 *            the id of the entity to be deleted.
-	 *            
+	 * 
 	 * @return boolean
 	 */
 	public static boolean deleteEntity(long entityId) {
@@ -453,7 +495,7 @@ public class MainEntitys extends CoolCRUD {
 				tags.get(i).entities.remove(entity);
 				tags.get(i).save();
 			}
-		}
+		}	
 		// size = entity.relationsSource.size();
 		// for (int j = 0; j < size; j++) {
 		// EntityRelationships.deleteER(entity.relationsSource.get(j).id);
@@ -481,9 +523,14 @@ public class MainEntitys extends CoolCRUD {
 					.delete(entity.relationshipRequestsDestination.get(j).id);
 		}
 		size = entity.topicList.size();
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+
 		for (int j = 0; j < size; j++) {
-			// Topic.delete(""+ entity.topicList
-			// .get(j).id, "msg");
+			Model object = type.findById(entity.topicList.get(j).id);
+			notFoundIfNull(object);
+			Topic temporaryTopic = (Topic) object;
+			Topic.delete("" + entity.topicList.get(j).id, "msg");
 		}
 		size = allEntities.size();
 		for (int i = 0; i < size; i++) {
