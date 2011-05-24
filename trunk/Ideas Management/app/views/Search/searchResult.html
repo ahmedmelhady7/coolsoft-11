@@ -108,10 +108,17 @@ The Search Results Viewer
             <div id = 'holder' class = "content_articles">
                 <form name="sort">
                <u> <big><b>Sort:</b></big></u><br>
-                <input type="radio" name="s" id="s" value="A" onclick="whichsortmethod(this.form)"/>show ideas only in descending rate order 
-                <br>
+                <input type="radio" name="s" id="s" value="A" onclick="whichsortmethod(this.form)"/>show ideas only in descending rate order                         .
+                
                 <input type="radio" name="s" id="s1" value="D" onclick="whichsortmethod(this.form)"/>show ideas only in ascending rate order 
                 </br>
+                
+                <input type="radio" name="sv" id="sv1" value="A" onclick="sortV(this.frm)"/>sort ideas and topics in ascending visit order                                .
+                
+                <input type="radio" name="sv" id="sv" value="D" onclick="sortV(this.frm)"/>show ideas and topics in descending visit order 
+                
+                
+                
                 </br>
                 </form><b>
                     <big>
@@ -540,6 +547,22 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
             });
         }
     }
+    
+    function sortV(frm){
+
+        if (document.getElementById("sv1").checked) {
+    	$.post('@{sortA_Views()}',
+    			{},function(){
+    				window.location.reload(true);})
+    			
+    }else{
+    $.post('@{sortD_Views()}',
+    		{},function(){
+    	window.location.reload(true);})
+    
+    }
+    
+        }
 </script>
 <br/>
 </br>
