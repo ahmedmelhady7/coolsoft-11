@@ -1,11 +1,9 @@
 #{extends 'planLayout.html' /}
 
-<b>Topic: </b> <a href="@{Topics.show(topic.id)}">${topic.title}</a>
-
 <br/>
 #{if ideas.size() > 0}
 <br/>
-Ideas posted in this topic:
+Ideas posted in the topic:
 <br/>
 <br/>
 #{form @Plans.selectedIdeas(), method:'POST', id:'creationForm', onsubmit: 'return validate()',
@@ -17,13 +15,13 @@ Ideas posted in this topic:
 
 <fieldset style="width:600px;">
         <legend>
-            Title: ${idea.title}
+             <b> Title:</b> <a href="@{Ideas.show(idea.id)}"> ${idea.title}</a>
         </legend> 
 		Description: ${idea.description}
 		<br/>
 		Author: 
 		#{if idea.author.state == "a"}
-		  <a href="#">${idea.author.username}</a>
+		  <a href="@{Users.viewProfile(idea.author.id)}">${idea.author.username}</a>
 		 #{/if}
 		 #{else}
 		  ${idea.author.username}
@@ -37,14 +35,14 @@ Ideas posted in this topic:
  </div>
 #{/list}
 
-<input type = "hidden" name = "planId" value = ${p.id} >
+<input type = "hidden" name = "planId" value = ${plan.id} >
 <input type="submit" value="save">
 #{/form}
 #{/if}
 #{else}
 The topic has no ideas to be promoted to execution
 #{/else}
-<a href="@{Plans.viewAsList(p.id)}">Go back to plan</a>
+<a href="@{Plans.viewAsList(plan.id)}">Go back to plan</a>
 <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
 </script>
 <script type="text/javascript" >

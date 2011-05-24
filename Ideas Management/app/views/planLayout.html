@@ -10,38 +10,38 @@
             <ul>
                 #{if isOrganizer == true}
                 <li>
-                    <a href="@{VolunteerRequests.viewVolunteerRequests(p.id)}">Volunteer Requests</a>
+                    <a href="@{VolunteerRequests.viewVolunteerRequests(plan.id)}">Volunteer Requests</a>
                 </li>
                 #{/if} 
                 #{if canIdea == 1} 
                 <li>
-                    <a href="@{Plans.addIdea(p.id)}">Associate ideas to plan</a>
+                    <a href="@{Plans.addIdea(plan.id)}">Associate ideas to plan</a>
                 </li>
                 #{/if}
                 <li>
-                    <a href="@{Plans.planView(p.id)}">Promoted Ideas </a>
+                    <a href="@{Plans.planView(plan.id)}">Promoted Ideas </a>
                 </li>
                 #{if canEdit == 1}
                 <li>
-                    <a href="@{Plans.addItem(p.id)}">Add item(s)</a>
+                    <a href="@{Plans.addItem(plan.id)}">Add item(s)</a>
                 </li>
                 <li>
-                    <a href="@{Plans.editPlan(p.id)}" id="demo01">Edit plan</a>
+                    <a href="@{Plans.editPlan(plan.id)}" id="demo01">Edit plan</a>
                 </li>
 				#{/if} 
 				#{if canDelete}
 				<li>
-				  	<a href="#" onclick="delPlan(${p.id}, ${p.topic.id})">delete plan</a>
+				  	<a href="#" onclick="delPlan(${plan.id}, ${plan.topic.id})">delete plan</a>
 				</li>
                 #{/if} 
                 <li>
-                    <a href="@{Plans.viewAsList(p.id)}">View list of to-do items</a>
+                    <a href="@{Plans.viewAsList(plan.id)}">View list of to-do items</a>
                 </li>
                 <li>
-                    <a href="@{Plans.viewAsCalendar(p.id)}">View plan calendar</a>
+                    <a href="@{Plans.viewAsCalendar(plan.id)}">View plan calendar</a>
                 </li>
                 <li>
-                    <a href="@{Plans.viewAsTimeline(p.id)}">View plan timeline</a>
+                    <a href="@{Plans.viewAsTimeline(plan.id)}">View plan timeline</a>
                 </li>
 				<br/>
 				<br/>
@@ -58,26 +58,26 @@
     </ul>
 </div>
 <body>
-    <h1 align="center" style="font-size:xx-large; ">${p.title}</h1>
+    <h1 align="center" style="font-size:xx-large; ">${plan.title}</h1>
     <br/>
     <p>
-    	<b> Topic: </b> <a href="@{Topics.show(p.topic.id)}">${p.topic.title}</a>
+    	<b> Topic: </b> <a href="@{Topics.show(plan.topic.id)}">${plan.topic.title}</a>
 		<br>
         <b>Created by: </b>
-        ${p.madeBy.username}
+        ${plan.madeBy.username}
         <br/>
-        <b>StartDate: </b>${p.startDate.format('dd MMM yy')}
+        <b>StartDate: </b>${plan.startDate.format('dd MMM yy')}
         <br/>
-        <b>EndDate: </b>${p.endDate.format('dd MMM yy')}
+        <b>EndDate: </b>${plan.endDate.format('dd MMM yy')}
         <br/>
         <b>Description:</b>
-        ${p.description}
+        ${plan.description}
         <br/>
         <b>Plan rating: </b>
-        ${p.rating}
+        ${plan.rating}
         <br/>
         <b>Plan progress:</b>
-        ${p.calculateProgress()}
+        ${plan.calculateProgress()}
         <br/>
     </p>
     <script type="text/javascript">
