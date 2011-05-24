@@ -131,6 +131,7 @@ public class Tag extends CoolModel {
 //		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
 //		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		this.taggedIdeas = new ArrayList<Idea>();
+		this.entities = new ArrayList<MainEntity>();
 		// this.relatedTags = new ArrayList<Tag>();
 		// ERD change
 		this.createdInOrganization = org;
