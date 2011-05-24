@@ -1362,7 +1362,17 @@ public class Topics extends CRUD {
 			Notifications.sendNotification(temporaryTopic.creator.getId(),
 					entity.getId(), "entity", justification);
 			System.out.println(justification);
-
+			
+			// added by Mohamed Hisham to delete the topic's relationships whenever its deleted
+			//{
+			for (int i = 0; i < temporaryTopic.relationsSource.size(); i++){
+				TopicRelationships.delete(temporaryTopic.relationsSource.get(i).id);
+			}
+			for (int i = 0; i < temporaryTopic.relationsDestination.size(); i++){
+				TopicRelationships.delete(temporaryTopic.relationsDestination.get(i).id);
+			}
+			//}
+			
 			// >>>>added by Salma Osama to delete the topic's plan if the topic
 			// is deleted
 			if (plan != null) {

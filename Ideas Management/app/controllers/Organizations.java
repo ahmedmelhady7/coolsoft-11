@@ -474,6 +474,10 @@ public class Organizations extends CoolCRUD {
 				topics.add(entities.get(x).topicList.get(y));
 			}
 		}
+		for(int x = 0; x < entities.size(); x++){
+			if(!entities.get(x).createRelationship)
+				entities.remove(entities.get(x));
+		}
 		boolean enrolled = false;
 		boolean canInvite = false;
 		if (Users.isPermitted(user,

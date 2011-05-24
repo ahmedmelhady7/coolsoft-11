@@ -33,7 +33,7 @@ public class TopicRelationships extends CoolCRUD {
 	 * 
 	 * @param destinationId
 	 *            : id of the second Topic to be related
-	 *            
+	 * 
 	 * @return boolean
 	 */
 	public static boolean createRelationship(String name, long sourceId,
@@ -80,13 +80,14 @@ public class TopicRelationships extends CoolCRUD {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * checks if a relation is duplicate(returns true) or not(returns false)
 	 * 
 	 * @author Mohamed Hisham
 	 * 
-	 * @param relation : the relation being checked for duplicate
+	 * @param relation
+	 *            : the relation being checked for duplicate
 	 * 
 	 * @return boolean
 	 */
@@ -116,14 +117,23 @@ public class TopicRelationships extends CoolCRUD {
 	 * 
 	 * @param newName
 	 *            : the new name to be set to the relationship
+	 * 
+	 * @return boolean
 	 */
-	public static void renameRelationship(long relationToBeRenamedId,
+	public static boolean renameRelationship(long relationToBeRenamedId,
 			String newName) {
 		TopicRelationship relation = TopicRelationship
 				.findById(relationToBeRenamedId);
-		relation.name = newName;
-		relation.save();
-
+		if (relation.name != newName) {
+			relation.name = newName;
+			for (int i = 0; i < relation.renameEndRequests.size(); i++) {
+				RenameEndRelationshipRequests.delete(relation.renameEndRequests
+						.get(i).id);
+			}
+			relation.save();
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -135,13 +145,18 @@ public class TopicRelationships extends CoolCRUD {
 	 * 
 	 * @param relationId
 	 *            : the id of the relation being deleted
+	 * @return boolean
 	 */
-	public static void delete(long relationId) {
+	public static boolean delete(long relationId) {
 		TopicRelationship relation = TopicRelationship.findById(relationId);
 		relation.source.relationsSource.remove(relation);
 		relation.destination.relationsDestination.remove(relation);
+		for (int i = 0; i < relation.renameEndRequests.size(); i++) {
+			RenameEndRelationshipRequests.delete(relation.renameEndRequests
+					.get(i).id);
+		}
 		relation.delete();
-
+		return true;
 	}
 
 	/**
@@ -187,13 +202,13 @@ public class TopicRelationships extends CoolCRUD {
 		}
 		return false;
 	}
-	
+
 	public static boolean deleteTR(long id) {
-		
+
 		TopicRelationship tr = TopicRelationship.findById(id);
 		List<MainEntity> entities = MainEntity.findAll();
 		int size = entities.size();
-		for (int i = 0; i< size; i++) {
+		for (int i = 0; i < size; i++) {
 			if (entities.get(i).relationsSource.contains(tr)) {
 				entities.get(i).relationsSource.remove(tr);
 				entities.get(i).save();
@@ -204,10 +219,11 @@ public class TopicRelationships extends CoolCRUD {
 			}
 		}
 		size = tr.renameEndRequests.size();
-		for (int i = 0; i< size; i++) {
-			RenameEndRelationshipRequests.delete(tr.renameEndRequests.get(i).id);
+		for (int i = 0; i < size; i++) {
+			RenameEndRelationshipRequests
+					.delete(tr.renameEndRequests.get(i).id);
 		}
-		tr.delete();		
+		tr.delete();
 		return true;
 	}
 
