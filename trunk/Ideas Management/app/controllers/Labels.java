@@ -64,12 +64,14 @@ public class Labels extends CoolCRUD
 			}
 			
 			Label label = new Label(name,user,choosenIdeas);
-			label.save();return 1;
+			label.save();
+			return 1;
 		}
 		else
 		{
 			Label label = new Label(name,user);
-			label.save();return 1;
+			label.save();
+			return 1;
 		}
 	}
 	
