@@ -32,7 +32,7 @@ public class TagRelationships extends CoolCRUD {
 	 * 
 	 * @param destinationId
 	 *            : id of the second Tag to be related
-	 *            
+	 * 
 	 * @return boolean
 	 */
 	public static boolean createRelationship(String name, long sourceId,
@@ -50,7 +50,7 @@ public class TagRelationships extends CoolCRUD {
 			if (!isDuplicate(name,
 					relation.source.createdInOrganization.relationNames))
 				relation.source.createdInOrganization.relationNames.add(name);
-			
+
 			Organization organization = relation.source.createdInOrganization;
 			organization.save();
 			relation.save();
@@ -74,13 +74,14 @@ public class TagRelationships extends CoolCRUD {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * checks if a relation is duplicate(returns true) or not(returns false)
 	 * 
 	 * @author Mohamed Hisham
 	 * 
-	 * @param relation : the relation being checked for duplicate
+	 * @param relation
+	 *            : the relation being checked for duplicate
 	 * 
 	 * @return boolean
 	 */
@@ -110,14 +111,19 @@ public class TagRelationships extends CoolCRUD {
 	 * 
 	 * @param newName
 	 *            : the new name to be set to the relationship
+	 * 
+	 * @return boolean
 	 */
-	public static void renameRelationship(long relationToBeRenamedId,
+	public static boolean renameRelationship(long relationToBeRenamedId,
 			String newName) {
 		TagRelationship relation = TagRelationship
 				.findById(relationToBeRenamedId);
-		relation.name = newName;
-		relation.save();
-
+		if (relation.name != newName) {
+			relation.name = newName;
+			relation.save();
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -129,12 +135,14 @@ public class TagRelationships extends CoolCRUD {
 	 * 
 	 * @param relationId
 	 *            : the id of the relation being deleted
+	 * @return boolean
 	 */
-	public static void delete(long relationId) {
+	public static boolean delete(long relationId) {
 		TagRelationship relation = TagRelationship.findById(relationId);
 		relation.source.relationsSource.remove(relation);
 		relation.destination.relationsDestination.remove(relation);
 		relation.delete();
+		return true;
 	}
 
 	/**

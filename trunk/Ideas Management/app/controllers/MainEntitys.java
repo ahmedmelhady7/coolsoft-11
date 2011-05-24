@@ -450,14 +450,22 @@ public class MainEntitys extends CoolCRUD {
 				tags.get(i).save();
 			}
 		}
-		size = entity.relationsSource.size();
-		for (int j = 0; j < size; j++) {
-			EntityRelationships.deleteER(entity.relationsSource.get(j).id);
+//		size = entity.relationsSource.size();
+//		for (int j = 0; j < size; j++) {
+//			EntityRelationships.deleteER(entity.relationsSource.get(j).id);
+//		}
+//		size = entity.relationsDestination.size();
+//		for (int j = 0; j < size; j++) {
+//			EntityRelationships.deleteER(entity.relationsDestination.get(j).id);
+//		}
+		// Mohamed Hisham {
+		for (int i = 0; i < entity.relationsSource.size(); i++){
+			EntityRelationships.delete(entity.relationsSource.get(i).id);
 		}
-		size = entity.relationsDestination.size();
-		for (int j = 0; j < size; j++) {
-			EntityRelationships.deleteER(entity.relationsDestination.get(j).id);
+		for (int i = 0; i < entity.relationsDestination.size(); i++){
+			EntityRelationships.delete(entity.relationsDestination.get(i).id);
 		}
+		//}
 		size = entity.relationshipRequestsSource.size();
 		for (int j = 0; j < size; j++) {
 			CreateRelationshipRequests
