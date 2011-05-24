@@ -21,21 +21,15 @@
     </p></b>
 #{/if}
 #{/if}
-
-#{if flashError==2}
+#{else}
 #{if flash.error}
    <b> <p style="color:green">
               <i><font size=2> ${flash.error} </font></i>
     </p></b>
 #{/if}
-#{/if}
-</div>
-#{if type==0}
-<input class = "linkButton" type="button" id="back" onclick="javascript: show1();" style="display:none" value="Back to search">
-#{/if}
-#{else}
-<input class = "linkButton" type="button" id="back" onclick="javascript: show1();" style="display:none" value="Back to search">
 #{/else}
+</div>
+<input class = "linkButton" type="button" id="back" onclick="javascript: show1();" style="display:none" value="Back to search">
 <form action="@{Invitations.send()}" method="GET" >
 <table border="0" bgcolor="#ececec" cellspacing="5" id="table" style="display:none">
 <tr><td><u>Invite directly by writing the email </u></td></tr>
@@ -133,7 +127,7 @@ function show(){
 }
 function show1(){
 	$('#back').hide();
-	$('#errors').show();
+	$('#errors').hide();
 	$('#block').show();
 	$('#table').hide();
 	$('#appear').hide();
