@@ -74,9 +74,7 @@ public class MainEntitys extends CoolCRUD {
 	public static void followEntity(long entityId) {
 		User user = Security.getConnected();
 		MainEntity entity = MainEntity.findById(entityId);
-		if (entity.followers.contains(user))
-			System.out.println("You are already a follower");
-		else {
+		if (!entity.followers.contains(user)) {
 			entity.followers.add(user);
 			entity.save();
 			user.followingEntities.add(entity);
@@ -99,13 +97,13 @@ public class MainEntitys extends CoolCRUD {
 	 * @param entityId
 	 *            : The id of the entity whose followers will be viewed
 	 * 
-	 * @param f
+	 * @param flag
 	 *            : A string that used to represent a flag
 	 * 
 	 */
-	public static void viewFollowers(long entityId, String f) {
+	public static void viewFollowers(long entityId, String flag) {
 		MainEntity entity = MainEntity.findById(entityId);
-		if (f.equals("true"))
+		if (flag.equals("true"))
 			followEntity(entityId);
 		render(entity);
 	}
@@ -133,7 +131,6 @@ public class MainEntitys extends CoolCRUD {
 	public static void createEntity(String name, String description,
 			long orgId, boolean createRelationship) {
 		boolean canCreate = true;
-		System.out.println(createRelationship);
 		User user = Security.getConnected();
 		Organization org = Organization.findById(orgId);
 		for (int i = 0; i < org.entitiesList.size(); i++) {
@@ -251,18 +248,26 @@ public class MainEntitys extends CoolCRUD {
 		Organization org = entity.organization;
 		List<MainEntity> subentities = entity.subentities;
 		List<Topic> topicList = entity.topicList;
-		List<User> organizers = Users.getEntityOrganizers(entity);
 		int canCreateEntity = 0;
+		int canCreateSubEntity = 0;
 		int canDeleteEntity = 0;
-		if (user.isAdmin || org.creator.equals(user)
-				|| organizers.contains(user))
+		if (user.isAdmin
+				|| Users.isPermitted(user, "create entities",
+						entity.organization.id, "organization")) {
 			canCreateEntity = 1;
-		if (user.isAdmin || org.creator.equals(user))
 			canDeleteEntity = 1;
+		}
+		if (user.isAdmin
+				|| Users.isPermitted(user, "create entities",
+						entity.organization.id, "organization")
+				|| Users.isPermitted(user,
+						"Create a sub-entity for entity he/she manages",
+						entity.id, "entity")) {
+			canCreateSubEntity = 1;
+		}
 		int permission = 1;
 		int invite = 0;
 		int canEdit = 0;
-		// int canView = 0;
 		int canRequest = 0;
 		int canRequestRelationship = 0;
 		int canRestrict = 0;
@@ -275,8 +280,6 @@ public class MainEntitys extends CoolCRUD {
 			canEdit = 1;
 		if (!Users.isPermitted(user, "post topics", entity.id, "entity"))
 			permission = 0;
-		// if (Users.isPermitted(user, "view", entity.id, "entity"))
-		// canView = 1;
 		if (Users.isPermitted(user, "use", entity.id, "entity"))
 			canRequest = 1;
 		if (Users
@@ -285,7 +288,6 @@ public class MainEntitys extends CoolCRUD {
 						"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
 						entity.id, "entity"))
 			invite = 1;
-
 		int check = 0;
 		if (Users.isPermitted(user,
 				"block a user from viewing or using a certain entity",
@@ -297,16 +299,16 @@ public class MainEntitys extends CoolCRUD {
 		int check2 = 0;
 		if (Users.isPermitted(user, "use", entity.id, "entity"))
 			check2 = 1;
-		if (Users.getEntityOrganizers(entity).contains(user)) {
+		if (UserRoleInOrganizations.isOrganizer(user, entity.id, "entity")) {
 			canRequestRelationship = 1;
 		}
 		boolean follower = user.followingEntities.contains(entity);
 		boolean canCreateRelationship = EntityRelationships.isAllowedTo(id);
 		List<Plan> plans = Plans.planList("entity", entity.id);
 		render(user, org, entity, subentities, topicList, permission, invite,
-				canEdit, canCreateEntity, follower, canCreateRelationship,
-				/* canView, */canRequest, canRequestRelationship, check,
-				canRestrict, entityIsLocked, plans, check1, check2,
+				canEdit, canCreateEntity, canCreateSubEntity, follower,
+				canCreateRelationship, canRequest, canRequestRelationship,
+				check, canRestrict, entityIsLocked, plans, check1, check2,
 				canDeleteEntity);
 	}
 
@@ -422,6 +424,8 @@ public class MainEntitys extends CoolCRUD {
 	 * 
 	 * @param entityId
 	 *            the id of the entity to be deleted.
+	 *            
+	 * @return boolean
 	 */
 	public static boolean deleteEntity(long entityId) {
 		MainEntity entity = MainEntity.findById(entityId);
@@ -450,36 +454,36 @@ public class MainEntitys extends CoolCRUD {
 				tags.get(i).save();
 			}
 		}
-//		size = entity.relationsSource.size();
-//		for (int j = 0; j < size; j++) {
-//			EntityRelationships.deleteER(entity.relationsSource.get(j).id);
-//		}
-//		size = entity.relationsDestination.size();
-//		for (int j = 0; j < size; j++) {
-//			EntityRelationships.deleteER(entity.relationsDestination.get(j).id);
-//		}
+		// size = entity.relationsSource.size();
+		// for (int j = 0; j < size; j++) {
+		// EntityRelationships.deleteER(entity.relationsSource.get(j).id);
+		// }
+		// size = entity.relationsDestination.size();
+		// for (int j = 0; j < size; j++) {
+		// EntityRelationships.deleteER(entity.relationsDestination.get(j).id);
+		// }
 		// Mohamed Hisham {
-		for (int i = 0; i < entity.relationsSource.size(); i++){
+		for (int i = 0; i < entity.relationsSource.size(); i++) {
 			EntityRelationships.delete(entity.relationsSource.get(i).id);
 		}
-		for (int i = 0; i < entity.relationsDestination.size(); i++){
+		for (int i = 0; i < entity.relationsDestination.size(); i++) {
 			EntityRelationships.delete(entity.relationsDestination.get(i).id);
 		}
-		//}
+		// }
 		size = entity.relationshipRequestsSource.size();
 		for (int j = 0; j < size; j++) {
-			CreateRelationshipRequests
-					.delete(entity.relationshipRequestsSource.get(j).id);
+			CreateRelationshipRequests.delete(entity.relationshipRequestsSource
+					.get(j).id);
 		}
 		size = entity.relationshipRequestsDestination.size();
 		for (int j = 0; j < size; j++) {
-			CreateRelationshipRequests.delete(entity.relationshipRequestsDestination
-					.get(j).id);
+			CreateRelationshipRequests
+					.delete(entity.relationshipRequestsDestination.get(j).id);
 		}
 		size = entity.topicList.size();
 		for (int j = 0; j < size; j++) {
-//			Topic.delete(""+ entity.topicList
-//					.get(j).id, "msg"); 
+			// Topic.delete(""+ entity.topicList
+			// .get(j).id, "msg");
 		}
 		size = allEntities.size();
 		for (int i = 0; i < size; i++) {
@@ -488,25 +492,26 @@ public class MainEntitys extends CoolCRUD {
 				allEntities.get(i).save();
 			}
 		}
-		
-		//Mai Magdy
-		List <Invitation> invite=Invitation.find("byEntity", entity).fetch();
-		for(int i=0;i<invite.size();i++)
+
+		// Mai Magdy
+		List<Invitation> invite = Invitation.find("byEntity", entity).fetch();
+		for (int i = 0; i < invite.size(); i++)
 			invite.get(i).delete();
 		//
-		
+
 		size = entity.topicRequests.size();
-		for (int i = 0; i<size;i++) {
-			//TopicRequests.delete(entity.topicRequests.get(i).id);
+		for (int i = 0; i < size; i++) {
+			// TopicRequests.delete(entity.topicRequests.get(i).id);
 		}
 		size = entity.relatedItems.size();
-		for (int i = 0; i<size;i++) {
-			//Items.delete(entity.relatedItems.get(i).id);
+		for (int i = 0; i < size; i++) {
+			// Items.delete(entity.relatedItems.get(i).id);
 		}
 		size = entity.subentities.size();
-		for (int i = 0; i<size;i++) {
+		for (int i = 0; i < size; i++) {
 			MainEntitys.deleteEntity(entity.subentities.get(i).id);
-		}		
+		}
+		entity.logs.clear();
 		entity.delete();
 		return true;
 	}
