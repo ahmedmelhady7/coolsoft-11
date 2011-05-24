@@ -1317,7 +1317,6 @@ public class Search extends Controller {
 	public static void sortA() {// char voteOrRate) {// ascending
 		List<Model> toSort = new ArrayList<Model>();
 		List<Model> notToSort = new ArrayList<Model>();
-		// if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
 
 		/*
 		 * a for loop to find all objects having attribute rate and add them to
@@ -1381,61 +1380,19 @@ public class Search extends Controller {
 		}
 		listOfResults = toSort;
 		searchResult();
-		// the previous too loops is to append to lists in one
-		// }
-
-		// waiting for the vote to be done in order to sort by voting
-		/*
-		 * if (voteOrRate == 'v' || voteOrRate == 'v') { // sorting by rate
-		 * 
-		 * 
-		 * // a for loop to find all objects having attribute rate and add them
-		 * // to a list called to sort and the rest of the search results are //
-		 * to be in a list not to be sorted
-		 * 
-		 * 
-		 * for (int i = 0; i < searchresult.size(); i++) { if
-		 * (searchresult.get(i) instanceof Idea || searchresult.get(i)
-		 * instanceof Plan) { tosort.add(searchresult.get(i)); } else {
-		 * nottosort.add(searchresult.get(i)); } }
-		 * 
-		 * for (int j = 0; j < tosort.size(); j++) { int vote1 = 0; int vote2 =
-		 * 0; if (tosort.get(j) instanceof Idea) { Idea temp1 = (Idea)
-		 * tosort.get(j); vote1 = temp1.voting; } else { Plan temp1 = (Plan)
-		 * tosort.get(j); vote1 = temp1.voting; } for (int k = 0; k <
-		 * tosort.size(); k++) { if (tosort.get(k) instanceof Idea) { Idea temp2
-		 * = (Idea) tosort.get(k); vote2 = temp2.voting; } else { Plan temp2 =
-		 * (Plan) tosort.get(k); vote2 = temp2.voting; }
-		 * 
-		 * if (vote1 > vote2) { //sorting
-		 * 
-		 * Object temp = (Object) tosort.get(k); tosort.set(k, tosort.get(j));
-		 * tosort.set(j, temp);
-		 * 
-		 * }
-		 * 
-		 * }
-		 * 
-		 * }
-		 * 
-		 * sorted= new ArrayList<Object>();//final sorted list for(int
-		 * m=0;m<tosort.size();m++){ sorted.add(tosort.get((e))); } for (int
-		 * m=0;m<nottosort.size();m++){ sorted.add(nottosort.get((e))); } //the
-		 * previous too loops is to append to lists in one }
-		 */
 
 	}
 
 	/**
 	 * 
-	 * sortD method sorts according to rates in descending order
+	 * sortD_Views method sorts according to views in descending order
 	 * 
 	 * task.
 	 * 
 	 * 
 	 * @author Monica Yousry
 	 * 
-	 * @story C4S04 sort descending the search result according to rates
+	 * @story C4S04 sort descending the search result according to views
 	 * 
 	 * 
 	 * @return void
@@ -1443,12 +1400,10 @@ public class Search extends Controller {
 	 * 
 	 */
 
-	public static void sortD() {// char voteOrRate) {// descending
+	public static void sortD_Views() {// descending
 
 		List<Model> toSort = new ArrayList<Model>();
 		List<Model> notToSort = new ArrayList<Model>();
-
-		// if (voteOrRate == 'r' || voteOrRate == 'R') { // sorting by rate
 
 		/*
 		 * a for loop to find all objects having attribute rate and add them to
@@ -1458,7 +1413,7 @@ public class Search extends Controller {
 
 		for (int i = 0; i < listOfResults.size(); i++) {
 			if (listOfResults.get(i) instanceof Idea
-					|| listOfResults.get(i) instanceof Plan) {
+					|| listOfResults.get(i) instanceof Topic) {
 				toSort.add(listOfResults.get(i));
 			} else {
 				notToSort.add(listOfResults.get(i));
@@ -1466,37 +1421,27 @@ public class Search extends Controller {
 		}
 
 		for (int j = 0; j < toSort.size(); j++) {
-			String rate1 = "0";
-			String rate2 = "0";
+			int view1 = 0;
+			int view2 = 0;
 			if (toSort.get(j) instanceof Idea) {
 				Idea temp1 = (Idea) toSort.get(j);
-				rate1 = temp1.rating;
-
-				if (rate1.equalsIgnoreCase("Not yet rated"))
-					rate1 = "0";
+				view1 = temp1.viewed;
 			} else {
-				Plan temp1 = (Plan) toSort.get(j);
-				rate1 = temp1.rating;
-
-				if (rate1.equalsIgnoreCase("Not yet rated"))
-					rate1 = "0";
+				Topic temp1 = (Topic) toSort.get(j);
+				view1 = temp1.viewed;
 			}
 			for (int k = 0; k < toSort.size(); k++) {
 				if (toSort.get(k) instanceof Idea) {
 					Idea temp2 = (Idea) toSort.get(k);
-					rate2 = temp2.rating;
+					view2 = temp2.viewed;
 
-					if (rate2.equalsIgnoreCase("Not yet rated"))
-						rate2 = "0";
 				} else {
-					Plan temp2 = (Plan) toSort.get(k);
-					rate2 = temp2.rating;
+					Topic temp2 = (Topic) toSort.get(k);
+					view2 = temp2.viewed;
 
-					if (rate2.equalsIgnoreCase("Not yet rated"))
-						rate2 = "0";
 				}
 
-				if (Integer.parseInt(rate1) < Integer.parseInt(rate2)) { // sorting
+				if (view1 < view2) { // sorting
 					Model temp = (Model) toSort.get(k);
 					toSort.set(k, toSort.get(j));
 					toSort.set(j, temp);
@@ -1514,48 +1459,6 @@ public class Search extends Controller {
 
 		listOfResults = toSort;
 		searchResult();
-		// the previous too loops is to append to lists in one
-		// }
-
-		// waiting for the vote to be done in order to sort by voting
-		/*
-		 * if (voteOrRate == 'v' || voteOrRate == 'v') { // sorting by rate
-		 * 
-		 * 
-		 * // a for loop to find all objects having attribute rate and add them
-		 * // to a list called to sort and the rest of the search results are //
-		 * to be in a list not to be sorted
-		 * 
-		 * 
-		 * for (int i = 0; i < searchresult.size(); i++) { if
-		 * (searchresult.get(i) instanceof Idea || searchresult.get(i)
-		 * instanceof Plan) { tosort.add(searchresult.get(i)); } else {
-		 * nottosort.add(searchresult.get(i)); } }
-		 * 
-		 * for (int j = 0; j < tosort.size(); j++) { int vote1 = 0; int vote2 =
-		 * 0; if (tosort.get(j) instanceof Idea) { Idea temp1 = (Idea)
-		 * tosort.get(j); vote1 = temp1.voting; } else { Plan temp1 = (Plan)
-		 * tosort.get(j); vote1 = temp1.voting; } for (int k = 0; k <
-		 * tosort.size(); k++) { if (tosort.get(k) instanceof Idea) { Idea temp2
-		 * = (Idea) tosort.get(k); vote2 = temp2.voting; } else { Plan temp2 =
-		 * (Plan) tosort.get(k); vote2 = temp2.voting; }
-		 * 
-		 * if (vote1 < vote2) { //sorting
-		 * 
-		 * Object temp = (Object) tosort.get(k); tosort.set(k, tosort.get(j));
-		 * tosort.set(j, temp);
-		 * 
-		 * }
-		 * 
-		 * }
-		 * 
-		 * }
-		 * 
-		 * sorted= new ArrayList<Object>();//final sorted list for(int
-		 * m=0;m<tosort.size();m++){ sorted.add(tosort.get((e))); } for (int
-		 * m=0;m<nottosort.size();m++){ sorted.add(nottosort.get((e))); } //the
-		 * previous too loops is to append to lists in one }
-		 */
 
 	}
 
@@ -1637,4 +1540,77 @@ public class Search extends Controller {
 			return null;
 		}
 	}
+
+	public static void sortD() {// descending
+
+		List<Model> toSort = new ArrayList<Model>();
+		List<Model> notToSort = new ArrayList<Model>();
+
+		/*
+		 * a for loop to find all objects having attribute rate and add them to
+		 * a list called to sort and the rest of the search results are to be in
+		 * a list not to be sorted
+		 */
+
+		for (int i = 0; i < listOfResults.size(); i++) {
+			if (listOfResults.get(i) instanceof Idea
+					|| listOfResults.get(i) instanceof Plan) {
+				toSort.add(listOfResults.get(i));
+			} else {
+				notToSort.add(listOfResults.get(i));
+			}
+		}
+
+		for (int j = 0; j < toSort.size(); j++) {
+			String rate1 = "0";
+			String rate2 = "0";
+			if (toSort.get(j) instanceof Idea) {
+				Idea temp1 = (Idea) toSort.get(j);
+				rate1 = temp1.rating;
+
+				if (rate1.equalsIgnoreCase("Not yet rated"))
+					rate1 = "0";
+			} else {
+				Plan temp1 = (Plan) toSort.get(j);
+				rate1 = temp1.rating;
+
+				if (rate1.equalsIgnoreCase("Not yet rated"))
+					rate1 = "0";
+			}
+			for (int k = 0; k < toSort.size(); k++) {
+				if (toSort.get(k) instanceof Idea) {
+					Idea temp2 = (Idea) toSort.get(k);
+					rate2 = temp2.rating;
+
+					if (rate2.equalsIgnoreCase("Not yet rated"))
+						rate2 = "0";
+				} else {
+					Plan temp2 = (Plan) toSort.get(k);
+					rate2 = temp2.rating;
+
+					if (rate2.equalsIgnoreCase("Not yet rated"))
+						rate2 = "0";
+				}
+
+				if (Integer.parseInt(rate1) < Integer.parseInt(rate2)) { // sorting
+					Model temp = (Model) toSort.get(k);
+					toSort.set(k, toSort.get(j));
+					toSort.set(j, temp);
+				}
+			}
+		}
+
+		sorted = new ArrayList<Model>();// final sorted list
+		for (int m = 0; m < toSort.size(); m++) {
+			sorted.add(toSort.get((m)));
+		}
+		for (int m = 0; m < notToSort.size(); m++) {
+			sorted.add(notToSort.get((m)));
+		}
+
+		listOfResults = toSort;
+		searchResult();
+
+	}
+
 }
