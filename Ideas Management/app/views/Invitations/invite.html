@@ -14,24 +14,21 @@
 <br/>
 <br/>
 <div id="errors" style="display:true">
-#{if flashError==1}
 #{if flash.error}
    <b> <p style="color:red">
               <i><font size=2> ${flash.error} </font></i>
     </p></b>
 #{/if}
-#{/if}
-#{else}
-#{if flash.error}
+#{if flash.success}
    <b> <p style="color:green">
-              <i><font size=2> ${flash.error} </font></i>
+              <i><font size=2> ${flash.success} </font></i>
     </p></b>
 #{/if}
-#{/else}
 </div>
-<input class = "linkButton" type="button" id="back" onclick="javascript: show1();" style="display:none" value="Back to search">
+<div id="table" style="display:none">
+<input class = "linkButton" type="button" id="back" onclick="javascript: show1();" value="Back to search">
 <form action="@{Invitations.send()}" method="GET" >
-<table border="0" bgcolor="#ececec" cellspacing="5" id="table" style="display:none">
+<table border="0" bgcolor="#ececec" cellspacing="5" >
 <tr><td><u>Invite directly by writing the email </u></td></tr>
 <tr><td>Email <input type="text" size="30" id="mail" name="email"></td></tr>
 <input type = "hidden" id="id" name ="userId" value =0>
@@ -45,11 +42,11 @@
 <tr><td>&nbsp;</td><td><input class = "linkButton" type="submit" value="send">
 </table>
 </form>
+</div>
+
 
 <div id="block" >
 <input class = "linkButton" type="button" onclick="javascript: show();" value="Invite by mail" id="button1" /> 
-
-
 <form action="@{Invitations.searchUser()}" method="GET" name="myform"">
 <table border="0" bgcolor="#ececec" cellspacing="5">
 <tr><td><u> You can search by name/email for users to invite </u></td></tr>
@@ -119,14 +116,12 @@ $('#block').hide();
 <script type="text/javascript">
 
 function show(){
-	$('#back').show();
 	$('#errors').hide();
 	$('#block').hide();
 	$('#table').show();
 	
 }
 function show1(){
-	$('#back').hide();
 	$('#errors').hide();
 	$('#block').show();
 	$('#table').hide();
