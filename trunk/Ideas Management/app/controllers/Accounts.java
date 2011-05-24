@@ -57,7 +57,7 @@ public class Accounts extends Controller{
 	
 	public static void addUser(String email, String username, String password,
 			String firstName, String lastName, String securityQuestion, String answer,
-			int communityContributionCounter, String dateofBirth, String country,
+			int communityContributionCounter, Date dateofBirth, String country,
 			String profession)
 	{
 		
