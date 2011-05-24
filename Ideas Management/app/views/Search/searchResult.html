@@ -167,7 +167,7 @@ The Search Results Viewer
         <div id='divIt'>
         #{if lof} 
         #{if itemsFound} 
-        Found ${itemsFound.size()} item{itemsFound.pluralize()}
+        Found ${itemsFound.size()} item${itemsFound.pluralize()}
         </br>
         <ul>
         #{list items:itemFound, as:'item'}
@@ -193,7 +193,7 @@ The Search Results Viewer
 <div id='divP'>
 #{if lof} 
 #{if plansFound} 
-Found ${plansFound.size()} item{plansFound.pluralize()}
+Found ${plansFound.size()} plan${plansFound.pluralize()}
 </br>
 <ul>
 #{list items:itemFound, as:'plan'}
@@ -262,12 +262,13 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
 <div id='divIt1'>
 #{if lof} 
 #{if itemsFound} 
-Found ${itemsFound.size()} item{itemsFound.pluralize()}
+Found ${itemsFound.size()} item${itemsFound.pluralize()}
 </br>
 <ul>
 #{list items:itemFound, as:'item'}
 <li>
 <a href='@{item.viewAssignedItems(item.id)}' target="_parent">${item.summary}</a>
+</br>Description:
 </br>${item.description}
 </li>#{/list}
 </br>
@@ -309,7 +310,7 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
 <div id='divP1'>
 #{if lof} 
 #{if plansFound} 
-Found ${plansFound.size()} item{plansFound.pluralize()}
+Found ${plansFound.size()} plan${plansFound.pluralize()}
 </br>
 <ul>
 #{list items:itemFound, as:'plan'}
@@ -402,12 +403,15 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
         }
         else {
             document.getElementById('divI').style.display = 'block';
+            document.getElementById('error').style.display = 'block';
+            
         }
         if (document.getElementById('I').checked == false) {
             document.getElementById('divI1').style.display = 'none';
         }
         else {
             document.getElementById('divI1').style.display = 'block';
+            document.getElementById('error1').style.display = 'block';
         }
         if (document.getElementById('P').checked == false) {
             document.getElementById('divP').style.display = 'none';
@@ -538,13 +542,14 @@ Found ${plansFound.size()} item{plansFound.pluralize()}
                 idea2ID: marked[1],
                 des: "Sending a request to mark"
             }, function(){
-                document.getElementById('errors').innerHTML = '<font color="green">Your request have been successfuly sent to the Topic organizers</font>';
-                for (i = 0; i < marked.length; i++) {
-                    document.getElementById(marked[i] + '').disabled = true;
-                    document.getElementById(marked[i] + '').checked = false;
-                }
-                marked = new Array();
             });
+            for (i = 0; i < marked.length; i++) {
+                document.getElementById(marked[i] + '').disabled = true;
+                document.getElementById(marked[i] + '').checked = false;
+            }
+            document.getElementById('errors').innerHTML = "#{ifErrors}Great#{/ifErrors}#{else}<font color='green'>Your request have been successfuly sent to the Topic organizers</font>#{/else}";
+            document.getElementById('errors1').innerHTML = "#{ifErrors}Great#{/ifErrors}#{else}<font color='green'>Your request have been successfuly sent to the Topic organizers</font>#{/else}";
+            marked = new Array();
         }
     }
     
