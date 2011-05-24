@@ -387,6 +387,10 @@ public class Ideas extends CoolCRUD {
 		boolean notBlockedFromUsing = Users.isPermitted(user, "use", topicId,
 				"topic");
 		ArrayList<Label> ideasLabels = new ArrayList<Label>();
+		
+		idea.incrmentViewed();
+		idea.save();
+		
 		for (Label label : user.myLabels)
 			if (label.ideas.contains(object))
 				ideasLabels.add(label);
