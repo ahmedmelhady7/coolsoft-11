@@ -316,6 +316,14 @@ public class Tags extends CoolCRUD {
 			}
 			i++;
 		}
+		tag.creator.createdTags.remove(tag);
+		tag.creator.save();
+		i = 0;
+		while (i < tag.entities.size()) {
+			tag.entities.get(i).tagList.remove(tag);
+			tag.entities.get(i).save();
+			i++;
+		}
 		i = 0;
 		while (i < followers.size()) {
 			if(followers.get(i).followingTags.contains(tag)) {
@@ -348,6 +356,8 @@ public class Tags extends CoolCRUD {
 			}
 			i++;
 		}
+		organization.createdTags.remove(tag);
+		organization.save();
 		
 		for(int j = 0; j < tag.relationsSource.size(); j++){
 			TagRelationships.delete(tag.relationsSource.get(j).id);
