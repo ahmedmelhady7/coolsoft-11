@@ -1285,13 +1285,6 @@ public class Search extends Controller {
 	 * @return void.
 	 * 
 	 */
-	// //////////////////////////////////////////////////////////////////
-	// filter method by monica yousry
-	// filtering on type (organisation,topic,idea,plan,entity,...etc)
-	//
-	// this commented method with the static parametar will help in defining
-	// which list to pass for the filter method accrding to the user's choice
-	// (and or or )
 
 	public static void handelingOrAnd(char andOr) {
 		if (andOr == 'a') {
@@ -1299,91 +1292,6 @@ public class Search extends Controller {
 		}
 		if (andOr == 'o') {
 			toBePassed = listOfResults;
-		}
-	}
-
-	/**
-	 * this method filters the result by organization
-	 * 
-	 * @author Monica Yousry
-	 * 
-	 * @story C4S03 filtering results after sort
-	 * @return void
-	 */
-	public static void filterO() {
-		System.out.print("filterO");
-		for (int i = 0; i < toBePassed.size(); i++) {// loop on the whole
-			// search result
-			if (toBePassed.get(i) instanceof Organization) {// if found an
-				// organization
-				filterResult.add(toBePassed.get(i));// add it to the list
-			}
-		}
-		// }
-	}
-
-	/**
-	 * this method filters the result by Ideas
-	 * 
-	 * @author: monica yousry
-	 * @return: void
-	 */
-	public static void filterI() {
-
-		System.out.println("filterI");
-		for (int i = 0; i < toBePassed.size(); i++) {
-			if (toBePassed.get(i) instanceof Idea) {
-				filterResult.add(toBePassed.get(i));
-			}
-		}
-
-	}
-
-	/**
-	 * this method filters the result by Topic
-	 * 
-	 * @author: monica yousry
-	 * @return: void
-	 */
-	public static void filterT() {
-
-		System.out.println("filterT");
-		for (int i = 0; i < toBePassed.size(); i++) {
-			if (toBePassed.get(i) instanceof Topic) {
-				filterResult.add(toBePassed.get(i));
-			}
-		}
-	}
-
-	/**
-	 * this method filters the result by Entity
-	 * 
-	 * @author: monica yousry
-	 * @return: void
-	 */
-	public static void filterE() {
-
-		System.out.println("filterE");
-		for (int i = 0; i < toBePassed.size(); i++) {
-			if (toBePassed.get(i) instanceof MainEntity) {
-
-				filterResult.add(toBePassed.get(i));
-			}
-		}
-	}
-
-	/**
-	 * this method filters the result by Plan
-	 * 
-	 * @author: monica yousry
-	 * @return: void
-	 */
-	public static void filterP() {
-		System.out.println("filterP");
-		for (int i = 0; i < toBePassed.size(); i++) {
-			if (toBePassed.get(i) instanceof Plan) {
-				filterResult.add(toBePassed.get(i));
-			}
 		}
 	}
 
