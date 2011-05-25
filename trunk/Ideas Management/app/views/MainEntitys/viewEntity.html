@@ -116,7 +116,20 @@
 			</div>
 		</li>
 		#{/if}
-        
+        #{if entity.relatedItems.size()>0}
+        <li>
+           <a id="relatedItemsLink"  style="cursor:pointer;"> Related Items </a>
+			 <div id="relatedItemsLinks">
+            <ul>
+            	#{list items:entity.relatedItems, as:'item'}
+				<li>
+				     <a href="@{Plans.viewAsList(item.plan.id)}">${item.summary} </a>
+                </li>
+				#{/list}
+			</ul>
+			</div>
+		</li>
+		#{/if}
 		</ul>
 		</div>	
 <script type="text/javascript">
@@ -130,6 +143,19 @@
             else {
                 $('#plansLinks').hide(500);
                 planFlag = true;
+            }
+        });
+		
+		var relatedItemsFlag = true;
+        $('#relatedItemsLinks').hide();
+        $('#relatedItemsLink').click(function(){
+            if (relatedItemsFlag) {
+                $('#relatedItemsLinks').show(500);
+                relatedItemsFlag = false;
+            }
+            else {
+                $('#relatedItemsLinks').hide(500);
+                relatedItemsFlag = true;
             }
         });
 
