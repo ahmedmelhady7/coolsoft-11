@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import notifiers.Mail;
 
 import play.data.validation.Required;
+import play.libs.Codec;
 import play.mvc.With;
 import models.Log;
 import models.User;
@@ -53,10 +54,7 @@ public class Security extends Secure.Security {
 	 */
 
 	public static boolean authenticate(String username, String password) {
-		//String hashedPassword = Application.hash(password);
-		/*User user = User.find(
-				"select u from User u where (u.username=? and u.password = ?)",
-				username, password).first();*/
+		password=Codec.hexMD5(password);
 		User user = User.find(
 				"select u from User u where (u.username=? and u.password = ?)",
 				username, password).first();
@@ -67,8 +65,7 @@ public class Security extends Secure.Security {
 			}
 			if(user.state.equals("w"))
 			{
-				flash.error("You must activate your account first ");
-				return false;
+				
 			}
 			session.put("user_id", user.id);
 			return true;
