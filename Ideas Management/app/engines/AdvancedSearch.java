@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import models.Comment;
 import models.Idea;
 import models.Item;
 import models.MainEntity;
@@ -771,7 +772,16 @@ public class AdvancedSearch {
 									i--;
 								} else {
 									if (in == 1) {
-										// comments
+										List<Comment> x = ((Topic) tOrgs.get(i)).commentsOn;
+										for (int j = 0; j < x.size(); j++) {
+											if (x.get(j).comment
+													.equalsIgnoreCase(key)) {
+												listOfResults.add(tOrgs.get(i));
+												tOrgs.remove(i);
+												i--;
+												break;
+											}
+										}
 									} else {
 										List<Tag> x = ((Topic) tOrgs.get(i)).tags;
 										for (int j = 0; j < x.size(); j++) {
@@ -814,7 +824,20 @@ public class AdvancedSearch {
 							}
 						} else {
 							if (in == 3) {
-								// comments
+								for (int i = 0; i < tOrgs.size(); i++) {
+									if (tOrgs.get(i) instanceof Topic) {
+										List<Comment> x = ((Topic) tOrgs.get(i)).commentsOn;
+										for (int j = 0; j < x.size(); j++) {
+											if (x.get(j).comment
+													.equalsIgnoreCase(key)) {
+												listOfResults.add(tOrgs.get(i));
+												tOrgs.remove(i);
+												i--;
+												break;
+											}
+										}
+									}
+								}
 							} else {
 								for (int i = 0; i < tOrgs.size(); i++) {
 									if (tOrgs.get(i) instanceof Topic) {
@@ -852,7 +875,17 @@ public class AdvancedSearch {
 									i--;
 								} else {
 									if (in == 1) {
-										// comments
+										List<Tag> x = ((Topic) tOrgs.get(i)).tags;
+										for (int j = 0; j < x.size(); j++) {
+											if (x.get(j).name
+													.toLowerCase()
+													.contains(key.toLowerCase())) {
+												listOfResults.add(tOrgs.get(i));
+												tOrgs.remove(i);
+												i--;
+												break;
+											}
+										}
 									} else {
 										List<Tag> x = ((Topic) tOrgs.get(i)).tags;
 										for (int j = 0; j < x.size(); j++) {

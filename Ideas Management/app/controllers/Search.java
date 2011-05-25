@@ -237,8 +237,21 @@ public class Search extends Controller {
 				wKi += eK.substring(eK.length() - 1, eK.length()) + ",";
 			}
 			isExact = true;
+		} else {
+			String[] temp1 = wKs.split(",");
+			String[] temp1i = wKi.split(",");
+			wKs = "";
+			wKi = "";
+			for (int i = 0; i < temp1.length - 1; i += 2) {
+				String[] temp2 = temp1[i + 1].split(" ");
+				for (int j = 0; j < temp2.length; j++) {
+					wKs += temp1[i] + "," + temp2[j] + ",";
+					if (wKi.compareTo("") != 0)
+						wKi += temp1i[i/2] + ",";
+				}
+			}
 		}
-		keyWords = wKs.split(",", 0);
+		keyWords = wKs.split(",", 0);		
 		if (wKi.compareTo("") == 0) {
 			keyWordsIn = new String[keyWords.length / 2];
 			for (int i = 0; i < keyWordsIn.length; i++) {
