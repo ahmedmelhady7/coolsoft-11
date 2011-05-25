@@ -20,7 +20,7 @@
             <a href="@{Browse.browse()}">Browse All</a>
         </li>
         <li>
-            <a id="not">Notifications 
+            <a id="not" style="cursor:pointer">Notifications 
                 #{if user.getNotificationNumber() == 0}
                 (No New)
                 #{/if}
@@ -41,7 +41,24 @@
 </div>
 <div id="sidebar">
     <ul>
-        <li>
+                        <li>
+                            <div id="search">
+                                Search: 
+                                <br>
+                                <input type="text" name="keywords" id="keywords" value = "Enter a keyword here" onfocus="this.value=''" " onfocusout='' onkeypress='javaScript: quickSearchScript()' /><input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick='javaScript: quickSearchScript()'/>
+                                <br>
+                                <small>
+                                    <i><a href="/AdvancedSearch">Advanced Search</a></i>
+                                </small>
+                            </div>
+                            <div style="clear: both;">
+                                &nbsp;
+                            </div>
+                        </li>
+                        <div style="clear: both;">
+                            &nbsp;
+                        </div>
+                        <li>
             <div id="not-body">
                 <h2>Notifications</h2>
                 <div id="list">
@@ -65,25 +82,11 @@
                             #{/list} 
                             </div>
                             <a href="@{Users.viewNotifications()}">All Notifications</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a id="hide" style="cursor:pointer">Hide</a>
                         </div>
                         </li>
-                        <li>
-                            <div id="search">
-                                Search: 
-                                <br>
-                                <input type="text" name="keywords" id="keywords" value = "Enter a keyword here" onfocus="this.value=''" " onfocusout='' onkeypress='javaScript: quickSearchScript()' /><input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick='javaScript: quickSearchScript()'/>
-                                <br>
-                                <small>
-                                    <i><a href="/AdvancedSearch">Advanced Search</a></i>
-                                </small>
-                            </div>
-                            <div style="clear: both;">
-                                &nbsp;
-                            </div>
-                        </li>
-                        <div style="clear: both;">
-                            &nbsp;
-                        </div>
+        
                         <li>
                             <h2 id="a1">
                                 <u>
@@ -116,7 +119,7 @@
                         </li>
                         <!--div style="clear: both;">
                         &nbsp;
-                        </div-->
+                        </div-->                             
                         <li>
                             <h2 id="a2">
                                 <u>
@@ -393,6 +396,19 @@
                         });
                         var show = true;
                         $("#not").click(function(){
+                            if (show) {
+                                $('#not-body').show(500);
+                                $.post('@{Users.showNotifications()}');
+                                document.getElementById("not").text = 'Notifications (No New)';
+                                show = false;
+                            }
+                            else {
+                                $('#not-body').hide(500);
+                                show = true;
+                            }
+                            
+                        });
+                        $("#hide").click(function(){
                             if (show) {
                                 $('#not-body').show(500);
                                 $.post('@{Users.showNotifications()}');

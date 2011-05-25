@@ -20,6 +20,7 @@ import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import play.mvc.With;
 import models.*;
+
 import java.util.Arrays;
 
 @With(Secure.class)
@@ -253,14 +254,15 @@ public class Users extends CoolCRUD {
 	 */
 
 	public static void viewProfile(long userId) {
-		User userConnected = Security.getConnected();
-		User user = User.findById(userId);
+		User user = Security.getConnected();		
 		boolean flag = true;
-		if (user.id == userConnected.id) {
-			render(user, flag);
+		if (user.id == userId) {
+			User otherUser = Security.getConnected();
+			render(user, otherUser, flag);
 		} else {
+			User otherUser = User.findById(userId);
 			flag = false;
-			render(user, flag);
+			render(user, otherUser, flag);
 		}
 	}
 
@@ -1672,6 +1674,58 @@ public class Users extends CoolCRUD {
 		}
 	}
 
+	public static void notificationView(String type) {
+		User user = Security.getConnected();
+		System.out.println(type);
+		List<Notification> notificationList = getNotificationsFrom(type);	
+		if (type.equals("All")) {
+			type = "";
+		} else {
+			if (type.equals("Organization")) {
+				type = "from any Organizations";
+			} else {
+				if (type.equals("Entity")) {
+					type = "from any Entities";
+				} else {
+					if (type.equals("Topic")) {
+						type = "from any Topics";						
+					} else {
+						if (type.equals("Tag")) {
+							type = "from any Tags";
+						} else {
+							if (type.equals("Idea")) {
+								type = "from any Ideas";
+							} else {
+								if (type.equals("User")) {
+									type = "from any Users";
+								} else {
+									if (type.equals("Plan")) {
+										type = "from any Plans";
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		render(user, notificationList, type);
+	}
+	
+	public static List<Notification> getNotificationsFrom(String type) {
+		User user = Security.getConnected();
+		List<Notification> notificationList = new ArrayList<Notification>();
+		if (type.equalsIgnoreCase("All")) {
+			return user.notifications;			
+		}
+		for (int i = 0; i < user.notifications.size(); i++) {
+			if (user.notifications.get(i).type.equalsIgnoreCase(type)) {
+				notificationList.add(user.notifications.get(i));
+			}
+		}
+		return notificationList;
+	}
+	
 	public static void notifications() {
 		User user = Security.getConnected();
 		// List<NotificationProfile> npList = user.notificationProfiles;
