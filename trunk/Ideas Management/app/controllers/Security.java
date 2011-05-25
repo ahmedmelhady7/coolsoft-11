@@ -110,7 +110,7 @@ public class Security extends Secure.Security {
 			Security.forgotPassword();
 		}
 		User user = User.find( "select u from User u where u.email=? or u.username=?", username.toLowerCase(), username ).first();
-		if(user == null || user.state.equals("d") || user.state.equals("n")) {
+		if(user == null || user.state.equals("d")) {
 			flash.error( "This username/Email does not exist" );
 			Security.forgotPassword();
 		} else {

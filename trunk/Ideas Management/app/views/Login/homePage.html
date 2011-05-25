@@ -2,6 +2,10 @@
 #{set title:'Home Page' /}
 
 
+<script src="/public/javascripts/bmi.js" language="javascript">
+</script>
+
+
 #{if flash.success}
    <p style="color:green">
     <font size=4>${flash.success}</font>
@@ -15,5 +19,9 @@
 </form>
 <br>
 <br>
-<a href="@{Users.notifications()}">View Notifications</a>
+<a href="/users/notificationview?type=All">View Notifications</a>
+
+<br>
+<br>
+
 

@@ -1,0 +1,256 @@
+#{extends 'Login/index.html' /}
+#{set title:'Notifications' /}
+
+<script src="/public/javascripts/bmi.js" language="javascript">
+</script>
+
+<style type="text/css">
+#show{
+	margin-top: 2%;
+	margin-right: 2%;
+	margin-bottom: 4%;
+	margin-left: 2%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #FFFFFF;
+	padding-top: 2px;
+	padding-right: 4px;
+	padding-bottom: 0px;
+	padding-left: 2px;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+
+.accordionItem h3 {
+            margin: 0;
+            font-size: 1.1em;
+            border-bottom: 1px solid #66d color: "#150517";
+        }
+        
+        .accordionItem h3:hover {
+            cursor: pointer;
+        }
+        
+        .accordionItem div {
+            margin: 0;
+            padding: 1em 0.4em;
+        }
+        
+        .accordionItem.hide h3 {
+        }
+        
+        .accordionItem.hide div {
+            display: none;
+        }
+</style>
+
+<div id="leftSidebar">
+    <ul>                   
+        <li>
+			<h2>Notifications From</h2>
+			<ul>
+				<li><a href="/users/notificationview?type=All">All</a></li>
+				<li><a href="/users/notificationview?type=Organization">Organizations</a></li>
+				<li><a href="/users/notificationview?type=Entity">Entities</a></li>
+				<li><a href="/users/notificationview?type=Topic">Topics</a></li>
+				<li><a href="/users/notificationview?type=Idea">Ideas</a></li>
+				<li><a href="/users/notificationview?type=Plan">Plans</a></li>
+				<li><a href="/users/notificationview?type=Tag">Tags</a></li>
+				<li><a href="/users/notificationview?type=User">Users</a></li>
+			</ul>        
+        </li>        
+    </ul>
+</div>
+
+<div id="page">
+		<div id="page-bgtop">
+			<div id="page-bgbtm">
+				<div id="content">
+					<div class="post">
+						<div id="show">
+						<h2>Notification List</h2>
+						<hr>
+						<br>						
+						#{if notificationList.size() == 0}
+						<i>You have no notifications ${type}!!</i>
+						#{/if}
+						<form name="myform">
+						#{list items:notificationList, as:'notifi'}
+						<ul>							
+							<li id="not_${notifi.id}">
+							<div class="accordionItem">
+							<h3>																				
+    						#{if notifi.type == 'Plan'}
+    						<a href="@{Plans.viewAsList(notifi.sourceID)}">${notifi.title}</a>
+    						&nbsp;&nbsp;<font color ="#FF0000" size =2 style="cursor:pointer">⊕</font>
+    						#{/if} 
+    						#{if notifi.type == 'Topic'}
+    						<a href="@{Topics.show(notifi.sourceID)}">${notifi.title}</a>
+    						&nbsp;&nbsp;<font color ="#FF0000" size =2 style="cursor:pointer">⊕</font>
+    						#{/if} 
+    						#{if notifi.type == 'Idea'}
+    						<a href="@{Ideas.show(notifi.sourceID)}">${notifi.title}</a>
+    						&nbsp;&nbsp;<font color ="#FF0000" size =2 style="cursor:pointer">⊕</font>
+    						#{/if} 
+    						#{if notifi.type == 'Entity'}
+    						<a href="@{MainEntitys.viewEntity(notifi.sourceID)}">${notifi.title}</a>
+    						&nbsp;&nbsp;<font color ="#FF0000" size =2 style="cursor:pointer">⊕</font>
+    						#{/if} 
+    						#{if notifi.type == 'Organization'}
+    						<a href="@{Organizations.viewProfile(notifi.sourceID)}">${notifi.title}</a>    						
+    						#{/if} 
+    						#{if notifi.type == 'Tag'}
+    						<a href="@{Tags.mainPage(notifi.sourceID)}">${notifi.title}</a>
+    						&nbsp;&nbsp;<font color ="#FF0000" size =2 style="cursor:pointer">⊕</font>
+    						#{/if}    						
+    						&nbsp;&nbsp;<font color ="#FF0000" size =4 style="cursor:pointer">⊕</font>
+    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    						<i>Delete: </i><input type="checkbox" name="checkfield" id="${notifi.id}" onclick="toggleCheck(${notifi.id})" class="enabled"></h3>  						
+    						<div>    												
+    						<b>Message: </b> ${notifi.description}    						  						    						
+    						</div> 
+    						</div>   						
+    						</li>
+							</ul>		
+						#{/list}
+						</form>
+						#{if notificationList.size() != 0}  
+					<a onclick="markAll();" style="cursor:pointer"> Check All </a>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<a onclick="unmarkAll();" style="cursor:pointer"> Uncheck All</a>
+					<br>	
+					Delete Notifications: <input type="submit" value="Delete" onclick="submit()">						
+					#{/if}
+					</div>					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+<script type="text/javascript">
+var accordionItems = new Array();
+
+//Grab the accordion items from the page
+var divs = document.getElementsByTagName('div');
+for (var i = 0; i < divs.length; i++) {
+    if (divs[i].className == 'accordionItem') {
+    	accordionItems.push(divs[i]);    	
+    }
+        
+}
+
+// Assign onclick events to the accordion item headings
+for (var i = 0; i < accordionItems.length; i++) {
+    var h3 = getFirstChildWithTagName(accordionItems[i], 'H3');
+    h3.onclick = toggleItem;
+}
+
+// Hide all accordion item bodies except the first and the first
+for (var i = 0; i < accordionItems.length; i++) {
+    accordionItems[i].className = 'accordionItem hide'; 
+}
+
+function toggleItem(){
+    var itemClass = this.parentNode.className;
+    
+    // Hide all items
+    for (var i = 0; i < accordionItems.length; i++) {
+        accordionItems[i].className = 'accordionItem hide';
+    }
+    
+    // Show this item if it was previously hidden
+    if (itemClass == 'accordionItem hide') {
+        this.parentNode.className = 'accordionItem';
+        
+    }
+}
+
+function getFirstChildWithTagName(element, tagName){
+    for (var i = 0; i < element.childNodes.length; i++) {
+        if (element.childNodes[i].nodeName == tagName) 
+            return element.childNodes[i];
+    }
+    
+}
+
+var ids = new Array();
+var counter = ${notificationList.size()};
+function toggleCheck(id) {			
+	if(ids.indexOf(id) == -1) {
+		ids.push(id);
+	}else {
+		ids.pop(id);
+	}			
+}
+function markAll(){
+	if(counter == 1) {
+		oneMark();
+	} else {
+		var field = document.myform.checkfield;	
+		for (i = 0; i < field.length; i++) {
+			field[i].checked = true ;
+			ids.push(field[i].id);
+		}
+	}	
+}
+function oneMark() {
+	var field = document.myform.checkfield;
+	field.checked = true;
+	ids.push(field.id);
+}
+function unmarkAll(){
+	if(counter == 1) {
+		oneUnMark();
+	} else {
+		var field = document.myform.checkfield;	
+		for (i = 0; i < field.length; i++) {
+			field[i].checked = false ;
+		}
+	}
+	ids = new Array();
+}
+function oneUnMark() {
+	var field = document.myform.checkfield;
+	field.checked = false;
+}
+function submit() {
+	if(ids.length == 0) {
+		alert('No notifications to be deleted!!');
+	} else {
+		var r=confirm("Are You sure you want to delete notifications?");
+		if (r == true) {
+			$.post('@{deleteNotifications()}', {a:ids});
+			for(var i=0;i<ids.length;i++) {
+				$('#not_' + ids[i]).remove();
+			}
+		} else {
+			//window.location.reload();
+		}
+		ids = new Array();
+		var field = document.myform.checkfield;
+		for (i = 0; i < field.length; i++){
+			field[i].checked = false ;
+		}
+		//window.location.reload();
+	}
+	
+}
+
+</script>
+					

@@ -1,49 +1,86 @@
 #{extends 'Login/index.html' /}
 #{set title:'Profile' /}
+
+<style type="text/css">
+#show{
+	margin-top: 2%;
+	margin-right: 2%;
+	margin-bottom: 4%;
+	margin-left: 2%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #FFFFFF;
+	padding-top: 2px;
+	padding-right: 4px;
+	padding-bottom: 0px;
+	padding-left: 2px;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+</style>
+
+<div id="leftSidebar">
+<ul>
+<li><a href="@{Users.editProfile()}">Edit Profile</a></li>
+<li><a style="cursor:pointer" id="cap" >Change Password</a></li>
+</ul>
+</div>
+
 <div id="page">
 		<div id="page-bgtop">
 			<div id="page-bgbtm">
 				<div id="content">
-					<div id="profile" class="post">
-						<h2 class="title">Profile Page</h2>						
+					<div id="profile" class="post">					
+						<h2 class="title">Profile Page</h2>	
+						<hr>					
 					<div style="clear: both;">&nbsp;</div>
-					<h1>${user.username}</h1>
+					<h1>${otherUser.username}</h1>
 					<br>
 					<div style="clear: both;">&nbsp;</div>
-							#{if user.profilePictureId != -1}							
+							#{if otherUser.profilePictureId != -1}							
 							#{list items:user.profilePictureId, as:'id'}
 							<img src="@{Pictures.getPicture(id)}" width="80" height="80"/>
 							#{/list}
 							#{/if}
-							#{if user.profilePictureId == -1}
+							#{if otherUser.profilePictureId == -1}
 							<img src="/public/images/user.png" width="80" height="80"/>
 							#{/if}
 					<br>
 					<div style="clear: both;">&nbsp;</div>
-					<p><big><b>E-Mail: </b></big> &nbsp;&nbsp; <i>${user.email}</i> <br>	
+					<p><big><b>E-Mail: </b></big> &nbsp;&nbsp; <i>${otherUser.email}</i> <br>	
 					<div style="clear: both;">&nbsp;</div>					
-					<big><b>First Name: </b></big> &nbsp;&nbsp; <i>${user.firstName}</i> <br>
+					<big><b>First Name: </b></big> &nbsp;&nbsp; <i>${otherUser.firstName}</i> <br>
 					<div style="clear: both;">&nbsp;</div>
-					<big><b>Last Name: </b></big> &nbsp;&nbsp; <i>${user.lastName}</i> <br>
+					<big><b>Last Name: </b></big> &nbsp;&nbsp; <i>${otherUser.lastName}</i> <br>
 					<div style="clear: both;">&nbsp;</div>
-					<big><b>Date of Birth: </b></big> &nbsp;&nbsp; <i>${user.dateofBirth}</i> <br>
+					<big><b>Date of Birth: </b></big> &nbsp;&nbsp; <i>${otherUser.dateofBirth}</i> <br>
 					<div style="clear: both;">&nbsp;</div>
-					<big><b>Community Contribution Counter: </b></big> &nbsp;&nbsp; <i>${user.communityContributionCounter}</i> <br>
+					<big><b>Community Contribution Counter: </b></big> &nbsp;&nbsp; <i>${otherUser.communityContributionCounter}</i> <br>
 					<div style="clear: both;">&nbsp;</div>
-					<big><b>Country: </b></big> &nbsp;&nbsp; <i>${user.country}</i> <br>
+					<big><b>Country: </b></big> &nbsp;&nbsp; <i>${otherUser.country}</i> <br>
 					<div style="clear: both;">&nbsp;</div>
-					<big><b>Profession: </b></big> &nbsp;&nbsp; <i>${user.profession}</i></p>										
-					</div>
+					<big><b>Profession: </b></big> &nbsp;&nbsp; <i>${otherUser.profession}</i></p>										
+					</div>								
 			</div>
 		</div>
 	</div>
 </div>
 #{if flag}
 
-
-<form action="@{Users.editProfile()}" method="post">
-<input type="submit" value="Edit Profile" />
-</form>
 <div id="captcha" >
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Content-Script-Type" content="text/javascript">
@@ -100,8 +137,6 @@
 	<style type="text/css">
 			#captcha{display: none;}
 		</style>
-
-<input type="submit" id="cap" value="Edit password">
 	<script type="text/javascript">
 		$("#cap").click(function(){
 			$("#captcha").show();
@@ -109,6 +144,7 @@
 			$("#cap").hide();});
 	</script>
 </div>
+
 
 <script type="text/javascript">
     function checkPass(){
