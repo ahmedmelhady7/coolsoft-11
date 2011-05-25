@@ -7,6 +7,16 @@
 		list-style-type: none;
 		padding-right: 20px;
 	}
+	.div_err{
+		color: red;
+		display: none;
+		text-align: right;
+	}
+	.div_suc{
+		color: green;
+		display: none;
+		text-align: right;
+	}
 </style>
 <div id="leftSidebar">
   	<br/>
@@ -241,11 +251,30 @@
 				});
 			}
 		</script>
- 		<form action="@{Comments.addCommentToIdea()}" method="GET">
-			<div id="comment-content"><textarea name = "comment"></textarea></div>
+ 		
+			<div id="comment-content"><textarea id="comments1" name = "comment"></textarea></div>
+			<input type = "submit" value = "Comment" onclick="comment1()" >
+			<br/>
+			<div id="commentError" class = "div_err">Comment is empty, please re-enter a valid comment</div>
+			<div id="commentSuccess" class = "div_suc">Comment posted, refresh to see your comment</div>
       	 	<input type = "hidden" name = "ideaID" value = ${ideaId} >
-			<input type = "submit" value = "Comment"  >
-		</form>
+			
+		
+		<script type='text/javascript'>
+		function comment1(){
+			var comment = document.getElementById('comments1').value
+			if(comment == '')
+			{
+				document.getElementById('commentError').style.display = 'inline'
+			}
+			else
+			{
+				document.getElementById('commentError').style.display = 'none'
+				document.getElementById('commentSuccess').style.display = 'inline'
+				$.post('@{Comments.addCommentToIdea()}',{ideaID: ${ideaId}, comment:comment},function(){});	
+			;}
+			}
+		</script>
 		<br/>
 		#{/if}
 		<br/>
