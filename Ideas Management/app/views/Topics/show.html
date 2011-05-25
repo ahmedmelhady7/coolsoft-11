@@ -875,7 +875,53 @@
 		#{else}
 		No ideas available for this topic!
 		#{/else}
+		<br />
+<!--		haget hadi	-->
 		
+        #{if topicNotClosed==true}
+        <input id="postIdea" type="button" value="Post Idea to this topic" class = "linkButton"/>
+        #{/if}
+        <div id="postIdeaform">
+                <p>
+            <label>Title  <font color="#123456"><span id="flashAmessage"></span></font>
+            <br>        
+                <input type="text" id="ideaTitle" cols="30" rows="1" class="" name="object.title" required>
+            <span id = "ideaTitleError">
+                <font color="Red">
+                    *
+                </font>Required
+            </span>
+            </p>
+            <p>
+            <label>
+                Description
+            </label>
+            <br>
+            <textarea id="ideaDescription" cols="50" rows="5" class="" name="object.description" required></textarea>
+            <span id="ideaDescriptionError">
+                <font color="Red">
+                    *
+                </font>Required
+            </span>
+            </p>
+                        <input id ="draftSaver" type="submit"  value="Save as Draft" onclick="save()" class = "linkButton"></input>
+                <input type="submit" value="post" onclick="postIt()" class = "linkButton"></input>
+                <style type="text/css">
+                        #postIdeaform{display: none;}
+                </style>
+                <script type="text/javascript">
+                $("#postIdea").click(function(){
+                        $("#postIdeaform").toggle();
+                        auto();
+           });
+                $("#showhidden").click(function(){
+                 $("#hidden").toggle();
+           });
+                 </script>
+                <style type="text/css">
+                        #hidden{display: none;}
+                </style> 
+        </div> 
     </div>    
 		<br />
         <br />
