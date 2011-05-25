@@ -25,8 +25,8 @@ public class Comments extends CoolCRUD {
 	 *            Comment to be added to list of comments of the plan
 	 *            addes a comment to a plan
 	 */
-	public static void addCommentToPlan(String comment, long planID) {
-		planID++;
+	public static void addCommentToPlan(long planID, String comment) {
+		//planID++;
 		Plan p = Plan.findById(planID);
 		User user = Security.getConnected();
 		Comment c = new Comment(comment, p, user).save();

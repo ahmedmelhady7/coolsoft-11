@@ -1,4 +1,5 @@
 #{extends 'planLayout.html' /}
+#{stylesheet src:"ideas.css" /}
 #{set 'title'}
 ${plan.title} - View Plan as List
 #{/set}
@@ -236,9 +237,47 @@ Please contact
 #{/if} 
 
 #{/else}
+<br/>
+<br/>
+<div class="comment">
+ 		#{if comments} 
+ 			<font color="black"> <h3>Comments</h3></font> 
+ 			<br/> <ul id="commentsList" style="list-style: none; ">
+ 					#{list comments, as:'comment'} 
+ 					<div class="comment-metadata">
+						<span class="comment-author">by ${comment.commenter.username}</span>
+						<span class="comment-date">${comment.commentDate}</span>
+					</div>
+ 					<div class="comment-content">
+ 						<div class="about">Detail:</div>
+ 						<li><a>${comment.comment}</a></li>
+ 						<input style="float: right;" type="image" src="/public/images/red_flag.png" value="Report As Spam" />
+ 					</div>
+ 					#{/list} 
+					</ul>
+ 					<br/>
+ 		#{/if} 
+ 		#{else}No comments posted#{/else}
+</div>
+
+			<div id="comment-content" style = "margin-left: 17%;"><textarea name = "comment" id= "commentTxt" rows="7" cols="80"></textarea></div>
+			<br/>
+			<input class = "linkButton" style = "margin-left: 17%; float: right;" type = "button" value = "Comment" onclick="comment(${plan.id});" >
+<br/>
+<br/>
 <script type="text/javascript">
                 	$(".req").hide();
                 	  var count = ${itemsList.size()};
+					  
+					  function comment(id) {
+					  	var text = $('#commentTxt').val();
+						 $('#commentTxt').val("");
+						$.getJSON('@{addCommentToPlan()}', {comment: text, planID:id}, function(comm) {
+							 $("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " +  comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li><input style=\"float: right;\" type=\"image\" src=\"/public/images/red_flag.png\" value=\"Report As Spam\" /></div>");
+						});
+					   
+
+					  }
                 	function show1(id) {
                 
                 	    $("#item_" + id).show();

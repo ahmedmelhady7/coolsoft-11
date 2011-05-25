@@ -46,10 +46,11 @@
 		}
 	}
 </script>
-Item: ${item.summary}
+<div id= "pageNoSideBar">
+<h3>Item: <b>${item.summary}</b></h3>
 <br/>
 You can also search for a certain nonblocked user from the plan's topic user by username, email or profession
-
+<br/>
 #{form @AssignRequests.search(), method:'POST', id:'creationForm', onsubmit: 'return validate()', enctype:'multipart/form-data' }
 <input type = "text" id = "keyword" name = "keyword"> &nbsp; &nbsp; &nbsp;
 <input type = "hidden" name = "itemId" value = ${itemId} >
@@ -71,7 +72,7 @@ You can also search for a certain nonblocked user from the plan's topic user by 
 #{list items:users, as:'user1'}
 <li id = "user_${user1.id}" >
 <input type="checkbox" id="${user1.id}" onclick="toggleUser(${user1.id});"> 
-<a href="#">${user1.username}</a>
+<a href="@{Users.viewProfile(user1.id)}">${user1.username}</a>
 <br/>
 </li>
 #{/list}
@@ -82,9 +83,8 @@ You can also search for a certain nonblocked user from the plan's topic user by 
 #{else}
 There are no users that match your criteria
 #{/else}
+<br/>
+<br/>
 <a href="@{Plans.viewAsList(planId)}">Go back to plan</a>
 
-
-<script type="text/javascript">
-
-</script>
+</div>

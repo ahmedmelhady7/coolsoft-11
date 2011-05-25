@@ -130,8 +130,11 @@ public class AssignRequests extends CoolCRUD {
 					sender.addSentAssignRequest(assignRequest);
 					destination.addReceivedAssignRequest(assignRequest);
 
-					System.out.println(destination.receivedAssignRequests
-							.contains(assignRequest));
+					for (int k = 0; k < users2.size(); k++) {
+						if (users2.get(k).id.compareTo(destination.id) == 0) {
+							users2.remove(k);
+						}
+					}
 					Notifications.sendNotification(userIds[i], source.plan.id,
 							"plan", description);
 
