@@ -1,107 +1,98 @@
 <!--
 @author Fady Amir
 @story  C4S05
---> 
-
-<!DOCTYPE html>
+--> #{extends 'login/index.html' /}
+<script src="/public/javascripts/topbar_message/jquery.js" type="text/javascript">
+</script>
+<script src="/public/javascripts/topbar_message/juery.topbar.js" type="text/javascript">
+</script>
+<script src="/public/javascript/jnotify/jquery.jnotify.js" type="text/javascript">
+</script>
+ <!DOCTYPE html>
 <html>
+    <head>
+        <title>Organizations</title>
+        <style>
+            A {
+                text-decoration: none;
+            }
+        </style>
+        <script type="text/javascript">
+            
+            function Toggle(item){
+                obj = document.getElementById(item);
+                visible = (obj.style.display != "none");
+                key = document.getElementById('x' + item);
+                if (visible) {
+                    obj.style.display = "none";
+                    key.innerHTML = "[+]";
+                }
+                else {
+                    obj.style.display = "block";
+                    key.innerHTML = "[-]";
+                }
+            }
+            
+            function Expand(){
+                divs = document.getElementsByTagName("div");
+                for (i = 0; i < divs.length; i++) {
+                    divs[i].style.display = "block";
+                    key = document.getElementById("x" + divs[i].id);
+                    //key.innerHTML = "[-]";
+                }
+            }
+            
+            function Collapse(){
+                divs = document.getElementsByTagName("div");
+                for (i = 0; i < divs.length; i++) {
+                    divs[i].style.display = "none";
+                    key = document.getElementById("x" + divs[i].id);
+                    //key.innerHTML = "[+]";
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <form action="@{Browse.browse}" name="test">
+            <h1>Browse Organizations</h1>
+            <hr><b><a ID="xorganizations" href="javascript:Toggle('organizations');">[+]</a>Organizations</b>
+            <br>
+            <div ID="organizations" style="display:none; margin-left:2em;">
 
-<head>
-	<title>Organizations</title>
-   <style>
-      A {text-decoration: none;}
-   </style>
-   
-   <script type="text/javascript">
-   
-   function Toggle(item) {
-   obj=document.getElementById(item);
-   visible=(obj.style.display!="none")
-   key=document.getElementById("x" + item);
-   if (visible) {
-     obj.style.display="none";
-     key.innerHTML="[+]";
-   } else {
-      obj.style.display="block";
-      key.innerHTML="[-]";
-   }
-}
-function Expand() {
-   divs=document.getElementsByTagName("DIV");
-   for (i=0;i<divs.length;i++) {
-     divs[i].style.display="block";
-     key=document.getElementById("x" + divs[i].id);
-     key.innerHTML="[-]";
-   }
-}
-function Collapse() {
-   divs=document.getElementsByTagName("DIV");
-   for (i=0;i<divs.length;i++) {
-     divs[i].style.display="none";
-     key=document.getElementById("x" + divs[i].id);
-     key.innerHTML="[+]";
-   }
-}
+            #{list items:listOfOrganizations, as: 'Organization'}
 
-   </script>
-</head>
+            <a ID="x" +'${Organization.name}' href="javascript:Toggle('${Organization.name}');">[+]</a>
+            <a href="@{Organizations.viewProfile(Organization.id)}">${Organization.name}</a>
+            </br>
+            <div ID='${Organization.name}'  style="display:none; margin-left:2em;">
 
-<body>
-#{extends 'main.html' /}
+            #{list items:Organization.entitiesList, as: 'Entity'}
 
-  <form action="@{Browse.browse}" name="test">
+            <a ID="x" + '${Entity.name}' href="javascript:Toggle('${Entity.name}');">[+]</a>
+            <a href="@{MainEntitys.viewEntity(Entity.id)}">${Entity.name}</a>
+            </br>
+            <div ID='${Entity.name}'  style="display:none; margin-left:2em;">
+                <b><a ID="x" + '${Entity.name}Topics' href="javascript:Toggle('${Entity.name}Topics');">[+]</a>Topics</b>
+                <br>
+                <div ID='${Entity.name}Topics'  style="display:none; margin-left:2em;">
 
-	<h1>Browse Organizations</h1>
-
-<hr>
-<b><a ID="xproducts" href="javascript:Toggle('organizations');">[+]</a>Organizations</b><br>
-   
-   
-   <div ID="organizations" style="display:none; margin-left:2em;">
-   
-  
-    #{list items:listOfOrganizations, as: 'Organization'}
-  
-  	 
-  	 <a ID="xproducts" href="javascript:Toggle('${Organization.name}');">[+]</a>
-     <a href="@{Organizations.viewProfile(Organization.id)}">${Organization.name}</a>
-     </br>
-     
-     
-     
-     <div ID=${Organization.name} style="display:none; margin-left:2em;">
-      
-       #{list items:Organization.entitiesList, as: 'Entity'}
-       
-       <a ID="xproducts" href="javascript:Toggle('${Entity.name}');">[+]</a>
-       <a href="@{MainEntitys.viewEntity(Entity.id)}">${Entity.name}</a>
-       </br>
-     
-       <div ID=${Entity.name} style="display:none; margin-left:2em;">
-       		
-       		<b><a ID="xproducts" href="javascript:Toggle('${Entity.name}Topics');">[+]</a>Topics</b><br>
-   			<div ID=${Entity.name}Topics style="display:none; margin-left:2em;">
-       		#{list items:Entity.topicList, as: 'topic'}
-       	
-       		<a href="@{Topics.view(topic.id)}">${topic.title}</a>
-       		</br>
-       		
-       		#{/list}
-       		</div>
-       
-       </div>
-     
-       #{/list}
-  	 
-  	 
-     </div>
-		
-	
-    #{/list}
-   
-   
-   </div>	
-   
+                #{list items:Entity.topicList, as: 'topic'}
+				<a ID="x" +'${topic.title}' href="javascript:Toggle('${topic.title}');">[+]</a>
+            	<a href="@{topics.view(topic.id)}">${topic.title}</a>
+				<div ID='${topic.title}'  style="display:none; margin-left:2em;">
+					#{list items:topic.ideas, as: 'idea'}
+					<a href="@{Ideas.view(idea.id)}">${idea.title}</a>
+					</br>
+					#{/list}
+            	</div>
+				</br>
+                #{/list}
+            </div>
+            </div>
+            #{/list}
+        </div>
+        #{/list}
+        </div>
+		<a href='javaScript: Expand()' >Expand All</a>
     </body>
- 
 </html>
