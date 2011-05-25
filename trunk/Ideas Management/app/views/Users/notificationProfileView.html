@@ -33,7 +33,7 @@
 					#{/if}
 					<br>
 					<ul>
-					#{list items:npList, as:'notifi'}
+					#{list items:notificationProfileList, as:'notifi'}
 				    <li>
     				<fieldset>
     				<b>Notification from: </b> ${notifi.notifiableType} 
@@ -67,7 +67,7 @@
     				</li>
 					#{/list}
 					</ul>
-					#{if npList.size() != 0}   	
+					#{if notificationProfileList.size() != 0}   	
 		<form action="@{NotificationProfiles.alterPreferences()}" method="post">
 		<input type="submit" value="Edit"/>
 		</form>					

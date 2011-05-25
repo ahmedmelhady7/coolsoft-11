@@ -54,7 +54,6 @@ public class Security extends Secure.Security {
 	 */
 
 	public static boolean authenticate(String username, String password) {
-		password=Codec.hexMD5(password);
 		User user = User.find(
 				"select u from User u where (u.username=? and u.password = ?)",
 				username, password).first();
@@ -135,12 +134,14 @@ public class Security extends Secure.Security {
 		if( validation.hasErrors() )
 		{
 			flash.error( "You must answer the question!" );
+			boolean flag = false;
 			Security.checkUsername(username);
 		}
 		User user = User.find("select u from User u where u.username=?", 
 				username).first();
 		if(answer == null) {
 			flash.error("You must answer the security question!");
+			boolean flag = false;
 			Security.checkUsername(username);
 		}
 		String userAnswer = user.answer;
