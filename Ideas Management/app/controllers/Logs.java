@@ -13,11 +13,6 @@ import models.*;
 
 @With(Secure.class)
 public class Logs extends CoolCRUD {
-
-	public static void passId() {
-		viewUserLogs();
-	}
-
 	/**
 	 * 
 	 * responsible for displaying the logs of a certain organization
@@ -31,8 +26,11 @@ public class Logs extends CoolCRUD {
 	 * 
 	 */
 	public static void viewLogs(long organizationId) {
-		User user = Security.getConnected();
 		Organization organization = Organization.findById(organizationId);
+		notFoundIfNull(organization);
+		if(Security.getConnected().isAdmin || Security.getConnected().equals(organization.creator)) {
+		User user = Security.getConnected();
+		
 		List<MainEntity> entities = organization.entitiesList;
 		System.out.println(organizationId + "3aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 		List<Log> toFilter = new ArrayList<Log>();
@@ -57,6 +55,12 @@ public class Logs extends CoolCRUD {
 		}
 
 		render(toFilter, organizationId, user, entities, organization, flag);
+		}
+		else {
+			BannedUsers.unauthorized();
+		}
+			
+		
 	}
 
 	/**
@@ -76,10 +80,15 @@ public class Logs extends CoolCRUD {
 	 */
 	public static void searchLog(@Required String keyword, long id,
 			long entityId) {
+		Organization organization = Organization.findById(id);
+		notFoundIfNull(organization);
+		if(Security.getConnected().isAdmin || Security.getConnected().equals(organization.creator)) {
+		
 		System.out.println("entity id = " + entityId);
 		ArrayList<Log> filtered = new ArrayList<Log>();
-		Organization organization = Organization.findById(id);
+		
 		MainEntity entity = MainEntity.findById(entityId);
+		notFoundIfNull(entity);
 		System.out.println(id + "searchLog");
 		List<Log> toFilter = new ArrayList<Log>();
 		List<Log> reversed = new ArrayList<Log>();
@@ -171,6 +180,10 @@ public class Logs extends CoolCRUD {
 		json.addProperty("time", time);
 
 		renderJSON(json.toString());
+		}
+		else {
+			BannedUsers.unauthorized();
+		}
 
 	}
 
@@ -187,6 +200,7 @@ public class Logs extends CoolCRUD {
 	 * 
 	 */
 	public static void viewUserLogs() {
+		if(Security.getConnected().isAdmin) {
 		User user = Security.getConnected();
 		List<Log> reversed = new ArrayList<Log>();
 		List<Log> toFilter = new ArrayList<Log>();
@@ -198,7 +212,11 @@ public class Logs extends CoolCRUD {
 		for(int i = 1; i <= reversed.size(); i++) {
 			toFilter.add(reversed.get(reversed.size() - i));
 		}
-		render(toFilter, user, organization);
+		render(toFilter, user, organization); 
+		}
+		else {
+			BannedUsers.unauthorized();
+		}
 		
 	}
 
@@ -218,6 +236,7 @@ public class Logs extends CoolCRUD {
 	 * 
 	 */
 	public static void searchUserLog(@Required String keyword) {
+		if(Security.getConnected().isAdmin) {
 		ArrayList<Log> filtered = new ArrayList<Log>();
 		List <Log> reversed =  new ArrayList<Log>();
 		List<Log> toFilter = new ArrayList<Log>();
@@ -254,6 +273,10 @@ public class Logs extends CoolCRUD {
 		json.addProperty("time", time);
 
 		renderJSON(json.toString());
+		}
+		else {
+			BannedUsers.unauthorized();
+		}
 
 	}
 }
