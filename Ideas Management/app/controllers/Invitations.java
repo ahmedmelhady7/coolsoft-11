@@ -67,19 +67,27 @@ public class Invitations extends CoolCRUD {
 							id, "entity"))
 				permitted = 1;
 			MainEntity entity = MainEntity.findById(id);
-			render(type, check, entity, usersMatched, permitted, user);
+			notFoundIfNull(entity);
+			if(permitted==1)
+			render(type, check, entity, usersMatched,user,usersInvited);
+			else
+				BannedUsers.unauthorized();
 		} else {
 			int permitted = 0;
 			if (Users
 					.isPermitted(
 							user,
-							"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
-							id, "entity"))
+							"Invite a user to join a private or secret organization",
+							id, "topic"))
 				permitted = 1;
 			Topic topic = Topic.findById(id);
 			notFoundIfNull(topic);
-			render(type, check, topic, usersMatched, user, permitted,
+			if(permitted==1)
+			render(type, check, topic, usersMatched, user,
 					usersInvited);
+			else
+				BannedUsers.unauthorized();
+			
 		}
 
 	}
@@ -109,7 +117,8 @@ public class Invitations extends CoolCRUD {
 
 		List<User> filter = Users.searchUser(name);
 		List<User> userFilter = new ArrayList<User>();
-		List<User> postsInTopic = new ArrayList<User>();
+		List<User> postsInTopic = Topics.searchByTopic(id);
+		notFoundIfNull(postsInTopic);
 		List<Integer> invited = new ArrayList<Integer>();
 
 		if (validation.hasErrors()) {
@@ -119,6 +128,7 @@ public class Invitations extends CoolCRUD {
 
 		if (type == 0) {
 			MainEntity entity = MainEntity.findById(id);
+			notFoundIfNull(entity);
 			List<User> organizers = Users.getEntityOrganizers(entity);
 			organizers.add(entity.organization.creator);
 			for (int i = 0; i < filter.size(); i++) {
@@ -180,14 +190,21 @@ public class Invitations extends CoolCRUD {
 		String role = "";
 		String name;
 		List<User> invalidUsers = new ArrayList<User>();
+		System.out.println(type);
+		System.out.println(email);
+		System.out.println(id);
+		System.out.println(userId);
 		if (type == 0) {
 			entity = MainEntity.findById(id);
+			notFoundIfNull(entity);
 			role = "Organizer";
 			invalidUsers = Users.getEntityOrganizers(entity);
 			name = entity.name;
 			invalidUsers.add(entity.organization.creator);
 		} else {
+			System.out.println("HEREEE TOPIC");
 			topic = Topic.findById(id);
+			notFoundIfNull(topic);
 			role = "idea developer";
 			invalidUsers = Topics.searchByTopic(id);
 			name = topic.title;
@@ -207,6 +224,8 @@ public class Invitations extends CoolCRUD {
 								.get(i).entity.parent.equals(entity)))
 					check = true;
 			} else {
+				System.out.println("topic");
+				System.out.println(topic);
 				if (invitation.get(i).email.equals(email)
 						&& (invitation.get(i).topic.equals(topic)))
 					check = true;
@@ -221,11 +240,9 @@ public class Invitations extends CoolCRUD {
 		User reciever = null;
 
 		if (userId == 0) {
-
 			boolean flag = true;
 			isRegistered = true;
 			reciever = User.find("byEmail", email).first();
-
 			if (reciever != null) {
 
 				for (int i = 0; i < invalidUsers.size(); i++) {
@@ -265,19 +282,27 @@ public class Invitations extends CoolCRUD {
 						"New organizer has been invited to be an organizer to entity  "
 								+ name);
 
-			if (reciever != null)
-				Log.addUserLog("User " + user.firstName + " " + user.lastName
-						+ " has invited user " + reciever.firstName + " "
-						+ reciever.lastName + " to be organizer to "
-						+ entity.name, entity, entity.organization, user);
-			else
-
-				Log.addUserLog("User " + user.firstName + " " + user.lastName
-						+ " has invited unregiseterd user with email  " + email
-						+ " to be organizer to " + entity.name, entity,
-						entity.organization, user);
+			if (reciever != null){
+				String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName +" "+ user.lastName + "</a>"
+                + " has invited user " + "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + reciever.firstName +" "+ reciever.lastName + "</a>"
+                +" to be organizer to "+"<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + entity.id +"\">" + entity.name + "</a>"+" entity" ;
+				
+				Log.addUserLog(logDescription, entity.organization,entity,reciever,user);
+				
+			}
+			else{
+				String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName +" "+ user.lastName + "</a>"
+				+ " has invited unregiseterd user with email" + email
+                +" to be organizer to "+"<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + entity.id +"\">" + entity.name + "</a>"+" entity" ;
+				
+				Log.addUserLog(logDescription, entity.organization,entity,user);
+			}
+			
+			
+			
 
 		} else {
+			System.out.println("YESSSSSS");
 			Organization organization = topic.entity.organization;
 			Mail.invite(email, role, organization.name, name, type);
 			user.addInvitation(email, role, organization, null, topic);
@@ -338,13 +363,11 @@ public class Invitations extends CoolCRUD {
 				if (!Users.isPermitted(user, "view",
 						invitation.get(i).entity.id, "entity"))
 					invitation.remove(i);
-			} else if (invitation.get(i).topic != null) {
-				if (!Users.isPermitted(user, "view",
-						invitation.get(i).topic.id, "topic"))
-					invitation.remove(i);
 			}
-		}
-		render(invitation);
+				
+			}
+		
+		render(invitation,user);
 
 	}
 
@@ -371,11 +394,13 @@ public class Invitations extends CoolCRUD {
 	public static void respond(int id, long i) {
 
 		Invitation invite = Invitation.findById(i);
+		notFoundIfNull(invite);
 		String roleName = invite.role.toLowerCase();
 		Organization organization = null;
 		MainEntity entity = null;
 		Topic topic = null;
 		User user = User.find("byEmail", invite.email).first();
+		notFoundIfNull(user);
 		Role role = Role.find("byRoleName", roleName).first();
 		boolean flag = true;
 		if (invite.topic == null) {
@@ -439,13 +464,12 @@ public class Invitations extends CoolCRUD {
 												+ " has been added as an organizer to entity  "
 												+ entity.name);
 
-					Log.addUserLog(
-							"User "
-									+ user.firstName
-									+ " "
-									+ user.lastName
-									+ " has accepted the invitation to be organizer to Entity "
-									+ entity.name, entity.organization, user);
+					
+					String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName +" "+ user.lastName + "</a>"
+	                + " has accepted the invitation to be organizer to Entity " +
+	                "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + entity.id +"\">" + entity.name + "</a>" ;
+					
+					Log.addUserLog(logDescription, entity.organization, user);
 
 				} else {
 					/**
@@ -492,7 +516,7 @@ public class Invitations extends CoolCRUD {
 					Notifications.sendNotification(organizers.get(k).id,
 							topic.id, "topic", " A new User " + user.username
 									+ " has joined topic " + topic.title);
-
+                
 				Log.addUserLog("User " + user.firstName + " " + user.lastName
 						+ " has accepted the invitation to join topic "
 						+ topic.title, organization, topic, user);
@@ -518,13 +542,11 @@ public class Invitations extends CoolCRUD {
 												+ "has rejected the invitation to be an organizer to Entity  "
 												+ entity.name);
 
-					Log.addUserLog(
-							"User "
-									+ user.firstName
-									+ " "
-									+ user.lastName
-									+ " has rejected the invitation to be organizer to Entity "
-									+ entity.name, organization, user);
+					String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName +" "+ user.lastName + "</a>"
+	                + " has rejected the invitation to be organizer to entity " +
+	                "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + entity.id +"\">" + entity.name + "</a>" ;
+					
+					Log.addUserLog(logDescription, organization,entity, user);
 				}
 
 			} else {
@@ -539,9 +561,11 @@ public class Invitations extends CoolCRUD {
 											+ user.username
 											+ " has rejected the invitation to join topic "
 											+ topic.title);
-				Log.addUserLog("User " + user.firstName + " " + user.lastName
-						+ " has rejected the invitation to join topic "
-						+ topic.title, organization, topic, user);
+				
+				String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName +" "+ user.lastName + "</a>"
+                + " has rejected the invitation to join topic " +
+                "<a href=\"http://localhost:9008/topics/show?topicId=" + topic.id +"\">" + topic.title + "</a>" ;
+				Log.addUserLog(logDescription, organization,entity ,topic, user);
 			}
 		}
 
