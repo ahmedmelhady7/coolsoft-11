@@ -135,6 +135,12 @@ public class Organization extends CoolModel {
 	public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
 
 	/**
+	 * @auther monica counter to check how many times this topic is viewed to be
+	 *         used in sorting
+	 */
+	public int viewed;
+	
+	/**
 	 * Organization Class Constructor
 	 * 
 	 * @author Omar Faruki
@@ -163,6 +169,8 @@ public class Organization extends CoolModel {
 		this.followers = new ArrayList<User>();
 		this.relatedTags = new ArrayList<Tag>();
 		// this.enrolledUsers = new ArrayList<User>();
+		this.viewed = 0;
+		
 		bannedUsers = new ArrayList<BannedUser>();
 		relationNames = new ArrayList<String>() {
 			{
@@ -426,4 +434,15 @@ public class Organization extends CoolModel {
 		}
 		}
 	}
+
+
+	
+	/**
+	 * @author monica yousry this method increments the counter viewed
+	 * @return:void
+	 */
+	public void incrmentViewed() {
+		this.viewed++;
+	}
+
 }
