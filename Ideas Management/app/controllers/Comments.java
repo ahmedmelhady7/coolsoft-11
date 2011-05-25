@@ -49,7 +49,6 @@ public class Comments extends CoolCRUD {
 		Comment c = new Comment(comment, i, user).save();
 		i.commentsList.add(c);
 		i.save();
-		redirect("/ideas/show?ideaId="+i.id);
 	}
 
 }
