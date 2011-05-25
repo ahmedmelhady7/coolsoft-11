@@ -170,13 +170,20 @@ public class Plans extends CoolCRUD {
 						item.plan.id, "plan", notificationMsg);
 			}
 		}
-		String logDescription = "User " + user.firstName + " " + user.lastName
-				+ " is now working on the item " + item.summary
-				+ " in the plan " + item.plan.title + " of the topic "
-				+ item.plan.topic.title;
-		Log.addUserLog(logDescription, user, item,
-				item.plan.topic.entity.organization);
-		// viewAsList(item.plan.id);
+		String logDescription = "User "
+				+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id + "\">" + user.firstName + " " + user.lastName
+				+ "</a>" + " is now working on the item " + item.summary
+				+ " in the plan "
+				+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+				+ item.plan.id + "\">" + item.plan.title + "</a>"
+				+ " of the topic "
+				+ "<a href=\"http://localhost:9008/topics/show?topicId="
+				+ item.plan.topic.id + "\">" + item.plan.topic.title + "</a>";
+
+		Log.addUserLog(logDescription, user, item, item.plan, item.plan.topic,
+				item.plan.topic.entity, item.plan.topic.entity.organization);
+
 	}
 
 	/**
@@ -284,12 +291,32 @@ public class Plans extends CoolCRUD {
 					+ plan.title + " of the topic: " + plan.topic.title;
 			Notifications.sendNotification(idea.author.id, plan.id, "plan",
 					notificationContent);
-			String logDescription = "Idea " + idea.title + " that belongs to "
-					+ idea.author.firstName + " " + idea.author.lastName
+			String logDescription = "Idea "
+					+ "<a href=\"http://localhost:9008/topics/show?ideaId="
+					+ idea.id
+					+ "\">"
+					+ idea.title
+					+ "</a>"
+					+ " that belongs to "
+					+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ idea.author.id
+					+ "\">"
+					+ idea.author.firstName
+					+ " "
+					+ idea.author.lastName
+					+ "</a>"
 					+ " has been promoted to exection in the plan "
-					+ plan.title + " of the topic " + plan.topic.title;
-			Log.addUserLog(logDescription, idea.author, plan, idea,
-					plan.topic.entity.organization);
+					+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+					+ plan.id
+					+ "\">"
+					+ plan.title
+					+ "</a>"
+					+ " of the topic "
+					+ "<a href=\"http://localhost:9008/topics/show?topicId="
+					+ plan.topic.id + "\">" + plan.topic.title + "</a>";
+
+			Log.addUserLog(logDescription, idea.author, plan, idea, plan.topic,
+					plan.topic.entity, plan.topic.entity.organization);
 
 		}
 
@@ -392,13 +419,32 @@ public class Plans extends CoolCRUD {
 		Notifications.sendNotification(idea.author.id, plan.id, "plan",
 				notificationMsg);
 
-		final String url = "http://localhost:9008/topics/show?topicId=1";
-		String logDescription = "Idea " + idea.title + " that belongs to "
-				+ idea.author.firstName + " " + idea.author.lastName
-				+ " has been removed from the plan " + plan.title
-				+ " of the topic " + url + plan.topic.title;
-		Log.addUserLog(logDescription, idea.author, plan, idea,
-				plan.topic.entity.organization);
+		String logDescription = "Idea "
+				+ "<a href=\"http://localhost:9008/topics/show?ideaId="
+				+ idea.id
+				+ "\">"
+				+ idea.title
+				+ "</a>"
+				+ " that belongs to "
+				+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ idea.author.id
+				+ "\">"
+				+ idea.author.firstName
+				+ " "
+				+ idea.author.lastName
+				+ "</a>"
+				+ " has been removed from the plan "
+				+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+				+ plan.id
+				+ "\">"
+				+ plan.title
+				+ "</a>"
+				+ " of the topic "
+				+ "<a href=\"http://localhost:9008/topics/show?topicId="
+				+ plan.topic.id + "\">" + plan.topic.title + "</a>";
+
+		Log.addUserLog(logDescription, idea.author, plan, idea, plan.topic,
+				plan.topic.entity, plan.topic.entity.organization);
 
 	}
 
@@ -493,14 +539,31 @@ public class Plans extends CoolCRUD {
 							destination.plan.id, "plan", description);
 				}
 
-				String logDescription = "User " + sender.firstName + " "
+				String logDescription = "User "
+						+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ sender.id
+						+ "\">"
+						+ sender.firstName
+						+ " "
 						+ sender.lastName
+						+ "</a>"
 						+ " is requesting to volunteer to work on the item "
-						+ destination.summary + " in the plan "
-						+ destination.plan.title + " of the topic "
-						+ destination.plan.topic.title;
+						+ destination.summary
+						+ " in the plan "
+						+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+						+ destination.plan.id
+						+ "\">"
+						+ destination.plan.title
+						+ "</a>"
+						+ " of the topic "
+						+ "<a href=\"http://localhost:9008/topics/show?topicId="
+						+ destination.plan.topic.id + "\">"
+						+ destination.plan.topic.title + "</a>";
+
 				Log.addUserLog(logDescription, sender, destination.plan,
-						destination, destination.plan.topic.entity.organization);
+						destination.plan.topic.entity, destination,
+						destination.plan.topic.entity.organization,
+						destination.plan.topic);
 				// Plans.viewAsList(dest.plan.id);
 				// justify(itemId, dest.plan.id, 2);
 			}
@@ -539,13 +602,28 @@ public class Plans extends CoolCRUD {
 							"plan", description);
 				}
 				String logDescription = "User "
+						+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ user.id
+						+ "\">"
 						+ user.firstName
 						+ " "
 						+ user.lastName
-						+ " canceled his volunteer request to work on the item "
-						+ item.summary + " in the plan " + item.plan.title
-						+ " of the topic " + item.plan.topic.title;
+						+ "</a>"
+						+ " canceled his/her volunteer request to work on the item "
+						+ item.summary
+						+ " in the plan "
+						+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+						+ item.plan.id
+						+ "\">"
+						+ item.plan.title
+						+ "</a>"
+						+ " of the topic "
+						+ "<a href=\"http://localhost:9008/topics/show?topicId="
+						+ item.plan.topic.id + "\">" + item.plan.topic.title
+						+ "</a>";
+
 				Log.addUserLog(logDescription, user, item.plan, item,
+						item.plan.topic.entity, item.plan.topic,
 						item.plan.topic.entity.organization);
 			}
 		}
@@ -1017,15 +1095,23 @@ public class Plans extends CoolCRUD {
 			items.remove(item);
 			tag.save();
 		}
-		String logDescription = "User " + user.firstName + " " + user.lastName
-				+ " deleted the item " + item.summary + " in the plan "
-				+ plan.title + " of the topic " + plan.topic.title;
-		Log.addUserLog(logDescription, user, plan,
-				plan.topic.entity.organization);
+		String logDescription = "User "
+				+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id + "\">" + user.firstName + " " + user.lastName
+				+ "</a>"
+				+ " canceled his/her volunteer request to work on the item "
+				+ item.summary + " in the plan "
+				+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+				+ plan.id + "\">" + plan.title + "</a>" + " of the topic "
+				+ "<a href=\"http://localhost:9008/topics/show?topicId="
+				+ plan.topic.id + "\">" + plan.topic.title + "</a>";
+
+		Log.addUserLog(logDescription, user, plan, plan.topic.entity,
+				plan.topic, plan.topic.entity.organization);
+		item.logs.clear();
 		item.delete();
 
 		return true;
-		// viewAsList(planId);
 	}
 
 	/**
@@ -1048,10 +1134,10 @@ public class Plans extends CoolCRUD {
 		Plan plan = Plan.findById(planId);
 		String notificationMsg = "The plan " + plan.title + " has been deleted";
 		for (Item item : plan.items) {
-			for (User user1 : item.getAssignees()) {
-				if (!toBeNotified.contains(user1) && user.id != user1.id) {
-					toBeNotified.add(user1);
-					Notifications.sendNotification(user1.id, plan.topic.id,
+			for (User userAssigned : item.getAssignees()) {
+				if (!toBeNotified.contains(userAssigned) && user.id != userAssigned.id) {
+					toBeNotified.add(userAssigned);
+					Notifications.sendNotification(userAssigned.id, plan.topic.id,
 							"topic", notificationMsg);
 				}
 			}
@@ -1102,14 +1188,18 @@ public class Plans extends CoolCRUD {
 		Topic topic = plan.topic;
 		topic.plan = null;
 		topic.save();
-		String logDescription = "User " + user.firstName + " " + user.lastName
-				+ " deleted the plan " + plan.title + " of the topic "
-				+ topic.title;
-		Log.addUserLog(logDescription, user, topic, topic.entity.organization);
+		String logDescription = "User "
+				+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id + "\">" + user.firstName + " " + user.lastName
+				+ "</a>" + " deleted the plan " + plan.title + " of the topic "
+				+ "<a href=\"http://localhost:9008/topics/show?topicId="
+				+ topic.id + "\">" + topic.title + "</a>";
+
+		Log.addUserLog(logDescription, user, topic, topic.entity,
+				topic.entity.organization);
+		plan.logs.clear();
 		plan.delete();
-		System.out.println("the plan has been deletd");
 		return true;
-		// Topics.show("" + topic.id);
 	}
 
 	/**
@@ -1128,7 +1218,6 @@ public class Plans extends CoolCRUD {
 
 		User user = Security.getConnected();
 		Plan plan = Plan.findById(planId);
-		// notFoundIfNull(p);
 
 		List<Item> itemsList = plan.items;
 

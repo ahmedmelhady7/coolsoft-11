@@ -50,9 +50,6 @@ public class AssignRequests extends CoolCRUD {
 	 * 
 	 * @story C5S5
 	 * 
-	 * @param users
-	 *            : the list of users that will be displayed so that the
-	 *            organizer can choose from to send them assignRequests requests
 	 * @param itemId
 	 *            : the id of the item the users are requested to be assigned to
 	 *            work on
@@ -93,8 +90,11 @@ public class AssignRequests extends CoolCRUD {
 
 	/**
 	 * 
-	 * This Method calls the method sendAssignRequest with each user id in the
-	 * given list of userIds and the item the user is being assigned to
+	 * This Method sends assign requests to the selected users by creating an
+	 * instance of AssignRequest and adds it to the list of sent assign requests
+	 * of the sender and to the list of received assign requests of the receiver
+	 * and to the list of assign requests in the item given list of userIds and
+	 * the item the user is being assigned to
 	 * 
 	 * @author Salma Osama
 	 * 
@@ -106,9 +106,7 @@ public class AssignRequests extends CoolCRUD {
 	 * @param userIds
 	 *            : the list of userIds of the users that will receive assign
 	 *            requests
-	 * @param planId
-	 *            : the id of the plan containing the item that will be assigned
-	 *            to the list of users selected
+	 * @return boolean
 	 */
 	public static boolean sendRequests(long itemId, long[] userIds) {
 		User destination;
@@ -119,7 +117,6 @@ public class AssignRequests extends CoolCRUD {
 			if (filter(itemId, source.plan.id).contains(destination)) {
 				if (!(source.status == 2) && !source.endDatePassed()) {
 
-					// sendAssignRequest(itemId,userIds[i]);
 					String description = "You have been sent a request to work on this item"
 							+ source.summary
 							+ "\n "
@@ -138,62 +135,43 @@ public class AssignRequests extends CoolCRUD {
 					Notifications.sendNotification(userIds[i], source.plan.id,
 							"plan", description);
 
-					String logDescription = "User " + sender.firstName + " "
-							+ sender.lastName + " sent an asssignment request"
-							+ destination.firstName + " "
-							+ destination.lastName + " to work on the item "
-							+ source.summary + " in the plan "
-							+ source.plan.title + " of the topic "
-							+ source.plan.topic.title;
+					String logDescription = "User "
+							+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ sender.id
+							+ "\">"
+							+ sender.firstName
+							+ " "
+							+ sender.lastName
+							+ "</a>"
+							+ " sent an asssignment request to "
+							+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ destination.id
+							+ "\">"
+							+ destination.firstName
+							+ " "
+							+ destination.lastName
+							+ "</a>"
+							+ " to work on the item "
+							+ source.summary
+							+ " in the plan "
+							+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+							+ source.plan.id
+							+ "\">"
+							+ source.plan.title
+							+ "</a>"
+							+ " of the topic "
+							+ "<a href=\"http://localhost:9008/topics/show?topicId="
+							+ source.plan.topic.id
+							+ "\">"
+							+ source.plan.topic.title + "</a>";
 					Log.addUserLog(logDescription, sender, destination,
-							source.plan, source,
+							source.plan, source, source.plan.topic,
+							source.plan.topic.entity,
 							source.plan.topic.entity.organization);
 				}
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * 
-	 * This Method creates an instance of AssignRequest and adds it to the list
-	 * of sent assign requests of the sender and to the list of received assign
-	 * requests of the receiver and to the list of assign requests in the item
-	 * given the item id, the destination id
-	 * 
-	 * @author Salma Osama
-	 * 
-	 * @story C5S5
-	 * 
-	 * @param itemId
-	 *            : the id of the item the user is requested to be assigned to
-	 *            work on
-	 * @param destId
-	 *            : the id of the user the assign request is sent to
-	 */
-	public static void sendAssignRequest(long itemId, long destId) {
-
-		User sender = Security.getConnected();
-		User destination = User.findById(destId);
-		Item source = Item.findById(itemId);
-		String description = "You have been sent a request to work on this item "
-				+ source.summary
-				+ "\n "
-				+ " In the plan "
-				+ source.plan.title
-				+ "\n" + "by " + sender.username;
-		AssignRequest assignRequest = new AssignRequest(source, destination,
-				sender, description);
-		assignRequest.save();
-		source.addAssignRequest(assignRequest);
-		sender.addSentAssignRequest(assignRequest);
-		destination.addReceivedAssignRequest(assignRequest);
-
-		System.out.println(destination.receivedAssignRequests
-				.contains(assignRequest));
-		Notifications.sendNotification(destId, source.plan.id, "plan",
-				description);
-
 	}
 
 	/**
@@ -213,7 +191,7 @@ public class AssignRequests extends CoolCRUD {
 	 *            : the id of the plan containing the item that will be assigned
 	 *            to the list of users selected
 	 * 
-	 * @return List<User>
+	 * @return ArrayList<User>
 	 */
 	public static ArrayList<User> filter(long itemId, long planId) {
 		Plan plan = Plan.findById(planId);
@@ -255,10 +233,11 @@ public class AssignRequests extends CoolCRUD {
 
 	/**
 	 * 
-	 * This Method returns the list of unblocked users from the topic of the
+	 * This Method assigns the list of unblocked users from the topic of the
 	 * plan who aren't assigned to the given item nor have pending
 	 * assignRequests or volunteerRequests to work on this item and who matched
-	 * the search result of the entered keyword
+	 * the search result of the entered keyword to the global list of users
+	 * users2 and calls method viewUsers given the keyword, item id and plan id
 	 * 
 	 * @author Salma Osama
 	 * 
@@ -273,7 +252,6 @@ public class AssignRequests extends CoolCRUD {
 	 *            : the id of the plan containing the item that will be assigned
 	 *            to the list of users selected
 	 * 
-	 * @return List<User>
 	 */
 
 	public static void search(String keyword, long itemId, long planId) {
@@ -396,9 +374,8 @@ public class AssignRequests extends CoolCRUD {
 				+ "\">"
 				+ request.source.summary
 				+ "</a>.";
-		Log.addLog(logDescription, request.source,
-				request.source.plan, request.source.plan.topic,
-				request.source.plan.topic.entity,
+		Log.addLog(logDescription, request.source, request.source.plan,
+				request.source.plan.topic, request.source.plan.topic.entity,
 				request.source.plan.topic.entity.organization);
 		assignRequests.remove(request);
 		request.destination.receivedAssignRequests.remove(request);
