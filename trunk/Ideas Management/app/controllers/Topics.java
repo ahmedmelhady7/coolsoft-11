@@ -727,7 +727,7 @@ public class Topics extends CRUD {
 				topicIdLong, "topic");
 		boolean alreadyReportedTopic = false;
 		boolean canRequestRelationship = false;
-
+		boolean topicNotClosed = targetTopic.openToEdit;
 		temporaryTopic.incrmentViewed();
 		temporaryTopic.save();
 
@@ -865,9 +865,15 @@ public class Topics extends CRUD {
 						topicId, "Topic")) {
 			canRequestRelationship = true;
 		}
+		
+		boolean joined = false;
+//		for (int i = 0; i < UserRoleInOrganizations.addEnrolledUser(user, organisation, "idea developer"); i++) {
+//			
+//		}
+		
 		try {
 
-			render(type, object, tags, /* canUse, */alreadyReportedTopic,
+			render(type, object, tags, joined,/* canUse, */alreadyReportedTopic,
 					creator, followers, ideas, canReport, hiddenIdeas,
 					numberOfIdeas, comments, entity, canDelete,
 					alreadyReported, plan, openToEdit, privacyLevel,
