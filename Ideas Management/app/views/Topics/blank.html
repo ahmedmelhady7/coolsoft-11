@@ -1,10 +1,197 @@
 #{extends 'login/index.html' /}
 
-<div id="crudBlank" class="${type.name}">
-	
-	<br />
+<style>
+#deleteHide{
+	text-align:right;
+}
+
+#crudShow{
+	margin-top: 2%;
+	margin-right: 30%;
+	margin-bottom: 4%;
+	margin-left: 21%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+
+#descriptionShow{
+	margin-top: 2%;
+	margin-right: 17%;
+	margin-bottom: 4%;
+	margin-left: 8%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #FFFFFF;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+
+.arrow {
+   
+    height: 15px;
+    left: -7px;
+    position: absolute;
+    top: 25px;
+    width: 8px;
+}
+
+#backToEntity{
+	margin-right: 17%;
+	margin-left: 8%;
+	text-align:left;
+}
+</style>
+
+<div id="leftSidebar">
+    <ul>
+        <div style="clear: both;">
+            &nbsp;
+        </div>
+        <li>
+            <ul>
+            	<li>
+            		No actions yet
+            	</li>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div id="backToEntity" ><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a></div>
+<div id="crudShow" class="${type.name}">
 	
 	<h2 id="crudBlankTitle">&{'crud.blank.title', type.modelName}</h2>
+	<br />
 	
 	<font color="Red">${message}</font>	
 	
@@ -15,6 +202,7 @@
 			#{crud.custom 'title'}
 	  		<p> 
  			<label for="object_title">Title</label>
+			<br />
 			<input type="text" id="object_title" cols="30" rows="1" class="" name="object.title" required/> 
  			<span class="crudHelp" ><font color="Red">*</font></span>
 			</p> 
@@ -22,7 +210,8 @@
 		
 			#{crud.custom 'description'}
 			<p> 
- 			<label for="object_description">Description</label> 
+ 			<label for="object_description">Description</label>
+			<br /> 
 			<textarea id="object_description" cols="50" rows="5" class="" name="object.description" required></textarea> 
 			<span class="crudHelp" ><font color="Red">*</font></span> 
  			</p> 
@@ -48,13 +237,13 @@
 		
 		#{/crud.form }
 		<p class="crudButtons">
-			<input id = "save" type="submit" name="_save" value="&{'crud.save', type.modelName}" />
-			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
-			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
+			<input id = "save" type="submit" name="_save" value="&{'crud.save', type.modelName}" class="linkButton"/>
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" class="linkButton"/>
+			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" class="linkButton"/>
 		</p>
 	#{/form}
 			
-			<input type="submit" id ="saveAsDraftButton" value="Save as Draft" onclick="saveAsDraft()" ></input>
+			<input type="submit" id ="saveAsDraftButton" value="Save as Draft" onclick="saveAsDraft()" class="linkButton"></input>
 	</div>
 
 </div>

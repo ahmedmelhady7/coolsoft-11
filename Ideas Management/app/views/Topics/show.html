@@ -452,7 +452,7 @@
 				
 				#{if allowed==1}
 				<li>
-					<input type="submit" value="Invite" onclick=location.href="@{Invitations.invite(object.id,1,0,0)}" class="linkButton">
+					<input type="submit" value="Invite" onclick=location.href="@{Invitations.invite(object.id,1,0)}" class="linkButton">
                 </li>
                 #{/if}
        
@@ -726,7 +726,7 @@
    				 #{if deletable}
    				   <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
        				 <p class="crudDelete">
-        				<input type="hidden" name = "justification" id = "justText">
+        				<input type="hidden" name = "justification" id = "justText"/>
            			    <input type="image" src="/public/images/trash.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
       			    </p>
     			   </form> 
@@ -735,7 +735,7 @@
 				#{if object.plan == null}
                   <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
                     <p class="crudDelete">
-                      	<input type="hidden" name = "justification" id = "justText">
+                      	<input type="hidden" name = "justification" id = "justText"/>
                        <input type="submit" value="&{'Hide Topic', type.modelName}" class = "linkButton"/>
                    </p>
                  </form> 
@@ -829,16 +829,16 @@
 			#{if seeRelationStatus}
 			#{if createRelationship}
 			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
-				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
+				<input type = "hidden" name = "topicId" value = ${targetTopic.id} />
 				<input type="checkbox" id="createRelationship" name="createRelationship" checked>Allow topic to have relationships </input>
-				<input type="submit" onclick="get_Value()" value="Change" class = "linkButton"><br />
+				<input type="submit" onclick="get_Value()" value="Change" class = "linkButton"/><br />
 			</form>
 			#{/if}
 			#{else}
 			<form name="topicForm" action="@{Topics.changeRelationStatus()}" method="POST">
-				<input type = "hidden" name = "topicId" value = ${targetTopic.id} >
-				<input type="checkbox" id="createRelationship" name="createRelationship">Allow topic to have relationships
-				<input type="submit" onclick="get_Value()" value="Change" class = "linkButton"><br />
+				<input type = "hidden" name = "topicId" value = ${targetTopic.id} />
+				<input type="checkbox" id="createRelationship" name="createRelationship"/>Allow topic to have relationships
+				<input type="submit" onclick="get_Value()" value="Change" class = "linkButton"/><br />
 			</form>
 			#{/else}
 			#{/if}

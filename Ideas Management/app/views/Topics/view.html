@@ -97,7 +97,7 @@
 				
 				#{if allowed==1}
 				<li>
-					<input type="submit" value="Invite" onclick=location.href="@{Invitations.invite(object.id,1,0,0)}" class="linkButton">
+					<input type="submit" value="Invite" onclick=location.href="@{Invitations.invite(object.id,1,0)}" class="linkButton">
                 </li>
                 #{/if}
        
@@ -314,56 +314,70 @@
 <div id="crudShow">
     
 	<div id="topicShow" class="objectForm">
-	<form action:@save(object._key())>
-	
-			     <p>
-		   <h3> <label id="object_title" cols="30" rows="1" class="" name="object.title" >
-              <font size = "6"> 
-			  <a href="@{Topics.show(object.id)}"> ${object.title}</a></font> 
-				<font size= "4">
-			<label for="object_creator">
-                by
-            </label>
-            <label id="object_creator" cols="30" rows="1" class="" name="object.creator">
-            	<a href="@{Users.viewProfile(object.creator.id)}">${object.creator.username}</a>
-            </label>
-			</font>
-            </label>
-			
-		</h3>
-            <h3>
-            <font size= "4">	
-            <label for="object_entity">
-                in
-            </label>
-            <label id="object_entity" cols="30" rows="1" class="" name="object.entity">
-            	<a href="@{MainEntitys.viewEntity(entity.id)}"> ${object.entity}</a>
+        #{form action:@save(object._key()), enctype:'multipart/form-data'}
+        
+                #{crud.form fields: ['title', 'description', 'privacyLevel']}
                 
-            </label>
-			</font>
+                   #{crud.custom 'title'}
+                        				     <p>
+			   <h3> <label id="object_title" cols="30" rows="1" class="" name="object.title" >
+	              <font size = "6">
+				  <a href="@{Topics.show(object.id)}"> ${object.title}</a></font>
+					<font size= "4">
+				<label for="object_creator">
+	                by
+	            </label>
+	            <label id="object_creator" cols="30" rows="1" class="" name="object.creator">
+	            	<a href="@{Users.viewProfile(object.creator.id)}">${object.creator.username}</a>
+	            </label>
+				</font>
+	            </label>
+	
 			</h3>
-        </p> 
-			
-			<p> 
- 			<label for="object_description">Description</label> 
-			<textarea id="object_description" cols="50" rows="5" class="" name="object.description" required>${object.description}</textarea> 
-			<span class="crudHelp" ><font color="Red">*</font>Required</span> 
- 			</p> 
-			
-			<p> 
- 			<label for="object_privacyLevel">Privacy Level</label> 
-			<select name="object.privacyLevel">
- 				<option value = "1">private</option>
-				<option value = "2">public</option>
- 			</select>
- 			<span class="crudHelp" ><font color="Red">*</font>Required</span> 
-			</p> 
-		
-		<p class="crudButtons">
-			<input type="submit" name="_save" value="&{'crud.save', type.modelName}"  class="linkButton" />
-			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}"  class="linkButton" />
-		</p>
-	</form>
+			<h3>
+	            <font size= "4">
+	            <label for="object_entity">
+	                in
+            </label>
+	            <label id="object_entity" cols="30" rows="1" class="" name="object.entity">
+	            	<a href="@{MainEntitys.viewEntity(entity.id)}"> ${object.entity}</a>
+	
+	            </label>
+				</font>
+				</h3>
+	        </p>
+
+                #{/crud.custom}
+			   
+	            
+						
+						
+                        #{crud.custom 'description'}
+                        <p> 
+						<br />
+                        <textarea id="object_description" cols="50" rows="5" class="" name="object.description" required>${object.description}</textarea> 
+                        <span class="crudHelp" ><font color="Red">*</font></span> 
+                        </p> 
+                        #{/crud.custom}
+                        
+                        #{crud.custom 'privacyLevel'}
+                        <p>  
+						<br />
+                        <select name="object.privacyLevel">
+                                <option value = "1">private</option>
+                                <option value = "2">public</option>
+                        </select>
+                        <span class="crudHelp" ><font color="Red">*</font></span> 
+                        </p> 
+                        #{/crud.custom }
+                
+                
+                #{/crud.form }
+                <p class="crudButtons">
+                        <input type="submit" name="_save" value="&{'crud.save', type.modelName}" class="linkButton"/>
+                        <input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" class="linkButton"/>
+                </p>
+        #{/form}
 	</div>
 	
 	
