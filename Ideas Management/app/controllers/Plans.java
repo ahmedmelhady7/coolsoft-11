@@ -347,6 +347,10 @@ public class Plans extends CoolCRUD {
 		boolean canView = false;
 		boolean isOrganizer = false;
 		boolean canDelete = false;
+
+		plan.incrmentViewed();
+		plan.save();
+
 		if (Users
 				.isPermitted(
 						user,
@@ -1048,8 +1052,7 @@ public class Plans extends CoolCRUD {
 	/**
 	 * This methods deletes an item and from the item list of a plan and delete
 	 * all its volunteer requests and assign requests given the item id and the
-	 * variable that to indicate whether to notify or not and add to the logs of
-	 * the plan, plan's topic, entity and organization
+	 * variable that to indicate whether to notify or not
 	 * 
 	 * @story C5S19
 	 * 
@@ -1119,8 +1122,7 @@ public class Plans extends CoolCRUD {
 	/**
 	 * This methods deletes a plan with all its items and comments of the plan
 	 * and sends notifications to all the users working on items in the plan and
-	 * the plan's topic organizers and add to the logs of the plan's topic,
-	 * entity and organization given the plan id
+	 * the plan's topic organizers given the plan id
 	 * 
 	 * @story C5S2
 	 * 
@@ -1138,11 +1140,10 @@ public class Plans extends CoolCRUD {
 		String notificationMsg = "The plan " + plan.title + " has been deleted";
 		for (Item item : plan.items) {
 			for (User userAssigned : item.getAssignees()) {
-				if (!toBeNotified.contains(userAssigned)
-						&& user.id != userAssigned.id) {
+				if (!toBeNotified.contains(userAssigned) && user.id != userAssigned.id) {
 					toBeNotified.add(userAssigned);
-					Notifications.sendNotification(userAssigned.id,
-							plan.topic.id, "topic", notificationMsg);
+					Notifications.sendNotification(userAssigned.id, plan.topic.id,
+							"topic", notificationMsg);
 				}
 			}
 		}
@@ -1157,10 +1158,6 @@ public class Plans extends CoolCRUD {
 		while (!plan.items.isEmpty()) {
 			deleteItem(plan.items.get(0).id, 0);
 			plan.save();
-		}
-		for (int i = 0; i < plan.ideas.size(); i++) {
-			plan.ideas.get(i).author.communityContributionCounter = plan.ideas
-					.get(i).author.communityContributionCounter - 13;
 		}
 		Idea idea;
 		while (!plan.ideas.isEmpty()) {
@@ -1186,7 +1183,9 @@ public class Plans extends CoolCRUD {
 		}
 		User creator = plan.madeBy;
 		creator.planscreated.remove(plan);
-
+		for (int i = 0; i < plan.ideas.size(); i++)
+			plan.ideas.get(i).author.communityContributionCounter = plan.ideas
+					.get(i).author.communityContributionCounter - 13;
 		creator.save();
 		plan.madeBy = null;
 		plan.save();
@@ -1590,30 +1589,7 @@ public class Plans extends CoolCRUD {
 		renderJSON(json.toString());
 
 		// viewAsList(plan.id);
-	}
 
-	/**
-	 * @author ${Ibrahim safwat}
-	 * 
-	 * @param planID
-	 *            ID of the plan that the user wants to add the comment to
-	 * @param comment
-	 *            Comment to be added to list of comments of the plan adds a
-	 *            comment to a plan
-	 */
-	public static void addCommentToPlan(String comment, long planID) {
-		Plan p = Plan.findById(planID);
-		User user = Security.getConnected();
-		Comment c = new Comment(comment, p, user).save();
-		p.commentsList.add(c);
-		p.save();
-		JsonObject json = new JsonObject();
-		json.addProperty("commentMsg", comment);
-		json.addProperty("commentUser", user.username);
-		json.addProperty("commentDate", c.commentDate + "");
-
-		renderJSON(json.toString());
-		// redirect("/plans/viewaslist?planId="+p.id);
 	}
 
 }
