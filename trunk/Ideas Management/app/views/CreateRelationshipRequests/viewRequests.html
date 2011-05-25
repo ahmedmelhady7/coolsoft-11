@@ -1,5 +1,5 @@
 #{extends 'login/index.html' /}
-
+<div id="pageNoSideBar">
   <a href="@{Organizations.viewProfile(id)}">Back to ${name}</a>  	
 <br />
 <br />
@@ -42,10 +42,10 @@
         <fieldset id="request_1_${request.id}">
         <tr><td><font size ="3" color ="black">  
 		#{if request.type==0}
-    User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to rename relationship " ${request.entityRelationship.name}" between entities <a href="@{MainEntitys.viewEntity(request.entityRelationship.source.id)}"> ${request.entityRelationship.source.name}</a> and  <a href="@{MainEntitys.viewEntity(request.entityRelationship.destination.id)}"> ${request.entityRelationship.destination.name}</a> to ${request.newName}</font></td><td>
+    User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to rename relationship " ${request.entityRelationship.name}" between entities <a href="@{MainEntitys.viewEntity(request.entityRelationship.source.id)}"> ${request.entityRelationship.source.name}</a> and  <a href="@{MainEntitys.viewEntity(request.entityRelationship.destination.id)}"> ${request.entityRelationship.destination.name}</a> to " ${request.newName} "</font></td><td>
             #{/if}
 			#{else}
-    	  User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to rename relationship " ${request.topicRelationship.name} " between topics <a href="@{Topics.show(request.topicRelationship.source.id)}"> ${request.topicRelationship.source.title}</a> and  <a href="@{Topics.show(request.topicRelationship.destination.id)}"> ${request.topicRelationship.destination.title}</a> to ${request.newName}</font></td><td>
+    	  User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to rename relationship " ${request.topicRelationship.name} " between topics <a href="@{Topics.show(request.topicRelationship.source.id)}"> ${request.topicRelationship.source.title}</a> and  <a href="@{Topics.show(request.topicRelationship.destination.id)}"> ${request.topicRelationship.destination.title}</a> to " ${request.newName} "</font></td><td>
 			#{/else}        
 	      <input type = "button" value = "Accept" onclick="javascript: respond(1,${request.id},${request.type},1,1)">
 			<input type = "button" value = "Reject" onclick="javascript: respond(0,${request.id},${request.type},1,1)">
@@ -79,15 +79,34 @@
     </li>
     #{/list}
 #{/else}
+</div>
 <script type="text/javascript">
 function respond(stat, id,type,i,c){
 	if (stat == 1) {
-		$.post('@{respondToRequests()}',{status:stat,id:id,type:type,whichList:i}, function()
-			 {
-			// alert("Accepted");
-			//$('#request_'+c+'_'+id).html('<i>Request has been accepted<\i>');
-		window.location.reload();});
-			
+		if (c == 0) {
+			$.post('@{respondToRequests()}', {
+				status: stat,
+				id: id,
+				type: type,
+				whichList: i
+			}, function(){
+				// alert("Accepted");
+				$('#request_'+c+'_'+id).html('<i>Request has been accepted<\i>');
+			//	window.location.reload();
+			});
+		}
+		else{
+				$.post('@{respondToRequests()}', {
+				status: stat,
+				id: id,
+				type: type,
+				whichList: i
+			}, function(){
+				// alert("Accepted");
+			  //$('#request_'+c+'_'+id).html('<i>Request has been accepted<\i>');
+				window.location.reload();
+			});
+		}	
 	}
 	else {
 		$.post('@{respondToRequests()}', {
