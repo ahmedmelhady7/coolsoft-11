@@ -106,16 +106,17 @@ The Search Results Viewer
             <span class="activeTab" id="tab5" onMouseOver="hover(this);" onClick="showNewPanel(5);" onMouseOut="setState(5);">Abstract View&nbsp;</span>
             <span class="inactiveTab" id="tab2" onMouseOver="hover(this);" onClick="showNewPanel(2);" onMouseOut="setState(2);" style="margin-left: 5px; font-size: 12px;">Detailed View</span>
             <div id = 'holder' class = "content_articles">
-                <form name="sort">
+                <form name="sort" >
                <u> <big><b>Sort:</b></big></u><br>
-                <input type="radio" name="s" id="s" value="A" onclick="whichsortmethod(this.form)"/>show ideas only in descending rate order                         .
                 
-                <input type="radio" name="s" id="s1" value="D" onclick="whichsortmethod(this.form)"/>show ideas only in ascending rate order 
+                <input type="radio" name="s" id="s1" value="D" onclick="whichsortmethod(this.form)"/>show ideas only in ascending rate order                         . 
+                <input type="radio" name="s" id="s" value="A" onclick="whichsortmethod(this.form)"/>show ideas only in descending rate order
+                
                 </br>
                 
-                <input type="radio" name="sv" id="sv1" value="A" onclick="sortV(this.frm)"/>sort ideas and topics in ascending visit order                                .
+                <input type="radio" name="sv" id="sv1" value="A" onclick="sortV(this.frm)"/>.show all results in  ascending visit order                                 .
                 
-                <input type="radio" name="sv" id="sv" value="D" onclick="sortV(this.frm)"/>show ideas and topics in descending visit order 
+                <input type="radio" name="sv" id="sv" value="D" onclick="sortV(this.frm)"/>show all results in descending visit order 
                 
                 
                 
