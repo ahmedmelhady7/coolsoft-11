@@ -106,6 +106,8 @@ public class Ideas extends CoolCRUD {
 		idea.isDraft = false;
 		idea.title = title;
 		idea.description = description;
+		idea.author.communityContributionCounter++;
+		idea.author.save();
 		idea.save();
 	}
 
@@ -683,9 +685,10 @@ public class Ideas extends CoolCRUD {
 		Idea idea = (Idea) object;
 		try {
 			if (idea.plan != null) {
-				object._delete();
 				idea.author.communityContributionCounter--;
 				idea.author.save();
+				object._delete();
+				
 
 			}
 		} catch (Exception e) {

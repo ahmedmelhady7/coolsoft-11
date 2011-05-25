@@ -8,6 +8,7 @@
 			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
 		}
 		.accordionItem h3 {
+			margin-top:2%;
 			font-size:1.1em;
 			border-bottom-width: 2px;
 			border-bottom-style: solid;
@@ -34,7 +35,12 @@
 		}
 		.accordionItem.hide div {
 			display:none;
-		}</style> 
+		}
+		#deleteHide{
+			margin-top:2%;
+		text-align:right;
+        }
+		</style> 
 			
         <title>Entity View</title>
 				<script type="text/javascript">function unfollow(id) {
@@ -96,6 +102,19 @@
 				alert("relation deleted succesfully!");
 				window.location.reload();
 			}
+			
+			function prompt1(){
+					var text = prompt("Why do you want to delete/hide this topic?");
+					
+					if(text){
+						document.getElementById("justText").value=text;
+						return true;
+					}
+					else{
+						return false;
+					}
+					
+				}
 			
 			</script>
     </head>
@@ -274,7 +293,37 @@
 			#{if topic.hidden == false}
 			#{if topic.canView(user)}
 			<div class="accordionItem">
-			<h3><a href="@{Topics.show(topic.id)}"> &nbsp ${topic.title}</a></h3>
+			<h3><a href="@{Topics.show(topic.id)}"> &nbsp ${topic.title}</a>#{if permission == 1}
+  			   #{if !topic.hidden}
+   				 #{if topic.isDeletable()}
+   				   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+       				 
+        				<input type="hidden" name = "justification" id = "justText"/>
+           			    <input type="image" style="float:right;" title="Delete Topic" src="/public/images/icons/trash.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
+      			    
+    			   </form> 
+		        #{/if}
+                #{if !topic.isDeletable()}
+				#{if topic.plan == null}
+                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+                   
+                      	<input type="hidden" name = "justification" id = "justText"/>
+                       <input type="submit" style="float:right;" title="Hide Topic" class = "linkButton"/>
+                   
+                 </form> 
+				#{/if}
+            	#{/if}
+             #{/if}
+             #{if topic.hidden}		
+                #{if topic..hider.username == actor.username}		
+		           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
+	                 		
+                         <input type="submit" title="Unhide" style="float:right;" class = "linkButton"/>		
+                  		
+                  </form>			
+                #{/if}		
+            #{/if}
+          #{/if}</h3>
 				<div>
 					<p><font size=2>Description: ${topic.description}</font></p>
 					<p><font size=2>Creator: ${topic.creator}</font></p>
@@ -285,7 +334,38 @@
 			#{else}
 			#{if topic.hider.username == user.username && topic.hidden == true}
 			<div class="accordionItem">
-			<h3><a href="@{Topics.show(topic.id)}">&nbsp ${topic.title}</a> <font color ="#FF0000" size =2> &nbsp hidden</font></h3>
+			<h3><a href="@{Topics.show(topic.id)}">&nbsp ${topic.title}</a> <font color ="#FF0000" size =2> &nbsp hidden</font>
+					#{if permission == 1}
+  			   #{if !topic.hidden}
+   				 #{if topic.isDeletable()}
+   				   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+       				 <p class="crudDelete">
+        				<input type="hidden" name = "justification" id = "justText"/>
+           			    <input type="image" style="float:right;" src="/public/images/icons/trash.png" title="Delete Topic" class = "linkButton"/>
+      			    </p>
+    			   </form> 
+		        #{/if}
+                #{if !topic.isDeletable()}
+				#{if topic.plan == null}
+                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+                    <p class="crudDelete">
+                      	<input type="hidden" name = "justification" id = "justText"/>
+                       <input type="submit" style="float:right;" title="Hide Topic" class = "linkButton"/>
+                   </p>
+                 </form> 
+				#{/if}
+            	#{/if}
+             #{/if}
+             #{if topic.hidden}		
+                #{if topic.hider.username == user.username}		
+		           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
+	                  <p class="crudDelete">		
+                         <input type="submit"  style="float:right;" title="Unhide" class = "linkButton"/>		
+                      </p>		
+                  </form>			
+                #{/if}		
+            #{/if}
+          #{/if}</h3>
 				<div>
 					<p><font size=2>Description: ${topic.description}</font></p>
 					<p><font size=2>Creator: ${topic.creator}</font></p>
