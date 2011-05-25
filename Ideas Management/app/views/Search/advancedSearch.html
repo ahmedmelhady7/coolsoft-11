@@ -730,7 +730,7 @@
 	                    $('.divR:last').show(1000);
 	                }
 	                else {
-	                    $('#ra').append('<div class="divR" vspace ="20"> <select id="h" class="h"><option value="1" selected>&nbsp;AND</option><option value="2">&nbsp;OR</option><option value="3">&nbsp;NOT</option></select> <input type="text" id="wantKey" class ="wantKey" name="wantKey" /> <small><small><label id="in" class = "in"> in </label> </small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option></select> </div>');
+	                    $('#ra').append('<div class="divR" vspace ="20"> <select id="h" class="h"><option value="1" selected>&nbsp;AND</option><option value="2">&nbsp;OR</option><option value="3">&nbsp;NOT</option></select> <input type="text" id="wantKey" class ="wantKey" name="wantKey" /> <small><small><label id="in" class = "in"> in </label> </small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comments</option><option value=4>Tags</option></select> </div>');
 	                    $('.divR:last').hide();
 	                    $('.divR:last').show(1000);
 	                    n++;
@@ -738,8 +738,8 @@
 	                m++;
 	            });
 	            $('#more').click(function(){
-	                $(".divR1").append(' <small><small><label id="in" class = "in"> in </label></small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option></select> ');
-	                $(".divR").append(' <small><small><label id="in" class = "in"> in </label></small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option></select> ');
+	                $(".divR1").append(' <small><small><label id="in" class = "in"> in </label></small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option><option value=4>Tags</option></select> ');
+	                $(".divR").append(' <small><small><label id="in" class = "in"> in </label></small></small> <select class="wantKeyX" id="wantKeyX" ><option value=0 selected>(Optional)</option><option value=1>Title</option><option value=2>Description</option><option value=3>Comment</option><option value=4>Tags</option></select> ');
 	                $('.in').hide();
 	                $('.in').show(1000);
 	                $('.wantKeyX').hide();
@@ -925,7 +925,7 @@
 					&&(document.getElementById("cbPu").checked||
                     document.getElementById("cbPr").checked||
                     document.getElementById("cbSc").checked)){
-					var wantedKeys = inPuts.wantKey1.value.replace(","," ");
+					var wantedKeys = "2,"+inPuts.wantKey1.value.replace(","," ");
 					var ins = "";
 					var exactKey = document.getElementById("wantKeyEx").value+document.getElementById("inExOp").value;
 					alert(exactKey);
