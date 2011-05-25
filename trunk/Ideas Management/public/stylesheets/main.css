@@ -283,9 +283,10 @@ line-height:17px;}
 /* PageNoSideBar */
 
 #pageNoSideBar {
-	width: 80%;
-	margin: 0 auto;	
-	padding: 0px 0px 0px 0px;
+	width: 74%;
+	float:left;
+	margin: auto;	
+	padding-left: 4%;
 }
 
 #pageNoSideBar-bgtop {
@@ -442,7 +443,7 @@ line-height:17px;}
 
 #leftSidebar {
 	float: left;
-	width: 16%;
+	width: 18%;
 	margin: 0px;
 	color: #787878;
 }
