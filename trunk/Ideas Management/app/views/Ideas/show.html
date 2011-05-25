@@ -73,15 +73,26 @@
 	<br/>
     #{if notBlockedFromUsing}
     <input type="button" class="linkButton" style="color: #4CC417" id ='share' value="Share idea"/>
-	<form id="shareidea" action="@{Ideas.shareIdea()}">
-			<input type="submit" class="linkButton" style="color: #4CC417" value="Share with user" />
+	<div id="shareidea">
+			<input type="submit" onclick = "share()" class="linkButton" style="color: #4CC417" value="Share with user" />
 			<input type="hidden" name="ideaId" value="${ideaId}">
 			<select id="userName" name = "userName"> 
 					#{list userNames, as:'name'}
 					<option>${name}</option>
 					#{/list}
 					</select>
-		</form>
+			<br/>
+			<div id = "shareSuccess" class = "div_suc">Notification sent successfully to user</div>
+			<script type='text/javascript'>
+			function share(){
+				
+				var userName = document.getElementById('userName').value
+				$.post('@{Ideas.shareIdea()}',{userName: userName, ideaID: ${ideaId}},function(){
+					document.getElementById('shareSuccess').style.display = 'inline'
+				});
+				}
+			</script>
+			</div>		
 		</br>
 		</br>
 		#{/if}
@@ -105,7 +116,7 @@
 </form>
 		#{/if}
 		#{else}
-		<font style="display: none;" id='rated'>You have already rated this idea</font>
+		<font  id='rated'>You have already rated this idea</font>
 		#{/else}
 		#{/if}	
 		#{if notBlockedFromUsing}
