@@ -177,7 +177,7 @@ public class Mail extends Mailer {
 		System.out.println(email);
 		addRecipient(email);
 		setFrom("coolsoft-11@gmail.com");
-		setSubject("No Relpay: Password recovery");
+		setSubject("No Reply: Password recovery");
 		String url = "http://localhost:9008/secure/login";
 		send(username, password, url);
 	}
