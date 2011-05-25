@@ -430,6 +430,11 @@ public class Organizations extends CoolCRUD {
 		int i = 0;
 		int allowed = 0;
 		int settings = 0;
+		
+
+		org.incrmentViewed();
+		org.save();
+		
 		if (org.privacyLevel == 1
 				&& Users.isPermitted(
 						user,
