@@ -240,9 +240,9 @@ public class Organizations extends CoolCRUD {
 		invitation._save();
 		if (reciever != null) {
 			reciever.invitation.add(invitation);
-			Notifications.sendNotification(reciever.id,
-					organizationId, "organization",
-					"you have recived an ivitation to join" + organization.name);
+			Notifications.sendNotification(reciever.id, organizationId,
+					"organization", "you have recived an ivitation to join"
+							+ organization.name);
 			reciever._save();
 		}
 		try {
@@ -349,9 +349,7 @@ public class Organizations extends CoolCRUD {
 	public static void followOrganization(long organizationId) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(organizationId);
-		if (org.followers.contains(user))
-			System.out.println("You are already a follower");
-		else {
+		if (!org.followers.contains(user)) {
 			org.followers.add(user);
 			org.save();
 			user.followingOrganizations.add(org);
@@ -387,9 +385,9 @@ public class Organizations extends CoolCRUD {
 	 * @param f
 	 *            : The String which is used as a variable for checking
 	 */
-	public static void viewFollowers(long organizationId, String f) {
+	public static void viewFollowers(long organizationId, String flag) {
 		Organization org = Organization.findById(organizationId);
-		if (f.equals("true"))
+		if (flag.equals("true"))
 			followOrganization(organizationId);
 		render(org);
 	}
@@ -578,11 +576,13 @@ public class Organizations extends CoolCRUD {
 		}
 
 		long pictureId = org.profilePictureId;
+		List<User> followers = org.followers;
 		List<Plan> plans = Plans.planList("organization", org.id);
 		render(user, org, entities, requestToJoin, canCreateEntity, tags, flag,
 				canInvite, admin, allowed, isMember, settings, creator,
 				alreadyRequested, plans, follower, usernames, join, logFlag,
-				pictureId, topics, entitiesCanBeRelated, entitiesICanView);
+				pictureId, topics, entitiesCanBeRelated, entitiesICanView,
+				followers);
 	}
 
 	/**

@@ -495,7 +495,7 @@ public class MainEntitys extends CoolCRUD {
 				tags.get(i).entities.remove(entity);
 				tags.get(i).save();
 			}
-		}	
+		}
 		// size = entity.relationsSource.size();
 		// for (int j = 0; j < size; j++) {
 		// EntityRelationships.deleteER(entity.relationsSource.get(j).id);
@@ -505,10 +505,12 @@ public class MainEntitys extends CoolCRUD {
 		// EntityRelationships.deleteER(entity.relationsDestination.get(j).id);
 		// }
 		// Mohamed Hisham {
-		for (int i = 0; i < entity.relationsSource.size(); i++) {
+		size = entity.relationsSource.size();
+		for (int i = 0; i < size; i++) {
 			EntityRelationships.delete(entity.relationsSource.get(i).id);
 		}
-		for (int i = 0; i < entity.relationsDestination.size(); i++) {
+		size = entity.relationsDestination.size();
+		for (int i = 0; i < size; i++) {
 			EntityRelationships.delete(entity.relationsDestination.get(i).id);
 		}
 		// }
@@ -522,16 +524,14 @@ public class MainEntitys extends CoolCRUD {
 			CreateRelationshipRequests
 					.delete(entity.relationshipRequestsDestination.get(j).id);
 		}
-		size = entity.topicList.size();
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-
-		for (int j = 0; j < size; j++) {
-			Model object = type.findById(entity.topicList.get(j).id);
-			notFoundIfNull(object);
-			Topic temporaryTopic = (Topic) object;
-			Topic.delete("" + entity.topicList.get(j).id, "msg");
-		}
+		// size = entity.topicList.size();
+		// ObjectType type = ObjectType.get(getControllerClass());
+		// notFoundIfNull(type);
+		// for (int j = 0; j < size; j++) {
+		// Model object = type.findById(entity.topicList.get(j).id);
+		// notFoundIfNull(object);
+		// Topics.deleteTopic("" + entity.topicList.get(j).id, "msg");
+		// }
 		size = allEntities.size();
 		for (int i = 0; i < size; i++) {
 			if (allEntities.get(i).subentities.contains(entity)) {
@@ -539,7 +539,10 @@ public class MainEntitys extends CoolCRUD {
 				allEntities.get(i).save();
 			}
 		}
-
+		size = entity.subentities.size();
+		for (int i = 0; i < size; i++) {
+			MainEntitys.deleteEntity(entity.subentities.get(i).id);
+		}
 		// Mai Magdy
 		List<Invitation> invite = Invitation.find("byEntity", entity).fetch();
 		for (int i = 0; i < invite.size(); i++)
@@ -553,10 +556,6 @@ public class MainEntitys extends CoolCRUD {
 		size = entity.relatedItems.size();
 		for (int i = 0; i < size; i++) {
 			// Items.delete(entity.relatedItems.get(i).id);
-		}
-		size = entity.subentities.size();
-		for (int i = 0; i < size; i++) {
-			MainEntitys.deleteEntity(entity.subentities.get(i).id);
 		}
 		entity.logs.clear();
 		entity.delete();
