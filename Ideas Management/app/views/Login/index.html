@@ -129,7 +129,7 @@
                                 		<a href="@{Organizations.createOrganization()}" title="Create a new Organization">Create Organization</a>
                                 	</li>                                		
                                     <li>
-                                        <a onclick="enrolledOrganizations();" title="View your Organizations">My Organizations</a>
+                                        <a onclick="enrolledOrganizations();" title="View your Organizations" style="cursor:pointer;">My Organizations</a>
                                     </li>
                                     <div id="enrolledInOrganizations">
                                     	<li>
@@ -155,7 +155,7 @@
                                         <input type="hidden" name="userId" value="${user.id}">
                                     </li>
                                     <li>
-                                        <a onclick="follows();">Follow List</a>
+                                        <a style="cursor:pointer;" onclick="follows();">Follow List</a>
                                     </li>
                                     <div id="follow">
                                     	<li>
@@ -229,7 +229,7 @@
                                         <a href="@{Documents.newDocument(-1)}">Create a Document</a>
                                     </li>
                                     <li>
-                                        <a onclick="showDoc();">Show my Documents</a>
+                                        <a style="cursor:pointer;" onclick="showDoc();">Show my Documents</a>
                                     </li>
                                     <div id="docs">
                                         <li>
