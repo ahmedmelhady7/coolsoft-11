@@ -1366,7 +1366,7 @@ public class Topics extends CRUD {
 			Notifications.sendNotification(temporaryTopic.followers.get(i)
 					.getId(), entity.getId(), "entity", message);
 		Notifications.sendNotification(temporaryTopic.creator.getId(),
-				entity.getId(), "entity", justification);
+				entity.getId(), "entity", "Your Topic was deleted because " + justification);
 
 		// added by Mohamed Hisham to delete the topic's relationships whenever
 		// its deleted
@@ -1454,7 +1454,7 @@ public class Topics extends CRUD {
 
 		UserRoleInOrganization.deleteEntityOrTopic(temporaryTopic.id, "topic");
 		
-		String justification = "The organization " +temporaryTopic.entity.organization+ " where this topic " +temporaryTopic+ " was, was deleted!";
+		String justification = "Your Topic was deleted because " + "The organization " +temporaryTopic.entity.organization+ " where this topic " +temporaryTopic+ " was, was deleted!";
 		
 		for (int i = 0; i < users.size(); i++)
 			Notifications.sendNotification(users.get(i).id, temporaryTopic.id,
@@ -1543,7 +1543,7 @@ public class Topics extends CRUD {
 				Notifications.sendNotification(temporaryTopic.followers.get(i)
 						.getId(), entity.getId(), "entity", message);
 			Notifications.sendNotification(temporaryTopic.creator.getId(),
-					entity.getId(), "entity", justification);
+					entity.getId(), "entity", "Your Topic was hidden because " + justification);
 			
 			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
 	        + " hid the topic " +"<a href=\"http://localhost:9008/topics/show?topicId=" + temporaryTopic.id +"\">" + temporaryTopic.title + "</a>"
