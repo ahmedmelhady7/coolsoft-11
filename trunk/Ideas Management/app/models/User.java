@@ -46,6 +46,7 @@ public class User extends CoolModel {
 	public String country;
 	public Date dateofBirth;
 	public int communityContributionCounter;
+	public String activationKey;
 	/**
 	 * Added by Ahmed Maged
 	 */
