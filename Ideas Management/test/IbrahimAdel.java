@@ -29,13 +29,11 @@ public class IbrahimAdel extends UnitTest {
 	public void inviteToJoinOrganizationAndReceive() {
 		Role.createIdeaDeveloperRole();
 		Role.createOrganizationLeadRole();
-
-		Role ideadeveloper = Roles.getRoleByName("idea developer");
 		Role OrganizationLead = Roles.getRoleByName("organizationLead");
 
 		User sharaf = new User("sharaf@eg.gov", "sharaf", "1234", "Asam",
 				"Sharaf", "What is our company's name?", "coolsoft", 0,
-				new Date(1955, 2, 14), "Egypt", "Primenister").save();
+				new Date(), "Egypt", "Primenister").save();
 
 		Organization gov = new Organization("الحكومة المصرية", sharaf, 0, true,
 				"").save();
@@ -43,8 +41,8 @@ public class IbrahimAdel extends UnitTest {
 		UserRoleInOrganizations.addEnrolledUser(sharaf, gov, OrganizationLead);
 
 		User mai = new User("mai.jt4@gmail.com", "mai", "1234", "Mai", "Magdy",
-				"What is our company's name?", "coolsoft", 0, new Date(1990, 9,
-						14), "Egypt", "student").save();
+				"What is our company's name?", "coolsoft", 0, new Date(),
+				"Egypt", "student").save();
 		// had to copy the method body since it contains getConnected
 		long organizationId = gov.id;
 		String email = mai.email;
@@ -85,15 +83,18 @@ public class IbrahimAdel extends UnitTest {
 		}
 
 		assertEquals(false, sharaf.invitation.isEmpty());
-		Invitation invitation2 = Invitation.findById(sharaf.invitation.get(0).id);
+		Invitation invitation2 = Invitation
+				.findById(sharaf.invitation.get(0).id);
 		assertEquals(true, invitation2.organization.equals(gov));
-		
+
 		// accept the invitation
-		assertEquals(false, Users.isPermitted(mai, "view", gov.id, "organization"));
+		assertEquals(false,
+				Users.isPermitted(mai, "view", gov.id, "organization"));
 		// received a notification
 		assertEquals(1, mai.notificationsNumber);
-		
-		//Invitations.respond(1, invitation2.id);  can not use since contains session
+
+		// Invitations.respond(1, invitation2.id); can not use since contains
+		// session
 		// method body
 		int id = 1;
 		long i = invitation2.id;
@@ -282,94 +283,92 @@ public class IbrahimAdel extends UnitTest {
 		sender2.invitation.remove(invite);
 		invite.delete();
 
-		
-		//joined
-		assertEquals(true, Users.isPermitted(mai, "view", gov.id, "organization"));
-		//invitation is deleted
+		// joined
+		assertEquals(true,
+				Users.isPermitted(mai, "view", gov.id, "organization"));
+		// invitation is deleted
 		assertEquals(true, Invitation.count() == 0);
-		//another notification is received
+		// another notification is received
 		assertEquals(2, mai.notificationsNumber);
-		
+
 	}
+
 	@Test
 	public void unfollowTest() {
 
 		User ashraf = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234",
 				"Ashraf", "Mansoor", "What is our company's name?", "coolsoft",
-				0, new Date(), "Egypt",
-				"student").save();
-// org
+				0, new Date(), "Egypt", "student").save();
+		// org
 		Organization guc = new Organization("GUC", ashraf, 1, true,
 				"The German University in Cairo").save();
 
-// tag
+		// tag
 		Tag tagEducation = new Tag("Education", guc, ashraf).save();
 
-// entity
+		// entity
 		MainEntity gucMet = new MainEntity("MET",
 				"Media Engineering and technology", guc, true).save();
-	
-		Topic gucMetStudentUnion = new Topic("Student union",
-				"Suggestions", 2, ashraf, gucMet, true).save();
+
+		Topic gucMetStudentUnion = new Topic("Student union", "Suggestions", 2,
+				ashraf, gucMet, true).save();
 		gucMetStudentUnion._save();
 
-// follow
+		// follow
 		ashraf.followingOrganizations.add(guc);
 		guc.followers.add(ashraf);
-		
+
 		ashraf.followingEntities.add(gucMet);
 		gucMet.followers.add(ashraf);
-		
+
 		ashraf.followingTags.add(tagEducation);
 		tagEducation.followers.add(ashraf);
-		
+
 		ashraf.topicsIFollow.add(gucMetStudentUnion);
 		gucMetStudentUnion.followers.add(ashraf);
-		
+
 		ashraf.save();
 		tagEducation.save();
 		gucMetStudentUnion.save();
 		gucMet.save();
 		guc.save();
 
-//unfollow can not use the controller method since it uses session
+		// unfollow can not use the controller method since it uses session
 		ashraf.unfollow(gucMet);
 		gucMet.unfollow(ashraf);
 		assertFalse(ashraf.followingEntities.contains(gucMet));
-		
+
 		ashraf.unfollow(gucMetStudentUnion);
 		gucMetStudentUnion.unfollow(ashraf);
 		assertFalse(ashraf.topicsIFollow.contains(gucMetStudentUnion));
-		
+
 		ashraf.unfollow(guc);
 		guc.unfollow(ashraf);
 		assertFalse(ashraf.followingOrganizations.contains(guc));
-		
+
 		ashraf.unfollow(tagEducation);
 		tagEducation.unfollow(ashraf);
 		assertFalse(ashraf.followingTags.contains(tagEducation));
-		
+
 	}
-	
-	@Test
-	public void RequestToPostOnATopic() {
-		User ashraf = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234",
-				"Ashraf", "Mansoor", "What is our company's name?", "coolsoft",
-				0, new Date(), "Egypt",
-				"student").save();
 
-		Organization guc = new Organization("GUC", ashraf, 1, true,
-				"The German University in Cairo").save();
-
-		MainEntity gucMet = new MainEntity("MET",
-				"Media Engineering and technology", guc, true).save();
-	
-		Topic gucMetStudentUnion = new Topic("Student union",
-				"Suggestions", 2, ashraf, gucMet, true).save();
-		
-		gucMetStudentUnion._save();
-
-		
-	}
+//	@Test
+//	public void RequestToPostOnATopic() {
+//		User ashraf = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234",
+//				"Ashraf", "Mansoor", "What is our company's name?", "coolsoft",
+//				0, new Date(), "Egypt", "student").save();
+//
+//		Organization guc = new Organization("GUC", ashraf, 1, true,
+//				"The German University in Cairo").save();
+//
+//		MainEntity gucMet = new MainEntity("MET",
+//				"Media Engineering and technology", guc, true).save();
+//
+//		Topic gucMetStudentUnion = new Topic("Student union", "Suggestions", 2,
+//				ashraf, gucMet, true).save();
+//
+//		gucMetStudentUnion._save();
+//
+//	}
 
 }
