@@ -734,6 +734,7 @@ public class Search extends Controller {
 				notToSort.add(listOfResults.get(i));
 			}
 		}
+		toSort = listOfResults;
 
 		for (int j = 0; j < toSort.size(); j++) {
 			int view1 = 0;
@@ -742,8 +743,25 @@ public class Search extends Controller {
 				Idea temp1 = (Idea) toSort.get(j);
 				view1 = temp1.viewed;
 			} else {
-				Topic temp1 = (Topic) toSort.get(j);
-				view1 = temp1.viewed;
+				if (toSort.get(j) instanceof Topic) {
+					Topic temp1 = (Topic) toSort.get(j);
+					view1 = temp1.viewed;
+				}else{
+					if(toSort.get(j)instanceof Plan){
+						Plan temp1 =(Plan)toSort.get(j);
+						view1=temp1.viewed;
+					}else{
+						if(toSort.get(j)instanceof Organization){
+							Organization temp1=(Organization)toSort.get(j);
+							view1=temp1.viewed;
+						}else{
+							if(toSort.get(j)instanceof MainEntity){
+								MainEntity temp1=(MainEntity)toSort.get(j);
+								view1=temp1.viewed;
+							}
+						}
+					}
+				}
 			}
 			for (int k = 0; k < toSort.size(); k++) {
 				if (toSort.get(k) instanceof Idea) {
@@ -751,9 +769,25 @@ public class Search extends Controller {
 					view2 = temp2.viewed;
 
 				} else {
+					if(toSort.get(k)instanceof Topic){
 					Topic temp2 = (Topic) toSort.get(k);
 					view2 = temp2.viewed;
-
+					}else{
+						if(toSort.get(k)instanceof Plan){
+							Plan temp2=(Plan)toSort.get(k);
+							view2=temp2.viewed;
+						}else{
+							if(toSort.get(k)instanceof Organization){
+								Organization temp2=(Organization)toSort.get(k);
+								view2=temp2.viewed;
+							}else{
+								if(toSort.get(k)instanceof MainEntity){
+									MainEntity temp2=(MainEntity)toSort.get(k);
+									view2=temp2.viewed;
+								}
+							}
+						}
+					}
 				}
 
 				if (view1 < view2) { // sorting
@@ -850,7 +884,6 @@ public class Search extends Controller {
 			in.close();
 			zOut.flush();
 			zOut.close();
-			System.out.println("File written");
 			return file;
 		} catch (IOException e) {
 			return null;
@@ -965,6 +998,7 @@ public class Search extends Controller {
 				notToSort.add(listOfResults.get(i));
 			}
 		}
+		toSort = listOfResults;
 
 		for (int j = 0; j < toSort.size(); j++) {
 			int view1 = 0;
@@ -973,8 +1007,25 @@ public class Search extends Controller {
 				Idea temp1 = (Idea) toSort.get(j);
 				view1 = temp1.viewed;
 			} else {
-				Topic temp1 = (Topic) toSort.get(j);
-				view1 = temp1.viewed;
+				if (toSort.get(j) instanceof Topic) {
+					Topic temp1 = (Topic) toSort.get(j);
+					view1 = temp1.viewed;
+				}else{
+					if(toSort.get(j)instanceof Plan){
+						Plan temp1 =(Plan)toSort.get(j);
+						view1=temp1.viewed;
+					}else{
+						if(toSort.get(j)instanceof Organization){
+							Organization temp1=(Organization)toSort.get(j);
+							view1=temp1.viewed;
+						}else{
+							if(toSort.get(j)instanceof MainEntity){
+								MainEntity temp1=(MainEntity)toSort.get(j);
+								view1=temp1.viewed;
+							}
+						}
+					}
+				}
 			}
 			for (int k = 0; k < toSort.size(); k++) {
 				if (toSort.get(k) instanceof Idea) {
@@ -982,9 +1033,25 @@ public class Search extends Controller {
 					view2 = temp2.viewed;
 
 				} else {
+					if(toSort.get(k)instanceof Topic){
 					Topic temp2 = (Topic) toSort.get(k);
 					view2 = temp2.viewed;
-
+					}else{
+						if(toSort.get(k)instanceof Plan){
+							Plan temp2=(Plan)toSort.get(k);
+							view2=temp2.viewed;
+						}else{
+							if(toSort.get(k)instanceof Organization){
+								Organization temp2=(Organization)toSort.get(k);
+								view2=temp2.viewed;
+							}else{
+								if(toSort.get(k)instanceof MainEntity){
+									MainEntity temp2=(MainEntity)toSort.get(k);
+									view2=temp2.viewed;
+								}
+							}
+						}
+					}
 				}
 
 				if (view1 > view2) { // sorting
