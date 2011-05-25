@@ -40,16 +40,46 @@
 		   				
 		   </div>
 		   <li>
-		   <ul>
-		   	
-		   	#{if admin || creator}
-			<li>
-		<a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
-            </li>
-			<li>
-		<a href="@{Organizations.editOrganization(org.id)}" title="Edit Organization">Edit</a>            
-		</li>
-		#{/if}
+		   
+		  	<ul>
+					#{if admin || creator}
+					<li>
+						<a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
+					</li>
+					<li>
+						<a href="@{Organizations.editOrganization(org.id)}" title="Edit Organization">Edit</a>
+					</li>
+					#{/if}
+					
+             <li>
+           <a id="entityLink" href="#">Entities</a>
+			 <div id="entityLinks">
+            <ul>
+            	#{if entities.size() > 0}
+            #{list items:entities, as:'entity'}
+            <LI type="disc">
+            	#{if (entitiesICanView.contains(entity))}
+                <a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>
+                #{/if}
+                #{else}
+                ${entity.name}
+                #{/else}
+            </LI>
+            #{/list}
+            #{/if}
+            #{else}
+            <LI type="disc">No Entities Yet!</LI>
+            #{/else}
+        </ul>
+       </div>
+       </li>
+       
+       #{if (canCreateEntity == 1)}
+       <li>
+        <a href="@{MainEntitys.goToCreateEntity(org.id)}">Create an Entity</a>
+        </li>
+        #{/if}
+		
 		#{if allowed==1}
 		<li>
 		<a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>
@@ -107,10 +137,33 @@
 		#{if follower == true}
         <li><a href="#" onclick="unfollow('${org.id}');">Unfollow ${org.name}</a></li>
 		#{/if}
+		#{else}
+		<li><a href="@{followOrganization(org.id)}">Follow ${org.name}</a></li>
+		#{/else}
 		
-		</ul>
+		
+        <li>
+           <a id="followersLink" href="#">Followers</a>
+			 <div id="followersLinks">
+            <ul>
+            	#{if org.followers.size()>0}
+            	#{list items:followers, as:'follower'}
+				<li>
+				     <a href="@{Users.viewProfile(follower.id)}">${follower.firstName} ${follower.lastName}</a>
+                </li>
+				#{/list}
+				#{/if}
+				#{else}
+				<LI type="disc">No Followers Yet!</LI>
+				#{/else}
+			</ul>
+			</div>
 		</li>
 		
+		
+		
+		</ul>
+		</li>		
 		</div>	
 		
 <script type="text/javascript">
@@ -137,6 +190,32 @@
             else {
                 $('#plansLinks').hide(500);
                 planFlag = true;
+            }
+        });
+        
+        var followerFlag = false;
+        $('#followersLinks').hide();
+        $('#followersLink').click(function(){
+            if (followerFlag) {
+                $('#followersLinks').show(500);
+                followerFlag = false;
+            }
+            else {
+                $('#followersLinks').hide(500);
+                followerFlag = true;
+            }
+        });
+        
+        var entityFlag = false;
+        $('#entityLinks').hide();
+        $('#entityLink').click(function(){
+            if (entityFlag) {
+                $('#entityLinks').show(500);
+                entityFlag = false;
+            }
+            else {
+                $('#entityLinks').hide(500);
+                entityFlag = true;
             }
         });
 
@@ -193,7 +272,7 @@
         <br/>
          
         	<br/>
-        List of entities:
+        <!--List of entities:
         <ul style="list-style: none;">
             #{list items:entities, as:'entity'}
             <li>
@@ -205,10 +284,8 @@
                 #{/else}
             </li>
             #{/list}
-        </ul>
-        #{if (canCreateEntity == 1)}
-        <a href="@{MainEntitys.goToCreateEntity(org.id)}">Create a new Entity</a>
-        #{/if}
+        </ul>-->
+        
         <br/>
         <br>
         List of viewable Tags:
@@ -265,18 +342,18 @@
         <!-- 	} -->
         <!-- </script> -->
         <!-- ======= -->
-        <form action="@{Organizations.viewFollowers()}">
-             <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="f" value="true">#{if (!org.followers.contains(user))}
+       <!--<form action="@{Organizations.viewFollowers()}">
+             <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="flag" value="true">#{if (!org.followers.contains(user))}
             <p>
                 Follow ${org.name} <input type="submit" value="Follow">
                 <br/>
                 #{/if}
                 </form> 
                 <form action="@{Organizations.viewFollowers()}">
-                    <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="f" value="false">View ${org.name} Followers <input type="submit" value="Followers">
+                    <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="flag" value="false">View ${org.name} Followers <input type="submit" value="Followers">
                     <br/>
                      
-                </form>
+                </form> -->
 				
 				#{if (admin || creator)}
 				<h4>Create Relationship between <select id="relType" onchange="showRelationForm()">

@@ -90,9 +90,13 @@
     </head>
 
     <body onload="init()">
-        #{extends 'main.html' /}
-        
-        <center><big><b>${entity.name}</b></big></center><br><br>
+         #{extends 'Login/index.html' /}		
+        #{set title: 'Entity Profile' /}        
+        <center>
+        	<big>
+        		<h2><b>${entity.name}</b></h2>
+        	</big>
+        </center><br><br>
 		
 		 <br/>
 		 		<div id="leftSidebar">
@@ -197,7 +201,7 @@
 		<form action="@{MainEntitys.viewFollowers()}">
             <HR>
             	<input type="hidden" name="entityId" value="${entity.id}">
-            	<input type="hidden" name="f" value="true">
+            	<input type="hidden" name="flag" value="true">
             	#{if (!entity.followers.contains(user))}            
             	<p>
                 Follow ${entity.name} 
@@ -214,7 +218,7 @@
 			#{/if}
        <form action="@{MainEntitys.viewFollowers()}">
           <input type="hidden" name="entityId" value="${entity.id}">
-          <input type="hidden" name="f" value="false">
+          <input type="hidden" name="flag" value="false">
           View ${entity.name} Followers 
           <input type="submit" value="Followers">
           <br/>
