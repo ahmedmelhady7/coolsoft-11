@@ -230,6 +230,7 @@ public class Organization extends CoolModel {
 			boolean createTag, String description) {
 		this.name = name;
 		this.creator = creator;
+		intializedIn = new Date();
 		// added by nada ossama
 		// UserRoleInOrganizations.addEnrolledUser(this.creator, this,
 		// Roles.getRoleByName("Organization Lead"));
