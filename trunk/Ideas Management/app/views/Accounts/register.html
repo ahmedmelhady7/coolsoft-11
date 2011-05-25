@@ -10,13 +10,13 @@
 		${message}
 	</font>
 	<div class="objectForm">
-	<form name="orderform" action="@{Home.addUser()}" method="POST">
+	<form name="orderform" action="@{Accounts.addUser()}" method="POST">
 	
 		<p>
 			<label for="email">
 				E-mail
 			</label>
-			<input type = "text" id="email" size=35 class="" name="email"  onkeyup="echeck();" required>
+			<input type = "text" id="email" size=35 class="" name="email"  onkeyup="echeck();" required/>
 			<span id="validEmail" class="validEmail"></span>
 				<font color="Red">
 					*
@@ -27,19 +27,17 @@
 			<label for="username">
 				username
 			</label>
-			<input type="text" size =20 class = "" id="username" name=username>
-			<span class="crudHelp" >
-				<font color="Red">
+			<input type="text" size =20 class = "" id="username" name=username onblur="checkUsername();>" required/>
+		<span id="usernameMessage" class="usernameMessage"><font color="Red">
 					*
-				</font>Required
-			</span>
+				</font>Required</span>
 		</p>
 
 		<p>
 			<label for="password">
 				Password
 			</label>
-			<input type="password" size="25" class="" name="password" id="pass1">
+			<input type="password" size="25" class="" name="password" id="pass1" onkeyup="checkPass(); return false;" required/>
 				<font color="Red">
 					*
 				</font>Required
@@ -53,7 +51,7 @@
 		</p>
 		
 			<label for="firstName">
-				firstName
+				First Name
 			</label>
 			<input type="text" size=15 name="firstName" class "" onmouseover=""/>
 			<span class="crudHelp" >
@@ -102,6 +100,7 @@
 				Country
 			</label> 
 			<select name="country" size="1">
+				<option value="Egypt">Egypt</option>
 				<option value="Afghanistan">Afghanistan</option>
 				<option value="Åland Islands">Åland Islands</option>
 				<option value="Albania">Albania</option>
@@ -171,7 +170,6 @@
 				<option value="Dominican Republic">Dominican Republic</option>
 				<option value="East Timor">East Timor</option>
 				<option value="Ecuador">Ecuador</option>
-				<option value="Egypt">Egypt</option>
 				<option value="El Salvador">El Salvador</option>
 				<option value="Equatorial Guinea">Equatorial Guinea</option>
 				<option value="Eritrea">Eritrea</option>
@@ -384,16 +382,44 @@
       var message = document.getElementById('confirmMessage');
       var goodColor = "#66cc66";
       var badColor = "#ff6666";
-      if(pass1.value == pass2.value){
+      if(pass1.value == pass2.value && pass1.value != ""){
         pass2.style.backgroundColor = goodColor;
         message.style.color = goodColor;
         message.innerHTML = "Passwords Match!"
       }else{
-        pass2.style.backgroundColor = badColor;
-        message.style.color = badColor;
-        message.innerHTML = "Passwords Do Not Match!"
+    	  pass2.style.backgroundColor = badColor;
+          message.style.color = badColor;
+    	  if(pass1.value == "" && pass2.value == "" )
+    	  {
+              message.innerHTML = "Password filed cannot be empty !"
+    	  }
+    	  else
+    	  {
+              message.innerHTML = "Passwords Do Not Match!"
+    	  }
       }
     }
+    
+
+    function checkUsername(){
+    	alert("hiiii");
+    	var unregisteredUsername = document.getElementById('username');
+        var message = document.getElementById('userMessage');
+    	alert("hiiii");
+        $.getJSON('@{checkUsername()}', { username: unregisteredUsername}, function (x){
+        	alert("hiiii");
+        	var goodColor = "#66cc66";
+            var badColor = "#ff6666";
+            if(!(x.existingUser))
+            	{
+            	object_username.style.backgroundColor = goodColor;
+                message.style.color = goodColor;
+                message.innerHTML = "Username available"
+            	}
+        });
+    	
+    }
+    
     function echeck() {
         var str = document.getElementById('email');
         var validEmailMessage =document.getElementById('validEmail');
@@ -459,7 +485,7 @@
 	<script>
     $(function(){
 		$("#dateofBirth").datepicker({ minDate:"-90Y -1M -5D",
-			maxDate:+32,
+			maxDate:"-12Y -1M -5D",
 			changeYear: true,
             showButtonPanel: true});
 	});
