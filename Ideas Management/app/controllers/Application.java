@@ -69,7 +69,7 @@ public class Application extends CoolCRUD {
 	 *            , The length of the hash string
 	 * @return hash String
 	 */
-	public static String random_hash( int length )
+	public static String randomHash( int length )
 	{
 		return hash( System.currentTimeMillis() * Math.random() + "" ).substring( 0, length );
 	}

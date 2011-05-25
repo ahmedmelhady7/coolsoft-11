@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.Date;
 
+import com.google.gson.JsonObject;
+
 import play.mvc.Controller;
 import models.User;
 import notifiers.Mail;
@@ -62,13 +64,11 @@ public class Accounts extends Controller{
 			int communityContributionCounter, Date dateofBirth, String country,
 			String profession)
 	{
-		
-		//String hashedPassword =Application.hash(password);
 		User user = new User(email,username,password , firstName, lastName,securityQuestion, answer, 0, dateofBirth, country, profession);
 		user.state = "w";
-		Mail.activation(user);
+		user.activationKey = Application.randomHash(10);
+		Mail.activation(user,user.activationKey);
 		user._save();
-		
 		render(email,username);
 	}
 	
@@ -81,7 +81,7 @@ public class Accounts extends Controller{
 	 * @story C1S10
 	 * 
 	 * @params userId 
-	 * 				long Id of the user that his account ll be activated
+	 * 				long Id of the user that his account will be activated
 	 * 
 	 * 
 	 */
@@ -94,6 +94,50 @@ public class Accounts extends Controller{
 		user.state = "a";
 		user._save();
 		render(user.state);
+	}
+	/**
+	 * checks if the given email already exists 
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9 , C1S10
+	 * 
+	 * @param email
+	 * 				String email , the email to check 
+	 * 
+	 * 
+	 * */
+	public static boolean checkEmail(String email)
+	{
+		User existingUser = User.find( "byEmail" + email ).first();
+		return (existingUser!=null);
+	}
+	/**
+	 * checks if the given username already exists 
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9 , C1S10
+	 * 
+	 * @param email
+	 * 				String email , the email to check 
+	 * 
+	 * 
+	 * */
+	public static void checkUsername(String username)
+	{
+		
+		/*User existingUser = User.find( "username like '" + username ).first();
+		if( existingUser != null )
+		{
+			flash.error( "User already exists!" + "\t" + "Please choose another username " );
+		}*/
+		JsonObject json = new JsonObject();
+		User existingUser = User.find( "ByUsername" + username ).first();
+		json.addProperty("existingUser", (existingUser!=null));
+		renderJSON(json.toString());
+		
+			
 	}
 
 }
