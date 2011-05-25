@@ -16,14 +16,14 @@
         <tr><td><font size ="3" color ="black">
 			#{if request.type==0}
           
-    	User ${request.requester.username} Wants to start relationship "${request.name}" between entities ${request.sourceEntity.name} and ${request.destinationEntity.name}</font></td><td>
+    	User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to start relationship "${request.name}" between entities   <a href="@{MainEntitys.viewEntity(request.sourceEntity.id)}"> ${request.sourceEntity.name}</a> and  <a href="@{MainEntitys.viewEntity(request.destinationEntity.id)}"> ${request.destinationEntity.name}</a> </font></td><td>
             
 			#{/if}
 			#{else}
-           User ${request.requester.username} Wants to start relationship ${request.name} between topics ${request.sourceTopic.title} and ${request.destinationTopic.title}
+    	User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to start relationship "${request.name}" between topics   <a href="@{Topics.show(request.sourceTopic.id)}"> ${request.sourceTopic.title}</a> and  <a href="@{Topics.show(request.destinationTopic.id)}"> ${request.destinationTopic.title}</a> </font></td><td>
 			#{/else}
       <input type = "button" value = "Accept" onclick="javascript: respond(1,${request.id},${request.type},0,0)">
-			<input type = "button" value = "Reject" onclick="javascript: respond(0,${request.id},${request.type},0,0)">
+    	<input type = "button" value = "Reject" onclick="javascript: respond(0,${request.id},${request.type},0,0)">
         </fieldset>
     </li>
     #{/list}
@@ -37,18 +37,18 @@
 <i><font size ="3" color ="blue">No new Requests</font></i>
 #{/if}
 #{else}
- #{list items:renamingRequests, as:'request1'}
+ #{list items:renamingRequests, as:'request'}
     <li>
-        <fieldset id="request_1_${request1.id}">
+        <fieldset id="request_1_${request.id}">
         <tr><td><font size ="3" color ="black">  
-		#{if request1.type==0}
-    	User ${request1.requester.username} Wants to rename relationship ${request1.entityRelationship.name} to ${request1.newName}</font></td><td>
+		#{if request.type==0}
+    User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to rename relationship " ${request.entityRelationship.name}" between entities <a href="@{MainEntitys.viewEntity(request.entityRelationship.source.id)}"> ${request.entityRelationship.source.name}</a> and  <a href="@{MainEntitys.viewEntity(request.entityRelationship.destination.id)}"> ${request.entityRelationship.destination.name}</a> to ${request.newName}</font></td><td>
             #{/if}
 			#{else}
-    	User ${request1.requester.username} Wants to rename relationship ${request1.topicRelationship.name} to ${request1.newName}</font></td><td>
+    	  User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to rename relationship " ${request.topicRelationship.name} " between topics <a href="@{Topics.show(request.topicRelationship.source.id)}"> ${request.topicRelationship.source.title}</a> and  <a href="@{Topics.show(request.topicRelationship.destination.id)}"> ${request.topicRelationship.destination.title}</a> to ${request.newName}</font></td><td>
 			#{/else}        
-	      <input type = "button" value = "Accept" onclick="javascript: respond(1,${request1.id},${request1.type},1,1)">
-			<input type = "button" value = "Reject" onclick="javascript: respond(0,${request1.id},${request1.type},1,1)">
+	      <input type = "button" value = "Accept" onclick="javascript: respond(1,${request.id},${request.type},1,1)">
+			<input type = "button" value = "Reject" onclick="javascript: respond(0,${request.id},${request.type},1,1)">
         </fieldset>
     </li>
     #{/list}
@@ -68,10 +68,10 @@
         <tr><td><font size ="3" color ="black">  
 		
     	#{if request.type==0}
-      User ${request.requester.username} Wants to end relationship ${request.entityRelationship.name}</font></td><td>
+    User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to end relationship " ${request.entityRelationship.name}" between entities <a href="@{MainEntitys.viewEntity(request.entityRelationship.source.id)}"> ${request.entityRelationship.source.name}</a> and  <a href="@{MainEntitys.viewEntity(request.entityRelationship.destination.id)}"> ${request.entityRelationship.destination.name}</a> </font></td><td>
             #{/if}
 			#{else}
-     User ${request.requester.username} Wants to end relationship ${request.topicRelationship.name}</font></td><td>
+    	  User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to end relationship " ${request.topicRelationship.name} " between topics <a href="@{Topics.show(request.topicRelationship.source.id)}"> ${request.topicRelationship.source.title}</a> and  <a href="@{Topics.show(request.topicRelationship.destination.id)}"> ${request.topicRelationship.destination.title}</a> </font></td><td>
 			#{/else}        
 	      <input type = "button" value = "Accept" onclick="javascript: respond(1,${request.id},${request.type},1,2)">
 			<input type = "button" value = "Reject" onclick="javascript: respond(0,${request.id},${request.type},1,2)">
@@ -85,8 +85,9 @@ function respond(stat, id,type,i,c){
 		$.post('@{respondToRequests()}',{status:stat,id:id,type:type,whichList:i}, function()
 			 {
 			// alert("Accepted");
-			$('#request_'+c+'_'+id).html('<i>Request has been accepted<\i>');
-			});
+			//$('#request_'+c+'_'+id).html('<i>Request has been accepted<\i>');
+		window.location.reload();});
+			
 	}
 	else {
 		$.post('@{respondToRequests()}', {
@@ -97,6 +98,7 @@ function respond(stat, id,type,i,c){
 			$('#request_'+c+'_'+id).html('<i>Request has been rejected<\i>');
 			});	
 	}
+	
 }
 
 
