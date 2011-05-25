@@ -366,10 +366,10 @@ public class Organization extends CoolModel {
 		}
 		case 3: {
 			for (int i = 0; i < orgs.size(); i++) {
-				if (!(((Organization) orgs.get(i)).privacyLevel == 0 && Users
+				if ((((Organization) orgs.get(i)).privacyLevel == 0 && !Users
 						.getEnrolledUsers((Organization) orgs.get(i)).contains(
 								Security.getConnected()))
-						|| !Security.getConnected().isAdmin) {
+						&& !Security.getConnected().isAdmin) {
 					orgs.remove(i);
 				}
 			}
@@ -388,10 +388,10 @@ public class Organization extends CoolModel {
 				if (((Organization) orgs.get(i)).privacyLevel == 1) {
 					orgs.remove(i);
 				} else {
-					if (!(((Organization) orgs.get(i)).privacyLevel == 0 && Users
+					if ((((Organization) orgs.get(i)).privacyLevel == 0 && !Users
 							.getEnrolledUsers((Organization) orgs.get(i))
 							.contains(Security.getConnected()))
-							|| !Security.getConnected().isAdmin) {
+							&& !Security.getConnected().isAdmin) {
 						orgs.remove(i);
 					}
 				}
@@ -403,10 +403,10 @@ public class Organization extends CoolModel {
 				if (((Organization) orgs.get(i)).privacyLevel == 2) {
 					orgs.remove(i);
 				} else {
-					if (!(((Organization) orgs.get(i)).privacyLevel == 0 && Users
+					if ((((Organization) orgs.get(i)).privacyLevel == 0 && !Users
 							.getEnrolledUsers((Organization) orgs.get(i))
 							.contains(Security.getConnected()))
-							|| !Security.getConnected().isAdmin) {
+							&& !Security.getConnected().isAdmin) {
 						orgs.remove(i);
 					}
 				}
@@ -414,6 +414,14 @@ public class Organization extends CoolModel {
 			break;
 		}
 		default: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if ((((Organization) orgs.get(i)).privacyLevel == 0 && !Users
+						.getEnrolledUsers((Organization) orgs.get(i)).contains(
+								Security.getConnected()))
+						&& !Security.getConnected().isAdmin) {
+					orgs.remove(i);
+				}
+			}
 			break;
 		}
 		}
