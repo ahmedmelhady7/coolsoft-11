@@ -213,13 +213,12 @@ public class Mail extends Mailer {
 	 *            :User the user
 	 * 
 	 */
-	public static void activation(User user) {
+	public static void activation(User user,String ActivationKey) {
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Welcome to CoolSoft, activate your account ");
-		String url = "http://localhost:9008/Accounts/activate?userId="
-				+ user.id;
-		send(user, url);
+		String url = "http://localhost:9008";
+		send(user, ActivationKey,url);
 
 	}
 
