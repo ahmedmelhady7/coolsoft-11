@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.mail.search.SearchTerm;
+import javax.swing.text.DateFormatter;
 
 import com.sun.mail.handlers.text_html;
 import com.sun.org.apache.bcel.internal.generic.NEW;
@@ -28,6 +30,7 @@ import models.Tag;
 import models.Topic;
 import models.User;
 
+import play.data.binding.types.DateBinder;
 import play.db.jpa.Model;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -49,8 +52,8 @@ public class Search extends Controller {
 	 * 
 	 * @author M Ghanem
 	 * 
-	 * @story C4S02 :: Advanced Search; list of results that will be displayed
-	 *        in the html page searchResult.
+	 *         list of results that will be displayed in the html page
+	 *         searchResult.
 	 * 
 	 */
 	public static List<Model> listOfResults = new ArrayList<Model>();
@@ -72,7 +75,6 @@ public class Search extends Controller {
 	 * 
 	 */
 	public static void advancedSearch() {
-		System.out.println("in advanced search");
 		User user = Security.getConnected();
 		render(user);
 	}
@@ -126,7 +128,8 @@ public class Search extends Controller {
 					entitiesFound, topicsFound, plansFound, itemsFound, user);
 		}
 	}
-
+	
+	
 	/**
 	 * 
 	 * @author M Ghanem
@@ -210,810 +213,109 @@ public class Search extends Controller {
 	 *            all the result initialized exactly in this date.
 	 * 
 	 */
-
 	public static void advSearch(String wKs, String wKi, String eK, String oT,
 			String rOfS, String dateB, String dateA, String dateE) {
-
+		// Initialize and empty the list of search result.
 		listOfResults = new ArrayList<Model>();
-
+		// Get the Organizations according to the user request. 
 		List<Organization> orgs = Organization.findAll();
-
-		// remove unwanted Organization type(s)
-		int searchIn = 0;
-		String[] str = oT.split(",");
-		if (!Boolean.parseBoolean(str[0])) {
-			if (Boolean.parseBoolean(str[1])) {
-				if (Boolean.parseBoolean(str[2])) {
-					searchIn = 4; // public & private
-				} else {
-					if (Boolean.parseBoolean(str[3])) {
-						searchIn = 5; // public & secrete
-					} else {
-						searchIn = 1; // public
-					}
-				}
-			} else {
-				if (Boolean.parseBoolean(str[2])) {
-					if (Boolean.parseBoolean(str[3])) {
-						searchIn = 6; // private & secrete
-					} else {
-						searchIn = 2; // private
-					}
-				} else {
-					searchIn = 3; // secrete
-				}
+		Organization.findByType(orgs, oT);
+		if(orgs==null)
+			return;
+		// Search in the Models user needs.
+		String [] showROf = rOfS.split(",");
+		// Formulating the search query of the user.
+		boolean isExact = false;
+		String[] keyWords;
+		String[] keyWordsIn;
+		if (eK.length() > 1) {
+			String[] temp = eK.substring(0, eK.length() - 1).split(" ");
+			wKs = "";
+			wKi = "";
+			for (int i = 0; i < temp.length; i++) {
+				wKs += "2," + temp[i] + ",";
+				wKi += eK.substring(eK.length() - 1, eK.length()) + ",";
 			}
+			isExact = true;
 		}
-
-		switch (searchIn) {
-		case 1: {
-			for (int i = 0; i < orgs.size(); i++) {
-				if (((Organization) orgs.get(i)).privacyLevel != 2) {
-					orgs.remove(i);
-				}
-			}
-			break;
-		}
-		case 2: {
-			for (int i = 0; i < orgs.size(); i++) {
-				if (((Organization) orgs.get(i)).privacyLevel != 1) {
-					orgs.remove(i);
-				}
-			}
-			break;
-		}
-		case 3: {
-			for (int i = 0; i < orgs.size(); i++) {
-				if (!(((Organization) orgs.get(i)).privacyLevel == 0 && Users
-						.getEnrolledUsers((Organization) orgs.get(i)).contains(
-								Security.getConnected()))
-						|| !Security.getConnected().isAdmin) {
-					orgs.remove(i);
-				}
-			}
-			break;
-		}
-		case 4: {
-			for (int i = 0; i < orgs.size(); i++) {
-				if (((Organization) orgs.get(i)).privacyLevel == 0) {
-					orgs.remove(i);
-				}
-			}
-			break;
-		}
-		case 5: {
-			for (int i = 0; i < orgs.size(); i++) {
-				if (((Organization) orgs.get(i)).privacyLevel == 1) {
-					orgs.remove(i);
-				} else {
-					if (!(((Organization) orgs.get(i)).privacyLevel == 0 && Users
-							.getEnrolledUsers((Organization) orgs.get(i))
-							.contains(Security.getConnected()))
-							|| !Security.getConnected().isAdmin) {
-						orgs.remove(i);
-					}
-				}
-			}
-			break;
-		}
-		case 6: {
-			for (int i = 0; i < orgs.size(); i++) {
-				if (((Organization) orgs.get(i)).privacyLevel == 2) {
-					orgs.remove(i);
-				} else {
-					if (!(((Organization) orgs.get(i)).privacyLevel == 0 && Users
-							.getEnrolledUsers((Organization) orgs.get(i))
-							.contains(Security.getConnected()))
-							|| !Security.getConnected().isAdmin) {
-						orgs.remove(i);
-					}
-				}
-			}
-			break;
-		}
-		default: {
-			break;
-		}
-		}
-
-		// // .... ////
-
-		str = rOfS.split(",");
-
-		System.out.println("this is wKi" + wKi.getClass() + "###");
-
-		boolean isIn = (wKi.compareTo("") != 0);
-		System.out.println(isIn);
-
-		wKs = "2," + eK.substring(0, eK.length() - 1) + ",2," + wKs;
-		wKi = Integer.parseInt("" + eK.charAt(eK.length() - 1)) + "," + wKi;
-		String[] keyWords = wKs.split(",");
-		String[] keyWordsIn = wKi.split(",", 0);
-
-		System.out.println("+++++++++++++>>>" + keyWords.length + "  "
-				+ keyWordsIn.length);
-		System.out.println(orgs.size());
-		for (int k = 0; k < orgs.size(); k++) {
-			System.out.println(orgs.get(k).name);
-		}
-
-		List<Model> tOrgs = null;
-
-		tOrgs = new ArrayList<Model>();
-		tOrgs.addAll(orgs);
-		if (Boolean.parseBoolean(str[1]) && tOrgs.size() > 0) { // Organizations.....
-			// Or parts
-			for (int i = 0; i < keyWords.length; i += 2) {
-				if (Integer.parseInt(keyWords[i]) == 2) {
-					System.out.println("pooooooooooo");
-					if (keyWords[i + 1].trim().compareTo("") != 0) {
-						System.out.println("1");
-						if (isIn) {
-							System.out.println("2");
-							AdvancedSearch.searchingOrganization(listOfResults,
-									tOrgs, keyWords[i + 1], (i == 0),
-									Integer.parseInt(keyWordsIn[i / 2]), true);
-						} else {
-							System.out.println("3");
-							AdvancedSearch.searchingOrganization(listOfResults,
-									tOrgs, keyWords[i + 1], (i == 0), 0, true);
-						}
-					}
-				}
-			}
-
-			// And parts
-			if (listOfResults.size() == 0) {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 1) {
-						if (keyWords[i + 1].trim() != "") {
-							AdvancedSearch.searchingOrganization(listOfResults,
-									tOrgs, keyWords[i], false,
-									Integer.parseInt(keyWordsIn[i / 2]), true);
-							for (int j = i; j < keyWords.length; j += 2) {
-								if (Integer.parseInt(keyWords[j]) == 1) {
-									if (keyWords[j + 1].trim() != "") {
-										if (isIn)
-											AdvancedSearch
-													.searchingOrganization(
-															listOfResults,
-															tOrgs,
-															keyWords[i],
-															(i == 0),
-															Integer.parseInt(keyWordsIn[i / 2]),
-															true);
-										else
-											AdvancedSearch
-													.searchingOrganization(
-															listOfResults,
-															tOrgs, keyWords[i],
-															(i == 0), 0, true);
-									}
-								}
-							}
-							break;
-						}
-					}
-				}
-			} else {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 1) {
-						if (keyWords[i + 1].trim() != "") {
-							if (isIn)
-								AdvancedSearch.searchingOrganization(
-										listOfResults, tOrgs, keyWords[i],
-										(i == 0),
-										Integer.parseInt(keyWordsIn[i / 2]),
-										true);
-							else
-								AdvancedSearch.searchingOrganization(
-										listOfResults, tOrgs, keyWords[i],
-										(i == 0), 0, true);
-						}
-					}
-				}
-			}
-
-			// Not parts
-			if (listOfResults.size() != 0) {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 3) {
-						if (keyWords[i + 1].trim() != "") {
-							if (isIn)
-								AdvancedSearch.searchingOrganization(
-										listOfResults, tOrgs, keyWords[i],
-										(i == 0),
-										Integer.parseInt(keyWordsIn[i / 2]),
-										true);
-							else
-								AdvancedSearch.searchingOrganization(
-										listOfResults, tOrgs, keyWords[i],
-										(i == 0), 0, true);
-						}
-					}
-				}
-			}
-		}
-
-		if (Boolean.parseBoolean(str[2])) { // Entities
-			tOrgs = new ArrayList<Model>();
-
-			for (int i = 0; i < orgs.size(); i++) {
-				tOrgs.addAll(orgs.get(i).entitiesList);
-			}
-
-			// Or parts
-			for (int i = 0; i < keyWords.length; i += 2) {
-				if (Integer.parseInt(keyWords[i]) == 2) {
-					if (keyWords[i + 1].trim() != "") {
-						if (isIn)
-							AdvancedSearch.searchingMainEntity(listOfResults,
-									tOrgs, keyWords[i + 1], (i == 0),
-									Integer.parseInt(keyWordsIn[i / 2]), true);
-						else
-							AdvancedSearch.searchingMainEntity(listOfResults,
-									tOrgs, keyWords[i + 1], (i == 0), 0, true);
-					}
-				}
-			}
-
-			// And parts
-			if (listOfResults.size() == 0) {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 1) {
-						if (keyWords[i + 1].trim() != "") {
-							AdvancedSearch.searchingMainEntity(listOfResults,
-									tOrgs, keyWords[i], false,
-									Integer.parseInt(keyWordsIn[i / 2]), true);
-							for (int j = i; j < keyWords.length; j += 2) {
-								if (Integer.parseInt(keyWords[j]) == 1) {
-									if (keyWords[j + 1].trim() != "") {
-										if (isIn)
-											AdvancedSearch
-													.searchingMainEntity(
-															listOfResults,
-															tOrgs,
-															keyWords[i],
-															(i == 0),
-															Integer.parseInt(keyWordsIn[i / 2]),
-															true);
-										else
-											AdvancedSearch.searchingMainEntity(
-													listOfResults, tOrgs,
-													keyWords[i], (i == 0), 0,
-													true);
-									}
-								}
-							}
-							break;
-						}
-					}
-				}
-			} else {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 1) {
-						if (keyWords[i + 1].trim() != "") {
-							if (isIn)
-								AdvancedSearch.searchingMainEntity(
-										listOfResults, tOrgs, keyWords[i],
-										(i == 0),
-										Integer.parseInt(keyWordsIn[i / 2]),
-										true);
-							else
-								AdvancedSearch.searchingMainEntity(
-										listOfResults, tOrgs, keyWords[i],
-										(i == 0), 0, true);
-						}
-					}
-				}
-			}
-
-			// Not parts
-			if (listOfResults.size() != 0) {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 3) {
-						if (keyWords[i + 1].trim() != "") {
-							if (isIn)
-								AdvancedSearch.searchingMainEntity(
-										listOfResults, tOrgs, keyWords[i],
-										(i == 0),
-										Integer.parseInt(keyWordsIn[i / 2]),
-										true);
-							else
-								AdvancedSearch.searchingMainEntity(
-										listOfResults, tOrgs, keyWords[i],
-										(i == 0), 0, true);
-						}
-					}
-				}
-			}
-
-		}
-
-		if (Boolean.parseBoolean(str[3])) { // Topic
-			tOrgs = new ArrayList<Model>();
-
-			for (int i = 0; i < orgs.size(); i++) {
-				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++)
-					tOrgs.addAll(orgs.get(i).entitiesList.get(j).topicList);
-			}
-
-			// Or parts
-			for (int i = 0; i < keyWords.length; i += 2) {
-				if (Integer.parseInt(keyWords[i]) == 2) {
-					if (keyWords[i + 1].trim() != "") {
-						if (isIn)
-							AdvancedSearch.searchingTopic(listOfResults, tOrgs,
-									keyWords[i + 1], (i == 0),
-									Integer.parseInt(keyWordsIn[i / 2]), true);
-						else
-							AdvancedSearch.searchingTopic(listOfResults, tOrgs,
-									keyWords[i + 1], (i == 0), 0, true);
-					}
-				}
-			}
-
-			// And parts
-			if (listOfResults.size() == 0) {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 1) {
-						if (keyWords[i + 1].trim() != "") {
-							AdvancedSearch.searchingTopic(listOfResults, tOrgs,
-									keyWords[i], false,
-									Integer.parseInt(keyWordsIn[i / 2]), true);
-							for (int j = i; j < keyWords.length; j += 2) {
-								if (Integer.parseInt(keyWords[j]) == 1) {
-									if (keyWords[j + 1].trim() != "") {
-										if (isIn)
-											AdvancedSearch
-													.searchingTopic(
-															listOfResults,
-															tOrgs,
-															keyWords[i],
-															(i == 0),
-															Integer.parseInt(keyWordsIn[i / 2]),
-															true);
-										else
-											AdvancedSearch.searchingTopic(
-													listOfResults, tOrgs,
-													keyWords[i], (i == 0), 0,
-													true);
-									}
-								}
-							}
-							break;
-						}
-					}
-				}
-			} else {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 1) {
-						if (keyWords[i + 1].trim() != "") {
-							if (isIn)
-								AdvancedSearch.searchingTopic(listOfResults,
-										tOrgs, keyWords[i], (i == 0),
-										Integer.parseInt(keyWordsIn[i / 2]),
-										true);
-							else
-								AdvancedSearch.searchingTopic(listOfResults,
-										tOrgs, keyWords[i], (i == 0), 0, true);
-						}
-					}
-				}
-			}
-
-			// Not parts
-			if (listOfResults.size() != 0) {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 3) {
-						if (keyWords[i + 1].trim() != "") {
-							if (isIn)
-								AdvancedSearch.searchingTopic(listOfResults,
-										tOrgs, keyWords[i], (i == 0),
-										Integer.parseInt(keyWordsIn[i / 2]),
-										true);
-							else
-								AdvancedSearch.searchingTopic(listOfResults,
-										tOrgs, keyWords[i], (i == 0), 0, true);
-						}
-					}
-				}
-			}
-
-		}
-
-		if (Boolean.parseBoolean(str[4])) { // Plan
-			tOrgs = new ArrayList<Model>();
-
-			for (int i = 0; i < orgs.size(); i++) {
-				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++)
-					for (int k = 0; k < orgs.get(i).entitiesList.get(j).topicList
-							.size(); k++)
-						tOrgs.add(orgs.get(i).entitiesList.get(j).topicList
-								.get(k).plan);
-			}
-
-			// Or parts
-			for (int i = 0; i < keyWords.length; i += 2) {
-				if (Integer.parseInt(keyWords[i]) == 2) {
-					if (keyWords[i + 1].trim() != "") {
-						if (isIn)
-							AdvancedSearch.searchingPlan(listOfResults, tOrgs,
-									keyWords[i + 1], (i == 0),
-									Integer.parseInt(keyWordsIn[i / 2]), true);
-						else
-							AdvancedSearch.searchingPlan(listOfResults, tOrgs,
-									keyWords[i + 1], (i == 0), 0, true);
-					}
-				}
-			}
-
-			// And parts
-			if (listOfResults.size() == 0) {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 1) {
-						if (keyWords[i + 1].trim() != "") {
-							AdvancedSearch.searchingPlan(listOfResults, tOrgs,
-									keyWords[i], false,
-									Integer.parseInt(keyWordsIn[i / 2]), true);
-							for (int j = i; j < keyWords.length; j += 2) {
-								if (Integer.parseInt(keyWords[j]) == 1) {
-									if (keyWords[j + 1].trim() != "") {
-										if (isIn)
-											AdvancedSearch
-													.searchingPlan(
-															listOfResults,
-															tOrgs,
-															keyWords[i],
-															(i == 0),
-															Integer.parseInt(keyWordsIn[i / 2]),
-															true);
-										else
-											AdvancedSearch.searchingPlan(
-													listOfResults, tOrgs,
-													keyWords[i], (i == 0), 0,
-													true);
-									}
-								}
-							}
-							break;
-						}
-					}
-				}
-			} else {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 1) {
-						if (keyWords[i + 1].trim() != "") {
-							if (isIn)
-								AdvancedSearch.searchingPlan(listOfResults,
-										tOrgs, keyWords[i], (i == 0),
-										Integer.parseInt(keyWordsIn[i / 2]),
-										true);
-							else
-								AdvancedSearch.searchingPlan(listOfResults,
-										tOrgs, keyWords[i], (i == 0), 0, true);
-						}
-					}
-				}
-			}
-
-			// Not parts
-			if (listOfResults.size() != 0) {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 3) {
-						if (keyWords[i + 1].trim() != "") {
-							if (isIn)
-								AdvancedSearch.searchingPlan(listOfResults,
-										tOrgs, keyWords[i], (i == 0),
-										Integer.parseInt(keyWordsIn[i / 2]),
-										true);
-							else
-								AdvancedSearch.searchingPlan(listOfResults,
-										tOrgs, keyWords[i], (i == 0), 0, true);
-						}
-					}
-				}
-			}
-		}
-
-		if (Boolean.parseBoolean(str[5])) { // Idea
-			tOrgs = new ArrayList<Model>();
-
-			for (int i = 0; i < orgs.size(); i++) {
-				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++)
-					for (int k = 0; k < orgs.get(i).entitiesList.get(j).topicList
-							.size(); k++)
-						tOrgs.addAll(orgs.get(i).entitiesList.get(j).topicList
-								.get(i).ideas);
-			}
-
-			// Or parts
-			for (int i = 0; i < keyWords.length; i += 2) {
-				if (Integer.parseInt(keyWords[i]) == 2) {
-					if (keyWords[i + 1].trim() != "") {
-						if (isIn)
-							AdvancedSearch.searchingIdea(listOfResults, tOrgs,
-									keyWords[i + 1], (i == 0),
-									Integer.parseInt(keyWordsIn[i / 2]), true);
-						else
-							AdvancedSearch.searchingIdea(listOfResults, tOrgs,
-									keyWords[i + 1], (i == 0), 0, true);
-					}
-				}
-			}
-
-			// And parts
-			if (listOfResults.size() == 0) {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 1) {
-						if (keyWords[i + 1].trim() != "") {
-							AdvancedSearch.searchingIdea(listOfResults, tOrgs,
-									keyWords[i], false,
-									Integer.parseInt(keyWordsIn[i / 2]), true);
-							for (int j = i; j < keyWords.length; j += 2) {
-								if (Integer.parseInt(keyWords[j]) == 1) {
-									if (keyWords[j + 1].trim() != "") {
-										if (isIn)
-											AdvancedSearch
-													.searchingIdea(
-															listOfResults,
-															tOrgs,
-															keyWords[i],
-															(i == 0),
-															Integer.parseInt(keyWordsIn[i / 2]),
-															true);
-										else
-											AdvancedSearch.searchingIdea(
-													listOfResults, tOrgs,
-													keyWords[i], (i == 0), 0,
-													true);
-									}
-								}
-							}
-							break;
-						}
-					}
-				}
-			} else {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 1) {
-						if (keyWords[i + 1].trim() != "") {
-							if (isIn)
-								AdvancedSearch.searchingIdea(listOfResults,
-										tOrgs, keyWords[i], (i == 0),
-										Integer.parseInt(keyWordsIn[i / 2]),
-										true);
-							else
-								AdvancedSearch.searchingIdea(listOfResults,
-										tOrgs, keyWords[i], (i == 0), 0, true);
-						}
-					}
-				}
-			}
-
-			// Not parts
-			if (listOfResults.size() != 0) {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 3) {
-						if (keyWords[i + 1].trim() != "") {
-							if (isIn)
-								AdvancedSearch.searchingIdea(listOfResults,
-										tOrgs, keyWords[i], (i == 0),
-										Integer.parseInt(keyWordsIn[i / 2]),
-										true);
-							else
-								AdvancedSearch.searchingIdea(listOfResults,
-										tOrgs, keyWords[i], (i == 0), 0, true);
-						}
-					}
-				}
-			}
-		}
-
-		if (Boolean.parseBoolean(str[6])) { // Item
-			tOrgs = new ArrayList<Model>();
-
-			for (int i = 0; i < orgs.size(); i++) {
-				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++)
-					for (int k = 0; k < orgs.get(i).entitiesList.get(j).topicList
-							.size(); k++)
-						tOrgs.addAll(orgs.get(i).entitiesList.get(j).topicList
-								.get(k).plan.items);
-			}
-
-			// Or parts
-			for (int i = 0; i < keyWords.length; i += 2) {
-				if (Integer.parseInt(keyWords[i]) == 2) {
-					if (keyWords[i + 1].trim() != "") {
-						if (isIn)
-							AdvancedSearch.searchingItem(listOfResults, tOrgs,
-									keyWords[i + 1], (i == 0),
-									Integer.parseInt(keyWordsIn[i / 2]), true);
-						else
-							AdvancedSearch.searchingItem(listOfResults, tOrgs,
-									keyWords[i + 1], (i == 0), 0, true);
-					}
-				}
-			}
-
-			// And parts
-			if (listOfResults.size() == 0) {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 1) {
-						if (keyWords[i + 1].trim() != "") {
-							AdvancedSearch.searchingItem(listOfResults, tOrgs,
-									keyWords[i], false,
-									Integer.parseInt(keyWordsIn[i / 2]), true);
-							for (int j = i; j < keyWords.length; j += 2) {
-								if (Integer.parseInt(keyWords[j]) == 1) {
-									if (keyWords[j + 1].trim() != "") {
-										if (isIn)
-											AdvancedSearch
-													.searchingItem(
-															listOfResults,
-															tOrgs,
-															keyWords[i],
-															(i == 0),
-															Integer.parseInt(keyWordsIn[i / 2]),
-															true);
-										else
-											AdvancedSearch.searchingItem(
-													listOfResults, tOrgs,
-													keyWords[i], (i == 0), 0,
-													true);
-									}
-								}
-							}
-							break;
-						}
-					}
-				}
-			} else {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 1) {
-						if (keyWords[i + 1].trim() != "") {
-							if (isIn)
-								AdvancedSearch.searchingItem(listOfResults,
-										tOrgs, keyWords[i], (i == 0),
-										Integer.parseInt(keyWordsIn[i / 2]),
-										true);
-							else
-								AdvancedSearch.searchingItem(listOfResults,
-										tOrgs, keyWords[i], (i == 0), 0, true);
-						}
-					}
-				}
-			}
-
-			// Not parts
-			if (listOfResults.size() != 0) {
-				for (int i = 0; i < keyWords.length; i += 2) {
-					if (Integer.parseInt(keyWords[i]) == 3) {
-						if (keyWords[i + 1].trim() != "") {
-							if (isIn)
-								AdvancedSearch.searchingItem(listOfResults,
-										tOrgs, keyWords[i], (i == 0),
-										Integer.parseInt(keyWordsIn[i / 2]),
-										true);
-							else
-								AdvancedSearch.searchingItem(listOfResults,
-										tOrgs, keyWords[i], (i == 0), 0, true);
-						}
-					}
-				}
-			}
-		}
-		/*
-		 * constrainTime(before, after, exact);
-		 */
-
-	}
-
-	/**
-	 * 
-	 * @author M Ghanem
-	 * 
-	 * @story C4S02 Advanced Search Result; it removes any of the result that
-	 *        violates the constrains of time before rendering it.
-	 * 
-	 * @param before
-	 *            :: "Date"; where the user needs all the result initialized
-	 *            before this date.
-	 * 
-	 * @param after
-	 *            :: "Date"; where the user needs all the result initialized
-	 *            after this date.
-	 * 
-	 * @param exact
-	 *            :: "Date"; where the user needs all the result initialized in
-	 *            this date.
-	 * 
-	 */
-
-	public static void constrainTime(Date before, Date after, Date exact) {
-
-		if (exact.compareTo(new Date(2010, 0, 0)) == 0) {
-			if (exact.compareTo(after) != 0 || exact.compareTo(before) != 0) {
-				if (before.before(after)) {
-					if (after.compareTo(new Date(2010, 0, 0)) != 0) {
-						for (int i = listOfResults.size() - 1; i > 0; i--) {
-							if (listOfResults.get(i) instanceof Organization) {
-								if (after.before(((Organization) listOfResults
-										.get(i)).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults.get(i) instanceof MainEntity) {
-								if (after.before(((MainEntity) listOfResults
-										.get(i)).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults.get(i) instanceof Topic) {
-								if (after
-										.before(((Topic) listOfResults.get(i)).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults.get(i) instanceof Plan) {
-								if (after
-										.before(((Plan) listOfResults.get(i)).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults.get(i) instanceof Idea) {
-								if (after
-										.before(((Idea) listOfResults.get(i)).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults.get(i) instanceof Item) {
-								if (after
-										.before(((Item) listOfResults.get(i)).startDate)) {
-									listOfResults.remove(i);
-								}
-							}
-						}
-					}
-					if (before.compareTo(new Date(2010, 0, 0)) != 0) {
-						for (int i = listOfResults.size() - 1; i > 0; i--) {
-							if (listOfResults.get(i) instanceof Organization) {
-								if (before.after(((Organization) listOfResults
-										.get(i)).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults.get(i) instanceof MainEntity) {
-								if (before.after(((MainEntity) listOfResults
-										.get(i)).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults.get(i) instanceof Topic) {
-								if (before
-										.after(((Topic) listOfResults.get(i)).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults.get(i) instanceof Plan) {
-								if (before
-										.after(((Plan) listOfResults.get(i)).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults.get(i) instanceof Idea) {
-								if (before
-										.after(((Idea) listOfResults.get(i)).intializedIn)) {
-									listOfResults.remove(i);
-								}
-							} else if (listOfResults.get(i) instanceof Item) {
-								if (before
-										.after(((Item) listOfResults.get(i)).endDate)) {
-									listOfResults.remove(i);
-								}
-							}
-						}
-					}
-				}
+		keyWords = wKs.split(",", 0);
+		if (wKi.compareTo("") == 0) {
+			keyWordsIn = new String[keyWords.length / 2];
+			for (int i = 0; i < keyWordsIn.length; i++) {
+				keyWordsIn[i] = "0";
 			}
 		} else {
-			constrainTime(
-					new Date(exact.getYear(), exact.getMonth(),
-							exact.getDay() - 1), new Date(exact.getYear(),
-							exact.getMonth(), exact.getDay() + 1), new Date(
-							2010, 0, 0));
+			keyWordsIn = wKi.split(",", 0);
 		}
+		// Container for the current search-in Models.
+		List<Model> currentModels = null;
+		// Organizations.....		
+		if (Boolean.parseBoolean(showROf[1])) {
+			currentModels = new ArrayList<Model>();
+			currentModels.addAll(orgs);
+			AdvancedSearch.solvingOrganizationQuery(keyWords,keyWordsIn,isExact,listOfResults,currentModels);
+		}
+		// MainEntities.....
+		if (Boolean.parseBoolean(showROf[2])) { 
+			currentModels = new ArrayList<Model>();
+			for (int i = 0; i < orgs.size(); i++) {
+				currentModels.addAll(orgs.get(i).entitiesList);
+			}
+			AdvancedSearch.solvingEntityQuery(keyWords,keyWordsIn,isExact,listOfResults,currentModels);
+		}
+		// Topics.....
+		if (Boolean.parseBoolean(showROf[3])) { 
+			currentModels = new ArrayList<Model>();
+			for (int i = 0; i < orgs.size(); i++) {
+				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++)
+					currentModels.addAll(orgs.get(i).entitiesList.get(j).topicList);
+			}			
+			AdvancedSearch.solvingTopicQuery(keyWords,keyWordsIn,isExact,listOfResults,currentModels);
+		}
+		// Plans.....
+		if (Boolean.parseBoolean(showROf[4])) { 
+			currentModels = new ArrayList<Model>();
+
+			for (int i = 0; i < orgs.size(); i++) {
+				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++)
+					for (int k = 0; k < orgs.get(i).entitiesList.get(j).topicList
+							.size(); k++)
+						currentModels.add(orgs.get(i).entitiesList.get(j).topicList
+								.get(k).plan);
+			}
+			AdvancedSearch.solvingPlanQuery(keyWords,keyWordsIn,isExact,listOfResults,currentModels);	
+		}
+		// Idea.....
+		if (Boolean.parseBoolean(showROf[5])) { 
+			currentModels = new ArrayList<Model>();
+			for (int i = 0; i < orgs.size(); i++) {
+				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++)
+					for (int k = 0; k < orgs.get(i).entitiesList.get(j).topicList
+							.size(); k++)
+						currentModels.addAll(orgs.get(i).entitiesList.get(j).topicList
+								.get(i).ideas);
+			}
+			AdvancedSearch.solvingIdeaQuery(keyWords,keyWordsIn,isExact,listOfResults,currentModels);
+		}
+		// Item.....
+		if (Boolean.parseBoolean(showROf[5])) { 
+			currentModels = new ArrayList<Model>();
+
+			for (int i = 0; i < orgs.size(); i++) {
+				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++) {
+					for (int k = 0; k < orgs.get(i).entitiesList.get(j).topicList
+							.size(); k++) {
+						if (orgs.get(i).entitiesList.get(j).topicList.get(j).plan != null) {
+							currentModels.addAll(orgs.get(i).entitiesList.get(j).topicList
+									.get(k).plan.items);
+						}
+					}
+				}
+			}
+			AdvancedSearch.solvingItemQuery(keyWords,keyWordsIn,isExact,listOfResults,currentModels);			
+		}
+		// Applying Date constrains by User.
+		AdvancedSearch.constrainTime(dateA,dateB,dateE,listOfResults);
 	}
 
 	/**
@@ -1154,7 +456,7 @@ public class Search extends Controller {
 					}
 				}
 				if (!Users.isPermitted(user, "view", listOfEntities.get(i).id,
-						"entity")) {
+						"Entity")) {
 					listOfEnts.remove(listOfEntities.get(i));
 				}
 			}
@@ -1535,6 +837,7 @@ public class Search extends Controller {
 			in.close();
 			zOut.flush();
 			zOut.close();
+			System.out.println("File written");
 			return file;
 		} catch (IOException e) {
 			return null;

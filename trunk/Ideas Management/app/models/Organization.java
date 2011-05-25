@@ -13,7 +13,9 @@ import javax.persistence.OneToMany;
 
 import controllers.CRUD;
 import controllers.Roles;
+import controllers.Security;
 import controllers.UserRoleInOrganizations;
+import controllers.Users;
 
 import play.data.validation.*;
 import play.db.jpa.Model;
@@ -312,5 +314,108 @@ public class Organization extends CoolModel {
 			}
 		}
 		return documents;
+	}
+
+	/**
+	 * @author Mohamed Ghanem
+	 * @param orgs
+	 * @param oT
+	 */
+	public static void findByType(List<Organization> orgs, String oT) {
+		int searchIn = 0;
+		String[] showROf = oT.split(",");
+		if (!Boolean.parseBoolean(showROf[0])) {
+			if (Boolean.parseBoolean(showROf[1])) {
+				if (Boolean.parseBoolean(showROf[2])) {
+					searchIn = 4; // public & private
+				} else {
+					if (Boolean.parseBoolean(showROf[3])) {
+						searchIn = 5; // public & secrete
+					} else {
+						searchIn = 1; // public
+					}
+				}
+			} else {
+				if (Boolean.parseBoolean(showROf[2])) {
+					if (Boolean.parseBoolean(showROf[3])) {
+						searchIn = 6; // private & secrete
+					} else {
+						searchIn = 2; // private
+					}
+				} else {
+					searchIn = 3; // secrete
+				}
+			}
+		}
+		switch (searchIn) {
+		case 1: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel != 2) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		case 2: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel != 1) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		case 3: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (!(((Organization) orgs.get(i)).privacyLevel == 0 && Users
+						.getEnrolledUsers((Organization) orgs.get(i)).contains(
+								Security.getConnected()))
+						|| !Security.getConnected().isAdmin) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		case 4: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel == 0) {
+					orgs.remove(i);
+				}
+			}
+			break;
+		}
+		case 5: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel == 1) {
+					orgs.remove(i);
+				} else {
+					if (!(((Organization) orgs.get(i)).privacyLevel == 0 && Users
+							.getEnrolledUsers((Organization) orgs.get(i))
+							.contains(Security.getConnected()))
+							|| !Security.getConnected().isAdmin) {
+						orgs.remove(i);
+					}
+				}
+			}
+			break;
+		}
+		case 6: {
+			for (int i = 0; i < orgs.size(); i++) {
+				if (((Organization) orgs.get(i)).privacyLevel == 2) {
+					orgs.remove(i);
+				} else {
+					if (!(((Organization) orgs.get(i)).privacyLevel == 0 && Users
+							.getEnrolledUsers((Organization) orgs.get(i))
+							.contains(Security.getConnected()))
+							|| !Security.getConnected().isAdmin) {
+						orgs.remove(i);
+					}
+				}
+			}
+			break;
+		}
+		default: {
+			break;
+		}
+		}
 	}
 }
