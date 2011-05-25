@@ -21,6 +21,8 @@ import java.lang.*;
 import java.lang.reflect.*;
 import java.util.*;
 
+import org.bouncycastle.asn1.x509.UserNotice;
+
 import com.sun.mail.iap.Response;
 
 //import controllers.CoolCRUD.ObjectType;
@@ -599,9 +601,9 @@ public class Topics extends CRUD {
 		((Topic) object).openToEdit = true;
 		object._save();
 		temporaryTopic = (Topic) object;
-	//	String message2 = temporaryTopic.creator.username
-		//		+ " has Created the topic " + temporaryTopic.title + " in "
-			//	+ temporaryTopic.entity;
+		String message2 = temporaryTopic.creator.username
+				+ " has Created the topic " + temporaryTopic.title + " in "
+				+ temporaryTopic.entity;
 		if (temporaryTopic.followers != null) {
 			for (int i = 0; i < temporaryTopic.followers.size(); i++)
 				Notifications.sendNotification(temporaryTopic.followers.get(i)
@@ -618,7 +620,7 @@ public class Topics extends CRUD {
 							+ "' has been added in entity '"
 							+ temporaryTopic.entity.name + "'");
 		
-		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username +  "</a>"
+		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
         + " created the topic " +"<a href=\"http://localhost:9008/topics/show?topicId=" + temporaryTopic.id +"\">" + temporaryTopic.title + "</a>"
         + " from entity " + "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + topicEntity.id +"\">" + topicEntity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, topicEntity,
@@ -635,9 +637,11 @@ public class Topics extends CRUD {
 			// temporaryTopic.taskStory.id );
 		}
 		if (params.get("_saveAndAddAnother") != null) {
-			render(request.controller.replace(".", "/") + "/blank.html", entityId, user);
+			render(request.controller.replace(".", "/") + "/blank.html",
+					message2, entityId, user);
 		}
-		redirect(request.controller + ".view", ((Topic) object).getId());
+		redirect(request.controller + ".view", ((Topic) object).getId(),
+				message2);
 	}
 
 	/**
@@ -664,22 +668,12 @@ public class Topics extends CRUD {
 		User user = Security.getConnected();
 		// handle permissions, depending on the privacyLevel the user will be
 		// directed to a different page
-		
-		int permission =1;
-		if (!Users.isPermitted(user, "post topics", entity.id, "entity"))
-			permission = 0;
-		
-		if(permission == 1)
-		{
+
 		try {
 			render(type, entityId, user, entity);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/blank.html", type, entityId, user, entity);
-		}
-		}
-		else{
-			BannedUsers.unauthorized();
 		}
 
 	}
@@ -736,6 +730,17 @@ public class Topics extends CRUD {
 		boolean alreadyReportedTopic = false;
 		boolean canRequestRelationship = false;
 		boolean topicNotClosed = targetTopic.openToEdit;
+		boolean notAuthor = !targetTopic.creator.username.equals(user.username);
+		boolean joined = false;
+		List<User> membersInTopic = searchByTopic(targetTopic.id);
+		for (int i = 0; i < membersInTopic.size() ; i++) {
+			if(user.username.equals(membersInTopic.get(i).username)){
+				joined = true;
+			}
+			else
+				joined = false;
+		}
+		
 		temporaryTopic.incrmentViewed();
 		temporaryTopic.save();
 
@@ -769,8 +774,14 @@ public class Topics extends CRUD {
 			}
 		}
 		for (int i = 0; i < reporters.size(); i++) {
+			System.out.println(reporters.get(i).toString());
+			System.out.println("gowa el loop");
+			System.out.println("Ana meen ?! " + reporter.toString());
+			System.out.println(alreadyReportedTopic);
 			if (reporter.toString().equals(reporters.get(i).toString())) {
 				alreadyReportedTopic = true;
+				System.out
+						.println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
 				break;
 			} else
 				alreadyReportedTopic = false;
@@ -867,29 +878,7 @@ public class Topics extends CRUD {
 						topicId, "Topic")) {
 			canRequestRelationship = true;
 		}
-		
-		boolean joined = false;
-		boolean banned = true;
-		
-		
-		if(temporaryTopic.hidden == true)
-			{
-			System.out.println("Hider " + temporaryTopic.hider.id + " , connected User " + user.id);
-			System.out.println("if");
-			if(temporaryTopic.hider.id.compareTo(user.id) ==0){
-				banned = false;
-				System.out.println("if if");
-			}
-			}
-		else{
-			System.out.println("else if");
-			if(temporaryTopic.canView(user)){
-				System.out.println("else if");
-				banned=false;
-			}
-		}
-			
-		if(banned == false){	
+
 		try {
 
 			render(type, object, tags, joined,/* canUse, */alreadyReportedTopic,
@@ -906,12 +895,7 @@ public class Topics extends CRUD {
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
 					canCreateRelationship, user);
-		}}
-		else{
-			BannedUsers.unauthorized();
 		}
-		
-		
 	}
 
 	/**
@@ -1136,8 +1120,7 @@ public class Topics extends CRUD {
 						topicIdLong, "Topic")) {
 			canRequestRelationship = true;
 		}
-        
-		if(permission ==1){
+
 		try {
 			render(type, object, tags, creator, followers, ideas, comments,
 					entity, plan, openToEdit, privacyLevel, deleteMessage,
@@ -1154,9 +1137,6 @@ public class Topics extends CRUD {
 					numberOfIdeas, canClose, canMerge, canPlan, check,
 					canCreateRelationship, follower, canNotPost, pending,
 					canRestrict, canRequestRelationship, organization);
-		}}
-		else{
-			BannedUsers.unauthorized();
 		}
 	}
 
@@ -1279,7 +1259,7 @@ public class Topics extends CRUD {
 		}
 
 		object._save();
-		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username +  "</a>"
+		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
         + " edited the topic " +"<a href=\"http://localhost:9008/topics/show?topicId=" + temporaryTopic.id +"\">" + temporaryTopic.title + "</a>"
         + " in entity " + "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + entity.id +"\">" + entity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, entity,
@@ -1428,7 +1408,7 @@ public class Topics extends CRUD {
 		
 		UserRoleInOrganization.deleteEntityOrTopic(temporaryTopic.id, "topic");
 		
-		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username +  "</a>"
+		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
         + " deleted the topic " +"<a href=\"http://localhost:9008/topics/show?topicId=" + temporaryTopic.id +"\">" + temporaryTopic.title + "</a>"
         + " from entity " + "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + entity.id +"\">" + entity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, entity,
@@ -1579,7 +1559,7 @@ public class Topics extends CRUD {
 			Notifications.sendNotification(temporaryTopic.creator.getId(),
 					entity.getId(), "entity", "Your Topic was hidden because " + justification);
 			
-			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username +  "</a>"
+			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
 	        + " hid the topic " +"<a href=\"http://localhost:9008/topics/show?topicId=" + temporaryTopic.id +"\">" + temporaryTopic.title + "</a>"
 	        + " from entity " + "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + entity.id +"\">" + entity.name + "</a>";
 			Log.addUserLog(logDescription, temporaryTopic, user, entity,
@@ -1626,7 +1606,7 @@ public class Topics extends CRUD {
 				Notifications.sendNotification(temporaryTopic.followers.get(i)
 						.getId(), entity.getId(), "entity", message);
 
-			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username +  "</a>"
+			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
 	        + " unhid the topic " +"<a href=\"http://localhost:9008/topics/show?topicId=" + temporaryTopic.id +"\">" + temporaryTopic.title + "</a>"
 	        + " from entity " + "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + entity.id +"\">" + entity.name + "</a>";
 			Log.addUserLog(logDescription, temporaryTopic, user, entity,
