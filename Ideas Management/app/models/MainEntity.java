@@ -141,6 +141,14 @@ public class MainEntity extends CoolModel {
 	@OneToMany(mappedBy = "relatedEntity")
 	public List<Item> relatedItems;
 
+
+	/**
+	 * @auther monica counter to check how many times this topic is viewed to be
+	 *         used in sorting
+	 */
+	public int viewed;
+	
+	
 	/**
 	 * Default constructor for an entity within an organization
 	 * 
@@ -176,6 +184,7 @@ public class MainEntity extends CoolModel {
 		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		this.topicList = new ArrayList<Topic>();
 		this.tagList = new ArrayList<Tag>();
+		this.viewed = 0;
 		int size = org.followers.size();
 		this.createRelationship = createRelationship;
 		for (int i = 0; i < size; i++) {
@@ -265,4 +274,15 @@ public class MainEntity extends CoolModel {
 	public String toString() {
 		return name;
 	}
+	
+
+	/**
+	 * @author monica yousry this method increments the counter viewed
+	 * @return:void
+	 */
+	public void incrmentViewed() {
+		this.viewed++;
+	}
+
+	
 }
