@@ -172,10 +172,15 @@ You have already rated this plan
                     #{list items:entitiesList, as:'ent'}<option value = ${ent.id}>${ent.name}</option>
                     #{/list}
                 </select>
-                <a onclick="javascript: relate_entity(${item.id});" style="cursor:pointer;" /><img src="/public/images/ranktable-tick.png" title="Relate" width="25" height="25"/></a>
+                <a onclick="javascript: relate_entity(${item.id});" style="cursor:pointer;" /><img src="/public/images/ranktable-tick.png" title="Relate" width="27" height="27"/></a>
             </div>
 			#{/else}
             #{/if}
+			#{else}
+			#{if item.isRelatedToEntity() == true} 
+			Related to entity: <a href="@{MainEntitys.viewEntity(item.relatedEntity.id)}">${item.relatedEntity}</a>
+			#{/if}
+			#{/else}            
                 <div id = "pend_${item.id}" hidden = true>
 				Pending volunteer Request &nbsp;&nbsp;&nbsp;
 				<a onclick="cancelReq(${item.id});" style="cursor:pointer;">

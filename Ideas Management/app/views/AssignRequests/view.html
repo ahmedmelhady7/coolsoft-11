@@ -1,21 +1,23 @@
-#{extends 'main.html' /}
+#{extends 'login/index.html' /}
 #{set title: 'View Assignment Requests'/}
+
 #{if assignRequests.size() > 0}<h3>Assignment Requests </h3>
+
 <ul>
     #{list items:assignRequests, as:'assignRequest'}
-    <div id = "assignRequest_${assignRequest.id}"><li>
-       <fieldset>
+    <li>
+       <fieldset id = "assignRequest_${assignRequest.id}">
             <legend>
-            <h2>
+			<h2>
              <a href="@{Plans.viewAsList(assignRequest.source.plan.id)}">   ${assignRequest.source.plan.title}</a>
             </h2>
             </legend>
             Content:  ${assignRequest.content}
             <br/>
-			<input type = "button" value = "Accept" onclick="accept_request('${assignRequest.id}')">
-			<input type = "button" value = "Reject" onclick="reject_request('${assignRequest.id}')">
+            <a onclick="javascript: accept_request(${assignRequest.id});" style="cursor:pointer;" /><img src="/public/images/ranktable-tick.png" title="Accept" width="27" height="27"/></a>
+			<a onclick="javascript: reject_request(${assignRequest.id});" style="cursor:pointer;" /><img src="/public/images/Cross.png" title="Reject" width="23" height="20"/></a>
         </fieldset>
-    </li></div>
+    </li>
     #{/list}
 </ul>
 #{/if}
@@ -28,15 +30,12 @@ You have no assignment requests.
 function accept_request(id)
   {
 	$.post('@{accept()}' , {id: id});
-	alert("Task accepted!");
-	$("#assignRequest_" + id).remove();
+	$("#assignRequest_" + id).html('<i>Request has been accepted</i>');
   }
-
 function reject_request(id)
   {
 	$.post( '@{reject()}' , {id: id});
-	alert("Task rejected!");
-	$("#assignRequest_" + id).remove();
+	$("#assignRequest_" + id).html('<i>Request has been rejected</i>');
   }
 
 </script>

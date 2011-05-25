@@ -116,6 +116,7 @@ public class VolunteerRequests extends CoolCRUD {
 		item.assignees.add(user);
 		user.save();
 		item.save();
+		request.logs.clear();
 		request.delete();
 		String descriptionToNewVolunteer = "Your request to volunteer on item: "
 				+ item.summary + " has been accepted.";
