@@ -99,7 +99,7 @@ public class Security extends Secure.Security {
 	 *
 	 */
 	
-	public static void checkUsername( @Required String username) {
+	public static void checkUsername( @Required String username, boolean flag) {
 		if( validation.hasErrors() )
 		{
 			flash.error( "Please enter a valid username/Email" );
@@ -110,7 +110,7 @@ public class Security extends Secure.Security {
 			flash.error( "This username/Email does not exist" );
 			Security.forgotPassword();
 		} else {
-			render(user);
+			render(user, flag);
 		}
 	}
 	
@@ -135,14 +135,14 @@ public class Security extends Secure.Security {
 		{
 			flash.error( "You must answer the question!" );
 			boolean flag = false;
-			Security.checkUsername(username);
+			Security.checkUsername(username, flag);
 		}
 		User user = User.find("select u from User u where u.username=?", 
 				username).first();
 		if(answer == null) {
 			flash.error("You must answer the security question!");
 			boolean flag = false;
-			Security.checkUsername(username);
+			Security.checkUsername(username, flag);
 		}
 		String userAnswer = user.answer;
 		if(answer.equalsIgnoreCase(userAnswer)) {
@@ -153,10 +153,12 @@ public class Security extends Secure.Security {
 			Mail.recoverPassword(user.username, user.email, newPassword);
 			flash.success("An email is sent to " + user.email 
 					+ " with your new password \n");
-			Security.checkUsername(username);
+			boolean flag = true;
+			Security.checkUsername(username, flag);
 		} else {
 			flash.error("Incorrect answer");
-			Security.checkUsername(username);
+			boolean flag = false;
+			Security.checkUsername(username, flag);
 		}
 	}
 	
