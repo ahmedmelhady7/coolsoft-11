@@ -55,7 +55,8 @@
     				#{if notifi.notifiableType == 'Tag'}
     				<a href="@{Tags.mainPage(notifi.notifiableId)}">${notifi.title}</a>
     				#{/if} 
-    				<br> 
+    				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     				<b>Enabled: </b>
     				#{if notifi.enabled}
     				<i>yes</i>
@@ -67,11 +68,11 @@
     				</li>
 					#{/list}
 					</ul>
-					#{if notificationProfileList.size() != 0}   	
-		<form action="@{NotificationProfiles.alterPreferences()}" method="post">
-		<input type="submit" value="Edit"/>
-		</form>					
-		#{/if}
+					#{if notificationProfileList.size() != 0}										
+					<form action="/notificationprofiles/alterpreferences?type=${select}" method="post">					
+					<input class = "linkButton" type="submit"  value = "Edit Preferences">
+					</form>					
+					#{/if}
 					</div>
 				</div>
 			</div>

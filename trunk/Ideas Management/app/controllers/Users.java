@@ -1729,29 +1729,38 @@ public class Users extends CoolCRUD {
 	public static void notificationProfileView(String type) {
 		User user = Security.getConnected();		
 		List<NotificationProfile> notificationProfileList = getNotificationProfilesOf(type);	
+		String select = "";
 		if (type.equals("All")) {
 			type = "";
+			select = "All";
 		} else {
 			if (type.equals("Organization")) {
 				type = "from any Organizations";
+				select = "Organization";
 			} else {
 				if (type.equals("Entity")) {
 					type = "from any Entities";
+					select = "Entity";
 				} else {
 					if (type.equals("Topic")) {
-						type = "from any Topics";						
+						type = "from any Topics";
+						select = "Topic";
 					} else {
 						if (type.equals("Tag")) {
 							type = "from any Tags";
+							select = "Tag";
 						} else {
 							if (type.equals("Idea")) {
 								type = "from any Ideas";
+								select = "Idea";
 							} else {
 								if (type.equals("User")) {
 									type = "from any Users";
+									select = "User";
 								} else {
 									if (type.equals("Plan")) {
 										type = "from any Plans";
+										select = "Plan";
 									}
 								}
 							}
@@ -1759,8 +1768,8 @@ public class Users extends CoolCRUD {
 					}
 				}
 			}
-		}
-		render(user, notificationProfileList, type);
+		}		
+		render(user, notificationProfileList, type, select);
 	}
 	
 	

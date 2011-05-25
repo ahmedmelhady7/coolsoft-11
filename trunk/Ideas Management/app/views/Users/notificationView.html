@@ -94,27 +94,22 @@
 							<div class="accordionItem">
 							<h3>																				
     						#{if notifi.type == 'Plan'}
-    						<a href="@{Plans.viewAsList(notifi.sourceID)}">${notifi.title}</a>
-    						&nbsp;&nbsp;<font color ="#FF0000" size =2 style="cursor:pointer">⊕</font>
+    						<a href="@{Plans.viewAsList(notifi.sourceID)}">${notifi.title}</a>    			
     						#{/if} 
     						#{if notifi.type == 'Topic'}
-    						<a href="@{Topics.show(notifi.sourceID)}">${notifi.title}</a>
-    						&nbsp;&nbsp;<font color ="#FF0000" size =2 style="cursor:pointer">⊕</font>
+    						<a href="@{Topics.show(notifi.sourceID)}">${notifi.title}</a>    						
     						#{/if} 
     						#{if notifi.type == 'Idea'}
-    						<a href="@{Ideas.show(notifi.sourceID)}">${notifi.title}</a>
-    						&nbsp;&nbsp;<font color ="#FF0000" size =2 style="cursor:pointer">⊕</font>
+    						<a href="@{Ideas.show(notifi.sourceID)}">${notifi.title}</a>    						
     						#{/if} 
     						#{if notifi.type == 'Entity'}
-    						<a href="@{MainEntitys.viewEntity(notifi.sourceID)}">${notifi.title}</a>
-    						&nbsp;&nbsp;<font color ="#FF0000" size =2 style="cursor:pointer">⊕</font>
+    						<a href="@{MainEntitys.viewEntity(notifi.sourceID)}">${notifi.title}</a>    						
     						#{/if} 
     						#{if notifi.type == 'Organization'}
     						<a href="@{Organizations.viewProfile(notifi.sourceID)}">${notifi.title}</a>    						
     						#{/if} 
     						#{if notifi.type == 'Tag'}
-    						<a href="@{Tags.mainPage(notifi.sourceID)}">${notifi.title}</a>
-    						&nbsp;&nbsp;<font color ="#FF0000" size =2 style="cursor:pointer">⊕</font>
+    						<a href="@{Tags.mainPage(notifi.sourceID)}">${notifi.title}</a>    						
     						#{/if}    						
     						&nbsp;&nbsp;<font color ="#FF0000" size =4 style="cursor:pointer">⊕</font>
     						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
