@@ -48,12 +48,15 @@ public class CreateRelationshipRequests extends CoolCRUD {
 
 		User user = Security.getConnected();
 		Organization organization = Organization.findById(id);
+		notFoundIfNull(organization);
 		String name = organization.name;
 		List<CreateRelationshipRequest> requests = organization.createRelationshipRequest;
 		List<RenameEndRelationshipRequest> allRequests = organization.renameEndRelationshipRequest;
 
 		for (int i = 0; i < requests.size(); i++) {
-			if (requests.get(i).requester.state.equals("n")) {
+			if ((requests.get(i).requester.state.equals("n"))
+					|| (requests.get(i).type == 1 && (requests.get(i).sourceTopic.hidden || requests
+							.get(i).destinationTopic.hidden))) {
 				requests.remove(i);
 				i--;
 			}
@@ -65,126 +68,22 @@ public class CreateRelationshipRequests extends CoolCRUD {
 				renamingRequests.add(allRequests.get(i));
 		}
 		for (int i = 0; i < renamingRequests.size(); i++) {
-			if (renamingRequests.get(i).requester.state.equals("n")) {
+			if ((renamingRequests.get(i).requester.state.equals("n"))
+					|| (renamingRequests.get(i).type == 1 && (renamingRequests.get(i).topicRelationship.source.hidden || renamingRequests
+							.get(i).topicRelationship.destination.hidden))) {
 				renamingRequests.remove(i);
 				i--;
 			}
 		}
 		for (int i = 0; i < deletionRequests.size(); i++) {
-			if (deletionRequests.get(i).requester.state.equals("n")) {
+			if ((deletionRequests.get(i).requester.state.equals("n"))
+					|| (deletionRequests.get(i).type == 1 && (deletionRequests.get(i).topicRelationship.source.hidden || deletionRequests
+							.get(i).topicRelationship.destination.hidden))) {
 				deletionRequests.remove(i);
 				i--;
 			}
 		}
 		render(requests, name, id, user, deletionRequests, renamingRequests);
-
-	}
-
-	public static void cancelRequest(int type, long id, int list) {
-		List<User> sourceOrganizers = new ArrayList<User>();
-		List<User> destinationOrganizers = new ArrayList<User>();
-		Organization organization;
-		User user = Security.getConnected();
-		CreateRelationshipRequest request = CreateRelationshipRequest
-				.findById(id);
-		if (type == 0) {
-			MainEntity source = request.sourceEntity;
-			MainEntity destination = request.destinationEntity;
-			source.relationshipRequestsSource.remove(request);
-			destination.relationshipRequestsDestination.remove(request);
-			organization = source.organization;
-			sourceOrganizers = Users.getEntityOrganizers(source);
-			destinationOrganizers = Users.getEntityOrganizers(destination);
-			for (int i = 0; i < sourceOrganizers.size(); i++)
-				Notifications
-						.sendNotification(
-								sourceOrganizers.get(i).id,
-								source.id,
-								"entity",
-								" User "
-										+ user.username
-										+ " has Cancelled pending request to create relationship with entity "
-										+ destination.name);
-			for (int i = 0; i < destinationOrganizers.size(); i++)
-				Notifications
-						.sendNotification(
-								destinationOrganizers.get(i).id,
-								destination.id,
-								"entity",
-								" User "
-										+ user.username
-										+ " has Cancelled pending request to create relationship with entity "
-										+ destination.name);
-			Log.addLog(
-					"User "
-							+ user.firstName
-							+ " "
-							+ user.lastName
-							+ " canceled pending request to create relationship with entity "
-							+ destination.name, organization, user, source,
-					destination);
-		} else if (type == 1) {
-			Topic source = request.sourceTopic;
-			Topic destination = request.destinationTopic;
-			source.relationshipRequestsSource.remove(request);
-			destination.relationshipRequestsDestination.remove(request);
-			MainEntity sourceEntity = source.entity;
-			MainEntity destinantionEntity = destination.entity;
-			organization = sourceEntity.organization;
-			if (!sourceEntity.equals(destinantionEntity)) {
-				sourceOrganizers = Users.getEntityOrganizers(sourceEntity);
-				destinationOrganizers = Users
-						.getEntityOrganizers(destinantionEntity);
-				for (int i = 0; i < sourceOrganizers.size(); i++)
-
-					Notifications
-							.sendNotification(
-									sourceOrganizers.get(i).id,
-									source.id,
-									"topic",
-									" User "
-											+ user.username
-											+ " has cancelled pending request to create relationship with topic "
-											+ destination.title);
-				for (int i = 0; i < destinationOrganizers.size(); i++)
-					Notifications
-							.sendNotification(
-									destinationOrganizers.get(i).id,
-									destination.id,
-									"topic",
-									" User "
-											+ user.username
-											+ " has cancelled pending request to create relationship with topic "
-											+ destination.title);
-
-			} else {
-				destinationOrganizers = Users
-						.getEntityOrganizers(destinantionEntity);
-				for (int i = 0; i < destinationOrganizers.size(); i++)
-
-					Notifications
-							.sendNotification(
-									destinationOrganizers.get(i).id,
-									source.id,
-									"topic",
-									" User "
-											+ user.username
-											+ " has cancelled pending request to create relationship with topic "
-											+ destination.title);
-
-			}
-			Log.addLog(
-					"User "
-							+ user.firstName
-							+ " "
-							+ user.lastName
-							+ " canceled pending request to create relationship with topic "
-							+ destination.title, organization, user, source,
-					destination);
-
-		} else {
-			// tags
-		}
 
 	}
 
@@ -245,7 +144,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 									+ user.lastName
 									+ " accepted request to create relationship between entities "
 									+ destination.name + " and " + source.name,
-							organization, user, source, destination);
+							organization, createRequest, destination, source);
 					System.out.println("logs");
 
 				} else {
@@ -256,7 +155,8 @@ public class CreateRelationshipRequests extends CoolCRUD {
 									+ user.lastName
 									+ " rejected request to create relationship between entities "
 									+ destination.name + " and " + source.name,
-							organization, user, source, destination);
+							organization, user, source, destination,
+							createRequest);
 
 				}
 			}
@@ -278,7 +178,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 									+ " accepted request to create relationship between topics "
 									+ destination.title + " and "
 									+ source.title, organization, user, source,
-							destination);
+							destination,createRequest);
 				} else {
 					Log.addLog(
 							"User "
@@ -288,7 +188,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 									+ " rejected request to create relationship between topics "
 									+ destination.title + " and "
 									+ source.title, organization, user, source,
-							destination);
+							destination,createRequest);
 				}
 			}
 			if (status == 1) {
@@ -315,11 +215,15 @@ public class CreateRelationshipRequests extends CoolCRUD {
 				if (status == 1) {
 					if (renameRequest.requestType == 0) {
 						System.out.println(relation);
+
 						for (int i = 0; i < relation.renameEndRequests.size(); i++) {
 							if (!relation.renameEndRequests.get(i).equals(
-									renameRequest))
+									renameRequest)) {
 								relation.renameEndRequests.get(i).delete();
+								relation.save();
+							}
 						}
+						System.out.println(relation.renameEndRequests);
 						relation.source.relationsSource.remove(relation);
 						relation.source.save();
 						relation.destination.relationsDestination
@@ -330,9 +234,18 @@ public class CreateRelationshipRequests extends CoolCRUD {
 						Log.addLog("User " + user.firstName + " "
 								+ user.lastName
 								+ " accepted request to end relationship  "
-								+ oldName, user, organization);
+								+ oldName, user,organization, relation,
+								relation.source, relation.destination);
+						relation.renameEndRequests.remove(renameRequest);
+						relation.logs.clear();
+						relation.save();
+						renameRequest.delete();
+
+						System.out.println(relation.renameEndRequests);
+						relation.delete();
 
 					} else {
+						System.out.println("rename");
 						EntityRelationships.renameRelationship(relation.id,
 								renameRequest.newName);
 						Log.addLog(
@@ -342,8 +255,11 @@ public class CreateRelationshipRequests extends CoolCRUD {
 										+ user.lastName
 										+ " accepted request to change the name of relationship  "
 										+ oldName + " to "
-										+ renameRequest.newName, user,
-								organization, relation);
+										+ renameRequest.newName,user, organization, relation,
+										relation.source, relation.destination);
+						System.out.println("DELETE!!");
+						//System.out.println();
+						RenameEndRelationshipRequests.delete(renameRequest.id);
 
 					}
 				} else {
@@ -351,7 +267,9 @@ public class CreateRelationshipRequests extends CoolCRUD {
 						Log.addLog("User " + user.firstName + " "
 								+ user.lastName
 								+ " rejected request to end relationship  "
-								+ oldName, user, organization, relation);
+
+								+ oldName,user, organization, relation,
+								relation.source, relation.destination);
 
 					} else {
 						Log.addLog(
@@ -361,11 +279,14 @@ public class CreateRelationshipRequests extends CoolCRUD {
 										+ user.lastName
 										+ " rejected request to change the name of relationship  "
 										+ oldName + " to "
-										+ renameRequest.newName, user,
-								organization, relation);
-					}
 
+										+ renameRequest.newName, user,organization, relation,
+										relation.source, relation.destination);
+
+					}
+					renameRequest.delete();
 				}
+
 			} else {
 				TopicRelationship relation = renameRequest.topicRelationship;
 				String oldName = relation.name;
@@ -386,10 +307,17 @@ public class CreateRelationshipRequests extends CoolCRUD {
 						Log.addLog("User " + user.firstName + " "
 								+ user.lastName
 								+ " accepted request to end relationship  "
-								+ oldName, user, organization, relation);
+
+								+ oldName ,user,organization, relation,
+								relation.source, relation.destination);
+						renameRequest.delete();
+						relation.delete();
+
 					} else {
+						System.out.println("will rename");
 						TopicRelationships.renameRelationship(relation.id,
 								renameRequest.newName);
+						System.out.println(relation);
 						Log.addLog(
 								"User "
 										+ user.firstName
@@ -397,16 +325,18 @@ public class CreateRelationshipRequests extends CoolCRUD {
 										+ user.lastName
 										+ " accepted request to change the name of relationship  "
 										+ oldName + " to "
-										+ renameRequest.newName, user,
-								organization, relation);
 
+								+ renameRequest.newName,user,organization, relation,
+										relation.source, relation.destination);
+						RenameEndRelationshipRequests.delete(renameRequest.id);
 					}
 				} else {
 					if (renameRequest.requestType == 0) {
 						Log.addLog("User " + user.firstName + " "
 								+ user.lastName
 								+ " rejected request to end relationship  "
-								+ oldName, user, organization, relation);
+
+								+ oldName, organization);
 
 					} else {
 						Log.addLog(
@@ -416,10 +346,12 @@ public class CreateRelationshipRequests extends CoolCRUD {
 										+ user.lastName
 										+ " rejected request to change the name of relationship  "
 										+ oldName + " to "
-										+ renameRequest.newName, user,
-								organization, relation);
-					}
 
+										+ renameRequest.newName,user,organization, relation,
+										relation.source, relation.destination);
+
+					}
+					renameRequest.delete();
 				}
 
 			}
@@ -427,13 +359,12 @@ public class CreateRelationshipRequests extends CoolCRUD {
 				Notifications.sendNotification(renameRequest.requester.id,
 						organization.id, "organization",
 						"Your Request has been accepted");
+
 			} else {
 				Notifications.sendNotification(renameRequest.requester.id,
 						organization.id, "organization",
 						"Your Request has been rejected");
 			}
-
-			renameRequest.delete();
 
 		}
 	}
@@ -516,33 +447,35 @@ public class CreateRelationshipRequests extends CoolCRUD {
 
 		int size = users.size();
 		for (int i = 0; i < size; i++) {
-			if(users.get(i).myRelationshipRequests.contains(request)) {
+			if (users.get(i).myRelationshipRequests.contains(request)) {
 				users.get(i).myRelationshipRequests.remove(request);
 				users.get(i).save();
 			}
 		}
 		for (int i = 0; i < size; i++) {
-			if (organizations.get(i).createRelationshipRequest.contains(request)) {
+			if (organizations.get(i).createRelationshipRequest
+					.contains(request)) {
 				organizations.get(i).createRelationshipRequest.remove(request);
 				organizations.get(i).save();
 			}
 		}
 		for (int i = 0; i < size; i++) {
-			if(entities.get(i).relationshipRequestsSource.contains(request)) {
+			if (entities.get(i).relationshipRequestsSource.contains(request)) {
 				entities.get(i).relationshipRequestsSource.remove(request);
 				entities.get(i).save();
 			}
-			if(entities.get(i).relationshipRequestsDestination.contains(request)) {
+			if (entities.get(i).relationshipRequestsDestination
+					.contains(request)) {
 				entities.get(i).relationshipRequestsDestination.remove(request);
 				entities.get(i).save();
 			}
 		}
 		for (int i = 0; i < size; i++) {
-			if(topics.get(i).relationshipRequestsSource.contains(request)) {
+			if (topics.get(i).relationshipRequestsSource.contains(request)) {
 				topics.get(i).relationshipRequestsSource.remove(request);
 				topics.get(i).save();
 			}
-			if(topics.get(i).relationshipRequestsDestination.contains(request)) {
+			if (topics.get(i).relationshipRequestsDestination.contains(request)) {
 				topics.get(i).relationshipRequestsDestination.remove(request);
 				topics.get(i).save();
 			}
