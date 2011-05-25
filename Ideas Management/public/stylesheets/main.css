@@ -280,6 +280,18 @@ line-height:17px;}
 	padding: 20px 0px;
 }
 
+/* PageNoSideBar */
+
+#pageNoSideBar {
+	width: 80%;
+	margin: 0 auto;	
+	padding: 0px 0px 0px 0px;
+}
+
+#pageNoSideBar-bgtop {
+	padding: 20px 0px;
+}
+
 
 /*divs to split a page in body (search page*/
         #div1 { 

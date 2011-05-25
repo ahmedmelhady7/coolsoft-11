@@ -243,11 +243,16 @@ public class CreateRelationshipRequests extends CoolCRUD {
 
 						System.out.println(relation.renameEndRequests);
 						relation.delete();
+						//renameRequest.delete();
 
 					} else {
 						System.out.println("rename");
-						EntityRelationships.renameRelationship(relation.id,
-								renameRequest.newName);
+						relation.name= renameRequest.newName;
+						relation.save();
+						for(int i =0 ; i<relation.renameEndRequests.size();i++){
+							relation.renameEndRequests.get(i).delete();
+						relation.save();
+						}
 						Log.addLog(
 								"User "
 										+ user.firstName
@@ -259,7 +264,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 										relation.source, relation.destination);
 						System.out.println("DELETE!!");
 						//System.out.println();
-						RenameEndRelationshipRequests.delete(renameRequest.id);
+						//sRenameEndRelationshipRequests.delete(renameRequest.id);
 
 					}
 				} else {
@@ -298,6 +303,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							if (!relation.renameEndRequests.get(i).equals(
 									renameRequest))
 								relation.renameEndRequests.get(i).delete();
+							relation.save();
 						}
 						relation.source.relationsSource.remove(relation);
 						relation.source.save();
@@ -315,9 +321,12 @@ public class CreateRelationshipRequests extends CoolCRUD {
 
 					} else {
 						System.out.println("will rename");
-						TopicRelationships.renameRelationship(relation.id,
-								renameRequest.newName);
-						System.out.println(relation);
+						relation.name= renameRequest.newName;
+						relation.save();
+						for(int i =0 ; i<relation.renameEndRequests.size();i++){
+							relation.renameEndRequests.get(i).delete();
+						relation.save();
+						}
 						Log.addLog(
 								"User "
 										+ user.firstName
@@ -328,7 +337,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 
 								+ renameRequest.newName,user,organization, relation,
 										relation.source, relation.destination);
-						RenameEndRelationshipRequests.delete(renameRequest.id);
+						
 					}
 				} else {
 					if (renameRequest.requestType == 0) {
