@@ -28,7 +28,7 @@ public class Browse extends Controller {
 	// Organization.findAll();
 
 	public static void index() {
-		
+
 		render();
 	}
 
@@ -45,19 +45,13 @@ public class Browse extends Controller {
 		List<Organization> listOfOrganizations = Organization.findAll();
 		List<Organization> temp = listOfOrganizations;
 		for (int i = 0; i < listOfOrganizations.size(); i++) {
-			if (!Users.getEnrolledUsers(listOfOrganizations.get(i)).contains(user)) {
-				switch (listOfOrganizations.get(i).privacyLevel) {
-				case 0:
-					temp.remove(listOfOrganizations.get(i));
-					break;
-				default:
-					break;
-				}
+			if (!Users.isPermitted(user, "view", listOfOrganizations.get(i).id,
+					"organization")) {
+				temp.remove(listOfOrganizations.get(i));
 			}
 		}
 		listOfOrganizations = temp;
-		render(listOfOrganizations);
-		
+		render(listOfOrganizations, user);
 
 	}
 
