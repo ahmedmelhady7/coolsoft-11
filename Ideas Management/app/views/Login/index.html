@@ -129,10 +129,10 @@
                                 		<a href="@{Organizations.createOrganization()}" title="Create a new Organization">Create Organization</a>
                                 	</li>                                		
                                     <li>
-                                        <a href="#" onclick="enrolledOrganizations();" title="View your Organizations">My Organizations</a>
+                                        <a onclick="enrolledOrganizations();" title="View your Organizations">My Organizations</a>
                                     </li>
                                     <div id="enrolledInOrganizations">
-                                    	<center>
+                                    	<li>
                                     		#{ifnot user.getOrganizations()}
 											<b>You are currently not enrolled in any organizations</b>
 											#{/ifnot}
@@ -143,7 +143,7 @@
 												</li>
 												#{/list}
 											</ul>
-                                    	</center>
+                                    	</li>
                                     </div>
                                     <li>
                                         <a href="@{Items.viewAssignedItems()}">Assigned Items</a>
@@ -158,8 +158,7 @@
                                         <a onclick="follows();">Follow List</a>
                                     </li>
                                     <div id="follow">
-                                        <center>
-                                            <br/>
+                                    	<li>
                                             <b>Organizations</b>
                                             #{ifnot user.followingOrganizations}
                                             <br/>
@@ -201,14 +200,14 @@
                                             <br/>
                                             No tags 
                                             #{/ifnot}
-                                            <ul>
+                                            </li>
+											<ul>
                                                 #{list items:user.followingTags, as:'tag'}
                                                 <li>
                                                     <a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>  <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="tag('${tag.id}');"/>
                                                 </li>
                                                 #{/list}
                                             </ul>
-                                        </center>
                                     </div>
                                     <li>
                                         <a href="@{MarkRequest.markDuplicate()}">Duplicate Requests</a>
@@ -233,11 +232,10 @@
                                         <a onclick="showDoc();">Show my Documents</a>
                                     </li>
                                     <div id="docs">
-                                        <center>
+                                        <li>
                                             <b>Documents</b>
                                             <br/>
                                             #{ifnot user.getDocuments()}
-                                            <br/>
                                             No documents 
                                             #{/ifnot}
                                             <ul>
@@ -246,8 +244,8 @@
                                                     <a href="@{Documents.viewDocument(document.id)}">${document.name}</a>
                                                 </li>
                                                 #{/list}
+												</li>
                                             </ul>
-                                        </center>
                                     </div>
                                 </ul>
                                 <div style="clear: both;">
