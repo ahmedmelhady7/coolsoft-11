@@ -3,8 +3,8 @@
 #{if planVolunteerRequests.size() > 0}<h3>Volunteer Requests </h3>
 <ul>
     #{list items:planVolunteerRequests, as:'request'}
-    <div id = "request_${request.id}"><li>
-        <fieldset>
+    <li>
+        <fieldset id = "request_${request.id}">
             <legend>
             <h2>
                 <a href="@{Plans.viewAsList(request.destination.plan.id)}">${request.destination.summary}</a>
@@ -12,12 +12,11 @@
             </legend>
             Sender: <a href = "@{Users.viewProfile(request.sender.id)}">${request.sender.username}</a>
             <br/>
-            Justification:  ${request.justification}
-            <br/>
-			<input class = "linkButton" type = "button" value = "Accept" onclick="accept_request('${request.id}')">
-			<input class = "linkButton" type = "button" value = "Reject" onclick="reject_request('${request.id}')">
+            Justification:  ${request.justification} &nbsp; &nbsp; &nbsp; &nbsp;
+            <a onclick="javascript: accept_request(${request.id});" style="cursor:pointer;" /><img src="/public/images/ranktable-tick.png" title="Accept" width="27" height="27"/></a>
+			&nbsp;<a onclick="javascript: reject_request(${request.id});" style="cursor:pointer;" /><img src="/public/images/Cross.png" title="Reject" width="23" height="20"/></a>
         </fieldset>
-    </li></div>
+    </li>
     #{/list}
 </ul>
 #{/if}
@@ -33,15 +32,13 @@ No volunteer requests for this plan exist.
 function accept_request(id)
   {
 	$.post('@{accept()}' , {requestId: id});
-	alert("Request rejected!");
-	$("#request_" + id).remove();
+	$("#request_" + id).html('<i>Request has been accepted</i>');
   }
 
 function reject_request(id)
   {
 	$.post( '@{reject()}' , {requestId: id});
-	alert("Request rejected!");
-	$("#request_" + id).remove();
+	$("#request_" + id).html('<i>Request has been rejected</i>');
   }
 
 </script>

@@ -49,6 +49,7 @@ public class Plans extends CoolCRUD {
 	public static void viewAsList(long planId) {
 		User user = Security.getConnected();
 		Plan plan = Plan.findById(planId);
+		notFoundIfNull(plan);
 		List<Comment> comments = plan.commentsList;
 		List<Item> itemsList = plan.items;
 		int canAssign = 0;
