@@ -29,7 +29,7 @@
                 #{/else}</a>
         </li>
         <li>
-            <a href="@{Users.viewNotificationProfile()}">Notification Profile</a>
+            <a href="/users/notificationprofileview?type=All">Notification Profile</a>
         </li>
         <li>
             #{if !user.isAdmin}<a href="@{Invitations.view()}">Invitations</a>
@@ -81,7 +81,7 @@
                             </ul>
                             #{/list} 
                             </div>
-                            <a href="@{Users.viewNotifications()}">All Notifications</a>
+                            <a href="/users/notificationview?type=All">All Notifications</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <a id="hide" style="cursor:pointer">Hide</a>
                         </div>
