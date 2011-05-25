@@ -8,16 +8,27 @@
 			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
 		}
 		.accordionItem h3 {
-			margin:0;
 			font-size:1.1em;
-			border-bottom:1px solid #66d color:"#150517";
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #FFFFFF;
+			background-color:#bbbbbb;
+			margin-right:23%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
 		}
 		.accordionItem h3:hover {
 			cursor:pointer;
 		}
 		.accordionItem div {
-			margin:0;
 			padding:1em 0.4em;
+			margin-right:23%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
 		}
 		.accordionItem.hide h3 {
 		}
@@ -263,7 +274,7 @@
 			#{if topic.hidden == false}
 			#{if topic.canView(user)}
 			<div class="accordionItem">
-			<h3><a href="@{Topics.show(topic.id)}">${topic.title}</a>    <font color ="#FF0000" size =4>    ⊕</font></h3>
+			<h3><a href="@{Topics.show(topic.id)}"> &nbsp ${topic.title}</a></h3>
 				<div>
 					<p><font size=2>Description: ${topic.description}</font></p>
 					<p><font size=2>Creator: ${topic.creator}</font></p>
@@ -274,7 +285,7 @@
 			#{else}
 			#{if topic.hider.username == user.username && topic.hidden == true}
 			<div class="accordionItem">
-			<h3><a href="@{Topics.show(topic.id)}">${topic.title}</a>    <font color ="#FF0000" size =4>    ⊕</font>     <font color ="#FF0000" size =2>       hidden</font></h3>
+			<h3><a href="@{Topics.show(topic.id)}">&nbsp ${topic.title}</a> <font color ="#FF0000" size =2> &nbsp hidden</font></h3>
 				<div>
 					<p><font size=2>Description: ${topic.description}</font></p>
 					<p><font size=2>Creator: ${topic.creator}</font></p>

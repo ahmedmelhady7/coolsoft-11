@@ -133,18 +133,16 @@ public class TopicRequests extends CoolCRUD{
 
 		}
 		
-		System.out
-		.println("333");
-		String message2 = "User " + user.firstName + " " + user.lastName+ "has requested a topic " + temporaryTopicRequest.title+ " in entity " + entity; 
-		Log.addUserLog(message2,
-				temporaryTopicRequest, user, entity, entity.organization);
-
-		System.out.println("create() about to save object");
+		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username +  "</a>"
+        + " requested a topic " +"<a href=\"http://localhost:9008/topics/show?topicId=" + temporaryTopicRequest.id +"\">" + temporaryTopicRequest.title + "</a>"
+        + " in entity " + "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + entity.id +"\">" + entity.name + "</a>";
+		Log.addUserLog(logDescription, temporaryTopicRequest, user, entity,
+				entity.organization);
+		
 		object._save();
 		TopicRequest topicRequest = (TopicRequest) object;
 		entity.topicRequests.add(topicRequest);
 		user.topicRequests.add(topicRequest);
-		System.out.println("create() object saved");
 		message = "Your request has been sent... an organizer will review it shortly";
 		
 		flash.success(Messages.get("crud.created", type.modelName,
@@ -176,6 +174,11 @@ public class TopicRequests extends CoolCRUD{
 		User user = Security.getConnected();
 		System.out.println("blank() for TopicRequests entered entity " + entityId + " and user "
 				+ user.toString());
+		int canRequest = 0;
+		if (Users.isPermitted(user, "use", entity.id, "entity"))
+			canRequest = 1;
+		
+		if(canRequest==1){
 		try {
 			System.out.println("blank() for TopicRequests done about to render");
 			render(type, entityId, user);
@@ -184,6 +187,10 @@ public class TopicRequests extends CoolCRUD{
 			System.out
 					.println("blank() for TopicRequests done with exception about to render CRUD/blank.html");
 			render("CRUD/blank.html", type, entityId);
+		}
+		}
+		else{
+			BannedUsers.unauthorized();
 		}
 
 	}
