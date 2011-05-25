@@ -91,7 +91,7 @@
     <body>
         <div style="text-align: left;">
            
-            <form action="@{Users.changePassword()}" method="get" onsubmit="return jcap();">
+            <form action="@{Users.changePassword()}" method="get" onsubmit="return confirm();">
                 <p>
                     This field helps prevent automated access.
                 </p>
@@ -105,24 +105,21 @@
 			</label>
 			
 			<input type="password" size="25" class="" name="user.password" id="pass" onkeyup="oldPass(); return false;" required/>
+			<span id="confirmMessage1" class="confirmMessage"></span>
 			<br/>
 			<br/>
 			<label for="object_password">
 			 New password
 			</label>
 			<input type="password" size="25" class="" name="user.password" id="pass1" onkeyup="checkPass(); return false;" required/>
-			<span class="crudHelp" >
-				<font color="Red">
-					*
-				</font>Required
-			</span>
+			
 		</p>
 		<p>
 			<label>
 				Confirm Password
 			</label>
 			<input type="password" size="25" name="pass2" id="pass2" onkeyup="checkPass(); return false;" required/>
-        <span id="confirmMessage" class="confirmMessage"></span>
+        <span id="confirmMessage2" class="confirmMessage"></span>
 		</p>
 			 
                     <input type="submit" id="submit" name="submit" value="Submit">
@@ -150,7 +147,7 @@
     function checkPass(){
       var pass1 = document.getElementById('pass1');
       var pass2 = document.getElementById('pass2');
-      var message = document.getElementById('confirmMessage');
+      var message = document.getElementById('confirmMessage2');
       var goodColor = "#66cc66";
       var badColor = "#ff6666";
       if(pass1.value == pass2.value){
@@ -166,20 +163,35 @@
 	
 	function oldPass() {
 		var pass = document.getElementById('pass');
-		var message = document.getElementById('confirmMessage');
+		var message = document.getElementById('confirmMessage1');
       var goodColor = "#66cc66";
       var badColor = "#ff6666";
 		if(pass.value == '${user.password}') {
 	pass.style.backgroundColor = goodColor;
         message.style.color = goodColor;
-		message.innerHTML = "correct"
+		message.innerHTML = "Correct"
+		
 		}else{
         pass.style.backgroundColor = badColor;
         message.style.color = badColor;
-        message.innerHTML = "Passwords Do Not Match!"
+        message.innerHTML = "Wrong Password!"
+		
       }
 		
 	}
+	
+	function confirm(){
+	if (document.getElementById('pass').value != '${user.password}' ) {
+				return false;
+	}
+	
+		if (document.getElementById('pass1').value != document.getElementById('pass2').value) {
+			
+			return false
+		}
+			
+			 return jcap();
+}
 	</script>
 
 #{/if}
