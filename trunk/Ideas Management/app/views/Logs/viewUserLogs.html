@@ -74,9 +74,10 @@ function show(){
 	        
 		     
 			  	
-				$('#toFil').html('<tr><td><font size=2>  </font></td><td>');
-				 for (var i = 0; i < action.length; i++) {
+				$('#toFil').html('<tr><td><font size=2>  Sreach results of "' + name + '" </font></td><td>');
+				 for (var i = 0; i < action.length-1; i++) {
 				 	var text = action[i];
+					
 			  	var tex = times[i];
 				 	$('#toFil').append('<tr><td><font size=2> ' + text +'&nbsp;&nbsp;&nbsp;&nbsp;'+ tex + '</font></td><td>');
 				 	$('#toFil').show();
