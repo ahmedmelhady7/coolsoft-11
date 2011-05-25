@@ -1,10 +1,8 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "htt://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 		<script src="/public/javascripts/bmi.js" language="javascript"></script>	
-
-
 #{extends 'login/index.html' /}
+#{stylesheet src:"ideas.css" /}
 <head>
 		<style type="text/css">body {
 			font-size:80%;
@@ -46,9 +44,9 @@
 
 #crudShow{
 	margin-top: 2%;
-	margin-right: 17%;
+	margin-right: 7%;
 	margin-bottom: 4%;
-	margin-left: 8%;
+	margin-left: 18%;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
@@ -93,6 +91,20 @@
 	border-bottom-style: solid;
 	border-bottom-color: #bbbbbb;
 	word-wrap: break-word;
+}
+
+#about {
+    text-indent: -999em;
+    display: block;
+    width: 0; 
+    height: 0; 
+	border-left: 10px solid transparent; 
+	border-right: 10px solid transparent;
+	border-bottom: 10px solid #fff;
+	border-top: 0;
+	position: absolute;
+	top: -6px;
+	left: 24px;
 }
 
 .arrow {
@@ -453,8 +465,17 @@
 					<input type="submit" value="Invite" onclick=location.href="@{Invitations.invite(object.id,1,0)}" class="linkButton">
                 </li>
                 #{/if}
-       
-				#{if alreadyReportedTopic==false && canReport}
+       		
+				
+				<li>
+				  	<form action="@{Topics.tagTopic()}" method="post">
+        	             <input type="hidden" value=${topicId} name='topicId'>
+			             <input type="hidden" value='@@' name='tag'>
+						 <input type="submit" value="Add tags" class = "linkButton">
+        			</form>
+				</li>
+				
+				#{if alreadyReportedTopic==false && canReport && notAuthor}
 				<li>
                     <form action="@{Users.reportTopicAsSpam()}" method="GET" name="myform">
                           <input type="hidden" name="topicId" value="${topicId}">
@@ -468,15 +489,6 @@
                     <font color="Red">Already reported as spam</font>
                 </li>
 				#{/if}
-				
-				
-				<li>
-				  	<form action="@{Topics.tagTopic()}" method="post">
-        	             <input type="hidden" value=${topicId} name='topicId'>
-			             <input type="hidden" value='@@' name='tag'>
-						 <input type="submit" value="Add tags" class = "linkButton">
-        			</form>
-				</li>
 				
 				 #{if numberOfIdeas > 1 && canMerge == 1}
                 <li>
@@ -712,6 +724,7 @@
         <br/>
         <p>
            <div id="descriptionShow">
+           	<div id="about">Details:</div>
            	<span class="arrow"></span>
            	<font size= "4">
             <label id="object_description" class="" name="object.description">
@@ -876,8 +889,29 @@
 		<br />
 <!--		haget hadi	-->
 		
-        #{if topicNotClosed==true}
+		 #{if canDelete}
+                <input id="showhidden" type="submit" value="show hidden Ideas" class = "linkButton">
+                <div id="hidden">
+                #{list items:hiddenIdeas, as:'idea'}
+                                <fieldset>
+                                </br>
+                <label>${idea.title}</label>
+                </br>
+                <label>Description : ${idea.description}</label>
+                </br>
+                <label>by : ${idea.author.username}</label>
+                <br />
+                <input type="submit" id="unhide" value="unhide" onclick="unhide(${idea.id})" class = "linkButton">
+                </fieldset>
+        #{/list}
+        </div>
+        #{/if}
+		<br/>
+        #{if topicNotClosed==true && joined}
         <input id="postIdea" type="button" value="Post Idea to this topic" class = "linkButton"/>
+        #{/if}
+        #{if joind==false}
+        <input id="postIdea" type="button" value="Join to post" class = "linkButton"/>
         #{/if}
         <div id="postIdeaform">
                 <p>
@@ -915,6 +949,9 @@
                 $("#showhidden").click(function(){
                  $("#hidden").toggle();
            });
+                $("#unhide").click(function(){
+                    $("#hidden").hide();
+              });
                  </script>
                 <style type="text/css">
                         #hidden{display: none;}

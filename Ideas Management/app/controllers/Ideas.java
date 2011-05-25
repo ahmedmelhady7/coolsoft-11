@@ -382,6 +382,7 @@ public class Ideas extends CoolCRUD {
 		boolean canDelete = Users.isPermitted(user, "hide and delete an idea",
 				topicId, "topic");
 		boolean ideaAlreadyReported = false;
+		boolean notAuthor = !idea.author.username.equals(user.username);
 		String username = idea.author.username;
 		long userId = idea.author.id;
 		boolean notBlockedFromUsing = Users.isPermitted(user, "use", topicId,
