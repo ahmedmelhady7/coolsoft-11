@@ -269,7 +269,7 @@ line-height:17px;}
 /* Page */
 
 #page {
-	width: 65%;
+	width: 60%;
 	margin: 0 auto;
 	padding: 0px 0px 0px 0px;
 }
@@ -355,7 +355,7 @@ line-height:17px;}
 
 #sidebar {
 	float: right;
-	width: 15%;
+	width: 20%;
 	margin: 0px;
 	padding: 0px 20px 0px 0px;
 	color: #787878;
@@ -428,7 +428,7 @@ line-height:17px;}
 
 #leftSidebar {
 	float: left;
-	width: 15%;
+	width: 16%;
 	margin: 0px;
 	color: #787878;
 }
@@ -495,6 +495,7 @@ line-height:17px;}
 /* layout */
 #layout1 {
 	float:left;
+	width: 60%;
 }
 
 /* Calendar */
