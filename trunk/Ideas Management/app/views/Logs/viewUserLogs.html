@@ -1,4 +1,4 @@
-#{extends 'main.html' /}
+#{extends 'login/index.html' /}
 
 
 
@@ -68,15 +68,15 @@ function show(){
 			   
 			   
 			  var action={};
-	        action=data.actions.split(",");
+	        action=data.actions.split("|");
 	         var  times = {};
-	          times = data.time.split(",");
+	          times = data.time.split("|");
 	        
 		     
 			  	
 				$('#toFil').html('<tr><td><font size=2>  </font></td><td>');
 				 for (var i = 0; i < action.length; i++) {
-				 	var text = action[i].raw();
+				 	var text = action[i];
 			  	var tex = times[i];
 				 	$('#toFil').append('<tr><td><font size=2> ' + text +'&nbsp;&nbsp;&nbsp;&nbsp;'+ tex + '</font></td><td>');
 				 	$('#toFil').show();
