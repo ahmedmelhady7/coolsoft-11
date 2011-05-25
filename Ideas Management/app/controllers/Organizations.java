@@ -238,12 +238,12 @@ public class Organizations extends CoolCRUD {
 		Invitation invitation = new Invitation(email, null, organization,
 				"Idea Developer", sender, null);
 		invitation._save();
+		sender.invitation.add(invitation);
+		sender.save();
 		if (reciever != null) {
-			reciever.invitation.add(invitation);
 			Notifications.sendNotification(reciever.id, organizationId,
 					"organization", "you have recived an ivitation to join"
 							+ organization.name);
-			reciever._save();
 		}
 		try {
 			Mail.invite(email, "Idea Devoloper", organization.name, "", 0);
