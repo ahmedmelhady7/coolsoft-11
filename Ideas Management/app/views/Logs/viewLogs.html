@@ -2,15 +2,32 @@
 <br/>
 <br/>
 
-
+<a href="@{Organizations.viewProfile(organizationId)}">Back to &{organization.name}</a>
+<br/>
+<br/>
+#{if flag == 1}
+<a href="@{Logs.viewUserLogs()}">Back to Logs</a>
+#{/if}
 <br/>
 <br/>
 <u><font size ="5" color ="blue">Logs</font></u>
 <br/>
 <br/>
 Search Logs <input type="text" size="20" name="name" id="table">
+<br/>
+<br/>
+Entity List: 
 
+</font></legend> <br /> <select name = "entityId" id = "entityId">
+	<option name = entity value= "0" >Please select an entity</option>
+  #{list items:entities, as:'Entity'}
+  <option name = entity value=${Entity.id}>${Entity.name}</option>
+   #{/list}
+</select>
 <input type="button" onclick="javascript: show('${organizationId}');" value="Search" />
+	<br/>
+<br/>
+   
 
 <table border="0" bgcolor="#ececec" cellspacing="5">
 	#{if toFilter.isEmpty()}
@@ -46,30 +63,33 @@ Search Logs <input type="text" size="20" name="name" id="table">
 
 
 <script type="text/javascript">
-function show(id){
-	window.location.reload();
+function show(id, entityId){
+	
 	var name = document.getElementById('table').value;
 
 	      
-          $.getJSON('@{searchLog()}', {keyword:name,id:id},
+          $.getJSON('@{searchLog()}', {keyword:name,id:id, entityId:document.getElementById("entityId").value},
 			 function(data)
 			 {
 			   
+			   var s = data.actions + "";
 			   
-			  var action={};
-	        action=data.actions.split(",");
-	         var  times = {};
-	          times = data.time.split(",");
+			  var action=new Array();
+	        action=s.split("|");
+			var t = data.time + "";
+	         var  times = new Array();
+			 times = t.split("|");
 	        
-		     
 			  	
-				$('#toFil').html('<tr><td><font size=2> </font></td><td>');
+				$('#toFil').html('<tr><td><font size=2> Sreach results of "' + name + '"</font></td></tr>');
 				 for (var i = 0; i < action.length; i++) {
-				 	var text = action[i].raw();
-			  	var tex = times[i];
-				 	$('#toFil').append('<tr><td><font size=2> ' + text +'&nbsp;&nbsp;&nbsp;&nbsp;'+ tex + '</font></td><td>');
+				 	var text = action[i];
+				 	
+				 	var tex = times[i];
+				 	$('#toFil').append('<tr><td><font size=2> ' + text + '&nbsp;&nbsp;&nbsp;&nbsp;' + tex + '</font></td></tr>');
 				 	$('#toFil').show();
-					
+				 	
+				 
 				 }
 			  
 			 
