@@ -243,75 +243,15 @@
 	  				</form>
 				</li>
 				
-				
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-            </ul>
+xx            </ul>
         </li>
     </ul>
 </div>
 
-
-<div id = "backToEntity"><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a> </div>
-<div id="crudShow">
+<div id="page">
+	<div id="page-bgtop">
+	<div id = "backToEntity"><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a> </div>
+    <div id="crudShow">
     
 	<div id="topicShow" class="objectForm">
         #{form action:@save(object._key()), enctype:'multipart/form-data'}
@@ -381,12 +321,12 @@
 	</div>
 	
 	
- <div id="deleteHide">#{if !hidden}
+ 	<div id="deleteHide">#{if !hidden}
     #{if deletable}
     <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         <p class="crudDelete">
         	<input type="hidden" name = "justification" id = "justText">
-            <input type="image" src="/public/images/delete.png" value="&{'crud.delete', type.modelName}" />
+            <input type="image" src="/public/images/icons/trash.png" style="float:right;" title="&{'crud.delete', type.modelName}" />
         </p>
     </form> #{/if}
     #{if !deletable}
@@ -394,14 +334,15 @@
     <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         <p class="crudDelete">
         	<input type="hidden" name = "justification" id = "justText">
-            <input type="submit" value="&{'Hide', type.modelName}"  class="linkButton"/>
+            <input type="submit" style="float:right;" title="Hide" class="linkButton"/>
         </p>
     </form> #{/if}
 	 #{/if}
     #{/if}
+	</div>
+	</div>
+	</div>
 </div>
-</div>
-
  <script type="text/javascript">
  	
 					function prompt1(){
