@@ -1676,7 +1676,7 @@ public class Users extends CoolCRUD {
 
 	public static void notificationView(String type) {
 		User user = Security.getConnected();
-		System.out.println(type);
+		//System.out.println(type);
 		List<Notification> notificationList = getNotificationsFrom(type);	
 		if (type.equals("All")) {
 			type = "";
@@ -1726,35 +1726,56 @@ public class Users extends CoolCRUD {
 		return notificationList;
 	}
 	
-	public static void notifications() {
-		User user = Security.getConnected();
-		// List<NotificationProfile> npList = user.notificationProfiles;
-		List<ArrayList> list = new ArrayList<ArrayList>();
-		// List<String> titles = new ArrayList<String>();
-		// List<Long> ids = new ArrayList<Long>();
-		// List<String> types = new ArrayList<String>();
-		for (int i = 0; i < user.notifications.size(); i++) {
-			boolean flag = true;
-			for (int j = 0; j < list.size(); j++) {
-				if (list.get(j).get(0).equals(user.notifications.get(i).title)
-						&& list.get(j).get(1)
-								.equals(user.notifications.get(i).type)) {
-					flag = false;
-					break;
+	public static void notificationProfileView(String type) {
+		User user = Security.getConnected();		
+		List<NotificationProfile> notificationProfileList = getNotificationProfilesOf(type);	
+		if (type.equals("All")) {
+			type = "";
+		} else {
+			if (type.equals("Organization")) {
+				type = "from any Organizations";
+			} else {
+				if (type.equals("Entity")) {
+					type = "from any Entities";
+				} else {
+					if (type.equals("Topic")) {
+						type = "from any Topics";						
+					} else {
+						if (type.equals("Tag")) {
+							type = "from any Tags";
+						} else {
+							if (type.equals("Idea")) {
+								type = "from any Ideas";
+							} else {
+								if (type.equals("User")) {
+									type = "from any Users";
+								} else {
+									if (type.equals("Plan")) {
+										type = "from any Plans";
+									}
+								}
+							}
+						}
+					}
 				}
 			}
-			if (flag) {
-				ArrayList<String> temp = new ArrayList<String>();
-				temp.add(user.notifications.get(i).title);
-				// temp.add(user.notifications.get(i).sourceID);
-				temp.add(user.notifications.get(i).type);
-				list.add(temp);
-				// titles.add(user.notifications.get(i).title);
-				// ids.add(user.notifications.get(i).sourceID);
-				// types.add(user.notifications.get(i).type);
+		}
+		render(user, notificationProfileList, type);
+	}
+	
+	
+	public static List<NotificationProfile> getNotificationProfilesOf(String type) {
+		User user = Security.getConnected();
+		List<NotificationProfile> notificationProfileList = new ArrayList<NotificationProfile>();
+		if (type.equalsIgnoreCase("All")) {
+			return user.notificationProfiles;			
+		}
+		for (int i = 0; i < user.notificationProfiles.size(); i++) {
+			if (user.notificationProfiles.get(i).notifiableType.equalsIgnoreCase(type)) {
+				notificationProfileList.add(user.notificationProfiles.get(i));
 			}
 		}
-		render(user, list);
+		return notificationProfileList;
 	}
 
 	/**
