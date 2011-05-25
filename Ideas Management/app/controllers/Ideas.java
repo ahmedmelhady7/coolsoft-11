@@ -839,7 +839,6 @@ public class Ideas extends CoolCRUD {
 		long notId = ideaId;
 		long userId = U.id;
 		Notifications.sendNotification(userId, notId, type, desc);
-		redirect("/ideas/show?ideaId=" + ideaId);
 
 	}
 
