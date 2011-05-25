@@ -72,7 +72,6 @@ public class AssignRequests extends CoolCRUD {
 			}
 
 			for (int i = 0; i < users2.size(); i++) {
-				System.out.println("user ids" + users2.get(i).id);
 				if (users2.get(i).id.compareTo(user.id) == 0) {
 
 					users.remove(i);
