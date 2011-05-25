@@ -11,16 +11,27 @@
 			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
 		}
 		.accordionItem h3 {
-			margin:0;
 			font-size:1.1em;
-			border-bottom:1px solid #66d color:"#150517";
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			background-color:#FFFFFF;
+			margin-right:23%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
 		}
 		.accordionItem h3:hover {
 			cursor:pointer;
 		}
 		.accordionItem div {
-			margin:0;
 			padding:1em 0.4em;
+			margin-right:23%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
 		}
 		.accordionItem.hide h3 {
 		}
@@ -81,15 +92,6 @@
 	border-bottom-width: 2px;
 	border-bottom-style: solid;
 	border-bottom-color: #bbbbbb;
-	border-right-width: 2px;
-	border-right-style: solid;
-	border-right-color: #bbbbbb;
-	border-left-width: 2px;
-	border-left-style: solid;
-	border-left-color: #bbbbbb;
-	border-top-width: 2px;
-	border-top-style: solid;
-	border-top-color: #bbbbbb;
 	word-wrap: break-word;
 }
 
@@ -379,9 +381,6 @@
 				var accordionItems = new Array();
 
 			function init() {
-				
-				alert("init");
-
 				// Grab the accordion items from the page
 				var divs = document.getElementsByTagName( 'div' );
 				for ( var i = 0; i < divs.length; i++ ) {
@@ -402,7 +401,6 @@
 			}
 
 			function toggleItem() {
-				alert("toggleItem");
 				var itemClass = this.parentNode.className;
 
 				// Hide all items
@@ -861,7 +859,7 @@
 		#{if idea.isDraft == false}
 		<li>
 			<div class="accordionItem">
-			<h3><a href="@{Ideas.show(idea.id)}">${idea.title}</a>    <font color ="#FF0000" size =4>    ⊕</font></h3>
+			<h3><a href="@{Ideas.show(idea.id)}">&nbsp ${idea.title}</a></h3>
 				<div>
 					<p><font size=2>Description: ${idea.description}</font></p>
 					<p><font size=2>Creator: ${idea.author}</font></p>
