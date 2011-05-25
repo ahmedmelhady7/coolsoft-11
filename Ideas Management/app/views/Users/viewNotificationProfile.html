@@ -1,6 +1,24 @@
 #{extends 'Login/index.html' /}
 #{set title:'Notification Profile' /}
 
+<div id="leftSidebar">
+    <ul>                   
+        <li>
+			<h2>Notifications From</h2>
+			<ul>
+				<li><a href="/users/notificationview?type=All">All</a></li>
+				<li><a href="/users/notificationview?type=Organization">Organizations</a></li>
+				<li><a href="/users/notificationview?type=Entity">Entities</a></li>
+				<li><a href="/users/notificationview?type=Topic">Topics</a></li>
+				<li><a href="/users/notificationview?type=Idea">Ideas</a></li>
+				<li><a href="/users/notificationview?type=Plan">Plans</a></li>
+				<li><a href="/users/notificationview?type=Tag">Tags</a></li>
+				<li><a href="/users/notificationview?type=User">Users</a></li>
+			</ul>        
+        </li>        
+    </ul>
+</div>
+
 <div id="page">
 		<div id="page-bgtop">
 			<div id="page-bgbtm">
