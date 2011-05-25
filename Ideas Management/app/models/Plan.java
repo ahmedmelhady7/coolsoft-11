@@ -71,6 +71,14 @@ public class Plan extends CoolModel {
 	/**
 	 * @author ${Ibrahim Safwat} List of comments in that plan
 	 */
+
+	
+	/**
+	 * @auther monica counter to check how many times this topic is viewed to be
+	 *         used in sorting
+	 */
+	public int viewed;
+	
 	/**
 	 * This is a constructor for the plan
 	 * 
@@ -107,7 +115,7 @@ public class Plan extends CoolModel {
 		this.endDate = endDate;
 		this.description = description;
 		this.requirement = requirement;
-
+		this.viewed = 0;
 		this.items = new ArrayList<Item>();
 		this.ideas = new ArrayList<Idea>();
 		
@@ -208,4 +216,14 @@ public class Plan extends CoolModel {
 		return s;
 	}
 
+
+	/**
+	 * @author monica yousry this method increments the counter viewed
+	 * @return:void
+	 */
+	public void incrmentViewed() {
+		this.viewed++;
+	}
+
+	
 }
