@@ -281,6 +281,11 @@ public class MainEntitys extends CoolCRUD {
 		Organization org = entity.organization;
 		List<MainEntity> subentities = entity.subentities;
 		List<Topic> topicList = entity.topicList;
+		
+
+		entity.incrmentViewed();
+		entity.save();
+		
 		int canCreateEntity = 0;
 		int canCreateSubEntity = 0;
 		int canDeleteEntity = 0;
