@@ -39,7 +39,7 @@ public class Security extends Secure.Security {
 	 * Needed to check that the logging user has access to the
 	 * web site
 	 * 
-	 * @author Ahmed Maged
+	 * @author Ahmed Maged , Mostafa Ali
 	 * 
 	 * @stroy C1S18
 	 * 
@@ -54,6 +54,8 @@ public class Security extends Secure.Security {
 	 */
 
 	public static boolean authenticate(String username, String password) {
+		password = Codec.hexMD5(password);
+		System.out.println(password);
 		User user = User.find(
 				"select u from User u where (u.username=? and u.password = ?)",
 				username, password).first();
