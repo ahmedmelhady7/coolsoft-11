@@ -214,7 +214,18 @@ public class Tags extends CoolCRUD {
 			org.save();
 			user.createdTags.add(tag);
 			user.save();
-			Log.addUserLog("User " + user.username + " created a new Tag \"" + name + "\" in Organization \"" + org.name + "\"", user,org,tag);
+			Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ user.id
+					+ "\">"
+					+ user.firstName
+					+ " "
+					+ user.lastName
+					+ "</a>"
+					+ " has created the tag ("
+					+ "<a href=\"http://localhost:9008/tags/mainPage?tagId="
+					+ tag.id + "\">" + tag.name + "</a>" + ") in organization ("
+					+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
+					+ org.id + "\">" + org.name + "</a>)", org, user, tag);
 			String description = user.username + " has created a new tag \""
 					+ name + "\" in organization " + org.name;
 			Notifications.sendNotification(org.creator.id, tag.id, "Tag",
@@ -305,7 +316,18 @@ public class Tags extends CoolCRUD {
 			String oldName = tag.name;
 			tag.name = name;
 			tag.save();
-			Log.addUserLog("User " + user.username + " changed the name of the Tag \"" + oldName + "\" to \"" + tag.name + "\"", user,tag,tagOrganization);
+			Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ user.id
+					+ "\">"
+					+ user.firstName
+					+ " "
+					+ user.lastName
+					+ "</a>"
+					+ " has changed the tag name from (" + oldName + ") to ("
+					+ "<a href=\"http://localhost:9008/tags/mainPage?tagId="
+					+ tag.id + "\">" + tag.name + "</a>" + ") in organization ("
+					+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
+					+ tagOrganization.id + "\">" + tagOrganization.name + "</a>)", tagOrganization, user, tag);
 			flash.success("DONE");
 		}
 		else {
@@ -394,7 +416,17 @@ public class Tags extends CoolCRUD {
 		for(int j = 0; j < tag.relationsDestination.size(); j++){
 			TagRelationships.delete(tag.relationsDestination.get(j).id);
 		}
-		Log.addUserLog("User " + user.username + " deleted the Tag \"" + tag.name + "\"", user,organization);
+		tag.logs.clear();
+		Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.firstName
+				+ " "
+				+ user.lastName
+				+ "</a>"
+				+ " has created the organisation ("
+				+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
+				+ organization.id + "\">" + organization.name + "</a>" + ")", user, organization);
 		tag.delete();
 		return true;
 	}

@@ -203,7 +203,17 @@ public class RequestToJoins extends CoolCRUD {
 			RequestToJoin request = new RequestToJoin(requester, null,
 					organization, description).save();
 			organization.joinRequests.add(request);
-			Log.addUserLog("User " + requester.username + " has requested to join the Organization \"" + organization.name + "\"", requester,organization);
+			Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ requester.id
+					+ "\">"
+					+ requester.firstName
+					+ " "
+					+ requester.lastName
+					+ "</a>"
+					+ " has requested to join the organisation ("
+					+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
+					+ organization.id + "\">" + organization.name + "</a>" + ")", requester, organization);
+			flash.success("Your request has been successfully been sent!!");
 			Login.homePage();
 		}
 	}

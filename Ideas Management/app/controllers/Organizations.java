@@ -321,9 +321,16 @@ public class Organizations extends CoolCRUD {
 			}
 			Organization org = new Organization(name, creator, privacyLevell,
 					createTagg, description).save();
-			Log.addUserLog("User " + creator.username
-					+ " created a new Organization \"" + name + "\"", creator,
-					org);
+			Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ creator.id
+					+ "\">"
+					+ creator.firstName
+					+ " "
+					+ creator.lastName
+					+ "</a>"
+					+ " has created the organisation ("
+					+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
+					+ org.id + "\">" + org.name + "</a>" + ")", creator, org);
 			Role role = Roles.getRoleByName("organizationLead");
 			UserRoleInOrganizations.addEnrolledUser(creator, org, role);
 			MainEntity defaultEntity = new MainEntity("Default", "", org, false);
@@ -364,7 +371,7 @@ public class Organizations extends CoolCRUD {
 							+ user.lastName
 							+ "</a>"
 							+ " has followed the organisation ("
-							+ "<a href=\"http://localhost:9008/organizations/viewprofile?organizationId="
+							+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
 							+ org.id + "\">" + org.name + "</a>" + ")", org);
 			redirect(request.controller + ".viewProfile", org.id,
 					"You are now a follower");
@@ -638,8 +645,16 @@ public class Organizations extends CoolCRUD {
 	public static void join(long organizationId) {
 		Organization organization = Organization.findById(organizationId);
 		User user = Security.getConnected();
-		Log.addUserLog("User " + user.username + " has joined Organization \""
-				+ organization.name + "\"", user, organization);
+		Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.firstName
+				+ " "
+				+ user.lastName
+				+ "</a>"
+				+ " has joined the organisation ("
+				+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
+				+ organization.id + "\">" + organization.name + "</a>" + ")",user, organization);
 		Role role = Roles.getRoleByName("idea developer");
 		UserRoleInOrganizations.addEnrolledUser(user, organization, role);
 		Organizations.viewProfile(organizationId);
@@ -718,8 +733,15 @@ public class Organizations extends CoolCRUD {
 		organization.logs.clear();
 
 		organization.delete();
-		Log.addUserLog("User " + user.username + " deleted the Organization \""
-				+ organization.name + "\"", user);
+		Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.firstName
+				+ " "
+				+ user.lastName
+				+ "</a>"
+				+ " deleted the organisation ("
+				+ organization.name + ")", user);
 		Login.homePage();
 	}
 
@@ -779,8 +801,16 @@ public class Organizations extends CoolCRUD {
 		organization.createTag = createTagg;
 		organization.description = description;
 		organization.save();
-		Log.addUserLog("User " + user.username + " edited the Organization \""
-				+ organization.name + "\"", user, organization);
+		Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.firstName
+				+ " "
+				+ user.lastName
+				+ "</a>"
+				+ " has edited the organisation ("
+				+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
+				+ organization.id + "\">" + organization.name + "</a>" + ")", user, organization);
 		Organizations.viewProfile(organizationId);
 	}
 
