@@ -23,6 +23,7 @@ import java.util.*;
 
 import org.bouncycastle.asn1.x509.UserNotice;
 
+import com.google.gson.JsonObject;
 import com.sun.mail.iap.Response;
 
 //import controllers.CoolCRUD.ObjectType;
@@ -37,7 +38,7 @@ import notifiers.Mail;
 
 @With(Secure.class)
 public class Topics extends CRUD {
-
+	static List<User> joinedUsersInTopic = new ArrayList<User>();
 	/**
 	 * renders the related topic, entity the topic belongs to and the list of
 	 * other topics in the organization to the view
@@ -216,6 +217,11 @@ public class Topics extends CRUD {
 		user.communityContributionCounter++;
 		user.save();
 		idea.save();
+		JsonObject json = new JsonObject();
+		json.addProperty("title", idea.title);
+		json.addProperty("description", idea.description);
+		json.addProperty("commentUser", user.username);
+		renderJSON(json.toString());
 	}
 
 	/**
@@ -741,7 +747,7 @@ public class Topics extends CRUD {
 		boolean topicNotClosed = targetTopic.openToEdit;
 		temporaryTopic.incrmentViewed();
 		temporaryTopic.save();
-
+		long userId=user.id;
 		for (int i = 0; i < ideas.size(); i++) {
 			Idea idea = ideas.get(i);
 
@@ -871,6 +877,13 @@ public class Topics extends CRUD {
 		}
 		
 		boolean joined = false;
+		joinedUsersInTopic = searchByTopic(topicId);
+		System.out.println("topic id "+topicId);
+		System.out.println(joinedUsersInTopic);
+		for (int i = 0; i < joinedUsersInTopic.size(); i++) {
+				if(joinedUsersInTopic.get(i).username.equals(user.username));
+					joined=true;
+		}
 		boolean banned = true;
 		
 		
@@ -895,7 +908,7 @@ public class Topics extends CRUD {
 		try {
 
 			render(type, object, tags, joined,/* canUse, */alreadyReportedTopic,
-					creator, followers, ideas, canReport, hiddenIdeas,
+					creator, followers, ideas, canReport,userId,topicNotClosed,hiddenIdeas,
 					numberOfIdeas, comments, entity, canDelete,
 					alreadyReported, plan, openToEdit, privacyLevel,
 					deleteMessage, deletable, topicIdLong, canClose, canPlan,
@@ -1968,5 +1981,19 @@ public class Topics extends CRUD {
 		targetTopic.save();
 
 		redirect("/ideas/getdrafts");
+	}
+	
+	/**
+	 *@author Ahmed El-Hadi
+	 *
+	 *@param userId :
+	 *				the user who wants to join the topic to post
+	 *
+	 *@description :
+	 *				the method which let the user join a topic to post in it 
+	 */
+	public static void joinToPost(long userId){
+		User user = User.findById(userId);
+		joinedUsersInTopic.add(user);
 	}
 }

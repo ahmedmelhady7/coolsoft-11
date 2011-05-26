@@ -821,8 +821,7 @@
 					#{/else}
 					<br />
 			<!--		haget hadi	-->
-					
-					 #{if canDelete}
+					#{if canDelete}
 			                <input id="showhidden" type="submit" value="show hidden Ideas" class = "linkButton"/>
 			                <div id="hidden">
 			                #{list items:hiddenIdeas, as:'idea'}
@@ -836,15 +835,18 @@
 			                <br />
 			                <input type="submit" id="unhide" value="unhide" onclick="unhide(${idea.id})" class = "linkButton"/>
 			                </fieldset>
-			        #{/list}
+			        		#{/list}
 			        </div>
 			        #{/if}
 					<br/>
-			        #{if topicNotClosed==true && joined}
+			        #{if topicNotClosed && joined}
 			        <input id="postIdea" type="button" value="Post Idea to this topic" class = "linkButton"/>
 			        #{/if}
-			        #{if joind==false}
+			        #{if topicNotClosed && joined==false}
+			        <form action="@{Topics.joinToPost()}" method="GET" name="myform">
+			        <input type="hidden" name="userId" value="${userId}">
 			        <input id="postIdea" type="button" value="Join to post" class = "linkButton"/>
+			        </form>
 			        #{/if}
 			        <div id="postIdeaform">
 			            <p>
