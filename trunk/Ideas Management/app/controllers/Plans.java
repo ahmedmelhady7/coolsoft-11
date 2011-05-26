@@ -1300,7 +1300,7 @@ public class Plans extends CoolCRUD {
 			out.write(" ");
 			out.write("icon=\"/public/rer7.png\"");
 			out.write(">");
-
+out.write(plan.description);
 			out.write("</event>");
 			out.write("\n");
 
