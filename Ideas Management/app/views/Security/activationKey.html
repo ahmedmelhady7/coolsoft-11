@@ -1,0 +1,101 @@
+#{extends 'Secure/layout.html' /}
+#{set title:'Activation' /}
+
+<style type="text/css">
+#login-box {
+	width:333px;
+	height: 352px;
+	padding: 58px 76px 0 76px;
+	color: #ebebeb;
+	font: 12px Arial, Helvetica, sans-serif;
+	background: url(/public/images/login-box-backg.png) no-repeat left top;
+}
+
+#login-box img {
+	border:none;
+}
+
+#login-box h2 {
+	padding:0;
+	margin:0;
+	color: #ebebeb;
+	font: bold 44px "Calibri", Arial;
+}
+
+
+#login-box-name {
+	float: left;
+	display:inline;
+	width:80px;
+	text-align: right;
+	padding: 14px 10px 0 0;
+	margin:0 0 7px 0;
+}
+
+#login-box-field {
+	float: left;
+	display:inline;
+	width:230px;
+	margin:0;
+	margin:0 0 7px 0;
+}
+
+
+.form-login  {
+	width: 205px;
+	padding: 10px 4px 6px 3px;
+	border: 1px solid #0d2c52;
+	background-color:#1e4f8a;
+	font-size: 16px;
+	color: #ebebeb;
+}
+
+.login-box-options  {
+	clear:both;
+	padding-left:87px;
+	font-size: 11px;
+}
+
+.login-box-options a {
+	color: #ebebeb;
+	font-size: 11px;
+}
+</style>
+
+
+<div style="padding: 100px 0 0 250px;">
+	<div id="login-box">
+	<H2>Activation</H2>	
+	Please enter your activation key:
+	#{/if}
+	#{if flash.error}
+		<div id = passrecovery>
+		<p class="error" style="color: #c00">
+		${flash.error}
+		</p>
+	</div>	
+	<br>	
+	${user.securityQuestion}	
+	<form action="@{Security.checkKey()}" method="post">
+		<input type="hidden" name="username" value="${user.username}"/>
+		<input type="hidden" name="username" value="${user.password}"/>				
+		<div id="login-box-name" style="margin-top:20px;">Activation Key:</div><div id="login-box-field" style="margin-top:20px;"><input name="actKey" id="sec_answer" class="form-login" title="Username" value="" size="30" maxlength="2048" /></div>		
+		<br />
+		<span class="login-box-options"><a href="/secure/login" style="margin-left:30px;">Back to login..</a></span>
+		<br/>
+		<br/>
+		<input type="image" src="/public/images/submit-btn.png" width="103" height="42" style="margin-left:90px;" alt="Submit button">		
+	</form>
+	#{/if}
+	#{if flash.success}
+	<br><br><br>
+	<span class="login-box-options"><a href="/secure/login" style="margin-left:30px;">Back to login..</a></span>
+	<br><br><br><br>
+	<div id = passrecovery>
+		<p class="success" style="color: #00FF00">
+		${flash.success}
+	</p>
+	</div>
+	#{/if}
+	</div>
+</div>
