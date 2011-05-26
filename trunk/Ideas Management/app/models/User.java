@@ -26,27 +26,31 @@ import play.data.validation.MinSize;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 import play.jobs.OnApplicationStart;
+import play.libs.Codec;
 
 @Entity
 public class User extends CoolModel {
 	@Required
-	// @Email
+	@Email
 	@Column(unique = true)
 	public String email;
 	@Required
+	@MinSize(3)
 	@MaxSize(20)
 	@Column(unique = true)
 	public String username;
 	@Required
+	@MinSize(3)
 	@MaxSize(25)
 	public String password;
 	@Required
 	public String firstName;
 	public String lastName;
 	public String country;
-	public Date dateofBirth;
+	public String dateofBirth;
 	public int communityContributionCounter;
 	public String activationKey;
+	public String confirmPassword;
 	/**
 	 * Added by Ahmed Maged
 	 */
@@ -213,11 +217,12 @@ public class User extends CoolModel {
 	 */
 	public User(String email, String username, String password,
 			String firstName, String lastName, String securityQuestion, String answer,
-			int communityContributionCounter, Date dateofBirth, String country,
+			int communityContributionCounter, String dateofBirth, String country,
 			String profession) {
 		this.email = email;
 		this.username = username;
-		this.password = password;
+		//this.password = Codec.hexMD5(password);
+		this.password =password;
 		this.firstName = firstName;
 		this.communityContributionCounter = communityContributionCounter;
 		this.securityQuestion = securityQuestion;
