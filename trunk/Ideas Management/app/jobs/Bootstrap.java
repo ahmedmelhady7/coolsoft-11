@@ -149,11 +149,12 @@ public class Bootstrap extends Job {
 			Tag tag2 = new Tag("Germany", guc, ashraf).save();
 			Tag tag3 = new Tag("DAAD", guc, ashraf).save();
 			Tag tag4 = new Tag("University", guc, ashraf).save();
+			Tag tag5 = new Tag("Egypt", guc, ashraf).save();
 
 			
 			guc.relatedTags.add(tagGuc);
 			guc.relatedTags.add(tagEducation);
-			guc.relatedTags.add(tagEgypt);
+			guc.relatedTags.add(tag5);
 			guc.relatedTags.add(tag2);
 			guc.relatedTags.add(tag3);
 			guc.relatedTags.add(tag4);
