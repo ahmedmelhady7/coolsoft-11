@@ -820,7 +820,7 @@ public class Users extends CoolCRUD {
 		}
 		if (placeType.equalsIgnoreCase("topic")) {
 			
-			System.out.println("aloooooooooo1");
+			
 			Topic topic = Topic.findById(placeId);
 			MainEntity m = topic.entity;
 			Organization org = m.organization;
@@ -841,7 +841,7 @@ public class Users extends CoolCRUD {
 				}
 
 			}
-			if (topic.privacyLevel == 2) {
+			if (topic.privacyLevel == 1) {
 				List<UserRoleInOrganization> allowed = UserRoleInOrganization
 						.find("byEnrolledAndEntityTopicIDAndType", user,
 								topic.id, "topic").fetch();
@@ -856,22 +856,29 @@ public class Users extends CoolCRUD {
 				}
 			} else {
 				if (org.privacyLevel == 0 || org.privacyLevel == 1) {
-
+System.out.println("ANA HENA");
 					List<UserRoleInOrganization> allowed = UserRoleInOrganization
 							.find("byEnrolledAndOrganization", user, org)
 							.fetch();
 					if (allowed.size() == 0) {
+						System.out.println("ANA HENA2");
 						return false;
 					} else {
-						if (Roles.getRoleActions("idea developer").contains(
-								action)) {
+						if (action.equals("view")) {
 							return true;
-						} else {
-							return false;
 						}
+						List<UserRoleInOrganization> allowedTopic = UserRoleInOrganization
+								.find("byEnrolledAndOrganization", user, topic)
+								.fetch();
+						if (allowedTopic.size() == 0) {
+							return false;
+						} else
+							return true;
+						
 					}
 				}
 				if (org.privacyLevel == 2) {
+					
 					if (action.equals("view")) {
 						return true;
 					}
@@ -1494,9 +1501,8 @@ public class Users extends CoolCRUD {
 			if (Security.getConnected().isAdmin) {
 				redirect(request.controller + ".list");
 			} else {
-				Log.addUserLog("User" + Security.getConnected().firstName + " "
-						+ Security.getConnected().lastName
-						+ " has edites his/her profile",
+				String url = " the user is clickable" + "<a href=\"http://localhost:9008/users/viewprofile?userId=" + tmp.id +"\">" + tmp.firstName + "</a>";
+				Log.addUserLog( url,
 						Security.getConnected());
 				redirect("/Users/viewProfile?userId=" + id); // was showProfile
 			}
