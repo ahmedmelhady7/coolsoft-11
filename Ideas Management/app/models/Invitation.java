@@ -39,13 +39,13 @@ public class Invitation extends CoolModel{
     public User sender;
     
     /**
-     *   Organization organization that sent the invitation    
+     *   Organization organization that sends the invitation    
      */ 
     @ManyToOne
     public Organization organization;
     
     /**
-     *   MainEntity entity that sent the invitation    
+     *   MainEntity entity that sends the invitation    
      */ 
     @ManyToOne
     public MainEntity entity;
@@ -59,8 +59,8 @@ public class Invitation extends CoolModel{
     
     /**
 	 * Constructor that initializes the destination (email) of the invitation and
-	 * the entity,the organization that sends the invitation and the user
-	 * who sent the invitation
+	 * the entity,organization&topic that sends the invitation and the user 
+	 * organizer/lead who sent the invitation
 	 * 
 	 * @author Mai Magdy
 	 * 
