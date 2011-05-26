@@ -92,7 +92,7 @@ public class Security extends Secure.Security {
 			activationKey(user.username, password);
 		}
 		if (user.activationKey.equals(actKey)) {
-			user.state = "a";
+			user.state = "h";
 			user._save();
 			System.out.println(username + " " + password);
 			authenticate(username, password);
