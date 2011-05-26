@@ -6,25 +6,31 @@
     <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
 <h1> Edit Action plan </h1>
 #{form @Plans.edit(), method:'POST', id:'planeditingnForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
-Plan title:<input type= "text" id = "title" name = "title" size= "30" value="${plan.title}"><label id = "titleerror"> </label>
+Plan title:<input type= "text" id = "title" name = "title" size= "30" value="${p.title}"><label id = "titleerror" style= "color:Red"> Please Insert a title for the plan </label>
 </br>
-Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"value="${plan.startDate}"/>
-</br>
-End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"value="${plan.endDate}"/>
+Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"value="${p.startDate.format('MM/dd/yyyy')}"/><label id = "startdateerror"style= "color:Red"> Please Insert the date on which the plan starts </label><label id = "dateerror"style= "color:Red">Start date can not be earlier than today's date</label>
+End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"value="${p.endDate.format('MM/dd/yyyy')}"/><label id = "enddateerror"style= "color:Red"> Please Insert the date on which the plan ends </label><label id = "earlyerror"style= "color:Red">Start date must be greater than end date</label>
 </br>
 <p><b>Insert the description of the plan</b></p>
 <textarea id = "description" name = "description" rows= "7" cols = "50">${plan.description}
-</textarea><label id = "descriptionerror"> </label>
+</textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the plan </label>
 </br>
 <p><b>Insert the requirements of the plan</b></p>
 <textarea id = "requirement" name = "requirement" rows = "7" cols = "50" >${plan.requirement}
-</textarea><label id = "requirementerror"> </label>
+</textarea><label id = "requirementerror"style= "color:Red"> Please insert the requirements of the plan </label>
 </br>
 <input type = "hidden" name = "planId" value = '${plan.id}' >
 <input type = "submit" value ="Edit">
 #{/form}
 <br>
 <script type ="text/javascript">
+	$('#titleerror').hide();
+	$('#startdateerror').hide();
+	$('#enddateerror').hide();
+	$('#descriptionerror').hide();
+	$('#requirementerror').hide();
+	$('#earlyerror').hide();
+	$('#dateerror').hide();
 	function datepickerA(){
 		$($("#datePickerA").datepicker({
                                                 changeYear: true,
@@ -43,38 +49,56 @@ End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" reado
 		var req = document.getElementById("requirement").value;
 		var start = document.getElementById("datePickerA").value;
 		var end = document.getElementById("datePickerB").value;
+		var flag = 0;
 		
 		if (t == null || t == "") {
-			alert("Please Insert a title for the plan");
-			return false;
+			$('#titleerror').show();
+			flag = 1;
+		}else{
+			$('#titleerror').hide();
 		}
 		if(start == "" || start == null){
-			alert("Please Insert the date on which the plan starts");
-			return false;
+			$('#startdateerror').show();
+			flag = 1;
+		}else{
+			$('#startdateerror').hide();
 		}
 		if(end == "" || end == null){
-			alert("Please Insert the date on which the plan ends");
-			return false;
+		$('#enddateerror').show();
+			flag = 1;
+		}else{
+			$('#enddateerror').hide();	
 		}
 	
 		if (desc == null || desc == "") {
-			alert("Please insert a description for the plan");
-			return false;
+			$('#descriptionerror').show();
+			flag = 1;
+		}else{
+			$('#descriptionerror').hide();
 		}
 					
 		if (req == null || req == "") {
-			alert("Please insert requirements for the plan");
+			$('#requirementerror').show();
+			flag = 1;
+		}else{
+			$('#requirementerror').hide();
+		}
+		if(flag == 1){
 			return false;
 		}
 		var sd = new Date("" +document.getElementById("datePickerA").value.toString());
 		var ed = new Date("" +document.getElementById("datePickerB").value.toString());
 		if(ed <sd){
-			alert("Start date must be greater than end date");
+			$('#earlyerror').show();
 			return false;
+		}else{
+			$('#earlyerror').hide();
 		}
 		if(sd< new Date()){
-			alert("Start date can not be earlier than today's date");
+			$('#dateerror').show();
 			return false;
+		}else{
+			$('#dateerror').hide();
 		}
 	}
 </script>
