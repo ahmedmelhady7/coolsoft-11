@@ -155,15 +155,16 @@ You have already rated this plan
 			 <a href="@{Plans.editItem(item.id)}" >Edit this item</a>#{/if}
             #{if canEdit == 1}
             <a onclick="delItem(${item.id})" style="cursor:pointer; float:right;">
-			<img src="/public/images/Cross.png" title="Delete item" width="25" height="20"/></a>
+			<img src="/public/images/icons/trash.png" title="Delete item" width="25" height="20"/></a>
             #{/if}
 
-                <br/>
+              
+				<div id="entityRelated_${item.id}"></div>
             #{if isOrganizer == true}  
             #{if item.isRelatedToEntity() == true} 
             <div id = "removeEntity_${item.id}">
                 Related to entity: <a href="@{MainEntitys.viewEntity(item.relatedEntity.id)}">${item.relatedEntity}</a>
-                <a onclick="javascript: remove_entity(${item.id});" style="cursor:pointer;" /><img src="/public/images/Cross.png" title="Remove relationship" width="23" height="20"/></a>
+                <a onclick="javascript: remove_entity(${item.id});" style="cursor:pointer;" /><img src="/public/images/icons/delete.png" title="Remove relationship" width="24" height="24"/></a>
             </div>
 			#{/if} 
             #{else} 
@@ -173,7 +174,7 @@ You have already rated this plan
                     #{list items:entitiesList, as:'ent'}<option value = ${ent.id}>${ent.name}</option>
                     #{/list}
                 </select>
-                <a onclick="javascript: relate_entity(${item.id});" style="cursor:pointer;" /><img src="/public/images/ranktable-tick.png" title="Relate" width="27" height="27"/></a>
+                <a onclick="javascript: relate_entity(${item.id});" style="cursor:pointer;" /><img src="/public/images/icons/accept.png" title="Relate" width="24" height="24"/></a>
             </div>
 			#{/else}
             #{/if}
@@ -181,11 +182,12 @@ You have already rated this plan
 			#{if item.isRelatedToEntity() == true} 
 			Related to entity: <a href="@{MainEntitys.viewEntity(item.relatedEntity.id)}">${item.relatedEntity}</a>
 			#{/if}
-			#{/else}            
+			#{/else}
+			<a id ="removeButton_${item.id}" hidden ="true" onclick="javascript: remove_entity(${item.id});" style="cursor:pointer;" /><img src="/public/images/icons/delete.png" title="Remove relationship" width="24" height="24"/></a>            
                 <div id = "pend_${item.id}" hidden = true>
 				Pending volunteer Request &nbsp;&nbsp;&nbsp;
 				<a onclick="cancelReq(${item.id});" style="cursor:pointer;">
-			<img src="/public/images/Cross.png" title="Cancel request" width="25" height="20"/></a>
+			<img src="/public/images/icons/delete.png" title="Cancel request" width="25" height="20"/></a>
 				 </div>
 		 #{if user.pendingVolunteerRequest(item.id)&& !(item.status == 2) && !item.endDatePassed()}
 		 			<script type="text/javascript">
@@ -252,9 +254,9 @@ Please contact
  						<div class="about">Detail:</div>
  						<li><a>${comment.comment}</a></li>
 						#{if comment.commenter.username != user.username}
- 						<input style="float: right;" type="image" src="/public/images/red_flag.png" value="Report As Spam" />
+ 						<input style="float: right;" type="image" src="/public/images/icons/red_flag.png" value="Report As Spam" />
  					#{/if}
-					</div>
+					<br/></div>
  					#{/list} 
 					</ul>
  					<br/>
@@ -275,7 +277,7 @@ Please contact
 					  	var text = $('#commentTxt').val();
 						 $('#commentTxt').val("");
 						$.getJSON('@{addCommentToPlan()}', {comment: text, planID:id}, function(comm) {
-							 $("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " +  comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li></div>");
+							 $("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " +  comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li><br/></div>");
 						});
 					   
 
@@ -347,8 +349,14 @@ Please contact
  					 function relate_entity(item)
  						{
                            var entity = document.getElementById('entitySelect').value;
-                           $.post('@{relateToEntity()}' , {itemId: item, entityId: entity}, function(){window.location.reload();});        	
-                         }
+						    $("#relateEntity_" + item).hide();
+                           $.getJSON('@{relateToEntity()}' , {itemId: item, entityId: entity}, function(entityReturned){ 
+						   
+							var eId = entityReturned.id;
+							var eName = entityReturned.name;
+						   $("#entityRelated_" + item).html("<div id = \"removeEntity_" + item + "\">Related to entity: <a href=\"http://localhost:9008/mainentitys/viewentity?id=" + eId + "\">"+eName+"</a></div>");
+						});$("#removeButton_" + item).show();      	
+                          }
                                       
 					 function remove_entity(item)
                         {
