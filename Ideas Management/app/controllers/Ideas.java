@@ -902,7 +902,8 @@ public class Ideas extends CoolCRUD {
 		Topic targetTopic = Topic.findById(topicId);
 		User merger = Security.getConnected();
 		ArrayList<String> contributorsList = new ArrayList<String>();
-
+		User user = Security.getConnected();
+		
 		String[] ideasIdsString = oldIdeas.split("%");
 		long[] ideasIds = new long[ideasIdsString.length];
 		List<Idea> selectedIdeas = new ArrayList<Idea>();
@@ -947,7 +948,16 @@ public class Ideas extends CoolCRUD {
 
 		ideaToKeep.save();
 		targetTopic.save();
-
+		
+		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
+        + " merged ideas " +"<a href=\"http://localhost:9008/ideas/show?ideaId=" + ideaToKeep.id +"\">" +  ideaToKeep.title + "</a>"  + " of the topic "
+        + "<a href=\"http://localhost:9008/topics/show?topicId=" + targetTopic.id +"\">" + targetTopic.title + "</a>" ;
+		
+		MainEntity entity = targetTopic.entity;
+		Organization organization = entity.organization;
+		
+		Log.addUserLog(log, user,ideaToKeep, targetTopic, entity, organization);
+		
 	}
 
 	/**
