@@ -219,13 +219,15 @@
 						<br />
  					</div>
  					#{/list} 
- 					<br/>
  		#{/if} 
 		</ul>
- 		#{else}No comments posted#{/else}
+ 		#{else}<label id = "noComments">No comments posted </label>#{/else}
  		</div>
 
-			<div id="comment-content"><textarea name = "comment" id= "commentTxt" rows="7" cols="80"></textarea></div>
+			<div class="comment-content" style = "margin-left: 21%;"><textarea name = "comment" id= "commentTxt" rows="7" cols="63"></textarea>
+			<br/>
+			<label id = "emptyComment" style = "color: red;" hidden = "true">You have to enter a comment</label>
+			</div>
 			<br/>
 			<input class = "linkButton" style = "margin-left: 17%; float: right;" type = "button" value = "Comment" onclick="comment(${ideaId});" >
 <br/>
@@ -239,12 +241,21 @@
             	
             }
 			  function comment(id) {
-				  	var text = $('#commentTxt').val();
-					 $('#commentTxt').val("");
-					$.getJSON('@{addCommentToIdea()}', {ideaID:id, comment: text}, function(comm) {
-						 $("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " +  comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li><br/></div>");
-					});
-				   
+		   			  	var text = $('#commentTxt').val();
+						if (text == null || text.trim() == "") {
+						$("#emptyComment").show();
+						
+						}
+						else {
+							$('#commentTxt').val("");
+							$.getJSON('@{addCommentToIdea()}', {
+								ideaID:id, comment: text
+							}, function(comm){
+								$("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " + comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li><br/></div>");
+							});
+								$("#emptyComment").hide();
+								$("#noComments").hide();
+						}
 
 				  }
             	function prompt1(){
@@ -299,32 +310,6 @@
 				});
 			}
 		</script>
- 		<div >
-		<div id="comment-content"><textarea id="comments1" name = "comment" cols="65" style="float:left;"></textarea><input type="image" src="/public/images/icons/cloud_comment.png"  title = "Comment" onclick="comment1()" /></div>
-			</div>
-			<br/>
-			<div id="commentError" class = "div_err">Comment is empty, please re-enter a valid comment</div>
-			<br />
-			<div id="commentSuccess" class = "div_suc">Comment posted, refresh to see your comment</div>
-      	 	<input type = "hidden" name = "ideaID" value = ${ideaId} />
-			
-		
-		<script type='text/javascript'>
-		function comment1(){
-			var comment = document.getElementById('comments1').value
-			if(comment == '')
-			{
-				document.getElementById('commentError').style.display = 'inline'
-			}
-			else
-			{
-				document.getElementById('commentError').style.display = 'none'
-				document.getElementById('commentSuccess').style.display = 'inline'
-				$.post('@{Comments.addCommentToIdea()}',{ideaID: ${ideaId}, comment:comment},function(){});	
-			;}
-			}
-		</script>
-		<br/>
 		#{/if}
 		<br/>
 		<br/>

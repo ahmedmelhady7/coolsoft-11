@@ -3,7 +3,6 @@
 #{set 'title'}
 Collaborative Thinking | ${plan.title} - View Plan as List
 #{/set}
-
 <script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js"></script>
 
 <style type="text/css">body {
@@ -269,9 +268,10 @@ Please contact
 <br/>
 #{if notBlockedFromUsing}
 <div class="comment">
+	 <ul id="commentsList" style="list-style: none; ">
  		#{if comments} 
  			<font color="black"> <h3> Comments</h3></font> 
- 			<br/> <ul id="commentsList" style="list-style: none; ">
+ 			<br/>
  					#{list comments, as:'comment'} 
  					<div class="comment-metadata">
 						<span class="comment-author">by ${comment.commenter.username}</span>
@@ -280,14 +280,16 @@ Please contact
  					<div class="comment-content">
  						<div class="about">Detail:</div>
  						<li><a>${comment.comment}</a></li>
-						#{if comment.commenter.username != user.username}
- 						<input style="float: right;" type="image" src="/public/images/icons/red_flag.png" value="Report As Spam" />
- 					#{/if}
+	
+					#{if comment.commenter.username != user.username && !comment.reported(user.id)}
+ 						<input id = "reportBtn_${comment.id}" onclick = "reportComment(${comment.id});" style="float: right;" type="image" src="/public/images/icons/red_flag.png" />
+ 						#{/if}
 					<br/></div>
  					#{/list} 
-					</ul>
+					
  					<br/>
- 		#{/if} 
+ 		#{/if}
+		</ul> 
  		#{else}<label id = "noComments">No comments posted </label>#{/else}
 </div>
 
@@ -303,7 +305,11 @@ Please contact
 <script type="text/javascript">
                 	$(".req").hide();
                 	  var count = ${itemsList.size()};
-					  
+		function reportComment(id) {
+            	$.post('@{Users.reportCommentAsSpam()}', {commentId: id});
+            	$("#reportBtn_" + id).remove();
+            	
+            }
 					  function comment(id) {
 					  	var text = $('#commentTxt').val();
 						if (text == null || text.trim() == "") {
@@ -319,6 +325,7 @@ Please contact
 								$("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " + comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li><br/></div>");
 							});
 								$("#emptyComment").hide();
+								$("#noComment").hide();
 						}
 					   
 
