@@ -193,7 +193,7 @@
 	<h2 id="crudBlankTitle">&{'crud.blank.title', type.modelName}</h2>
 	<br />
 	
-	<font color="Red">${message}</font>	
+	<font color="Red">${message}</font>	<font size="3px" color="#123456"><span id="flashAmessage"></span></font>
 	
 	<div class="objectForm">
 	#{form action:@create(entityId), enctype:'multipart/form-data'}
@@ -201,9 +201,9 @@
 		
 			#{crud.custom 'title'}
 	  		<p> 
- 			<label for="object_title">Title</label>
+ 			<label for="object_title">Title</label> <span
 			<br />
-			<input type="text" id="object_title" cols="30" rows="1" class="" name="object.title" required/> 
+			<input type="text" id="object_title" cols="30" rows="1" class="" name="object.title" required/><span id = "ideaTitleError"></span>
  			<span class="crudHelp" ><font color="Red">*</font></span>
 			</p> 
 			#{/crud.custom}
@@ -212,7 +212,7 @@
 			<p> 
  			<label for="object_description">Description</label>
 			<br /> 
-			<textarea id="object_description" cols="50" rows="5" class="" name="object.description" required></textarea> 
+			<textarea id="object_description" cols="50" rows="5" class="" name="object.description" required></textarea><span id = "ideaDescriptionError"></span>
 			<span class="crudHelp" ><font color="Red">*</font></span> 
  			</p> 
 			#{/crud.custom}
@@ -251,30 +251,242 @@
 <script type="text/javascript">
 				
 	function saveAsDraft() {
-		
-		var entityId = ${entityId};
+		var entityId = ${entity.id};
+		var topicId = auto.kill;
 		var topicTitle = document.getElementById("object_title").value.toString();
 		var topicDescription = document.getElementById("object_description").value.toString();
-		var privacyLevelString = document.getElementById("object_privacyLevel").value.toString();
-		var privacyLevel;
+		var privacyLevel = getPrivacyLevel();
+		
 		var createRelationship = document.getElementById("object_createRelationship").checked;
-		
-		if(topicTitle == "" && topicDescription == "") {
-			alert("Nothing to save");
-			return;
-		}
-		
-		if(privacyLevelString == "1") {
-			privacyLevel = 1;
-		} else {
-			privacyLevel = 2;
-		}
 					
 		var link = "/mainentitys/viewentity?id="+entityId;
-		$.post('@{Topics.createDraft()}' ,{title:topicTitle, description:topicDescription, 
+		$.post('@{Topics.saveDraft()}' ,{title:topicTitle, description:topicDescription, 
 			privacyLevel: privacyLevel, createRelationship: createRelationship,
-			entityId:entityId}, function(){window.location.href=link});					
+			topicId:topicId}, function(){window.location.href=link});					
 	}
+	
+	
 </script>
+<script type="text/javascript">
+
+				window.onload = auto;
+				
+				function getPrivacyLevel()
+				{
+					var privacyLevelString = document.getElementById("object_privacyLevel").value.toString();
+					var privacyLevel;
+					
+					if(privacyLevelString == "1") {
+						privacyLevel = 1;
+					} else {
+						privacyLevel = 2;
+					}
+					
+					return privacyLevel;
+					
+				}
+				
+				function save()
+				{
+					var entityId 		 = ${entityId};
+					var topicTitle 		 = document.getElementById("object_title").value.toString();
+					var topicDescription = document.getElementById("object_description").value.toString();
+					
+					if(validate())
+					{
+						var link = "/mainentitys/viewentity?id="+entityId;
+						
+						$.post('@{Topics.createDraft()}' ,
+						{title:topicTitle, description:topicDescription,
+							privacyLevel: privacyLevel, createRelationship: createRelationship,
+							entityId:entityId}, 
+						function(){window.location.href=link});
+					}					
+				}
+				
+				function takeFirstSave()
+				{
+					var id;
+					var x = ${entityId};
+					var y = document.getElementById("object_title").value.toString();
+					var z = document.getElementById("object_description").value.toString();
+					var r = getPrivacyLevel();
+					var w = document.getElementById("object_createRelationship").checked;
+						
+
+					if(!validate2())
+						setTimeout("takeFirstSave()",'1000');
+					else
+					{
+						$.post('@{Topics.createDraft()}', 
+						{
+							title:y, 
+							description:z, 
+							privacyLevel:r, 
+							createRelationship:w,
+							entityId:x
+						}, 
+						function(data){
+							id = data;
+							auto.kill = id;
+							var currentTime = new Date();
+							var hours = currentTime.getHours();
+							var minutes = currentTime.getMinutes();
+			
+							if (minutes < 10)	
+								minutes = "0" + minutes;
+			
+							var write =(hours + ":" + minutes /*+ ":" + secs + " "*/ );
+							
+							document.getElementById("flashAmessage").innerHTML = "Topic auto saved as a draft at " + write;
+							setTimeout("myFader()", '3000');
+						});
+						
+					}
+					auto.c = 1;
+				}
+				
+				function auto()
+				{
+					if(!auto.c) auto.c = 0;
+					if(!auto.t) auto.t = document.getElementById("object_title").value.toString();
+	            	if(!auto.b)	auto.b = document.getElementById("object_description").value.toString();
+					if(!auto.kill) auto.kill = 0;
+					
+	                if (auto.c == 0) 
+					{
+                    	takeFirstSave();    
+                    }
+					else
+					{
+						var x = document.getElementById("object_title").value.toString();
+	            		var y = document.getElementById("object_description").value.toString();
+	            		var r = getPrivacyLevel();
+						var w = document.getElementById("object_createRelationship").checked;
+					   		
+						var currentTime = new Date();
+						var hours = currentTime.getHours();
+						var minutes = currentTime.getMinutes();
+		
+						if (minutes < 10)	
+							minutes = "0" + minutes;
+		
+						var write =(hours + ":" + minutes /*+ ":" + secs + " "*/ );
+						
+						var xx = jQuery.trim(x);
+						var yy = jQuery.trim(y);
+						
+						if(((x != auto.t) || (y != auto.b)) && ((xx != "") && (yy != "") ) )
+						{
+							
+							$('#flashAmessage').fadeIn('10');
+							
+							$.post('@{Topics.saveDraft()}', 
+							{
+								title:x, 
+								description:y, 
+								privacyLevel:r, 
+								createRelationship:w,
+								topicId:auto.kill
+							});
+							
+							auto.t = document.getElementById("object_title").value.toString();
+		            		auto.b = document.getElementById("object_description").value.toString();
+							
+							document.getElementById("flashAmessage").innerHTML = "draft auto saved at " + write;
+							setTimeout("myFader()",'3000');
+						}
+					
+					}
+					setTimeout("auto()",'10000');
+				}
+				
+					function myFader()
+					{
+						$('#flashAmessage').fadeOut('500');
+					}
+					
+					
+						
+					function validate()
+					{
+						var x = document.getElementById("object_title").value.toString();
+						var y = document.getElementById("object_description").value.toString();
+					
+						var Tflag = true;
+						var Dflag = true;
+						
+						x = jQuery.trim(x);
+						y = jQuery.trim(y);
+						
+						if(x=="")
+						{
+							document.getElementById("ideaTitleError").innerHTML = "please enter a title for the topic";
+							Tflag = false;
+						}
+						else
+						{
+							document.getElementById("ideaTitleError").innerHTML = "";
+							Tflag = true;
+						}
+						if(y=="")
+						{
+							document.getElementById("ideaDescriptionError").innerHTML = "please enter a body for the topic";
+							Dflag = false;
+						}
+						else
+						{
+							document.getElementById("ideaDescriptionError").innerHTML = "";
+							Dflag = true;
+						}
+						
+						if(Tflag && Dflag)
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+					
+					function validate2()
+					{
+						var x = document.getElementById("object_title").value.toString();
+						var y = document.getElementById("object_description").value.toString();
+						
+						var Tflag = true;
+						var Dflag = true;
+						
+						x = jQuery.trim(x);
+						y = jQuery.trim(y);
+						
+						if(x=="")
+						{
+							Tflag = false;
+						}
+						else
+						{
+							Tflag = true;
+						}
+						if(y=="")
+						{
+							Dflag = false;
+						}
+						else
+						{
+							Dflag = true;
+						}
+						
+						if(Tflag && Dflag)
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+			</script>
 	
 			
