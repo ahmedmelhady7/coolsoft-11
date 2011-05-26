@@ -192,6 +192,7 @@
  		#{if comments} 
  			<font color="black">Comments</font> 
  			<br/> 
+ 					 <ul id="commentsList" style="list-style: none; ">
  					#{list comments, as:'comment'} 
  					<div class="comment-metadata">
 						<span class="comment-author">by ${comment.commenter.username}</span>
@@ -206,11 +207,28 @@
 						<br />
  					</div>
  					#{/list} 
+ 					</ul>
  					<br/>
  		#{/if} 
  		#{else}No comments posted#{/else}
  		</div>
+
+			<div id="comment-content" style = "margin-left: 17%;"><textarea name = "comment" id= "commentTxt" rows="7" cols="80"></textarea></div>
+			<br/>
+			<input class = "linkButton" style = "margin-left: 17%; float: right;" type = "button" value = "Comment" onclick="comment(${ideaId});" >
+<br/>
+<br/>
+ 		</div>
             <script type="text/javascript">
+			  function comment(id) {
+				  	var text = $('#commentTxt').val();
+					 $('#commentTxt').val("");
+					$.getJSON('@{addCommentToIdea()}', {ideaID:id, comment: text}, function(comm) {
+						 $("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " +  comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li></div>");
+					});
+				   
+
+				  }
             	function prompt1(){
 					var text = prompt("Why do you want to delete/hide this idea?");
 					

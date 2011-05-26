@@ -7,6 +7,8 @@ import java.util.Collections;
 
 import javax.persistence.Id;
 
+import com.google.gson.JsonObject;
+
 import controllers.CoolCRUD.ObjectType;
 
 import play.*;
@@ -624,7 +626,6 @@ public class Ideas extends CoolCRUD {
 				idea.author.save();
 				object._delete();
 				
-
 			}
 		} catch (Exception e) {
 			flash.error(Messages.get("crud.delete.error", type.modelName));
@@ -997,4 +998,27 @@ public class Ideas extends CoolCRUD {
 		return selectedIdeas;
 	}
 
+	/**
+	 * @author ${Ibrahim safwat}
+	 * 
+	 * @param ideaID
+	 *            ID of the idea that the user wants to add the comment to
+	 * @param comment
+	 *            Comment to be added to list of comments of the idea
+	 *            addes a comment to an idea
+	 */
+	public static void addCommentToIdea(long ideaID, String comment) {
+		Idea i = Idea.findById(ideaID);
+		User user = Security.getConnected();
+		Comment c = new Comment(comment, i, user).save();
+		i.commentsList.add(c);
+		i.save();
+
+		JsonObject json = new JsonObject();
+		json.addProperty("commentMsg", comment);
+		json.addProperty("commentUser", user.username);
+		json.addProperty("commentDate", c.commentDate + "");
+
+		renderJSON(json.toString());
+	}
 }
