@@ -21,8 +21,6 @@ import java.lang.*;
 import java.lang.reflect.*;
 import java.util.*;
 
-import org.bouncycastle.asn1.x509.UserNotice;
-
 import com.google.gson.JsonObject;
 import com.sun.mail.iap.Response;
 
@@ -866,8 +864,8 @@ public class Topics extends CRUD {
 		}
 		if (Users.getEntityOrganizers(entity).contains(actor)
 				&& Users.isPermitted(actor,
-						"Request to start a relationship with other items;",
-						topicId, "Topic")) {
+						"Request to start a relationship with other items",
+						topicId, "topic")) {
 			canRequestRelationship = true;
 		}
 		
@@ -920,8 +918,6 @@ public class Topics extends CRUD {
 		else{
 			BannedUsers.unauthorized();
 		}
-		
-		
 	}
 
 	/**
@@ -1459,8 +1455,11 @@ public class Topics extends CRUD {
 	 * @return boolean
 	 */
 	public static boolean deleteTopicInternally(String id) {
-
-		Topic temporaryTopic  = Topic.findById(id);
+		long temporaryTopicId = Long.parseLong(id);
+		List<Tag> tags = Tag.findAll();
+		List<User> allUsers = User.findAll();
+		Topic temporaryTopic  = Topic.findById(temporaryTopicId);
+		List<User> followers = temporaryTopic.followers;
 		notFoundIfNull(temporaryTopic);
 		MainEntity entity = temporaryTopic.entity;
 		Plan plan = temporaryTopic.plan;
@@ -1490,6 +1489,31 @@ public class Topics extends CRUD {
 		for (int i = 0; i < temporaryTopic.invitations.size(); i++)
 			temporaryTopic.invitations.get(i).delete();
 		// fadwa
+		
+		for(int i = 0; i < tags.size(); i++) {
+			if(tags.get(i).taggedTopics.contains(temporaryTopic)) {
+				tags.get(i).taggedTopics.remove(temporaryTopic);
+				tags.get(i).save();
+			}
+		}
+		
+		for(int i = 0; i < allUsers.size();i++) {
+			if(allUsers.get(i).topicsCreated.contains(temporaryTopic)) {
+				allUsers.get(i).topicsCreated.remove(temporaryTopic);
+				allUsers.get(i).save();
+			}
+		}
+		
+		for(int i = 0; i < followers.size();i++) {
+			if(followers.get(i).topicsIFollow.contains(temporaryTopic)) {
+				followers.get(i).topicsIFollow.remove(temporaryTopic);
+				followers.get(i).save();
+			}
+		}
+		
+		for(int i = 0; i < temporaryTopic.ideas.size(); i++) {
+			//Ideas.delete(temporaryTopic)
+		}
 
 		UserRoleInOrganization.deleteEntityOrTopic(temporaryTopic.id, "topic");
 		
@@ -1508,7 +1532,7 @@ public class Topics extends CRUD {
 		+ entity.name + "</a>" + "was deleted";
 		Log.addUserLog(logDescription, temporaryTopic, entity,
 				entity.organization);
-		temporaryTopic._delete();
+		temporaryTopic.delete();
 		return true;
 	}
 	
@@ -1631,7 +1655,7 @@ public class Topics extends CRUD {
 				Notifications.sendNotification(temporaryTopic.followers.get(i)
 						.getId(), entity.getId(), "entity", message);
 
-			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username +  "</a>"
+			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
 	        + " unhid the topic " +"<a href=\"http://localhost:9008/topics/show?topicId=" + temporaryTopic.id +"\">" + temporaryTopic.title + "</a>"
 	        + " from entity " + "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + entity.id +"\">" + entity.name + "</a>";
 			Log.addUserLog(logDescription, temporaryTopic, user, entity,
@@ -1822,7 +1846,7 @@ public class Topics extends CRUD {
 		draftTopic.save();
 		return draftTopic.id;
 	}
-	
+
 	/**
 	 * @description publish a topic
 	 * 
