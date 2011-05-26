@@ -1,16 +1,254 @@
-<html>
-    <head>
-        <title>Entity View</title>
-    </head>
-
-    <body>
-        #{extends 'main.html' /}
-        <form name="entityForm" action="@{MainEntitys.editEntity()}" method="POST"
+#{extends 'Login/index.html' /} 
+#{set title: 'Entity Profile' /} 
+<script src="/public/javascripts/bmi.js" language="javascript">
+</script>
+<style>
+    #crudShow {
+        margin-top: 2%;
+        margin-right: 9%;
+        margin-bottom: 4%;
+        margin-left: 0%;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        background-color: #bbbbbb;
+        padding-top: 2%;
+        padding-right: 4%;
+        padding-bottom: 0%;
+        padding-left: 4%;
+        border-bottom-width: 2px;
+        border-bottom-style: solid;
+        border-bottom-color: #bbbbbb;
+        border-right-width: 2px;
+        border-right-style: solid;
+        border-right-color: #bbbbbb;
+        border-left-width: 2px;
+        border-left-style: solid;
+        border-left-color: #bbbbbb;
+        border-top-width: 2px;
+        border-top-style: solid;
+        border-top-color: #bbbbbb;
+        word-wrap: break-word;
+    }
+    
+    #descriptionShow {
+        margin-top: 2%;
+        margin-right: 5%;
+        margin-bottom: 4%;
+        margin-left: 5%;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        background-color: #FFFFFF;
+        padding-top: 2%;
+        padding-right: 4%;
+        padding-bottom: 0%;
+        padding-left: 4%;
+        position: relative;
+        border-bottom-width: 2px;
+        border-bottom-style: solid;
+        border-bottom-color: #bbbbbb;
+        word-wrap: break-word;
+    }
+    
+    #backToOrg {
+        margin-left: 1%;
+        text-align: left;
+    }
+    
+    #about {
+        text-indent: -999em;
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid #fff;
+        border-top: 0;
+        position: absolute;
+        top: -6px;
+        left: 24px;
+    }
+    
+    .arrow {
+        height: 15px;
+        left: -7px;
+        position: absolute;
+        top: 25px;
+        width: 8px;
+    }
+</style>
+<head>
+    <style type="text/css">
+        body {
+            font-size: 80%;
+            font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+        }
+        
+        .accordionItem h3 {
+            margin-top: 2%;
+            font-size: 1.1em;
+            border-bottom-width: 2px;
+            border-bottom-style: solid;
+            border-bottom-color: #bbbbbb;
+            background-color: #FFFFFF;
+            margin-right: 23%;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        
+        .accordionItem h3:hover {
+            cursor: pointer;
+        }
+        
+        .accordionItem div {
+            padding: 1em 0.4em;
+            margin-right: 23%;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        
+        .accordionItem.hide h3 {
+        }
+        
+        .accordionItem.hide div {
+            display: none;
+        }
+        
+        #deleteHide {
+            margin-top: 2%;
+            text-align: right;
+        }
+    </style>
+    <title>Entity Creation Form</title>
+</head>
+<body onload="init()">
+    <div id="leftSidebar">
+        <ul>
+            <div style="clear: both;">
+            </div>
+            <li>
+                <ul>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <li>
+                        <a id="entityLink" style="cursor:pointer;">Entities</a>
+                        <div id="entityLinks">
+                            <ul>
+                                #{if entities.size() > 0}
+                                #{list items:entities, as:'entity'}
+                                <LI type="disc">
+                                    #{if (entitiesICanView.contains(entity))}<a href="@{MainEntitys.viewEntity(entity.id)}" style="cursor:pointer;">${entity.name}</a>
+                                    #{/if}
+                                    #{else}
+                                    ${entity.name}
+                                    #{/else}
+                                </LI>
+                                #{/list}
+                                #{/if}
+                                #{else}
+                                <LI type="disc">
+                                    No Entities Yet!
+                                </LI>
+                                #{/else}
+                            </ul>
+                        </div>
+                    </li>
+                    #{if (canCreateEntity == 1)}
+                    <li>
+                        <a href="@{MainEntitys.goToCreateEntity(org.id)}">Create an Entity</a>
+                    </li>
+                    #{/if}
+                    #{if allowed==1}
+                    <li>
+                        <a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>
+                    </li>
+                    #{/if}
+                    #{if isMember == true || org.privacyLevel == 2 || admin}
+                    <li>
+                        <a href="@{Pictures.index(org.id)}">Gallery</a>
+                    </li>
+                    #{/if}
+                    #{if plans.size()>0}
+                    <li>
+                        <a id="planLink" style="cursor:pointer;">Plans</a>
+                        <div id="plansLinks">
+                            <ul>
+                                #{list items:plans, as:'plan'}
+                                <li>
+                                    <a href="@{Plans.viewAsList(plan.id)}">${plan.title}</a>
+                                </li>
+                                #{/list}
+                            </ul>
+                        </div>
+                    </li>
+                    #{/if}
+                    <li>
+                        <a id="docLink" style="cursor:pointer;">Documents</a>
+                        <div id="documen">
+                            <ul>
+                                #{if creator == true || admin == true}
+                                <li>
+                                    <a href="@{Documents.newDocument(org.id)}">Add new</a>
+                                </li>
+                                #{/if}
+                                #{if isMember == true || org.privacyLevel == 2 || admin}
+                                #{ifnot org.getDocuments()}
+                                <li>
+                                    No documents
+                                </li>
+                                #{/ifnot}
+                                #{list items:org.getDocuments(), as:'document'}
+                                <li>
+                                    <a href="@{Documents.viewDocument(document.id)}">${document.name}</a>
+                                </li>
+                                #{/list}
+                                #{/if}#{else}
+                                <li>
+                                    No public documents
+                                </li>
+                                #{/else}
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        #{if (admin || creator)}<a href="@{Tags.createTag(org.id)}" title="Create a new Tag">Create a Tag</a>
+                        #{/if}
+                        #{else}
+                        #{if (org.createTag) && (!join)}<a href="@{Tags.createTag(org.id)}" title="Create a new Tag">Create a Tag</a>
+                        #{/if}
+                        #{/else}
+                    </li>
+                    
+                    <!-- End of sidebar -->
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <body onload="init()">
+        <div id="page">
+            <div id= "page-bgtop">
+            	 <font color="Red">
+                    ${message}
+                </font>
+                <br/>
+                <div id="backToOrg">
+                    <a href="@{MainEntitys.viewEntity(targetEntity.id)}">Back to ${targetEntity.name}</a>
+                </div>
+                <form name="entityForm" action="@{MainEntitys.editEntity()}" method="POST"
         onsubmit= "return validate()">
-        	<input type="hidden" name="entityId" value="${entity.id}">		
+        	<input type="hidden" name="entityId" value="${targetEntity.id}">		
 			<HR>
 			Entity Name: <input type="text" id="name" name="name"
-			value="${entity.name}"> 
+			value="${targetEntity.name}"> 
 			<br />
 			<label id= "nameerror"> </label><br />
 			<HR>
@@ -29,10 +267,95 @@
 			#{/else}
 			<input type="submit" onclick="get_Value()" value = "Save">
 			<HR>
-				
-			<script type="text/javascript">
-   
-	    	function validate() {
+			</form>
+                <script type="text/javascript">
+                    function redirect(){
+                        document.location.href = "@{Organizations.viewProfile(org.id)}";
+                    }
+                    
+                    function validate(){
+                        var nm = document.getElementById("name").value;
+                        var ds = document.getElementById("description").value;
+                        var flag = 1;
+                        if (nm == "") {
+                            document.getElementById("nameerror").innerHTML = "Please insert a name";
+                            flag = 0;
+                        }
+                        else {
+                            document.getElementById("nameerror").innerHTML = "";
+                        }
+                        if (ds == "") {
+                            document.getElementById("descriptionerror").innerHTML = "Please insert a description";
+                            flag = 0;
+                        }
+                        else {
+                            document.getElementById("descriptionerror").innerHTML = "";
+                        }
+                        if (flag == 0) 
+                            return false;
+                    }
+                    
+                    function get_Value(){
+                        var createRelationship = false;
+                        if (document.entityForm.createRelationship.checked) {
+                            createRelationship = true;
+                        }
+                        return createRelationship;
+                    }
+                    
+                    var planFlag = true;
+                    $('#plansLinks').hide();
+                    $('#planLink').click(function(){
+                        if (planFlag) {
+                            $('#plansLinks').show(500);
+                            planFlag = false;
+                        }
+                        else {
+                            $('#plansLinks').hide(500);
+                            planFlag = true;
+                        }
+                    });
+                    
+                    var relatedItemsFlag = true;
+                    $('#relatedItemsLinks').hide();
+                    $('#relatedItemsLink').click(function(){
+                        if (relatedItemsFlag) {
+                            $('#relatedItemsLinks').show(500);
+                            relatedItemsFlag = false;
+                        }
+                        else {
+                            $('#relatedItemsLinks').hide(500);
+                            relatedItemsFlag = true;
+                        }
+                    });
+                    
+                    var entityFlag = true;
+                    $('#entityLinks').hide();
+                    $('#entityLink').click(function(){
+                        if (entityFlag) {
+                            $('#entityLinks').show(500);
+                            entityFlag = false;
+                        }
+                        else {
+                            $('#entityLinks').hide(500);
+                            entityFlag = true;
+                        }
+                    });
+					
+					var bdocs = false;
+	$('#documen').hide();	
+	 $('#docLink').click(function(){
+            if (bdocs) {
+                $('#documen').show(500);
+                bdocs = false;
+            }
+            else {
+                $('#documen').hide(500);
+                bdocs = true;
+            }
+        });
+		
+		function validate() {
 				var nm = document.getElementById("name").value;
 				var ds = document.getElementById("description").value;
 				var flag = 1;
@@ -59,6 +382,7 @@
 		}
 		return createRelationship;
 	}	
-		</script>		
-	</body>
-</html>	
+                </script>
+            </div>
+        </div>
+    </body>

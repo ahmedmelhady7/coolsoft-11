@@ -477,8 +477,20 @@ public class MainEntitys extends CoolCRUD {
 	 * 
 	 */
 	public static void editEntityPage(long entityId) {
-		MainEntity entity = MainEntity.findById(entityId);
-		render(entity);
+		MainEntity targetEntity = MainEntity.findById(entityId);
+		User user = Security.getConnected();
+		Organization org = Organization.findById(targetEntity.organization.id);
+		List<MainEntity> entities = org.entitiesList;
+		List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
+		for (MainEntity entity : entities) {
+			if (Users.isPermitted(user, "view", entity.id, "entity")) {
+				entitiesICanView.add(entity);
+			}
+		}
+		List<User> followers = org.followers;
+		List<Plan> plans = Plans.planList("organization", org.id);
+		render(user, org, entities, plans, entitiesICanView, followers,
+				targetEntity);
 	}
 
 	/**

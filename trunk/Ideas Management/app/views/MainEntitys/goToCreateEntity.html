@@ -139,14 +139,6 @@
                     <br/>
                     <br/>
                     <br/>
-                    #{if admin || creator}
-                    <li>
-                        <a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
-                    </li>
-                    <li>
-                        <a href="@{Organizations.editOrganization(org.id)}" title="Edit Organization">Edit</a>
-                    </li>
-                    #{/if}
                     <li>
                         <a id="entityLink" style="cursor:pointer;">Entities</a>
                         <div id="entityLinks">
@@ -347,6 +339,19 @@
                             entityFlag = true;
                         }
                     });
+					
+					var bdocs = false;
+	$('#documen').hide();	
+	 $('#docLink').click(function(){
+            if (bdocs) {
+                $('#documen').show(500);
+                bdocs = false;
+            }
+            else {
+                $('#documen').hide(500);
+                bdocs = true;
+            }
+        });
                 </script>
             </div>
         </div>
