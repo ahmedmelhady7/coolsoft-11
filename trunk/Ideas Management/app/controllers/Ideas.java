@@ -190,12 +190,8 @@ public class Ideas extends CoolCRUD {
 	 * @param topicId
 	 *            : id of the topic the idea belongs to
 	 * 
-	 * @param userId
-	 *            : id of the user who wants to post an idea
-	 * 
 	 * @description This method renders the form for creating an idea
 	 * 
-	 * @throws Exception
 	 * 
 	 */
 	public static void blank(long topicId) {
@@ -219,6 +215,7 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 * @story C3S10
 	 * 
+	 * @param topicId : the id of the topic the idea will be posted in
 	 * 
 	 * @description This method checks for the Validation of the information
 	 *              inserted in the Add form of an Idea and if they are valid
@@ -241,10 +238,6 @@ public class Ideas extends CoolCRUD {
 		Idea idea = (Idea) object;
 		idea.belongsToTopic = topic;
 		idea.author = author;
-		// i.privacyLevel = topic.privacyLevel;
-		// ArrayList<Comment> ideaComments = (ArrayList<Comment>)
-		// i.commentsList;
-		// ArrayList<Tag> ideaTags = (ArrayList<Tag>) i.tagsList;
 		String message = "";
 		if (idea.belongsToTopic == null) {
 			message = "An Idea must belong to a Topic";
@@ -265,14 +258,11 @@ public class Ideas extends CoolCRUD {
 			}
 
 			try {
-				System.out.println("foo2 Render");
 				render(request.controller.replace(".", "/") + "/blank.html",
 						type, idea.title, idea.belongsToTopic,
-						idea.description, idea.commentsList, /* i.tagsList, */
+						idea.description, idea.commentsList,
 						message, topicId);
-				System.out.println("rendered 5alas");
 			} catch (TemplateNotFoundException e) {
-				System.out.println("fel catch templatenotfound");
 				render("CRUD/blank.html", type, topicId);
 			}
 		}
@@ -280,16 +270,11 @@ public class Ideas extends CoolCRUD {
 		author.communityContributionCounter++;
 		author.save();
 		object._save();
-		System.out.println("3ada el save");
 		String anothermessage = "you have created a new idea with title "
 				+ idea.title + " and with description " + idea.description;
 		flash.success(Messages.get("crud.created", type.modelName,
 				((Idea) object).getId()));
-		System.out.println("foo2 el if");
 		if (params.get("_save") != null) {
-			System.out.println("gowa el if");
-			System.out
-					.println("/ideas/view?ideasid=" + ((Idea) object).getId());
 
 			redirect("/ideas/show?ideaId=" + ((Idea) object).getId());
 			if (params.get("_saveAndAddAnother") != null) {
@@ -313,7 +298,6 @@ public class Ideas extends CoolCRUD {
 	 */
 	public static void hide(long id) {
 		String justification = "";
-		System.out.println("hide bta3t crud");
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(id);
@@ -321,28 +305,21 @@ public class Ideas extends CoolCRUD {
 		Idea idea = (Idea) object;
 		Topic topic = idea.belongsToTopic;
 		User user = Security.getConnected();
-
 		try {
-			// Logs.addLog( myUser, "delete", "Task", temporaryTopic.id,
-			// temporaryTopic.taskStory.componentID.project, cal.getTime() );
+//			Logs.addLog( user, "delete", "Task", topic.id,
+//			topic.taskStory.componentID.project, cal.getTime() );
 			String message = user.username + " has hidden the idea "
 					+ idea.title + " Justification : " + justification;
 			Notifications.sendNotification(idea.author.id, idea.id, "Idea",
 					message);
-			System.out.println(idea.toString()
-					+ "aywa ba2aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 			idea.hidden = true;
 			idea.save();
-			System.out.println("hidden");
-			System.out.println("leaving try");
 
 		} catch (Exception e) {
-			System.out.println("entered catch");
 			flash.error(Messages.get("crud.delete.error", type.modelName));
 			redirect(request.controller + ".show", object._key());
 		}
 		flash.success(Messages.get("crud.deleted", type.modelName));
-		System.out.println("flash.success");
 		// redirect(request.controller + ".list");
 		redirect("topics.show", topic.id);
 	}
@@ -358,7 +335,6 @@ public class Ideas extends CoolCRUD {
 	 *            : id of the idea to be show
 	 * 
 	 * @description This method renders the form for editing and viewing an idea
-	 * 
 	 * 
 	 */
 	public static void show(long ideaId) {
@@ -377,7 +353,6 @@ public class Ideas extends CoolCRUD {
 		long topicId = topic.id;
 		// boolean openToEdit = i.openToEdit;
 		boolean canReport = Users.isPermitted(user, "use", topicId, "topic");
-		System.out.println("canReport ba2et b "+canReport);
 		boolean isAuthor = user.toString().equals(idea.author.toString());
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
@@ -398,7 +373,6 @@ public class Ideas extends CoolCRUD {
 			if (label.ideas.contains(object))
 				ideasLabels.add(label);
 		boolean canUse = Users.canDelete(user, "use", ideaId, "idea", topicId);
-		System.out.println("false alreadyreoprted");
 		List<User> allUsers = User.findAll();
 		List<String> userNames = new ArrayList<String>();
 		String s;
@@ -417,16 +391,10 @@ public class Ideas extends CoolCRUD {
 		else
 			checkNotRated = true;
 		for (int i = 0; i < idea.reporters.size(); i++) {
-			System.out.println(idea.reporters.get(i).toString());
-			System.out.println("gowa el loop");
-			System.out.println("Ana meen ?! " + user.toString());
-			System.out.println(ideaAlreadyReported);
 			if (idea.reporters.size() > 0
 					&& (user.toString()
 							.equals(idea.reporters.get(i).toString()))) {
 				ideaAlreadyReported = true;
-				System.out
-						.println("3mlha w 5ala el already reported b true****************************************************************************************************************************************************************");
 				break;
 			} else
 				ideaAlreadyReported = false;
@@ -434,7 +402,6 @@ public class Ideas extends CoolCRUD {
 
 		try {
 			System.out.println("show() done, about to render");
-			// System.out.println("x is " + x);
 			boolean permittedToTagIdea = Users.isPermitted(user,
 					"tag his/her ideas", ideaId, "idea")
 					|| Users.isPermitted(user, "tag ideas in my organization",
@@ -465,8 +432,6 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 * @description This method is resposible for editing an idea
 	 * 
-	 * @throws Exception
-	 * 
 	 */
 
 	public static void edit(long ideaId) {
@@ -496,7 +461,6 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 */
 	public static void view(long ideaId) {
-		System.out.println("hadi foo222");
 
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -511,9 +475,7 @@ public class Ideas extends CoolCRUD {
 		// boolean openToEdit = i.openToEdit;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
-		System.out.println("haadi");
 		try {
-			System.out.println("try");
 			render(type, object, /* tags, */author, comments, topic, plan,
 			/* openToEdit, */deletemessage, /* deletable, */ideaId);
 		} catch (TemplateNotFoundException e) {
@@ -601,31 +563,22 @@ public class Ideas extends CoolCRUD {
 	public static void save(String ideaid) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
-		System.out.println(ideaid);
 		Model object = Idea.findById(Long.parseLong(ideaid));
 		notFoundIfNull(object);
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
 		Idea i = (Idea) object;
-		Topic topic = Topic.findById((long) 1); // temporary; for testing
-		String message = ""; // purposes
+		Topic topic = Topic.findById((long) 1); 
+		String message = ""; 
 		i.belongsToTopic = topic;
-		// User myUser = Security.getConnected();
-		User myUser = User.findById((long) 1);// temporary; for testing purposes
+		User myUser = User.findById((long) 1);
 		i.author = myUser;
-		// ArrayList<Tag> topicTags = (ArrayList<Tag>) tmp.tags;
-		// Organization topicOrganization = topic.organization;
 		if (validation.hasErrors()) {
 			if (i.description.equals("")) {
 				message = "A Topic must have a description";
 
 			}
 
-			/*
-			 * else if( !Users.isPermitted(myUser, "edit topics",
-			 * topicEntity.getId(), "entity")) { message =
-			 * "Sorry but you are not allowed to edit topics in this entity"; }
-			 */
 			try {
 				render(request.controller.replace(".", "/") + "/show.html",
 						topic, type, i.title, i.belongsToTopic, i.description,
@@ -635,31 +588,14 @@ public class Ideas extends CoolCRUD {
 			}
 		}
 
-		System.out.println("about to save() topic");
 		object._save();
-		Calendar cal = new GregorianCalendar();
-		// Logs.addLog( myUser, "add", "Task", tmp.id, tmp.entity.organization,
-		// cal.getTime() );
-		// String message3 = myUser.username + " has editted the topic " +
-		/*
-		 * List users = Users.getEntityOrganizers(tmp.entity);
-		 * users.add(tmp.entity.organization.creator);
-		 * Notifications.sendNotification(users, tmp.id, "Topic", "User " +
-		 * myUser.firstName + " has edited topic  " + tmp.title);
-		 */
-		System.out.println("save() done, not redirected yet");
 
 		flash.success(Messages.get("crud.saved", type.modelName,
 				((Idea) object).getId()));
 		if (params.get("_save") != null) {
 			redirect("/ideas/view?ideaId=" + ((Idea) object).getId());
-			System.out.println("save() done, redirected to ideas/view?topicid");
-			// redirect( "/storys/liststoriesinproject?projectId=" +
-			// tmp.taskStory.componentID.project.id + "&storyId=" +
-			// tmp.taskStory.id );
 		}
 		redirect(request.controller + ".show", ((Idea) object).getId());
-		System.out.println("save() done, redirected to default show.html");
 	}
 
 	/**
@@ -667,16 +603,15 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 * @author ${Ahmed EL-Hadi}
 	 * 
+	 * C3S6/C3S17
 	 * 
 	 * @param ideaId
 	 *            : id of the idea to be deleted
 	 * 
 	 * @description This method deletes and idea from the database
 	 * 
-	 * 
 	 */
 	public static void delete(long ideaId) {
-		System.out.println("delete bta3t crud");
 		String justification = "";
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -696,7 +631,6 @@ public class Ideas extends CoolCRUD {
 			redirect(request.controller + ".show", object._key());
 		}
 		flash.success(Messages.get("crud.deleted", type.modelName));
-		// redirect(request.controller + ".list");
 		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
@@ -867,37 +801,6 @@ public class Ideas extends CoolCRUD {
 		redirect("/ideas/show?ideaId=" + ideaId);
 	}
 
-	/**
-	 * Overriding the CRUD method save.
-	 * 
-	 * @author ${Ahmed EL-Hadi}
-	 * 
-	 * @story C3S10
-	 * 
-	 * @param entityId
-	 *            the id of the entity where the user would like to post
-	 * 
-	 * @description This method renders the list of ideas the connected user can
-	 *              post in
-	 * 
-	 * @return void
-	 */
-
-	public void topicsList(long entityId) {
-		User user = Security.getConnected();
-		MainEntity m = MainEntity.findById(entityId);
-		List<Topic> all = m.topicList;
-		Topic temp;
-		List<Topic> topics = new ArrayList<Topic>();
-		for (int i = 0; i < all.size(); i++) {
-			temp = all.get(i);
-			if (!Users.isPermitted(user, "can post ideas to a Topic", temp.id,
-					"topic")) {
-				topics.add(temp);
-			}
-		}
-		render(topics);
-	}
 
 	/**
 	 * @author Loaay Alkherbawy

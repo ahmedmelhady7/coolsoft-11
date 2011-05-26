@@ -247,61 +247,6 @@ h3 span {
 	left: -4px;
 }
 
-/** Form **/
-
-/*form {*/
-/*    padding: 10px;*/
-/*    background: #253142;*/
-/*    background: -webkit-gradient(linear, left top, left 60%, from(#253142), to(#364B66));*/
-/*    -webkit-border-radius: 10px;*/
-/*    -moz-border-radius: 10px;*/
-/*}*/
-
-form .error {
-    background: #c00;
-    color: #fff;
-    font-size: 90%;
-    padding: 3px 5px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    -webkit-box-shadow: 0 2px 0 #800;
-}
-
-form p {
-    margin: 5px 0 0 0;
-}
-
-form textarea {
-    width: 70%;
-    height: 150px;
-}
-
-form input, form textarea {
-    font-size: 14px;
-}
-
-form label {
-    display: block;
-    font-weight: bold;
-    font-size: 90%;
-    color: #aaa;
-    margin-bottom: 3px;
-}
-
-#captcha{
-    display: block;
-    height: 50px;  
-}
-
-.success {
-    background: #67AD10;
-    color: #fff;
-    padding: 10px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    -webkit-box-shadow: 0 2px 0 #4E840B; 
-}
-
 /** Pagination **/
 
 #pagination {

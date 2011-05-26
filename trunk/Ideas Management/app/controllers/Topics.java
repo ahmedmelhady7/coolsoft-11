@@ -758,24 +758,24 @@ public class Topics extends CRUD {
 					alreadyReported = true;
 			}
 		}
-		ArrayList<User> reporters = new ArrayList<User>();
-		String[] reportersId = { "0" };
+		ArrayList<User> topicReporters = new ArrayList<User>();
+		String[] topicReportersId = { "0" };
 		User reporter = Security.getConnected();
 		if (targetTopic.reporters != null) {
-			reportersId = targetTopic.reporters.split(",");
+			topicReportersId = targetTopic.reporters.split(",");
 			long reporterId = 0;
 			if (!targetTopic.reporters.isEmpty()) {
-				for (int i = 0; i < reportersId.length
+				for (int i = 0; i < topicReportersId.length
 						&& targetTopic.reporters != ""; i++) {
-					reporterId = Integer.parseInt(reportersId[i]);
+					reporterId = Integer.parseInt(topicReportersId[i]);
 					if (reporterId == reporter.id) {
-						reporters.add(reporter);
+						topicReporters.add(reporter);
 					}
 				}
 			}
 		}
-		for (int i = 0; i < reporters.size(); i++) {
-			if (reporter.toString().equals(reporters.get(i).toString())) {
+		for (int i = 0; i < topicReporters.size(); i++) {
+			if (reporter.toString().equals(topicReporters.get(i).toString())) {
 				alreadyReportedTopic = true;
 				break;
 			} else
@@ -785,7 +785,6 @@ public class Topics extends CRUD {
 		for (int i = 0; i < ideas.size(); i++) {
 			if (ideas.get(i).hidden) {
 				hiddenIdeas.add(ideas.get(i));
-				System.out.println("aywan aywan");
 			}
 		}
 		int allowed = 0;
