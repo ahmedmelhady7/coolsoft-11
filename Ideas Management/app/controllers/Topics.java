@@ -1686,10 +1686,8 @@ public class Topics extends CRUD {
 				+ justification;
 
 		try {
-			if (idea.plan != null) {
+			if (idea.plan == null) {
 				idea.delete();
-				idea.author.communityContributionCounter--;
-				idea.author.save();
 				Notifications.sendNotification(idea.author.id, idea.id, "Idea",
 						message);
 			}
