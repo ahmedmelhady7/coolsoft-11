@@ -251,8 +251,10 @@ Please contact
  					<div class="comment-content">
  						<div class="about">Detail:</div>
  						<li><a>${comment.comment}</a></li>
+						#{if comment.commenter.username != user.username}
  						<input style="float: right;" type="image" src="/public/images/red_flag.png" value="Report As Spam" />
- 					</div>
+ 					#{/if}
+					</div>
  					#{/list} 
 					</ul>
  					<br/>
@@ -273,7 +275,7 @@ Please contact
 					  	var text = $('#commentTxt').val();
 						 $('#commentTxt').val("");
 						$.getJSON('@{addCommentToPlan()}', {comment: text, planID:id}, function(comm) {
-							 $("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " +  comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li><input style=\"float: right;\" type=\"image\" src=\"/public/images/red_flag.png\" value=\"Report As Spam\" /></div>");
+							 $("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " +  comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li></div>");
 						});
 					   
 

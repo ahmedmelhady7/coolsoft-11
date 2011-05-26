@@ -1157,8 +1157,8 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
-	 * This methods deletes a plan with all its items and comments of the plan
-	 * and sends notifications to all the users working on items in the plan and
+	 * This methods deletes a plan with all its items and comments of the plan,
+	 * sends notifications to all the users working on items in the plan and
 	 * the plan's topic organizers and add to the logs of the plan's topic,
 	 * entity and organization given the plan id
 	 * 
