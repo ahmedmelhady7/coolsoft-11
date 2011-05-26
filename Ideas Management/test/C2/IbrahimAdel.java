@@ -376,7 +376,7 @@ public class IbrahimAdel extends UnitTest {
 		MainEntity gucMet = new MainEntity("MET",
 				"Media Engineering and technology", guc, true).save();
 
-		Topic gucMetStudentUnion = new Topic("Student union", "Suggestions", 2,
+		Topic gucMetStudentUnion = new Topic("Student union", "Suggestions", 1,
 				ashraf, gucMet, true).save();
 
 		gucMetStudentUnion._save();
@@ -386,21 +386,17 @@ public class IbrahimAdel extends UnitTest {
 		
 		Role ideadeveloper = Roles.getRoleByName("idea developer");
 		
-		
 		ideadeveloper = Roles.getRoleByName("idea developer");
 		UserRoleInOrganization roleInOrg = new UserRoleInOrganization(
 				khayat, guc, ideadeveloper);
 		roleInOrg._save();
 		khayat.userRolesInOrganization.add(roleInOrg);
 		khayat.save();
-		
-		
+				
 		assertEquals(false, Users.isPermitted(khayat, "use", gucMetStudentUnion.id, "topic"));
 		assertEquals(true, Users.isPermitted(khayat, "view", gucMetStudentUnion.id, "topic"));
 		
 		gucMetStudentUnion.requestFromUserToPost(khayat.id);
-	
-		
 	}
 
 }
