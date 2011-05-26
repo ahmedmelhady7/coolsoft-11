@@ -1809,7 +1809,7 @@ public class Topics extends CRUD {
 	 * @param entityId
 	 *            : the id
 	 */
-	public static void createDraft(String title, String description,
+	public static long createDraft(String title, String description,
 			int privacyLevel, boolean createRelationship, long entityId) {
 
 		User user = Security.getConnected();
@@ -1820,9 +1820,9 @@ public class Topics extends CRUD {
 				targetEntity, createRelationship, isDraft);
 
 		draftTopic.save();
-
+		return draftTopic.id;
 	}
-
+	
 	/**
 	 * @description publish a topic
 	 * 
