@@ -8,17 +8,17 @@
 		function submit() {
 			if(en_ids.length == 0 && dis_ids.length == 0) {
 				alert('No changes to perform!!');
-			} else {
-				if(counter == 1) {
-					var field = document.myform.checkfield;
-					var notId = field.id;
-					alert(notId);
-										
-				}
+			} else {				
 				var r=confirm("Are You sure you want to save changes?");
 				if (r == true) {
-					$.post('@{disablePreferences()}', {a:dis_ids});
-					$.post('@{enablePreferences()}', {b:en_ids});					
+					var c = confirm("Do you want to cascade the profiles");
+					if(c == true) {
+						$.post('@{disableCascadePreferences()}', {a:dis_ids});
+						$.post('@{enableCascadePreferences()}', {b:en_ids});
+					} else {
+						$.post('@{disablePreferences()}', {a:dis_ids});
+						$.post('@{enablePreferences()}', {b:en_ids});
+					}										
 				} else {
 					window.location.reload();
 				}	
