@@ -522,13 +522,14 @@ public class Users extends CoolCRUD {
 	public static void reportCommentAsSpam(long commentId) {
 		Comment comment = Comment.findById(commentId);
 		User reporter = Security.getConnected();
-		if (comment.reporters != null)
+		if (comment.reporters != null){
 		comment.reporters += reporter.id + ",";
 		comment.save();
 		System.out.println(comment.reporters+"aaaa");
-		Mail.reportCommentMail(comment.commentedIdea.author, reporter, comment,
-					comment.comment);
-		commentSpamView(commentId);
+		}
+//		Mail.reportCommentMail(comment.commentedIdea.author, reporter, comment,
+//					comment.comment);
+		//commentSpamView(commentId);
 
 	}
 

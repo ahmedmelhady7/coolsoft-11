@@ -1759,13 +1759,16 @@ public class Plans extends CoolCRUD {
 		Comment c = new Comment(comment, p, user).save();
 		p.commentsList.add(c);
 		p.save();
+		c.save();
 		JsonObject json = new JsonObject();
 		json.addProperty("commentMsg", comment);
 		json.addProperty("commentUser", user.username);
 		json.addProperty("commentDate", c.commentDate + "");
 
 		renderJSON(json.toString());
-		// redirect("/plans/viewaslist?planId="+p.id);
+	
+		
+		
 	}
 
 }
