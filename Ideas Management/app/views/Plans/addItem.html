@@ -1,6 +1,43 @@
 #{extends 'planLayout.html' /}
 #{set title:'Add Item' /}
-<link type="text/css" href="/public/stylesheets/jquery-ui-.custom.css" rel="Stylesheet" />
+
+<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+	#showAddItem{
+	margin-top: 1%;
+	margin-right: 1.5%;
+	margin-bottom: 4%;
+	margin-left: 1.5%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+</style>
+
+<div id="showAddItem">
+	<link type="text/css" href="/public/stylesheets/jquery-ui-.custom.css" rel="Stylesheet" />
     <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js"></script>
     <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
 <h1> Add Item </h1>
@@ -23,6 +60,8 @@ End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" reado
 To add another item check here <input type="checkbox" name = "check" value = "checked">
 <input type = "submit" value ="Add" >
 #{/form}
+</div>
+
 <script type ="text/javascript">
 	$('#startdateerror').hide();
 	$('#enddateerror').hide();
