@@ -128,8 +128,7 @@ public class Search extends Controller {
 					entitiesFound, topicsFound, plansFound, itemsFound, user);
 		}
 	}
-	
-	
+
 	/**
 	 * 
 	 * @author M Ghanem
@@ -137,93 +136,42 @@ public class Search extends Controller {
 	 * @story C4S02 Advanced Search Result; search for any Entity in the DB
 	 *        according to the given parameters.
 	 * 
-	 * @param searchIn
-	 *            :: "int"; that determines what privacy level of the
-	 *            organizations does the user care about.
+	 * @param wKs
+	 *            'String' Contains un-exact wanted keys
 	 * 
-	 * @param wantKey
-	 *            :: "String"; of the keyword that the user is searching for.
+	 * @param wKi
+	 *            'String' Contains un-exact wanted keys's =search in= type.
 	 * 
-	 * @param unWantKey
-	 *            :: "String"; of the word where user want to avoid it within
-	 *            the result of searching.
+	 * @param eK
+	 *            'String' Contains exact wanted key
 	 * 
-	 * @param org
-	 *            :: "int"; int of 0 or 1 , 0 for searching in organization 1
-	 *            for not searching in organizations.
+	 * @param oT
+	 *            'String' wanted organizations types.
 	 * 
-	 * @param entity
-	 *            :: "int"; int of 0 or 1 , 0 for searching in MainEntity 1 for
-	 *            not searching in MainEntity.
+	 * @param rOfS
+	 *            'String' types wanted to be shown in the result.
 	 * 
-	 * @param topic
-	 *            :: "int"; int of 0 or 1 , 0 for searching in Topic 1 for not
-	 *            searching in Topic.
+	 * @param dateA
+	 *            'String' contains the After date
 	 * 
-	 * @param plan
-	 *            :: "int"; int of 0 or 1 , 0 for searching in Plan 1 for not
-	 *            searching in Plan.
+	 * @param dateB
+	 *            'String' contains the Before date
 	 * 
-	 * @param idea
-	 *            :: "int"; int of 0 or 1 , 0 for searching in Idea 1 for not
-	 *            searching in Idea.
-	 * 
-	 * @param item
-	 *            :: "int"; int of 0 or 1 , 0 for searching in item 1 for not
-	 *            searching in item.
-	 * 
-	 * @param comm
-	 *            :: "int"; int of 0 or 1 , 0 for searching in comment 1 for not
-	 *            searching in comment.
-	 * 
-	 * @param dayB
-	 *            :: "int" representing day of the "Date"; where the user needs
-	 *            all the result initialized before this date.
-	 * 
-	 * @param monthB
-	 *            ::"int" representing month of the "Date"; where the user needs
-	 *            all the result initialized before this date.
-	 * 
-	 * @param yearB
-	 *            ::"int" representing year of the "Date"; where the user needs
-	 *            all the result initialized before this date.
-	 * 
-	 * @param dayA
-	 *            :: "int" representing day of the "Date"; where the user needs
-	 *            all the result initialized after this date.
-	 * 
-	 * @param monthA
-	 *            :: "int" representing month of the "Date"; where the user
-	 *            needs all the result initialized after this date.
-	 * 
-	 * @param yearA
-	 *            :: "int" representing year of the "Date"; where the user needs
-	 *            all the result initialized after this date.
-	 * 
-	 * @param dayE
-	 *            :: "int" representing day of the "Date"; where the user needs
-	 *            all the result initialized exactly in this date.
-	 * 
-	 * @param monthE
-	 *            :: "int" representing month of the "Date"; where the user
-	 *            needs all the result initialized exactly in this date.
-	 * 
-	 * @param yearE
-	 *            :: "int" representing year of the "Date"; where the user needs
-	 *            all the result initialized exactly in this date.
+	 * @param dateE
+	 *            'String' contains the Exact date
 	 * 
 	 */
 	public static void advSearch(String wKs, String wKi, String eK, String oT,
 			String rOfS, String dateB, String dateA, String dateE) {
 		// Initialize and empty the list of search result.
 		listOfResults = new ArrayList<Model>();
-		// Get the Organizations according to the user request. 
+		// Get the Organizations according to the user request.
 		List<Organization> orgs = Organization.findAll();
 		Organization.findByType(orgs, oT);
-		if(orgs==null)
+		if (orgs == null)
 			return;
 		// Search in the Models user needs.
-		String [] showROf = rOfS.split(",");
+		String[] showROf = rOfS.split(",");
 		// Formulating the search query of the user.
 		boolean isExact = false;
 		String[] keyWords;
@@ -247,11 +195,11 @@ public class Search extends Controller {
 				for (int j = 0; j < temp2.length; j++) {
 					wKs += temp1[i] + "," + temp2[j] + ",";
 					if (wKi.compareTo("") != 0)
-						wKi += temp1i[i/2] + ",";
+						wKi += temp1i[i / 2] + ",";
 				}
 			}
 		}
-		keyWords = wKs.split(",", 0);		
+		keyWords = wKs.split(",", 0);
 		if (wKi.compareTo("") == 0) {
 			keyWordsIn = new String[keyWords.length / 2];
 			for (int i = 0; i < keyWordsIn.length; i++) {
@@ -262,56 +210,64 @@ public class Search extends Controller {
 		}
 		// Container for the current search-in Models.
 		List<Model> currentModels = null;
-		// Organizations.....		
+		// Organizations.....
 		if (Boolean.parseBoolean(showROf[1])) {
 			currentModels = new ArrayList<Model>();
 			currentModels.addAll(orgs);
-			AdvancedSearch.solvingOrganizationQuery(keyWords,keyWordsIn,isExact,listOfResults,currentModels);
+			AdvancedSearch.solvingOrganizationQuery(keyWords, keyWordsIn,
+					isExact, listOfResults, currentModels);
 		}
 		// MainEntities.....
-		if (Boolean.parseBoolean(showROf[2])) { 
+		if (Boolean.parseBoolean(showROf[2])) {
 			currentModels = new ArrayList<Model>();
 			for (int i = 0; i < orgs.size(); i++) {
 				currentModels.addAll(orgs.get(i).entitiesList);
 			}
-			AdvancedSearch.solvingEntityQuery(keyWords,keyWordsIn,isExact,listOfResults,currentModels);
+			AdvancedSearch.solvingEntityQuery(keyWords, keyWordsIn, isExact,
+					listOfResults, currentModels);
 		}
 		// Topics.....
-		if (Boolean.parseBoolean(showROf[3])) { 
+		if (Boolean.parseBoolean(showROf[3])) {
 			currentModels = new ArrayList<Model>();
 			for (int i = 0; i < orgs.size(); i++) {
 				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++)
-					currentModels.addAll(orgs.get(i).entitiesList.get(j).topicList);
-			}			
-			AdvancedSearch.solvingTopicQuery(keyWords,keyWordsIn,isExact,listOfResults,currentModels);
+					currentModels
+							.addAll(orgs.get(i).entitiesList.get(j).topicList);
+			}
+			AdvancedSearch.solvingTopicQuery(keyWords, keyWordsIn, isExact,
+					listOfResults, currentModels);
 		}
 		// Plans.....
-		if (Boolean.parseBoolean(showROf[4])) { 
+		if (Boolean.parseBoolean(showROf[4])) {
 			currentModels = new ArrayList<Model>();
 
 			for (int i = 0; i < orgs.size(); i++) {
 				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++)
 					for (int k = 0; k < orgs.get(i).entitiesList.get(j).topicList
 							.size(); k++)
-						currentModels.add(orgs.get(i).entitiesList.get(j).topicList
-								.get(k).plan);
+						currentModels
+								.add(orgs.get(i).entitiesList.get(j).topicList
+										.get(k).plan);
 			}
-			AdvancedSearch.solvingPlanQuery(keyWords,keyWordsIn,isExact,listOfResults,currentModels);	
+			AdvancedSearch.solvingPlanQuery(keyWords, keyWordsIn, isExact,
+					listOfResults, currentModels);
 		}
 		// Idea.....
-		if (Boolean.parseBoolean(showROf[5])) { 
+		if (Boolean.parseBoolean(showROf[5])) {
 			currentModels = new ArrayList<Model>();
 			for (int i = 0; i < orgs.size(); i++) {
 				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++)
 					for (int k = 0; k < orgs.get(i).entitiesList.get(j).topicList
 							.size(); k++)
-						currentModels.addAll(orgs.get(i).entitiesList.get(j).topicList
-								.get(i).ideas);
+						currentModels
+								.addAll(orgs.get(i).entitiesList.get(j).topicList
+										.get(i).ideas);
 			}
-			AdvancedSearch.solvingIdeaQuery(keyWords,keyWordsIn,isExact,listOfResults,currentModels);
+			AdvancedSearch.solvingIdeaQuery(keyWords, keyWordsIn, isExact,
+					listOfResults, currentModels);
 		}
 		// Item.....
-		if (Boolean.parseBoolean(showROf[5])) { 
+		if (Boolean.parseBoolean(showROf[5])) {
 			currentModels = new ArrayList<Model>();
 
 			for (int i = 0; i < orgs.size(); i++) {
@@ -319,16 +275,17 @@ public class Search extends Controller {
 					for (int k = 0; k < orgs.get(i).entitiesList.get(j).topicList
 							.size(); k++) {
 						if (orgs.get(i).entitiesList.get(j).topicList.get(j).plan != null) {
-							currentModels.addAll(orgs.get(i).entitiesList.get(j).topicList
-									.get(k).plan.items);
+							currentModels.addAll(orgs.get(i).entitiesList
+									.get(j).topicList.get(k).plan.items);
 						}
 					}
 				}
 			}
-			AdvancedSearch.solvingItemQuery(keyWords,keyWordsIn,isExact,listOfResults,currentModels);			
+			AdvancedSearch.solvingItemQuery(keyWords, keyWordsIn, isExact,
+					listOfResults, currentModels);
 		}
 		// Applying Date constrains by User.
-		AdvancedSearch.constrainTime(dateA,dateB,dateE,listOfResults);
+		AdvancedSearch.constrainTime(dateA, dateB, dateE, listOfResults);
 	}
 
 	/**
@@ -746,18 +703,18 @@ public class Search extends Controller {
 				if (toSort.get(j) instanceof Topic) {
 					Topic temp1 = (Topic) toSort.get(j);
 					view1 = temp1.viewed;
-				}else{
-					if(toSort.get(j)instanceof Plan){
-						Plan temp1 =(Plan)toSort.get(j);
-						view1=temp1.viewed;
-					}else{
-						if(toSort.get(j)instanceof Organization){
-							Organization temp1=(Organization)toSort.get(j);
-							view1=temp1.viewed;
-						}else{
-							if(toSort.get(j)instanceof MainEntity){
-								MainEntity temp1=(MainEntity)toSort.get(j);
-								view1=temp1.viewed;
+				} else {
+					if (toSort.get(j) instanceof Plan) {
+						Plan temp1 = (Plan) toSort.get(j);
+						view1 = temp1.viewed;
+					} else {
+						if (toSort.get(j) instanceof Organization) {
+							Organization temp1 = (Organization) toSort.get(j);
+							view1 = temp1.viewed;
+						} else {
+							if (toSort.get(j) instanceof MainEntity) {
+								MainEntity temp1 = (MainEntity) toSort.get(j);
+								view1 = temp1.viewed;
 							}
 						}
 					}
@@ -769,21 +726,23 @@ public class Search extends Controller {
 					view2 = temp2.viewed;
 
 				} else {
-					if(toSort.get(k)instanceof Topic){
-					Topic temp2 = (Topic) toSort.get(k);
-					view2 = temp2.viewed;
-					}else{
-						if(toSort.get(k)instanceof Plan){
-							Plan temp2=(Plan)toSort.get(k);
-							view2=temp2.viewed;
-						}else{
-							if(toSort.get(k)instanceof Organization){
-								Organization temp2=(Organization)toSort.get(k);
-								view2=temp2.viewed;
-							}else{
-								if(toSort.get(k)instanceof MainEntity){
-									MainEntity temp2=(MainEntity)toSort.get(k);
-									view2=temp2.viewed;
+					if (toSort.get(k) instanceof Topic) {
+						Topic temp2 = (Topic) toSort.get(k);
+						view2 = temp2.viewed;
+					} else {
+						if (toSort.get(k) instanceof Plan) {
+							Plan temp2 = (Plan) toSort.get(k);
+							view2 = temp2.viewed;
+						} else {
+							if (toSort.get(k) instanceof Organization) {
+								Organization temp2 = (Organization) toSort
+										.get(k);
+								view2 = temp2.viewed;
+							} else {
+								if (toSort.get(k) instanceof MainEntity) {
+									MainEntity temp2 = (MainEntity) toSort
+											.get(k);
+									view2 = temp2.viewed;
 								}
 							}
 						}
@@ -1010,18 +969,18 @@ public class Search extends Controller {
 				if (toSort.get(j) instanceof Topic) {
 					Topic temp1 = (Topic) toSort.get(j);
 					view1 = temp1.viewed;
-				}else{
-					if(toSort.get(j)instanceof Plan){
-						Plan temp1 =(Plan)toSort.get(j);
-						view1=temp1.viewed;
-					}else{
-						if(toSort.get(j)instanceof Organization){
-							Organization temp1=(Organization)toSort.get(j);
-							view1=temp1.viewed;
-						}else{
-							if(toSort.get(j)instanceof MainEntity){
-								MainEntity temp1=(MainEntity)toSort.get(j);
-								view1=temp1.viewed;
+				} else {
+					if (toSort.get(j) instanceof Plan) {
+						Plan temp1 = (Plan) toSort.get(j);
+						view1 = temp1.viewed;
+					} else {
+						if (toSort.get(j) instanceof Organization) {
+							Organization temp1 = (Organization) toSort.get(j);
+							view1 = temp1.viewed;
+						} else {
+							if (toSort.get(j) instanceof MainEntity) {
+								MainEntity temp1 = (MainEntity) toSort.get(j);
+								view1 = temp1.viewed;
 							}
 						}
 					}
@@ -1033,21 +992,23 @@ public class Search extends Controller {
 					view2 = temp2.viewed;
 
 				} else {
-					if(toSort.get(k)instanceof Topic){
-					Topic temp2 = (Topic) toSort.get(k);
-					view2 = temp2.viewed;
-					}else{
-						if(toSort.get(k)instanceof Plan){
-							Plan temp2=(Plan)toSort.get(k);
-							view2=temp2.viewed;
-						}else{
-							if(toSort.get(k)instanceof Organization){
-								Organization temp2=(Organization)toSort.get(k);
-								view2=temp2.viewed;
-							}else{
-								if(toSort.get(k)instanceof MainEntity){
-									MainEntity temp2=(MainEntity)toSort.get(k);
-									view2=temp2.viewed;
+					if (toSort.get(k) instanceof Topic) {
+						Topic temp2 = (Topic) toSort.get(k);
+						view2 = temp2.viewed;
+					} else {
+						if (toSort.get(k) instanceof Plan) {
+							Plan temp2 = (Plan) toSort.get(k);
+							view2 = temp2.viewed;
+						} else {
+							if (toSort.get(k) instanceof Organization) {
+								Organization temp2 = (Organization) toSort
+										.get(k);
+								view2 = temp2.viewed;
+							} else {
+								if (toSort.get(k) instanceof MainEntity) {
+									MainEntity temp2 = (MainEntity) toSort
+											.get(k);
+									view2 = temp2.viewed;
 								}
 							}
 						}
