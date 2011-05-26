@@ -50,7 +50,6 @@ public class Organization extends CoolModel {
 	 * List of entities belonging to an organization
 	 */
 	@OneToMany(mappedBy = "organization")
-	// , cascade = CascadeType.ALL)
 	public List<MainEntity> entitiesList;
 
 	/**
@@ -139,7 +138,7 @@ public class Organization extends CoolModel {
 	 *         used in sorting
 	 */
 	public int viewed;
-	
+
 	/**
 	 * Organization Class Constructor
 	 * 
@@ -170,7 +169,7 @@ public class Organization extends CoolModel {
 		this.relatedTags = new ArrayList<Tag>();
 		// this.enrolledUsers = new ArrayList<User>();
 		this.viewed = 0;
-		
+
 		bannedUsers = new ArrayList<BannedUser>();
 		relationNames = new ArrayList<String>() {
 			{
@@ -272,6 +271,8 @@ public class Organization extends CoolModel {
 		// bannedUsers = new ArrayList<BannedUser>();
 		userRoleInOrg = new ArrayList<UserRoleInOrganization>();
 		joinRequests = new ArrayList<RequestToJoin>();
+		this.createRelationshipRequest = new ArrayList<CreateRelationshipRequest>();
+		this.renameEndRelationshipRequest = new ArrayList<RenameEndRelationshipRequest>();
 		this.description = description;
 	}
 
@@ -303,19 +304,20 @@ public class Organization extends CoolModel {
 	public String toString() {
 		return this.name;
 	}
-	
+
 	/**
-	 * gets the list of documents owned by the organization 
+	 * gets the list of documents owned by the organization
 	 * 
 	 * @author Ibrahim Al-Kahayat
 	 * 
 	 * @story C2S28
-	 *  
+	 * 
 	 * @return List<Document>
 	 */
-	
+
 	public List<Document> getDocuments() {
-		List<Document> documents = Document.find("byUserOrganizationId", id).fetch();
+		List<Document> documents = Document.find("byUserOrganizationId", id)
+				.fetch();
 		for (int i = 0; i < documents.size(); i++) {
 			if (!documents.get(i).isOrganization) {
 				documents.remove(i);
@@ -435,8 +437,6 @@ public class Organization extends CoolModel {
 		}
 	}
 
-
-	
 	/**
 	 * @author monica yousry this method increments the counter viewed
 	 * @return:void
