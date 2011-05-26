@@ -188,8 +188,9 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
-	 * This Method renders the page addIdea where the user selects the topic
-	 * ideas that will be promoted to execution in the plan given the plan id
+	 * This Method renders the page addIdea, after checking the permissions given
+	 * to the user, where the user selects the topic ideas that will be promoted
+	 * to execution in the plan given the plan id
 	 * 
 	 * @story C5S4
 	 * 
@@ -259,7 +260,7 @@ public class Plans extends CoolCRUD {
 
 	/**
 	 * This Method associates the list of selected ideas to the plan, sends
-	 * notifications to the authors of the selected ideas , add the logs and
+	 * notifications to the authors of the selected ideas , add the logs,
 	 * increments the community contribution counter of the authors of these
 	 * plans and then calls the planView method that renders the list of ideas
 	 * promoted to execution
@@ -269,7 +270,7 @@ public class Plans extends CoolCRUD {
 	 * @author Salma Osama
 	 * 
 	 * @param checkedIdeas
-	 *            The list of ideas selected to be associated to the plan
+	 *            The list of idea ids selected to be associated to the plan
 	 * @param planId
 	 *            The id of the plan that the selected ideas will be associated
 	 *            to
@@ -328,7 +329,7 @@ public class Plans extends CoolCRUD {
 
 	/**
 	 * This method renders the view containing the list of ideas associated to
-	 * the plan given the plan id
+	 * the plan after checking if the user is allowed to view the plan given the plan id
 	 * 
 	 * @story C5S4
 	 * 
@@ -421,7 +422,7 @@ public class Plans extends CoolCRUD {
 		idea.save();
 		plan.save();
 		String notificationMsg = "Sorry!! your idea " + idea.title
-				+ "has been removed from the following plan" + plan.title
+				+ " has been removed from the following plan" + plan.title
 				+ " of the topic: " + plan.topic.title;
 		Notifications.sendNotification(idea.author.id, plan.id, "plan",
 				notificationMsg);
@@ -1043,7 +1044,7 @@ public class Plans extends CoolCRUD {
 
 				render(plan, item, user, canEdit, canView, isOrganizer,
 						canIdea, canDelete, canAssign);
-				
+
 			} else {
 				BannedUsers.unauthorized();
 
@@ -1190,10 +1191,10 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
-	 * This methods deletes an item and from the item list of a plan and delete
-	 * all its volunteer requests and assign requests and add to the logs of the
-	 * plan, plan's topic, entity and organization given the item id and the
-	 * variable that to indicate whether to notify or not
+	 * This methods deletes an item, removes it from the item list of the plan,
+	 * delete all its volunteer requests and assign requests and add to the logs
+	 * of the plan, plan's topic, entity and organization given the item id and
+	 * the variable that to indicate whether to notify or not
 	 * 
 	 * @story C5S19
 	 * 
@@ -1359,9 +1360,10 @@ public class Plans extends CoolCRUD {
 	 * 
 	 * @story C5S8
 	 * 
-	 * @param planId    The id of the plan needed to be viewed
-	 * 	
-	 *            
+	 * @param planId
+	 *            The id of the plan needed to be viewed
+	 * 
+	 * 
 	 * @throws java.text.ParseException
 	 */
 	public static void viewasTimeline(long planId) throws IOException,
@@ -1625,13 +1627,13 @@ public class Plans extends CoolCRUD {
 				item.plan.topic, item.plan.topic.entity,
 				item.plan.topic.entity.organization);
 		long id = item.relatedEntity.id;
-		String name=  item.relatedEntity.name;
+		String name = item.relatedEntity.name;
 		JsonObject json = new JsonObject();
 		json.addProperty("name", name + "");
 		json.addProperty("id", id + "");
 
 		renderJSON(json.toString());
-	
+
 	}
 
 	/**
@@ -1770,9 +1772,7 @@ public class Plans extends CoolCRUD {
 		json.addProperty("commentDate", c.commentDate + "");
 
 		renderJSON(json.toString());
-	
-		
-		
+
 	}
 
 }
