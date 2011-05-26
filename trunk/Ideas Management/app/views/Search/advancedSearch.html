@@ -45,18 +45,18 @@
                 document.getElementById('panel' + currentPanel).style.display = 'none';
                 document.getElementById('tab' + currentPanel).className = 'inactiveTab';
                 document.getElementById('tab' + currentPanel).style.color = '#fff';
-                document.getElementById('tab' + currentPanel).style.background = '#c98503';
+                document.getElementById('tab' + currentPanel).style.background = '#e5e5e5';
             }
             
             function setState(tabNum){
                 if (tabNum == currentPanel) {
                     document.getElementById('tab' + tabNum).style.color = '#000';
-                    document.getElementById('tab' + tabNum).style.background = '#faf3c7';
+                    document.getElementById('tab' + tabNum).style.background = '#e5e5e5';
                     document.getElementById('tab' + tabNum).className = 'activeTab';
                 }
                 else {
                     document.getElementById('tab' + tabNum).style.color = '#fff';
-                    document.getElementById('tab' + tabNum).style.background = '#c98503';
+                    document.getElementById('tab' + tabNum).style.background = '#e0e0e0';
                     document.getElementById('tab' + tabNum).style.backgroundImage = 'url(/plone_chunks/graphics/orangeGradientBG.jpg)';
                     document.getElementById('tab' + tabNum).className = 'inactiveTab';
                 }
@@ -64,7 +64,7 @@
             
             function hover(tab){
                 tab.style.color = '#fff';
-                tab.style.background = '#900';
+                tab.style.background = '#4a4a4a';
             }
         </script>
         <style type="text/css">
@@ -96,7 +96,11 @@
                 border-right-style: none;
                 border-bottom-style: none;
                 border-left-style: none;
-                background-color: #faf3c7;
+                background-color: #e5e5e5;
+				border-top-left-radius: 10px;
+				border-top-right-radius: 10px;
+				border-bottom-right-radius: 10px;
+				border-bottom-left-radius: 10px;
             }
             
             .content_articlesWrapper {
@@ -221,9 +225,9 @@
             }
             
             #tabholder_articles span.activeTab {
-                background: #faf3c7;
+                background: #e5e5e5;
                 border: 1px solid #c0c0c0;
-                border-bottom: 1px solid #faf3c7;
+                border-bottom: 1px solid #c0c0c0;
                 color: #000;
                 /*font-weight: 400;*/
                 padding: 1px 10px 3px 10px;
@@ -231,18 +235,27 @@
                 font-size: 9pt;
                 text-align: left;
                 cursor: pointer;
+				border-top-left-radius: 10px;
+				border-top-right-radius: 10px;
+				border-bottom-right-radius: 10px;
+				border-bottom-left-radius: 10px;
             }
             
             #tabholder_articles span.inactiveTab {
                 font-size: 12px;
                 color: #fff;
+				border: 1px solid #e5e5e5;
                 /*border: 1px solid #c98503;*/
                 font-weight: 700;
                 border-bottom: none;
                 padding: 1px 10px 3px 10px;
                 margin: 0px 5px 3px 0px;
                 cursor: pointer;
-                background-color: #c98503;
+                background-color: #c0c0c0;
+				border-top-left-radius: 10px;
+				border-top-right-radius: 10px;
+				border-bottom-right-radius: 10px;
+				border-bottom-left-radius: 10px;
             }
             
             #dblinksWrapper {
@@ -383,7 +396,7 @@
         </style>
     </head>
     <body dir="ltr" onLoad="reloadMyPage(); showNewPanel(5); ">
-        <div style="padding-top: 25px; color: #c0c0c0;">
+        <div style="padding-top: 25px; color: #000000>
             <div class="tabholder" id="tabholder_articles">
                 <span class="activeTab" id="tab5" onMouseOver="hover(this);" onClick="showNewPanel(5);" onMouseOut="setState(5);">Advanced Search&nbsp;</span>
                 <span class="inactiveTab" id="tab1" onMouseOver="hover(this);" onClick="showNewPanel(1);" onMouseOut="setState(1);" style="margin-left: 5px; font-size: 12px;">Find User</span>
