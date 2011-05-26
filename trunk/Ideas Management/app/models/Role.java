@@ -58,10 +58,8 @@ public class Role extends CoolModel {
 				+ "block a user from viewing or using a certain entity;"
 				+ "Request to start a relationship with other items;"
 				+ "Request to end a relationship with other items;"
-				+ "Accept/Reject a request to start/end a relationship with other items;"
-				+ "Create a sub-entity for entity he/she manages;"
+                + "Create a sub-entity for entity he/she manages;"
 				+ "Request to rename relationships that are related to any of the entities or topics he/she manages;"
-				+ "Accept/Reject request to rename relationships that are related to any of the entities or topics I am managing;"
 				+ "Create a certain topic and specify its type within entities that he/she manages;"
 				+ "Receive notifications about any changes or updates within the entities that he/she created or he/she currently manages;"
 				+ "Invite a user to join a private or secret organization;"
@@ -144,7 +142,9 @@ public class Role extends CoolModel {
 				+ "enable/disable the user to create their own tags within an organization; "
 				+ "rename any relationship within the organization;"
 				+ "create relationships between entities/sub-entities/topics/tags;"
-				+ "end a relationship between entities/sub-entities/topics/tags;";
+				+ "end a relationship between entities/sub-entities/topics/tags;"
+				+ "Accept/Reject a request to start/end a relationship with other items;"
+				+ "Accept/Reject request to rename relationships that are related to any of the entities or topics I am managing;";
 		Role OrganizationLead = new Role("organizationLead", action);
 		OrganizationLead.save();
 	}
