@@ -528,9 +528,7 @@ public class Invitations extends CoolCRUD {
 					Log.addUserLog(logDescription, entity.organization, user);
 
 				} else {
-					/**
-					 * * idea devoloper by ibrahim adel
-					 */
+					
 					role = Roles.getRoleByName("idea developer");
 					UserRoleInOrganization roleInOrganization = new UserRoleInOrganization(
 							user, organization, role);
@@ -563,6 +561,19 @@ public class Invitations extends CoolCRUD {
 											+ organization.name);
 						}
 					}
+					
+					String description = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ user.id
+						+ "\">"
+						+ user.firstName
+						+ " "
+						+ user.lastName
+						+ "</a>"
+						+ " has accepted the invitation to join organization "
+						+ "<a href=\"http://localhost:9008/organizations/viewProfile?id="
+						+ organization.id + "\">" + organization.name + "</a>";
+
+				Log.addUserLog(description, organization, user);
 
 				}
 			} else {
