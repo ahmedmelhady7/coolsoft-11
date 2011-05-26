@@ -328,8 +328,17 @@ public class Organization extends CoolModel {
 
 	/**
 	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 Advanced Search
+	 * 
+	 * @description this method find the Organizations with their type
+	 * 
 	 * @param orgs
+	 *            'List<Organization>' list of organizations as result
+	 * 
 	 * @param oT
+	 *            'String' types needed by the user.
+	 * 
 	 */
 	public static void findByType(List<Organization> orgs, String oT) {
 		int searchIn = 0;
