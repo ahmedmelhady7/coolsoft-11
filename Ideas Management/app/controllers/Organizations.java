@@ -261,7 +261,8 @@ public class Organizations extends CoolCRUD {
 	 * @story C2S1
 	 */
 	public static void createOrganization() {
-		render();
+		User user = Security.getConnected();
+		render(user);
 		// if (validation.hasErrors()) {
 		// params.flash();
 		// validation.keep();
@@ -387,9 +388,10 @@ public class Organizations extends CoolCRUD {
 	 */
 	public static void viewFollowers(long organizationId, String flag) {
 		Organization org = Organization.findById(organizationId);
+		User user = Security.getConnected();
 		if (flag.equals("true"))
 			followOrganization(organizationId);
-		render(org);
+		render(org, user);
 	}
 
 	/**
@@ -620,7 +622,7 @@ public class Organizations extends CoolCRUD {
 				i++;
 			}
 		}
-		render(organizations);
+		render(organizations, user);
 	}
 
 	/**
@@ -733,7 +735,8 @@ public class Organizations extends CoolCRUD {
 	 */
 	public static void editOrganization(long organizationId) {
 		Organization organization = Organization.findById(organizationId);
-		render(organization);
+		User user = Security.getConnected();
+		render(organization, user);
 	}
 
 	/**

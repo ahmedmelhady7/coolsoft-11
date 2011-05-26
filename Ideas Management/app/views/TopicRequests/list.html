@@ -30,7 +30,42 @@
             display: none;
         }
     </style>
-    <title>Topic Requests</title>
+    
+			<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+	#showList{
+	margin-top: 1%;
+	margin-right: 5%;
+	margin-bottom: 4%;
+	margin-left: 0%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+</style>
+	
     <script type="text/javascript">
         var accordionItems = new Array();
         
@@ -118,39 +153,62 @@
         }
     </script>
 </head>
-<body onload="init()">
-    #{if listOfTopicsToBeRendered.size() > 0}
-    <br/>
-    <p>
-        List of Topics Requests:
-    </p>
-    <ul style="list-style: none;">
-        #{list items:listOfTopicsToBeRendered, as:'topicRequest'}
-        <li>
-            <div class="accordionItem">
-                <h3>Title: ${topicRequest.title} 
-                    <font size=2>
-                        By: ${topicRequest.requester}
-                    </font>
-                    <font color ="#FF0000" size =4>
-                        ⊕
-                    </font>
-                    <input type="button" value="Rephrase" onclick="rephraseRequest();"><h3><input type="button" value="Accept" onclick="acceptRequest('${topicRequest.id}');"><input type="button" value="Reject" onclick="rejectRequest('${topicRequest.id}');">
-                        <div>
-                            <p>
-                                Description:
-								<br>
-                                <textarea id="topicDescription" disabled='true'>
-                                    ${topicRequest.description}
-                                </textarea>
-								<br>
-                                <input type='submit' id='donebutton' value='Done Rephrasing' disabled='true' onclick="doneRephrasing();">
-                            </p>
-                        </div>
-                        </div>
-                    </li> #{/list}
-                    </ul>#{/if}
-                    #{else}
-                    No topic requests available for this entity!
-                    #{/else}
-                </body>
+
+<div id="leftSidebar">
+		    <ul>
+		        <div style="clear: both;">
+		            &nbsp;
+		        </div>
+		        <li>
+		            <ul>
+		            	<li>
+		            		No actions yet
+		            	</li>
+						
+		            </ul>
+		        </li>
+		    </ul>
+		</div>
+
+<div id="page">
+	<div id="page-bgtop">
+		<div id="showList">
+			<body onload="init()">
+				<h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Topic Requests</h2>
+				<br />
+				
+			    #{if listOfTopicsToBeRendered.size() > 0}
+			    <br/>
+			    <p>
+			        List of Topics Requests:
+			    </p>
+			    <ul style="list-style: none;">
+			        #{list items:listOfTopicsToBeRendered, as:'topicRequest'}
+			        <li>
+			            <div class="accordionItem">
+			                <h3 style="backgroud-color:#FFFFFF; border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">Title: ${topicRequest.title} 
+			                    <font size=2>
+			                        By: ${topicRequest.requester.username}
+			                    </font>
+			                    <input type="button" value="Rephrase" onclick="rephraseRequest();" class="linkButton"/><input type="button" value="Accept" onclick="acceptRequest('${topicRequest.id}');" class="linkButton"/><input type="button" value="Reject" onclick="rejectRequest('${topicRequest.id}');" class="linkButton"/></h3>
+			                        <div>
+			                            <p>
+			                                Description:
+											<br>
+			                                <textarea id="topicDescription" disabled='true'>
+			                                    ${topicRequest.description}
+			                                </textarea>
+											<br>
+			                                <input type='submit' id='donebutton' value='Done Rephrasing' disabled='true' onclick="doneRephrasing();" class="linkButton"/>
+			                            </p>
+			                        </div>
+			                        </div>
+			                    </li> #{/list}
+			                    </ul>#{/if}
+			                    #{else}
+			                    No topic requests available for this entity!
+			                    #{/else}
+ 			</body>
+ 		</div>
+	 </div>
+ </div>

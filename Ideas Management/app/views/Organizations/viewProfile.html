@@ -2,7 +2,6 @@
 <html>
     <head>
         <meta name="generator" content="HTML Tidy, see www.w3.org">
-        <title>Organization Profile View</title>
         <script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js">
         </script>
 				<script type="text/javascript" src="/public/javascripts/jquery.js"></script>
@@ -70,8 +69,42 @@ pre{
 	#tags .alt .tag5{background:#266ca2;}
 	
 	.btn{display:block;}
-	
 
+</style>
+
+<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+	#showViewProfile{
+	margin-top: 1%;
+	margin-right: 5%;
+	margin-bottom: 4%;
+	margin-left: 0%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
 </style>
 
 <script type="text/javascript">
@@ -104,36 +137,7 @@ $(document).ready(function(){
 });
 </script>
     </head>
-    <body>
-        #{extends 'Login/index.html' /}		
-        #{set title: 'Organization Profile' /}
-		<div id="invbox" style="float: left; padding-left: 1%; padding-top:2%; color:#0080ff;">
-		#{if canInvite == true}
-                <form onsubmit="help('${org.id}', email.value);" method="post">
-                    <input type="hidden" id='users' name="users" value="${usernames}">
-					<br /> Invite an Idea Developer 
-                    <br> Username/Email: <input type="text" id="email" name="email" autoComplete="group"/>
-                    <br> Invite by: <input type="radio" id="s" name="select" value="username" onclick="autoC();" checked> Username <input type="radio" name="select" value="email" onclick="autoC();"> E-Mail  <input type="submit" value="Invite"/>
-                    <script language="javascript" type="text/javascript">
-                        var a = document.getElementById('users');
-                        b = a.value + "";
-                        c = b.split("|");
-                        autoComplete.Set("group", c);
-                    </script>
-                </form>#{/if}</div>
-        <center>
-        	#{if org.profilePictureId != -1}
-			#{list items:pictureId, as:'id'}
-			<img src="@{Pictures.getPicture(id)}" width="75" height="75"/>
-			#{/list}
-			#{/if}
-			#{if org.profilePictureId == -1}
-			<img src="/public/images/org.png" width="75" height="75"/>
-			#{/if}
-            <big>
-                <h2><b>${org.name}</b></h2>
-            </big>
-        </center>
+	
 		<div id="leftSidebar">
            <div style="clear: both;">
 		   				
@@ -141,11 +145,6 @@ $(document).ready(function(){
 		   <li>
 		   
 		  	<ul>
-		  			#{if canInvite == true}
-					<li>
-						<a id="invLink" style="cursor:pointer;">Invite a user</a>
-					</li>
-					#{/if}
 					#{if admin || creator}
 					<li>
 						<a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
@@ -268,287 +267,301 @@ $(document).ready(function(){
 		
 		</ul>
 		</li>		
-		</div>	
-		
-<script type="text/javascript">
-	var bdocs = false;
-	$('#documen').hide();	
-	 $('#docLink').click(function(){
-            if (bdocs) {
-                $('#documen').show(500);
-                bdocs = false;
-            }
-            else {
-                $('#documen').hide(500);
-                bdocs = true;
-            }
-        });
-	        
-			var planFlag = true;
-        $('#plansLinks').hide();
-        $('#planLink').click(function(){
-            if (planFlag) {
-                $('#plansLinks').show(500);
-                planFlag = false;
-            }
-            else {
-                $('#plansLinks').hide(500);
-                planFlag = true;
-            }
-        });
-        
-        var followerFlag = false;
-        $('#followersLinks').hide();
-        $('#followersLink').click(function(){
-            if (followerFlag) {
-                $('#followersLinks').show(500);
-                followerFlag = false;
-            }
-            else {
-                $('#followersLinks').hide(500);
-                followerFlag = true;
-            }
-        });
-        
-        var entityFlag = false;
-        $('#entityLinks').hide();
-        $('#entityLink').click(function(){
-            if (entityFlag) {
-                $('#entityLinks').show(500);
-                entityFlag = false;
-            }
-            else {
-                $('#entityLinks').hide(500);
-                entityFlag = true;
-            }
-        });
-		
-	var invb = false;
-	$('#invbox').hide();	
-	 $('#invLink').click(function(){
-            if (invb) {
-                $('#invbox').show(500);
-                invb = false;
-            }
-            else {
-                $('#invbox').hide(500);
-                invb = true;
-            }
-        });
-		
-	 function autoC(){
-	 	var emailID=document.getElementById("email");                            	
-        var auto=document.getElementById("s").checked;   
-		if (!auto) {
-			emailID.setAttribute('autocomplete', 'off');
-			}
-			else {
-				emailID.setAttribute('autocomplete', "group");
-            }
-        }
-
-	</script>		
-			<div id="page">
-        #{if join}
-        <form action="@{Organizations.join()}" method="post">
-            <input type="hidden" id="organizationId" name="organizationId" value="${org.id}" />Join Organization 
-            <p>
-                <input type="submit" value="Join" />
-            </p>
-        </form>#{/if}
-        <br>
-        <br>
-        
-		
-		#{if logFlag == 1}		
- <input type="submit" value="View Logs" onclick=location.href="@{Logs.viewLogs(org.id)}">
-		#{/if}	
-<br>
-        <br>
-        #{if settings==1}
-     <a href="@{CreateRelationshipRequests.viewRequests(org.id)}">Relationship Requests</a>
-        #{/if}
-        <br>
-        <br>
-        #{if (requestToJoin == true) && (!admin) && (!alreadyRequested)}
-        <form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
-            <input type="hidden" id="orgId" name="orgId" value="${org.id}">Your message: 
-            <textarea id="description" name="description" rows="5" cols="50">
-            </textarea>
-            Request to join <input type="submit" value="Request">
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-        </form>
-        #{/if}
-        #{else}
-        #{if alreadyRequested}
-        <big>
-            <b>Your request has already been sent!!</b>
-        </big>
-        #{/if}
-        #{else}
-		<br />
-	<div style="width:20%;">
-		<p><b>List of viewable Tags:</b><p>
-		<div id="tags">
-			<ul>
-				 #{list items:tags, as:'tag'}
-				 <!-- tag1, tag2 ..etc for diffrent sizes link:: http://cssglobe.com/post/4581/tag-clouds-styling-and-adding-sort-options				 -->
-            <li>
-                <a class="tag2" href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
-            </li>
-            #{/list}
-			</ul>
-	</div>
-</div>
-<br />
-        #{/else}
-        #{/else}
-        #{if flag == 1}
-         
-        <form action="@{BannedUsers.restrictOrganizer()}">
-            <input type="hidden" name="orgId" value='${org.id}'>
-            Restrict / De-Restrict organizers in this organization: <input type="submit" value="view">
-        </form>
-         <br />
-         <form action="@{BannedUsers.restrictGroupInSelectedEntity()}">
-            <input type="hidden" name="organizationID" value='${org.id}'>
-            Restrict Group of organizers in a certain Entity or Topic : <input type="submit" value="view">
-        </form>
-        <br />
-        <form action="@{BannedUsers.viewRestrictedOrganizersInOrganization()}">
-            <input type="hidden" name="organizationID" value='${org.id}'>
-            View Restricted Organizers in Entities: <input type="submit" value="view">
-        </form>
-        <br />
-        <form action="@{BannedUsers.viewRestrictedOrganizersTopicPath()}">
-            <input type="hidden" name="organizationID" value='${org.id}'>
-            View Restricted Organizers in Topics: <input type="submit" value="view">
-        </form>
-         
-        #{/if}
-        <!--     </body> -->
-        <!-- </html> -->
-        <!-- <script type="text/javascript"> -->
-        <!-- function test(){ -->
-        <!-- 	//var v = document.getElementById('selec').selectedIndex; -->
-        <!-- 	var a = document.getElementById('selec').value; -->
-        <!-- 	//alert("function" +  a); -->
-        <!-- 	if(a!='Tags') -->
-        <!-- 	if(a == 0){ -->
-        <!-- 		//alert("function2" +  ${org.id}); -->
-        <!-- 	$.post('@{Organizations.enableTags()}',{id:${org.id}}); -->
-        <!-- 		alert("Options is enabled"); -->
-        <!-- 	} -->
-        <!-- 	else{ -->
-        <!-- 		//alert("function2" +  ${org.id}); -->
-        <!-- 	$.post('@{Organizations.disableTags()}',{id:${org.id}}); -->
-        <!-- 		alert("Options is disabled"); -->
-        <!-- 	} -->
-        <!-- 	} -->
-        <!-- </script> -->
-        <!-- ======= -->
-       <!--<form action="@{Organizations.viewFollowers()}">
-             <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="flag" value="true">#{if (!org.followers.contains(user))}
-            <p>
-                Follow ${org.name} <input type="submit" value="Follow">
-                <br/>
-                #{/if}
-                </form> 
-                <form action="@{Organizations.viewFollowers()}">
-                    <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="flag" value="false">View ${org.name} Followers <input type="submit" value="Followers">
-                    <br/>
-                     
-                </form> -->
-				
-				#{if (admin || creator)}
-				<h4>Create Relationship between <select id="relType" onchange="showRelationForm()">
-						<option>select object</option>
-						<option>Entities</option>
-						<option>Topics</option>
-						<option>Tags</option>
-					</select> :</h4>
-					name: <select id="rels"> 
-					<option>choose name</option>
-					#{list items:org.relationNames, as:'relName'}
-					<option>${relName}</option>
-					#{/list}
-					</select> <input id="rTextForm" type="text" /> <input type="button" value="add new name" onclick="addName()" /> <font color="red"><span id="duplicate"></span></font>
-				
-				<p><form id="eform" style="display: none;">
+		</div>
+	
+	<div id="page">
+    	<div id="page-bgtop">
+    		<div id="showViewProfile">
+			    <body>
+			        #{extends 'Login/index.html' /}		
+			        #{set title: 'Organization Profile' /}
 					
-					Source: <select id="ent1">
-					<option>Select Entity</option>
-					#{list items:entitiesCanBeRelated, as:'entityElement'}
-					<option value="${entityElement.id}">${entityElement.name}</option>
-					#{/list}
-					</select>
-					
-					Destination: <select id="ent2">
-					<option>Select Entity</option>
-					#{list items:entitiesCanBeRelated, as:'entityElement'}
-					<option value="${entityElement.id}">${entityElement.name}</option>
-					#{/list}
-					</select>			
-					
-					<input type="button" value="Create Relation" onclick="createERelation()"/> <font color="red"><span id="e_duplicate"></span></font>
-					
-				</form></p>
-				<p>
-				<form id="tform" style="display: none;">
-										
-					Source: <select id="tpc1"> 
-					<option>Select Topic</option>
-					#{list items:topics, as:'topicElement'}
-					<option value="${topicElement.id}">${topicElement.title}</option>
-					#{/list}
-					</select>
-					
-					Destination: <select id="tpc2"> 
-					<option>Select Topic</option>
-					#{list items:topics, as:'topicElement'}
-					<option value="${topicElement.id}">${topicElement.title}</option>
-					#{/list}
-					</select>
-					
-					<input type="button" value="Create Relation" onclick="createTRelation()" />
-					
-				</form></p>
-				
-				
-			<p>	<form id="gform" style="display: none;">
-										
-					Source: <select id="tg1"> 
-					<option>Select Tag</option>
-					#{list items:tags, as:'tagElement'}
-					<option value="${tagElement.id}">${tagElement.name}</option>
-					#{/list}
-					</select>
-
-					Destination: <select id="tg2"> 
-					<option>Select Tag</option>
-					#{list items:tags, as:'tagElement'}
-					<option value="${tagElement.id}">${tagElement.name}</option>
-					#{/list}
-					</select>
-
-					<input type="button" value="Create Relation" onclick="createGRelation()" />				
-					
-				</form></p>
+			<script type="text/javascript">
+				var bdocs = false;
+				$('#documen').hide();	
+				 $('#docLink').click(function(){
+			            if (bdocs) {
+			                $('#documen').show(500);
+			                bdocs = false;
+			            }
+			            else {
+			                $('#documen').hide(500);
+			                bdocs = true;
+			            }
+			        });
+				        
+						var planFlag = true;
+			        $('#plansLinks').hide();
+			        $('#planLink').click(function(){
+			            if (planFlag) {
+			                $('#plansLinks').show(500);
+			                planFlag = false;
+			            }
+			            else {
+			                $('#plansLinks').hide(500);
+			                planFlag = true;
+			            }
+			        });
+			        
+			        var followerFlag = false;
+			        $('#followersLinks').hide();
+			        $('#followersLink').click(function(){
+			            if (followerFlag) {
+			                $('#followersLinks').show(500);
+			                followerFlag = false;
+			            }
+			            else {
+			                $('#followersLinks').hide(500);
+			                followerFlag = true;
+			            }
+			        });
+			        
+			        var entityFlag = false;
+			        $('#entityLinks').hide();
+			        $('#entityLink').click(function(){
+			            if (entityFlag) {
+			                $('#entityLinks').show(500);
+			                entityFlag = false;
+			            }
+			            else {
+			                $('#entityLinks').hide(500);
+			                entityFlag = true;
+			            }
+			        });
 			
-				#{/if}
+				</script>		
+						
+					  <center>
+			        	#{if org.profilePictureId != -1}
+						#{list items:pictureId, as:'id'}
+						<img src="@{Pictures.getPicture(id)}" width="75" height="75"/>
+						#{/list}
+						#{/if}
+						#{if org.profilePictureId == -1}
+						<img src="/public/images/org.png" width="75" height="75"/>
+						#{/if}
+						 <h2 style="font-size:7;font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">${org.name}</h2>
+						<br />
+						<br />
+			         </center>	
+					 
+					 <div style="float: left;">#{if canInvite == true}
+			                <form onsubmit="help('${org.id}', email.value);" method="post">
+			                    <input type="hidden" id='users' name="users" value="${usernames}">
+								Invite an Idea Developer 
+			                    <br>Username/Email: <input type="text" id="email" name="email" autoComplete="group"/>
+			                    <br>Invite by: <input type="radio" id="s" name="select" value="username" checked> Username <input type="radio" name="select" value="email"> E-Mail  <input type="submit" value="Invite" class="linkButton"/>
+			                    <script language="javascript" type="text/javascript">
+			                        var a = document.getElementById('users');
+			                        b = a.value + "";
+			                        c = b.split("|");
+			                        autoComplete.Set("group", c);
+			                    </script>
+			                </form>#{/if}
+							<br />
+							<br />
+					 </div>
+					<p></p>
+			        #{if join}
+			        <form action="@{Organizations.join()}" method="post">
+			            <input type="hidden" id="organizationId" name="organizationId" value="${org.id}" />Join Organization 
+			            <p>
+			                <input type="submit" value="Join" class="linkButton"/>
+			            </p>
+			        </form>
+					#{/if}
+			        <br/>
+			        <br/>
+			        
+			        #{if settings==1}
+			     <a href="@{CreateRelationshipRequests.viewRequests(org.id)}">Relationship Requests</a>
+			        #{/if}
+			        <br>
+			        <br>
+					#{if logFlag == 1}		
+			 			<input type="submit" value="View Logs" onclick=location.href="@{Logs.viewLogs(org.id)}" class="linkButton"></input>
+					#{/if}	
+					<br>
+			        <br>
+			        #{if (requestToJoin == true) && (!admin) && (!alreadyRequested)}
+			        <form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
+			            <input type="hidden" id="orgId" name="orgId" value="${org.id}">Your message: 
+			            <textarea id="description" name="description" rows="5" cols="50">
+			            </textarea>
+			            Request to join <input type="submit" value="Request" class="linkButton">
+			            <br/>
+			            <br/>
+			            <br/>
+			            <br/>
+			        </form>
+			        #{/if}
+			        #{else}
+			        #{if alreadyRequested}
+			        <big>
+			            <b>Your request has already been sent!!</b>
+			        </big>
+			        #{/if}
+			        #{else}
+					<br />
+				<div style="width:20%;">
+					<p><b>List of viewable Tags:</b></p>
+					<div id="tags">
+						<ul>
+							 #{list items:tags, as:'tag'}
+							 <!-- tag1, tag2 ..etc for diffrent sizes link:: http://cssglobe.com/post/4581/tag-clouds-styling-and-adding-sort-options				 -->
+			            <li>
+			                <a class="tag2" href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
+			            </li>
+			            #{/list}
+						</ul>
+					</div>
+				</div>
+				<br />
+			        #{/else}
+			        #{/else}
+			        #{if flag == 1}
+			         
+			        <form action="@{BannedUsers.restrictOrganizer()}">
+			            <input type="hidden" name="orgId" value='${org.id}'>
+			            Restrict / De-Restrict organizers in this organization: <input type="submit" value="view" class="linkButton">
+			        </form>
+			         <br />
+			         <form action="@{BannedUsers.restrictGroupInSelectedEntity()}">
+			            <input type="hidden" name="organizationID" value='${org.id}'>
+			            Restrict Group of organizers in a certain Entity or Topic : <input type="submit" value="view" class="linkButton">
+			        </form>
+			        <br />
+			        <form action="@{BannedUsers.viewRestrictedOrganizersInOrganization()}">
+			            <input type="hidden" name="organizationID" value='${org.id}'>
+			            View Restricted Organizers in Entities: <input type="submit" value="view" class="linkButton">
+			        </form>
+			        <br />
+			        <form action="@{BannedUsers.viewRestrictedOrganizersTopicPath()}">
+			            <input type="hidden" name="organizationID" value='${org.id}'>
+			            View Restricted Organizers in Topics: <input type="submit" value="view" class="linkButton">
+			        </form>
+			        #{/if}
+			        <!--     </body> -->
+			        <!-- </html> -->
+			        <!-- <script type="text/javascript"> -->
+			        <!-- function test(){ -->
+			        <!-- 	//var v = document.getElementById('selec').selectedIndex; -->
+			        <!-- 	var a = document.getElementById('selec').value; -->
+			        <!-- 	//alert("function" +  a); -->
+			        <!-- 	if(a!='Tags') -->
+			        <!-- 	if(a == 0){ -->
+			        <!-- 		//alert("function2" +  ${org.id}); -->
+			        <!-- 	$.post('@{Organizations.enableTags()}',{id:${org.id}}); -->
+			        <!-- 		alert("Options is enabled"); -->
+			        <!-- 	} -->
+			        <!-- 	else{ -->
+			        <!-- 		//alert("function2" +  ${org.id}); -->
+			        <!-- 	$.post('@{Organizations.disableTags()}',{id:${org.id}}); -->
+			        <!-- 		alert("Options is disabled"); -->
+			        <!-- 	} -->
+			        <!-- 	} -->
+			        <!-- </script> -->
+			        <!-- ======= -->
+			       <!--<form action="@{Organizations.viewFollowers()}">
+			             <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="flag" value="true">#{if (!org.followers.contains(user))}
+			            <p>
+			                Follow ${org.name} <input type="submit" value="Follow">
+			                <br/>
+			                #{/if}
+			                </form> 
+			                <form action="@{Organizations.viewFollowers()}">
+			                    <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="flag" value="false">View ${org.name} Followers <input type="submit" value="Followers">
+			                    <br/>
+			                     
+			                </form> -->
+							
+							#{if (admin || creator)}
+							<h4>Create Relationship between <select id="relType" onchange="showRelationForm()">
+									<option>select object</option>
+									<option>Entities</option>
+									<option>Topics</option>
+									<option>Tags</option>
+								</select> :</h4>
+								name: <select id="rels"> 
+								<option>choose name</option>
+								#{list items:org.relationNames, as:'relName'}
+								<option>${relName}</option>
+								#{/list}
+								</select> <input id="rTextForm" type="text" /> <input type="button" class="linkButton" value="add new name" onclick="addName()" /><span id="duplicate"></span>
+							
+							<p><form id="eform" style="display: none;">
+								
+								Source: <select id="ent1">
+								<option>Select Entity</option>
+								#{list items:entitiesCanBeRelated, as:'entityElement'}
+								<option value="${entityElement.id}">${entityElement.name}</option>
+								#{/list}
+								</select>		
+								
+								Destination: <select id="ent2">
+								<option>Select Entity</option>
+								#{list items:entitiesCanBeRelated, as:'entityElement'}
+								<option value="${entityElement.id}">${entityElement.name}</option>
+								#{/list}
+								</select>			
+								
+								<input type="button" value="Create Relation" onclick="createERelation()"/>
+								
+							</form></p>
+							<p>
+							<form id="tform" style="display: none;">
+													
+								Source: <select id="tpc1"> 
+								<option>Select Topic</option>
+								#{list items:topics, as:'topicElement'}
+								<option value="${topicElement.id}">${topicElement.title}</option>
+								#{/list}
+								</select>
+								
+								Destination: <select id="tpc2"> 
+								<option>Select Topic</option>
+								#{list items:topics, as:'topicElement'}
+								<option value="${topicElement.id}">${topicElement.title}</option>
+								#{/list}
+								</select>
+								
+								<input type="button" value="Create Relation" onclick="createTRelation()" class="linkButton"/>
+								
+							</form></p>
+							
+							
+						<p>	<form id="gform" style="display: none;">
+													
+								Source: <select id="tg1"> 
+								<option>Select Tag</option>
+								#{list items:tags, as:'tagElement'}
+								<option value="${tagElement.id}">${tagElement.name}</option>
+								#{/list}
+								</select>
+			
+								Destination: <select id="tg2"> 
+								<option>Select Tag</option>
+								#{list items:tags, as:'tagElement'}
+								<option value="${tagElement.id}">${tagElement.name}</option>
+								#{/list}
+								</select>
+			
+								<input type="button" value="Create Relation" onclick="createGRelation()" />				
+								
+							</form></p>
+							#{/if}
 				
-				<HR>
-				#{if isMember == true || org.privacyLevel == 2 || admin}
-                <form action="@{Contribution.contribution()}" method="post">
-                    <input type="hidden" name="id" value="${org.id}">Contribution Points: <input type="submit" value="View">
-                </form>
-				#{/if}
-				<HR>
-</div>            </body>
-            </html>
+							#{if isMember == true || org.privacyLevel == 2 || admin}
+			                <form action="@{Contribution.contribution()}" method="post">
+			                    <input type="hidden" name="id" value="${org.id}">Contribution Points: <input type="submit" value="View" class="linkButton">
+			                </form>
+							#{/if}           
+							 </body>
+			     
+			</div>
+		</div>
+	</div>       
+			</html>
             <script type="text/javascript">
             	
 				function createERelation(){
@@ -556,12 +569,10 @@ $(document).ready(function(){
 					var s = document.getElementById("ent1").value;
 					var d = document.getElementById("ent2").value;
 					
-					var tmp_n;
-					
 					if (n == "choose name" || s == "Select Entity" || d == "Select Entity") {
-						document.getElementById('e_duplicate').textContent="Please fill all required field(s).";
+						alert("Please fill the required filed(s)");
 					}else if (s == d){
-						document.getElementById('e_duplicate').textContent="Cannot relate entity to itself!";
+						alert("Cannot relate entity to itself!");
 					}else {
 						$.post('@{EntityRelationships.createRelationship()}', {
 							name: n,
@@ -569,13 +580,10 @@ $(document).ready(function(){
 							destinationId: d
 						}, function(data){
 							if(data == "true"){
-								document.getElementById('e_duplicate').textContent="Relation \"" + n + "\" have been created.";
-//								location.reload();
-								$('#e_duplicate').fadeOut('slow');
-								//reset values.
-								
+								alert("you have created relation: " + n);
+								location.reload();
 							}else if(data == "false"){
-								document.getElementById('e_duplicate').textContent="Relation already exists.";
+								alert("relation already exists!!");
 							}
 						});
 					}
@@ -670,11 +678,11 @@ $(document).ready(function(){
 							document.getElementById('rTextForm').value = "";
 						}
 						else if(data == "true"){
-							document.getElementById('duplicate').textContent="Name already exists.";
+							document.getElementById('duplicate').textContent=" Duplicate!!";
 						}
 						});
 					}else{
-						document.getElementById('duplicate').textContent="Please enter a name.";
+						alert("enter a name!");
 					}
 				}
 				
@@ -687,37 +695,37 @@ $(document).ready(function(){
                                 		var lstr=str.length
                                 		var ldot=str.indexOf(dot)
                                 		if (str.indexOf(at)==-1){
-                                		   alert("Invalid Email address")
+                                		   alert("Invalid E-mail ID")
                                 		   return false
                                 		}
                                 
                                 		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
-                                		   alert("Invalid Email address")
+                                		   alert("Invalid E-mail ID")
                                 		   return false
                                 		}
                                 
                                 		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
-                                		    alert("Invalid Email address")
+                                		    alert("Invalid E-mail ID")
                                 		    return false
                                 		}
                                 
                                 		 if (str.indexOf(at,(lat+1))!=-1){
-                                		    alert("Invalid Email address")
+                                		    alert("Invalid E-mail ID")
                                 		    return false
                                 		 }
                                 
                                 		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
-                                		    alert("Invalid Email address")
+                                		    alert("Invalid E-mail ID")
                                 		    return false
                                 		 }
                                 
                                 		 if (str.indexOf(dot,(lat+2))==-1){
-                                		    alert("Invalid Email address")
+                                		    alert("Invalid E-mail ID")
                                 		    return false
                                 		 }
                                 		
                                 		 if (str.indexOf(" ")!=-1){
-                                		    alert("Invalid Email address")
+                                		    alert("Invalid E-mail ID")
                                 		    return false
                                 		 }
                                 
@@ -728,7 +736,7 @@ $(document).ready(function(){
                                 	var emailID=document.getElementById("email");
                                 	
                                 	if ((emailID.value==null)||(emailID.value=="")){
-                                		alert("Please Enter a valid Email address")
+                                		alert("Please Enter your Email ID")
                                 		emailID.focus()
                                 		return false
                                 	}
