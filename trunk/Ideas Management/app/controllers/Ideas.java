@@ -891,7 +891,6 @@ public class Ideas extends CoolCRUD {
 	public static void mergeIdeas(long topicId, String oldIdeas,
 			String newTitle, String newDescription) {
 
-		System.out.println("I entered mergeIdeas()");
 		String allContributors = "";
 		Topic targetTopic = Topic.findById(topicId);
 		User merger = Security.getConnected();
@@ -914,7 +913,6 @@ public class Ideas extends CoolCRUD {
 
 		for (int i = 1; i < selectedIdeas.size(); i++) {
 			String contributor = selectedIdeas.get(i).author.username;
-			System.out.println("contributor:" + contributor);
 			if (i == selectedIdeas.size() - 1) {
 				if (contributorsList.indexOf(contributor) == -1) {
 					allContributors = allContributors + contributor;
@@ -943,7 +941,6 @@ public class Ideas extends CoolCRUD {
 		ideaToKeep.save();
 		targetTopic.save();
 
-		System.out.println("done merging");
 	}
 
 	/**
@@ -975,25 +972,14 @@ public class Ideas extends CoolCRUD {
 			}
 
 			Idea currentIdea = allIdeas.get(i);
-			System.out.println("selectedIdeasIds bef sort:"
-					+ selectedIdeasIds.length);
 
-			System.out.println("selectedIdeasIds bef sort:"
-					+ selectedIdeasIds.length);
 			// checks if the current idea is indeed selected
 			if (Arrays.binarySearch(selectedIdeasIds, currentIdea.getId()) >= 0) {
 				selectedIdeas.add(currentIdea);
 			}
 
 		}
-		System.out.println("selectedIdeasIds:");
-		for (int i = 0; i < selectedIdeasIds.length; i++) {
-			System.out.println(selectedIdeasIds[i]);
-		}
-		System.out.println("selectedIdeas:");
-		for (int i = 0; i < selectedIdeas.size(); i++) {
-			System.out.println(selectedIdeas.get(i).getId());
-		}
+
 
 		return selectedIdeas;
 	}
