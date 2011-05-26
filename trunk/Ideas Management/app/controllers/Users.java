@@ -18,9 +18,9 @@ import play.db.jpa.GenericModel.JPAQuery;
 import play.db.jpa.JPA;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
+import play.libs.Codec;
 import play.mvc.With;
 import models.*;
-
 import java.util.Arrays;
 
 @With(Secure.class)
@@ -109,11 +109,16 @@ public class Users extends CoolCRUD {
 		if (Security.getConnected().isAdmin) {
 			adminFlag = 1;
 		}
+		int isDeleted=0;
+		if(object.state.equals("d"))
+		{
+			isDeleted = 1;
+		}
 		try {
 
 			System.out.println("view() done, about to render");
 			render(type, object, username, name, communityContributionCounter,
-					profession, birthDate, userId, adminFlag);
+					profession, birthDate, userId, adminFlag,isDeleted);
 
 		} catch (TemplateNotFoundException e) {
 			System.out
@@ -174,9 +179,14 @@ public class Users extends CoolCRUD {
 		String profession = tmp.profession;
 		String username = tmp.username;
 		String dateofBirth = "" + tmp.dateofBirth;
+		int isDeleted=0;
+		if(tmp.state.equals("d"))
+		{
+			isDeleted=1;
+		}
 		try {
 			render(type, object, username, name, communityContributionCounter,
-					profession, dateofBirth, userId);
+					profession, dateofBirth, userId,isDeleted);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -1285,17 +1295,9 @@ public class Users extends CoolCRUD {
 		User tmp = (User) object;
 		System.out.println("create() entered");
 		tmp.email = tmp.email.trim().toLowerCase();
-		tmp.username = tmp.username.trim();
-		tmp.password = tmp.password.trim();
+		tmp.username = tmp.username.trim().toLowerCase();
 		tmp.firstName = tmp.firstName.trim();
 		boolean flag = false;
-		String communityCounterString = tmp.communityContributionCounter + "";
-		boolean communityCounterFlag = false;
-		try {
-			Integer.parseInt(communityCounterString);
-		} catch (NumberFormatException e) {
-			communityCounterFlag = true;
-		}
 		/*
 		 * if (User.find("ByEmail", tmp.email) != null ||
 		 * User.find("ByUsername", tmp.username) != null) { flag = true; }
@@ -1319,11 +1321,9 @@ public class Users extends CoolCRUD {
 				message = "Username cannot exceed 20 characters";
 			} else if (tmp.password.length() >= 25) {
 				message = "First name cannot exceed 25 characters";
-			} else if (communityCounterFlag) {
-				message = "Community contributuion counter must be a number";
 			} /*
-			 * else if (User.find("ByEmail", tmp.email) != null) { message =
-			 * "This Email already exists !"; } else if (User.find("ByUsername",
+			 * else if (User.find("byEmail", tmp.email) != null) { message =
+			 * "This Email already exists !"; } else if (User.find("byUsername",
 			 * tmp.username) != null) { message =
 			 * "This username already exists !"; }
 			 */
@@ -1417,15 +1417,8 @@ public class Users extends CoolCRUD {
 		tmp.firstName = tmp.firstName.trim();
 		tmp.lastName = tmp.lastName.trim();
 		tmp.profession = tmp.profession.trim();
-		String communityCounterString = tmp.communityContributionCounter + "";
-		boolean communityCounterFlag = false;
-		try {
-			Integer.parseInt(communityCounterString);
-		} catch (NumberFormatException e) {
-			communityCounterFlag = true;
-		}
 
-		if (validation.hasErrors() || communityCounterFlag) {
+		if (validation.hasErrors()) {
 			System.out.println("lol");
 			if (tmp.email.equals("")) {
 				message = "A User must have an email";
@@ -1439,8 +1432,6 @@ public class Users extends CoolCRUD {
 				message = "Username cannot exceed 20 characters";
 			} else if (tmp.password.length() >= 25) {
 				message = "First name cannot exceed 25 characters";
-			} else if (communityCounterFlag) {
-				message = "Community contributuion counter must be a number";
 			}
 			try {
 				System.out.println("show user try ");
@@ -1454,6 +1445,7 @@ public class Users extends CoolCRUD {
 		}
 
 		System.out.println(object.toString() + "before save");
+		tmp.password=Codec.hexMD5(tmp.password);
 		object._save();
 		if (Security.getConnected().isAdmin
 				&& Security.getConnected().id != tmp.id) {
@@ -1464,11 +1456,11 @@ public class Users extends CoolCRUD {
 			editedMessage += "Email changed to -->  " + tmp.email + "\n";
 		}
 		if (!(Arrays.equals(oldFirstNameArray, tmp.firstName.toCharArray()))) {
-			editedMessage += oldFirstName + " First Name changed to -->  "
+			editedMessage +=  " First Name changed to -->  "
 					+ tmp.firstName + "\n";
 		}
 		if (!(Arrays.equals(oldLastNameArray, tmp.lastName.toCharArray()))) {
-			editedMessage += oldLastName + "  changed to -->  " + tmp.lastName
+			editedMessage +=  "  changed to -->  " + tmp.lastName
 					+ "\n";
 		}
 		if (oldUser.communityContributionCounter != tmp.communityContributionCounter) {
@@ -1481,17 +1473,21 @@ public class Users extends CoolCRUD {
 		 * dateofBirth + "  changed to -->  " + tmp.dateofBirth +"\n"; }
 		 */
 		if (!(Arrays.equals(oldCountryArray, tmp.country.toCharArray()))) {
-			editedMessage += oldUser.country + "  changed to -->  "
+			editedMessage += "  changed to -->  "
 					+ tmp.country + "\n";
 		}
 		if (!(Arrays.equals(oldProfessionArray, tmp.profession.toCharArray()))) {
-			editedMessage += oldProfession + " changed to --> "
+			editedMessage += " changed to --> "
 					+ tmp.profession + "\n";
 		}
 		System.out.println("edited" + editedMessage + " all");
-		Log.addUserLog("Admin " + Security.getConnected().firstName + " "
-				+ Security.getConnected().lastName + " has edited "
-				+ tmp.username + "'s profile" + "\n" + editedMessage, tmp);
+		if (Security.getConnected().isAdmin
+				&& Security.getConnected().id != tmp.id)
+		{
+			Log.addUserLog("Admin " + Security.getConnected().firstName + " "
+					+ Security.getConnected().lastName + " has edited "
+					+ tmp.username + "'s profile" + "\n" + editedMessage, tmp);
+		}
 		System.out.println(object.toString() + "after the save");
 		flash.success(Messages.get("crud.saved", type.modelName));
 		if (params.get("_save") != null) {
@@ -1616,6 +1612,39 @@ public class Users extends CoolCRUD {
 		}
 
 	}
+	
+	/**
+	 * undeletes a user by the system admin, then sends an email to the undeleted user 
+	 * notifying him of the event
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
+	 * 
+	 * @param id
+	 *            :String the user's id
+	 * 
+	 * 
+	 * */
+	public static void undelete(String id) {
+		long userId = Long.parseLong(id);
+		User user = User.findById(userId);
+		String x = "";
+		try {
+
+			if (!(user.state.equals("d"))) {
+				return;
+			}
+			user.state = "a";
+			user._save();
+			Mail.forgiven(user);
+			render(request.controller.replace(".", "/") + "/index.html", x);
+		} catch (NullPointerException e) {
+			render(request.controller.replace(".", "/") + "/index.html");
+
+		}
+	}
+
 
 	/**
 	 * Renders the list of notifications of the user, to the view to display the
