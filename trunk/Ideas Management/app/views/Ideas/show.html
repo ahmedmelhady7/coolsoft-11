@@ -70,7 +70,8 @@
  		<br/>
  		<br/>
 		<form action="@{Ideas.rate(ideaId,rat)}" method="GET">
-    <input type="submit" value="Submit rating"/><input type = "hidden" name = "ideaId" value = ${ideaId} >
+	<div id="rateidea">	
+    <input type="submit" value="Submit rating" class="linkButton"/><input type = "hidden" name = "ideaId" value = ${ideaId} >
     <select name="rat">
         <option value="0">0</option>
         <option value="1">1</option>
@@ -79,6 +80,7 @@
         <option value="4">4</option>
         <option value="5">5</option>
     </select>
+    </div>
 </form>
 		#{/if}
 		#{else}
@@ -148,7 +150,7 @@
             	#{if active}
             	by <a href="@{Users.viewProfile(userId)}">${username}</a>
             	#{/if}
-            	#{if notactive}
+            	#{if !active}
             	<font>by ${username}</font>
             	#{/if}
             	</span>
@@ -198,10 +200,11 @@
 	   <input type="image"  class="linkButton" src="/public/images/icons/bad.png" id ='dislike' title="Dislike" onclick="disLike()" />
 			
         <div class="comment">
+        <ul id="commentsList" style="list-style: none; ">
  		#{if comments} 
  			<font color="black">Comments</font> 
  			<br/> 
- 					 <ul id="commentsList" style="list-style: none; ">
+ 					 
  					#{list comments, as:'comment'} 
  					<div class="comment-metadata">
 						<span class="comment-author">by ${comment.commenter.username}</span>
@@ -211,17 +214,14 @@
  						<div class="about">Detail:</div>
  						<li><a>${comment.comment}</a></li>
  						#{if comment.commenter.username != user.username && !comment.reported(user.id)}
- 						<form action="@{Users.reportCommentAsSpam()}" method="GET" name="myform">
- 						<input type = "hidden" name = "commentId" value = ${comment.id} />
- 						<input style="float: right;" type="image" src="/public/images/icons/red_flag.png" />
- 						</form>
+ 						<input id = "reportBtn_${comment.id}" onclick = "reportComment(${comment.id});" style="float: right;" type="image" src="/public/images/icons/red_flag.png" />
  						#{/if}
 						<br />
  					</div>
  					#{/list} 
- 					</ul>
  					<br/>
  		#{/if} 
+		</ul>
  		#{else}No comments posted#{/else}
  		</div>
 
@@ -232,11 +232,17 @@
 <br/>
  		</div>
             <script type="text/javascript">
+            
+            function reportComment(id) {
+            	$.post('@{Users.reportCommentAsSpam()}', {commentId: id});
+            	$("#reportBtn_" + id).remove();
+            	
+            }
 			  function comment(id) {
 				  	var text = $('#commentTxt').val();
 					 $('#commentTxt').val("");
 					$.getJSON('@{addCommentToIdea()}', {ideaID:id, comment: text}, function(comm) {
-						 $("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " +  comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li></div>");
+						 $("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " +  comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li><br/></div>");
 					});
 				   
 
