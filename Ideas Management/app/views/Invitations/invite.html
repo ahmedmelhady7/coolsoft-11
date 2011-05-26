@@ -1,8 +1,7 @@
 <!--C1S6  @author : Mai Magdy -->
 #{extends 'Login/index.html' /}
 #{set title:'invite Page' /}
-<div id="pageNoSideBar">
-        <div id="pageNoSideBar-bgtop">
+
 #{if type==0}
 <a href="@{MainEntitys.viewEntity(entity.id)}"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to &{entity.name}</a>
 #{/if}
@@ -87,16 +86,15 @@
         	  <ul>
 #{list items:0..usersMatched.size()-1, as:'u'} 
 <li>
-<font size ="3"><a href="@{Users.viewProfile(usersMatched.get(u).id)}">${usersMatched.get(u).username}</a>
+<font size ="3"><a href="@{Users.viewProfile(usersMatched.get(u).id)}">${usersMatched.get(u).username}</a></font>
 #{if usersInvited.get(u)==1}
-&nbsp;&nbsp;&nbsp;<p align="right"><i><font size ="2" color ="blue">pending invitation</font></i></p>
-#{/if}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><i><font size ="2" color ="blue">pending</font></i></label>#{/if}
 #{else}
 #{if type==0}
-<p align="right"><a href="@{Invitations.send(type,usersMatched.get(u).email,entity.id,usersMatched.get(u).id)}">invite</a></p>
+<a href="@{Invitations.send(type,usersMatched.get(u).email,entity.id,usersMatched.get(u).id)}"/><img src="/public/images/icons/mail_send.png" title="invite" width="30" height="30" align="right"/></a>
 #{/if}
 #{else}
-<p align="right"><a href="@{Invitations.send(type,usersMatched.get(u).email,topic.id,usersMatched.get(u).id)}">invite</a></p>
+<a href="@{Invitations.send(type,usersMatched.get(u).email,topic.id,usersMatched.get(u).id)}">invite</a>
 #{/else}
 #{/else}
 </li>
@@ -116,8 +114,6 @@ $('#block').hide();
 	$('#table').show();
 </script>
 #{/if}
-    </div>
-</div>
 <script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
 
 	</script>
