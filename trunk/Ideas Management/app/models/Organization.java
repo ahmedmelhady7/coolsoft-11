@@ -274,6 +274,8 @@ public class Organization extends CoolModel {
 		this.createRelationshipRequest = new ArrayList<CreateRelationshipRequest>();
 		this.renameEndRelationshipRequest = new ArrayList<RenameEndRelationshipRequest>();
 		this.description = description;
+		this.viewed = 0;
+
 	}
 
 	/**
