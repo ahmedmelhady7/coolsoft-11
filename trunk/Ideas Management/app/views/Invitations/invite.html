@@ -4,10 +4,10 @@
 <div id="pageNoSideBar">
         <div id="pageNoSideBar-bgtop">
 #{if type==0}
-<a href="@{MainEntitys.viewEntity(entity.id)}">Back to &{entity.name}</a>
+<a href="@{MainEntitys.viewEntity(entity.id)}"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to &{entity.name}</a>
 #{/if}
 #{else}
-<a href="@{	Topics.show(topic.id)}">Back to &{topic.title}</a>
+<a href="@{	Topics.show(topic.id)}"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to &{topic.title}</a>
 #{/else}
 
 
@@ -42,7 +42,7 @@
 #{else}
 <input type = "hidden" name ="id" value = ${topic.id}>
 #{/else}
-<tr><td>&nbsp;</td><td><input class = "linkButton" type="submit" value="send">
+<tr><td>&nbsp;</td><td><button class = "linkButton" type="submit" value="send"><img src="/public/images/icons/mail_send.png" title="send" width="35" height="25"/></button>
 </table>
 </form>
 </div>
@@ -52,8 +52,8 @@
 <form action="@{Invitations.searchUser()}" method="GET" name="myform"">
 <table border="0" bgcolor="#ececec" cellspacing="5">
 <tr><td><u> You can search by name/email for users to invite </u></td></tr>
-<tr><td>Name <input type="text" size="20" name="name"></td></tr>
-<tr><td>&nbsp;</td><td><input  class = "linkButton" type="submit" value="search">
+<tr><td>Name/Email <input type="text" size="25" name="name"></td></tr>
+<tr><td></td><td><button class = "linkButton" type="submit" value="search"><img src="/public/images/icons/mail_search.png" title="search" width="35" height="25"/></button>
 <input type = "hidden" name ="type" value = ${type}>
 #{if type==0}
 <input type = "hidden" name ="id" value = ${entity.id}>
