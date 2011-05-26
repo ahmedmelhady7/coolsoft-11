@@ -147,9 +147,9 @@ The Search Results Viewer
                     unchecked is what is removed 
                     <br>
                     </br>
-                    <input type="checkbox" id ='I' name="type" value="idea" onclick="check()" checked="checked"/>Ideas<input type="checkbox" id='E' name="type" value="entity" onclick=check() checked="checked"/>Entities
-                    </br><input type="checkbox" id='T' name="type" value="topic" onclick=check() checked="checked"/>Topics<input type="checkbox" id='O' name="type" value='organization' onclick="check()" checked="checked"/>Organizations
-                    </br><input type="checkbox" id='P' name="type" value="plans" onclick=check() checked="checked"/>Plans<input type="checkbox" id='It' name="type" value="items" onclick="check()" checked="checked"/>Items
+                    <input type="checkbox" id ='I' name="type" value="idea" onclick=check() checked="checked"/>Ideas<input type="checkbox" id='E' name="type" value="entity" onclick=check() checked="checked"/>Entities
+                    </br><input type="checkbox" id='T' name="type" value="topic" onclick=check() checked="checked"/>Topics<input type="checkbox" id='O' name="type" value='organization' onclick=check() checked="checked"/>Organizations
+                    </br><input type="checkbox" id='P' name="type" value="plans" onclick=check() checked="checked"/>Plans<input type="checkbox" id='It' name="type" value="items" onclick=check() checked="checked"/>Items
                     </br>
                 </font>
             </div>
@@ -227,23 +227,27 @@ Found ${plansFound.size()} plan${plansFound.pluralize()}
 <ul>
 #{list items:ideasFound, as:'item'}
 <li>
-    <input type='checkbox' id =${item.id} onclick='mark(this.id)'/><a href=@{Ideas.show(item.id)} target="_parent">${item.title}</a>
+    <input type='checkbox' id ='${item.id}' onclick='mark(this.id)'/><a href=@{Ideas.show(item.id)} target="_parent">${item.title}</a>
 </li>
 #{/list}
 </br>
 </ul>
-<input type='image' src='/public/images/link2.gif' value = 'Mark two ideas as duplicate' onclick=markDuplicate() width='15%' height=50/>#{/if}#{/if}
+#{/if}
+#{if ideasFound.size()>1}
+<a href='javascript: markDuplicate()'>Mark two ideas as duplicate</a>#{/if}#{/if}
+</div>
 #{else}
 <center>
     <img src='/public/images/noresults.jpg'>
     </br>No results found
 </center>#{/else}
-</div>
+#{if lof}
 <div id='errors'>
 </div>
 <div id='down'>
     <a href='/public/results.zip'><img src='/public/images/download.gif' width=15% height=30/></a>
 </div>
+#{/if}
 </div>
 <div id='panel2' style='display:none'>
     <div id='divO1'>
@@ -279,24 +283,6 @@ Found ${itemsFound.size()} item${itemsFound.pluralize()}
 </ul>
 #{/if}#{/if}
 </div>
-<div id='divT1'>
-#{if lof}
-#{if topicsFound}
-Found ${topicsFound.size()} topic${topicsFound.pluralize()}
-</br>
-<ul>
-#{list items:topicsFound, as:'item'}
-<li>
-<a href='@{Topics.show(item.id)}' target="_parent">${item.toString()}</a>
-</br>Description:
-</br>${item.description}
-</li>
-#{/list}
-</br>
-</ul>
-#{/if}
-#{/if}
-</div>
 <div id='divE1'>
 #{if lof}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}
 </br>
@@ -326,30 +312,53 @@ Found ${plansFound.size()} plan${plansFound.pluralize()}
 </ul>
 #{/if}#{/if}
 </div>
-<div id='divI1'>
-#{if lof}#{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}
+<div id='divT1'>
+#{if lof}
+#{if topicsFound}
+Found ${topicsFound.size()} topic${topicsFound.pluralize()}
 </br>
 <ul>
-#{list items:ideasFound, as:'item'}
+#{list items:topicsFound, as:'item'}
 <li>
-<input type='checkbox' id=${item.id} onclick='mark(this.id)'/><a href='@{Ideas.show(item.id)}' target="_parent">${item.title}</a>
+<a href='@{Topics.show(item.id)}' target="_parent">${item.toString()}</a>
 </br>Description:
 </br>${item.description}
 </li>
 #{/list}
 </br>
 </ul>
-<input type='image' src='/public/images/link2.gif' value = 'Mark two ideas as duplicate' onclick=markDuplicate() width='15%' height=40/>#{/if}#{/if} #{else}
+#{/if}
+#{/if}
+</div>
+<div id='divI1'>
+#{if lof}#{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}
+</br>
+<ul>
+#{list items:ideasFound, as:'item'}
+<li>
+<input type='checkbox' id='${item.id}' onclick='mark(this.id)'/><a href='@{Ideas.show(item.id)}' target="_parent">${item.title}</a>
+</br>Description:
+</br>${item.description}
+</li>
+#{/list}
+</br>
+</ul>
+#{/if}
+#{if ideasFound.size()>1}
+<a href='javascript: markDuplicate()'>Mark two ideas as duplicate</a>#{/if}#{/if} 
+</div>
+#{else}
 <center>
     <img src='/public/images/noresults.jpg'>
     </br>No Results Found
 </center>#{/else}
-</div>
-<div id='errors'>
+#{if lof}
+<div id='errors1'>
 </div>
 <div id='down' align='justify'>
     <a href='/public/results.zip'><img src='/public/images/download.gif' width='15%' height=30/></a>
 </div>
+#{/if}
 </div>
 </div>
 </div>
@@ -406,10 +415,13 @@ Found ${plansFound.size()} plan${plansFound.pluralize()}
         }
         if (document.getElementById('I').checked == false) {
             document.getElementById('divI').style.display = 'none';
+			document.getElementById('divI1').style.display = 'none';
         }
         else {
             document.getElementById('divI').style.display = 'block';
+			document.getElementById('divI1').style.display = 'block';
             document.getElementById('error').style.display = 'block';
+			document.getElementById('error1').style.display = 'block';
             
         }
         if (document.getElementById('I').checked == false) {
@@ -526,18 +538,21 @@ Found ${plansFound.size()} plan${plansFound.pluralize()}
             else {
                 marked.push(id);
                 document.getElementById('errors').innerHTML = '<font color="red">You could only mark two ideas</font>';
-                for (i = 0; i < marked.length; i++) {
+               	document.getElementById('errors1').innerHTML = '<font color="red">You could only mark two ideas</font>';
+				for (i = 0; i < marked.length; i++) {
                     document.getElementById(marked[i] + '').checked = false;
                 }
                 marked = new Array();
             }
         }
+		check();
     }
     
     function markDuplicate(){
         if (marked.length < 2) {
             document.getElementById('errors').innerHTML = '<font color="red">Mark two ideas</font>';
-            for (i = 0; i < marked.length; i++) {
+            document.getElementById('errors1').innerHTML = '<font color="red">Mark two ideas</font>';
+			for (i = 0; i < marked.length; i++) {
                 document.getElementById(marked[i] + '').checked = false;
             }
             marked = new Array();
@@ -550,11 +565,16 @@ Found ${plansFound.size()} plan${plansFound.pluralize()}
             }, function(){
             });
             for (i = 0; i < marked.length; i++) {
-                document.getElementById(marked[i] + '').disabled = true;
-                document.getElementById(marked[i] + '').checked = false;
+                x = document.getElementsByTagName("input");
+				for(j=0;j<x.length;j++){
+					if(x[j].id == marked[i]){
+						x[j].checked = false;
+						x[j].disabled = true;
+					}
+				}
             }
-            document.getElementById('errors').innerHTML = "#{ifErrors}Great#{/ifErrors}#{else}<font color='green'>Your request have been successfuly sent to the Topic organizers</font>#{/else}";
-            document.getElementById('errors1').innerHTML = "#{ifErrors}Great#{/ifErrors}#{else}<font color='green'>Your request have been successfuly sent to the Topic organizers</font>#{/else}";
+			document.getElementById('errors').innerHTML = '<font color="green">A request Have been sent to the topic organizer</font>';
+            document.getElementById('errors1').innerHTML = '<font color="green">A request Have been sent to the topic organizer</font>';
             marked = new Array();
         }
     }
