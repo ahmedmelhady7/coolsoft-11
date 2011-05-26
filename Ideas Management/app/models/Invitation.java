@@ -27,7 +27,7 @@ public class Invitation extends CoolModel{
     public Date dateOfSending;
     
     /**
-     *  String role that will be assigned to the user if accept the invitation
+     *  String role that will be assigned to the user if accepted the invitation
      */
     public String role;
     
@@ -59,8 +59,8 @@ public class Invitation extends CoolModel{
     
     /**
 	 * Constructor that initializes the destination (email) of the invitation and
-	 * the entity,organization&topic that sends the invitation and the user 
-	 * organizer/lead who sent the invitation
+	 * the entity,organization&topic that sends the invitation,the role that
+	 * ll be assigned to the user and the organizer/lead who sent the invitation
 	 * 
 	 * @author Mai Magdy
 	 * 
