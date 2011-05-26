@@ -835,7 +835,7 @@ public class Ideas extends CoolCRUD {
 	}
 
 	/**
-	 * The method renders the ideas the organizer wants to merge
+	 * @description The method renders the ideas the organizer wants to merge
 	 * 
 	 * @author Mostafa Aboul-Atta
 	 * 
@@ -868,7 +868,7 @@ public class Ideas extends CoolCRUD {
 	}
 
 	/**
-	 * method to merge ideas, overwrites the first idea with the new description
+	 * @description method to merge ideas, overwrites the first idea with the new description
 	 * and title then deletes the other ideas, the authors of the deleted ideas
 	 * are added in the description as contributors and the merger is added to
 	 * the description as the merger
@@ -946,7 +946,7 @@ public class Ideas extends CoolCRUD {
 	}
 
 	/**
-	 * takes an array of ideas ids and the topic id they belong to and returns a
+	 * @description takes an array of ideas ids and the topic id they belong to and returns a
 	 * list of the ideas
 	 * 
 	 * @author Mostafa Aboul-Atta
