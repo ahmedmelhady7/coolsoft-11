@@ -144,7 +144,8 @@ public class Invitations extends CoolCRUD {
 
 		} else {
 			for (int i = 0; i < filter.size(); i++) {
-				if (!postsInTopic.contains(filter.get(i))|| filter.get(i).isAdmin) {
+				if (!postsInTopic.contains(filter.get(i))
+						|| filter.get(i).isAdmin) {
 					userFilter.add(filter.get(i));
 				}
 			}
@@ -341,49 +342,48 @@ public class Invitations extends CoolCRUD {
 						"New user has been invited to be an Idea developer in topic  "
 								+ name);
 
-			if (reciever != null){
+			if (reciever != null) {
 				String description = "<a href=\"http://localhost:9008/users/viewprofile?userId="
-					+ user.id
-					+ "\">"
-					+ user.firstName
-					+ " "
-					+ user.lastName
-					+ "</a>"
-					+ " has invited user "
-					+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
-					+ reciever.id
-					+ "\">"
-					+ reciever.firstName
-					+ " "
-					+ reciever.lastName
-					+ "</a>"
-					+ " to be an idea developer in "
-					+ "<a href=\"http://localhost:9008/topics/show?id="
-					+ topic.id + "\">" + topic.title + "</a>" + " topic";
+						+ user.id
+						+ "\">"
+						+ user.firstName
+						+ " "
+						+ user.lastName
+						+ "</a>"
+						+ " has invited user "
+						+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ reciever.id
+						+ "\">"
+						+ reciever.firstName
+						+ " "
+						+ reciever.lastName
+						+ "</a>"
+						+ " to be an idea developer in "
+						+ "<a href=\"http://localhost:9008/topics/show?id="
+						+ topic.id + "\">" + topic.title + "</a>" + " topic";
 
-			Log.addUserLog(description,organization, topic.entity,topic,
-				reciever, user);
-			Notifications.sendNotification(reciever.id, id, "topic",
-					"You have received a new invitation from " + name);
+				Log.addUserLog(description, organization, topic.entity, topic,
+						reciever, user);
+				Notifications.sendNotification(reciever.id, id, "topic",
+						"You have received a new invitation from " + name);
+			} else {
+
+				String description = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ user.id
+						+ "\">"
+						+ user.firstName
+						+ " "
+						+ user.lastName
+						+ "</a>"
+						+ " has invited an unregiseterd user with email "
+						+ email
+						+ " to be an idea developer in "
+						+ "<a href=\"http://localhost:9008/topics/show?id="
+						+ topic.id + "\">" + topic.title + "</a>" + " topic";
+
+				Log.addUserLog(description, organization, topic.entity, topic,
+						user);
 			}
-			else{
-
-				String description = "<a href=\"http://localhost:9008/users/viewprofile?userId="
-					+ user.id
-					+ "\">"
-					+ user.firstName
-					+ " "
-					+ user.lastName
-					+ "</a>"
-					+ " has invited an unregiseterd user with email "
-					+ email
-					+ " to be an idea developer in "
-					+ "<a href=\"http://localhost:9008/topics/show?id="
-					+ topic.id + "\">" + topic.title + "</a>" + " topic";
-
-			Log.addUserLog(description,organization, topic.entity,topic,
-				 user);
-		}
 		}
 
 		flash.success("Invitation has been sent successfuly");
@@ -442,12 +442,12 @@ public class Invitations extends CoolCRUD {
 	 */
 
 	public static void respond(int id, long i) {
-         System.out.println(id);
-         System.out.println(i); 
+		System.out.println(id);
+		System.out.println(i);
 		Invitation invite = Invitation.findById(i);
 		notFoundIfNull(invite);
 		String roleName = invite.role.toLowerCase();
-		 System.out.println(roleName);
+		System.out.println(roleName);
 		Organization organization = null;
 		MainEntity entity = null;
 		Topic topic = null;
@@ -470,18 +470,19 @@ public class Invitations extends CoolCRUD {
 		if (id == 1) {
 
 			if (!flag) {
-				 System.out.println("HERE");
+				System.out.println("HERE");
 				if (role.roleName.equals("organizer")) {
 					UserRoleInOrganizations.addEnrolledUser(user, organization,
 							role, entity.id, "entity");
 
 					for (int c = 0; c < entity.topicList.size(); c++) {
-						UserRoleInOrganization oldRole=UserRoleInOrganization.find("byEnrolledAndRoleAndEntityTopicIDAndType",
-								user,"idea developer",entity.topicList.get(c).id,"topic").first();
+						UserRoleInOrganization oldRole = UserRoleInOrganization.find("byEnrolledAndOrganizationAndEntityTopicIDAndType",user,
+								organization,entity.topicList.get(c).id,
+								"topic").first();
 						System.out.println("YES");
-						if(oldRole !=null)
+						if (oldRole != null)
 							oldRole.delete();
-						 
+
 						UserRoleInOrganizations.addEnrolledUser(user,
 								organization, role, entity.topicList.get(c).id,
 								"topic");
@@ -500,11 +501,12 @@ public class Invitations extends CoolCRUD {
 										subEntity.get(j).id, "entity");
 								for (int s = 0; s < subEntity.get(j).topicList
 										.size(); s++) {
-									UserRoleInOrganization oldRole=UserRoleInOrganization.find("byEnrolledAndRoleAndEntityTopicIDAndType",
-											user,"idea developer",entity.topicList.get(j).id,"topic").first();
-									if(oldRole !=null)
+									UserRoleInOrganization oldRole = UserRoleInOrganization.find("byEnrolledAndOrganizationAndEntityTopicIDAndType",user,
+											organization,subEntity.get(j).topicList.get(s).id,
+											"topic").first();
+									if (oldRole != null)
 										oldRole.delete();
-									
+
 									UserRoleInOrganizations
 											.addEnrolledUser(user,
 													organization, role,
@@ -542,7 +544,7 @@ public class Invitations extends CoolCRUD {
 					Log.addUserLog(logDescription, entity.organization, user);
 
 				} else {
-					
+
 					role = Roles.getRoleByName("idea developer");
 					UserRoleInOrganization roleInOrganization = new UserRoleInOrganization(
 							user, organization, role);
@@ -575,19 +577,22 @@ public class Invitations extends CoolCRUD {
 											+ organization.name);
 						}
 					}
-					
-					String description = "<a href=\"http://localhost:9008/users/viewprofile?userId="
-						+ user.id
-						+ "\">"
-						+ user.firstName
-						+ " "
-						+ user.lastName
-						+ "</a>"
-						+ " has accepted the invitation to join organization "
-						+ "<a href=\"http://localhost:9008/organizations/viewProfile?id="
-						+ organization.id + "\">" + organization.name + "</a>";
 
-				Log.addUserLog(description, organization, user);
+					String description = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
+							+ user.firstName
+							+ " "
+							+ user.lastName
+							+ "</a>"
+							+ " has accepted the invitation to join organization "
+							+ "<a href=\"http://localhost:9008/organizations/viewProfile?id="
+							+ organization.id
+							+ "\">"
+							+ organization.name
+							+ "</a>";
+
+					Log.addUserLog(description, organization, user);
 
 				}
 			} else {
@@ -599,17 +604,17 @@ public class Invitations extends CoolCRUD {
 									+ " has joined topic " + topic.title);
 
 				String description = "<a href=\"http://localhost:9008/users/viewprofile?userId="
-					+ user.id
-					+ "\">"
-					+ user.firstName
-					+ " "
-					+ user.lastName
-					+ "</a>"
-					+ " has accepted the invitation to be an idea developer  in topic "
-					+ "<a href=\"http://localhost:9008/topics/show?id="
-					+ topic.id + "\">" + topic.title + "</a>";
+						+ user.id
+						+ "\">"
+						+ user.firstName
+						+ " "
+						+ user.lastName
+						+ "</a>"
+						+ " has accepted the invitation to be an idea developer  in topic "
+						+ "<a href=\"http://localhost:9008/topics/show?id="
+						+ topic.id + "\">" + topic.title + "</a>";
 
-			Log.addUserLog(description, topic,organization, entity,user);
+				Log.addUserLog(description, topic, organization, entity, user);
 
 			}
 		}
