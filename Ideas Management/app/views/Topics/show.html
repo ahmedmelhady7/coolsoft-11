@@ -744,12 +744,12 @@
 						   <div id="lista" style="display: none;">
 						   	#{if targetTopic.relationsSource != null}
 						      #{list items:targetTopic.relationsSource, as:'relationElement'}
-									<ul><a href="/topics/show?topicId=${relationElement.source.id}">${relationElement.source.title}</a> <input id="textToRename_${relationElement.id}" type="text" value=${relationElement.name} style="display:none;"/><q id=${relationElement.id}>${relationElement.name}</q> <a href="/topics/show?topicId=${relationElement.destination.id}">${relationElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" class="linkButton" value="Done" style="display:none;" id="renameDone_${relationElement.id}" onclick="actionRename(${relationElement.id})"/><input id="renameButton_${relationElement.id}" type="button" class="linkButton" value="edit" onclick="showRename(${relationElement.id})"/> <input type="button" class="linkButton" value="end relationship" onclick="endRelation(${relationElement.id})" />#{/if}</ul>
+									<ul><a href="/topics/show?topicId=${relationElement.source.id}">${relationElement.source.title}</a> <input id="textToRename_${relationElement.id}" type="text" value=${relationElement.name} style="display:none;"/><q id=${relationElement.id}>${relationElement.name}</q> <a href="/topics/show?topicId=${relationElement.destination.id}">${relationElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" class="linkButton" value="Done" style="display:none;" id="renameDone_${relationElement.id}" onclick="actionRename(${relationElement.id})"/><input id="renameButton_${relationElement.id}" type="button" class="linkButton" value="edit" onclick="showRename(${relationElement.id})"/> <input type="button" class="linkButton" value="end relationship" onclick="endRelation(${relationElement.id})" /> <span id="span_${relationElement.id}" style="color:red;"></span>#{/if}</ul>
 							  #{/list}
 							#{/if}
 							#{if targetTopic.relationsDestination != null}
 							  #{list items:targetTopic.relationsDestination, as:'relElement'}
-									<ul><a href="/topics/show?topicId=${relElement.source.id}">${relElement.source.title}</a> <input id="textToRename2_${relElement.id}" type="text" value=${relElement.name} style="display:none;"/><q id=${relElement.id}>${relElement.name}</q> <a href="/topics/show?topicId=${relElement.destination.id}"> ${relElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" class="linkButton" value="Done" style="display:none;" id="renameDone2_${relElement.id}" onclick="actionRename2(${relElement.id})"/><input id="renameButton2_${relElement.id}" type="button" class="linkButton" value="edit" onclick="showRename2(${relElement.id})"/> <input type="button" class="linkButton" value="end relationship" onclick="endRelation(${relElement.id})" />#{/if}</ul>
+									<ul><a href="/topics/show?topicId=${relElement.source.id}">${relElement.source.title}</a> <input id="textToRename2_${relElement.id}" type="text" value=${relElement.name} style="display:none;"/><q id=${relElement.id}>${relElement.name}</q> <a href="/topics/show?topicId=${relElement.destination.id}"> ${relElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="button" class="linkButton" value="Done" style="display:none;" id="renameDone2_${relElement.id}" onclick="actionRename2(${relElement.id})"/><input id="renameButton2_${relElement.id}" type="button" class="linkButton" value="edit" onclick="showRename2(${relElement.id})"/> <input type="button" class="linkButton" value="end relationship" onclick="endRelation(${relElement.id})" /> <span id="span_${relElement.id}" style="color:red;"></span>#{/if}</ul>
 							  #{/list}
 							#{/if}
 						   </div>
@@ -776,9 +776,10 @@
 				$('#renameButton_' + relId).show();
 				$('#textToRename_' + relId).hide();
 				$('#renameDone_' + relId).hide();
+				document.getElementById('span_' + relId).textContent="";
 
 		}else if(data == "false"){
-			alert("Relation already there!");
+			document.getElementById('span_' + relId).textContent="Relation already exists.";
 		}
 	});
 	}
@@ -787,6 +788,7 @@
 				$('#renameButton_' + relId).show();
 				$('#textToRename_' + relId).hide();
 				$('#renameDone_' + relId).hide();
+				document.getElementById('span_' + relId).textContent="";
 	}
 	}
 	
@@ -811,9 +813,10 @@
 				$('#renameButton2_' + relId).show();
 				$('#textToRename2_' + relId).hide();
 				$('#renameDone2_' + relId).hide();
+				document.getElementById('span_' + relId).textContent="";
 
 		}else if(data == "false"){
-			alert("Relation already there!");
+			document.getElementById('span_' + relId).textContent="Relation already exists.";
 		}
 	});
 	}
@@ -822,6 +825,7 @@
 				$('#renameButton2_' + relId).show();
 				$('#textToRename2_' + relId).hide();
 				$('#renameDone2_' + relId).hide();
+				document.getElementById('span_' + relId).textContent="";
 	}
 	}
 						   </script>
