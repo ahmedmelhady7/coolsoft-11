@@ -45,8 +45,8 @@ public class Bootstrap extends Job {
 			
 			User lama = new User("lama@coolsoft.com", "lama", "lama", "lama",
 					"as admin", "What is our company's name?", "coolsoft", 0, "11/11/2010", "Egypt", "Programmer");
-			admin.isAdmin = true;
-			admin._save();
+			lama.isAdmin = true;
+			lama._save();
 
 			User hadi = new User("elhadiahmed3@gmail.com", "hadi.18",
 					"notreal", "Ahmed", "El-Hadi", "What is our company's name?", "coolsoft",
