@@ -522,14 +522,12 @@ public class Users extends CoolCRUD {
 	public static void reportCommentAsSpam(long commentId) {
 		Comment comment = Comment.findById(commentId);
 		User reporter = Security.getConnected();
-		if (comment.reporters == null)
-			comment.reporters = "";
+		if (comment.reporters != null)
 		comment.reporters += reporter.id + ",";
-		List<User> organizers = Users.getEntityOrganizers(comment.commentedIdea.belongsToTopic.entity);
-		for (int j = 0; j < organizers.size(); j++) {
-			Mail.reportCommentMail(organizers.get(j), reporter, comment,
+		comment.save();
+		System.out.println(comment.reporters+"aaaa");
+		Mail.reportCommentMail(comment.commentedIdea.author, reporter, comment,
 					comment.comment);
-		}
 		commentSpamView(commentId);
 
 	}
@@ -541,19 +539,20 @@ public class Users extends CoolCRUD {
 	 * 
 	 * @story C3S16
 	 * 
-	 * @param topicId
+	 * @param commentId
 	 *            : the ID of the topic to be reported
 	 * 
 	 */
 
-	public static void commentSpamView(long topicId) {
+	public static void commentSpamView(long commentId) {
 		boolean alreadyReported = false;
-		Topic topic = Topic.findById(topicId);
+		Comment comment = Comment.findById(commentId);
+		Idea idea = comment.commentedIdea;
 		User reporter = Security.getConnected();
 		// for (int i = 0; i < topic.reporters.size(); i++) {
 		// if (reporter.username.equals(topic.reporters.get(i).username))
-		// alreadyReported = true;
-		// }		redirect("/topics/show?topicId=" + topic.getId(), alreadyReported);
+		// alreadyReported = true;}
+		   redirect("/ideas/show?ideaId=" + idea.getId(), alreadyReported);
 		// render(alreadyReported);
 	}
 	

@@ -1,7 +1,10 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.*;
+
+import controllers.Security;
 
 import play.data.validation.Required;
 import play.db.jpa.Model;
@@ -49,6 +52,7 @@ public class Comment extends CoolModel {
 		this.commentedTopic = commentedTopic;
 		this.commenter = commenter;
 		this.commentDate = new Date();
+		this.reporters = "";
 	}
 
 	public Comment(String comment, Plan commentedPlan, User commenter) {
@@ -56,6 +60,7 @@ public class Comment extends CoolModel {
 		this.commentedPlan = commentedPlan;
 		this.commenter = commenter;
 		this.commentDate = new Date();
+		this.reporters = "";
 	}
 
 	public Comment(String comment, Idea commentedIdea, User commenter) {
@@ -63,6 +68,7 @@ public class Comment extends CoolModel {
 		this.commentedIdea = commentedIdea;
 		this.commenter = commenter;
 		this.commentDate = new Date();
+		this.reporters = "";
 	}
 
 /**
@@ -83,6 +89,29 @@ public class Comment extends CoolModel {
 		return display;
 	}
 
-
+	public boolean reported(long reporterId){
+		User reporter = User.findById(reporterId);
+		ArrayList<User> commentReporters = new ArrayList<User>();
+		String[] commentReportersId = { "0" };
+		System.out.println("ana hena fel comment" + reporterId);
+		long reporterId2=0;
+		if (reporters != null) {
+			commentReportersId = reporters.split(",");
+			System.out.println(commentReportersId.length);
+			System.out.println(reporters + " hhhhhhhhhhhhhhhhh");
+			if (!reporters.isEmpty()) {
+				for (int i = 0; i < commentReportersId.length
+						&& reporters != ""; i++) {
+					reporterId2 = Long.parseLong(commentReportersId[i]);
+					System.out.println("reporters" + reporters);
+					if (reporterId2 == reporterId) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		return false;
+	}
 
 }
