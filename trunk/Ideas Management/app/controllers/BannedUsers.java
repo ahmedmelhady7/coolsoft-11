@@ -266,7 +266,7 @@ public class BannedUsers extends CoolCRUD {
 		List<MainEntity> finalEntities = new ArrayList<MainEntity>();
 		if (validation.hasErrors() || userId.length == 0) {
 			flash.error("Oops, please select one the Organizers");
-			restrictOrganizer(organizationId);
+			restrictOrganizersList(organizationId);
 		} else {
 
 			Organization organization = Organization.findById(organizationId);
@@ -664,15 +664,14 @@ public class BannedUsers extends CoolCRUD {
 						organizationId, actionToDo[i], entityTopicId);
 				User restricted = User.findById(userId);
 				User restricter = Security.getConnected();
+				String logDescription = "<a href=\"http://l27.0.0.1:9008/users/viewprofile?userId=" + restricter.id +"\">" + restricter.firstName + "</a>"
+                + " has restricted the organizer : " +"<a href=\"http://127.0.0.1:9008/users/viewprofile?userId=" + restricted.id +"\">" +  restricted.firstName + " "  + restricted.lastName + "</a>" 
+                + " from : "+ actionToDo[i] + " In the Organization : " + "<a href=\"http://127.0.0.1:9008/organizations/viewprofile?id=" + organizationId +"\">" + org.name+ "</a>" +
+                " In the Entity : " + "<a href =\"http://127.0.0.1:9008/mainentitys/viewentity?id=" + entity.id + "\">" + entity.name + "</a>" +
+                " In the Topic :" +"<a href =\"http://127.0.0.1:9008/topics/show?topicId="+ entityTopicId + "\"> " + topic.title + "</a>";
+				
 				Log.addUserLog(
-						"User " + restricter.firstName + " "
-								+ restricter.lastName
-								+ " has restricted the Organizer: "
-								+ restricted.firstName + " "
-								+ restricted.lastName + " from "
-								+ actionToDo[i] + " In organization  : " + org
-								+ " In Entity :" + entity + " In Topic :"
-								+ topic, org, entity, topic);
+						logDescription, org, entity, topic);
 				Notifications.sendNotification(userId, Security.getConnected()
 						.getId(), "user",
 						"you have been restricted from the following action :"
@@ -701,12 +700,11 @@ public class BannedUsers extends CoolCRUD {
 
 				User restricted = User.findById(userId);
 				User restricter = Security.getConnected();
-				Log.addUserLog("User " + restricter.firstName + " "
-						+ restricter.lastName
-						+ " has restricted the Organizer: "
-						+ restricted.firstName + " " + restricted.lastName
-						+ " from " + actionToDo[i] + " In organization  : "
-						+ org + " In Entity :" + entity, org, entity);
+				String logDescription = "<a href=\"http://l27.0.0.1:9008/users/viewprofile?userId=" + restricter.id +"\">" + restricter.firstName + "</a>"
+                + " has restricted " +"<a href=\"http://127.0.0.1:9008/users/viewprofile?userId=" + restricted.id +"\">" +  restricted.firstName + " "  + restricted.lastName + "</a>" 
+                + " from : "+ actionToDo[i] + " In the Organization : " + "<a href=\"http://127.0.0.1:9008/organizations/viewprofile?id=" + organizationId +"\">" + org.name+ "</a>" +
+                " In the Entity : " + "<a href =\"http://127.0.0.1:9008/mainentitys/viewentity?id=" + entity.id + "\">" + entity.name + "</a>";
+				Log.addUserLog(logDescription, org, entity);
 
 				Notifications.sendNotification(userId, restricter.getId(),
 						"user",
@@ -760,7 +758,7 @@ public class BannedUsers extends CoolCRUD {
 					User restricted = User.findById(userId);
 					User restricter = Security.getConnected();
 					String logDescription = "<a href=\"http://l27.0.0.1:9008/users/viewprofile?userId=" + restricter.id +"\">" + restricter.firstName + "</a>"
-	                + " has restricted " +"<a href=\"http://127.0.0.1:9008/users/viewprofile?userId=" + restricted.id +"\">" +  restricted.firstName + " "  + restricted.lastName + "</a>" 
+	                + " has restricted the organizer : " +"<a href=\"http://127.0.0.1:9008/users/viewprofile?userId=" + restricted.id +"\">" +  restricted.firstName + " "  + restricted.lastName + "</a>" 
 	                + " from : "+ actionToDo[i] + " In the Organization : " + "<a href=\"http://127.0.0.1:9008/organizations/viewprofile?id=" + organizationId +"\">" + org.name+ "</a>" +
 	                " In the Entity : " + "<a href =\"http://127.0.0.1:9008/mainentitys/viewentity?id=" + entity.id + "\">" + entity.name + "</a>" +
 	                " In the Topic :" +"<a href =\"http://127.0.0.1:9008/topics/show?topicId="+ entityTopicId + "\"> " + topic.title + "</a>";
@@ -793,12 +791,12 @@ public class BannedUsers extends CoolCRUD {
 
 					User restricted = User.findById(userId);
 					User restricter = Security.getConnected();
-					Log.addUserLog("User " + restricter.firstName + " "
-							+ restricter.lastName
-							+ " has restricted the Organizer: "
-							+ restricted.firstName + " " + restricted.lastName
-							+ " from " + actionToDo[i] + " In organization  : "
-							+ org + " In Entity :" + entity, org, entity);
+					String logDescription = "<a href=\"http://l27.0.0.1:9008/users/viewprofile?userId=" + restricter.id +"\">" + restricter.firstName + "</a>"
+	                + " has restricted the organizer : " +"<a href=\"http://127.0.0.1:9008/users/viewprofile?userId=" + restricted.id +"\">" +  restricted.firstName + " "  + restricted.lastName + "</a>" 
+	                + " from : "+ actionToDo[i] + " In the Organization : " + "<a href=\"http://127.0.0.1:9008/organizations/viewprofile?id=" + organizationId +"\">" + org.name+ "</a>" +
+	                " In the Entity : " + "<a href =\"http://127.0.0.1:9008/mainentitys/viewentity?id=" + entity.id + "\">" + entity.name + "</a>";
+					
+					Log.addUserLog(logDescription, org, entity);
 
 					Notifications.sendNotification(userId, Security
 							.getConnected().getId(), "user",
@@ -845,6 +843,7 @@ public class BannedUsers extends CoolCRUD {
 			Topic topic = Topic.findById(entityTopicID);
 			MainEntity entity = topic.entity;
 			Organization org = entity.organization;
+			long organizationId = org.getId();
 
 			for (int i = 0; i < actionsRestricted.length; i++) {
 				System.out.println("In BannedUsers : Topic deRest."
@@ -854,13 +853,13 @@ public class BannedUsers extends CoolCRUD {
 
 				User restricted = User.findById(userId);
 				User restricter = Security.getConnected();
-				Log.addUserLog("User " + restricter.firstName + " "
-						+ restricter.lastName
-						+ " has de-restricted the Organizer: "
-						+ restricted.firstName + " " + restricted.lastName
-						+ " from " + actionsRestricted[i]
-						+ " In organization  : " + org + " In Entity :"
-						+ entity + " In Topic :" + topic, org, entity, topic);
+				String logDescription = "<a href=\"http://l27.0.0.1:9008/users/viewprofile?userId=" + restricter.id +"\">" + restricter.firstName + "</a>"
+                + " has de-restricted the organizer : " +"<a href=\"http://127.0.0.1:9008/users/viewprofile?userId=" + restricted.id +"\">" +  restricted.firstName + " "  + restricted.lastName + "</a>" 
+                + " from : "+ actionsRestricted[i] + " In the Organization : " + "<a href=\"http://127.0.0.1:9008/organizations/viewprofile?id=" + organizationId +"\">" + org.name+ "</a>" +
+                " In the Entity : " + "<a href =\"http://127.0.0.1:9008/mainentitys/viewentity?id=" + entity.id + "\">" + entity.name + "</a>" +
+                " In the Topic :" +"<a href =\"http://127.0.0.1:9008/topics/show?topicId="+ entityTopicID + "\"> " + topic.title + "</a>";
+				
+				Log.addUserLog(logDescription, org, entity, topic);
 
 				Notifications.sendNotification(userId, Security.getConnected()
 						.getId(), "user",
@@ -883,13 +882,12 @@ public class BannedUsers extends CoolCRUD {
 
 				User restricted = User.findById(userId);
 				User restricter = Security.getConnected();
-				Log.addUserLog("User " + restricter.firstName + " "
-						+ restricter.lastName
-						+ " has de-restricted the Organizer: "
-						+ restricted.firstName + " " + restricted.lastName
-						+ " from " + actionsRestricted[i]
-						+ " In organization  : " + org + " In Entity :"
-						+ entity, org, entity);
+				String logDescription = "<a href=\"http://l27.0.0.1:9008/users/viewprofile?userId=" + restricter.id +"\">" + restricter.firstName + "</a>"
+                + " has de-restricted the organizer : " +"<a href=\"http://127.0.0.1:9008/users/viewprofile?userId=" + restricted.id +"\">" +  restricted.firstName + " "  + restricted.lastName + "</a>" 
+                + " from : "+ actionsRestricted[i] + " In the Organization : " + "<a href=\"http://127.0.0.1:9008/organizations/viewprofile?id=" + org.getId() +"\">" + org.name+ "</a>" +
+                " In the Entity : " + "<a href =\"http://127.0.0.1:9008/mainentitys/viewentity?id=" + entity.id + "\">" + entity.name + "</a>";
+				
+				Log.addUserLog(logDescription, org, entity);
 
 				Notifications.sendNotification(userId, Security.getConnected()
 						.getId(), "user",
@@ -943,13 +941,13 @@ public class BannedUsers extends CoolCRUD {
 
 					User restricted = User.findById(userId);
 					User restricter = Security.getConnected();
-					Log.addUserLog("User " + restricter.firstName + " "
-							+ restricter.lastName
-							+ " has de-restricted the Organizer: "
-							+ restricted.firstName + " " + restricted.lastName
-							+ " from " + actionsRestricted[i]
-							+ " In organization  : " + org + " In Entity :"
-							+ entity + " In Topic :" + topic, org, entity,
+					String logDescription = "<a href=\"http://l27.0.0.1:9008/users/viewprofile?userId=" + restricter.id +"\">" + restricter.firstName + "</a>"
+	                + " has de-restricted the organizer " +"<a href=\"http://127.0.0.1:9008/users/viewprofile?userId=" + restricted.id +"\">" +  restricted.firstName + " "  + restricted.lastName + "</a>" 
+	                + " from : "+ actionsRestricted[i] + " In the Organization : " + "<a href=\"http://127.0.0.1:9008/organizations/viewprofile?id=" + org.getId() +"\">" + org.name+ "</a>" +
+	                " In the Entity : " + "<a href =\"http://127.0.0.1:9008/mainentitys/viewentity?id=" + entity.id + "\">" + entity.name + "</a>" +
+	                " In the Topic :" +"<a href =\"http://127.0.0.1:9008/topics/show?topicId="+ entityTopicID + "\"> " + topic.title + "</a>";
+					
+					Log.addUserLog(logDescription, org, entity,
 							topic);
 
 					Notifications.sendNotification(userId, Security
@@ -977,13 +975,12 @@ public class BannedUsers extends CoolCRUD {
 							actionsRestricted[i], entityTopicID);
 					User restricted = User.findById(userId);
 					User restricter = Security.getConnected();
-					Log.addUserLog("User " + restricter.firstName + " "
-							+ restricter.lastName
-							+ " has de-restricted the Organizer: "
-							+ restricted.firstName + " " + restricted.lastName
-							+ " from " + actionsRestricted[i]
-							+ " In organization  : " + org + " In Entity :"
-							+ entity, org, entity);
+					String logDescription = "<a href=\"http://l27.0.0.1:9008/users/viewprofile?userId=" + restricter.id +"\">" + restricter.firstName + "</a>"
+	                + " has de-restricted the organizer " +"<a href=\"http://127.0.0.1:9008/users/viewprofile?userId=" + restricted.id +"\">" +  restricted.firstName + " "  + restricted.lastName + "</a>" 
+	                + " from : "+ actionsRestricted[i] + " In the Organization : " + "<a href=\"http://127.0.0.1:9008/organizations/viewprofile?id=" + org.getId() +"\">" + org.name+ "</a>" +
+	                " In the Entity : " + "<a href =\"http://127.0.0.1:9008/mainentitys/viewentity?id=" + entity.id + "\">" + entity.name + "</a>" ;
+					
+					Log.addUserLog(logDescription, org, entity);
 
 					Notifications.sendNotification(userId, Security
 							.getConnected().getId(), "user",
@@ -1125,7 +1122,6 @@ public class BannedUsers extends CoolCRUD {
 
 		long id = Long.parseLong(idd);
 		String name = "";
-		// JsonObject json = new JsonObject();
 		if (type.equalsIgnoreCase("entity")) {
 			MainEntity entity = MainEntity.findById(id);
 			name = entity.name;
@@ -1134,10 +1130,6 @@ public class BannedUsers extends CoolCRUD {
 			Topic topic = Topic.findById(id);
 			name = topic.title;
 		}
-
-		// json.addProperty("namee", name);
-		// System.out.println(name);
-		// renderJSON(json.toString());
 		return (name);
 	}
 
