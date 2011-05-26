@@ -28,8 +28,8 @@ import play.mvc.With;
 public class Login extends Controller {
 
 	/**
-	 * Reactivates the account if it has been deactivated before Redirects the
-	 * new registered users to the invitation page if they have been invited to
+	 * Reactivates the account if it has been deactivated before 
+	 * Redirects the new registered users to the invitation page if they have been invited to
 	 * be idea developers/organizers
 	 * 
 	 * Renders the login page, first the user has to login using his user name
