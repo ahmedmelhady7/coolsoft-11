@@ -1,5 +1,6 @@
 #{extends 'main.html' /}
- 
+ <div id="pageNoSideBar">
+        <div id="pageNoSideBar-bgtop">
 <a href="@{Login.homePage()}">Back to Home</a>
 <hr>          </hr>
 <u><font size ="5" color ="blue">Invitations</font></u>
@@ -7,29 +8,26 @@
 <br/>
 <table border="0" bgcolor="#ececec" cellspacing="5">
 #{if invitation.isEmpty()}
-</table>
 <tr><td><i>No new invitations</i></td><td>
+</table>
 #{/if}
 #{else}
-#{list items:invitation, as:'inn'} 
+#{list items:invitation, as:'inn'}
 <html>
 <table border="0" bgcolor="#ececec" cellspacing="5" id ="inv_${inn.id}">
 <tr><td><font size ="2" color ="black"><i>Date : ${inn.dateOfSending.format('dd MMM yy')} </i></font></td><td>
-
-<tr><td><font size ="3" color ="black"><u>From : ${inn.organization.name} Organization</u></font></td><td>
-
-<tr><td><font size ="3" color ="black">You have been invited to join ${inn.organization.name} Organization</font></td><td>
-<tr><td><font size ="3" color ="black"> As ${inn.role} #{if inn.entity!=null}to ${inn.entity.name} Entity#{/if} #{if inn.topic!=null} in ${inn.topic.title} Topic #{/if}</font> </td><td>
+<tr><td><font size ="3" color ="black">You have been invited to join <a href="@{Organizations.viewProfile(inn.organization.id)}"> ${inn.organization.name}</a> Organization</font></td><td>
+<tr><td><font size ="3" color ="black"> As ${inn.role} #{if inn.entity!=null}to<a href="@{MainEntitys.viewEntity(inn.entity.id)}" >${inn.entity.name} </a> Entity #{/if} #{if inn.topic!=null} in <a href="@{Topics.show(inn.topic.id)}">${inn.topic.title}</a> Topic #{/if}</font> </td><td>
 <a onclick="javascript: show(1,'${inn.id}');" /><img src="/public/images/ranktable-tick.png" title="Confirm" width="40" height="30"/></a>  &nbsp; &nbsp; 
 <a onclick="javascript: show(0,'${inn.id}');" /><img src="/public/images/Cross.png" title="Decline" width="30" height="20"/></a>
-</table>
 </html>
-<br/>
-<br/>
 #{/list}
 #{/else}
-
-
+</table>
+<br/>
+<br/>
+        </div>
+</div>
 <script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
 	</script>
 	
@@ -41,7 +39,6 @@ function show(k,i){
 		$.post('@{respond()}', {id:1,i:i},
 			 function()
 			 {
-			 alert("Accepted");
 			$('#inv_'+i).html('<i>Invitation has been accepted<\i>');
 			});
 	}
@@ -50,7 +47,6 @@ function show(k,i){
 		$.post('@{respond()}', {id:0,i:i},
 			 function()
 			 {
-			 	alert("Rejected");
 			$('#inv_'+i).html('<i>Invitation has been rejected<\i>');
 			});
 	}

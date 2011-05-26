@@ -1,15 +1,18 @@
 <!--C1S6  @author : Mai Magdy -->
 #{extends 'Login/index.html' /}
 #{set title:'invite Page' /}
-
+<div id="pageNoSideBar">
+        <div id="pageNoSideBar-bgtop">
 #{if type==0}
 <a href="@{MainEntitys.viewEntity(entity.id)}">Back to &{entity.name}</a>
 #{/if}
+#{else}
+<a href="@{	Topics.show(topic.id)}">Back to &{topic.title}</a>
+#{/else}
 
-#{if permitted==0}
-<u><font size ="3" color ="red">You are not allowed to view this page</font></u>
-#{/if}
-#{if permitted==1}
+
+
+
 
 <br/>
 <br/>
@@ -44,7 +47,6 @@
 </form>
 </div>
 
-
 <div id="block" >
 <input class = "linkButton" type="button" onclick="javascript: show();" value="Invite by mail" id="button1" /> 
 <form action="@{Invitations.searchUser()}" method="GET" name="myform"">
@@ -71,35 +73,42 @@
 <u><b><font size ="3" color ="blue">Search Result</font></b></u>
 <br/>
 <br/>
-<table border="0" bgcolor="#ececec" cellspacing="5">
+<table border="0" bgcolor="#ececec" cellspacing="2">
 #{if usersMatched.isEmpty()}
-</table>
 <tr><td><u><font size ="3" color ="black">No user Found</font></u></td><td>
 #{/if}
-#{else}
-#{list items:usersMatched, as:'u'} 
-<html>
-<table border="0" bgcolor="#ececec" cellspacing="5" width="20%" >
-
-<tr><td><font size ="3" color ="black">Name  : ${u.firstName} ${u.lastName}</font></td><td>
-<tr><td><font size ="3" color ="black">Username  : ${u.username}</font>
-#{if type==0}
-<td  align="right"><a href="@{Invitations.send(type,u.email,entity.id,u.id)}">invite</a></td></td><td>
-#{/if}
-#{else}
-<td  align="right"><a href="@{Invitations.send(type,u.email,topic.id,u.id)}">invite</a></td></td><td>
-
-#{/else}
 </table>
-</html>
-<br/>
-<br/>
+#{else}
+
+<div id="leftSidebar">
+    <ul>
+        
+        <li>
+        	  <ul>
+#{list items:0..usersMatched.size()-1, as:'u'} 
+<li>
+<font size ="3"><a href="@{Users.viewProfile(usersMatched.get(u).id)}">${usersMatched.get(u).username}</a>
+#{if usersInvited.get(u)==1}
+&nbsp;&nbsp;&nbsp;<p align="right"><i><font size ="2" color ="blue">pending invitation</font></i></p>
+#{/if}
+#{else}
+#{if type==0}
+<p align="right"><a href="@{Invitations.send(type,usersMatched.get(u).email,entity.id,usersMatched.get(u).id)}">invite</a></p>
+#{/if}
+#{else}
+<p align="right"><a href="@{Invitations.send(type,usersMatched.get(u).email,topic.id,usersMatched.get(u).id)}">invite</a></p>
+#{/else}
+#{/else}
+</li>
+<li></li>
 #{/list}
+</ul>
+      </li>
+    </ul>
+</div>
 #{/else}
 #{/if}
 </div>
-</div>
-
 
 #{if check==2}
 <script type="text/javascript">
@@ -107,8 +116,8 @@ $('#block').hide();
 	$('#table').show();
 </script>
 #{/if}
-#{/if}
-
+    </div>
+</div>
 <script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
 
 	</script>
