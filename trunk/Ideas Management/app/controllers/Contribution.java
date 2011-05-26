@@ -19,7 +19,6 @@ public class Contribution extends Controller
 	  * @story c4s11 : view contribution counter
 	  * 
 	  *@param Id
-	  * @return void
 	  * 
 	  */
 	
