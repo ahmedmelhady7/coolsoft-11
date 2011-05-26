@@ -4,9 +4,11 @@ import notifiers.Mail;
 
 import org.junit.*;
 
+import controllers.Documents;
 import controllers.Invitations;
 import controllers.Notifications;
 import controllers.Organizations;
+import controllers.Pictures;
 import controllers.Roles;
 import controllers.Security;
 import controllers.Topics;
@@ -359,13 +361,12 @@ public class IbrahimAdel extends UnitTest {
 		Role.createIdeaDeveloperRole();
 		Role.createOrganizationLeadRole();
 		Role OrganizationLead = Roles.getRoleByName("organizationLead");
-		
-		User khayat = new User("ibrahim.al.khayat@gmail.com", "ialk",
-				"1234", "Ibrahim", "EL-khayat", "What is our company's name?", "coolsoft",
-				0, "2/14/1995",
-				"Egypt", "student");
+
+		User khayat = new User("ibrahim.al.khayat@gmail.com", "ialk", "1234",
+				"Ibrahim", "EL-khayat", "What is our company's name?",
+				"coolsoft", 0, "2/14/1995", "Egypt", "student");
 		khayat._save();
-		
+
 		User ashraf = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234",
 				"Ashraf", "Mansoor", "What is our company's name?", "coolsoft",
 				0, "2/14/1995", "Egypt", "student").save();
@@ -376,31 +377,175 @@ public class IbrahimAdel extends UnitTest {
 		MainEntity gucMet = new MainEntity("MET",
 				"Media Engineering and technology", guc, true).save();
 
-		Topic gucMetStudentUnion = new Topic("Student union", "Suggestions", 2,
+		Topic gucMetStudentUnion = new Topic("Student union", "Suggestions", 1,
 				ashraf, gucMet, true).save();
 
 		gucMetStudentUnion._save();
-		
-		UserRoleInOrganizations.addEnrolledUser(ashraf, guc,
-				OrganizationLead);
-		
+
+		UserRoleInOrganizations.addEnrolledUser(ashraf, guc, OrganizationLead);
+
 		Role ideadeveloper = Roles.getRoleByName("idea developer");
-		
-		
+
 		ideadeveloper = Roles.getRoleByName("idea developer");
-		UserRoleInOrganization roleInOrg = new UserRoleInOrganization(
-				khayat, guc, ideadeveloper);
+		UserRoleInOrganization roleInOrg = new UserRoleInOrganization(khayat,
+				guc, ideadeveloper);
 		roleInOrg._save();
 		khayat.userRolesInOrganization.add(roleInOrg);
 		khayat.save();
-		
-		
-		assertEquals(false, Users.isPermitted(khayat, "use", gucMetStudentUnion.id, "topic"));
-		assertEquals(true, Users.isPermitted(khayat, "view", gucMetStudentUnion.id, "topic"));
-		
+
+		assertEquals(false, Users.isPermitted(khayat, "use",
+				gucMetStudentUnion.id, "topic"));
+		assertEquals(true, Users.isPermitted(khayat, "view",
+				gucMetStudentUnion.id, "topic"));
+
 		gucMetStudentUnion.requestFromUserToPost(khayat.id);
-	
-		
+
+		// // accept the request
+		RequestToJoin request = (RequestToJoin) RequestToJoin.findAll().get(0);
+		User user = request.source;
+		Topic topic = request.topic;
+		MainEntity entity = topic.entity;
+		Organization organization = entity.organization;
+		Role role = Roles.getRoleByName("idea developer");
+		UserRoleInOrganizations.addEnrolledUser(user, organization, role,
+				topic.id, "topic");
+		topic.requestsToJoin.remove(request);
+
+		assertEquals(true, Users.isPermitted(khayat, "use",
+				gucMetStudentUnion.id, "topic"));
+
 	}
 
+	@Test
+	public void picturesActions() {
+		Role.createIdeaDeveloperRole();
+		Role.createOrganizationLeadRole();
+
+		User khayat = new User("ibrahim.al.khayat@gmail.com", "ialk", "1234",
+				"Ibrahim", "EL-khayat", "What is our company's name?",
+				"coolsoft", 0, "2/14/1995", "Egypt", "student");
+		khayat._save();
+
+		User ashraf = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234",
+				"Ashraf", "Mansoor", "What is our company's name?", "coolsoft",
+				0, "2/14/1995", "Egypt", "student").save();
+
+		Organization guc = new Organization("GUC", ashraf, 1, true,
+				"The German University in Cairo").save();
+
+		Picture gucPicture = new Picture("test", null, guc.id, true).save();
+		Picture userPicture = new Picture("test", null, khayat.id, false).save();
+
+		long pictureId = gucPicture.id;
+		// public static void setProfilePicture(long pictureId, long id) {
+		Picture picture = Picture.findById(pictureId);
+		if (picture.isOrganization) {
+			Organization organization = Organization
+					.findById(picture.userOrganizationId);
+			organization.profilePictureId = pictureId;
+			organization.save();
+		} else {
+			User user = User.findById(picture.userOrganizationId);
+			user.profilePictureId = pictureId;
+			user.save();
+		}
+		// index(id);
+		// }
+
+		khayat.profilePictureId = userPicture.id;
+		khayat.save();
+
+		assertEquals(false, khayat.profilePictureId == -1);
+		assertEquals(false, guc.profilePictureId == -1);
+
+		// public static void deletePicture(long pictureId, long id) {
+		// Picture
+		picture = Picture.findById(pictureId);
+		if (picture.isOrganization) {
+			Organization organization = Organization
+					.findById(picture.userOrganizationId);
+			if (((Organization) Organization
+					.findById(picture.userOrganizationId)).profilePictureId == pictureId) {
+				organization.profilePictureId = -1;
+				organization.save();
+			}
+		} else {
+			User user = User.findById(picture.userOrganizationId);
+			if (user.profilePictureId == pictureId) {
+				user.profilePictureId = -1;
+				user.save();
+			}
+		}
+		try {
+			picture.image.getFile().delete();
+
+		} catch (Exception e) {
+		}
+		picture.delete();
+		// index(id);
+		// }
+
+		assertEquals(true, guc.profilePictureId == -1);
+
+	}
+	
+	@Test
+	public void documentsActions() {
+		Role.createIdeaDeveloperRole();
+		Role.createOrganizationLeadRole();
+
+		User khayat = new User("ibrahim.al.khayat@gmail.com", "ialk", "1234",
+				"Ibrahim", "EL-khayat", "What is our company's name?",
+				"coolsoft", 0, "2/14/1995", "Egypt", "student");
+		khayat._save();
+
+		User ashraf = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234",
+				"Ashraf", "Mansoor", "What is our company's name?", "coolsoft",
+				0, "2/14/1995", "Egypt", "student").save();
+
+		Organization guc = new Organization("GUC", ashraf, 1, true,
+				"The German University in Cairo").save();
+		
+//		Documents.createDocument(khayat.id, false, "test", "<p>test</p>");
+//		Documents.createDocument(guc.id, true, "test", "<p>test</p>");
+		long id = khayat.id;
+		boolean isOrganization = false;
+		String title = "test";
+		String data = "<p>test</p>";
+//		public static void createDocument(long id, boolean isOrganization,
+//				String title, String data) {
+			new Document(title, data, id, isOrganization).save();
+//		}
+		
+			new Document("test", "<p>test</p>", guc.id, true).save();
+			
+		assertEquals(1, guc.getDocuments().size());
+		assertEquals(1, khayat.getDocuments().size());
+		
+//		Documents.updateDocument(guc.getDocuments().get(0).id, "2", "2");
+		title = "2";
+		data = "2";
+		id = guc.getDocuments().get(0).id;
+//		public static void updateDocument(long id, String title, String data) {
+			Document document = Document.findById(id);
+			document.data = data;
+			document.name = title;
+			document.save();
+//		}
+		
+		assertEquals("2", guc.getDocuments().get(0).name);
+				
+//		Documents.deleteDocument(guc.getDocuments().get(0).id);
+		
+//		public static void deleteDocument(long id) {
+//			Document 
+			document = Document.findById(id);
+			document.delete();
+//		}
+		
+		
+		assertEquals(0, guc.getDocuments().size());
+		assertEquals(1, khayat.getDocuments().size());
+		
+	}
 }
