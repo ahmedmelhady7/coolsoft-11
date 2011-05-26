@@ -2,7 +2,12 @@
 #{extends 'Login/index.html' /}
 #{set title:'Block/Unblock Page' /}
 
-<a href="@{Login.homePage()}">Back to Home</a>
+#{if num==0}
+<a href="@{MainEntitys.viewEntity()}"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to ${object.name}</a>
+#{/if}
+#{else}
+<a href="@{Topics.show()}"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to ${object.title}</a>
+#{/else}
 <hr>          </hr>
 <u><font size ="4" color ="blue">Enrolled Idea Developers</font></u>
 <br/>
@@ -22,7 +27,7 @@
 <li>
 <a href="@{Users.viewProfile(users.get(u).id)}">${users.get(u).username}</a>
 <br/>
-<font size ="3" color ="black">${users.get(u).firstName} ${users.get(u).lastName}</font><a onclick="javascript: hide('${u}');" id="9_${u}"/><img src="/public/images/block.png" title="Block/Unblock" width="30" height="20" align="right"/></a><a onclick="javascript: view('${u}');" id="10_${u}"  style="display:none"/><img src="/public/images/block.png" title="Block/Unblock" width="30" height="20" align="right"/></a>
+<font size ="3" color ="black">${users.get(u).firstName} ${users.get(u).lastName}</font><a onclick="javascript: hide('${u}');" id="9_${u}"/><img src="/public/images/icons/blocked.png" title="Block/Unblock" width="30" height="30" align="right"/></a><a onclick="javascript: view('${u}');" id="10_${u}"  style="display:none"/><img src="/public/images/icons/blocked.png" title="Block/Unblock" width="30" height="20" align="right"/></a>
 <br/>
 <input class = "linkButton" type="button" onclick="show('${users.get(u).id}',0,'${object.id}','${num}','${u}');" id="1_${u}" value="Block from viewing" style="display:none"/>
 <input class = "linkButton" type="button" onclick="show('${users.get(u).id}',1,'${object.id}','${num}','${u}');"  id="2_${u}" value="Block from using" style="display:none"/>
@@ -139,7 +144,7 @@ function show(userId,type,numId,id,i){
 							return;
 						}
 					if ( document.getElementById('6_' + i).value== '') {
-						$('#3_' + i).html('<font color="red"  size ="2"><i>please specify the reason first</i></font>')
+						$('#3_' + i).html('<font color="red"  size ="2"><i>please specify the reason</i></font>')
 	                
 					
 					}else{
@@ -220,7 +225,7 @@ function show(userId,type,numId,id,i){
 						 	return;
 						 }
 						if (document.getElementById('6_' + i).value == '') {
-							$('#3_' + i).html('<font color="red"  size ="2"><i>please specify the reason first</i></font>')
+							$('#3_' + i).html('<font color="red"  size ="2"><i>please specify the reason</i></font>')
 							
 							
 						}
