@@ -1512,9 +1512,13 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
+	 * 
+	 * This method checks first if the user is an organizer
+	 *     then renders the a plan and list of items in that plan to the view
+	 *     
 	 * @author Yasmine Elsayed
 	 * 
-	 *         this method renders the Calendar view of a plan
+	 * C5S9
 	 * 
 	 * @param planId
 	 *            the id of the plan
