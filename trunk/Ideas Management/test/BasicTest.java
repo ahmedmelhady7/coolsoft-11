@@ -27,18 +27,17 @@ public class BasicTest extends UnitTest {
 
 		User admin = new User("admin@coolsoft.com", "admin", "1234", "Mr.",
 				"admin", "What is our company's name?", "coolsoft", 0,
-				new Date(1990, 11, 11), "Egypt", "Prgrammer");
+				"11/11/1990", "Egypt", "Prgrammer");
 		admin.isAdmin = true;
 		admin._save();
 
 		User mai = new User("mai.jt4@gmail.com", "mai", "1234", "Mai", "Magdy",
-				"What is our company's name?", "coolsoft", 0, new Date(1990, 9,
-						14), "Egypt", "student");
+				"What is our company's name?", "coolsoft", 0, "9/14/1990", "Egypt", "student");
 		mai._save();
 
 		User sharaf = new User("sharaf@eg.gov", "sharaf", "1234", "Asam",
 				"Sharaf", "What is our company's name?", "coolsoft", 0,
-				new Date(1955, 2, 14), "Egypt", "Primenister").save();
+				"2/14/1955", "Egypt", "Primenister").save();
 
 		Organization egypt = new Organization("Egypt", admin, 2, false,
 				"The National Egyptian Organization").save();
@@ -105,7 +104,7 @@ public class BasicTest extends UnitTest {
 
 		User sharaf = new User("sharaf@eg.gov", "sharaf", "1234", "Asam",
 				"Sharaf", "What is our company's name?", "coolsoft", 0,
-				new Date(1955, 2, 14), "Egypt", "Primenister").save();
+				"2/14/1995", "Egypt", "Primenister").save();
 
 		Organization gov = new Organization("الحكومة المصرية", sharaf, 0, true,
 				"").save();

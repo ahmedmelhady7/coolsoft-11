@@ -23,11 +23,11 @@ public class OmarFaruki extends UnitTest{
 	public void getAllOrganizations() {
 		User ashraf = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234",
 				"Ashraf", "Mansoor", "What is our company's name?", "coolsoft",
-				0, new Date(), "Egypt",
+				0, "2/14/1995", "Egypt",
 				"student").save();
 		User faruki = new User("Faruki@guc.edu.eg", "Faruki", "1234",
 				"Omar", "Faruki", "Favourite course?", "Faruki",
-				0, new Date(), "Egypt",
+				0, "2/14/1995", "Egypt",
 				"professor").save();
 		Role.createIdeaDeveloperRole();
 		Role.createOrganizationLeadRole();

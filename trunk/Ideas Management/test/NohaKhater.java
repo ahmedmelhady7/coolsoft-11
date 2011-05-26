@@ -29,7 +29,7 @@ public class NohaKhater extends UnitTest {
 	public void createEntity() {
 		User user = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234", "Ashraf",
 				"Mansoor", "What is our company's name?", "coolsoft", 0,
-				new Date(), "Egypt", "student").save();
+				"2/14/1995", "Egypt", "student").save();
 		Organization guc = new Organization("GUC", user, 0, false, "guc")
 				.save();
 		MainEntity met = new MainEntity("MET", "Media Engineering", guc, false)
@@ -43,7 +43,7 @@ public class NohaKhater extends UnitTest {
 	public void createSubEntity() {
 		User user = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234", "Ashraf",
 				"Mansoor", "What is our company's name?", "coolsoft", 0,
-				new Date(), "Egypt", "student").save();
+				"2/14/1995", "Egypt", "student").save();
 		Organization guc = new Organization("GUC", user, 0, false, "guc")
 				.save();
 		MainEntity met = new MainEntity("MET", "Media Engineering", guc, false)
@@ -59,7 +59,7 @@ public class NohaKhater extends UnitTest {
 	public void requestRelation1() {
 		User user = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234", "Ashraf",
 				"Mansoor", "What is our company's name?", "coolsoft", 0,
-				new Date(), "Egypt", "student").save();
+				"2/14/1995", "Egypt", "student").save();
 		Organization guc = new Organization("GUC", user, 0, true, "guc")
 				.save();
 		MainEntity met = new MainEntity("MET", "Media Engineering", guc, false)
@@ -83,7 +83,7 @@ public class NohaKhater extends UnitTest {
 	public void requestRelation2() {
 		User user = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234", "Ashraf",
 				"Mansoor", "What is our company's name?", "coolsoft", 0,
-				new Date(), "Egypt", "student").save();
+				"2/14/1995", "Egypt", "student").save();
 		Organization guc = new Organization("GUC", user, 0, true, "guc")
 				.save();
 		MainEntity met = new MainEntity("MET", "Media Engineering", guc, false)
