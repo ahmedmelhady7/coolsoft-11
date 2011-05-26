@@ -846,7 +846,11 @@ public class Users extends CoolCRUD {
 						.find("byEnrolledAndEntityTopicIDAndType", user,
 								topic.id, "topic").fetch();
 				if (allowed.size() == 0) {
-					return false;
+					if (action.equals("view")) {
+						return true;
+					}
+					 else
+						return false;
 				} else {
 					if (Roles.getRoleActions("idea developer").contains(action)) {
 						return true;
@@ -1504,6 +1508,7 @@ System.out.println("ANA HENA");
 				String url = " the user is clickable" + "<a href=\"http://localhost:9008/users/viewprofile?userId=" + tmp.id +"\">" + tmp.firstName + "</a>";
 				Log.addUserLog( url,
 						Security.getConnected());
+				
 				redirect("/Users/viewProfile?userId=" + id); // was showProfile
 			}
 		}
