@@ -66,13 +66,38 @@ public class Security extends Secure.Security {
 			}
 			if(user.state.equals("w"))
 			{
-				
+				activationKey(user.username);
 			}
 			session.put("user_id", user.id);
 			return true;
 		}
 		flash.error("Incorrect username or password");
 		return false;		
+	}
+	
+	public static void activationKey(String username) {
+		User user = User.find("select u from User u where u.username=?", 
+				username).first();
+		render(user);
+	}
+	
+	public static void checkKey(String username, String password, @Required String actKey) {
+		User user = User.find("select u from User u where u.username=?", 
+				username).first();
+		if (validation.hasErrors()) {
+			flash.error("You must enter the activation key to login");
+			activationKey(user.username);
+		}
+		if (actKey.trim().equals("")) {
+			flash.error("You must enter the activation key to login");
+			activationKey(user.username);
+		}
+		if (user.activationKey.equals(actKey)) {
+			authenticate(username, password);
+		} else {
+			flash.error("Incorrect activation key");
+			activationKey(user.username);
+		}
 	}
 	
 	/**

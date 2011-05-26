@@ -9,6 +9,12 @@
 			if(en_ids.length == 0 && dis_ids.length == 0) {
 				alert('No changes to perform!!');
 			} else {
+				if(counter == 1) {
+					var field = document.myform.checkfield;
+					var notId = field.id;
+					alert(notId);
+										
+				}
 				var r=confirm("Are You sure you want to save changes?");
 				if (r == true) {
 					$.post('@{disablePreferences()}', {a:dis_ids});
@@ -51,6 +57,8 @@
 				<div id="content">
 					<div class="post">
 					<a href="/users/notificationprofileview?type=All"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to Notification Profile</a>
+					<br>
+					<br>
 					<h2>Notification Profile</h2>
 <br>
 <hr>
