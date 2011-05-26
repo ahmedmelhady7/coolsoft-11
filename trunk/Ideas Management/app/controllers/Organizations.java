@@ -503,8 +503,12 @@ public class Organizations extends CoolCRUD {
 			}
 		}
 
-		List<MainEntity> entities = org.entitiesList;
-		entities.remove(0);
+		List<MainEntity> entities = new ArrayList<MainEntity>();
+		int iii = 1;
+		while (iii < org.entitiesList.size()) {
+			entities.add(org.entitiesList.get(iii));
+			iii++;
+		}
 		List<MainEntity> entitiesCanBeRelated = new ArrayList<MainEntity>();
 		for (int x = 0; x < entities.size(); x++) {
 			entitiesCanBeRelated.add(entities.get(x));
