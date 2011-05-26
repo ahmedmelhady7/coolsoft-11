@@ -532,10 +532,10 @@ public class Invitations extends CoolCRUD {
 					 * * idea devoloper by ibrahim adel
 					 */
 					role = Roles.getRoleByName("idea developer");
-					UserRoleInOrganization roleInOrg = new UserRoleInOrganization(
+					UserRoleInOrganization roleInOrganization = new UserRoleInOrganization(
 							user, organization, role);
-					roleInOrg._save();
-					user.userRolesInOrganization.add(roleInOrg);
+					roleInOrganization._save();
+					user.userRolesInOrganization.add(roleInOrganization);
 					user.save();
 					User orgLead = organization.creator;
 					Notifications
