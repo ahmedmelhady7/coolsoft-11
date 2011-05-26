@@ -479,7 +479,7 @@
                 </li>
 				#{/if}
 				
-				 #{if numberOfIdeas > 1 && canMerge == 1}
+				 #{if numberOfIdeas > 1 && canMerge == 1 && openToEdit == true}
                 <li>
                    #{form @Topics.getIdeasToMerge(), method:'POST', enctype:'multipart/form-data' }
 				       <input type = "hidden" name = "topicId" value = ${topicId}>
