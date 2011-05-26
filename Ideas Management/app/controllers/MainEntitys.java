@@ -3,6 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.chainsaw.Main;
+
 import controllers.CoolCRUD.ObjectType;
 
 import play.data.validation.Required;
@@ -113,9 +115,84 @@ public class MainEntitys extends CoolCRUD {
 	 */
 	public static void viewFollowers(long entityId, String flag) {
 		MainEntity entity = MainEntity.findById(entityId);
+		User user = Security.getConnected();
+		Organization org = Organization.findById(entity.organization.id);
+		List<MainEntity> entities = org.entitiesList;
+		List<Topic> topicList = entity.topicList;
+		List<MainEntity> subentities = entity.subentities;
+		List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
+		for (MainEntity entityTemp : entities) {
+			if (Users.isPermitted(user, "view", entityTemp.id, "entity")) {
+				entitiesICanView.add(entityTemp);
+			}
+		}
+		List<User> followers = org.followers;
+		List<Plan> plans = Plans.planList("organization", org.id);
+		int canCreateEntity = 0;
+		int canCreateSubEntity = 0;
+		int canDeleteEntity = 0;
+		if (user.isAdmin
+				|| Users.isPermitted(user, "create entities",
+						entity.organization.id, "organization")) {
+			canCreateEntity = 1;
+			canDeleteEntity = 1;
+		}
+		if (user.isAdmin
+				|| Users.isPermitted(user, "create entities",
+						entity.organization.id, "organization")
+				|| Users.isPermitted(user,
+						"Create a sub-entity for entity he/she manages",
+						entity.id, "entity")) {
+			canCreateSubEntity = 1;
+		}
+		int permission = 1;
+		int invite = 0;
+		int canEdit = 0;
+		int canRequest = 0;
+		int canRequestRelationship = 0;
+		int canRestrict = 0;
+		boolean entityIsLocked = entity.createRelationship;
+		List<User> allowed = Users.getEntityOrganizers(entity);
+		if (org.creator.equals(user) || user.isAdmin) {
+			canRestrict = 1;
+		}
+		if (org.creator.equals(user) || allowed.contains(user) || user.isAdmin)
+			canEdit = 1;
+		if (!Users.isPermitted(user, "post topics", entity.id, "entity"))
+			permission = 0;
+		if (Users.isPermitted(user, "use", entity.id, "entity"))
+			canRequest = 1;
+		if (Users
+				.isPermitted(
+						user,
+						"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
+						entity.id, "entity"))
+			invite = 1;
+		if (UserRoleInOrganizations.isOrganizer(user, entity.id, "entity")) {
+			canRequestRelationship = 1;
+		}
+		int check = 0;
+		if (Users.isPermitted(user,
+				"block a user from viewing or using a certain entity",
+				entity.id, "entity"))
+			check = 1;
+		int check1 = 0;
+		if (Users.isPermitted(user, "view", entity.id, "entity"))
+			check1 = 1;
+		int check2 = 0;
+		if (Users.isPermitted(user, "use", entity.id, "entity"))
+			check2 = 1;
+		boolean follower = user.followingEntities.contains(entity);
+		boolean canCreateRelationship = EntityRelationships.isAllowedTo(entityId);
+		render(user, org, entity, subentities, topicList, permission, invite,
+				canEdit, canCreateEntity, canCreateSubEntity, follower,
+				canCreateRelationship, canRequest, canRequestRelationship,
+				canRestrict, entityIsLocked, plans, canDeleteEntity, followers,
+				check, check1, check2);
 		if (flag.equals("true"))
 			followEntity(entityId);
-		render(entity);
+		render(user, org, entities, plans, entitiesICanView, followers,
+				entity, subentities);		
 	}
 
 	/**

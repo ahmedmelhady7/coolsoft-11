@@ -258,16 +258,16 @@
             </li>
             #{/else}
 			<!-- ################## -->	
-            <li>
+           <!-- <li>
                 <a id="followersLink" style="cursor:pointer;">Followers</a>
                 <div id="followersLinks">
                     <ul>
                         #{if entity.followers.size()>0}
-                        #{list items:followers, as:'follower'}
-                        <li type="disc">
-                            <a href="@{Users.viewProfile(follower.id)}">${follower.firstName} ${follower.lastName}</a>
+                        #{list items:followers, as:'follower'} -->
+                        <li>
+                            <a href="@{viewFollowers(entity.id, "false")}">View Followers</a>
                         </li>
-                        #{/list}
+                       <!-- #{/list}
                         #{/if}
                         #{else}
                         <LI type="disc">
@@ -276,7 +276,7 @@
                         #{/else}
                     </ul>
                 </div>
-            </li>
+            </li> -->
 			<!-- ################## -->				
 			#{if (canRequestRelationship == 1)}
 			<li>
