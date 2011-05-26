@@ -1,8 +1,9 @@
 #{extends 'planLayout.html' /}
 #{stylesheet src:"ideas.css" /}
 #{set 'title'}
-${plan.title} - View Plan as List
+Collaborative Thinking | ${plan.title} - View Plan as List
 #{/set}
+
 <script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js"></script>
 
 <style type="text/css">body {
@@ -176,7 +177,7 @@ You have already rated this plan
 				#{/else}
             </ul>
               
-				<div id="entityRelated_${item.id}"></div>
+				<div id="entityRelated_${item.id}" style= "float: left;"></div>
             #{if isOrganizer == true}  
             #{if item.isRelatedToEntity() == true} 
             <div id = "removeEntity_${item.id}">
@@ -200,7 +201,7 @@ You have already rated this plan
 			Related to entity: <a href="@{MainEntitys.viewEntity(item.relatedEntity.id)}">${item.relatedEntity}</a>
 			#{/if}
 			#{/else}
-			<a id ="removeButton_${item.id}" hidden ="true" onclick="javascript: remove_entity(${item.id});" style="cursor:pointer;" /><img src="/public/images/icons/delete.png" title="Remove relationship" width="24" height="24"/></a>            
+			<a id ="removeButton_${item.id}" hidden ="true" onclick="javascript: remove_entity(${item.id});" style="cursor:pointer;float: left;" /><img src="/public/images/icons/delete.png" title="Remove relationship" width="24" height="24"/></a>            
                 <div id = "pend_${item.id}" hidden = true>
 				Pending volunteer Request &nbsp;&nbsp;&nbsp;
 				<a onclick="cancelReq(${item.id});" style="cursor:pointer;">
@@ -395,7 +396,7 @@ Please contact
 							var eId = entityReturned.id;
 							var eName = entityReturned.name;
 						   $("#entityRelated_" + item).html("<div id = \"removeEntity_" + item + "\">Related to entity: <a href=\"http://localhost:9008/mainentitys/viewentity?id=" + eId + "\">"+eName+"</a></div>");
-						});$("#removeButton_" + item).show();      	
+						});$("#removeButton_" + item).show();
                           }
                                       
 					 function remove_entity(item)

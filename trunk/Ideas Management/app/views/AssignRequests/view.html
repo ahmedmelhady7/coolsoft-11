@@ -1,30 +1,7 @@
 #{extends 'login/index.html' /}
-#{set title: 'View Assignment Requests'/}
-
-#{if assignRequests.size() > 0}<h3>Assignment Requests </h3>
-
-<ul>
-    #{list items:assignRequests, as:'assignRequest'}
-    <li>
-       <fieldset id = "assignRequest_${assignRequest.id}">
-            <legend>
-			<h2>
-             <a href="@{Plans.viewAsList(assignRequest.source.plan.id)}">   ${assignRequest.source.plan.title}</a>
-            </h2>
-            </legend>
-            Content:  ${assignRequest.content}
-            <br/>
-            <a onclick="javascript: accept_request(${assignRequest.id});" style="cursor:pointer;" /><img src="/public/images/ranktable-tick.png" title="Accept" width="27" height="27"/></a>
-			<a onclick="javascript: reject_request(${assignRequest.id});" style="cursor:pointer;" /><img src="/public/images/Cross.png" title="Reject" width="23" height="20"/></a>
-        </fieldset>
-    </li>
-    #{/list}
-</ul>
-#{/if}
-#{else}
-You have no assignment requests.
-#{/else}
-
+#{set 'title'} Collaborative Thinking | ${user.username} - View Assignment Requests #{/set}
+<html>
+<head>
 <script type="text/javascript">
 
 function accept_request(id)
@@ -38,4 +15,71 @@ function reject_request(id)
 	$("#assignRequest_" + id).html('<i>Request has been rejected</i>');
   }
 
-</script>
+</script>	
+
+<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+	#showRequest{
+	margin-top: 1%;
+	margin-right: 3%;
+	margin-bottom: 4%;
+	margin-left: 0%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+
+</style>
+</head>
+<div id="pageNoSideBar">
+        <div id="pageNoSideBar-bgtop">
+        		<body>
+#{if assignRequests.size() > 0}<h3>Assignment Requests </h3>
+
+<div id="showRequest"><ul>
+    #{list items:assignRequests, as:'assignRequest'}
+    <li>
+       <fieldset id = "assignRequest_${assignRequest.id}">
+            <legend>
+			<h3>
+             <a href="@{Plans.viewAsList(assignRequest.source.plan.id)}">   ${assignRequest.source.plan.title}</a>
+            </h3>
+            </legend>
+            Content:  ${assignRequest.content}
+            <br/>
+			<a onclick="javascript: reject_request(${assignRequest.id});" style="cursor:pointer; float: right;"/><img src="/public/images/icons/delete.png" title="Reject" width="24" height="24"/></a>
+            <a onclick="javascript: accept_request(${assignRequest.id});" style="cursor:pointer; float: right;"/><img src="/public/images/icons/accept.png" title="Accept" width="24" height="24"/></a>
+       </fieldset> <br/>
+    </li>
+    #{/list}
+</ul></div>
+#{/if}
+#{else}
+You have no assignment requests.
+#{/else}
+</body>
+</div>
+</div>
+</html>

@@ -1,24 +1,66 @@
 #{extends 'login/index.html' /}
-#{set title:'View Volunteer Requests' /}
+#{set 'title'} Collaborative Thinking | ${plan.title} - View Volunteer Requests #{/set}
+<html>
+<head>
+
+<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+	#showRequest{
+	margin-top: 1%;
+	margin-right: 3%;
+	margin-bottom: 4%;
+	margin-left: 0%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+
+</style>
+</head>
+<div id="pageNoSideBar">
+        <div id="pageNoSideBar-bgtop">
+        		<body>
 #{if planVolunteerRequests.size() > 0}<h3>Volunteer Requests </h3>
-<ul>
+<div id = "showRequest"><ul>
     #{list items:planVolunteerRequests, as:'request'}
     <li>
         <fieldset id = "request_${request.id}">
             <legend>
-            <h2>
+            <h3>
                 <a href="@{Plans.viewAsList(request.destination.plan.id)}">${request.destination.summary}</a>
-            </h2>
+            </h3>
             </legend>
             Sender: <a href = "@{Users.viewProfile(request.sender.id)}">${request.sender.username}</a>
             <br/>
             Justification:  ${request.justification} &nbsp; &nbsp; &nbsp; &nbsp;
-            <a onclick="javascript: accept_request(${request.id});" style="cursor:pointer;" /><img src="/public/images/ranktable-tick.png" title="Accept" width="27" height="27"/></a>
-			&nbsp;<a onclick="javascript: reject_request(${request.id});" style="cursor:pointer;" /><img src="/public/images/Cross.png" title="Reject" width="23" height="20"/></a>
+			<a onclick="javascript: reject_request(${request.id});" style="cursor:pointer; float: right;" /><img src="/public/images/icons/delete.png" title="Reject" width="24" height="24"/></a>
+            <a onclick="javascript: accept_request(${request.id});" style="cursor:pointer; float: right;" /><img src="/public/images/icons/accept.png" title="Accept" width="24" height="24"/></a>
         </fieldset>
     </li>
     #{/list}
-</ul>
+</ul></div>
 #{/if}
 #{else}
 No volunteer requests for this plan exist.
@@ -27,6 +69,10 @@ No volunteer requests for this plan exist.
 
 </br><a href="@{Plans.viewAsList(plan.id)}">Go back to plan</a>
 
+</body>
+</div>
+</div>
+</html>
 <script type="text/javascript">
 
 function accept_request(id)
