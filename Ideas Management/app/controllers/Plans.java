@@ -649,7 +649,7 @@ public class Plans extends CoolCRUD {
 	 */
 	public static void planCreate(long topicId) {
 		User user = Security.getConnected();
-		render(topicId,user);
+		render(topicId, user);
 	}
 
 	/**
@@ -711,7 +711,8 @@ public class Plans extends CoolCRUD {
 	/**
 	 * This method takes the parameters from the web page of the plan creation
 	 * to instantiate a plan object, it also sends a notification to the
-	 * organizers of the topic, updates the log and then calls a method to view the plan as alist
+	 * organizers of the topic, updates the log and then calls a method to view
+	 * the plan as alist
 	 * 
 	 * @story C5S1
 	 * 
@@ -744,13 +745,25 @@ public class Plans extends CoolCRUD {
 		List<User> topicOrganizers = plan.topic.getOrganizer();
 		for (int i = 0; i < topicOrganizers.size(); i++) {
 			Notifications.sendNotification(topicOrganizers.get(i).id, plan.id,
-					"plan", "A new plan: "+p.title+" has been created in topic: "+topic.title);
+					"plan", "A new plan: " + plan.title
+							+ " has been created in topic: " + topic.title);
 		}
-		String logDescription = "a href=\"http://localhost:9008/users/viewprofile?userId="+user.id+"\">"+user.firstName + "</a>" +
-		"created the plan "+ "<a href =\"http://localhost:9008/plans/viewaslist?planId="+p.id+"\">"+p.title+" of the topic"+"<a href=\"http://localhost:9008/topics/show?topicId="+
-		topic.id+"\">"+topic.title+"</a>";
-		Log.addUserLog(logDescription, user, p,p.topic.entity,p.topic.entity.organization);
-		viewAsList(p.id);
+		String logDescription = "a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.firstName
+				+ "</a>"
+				+ "created the plan "
+				+ "<a href =\"http://localhost:9008/plans/viewaslist?planId="
+				+ plan.id
+				+ "\">"
+				+ plan.title
+				+ " of the topic"
+				+ "<a href=\"http://localhost:9008/topics/show?topicId="
+				+ topic.id + "\">" + topic.title + "</a>";
+		Log.addUserLog(logDescription, user, plan, plan.topic.entity,
+				plan.topic.entity.organization);
+		viewAsList(plan.id);
 
 	}
 
@@ -954,12 +967,13 @@ public class Plans extends CoolCRUD {
 	public static void editItem(long itemId) {
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
-		render(item,user);
+		render(item, user);
 	}
 
 	/**
 	 * This method takes the parameters from the web page of the plan editing to
-	 * edit a certain plan, it sends notifications to the organizers of the topic, updates the log and then goes to the plan of viewing a plan
+	 * edit a certain plan, it sends notifications to the organizers of the
+	 * topic, updates the log and then goes to the plan of viewing a plan
 	 * 
 	 * @story C5S3
 	 * 
@@ -980,6 +994,7 @@ public class Plans extends CoolCRUD {
 	 */
 	public static void edit(String title, String startDate, String endDate,
 			String description, String requirement, long planId) {
+		User user = Security.getConnected();
 		Date sd = new Date(startDate);
 		Date ed = new Date(endDate);
 		Plan plan = Plan.findById(planId);
@@ -993,7 +1008,8 @@ public class Plans extends CoolCRUD {
 		List<User> topicOrganizers = plan.topic.getOrganizer();
 		for (int i = 0; i < topicOrganizers.size(); i++) {
 			Notifications.sendNotification(topicOrganizers.get(i).id, plan.id,
-					"plan", "The action plan: "+p.title+" has been edited" + "in the topic: "+p.topic.title);
+					"plan", "The action plan: " + plan.title + " has been edited"
+							+ "in the topic: " + plan.topic.title);
 		}
 		List<User> assignees = new ArrayList<User>();
 		for (int i = 0; i < plan.items.size(); i++) {
@@ -1003,11 +1019,22 @@ public class Plans extends CoolCRUD {
 						"plan", "This action plan has been edited");
 			}
 		}
-		String logDescription = "a href=\"http://localhost:9008/users/viewprofile?userId="+user.id+"\">"+user.firstName + "</a>" +
-		"edit the plan "+ "<a href =\"http://localhost:9008/plans/viewaslist?planId="+p.id+"\">"+p.title+" of the topic"+"<a href=\"http://localhost:9008/topics/show?topicId="+
-		p.topic.id+"\">"+p.topic.title+"</a>";
-		Log.addUserLog(logDescription, user, p,p.topic.entity,p.topic.entity.organization);
-		viewAsList(p.id);
+		String logDescription = "a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.firstName
+				+ "</a>"
+				+ "edit the plan "
+				+ "<a href =\"http://localhost:9008/plans/viewaslist?planId="
+				+ plan.id
+				+ "\">"
+				+ plan.title
+				+ " of the topic"
+				+ "<a href=\"http://localhost:9008/topics/show?topicId="
+				+ plan.topic.id + "\">" + plan.topic.title + "</a>";
+		Log.addUserLog(logDescription, user, plan, plan.topic.entity,
+				plan.topic.entity.organization);
+		viewAsList(plan.id);
 	}
 
 	/**
@@ -1060,9 +1087,9 @@ public class Plans extends CoolCRUD {
 
 	/**
 	 * This methods deletes an item and from the item list of a plan and delete
-	 * all its volunteer requests and assign requests and add to the logs of
-	 * the plan, plan's topic, entity and organization given the item id and the
-	 * variable that to indicate whether to notify or not 
+	 * all its volunteer requests and assign requests and add to the logs of the
+	 * plan, plan's topic, entity and organization given the item id and the
+	 * variable that to indicate whether to notify or not
 	 * 
 	 * @story C5S19
 	 * 
@@ -1307,7 +1334,7 @@ public class Plans extends CoolCRUD {
 			out.write(" ");
 			out.write("icon=\"/public/rer7.png\"");
 			out.write(">");
-out.write(plan.description);
+			out.write(plan.description);
 			out.write("</event>");
 			out.write("\n");
 
