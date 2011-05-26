@@ -199,6 +199,9 @@
 			</script>
     </head>
 
+    <body onload="init()">
+         #{extends 'Login/index.html' /}			
+        #{set title: 'Entity Profile' /}        
 	<div id="leftSidebar">
     <ul>
         <div style="clear: both;"></div>
@@ -208,7 +211,86 @@
 				<br />
 				<br />
 				<br />
-            	#{if plans.size()>0}
+            #{if (canCreateSubEntity == 1)}
+            <li>
+                <a href="@{MainEntitys.goToCreateSubEntity(org.id,entity.id)}">Create SubEntity</a>
+            </li>
+            #{/if} 
+			<!-- ################## -->
+			#{if (canEdit == 1)}
+			<li>
+                <a href="@{MainEntitys.editEntityPage(entity.id)}">Edit</a>
+            </li>
+			#{/if}
+			<!-- ################## -->			
+			#{if (canDeleteEntity == 1)}
+			<li>
+                <a href="@{MainEntitys.deleteEntity(entity.id)}">Delete</a>
+            </li>
+			#{/if}	
+			<!-- ################## -->
+			<li>
+	           <a id="subentityLink"  style="cursor:pointer;"> Subentities </a>
+				 <div id="subentityLinks">
+                 <ul>
+                     #{if (subentities.size() > 0)}
+                     #{list items:subentities, as:'subentity'}
+                     <li type="disc">
+                         <a href="@{MainEntitys.viewEntity(subentity.id)}">${subentity.name}</a>
+                     </li>
+                     #{/list}
+                     #{/if}
+                     #{else}
+                     <li type="disc">No subentities yet!</li>
+                     #{/else}
+                 </ul>
+				</div>
+			</li>
+			<!-- ################## -->	
+            #{if follower == true}
+            <li>
+                <a onclick="unfollow('${entity.id}');">Unfollow ${entity.name}</a>
+            </li>
+            #{/if}
+            #{else}
+            <li>
+                <a href="@{followEntity(entity.id)}">Follow ${entity.name}</a>
+            </li>
+            #{/else}
+			<!-- ################## -->	
+            <li>
+                <a id="followersLink" style="cursor:pointer;">Followers</a>
+                <div id="followersLinks">
+                    <ul>
+                        #{if entity.followers.size()>0}
+                        #{list items:followers, as:'follower'}
+                        <li type="disc">
+                            <a href="@{Users.viewProfile(follower.id)}">${follower.firstName} ${follower.lastName}</a>
+                        </li>
+                        #{/list}
+                        #{/if}
+                        #{else}
+                        <LI type="disc">
+                            No Followers Yet!
+                        </LI>
+                        #{/else}
+                    </ul>
+                </div>
+            </li>
+			<!-- ################## -->				
+			#{if (canRequestRelationship == 1)}
+			<li>
+                <a href="@{MainEntitys.requestRelationship(user.id, org.id, entity.id)}">Request Relationship</a>
+            </li>
+			#{/if}
+			<!-- ################## -->				
+			#{if (canRequestRelationship == 1)}
+			<li>
+                <a href="@{MainEntitys.viewRelationships(user.id, org.id, entity.id, canRequestRelationship)}">View Relationships</a>
+            </li>
+			#{/if}	
+			<!-- ################## -->
+			#{if plans.size()>0}
 	        <li>
 	           <a id="planLink"  style="cursor:pointer;"> Plans </a>
 				 <div id="plansLinks">
@@ -222,6 +304,7 @@
 				</div>
 			</li>
 			#{/if}
+			<!-- ################## -->
 	        #{if entity.relatedItems.size()>0}
 	        <li>
 	           <a id="relatedItemsLink"  style="cursor:pointer;"> Related Items </a>
@@ -236,6 +319,9 @@
 				</div>
 			</li>
 			#{/if}
+			<!-- ################## -->			
+			
+			<!-- End of sidebar -->
             </ul>
         </li>
     </ul>
@@ -271,6 +357,32 @@
 		                relatedItemsFlag = true;
 		            }
 		        });
+				
+				var subentityFlag = true;
+		        $('#subentityLinks').hide();
+		        $('#subentityLink').click(function(){
+		            if (subentityFlag) {
+		                $('#subentityLinks').show(500);
+		                subentityFlag = false;
+		            }
+		            else {
+		                $('#subentityLinks').hide(500);
+		                subentityFlag = true;
+		            }
+		        });
+				
+                var followerFlag = false;
+                $('#followersLinks').hide();
+                $('#followersLink').click(function(){
+                    if (followerFlag) {
+                        $('#followersLinks').show(500);
+                        followerFlag = false;
+                    }
+                    else {
+                        $('#followersLinks').hide(500);
+                        followerFlag = true;
+                    }
+                });
 		
 			</script>	
 	    <font color="Red">
@@ -306,24 +418,6 @@
 				<br />
 		   </div>
 			
-	        #{if subentities.size() > 0}
-			List of subentities: <br />
-	        <ul style="list-style: none;">   
-			#{list items:subentities, as:'subentity'}
-			<li>
-				<a href="@{MainEntitys.viewEntity(subentity.id)}">${subentity.name}</a>
-			</li>
-			#{/list}
-			</ul>
-			#{/if}
-			#{else}
-			No subentities available for this entity!
-			#{/else}
-			<br />
-			#{if (canCreateSubEntity == 1)}
-			<a href="@{MainEntitys.goToCreateSubEntity(org.id,entity.id)}">Create new SubEntity</a>
-			#{/if}
-			<br />
 			#{if (entity.createRelationship == true)}
 			#{if (canCreateRelationship == true)}
 			<a href="@{MainEntitys.createRelation(entity.id,org.id)}">Create Relation</a>
@@ -363,32 +457,7 @@
 				}
 			</script>
 			</head>
-			
-			<form action="@{MainEntitys.viewFollowers()}">
-	            	<input type="hidden" name="entityId" value="${entity.id}"/>
-	            	<input type="hidden" name="flag" value="true"/>
-	            	#{if (!entity.followers.contains(user))} 
-	                Follow ${entity.name} 
-	                <input type="submit" value="Follow" class = "linkButton"/>
-	                <br />
-	                #{/if}
-	        </form>
-			#{if follower == true}
-				<form onsubmit="unfollow('${entity.id}');" method="post">
-				<p>
-				Unfollow ${entity.name} <input type="submit" value="unfollow" class = "linkButton"/>
-				</p>	
-				</form>
-			#{/if}
 					
-	       <form action="@{MainEntitys.viewFollowers()}">
-	          <input type="hidden" name="entityId" value="${entity.id}"/>
-	          <input type="hidden" name="flag" value="false"/>
-	          View ${entity.name} Followers 
-	          <input type="submit" value="Followers" class = "linkButton"/>
-	          <br />
-	       </form>
-		   	
 	       <div id="topicList">		
 		        #{if topicList.size() > 0}
 				<br />
@@ -529,27 +598,6 @@
 					<input type="hidden" value=${entity.id} name='entityId'/>
 					<input type="submit" value="View topic requests" class = "linkButton"/>
 				</form>
-			
-			#{if (canEdit == 1)}
-				<input type="submit" value="Edit" onclick=location.href="@{MainEntitys.editEntityPage(entity.id)}" class = "linkButton"></input>
-			#{/if}
-			
-			
-			#{if (canDeleteEntity == 1)}
-				<form action="@{MainEntitys.deleteEntity(entity.id)}" method="post">
-				<input type="submit" value="Delete" class = "linkButton"/>
-				</form>
-			#{/if}	
-			
-			#{if (canRequestRelationship == 1)}
-				<form action="@{MainEntitys.requestRelationship(user.id, org.id, entity.id)}" method="post">
-					<input type="submit" value="Request Relationship Creation" class = "linkButton"/>
-				</form>		
-				
-				<form action="@{MainEntitys.viewRelationships(user.id, org.id, entity.id, canRequestRelationship)}" method="post">
-					<input type="submit" value="View Relationships" class = "linkButton"/>
-				</form>		
-			#{/if}
 			
 			<script type="text/javascript">function unfollow(id) {
 					$.post('@{Users.unfollowEntity()}', {
