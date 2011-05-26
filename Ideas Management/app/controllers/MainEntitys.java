@@ -19,6 +19,7 @@ import models.MainEntity;
 import models.Organization;
 import models.Plan;
 import models.RenameEndRelationshipRequest;
+import models.RequestToJoin;
 import models.Tag;
 import models.Topic;
 import models.User;
@@ -239,8 +240,123 @@ public class MainEntitys extends CoolCRUD {
 	 * 
 	 */
 	public static void goToCreateEntity(long orgid) {
+		User user = Security.getConnected();
 		Organization org = Organization.findById(orgid);
-		render(org);
+		List<MainEntity> entities = org.entitiesList;
+		List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
+		for (MainEntity entity : entities) {
+			if (Users.isPermitted(user, "view", entity.id, "entity")) {
+				entitiesICanView.add(entity);
+			}
+		}
+		int allowed = 0;
+		int settings = 0;
+		if (org.privacyLevel == 1
+				&& Users.isPermitted(
+						user,
+						"accept/reject join requests from users to join a private organization",
+						org.id, "organization"))
+			allowed = 1;
+		if (Users
+				.isPermitted(
+						user,
+						"enable/disable the user to create their own tags within an organization",
+						org.id, "organization"))
+			settings = 1;
+		System.out.println(settings);
+		System.out.println(user);
+		System.out.println(org);
+		List<MainEntity> entitiesCanBeRelated = new ArrayList<MainEntity>();
+		for (int x = 0; x < entities.size(); x++) {
+			entitiesCanBeRelated.add(entities.get(x));
+		}
+		List<Topic> topics = new ArrayList<Topic>();
+		for (int x = 0; x < entities.size(); x++) {
+			for (int y = 0; y < entities.get(x).topicList.size(); y++) {
+				topics.add(entities.get(x).topicList.get(y));
+			}
+		}
+		for (int x = 0; x < entitiesCanBeRelated.size(); x++) {
+			if (!entitiesCanBeRelated.get(x).createRelationship)
+				entitiesCanBeRelated.remove(entitiesCanBeRelated.get(x));
+		}
+		boolean enrolled = false;
+		boolean canInvite = false;
+		if (Users.isPermitted(user,
+				"Invite a user to join a private or secret organization",
+				org.id, "organization")
+				&& org.privacyLevel != 2) {
+			canInvite = true;
+		}
+
+		if (Users.getEnrolledUsers(org).contains(user)) {
+			enrolled = true;
+		}
+		boolean requestToJoin = false;
+		if ((enrolled == false) && (org.privacyLevel == 1)) {
+			requestToJoin = true;
+		}
+		int flag = 0;
+		if ((Security.getConnected() == org.creator)
+				|| (Security.getConnected().isAdmin)) {
+			flag = 1;
+		}
+		boolean admin = user.isAdmin;
+		boolean isMember = Users.getEnrolledUsers(org).contains(user);
+		boolean creator = false;
+		if (org.creator.equals(user)) {
+			creator = true;
+		}
+		List<RequestToJoin> allRequests = RequestToJoin.findAll();
+		boolean alreadyRequested = false;
+		if ((!user.isAdmin) && (!org.creator.equals(user))
+				&& (!Users.getEnrolledUsers(org).contains(user))
+				&& (org.privacyLevel == 1)) {
+			int ii = 0;
+			while (ii < allRequests.size()) {
+				if (allRequests.get(ii).organization.equals(org)
+						&& allRequests.get(ii).source.equals(user)) {
+					alreadyRequested = true;
+				}
+				ii++;
+			}
+		}
+		boolean follower = user.followingOrganizations.contains(org);
+		List<User> users = User.findAll();
+		String usernames = "";
+		List<User> enrolledUsers = Users.getEnrolledUsers(org);
+		if (canInvite) {
+			for (int j = 0; j < users.size(); j++) {
+				if (users.get(j).state.equalsIgnoreCase("a")
+						&& !enrolledUsers.contains(users.get(j))
+						&& !users.get(j).isAdmin) {
+					if (j < users.size() - 1) {
+						usernames += users.get(j).username + "|";
+					} else {
+						usernames += users.get(j).username;
+					}
+				}
+			}
+		}
+		boolean join = false;
+		if ((!Users.getEnrolledUsers(org).contains(user)) && (!admin)
+				&& (org.privacyLevel == 2)) {
+			join = true;
+		}
+		int logFlag = 0;
+		if (Security.getConnected().equals(org.creator)
+				|| Security.getConnected().isAdmin) {
+			logFlag = 1;
+		}
+
+		long pictureId = org.profilePictureId;
+		List<User> followers = org.followers;
+		List<Plan> plans = Plans.planList("organization", org.id);
+		render(user, org, entities, requestToJoin, flag,
+				canInvite, admin, allowed, isMember, settings, creator,
+				alreadyRequested, plans, follower, usernames, join, logFlag,
+				pictureId, topics, entitiesCanBeRelated, entitiesICanView,
+				followers);
 	}
 
 	/**
@@ -326,28 +442,17 @@ public class MainEntitys extends CoolCRUD {
 						"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
 						entity.id, "entity"))
 			invite = 1;
-		int check = 0;
-		if (Users.isPermitted(user,
-				"block a user from viewing or using a certain entity",
-				entity.id, "entity"))
-			check = 1;
-		int check1 = 0;
-		if (Users.isPermitted(user, "view", entity.id, "entity"))
-			check1 = 1;
-		int check2 = 0;
-		if (Users.isPermitted(user, "use", entity.id, "entity"))
-			check2 = 1;
 		if (UserRoleInOrganizations.isOrganizer(user, entity.id, "entity")) {
 			canRequestRelationship = 1;
 		}
 		boolean follower = user.followingEntities.contains(entity);
 		boolean canCreateRelationship = EntityRelationships.isAllowedTo(id);
+		List<User> followers = entity.followers;
 		List<Plan> plans = Plans.planList("entity", entity.id);
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity, canCreateSubEntity, follower,
 				canCreateRelationship, canRequest, canRequestRelationship,
-				check, canRestrict, entityIsLocked, plans, check1, check2,
-				canDeleteEntity);
+				canRestrict, entityIsLocked, plans, canDeleteEntity, followers);
 	}
 
 	/**
@@ -529,14 +634,10 @@ public class MainEntitys extends CoolCRUD {
 			CreateRelationshipRequests
 					.delete(entity.relationshipRequestsDestination.get(j).id);
 		}
-		// size = entity.topicList.size();
-		// ObjectType type = ObjectType.get(getControllerClass());
-		// notFoundIfNull(type);
-		// for (int j = 0; j < size; j++) {
-		// Model object = type.findById(entity.topicList.get(j).id);
-		// notFoundIfNull(object);
-		// Topics.deleteTopic("" + entity.topicList.get(j).id, "msg");
-		// }
+		 size = entity.topicList.size();
+		 for (int j = 0; j < size; j++) {
+		 Topics.deleteTopicInternally("" + entity.topicList.get(j).id);
+		 }
 		size = allEntities.size();
 		for (int i = 0; i < size; i++) {
 			if (allEntities.get(i).subentities.contains(entity)) {
