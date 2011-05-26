@@ -1488,7 +1488,7 @@ public class Plans extends CoolCRUD {
 	 * 
 	 * @return boolean
 	 */
-	public static boolean relateToEntity(long itemId, long entityId) {
+	public static void relateToEntity(long itemId, long entityId) {
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
 		notFoundIfNull(item);
@@ -1515,7 +1515,14 @@ public class Plans extends CoolCRUD {
 						+ item.relatedEntity.name + "</a>", item, item.plan,
 				item.plan.topic, item.plan.topic.entity,
 				item.plan.topic.entity.organization);
-		return true;
+		long id = item.relatedEntity.id;
+		String name=  item.relatedEntity.name;
+		JsonObject json = new JsonObject();
+		json.addProperty("name", name + "");
+		json.addProperty("id", id + "");
+
+		renderJSON(json.toString());
+	
 	}
 
 	/**
@@ -1534,7 +1541,6 @@ public class Plans extends CoolCRUD {
 	public static boolean removeItemEntityRelation(long itemId) {
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
-		notFoundIfNull(item);
 		Log.addLog(
 				"User <a href=\"http://localhost:9008/users/viewprofile?userId="
 						+ user.id
