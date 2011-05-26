@@ -3,10 +3,10 @@
 #{set title:'Block/Unblock Page' /}
 
 #{if num==0}
-<a href="@{MainEntitys.viewEntity()}"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to ${object.name}</a>
+<a href="@{MainEntitys.viewEntity(object.id)}"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to ${object.name}</a>
 #{/if}
 #{else}
-<a href="@{Topics.show()}"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to ${object.title}</a>
+<a href="@{Topics.show(object.id)}"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to ${object.title}</a>
 #{/else}
 <hr>          </hr>
 <u><font size ="4" color ="blue">Enrolled Idea Developers</font></u>
