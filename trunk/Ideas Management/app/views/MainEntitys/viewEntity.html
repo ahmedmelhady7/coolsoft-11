@@ -383,13 +383,12 @@
                         followerFlag = true;
                     }
                 });
-		
 			</script>	
 	    <font color="Red">
 	        ${message}
 	    </font>
 	    <br />
-	
+			
 	  <div id="backToOrg" ><a href="@{Organizations.viewProfile(org.id)}"> Back to ${org.name}</a></div>	
 	
 	  <div id="crudShow"> 
@@ -429,32 +428,88 @@
 				   <div id="lista" style="display: none;">
 				   	#{if entity.relationsSource != null}
 				      #{list items:entity.relationsSource, as:'relationElement'}
-							<ul><a href="/mainentitys/viewentity?id=${relationElement.source.id}">${relationElement.source.name}</a> <q id=${relationElement.id}>${relationElement.name}</q> <a href="/mainentitys/viewentity?id=${relationElement.destination.id}">${relationElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relationElement.id})" /> <input type="button" value="end relationship" onclick="endRelation(${relationElement.id})" />#{/if}</ul>
+							<ul><a href="/mainentitys/viewentity?id=${relationElement.source.id}">${relationElement.source.name}</a> <input id="textToRename_${relationElement.id}" type="text" value=${relationElement.name} style="display:none;"/><q id=${relationElement.id}>${relationElement.name}</q> <a href="/mainentitys/viewentity?id=${relationElement.destination.id}">${relationElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="button" class="linkButton" value="Done" style="display:none;" id="renameDone_${relationElement.id}" onclick="actionRename(${relationElement.id})"/><input id="renameButton_${relationElement.id}" type="button" class="linkButton" value="edit" onclick="showRename(${relationElement.id})"/> <input type="button" class="linkButton" value="end relationship" onclick="endRelation(${relationElement.id})" />#{/if}</ul>
 					  #{/list}	
 					#{/if}
 					#{if entity.relationsDestination != null}
 					  
 					  #{list items:entity.relationsDestination, as:'relElement'}
-							<ul><a href="/mainentitys/viewentity?id=${relElement.source.id}">${relElement.source.name}</a> <q id=${relElement.id}>${relElement.name}</q> <a href="/mainentitys/viewentity?id=${relElement.destination.id}">${relElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relElement.id})" />#{/if}</ul>
+							<ul><a href="/mainentitys/viewentity?id=${relElement.source.id}">${relElement.source.name}</a> <input id="textToRename2_${relElement.id}" type="text" value=${relElement.name} style="display:none;"/><q id=${relElement.id}>${relElement.name}</q> <a href="/mainentitys/viewentity?id=${relElement.destination.id}">${relElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="button" class="linkButton" value="Done" style="display:none;" id="renameDone2_${relElement.id}" onclick="actionRename2(${relElement.id})"/><input id="renameButton2_${relElement.id}" type="button" class="linkButton" value="edit" onclick="showRename2(${relElement.id})"/> <input type="button" class="linkButton" value="end relationship" onclick="endRelation(${relElement.id})" />#{/if}</ul>
 					  #{/list}
 				   	#{/if}
 				   </div>
 			</div>
 			<head>
 			<script type="text/javascript">
-				function showRename(relId)
-				{
-				var newRelName = prompt("Please enter the new name:", document.getElementById(relId).textContent);
-				location.reload();
-				if (newRelName!=null && newRelName!="")
-			  	{
-			  	$.post('@{EntityRelationships.renameRelationship()}', {
-					relationToBeRenamedId: relId,
-					newName: newRelName
-				});
-				
-			  	}
-				}
+									   	function showRename(relId)
+	{
+	$('#' + relId).hide();
+	$('#renameButton_' + relId).hide();
+	$('#textToRename_' + relId).show();
+	$('#renameDone_' + relId).show();
+	}
+	
+	function actionRename(relId){
+		var newRelName = document.getElementById('textToRename_' + relId).value;
+		if(newRelName != "" && newRelName != document.getElementById(relId).textContent){
+		$.post('@{EntityRelationships.renameRelationship()}', {
+		relationToBeRenamedId: relId,
+		newName: newRelName
+	}, function(data){
+		if(data == "true"){
+			document.getElementById(relId).textContent=newRelName;
+				$('#' + relId).show();
+				$('#renameButton_' + relId).show();
+				$('#textToRename_' + relId).hide();
+				$('#renameDone_' + relId).hide();
+
+		}else if(data == "false"){
+			alert("Relation already there!");
+		}
+	});
+	}
+	else{
+		$('#' + relId).show();
+				$('#renameButton_' + relId).show();
+				$('#textToRename_' + relId).hide();
+				$('#renameDone_' + relId).hide();
+	}
+	}
+	
+	  	function showRename2(relId)
+	{
+	$('#' + relId).hide();
+	$('#renameButton2_' + relId).hide();
+	$('#textToRename2_' + relId).show();
+	$('#renameDone2_' + relId).show();
+	}
+	
+	function actionRename2(relId){
+		var newRelName = document.getElementById('textToRename2_' + relId).value;
+		if(newRelName != "" && newRelName != document.getElementById(relId).textContent){
+		$.post('@{EntityRelationships.renameRelationship()}', {
+		relationToBeRenamedId: relId,
+		newName: newRelName
+	}, function(data){
+		if(data == "true"){
+			document.getElementById(relId).textContent=newRelName;
+				$('#' + relId).show();
+				$('#renameButton2_' + relId).show();
+				$('#textToRename2_' + relId).hide();
+				$('#renameDone2_' + relId).hide();
+
+		}else if(data == "false"){
+			alert("Relation already there!");
+		}
+	});
+	}
+	else{
+				$('#' + relId).show();
+				$('#renameButton2_' + relId).show();
+				$('#textToRename2_' + relId).hide();
+				$('#renameDone2_' + relId).hide();
+	}
+	}
 			</script>
 			</head>
 					

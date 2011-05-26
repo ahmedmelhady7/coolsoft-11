@@ -475,7 +475,7 @@ $(document).ready(function(){
 					#{list items:org.relationNames, as:'relName'}
 					<option>${relName}</option>
 					#{/list}
-					</select> <input id="rTextForm" type="text" /> <input type="button" value="add new name" onclick="addName()" /><span id="duplicate"></span>
+					</select> <input id="rTextForm" type="text" /> <input type="button" value="add new name" onclick="addName()" /> <font color="red"><span id="duplicate"></span></font>
 				
 				<p><form id="eform" style="display: none;">
 					
@@ -484,7 +484,7 @@ $(document).ready(function(){
 					#{list items:entitiesCanBeRelated, as:'entityElement'}
 					<option value="${entityElement.id}">${entityElement.name}</option>
 					#{/list}
-					</select>		
+					</select>
 					
 					Destination: <select id="ent2">
 					<option>Select Entity</option>
@@ -493,7 +493,7 @@ $(document).ready(function(){
 					#{/list}
 					</select>			
 					
-					<input type="button" value="Create Relation" onclick="createERelation()"/>
+					<input type="button" value="Create Relation" onclick="createERelation()"/> <font color="red"><span id="e_duplicate"></span></font>
 					
 				</form></p>
 				<p>
@@ -556,10 +556,12 @@ $(document).ready(function(){
 					var s = document.getElementById("ent1").value;
 					var d = document.getElementById("ent2").value;
 					
+					var tmp_n;
+					
 					if (n == "choose name" || s == "Select Entity" || d == "Select Entity") {
-						alert("Please fill the required filed(s)");
+						document.getElementById('e_duplicate').textContent="Please fill all required field(s).";
 					}else if (s == d){
-						alert("Cannot relate entity to itself!");
+						document.getElementById('e_duplicate').textContent="Cannot relate entity to itself!";
 					}else {
 						$.post('@{EntityRelationships.createRelationship()}', {
 							name: n,
@@ -567,10 +569,13 @@ $(document).ready(function(){
 							destinationId: d
 						}, function(data){
 							if(data == "true"){
-								alert("you have created relation: " + n);
-								location.reload();
+								document.getElementById('e_duplicate').textContent="Relation \"" + n + "\" have been created.";
+//								location.reload();
+								$('#e_duplicate').fadeOut('slow');
+								//reset values.
+								
 							}else if(data == "false"){
-								alert("relation already exists!!");
+								document.getElementById('e_duplicate').textContent="Relation already exists.";
 							}
 						});
 					}
@@ -665,11 +670,11 @@ $(document).ready(function(){
 							document.getElementById('rTextForm').value = "";
 						}
 						else if(data == "true"){
-							document.getElementById('duplicate').textContent=" Duplicate!!";
+							document.getElementById('duplicate').textContent="Name already exists.";
 						}
 						});
 					}else{
-						alert("enter a name!");
+						document.getElementById('duplicate').textContent="Please enter a name.";
 					}
 				}
 				
