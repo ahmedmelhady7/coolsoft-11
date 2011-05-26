@@ -12,15 +12,26 @@ import controllers.Roles;
 
 import play.db.jpa.Model;
 
+/**
+ * 
+ * @author Nada Ossama
+ * 
+ */
 @Entity
 public class UserRoleInOrganization extends CoolModel {
-
+	/**
+	 * the user that is enrolled
+	 */
 	@ManyToOne
 	public User enrolled;
-
+	/**
+	 * the organization where the user is enrolled in
+	 */
 	@ManyToOne
 	public Organization organization;
-
+	/**
+	 * the role of the user in that organization
+	 */
 	@ManyToOne
 	public Role role;
 	/**
@@ -35,7 +46,7 @@ public class UserRoleInOrganization extends CoolModel {
 
 	/**
 	 * creates an enrolled a user in a certain organization
-	 *
+	 * 
 	 * @author Nada Ossama
 	 * 
 	 * @story C1S7
@@ -47,7 +58,7 @@ public class UserRoleInOrganization extends CoolModel {
 	 * @param role
 	 *            Role role of that user in the organization org
 	 * @param entityTopicId
-	 *            long ID of the entity or the topic the user will be inrolled
+	 *            long ID of the entity or the topic the user will be enrolled
 	 *            in if any
 	 * 
 	 * @param type
@@ -71,7 +82,7 @@ public class UserRoleInOrganization extends CoolModel {
 	 * @author Nada Ossama
 	 * 
 	 * @story C1S7
-	 *
+	 * 
 	 * @param user
 	 *            User the user to be enrolled
 	 * @param org
@@ -109,64 +120,67 @@ public class UserRoleInOrganization extends CoolModel {
 		UserRoleInOrganization role = UserRoleInOrganization
 				.find("select uro from UserRoleInOrganization uro where uro.enrolled = ? and uro.organization = ?",
 						user, org).first();
-		
-	    if (role == null ){
-	    	return (Roles.getRoleByName("idea developer"));
-	    }
-	    else
-	    return role.role;
-						
+
+		if (role == null) {
+			return (Roles.getRoleByName("idea developer"));
+		} else
+			return role.role;
+
 	}
-	
+
 	/**
 	 * deletes a certain record in the table
 	 * 
-	 *  @author Nada Ossama
-	 *  
-	 *  @story C1S7
-	 *  
-	 * @param userRoleInOrg UserRoleInOrganiztion record to be deleted
+	 * @author Nada Ossama
+	 * 
+	 * @story C1S7
+	 * 
+	 * @param userRoleInOrg
+	 *            UserRoleInOrganiztion record to be deleted
 	 */
-	
 
 	public static boolean delete(UserRoleInOrganization userRoleInOrg) {
 		User user = userRoleInOrg.enrolled;
 		Organization organiztion = userRoleInOrg.organization;
 		Role role = userRoleInOrg.role;
-    try{
-		user.userRolesInOrganization.remove(userRoleInOrg);
-		organiztion.userRoleInOrg.remove(userRoleInOrg);
-		role.userRoleInOrganization.remove(userRoleInOrg);
-		userRoleInOrg.delete();
-		return true;
-      }
-     catch (Exception e){
-	  return false;
-    }
+		try {
+			user.userRolesInOrganization.remove(userRoleInOrg);
+			organiztion.userRoleInOrg.remove(userRoleInOrg);
+			role.userRoleInOrganization.remove(userRoleInOrg);
+			userRoleInOrg.delete();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
-	
-	
+
 	/**
-	 * given a certain topic or entity that will be deleted this method cascades the deletion
+	 * given a certain topic or entity that will be deleted this method cascades
+	 * the deletion
 	 * 
 	 * @author Nada Ossama
 	 * 
-	 * @story C1S7 
+	 * @story C1S7
 	 * 
-	 * @param entityTopicID long id of the entity or topic to be deleted
-	 * @param type String type that determines whether the passed id belongs to a topic or entity
+	 * @param entityTopicID
+	 *            long id of the entity or topic to be deleted
+	 * @param type
+	 *            String type that determines whether the passed id belongs to a
+	 *            topic or entity
 	 */
-	
-	public static void deleteEntityOrTopic (long entityTopicID ,String type){
-		 
-		List <UserRoleInOrganization> toBeDeleted = UserRoleInOrganization.find("select uro from UserRoleInOrganization uro where uro.entityTopicID = ? and uro.type like ?", entityTopicID , type).fetch();
-		if(toBeDeleted != null && !toBeDeleted.isEmpty()){
-			for(int i = 0 ; i < toBeDeleted.size() ; i++){
+
+	public static void deleteEntityOrTopic(long entityTopicID, String type) {
+
+		List<UserRoleInOrganization> toBeDeleted = UserRoleInOrganization
+				.find("select uro from UserRoleInOrganization uro where uro.entityTopicID = ? and uro.type like ?",
+						entityTopicID, type).fetch();
+		if (toBeDeleted != null && !toBeDeleted.isEmpty()) {
+			for (int i = 0; i < toBeDeleted.size(); i++) {
 				UserRoleInOrganization record = toBeDeleted.get(i);
 				UserRoleInOrganization.delete(record);
 			}
 		}
-		
+
 	}
-	
+
 }
