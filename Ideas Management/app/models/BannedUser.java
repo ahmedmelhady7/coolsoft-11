@@ -120,44 +120,7 @@ public class BannedUser extends CoolModel {
 		}
 	}
     
-	/**
-	 *  used so as to block a user from a certain entity
-	 * 
-	 * @author: Nada Ossama
-	 * 
-	 * @story:C1S7
-	 * 
-	 * @param userID :long  ID of the User to be blocked
-	 * 
-	 * @param organizationID : long id that this entity belongs to
-	 * 
-	 * @param entityID : long  ID of that entity
-	 * 
-	 * @return boolean:  false if found banned otherwise return true
-	 */
-	public static boolean blockFromEntity(long userID, long organizationID,
-			long entityID) {
 
-		User myBannedUser = User.findById(userID);
-		Organization myOrganization = Organization.findById(organizationID);
-                     
-		BannedUser test = BannedUser.find(
-				"select bu from BannedUser bu where bu.bannedUser = ? and bu.organization = ? and bu.action like ? and bu.resourceType like ? and bu.resourceID = ?",
-				myBannedUser, myOrganization, "All", "entity", entityID)
-				.first();
-
-		if (test != null) {
-			return false;
-		}
-
-		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
-				"All", "entity", entityID);
-		
-		newBannedUser.save();
-    	myBannedUser.bannedUsers.add(newBannedUser);
-		myOrganization.bannedUsers.add(newBannedUser);
-		return true;
-	}
 
 	/**
 	 * block a user from a certain action within an entity and cascade that
@@ -271,43 +234,7 @@ public class BannedUser extends CoolModel {
 		return true;
 	}
 
-	/**
-	 *block a user from a certain topic
-	 * 
-	 * @author : Nada Ossama
-	 * 
-	 * @story: C1S7
-	 * 
-	 * @param userID : long ID of the User to be blocked
-	 * 
-	 * @param organizationID : long id that this entity belongs to
-	 * 
-	 * @param entityID : long ID of that entity
-	 * 
-	 * @return boolean to indicates the successfulness of the operation
-	 */
 
-	public static boolean blockFromTopic(long userID, long organizationID, long topicID) {
-		User myBannedUser = User.findById(userID);
-		Organization myOrganization = Organization.findById(organizationID);
-		
-		BannedUser test = BannedUser.find(
-				"select bu from BannedUser bu where bu.bannedUser = ?"
-						+ " and bu.organization = ? and bu.action like ?"
-						+ "and bu.resourceType like ? and bu.resourceID = ?",
-				myBannedUser, myOrganization, "All", "Topic", topicID)
-				.first();
-
-		if (test != null) {
-			return false;
-		}
-		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
-				"All", "Topic", topicID);
-		newBannedUser.save();
-		myBannedUser.bannedUsers.add(newBannedUser);
-		myOrganization.bannedUsers.add(newBannedUser);
-		return true;
-	}
 	/**
 	 * de-restricts an organizer from a certain action within a specified topic and cascades the 
 	 * de-restriction to the rest of the entity
