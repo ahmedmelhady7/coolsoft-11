@@ -109,16 +109,15 @@ public class Users extends CoolCRUD {
 		if (Security.getConnected().isAdmin) {
 			adminFlag = 1;
 		}
-		int isDeleted=0;
-		if(object.state.equals("d"))
-		{
+		int isDeleted = 0;
+		if (object.state.equals("d")) {
 			isDeleted = 1;
 		}
 		try {
 
 			System.out.println("view() done, about to render");
 			render(type, object, username, name, communityContributionCounter,
-					profession, birthDate, userId, adminFlag,isDeleted);
+					profession, birthDate, userId, adminFlag, isDeleted);
 
 		} catch (TemplateNotFoundException e) {
 			System.out
@@ -179,14 +178,13 @@ public class Users extends CoolCRUD {
 		String profession = tmp.profession;
 		String username = tmp.username;
 		String dateofBirth = "" + tmp.dateofBirth;
-		int isDeleted=0;
-		if(tmp.state.equals("d"))
-		{
-			isDeleted=1;
+		int isDeleted = 0;
+		if (tmp.state.equals("d")) {
+			isDeleted = 1;
 		}
 		try {
 			render(type, object, username, name, communityContributionCounter,
-					profession, dateofBirth, userId,isDeleted);
+					profession, dateofBirth, userId, isDeleted);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -264,7 +262,7 @@ public class Users extends CoolCRUD {
 	 */
 
 	public static void viewProfile(long userId) {
-		User user = Security.getConnected();		
+		User user = Security.getConnected();
 		boolean flag = true;
 		if (user.id == userId) {
 			User otherUser = Security.getConnected();
@@ -422,12 +420,12 @@ public class Users extends CoolCRUD {
 		idea.spamCounter++;
 		reporter.ideasReported.add(idea);
 		idea.reporters.add(reporter);
-//		List<User> organizers = Users
-//				.getEntityOrganizers(idea.belongsToTopic.entity);
-//		for (int j = 0; j < organizers.size(); j++) {
-			Mail.reportAsSpamMail(/*organizers.get(j)*/idea.belongsToTopic.creator, reporter, idea,
-					idea.description, idea.title);
-//		}
+		// List<User> organizers = Users
+		// .getEntityOrganizers(idea.belongsToTopic.entity);
+		// for (int j = 0; j < organizers.size(); j++) {
+		Mail.reportAsSpamMail(/* organizers.get(j) */idea.belongsToTopic.creator,
+				reporter, idea, idea.description, idea.title);
+		// }
 		idea.save();
 		reporter.save();
 		ideaSpamView(ideaId);
@@ -523,9 +521,10 @@ public class Users extends CoolCRUD {
 		Comment comment = Comment.findById(commentId);
 		User reporter = Security.getConnected();
 		if (comment.reporters != null){
-		comment.reporters += reporter.id + ",";
+			comment.reporters += reporter.id + ",";
 		comment.save();
-		System.out.println(comment.reporters+"aaaa");
+		System.out.println(comment.reporters + "aaaa");
+
 		}
 //		Mail.reportCommentMail(comment.commentedIdea.author, reporter, comment,
 //					comment.comment);
@@ -553,10 +552,10 @@ public class Users extends CoolCRUD {
 		// for (int i = 0; i < topic.reporters.size(); i++) {
 		// if (reporter.username.equals(topic.reporters.get(i).username))
 		// alreadyReported = true;}
-		   redirect("/ideas/show?ideaId=" + idea.getId(), alreadyReported);
+		redirect("/ideas/show?ideaId=" + idea.getId(), alreadyReported);
 		// render(alreadyReported);
 	}
-	
+
 	/**
 	 * returns the list of users that are banned from a certain action in a
 	 * certain organization from a certain source in a certain type such that
@@ -574,7 +573,7 @@ public class Users extends CoolCRUD {
 	 *            long id of the source that user is banned from
 	 * @param type
 	 *            String type of the source
-	 * @return List<User> is the list of he banned users
+	 * @return List<User> is the list of the banned users
 	 */
 
 	public static List<User> getBannedUser(Organization organization,
@@ -582,12 +581,12 @@ public class Users extends CoolCRUD {
 		List<User> users = BannedUser
 				.find("select bu.bannedUser from BannedUser where bu.organization = ? and bu.action = ? and bu.resourceType = ? and bu.resourceID = ? ",
 						organization, action, type, sourceID).fetch();
-        List<User> usersReturned = new ArrayList();
+		List<User> usersReturned = new ArrayList();
 		for (int i = 0; i < users.size(); i++) {
-           User temp = users.get(i);
-			if (temp.state.equals("a")&& (!usersReturned.contains(temp))) {
+			User temp = users.get(i);
+			if (temp.state.equals("a") && (!usersReturned.contains(temp))) {
 				usersReturned.add(temp);
-				
+
 			}
 		}
 
@@ -819,8 +818,7 @@ public class Users extends CoolCRUD {
 
 		}
 		if (placeType.equalsIgnoreCase("topic")) {
-			
-			
+
 			Topic topic = Topic.findById(placeId);
 			MainEntity m = topic.entity;
 			Organization org = m.organization;
@@ -848,8 +846,7 @@ public class Users extends CoolCRUD {
 				if (allowed.size() == 0) {
 					if (action.equals("view")) {
 						return true;
-					}
-					 else
+					} else
 						return false;
 				} else {
 					if (Roles.getRoleActions("idea developer").contains(action)) {
@@ -860,7 +857,7 @@ public class Users extends CoolCRUD {
 				}
 			} else {
 				if (org.privacyLevel == 0 || org.privacyLevel == 1) {
-System.out.println("ANA HENA");
+					System.out.println("ANA HENA");
 					List<UserRoleInOrganization> allowed = UserRoleInOrganization
 							.find("byEnrolledAndOrganization", user, org)
 							.fetch();
@@ -872,32 +869,34 @@ System.out.println("ANA HENA");
 							return true;
 						}
 						List<UserRoleInOrganization> allowedTopic = UserRoleInOrganization
-								.find("byEnrolledAndEntityTopicIDAndType", user, topic.id, "topic")
-								.fetch();
+								.find("byEnrolledAndEntityTopicIDAndType",
+										user, topic.id, "topic").fetch();
 						if (allowedTopic.size() == 0) {
 							return false;
 						} else {
-							if (Roles.getRoleActions("idea developer").contains(action)) {
+							if (Roles.getRoleActions("idea developer")
+									.contains(action)) {
 								return true;
 							} else {
 								return false;
 							}
 						}
-						
+
 					}
 				}
 				if (org.privacyLevel == 2) {
-					
+
 					if (action.equals("view")) {
 						return true;
 					}
 					List<UserRoleInOrganization> allowed = UserRoleInOrganization
-							.find("byEnrolledAndEntityTopicIDAndType", user, topic.id, "topic")
-							.fetch();
+							.find("byEnrolledAndEntityTopicIDAndType", user,
+									topic.id, "topic").fetch();
 					if (allowed.size() == 0) {
 						return false;
 					} else {
-						if (Roles.getRoleActions("idea developer").contains(action)) {
+						if (Roles.getRoleActions("idea developer").contains(
+								action)) {
 							return true;
 						} else {
 							return false;
@@ -988,7 +987,8 @@ System.out.println("ANA HENA");
 			for (int i = 0; i < organizers.size(); i++) {
 
 				if ((organizers.get(i).role.roleName.equals("organizer"))
-						&& organizers.get(i).enrolled.state.equals("a") &&(!enrolled.contains(organizers.get(i).enrolled))) {
+						&& organizers.get(i).enrolled.state.equals("a")
+						&& (!enrolled.contains(organizers.get(i).enrolled))) {
 					enrolled.add(organizers.get(i).enrolled);
 				}
 
@@ -1023,7 +1023,8 @@ System.out.println("ANA HENA");
 							organization, entityId, "entity").fetch();
 			for (int i = 0; i < organizers.size(); i++) {
 				if (((organizers.get(i).role.roleName).equals("organizer"))
-						&& (organizers.get(i).enrolled.state.equals("a"))&&(!enrolled.contains(organizers.get(i).enrolled))) {
+						&& (organizers.get(i).enrolled.state.equals("a"))
+						&& (!enrolled.contains(organizers.get(i).enrolled))) {
 
 					enrolled.add(organizers.get(i).enrolled);
 				}
@@ -1102,10 +1103,10 @@ System.out.println("ANA HENA");
 	 * 
 	 * @story C1S7
 	 * 
-	 * @param: organization Organization organization that the users are
-	 *         enrolled in
+	 * @param organization
+	 *            Organization organization that the users are enrolled in
 	 * 
-	 * @return :List<User> enrolled users
+	 * @return List<User> enrolled users
 	 */
 
 	public static List<User> getEnrolledUsers(Organization organization) {
@@ -1118,7 +1119,8 @@ System.out.println("ANA HENA");
 							organization).fetch();
 
 			for (int i = 0; i < enrolled.size(); i++) {
-				if (enrolled.get(i).state.equals("a") && (!finalEnrolled.contains(enrolled.get(i)))) {
+				if (enrolled.get(i).state.equals("a")
+						&& (!finalEnrolled.contains(enrolled.get(i)))) {
 					finalEnrolled.add(enrolled.get(i));
 				}
 			}
@@ -1167,7 +1169,8 @@ System.out.println("ANA HENA");
 		}
 
 		for (int i = 0; i < enrolled.size(); i++) {
-			if (enrolled.get(i).state.equals("a") && (!finalEnrolled.contains(enrolled.get(i))) ) {
+			if (enrolled.get(i).state.equals("a")
+					&& (!finalEnrolled.contains(enrolled.get(i)))) {
 
 				finalEnrolled.add(enrolled.get(i));
 			}
@@ -1189,7 +1192,7 @@ System.out.println("ANA HENA");
 	 *            Organization org that contains the entities
 	 * @param user
 	 *            User the intended user
-	 * @return list <MainEntities> of entities
+	 * @return list <MainEntities> list of  entities that the organizer is enrolled in
 	 */
 	public static List<MainEntity> getEntitiesOfOrganizer(Organization org,
 			User user) {
@@ -1199,8 +1202,9 @@ System.out.println("ANA HENA");
 				.find("byOrganizationAndEnrolled", org, user).fetch();
 
 		for (int i = 0; i < userRoleInOrg.size(); i++) {
-			if (userRoleInOrg.get(i).role.roleName.equals("organizer") &&(!entities.contains((MainEntity) MainEntity.findById(userRoleInOrg
-						.get(i).entityTopicID)))) {
+			if (userRoleInOrg.get(i).role.roleName.equals("organizer")
+					&& (!entities.contains((MainEntity) MainEntity
+							.findById(userRoleInOrg.get(i).entityTopicID)))) {
 				entities.add((MainEntity) MainEntity.findById(userRoleInOrg
 						.get(i).entityTopicID));
 			}
@@ -1466,7 +1470,7 @@ System.out.println("ANA HENA");
 		}
 
 		System.out.println(object.toString() + "before save");
-		tmp.password=Codec.hexMD5(tmp.password);
+		tmp.password = Codec.hexMD5(tmp.password);
 		object._save();
 		if (Security.getConnected().isAdmin
 				&& Security.getConnected().id != tmp.id) {
@@ -1477,12 +1481,11 @@ System.out.println("ANA HENA");
 			editedMessage += "Email changed to -->  " + tmp.email + "\n";
 		}
 		if (!(Arrays.equals(oldFirstNameArray, tmp.firstName.toCharArray()))) {
-			editedMessage +=  " First Name changed to -->  "
-					+ tmp.firstName + "\n";
+			editedMessage += " First Name changed to -->  " + tmp.firstName
+					+ "\n";
 		}
 		if (!(Arrays.equals(oldLastNameArray, tmp.lastName.toCharArray()))) {
-			editedMessage +=  "  changed to -->  " + tmp.lastName
-					+ "\n";
+			editedMessage += "  changed to -->  " + tmp.lastName + "\n";
 		}
 		if (oldUser.communityContributionCounter != tmp.communityContributionCounter) {
 			editedMessage += oldCommunityContributionCounter
@@ -1494,17 +1497,14 @@ System.out.println("ANA HENA");
 		 * dateofBirth + "  changed to -->  " + tmp.dateofBirth +"\n"; }
 		 */
 		if (!(Arrays.equals(oldCountryArray, tmp.country.toCharArray()))) {
-			editedMessage += "  changed to -->  "
-					+ tmp.country + "\n";
+			editedMessage += "  changed to -->  " + tmp.country + "\n";
 		}
 		if (!(Arrays.equals(oldProfessionArray, tmp.profession.toCharArray()))) {
-			editedMessage += " changed to --> "
-					+ tmp.profession + "\n";
+			editedMessage += " changed to --> " + tmp.profession + "\n";
 		}
 		System.out.println("edited" + editedMessage + " all");
 		if (Security.getConnected().isAdmin
-				&& Security.getConnected().id != tmp.id)
-		{
+				&& Security.getConnected().id != tmp.id) {
 			Log.addUserLog("Admin " + Security.getConnected().firstName + " "
 					+ Security.getConnected().lastName + " has edited "
 					+ tmp.username + "'s profile" + "\n" + editedMessage, tmp);
@@ -1515,10 +1515,11 @@ System.out.println("ANA HENA");
 			if (Security.getConnected().isAdmin) {
 				redirect(request.controller + ".list");
 			} else {
-				String url = " the user is clickable" + "<a href=\"http://localhost:9008/users/viewprofile?userId=" + tmp.id +"\">" + tmp.firstName + "</a>";
-				Log.addUserLog( url,
-						Security.getConnected());
-				
+				String url = " the user is clickable"
+						+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ tmp.id + "\">" + tmp.firstName + "</a>";
+				Log.addUserLog(url, Security.getConnected());
+
 				redirect("/Users/viewProfile?userId=" + id); // was showProfile
 			}
 		}
@@ -1633,10 +1634,10 @@ System.out.println("ANA HENA");
 		}
 
 	}
-	
+
 	/**
-	 * undeletes a user by the system admin, then sends an email to the undeleted user 
-	 * notifying him of the event
+	 * undeletes a user by the system admin, then sends an email to the
+	 * undeleted user notifying him of the event
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1665,7 +1666,6 @@ System.out.println("ANA HENA");
 
 		}
 	}
-
 
 	/**
 	 * Renders the list of notifications of the user, to the view to display the
@@ -1765,8 +1765,8 @@ System.out.println("ANA HENA");
 
 	public static void notificationView(String type) {
 		User user = Security.getConnected();
-		//System.out.println(type);
-		List<Notification> notificationList = getNotificationsFrom(type);	
+		// System.out.println(type);
+		List<Notification> notificationList = getNotificationsFrom(type);
 		if (type.equals("All")) {
 			type = "";
 		} else {
@@ -1777,7 +1777,7 @@ System.out.println("ANA HENA");
 					type = "from any Entities";
 				} else {
 					if (type.equals("Topic")) {
-						type = "from any Topics";						
+						type = "from any Topics";
 					} else {
 						if (type.equals("Tag")) {
 							type = "from any Tags";
@@ -1800,12 +1800,12 @@ System.out.println("ANA HENA");
 		}
 		render(user, notificationList, type);
 	}
-	
+
 	public static List<Notification> getNotificationsFrom(String type) {
 		User user = Security.getConnected();
 		List<Notification> notificationList = new ArrayList<Notification>();
 		if (type.equalsIgnoreCase("All")) {
-			return user.notifications;			
+			return user.notifications;
 		}
 		for (int i = 0; i < user.notifications.size(); i++) {
 			if (user.notifications.get(i).type.equalsIgnoreCase(type)) {
@@ -1814,10 +1814,10 @@ System.out.println("ANA HENA");
 		}
 		return notificationList;
 	}
-	
+
 	public static void notificationProfileView(String type) {
-		User user = Security.getConnected();		
-		List<NotificationProfile> notificationProfileList = getNotificationProfilesOf(type);	
+		User user = Security.getConnected();
+		List<NotificationProfile> notificationProfileList = getNotificationProfilesOf(type);
 		String select = "";
 		if (type.equals("All")) {
 			type = "";
@@ -1857,19 +1857,20 @@ System.out.println("ANA HENA");
 					}
 				}
 			}
-		}		
+		}
 		render(user, notificationProfileList, type, select);
 	}
-	
-	
-	public static List<NotificationProfile> getNotificationProfilesOf(String type) {
+
+	public static List<NotificationProfile> getNotificationProfilesOf(
+			String type) {
 		User user = Security.getConnected();
 		List<NotificationProfile> notificationProfileList = new ArrayList<NotificationProfile>();
 		if (type.equalsIgnoreCase("All")) {
-			return user.notificationProfiles;			
+			return user.notificationProfiles;
 		}
 		for (int i = 0; i < user.notificationProfiles.size(); i++) {
-			if (user.notificationProfiles.get(i).notifiableType.equalsIgnoreCase(type)) {
+			if (user.notificationProfiles.get(i).notifiableType
+					.equalsIgnoreCase(type)) {
 				notificationProfileList.add(user.notificationProfiles.get(i));
 			}
 		}
@@ -1903,12 +1904,11 @@ System.out.println("ANA HENA");
 	 * 
 	 */
 	public static void confirmDeactivation() {
-		User user=Security.getConnected();
+		User user = Security.getConnected();
 		render(user);
 
 	}
-	
-	
+
 	/**
 	 * un-hashed the pass and check if the password enterd is correct
 	 * 
@@ -1917,14 +1917,12 @@ System.out.println("ANA HENA");
 	 * @author Mai Magdy
 	 * 
 	 */
-	public static int checkPass(String pass)
-	{
+	public static int checkPass(String pass) {
 		User user = Security.getConnected();
 		pass = Codec.hexMD5(pass);
-		return (pass.equals(user.password))? 1:0;
+		return (pass.equals(user.password)) ? 1 : 0;
 	}
-	
-	
+
 	/**
 	 * Deactivate the account of that user by setting the state to "n"
 	 * 
@@ -1964,8 +1962,7 @@ System.out.println("ANA HENA");
 	 */
 	public static void activate(long userId) {
 		User user = User.findById(userId);
-		if(user.state.equals("a"))
-		{
+		if (user.state.equals("a")) {
 			return;
 		}
 		user.state = "a";
@@ -1978,7 +1975,7 @@ System.out.println("ANA HENA");
 		else
 			render();
 	}
-	
+
 	public static void changePassword(String pass2) {
 		User user = Security.getConnected();
 		user.password = Codec.hexMD5(pass2);
