@@ -378,6 +378,7 @@ public class Ideas extends CoolCRUD {
 				"topic");
 		ArrayList<Label> ideasLabels = new ArrayList<Label>();
 		boolean notInPlan = (idea.plan==null);
+		boolean active = idea.author.state.equals("a");
 		idea.incrmentViewed();
 		idea.save();
 
