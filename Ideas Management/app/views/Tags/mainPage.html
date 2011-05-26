@@ -1,244 +1,307 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
-<html>
-    <head>
-        <meta name="generator" content="HTML Tidy, see www.w3.org">
-		<style type="text/css">
-p.padding
-{
-/*
-padding-top:50px;
-*/
-padding-bottom:25px;
-/*
-padding-right:50px;
-*/
-position:absolute;
-top:350px;
-padding-left:950px;
-}
+#{extends 'login/index.html' /}
+#{set title: 'Tag Profile' /}
+<style type="text/css">
+    p.padding {
+        /*
+         padding-top:50px;
+         */
+        padding-bottom: 25px;
+        /*
+         padding-right:50px;
+         */
+        position: absolute;
+        top: 350px;
+        padding-left: 950px;
+    }
 </style>
-        <title>Tag Profile View</title>
-    </head>
-
-    <body>
-        #{extends 'main.html' /}
-		#{set title: 'Tag Profile' /}
-		#{if flash.success}
-		<p style="color:#00ff40">
-			${flash.success}
-			</p>
-		</style>
-		#{/if}
-		#{if flash.error}
-		<p style="color:#ff0000">
-			${flash.error}
-			</p>
-		</style>
-		#{/if}
-		#{if follower == true}
-			 <form onsubmit="unfollow('${tag.id}');" method="post">
-			<p>
-			Unfollow ${tag.name} <input type="submit" value="unfollow" />
-			</p>	
-			</form>
-		#{/if} 
-		#{if follower == false}
-			 <form onsubmit="follow('${tag.id}', '${user.id}');" method="post">
-			<p>
-			Follow ${tag.name} <input type="submit" value="follow" />
-			</p>	
-			</form>
-		#{/if}		 
-		#{if allowed}
-		<form action="@{Tags.edit()}" method="post">
-			<p>
-			<input type="hidden" id="tagId" name="tagId" value="${tag.id}" />Edit Tag Name
-			<input type="text" id="name" name="name" value="${tag.name}" /> 
-                <input class="linkButton" type="submit" value="Edit" />
+#{if flash.success}
+<p style="color:#00ff40">
+    ${flash.success}
+</p>
+#{/if}
+#{if flash.error}
+<p style="color:#ff0000">
+    ${flash.error}
+</p>
+#{/if}
+<center>
+    <big>
+    	<br />
+        <h3>${tag.name}</h3>
+    </big>
+</center>
+<div id="leftSidebar">
+	<br />
+    <li>
+        <ul>
+            #{if follower == true}
+            <li>
+                <a onclick="unfollow('${tag.id}');" style="cursor:pointer;">Unfollow ${tag.name}</a>
+            </li>
+            #{/if} 
+            #{if follower == false}
+            <li>
+                <a onclick="follow('${tag.id}', '${user.id}');" style="cursor:pointer;">Follow ${tag.name}</a>
+            </li>
+            #{/if}
+            #{if canCreateRelationship == true}
+            <li>
+                <a href="@{Tags.createRelation(tag.id,tag.createdInOrganization.id)}">Create relation</a>
+            </li>
+            #{/if}
+            <li>
+                <a onclick="$('#lista').slideToggle();" style="cursor:pointer;">Show Relationships</a>
+            </li>
+            #{if allowed}
+            <li>
+                <a style="cursor:pointer;" id="edLink">Edit</a>
+            </li>
+            <li>
+                <a href="@{Tags.deleteTag(tag.id)}">Delete</a>
+            </li>
+            #{/if}
+            <li>
+                <a style="cursor:pointer;" id="folLink">Followers</a>
+            </li>
+            <li>
+                <a style="cursor:pointer;" id="tLink">Taged by ${tag.name}</a>
+            </li>
+        </ul>
+    </li>
+	<br /><br /><br />
+</div>
+<div id="page">
+    <div id="edd">
+        #{if allowed}
+        <br/>
+        <form action="@{Tags.edit()}" method="post">
+            <p>
+                <input type="hidden" id="tagId" name="tagId" value="${tag.id}" />
+				Edit Tag Name <input type="text" id="name" name="name" value="${tag.name}" /> <input class="linkButton" type="submit" value="Edit" />
             </p>
-		</form>
-		<br />
-		<form action="@{Tags.deleteTag()}" method="post">
-			<p>
-			<input type="hidden" id="tagId" name="tagId" value="${tag.id}" />
-			<input class="linkButton" type="submit" value="Delete" />
-            </p>
-		</form>
-		#{/if}
-		
-		#{if canCreateRelationship == true}
-		<p><b>
-			<a href="@{Tags.createRelation(tag.id,tag.createdInOrganization.id)}">create relation</a>
-		</b></p>
-		#{/if}
-		
-		<script type="text/javascript">
-   	function showRename(relId)
-	{
-	$('#' + relId).hide();
-	$('#renameButton_' + relId).hide();
-	$('#textToRename_' + relId).show();
-	$('#renameDone_' + relId).show();
-	}
-	
-	function actionRename(relId){
-		var newRelName = document.getElementById('textToRename_' + relId).value;
-		if(newRelName != "" && newRelName != document.getElementById(relId).textContent){
-		$.post('@{TagRelationships.renameRelationship()}', {
-		relationToBeRenamedId: relId,
-		newName: newRelName
-	}, function(data){
-		if(data == "true"){
-			document.getElementById(relId).textContent=newRelName;
-				$('#' + relId).show();
-				$('#renameButton_' + relId).show();
-				$('#textToRename_' + relId).hide();
-				$('#renameDone_' + relId).hide();
-				document.getElementById('span_' + relId).textContent="";
-
-		}else if(data == "false"){
-			document.getElementById('span_' + relId).textContent="Relation already exists.";
-		}
-	});
-	}
-	else{
-		$('#' + relId).show();
-				$('#renameButton_' + relId).show();
-				$('#textToRename_' + relId).hide();
-				$('#renameDone_' + relId).hide();
-				document.getElementById('span_' + relId).textContent="";
-	}
-	}
-	
-	  	function showRename2(relId)
-	{
-	$('#' + relId).hide();
-	$('#renameButton2_' + relId).hide();
-	$('#textToRename2_' + relId).show();
-	$('#renameDone2_' + relId).show();
-	}
-	
-	function actionRename2(relId){
-		var newRelName = document.getElementById('textToRename2_' + relId).value;
-		if(newRelName != "" && newRelName != document.getElementById(relId).textContent){
-		$.post('@{TagRelationships.renameRelationship()}', {
-		relationToBeRenamedId: relId,
-		newName: newRelName
-	}, function(data){
-		if(data == "true"){
-			document.getElementById(relId).textContent=newRelName;
-				$('#' + relId).show();
-				$('#renameButton2_' + relId).show();
-				$('#textToRename2_' + relId).hide();
-				$('#renameDone2_' + relId).hide();
-				document.getElementById('span_' + relId).textContent="";
-
-		}else if(data == "false"){
-			document.getElementById('span_' + relId).textContent="Relation already exists.";
-		}
-	});
-	}
-	else{
-				$('#' + relId).show();
-				$('#renameButton2_' + relId).show();
-				$('#textToRename2_' + relId).hide();
-				$('#renameDone2_' + relId).hide();
-				document.getElementById('span_' + relId).textContent="";
-	}
-	}
-   </script>
-		
-		<a onclick="$('#lista').slideToggle();">Show Relationships</a>
-	<div id="lista" style="display:none;">
-		#{if tag.relationsSource != null}
-		#{list items:tag.relationsSource, as:'relationElement'}
-				<ul><a href="/tags/mainpage?tagId=${relationElement.source.id}">${relationElement.source.name}</a> <input id="textToRename_${relationElement.id}" type="text" value=${relationElement.name} style="display:none;"/><q id=${relationElement.id}>${relationElement.name}</q> <a href="/tags/mainpage?tagId=${relationElement.destination.id}">${relationElement.destination.name}</a> #{if canCreateRelationship == true}<input type="image" src="/public/images/icons/accept.png" title="Done" style="display:none;" id="renameDone_${relationElement.id}" onclick="actionRename(${relationElement.id})"/><input id="renameButton_${relationElement.id}" type="image" src="/public/images/icons/pencil.png" title="edit" onclick="showRename(${relationElement.id})"/> <input type="image" src="/public/images/icons/delete.png" title="end" onclick="endRelation(${relationElement.id})" /> <span id="span_${relationElement.id}" style="color:red;"></span>#{/if}</ul>
-		#{/list}
-		#{/if}
-		#{if tag.relationsDestination != null}
-		#{list items:tag.relationsDestination, as:'relElement'}
-				<ul><a href="/tags/mainpage?tagId=${relElement.source.id}">${relElement.source.name}</a> <input id="textToRename2_${relElement.id}" type="text" value=${relElement.name} style="display:none;"/><q id=${relElement.id}>${relElement.name}</q> <a href="/tags/mainpage?tagId=${relElement.destination.id}">${relElement.destination.name}</a> #{if canCreateRelationship == true}<input type="image" src="/public/images/icons/accept.png" title="Done" style="display:none;" id="renameDone2_${relElement.id}" onclick="actionRename2(${relElement.id})"/><input id="renameButton2_${relElement.id}" type="image" src="/public/images/icons/pencil.png" title="edit" onclick="showRename2(${relElement.id})"/> <input type="image" src="/public/images/icons/delete.png" title="end relationship" onclick="endRelation(${relElement.id})" /> <span id="span_${relElement.id}" style="color:red;"></span>#{/if}</ul>
-		#{/list}
-		#{/if}
-	</div>
-		
-        <center><big><b>${tag.name}</b></big></center><br><br>
-		List of Followers:
-		<br>
-		
-		#{list items:followers, as:'follower'}
-		<li>
-			<a href="@{Users.viewProfile(follower.id)}">${follower.username}</a>
-		</li>
-		#{/list}
-		<br>
-		List of tagged Topics:
-		<br>
-		#{list items:topics, as:'topic'}
-		<li>
-			<a href="@{Topics.show(topic.id)}">${topic.title}</a>
-		</li>
-		#{/list}
-		<br>
-		List of tagged Organizations:
-		<br>
-		#{list items:organizations, as:'organization'}
-		<li>
-			<a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>
-		</li>
-		#{/list}
-		<br>
-		List of tagged Entities:
-		<br>
-		#{list items:entities, as:'entity'}
-		<li>
-			<a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name} ${entity.organization}</a>
-		</li>
-		#{/list}
-		<br>
-		List of tagged Ideas:
-		<br>
-		#{list items:ideas, as:'idea'}
-		<li>
-			<a href="@{Ideas.show(idea.id)}">${idea.title}</a>
-		</li>
-		#{/list}
-		
-	
-	
-	<!--	<b>
-			<a onclick="@{Users.followTag(tag.id)}" href="/organizations/viewprofile?id=${tag.createdInOrganization.id}">Follow</a>
-		</b>
-		<script type="text/javascript">
-			alert("you are now following " + tag);
-		</script>   -->
-
-		<script type="text/javascript">
-			
-			function endRelation(relId){
-				$.post('@{TagRelationships.delete()}', {relationId: relId});
-				alert("relation deleted succesfully!");
-				window.location.reload();
-			}
-			
-			function unfollow(id){
-		$.post('@{Users.unfollowTag()}', {
-			tagId: id
-		});
-		alert("done");
-		location.reload(true);
-	}
-	function follow(id, user){
-		$.post('@{Users.followTag()}', {
-			tagId: id, userId:user
-		});
-		alert("done!");
-		location.reload(true);
-	}
-		</script>
-		
-
-    </body>
-</html>
-
+        </form>#{/if}
+    </div>
+    <div id="lista" style="display:none;">
+        #{if tag.relationsSource != null}
+        #{list items:tag.relationsSource, as:'relationElement'}
+        <ul>
+            <a href="/tags/mainpage?tagId=${relationElement.source.id}">${relationElement.source.name}</a>
+            <input id="textToRename_${relationElement.id}" type="text" value=${relationElement.name} style="display:none;"/>
+            <q id=${relationElement.id}>
+                ${relationElement.name}
+            </q>
+            <a href="/tags/mainpage?tagId=${relationElement.destination.id}">${relationElement.destination.name}</a>
+            #{if canCreateRelationship == true}
+			<input type="image" src="/public/images/icons/accept.png" title="Done" style="display:none;" id="renameDone_${relationElement.id}" onclick="actionRename(${relationElement.id})"/>
+			<input id="renameButton_${relationElement.id}" type="image" src="/public/images/icons/pencil.png" title="edit" onclick="showRename(${relationElement.id})"/>
+			<input type="image" src="/public/images/icons/delete.png" title="end" onclick="endRelation(${relationElement.id})"/>
+			<span id="span_${relationElement.id}" style="color:red;"></span>
+			#{/if}
+        </ul>
+        #{/list}
+        #{/if}
+        #{if tag.relationsDestination != null}
+        #{list items:tag.relationsDestination, as:'relElement'}
+        <ul>
+            <a href="/tags/mainpage?tagId=${relElement.source.id}">${relElement.source.name}</a>
+            <input id="textToRename2_${relElement.id}" type="text" value=${relElement.name} style="display:none;"/>
+            <q id=${relElement.id}>
+                ${relElement.name}
+            </q>
+            <a href="/tags/mainpage?tagId=${relElement.destination.id}">${relElement.destination.name}</a>
+            #{if canCreateRelationship == true}<input type="image" src="/public/images/icons/accept.png" title="Done" style="display:none;" id="renameDone2_${relElement.id}" onclick="actionRename2(${relElement.id})"/>
+			<input id="renameButton2_${relElement.id}" type="image" src="/public/images/icons/pencil.png" title="edit" onclick="showRename2(${relElement.id})"/>
+			<input type="image" src="/public/images/icons/delete.png" title="end relationship" onclick="endRelation(${relElement.id})"/>
+			<span id="span_${relElement.id}" style="color:red;"></span>
+			#{/if}
+        </ul>
+        #{/list}
+        #{/if}
+    </div>
+    <div id="fol">
+        <b>List of Followers:</b>
+        <br>
+        #{ifnot followers}
+        <br/>
+        No followers
+        #{/ifnot}
+        #{list items:followers, as:'follower'}
+        <li>
+            <a href="@{Users.viewProfile(follower.id)}">${follower.username}</a>
+        </li>
+        #{/list}
+    </div>
+    <div id="taged">
+        <br/>
+        <b>List of tagged Topics:</b>
+        <br>
+        #{list items:topics, as:'topic'}
+        <li>
+            <a href="@{Topics.show(topic.id)}">${topic.title}</a>
+        </li>
+        #{/list}
+        <br>
+        <b>List of tagged Organizations:</b>
+        <br>
+        #{list items:organizations, as:'organization'}
+        <li>
+            <a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>
+        </li>
+        #{/list}
+        <br>
+        <b>List of tagged Entities:</b>
+        <br>
+        #{list items:entities, as:'entity'}
+        <li>
+            <a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name} ${entity.organization}</a>
+        </li>
+        #{/list}
+        <br>
+        <b>List of tagged Ideas:</b>
+        <br>
+        #{list items:ideas, as:'idea'}
+        <li>
+            <a href="@{Ideas.show(idea.id)}">${idea.title}</a>
+        </li>
+        #{/list}
+    </div>
+</div>
+<script type="text/javascript">
+    var ff = false;
+    $('#fol').hide();
+    $('#folLink').click(function(){
+        if (ff) {
+            $('#fol').show(500);
+            ff = false;
+        }
+        else {
+            $('#fol').hide(500);
+            ff = true;
+        }
+    });
+    
+    var tt = false;
+    $('#taged').hide();
+    $('#tLink').click(function(){
+        if (tt) {
+            $('#taged').show(500);
+            tt = false;
+        }
+        else {
+            $('#taged').hide(500);
+            tt = true;
+        }
+    });
+    var edb = false;
+    $('#edd').hide();
+    $('#edLink').click(function(){
+        if (edb) {
+            $('#edd').show(500);
+            edb = false;
+        }
+        else {
+            $('#edd').hide(500);
+            edb = true;
+        }
+    });
+    function showRename(relId){
+        $('#' + relId).hide();
+        $('#renameButton_' + relId).hide();
+        $('#textToRename_' + relId).show();
+        $('#renameDone_' + relId).show();
+    }
+    
+    function actionRename(relId){
+        var newRelName = document.getElementById('textToRename_' + relId).value;
+        if (newRelName != "" && newRelName != document.getElementById(relId).textContent) {
+            $.post('@{TagRelationships.renameRelationship()}', {
+                relationToBeRenamedId: relId,
+                newName: newRelName
+            }, function(data){
+                if (data == "true") {
+                    document.getElementById(relId).textContent = newRelName;
+                    $('#' + relId).show();
+                    $('#renameButton_' + relId).show();
+                    $('#textToRename_' + relId).hide();
+                    $('#renameDone_' + relId).hide();
+                    document.getElementById('span_' + relId).textContent = "";
+                    
+                }
+                else 
+                    if (data == "false") {
+                        document.getElementById('span_' + relId).textContent = "Relation already exists.";
+                    }
+            });
+        }
+        else {
+            $('#' + relId).show();
+            $('#renameButton_' + relId).show();
+            $('#textToRename_' + relId).hide();
+            $('#renameDone_' + relId).hide();
+            document.getElementById('span_' + relId).textContent = "";
+        }
+    }
+    
+    function showRename2(relId){
+        $('#' + relId).hide();
+        $('#renameButton2_' + relId).hide();
+        $('#textToRename2_' + relId).show();
+        $('#renameDone2_' + relId).show();
+    }
+    
+    function actionRename2(relId){
+        var newRelName = document.getElementById('textToRename2_' + relId).value;
+        if (newRelName != "" && newRelName != document.getElementById(relId).textContent) {
+            $.post('@{TagRelationships.renameRelationship()}', {
+                relationToBeRenamedId: relId,
+                newName: newRelName
+            }, function(data){
+                if (data == "true") {
+                    document.getElementById(relId).textContent = newRelName;
+                    $('#' + relId).show();
+                    $('#renameButton2_' + relId).show();
+                    $('#textToRename2_' + relId).hide();
+                    $('#renameDone2_' + relId).hide();
+                    document.getElementById('span_' + relId).textContent = "";
+                    
+                }
+                else 
+                    if (data == "false") {
+                        document.getElementById('span_' + relId).textContent = "Relation already exists.";
+                    }
+            });
+        }
+        else {
+            $('#' + relId).show();
+            $('#renameButton2_' + relId).show();
+            $('#textToRename2_' + relId).hide();
+            $('#renameDone2_' + relId).hide();
+            document.getElementById('span_' + relId).textContent = "";
+        }
+    }
+    
+    function endRelation(relId){
+        $.post('@{TagRelationships.delete()}', {
+            relationId: relId
+        });
+        alert("relation deleted succesfully!");
+        window.location.reload();
+    }
+    
+    function unfollow(id){
+        $.post('@{Users.unfollowTag()}', {
+            tagId: id
+        });
+        alert("done");
+        location.reload(true);
+    }
+    
+    function follow(id, user){
+        $.post('@{Users.followTag()}', {
+            tagId: id,
+            userId: user
+        });
+        alert("done!");
+        location.reload(true);
+    }
+</script>
