@@ -592,12 +592,13 @@ public class Organizations extends CoolCRUD {
 
 		long pictureId = org.profilePictureId;
 		List<User> followers = org.followers;
+		MainEntity defaultEntity = org.entitiesList.get(0);
 		List<Plan> plans = Plans.planList("organization", org.id);
 		render(user, org, entities, requestToJoin, canCreateEntity, tags, flag,
 				canInvite, admin, allowed, isMember, settings, creator,
 				alreadyRequested, plans, follower, usernames, join, logFlag,
 				pictureId, topics, entitiesCanBeRelated, entitiesICanView,
-				followers);
+				followers, defaultEntity);
 	}
 
 	/**
