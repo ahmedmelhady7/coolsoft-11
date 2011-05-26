@@ -1,86 +1,116 @@
 #{extends 'login/index.html' /}
-<div id="pageNoSideBar">
-  <a href="@{Organizations.viewProfile(id)}">Back to ${name}</a>  	
-<br />
-<br />
-<tr><td><u><font size ="3" color ="black">Create Relationship Requests : </font></u></td><td>
-<br />
-<br />
-#{if requests.isEmpty()}
-<i><font size ="3" color ="blue">No new Requests</font></i>
-#{/if}
-#{else}
- #{list items:requests, as:'request'}
-    <li>
-        <fieldset id="request_0_${request.id}">
-        <tr><td><font size ="3" color ="black">
-			#{if request.type==0}
-          
-    	User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to start relationship "${request.name}" between entities   <a href="@{MainEntitys.viewEntity(request.sourceEntity.id)}"> ${request.sourceEntity.name}</a> and  <a href="@{MainEntitys.viewEntity(request.destinationEntity.id)}"> ${request.destinationEntity.name}</a> </font></td><td>
-            
-			#{/if}
-			#{else}
-    	User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to start relationship "${request.name}" between topics   <a href="@{Topics.show(request.sourceTopic.id)}"> ${request.sourceTopic.title}</a> and  <a href="@{Topics.show(request.destinationTopic.id)}"> ${request.destinationTopic.title}</a> </font></td><td>
-			#{/else}
-      <input type = "button" value = "Accept" onclick="javascript: respond(1,${request.id},${request.type},0,0)">
-    	<input type = "button" value = "Reject" onclick="javascript: respond(0,${request.id},${request.type},0,0)">
-        </fieldset>
-    </li>
-    #{/list}
-#{/else}
-<br />
-<br />
-<tr><td><u><font size ="3" color ="black">Rename Relationship Requests :</font></u></td><td>
-<br />
-<br />
-#{if renamingRequests.isEmpty()}
-<i><font size ="3" color ="blue">No new Requests</font></i>
-#{/if}
-#{else}
- #{list items:renamingRequests, as:'request'}
-    <li>
-        <fieldset id="request_1_${request.id}">
-        <tr><td><font size ="3" color ="black">  
-		#{if request.type==0}
-    User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to rename relationship " ${request.entityRelationship.name}" between entities <a href="@{MainEntitys.viewEntity(request.entityRelationship.source.id)}"> ${request.entityRelationship.source.name}</a> and  <a href="@{MainEntitys.viewEntity(request.entityRelationship.destination.id)}"> ${request.entityRelationship.destination.name}</a> to " ${request.newName} "</font></td><td>
-            #{/if}
-			#{else}
-    	  User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to rename relationship " ${request.topicRelationship.name} " between topics <a href="@{Topics.show(request.topicRelationship.source.id)}"> ${request.topicRelationship.source.title}</a> and  <a href="@{Topics.show(request.topicRelationship.destination.id)}"> ${request.topicRelationship.destination.title}</a> to " ${request.newName} "</font></td><td>
-			#{/else}        
-	      <input type = "button" value = "Accept" onclick="javascript: respond(1,${request.id},${request.type},1,1)">
-			<input type = "button" value = "Reject" onclick="javascript: respond(0,${request.id},${request.type},1,1)">
-        </fieldset>
-    </li>
-    #{/list}
-#{/else}
-<br />
-<br />
-<tr><td><u><font size ="3" color ="black">End Relationship Requests :</font></u></td><td>
-<br />
-<br />
-#{if deletionRequests.isEmpty()}
-<i><font size ="3" color ="blue">No new Requests</font></i>
-#{/if}
-#{else}
- #{list items:deletionRequests, as:'request'}
-    <li>
-        <fieldset id="request_2_${request.id}">
-        <tr><td><font size ="3" color ="black">  
+<head>
+<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+		.accordionItem h3 {
+			font-size:1.1em;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			background-color:#FFFFFF;
+			margin-right:23%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+		}
+		.accordionItem h3:hover {
+			cursor:pointer;
+		}
+		.accordionItem div {
+			padding:1em 0.4em;
+			margin-right:23%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+		}
+		.accordionItem.hide h3 {
+		}
+		.accordionItem.hide div {
+			display:none;
+		}
+	#view{
+			margin-top: 2%;
+			margin-right: 9%;
+			margin-bottom: 4%;
+			margin-left: 0%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #bbbbbb;
+			padding-top: 2%;
+			padding-right: 4%;
+			padding-bottom: 0%;
+			padding-left: 4%;
+			border-bottom-width: 4px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			border-right-width: 4px;
+			border-right-style: solid;
+			border-right-color: #bbbbbb;
+			border-left-width: 4px;
+			border-left-style: solid;
+			border-left-color: #bbbbbb;
+			border-top-width: 4px;
+			border-top-style: solid;
+			border-top-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+	
+
+		</style> 
 		
-    	#{if request.type==0}
-    User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to end relationship " ${request.entityRelationship.name}" between entities <a href="@{MainEntitys.viewEntity(request.entityRelationship.source.id)}"> ${request.entityRelationship.source.name}</a> and  <a href="@{MainEntitys.viewEntity(request.entityRelationship.destination.id)}"> ${request.entityRelationship.destination.name}</a> </font></td><td>
-            #{/if}
-			#{else}
-    	  User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to end relationship " ${request.topicRelationship.name} " between topics <a href="@{Topics.show(request.topicRelationship.source.id)}"> ${request.topicRelationship.source.title}</a> and  <a href="@{Topics.show(request.topicRelationship.destination.id)}"> ${request.topicRelationship.destination.title}</a> </font></td><td>
-			#{/else}        
-	      <input type = "button" value = "Accept" onclick="javascript: respond(1,${request.id},${request.type},1,2)">
-			<input type = "button" value = "Reject" onclick="javascript: respond(0,${request.id},${request.type},1,2)">
-        </fieldset>
-    </li>
-    #{/list}
-#{/else}
-</div>
+		<script src="/public/javascripts/bmi.js" language="javascript"></script>	
 <script type="text/javascript">
+	var accordionItems = new Array();
+
+			function init() {
+				// Grab the accordion items from the page
+				var divs = document.getElementsByTagName( 'div' );
+				for ( var i = 0; i < divs.length; i++ ) {
+					if ( divs[i].className == 'accordionItem' )
+						accordionItems.push( divs[i] );
+				}
+
+				// Assign onclick events to the accordion item headings
+				for ( var i = 0; i < accordionItems.length; i++ ) {
+					var h3 = getFirstChildWithTagName( accordionItems[i], 'H3' );
+					h3.onclick = toggleItem;
+				}
+
+				// Hide all accordion item bodies except the first
+				for ( var i = 1; i < accordionItems.length; i++ ) {
+					accordionItems[i].className = 'accordionItem hide';
+				}
+			}
+
+			function toggleItem() {
+				var itemClass = this.parentNode.className;
+
+				// Hide all items
+				for ( var i = 0; i < accordionItems.length; i++ ) {
+					accordionItems[i].className = 'accordionItem hide';
+				}
+
+				// Show this item if it was previously hidden
+				if ( itemClass == 'accordionItem hide' ) {
+					this.parentNode.className = 'accordionItem';
+
+				}
+			}
+
+			function getFirstChildWithTagName( element, tagName ) {
+				for ( var i = 0; i < element.childNodes.length; i++ ) {
+					if ( element.childNodes[i].nodeName == tagName )
+						return element.childNodes[i];
+				}
+				
+			}
+
 function respond(stat, id,type,i,c){
 	if (stat == 1) {
 		if (c == 0) {
@@ -119,6 +149,121 @@ function respond(stat, id,type,i,c){
 	}
 	
 }
-
-
+	
 </script>
+</head>
+<body onload="init();">
+<div id="pageNoSideBar">
+	 <div id="pageNoSideBar-bgtop">
+  <a href="@{Organizations.viewProfile(id)}">Back to ${name}</a>  	
+<br/>
+<br/>
+  
+<div class="accordionItem">
+<h3><tr><td><font size ="3" color ="black">Create Relationship Requests : </font></td></tr></h3>
+<div>
+#{if requests.isEmpty()}
+<i><font size ="3" color ="blue">No new Requests</font></i>
+#{/if}
+#{else}
+ <div id = "view">
+ #{list items:requests, as:'request'}
+    	</ul>
+	<li id="request_0_${request.id}">
+  
+       <font size ="3" color ="black">
+			#{if request.type==0}
+          
+    	User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to start relationship "${request.name}" between entities   <a href="@{MainEntitys.viewEntity(request.sourceEntity.id)}"> ${request.sourceEntity.name}</a> and  <a href="@{MainEntitys.viewEntity(request.destinationEntity.id)}"> ${request.destinationEntity.name}</a>
+            
+			#{/if}
+			#{else}
+    	User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to start relationship "${request.name}" between topics   <a href="@{Topics.show(request.sourceTopic.id)}"> ${request.sourceTopic.title}</a> and  <a href="@{Topics.show(request.destinationTopic.id)}"> ${request.destinationTopic.title}</a></font>
+			#{/else}
+			
+		<div style="float:right;">
+    <a onclick="javascript: respond(1,${request.id},${request.type},0,0)" style="cursor:pointer; margin-right:20px"> <img src="/public/images/icons/accept.png" title="Accept" width="24" height="24"/></a>
+	<a onclick="javascript: respond(0,${request.id},${request.type},0,0)" style="cursor:pointer;"> <img src="/public/images/icons/delete.png" title="Reject" width="24" height="24"/></a>  
+	</div>
+	
+    </li>
+	</ul>
+    #{/list}
+<br/>
+<br/>
+	</div>
+	
+#{/else}
+</div>
+
+<br />
+<br />
+</div>
+<div class="accordionItem">
+<h3><tr><td><font size ="3" color ="black">Rename Relationship Requests :</font></td></tr></h3>
+<br />
+<br />
+<div>
+#{if renamingRequests.isEmpty()}
+<i><font size ="3" color ="blue">No new Requests</font></i>
+#{/if}
+#{else}
+<div id = "view">
+ #{list items:renamingRequests, as:'request'}
+    
+     <ul>   <li id="request_1_${request.id}">
+        <tr><td><font size ="3" color ="black">  
+		#{if request.type==0}
+    User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to rename relationship " ${request.entityRelationship.name}" between entities <a href="@{MainEntitys.viewEntity(request.entityRelationship.source.id)}"> ${request.entityRelationship.source.name}</a> and  <a href="@{MainEntitys.viewEntity(request.entityRelationship.destination.id)}"> ${request.entityRelationship.destination.name}</a> to " ${request.newName} "
+            #{/if}
+			#{else}
+    	  User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to rename relationship " ${request.topicRelationship.name} " between topics <a href="@{Topics.show(request.topicRelationship.source.id)}"> ${request.topicRelationship.source.title}</a> and  <a href="@{Topics.show(request.topicRelationship.destination.id)}"> ${request.topicRelationship.destination.title}</a> to " ${request.newName} "</font></td></tr>
+			#{/else}     
+		<div style="float:right;">   
+	       <a onclick="javascript: respond(1,${request.id},${request.type},1,1)"style="cursor:pointer; margin-right:20px"> <img src="/public/images/icons/accept.png" title="Accept" width="24" height="24"/></a>
+		  <a onclick="javascript: respond(0,${request.id},${request.type},1,1)" style="cursor:pointer;"> <img src="/public/images/icons/delete.png" title="Reject" width="24" height="24"/></a>  
+   </div>
+    </li></ul>
+    #{/list}
+	<br />
+	<br />
+	</div>
+#{/else}
+</div>
+</div>
+<div class="accordionItem">
+<h3><tr><td><font size ="3" color ="black">End Relationship Requests :</font></td></tr></h3>
+<br />
+<br />
+<div>
+#{if deletionRequests.isEmpty()}
+<i><font size ="3" color ="blue">No new Requests</font></i>
+#{/if}
+<div id = "view">
+#{else}
+ #{list items:deletionRequests, as:'request'}
+    
+      <ul>  <li id="request_2_${request.id}">
+        <tr><td><font size ="3" color ="black">  	
+    	#{if request.type==0}
+    User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to end relationship " ${request.entityRelationship.name}" between entities <a href="@{MainEntitys.viewEntity(request.entityRelationship.source.id)}"> ${request.entityRelationship.source.name}</a> and  <a href="@{MainEntitys.viewEntity(request.entityRelationship.destination.id)}"> ${request.entityRelationship.destination.name}</a>
+            #{/if}
+			#{else}
+    	  User <a href="@{Users.viewProfile(request.requester.id)}"> ${request.requester.username} </a> Wants to end relationship " ${request.topicRelationship.name} " between topics <a href="@{Topics.show(request.topicRelationship.source.id)}"> ${request.topicRelationship.source.title}</a> and  <a href="@{Topics.show(request.topicRelationship.destination.id)}"> ${request.topicRelationship.destination.title}</a> </font></td></tr>
+			#{/else}   
+			<div style="float:right;">   
+	       <a onclick="javascript: respond(1,${request.id},${request.type},1,2)"style="cursor:pointer; margin-right:20px"> <img src="/public/images/icons/accept.png" title="Accept" width="24" height="24"/></a>
+		  <a onclick="javascript: respond(0,${request.id},${request.type},1,2)" style="cursor:pointer;"> <img src="/public/images/icons/delete.png" title="Reject" width="24" height="24"/></a>  
+   </div>
+  </ul>  </li>
+    #{/list}
+#{/else}
+<br />
+<br />
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</body>
