@@ -64,7 +64,7 @@ public class MarkRequest extends Controller {
 	 *            : description of where the duplication is
 	 */
 
-	public static void sendRequest(long idea1ID, long idea2ID, String des) {
+	public static int sendRequest(long idea1ID, long idea2ID, String des) {
 		User user = Security.getConnected();
 		Idea i1 = Idea.findById(idea1ID);
 		Idea i2 = Idea.findById(idea2ID);
@@ -73,6 +73,7 @@ public class MarkRequest extends Controller {
 		Long ideaOrg1 = i1.belongsToTopic.id;
 		Long ideaOrg2 = i2.belongsToTopic.id;
 		List<LinkDuplicatesRequest> requests = LinkDuplicatesRequest.findAll();
+		int returnint = -1;
 		if (requests.size() == 0) {
 			if (ideaOrg1 == ideaOrg2) {
 				LinkDuplicatesRequest req = new LinkDuplicatesRequest(user, i1,
@@ -89,34 +90,39 @@ public class MarkRequest extends Controller {
 					user.sentMarkingRequests.add(req);
 					user.save();
 				}
+				returnint = 0;
+			} else {
+				returnint = 1;
 			}
 		} else {
 			for (int i = 0; i < requests.size(); i++) {
 				if ((requests.get(i).idea1.id == i1.id && requests.get(i).idea2.id == i2.id)
 						|| (requests.get(i).idea1.id == i2.id && requests
 								.get(i).idea2.id == i1.id)) {
-				} else {
-					if (ideaOrg1 == ideaOrg2) {
-						LinkDuplicatesRequest req = new LinkDuplicatesRequest(
-								user, i1, i2, des);
-						req.save();
-						user.sentMarkingRequests.add(req);
-						user.save();
-						i1.belongsToTopic.creator.receivedMarkingRequests
-								.add(req);
-						i1.belongsToTopic.creator.save();
-						for (int j = 0; j < i1.belongsToTopic.getOrganizer()
-								.size(); j++) {
-							i1.belongsToTopic.getOrganizer().get(j).receivedMarkingRequests
-									.add(req);
-							i1.belongsToTopic.getOrganizer().get(j).save();
-							user.sentMarkingRequests.add(req);
-							user.save();
-						}
-					}
+					return 2;
 				}
 			}
+			if (ideaOrg1 == ideaOrg2) {
+				LinkDuplicatesRequest req = new LinkDuplicatesRequest(user, i1,
+						i2, des);
+				req.save();
+				user.sentMarkingRequests.add(req);
+				user.save();
+				i1.belongsToTopic.creator.receivedMarkingRequests.add(req);
+				i1.belongsToTopic.creator.save();
+				for (int j = 0; j < i1.belongsToTopic.getOrganizer().size(); j++) {
+					i1.belongsToTopic.getOrganizer().get(j).receivedMarkingRequests
+							.add(req);
+					i1.belongsToTopic.getOrganizer().get(j).save();
+					user.sentMarkingRequests.add(req);
+					user.save();
+				}
+				returnint = 0;
+			} else {
+				returnint = 1;
+			}
 		}
+		return returnint;
 	}
 
 	/**
