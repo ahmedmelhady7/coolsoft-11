@@ -145,6 +145,12 @@ $(document).ready(function(){
 		   <li>
 		   
 		  	<ul>
+		  		
+					#{if canInvite == true}		
+						<li>		
+							<a id="invLink" style="cursor:pointer;">Invite a user</a>		
+						</li>		
+						#{/if}
 					#{if admin || creator}
 					<li>
 						<a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
@@ -328,8 +334,7 @@ $(document).ready(function(){
 			                entityFlag = true;
 			            }
 			        });
-			
-				</script>		
+		</script>		
 						
 					  <center>
 			        	#{if org.profilePictureId != -1}
@@ -344,23 +349,6 @@ $(document).ready(function(){
 						<br />
 						<br />
 			         </center>	
-					 
-					 <div style="float: left;">#{if canInvite == true}
-			                <form onsubmit="help('${org.id}', email.value);" method="post">
-			                    <input type="hidden" id='users' name="users" value="${usernames}">
-								Invite an Idea Developer 
-			                    <br>Username/Email: <input type="text" id="email" name="email" autoComplete="group"/>
-			                    <br>Invite by: <input type="radio" id="s" name="select" value="username" checked> Username <input type="radio" name="select" value="email"> E-Mail  <input type="submit" value="Invite" class="linkButton"/>
-			                    <script language="javascript" type="text/javascript">
-			                        var a = document.getElementById('users');
-			                        b = a.value + "";
-			                        c = b.split("|");
-			                        autoComplete.Set("group", c);
-			                    </script>
-			                </form>#{/if}
-							<br />
-							<br />
-					 </div>
 					<p></p>
 			        #{if join}
 			        <form action="@{Organizations.join()}" method="post">
@@ -403,6 +391,21 @@ $(document).ready(function(){
 			        #{/if}
 			        #{else}
 					<br />
+					<div id="invbox" style="float: left; color:#0080ff;">		
+					#{if canInvite == true}		
+	                <form onsubmit="help('${org.id}', email.value);" method="post">		
+	                    <input type="hidden" id='users' name="users" value="${usernames}">		
+						<br /> Invite an Idea Developer		
+	                    <br> Username/Email: <input type="text" id="email" name="email" autoComplete="group"/>		
+	                    <br> Invite by: <input type="radio" id="s" name="select" value="username" onclick="autoC();" checked> Username <input type="radio" name="select" value="email" onclick="autoC();"> E-Mail  
+						<input type="submit" value="Invite" class="linkButton"/>		
+	                    <script language="javascript" type="text/javascript">		
+	                        var a = document.getElementById('users');		
+                        b = a.value + "";		
+	                        c = b.split("|");		
+                        autoComplete.Set("group", c);		
+	                    </script>		
+	                </form>#{/if}</div>
 				<div style="width:20%;">
 					<p><b>List of viewable Tags:</b></p>
 					<div id="tags">
@@ -695,37 +698,37 @@ $(document).ready(function(){
                                 		var lstr=str.length
                                 		var ldot=str.indexOf(dot)
                                 		if (str.indexOf(at)==-1){
-                                		   alert("Invalid E-mail ID")
+                                		   alert("Please enter a valid email address")
                                 		   return false
                                 		}
                                 
                                 		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
-                                		   alert("Invalid E-mail ID")
+                                		   alert("Please enter a valid email address")
                                 		   return false
                                 		}
                                 
                                 		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
-                                		    alert("Invalid E-mail ID")
+                                		    alert("Please enter a valid email address")
                                 		    return false
                                 		}
                                 
                                 		 if (str.indexOf(at,(lat+1))!=-1){
-                                		    alert("Invalid E-mail ID")
+                                		    alert("Please enter a valid email address")
                                 		    return false
                                 		 }
                                 
                                 		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
-                                		    alert("Invalid E-mail ID")
+                                		    alert("Please enter a valid email address")
                                 		    return false
                                 		 }
                                 
                                 		 if (str.indexOf(dot,(lat+2))==-1){
-                                		    alert("Invalid E-mail ID")
+                                		    alert("Please enter a valid email address")
                                 		    return false
                                 		 }
                                 		
                                 		 if (str.indexOf(" ")!=-1){
-                                		    alert("Invalid E-mail ID")
+                                		    alert("Please enter a valid email address")
                                 		    return false
                                 		 }
                                 
@@ -736,7 +739,7 @@ $(document).ready(function(){
                                 	var emailID=document.getElementById("email");
                                 	
                                 	if ((emailID.value==null)||(emailID.value=="")){
-                                		alert("Please Enter your Email ID")
+                                		alert("Please enter a valid email address")
                                 		emailID.focus()
                                 		return false
                                 	}
@@ -808,6 +811,33 @@ $(document).ready(function(){
                                 				alert("User with this username does not exist");
                                 			return false;
                                 			}
+											
+											
+					var invb = false;	
+		$('#invbox').hide();	
+		 $('#invLink').click(function(){	
+	            if (invb) {	
+	                $('#invbox').show(500);	
+	                invb = false;	
+	            }	
+	            else {
+	                $('#invbox').hide(500);	
+	                invb = true;	
+	            }	
+	        });	
+		
+		 function autoC(){	
+		 	var emailID=document.getElementById("email");	
+	        var auto=document.getElementById("s").checked;	
+			if (!auto) {	
+			emailID.setAttribute('autocomplete', 'off');
+				}
+				else {	
+					emailID.setAttribute('autocomplete', "group");	
+	            }	
+	        }
+			
+		
                                             
                             
             </script>
