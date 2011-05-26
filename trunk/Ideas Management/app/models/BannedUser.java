@@ -110,7 +110,7 @@ public class BannedUser extends CoolModel {
 	public static void deleteEntityOrTopic(long entityTopicID, String type) {
 
 		List<BannedUser> toBeDeleted = BannedUser
-				.find("select bu from BannedUser bu where bu.resourceID = ? and bu.resourceType like ?",
+				.find("select bu from BannedUser bu where bu.resourceID = ? and bu.resourceType = ?",
 						entityTopicID, type).fetch();
 		if (toBeDeleted != null && !toBeDeleted.isEmpty()) {
 			for (int i = 0; i < toBeDeleted.size(); i++) {
