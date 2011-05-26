@@ -34,18 +34,23 @@ public class Bootstrap extends Job {
 			Role.createOrganizationLeadRole();
 
 			User rf = new User("aymaestro@gmail.com", "majic", "1234", "Ahmed",
-					"Maged", "What is our company's name?", "coolsoft", 0, new Date(1990, 11, 11), "Egypt", "Programmer");
+					"Maged", "What is our company's name?", "coolsoft", 0, "11/11/2010", "Egypt", "Programmer");
 			// System.out.println(rf.topicsReported.size());
 			rf.save();
 
 			User admin = new User("admin@coolsoft.com", "admin", "1234", "Mr.",
-					"admin", "What is our company's name?", "coolsoft", 0, new Date(1990, 11, 11), "Egypt", "Prgrammer");
+					"admin", "What is our company's name?", "coolsoft", 0, "11/11/2010", "Egypt", "Programmer");
+			admin.isAdmin = true;
+			admin._save();
+			
+			User lama = new User("lama@coolsoft.com", "lama", "lama", "lama",
+					"as admin", "What is our company's name?", "coolsoft", 0, "11/11/2010", "Egypt", "Programmer");
 			admin.isAdmin = true;
 			admin._save();
 
 			User hadi = new User("elhadiahmed3@gmail.com", "hadi.18",
 					"notreal", "Ahmed", "El-Hadi", "What is our company's name?", "coolsoft",
-					0, new Date(1991, 3, 20),
+					0, "11/11/2010",
 					null, "");
 			
 			hadi._save();
@@ -57,61 +62,61 @@ public class Bootstrap extends Job {
 
 			User sharaf = new User("sharaf@eg.gov", "sharaf", "1234", "Asam",
 					"Sharaf", "What is our company's name?", "coolsoft",
-					0, new Date(1955, 2, 14), "Egypt", "Primenister")
+					0, "11/11/2010", "Egypt", "Primenister")
 					.save();
 
 			User gamal = new User("gmal@gov.eg", "gmal", "1234", "Yehya",
 					"El Gamal", "What is our company's name?", "coolsoft",
-					0, new Date(1955, 5, 6), "Egypt", "menister")
+					0, "11/11/2010", "Egypt", "menister")
 					.save();
 
 			User khalifa = new User("khalifa@gov.eg", "khalifa", "1234",
 					"Abd El Kawi", "Khalifa", "What is our company's name?", "coolsoft",
-					0, new Date(1955, 7, 15),
+					0, "11/11/2010",
 					"Egypt", "Governer").save();
 
 			User gom3a = new User("mgmohamedganem@gmail.com", "Ghanem", "1234",
 					"Mohamed", "Gomaa", "What is our company's name?", "coolsoft",
-					0, new Date(1991, 6, 4), "Egypt",
+					0, "11/11/2010", "Egypt",
 					"student");
 			gom3a._save();
 
 			User khayat = new User("ibrahim.al.khayat@gmail.com", "ialk",
 					"1234", "Ibrahim", "EL-khayat", "What is our company's name?", "coolsoft",
-					0, new Date(1991, 1, 19),
+					0, "11/11/2010",
 					"Egypt", "student");
 			khayat._save();
 
 			User mai = new User("mai.jt4@gmail.com", "mai", "1234", "Mai",
 					"Magdy", "What is our company's name?", "coolsoft",
-					0, new Date(1990, 9, 14), "Egypt", "student");
+					0, "11/11/2010", "Egypt", "student");
 			mai._save();
 
 			User u5 = new User("mostafa.aly0@gmail.com", "s3eed", "1234",
 					"mostafa", "Ali", "What is our company's name?", "coolsoft",
-					0, new Date(1990, 11, 11), "Egypt",
+					0, "11/11/2010", "Egypt",
 					"student");
 			u5._save();
 
 			User u6 = new User("Ibrahim@gmail.com", "Ibrahim", "1234",
 					"Ibrahim", "Safwat", "What is our company's name?", "coolsoft",
-					0, new Date(1989, 1, 11), "Egypt",
+					0, "11/11/2010", "Egypt",
 					"student");
 			u6._save();
 
 			User fatma = new User("testfatma.meawad@guc.edu.eg", "fmeawad",
 					"1234", "Fatma", "Meawad", "What is our company's name?", "coolsoft",
-					0, new Date(1978, 4, 17),
+					0, "11/11/2010",
 					"Egypt", "Professor").save();
 
 			User slim = new User("testslim.abdennadher@guc.edu.eg", "mezo",
 					"1234", "Slim", "Abd EL Nadder", "What is our company's name?", "coolsoft",
-					0, new Date(1969, 4, 17),
+					0, "11/11/2010",
 					"Egypt", "Professor").save();
 
 			User ashraf = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234",
 					"Ashraf", "Mansoor", "What is our company's name?", "coolsoft",
-					0, new Date(1960, 11, 11), "Egypt",
+					0, "11/11/2010", "Egypt",
 					"student").save();
 
 			Organization guc = new Organization("GUC", ashraf, 1, true,
