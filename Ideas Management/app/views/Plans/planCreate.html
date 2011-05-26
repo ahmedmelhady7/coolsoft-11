@@ -1,4 +1,4 @@
-#{extends 'main.html' /}
+#{extends 'Login/index.html' /}
 #{set title:'Plan Creation' /}
 
 <style type="text/css">body {
@@ -44,21 +44,28 @@
 #{form @Plans.myCreate(), method:'POST', id:'plancreationForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
 Plan title:<input type= "text" id = "title" name = "title" size= "30"><label id = "titleerror" style= "color:Red"> Please Insert a title for the plan </label>
 </br>
+</br>
 Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"/><label id = "startdateerror"style= "color:Red"> Please Insert the date on which the plan starts </label><label id = "dateerror"style= "color:Red">Start date can not be earlier than today's date</label>
 </br>
-End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"/><label id = "enddateerror"style= "color:Red"> Please Insert the date on which the plan ends </label><label id = "earlyerror"style= "color:Red">Start date must be greater than end date</label>
+</br>
+End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"/><label id = "enddateerror"style= "color:Red"> Please Insert the date on which the plan ends </label><label id = "earlyerror"style= "color:Red">Start date must be greater than end date</label>
+</br>
 </br>
 <p><b>Insert the description of the plan</b></p>
+</br>
 </br>
 <textarea id = "description" name = "description" rows= "7" cols = "50">
 </textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the plan </label>
 </br>
+</br>
 <input type = "hidden" name = "topicId" value = ${topicId} >
 <p><b>Insert the requirements of the plan</b></p>
+</br>
 </br>
 <textarea id = "requirement" name = "requirement" rows = "7" cols = "50">
 </textarea><label id = "requirementerror"style= "color:Red"> Please insert the requirements of the plan </label>
 </br>
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input type = "submit" value ="Create">
 #{/form}</div>
 
