@@ -30,13 +30,7 @@ public class NotificationProfiles extends CoolCRUD {
 	 * 
 	 * @story C1S14
 	 * 
-	 */
-
-	public static void alterPreferences2() {		
-		User user = Security.getConnected();
-		List<NotificationProfile> npList = user.notificationProfiles;		
-		render(user, npList);
-	}
+	 */	
 	
 	public static void alterPreferences(String type) {
 		User user = Security.getConnected();
