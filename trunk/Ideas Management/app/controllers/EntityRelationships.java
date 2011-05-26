@@ -146,35 +146,40 @@ public class EntityRelationships extends CoolCRUD {
 			String newName) {
 		EntityRelationship relation = EntityRelationship
 				.findById(relationToBeRenamedId);
+		EntityRelationship relationTemp = new EntityRelationship(newName,
+				relation.source, relation.destination);
 		if (relation.name != newName) {
-			Log
-					.addUserLog(
-							"User \"<a href=\"/users/viewprofile?userId="
-									+ Security.getConnected().id
-									+ "\">"
-									+ Security.getConnected().firstName
-									+ " "
-									+ Security.getConnected().lastName
-									+ "</a>\" "
-									+ "renamed the relationship \""
-									+ relation.name
-									+ "\" between entities \"<a href=\"/mainentitys/viewentity?id="
-									+ relation.source.id
-									+ "\">"
-									+ relation.source.name
-									+ "</a>\" and \"<a href=\"/mainentitys/viewentity?id="
-									+ relation.destination.id + "\">"
-									+ relation.destination.name
-									+ "</a>\" to \"" + newName + "\"", Security
-									.getConnected(), relation.source,
-							relation.destination, relation.source.organization);
-			relation.name = newName;
-			for (int i = 0; i < relation.renameEndRequests.size(); i++) {
-				RenameEndRelationshipRequests.delete(relation.renameEndRequests
-						.get(i).id);
+			if (!relationDuplicate(relationTemp)) {
+				Log
+						.addUserLog(
+								"User \"<a href=\"/users/viewprofile?userId="
+										+ Security.getConnected().id
+										+ "\">"
+										+ Security.getConnected().firstName
+										+ " "
+										+ Security.getConnected().lastName
+										+ "</a>\" "
+										+ "renamed the relationship \""
+										+ relation.name
+										+ "\" between entities \"<a href=\"/mainentitys/viewentity?id="
+										+ relation.source.id
+										+ "\">"
+										+ relation.source.name
+										+ "</a>\" and \"<a href=\"/mainentitys/viewentity?id="
+										+ relation.destination.id + "\">"
+										+ relation.destination.name
+										+ "</a>\" to \"" + newName + "\"",
+								Security.getConnected(), relation.source,
+								relation.destination,
+								relation.source.organization);
+				for (int i = 0; i < relation.renameEndRequests.size(); i++) {
+					RenameEndRelationshipRequests
+							.delete(relation.renameEndRequests.get(i).id);
+				}
+				relation.name = newName;
+				relation.save();
+				return true;
 			}
-			relation.save();
-			return true;
 		}
 		return false;
 	}

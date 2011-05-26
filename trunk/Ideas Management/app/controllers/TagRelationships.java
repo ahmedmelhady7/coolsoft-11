@@ -130,32 +130,27 @@ public class TagRelationships extends CoolCRUD {
 			String newName) {
 		TagRelationship relation = TagRelationship
 				.findById(relationToBeRenamedId);
+		TagRelationship relationTemp = new TagRelationship(newName,
+				relation.source, relation.destination);
 		if (relation.name != newName) {
-			Log
-					.addUserLog(
-							"User \"<a href=\"/users/viewprofile?userId="
-									+ Security.getConnected().id
-									+ "\">"
-									+ Security.getConnected().firstName
-									+ " "
-									+ Security.getConnected().lastName
-									+ "</a>\" "
-									+ "renamed the relationship \""
-									+ relation.name
-									+ "\" between tags \"<a href=\"/tags/mainpage?tagId="
-									+ relation.source.id
-									+ "\">"
-									+ relation.source.name
-									+ "</a>\" and \"<a href=\"/tags/mainpage?tagId="
-									+ relation.destination.id + "\">"
-									+ relation.destination.name
-									+ "</a>\" to \"" + newName + "\"", Security
-									.getConnected(), relation.source,
-							relation.destination,
-							relation.source.createdInOrganization);
-			relation.name = newName;
-			relation.save();
-			return true;
+			if (!relationDuplicate(relationTemp)) {
+				Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
+						+ Security.getConnected().id + "\">"
+						+ Security.getConnected().firstName + " "
+						+ Security.getConnected().lastName + "</a>\" "
+						+ "renamed the relationship \"" + relation.name
+						+ "\" between tags \"<a href=\"/tags/mainpage?tagId="
+						+ relation.source.id + "\">" + relation.source.name
+						+ "</a>\" and \"<a href=\"/tags/mainpage?tagId="
+						+ relation.destination.id + "\">"
+						+ relation.destination.name + "</a>\" to \"" + newName
+						+ "\"", Security.getConnected(), relation.source,
+						relation.destination,
+						relation.source.createdInOrganization);
+				relation.name = newName;
+				relation.save();
+				return true;
+			}
 		}
 		return false;
 	}

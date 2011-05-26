@@ -135,28 +135,33 @@ public class TopicRelationships extends CoolCRUD {
 			String newName) {
 		TopicRelationship relation = TopicRelationship
 				.findById(relationToBeRenamedId);
+		TopicRelationship relationTemp = new TopicRelationship(newName,
+				relation.source, relation.destination);
 		if (relation.name != newName) {
-			Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
-					+ Security.getConnected().id + "\">"
-					+ Security.getConnected().firstName + " "
-					+ Security.getConnected().lastName + "</a>\" "
-					+ "renamed the relationship \"" + relation.name
-					+ "\" between topics \"<a href=\"/Topics/show?topicId="
-					+ relation.source.id + "\">" + relation.source.title
-					+ "</a>\" and \"<a href=\"/Topics/show?topicId="
-					+ relation.destination.id + "\">"
-					+ relation.destination.title + "</a>\" to \"" + newName
-					+ "\"", Security.getConnected(), relation.source,
-					relation.destination, relation.source.entity,
-					relation.source.entity.organization);
-			relation.name = newName;
-			for (int i = 0; i < relation.renameEndRequests.size(); i++) {
-				RenameEndRelationshipRequests.delete(relation.renameEndRequests
-						.get(i).id);
-			}
-			relation.save();
+			if (!relationDuplicate(relationTemp)) {
+				Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
+						+ Security.getConnected().id + "\">"
+						+ Security.getConnected().firstName + " "
+						+ Security.getConnected().lastName + "</a>\" "
+						+ "renamed the relationship \"" + relation.name
+						+ "\" between topics \"<a href=\"/Topics/show?topicId="
+						+ relation.source.id + "\">" + relation.source.title
+						+ "</a>\" and \"<a href=\"/Topics/show?topicId="
+						+ relation.destination.id + "\">"
+						+ relation.destination.title + "</a>\" to \"" + newName
+						+ "\"", Security.getConnected(), relation.source,
+						relation.destination, relation.source.entity,
+						relation.source.entity.organization);
 
-			return true;
+				for (int i = 0; i < relation.renameEndRequests.size(); i++) {
+					RenameEndRelationshipRequests
+							.delete(relation.renameEndRequests.get(i).id);
+				}
+				relation.name = newName;
+				relation.save();
+
+				return true;
+			}
 		}
 		return false;
 	}
