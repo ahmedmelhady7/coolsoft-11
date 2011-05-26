@@ -9,23 +9,29 @@
 </br>
 #{form @Plans.add(), method:'POST', id:'additemForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
 </br>
-Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"/>
+Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"/><label id = "startdateerror"style= "color:Red"> Please Insert the date on which the item starts </label><label id = "dateerror"style= "color:Red">Start date can not be earlier than today's date</label><label id = "gom3aerror"style= "color:Red">Item's start date must be later than the plan's start date</label>
 </br>
-End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"/>
+End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"/><label id = "enddateerror"style= "color:Red"> Please Insert the date on which the item ends </label><label id = "earlyerror"style= "color:Red">Start date must be greater than end date</label><label id = "zikoerror"style= "color:Red">Item's end date must be earlier than the plan's end date</label>
 </br>
 <p><b>Insert the description of the item</b></p>
-<textarea id="description" name="description" rows="7" cols="50"></textarea>
-<label id = "descriptionerror"> </label>
+<textarea id="description" name="description" rows="7" cols="50"></textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the item </label>
 </br>
-<p><b>Insert a summary for the description</b></p>
+<p><b>Insert a Title for the description</b></p>
 <input type = "hidden" name = "planId" value = ${plan.id} >
-<input type = "text" id = "summary" name = "summary" type = "text" size = "30">
-<label id = "summaryerror"> </label>
+<input type = "text" id = "summary" name = "summary" type = "text" size = "30"><label id = "summaryerror"style= "color:Red"> Please  a title for the plan </label>
 </br>
 To add another item check here <input type="checkbox" name = "check" value = "checked">
 <input type = "submit" value ="Add" >
 #{/form}
 <script type ="text/javascript">
+	$('#startdateerror').hide();
+	$('#enddateerror').hide();
+	$('#descriptionerror').hide();
+	$('#summaryerror').hide();
+	$('#earlyerror').hide();
+	$('#dateerror').hide();
+	$('#gom3aerror').hide();
+	$('#zikoerror').hide();
 	function datepickerA(){
 		$($("#datePickerA").datepicker({
                                                 changeYear: true,
@@ -43,45 +49,61 @@ To add another item check here <input type="checkbox" name = "check" value = "ch
 		var end = document.getElementById("datePickerB").value;
 		var desc = document.getElementById("description").value;
 		var sum = document.getElementById("summary").value;
+		var flag = 0;
 		if(start == "" || start == null){
-			alert("Please Insert the date on which the item starts");
-			return false;
+			$('#startdateerror').show();
+			flag = 1;
+		}else{
+			$('#startdateerror').hide();
 		}
 		if(end == "" || end == null){
-			alert("Please Insert the date on which the item ends");
-			return false;
+			$('#enddateerror').show();
+			flag = 1;
+		}else{
+			$('#enddateerror').hide();	
 		}
 		if (desc == null || desc == "") {
-			alert("Please insert a description for the item");
-			return false;
+			$('#descriptionerror').show();
+			flag = 1;
+		}else{
+			$('#descriptionerror').hide();
 		}
 		if(sum == null || sum == "" ){
-			alert("Please insert a summary for the description of the item");
+			$('#summaryerror').show();
+			flag = 1;
+		}else{
+			$('#summaryerror').hide();
+		}
+		if(flag == 1){
 			return false;
 		}
 		var sd = new Date("" +document.getElementById("datePickerA").value.toString());
-		alert(sd);
 		var ed = new Date("" +document.getElementById("datePickerB").value.toString());
-		alert(ed);
-		var psd = new date("" +document.getElementById("planstart").value);
-		alert(psd);
-		var ped = new date("" +document.getElementById("planend").value);
-		alert(psd);
+		var gom3a = new Date(""+document.getElementById("planstart").value.toString());
+		var ziko = new Date(""+document.getElementById("planend").value.toString());
 		if(ed <sd){
-			alert("Start date must be later than end date");
+			$('#earlyerror').show();
 			return false;
+		}else{
+			$('#earlyerror').hide();
 		}
 		if(sd< new Date()){
-			alert("Start date can not be earlier than today's date");
+			$('#dateerror').show();
 			return false;
+		}else{
+			$('#dateerror').hide();
 		}
-		if(sd <psd){
-			alert("The item's start date must be later than the plan's start date");
+		if(sd < gom3a){
+			$('#gom3aerror').show();
 			return false;
+		}else{
+			$('#gom3aerror').hide();
 		}
-		if(ed>ped){
-			alert("The item's end date must be earlier than teh plan's end date");
+		if(ed > ziko){
+			$('#zikoerror').show();
 			return false;
-		}			
+		}else{
+			$('#zikoerror').hide();
+		}		
 	}
 </script>
