@@ -170,6 +170,9 @@ public class Organization extends CoolModel {
 		this.relatedTags = new ArrayList<Tag>();
 		// this.enrolledUsers = new ArrayList<User>();
 		this.viewed = 0;
+		//faruki
+		this.bannedUsers = new ArrayList<BannedUser>();
+		//faruki
 
 		bannedUsers = new ArrayList<BannedUser>();
 		relationNames = new ArrayList<String>() {
@@ -250,7 +253,13 @@ public class Organization extends CoolModel {
 		this.entitiesList = new ArrayList<MainEntity>();
 		this.followers = new ArrayList<User>();
 		this.relatedTags = new ArrayList<Tag>();
+
+		//faruki
+		this.bannedUsers = new ArrayList<BannedUser>();
+		//faruki
+
 		this.viewed = 0;
+
 
 		relationNames = new ArrayList<String>() {
 			{
