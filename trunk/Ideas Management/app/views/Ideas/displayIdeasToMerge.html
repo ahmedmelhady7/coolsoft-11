@@ -1,6 +1,9 @@
 #{extends 'main.html' /} 
 #{extends '/login/index.html' /}
 
+<div id="pageNoSideBar">
+	<div id="pageNoSideBar-bgtop">
+		
 <table width="500">
 	#{list items:selectedIdeas, as:'idea'}
 	
@@ -52,6 +55,8 @@
 </div>
 
 		<textarea cols="50" rows="5" id="hiddenIdeasId">${selectedIdeasString}</textarea> 
+</div>
+</div>
 <script type="text/javascript">
 	var insertedIdeas = 0;
 	document.getElementById("hiddenIdeasId").style.display = "none";
