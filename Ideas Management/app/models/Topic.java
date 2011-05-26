@@ -289,6 +289,7 @@ public class Topic extends CoolModel {
 		this.createRelationship = createRelationship;
 		this.openToEdit = true;
 		this.isDraft = false;
+		this.viewed=0;
 	}
 
 	/**
@@ -318,6 +319,7 @@ public class Topic extends CoolModel {
 		this(title, description, privacyLevel, creator, entity,
 				createRelationship);
 		this.isDraft = true;
+		this.viewed=0;
 	}
 
 	/**
@@ -435,24 +437,13 @@ public class Topic extends CoolModel {
 		User user = User.findById(userId);
 		if (!hasRequest(userId)) {
 			RequestToJoin r;
-			List<User> organizaers = getOrganizer();
-			if (organizaers.size() > 0) {
+			if (getOrganizer().size() > 0) {
 				r = new RequestToJoin(user, this, this.entity.organization,
 						"I would like to post").save();
-				for (int i = 0; i > organizaers.size(); i++)
-					Notifications.sendNotification(organizaers.get(i).id, id,
-							"topic", user.username
-									+ " has requested to post on topic "
-									+ title);
-				Notifications.sendNotification(entity.organization.creator.id,
-						id, "topic", user.username
-								+ " has requested to post on topic " + title);
+
 			} else {
 				r = new RequestToJoin(user, this, this.entity.organization,
 						"I would like to post").save();
-				Notifications.sendNotification(entity.organization.creator.id,
-						id, "topic", user.username
-								+ " has requested to post on topic " + title);
 			}
 			requestsToJoin.add(r);
 			_save();
@@ -502,7 +493,7 @@ public class Topic extends CoolModel {
 	}
 
 	/*
-	 * 
+	 
 	 * Checks whether a topic can be hidden
 	 * 
 	 * @author Alia El Bolock
@@ -510,12 +501,14 @@ public class Topic extends CoolModel {
 	 * @story C3S9
 	 * 
 	 * @return boolean
-	 * 
-	 * public boolean isHideable() { // TODO Auto-generated method stub if
-	 * (openToEdit == false) return false;
-	 * 
-	 * return true; }
-	 */
+	 *
+	public boolean isHideable() {
+		// TODO Auto-generated method stub
+		if (openToEdit == false)
+			return false;
+
+		return true;
+	}*/
 
 	/**
 	 * Checks whether a certain user can view this topic
