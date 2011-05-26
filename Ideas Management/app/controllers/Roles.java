@@ -67,7 +67,7 @@ public class Roles extends CoolCRUD {
 		return actionsList;
 	}
 
-	// 13
+	
 	/**
 	 * returns the list of Organizer actions that are related to
 	 * Topics not the whole entity
@@ -82,7 +82,7 @@ public class Roles extends CoolCRUD {
 
 		List<String> allActions = getRoleActions("organizer");
 		List<String> topicActions = new ArrayList<String>();
-		for (int i = 13; i < allActions.size(); i++) {
+		for (int i = 11; i < allActions.size(); i++) {
 			topicActions.add(allActions.get(i));
 		}
 		return topicActions;
