@@ -44,7 +44,7 @@ public class Bootstrap extends Job {
 			admin._save();
 			
 			User lama = new User("lama@coolsoft.com", "lama", "lama", "lama",
-					"as admin", "What is our company's name?", "coolsoft", 0, "11/11/2010", "Egypt", "Programmer");
+					"ashraf", "What is our company's name?", "coolsoft", 0, "11/06/1990", "Egypt", "Programmer");
 			lama.isAdmin = true;
 			lama._save();
 
