@@ -219,13 +219,13 @@
 			<!-- ################## -->
 			#{if (canEdit == 1)}
 			<li>
-                <a href="@{MainEntitys.editEntityPage(entity.id)}">Edit</a>
+                <a href="@{MainEntitys.editEntityPage(entity.id)}">Edit ${entity.name}</a>
             </li>
 			#{/if}
 			<!-- ################## -->			
 			#{if (canDeleteEntity == 1)}
 			<li>
-                <a href="@{MainEntitys.deleteEntity(entity.id)}">Delete</a>
+                <a href="@{MainEntitys.deleteEntity(entity.id)}">Delete ${entity.name}</a>
             </li>
 			#{/if}	
 			<!-- ################## -->
