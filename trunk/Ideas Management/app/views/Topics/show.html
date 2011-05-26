@@ -42,10 +42,10 @@
 }
 
 #crudShow{
-	margin-top: 2%;
+	margin-top: 1%;
 	margin-right: 5%;
 	margin-bottom: 4%;
-	margin-left: 10%;
+	margin-left: 1%;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
@@ -73,9 +73,7 @@
 
 #descriptionShow{
 	margin-top: 2%;
-	margin-right: 5%;
 	margin-bottom: 4%;
-	margin-left: 5%;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
@@ -116,8 +114,7 @@
 }
 
 #backToEntity{
-	margin-right: 17%;
-	margin-left: 8%;
+	margin-left: 2%;
 	text-align:left;
 }
 
@@ -448,7 +445,12 @@
         </div>
         <li>
             <ul>
-            	
+            	#{if permission == 1}		
+	                <li>		
+	                <input type="submit" value="Edit topic" onclick=location.href="@{Topics.view(topicId)}" class="linkButton">		
+	                </li>		
+					 #{/if}
+				
 				#{if allowed==1}
 				<li>
 					<input type="submit" value="Requests" onclick=location.href="@{RequestToJoins.viewRequests(1,object.id)}" class="linkButton">
@@ -457,17 +459,18 @@
 				
 				#{if allowed==1}
 				<li>
-					<input type="submit" value="Invite" onclick=location.href="@{Invitations.invite(object.id,1,0)}" class="linkButton">
-                </li>
-                #{/if}
-       
-				#{if alreadyReportedTopic==false && canReport}
+					<input type="submit" value="Invite"
+					onclick=location.href="@{Invitations.invite(object.id,1,0)}" class="linkButton"/>
+				</li>
+				 #{/if}
+				 
+				#{if alreadyReportedTopic==false && canReport && notAuthor}
 				<li>
-                    <form action="@{Users.reportTopicAsSpam()}" method="GET" name="myform">
-                          <input type="hidden" name="topicId" value="${topicId}">
-                          <input id="spam" type="submit" value="Report Topic As Spam" class = "linkButton">
-                    </form>
-                </li>
+					<form action="@{Users.reportTopicAsSpam()}" method="GET" name="myform">
+						<input type="hidden" name="topicId" value="${topicId}"/>
+						<input id="spam" type="submit" value="Report Topic As Spam" class = "linkButton"/>
+					</form>
+				</li>
 				#{/if}
 				
 				#{if alreadyReportedTopic==true}
@@ -475,15 +478,6 @@
                     <font color="Red">Already reported as spam</font>
                 </li>
 				#{/if}
-				
-				
-				<li>
-				  	<form action="@{Topics.tagTopic()}" method="post">
-        	             <input type="hidden" value=${topicId} name='topicId'>
-			             <input type="hidden" value='@@' name='tag'>
-						 <input type="submit" value="Add tags" class = "linkButton">
-        			</form>
-				</li>
 				
 				 #{if numberOfIdeas > 1 && canMerge == 1}
                 <li>
@@ -694,8 +688,16 @@
 			                #{/if}		
 			            #{/if}
 			          #{/if}</div>
+					  <br />
 						</div>
-			            <!--<span class="crudHelp" ><font color="Red">*</font>Required</span>-->
+			            
+								
+				  	<form action="@{Topics.tagTopic()}" method="post">		
+	        	             <input type="hidden" value=${topicId} name='topicId'>		
+				             <input type="hidden" value='@@' name='tag'>		
+							 <input type="image" src="/public/images/icons/tag.png" title="Add tags" class = "linkButton">		
+	        		</form>			
+			
 			        </p>
 			        <br/>
 			        <p>

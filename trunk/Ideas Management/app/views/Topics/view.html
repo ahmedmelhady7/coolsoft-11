@@ -7,9 +7,9 @@
 
 #crudShow{
 	margin-top: 2%;
-	margin-right: 30%;
+	margin-right: 10%;
 	margin-bottom: 4%;
-	margin-left: 21%;
+	margin-left: 5%;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
@@ -293,11 +293,13 @@ xx            </ul>
 						
 						
                         #{crud.custom 'description'}
-                        <p> 
+                        <center>
+						<p> 
 						<br />
-                        <textarea id="object_description" cols="50" rows="5" class="" name="object.description" required>${object.description}</textarea> 
+                        <textarea id="object_description" cols="65" rows="5" class="" name="object.description" required>${object.description}</textarea> 
                         <span class="crudHelp" ><font color="Red">*</font></span> 
-                        </p> 
+                        </p>
+						</center> 
                         #{/crud.custom}
                         
                         #{crud.custom 'privacyLevel'}
@@ -340,6 +342,8 @@ xx            </ul>
 	 #{/if}
     #{/if}
 	</div>
+	<br />
+	<br />
 	</div>
 	</div>
 </div>
