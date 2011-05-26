@@ -242,12 +242,12 @@ public class Mail extends Mailer {
 	 *            :User the user
 	 * 
 	 */
-	public static void activation(User user,String ActivationKey) {
+	public static void activation(User user,String activationKey) {
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Welcome to CoolSoft, activate your account ");
 		String url = "http://localhost:9008";
-		send(user, ActivationKey,url);
+		send(user, activationKey,url);
 
 	}
 
