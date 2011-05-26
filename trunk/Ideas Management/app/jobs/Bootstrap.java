@@ -132,12 +132,27 @@ public class Bootstrap extends Job {
 
 			Organization guc = new Organization("GUC", ashraf, 1, true,
 					"The German University in Cairo").save();
+			
+			//faruki
+			MainEntity defaultEntity = new MainEntity("Default", "", guc, false);
+			defaultEntity.save();
+			//faruki
 
 			Organization egypt = new Organization("Egypt", admin, 2, false,
 					"The National Egyptian Organization").save();
+			
+			//faruki
+			MainEntity defaultEntity1 = new MainEntity("Default", "", egypt, false);
+			defaultEntity.save();
+			//faruki
 
 			Organization gov = new Organization("الحكومة المصرية", sharaf, 0,
 					true, "").save();
+			
+			//faruki
+			MainEntity defaultEntity2 = new MainEntity("Default", "", gov, false);
+			defaultEntity.save();
+			//faruki
 
 			Tag tagEducation = new Tag("Education", guc, slim).save();
 			Tag tagGuc = new Tag("GUC", guc, ashraf).save();
