@@ -88,7 +88,7 @@ public class Logs extends CoolCRUD {
 		ArrayList<Log> filtered = new ArrayList<Log>();
 		
 		MainEntity entity = MainEntity.findById(entityId);
-		notFoundIfNull(entity);
+		//notFoundIfNull(entity);
 		System.out.println(id + "searchLog");
 		List<Log> toFilter = new ArrayList<Log>();
 		List<Log> reversed = new ArrayList<Log>();
@@ -129,7 +129,8 @@ public class Logs extends CoolCRUD {
 			System.out.println("entity id  = 0");
 
 			reversed = organization.logs;
-			//System.out.println(toFilter.size() + "tofilter size");
+			System.out.println(reversed.size() + "reversed size");
+			
 		} else {
 			toFilter.clear();
 			System.out.println("entity id  != 0");
@@ -142,7 +143,7 @@ public class Logs extends CoolCRUD {
 						.println("you are not authorized to view....................");
 			}
 		}
-		
+		System.out.println(reversed.size() + "reversed size lamaaaa");
 		for(int i = 1; i <= reversed.size(); i++) {
 			toFilter.add(reversed.get(reversed.size() - i));
 		}
