@@ -1867,7 +1867,7 @@ public class Topics extends CRUD {
 	}
 
 	/**
-	 * @description publish a topic
+	 * @description publish a topicpost
 	 * 
 	 * @author Mostafa Aboul Atta
 	 * 
@@ -1972,7 +1972,15 @@ public class Topics extends CRUD {
 		redirect("/ideas/getdrafts");
 
 	}
-
+	
+	/**
+	 * @Description: this method post a draft topic directly without editing
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @param topicId
+	 * 			: the ID of the topic to be posted
+	 */
 	public static void postWithoutEdit(long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
 
