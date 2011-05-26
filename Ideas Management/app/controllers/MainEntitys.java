@@ -352,11 +352,10 @@ public class MainEntitys extends CoolCRUD {
 		long pictureId = org.profilePictureId;
 		List<User> followers = org.followers;
 		List<Plan> plans = Plans.planList("organization", org.id);
-		render(user, org, entities, requestToJoin, flag,
-				canInvite, admin, allowed, isMember, settings, creator,
-				alreadyRequested, plans, follower, usernames, join, logFlag,
-				pictureId, topics, entitiesCanBeRelated, entitiesICanView,
-				followers);
+		render(user, org, entities, requestToJoin, flag, canInvite, admin,
+				allowed, isMember, settings, creator, alreadyRequested, plans,
+				follower, usernames, join, logFlag, pictureId, topics,
+				entitiesCanBeRelated, entitiesICanView, followers);
 	}
 
 	/**
@@ -397,11 +396,10 @@ public class MainEntitys extends CoolCRUD {
 		Organization org = entity.organization;
 		List<MainEntity> subentities = entity.subentities;
 		List<Topic> topicList = entity.topicList;
-		
 
 		entity.incrmentViewed();
 		entity.save();
-		
+
 		int canCreateEntity = 0;
 		int canCreateSubEntity = 0;
 		int canDeleteEntity = 0;
@@ -445,6 +443,17 @@ public class MainEntitys extends CoolCRUD {
 		if (UserRoleInOrganizations.isOrganizer(user, entity.id, "entity")) {
 			canRequestRelationship = 1;
 		}
+		int check = 0;
+		if (Users.isPermitted(user,
+				"block a user from viewing or using a certain entity",
+				entity.id, "entity"))
+			check = 1;
+		int check1 = 0;
+		if (Users.isPermitted(user, "view", entity.id, "entity"))
+			check1 = 1;
+		int check2 = 0;
+		if (Users.isPermitted(user, "use", entity.id, "entity"))
+			check2 = 1;
 		boolean follower = user.followingEntities.contains(entity);
 		boolean canCreateRelationship = EntityRelationships.isAllowedTo(id);
 		List<User> followers = entity.followers;
@@ -452,7 +461,8 @@ public class MainEntitys extends CoolCRUD {
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity, canCreateSubEntity, follower,
 				canCreateRelationship, canRequest, canRequestRelationship,
-				canRestrict, entityIsLocked, plans, canDeleteEntity, followers);
+				canRestrict, entityIsLocked, plans, canDeleteEntity, followers,
+				check, check1, check2);
 	}
 
 	/**
@@ -634,10 +644,10 @@ public class MainEntitys extends CoolCRUD {
 			CreateRelationshipRequests
 					.delete(entity.relationshipRequestsDestination.get(j).id);
 		}
-		 size = entity.topicList.size();
-		 for (int j = 0; j < size; j++) {
-		 Topics.deleteTopicInternally("" + entity.topicList.get(j).id);
-		 }
+		size = entity.topicList.size();
+		for (int j = 0; j < size; j++) {
+			Topics.deleteTopicInternally("" + entity.topicList.get(j).id);
+		}
 		size = allEntities.size();
 		for (int i = 0; i < size; i++) {
 			if (allEntities.get(i).subentities.contains(entity)) {
