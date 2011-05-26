@@ -33,7 +33,7 @@ public class IbrahimAdel extends UnitTest {
 
 		User sharaf = new User("sharaf@eg.gov", "sharaf", "1234", "Asam",
 				"Sharaf", "What is our company's name?", "coolsoft", 0,
-				new Date(), "Egypt", "Primenister").save();
+				"2/14/1995", "Egypt", "Primenister").save();
 
 		Organization gov = new Organization("الحكومة المصرية", sharaf, 0, true,
 				"").save();
@@ -41,7 +41,7 @@ public class IbrahimAdel extends UnitTest {
 		UserRoleInOrganizations.addEnrolledUser(sharaf, gov, OrganizationLead);
 
 		User mai = new User("mai.jt4@gmail.com", "mai", "1234", "Mai", "Magdy",
-				"What is our company's name?", "coolsoft", 0, new Date(),
+				"What is our company's name?", "coolsoft", 0, "2/14/1995",
 				"Egypt", "student").save();
 		// had to copy the method body since it contains getConnected
 		long organizationId = gov.id;
@@ -298,7 +298,7 @@ public class IbrahimAdel extends UnitTest {
 
 		User ashraf = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234",
 				"Ashraf", "Mansoor", "What is our company's name?", "coolsoft",
-				0, new Date(), "Egypt", "student").save();
+				0, "2/14/1995", "Egypt", "student").save();
 		// org
 		Organization guc = new Organization("GUC", ashraf, 1, true,
 				"The German University in Cairo").save();
