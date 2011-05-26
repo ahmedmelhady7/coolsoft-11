@@ -585,6 +585,7 @@
 			   </li>
 			   #{/if}
 			   
+			    #{if (canRequestRelationship)}
 			   <li>
 			    	<form action="@{Topics.requestRelationship(user.id, entity.organization.id, entity.id, topicId)}" method="post">
 	 					<input type="submit" value="Request Relationship Creation" class = "linkButton">
@@ -596,6 +597,7 @@
 	  					<input type="submit" value="View Relationships" class = "linkButton">
 	  				</form>
 				</li>
+				#{/if}
 				
             </ul>
         </li>
