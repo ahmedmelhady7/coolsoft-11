@@ -558,11 +558,23 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
             marked = new Array();
         }
         else {
-            $.post('@{MarkRequest.sendRequest}', {
+            $.post('@{MarkRequest.sendRequest()}', {
                 idea1ID: marked[0],
                 idea2ID: marked[1],
                 des: "Sending a request to mark"
-            }, function(){
+            }, function(kill){
+			if(kill == 0){
+			document.getElementById('errors').innerHTML = '<font color="green">A request Have been sent to the topic organizer</font>';
+            document.getElementById('errors1').innerHTML = '<font color="green">A request Have been sent to the topic organizer</font>';
+				}
+			if(kill == 2){
+			document.getElementById('errors').innerHTML = '<font color="red">A request Have already been sent to the topic organizer</font>';
+            document.getElementById('errors1').innerHTML = '<font color="red">A request Have already been sent to the topic organizer</font>';	
+			}
+			if(kill == 1){
+			document.getElementById('errors').innerHTML = '<font color="red">Ideas relate to different topics</font>';
+            document.getElementById('errors1').innerHTML = '<font color="red">Ideas relate to different topics</font>';	
+			}
             });
             for (i = 0; i < marked.length; i++) {
                 x = document.getElementsByTagName("input");
@@ -573,8 +585,6 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
 					}
 				}
             }
-			document.getElementById('errors').innerHTML = '<font color="green">A request Have been sent to the topic organizer</font>';
-            document.getElementById('errors1').innerHTML = '<font color="green">A request Have been sent to the topic organizer</font>';
             marked = new Array();
         }
     }
