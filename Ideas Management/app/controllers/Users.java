@@ -1981,7 +1981,7 @@ System.out.println("ANA HENA");
 	
 	public static void changePassword(String pass2) {
 		User user = Security.getConnected();
-		user.password = pass2;
+		user.password = Codec.hexMD5(pass2);
 		user.save();
 		viewProfile(user.id);
 	}
