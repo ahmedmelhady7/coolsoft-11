@@ -115,45 +115,74 @@ public class Mail extends Mailer {
 	 * 
 	 * @param description : description of the idea
 	 * 
-	 * @param title : title of idea
+	 * @param title : title of the idea
 	 */
 
 	public static void reportAsSpamMail(User topicOrganizer, User reporter,
 			Idea reportedIdea, String description, String title) {
-		System.out.println("maiiiiiiiiii");
-		addRecipient(topicOrganizer.email);
+		long ideaId = reportedIdea.id;
+		addRecipient(/*topicOrganizer.email*/"elhadiahmed3@gmail.com");
+		String url = "http://localhost:9008/ideas/show?ideaId="+ideaId;
 		setFrom("coolsoft-11@gmail.com");
 		setSubject("An Idea is Reported as a Spam");
-		send(topicOrganizer, reporter, reportedIdea, description, title);
+		send(topicOrganizer, reporter, reportedIdea, description, title, url);
 	}
 
 	/*
 	 * this Method is responsible for sending a mail to the topic organizers
-	 * when a Topic inside the topic is reported as a spam
+	 * and the entity organizers when a Topic is reported as a spam
 	 * 
 	 * @author ${Ahmed El-Hadi}
 	 * 
 	 * @story C3S16
 	 * 
-	 * @param topicOrganizer : the organizer of be topic
+	 * @param reciever : the organizer of be topic
 	 * 
 	 * @param reporter : the user who reported the idea
 	 * 
-	 * @param reportedIdea : the reported idea
+	 * @param reportedIdea : the reported topic
 	 * 
-	 * @param description : description of the idea
+	 * @param description : description of the topic
 	 * 
-	 * @param title : title of idea
+	 * @param title : title of the topic
 	 */
 
 	public static void reportTopicMail(User reciever, User reporter,
-			Topic reportedTopic, String description, String title) {
-		long id = reportedTopic.id;
-		System.out.println("maiiiiiiiiii");
+		Topic reportedTopic, String description, String title) {
+		long topicId = reportedTopic.id;
+		String url = "http://localhost:9008/ideas/show?ideaId="+topicId;
 		addRecipient("elhadiahmed3@gmail.com");
 		setFrom("coolsoft-11@gmail.com");
 		setSubject("A Topic has been Reported as a Spam");
-		send(reciever, reporter, id, description, title);
+		send(reciever, reporter, topicId, description, title,url);
+	}
+	/*
+	 * this Method is responsible for sending a mail to the topic organizers
+	 * 	and the idea author or the plan creator when a comment is reported as a spam
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S16
+	 * 
+	 * @param reciever : the user who will recieve the mail
+	 * 
+	 * @param reporter : the user who reported the idea
+	 * 
+	 * @param comment : the reported comment
+	 * 
+	 * @param comment2 : the comment written as String
+	 */
+
+	public static void reportCommentMail(User reciever, User reporter,
+			Comment comment, String comment2) {
+		long commentId = comment.id;
+		long ideaId = comment.commentedIdea.id;
+		String url = "http://localhost:9008/ideas/show?ideaId="+ideaId;
+		addRecipient("elhadiahmed3@gmail.com");
+		setFrom("coolsoft-11@gmail.com");
+		setSubject("A Topic has been Reported as a Spam");
+		send(reciever, reporter, commentId, comment,comment2,url);
+		
 	}
 
 	/**
@@ -266,5 +295,7 @@ public class Mail extends Mailer {
 		send(user,url);
 
 	}
+
+	
 
 }

@@ -414,17 +414,14 @@ public class Users extends CoolCRUD {
 		idea.spamCounter++;
 		reporter.ideasReported.add(idea);
 		idea.reporters.add(reporter);
-		List<User> organizers = Users
-				.getEntityOrganizers(idea.belongsToTopic.entity);
-		System.out.println(organizers);
-		System.out.println(idea.reporters.get(0).toString());
-		for (int j = 0; j < organizers.size(); j++) {
-			Mail.reportAsSpamMail(organizers.get(j), reporter, idea,
+//		List<User> organizers = Users
+//				.getEntityOrganizers(idea.belongsToTopic.entity);
+//		for (int j = 0; j < organizers.size(); j++) {
+			Mail.reportAsSpamMail(/*organizers.get(j)*/idea.belongsToTopic.creator, reporter, idea,
 					idea.description, idea.title);
-		}
+//		}
 		idea.save();
 		reporter.save();
-		System.out.println(reporter.ideasReported.get(0).toString());
 		ideaSpamView(ideaId);
 
 	}
@@ -458,7 +455,7 @@ public class Users extends CoolCRUD {
 	 * 
 	 * @author ${Ahmed El-Hadi}
 	 * 
-	 * @story C3S12
+	 * @story C3S16
 	 * 
 	 * @param topicId
 	 *            : the ID of the topic to be reported
@@ -486,11 +483,11 @@ public class Users extends CoolCRUD {
 	}
 
 	/**
-	 * this Method is responsible for the view of reporting the idea as spam
+	 * this Method is responsible for the view of reporting the topic as spam
 	 * 
 	 * @author ${Ahmed El-Hadi}
 	 * 
-	 * @story C3S12
+	 * @story C3S16
 	 * 
 	 * @param topicId
 	 *            : the ID of the topic to be reported
@@ -509,6 +506,56 @@ public class Users extends CoolCRUD {
 		// render(alreadyReported);
 	}
 
+	/**
+	 * this Method is responsible for reporting a Topic as a spam
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S16
+	 * 
+	 * @param commentId
+	 *            : the ID of the comment to be reported
+	 * 
+	 * 
+	 */
+	public static void reportCommentAsSpam(long commentId) {
+		Comment comment = Comment.findById(commentId);
+		User reporter = Security.getConnected();
+		if (comment.reporters == null)
+			comment.reporters = "";
+		comment.reporters += reporter.id + ",";
+		List<User> organizers = Users.getEntityOrganizers(comment.commentedIdea.belongsToTopic.entity);
+		for (int j = 0; j < organizers.size(); j++) {
+			Mail.reportCommentMail(organizers.get(j), reporter, comment,
+					comment.comment);
+		}
+		commentSpamView(commentId);
+
+	}
+
+	/**
+	 * this Method is responsible for the view of reporting the comment as spam
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 * 
+	 * @story C3S16
+	 * 
+	 * @param topicId
+	 *            : the ID of the topic to be reported
+	 * 
+	 */
+
+	public static void commentSpamView(long topicId) {
+		boolean alreadyReported = false;
+		Topic topic = Topic.findById(topicId);
+		User reporter = Security.getConnected();
+		// for (int i = 0; i < topic.reporters.size(); i++) {
+		// if (reporter.username.equals(topic.reporters.get(i).username))
+		// alreadyReported = true;
+		// }		redirect("/topics/show?topicId=" + topic.getId(), alreadyReported);
+		// render(alreadyReported);
+	}
+	
 	/**
 	 * returns the list of users that are banned from a certain action in a
 	 * certain organization from a certain source in a certain type such that

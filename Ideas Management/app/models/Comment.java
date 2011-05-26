@@ -36,6 +36,14 @@ public class Comment extends CoolModel {
 	@OneToOne
 	public User commenter;
 
+	/**
+	 * the reporters of the comment
+	 * 
+	 * @author ${Ahmed El-Hadi}
+	 */
+
+	public String reporters;
+	
 	public Comment(String comment, Topic commentedTopic, User commenter) {
 		this.comment = comment;
 		this.commentedTopic = commentedTopic;
