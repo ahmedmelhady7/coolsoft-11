@@ -409,11 +409,15 @@ public class Invitations extends CoolCRUD {
 		User user = Security.getConnected();
 		List<Invitation> invitation = Invitation.find("byEmail", user.email)
 				.fetch();
+		
 		for (int i = 0; i < invitation.size(); i++) {
+			List<User> developers = Users.getIdeaDevelopers(invitation.get(i).id, "entity");
+			if(developers.contains(user)){
 			if (invitation.get(i).entity != null) {
 				if (!Users.isPermitted(user, "view",
 						invitation.get(i).entity.id, "entity"))
 					invitation.remove(i);
+			}
 			}
 		}
 
