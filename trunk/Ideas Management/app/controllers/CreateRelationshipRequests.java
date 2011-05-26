@@ -69,7 +69,8 @@ public class CreateRelationshipRequests extends CoolCRUD {
 		}
 		for (int i = 0; i < renamingRequests.size(); i++) {
 			if ((renamingRequests.get(i).requester.state.equals("n"))
-					|| (renamingRequests.get(i).type == 1 && (renamingRequests.get(i).topicRelationship.source.hidden || renamingRequests
+					|| (renamingRequests.get(i).type == 1 && (renamingRequests
+							.get(i).topicRelationship.source.hidden || renamingRequests
 							.get(i).topicRelationship.destination.hidden))) {
 				renamingRequests.remove(i);
 				i--;
@@ -77,13 +78,22 @@ public class CreateRelationshipRequests extends CoolCRUD {
 		}
 		for (int i = 0; i < deletionRequests.size(); i++) {
 			if ((deletionRequests.get(i).requester.state.equals("n"))
-					|| (deletionRequests.get(i).type == 1 && (deletionRequests.get(i).topicRelationship.source.hidden || deletionRequests
+					|| (deletionRequests.get(i).type == 1 && (deletionRequests
+							.get(i).topicRelationship.source.hidden || deletionRequests
 							.get(i).topicRelationship.destination.hidden))) {
 				deletionRequests.remove(i);
 				i--;
 			}
 		}
-		render(requests, name, id, user, deletionRequests, renamingRequests);
+		if (Users
+				.isPermitted(
+						user,
+						"Accept/Reject a request to start/end a relationship with other items",
+						organization.id, "organization")
+				|| user.isAdmin)
+			render(requests, name, id, user, deletionRequests, renamingRequests);
+		else
+			BannedUsers.unauthorized();
 
 	}
 
@@ -137,27 +147,52 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							source.id, destination.id);
 					System.out.println(user);
 					System.out.println(organization);
-					Log.addLog(
-							"User "
-									+ user.firstName
-									+ " "
-									+ user.lastName
-									+ " accepted request to create relationship between entities "
-									+ destination.name + " and " + source.name,
-							organization, createRequest, destination, source);
-					System.out.println("logs");
+					String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
+							+ user.username
+							+ " "
+							+ "</a>"
+							+ " has accepted request to create relationship "
+							+ createRequest.name
+							+" between entities "
+							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+							+ source.id
+							+ "\">"
+							+ source.name
+							+ "</a>"
+							+ " and "
+							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+							+ destination.id
+							+ "\">"
+							+ destination.name
+							+ "</a>";
+
+					Log.addUserLog(logDescription, organization, createRequest,
+							destination, source);
 
 				} else {
-					Log.addLog(
-							"User "
-									+ user.firstName
-									+ " "
-									+ user.lastName
-									+ " rejected request to create relationship between entities "
-									+ destination.name + " and " + source.name,
-							organization, user, source, destination,
-							createRequest);
+					String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
+							+ user.username
+							+ " "
+							+ "</a>"
+							+ " has rejectted request to create relationship between entities "
+							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+							+ source.id
+							+ "\">"
+							+ source.name
+							+ "</a>"
+							+ " and "
+							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+							+ destination.id
+							+ "\">"
+							+ destination.name
+							+ "</a>";
 
+					Log.addUserLog(logDescription, organization, createRequest,
+							destination);
 				}
 			}
 
@@ -170,25 +205,52 @@ public class CreateRelationshipRequests extends CoolCRUD {
 				if (status == 1) {
 					TopicRelationships.createRelationship(createRequest.name,
 							source.id, destination.id);
-					Log.addLog(
-							"User "
-									+ user.firstName
-									+ " "
-									+ user.lastName
-									+ " accepted request to create relationship between topics "
-									+ destination.title + " and "
-									+ source.title, organization, user, source,
-							destination,createRequest);
+					String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
+							+ user.username
+							+ " "
+							+ "</a>"
+							+ " has accepted request to create relationship " 
+							+ createRequest.name 
+							+" between topics "
+							+ "<a href=\"http://localhost:9008/topics/show?id="
+							+ source.id
+							+ "\">"
+							+ source.title
+							+ "</a>"
+							+ " and "
+							+ "<a href=\"http://localhost:9008/topics/show?id="
+							+ destination.id
+							+ "\">"
+							+ destination.title
+							+ "</a>";
+
+					Log.addUserLog(logDescription, organization, user,
+							destination, source, source.entity);
 				} else {
-					Log.addLog(
-							"User "
-									+ user.firstName
-									+ " "
-									+ user.lastName
-									+ " rejected request to create relationship between topics "
-									+ destination.title + " and "
-									+ source.title, organization, user, source,
-							destination,createRequest);
+					String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ user.id
+							+ "\">"
+							+ user.username
+							+ " "
+							+ "</a>"
+							+ " has accepted rejected to create relationship between topics "
+							+ "<a href=\"http://localhost:9008/topics/show?id="
+							+ source.id
+							+ "\">"
+							+ source.title
+							+ "</a>"
+							+ " and "
+							+ "<a href=\"http://localhost:9008/topics/show?id="
+							+ destination.id
+							+ "\">"
+							+ destination.title
+							+ "</a>";
+
+					Log.addUserLog(logDescription, organization, user,
+							destination, source, source.entity);
+
 				}
 			}
 			if (status == 1) {
@@ -229,13 +291,26 @@ public class CreateRelationshipRequests extends CoolCRUD {
 						relation.destination.relationsDestination
 								.remove(relation);
 						relation.destination.save();
-						// relation.delete();
-						// EntityRelationships.delete(relation.id);
-						Log.addLog("User " + user.firstName + " "
-								+ user.lastName
-								+ " accepted request to end relationship  "
-								+ oldName, user,organization, relation,
-								relation.source, relation.destination);
+						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+								+ user.id
+								+ "\">"
+								+ user.username
+								+ " "
+								+ "</a>"
+								+ " has accepted request to end relationship between entities "
+								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ relation.source.id
+								+ "\">"
+								+ relation.source.name
+								+ "</a>"
+								+ " and "
+								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ relation.destination.id
+								+ "\">"
+								+ relation.destination.name + "</a>";
+
+						Log.addUserLog(logDescription, organization,
+								relation.destination, relation.source);
 						relation.renameEndRequests.remove(renameRequest);
 						relation.logs.clear();
 						relation.save();
@@ -243,50 +318,91 @@ public class CreateRelationshipRequests extends CoolCRUD {
 
 						System.out.println(relation.renameEndRequests);
 						relation.delete();
-						//renameRequest.delete();
 
 					} else {
 						System.out.println("rename");
-						relation.name= renameRequest.newName;
+						relation.name = renameRequest.newName;
 						relation.save();
-						for(int i =0 ; i<relation.renameEndRequests.size();i++){
+						for (int i = 0; i < relation.renameEndRequests.size(); i++) {
 							relation.renameEndRequests.get(i).delete();
-						relation.save();
+							relation.save();
 						}
-						Log.addLog(
-								"User "
-										+ user.firstName
-										+ " "
-										+ user.lastName
-										+ " accepted request to change the name of relationship  "
-										+ oldName + " to "
-										+ renameRequest.newName,user, organization, relation,
-										relation.source, relation.destination);
-						System.out.println("DELETE!!");
-						//System.out.println();
-						//sRenameEndRelationshipRequests.delete(renameRequest.id);
 
+						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+								+ user.id
+								+ "\">"
+								+ user.username
+								+ " "
+								+ "</a>"
+								+ " has accepted request to change the name of relationship "
+								+ oldName
+								+ " to"
+								+ renameRequest.newName
+								+ "between entities"
+								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ relation.source.id
+								+ "\">"
+								+ relation.source.name
+								+ "</a>"
+								+ " and "
+								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ relation.destination.id
+								+ "\">"
+								+ relation.destination.name + "</a>";
+
+						Log.addUserLog(logDescription, organization,
+								relation.destination, relation.source);
 					}
 				} else {
 					if (renameRequest.requestType == 0) {
-						Log.addLog("User " + user.firstName + " "
-								+ user.lastName
-								+ " rejected request to end relationship  "
+						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+								+ user.id
+								+ "\">"
+								+ user.username
+								+ " "
+								+ "</a>"
+								+ " has rejected request to end relationship "
+								+ relation.name
+								+ " between entities "
+								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ relation.source.id
+								+ "\">"
+								+ relation.source.name
+								+ "</a>"
+								+ " and "
+								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ relation.destination.id
+								+ "\">"
+								+ relation.destination.name + "</a>";
 
-								+ oldName,user, organization, relation,
-								relation.source, relation.destination);
+						Log.addUserLog(logDescription, organization,
+								relation.destination, relation.source);
 
 					} else {
-						Log.addLog(
-								"User "
-										+ user.firstName
-										+ " "
-										+ user.lastName
-										+ " rejected request to change the name of relationship  "
-										+ oldName + " to "
+						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+								+ user.id
+								+ "\">"
+								+ user.username
+								+ " "
+								+ "</a>"
+								+ " has rejected request to change the name of relationship "
+								+ oldName
+								+ " to "
+								+ renameRequest.newName
+								+ " between entities "
+								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ relation.source.id
+								+ "\">"
+								+ relation.source.name
+								+ "</a>"
+								+ " and "
+								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ relation.destination.id
+								+ "\">"
+								+ relation.destination.name + "</a>";
 
-										+ renameRequest.newName, user,organization, relation,
-										relation.source, relation.destination);
+						Log.addUserLog(logDescription, organization,
+								relation.destination, relation.source);
 
 					}
 					renameRequest.delete();
@@ -310,54 +426,120 @@ public class CreateRelationshipRequests extends CoolCRUD {
 						relation.destination.relationsDestination
 								.remove(relation);
 						relation.destination.save();
-						Log.addLog("User " + user.firstName + " "
-								+ user.lastName
-								+ " accepted request to end relationship  "
+						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+								+ user.id
+								+ "\">"
+								+ user.username
+								+ " "
+								+ "</a>"
+								+ " has accepted request to end relationship between topics "
+								+ "<a href=\"http://localhost:9008/topicss/show?id="
+								+ relation.source.id
+								+ "\">"
+								+ relation.source.title
+								+ "</a>"
+								+ " and "
+								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ relation.destination.id
+								+ "\">"
+								+ relation.destination.title + "</a>";
 
-								+ oldName ,user,organization, relation,
-								relation.source, relation.destination);
+						Log.addUserLog(logDescription, organization,
+								relation.destination, relation.source,
+								relation.source.entity,
+								relation.destination.entity);
+
 						renameRequest.delete();
 						relation.delete();
 
 					} else {
 						System.out.println("will rename");
-						relation.name= renameRequest.newName;
+						relation.name = renameRequest.newName;
 						relation.save();
-						for(int i =0 ; i<relation.renameEndRequests.size();i++){
+						for (int i = 0; i < relation.renameEndRequests.size(); i++) {
 							relation.renameEndRequests.get(i).delete();
-						relation.save();
+							relation.save();
 						}
-						Log.addLog(
-								"User "
-										+ user.firstName
-										+ " "
-										+ user.lastName
-										+ " accepted request to change the name of relationship  "
-										+ oldName + " to "
 
-								+ renameRequest.newName,user,organization, relation,
-										relation.source, relation.destination);
-						
+						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+								+ user.id
+								+ "\">"
+								+ user.username
+								+ " "
+								+ "</a>"
+								+ " has accepted request to change the name of relationship "
+								+ oldName
+								+ " to"
+								+ renameRequest.newName
+								+ "between topicss"
+								+ "<a href=\"http://localhost:9008/topics/show?id="
+								+ relation.source.id
+								+ "\">"
+								+ relation.source.title
+								+ "</a>"
+								+ " and "
+								+ "<a href=\"http://localhost:9008/topics/show?id="
+								+ relation.destination.id
+								+ "\">"
+								+ relation.destination.title + "</a>";
+
+						Log.addUserLog(logDescription, organization,
+								relation.destination, relation.source,
+								relation.source.entity,
+								relation.destination.entity);
 					}
 				} else {
 					if (renameRequest.requestType == 0) {
-						Log.addLog("User " + user.firstName + " "
-								+ user.lastName
-								+ " rejected request to end relationship  "
+						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+								+ user.id
+								+ "\">"
+								+ user.username
+								+ " "
+								+ "</a>"
+								+ " has rejected request to end relationship between topics "
+								+ "<a href=\"http://localhost:9008/topicss/show?id="
+								+ relation.source.id
+								+ "\">"
+								+ relation.source.title
+								+ "</a>"
+								+ " and "
+								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ relation.destination.id
+								+ "\">"
+								+ relation.destination.title + "</a>";
 
-								+ oldName, organization);
+						Log.addUserLog(logDescription, organization,
+								relation.destination, relation.source,
+								relation.source.entity,
+								relation.destination.entity);
 
 					} else {
-						Log.addLog(
-								"User "
-										+ user.firstName
-										+ " "
-										+ user.lastName
-										+ " rejected request to change the name of relationship  "
-										+ oldName + " to "
+						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+								+ user.id
+								+ "\">"
+								+ user.username
+								+ " "
+								+ "</a>"
+								+ " has rejected request to change the name of relationship "
+								+ oldName
+								+ " to"
+								+ renameRequest.newName
+								+ "between topicss"
+								+ "<a href=\"http://localhost:9008/topics/show?id="
+								+ relation.source.id
+								+ "\">"
+								+ relation.source.title
+								+ "</a>"
+								+ " and "
+								+ "<a href=\"http://localhost:9008/topics/show?id="
+								+ relation.destination.id
+								+ "\">"
+								+ relation.destination.title + "</a>";
 
-										+ renameRequest.newName,user,organization, relation,
-										relation.source, relation.destination);
+						Log.addUserLog(logDescription, organization,
+								relation.destination, relation.source,
+								relation.source.entity,
+								relation.destination.entity);
 
 					}
 					renameRequest.delete();
