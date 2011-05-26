@@ -229,12 +229,24 @@ public class Topics extends CRUD {
 	 *            : the id of the topic that to be reopened
 	 */
 	public static void reopen(long topicId) {
-
+		
+		User user = Security.getConnected();
 		Topic targetTopic = Topic.findById(topicId);
 		targetTopic.openToEdit = true;
 		targetTopic.save();
-
+		
+		
+		
+		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
+        + " reopened Topic " +"<a href=\"http://localhost:9008topics/show?topicId==" + targetTopic.id +"\">" +  targetTopic.title + "</a>";
+		
+		MainEntity entity = targetTopic.entity;
+		Organization organization = entity.organization;
+		
+		Log.addUserLog(log, user, targetTopic, entity, organization);
+		
 		redirect("/topics/show?topicId=" + topicId);
+	
 	}
 
 	// /**
@@ -510,7 +522,15 @@ public class Topics extends CRUD {
 			Notifications.sendNotification(followers.get(i).getId(),
 					targetTopic.getId(), "Topic", notificationDescription);
 		}
-
+		
+		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + actor.id +"\">" + actor.firstName + "</a>"
+        + " closed Topic " +"<a href=\"http://localhost:9008topics/show?topicId==" + targetTopic.id +"\">" +  targetTopic.title + "</a>";
+		
+		MainEntity entity = targetTopic.entity;
+		Organization organization = entity.organization;
+		
+		Log.addUserLog(log, actor, targetTopic, entity, organization);
+		
 		redirect("/topics/show?topicId=" + topicId);
 	}
 
@@ -1848,7 +1868,7 @@ public class Topics extends CRUD {
 	}
 
 	/**
-	 * @description publish a topic
+	 * @description save a topic
 	 * 
 	 * @author Mostafa Aboul Atta
 	 * 
@@ -1882,11 +1902,13 @@ public class Topics extends CRUD {
 		targetTopic.intializedIn = new Date();
 
 		targetTopic.save();
+		
+		
 
 	}
 
 	/**
-	 * @description publish a topicpost
+	 * @description publish a topic
 	 * 
 	 * @author Mostafa Aboul Atta
 	 * 
@@ -1923,6 +1945,18 @@ public class Topics extends CRUD {
 
 		targetTopic.save();
 		user.save();
+		
+		MainEntity entity = targetTopic.entity;
+		Organization organization = entity.organization;
+		
+		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
+			+ " posted Topic " +"<a href=\"http://localhost:9008topics/show?topicId==" + targetTopic.id +"\">" +  
+			targetTopic.title + "</a>" + " to the entity "
+			+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + 
+			entity.id +"\">" + entity.name + "</a>" ;
+		
+		
+		Log.addUserLog(log, user, targetTopic, entity, organization);
 		
 	}
 
@@ -2007,7 +2041,19 @@ public class Topics extends CRUD {
 		targetTopic.isDraft = false;
 		targetTopic.intializedIn = new Date();
 		targetTopic.save();
-
+		User user = Security.getConnected();
+		MainEntity entity = targetTopic.entity;
+		Organization organization = entity.organization;
+		
+		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
+			+ " posted Topic " +"<a href=\"http://localhost:9008topics/show?topicId==" + targetTopic.id +"\">" +  
+			targetTopic.title + "</a>" + " to the entity "
+			+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + 
+			entity.id +"\">" + entity.name + "</a>" ;
+		
+		
+		Log.addUserLog(log, user, targetTopic, entity, organization);
+		
 		redirect("/ideas/getdrafts");
 	}
 	
