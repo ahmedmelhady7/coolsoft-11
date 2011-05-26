@@ -214,10 +214,7 @@ public class Topics extends CRUD {
 		topic.ideas.add(idea);
 		topic.save();
 		user.communityContributionCounter++;
-		System.out.println("................................................" + user.communityContributionCounter);
 		user.save();
-		System.out.println("................................................" + user.communityContributionCounter);
-
 		idea.save();
 	}
 
@@ -1692,14 +1689,11 @@ public class Topics extends CRUD {
 			if (idea.plan != null) {
 				idea.delete();
 				idea.author.communityContributionCounter--;
-				System.out.println("................................................" + idea.author.communityContributionCounter);
 				idea.author.save();
-				System.out.println("................................................" + idea.author.communityContributionCounter);
-
-
+				Notifications.sendNotification(idea.author.id, idea.id, "Idea",
+						message);
 			}
-			Notifications.sendNotification(idea.author.id, idea.id, "Idea",
-					message);
+			
 
 		} catch (Exception e) {
 			redirect(request.controller + ".show");
@@ -1728,8 +1722,6 @@ public class Topics extends CRUD {
 		Notifications
 				.sendNotification(idea.author.id, idea.id, "Idea", message);
 
-		System.out.println("abo hadiiiiiiiiiiiiiiiiii");
-
 		redirect("topics/show?topicId=" + idea.belongsToTopic.id);
 
 	}
@@ -1743,6 +1735,8 @@ public class Topics extends CRUD {
 	 * 
 	 * @param ideaId
 	 *            : the id of the idea to be hidden
+	 * @param justification :
+	 * 							the justification note sent to the user            
 	 */
 	public static void hideIdea(Long ideaId, String justification) {
 		System.out.println("hide bta3ti");
@@ -1750,8 +1744,6 @@ public class Topics extends CRUD {
 		Topic topic = idea.belongsToTopic;
 		User user = Security.getConnected();
 		try {
-			// Logs.addLog( user, "delete", "Task", temporaryTopic.id,
-			// temporaryTopic.taskStory.componentID.project, cal.getTime() );
 			String message = user.username + " has hidden the idea "
 					+ idea.title + " Justification : " + justification;
 			Notifications.sendNotification(idea.author.id, idea.id, "Idea",
@@ -1765,7 +1757,6 @@ public class Topics extends CRUD {
 			System.out.println("entered catch");
 		}
 		System.out.println("flash.success");
-		// redirect(request.controller + ".list");
 		redirect("topics.show", topic.id);
 	}
 
