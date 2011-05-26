@@ -3,12 +3,17 @@
 <link type="text/css" href="/public/stylesheets/jquery-ui-.custom.css" rel="Stylesheet" />
     <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js"></script>
     <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
-<div id="page">
-		<div id="page-bgtop">
-			<div id="page-bgbtm">
+<div id="pageNoSideBar">
+		<div id="pageNoSideBar-bgtop">
 				<div id="content">
 					<div class="post">
-					
+					<h2>
+					<font color = "Navy">
+					Registration
+					</font>
+					</h2>
+					<hr>
+					<br>
 					<font color="Red">
 		${message}
 	</font>
@@ -19,7 +24,7 @@
 			<label for="email">
 				E-mail
 			</label>
-			<input type = "text" id="email" size=35 class="" name="email"  onkeyup="echeck();" required/>
+			<input type = "text" id="email" size=35 class="" name="email" onblur="echeck();" required/>
 			<span id="validEmail" class="validEmail"></span>
 				<font color="Red">
 					*
@@ -30,7 +35,7 @@
 			<label for="username">
 				username
 			</label>
-			<input type="text" size =20 class = "" id="username" name=username onblur="checkUsername();>" required/>
+			<input type="text" size =20 class = "" id="username" name=username onkeyup='checkUsername()' required/>
 		<span id="usernameMessage" class="usernameMessage"><font color="Red">
 					*
 				</font>Required</span>
@@ -405,14 +410,13 @@
     
 
     function checkUsername(){
-    	alert("hiiii");
-    	var unregisteredUsername = document.getElementById('username');
+    	var unregisteredUsername = document.getElementById('username').value;
         var message = document.getElementById('userMessage');
-    	alert("hiiii");
+    	alert(unregisteredUsername);
         $.getJSON('@{checkUsername()}', { username: unregisteredUsername}, function (x){
-        	alert("hiiii");
         	var goodColor = "#66cc66";
             var badColor = "#ff6666";
+        	alert("hiiii");
             if(!(x.existingUser))
             	{
             	object_username.style.backgroundColor = goodColor;
@@ -494,7 +498,6 @@
 	});
 	
 	</script>		
-					</div>
 					</div>
 					</div>
 					</div>
