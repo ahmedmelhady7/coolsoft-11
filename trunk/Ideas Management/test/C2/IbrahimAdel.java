@@ -1,4 +1,5 @@
 package C2;
+
 import notifiers.Mail;
 
 import org.junit.*;
@@ -353,23 +354,53 @@ public class IbrahimAdel extends UnitTest {
 
 	}
 
-//	@Test
-//	public void RequestToPostOnATopic() {
-//		User ashraf = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234",
-//				"Ashraf", "Mansoor", "What is our company's name?", "coolsoft",
-//				0, new Date(), "Egypt", "student").save();
-//
-//		Organization guc = new Organization("GUC", ashraf, 1, true,
-//				"The German University in Cairo").save();
-//
-//		MainEntity gucMet = new MainEntity("MET",
-//				"Media Engineering and technology", guc, true).save();
-//
-//		Topic gucMetStudentUnion = new Topic("Student union", "Suggestions", 2,
-//				ashraf, gucMet, true).save();
-//
-//		gucMetStudentUnion._save();
-//
-//	}
+	@Test
+	public void RequestToPostOnATopic() {
+		Role.createIdeaDeveloperRole();
+		Role.createOrganizationLeadRole();
+		Role OrganizationLead = Roles.getRoleByName("organizationLead");
+		
+		User khayat = new User("ibrahim.al.khayat@gmail.com", "ialk",
+				"1234", "Ibrahim", "EL-khayat", "What is our company's name?", "coolsoft",
+				0, "2/14/1995",
+				"Egypt", "student");
+		khayat._save();
+		
+		User ashraf = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234",
+				"Ashraf", "Mansoor", "What is our company's name?", "coolsoft",
+				0, "2/14/1995", "Egypt", "student").save();
+
+		Organization guc = new Organization("GUC", ashraf, 1, true,
+				"The German University in Cairo").save();
+
+		MainEntity gucMet = new MainEntity("MET",
+				"Media Engineering and technology", guc, true).save();
+
+		Topic gucMetStudentUnion = new Topic("Student union", "Suggestions", 2,
+				ashraf, gucMet, true).save();
+
+		gucMetStudentUnion._save();
+		
+		UserRoleInOrganizations.addEnrolledUser(ashraf, guc,
+				OrganizationLead);
+		
+		Role ideadeveloper = Roles.getRoleByName("idea developer");
+		
+		
+		ideadeveloper = Roles.getRoleByName("idea developer");
+		UserRoleInOrganization roleInOrg = new UserRoleInOrganization(
+				khayat, guc, ideadeveloper);
+		roleInOrg._save();
+		khayat.userRolesInOrganization.add(roleInOrg);
+		khayat.save();
+		
+		
+		assertEquals(false, Users.isPermitted(khayat, "use", gucMetStudentUnion.id, "topic"));
+		assertEquals(true, Users.isPermitted(khayat, "view", gucMetStudentUnion.id, "topic"));
+		
+		gucMetStudentUnion.requestFromUserToPost(khayat.id);
+	
+		
+	}
 
 }
