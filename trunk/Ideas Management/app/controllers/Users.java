@@ -1864,6 +1864,9 @@ System.out.println("ANA HENA");
 		}
 		return notificationProfileList;
 	}
+	
+	
+
 
 	/**
 	 * Ends the session of the current user and logs out
@@ -1896,7 +1899,24 @@ System.out.println("ANA HENA");
 		render(user);
 
 	}
-
+	
+	
+	/**
+	 * un-hashed the pass and check if the password enterd is correct
+	 * 
+	 * @story C1S5
+	 * 
+	 * @author Mai Magdy
+	 * 
+	 */
+	public static int checkPass(String pass)
+	{
+		User user = Security.getConnected();
+		pass = Codec.hexMD5(pass);
+		return (pass.equals(user.password))? 1:0;
+	}
+	
+	
 	/**
 	 * Deactivate the account of that user by setting the state to "n"
 	 * 
