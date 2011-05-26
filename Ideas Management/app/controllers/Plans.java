@@ -135,8 +135,9 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
-	 * This Method directly assigns the logged in user to the item given the
-	 * item id
+	 * This Method directly assigns the logged in user to the item, notify the
+	 * other users assigned to the item and the topic organizers and add to the
+	 * logs of the user, item, item's plan, entity, organization given the item id
 	 * 
 	 * @story C5S10
 	 * 
@@ -188,9 +189,9 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
-	 * This Method renders the page addIdea, after checking the permissions given
-	 * to the user, where the user selects the topic ideas that will be promoted
-	 * to execution in the plan given the plan id
+	 * This Method renders the page addIdea, after checking the permissions
+	 * given to the user, where the user selects the topic ideas that will be
+	 * promoted to execution in the plan given the plan id
 	 * 
 	 * @story C5S4
 	 * 
@@ -329,7 +330,8 @@ public class Plans extends CoolCRUD {
 
 	/**
 	 * This method renders the view containing the list of ideas associated to
-	 * the plan after checking if the user is allowed to view the plan given the plan id
+	 * the plan after checking if the user is allowed to view the plan given the
+	 * plan id
 	 * 
 	 * @story C5S4
 	 * 
@@ -1515,12 +1517,12 @@ public class Plans extends CoolCRUD {
 
 	/**
 	 * 
-	 * This method checks first if the user is an organizer
-	 *     then renders the a plan and list of items in that plan to the view
-	 *     
+	 * This method checks first if the user is an organizer then renders the a
+	 * plan and list of items in that plan to the view
+	 * 
 	 * @author Yasmine Elsayed
 	 * 
-	 * C5S9
+	 *         C5S9
 	 * 
 	 * @param planId
 	 *            the id of the plan

@@ -43,7 +43,8 @@ public class AssignRequests extends CoolCRUD {
 	/**
 	 * 
 	 * This Method renders the viewUsers.html giving it the list of users that
-	 * the organizer will choose from, the itemId that users will be assigned to
+	 * the organizer will choose from after checking if the user is permitted to
+	 * assign a user to the item given the itemId that users will be assigned to
 	 * and its planId
 	 * 
 	 * @author Salma Osama
@@ -91,9 +92,11 @@ public class AssignRequests extends CoolCRUD {
 	 * 
 	 * This Method sends assign requests to the selected users by creating an
 	 * instance of AssignRequest and adds it to the list of sent assign requests
-	 * of the sender and to the list of received assign requests of the receiver
-	 * and to the list of assign requests in the item given list of userIds and
-	 * the item the user is being assigned to
+	 * of the sender, to the list of received assign requests of the receiver
+	 * and to the list of assign requests in the item, sends notification to the
+	 * assigned users and add to the logs of the sender and destination of the
+	 * request, the item, its plan, topic, entity and organization given list of
+	 * userIds and the item the user is being assigned to
 	 * 
 	 * @author Salma Osama
 	 * 
