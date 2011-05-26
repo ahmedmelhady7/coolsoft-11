@@ -246,6 +246,7 @@ public class Tags extends CoolCRUD {
 	 */
 	public static void mainPage(long tagId) {
 		Tag tag = Tag.findById(tagId);
+		notFoundIfNull(tag);
 		List<User> followers = tag.followers;
 		List<Topic> topics = tag.taggedTopics;
 		List<Organization> organizations = tag.organizations;
@@ -278,6 +279,7 @@ public class Tags extends CoolCRUD {
 		User user = Security.getConnected();
 		if(!name.equals("")) {
 		Tag tag = Tag.findById(tagId);
+		notFoundIfNull(tag);
 		Organization tagOrganization = tag.createdInOrganization;
 		List<Tag> tags = new ArrayList<Tag>();
 		List<Organization> allOrganizations = Organization.findAll();
@@ -443,6 +445,7 @@ public class Tags extends CoolCRUD {
 	 */
 	public static void deleteTag(long tagId) {
 		Tag tag = Tag.findById(tagId);
+		notFoundIfNull(tag);
 		Organization organization = tag.createdInOrganization;
 		Tags.delete(tagId);
 		Organizations.viewProfile(organization.id);

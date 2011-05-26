@@ -433,6 +433,7 @@ public class Organizations extends CoolCRUD {
 	public static void viewProfile(long id) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(id);
+		notFoundIfNull(org);
 		List<MainEntity> allEntities = MainEntity.findAll();
 		List<Tag> tags = new ArrayList<Tag>();
 		// List<Tag> allTags = Tag.findAll();
@@ -644,6 +645,7 @@ public class Organizations extends CoolCRUD {
 	 */
 	public static void join(long organizationId) {
 		Organization organization = Organization.findById(organizationId);
+		notFoundIfNull(organization);
 		User user = Security.getConnected();
 		Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
 				+ user.id
@@ -673,6 +675,7 @@ public class Organizations extends CoolCRUD {
 	public static void deleteOrganization(long organizationId) {
 		User user = Security.getConnected();
 		Organization organization = Organization.findById(organizationId);
+		notFoundIfNull(organization);
 		List<User> followers = User.findAll();
 		List<Tag> createdTags = organization.createdTags;
 		List<BannedUser> bannedUsers = organization.bannedUsers;
@@ -757,6 +760,7 @@ public class Organizations extends CoolCRUD {
 	 */
 	public static void editOrganization(long organizationId) {
 		Organization organization = Organization.findById(organizationId);
+		notFoundIfNull(organization);
 		User user = Security.getConnected();
 		render(organization, user);
 	}
@@ -785,6 +789,7 @@ public class Organizations extends CoolCRUD {
 			String privacyLevel, String description) {
 		User user = Security.getConnected();
 		Organization organization = Organization.findById(organizationId);
+		notFoundIfNull(organization);
 		int privacyLevell = 0;
 		if (privacyLevel.equalsIgnoreCase("Public")) {
 			privacyLevell = 2;
