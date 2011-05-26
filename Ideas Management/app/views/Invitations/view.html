@@ -1,7 +1,8 @@
-#{extends 'main.html' /}
+#{extends 'Login/index.html' /}
+#{set title:'invitation Page' /}
  <div id="pageNoSideBar">
         <div id="pageNoSideBar-bgtop">
-<a href="@{Login.homePage()}">Back to Home</a>
+<a href="@{Login.homePage()}"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to Home</a>
 <hr>          </hr>
 <u><font size ="5" color ="blue">Invitations</font></u>
 <br/>
@@ -17,9 +18,9 @@
 <table border="0" bgcolor="#ececec" cellspacing="5" id ="inv_${inn.id}">
 <tr><td><font size ="2" color ="black"><i>Date : ${inn.dateOfSending.format('dd MMM yy')} </i></font></td><td>
 <tr><td><font size ="3" color ="black">You have been invited to join <a href="@{Organizations.viewProfile(inn.organization.id)}"> ${inn.organization.name}</a> Organization</font></td><td>
-<tr><td><font size ="3" color ="black"> As ${inn.role} #{if inn.entity!=null}to<a href="@{MainEntitys.viewEntity(inn.entity.id)}" >${inn.entity.name} </a> Entity #{/if} #{if inn.topic!=null} in <a href="@{Topics.show(inn.topic.id)}">${inn.topic.title}</a> Topic #{/if}</font> </td><td>
-<a onclick="javascript: show(1,'${inn.id}');" /><img src="/public/images/ranktable-tick.png" title="Confirm" width="40" height="30"/></a>  &nbsp; &nbsp; 
-<a onclick="javascript: show(0,'${inn.id}');" /><img src="/public/images/Cross.png" title="Decline" width="30" height="20"/></a>
+<tr><td><font size ="3" color ="black"> As ${inn.role} #{if inn.entity!=null}to<a href="@{MainEntitys.viewEntity(inn.entity.id)}" > ${inn.entity.name} </a> Entity #{/if} #{if inn.topic!=null} in <a href="@{Topics.show(inn.topic.id)}">${inn.topic.title}</a> Topic #{/if}</font> </td><td>
+<a onclick="javascript: show(1,'${inn.id}');" /><img src="/public/images/icons/accept.png" title="Confirm" width="35" height="25"/></a>  &nbsp; &nbsp; 
+<a onclick="javascript: show(0,'${inn.id}');" /><img src="/public/images/icons/delete.png" title="Decline" width="30" height="20"/></a>
 </html>
 #{/list}
 #{/else}
