@@ -39,8 +39,9 @@ public class TopicRelationships extends CoolCRUD {
 	public static boolean createRelationship(String name, long sourceId,
 			long destinationId) {
 		Topic source = Topic.findById(sourceId);
+		notFoundIfNull(source);
 		Topic destination = Topic.findById(destinationId);
-
+		notFoundIfNull(destination);
 		TopicRelationship relation = new TopicRelationship(name, source,
 				destination);
 		if (!relationDuplicate(relation)) {
@@ -135,6 +136,7 @@ public class TopicRelationships extends CoolCRUD {
 			String newName) {
 		TopicRelationship relation = TopicRelationship
 				.findById(relationToBeRenamedId);
+		notFoundIfNull(relation);
 		TopicRelationship relationTemp = new TopicRelationship(newName,
 				relation.source, relation.destination);
 		if (relation.name != newName) {
@@ -179,6 +181,7 @@ public class TopicRelationships extends CoolCRUD {
 	 */
 	public static boolean delete(long relationId) {
 		TopicRelationship relation = TopicRelationship.findById(relationId);
+		notFoundIfNull(relation);
 		Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
 				+ Security.getConnected().id + "\">"
 				+ Security.getConnected().firstName + " "
@@ -248,6 +251,7 @@ public class TopicRelationships extends CoolCRUD {
 	public static boolean deleteTR(long id) {
 
 		TopicRelationship tr = TopicRelationship.findById(id);
+		notFoundIfNull(tr);
 		List<MainEntity> entities = MainEntity.findAll();
 		int size = entities.size();
 		for (int i = 0; i < size; i++) {

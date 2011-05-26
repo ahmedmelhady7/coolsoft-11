@@ -39,8 +39,9 @@ public class TagRelationships extends CoolCRUD {
 			long destinationId) {
 
 		Tag source = Tag.findById(sourceId);
+		notFoundIfNull(source);
 		Tag destination = Tag.findById(destinationId);
-
+		notFoundIfNull(destination);
 		TagRelationship relation = new TagRelationship(name, source,
 				destination);
 		if (!relationDuplicate(relation)) {
@@ -130,6 +131,7 @@ public class TagRelationships extends CoolCRUD {
 			String newName) {
 		TagRelationship relation = TagRelationship
 				.findById(relationToBeRenamedId);
+		notFoundIfNull(relation);
 		TagRelationship relationTemp = new TagRelationship(newName,
 				relation.source, relation.destination);
 		if (relation.name != newName) {
@@ -168,6 +170,7 @@ public class TagRelationships extends CoolCRUD {
 	 */
 	public static boolean delete(long relationId) {
 		TagRelationship relation = TagRelationship.findById(relationId);
+		notFoundIfNull(relation);
 		Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
 				+ Security.getConnected().id + "\">"
 				+ Security.getConnected().firstName + " "
@@ -199,6 +202,7 @@ public class TagRelationships extends CoolCRUD {
 	public static boolean isAllowedTo(long tagId) {
 		User user = Security.getConnected();
 		Tag tag = Tag.findById(tagId);
+		notFoundIfNull(tag);
 		if (user == tag.createdInOrganization.creator || user.isAdmin)
 			return true;
 		return false;

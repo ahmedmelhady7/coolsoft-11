@@ -48,8 +48,9 @@ public class EntityRelationships extends CoolCRUD {
 			long destinationId) {
 
 		MainEntity source = MainEntity.findById(sourceId);
+		notFoundIfNull(source);
 		MainEntity destination = MainEntity.findById(destinationId);
-
+		notFoundIfNull(destination);
 		EntityRelationship relation = new EntityRelationship(name, source,
 				destination);
 		if (!relationDuplicate(relation)) {
@@ -146,6 +147,7 @@ public class EntityRelationships extends CoolCRUD {
 			String newName) {
 		EntityRelationship relation = EntityRelationship
 				.findById(relationToBeRenamedId);
+		notFoundIfNull(relation);
 		EntityRelationship relationTemp = new EntityRelationship(newName,
 				relation.source, relation.destination);
 		if (relation.name != newName) {
@@ -198,6 +200,7 @@ public class EntityRelationships extends CoolCRUD {
 	 */
 	public static boolean delete(long relationId) {
 		EntityRelationship relation = EntityRelationship.findById(relationId);
+		notFoundIfNull(relation);
 		Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
 				+ Security.getConnected().id + "\">"
 				+ Security.getConnected().firstName + " "
