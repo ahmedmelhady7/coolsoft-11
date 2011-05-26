@@ -7,7 +7,6 @@ The marking request
 </script>
 <script src="/public/javascripts/topbar_message/juery.topbar.js" type="text/javascript">
 </script>
-<link href="jquery.jnotify.css" rel="stylesheet" type="text/css" />
 <script src="/public/javascript/jnotify/jquery.jnotify.js" type="text/javascript">
 </script>
 <html>
@@ -25,20 +24,19 @@ The marking request
         #{if requests}
         #{list items:requests, as:'request'}
         <li>
-            <fieldset>
+            <fieldse>
             User ${request.sender.username} Wants to mark Idea <a href='@{Ideas.show(request.idea1.id)}'>${request.idea1.title}</a>
             with Idea<a href='@{Ideas.show(request.idea2.id)}'> ${request.idea2.title}</a>
             </br>
-            <input type = "button" value = "Accept" onclick='reject(${request.id},0)'/><input type = "button" value = "Reject" onclick='reject(${request.id},1)'/>
+            <input type = "image" src='/public/images/ranktable-tick.png' value = "Accept" onclick='reject("${request.id}",0)'/>
+			<input type = "image" src='/public/images/Cross.png' value = "Reject" onclick='reject("${request.id}",1)'/>
         </fieldset>
         </li>#{/list}
         #{/if}
         #{else}
-        <tr>
             <td>
                 <i>No new Requests</i>
             </td>
-            <td>
             #{/else}
             <script type="text/javascript">
                 function reject(id, ar){
