@@ -1,5 +1,8 @@
 #{extends 'Home/home.html' /}
 
+<link type="text/css" href="/public/stylesheets/jquery-ui-.custom.css" rel="Stylesheet" />
+    <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
 <div id="page">
 		<div id="page-bgtop">
 			<div id="page-bgbtm">
@@ -49,30 +52,22 @@
 			<input type="password" size="25" name="pass2" id="pass2" onkeyup="checkPass(); return false;" >
         <span id="confirmMessage" class="confirmMessage"></span>
 		</p>
-		
+		<p>
 			<label for="firstName">
 				First Name
 			</label>
-			<input type="text" size=15 name="firstName" class "" onmouseover=""/>
+			<input type="text" size=15 name="firstName" class "" onmouseover="" required/>
 			<span class="crudHelp" >
 				<font color="Red">
 					*
 				</font>Required
 			</span>
-			
-			<p>
-			<label for="lastName">
-				Last Name
-			</label>
-			<input type="text" size=15 name="lastName" class "" onmouseover=""/>
 			</p>
-			
-			
 			<p>
 			<label for="securityQuestion">
 				Security Question 
 			</label>
-			<input type = "text" id="securityQuestion" size=35 class="" name="securityQuestion"   required>
+			<input type = "text" id="securityQuestion" size=35 class="" name="securityQuestion" required/>
 				<font color="Red">
 					*
 				</font>Required
@@ -82,11 +77,19 @@
 			<label for="answer">
 				Security Answer 
 			</label>
-			<input type = "text" id="answer" size=20 class="" name="answer" required>
+			<input type = "text" id="answer" size=20 class="" name="answer" required/>
 				<font color="Red">
 					*
 				</font>Required
 		</p>
+			<hr>
+			<br>
+			<p>
+			<label for="lastName">
+				Last Name
+			</label>
+			<input type="text" size=15 name="lastName" class "" onmouseover=""/>
+			</p>
 			
 			<p>
 			<label for="dateofBirth">
