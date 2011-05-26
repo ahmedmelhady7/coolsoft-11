@@ -25,12 +25,38 @@ public class AdvancedSearch {
 
 	/**
 	 * 
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method search for Organizations required from list tOrg
+	 *              and using keyword key and constrains exKey, in, or.
+	 * 
 	 * @param listOfResults
+	 *            'List<Model>'; is a memory reference for list contains the
+	 *            current search result to add or remove the required search
+	 *            results in/from.
+	 * 
 	 * @param tOrgs
+	 *            'List<Model>'; is the Organization list that the result could
+	 *            be taken to listOfResult from.
+	 * 
 	 * @param key
+	 *            'String'; the search key word.
+	 * 
 	 * @param exKey
+	 *            'boolean'; that used to determined that the key is an exact
+	 *            key or not.
+	 * 
 	 * @param in
+	 *            'int'; that used to determined the type to search in( 0 for
+	 *            All, 1 for Title, 2 for Description, 3 for Comment, 4 for
+	 *            Tags.
+	 * 
 	 * @param or
+	 *            'boolean'; that used to determined that the key is an or key
+	 *            or not.
+	 * 
 	 */
 	public static void searchingOrganization(List<Model> listOfResults,
 			List<Model> tOrgs, String key, boolean exKey, int in, boolean or) {
@@ -385,12 +411,38 @@ public class AdvancedSearch {
 
 	/**
 	 * 
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method search for MainEntity required from list tOrg
+	 *              and using keyword key and constrains exKey, in, or.
+	 * 
 	 * @param listOfResults
+	 *            'List<Model>'; is a memory reference for list contains the
+	 *            current search result to add or remove the required search
+	 *            results in/from.
+	 * 
 	 * @param tOrgs
+	 *            'List<Model>'; is the MainEntity list that the result could be
+	 *            taken to listOfResult from.
+	 * 
 	 * @param key
+	 *            'String'; the search key word.
+	 * 
 	 * @param exKey
+	 *            'boolean'; that used to determined that the key is an exact
+	 *            key or not.
+	 * 
 	 * @param in
+	 *            'int'; that used to determined the type to search in( 0 for
+	 *            All, 1 for Title, 2 for Description, 3 for Comment, 4 for
+	 *            Tags.
+	 * 
 	 * @param or
+	 *            'boolean'; that used to determined that the key is an or key
+	 *            or not.
+	 * 
 	 */
 	public static void searchingMainEntity(List<Model> listOfResults,
 			List<Model> tOrgs, String key, boolean exKey, int in, boolean or) {
@@ -745,12 +797,38 @@ public class AdvancedSearch {
 
 	/**
 	 * 
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method search for Topic required from list tOrg and
+	 *              using keyword key and constrains exKey, in, or.
+	 * 
 	 * @param listOfResults
+	 *            'List<Model>'; is a memory reference for list contains the
+	 *            current search result to add or remove the required search
+	 *            results in/from.
+	 * 
 	 * @param tOrgs
+	 *            'List<Model>'; is the Topic list that the result could be
+	 *            taken to listOfResult from.
+	 * 
 	 * @param key
+	 *            'String'; the search key word.
+	 * 
 	 * @param exKey
+	 *            'boolean'; that used to determined that the key is an exact
+	 *            key or not.
+	 * 
 	 * @param in
+	 *            'int'; that used to determined the type to search in( 0 for
+	 *            All, 1 for Title, 2 for Description, 3 for Comment, 4 for
+	 *            Tags.
+	 * 
 	 * @param or
+	 *            'boolean'; that used to determined that the key is an or key
+	 *            or not.
+	 * 
 	 */
 	public static void searchingTopic(List<Model> listOfResults,
 			List<Model> tOrgs, String key, boolean exKey, int in, boolean or) {
@@ -771,21 +849,22 @@ public class AdvancedSearch {
 									tOrgs.remove(i);
 									i--;
 								} else {
-									if (in == 1) {
-										List<Comment> x = ((Topic) tOrgs.get(i)).commentsOn;
-										for (int j = 0; j < x.size(); j++) {
-											if (x.get(j).comment
-													.equalsIgnoreCase(key)) {
-												listOfResults.add(tOrgs.get(i));
-												tOrgs.remove(i);
-												i--;
-												break;
-											}
+									boolean b = true;
+									List<Comment> x = ((Topic) tOrgs.get(i)).commentsOn;
+									for (int j = 0; j < x.size(); j++) {
+										if (x.get(j).comment
+												.equalsIgnoreCase(key)) {
+											listOfResults.add(tOrgs.get(i));
+											tOrgs.remove(i);
+											i--;
+											b = false;
+											break;
 										}
-									} else {
-										List<Tag> x = ((Topic) tOrgs.get(i)).tags;
-										for (int j = 0; j < x.size(); j++) {
-											if (x.get(j).name
+									}
+									if (b) {
+										List<Tag> y = ((Topic) tOrgs.get(i)).tags;
+										for (int j = 0; j < y.size(); j++) {
+											if (y.get(j).name
 													.equalsIgnoreCase(key)) {
 												listOfResults.add(tOrgs.get(i));
 												tOrgs.remove(i);
@@ -874,22 +953,22 @@ public class AdvancedSearch {
 									tOrgs.remove(i);
 									i--;
 								} else {
-									if (in == 1) {
-										List<Tag> x = ((Topic) tOrgs.get(i)).tags;
-										for (int j = 0; j < x.size(); j++) {
-											if (x.get(j).name
-													.toLowerCase()
-													.contains(key.toLowerCase())) {
-												listOfResults.add(tOrgs.get(i));
-												tOrgs.remove(i);
-												i--;
-												break;
-											}
+									boolean b = true;
+									List<Comment> x = ((Topic) tOrgs.get(i)).commentsOn;
+									for (int j = 0; j < x.size(); j++) {
+										if (x.get(j).comment.toLowerCase()
+												.contains(key.toLowerCase())) {
+											listOfResults.add(tOrgs.get(i));
+											tOrgs.remove(i);
+											b = false;
+											i--;
+											break;
 										}
-									} else {
-										List<Tag> x = ((Topic) tOrgs.get(i)).tags;
-										for (int j = 0; j < x.size(); j++) {
-											if (x.get(j).name
+									}
+									if (b) {
+										List<Tag> y = ((Topic) tOrgs.get(i)).tags;
+										for (int j = 0; j < y.size(); j++) {
+											if (y.get(j).name
 													.toLowerCase()
 													.contains(key.toLowerCase())) {
 												listOfResults.add(tOrgs.get(i));
@@ -899,6 +978,7 @@ public class AdvancedSearch {
 											}
 										}
 									}
+
 								}
 							}
 						}
@@ -930,7 +1010,18 @@ public class AdvancedSearch {
 							}
 						} else {
 							if (in == 3) {
-								// comments
+								for (int i = 0; i < tOrgs.size(); i++) {
+									List<Comment> x = ((Topic) tOrgs.get(i)).commentsOn;
+									for (int j = 0; j < x.size(); j++) {
+										if (x.get(j).comment.toLowerCase()
+												.contains(key.toLowerCase())) {
+											listOfResults.add(tOrgs.get(i));
+											tOrgs.remove(i);
+											i--;
+											break;
+										}
+									}
+								}
 							} else {
 								for (int i = 0; i < tOrgs.size(); i++) {
 									if (tOrgs.get(i) instanceof Topic) {
@@ -968,12 +1059,21 @@ public class AdvancedSearch {
 									tOrgs.remove(i);
 									i--;
 								} else {
-									if (in == 1) {
-										// comments
-									} else {
-										List<Tag> x = ((Topic) tOrgs.get(i)).tags;
-										for (int j = 0; j < x.size(); j++) {
-											if (x.get(j).name
+									boolean b = true;
+									List<Comment> x = ((Topic) tOrgs.get(i)).commentsOn;
+									for (int j = 0; j < x.size(); j++) {
+										if (x.get(j).comment.toLowerCase()
+												.contains(key.toLowerCase())) {
+											tOrgs.remove(i);
+											i--;
+											b = false;
+											break;
+										}
+									}
+									if (b) {
+										List<Tag> y = ((Topic) tOrgs.get(i)).tags;
+										for (int j = 0; j < y.size(); j++) {
+											if (y.get(j).name
 													.toLowerCase()
 													.contains(key.toLowerCase())) {
 												tOrgs.remove(i);
@@ -1011,7 +1111,20 @@ public class AdvancedSearch {
 							}
 						} else {
 							if (in == 3) {
-								// comments
+								for (int i = 0; i < tOrgs.size(); i++) {
+									if (tOrgs.get(i) instanceof Topic) {
+										List<Comment> x = ((Topic) tOrgs.get(i)).commentsOn;
+										for (int j = 0; j < x.size(); j++) {
+											if (x.get(j).comment
+													.toLowerCase()
+													.contains(key.toLowerCase())) {
+												tOrgs.remove(i);
+												i--;
+												break;
+											}
+										}
+									}
+								}
 							} else {
 								for (int i = 0; i < tOrgs.size(); i++) {
 									if (tOrgs.get(i) instanceof Topic) {
@@ -1096,7 +1209,24 @@ public class AdvancedSearch {
 							}
 						} else {
 							if (in == 3) {
-								// comments
+								for (int i = 0; i < tOrgs.size(); i++) {
+									if (tOrgs.get(i) instanceof Topic) {
+										boolean b = false;
+										List<Comment> x = ((Topic) tOrgs.get(i)).commentsOn;
+										for (int j = 0; j < x.size(); j++) {
+											if (x.get(j).comment
+													.toLowerCase()
+													.contains(key.toLowerCase())) {
+												b = true;
+												break;
+											}
+										}
+										if (b) {
+											tOrgs.remove(i);
+											i--;
+										}
+									}
+								}
 							} else {
 								for (int i = 0; i < tOrgs.size(); i++) {
 									if (tOrgs.get(i) instanceof Topic) {
@@ -1126,12 +1256,38 @@ public class AdvancedSearch {
 
 	/**
 	 * 
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method search for Idea required from list tOrg and
+	 *              using keyword key and constrains exKey, in, or.
+	 * 
 	 * @param listOfResults
+	 *            'List<Model>'; is a memory reference for list contains the
+	 *            current search result to add or remove the required search
+	 *            results in/from.
+	 * 
 	 * @param tOrgs
+	 *            'List<Model>'; is the Idea list that the result could be taken
+	 *            to listOfResult from.
+	 * 
 	 * @param key
+	 *            'String'; the search key word.
+	 * 
 	 * @param exKey
+	 *            'boolean'; that used to determined that the key is an exact
+	 *            key or not.
+	 * 
 	 * @param in
+	 *            'int'; that used to determined the type to search in( 0 for
+	 *            All, 1 for Title, 2 for Description, 3 for Comment, 4 for
+	 *            Tags.
+	 * 
 	 * @param or
+	 *            'boolean'; that used to determined that the key is an or key
+	 *            or not.
+	 * 
 	 */
 	public static void searchingIdea(List<Model> listOfResults,
 			List<Model> tOrgs, String key, boolean exKey, int in, boolean or) {
@@ -1150,14 +1306,28 @@ public class AdvancedSearch {
 									listOfResults.add(tOrgs.get(i));
 									tOrgs.remove(i);
 									i--;
-								}
-								List<Tag> x = ((Idea) tOrgs.get(i)).tagsList;
-								for (int j = 0; j < x.size(); j++) {
-									if (x.get(j).name.equals(key)) {
-										listOfResults.add(tOrgs.get(i));
-										tOrgs.remove(i);
-										i--;
-										break;
+								} else {
+									boolean b = true;
+									List<Comment> y = ((Idea) tOrgs.get(i)).commentsList;
+									for (int j = 0; j < y.size(); j++) {
+										if (y.get(j).comment.equals(key)) {
+											listOfResults.add(tOrgs.get(i));
+											tOrgs.remove(i);
+											i--;
+											b = false;
+											break;
+										}
+									}
+									if (b) {
+										List<Tag> x = ((Idea) tOrgs.get(i)).tagsList;
+										for (int j = 0; j < x.size(); j++) {
+											if (x.get(j).name.equals(key)) {
+												listOfResults.add(tOrgs.get(i));
+												tOrgs.remove(i);
+												i--;
+												break;
+											}
+										}
 									}
 								}
 							}
@@ -1188,6 +1358,19 @@ public class AdvancedSearch {
 							}
 						} else {
 							if (in == 3) {
+								for (int i = 0; i < tOrgs.size(); i++) {
+									if (tOrgs.get(i) instanceof Idea) {
+										List<Comment> x = ((Idea) tOrgs.get(i)).commentsList;
+										for (int j = 0; j < x.size(); j++) {
+											if (x.get(j).comment.equals(key)) {
+												listOfResults.add(tOrgs.get(i));
+												tOrgs.remove(i);
+												i--;
+												break;
+											}
+										}
+									}
+								}
 							} else {
 								for (int i = 0; i < tOrgs.size(); i++) {
 									if (tOrgs.get(i) instanceof Idea) {
@@ -1207,15 +1390,11 @@ public class AdvancedSearch {
 					}
 				}
 			} else {
-				System.out.println("goo AAA");
 				if (in == 0) {
-					System.out.println("gooes BBB");
 					for (int i = 0; i < tOrgs.size(); i++) {
-						System.out.println("gooes BBB" + i);
 						if (tOrgs.get(i) instanceof Idea) {
 							if (((Idea) tOrgs.get(i)).title.toLowerCase()
 									.contains(key.toLowerCase())) {
-								System.out.println("ADDDDDED here");
 								listOfResults.add(tOrgs.get(i));
 								tOrgs.remove(i);
 								i--;
@@ -1268,6 +1447,21 @@ public class AdvancedSearch {
 							}
 						} else {
 							if (in == 3) {
+								for (int i = 0; i < tOrgs.size(); i++) {
+									if (tOrgs.get(i) instanceof Idea) {
+										List<Comment> x = ((Idea) tOrgs.get(i)).commentsList;
+										for (int j = 0; j < x.size(); j++) {
+											if (x.get(j).comment
+													.toLowerCase()
+													.contains(key.toLowerCase())) {
+												listOfResults.add(tOrgs.get(i));
+												tOrgs.remove(i);
+												i--;
+												break;
+											}
+										}
+									}
+								}
 							} else {
 								for (int i = 0; i < tOrgs.size(); i++) {
 									if (tOrgs.get(i) instanceof Idea) {
@@ -1342,6 +1536,20 @@ public class AdvancedSearch {
 							}
 						} else {
 							if (in == 3) {
+								for (int i = 0; i < tOrgs.size(); i++) {
+									if (tOrgs.get(i) instanceof Idea) {
+										List<Comment> x = ((Idea) tOrgs.get(i)).commentsList;
+										for (int j = 0; j < x.size(); j++) {
+											if (x.get(j).comment
+													.toLowerCase()
+													.contains(key.toLowerCase())) {
+												tOrgs.remove(i);
+												i--;
+												break;
+											}
+										}
+									}
+								}
 							} else {
 								for (int i = 0; i < tOrgs.size(); i++) {
 									if (tOrgs.get(i) instanceof Idea) {
@@ -1377,13 +1585,27 @@ public class AdvancedSearch {
 									tOrgs.remove(i);
 									i--;
 								}
-								List<Tag> x = ((Idea) tOrgs.get(i)).tagsList;
+
 								boolean b = false;
-								for (int j = 0; j < x.size(); j++) {
-									if (x.get(j).name.toLowerCase().contains(
-											key.toLowerCase())) {
+
+								List<Comment> y = ((Idea) tOrgs.get(i)).commentsList;
+
+								for (int k = 0; k < y.size(); k++) {
+									if (y.get(k).comment.toLowerCase()
+											.contains(key.toLowerCase())) {
 										b = true;
 										break;
+									}
+								}
+								if (!b) {
+									List<Tag> x = ((Idea) tOrgs.get(i)).tagsList;
+
+									for (int j = 0; j < x.size(); j++) {
+										if (x.get(j).name.toLowerCase()
+												.contains(key.toLowerCase())) {
+											b = true;
+											break;
+										}
 									}
 								}
 								if (b) {
@@ -1418,6 +1640,24 @@ public class AdvancedSearch {
 							}
 						} else {
 							if (in == 3) {
+								for (int i = 0; i < tOrgs.size(); i++) {
+									if (tOrgs.get(i) instanceof Idea) {
+										boolean b = false;
+										List<Comment> x = ((Idea) tOrgs.get(i)).commentsList;
+										for (int j = 0; j < x.size(); j++) {
+											if (x.get(j).comment
+													.toLowerCase()
+													.contains(key.toLowerCase())) {
+												b = true;
+												break;
+											}
+										}
+										if (b) {
+											tOrgs.remove(i);
+											i--;
+										}
+									}
+								}
 							} else {
 								for (int i = 0; i < tOrgs.size(); i++) {
 									if (tOrgs.get(i) instanceof Idea) {
@@ -1447,12 +1687,38 @@ public class AdvancedSearch {
 
 	/**
 	 * 
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method search for Item required from list tOrg and
+	 *              using keyword key and constrains exKey, in, or.
+	 * 
 	 * @param listOfResults
+	 *            'List<Model>'; is a memory reference for list contains the
+	 *            current search result to add or remove the required search
+	 *            results in/from.
+	 * 
 	 * @param tOrgs
+	 *            'List<Model>'; is the Item list that the result could be taken
+	 *            to listOfResult from.
+	 * 
 	 * @param key
+	 *            'String'; the search key word.
+	 * 
 	 * @param exKey
+	 *            'boolean'; that used to determined that the key is an exact
+	 *            key or not.
+	 * 
 	 * @param in
+	 *            'int'; that used to determined the type to search in( 0 for
+	 *            All, 1 for Title, 2 for Description, 3 for Comment, 4 for
+	 *            Tags.
+	 * 
 	 * @param or
+	 *            'boolean'; that used to determined that the key is an or key
+	 *            or not.
+	 * 
 	 */
 	public static void searchingItem(List<Model> listOfResults,
 			List<Model> tOrgs, String key, boolean exKey, int in, boolean or) {
@@ -1797,12 +2063,38 @@ public class AdvancedSearch {
 
 	/**
 	 * 
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method search for Plan required from list tOrg and
+	 *              using keyword key and constrains exKey, in, or.
+	 * 
 	 * @param listOfResults
+	 *            'List<Model>'; is a memory reference for list contains the
+	 *            current search result to add or remove the required search
+	 *            results in/from.
+	 * 
 	 * @param tOrgs
+	 *            'List<Model>'; is the Plan list that the result could be taken
+	 *            to listOfResult from.
+	 * 
 	 * @param key
+	 *            'String'; the search key word.
+	 * 
 	 * @param exKey
+	 *            'boolean'; that used to determined that the key is an exact
+	 *            key or not.
+	 * 
 	 * @param in
+	 *            'int'; that used to determined the type to search in( 0 for
+	 *            All, 1 for Title, 2 for Description, 3 for Comment, 4 for
+	 *            Tags.
+	 * 
 	 * @param or
+	 *            'boolean'; that used to determined that the key is an or key
+	 *            or not.
+	 * 
 	 */
 	public static void searchingPlan(List<Model> listOfResults,
 			List<Model> tOrgs, String key, boolean exKey, int in, boolean or) {
@@ -2153,10 +2445,22 @@ public class AdvancedSearch {
 	}
 
 	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method search for Plan required from list tOrg and
+	 *              using keyword key and constrains exKey, in, or.
 	 * 
 	 * @param t
+	 *            'char'; character that determine
+	 * 
 	 * @param listOfResults
-	 * @return
+	 *            List<Model>; is the list to check weather the t character is
+	 *            in or not.
+	 * 
+	 * @return 'boolean' true iff the listOfResult contains the type of char 't'
+	 * 
 	 */
 	public static boolean checkType(char t, List<Model> listOfResults) {
 		switch (t) {
@@ -2203,12 +2507,29 @@ public class AdvancedSearch {
 	}
 
 	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method solve the Query the user entered to search with
+	 *              by finding the required Organizations to the result .
 	 * 
 	 * @param keyWords
+	 *            'String[]' contains the key words needed
+	 * 
 	 * @param keyWordsIn
+	 *            'String[]' contains the key word's type to search in
+	 * 
 	 * @param isExact
+	 *            'boolean' determine if the keywords is/are exact or not.
+	 * 
 	 * @param listOfResults
+	 *            'List<Model>' a reference for the listOfresults.
+	 * 
 	 * @param currentModels
+	 *            'List<Model>' a list of current Models used to find the search
+	 *            result in.
+	 * 
 	 */
 	public static void solvingOrganizationQuery(String[] keyWords,
 			String[] keyWordsIn, boolean isExact, List<Model> listOfResults,
@@ -2267,12 +2588,29 @@ public class AdvancedSearch {
 	}
 
 	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method solve the Query the user entered to search with
+	 *              by finding the required Entities to the result .
 	 * 
 	 * @param keyWords
+	 *            'String[]' contains the key words needed
+	 * 
 	 * @param keyWordsIn
+	 *            'String[]' contains the key word's type to search in
+	 * 
 	 * @param isExact
+	 *            'boolean' determine if the keywords is/are exact or not.
+	 * 
 	 * @param listOfResults
+	 *            'List<Model>' a reference for the listOfresults.
+	 * 
 	 * @param currentModels
+	 *            'List<Model>' a list of current Models used to find the search
+	 *            result in.
+	 * 
 	 */
 	public static void solvingEntityQuery(String[] keyWords,
 			String[] keyWordsIn, boolean isExact, List<Model> listOfResults,
@@ -2330,12 +2668,29 @@ public class AdvancedSearch {
 	}
 
 	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method solve the Query the user entered to search with
+	 *              by finding the required Topics to the result .
 	 * 
 	 * @param keyWords
+	 *            'String[]' contains the key words needed
+	 * 
 	 * @param keyWordsIn
+	 *            'String[]' contains the key word's type to search in
+	 * 
 	 * @param isExact
+	 *            'boolean' determine if the keywords is/are exact or not.
+	 * 
 	 * @param listOfResults
+	 *            'List<Model>' a reference for the listOfresults.
+	 * 
 	 * @param currentModels
+	 *            'List<Model>' a list of current Models used to find the search
+	 *            result in.
+	 * 
 	 */
 	public static void solvingTopicQuery(String[] keyWords,
 			String[] keyWordsIn, boolean isExact, List<Model> listOfResults,
@@ -2394,12 +2749,29 @@ public class AdvancedSearch {
 	}
 
 	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method solve the Query the user entered to search with
+	 *              by finding the required Plan to the result .
 	 * 
 	 * @param keyWords
+	 *            'String[]' contains the key words needed
+	 * 
 	 * @param keyWordsIn
+	 *            'String[]' contains the key word's type to search in
+	 * 
 	 * @param isExact
+	 *            'boolean' determine if the keywords is/are exact or not.
+	 * 
 	 * @param listOfResults
+	 *            'List<Model>' a reference for the listOfresults.
+	 * 
 	 * @param currentModels
+	 *            'List<Model>' a list of current Models used to find the search
+	 *            result in.
+	 * 
 	 */
 	public static void solvingPlanQuery(String[] keyWords, String[] keyWordsIn,
 			boolean isExact, List<Model> listOfResults,
@@ -2458,12 +2830,29 @@ public class AdvancedSearch {
 	}
 
 	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method solve the Query the user entered to search with
+	 *              by finding the required Ideas to the result .
 	 * 
 	 * @param keyWords
+	 *            'String[]' contains the key words needed
+	 * 
 	 * @param keyWordsIn
+	 *            'String[]' contains the key word's type to search in
+	 * 
 	 * @param isExact
+	 *            'boolean' determine if the keywords is/are exact or not.
+	 * 
 	 * @param listOfResults
+	 *            'List<Model>' a reference for the listOfresults.
+	 * 
 	 * @param currentModels
+	 *            'List<Model>' a list of current Models used to find the search
+	 *            result in.
+	 * 
 	 */
 	public static void solvingIdeaQuery(String[] keyWords, String[] keyWordsIn,
 			boolean isExact, List<Model> listOfResults,
@@ -2521,12 +2910,29 @@ public class AdvancedSearch {
 	}
 
 	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method solve the Query the user entered to search with
+	 *              by finding the required Items to the result .
 	 * 
 	 * @param keyWords
+	 *            'String[]' contains the key words needed
+	 * 
 	 * @param keyWordsIn
+	 *            'String[]' contains the key word's type to search in
+	 * 
 	 * @param isExact
+	 *            'boolean' determine if the keywords is/are exact or not.
+	 * 
 	 * @param listOfResults
+	 *            'List<Model>' a reference for the listOfresults.
+	 * 
 	 * @param currentModels
+	 *            'List<Model>' a list of current Models used to find the search
+	 *            result in.
+	 * 
 	 */
 	public static void solvingItemQuery(String[] keyWords, String[] keyWordsIn,
 			boolean isExact, List<Model> listOfResults,
@@ -2583,13 +2989,25 @@ public class AdvancedSearch {
 		}
 	}
 
-	
 	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 * @story C4S02 advanced search
+	 * 
+	 * @Description this method solve the Query the user entered to search with
+	 *              by finding the required Items to the result .
 	 * 
 	 * @param dateA
+	 *            'String' contains the After date
+	 * 
 	 * @param dateB
+	 *            'String' contains the Before date
+	 * 
 	 * @param dateE
-	 * @param listOfResults
+	 *            'String' contains the Exact date
+	 * 
+	 * @param listOfResults 'List<Model>' list of result 
+	 * 
 	 */
 	public static void constrainTime(String dateA, String dateB, String dateE,
 			List<Model> listOfResults) {
