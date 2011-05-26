@@ -180,6 +180,7 @@ public class Idea extends CoolModel {
 		this.usersRated = new ArrayList<User>();
 		this.rating = "Not yet rated";
 		this.priority = "Not yet prioritized";
+		this.viewed=0;
 		this.hidden = false;
 	}
 
