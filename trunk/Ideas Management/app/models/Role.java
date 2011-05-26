@@ -1,6 +1,5 @@
 package models;
 
-//Added public to attributes
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,16 +10,30 @@ import javax.persistence.*;
 import play.data.validation.Required;
 import play.db.jpa.*;
 
+/**
+ * 
+ * @author Nada Ossama
+ * 
+ */
 @Entity
 public class Role extends CoolModel {
 
+	/**
+	 * the name of the role
+	 */
 	@Required
 	public String roleName;
 
+	/**
+	 * the default actions that the role implies
+	 */
 	@Required
 	@Lob
 	public String actions;
 
+	/**
+	 * List of UserRoleInOrganiztion records where that role is referenced
+	 */
 	@OneToMany(mappedBy = "role")
 	// , cascade = CascadeType.ALL)
 	public List<UserRoleInOrganization> userRoleInOrganization;
@@ -35,7 +48,7 @@ public class Role extends CoolModel {
 	 * @param role
 	 *            String role name
 	 * @param actions
-	 *            String actions string
+	 *            String actions is the default actions that that role implies
 	 */
 
 	public Role(String role, String actions) {
@@ -58,7 +71,7 @@ public class Role extends CoolModel {
 				+ "block a user from viewing or using a certain entity;"
 				+ "Request to start a relationship with other items;"
 				+ "Request to end a relationship with other items;"
-                + "Create a sub-entity for entity he/she manages;"
+				+ "Create a sub-entity for entity he/she manages;"
 				+ "Request to rename relationships that are related to any of the entities or topics he/she manages;"
 				+ "Create a certain topic and specify its type within entities that he/she manages;"
 				+ "Receive notifications about any changes or updates within the entities that he/she created or he/she currently manages;"
@@ -177,8 +190,23 @@ public class Role extends CoolModel {
 		return this.roleName;
 	}
 
-	public boolean equals(Object o) {
-		Role r = (Role) o;
+	/**
+	 * checks whether the passed object equals to the the object that the method
+	 * is invoked on
+	 * 
+	 * @author Nada Ossama
+	 * 
+	 * @story C1S7
+	 * 
+	 * @param object
+	 *            Object that is to be compared to the Role that the method is
+	 *            invoked on
+	 * 
+	 * @return boolean true if the passed object has the same name as the Role
+	 *         the method is invoked on , otherwise it retuns false
+	 */
+	public boolean equals(Object object) {
+		Role r = (Role) object;
 
 		if (this.roleName.equals(r.roleName)) {
 			return true;
