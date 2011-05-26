@@ -145,7 +145,12 @@
             ${object.title}
             	<h3 class"post-metadata">
             	<span class "post-author">
+            	#{if active}
             	by <a href="@{Users.viewProfile(userId)}">${username}</a>
+            	#{/if}
+            	#{if notactive}
+            	<font>by ${username}</font>
+            	#{/if}
             	</span>
             	<span class "post-tags">
 
@@ -205,8 +210,11 @@
  					<div class="comment-content">
  						<div class="about">Detail:</div>
  						<li><a>${comment.comment}</a></li>
- 						#{if comment.commenter.username != user.username}
+ 						#{if comment.commenter.username != user.username && !comment.reported(user.id)}
+ 						<form action="@{Users.reportCommentAsSpam()}" method="GET" name="myform">
+ 						<input type = "hidden" name = "commentId" value = ${comment.id} />
  						<input style="float: right;" type="image" src="/public/images/icons/red_flag.png" />
+ 						</form>
  						#{/if}
 						<br />
  					</div>
@@ -217,7 +225,7 @@
  		#{else}No comments posted#{/else}
  		</div>
 
-			<div id="comment-content"><textarea name = "comment" id= "commentTxt" rows="7" cols="80" required></textarea></div>
+			<div id="comment-content"><textarea name = "comment" id= "commentTxt" rows="7" cols="80"></textarea></div>
 			<br/>
 			<input class = "linkButton" style = "margin-left: 17%; float: right;" type = "button" value = "Comment" onclick="comment(${ideaId});" >
 <br/>
@@ -317,12 +325,14 @@
 		<div id='div1' align='left' style="display: none"></div>
 		<br/>
 		<form>
+			#{if idea.duplicateIdeas}
 			<big><b><font color="#4E4848">List Of Duplicates</font></b></big>
 			#{list items:idea.duplicateIdeas , as:'idea'}
 			<li>
 				<a href='@{Ideas.show(idea.id)}' ><b><font color="#4E4848">${idea.title}</font></b></a>
 			</li>
 			#{/list}
+			#{/if}
 		</form>
 		<br/>
 		<br/>
