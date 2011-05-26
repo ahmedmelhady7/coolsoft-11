@@ -220,7 +220,7 @@ public class Topics extends CRUD {
 
 	/**
 	 * 
-	 * This method reopens a closed topic, used after its plan gets deleted
+	 * @description This method reopens a closed topic, used after its plan gets deleted
 	 * 
 	 * @author Mostafa Aboul Atta
 	 * 
@@ -468,7 +468,7 @@ public class Topics extends CRUD {
 	}
 
 	/**
-	 * This method closes a topic, return true if was successful, returns false
+	 * @ description This method closes a topic, return true if was successful, returns false
 	 * if the there was ideas and doesn't close the topic
 	 * 
 	 * @author Mostafa Aboul Atta
@@ -1761,7 +1761,7 @@ public class Topics extends CRUD {
 	}
 
 	/**
-	 * This method renders get a topic ID, and the renders the ideas to a new
+	 * @description This method renders get a topic ID, and the renders the ideas to a new
 	 * page
 	 * 
 	 * @author Mostafa Aboul Atta
