@@ -6,7 +6,11 @@ import java.util.List;
 import play.*;
 import play.mvc.With;
 import models.*;
-
+/**
+ * 
+ * @author Nada Ossama
+ *
+ */
 @With(Secure.class)
 public class Roles extends CoolCRUD {
 
@@ -17,10 +21,11 @@ public class Roles extends CoolCRUD {
 	 * 
 	 * @story C1S7
 	 * 
-	 * @param: role 
+	 * @param role 
 	 *             String the name of the role
 	 * 
-	 * @return the Role required
+	 * @return Role 
+	 *              the Role that it's name was passed
 	 */
 
 	public static Role getRoleByName(String role) {
