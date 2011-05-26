@@ -405,10 +405,8 @@ public class Users extends CoolCRUD {
 	 * @param ideaId
 	 *            : the ID of the idea to be reported
 	 * 
-	 * 
 	 */
 	public static void reportIdeaAsSpam(long ideaId) {
-		System.out.println("hadiiiiiiiiiiiiiiii");
 		Idea idea = Idea.findById(ideaId);
 		User reporter = Security.getConnected();
 		idea.spamCounter++;
@@ -463,13 +461,11 @@ public class Users extends CoolCRUD {
 	 * 
 	 */
 	public static void reportTopicAsSpam(long topicId) {
-		System.out.println("hadiiiiiiiiiiiiiiii");
 		Topic topic = Topic.findById(topicId);
 		User reporter = Security.getConnected();
 		if (topic.reporters == null)
 			topic.reporters = "";
 		topic.reporters += reporter.id + ",";
-		System.out.println(topic.reporters + " howa da ");
 		List<User> organizers = Users.getEntityOrganizers(topic.entity);
 		for (int j = 0; j < organizers.size(); j++) {
 			Mail.reportTopicMail(topic.creator, reporter, topic,
@@ -477,7 +473,6 @@ public class Users extends CoolCRUD {
 		}
 		topic.save();
 		reporter.save();
-		// System.out.println(reporter.ideasReported.get(0).toString());
 		TopicSpamView(topicId);
 
 	}
@@ -498,16 +493,12 @@ public class Users extends CoolCRUD {
 		boolean alreadyReported = false;
 		Topic topic = Topic.findById(topicId);
 		User reporter = Security.getConnected();
-		// for (int i = 0; i < topic.reporters.size(); i++) {
-		// if (reporter.username.equals(topic.reporters.get(i).username))
-		// alreadyReported = true;
-		// }
 		redirect("/topics/show?topicId=" + topic.getId(), alreadyReported);
 		// render(alreadyReported);
 	}
 
 	/**
-	 * this Method is responsible for reporting a Topic as a spam
+	 * this Method is responsible for reporting a comment as a spam
 	 * 
 	 * @author ${Ahmed El-Hadi}
 	 * 
