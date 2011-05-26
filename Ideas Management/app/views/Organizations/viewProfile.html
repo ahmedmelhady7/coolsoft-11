@@ -479,92 +479,96 @@ $(document).ready(function(){
 			                </form> -->
 							
 							#{if (admin || creator)}
-							<h4>Create Relationship between <select id="relType" onchange="showRelationForm()">
-									<option>select object</option>
-									<option>Entities</option>
-									<option>Topics</option>
-									<option>Tags</option>
-								</select> :</h4>
-								name: <select id="rels"> 
-								<option>choose name</option>
-								#{list items:org.relationNames, as:'relName'}
-								<option>${relName}</option>
-								#{/list}
-								</select> <input id="rTextForm" type="text" /> <input type="button" class="linkButton" value="add new name" onclick="addName()" /><span id="duplicate"></span>
-							
-							<p><form id="eform" style="display: none;">
-								
-								Source: <select id="ent1">
-								<option>Select Entity</option>
-								#{list items:entitiesCanBeRelated, as:'entityElement'}
-								<option value="${entityElement.id}">${entityElement.name}</option>
-								#{/list}
-								</select>		
-								
-								Destination: <select id="ent2">
-								<option>Select Entity</option>
-								#{list items:entitiesCanBeRelated, as:'entityElement'}
-								<option value="${entityElement.id}">${entityElement.name}</option>
-								#{/list}
-								</select>			
-								
-								<input type="button" value="Create Relation" onclick="createERelation()"/>
-								
-							</form></p>
-							<p>
-							<form id="tform" style="display: none;">
-													
-								Source: <select id="tpc1"> 
-								<option>Select Topic</option>
-								#{list items:topics, as:'topicElement'}
-								<option value="${topicElement.id}">${topicElement.title}</option>
-								#{/list}
-								</select>
-								
-								Destination: <select id="tpc2"> 
-								<option>Select Topic</option>
-								#{list items:topics, as:'topicElement'}
-								<option value="${topicElement.id}">${topicElement.title}</option>
-								#{/list}
-								</select>
-								
-								<input type="button" value="Create Relation" onclick="createTRelation()" class="linkButton"/>
-								
-							</form></p>
-							
-							
-						<p>	<form id="gform" style="display: none;">
-													
-								Source: <select id="tg1"> 
-								<option>Select Tag</option>
-								#{list items:tags, as:'tagElement'}
-								<option value="${tagElement.id}">${tagElement.name}</option>
-								#{/list}
-								</select>
-			
-								Destination: <select id="tg2"> 
-								<option>Select Tag</option>
-								#{list items:tags, as:'tagElement'}
-								<option value="${tagElement.id}">${tagElement.name}</option>
-								#{/list}
-								</select>
-			
-								<input type="button" value="Create Relation" onclick="createGRelation()" />				
-								
-							</form></p>
-							#{/if}
+							<div style="background:#b2b2b2;">
+							<br />
+				<h4>Create Relationship between <select id="relType" onchange="showRelationForm()">
+						<option>select object</option>
+						<option>Entities</option>
+						<option>Topics</option>
+						<option>Tags</option>
+					</select> :</h4>
+					name: <select id="rels"> 
+					<option>choose name</option>
+					#{list items:org.relationNames, as:'relName'}
+					<option>${relName}</option>
+					#{/list}
+					</select> <input id="rTextForm" type="text" /> <input type="image" src="/public/images/icons/add.png" title="add new name" onclick="addName()" /> <font color="red"><span id="duplicate"></span></font>
 				
-							#{if isMember == true || org.privacyLevel == 2 || admin}
-			                <form action="@{Contribution.contribution()}" method="post">
+				<p><form id="eform" style="display: none;">
+					
+					Source: <select id="ent1">
+					<option>Select Entity</option>
+					#{list items:entitiesCanBeRelated, as:'entityElement'}
+					<option value="${entityElement.id}">${entityElement.name}</option>
+					#{/list}
+					</select>
+					
+					Destination: <select id="ent2">
+					<option>Select Entity</option>
+					#{list items:entitiesCanBeRelated, as:'entityElement'}
+					<option value="${entityElement.id}">${entityElement.name}</option>
+					#{/list}
+					</select>			
+					
+					<input type="button" value="Create Relation" onclick="createERelation()"/> <font color="red"><span id="e_duplicate"></span></font>
+					
+				</form></p>
+				<p>
+				<form id="tform" style="display: none;">
+										
+					Source: <select id="tpc1"> 
+					<option>Select Topic</option>
+					#{list items:topics, as:'topicElement'}
+					<option value="${topicElement.id}">${topicElement.title}</option>
+					#{/list}
+					</select>
+					
+					Destination: <select id="tpc2"> 
+					<option>Select Topic</option>
+					#{list items:topics, as:'topicElement'}
+					<option value="${topicElement.id}">${topicElement.title}</option>
+					#{/list}
+					</select>
+					
+					<input type="button" value="Create Relation" onclick="createTRelation()" />
+					
+				</form></p>
+				
+				
+			<p>	<form id="gform" style="display: none;">
+										
+					Source: <select id="tg1"> 
+					<option>Select Tag</option>
+					#{list items:tags, as:'tagElement'}
+					<option value="${tagElement.id}">${tagElement.name}</option>
+					#{/list}
+					</select>
+
+					Destination: <select id="tg2"> 
+					<option>Select Tag</option>
+					#{list items:tags, as:'tagElement'}
+					<option value="${tagElement.id}">${tagElement.name}</option>
+					#{/list}
+					</select>
+
+					<input type="button" value="Create Relation" onclick="createGRelation()" />				
+					
+				</form></p>
+				<br />
+				</div>
+				#{/if}
+				
+				#{if isMember == true || org.privacyLevel == 2 || admin}
+                <form action="@{Contribution.contribution()}" method="post">
 			                    <input type="hidden" name="id" value="${org.id}">Contribution Points: <input type="submit" value="View" class="linkButton">
-			                </form>
-							#{/if}           
+                </form>
+				#{/if}
 							 </body>
 			     
 			</div>
 		</div>
 	</div>       
-			</html>
+            </html>
             <script type="text/javascript">
             	
 				function createERelation(){
@@ -572,10 +576,12 @@ $(document).ready(function(){
 					var s = document.getElementById("ent1").value;
 					var d = document.getElementById("ent2").value;
 					
+					var tmp_n;
+					
 					if (n == "choose name" || s == "Select Entity" || d == "Select Entity") {
-						alert("Please fill the required filed(s)");
+						document.getElementById('e_duplicate').textContent="Please fill all required field(s).";
 					}else if (s == d){
-						alert("Cannot relate entity to itself!");
+						document.getElementById('e_duplicate').textContent="Cannot relate entity to itself!";
 					}else {
 						$.post('@{EntityRelationships.createRelationship()}', {
 							name: n,
@@ -583,10 +589,13 @@ $(document).ready(function(){
 							destinationId: d
 						}, function(data){
 							if(data == "true"){
-								alert("you have created relation: " + n);
-								location.reload();
+								document.getElementById('e_duplicate').textContent="Relation \"" + n + "\" have been created.";
+//								location.reload();
+								$('#e_duplicate').fadeOut('slow');
+								//reset values.
+								
 							}else if(data == "false"){
-								alert("relation already exists!!");
+								document.getElementById('e_duplicate').textContent="Relation already exists.";
 							}
 						});
 					}
@@ -681,13 +690,14 @@ $(document).ready(function(){
 							document.getElementById('rTextForm').value = "";
 						}
 						else if(data == "true"){
-							document.getElementById('duplicate').textContent=" Duplicate!!";
+							document.getElementById('duplicate').textContent="Name already exists.";
 						}
 						});
 					}else{
-						alert("enter a name!");
+						document.getElementById('duplicate').textContent="Please enter a name.";
 					}
 				}
+
 				
 				
                                 function echeck(str) {
