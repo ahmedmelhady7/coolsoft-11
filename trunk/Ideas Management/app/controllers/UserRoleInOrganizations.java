@@ -34,7 +34,7 @@ public class UserRoleInOrganizations extends CoolCRUD {
 
 	public static boolean addEnrolledUser(User user, Organization org, Role role) {
 
-		UserRoleInOrganization userRoleInOrg = 
+		try{UserRoleInOrganization userRoleInOrg = 
 		new UserRoleInOrganization(user, org, role).save();
 		user.userRolesInOrganization.add(userRoleInOrg);
 		org.userRoleInOrg.add(userRoleInOrg);
@@ -42,13 +42,11 @@ public class UserRoleInOrganizations extends CoolCRUD {
 		user.save();
 		org.save();
 		role.save();
-
-
-         /*
-		UserRoleInOrganization o = new UserRoleInOrganization(user, org, role, 1, "");
-		o.save();
-		*/
 		return true;
+		}
+		catch(Exception e){
+			return false;
+		}
 	}
 
 	/**
@@ -135,5 +133,7 @@ public class UserRoleInOrganizations extends CoolCRUD {
 		return false;
 
 	}
+	
+	
 
 }
