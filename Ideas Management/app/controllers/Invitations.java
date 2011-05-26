@@ -67,7 +67,7 @@ public class Invitations extends CoolCRUD {
 							id, "entity")) {
 				MainEntity entity = MainEntity.findById(id);
 
-				render(type, check, entity, usersMatched, user);
+				render(type, check, entity, usersMatched, user, usersInvited);
 			} else {
 				BannedUsers.unauthorized();
 
@@ -442,10 +442,12 @@ public class Invitations extends CoolCRUD {
 	 */
 
 	public static void respond(int id, long i) {
-
+         System.out.println(id);
+         System.out.println(i); 
 		Invitation invite = Invitation.findById(i);
 		notFoundIfNull(invite);
 		String roleName = invite.role.toLowerCase();
+		 System.out.println(roleName);
 		Organization organization = null;
 		MainEntity entity = null;
 		Topic topic = null;
@@ -468,11 +470,18 @@ public class Invitations extends CoolCRUD {
 		if (id == 1) {
 
 			if (!flag) {
+				 System.out.println("HERE");
 				if (role.roleName.equals("organizer")) {
 					UserRoleInOrganizations.addEnrolledUser(user, organization,
 							role, entity.id, "entity");
 
 					for (int c = 0; c < entity.topicList.size(); c++) {
+						UserRoleInOrganization oldRole=UserRoleInOrganization.find("byEnrolledAndRoleAndEntityTopicIDAndType",
+								user,"idea developer",entity.topicList.get(c).id,"topic").first();
+						System.out.println("YES");
+						if(oldRole !=null)
+							oldRole.delete();
+						 
 						UserRoleInOrganizations.addEnrolledUser(user,
 								organization, role, entity.topicList.get(c).id,
 								"topic");
@@ -491,6 +500,11 @@ public class Invitations extends CoolCRUD {
 										subEntity.get(j).id, "entity");
 								for (int s = 0; s < subEntity.get(j).topicList
 										.size(); s++) {
+									UserRoleInOrganization oldRole=UserRoleInOrganization.find("byEnrolledAndRoleAndEntityTopicIDAndType",
+											user,"idea developer",entity.topicList.get(j).id,"topic").first();
+									if(oldRole !=null)
+										oldRole.delete();
+									
 									UserRoleInOrganizations
 											.addEnrolledUser(user,
 													organization, role,
