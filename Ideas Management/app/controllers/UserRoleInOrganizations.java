@@ -11,7 +11,11 @@ import models.Role;
 import models.Topic;
 import models.User;
 import models.UserRoleInOrganization;
-
+/**
+ * 
+ * @author Nada Ossama
+ *
+ */
 @With(Secure.class)
 public class UserRoleInOrganizations extends CoolCRUD {
 
@@ -88,7 +92,7 @@ public class UserRoleInOrganizations extends CoolCRUD {
 
 	/**
 	 * checks whether this user is organizer or not given the organization
-	 * ,entity or topic REGARDLESS any restrictions , this method doesnot put
+	 * ,entity or topic regardless any restrictions , this method does not put
 	 * into consideration the state of the user
 	 * 
 	 * @author Nada Ossama
