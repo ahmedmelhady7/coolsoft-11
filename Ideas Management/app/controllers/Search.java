@@ -543,7 +543,7 @@ public class Search extends Controller {
 	}
 
 	/**
-	 * method handelingOrAnd decides which list is to be passed for the filter
+	 * @description: method handelingOrAnd decides which list is to be passed for the filter
 	 * method if the choice is and so we will need to filter on the filtered
 	 * list but if or then we filter on the main list
 	 * 
@@ -554,7 +554,6 @@ public class Search extends Controller {
 	 * @param andOr
 	 *            :: "char"; of the filter option view as input from user
 	 * 
-	 * @return void.
 	 * 
 	 */
 
@@ -569,7 +568,7 @@ public class Search extends Controller {
 
 	/**
 	 * 
-	 * sortA method sorts according to rates (known from input) in ascending
+	 * @description: sortA method sorts according to rates (known from input) in ascending
 	 * order
 	 * 
 	 * task.
@@ -580,8 +579,6 @@ public class Search extends Controller {
 	 * @story C4S04 sort ascending the search result according to rates
 	 * 
 	 * 
-	 * 
-	 * @return void
 	 * 
 	 * 
 	 */
@@ -657,7 +654,7 @@ public class Search extends Controller {
 
 	/**
 	 * 
-	 * sortD_Views method sorts according to views in descending order
+	 * @description: sortD_Views method sorts according to views in descending order
 	 * 
 	 * task.
 	 * 
@@ -667,7 +664,6 @@ public class Search extends Controller {
 	 * @story C4S04 sort descending the search result according to views
 	 * 
 	 * 
-	 * @return void
 	 * 
 	 * 
 	 */
@@ -923,7 +919,7 @@ public class Search extends Controller {
 
 	/**
 	 * 
-	 * sortA_Views method sorts according to views in ascending order
+	 * @description: sortA_Views method sorts according to views in ascending order
 	 * 
 	 * task.
 	 * 
@@ -933,7 +929,6 @@ public class Search extends Controller {
 	 * @story C4S04 sort ascending the search result according to views
 	 * 
 	 * 
-	 * @return void
 	 * 
 	 * 
 	 */
