@@ -54,8 +54,8 @@ public class Security extends Secure.Security {
 	 */
 
 	public static boolean authenticate(String username, String password) {
-		password = Codec.hexMD5(password);
-		System.out.println(password);
+		String tempPass = password;
+		password = Codec.hexMD5(password);		
 		User user = User.find(
 				"select u from User u where (u.username=? and u.password = ?)",
 				username, password).first();
@@ -64,9 +64,8 @@ public class Security extends Secure.Security {
 				flash.error("Your account has been deleted");
 				return false;
 			}
-			if(user.state.equals("w"))
-			{
-				activationKey(user.username);
+			if (user.state.equals("w")) {
+				activationKey(user.username, tempPass);
 			}
 			session.put("user_id", user.id);
 			return true;
@@ -75,28 +74,32 @@ public class Security extends Secure.Security {
 		return false;		
 	}
 	
-	public static void activationKey(String username) {
+	public static void activationKey(String username, String password) {
 		User user = User.find("select u from User u where u.username=?", 
 				username).first();
-		render(user);
+		render(user, password);
 	}
 	
 	public static void checkKey(String username, String password, @Required String actKey) {
 		User user = User.find("select u from User u where u.username=?", 
-				username).first();
+				username).first();	
 		if (validation.hasErrors()) {
 			flash.error("You must enter the activation key to login");
-			activationKey(user.username);
+			activationKey(user.username, password);
 		}
 		if (actKey.trim().equals("")) {
 			flash.error("You must enter the activation key to login");
-			activationKey(user.username);
+			activationKey(user.username, password);
 		}
 		if (user.activationKey.equals(actKey)) {
+			user.state = "a";
+			user._save();
+			System.out.println(username + " " + password);
 			authenticate(username, password);
+			Login.homePage();
 		} else {
-			flash.error("Incorrect activation key");
-			activationKey(user.username);
+			flash.error("Incorrect activation keyyyyyyyy");
+			activationKey(user.username, password);
 		}
 	}
 	

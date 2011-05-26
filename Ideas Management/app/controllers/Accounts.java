@@ -151,14 +151,15 @@ public class Accounts extends Controller {
 	 * 
 	 * 
 	 */
-	public static void activate(long userId) {
+	public static boolean activate(long userId) {
 		User user = User.findById(userId);
 		if (user.state.equals("a")) {
-			return;
+			return true;
 		}
 		user.state = "a";
 		user._save();
-		render(user.state);
+		return true;
+		
 	}
 
 	/**

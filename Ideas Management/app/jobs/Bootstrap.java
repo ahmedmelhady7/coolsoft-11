@@ -36,8 +36,8 @@ public class Bootstrap extends Job {
 			User rf = new User("aymaestro@gmail.com", "majic", "1234", "Ahmed",
 					"Maged", "What is our company's name?", "coolsoft", 0, "11/11/2010", "Egypt", "Programmer");
 			// System.out.println(rf.topicsReported.size());
-			rf.save();
-
+			rf.save();		
+			
 			User admin = new User("admin@coolsoft.com", "admin", "1234", "Mr.",
 					"admin", "What is our company's name?", "coolsoft", 0, "11/11/2010", "Egypt", "Programmer");
 			admin.isAdmin = true;
