@@ -18,7 +18,7 @@
 		${message}
 	</font>
 	<div class="objectForm">
-	<form name="orderform" action="@{Accounts.addUser()}" method="POST">
+	<form name="orderform" action="@{Accounts.addUser()}" method="POST" onsubmit="return jcap();">
 	
 		<p>
 			<label for="email">
@@ -35,7 +35,7 @@
 			<label for="username">
 				username
 			</label>
-			<input type="text" size =20 class = "" id="username" name=username onkeyup='checkUsername()' required/>
+			<input type="text" size =20 class = "" id="username" name=username onblur='checkUsername()' required/>
 		<span id="usernameMessage" class="usernameMessage"><font color="Red">
 					*
 				</font>Required</span>
@@ -87,6 +87,23 @@
 					*
 				</font>Required
 		</p>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <!-- all content by Jonathan Feaster (http://www.bitdesigner.com/) -->
+    <script src="@{'/public/javascripts/md5.js'}"></script>
+    <script src="@{'/public/javascripts/jcap.js'}"></script>    
+    <body>
+        <div style="text-align: left;">
+           
+                <p>
+                    This field helps prevent automated access.
+                </p>
+                <script type="text/javascript">
+                    sjcap();
+                </script>
+                	<p>
 			<hr>
 			<br>
 			<p>
@@ -378,7 +395,8 @@
 			<label for="profession">Profession</label>
 			<input type="text" id ="profession" size="20" name="profession">
 		</p>
-			<input type="submit"  value="Submit" />
+		
+			<input type="submit" id="submit" name="submit" value="Submit" />
 		</form>
 </div>
 
