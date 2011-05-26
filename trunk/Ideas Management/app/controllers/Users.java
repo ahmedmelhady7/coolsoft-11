@@ -534,16 +534,16 @@ public class Users extends CoolCRUD {
 		List<User> users = BannedUser
 				.find("select bu.bannedUser from BannedUser where bu.organization = ? and bu.action = ? and bu.resourceType = ? and bu.resourceID = ? ",
 						organization, action, type, sourceID).fetch();
-
+        List<User> usersReturned = new ArrayList();
 		for (int i = 0; i < users.size(); i++) {
-
-			if (!users.get(i).state.equals("a")) {
-				users.remove(i);
-				i--;
+           User temp = users.get(i);
+			if (temp.state.equals("a")&& (!usersReturned.contains(temp))) {
+				usersReturned.add(temp);
+				
 			}
 		}
 
-		return (users);
+		return (usersReturned);
 	}
 
 	/**
@@ -919,7 +919,7 @@ public class Users extends CoolCRUD {
 			for (int i = 0; i < organizers.size(); i++) {
 
 				if ((organizers.get(i).role.roleName.equals("organizer"))
-						&& organizers.get(i).enrolled.state.equals("a")) {
+						&& organizers.get(i).enrolled.state.equals("a") &&(!enrolled.contains(organizers.get(i).enrolled))) {
 					enrolled.add(organizers.get(i).enrolled);
 				}
 
@@ -954,7 +954,7 @@ public class Users extends CoolCRUD {
 							organization, entityId, "entity").fetch();
 			for (int i = 0; i < organizers.size(); i++) {
 				if (((organizers.get(i).role.roleName).equals("organizer"))
-						&& (organizers.get(i).enrolled.state.equals("a"))) {
+						&& (organizers.get(i).enrolled.state.equals("a"))&&(!enrolled.contains(organizers.get(i).enrolled))) {
 
 					enrolled.add(organizers.get(i).enrolled);
 				}
@@ -1049,7 +1049,7 @@ public class Users extends CoolCRUD {
 							organization).fetch();
 
 			for (int i = 0; i < enrolled.size(); i++) {
-				if (enrolled.get(i).state.equals("a")) {
+				if (enrolled.get(i).state.equals("a") && (!finalEnrolled.contains(enrolled.get(i)))) {
 					finalEnrolled.add(enrolled.get(i));
 				}
 			}
@@ -1098,7 +1098,7 @@ public class Users extends CoolCRUD {
 		}
 
 		for (int i = 0; i < enrolled.size(); i++) {
-			if (enrolled.get(i).state.equals("a")) {
+			if (enrolled.get(i).state.equals("a") && (!finalEnrolled.contains(enrolled.get(i))) ) {
 
 				finalEnrolled.add(enrolled.get(i));
 			}
@@ -1130,7 +1130,8 @@ public class Users extends CoolCRUD {
 				.find("byOrganizationAndEnrolled", org, user).fetch();
 
 		for (int i = 0; i < userRoleInOrg.size(); i++) {
-			if (userRoleInOrg.get(i).role.roleName.equals("organizer")) {
+			if (userRoleInOrg.get(i).role.roleName.equals("organizer") &&(!entities.contains((MainEntity) MainEntity.findById(userRoleInOrg
+						.get(i).entityTopicID)))) {
 				entities.add((MainEntity) MainEntity.findById(userRoleInOrg
 						.get(i).entityTopicID));
 			}
