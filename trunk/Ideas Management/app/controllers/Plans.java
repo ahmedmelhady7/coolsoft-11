@@ -1355,14 +1355,15 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
-	 * This methods This Method renders the Timeline view of a plan
-	 * 
-	 * @story C5S8
+	 * Renders the Timeline view of a plan
 	 * 
 	 * @author Alaa Samer
 	 * 
-	 * @param planId
-	 *            The id of the plan
+	 * @story C5S8
+	 * 
+	 * @param planId    The id of the plan needed to be viewed
+	 * 	
+	 *            
 	 * @throws java.text.ParseException
 	 */
 	public static void viewasTimeline(long planId) throws IOException,
@@ -1370,7 +1371,7 @@ public class Plans extends CoolCRUD {
 
 		User user = Security.getConnected();
 		Plan plan = Plan.findById(planId);
-
+		notFoundIfNull(plan);
 		List<Item> itemsList = plan.items;
 
 		boolean canView = false;
