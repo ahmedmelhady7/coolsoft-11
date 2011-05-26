@@ -1,4 +1,4 @@
-#{extends 'main.html' /}
+#{extends 'login/index.html' /}
 
 
 <head>
@@ -9,7 +9,7 @@
 	#{list items:users, as: 'user'}
 		<ul>
 			<li>${user.username} : ${user.communityContributionCounter} </li>
-			<HR>
+		
 		</ul>
 	#{/list}
 </body>

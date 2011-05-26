@@ -26,6 +26,7 @@ public class Contribution extends Controller
 	public static void contribution(long id)
 	{
 		//User user = Security.getConnected();
+		User user = Security.getConnected();
 		
 		List<User> users = Users.getEnrolledUsers((Organization)Organization.findById(id));
 		
@@ -44,7 +45,7 @@ public class Contribution extends Controller
 		        }
 		   }
 		}
-		render(users);
+		render(users,user);
 	}  
 	   
 }
