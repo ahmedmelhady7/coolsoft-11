@@ -217,11 +217,6 @@ public class Topics extends CRUD {
 		user.communityContributionCounter++;
 		user.save();
 		idea.save();
-		JsonObject json = new JsonObject();
-		json.addProperty("title", idea.title);
-		json.addProperty("description", idea.description);
-		json.addProperty("commentUser", user.username);
-		renderJSON(json.toString());
 	}
 
 	/**
@@ -1904,6 +1899,7 @@ public class Topics extends CRUD {
 
 		targetTopic.save();
 		user.save();
+		
 	}
 
 	/**

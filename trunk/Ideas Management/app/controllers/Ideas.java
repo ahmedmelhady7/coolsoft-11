@@ -43,9 +43,8 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 * @param topicId
 	 *            the topic that the idea belongs to
-	 *            
-	 * @return long
-	 *  		the method returns the id of the created draft idea
+	 * 
+	 * @return long the method returns the id of the created draft idea
 	 */
 
 	public static long createDraft(String title, String description,
@@ -103,7 +102,7 @@ public class Ideas extends CoolCRUD {
 	 */
 
 	public static void postDraft(long ideaId, String title, String description) {
-
+		User user = Security.getConnected();
 		Idea idea = Idea.findById(ideaId);
 		idea.isDraft = false;
 		idea.title = title;
@@ -111,6 +110,13 @@ public class Ideas extends CoolCRUD {
 		idea.author.communityContributionCounter++;
 		idea.author.save();
 		idea.save();
+
+		JsonObject json = new JsonObject();
+		json.addProperty("title", idea.title);
+		json.addProperty("description", idea.description);
+		json.addProperty("author", user.username);
+		json.addProperty("id", idea.id);
+		renderJSON(json.toString());
 	}
 
 	/**
@@ -135,6 +141,10 @@ public class Ideas extends CoolCRUD {
 		idea.title = title;
 		idea.description = description;
 		idea.save();
+		JsonObject json = new JsonObject();
+	
+		json.addProperty("id", idea.id);
+		renderJSON(json.toString());
 		// flash.success("aho");
 		// redirect("/ideas/editdraft?ideaId=" + ideaId);
 	}
@@ -217,7 +227,8 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 * @story C3S10
 	 * 
-	 * @param topicId : the id of the topic the idea will be posted in
+	 * @param topicId
+	 *            : the id of the topic the idea will be posted in
 	 * 
 	 * @description This method checks for the Validation of the information
 	 *              inserted in the Add form of an Idea and if they are valid
@@ -262,8 +273,7 @@ public class Ideas extends CoolCRUD {
 			try {
 				render(request.controller.replace(".", "/") + "/blank.html",
 						type, idea.title, idea.belongsToTopic,
-						idea.description, idea.commentsList,
-						message, topicId);
+						idea.description, idea.commentsList, message, topicId);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/blank.html", type, topicId);
 			}
@@ -308,8 +318,8 @@ public class Ideas extends CoolCRUD {
 		Topic topic = idea.belongsToTopic;
 		User user = Security.getConnected();
 		try {
-//			Logs.addLog( user, "delete", "Task", topic.id,
-//			topic.taskStory.componentID.project, cal.getTime() );
+			// Logs.addLog( user, "delete", "Task", topic.id,
+			// topic.taskStory.componentID.project, cal.getTime() );
 			String message = user.username + " has hidden the idea "
 					+ idea.title + " Justification : " + justification;
 			Notifications.sendNotification(idea.author.id, idea.id, "Idea",
@@ -367,10 +377,10 @@ public class Ideas extends CoolCRUD {
 		boolean notBlockedFromUsing = Users.isPermitted(user, "use", topicId,
 				"topic");
 		ArrayList<Label> ideasLabels = new ArrayList<Label>();
-		
+		boolean notInPlan = (idea.plan==null);
 		idea.incrmentViewed();
 		idea.save();
-		
+
 		for (Label label : user.myLabels)
 			if (label.ideas.contains(object))
 				ideasLabels.add(label);
@@ -378,8 +388,7 @@ public class Ideas extends CoolCRUD {
 		List<User> allUsers = User.findAll();
 		List<String> userNames = new ArrayList<String>();
 		String s;
-		for(int i = 0; i<allUsers.size();i++)
-		{
+		for (int i = 0; i < allUsers.size(); i++) {
 			s = allUsers.get(i).username;
 			userNames.add(s);
 		}
@@ -411,7 +420,7 @@ public class Ideas extends CoolCRUD {
 			render(type, ideasLabels, object, /* tags, */user, username, userId,
 					canReport, canDelete, comments, topic, plan,
 					permittedToTagIdea,
-					/* openToEdit, */topicId, ideaAlreadyReported, canUse,
+					/* openToEdit, */topicId,notInPlan,ideaAlreadyReported, canUse,
 					deletemessage, /*
 									 * deletable ,
 									 */
@@ -570,8 +579,8 @@ public class Ideas extends CoolCRUD {
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
 		Idea i = (Idea) object;
-		Topic topic = Topic.findById((long) 1); 
-		String message = ""; 
+		Topic topic = Topic.findById((long) 1);
+		String message = "";
 		i.belongsToTopic = topic;
 		User myUser = User.findById((long) 1);
 		i.author = myUser;
@@ -605,7 +614,7 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 * @author ${Ahmed EL-Hadi}
 	 * 
-	 * C3S6/C3S17
+	 *         C3S6/C3S17
 	 * 
 	 * @param ideaId
 	 *            : id of the idea to be deleted
@@ -625,7 +634,7 @@ public class Ideas extends CoolCRUD {
 				idea.author.communityContributionCounter--;
 				idea.author.save();
 				object._delete();
-				
+
 			}
 		} catch (Exception e) {
 			flash.error(Messages.get("crud.delete.error", type.modelName));
@@ -770,9 +779,7 @@ public class Ideas extends CoolCRUD {
 		User U = User.find("byUsername", userName).first();
 		String type = "Idea";
 		User user = Security.getConnected();
-		String desc = user.firstName
-				+ " "
-				+ user.lastName
+		String desc = user.firstName + " " + user.lastName
 				+ " shared an Idea with you";
 		long notId = ideaId;
 		long userId = U.id;
@@ -801,7 +808,6 @@ public class Ideas extends CoolCRUD {
 		i.save();
 		redirect("/ideas/show?ideaId=" + ideaId);
 	}
-
 
 	/**
 	 * @author Loaay Alkherbawy
@@ -864,15 +870,16 @@ public class Ideas extends CoolCRUD {
 		}
 		long idd = selectedIdeas.get(0).getId();
 		System.out.println(selectedIdeasString + " " + idd);
-		
+
 		render(selectedIdeas, topicId, selectedIdeasString, idd, user);
 	}
 
 	/**
-	 * @description method to merge ideas, overwrites the first idea with the new description
-	 * and title then deletes the other ideas, the authors of the deleted ideas
-	 * are added in the description as contributors and the merger is added to
-	 * the description as the merger
+	 * @description method to merge ideas, overwrites the first idea with the
+	 *              new description and title then deletes the other ideas, the
+	 *              authors of the deleted ideas are added in the description as
+	 *              contributors and the merger is added to the description as
+	 *              the merger
 	 * 
 	 * @author Mostafa Aboul Atta
 	 * 
@@ -944,8 +951,8 @@ public class Ideas extends CoolCRUD {
 	}
 
 	/**
-	 * @description takes an array of ideas ids and the topic id they belong to and returns a
-	 * list of the ideas
+	 * @description takes an array of ideas ids and the topic id they belong to
+	 *              and returns a list of the ideas
 	 * 
 	 * @author Mostafa Aboul-Atta
 	 * 
@@ -990,8 +997,8 @@ public class Ideas extends CoolCRUD {
 	 * @param ideaID
 	 *            ID of the idea that the user wants to add the comment to
 	 * @param comment
-	 *            Comment to be added to list of comments of the idea
-	 *            addes a comment to an idea
+	 *            Comment to be added to list of comments of the idea addes a
+	 *            comment to an idea
 	 */
 	public static void addCommentToIdea(long ideaID, String comment) {
 		Idea i = Idea.findById(ideaID);
