@@ -1,8 +1,33 @@
 #{extends 'Home/home.html' /}
+#{set title:'Contacts' /}
+
+<style type="text/css">
+.accordionItem h3 {
+            margin: 0;
+            font-size: 1.1em;
+            border-bottom: 1px solid #66d color: "#150517";
+        }
+        
+        .accordionItem h3:hover {
+            cursor: pointer;
+        }
+        
+        .accordionItem div {
+            margin: 0;
+            padding: 1em 0.4em;
+        }
+        
+        .accordionItem.hide h3 {
+        }
+        
+        .accordionItem.hide div {
+            display: none;
+        }
+</style>
+
 <div id = "contact">
-<div id="page">
-		<div id="page-bgtop">
-			<div id="page-bgbtm">
+<div id="pageNoSideBar">
+		<div id="pageNoSideBar-bgtop">			
 				<div id="content">
 					<div class="post">
 						<h2 class="title"><a href="#">Contact Us  </a></h2>
@@ -51,7 +76,7 @@
 								<br>
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Developer <i>Mostafa Aboul-Atta</i>
 								<br>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Developer/Team Leader<a href="mailto:mostafayasser.1991@g​mail.com"><i>Mostafa Yasser</i></a>							
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Developer/Team Leader<a href="mailto:mostafayasser.1991@gmail.com"><i>Mostafa Yasser</i></a>							
 								<br>
 								&nbsp;&nbsp;&nbsp;<b>Browsing Team: </b>
 								<br>
@@ -75,7 +100,7 @@
 								<br>
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Developer <i>Hassan Ziko</i>
 								<br>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Developer/Team Leader<a href="mailto:salma.qayed@gmail.co​m"><i>Salma Osama</i></a>								 
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Developer/Team Leader<a href="mailto:salma.qayed@gmail.com"><i>Salma Osama</i></a>								 
 								</li>							
 								<br>
 								<li><strong><u>To reach us all: </u></strong>
@@ -90,4 +115,51 @@
 	</div>
 </div>
 <!-- end #content -->
-</div>
+
+
+<script type="text/javascript">
+var accordionItems = new Array();
+
+//Grab the accordion items from the page
+var divs = document.getElementsByTagName('div');
+for (var i = 0; i < divs.length; i++) {
+    if (divs[i].className == 'accordionItem') {
+    	accordionItems.push(divs[i]);    	
+    }
+        
+}
+
+// Assign onclick events to the accordion item headings
+for (var i = 0; i < accordionItems.length; i++) {
+    var h3 = getFirstChildWithTagName(accordionItems[i], 'H3');
+    h3.onclick = toggleItem;
+}
+
+// Hide all accordion item bodies except the first and the first
+for (var i = 0; i < accordionItems.length; i++) {
+    accordionItems[i].className = 'accordionItem hide'; 
+}
+
+function toggleItem(){
+    var itemClass = this.parentNode.className;
+    
+    // Hide all items
+    for (var i = 0; i < accordionItems.length; i++) {
+        accordionItems[i].className = 'accordionItem hide';
+    }
+    
+    // Show this item if it was previously hidden
+    if (itemClass == 'accordionItem hide') {
+        this.parentNode.className = 'accordionItem';
+        
+    }
+}
+
+function getFirstChildWithTagName(element, tagName){
+    for (var i = 0; i < element.childNodes.length; i++) {
+        if (element.childNodes[i].nodeName == tagName) 
+            return element.childNodes[i];
+    }
+    
+}
+</script>
