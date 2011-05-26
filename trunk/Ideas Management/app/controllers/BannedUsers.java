@@ -88,7 +88,14 @@ public class BannedUsers extends CoolCRUD {
 
 		Organization organization = Organization.findById(orgId);
 
-		List<User> users = Users.searchOrganizer(organization);
+		List<User> temp = Users.searchOrganizer(organization);
+		List<User> users = new ArrayList<User>();
+		for (int i = 0 ; i < temp.size() ; i++){
+			if (!users.contains(temp.get(i))){
+				users.add(temp.get(i));
+			}
+		}
+		
 
 		long organizationID = orgId;
 		// boolean flag = false;
@@ -157,7 +164,7 @@ public class BannedUsers extends CoolCRUD {
 				finalBannedUsers.add(bannedUsers.get(i));
 			}
 		}
-		List<BannedUser> entityBannedUsers = new ArrayList<BannedUser>();
+		
 		List<BannedUser> topicBannedUsers = new ArrayList<BannedUser>();
 
 		for (int i = 0; i < finalBannedUsers.size(); i++) {
@@ -165,34 +172,10 @@ public class BannedUsers extends CoolCRUD {
 			if (bannedUser.resourceType.equalsIgnoreCase("topic")) {
 				topicBannedUsers.add(bannedUser);
 			}
-			if (bannedUser.resourceType.equalsIgnoreCase("entity")) {
-				entityBannedUsers.add(bannedUser);
-			}
+			
 		}
 
-		// List<BannedUser> sortedByEntity = sortByID(entityBannedUsers);
-		// List<BannedUser> sortedByTopic = sortByID(topicBannedUsers);
-		// List<BannedUser> sortByUserInEntity = sortByUser(entityBannedUsers);
-		// List<BannedUser> sortByUserInTopic = sortByUser(topicBannedUsers);
-		// List<BannedUser> sortByActionInEntity =
-		// sortByAction(entityBannedUsers);
-		// List<BannedUser> sortByActionInTopic =
-		// sortByAction(topicBannedUsers);
-		//
-		// String ids = "";
-		// String names = "";
-		// for(int i = 0 ; i < sortedByEntity.size() ; i++){
-		// ids = ids + sortedByEntity.get(i).resourceID + ",";
-		//
-		// MainEntity entity =
-		// MainEntity.findById(sortedByEntity.get(i).resourceID);
-		// names = names + (entity.name) + ",";
-		//
-		// }
-		// boolean Flag = false; if(user == null ){
-		// Flag = true;
-		// }
-		// System.out.println(Flag + "Yarubbbbbbbbbbbbbbbb");
+		
 
 		if (user.isAdmin || organization.creator.equals(user)) {
 			render(user, organizationID, topicBannedUsers);
@@ -776,13 +759,12 @@ public class BannedUsers extends CoolCRUD {
 
 					User restricted = User.findById(userId);
 					User restricter = Security.getConnected();
-					Log.addUserLog("User " + restricter.firstName + " "
-							+ restricter.lastName
-							+ " has restricted the Organizer: "
-							+ restricted.firstName + " " + restricted.lastName
-							+ " from " + actionToDo[i] + " In organization  : "
-							+ org + " In Entity :" + entity + " In Topic :"
-							+ topic, org, entity, topic);
+					String logDescription = "<a href=\"http://l27.0.0.1:9008/users/viewprofile?userId=" + restricter.id +"\">" + restricter.firstName + "</a>"
+	                + " has restricted " +"<a href=\"http://127.0.0.1:9008/users/viewprofile?userId=" + restricted.id +"\">" +  restricted.firstName + " "  + restricted.lastName + "</a>" 
+	                + " from : "+ actionToDo[i] + " In the Organization : " + "<a href=\"http://127.0.0.1:9008/organizations/viewprofile?id=" + organizationId +"\">" + org.name+ "</a>" +
+	                " In the Entity : " + "<a href =\"http://127.0.0.1:9008/mainentitys/viewentity?id=" + entity.id + "\">" + entity.name + "</a>" +
+	                " In the Topic :" +"<a href =\"http://127.0.0.1:9008/topics/show?topicId="+ entityTopicId + "\"> " + topic.title + "</a>";
+					Log.addUserLog(logDescription, org, entity, topic);
 
 					Notifications.sendNotification(userId, Security
 							.getConnected().getId(), "user",
@@ -1039,51 +1021,27 @@ public class BannedUsers extends CoolCRUD {
 				"select bu from BannedUser bu where bu.organization = ?",
 				organization).fetch();
 		List<BannedUser> finalBannedUsers = new ArrayList<BannedUser>();
+		List<User> searchResult = Users.searchOrganizer(organization);
 
 		for (int i = 0; i < bannedUsers.size(); i++) {
 			User banned = bannedUsers.get(i).bannedUser;
-			List<User> searchResult = Users.searchOrganizer(organization);
 			if (searchResult.contains(banned)) {
 				finalBannedUsers.add(bannedUsers.get(i));
 			}
 		}
 
 		List<BannedUser> entityBannedUsers = new ArrayList<BannedUser>();
-		List<BannedUser> topicBannedUsers = new ArrayList<BannedUser>();
-
+		
 		for (int i = 0; i < finalBannedUsers.size(); i++) {
 			BannedUser bannedUser = finalBannedUsers.get(i);
 
-			if (bannedUser.resourceType.equalsIgnoreCase("topic")) {
-				topicBannedUsers.add(bannedUser);
-
-			}
 			if (bannedUser.resourceType.equalsIgnoreCase("entity")) {
 				entityBannedUsers.add(bannedUser);
 
 			}
 		}
 
-		// List<BannedUser> sortedByEntity = sortByID(entityBannedUsers);
-		// List<BannedUser> sortedByTopic = sortByID(topicBannedUsers);
-		// List<BannedUser> sortByUserInEntity = sortByUser(entityBannedUsers);
-		// List<BannedUser> sortByUserInTopic = sortByUser(topicBannedUsers);
-		// List<BannedUser> sortByActionInEntity =
-		// sortByAction(entityBannedUsers);
-		// List<BannedUser> sortByActionInTopic =
-		// sortByAction(topicBannedUsers);
-		//
-		// String ids = "";
-		// String names = "";
-		// for(int i = 0 ; i < sortedByEntity.size() ; i++){
-		// ids = ids + sortedByEntity.get(i).resourceID + ",";
-		//
-		// MainEntity entity =
-		// MainEntity.findById(sortedByEntity.get(i).resourceID);
-		// names = names + (entity.name) + ",";
-		//
-		// }
-
+		
 		if (user.isAdmin || organization.creator.equals(user)) {
 			render(user, organizationID, entityBannedUsers);
 		} else {
@@ -1234,27 +1192,9 @@ public class BannedUsers extends CoolCRUD {
 			}
 		}
 
-		List<BannedUser> sortedByEntity = sortByID(entityBannedUsers);
-		List<BannedUser> sortedByTopic = sortByID(topicBannedUsers);
-		List<BannedUser> sortByUserInEntity = sortByUser(entityBannedUsers);
-		List<BannedUser> sortByUserInTopic = sortByUser(topicBannedUsers);
-		List<BannedUser> sortByActionInEntity = sortByAction(entityBannedUsers);
-		List<BannedUser> sortByActionInTopic = sortByAction(topicBannedUsers);
-
-		// String ids = "";
-		// String names = "";
-		// for(int i = 0 ; i < sortedByEntity.size() ; i++){
-		// ids = ids + sortedByEntity.get(i).resourceID + ",";
-		//
-		// MainEntity entity =
-		// MainEntity.findById(sortedByEntity.get(i).resourceID);
-		// names = names + (entity.name) + ",";
-		//
-		// }
-		// System.out.println(ids);
-		//
-
+		
 		if (number == 4) {
+			List<BannedUser> sortByActionInTopic = sortByAction(topicBannedUsers);
 			JsonObject json = new JsonObject();
 			String myname = sortByActionInTopic.get(order).bannedUser.firstName
 					+ " " + sortByActionInTopic.get(order).bannedUser.lastName;
@@ -1269,7 +1209,7 @@ public class BannedUsers extends CoolCRUD {
 			renderJSON(json.toString());
 		}
 		if (number == 5) {
-
+			List<BannedUser> sortedByTopic = sortByID(topicBannedUsers);
 			JsonObject json = new JsonObject();
 			String myname = sortedByTopic.get(order).bannedUser.firstName + " "
 					+ sortedByTopic.get(order).bannedUser.lastName;
@@ -1284,6 +1224,7 @@ public class BannedUsers extends CoolCRUD {
 			renderJSON(json.toString());
 		}
 		if (number == 6) {
+			List<BannedUser> sortByUserInTopic = sortByUser(topicBannedUsers);
 			JsonObject json = new JsonObject();
 			String myname = sortByUserInTopic.get(order).bannedUser.firstName
 					+ " " + sortByUserInTopic.get(order).bannedUser.lastName;
@@ -1297,6 +1238,7 @@ public class BannedUsers extends CoolCRUD {
 			renderJSON(json.toString());
 		}
 		if (number == 1) {
+			List<BannedUser> sortedByEntity = sortByID(entityBannedUsers);
 			JsonObject json = new JsonObject();
 			String myname = sortedByEntity.get(order).bannedUser.firstName
 					+ " " + sortedByEntity.get(order).bannedUser.lastName;
@@ -1310,6 +1252,7 @@ public class BannedUsers extends CoolCRUD {
 			renderJSON(json.toString());
 		} else {
 			if (number == 2) {
+				List<BannedUser> sortByUserInEntity = sortByUser(entityBannedUsers);
 				JsonObject json = new JsonObject();
 				String myname = sortByUserInEntity.get(order).bannedUser.firstName
 						+ " "
@@ -1324,7 +1267,7 @@ public class BannedUsers extends CoolCRUD {
 				json.addProperty("namee", name);
 				renderJSON(json.toString());
 			} else {
-
+				List<BannedUser> sortByActionInEntity = sortByAction(entityBannedUsers);
 				JsonObject json = new JsonObject();
 				String myname = sortByActionInEntity.get(order).bannedUser.firstName
 						+ " "
