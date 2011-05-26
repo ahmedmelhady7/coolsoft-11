@@ -198,6 +198,7 @@ public class RequestToJoins extends CoolCRUD {
 	public static void requestToJoinOrganization(long orgId, String description) {
 		User requester = Security.getConnected();
 		Organization organization = Organization.findById(orgId);
+		notFoundIfNull(organization);
 		if ((!Users.getEnrolledUsers(organization).contains(requester))
 				&& (organization.privacyLevel == 1)) {
 			RequestToJoin request = new RequestToJoin(requester, null,
