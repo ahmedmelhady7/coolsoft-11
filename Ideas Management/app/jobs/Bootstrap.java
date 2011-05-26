@@ -47,6 +47,17 @@ public class Bootstrap extends Job {
 					"ashraf", "What is our company's name?", "coolsoft", 0, "11/06/1990", "Egypt", "Programmer");
 			lama.isAdmin = true;
 			lama._save();
+			
+			User noha = new User("noha@gmail.com", "noha",
+					"1234", "noha", "khater", "What is our company's name?", "coolsoft",
+					0, "11/11/2010",
+					null, "").save();
+			
+			User alia = new User("alia@gmail.com", "alia",
+					"1234", "alia", "el-bolock", "What is our company's name?", "coolsoft",
+					0, "11/11/2010",
+					null, "").save();
+			
 
 			User hadi = new User("elhadiahmed3@gmail.com", "hadi.18",
 					"notreal", "Ahmed", "El-Hadi", "What is our company's name?", "coolsoft",
