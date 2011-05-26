@@ -1,17 +1,401 @@
-<html>
-    <head>
-        <meta name="generator" content="HTML Tidy, see www.w3.org">
+ #{extends 'Login/index.html' /}		
+#{set title: 'Entity Profile' /}        
+	<script src="/public/javascripts/bmi.js" language="javascript"></script>	
+	
+	<style>
+		#crudShow{
+			margin-top: 2%;
+			margin-right: 9%;
+			margin-bottom: 4%;
+			margin-left: 0%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #bbbbbb;
+			padding-top: 2%;
+			padding-right: 4%;
+			padding-bottom: 0%;
+			padding-left: 4%;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			border-right-width: 2px;
+			border-right-style: solid;
+			border-right-color: #bbbbbb;
+			border-left-width: 2px;
+			border-left-style: solid;
+			border-left-color: #bbbbbb;
+			border-top-width: 2px;
+			border-top-style: solid;
+			border-top-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+		
+		#descriptionShow{
+			margin-top: 2%;
+			margin-right: 5%;
+			margin-bottom: 4%;
+			margin-left: 5%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #FFFFFF;
+			padding-top: 2%;
+			padding-right: 4%;
+			padding-bottom: 0%;
+			padding-left: 4%;
+			position: relative;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+		
+		#backToOrg{
+			margin-left: 1%;
+			text-align:left;
+		}
+		
+		#about {
+		    text-indent: -999em;
+		    display: block;
+		    width: 0; 
+		    height: 0; 
+			border-left: 10px solid transparent; 
+			border-right: 10px solid transparent;
+			border-bottom: 10px solid #fff;
+			border-top: 0;
+			position: absolute;
+			top: -6px;
+			left: 24px;
+		}
 
-        <title>${entity.name} Followers</title>
+.arrow {
+   
+    height: 15px;
+    left: -7px;
+    position: absolute;
+    top: 25px;
+    width: 8px;
+}
+	</style>
+
+    <head>
+    	<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+		.accordionItem h3 {
+			margin-top:2%;
+			font-size:1.1em;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			background-color:#FFFFFF;
+			margin-right:23%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+		}
+		.accordionItem h3:hover {
+			cursor:pointer;
+		}
+		.accordionItem div {
+			padding:1em 0.4em;
+			margin-right:23%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+		}
+		.accordionItem.hide h3 {
+		}
+		.accordionItem.hide div {
+			display:none;
+		}
+		#deleteHide{
+			margin-top:2%;
+		text-align:right;
+        }
+		</style> 
+			
+        <title>Entity View</title>
+				<script type="text/javascript">function unfollow(id) {
+				$.post('@{Users.unfollowEntity()}', {
+					entityId: id
+				});
+				alert("done!");
+				location.reload(true);
+			}
+
+			var accordionItems = new Array();
+
+			function init() {
+
+				// Grab the accordion items from the page
+				var divs = document.getElementsByTagName( 'div' );
+				for ( var i = 0; i < divs.length; i++ ) {
+					if ( divs[i].className == 'accordionItem' )
+						accordionItems.push( divs[i] );
+				}
+
+				// Assign onclick events to the accordion item headings
+				for ( var i = 0; i < accordionItems.length; i++ ) {
+					var h3 = getFirstChildWithTagName( accordionItems[i], 'H3' );
+					h3.onclick = toggleItem;
+				}
+
+				// Hide all accordion item bodies except the first
+				for ( var i = 1; i < accordionItems.length; i++ ) {
+					accordionItems[i].className = 'accordionItem hide';
+				}
+			}
+
+			function toggleItem() {
+				var itemClass = this.parentNode.className;
+
+				// Hide all items
+				for ( var i = 0; i < accordionItems.length; i++ ) {
+					accordionItems[i].className = 'accordionItem hide';
+				}
+
+				// Show this item if it was previously hidden
+				if ( itemClass == 'accordionItem hide' ) {
+					this.parentNode.className = 'accordionItem';
+
+				}
+			}
+
+			function getFirstChildWithTagName( element, tagName ) {
+				for ( var i = 0; i < element.childNodes.length; i++ ) {
+					if ( element.childNodes[i].nodeName == tagName )
+						return element.childNodes[i];
+				}
+				
+			}
+			
+			function endRelation(relId){
+				$.post('@{EntityRelationships.delete()}', {relationId: relId});
+				alert("relation deleted succesfully!");
+				window.location.reload();
+			}
+			
+			function prompt1(){
+					var text = prompt("Why do you want to delete/hide this topic?");
+					
+					if(text){
+						document.getElementById("justText").value=text;
+						return true;
+					}
+					else{
+						return false;
+					}
+					
+				}
+			
+			</script>
     </head>
 
-    <body>
-        #{extends 'main.html' /} 
+    <body onload="init()">
+         #{extends 'Login/index.html' /}			
+        #{set title: 'Entity Profile' /}        
+	<div id="leftSidebar">
+    <ul>
+        <div style="clear: both;"></div>
+        <li>
+            <ul>
+            	<br />
+				<br />
+				<br />
+				<br />
+            #{if (canCreateSubEntity == 1)}
+            <li>
+                <a href="@{MainEntitys.goToCreateSubEntity(org.id,entity.id)}">Create SubEntity</a>
+            </li>
+            #{/if} 
+			<!-- ################## -->
+			#{if (canEdit == 1)}
+			<li>
+                <a href="@{MainEntitys.editEntityPage(entity.id)}">Edit ${entity.name}</a>
+            </li>
+			#{/if}
+			<!-- ################## -->			
+			#{if (canDeleteEntity == 1)}
+			<li>
+                <a href="@{MainEntitys.deleteEntity(entity.id)}">Delete ${entity.name}</a>
+            </li>
+			#{/if}	
+			<!-- ################## -->
+			<li>
+	           <a id="subentityLink"  style="cursor:pointer;"> Subentities </a>
+				 <div id="subentityLinks">
+                 <ul>
+                     #{if (subentities.size() > 0)}
+                     #{list items:subentities, as:'subentity'}
+                     <li type="disc">
+                         <a href="@{MainEntitys.viewEntity(subentity.id)}">${subentity.name}</a>
+                     </li>
+                     #{/list}
+                     #{/if}
+                     #{else}
+                     <li type="disc">No subentities yet!</li>
+                     #{/else}
+                 </ul>
+				</div>
+			</li>
+			<!-- ################## -->	
+            #{if follower == true}
+            <li>
+                <a onclick="unfollow('${entity.id}');">Unfollow ${entity.name}</a>
+            </li>
+            #{/if}
+            #{else}
+            <li>
+                <a href="@{followEntity(entity.id)}">Follow ${entity.name}</a>
+            </li>
+            #{/else}
+			<!-- ################## -->	
+            <li>
+                <a id="followersLink" style="cursor:pointer;">Followers</a>
+                <div id="followersLinks">
+                    <ul>
+                        #{if entity.followers.size()>0}
+                        #{list items:followers, as:'follower'}
+                        <li type="disc">
+                            <a href="@{Users.viewProfile(follower.id)}">${follower.firstName} ${follower.lastName}</a>
+                        </li>
+                        #{/list}
+                        #{/if}
+                        #{else}
+                        <LI type="disc">
+                            No Followers Yet!
+                        </LI>
+                        #{/else}
+                    </ul>
+                </div>
+            </li>
+			<!-- ################## -->				
+			#{if (canRequestRelationship == 1)}
+			<li>
+                <a href="@{MainEntitys.requestRelationship(user.id, org.id, entity.id)}">Request Relationship</a>
+            </li>
+			#{/if}
+			<!-- ################## -->				
+			#{if (canRequestRelationship == 1)}
+			<li>
+                <a href="@{MainEntitys.viewRelationships(user.id, org.id, entity.id, canRequestRelationship)}">View Relationships</a>
+            </li>
+			#{/if}	
+			<!-- ################## -->
+			#{if plans.size()>0}
+	        <li>
+	           <a id="planLink"  style="cursor:pointer;"> Plans </a>
+				 <div id="plansLinks">
+	            <ul>
+	            	#{list items:plans, as:'plan'}
+					<li>
+					     <a href="@{Plans.viewAsList(plan.id)}">${plan.title} </a>
+	                </li>
+					#{/list}
+				</ul>
+				</div>
+			</li>
+			#{/if}
+			<!-- ################## -->
+	        #{if entity.relatedItems.size()>0}
+	        <li>
+	           <a id="relatedItemsLink"  style="cursor:pointer;"> Related Items </a>
+				 <div id="relatedItemsLinks">
+	            <ul>
+	            	#{list items:entity.relatedItems, as:'item'}
+					<li>
+					     <a href="@{Plans.viewAsList(item.plan.id)}">${item.summary} </a>
+	                </li>
+					#{/list}
+				</ul>
+				</div>
+			</li>
+			#{/if}
+			<!-- ################## -->			
+			
+			<!-- End of sidebar -->
+            </ul>
+        </li>
+    </ul>
+</div>
+
+    <body onload="init()">
+	        
+		<div id="page">
+			<div id= "page-bgtop">
+				<script type="text/javascript">
+			        var planFlag = true;
+		        $('#plansLinks').hide();
+		        $('#planLink').click(function(){
+		            if (planFlag) {
+		                $('#plansLinks').show(500);
+		                planFlag = false;
+		            }
+		            else {
+		                $('#plansLinks').hide(500);
+		                planFlag = true;
+		            }
+		        });
+				
+				var relatedItemsFlag = true;
+		        $('#relatedItemsLinks').hide();
+		        $('#relatedItemsLink').click(function(){
+		            if (relatedItemsFlag) {
+		                $('#relatedItemsLinks').show(500);
+		                relatedItemsFlag = false;
+		            }
+		            else {
+		                $('#relatedItemsLinks').hide(500);
+		                relatedItemsFlag = true;
+		            }
+		        });
+				
+				var subentityFlag = true;
+		        $('#subentityLinks').hide();
+		        $('#subentityLink').click(function(){
+		            if (subentityFlag) {
+		                $('#subentityLinks').show(500);
+		                subentityFlag = false;
+		            }
+		            else {
+		                $('#subentityLinks').hide(500);
+		                subentityFlag = true;
+		            }
+		        });
+				
+                var followerFlag = false;
+                $('#followersLinks').hide();
+                $('#followersLink').click(function(){
+                    if (followerFlag) {
+                        $('#followersLinks').show(500);
+                        followerFlag = false;
+                    }
+                    else {
+                        $('#followersLinks').hide(500);
+                        followerFlag = true;
+                    }
+                });
+			</script>	
+	    <font color="Red">
+	        ${message}
+	    </font>
+	    <br />
+			
+	  <div id="backToOrg" ><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a></div>	
+	<div>
 		#{if entity.followers.size() > 0}
 		These are the currently available followers: <br />
 		<ul style="list-style: none;">
 			#{list items: entity.followers, as:'follower'}
-			<li>
+			<li type="disc">
 				${follower.firstName} ${follower.lastName}
 			</li>
 			#{/list}
@@ -19,6 +403,82 @@
 		#{/if}
 		#{else}
 		No users are following ${entity.name} at the moment!
-		#{/else}
-    </body>
-</html>
+		#{/else} 
+	</div>	
+	  
+			<head>
+			<script type="text/javascript">
+									   	function showRename(relId)
+	{
+	$('#' + relId).hide();
+	$('#renameButton_' + relId).hide();
+	$('#textToRename_' + relId).show();
+	$('#renameDone_' + relId).show();
+	}
+	
+	function actionRename(relId){
+		var newRelName = document.getElementById('textToRename_' + relId).value;
+		if(newRelName != "" && newRelName != document.getElementById(relId).textContent){
+		$.post('@{EntityRelationships.renameRelationship()}', {
+		relationToBeRenamedId: relId,
+		newName: newRelName
+	}, function(data){
+		if(data == "true"){
+			document.getElementById(relId).textContent=newRelName;
+				$('#' + relId).show();
+				$('#renameButton_' + relId).show();
+				$('#textToRename_' + relId).hide();
+				$('#renameDone_' + relId).hide();
+				document.getElementById('span_' + relId).textContent="";
+
+		}else if(data == "false"){
+			document.getElementById('span_' + relId).textContent="Relation already exists.";
+		}
+	});
+	}
+	else{
+		$('#' + relId).show();
+				$('#renameButton_' + relId).show();
+				$('#textToRename_' + relId).hide();
+				$('#renameDone_' + relId).hide();
+				document.getElementById('span_' + relId).textContent="";
+	}
+	}
+	
+	  	function showRename2(relId)
+	{
+	$('#' + relId).hide();
+	$('#renameButton2_' + relId).hide();
+	$('#textToRename2_' + relId).show();
+	$('#renameDone2_' + relId).show();
+	}
+	
+	function actionRename2(relId){
+		var newRelName = document.getElementById('textToRename2_' + relId).value;
+		if(newRelName != "" && newRelName != document.getElementById(relId).textContent){
+		$.post('@{EntityRelationships.renameRelationship()}', {
+		relationToBeRenamedId: relId,
+		newName: newRelName
+	}, function(data){
+		if(data == "true"){
+			document.getElementById(relId).textContent=newRelName;
+				$('#' + relId).show();
+				$('#renameButton2_' + relId).show();
+				$('#textToRename2_' + relId).hide();
+				$('#renameDone2_' + relId).hide();
+				document.getElementById('span_' + relId).textContent="";
+		}else if(data == "false"){
+			document.getElementById('span_' + relId).textContent="Relation already exists.";
+		}
+	});
+	}
+	else{
+				$('#' + relId).show();
+				$('#renameButton2_' + relId).show();
+				$('#textToRename2_' + relId).hide();
+				$('#renameDone2_' + relId).hide();
+				document.getElementById('span_' + relId).textContent="";
+	}
+	}
+			</script>
+			</head>
