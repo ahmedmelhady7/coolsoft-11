@@ -144,9 +144,20 @@ public class Bootstrap extends Job {
 
 			Tag tagEgypt = new Tag("Egypt", gov, sharaf).save();
 			Tag tagGov = new Tag("Government", gov, sharaf).save();
+			
+			Tag tag1 = new Tag("Cairo", guc, ashraf).save();
+			Tag tag2 = new Tag("Germany", guc, ashraf).save();
+			Tag tag3 = new Tag("DAAD", guc, ashraf).save();
+			Tag tag4 = new Tag("University", guc, ashraf).save();
 
+			
 			guc.relatedTags.add(tagGuc);
 			guc.relatedTags.add(tagEducation);
+			guc.relatedTags.add(tagEgypt);
+			guc.relatedTags.add(tag2);
+			guc.relatedTags.add(tag3);
+			guc.relatedTags.add(tag4);
+			guc.relatedTags.add(tag1);
 			guc.save();
 
 			gov.relatedTags.add(tagEgypt);
@@ -157,7 +168,8 @@ public class Bootstrap extends Job {
 					"Media Engineering and technology", guc, true).save();
 			gucMet.tagList.add(tagEducation);
 			gucMet._save();
-
+			
+			
 			MainEntity gucCs = new MainEntity("CS",
 					"Computer Science and Engineering", gucMet, guc, false)
 					.save();
