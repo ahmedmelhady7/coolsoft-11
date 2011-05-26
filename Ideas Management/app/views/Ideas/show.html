@@ -37,8 +37,8 @@
     #{if notBlockedFromUsing}
     <input type="button" class="linkButton"  id ='share' value="Share idea"/>
 	<div id="shareidea">
-			<input type="submit" onclick = "share()" class="linkButton"  value="Share with user" />
-			<input type="hidden" name="ideaId" value="${ideaId}">
+			<input type="submit" onclick = "share()" class="linkButton"  value="Share with user" /><input type="hidden" name="ideaId" value="${ideaId}">
+			
 			<select id="userName" name = "userName"> 
 					#{list userNames, as:'name'}
 					<option>${name}</option>
@@ -50,7 +50,7 @@
 			function share(){
 				
 				var userName = document.getElementById('userName').value
-				$.post('@{Ideas.shareIdea()}',{userName: userName, ideaID: ${ideaId}},function(){
+				$.post('@{Ideas.shareIdea()}',{userName: userName, ideaId: ${ideaId}},function(){
 					document.getElementById('shareSuccess').style.display = 'inline'
 				});
 				}
@@ -59,33 +59,39 @@
 		</br>
 		</br>
 		#{/if}
+		<font color="#4E4848">Idea rating : ${rate}</font>
+		<br/>
+		<br/>
  		#{if notBlockedFromUsing}
  		#{if checkPermitted}
  		#{if checkNotRated}
 		<input type="button" class="linkButton" id ='rate' value="Rate idea"/>
-		<font color="#4E4848">Idea rating : ${rate}</font>
+		
  		<br/>
  		<br/>
-		<form id="rateidea" action="@{Ideas.rate(ideaId,rat)}" method="GET">
-		    <input type="submit" class="linkButton" value="Submit rating"/>
-			<input type = "hidden" name = "ideaId" value = ${ideaId}/>
-			    <select name="rat">
-			        <option value="0">0</option>
-			        <option value="1">1</option>
-			        <option value="2">2</option>
-			        <option value="3">3</option>
-			        <option value="4">4</option>
-			        <option value="5">5</option>
-			    </select>
-		</form>
+		<form action="@{Ideas.rate(ideaId,rat)}" method="GET">
+    <input type="submit" value="Submit rating"/><input type = "hidden" name = "ideaId" value = ${ideaId} >
+    <select name="rat">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+</form>
 		#{/if}
 		#{else}
 		<font  id='rated'>You have already rated this idea</font>
+		<br/>
+		<br/>
 		#{/else}
 		#{/if}	
 		#{if notBlockedFromUsing}
 		#{if checkPermitted}
 		<input type="button" class="linkButton" id ='prior' value="Prioritize idea"/>
+		<br/>
+		<br/>
 		<font color="#4E4848">Idea priority : ${priority}</font>	
 		<br/>
 		<br/>
@@ -154,20 +160,18 @@
           <div class="about">Detail:</div>
 		  <h3>${object.description}</h3>
 		  <div class="objectForm">
-    #{if isAuthor}
-	&nbps &nbps &nbps &nbps  
-    #{form @delete(object._key())}
+     #{if isAuthor && notInPlan}
+	<form action="@{Topics.deleteIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">
 			<input type="image" style="float:right;" src="/public/images/icons/trash.png"  class="linkButton" title="Delete My Idea" />
-	#{/form} 
-	 
+	</form>
 	#{/if}
-	#{if canDelete && !isAuthor}
+	#{if canDelete && !isAuthor && notInPlan}
 		<form action="@{Topics.deleteIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         	<input type="hidden" name = "justification" id = "justText">
             <input type="image" style="float:right;" src="/public/images/icons/trash.png"  class="linkButton" title="Delete Idea"/>
     </form>
 	#{/if}
-	#{if canDelete && !isAuthor}
+	#{if canDelete && !isAuthor && notInPlan}
 	<form action="@{Topics.hideIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         	<input type="hidden" name = "justification" id = "justText2">
             <input type="submit" style="float:right;" class="linkButton" style="color: red;"  value="&{'Hide Idea', type.modelName}" />
@@ -213,7 +217,7 @@
  		#{else}No comments posted#{/else}
  		</div>
 
-			<div id="comment-content" style = "margin-left: 17%;"><textarea name = "comment" id= "commentTxt" rows="7" cols="80"></textarea></div>
+			<div id="comment-content"><textarea name = "comment" id= "commentTxt" rows="7" cols="80" required></textarea></div>
 			<br/>
 			<input class = "linkButton" style = "margin-left: 17%; float: right;" type = "button" value = "Comment" onclick="comment(${ideaId});" >
 <br/>
