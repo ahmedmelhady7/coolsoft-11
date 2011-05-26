@@ -14,7 +14,7 @@
 </script>
 <br />
 #{if canDelete == true}
-#{form @Pictures.uploadPicture(), enctype:'multipart/form-data'}<input type="file" name="image" /> image name: <input name="name" Required><input type="hidden" name="id" value="${id}"><input type="hidden" name="isOrganization" value="${isOrganization}"><input type="submit" name="submit" value="add to gallery" />#{/form}
+#{form @Pictures.uploadPicture(), enctype:'multipart/form-data'}<input type="file" name="image" id="image" size="36" onblur="return checkPhoto(this.value)" /> image name: <input name="name" Required><input type="hidden" name="id" value="${id}"><input type="hidden" name="isOrganization" value="${isOrganization}"><input type="submit" id="upload" name="upload" value="add to gallery" />#{/form}
 #{/if}
 <div id="page">
 	<center>
@@ -189,4 +189,21 @@
         
         /****************************************************************************************/
     });
+	
+	$('input[type="submit"]').attr('disabled','disabled');
+	
+function checkPhoto() {
+   var imagePath = document.getElementById('image').value;
+   var pathLength = imagePath.length;
+   var lastDot = imagePath.lastIndexOf(".");
+   var fileType = imagePath.substring(lastDot,pathLength);
+   if((fileType == ".gif") || (fileType == ".jpg") || (fileType == ".png") || (fileType == ".GIF") || (fileType == ".JPG") || (fileType == ".PNG")) {
+	   $('input[type="submit"]').removeAttr('disabled');
+	   return true;
+   } else {
+   	   alert("We support .JPG, .PNG, and .GIF image formats. Your file-type is " + fileType + ".");
+   	   $('input[type="submit"]').attr('disabled','disabled');
+	   return false;
+   }
+}
 </script>

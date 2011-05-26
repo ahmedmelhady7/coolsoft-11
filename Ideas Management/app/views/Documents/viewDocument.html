@@ -32,7 +32,7 @@
 </script>
 <div id="page">
 	<input type="hidden" id= "i" value="${document.userOrganizationId}">
-    <center>
+    <center><p>
         <b>${document.name}</b>   <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="del('${document.id}');">
         #{if canEdit == true}
         <form action="@{Documents.editDocument()}" method="post">
@@ -40,11 +40,8 @@
 			<input type="submit" value="edit">
         </form>
 		#{/if}
-		<input type="hidden" id= "b" value="${document.isOrganization}">
-        <p>
-            <textarea id="data" name="data" rows="30" cols="80" style="width: 40%">
-                ${document.data}
-            </textarea>
+		<input type="hidden" id= "b" value="${document.isOrganization}">     
+            <textarea id="data" name="data" rows="30" cols="80" style="width: 70%">${document.data}</textarea>
         </p>
     </center>
 </div>
