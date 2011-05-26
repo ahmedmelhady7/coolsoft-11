@@ -246,7 +246,7 @@ $(document).ready(function(){
             <ul>
             	#{if org.followers.size()>0}
             	#{list items:followers, as:'follower'}
-				<li>
+				<li type="disc">
 				     <a href="@{Users.viewProfile(follower.id)}">${follower.firstName} ${follower.lastName}</a>
                 </li>
 				#{/list}
