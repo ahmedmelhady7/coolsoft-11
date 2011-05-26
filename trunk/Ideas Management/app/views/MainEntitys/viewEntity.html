@@ -1,6 +1,86 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-		<script src="/public/javascripts/bmi.js" language="javascript"></script>	
+ #{extends 'Login/index.html' /}		
+#{set title: 'Entity Profile' /}        
+	<script src="/public/javascripts/bmi.js" language="javascript"></script>	
+	
+	<style>
+		#crudShow{
+			margin-top: 2%;
+			margin-right: 9%;
+			margin-bottom: 4%;
+			margin-left: 0%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #bbbbbb;
+			padding-top: 2%;
+			padding-right: 4%;
+			padding-bottom: 0%;
+			padding-left: 4%;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			border-right-width: 2px;
+			border-right-style: solid;
+			border-right-color: #bbbbbb;
+			border-left-width: 2px;
+			border-left-style: solid;
+			border-left-color: #bbbbbb;
+			border-top-width: 2px;
+			border-top-style: solid;
+			border-top-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+		
+		#descriptionShow{
+			margin-top: 2%;
+			margin-right: 5%;
+			margin-bottom: 4%;
+			margin-left: 5%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #FFFFFF;
+			padding-top: 2%;
+			padding-right: 4%;
+			padding-bottom: 0%;
+			padding-left: 4%;
+			position: relative;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+		
+		#backToOrg{
+			margin-left: 1%;
+			text-align:left;
+		}
+		
+		#about {
+		    text-indent: -999em;
+		    display: block;
+		    width: 0; 
+		    height: 0; 
+			border-left: 10px solid transparent; 
+			border-right: 10px solid transparent;
+			border-bottom: 10px solid #fff;
+			border-top: 0;
+			position: absolute;
+			top: -6px;
+			left: 24px;
+		}
+
+.arrow {
+   
+    height: 15px;
+    left: -7px;
+    position: absolute;
+    top: 25px;
+    width: 8px;
+}
+	</style>
 
     <head>
     	<style type="text/css">body {
@@ -12,8 +92,8 @@
 			font-size:1.1em;
 			border-bottom-width: 2px;
 			border-bottom-style: solid;
-			border-bottom-color: #FFFFFF;
-			background-color:#bbbbbb;
+			border-bottom-color: #bbbbbb;
+			background-color:#FFFFFF;
 			margin-right:23%;
 			border-top-left-radius: 10px;
 	        border-top-right-radius: 10px;
@@ -119,342 +199,372 @@
 			</script>
     </head>
 
-    <body onload="init()">
-         #{extends 'Login/index.html' /}		
-        #{set title: 'Entity Profile' /}        
-        <center>
-        	<big>
-        		<h2><b>${entity.name}</b></h2>
-        	</big>
-        </center><br><br>
-		
-		 <br/>
-		 		<div id="leftSidebar">
-        <ul>
-           <div style="clear: both;"></div>
-		#{if plans.size()>0}
+	<div id="leftSidebar">
+    <ul>
+        <div style="clear: both;"></div>
         <li>
-           <a id="planLink"  style="cursor:pointer;"> Plans </a>
-			 <div id="plansLinks">
             <ul>
-            	#{list items:plans, as:'plan'}
-				<li>
-				     <a href="@{Plans.viewAsList(plan.id)}">${plan.title} </a>
-                </li>
-				#{/list}
-			</ul>
-			</div>
-		</li>
-		#{/if}
-        #{if entity.relatedItems.size()>0}
-        <li>
-           <a id="relatedItemsLink"  style="cursor:pointer;"> Related Items </a>
-			 <div id="relatedItemsLinks">
-            <ul>
-            	#{list items:entity.relatedItems, as:'item'}
-				<li>
-				     <a href="@{Plans.viewAsList(item.plan.id)}">${item.summary} </a>
-                </li>
-				#{/list}
-			</ul>
-			</div>
-		</li>
-		#{/if}
-		</ul>
-		</div>	
-<script type="text/javascript">
-	        var planFlag = true;
-        $('#plansLinks').hide();
-        $('#planLink').click(function(){
-            if (planFlag) {
-                $('#plansLinks').show(500);
-                planFlag = false;
-            }
-            else {
-                $('#plansLinks').hide(500);
-                planFlag = true;
-            }
-        });
-		
-		var relatedItemsFlag = true;
-        $('#relatedItemsLinks').hide();
-        $('#relatedItemsLink').click(function(){
-            if (relatedItemsFlag) {
-                $('#relatedItemsLinks').show(500);
-                relatedItemsFlag = false;
-            }
-            else {
-                $('#relatedItemsLinks').hide(500);
-                relatedItemsFlag = true;
-            }
-        });
-
-	</script>	
-    <font color="Red">
-        ${message}
-    </font>
-    <br/>
-        <p>Description:</br>
-        ${entity.description}</p> 
-        #{if subentities.size() > 0}
-		List of subentities: <br />
-        <ul style="list-style: none;">   
-		#{list items:subentities, as:'subentity'}
-		<li>
-			<a href="@{MainEntitys.viewEntity(subentity.id)}">${subentity.name}</a>
-		</li>
-		#{/list}
-		</ul>
-		#{/if}
-		#{else}
-		No subentities available for this entity!
-		#{/else}
-		<br />
-		#{if (canCreateSubEntity == 1)}
-		<a href="@{MainEntitys.goToCreateSubEntity(org.id,entity.id)}">Create new SubEntity</a>
-		#{/if}
-		<br />
-		#{if (entity.createRelationship == true)}
-		#{if (canCreateRelationship == true)}
-		<a href="@{MainEntitys.createRelation(entity.id,org.id)}">Create Relation</a>
-		<br />
-		#{/if}
-		#{/if}
-		<div>
-<a onclick="$('#lista').slideToggle()">Show Relationships</a>
-   <div id="lista" style="display: none;">
-   	#{if entity.relationsSource != null}
-      #{list items:entity.relationsSource, as:'relationElement'}
-			<ul><a href="/mainentitys/viewentity?id=${relationElement.source.id}">${relationElement.source.name}</a> <q id=${relationElement.id}>${relationElement.name}</q> <a href="/mainentitys/viewentity?id=${relationElement.destination.id}">${relationElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relationElement.id})" /> <input type="button" value="end relationship" onclick="endRelation(${relationElement.id})" />#{/if}</ul>
-	  #{/list}	
-	#{/if}
-	#{if entity.relationsDestination != null}
-	  
-	  #{list items:entity.relationsDestination, as:'relElement'}
-			<ul><a href="/mainentitys/viewentity?id=${relElement.source.id}">${relElement.source.name}</a> <q id=${relElement.id}>${relElement.name}</q> <a href="/mainentitys/viewentity?id=${relElement.destination.id}">${relElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relElement.id})" />#{/if}</ul>
-	  #{/list}
-   	#{/if}
-   </div>
-</div>
-<head>
-<script type="text/javascript">
-	function showRename(relId)
-	{
-	var newRelName = prompt("Please enter the new name:", document.getElementById(relId).textContent);
-	location.reload();
-	if (newRelName!=null && newRelName!="")
-  	{
-  	$.post('@{EntityRelationships.renameRelationship()}', {
-		relationToBeRenamedId: relId,
-		newName: newRelName
-	});
-	
-  	}
-	}
-</script>
-</head>
-		
-		<form action="@{MainEntitys.viewFollowers()}">
-            <HR>
-            	<input type="hidden" name="entityId" value="${entity.id}">
-            	<input type="hidden" name="flag" value="true">
-            	#{if (!entity.followers.contains(user))}            
-            	<p>
-                Follow ${entity.name} 
-                <input type="submit" value="Follow">
-                <br/>
-                #{/if}
-                </form>
-				#{if follower == true}
-			<form onsubmit="unfollow('${entity.id}');" method="post">
-			<p>
-			Unfollow ${entity.name} <input type="submit" value="unfollow" />
-			</p>	
-			</form>
-			#{/if}
-       <form action="@{MainEntitys.viewFollowers()}">
-          <input type="hidden" name="entityId" value="${entity.id}">
-          <input type="hidden" name="flag" value="false">
-          View ${entity.name} Followers 
-          <input type="submit" value="Followers">
-          <br/>
-          <HR>
-       </form>
-		
-		<p>		
-		    #{if topicList.size() > 0}
-			<br />
-		<p>List of Topics:</p>
-        <ul style="list-style: none;">   
-		#{list items:topicList, as:'topic'}
-		
-		#{if topic.isDraft == false}
-		<li>
-			#{if topic.hidden == false}
-			#{if topic.canView(user)}
-			<div class="accordionItem">
-			<h3><a href="@{Topics.show(topic.id)}"> &nbsp ${topic.title}</a>#{if permission == 1}
-  			   #{if !topic.hidden}
-   				 #{if topic.isDeletable()}
-   				   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-       				 
-        				<input type="hidden" name = "justification" id = "justText"/>
-           			    <input type="image" style="float:right;" title="Delete Topic" src="/public/images/icons/trash.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
-      			    
-    			   </form> 
-		        #{/if}
-                #{if !topic.isDeletable()}
-				#{if topic.plan == null}
-                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-                   
-                      	<input type="hidden" name = "justification" id = "justText"/>
-                       <input type="submit" style="float:right;" title="Hide Topic" class = "linkButton"/>
-                   
-                 </form> 
-				#{/if}
-            	#{/if}
-             #{/if}
-             #{if topic.hidden}		
-                #{if topic..hider.username == actor.username}		
-		           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
-	                 		
-                         <input type="submit" title="Unhide" style="float:right;" class = "linkButton"/>		
-                  		
-                  </form>			
-                #{/if}		
-            #{/if}
-          #{/if}</h3>
-				<div>
-					<p><font size=2>Description: ${topic.description}</font></p>
-					<p><font size=2>Creator: ${topic.creator}</font></p>
+            	<br />
+				<br />
+				<br />
+				<br />
+            	#{if plans.size()>0}
+	        <li>
+	           <a id="planLink"  style="cursor:pointer;"> Plans </a>
+				 <div id="plansLinks">
+	            <ul>
+	            	#{list items:plans, as:'plan'}
+					<li>
+					     <a href="@{Plans.viewAsList(plan.id)}">${plan.title} </a>
+	                </li>
+					#{/list}
+				</ul>
 				</div>
-			</div>
+			</li>
 			#{/if}
+	        #{if entity.relatedItems.size()>0}
+	        <li>
+	           <a id="relatedItemsLink"  style="cursor:pointer;"> Related Items </a>
+				 <div id="relatedItemsLinks">
+	            <ul>
+	            	#{list items:entity.relatedItems, as:'item'}
+					<li>
+					     <a href="@{Plans.viewAsList(item.plan.id)}">${item.summary} </a>
+	                </li>
+					#{/list}
+				</ul>
+				</div>
+			</li>
+			#{/if}
+            </ul>
+        </li>
+    </ul>
+</div>
+
+    <body onload="init()">
+	        
+		<div id="page">
+			<div id= "page-bgtop">
+				<script type="text/javascript">
+			        var planFlag = true;
+		        $('#plansLinks').hide();
+		        $('#planLink').click(function(){
+		            if (planFlag) {
+		                $('#plansLinks').show(500);
+		                planFlag = false;
+		            }
+		            else {
+		                $('#plansLinks').hide(500);
+		                planFlag = true;
+		            }
+		        });
+				
+				var relatedItemsFlag = true;
+		        $('#relatedItemsLinks').hide();
+		        $('#relatedItemsLink').click(function(){
+		            if (relatedItemsFlag) {
+		                $('#relatedItemsLinks').show(500);
+		                relatedItemsFlag = false;
+		            }
+		            else {
+		                $('#relatedItemsLinks').hide(500);
+		                relatedItemsFlag = true;
+		            }
+		        });
+		
+			</script>	
+	    <font color="Red">
+	        ${message}
+	    </font>
+	    <br />
+	
+	  <div id="backToOrg" ><a href="@{Organizations.viewProfile(org.id)}"> Back to ${org.name}</a></div>	
+	
+	  <div id="crudShow"> 
+	        <p>
+			    <h3> 
+					<label name="entity.name" >
+						<font size = "6"  color="#000000">  ${entity.name} </font> 
+					</label>	
+					<p></p>
+					<font size= "4" color="#000000">	
+						<label for="object_organization">
+						 	in
+						</label>
+						<label name="entity.organization">
+						 	<a href="@{Organizations.viewProfile(org.id)}"> ${org.name}</a>
+						</label>
+					</font>
+				</h3>
+		   </p>
+		   
+		   <div id="descriptionShow"> 
+		   <div id="about">Details:</div>
+			           	<span class="arrow"></span>
+		   		${entity.description}
+				<br />
+				<br />
+		   </div>
+			
+	        #{if subentities.size() > 0}
+			List of subentities: <br />
+	        <ul style="list-style: none;">   
+			#{list items:subentities, as:'subentity'}
+			<li>
+				<a href="@{MainEntitys.viewEntity(subentity.id)}">${subentity.name}</a>
+			</li>
+			#{/list}
+			</ul>
 			#{/if}
 			#{else}
-			#{if topic.hider.username == user.username && topic.hidden == true}
-			<div class="accordionItem">
-			<h3><a href="@{Topics.show(topic.id)}">&nbsp ${topic.title}</a> <font color ="#FF0000" size =2> &nbsp hidden</font>
-					#{if permission == 1}
-  			   #{if !topic.hidden}
-   				 #{if topic.isDeletable()}
-   				   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-       				 <p class="crudDelete">
-        				<input type="hidden" name = "justification" id = "justText"/>
-           			    <input type="image" style="float:right;" src="/public/images/icons/trash.png" title="Delete Topic" class = "linkButton"/>
-      			    </p>
-    			   </form> 
-		        #{/if}
-                #{if !topic.isDeletable()}
-				#{if topic.plan == null}
-                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-                    <p class="crudDelete">
-                      	<input type="hidden" name = "justification" id = "justText"/>
-                       <input type="submit" style="float:right;" title="Hide Topic" class = "linkButton"/>
-                   </p>
-                 </form> 
-				#{/if}
-            	#{/if}
-             #{/if}
-             #{if topic.hidden}		
-                #{if topic.hider.username == user.username}		
-		           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
-	                  <p class="crudDelete">		
-                         <input type="submit"  style="float:right;" title="Unhide" class = "linkButton"/>		
-                      </p>		
-                  </form>			
-                #{/if}		
-            #{/if}
-          #{/if}</h3>
-				<div>
-					<p><font size=2>Description: ${topic.description}</font></p>
-					<p><font size=2>Creator: ${topic.creator}</font></p>
-				</div>
+			No subentities available for this entity!
+			#{/else}
+			<br />
+			#{if (canCreateSubEntity == 1)}
+			<a href="@{MainEntitys.goToCreateSubEntity(org.id,entity.id)}">Create new SubEntity</a>
+			#{/if}
+			<br />
+			#{if (entity.createRelationship == true)}
+			#{if (canCreateRelationship == true)}
+			<a href="@{MainEntitys.createRelation(entity.id,org.id)}">Create Relation</a>
+			<br />
+			#{/if}
+			#{/if}
+			<div>
+				<a onclick="$('#lista').slideToggle()">Show Relationships</a>
+				   <div id="lista" style="display: none;">
+				   	#{if entity.relationsSource != null}
+				      #{list items:entity.relationsSource, as:'relationElement'}
+							<ul><a href="/mainentitys/viewentity?id=${relationElement.source.id}">${relationElement.source.name}</a> <q id=${relationElement.id}>${relationElement.name}</q> <a href="/mainentitys/viewentity?id=${relationElement.destination.id}">${relationElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relationElement.id})" /> <input type="button" value="end relationship" onclick="endRelation(${relationElement.id})" />#{/if}</ul>
+					  #{/list}	
+					#{/if}
+					#{if entity.relationsDestination != null}
+					  
+					  #{list items:entity.relationsDestination, as:'relElement'}
+							<ul><a href="/mainentitys/viewentity?id=${relElement.source.id}">${relElement.source.name}</a> <q id=${relElement.id}>${relElement.name}</q> <a href="/mainentitys/viewentity?id=${relElement.destination.id}">${relElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="button" value="rename" onclick="showRename(${relElement.id})"/> <input type="button" value="end relationship" onclick="endRelation(${relElement.id})" />#{/if}</ul>
+					  #{/list}
+				   	#{/if}
+				   </div>
 			</div>
+			<head>
+			<script type="text/javascript">
+				function showRename(relId)
+				{
+				var newRelName = prompt("Please enter the new name:", document.getElementById(relId).textContent);
+				location.reload();
+				if (newRelName!=null && newRelName!="")
+			  	{
+			  	$.post('@{EntityRelationships.renameRelationship()}', {
+					relationToBeRenamedId: relId,
+					newName: newRelName
+				});
+				
+			  	}
+				}
+			</script>
+			</head>
+			
+			<form action="@{MainEntitys.viewFollowers()}">
+	            	<input type="hidden" name="entityId" value="${entity.id}"/>
+	            	<input type="hidden" name="flag" value="true"/>
+	            	#{if (!entity.followers.contains(user))} 
+	                Follow ${entity.name} 
+	                <input type="submit" value="Follow" class = "linkButton"/>
+	                <br />
+	                #{/if}
+	        </form>
+			#{if follower == true}
+				<form onsubmit="unfollow('${entity.id}');" method="post">
+				<p>
+				Unfollow ${entity.name} <input type="submit" value="unfollow" class = "linkButton"/>
+				</p>	
+				</form>
+			#{/if}
+					
+	       <form action="@{MainEntitys.viewFollowers()}">
+	          <input type="hidden" name="entityId" value="${entity.id}"/>
+	          <input type="hidden" name="flag" value="false"/>
+	          View ${entity.name} Followers 
+	          <input type="submit" value="Followers" class = "linkButton"/>
+	          <br />
+	       </form>
+		   	
+	       <div id="topicList">		
+		        #{if topicList.size() > 0}
+				<br />
+				<p>List of Topics:</p>
+		        <ul style="list-style: none;">   
+				#{list items:topicList, as:'topic'}
+				
+				#{if topic.isDraft == false}
+				<li>
+					#{if topic.hidden == false}
+					#{if topic.canView(user)}
+					<div class="accordionItem">
+					<h3><a href="@{Topics.show(topic.id)}"> &nbsp ${topic.title}</a>#{if permission == 1}
+		  			   #{if !topic.hidden}
+		   				 #{if topic.isDeletable()}
+		   				   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+		       				 
+		        				<input type="hidden" name = "justification" id = "justText"/>
+		           			    <input type="image" style="float:right;" title="Delete Topic" src="/public/images/icons/trash.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
+		      			    
+		    			   </form> 
+				        #{/if}
+		                #{if !topic.isDeletable()}
+						#{if topic.plan == null}
+		                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+		                   
+		                      	<input type="hidden" name = "justification" id = "justText"/>
+		                       <input type="submit" style="float:right;" title="Hide Topic" class = "linkButton"/>
+		                   
+		                 </form> 
+						#{/if}
+		            	#{/if}
+		             #{/if}
+		             #{if topic.hidden}		
+		                #{if topic..hider.username == actor.username}		
+				           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
+			                 		
+		                         <input type="submit" title="Unhide" style="float:right;" class = "linkButton"/>		
+		                  		
+		                  </form>			
+		                #{/if}		
+		            #{/if}
+		          #{/if}</h3>
+						<div>
+							<p><font size=2>Description: ${topic.description}</font></p>
+							<p><font size=2>Creator: ${topic.creator}</font></p>
+						</div>
+						<br />
+						<br />
+					</div>
+					#{/if}
+					#{/if}
+					#{else}
+					#{if topic.hider.username == user.username && topic.hidden == true}
+					<div class="accordionItem">
+					<h3><a href="@{Topics.show(topic.id)}">&nbsp ${topic.title}</a> <font color ="#FF0000" size =2> &nbsp hidden</font>
+							#{if permission == 1}
+		  			   #{if !topic.hidden}
+		   				 #{if topic.isDeletable()}
+		   				   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+		       				 <p class="crudDelete">
+		        				<input type="hidden" name = "justification" id = "justText"/>
+		           			    <input type="image" style="float:right;" src="/public/images/icons/trash.png" title="Delete Topic" class = "linkButton"/>
+		      			    </p>
+		    			   </form> 
+				        #{/if}
+		                #{if !topic.isDeletable()}
+						#{if topic.plan == null}
+		                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+		                    <p class="crudDelete">
+		                      	<input type="hidden" name = "justification" id = "justText"/>
+		                       <input type="submit" style="float:right;" title="Hide Topic" class = "linkButton"/>
+		                   </p>
+		                 </form> 
+						#{/if}
+		            	#{/if}
+		             #{/if}
+		             #{if topic.hidden}		
+		                #{if topic.hider.username == user.username}		
+				           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
+			                  <p class="crudDelete">		
+		                         <input type="submit"  style="float:right;" title="Unhide" class = "linkButton"/>		
+		                      </p>		
+		                  </form>			
+		                #{/if}		
+		            #{/if}
+		          #{/if}</h3>
+						<div>
+							<p><font size=2>Description: ${topic.description}</font></p>
+							<p><font size=2>Creator: ${topic.creator}</font></p>
+						</div>
+						<br />
+						<br />
+					</div>
+					#{/if}
+					#{/else}
+				</li>
+				#{/if}
+				#{/list}
+				</ul>
+				#{/if}
+				#{else}
+				No topics available for this entity!
+				#{/else}
+			</div>
+			
+			#{if invite == 1}		
+				 <input type="submit" value="Invite Organizers" onclick=location.href="@{Invitations.invite(entity.id)}" class = "linkButton"></input>
+			#{/if}	
+				<br />
+			#{if check == 1}
+			 	<input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}" class = "linkButton"></input>
+			#{/if}
+				
+			#{if check1 == 1}
+				 <input type="submit" value="view" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}" class = "linkButton"></input>
+			#{/if}
+			
+			#{if check2 == 1}
+				 <input type="submit" value="use" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}" class = "linkButton"></input>
+			#{/if}
+					
+			#{if permission == 1}
+				<br />
+				<input type="submit" value="Add A Topic" onclick=location.href="@{Topics.blank(entity.id)}" class = "linkButton"></input>
+				<br />
+			#{/if}
+			    
+			#{else}
+			#{if canRequest == 1}
+				<br />
+				<input type="submit" value="Request A Topic" onclick=location.href="@{TopicRequests.blank(entity.id)}" class = "linkButton"></input>
+				<br />
 			#{/if}
 			#{/else}
-		</li>
-		#{/if}
-		#{/list}
-		</ul>
-		#{/if}
-		#{else}
-		No topics available for this entity!
-		#{/else}
-		
-#{if invite == 1}		
- <input type="submit" value="Invite Organizers" onclick=location.href="@{Invitations.invite(entity.id)}">
-#{/if}	
-<br />
-#{if check == 1}
- <input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}">
-#{/if}	
-#{if check1 == 1}
- <input type="submit" value="view" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}">
-#{/if}
-#{if check2 == 1}
- <input type="submit" value="use" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}">
-#{/if}		
-		 #{if permission == 1}
-		 <br />
-<input type="submit" value="Add A Topic" onclick=location.href="@{Topics.blank(entity.id)}">
-        <br />
-		#{/if}
-    
-		#{else}
-		#{if canRequest == 1}
-		<br />
-<input type="submit" value="Request A Topic" onclick=location.href="@{TopicRequests.blank(entity.id)}">
-		<br />
-		#{/if}
-		#{/else}
-		
-		<form action="@{TopicRequests.list()}">
-			<input type="hidden" value=${entity.id} name='entityId'>
-			<input type="submit" value="View topic requests">
-		</form>
-		
-		#{if (canEdit == 1)}
-		<HR>
-		<input type="submit" value="Edit" onclick=location.href="@{MainEntitys.editEntityPage(entity.id)}">
-		<HR>	
-		#{/if}
-		
-		
-		#{if (canDeleteEntity == 1)}
-		<HR>
-		<form action="@{MainEntitys.deleteEntity(entity.id)}" method="post">
-		<input type="submit" value="Delete">
-		</form>
-		<HR>	
-		#{/if}	
-		
-		
-		#{if (canRequestRelationship == 1)}
+					
+				<form action="@{TopicRequests.list()}">
+					<input type="hidden" value=${entity.id} name='entityId'/>
+					<input type="submit" value="View topic requests" class = "linkButton"/>
+				</form>
+			
+			#{if (canEdit == 1)}
+				<input type="submit" value="Edit" onclick=location.href="@{MainEntitys.editEntityPage(entity.id)}" class = "linkButton"></input>
+			#{/if}
+			
+			
+			#{if (canDeleteEntity == 1)}
+				<form action="@{MainEntitys.deleteEntity(entity.id)}" method="post">
+				<input type="submit" value="Delete" class = "linkButton"/>
+				</form>
+			#{/if}	
+			
+			#{if (canRequestRelationship == 1)}
+				<form action="@{MainEntitys.requestRelationship(user.id, org.id, entity.id)}" method="post">
+					<input type="submit" value="Request Relationship Creation" class = "linkButton"/>
+				</form>		
 				
-		<form action="@{MainEntitys.requestRelationship(user.id, org.id, entity.id)}" method="post">
-			<input type="submit" value="Request Relationship Creation">
-		</form>		
-		
-		<form action="@{MainEntitys.viewRelationships(user.id, org.id, entity.id, canRequestRelationship)}" method="post">
-			<input type="submit" value="View Relationships">
-		</form>		
-		
-		#{/if}
-		
-		<script type="text/javascript">function unfollow(id) {
-				$.post('@{Users.unfollowEntity()}', {
-					entityId: id
-				});
-				alert("done");
-				location.reload(true);
-			}</script>
-		#{if (canRestrict == 1)}
-		
-		<input type="submit" value="Restrict/De-Restrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerEntityPath(entity.id)}">
-		<HR>	
-		#{/if}
-
-    </body>
-</html>
+				<form action="@{MainEntitys.viewRelationships(user.id, org.id, entity.id, canRequestRelationship)}" method="post">
+					<input type="submit" value="View Relationships" class = "linkButton"/>
+				</form>		
+			#{/if}
+			
+			<script type="text/javascript">function unfollow(id) {
+					$.post('@{Users.unfollowEntity()}', {
+						entityId: id
+					});
+					alert("done");
+					location.reload(true);
+				}
+			</script>
+			
+			#{if (canRestrict == 1)}
+			<input type="submit" value="Restrict/De-Restrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerEntityPath(entity.id)}" class = "linkButton"></input>
+			#{/if}
+		</div>
+		</div>
+		</div>
+	</body>
 
