@@ -712,7 +712,7 @@ public class Plans extends CoolCRUD {
 	 * This method takes the parameters from the web page of the plan creation
 	 * to instantiate a plan object, it also sends a notification to the
 	 * organizers of the topic, updates the log and then calls a method to view
-	 * the plan as alist
+	 * the plan as a list
 	 * 
 	 * @story C5S1
 	 * 
@@ -748,17 +748,18 @@ public class Plans extends CoolCRUD {
 					"plan", "A new plan: " + plan.title
 							+ " has been created in topic: " + topic.title);
 		}
-		String logDescription = "a href=\"http://localhost:9008/users/viewprofile?userId="
+		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
 				+ user.id
 				+ "\">"
-				+ user.firstName
+				+ user.username
 				+ "</a>"
-				+ "created the plan "
+				+ " created the plan "
 				+ "<a href =\"http://localhost:9008/plans/viewaslist?planId="
 				+ plan.id
 				+ "\">"
 				+ plan.title
-				+ " of the topic"
+				+ "</a>"
+				+ " of the topic "
 				+ "<a href=\"http://localhost:9008/topics/show?topicId="
 				+ topic.id + "\">" + topic.title + "</a>";
 		Log.addUserLog(logDescription, user, plan, plan.topic.entity,
@@ -805,6 +806,7 @@ public class Plans extends CoolCRUD {
 
 	public static void addItem(long planId) {
 		Plan plan = Plan.findById(planId);
+		notFoundIfNull(plan);
 		User user = Security.getConnected();
 		int canAssign = 0;
 		int canEdit = 0;
@@ -847,9 +849,13 @@ public class Plans extends CoolCRUD {
 				canIdea = 1;
 			}
 		}
+		if (canView) {
+			render(plan, user, canEdit, canView, isOrganizer, canIdea,
+					canAssign, canDelete);
+		} else {
+			BannedUsers.unauthorized();
+		}
 
-		render(plan, user, canEdit, canView, isOrganizer, canIdea, canAssign,
-				canDelete);
 	}
 
 	/**
@@ -877,19 +883,39 @@ public class Plans extends CoolCRUD {
 	 */
 	public static void add(String startDate, String endDate,
 			String description, long planId, String summary, String check) {
+		User user = Security.getConnected();
 		Date sd = new Date(startDate);
 		Date ed = new Date(endDate);
 		Plan plan = Plan.findById(planId);
+		notFoundIfNull(plan);
 		plan.addItem(sd, ed, description, summary);
+		List<User> topicOrganizers = plan.topic.getOrganizer();
+		for (int i = 0; i < topicOrganizers.size(); i++) {
+			Notifications.sendNotification(topicOrganizers.get(i).id, plan.id,
+					"plan", "A new plan: " + plan.title
+							+ "has been created in the topic: "
+							+ plan.topic.title);
+		}
+		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.username
+				+ "</a>"
+				+ " added an item in  "
+				+ "<a href =\"http://localhost:9008/plans/viewaslist?planId="
+				+ plan.id
+				+ "\">"
+				+ plan.title
+				+ "</a>"
+				+ " of the topic "
+				+ "<a href=\"http://localhost:9008/topics/show?topicId="
+				+ plan.topic.id + "\">" + plan.topic.title + "</a>";
+		Log.addUserLog(logDescription, user, plan, plan.topic.entity,
+				plan.topic.entity.organization);
 		if (check != null && check.equals("checked")) {
 			addItem(plan.id);
 		} else {
 			viewAsList(plan.id);
-		}
-		List<User> topicOrganizers = plan.topic.getOrganizer();
-		for (int i = 0; i < topicOrganizers.size(); i++) {
-			Notifications.sendNotification(topicOrganizers.get(i).id, plan.id,
-					"plan", "A new plan has been created");
 		}
 	}
 
@@ -906,6 +932,7 @@ public class Plans extends CoolCRUD {
 	 */
 	public static void editPlan(long planId) {
 		Plan plan = Plan.findById(planId);
+		notFoundIfNull(plan);
 		User user = Security.getConnected();
 		int canAssign = 0;
 		int canEdit = 0;
@@ -948,8 +975,13 @@ public class Plans extends CoolCRUD {
 				canIdea = 1;
 			}
 		}
-		render(plan, user, canEdit, canView, isOrganizer, canIdea, canDelete,
-				canAssign);
+		if (canView == true) {
+			render(plan, user, canEdit, canView, isOrganizer, canIdea,
+					canDelete, canAssign);
+		} else {
+			BannedUsers.unauthorized();
+		}
+
 	}
 
 	/**
@@ -967,7 +999,61 @@ public class Plans extends CoolCRUD {
 	public static void editItem(long itemId) {
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
-		render(item, user);
+		notFoundIfNull(item);
+		boolean canView = false;
+		boolean isOrganizer = false;
+		int canEdit = 0;
+		int canIdea = 0;
+		int canAssign = 0;
+		boolean canDelete = false;
+		Plan plan = item.plan;
+
+		if (Users.isPermitted(user, "view", plan.topic.id, "topic")) {
+			canView = true;
+
+			if (Users.isPermitted(user, "edit an action plan", plan.topic.id,
+					"topic")) {
+
+				canEdit = 1;
+				if (Users
+						.isPermitted(
+								user,
+								"accept/Reject user request to volunteer to work on action item in a plan",
+								plan.topic.id, "topic")) {
+					isOrganizer = true;
+				}
+
+				if (Users.isPermitted(user, "delete an action plan",
+						plan.topic.id, "topic")) {
+
+					canDelete = true;
+				}
+				if (Users.isPermitted(user,
+						"assign one or many users to a to-do item in a plan",
+						plan.topic.id, "topic")) {
+
+					canAssign = 1;
+				}
+				if (Users
+						.isPermitted(
+								user,
+								"associate an idea or more to an already existing plan",
+								plan.topic.id, "topic")) {
+
+					canIdea = 1;
+				}
+
+				render(plan, item, user, canEdit, canView, isOrganizer,
+						canIdea, canDelete, canAssign);
+				
+			} else {
+				BannedUsers.unauthorized();
+
+			}
+		} else {
+			BannedUsers.unauthorized();
+		}
+
 	}
 
 	/**
@@ -998,6 +1084,7 @@ public class Plans extends CoolCRUD {
 		Date sd = new Date(startDate);
 		Date ed = new Date(endDate);
 		Plan plan = Plan.findById(planId);
+		notFoundIfNull(plan);
 		plan.title = title;
 		plan.startDate = sd;
 		plan.endDate = ed;
@@ -1008,8 +1095,9 @@ public class Plans extends CoolCRUD {
 		List<User> topicOrganizers = plan.topic.getOrganizer();
 		for (int i = 0; i < topicOrganizers.size(); i++) {
 			Notifications.sendNotification(topicOrganizers.get(i).id, plan.id,
-					"plan", "The action plan: " + plan.title + " has been edited"
-							+ "in the topic: " + plan.topic.title);
+					"plan", "The action plan: " + plan.title
+							+ " has been edited" + "in the topic: "
+							+ plan.topic.title);
 		}
 		List<User> assignees = new ArrayList<User>();
 		for (int i = 0; i < plan.items.size(); i++) {
@@ -1019,17 +1107,18 @@ public class Plans extends CoolCRUD {
 						"plan", "This action plan has been edited");
 			}
 		}
-		String logDescription = "a href=\"http://localhost:9008/users/viewprofile?userId="
+		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
 				+ user.id
 				+ "\">"
-				+ user.firstName
+				+ user.username
 				+ "</a>"
-				+ "edit the plan "
+				+ " edited the plan "
 				+ "<a href =\"http://localhost:9008/plans/viewaslist?planId="
 				+ plan.id
 				+ "\">"
 				+ plan.title
-				+ " of the topic"
+				+ "</a>"
+				+ " of the topic "
 				+ "<a href=\"http://localhost:9008/topics/show?topicId="
 				+ plan.topic.id + "\">" + plan.topic.title + "</a>";
 		Log.addUserLog(logDescription, user, plan, plan.topic.entity,
@@ -1061,9 +1150,11 @@ public class Plans extends CoolCRUD {
 
 	public static void edit2(String startDate, String endDate,
 			String description, long planId, String summary, long itemId) {
+		User user = Security.getConnected();
 		Date sd = new Date(startDate);
 		Date ed = new Date(endDate);
 		Item item = Item.findById(itemId);
+		notFoundIfNull(item);
 		item.startDate = sd;
 		item.endDate = ed;
 		item.description = description;
@@ -1081,7 +1172,22 @@ public class Plans extends CoolCRUD {
 			Notifications.sendNotification(assignees.get(j).id, item.plan.id,
 					"plan", "This item has been edited");
 		}
-
+		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.username
+				+ "</a>"
+				+ " edited an item in  "
+				+ "<a href =\"http://localhost:9008/plans/viewaslist?planId="
+				+ item.plan.id
+				+ "\">"
+				+ item.plan.title
+				+ "</a>"
+				+ " of the topic "
+				+ "<a href=\"http://localhost:9008/topics/show?topicId="
+				+ item.plan.topic.id + "\">" + item.plan.topic.title + "</a>";
+		Log.addUserLog(logDescription, user, item.plan, item.plan.topic.entity,
+				item.plan.topic.entity.organization);
 		viewAsList(item.plan.id);
 	}
 
@@ -1158,9 +1264,9 @@ public class Plans extends CoolCRUD {
 
 	/**
 	 * This methods deletes a plan with all its items and comments of the plan,
-	 * sends notifications to all the users working on items in the plan and
-	 * the plan's topic organizers and add to the logs of the plan's topic,
-	 * entity and organization given the plan id
+	 * sends notifications to all the users working on items in the plan and the
+	 * plan's topic organizers and add to the logs of the plan's topic, entity
+	 * and organization given the plan id
 	 * 
 	 * @story C5S2
 	 * 
