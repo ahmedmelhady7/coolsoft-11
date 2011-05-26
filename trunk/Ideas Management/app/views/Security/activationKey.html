@@ -67,26 +67,25 @@
 	<div id="login-box">
 	<H2>Activation</H2>	
 	Please enter your activation key:
-	#{/if}
+	
 	#{if flash.error}
 		<div id = passrecovery>
 		<p class="error" style="color: #c00">
 		${flash.error}
 		</p>
-	</div>	
-	<br>	
-	${user.securityQuestion}	
+	</div>
+	#{/if}	
+	<br>			
 	<form action="@{Security.checkKey()}" method="post">
 		<input type="hidden" name="username" value="${user.username}"/>
-		<input type="hidden" name="username" value="${user.password}"/>				
+		<input type="hidden" name="password" value="${password}"/>				
 		<div id="login-box-name" style="margin-top:20px;">Activation Key:</div><div id="login-box-field" style="margin-top:20px;"><input name="actKey" id="sec_answer" class="form-login" title="Username" value="" size="30" maxlength="2048" /></div>		
 		<br />
 		<span class="login-box-options"><a href="/secure/login" style="margin-left:30px;">Back to login..</a></span>
 		<br/>
 		<br/>
 		<input type="image" src="/public/images/submit-btn.png" width="103" height="42" style="margin-left:90px;" alt="Submit button">		
-	</form>
-	#{/if}
+	</form>	
 	#{if flash.success}
 	<br><br><br>
 	<span class="login-box-options"><a href="/secure/login" style="margin-left:30px;">Back to login..</a></span>
