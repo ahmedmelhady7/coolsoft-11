@@ -1,4 +1,3 @@
-#{extends 'main.html' /}
 #{extends 'planLayout.html' /}
 #{set title:'Edit Plan' /}
 
@@ -45,19 +44,26 @@
 #{form @Plans.edit(), method:'POST', id:'planeditingnForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
 Plan title:<input type= "text" id = "title" name = "title" size= "30" value="${plan.title}"><label id = "titleerror" style= "color:Red"> Please Insert a title for the plan </label>
 </br>
+</br>
 Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"value="${plan.startDate.format('MM/dd/yyyy')}"/><label id = "startdateerror"style= "color:Red"> Please Insert the date on which the plan starts </label><label id = "dateerror"style= "color:Red">Start date can not be earlier than today's date</label>
-End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"value="${plan.endDate.format('MM/dd/yyyy')}"/><label id = "enddateerror"style= "color:Red"> Please Insert the date on which the plan ends </label><label id = "earlyerror"style= "color:Red">Start date must be greater than end date</label>
+</br>
+</br>
+End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"value="${plan.endDate.format('MM/dd/yyyy')}"/><label id = "enddateerror"style= "color:Red"> Please Insert the date on which the plan ends </label><label id = "earlyerror"style= "color:Red">Start date must be greater than end date</label>
+</br>
 </br>
 <p><b>Insert the description of the plan</b></p>
 <textarea id = "description" name = "description" rows= "7" cols = "50">${plan.description}
 </textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the plan </label>
 </br>
+</br>
 <p><b>Insert the requirements of the plan</b></p>
 <textarea id = "requirement" name = "requirement" rows = "7" cols = "50" >${plan.requirement}
 </textarea><label id = "requirementerror"style= "color:Red"> Please insert the requirements of the plan </label>
 </br>
+</br>
 <input type = "hidden" name = "planId" value = '${plan.id}' >
-<input type = "submit" value ="Edit">
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type = "submit" value ="Save">
 #{/form}
 <br>
 </div>
