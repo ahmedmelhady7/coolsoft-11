@@ -374,9 +374,19 @@ public class MainEntitys extends CoolCRUD {
 	 * 
 	 */
 	public static void goToCreateSubEntity(long orgid, long pId) {
-		Organization org = Organization.findById(orgid);
 		MainEntity parent = MainEntity.findById(pId);
-		render(org, parent);
+		User user = Security.getConnected();
+		Organization org = Organization.findById(parent.organization.id);
+		List<MainEntity> entities = org.entitiesList;
+		List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
+		for (MainEntity entity : entities) {
+			if (Users.isPermitted(user, "view", entity.id, "entity")) {
+				entitiesICanView.add(entity);
+			}
+		}
+		List<User> followers = org.followers;
+		List<Plan> plans = Plans.planList("organization", org.id);
+		render(user, org, entities, plans, entitiesICanView, followers, parent);
 	}
 
 	/**
