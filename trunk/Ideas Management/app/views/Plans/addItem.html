@@ -48,20 +48,23 @@
 </br>
 Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"/><label id = "startdateerror"style= "color:Red"> Please Insert the date on which the item starts </label><label id = "dateerror"style= "color:Red">Start date can not be earlier than today's date</label><label id = "gom3aerror"style= "color:Red">Item's start date must be later than the plan's start date</label>
 </br>
-End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"/><label id = "enddateerror"style= "color:Red"> Please Insert the date on which the item ends </label><label id = "earlyerror"style= "color:Red">Start date must be greater than end date</label><label id = "zikoerror"style= "color:Red">Item's end date must be earlier than the plan's end date</label>
+</br>
+End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"/><label id = "enddateerror"style= "color:Red"> Please Insert the date on which the item ends </label><label id = "earlyerror"style= "color:Red">Start date must be greater than end date</label><label id = "zikoerror"style= "color:Red">Item's end date must be earlier than the plan's end date</label>
+</br>
+</br>
+<p><b>Insert a Title for the item</b></p>
+<input type = "hidden" name = "planId" value = ${plan.id} >
+<input type = "text" id = "summary" name = "summary" type = "text" size = "30"><label id = "summaryerror"style= "color:Red"> Please  a title for the plan </label>
+</br>
 </br>
 <p><b>Insert the description of the item</b></p>
 <textarea id="description" name="description" rows="7" cols="50"></textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the item </label>
 </br>
-<p><b>Insert a Title for the description</b></p>
-<input type = "hidden" name = "planId" value = ${plan.id} >
-<input type = "text" id = "summary" name = "summary" type = "text" size = "30"><label id = "summaryerror"style= "color:Red"> Please  a title for the plan </label>
 </br>
-To add another item check here <input type="checkbox" name = "check" value = "checked">
+To add another item check here <input type="checkbox" name = "check" value = "checked">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input type = "submit" value ="Add" >
 #{/form}
 </div>
-
 <script type ="text/javascript">
 	$('#startdateerror').hide();
 	$('#enddateerror').hide();
