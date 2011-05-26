@@ -232,6 +232,7 @@ public class Topics extends CRUD {
 		
 		User user = Security.getConnected();
 		Topic targetTopic = Topic.findById(topicId);
+		notFoundIfNull(targetTopic);
 		targetTopic.openToEdit = true;
 		targetTopic.save();
 		
@@ -494,6 +495,8 @@ public class Topics extends CRUD {
 
 		long topicIdLong = Long.parseLong(topicId);
 		Topic targetTopic = Topic.findById(topicIdLong);
+		notFoundIfNull(targetTopic);
+		
 		User actor = User.findById(Security.getConnected().id);
 		List<User> organizers = targetTopic.getOrganizer();
 		List<User> followers = targetTopic.followers;
@@ -1827,6 +1830,7 @@ public class Topics extends CRUD {
 		User user = Security.getConnected();
 		Long topicIdLong = Long.parseLong(topicId);
 		Topic targetTopic = Topic.findById(topicIdLong);
+		notFoundIfNull(targetTopic);
 		List ideas = new ArrayList<Idea>();
 		List allIdeas = targetTopic.ideas;
 
@@ -1950,7 +1954,7 @@ public class Topics extends CRUD {
 		Organization organization = entity.organization;
 		
 		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
-			+ " posted Topic " +"<a href=\"http://localhost:9008topics/show?topicId==" + targetTopic.id +"\">" +  
+			+ " posted Topic " +"<a href=\"http://localhost:9008topics/show?topicId=" + targetTopic.id +"\">" +  
 			targetTopic.title + "</a>" + " to the entity "
 			+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + 
 			entity.id +"\">" + entity.name + "</a>" ;
@@ -1973,7 +1977,8 @@ public class Topics extends CRUD {
 
 	public static void editDraft(long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
-
+		notFoundIfNull(targetTopic);
+		
 		User user = Security.getConnected();
 		// System.out.println("Topic title:" + targetTopic.title);
 		render(targetTopic, user);
@@ -2046,7 +2051,7 @@ public class Topics extends CRUD {
 		Organization organization = entity.organization;
 		
 		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
-			+ " posted Topic " +"<a href=\"http://localhost:9008topics/show?topicId==" + targetTopic.id +"\">" +  
+			+ " posted Topic " +"<a href=\"http://localhost:9008topics/show?topicId=" + targetTopic.id +"\">" +  
 			targetTopic.title + "</a>" + " to the entity "
 			+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + 
 			entity.id +"\">" + entity.name + "</a>" ;
