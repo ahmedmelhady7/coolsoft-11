@@ -871,12 +871,17 @@ System.out.println("ANA HENA");
 							return true;
 						}
 						List<UserRoleInOrganization> allowedTopic = UserRoleInOrganization
-								.find("byEnrolledAndOrganization", user, topic)
+								.find("byEnrolledAndEntityTopicIDAndType", user, topic.id, "topic")
 								.fetch();
 						if (allowedTopic.size() == 0) {
 							return false;
-						} else
-							return true;
+						} else {
+							if (Roles.getRoleActions("idea developer").contains(action)) {
+								return true;
+							} else {
+								return false;
+							}
+						}
 						
 					}
 				}
@@ -886,12 +891,17 @@ System.out.println("ANA HENA");
 						return true;
 					}
 					List<UserRoleInOrganization> allowed = UserRoleInOrganization
-							.find("byEnrolledAndOrganization", user, topic)
+							.find("byEnrolledAndEntityTopicIDAndType", user, topic.id, "topic")
 							.fetch();
 					if (allowed.size() == 0) {
 						return false;
-					} else
-						return true;
+					} else {
+						if (Roles.getRoleActions("idea developer").contains(action)) {
+							return true;
+						} else {
+							return false;
+						}
+					}
 				}
 			}
 		}
@@ -1864,9 +1874,6 @@ System.out.println("ANA HENA");
 		}
 		return notificationProfileList;
 	}
-	
-	
-
 
 	/**
 	 * Ends the session of the current user and logs out

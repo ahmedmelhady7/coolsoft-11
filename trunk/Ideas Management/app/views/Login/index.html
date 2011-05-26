@@ -59,7 +59,7 @@
                         </div>
                         <li>
             <div id="not-body">
-                <h2>Notifications</h2>
+                <h3>Notifications</h3>
                 <div id="list">
                     #{if user.getLatest().size() == 0}<span>No new notifications.</span>
                     <br>
@@ -87,11 +87,11 @@
                         </li>
         
                         <li>
-                            <h2 id="a1">
+                            <h3 id="a1">
                                 <u>
                                     ${user.username}
                                 </u>
-                            </h2>
+                            </h3>
                             <div id="o1">
                                 #{if user.profilePictureId != -1} 
                                 #{list items:user.profilePictureId, as:'id'}<img src="@{Pictures.getPicture(id)}" width="40" height="40"/>#{/list}
@@ -228,11 +228,11 @@
                         &nbsp;
                         </div-->                             
                         <li>
-                            <h2 id="a2">
+                            <h3 id="a2">
                                 <u>
                                     My Links
                                 </u>
-                            </h2>
+                            </h3>
                             <div id="o2">
                                 <ul>
                                 	<li>
@@ -328,11 +328,11 @@
                             </div>
                         </li>
                         <li>
-                            <h2 id="a3">
+                            <h3 id="a3">
                                 <u>
                                     My Documents
                                 </u>
-                            </h2>
+                            </h3>
                             <div id="o3">
                                 <ul>
                                     <li>
@@ -363,11 +363,11 @@
                             </div>
                         </li>
                         <li>
-                            <h2 id="a4">
+                            <h3 id="a4">
                                 <u>
                                     My Gallery
                                 </u>
-                            </h2>
+                            </h3>
                             <div id="o4">
                                 <ul>
                                     <li>
@@ -379,18 +379,18 @@
                             </div>
                         </li>
                         <li>
-                            <h2>
-                                <u>
-                                    <a href="@{Ideas.getDrafts()}">Drafts (${user.getDraftsCount()})</a>
+                            <h3 >
+                                <u >
+                                    <a style= "color: #003366;" href="@{Ideas.getDrafts()}">Drafts (${user.getDraftsCount()})</a>
                                 </u>
-                            </h2>
+                            </h3>
                         </li>
                         <li>
-                            <h2 id="a6">
+                            <h3 id="a6">
                                 <u>
                                     My Labels
                                 </u>
-                            </h2>
+                            </h3>
                             <div id="o6">
                                 <ul>
                                     <li>
@@ -551,10 +551,10 @@
                     });
                 </script>
                 <style>
-                    h2 {
+                    h3 {
                         cursor: pointer;
                         color: #003366;
-                        font-family: Georgia, "Times New Roman", Times, serif;
+                        font-family: Arial, Helvetica, sans-serif;
                         padding: 0 !important;
                     }
                 </style>

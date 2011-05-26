@@ -778,18 +778,16 @@ public class Plans extends CoolCRUD {
 	 * 
 	 *            shares a plan with a given user
 	 */
-	public static void sharePlan(String userName, long planID) {
+	public static boolean sharePlan(String userName, long planID) {
 		User U = User.find("byUsername", userName).first();
-		planID++;
 		Plan plan = Plan.findById(planID);
 		String type = "Plan";
 		User user = Security.getConnected();
 		String desc = user.firstName + " " + user.lastName
 				+ " shared a plan with you";
-		long notId = planID;
 		long userId = U.id;
-		Notifications.sendNotification(userId, notId, type, desc);
-		redirect("/plans/viewaslist?planId=" + plan.id);
+		Notifications.sendNotification(userId, planID, type, desc);
+		return true;
 	}
 
 	/**
@@ -1648,6 +1646,7 @@ public class Plans extends CoolCRUD {
 	public static boolean removeItemEntityRelation(long itemId) {
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
+		notFoundIfNull(item);
 		Log.addLog(
 				"User <a href=\"http://localhost:9008/users/viewprofile?userId="
 						+ user.id

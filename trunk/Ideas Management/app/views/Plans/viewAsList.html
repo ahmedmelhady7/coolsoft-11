@@ -4,6 +4,7 @@
 ${plan.title} - View Plan as List
 #{/set}
 <script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js"></script>
+
 <style type="text/css">body {
 			font-size:80%;
 			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
@@ -39,7 +40,13 @@ ${plan.title} - View Plan as List
 }
 
 </style>
-
+<style type="text/css">
+	.div_suc{
+		color: green;
+		display: none;
+		text-align: right;
+	}
+</style>
 <div id="planShow"><br/>
 #{if notBlockedFromUsing}
 #{if checkNotRated}
@@ -59,45 +66,33 @@ ${plan.title} - View Plan as List
 You have already rated this plan
 #{/else}
 <br/>
-<form action="@{Plans.sharePlan()}" method="GET">
-    <input type="submit" value="Share with user" /><input type="hidden" name = "planID" value=${plan.id}/>
+<div>
+    <input type="submit" value="Share with user" onclick="sharePlan(${plan.id})"/>
 	<select id="userName" name = "userName"> 
 					#{list userNames, as:'name'}
 					<option>${name}</option>
 					#{/list}
 					</select>
-</form>
-<br/>
-<form action="@{Comments.addCommentToPlan()}" method="GET">
-    <input type = "text" name = "comment"><input type = "hidden" name = "planId" value = ${plan.id}><input type = "submit" value = "Comment">
-</form>
-<br/>
-#{/if}
-<input type = "submit" id = "commentsd" value = "Show Comments" onclick="viewComments()">
-<br/>
-<script type="text/javascript">
-    function viewComments(){
-    	if(document.getElementById("commentsd").value == "Show Comments")
-		{
-			document.getElementById('div1').style.display = 'inline';
-			document.getElementById("commentsd").value = "Hide Comments";
-		}
-		else
-		{
-			document.getElementById('div1').style.display = 'none';
-			document.getElementById("commentsd").value = "Show Comments";
-		}
-        document.getElementById('div1').innerHTML = "#{if comments} Comments <br/> <ul> #{list comments, as:'comment'} <li><a>${comment.toString()}</a></li> #{/list} <br/></ul> #{/if} #{else}No comments posted#{/else}"
-    }
-</script>
-<div id='div1' align='left'>
 </div>
+<label id = "shareSucess" class = "div_suc"></label>
+			<script type='text/javascript'>
+			function sharePlan(id){
+				var userName = document.getElementById('userName').value;
+				$.post('@{sharePlan()}',{userName: userName, planID: id}, function() {
+					$("#shareSucess").text("notification sent to " + userName+ " successfuly");
+					$("#shareSucess").show();
+				});
+				}
+			</script>
+ 
+#{/if}
+
+<br/>
 #{if itemsList.size() > 0}
 <br>
 <label id="itemsLabel">
 <h3>To-do items:</h3> 
 </label>
-
     #{list items:itemsList, as:'item'}
     <div id = "listItem_${item.id}">
         <br/>
@@ -130,19 +125,12 @@ You have already rated this plan
 			 
             <br/>
 			 Assigned Users: 
-			 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-			  #{if user.canWork(item.id) && !(item.status == 2) && !item.endDatePassed()}
+			            #{if canAssign == 1 && !(item.status == 2)&& !item.endDatePassed()}
+            <a href="@{AssignRequests.assign(item.id, plan.id)}"> <img src="/public/images/icons/add.png" title="assign a user" width="20" height="20"/></a>
+            #{/if}
+  #{if user.canWork(item.id) && !(item.status == 2) && !item.endDatePassed()}
 			  <input class = "linkButton" type="button" id = "buttonWork_${item.id}" onclick="workItem(${item.id},'${user.username}');" value = "work on this item">
 			  #{/if} 
-			            #{if canAssign == 1 && !(item.status == 2)&& !item.endDatePassed()}
-            <a href="@{AssignRequests.assign(item.id, plan.id)}" style="float:right;">assign a user to this item</a>
-            #{/if}
-
 
  
             <ul id = "assignees_${item.id}" style="list-style: none; ">
@@ -187,13 +175,6 @@ You have already rated this plan
 				</li>
 				#{/else}
             </ul>
-            #{if canEdit == 1}
-			 <a href="@{Plans.editItem(item.id)}" >Edit this item</a>#{/if}
-            #{if canEdit == 1}
-            <a onclick="delItem(${item.id})" style="cursor:pointer; float:right;">
-			<img src="/public/images/icons/trash.png" title="Delete item" width="25" height="20"/></a>
-            #{/if}
-
               
 				<div id="entityRelated_${item.id}"></div>
             #{if isOrganizer == true}  
@@ -255,8 +236,16 @@ You have already rated this plan
 				$('#vr_' + ${item.id}).show();			
 				</script>
             #{/if}
+				            #{if canEdit == 1}
+			 <a href="@{Plans.editItem(item.id)}" style=" float:right;">Edit this item</a>#{/if}
+            #{if canEdit == 1}
+            <a onclick="delItem(${item.id})" style="cursor:pointer; float:right;">
+			<img src="/public/images/icons/trash.png" title="Delete item" width="25" height="20"/></a>
+            #{/if}
         </fieldset>
-    </div>
+    
+	</div>
+
     #{/list}
 
 
@@ -277,9 +266,10 @@ Please contact
 #{/else}
 <br/>
 <br/>
+#{if notBlockedFromUsing}
 <div class="comment">
  		#{if comments} 
- 			<font color="black"> <h3>Comments</h3></font> 
+ 			<font color="black"> <h3> Comments</h3></font> 
  			<br/> <ul id="commentsList" style="list-style: none; ">
  					#{list comments, as:'comment'} 
  					<div class="comment-metadata">
@@ -297,24 +287,38 @@ Please contact
 					</ul>
  					<br/>
  		#{/if} 
- 		#{else}No comments posted#{/else}
+ 		#{else}<label id = "noComments">No comments posted </label>#{/else}
 </div>
 
-			<div id="comment-content" style = "margin-left: 0%;"><textarea name = "comment" id= "commentTxt" rows="7" cols="80"></textarea></div>
+			<div class="comment-content" style = "margin-left: 20%;"><textarea name = "comment" id= "commentTxt" rows="7" cols="67"></textarea>
+			<br/>
+			<label id = "emptyComment" style = "color: red;" hidden = "true">You have to enter a comment</label>
+			</div>
 			<br/>
 			<input class = "linkButton" style = "margin-left: 17%; float: right;" type = "button" value = "Comment" onclick="comment(${plan.id});" >
+#{/if}
 <br/>
-<br/></div>
+<br/>
 <script type="text/javascript">
                 	$(".req").hide();
                 	  var count = ${itemsList.size()};
 					  
 					  function comment(id) {
 					  	var text = $('#commentTxt').val();
-						 $('#commentTxt').val("");
-						$.getJSON('@{addCommentToPlan()}', {comment: text, planID:id}, function(comm) {
-							 $("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " +  comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li><br/></div>");
-						});
+						if (text == null || text.trim() == "") {
+						$("#emptyComment").show();
+						
+						}
+						else {
+							$('#commentTxt').val("");
+							$.getJSON('@{addCommentToPlan()}', {
+								comment: text,
+								planID: id
+							}, function(comm){
+								$("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " + comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li><br/></div>");
+							});
+								$("#emptyComment").hide();
+						}
 					   
 
 					  }
