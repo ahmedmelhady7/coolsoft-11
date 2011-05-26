@@ -859,6 +859,7 @@ public class Ideas extends CoolCRUD {
 	public static void displayIdeasToMerge(long[] selectedIdeasIds, long topicId) {
 
 		Topic targetTopic = Topic.findById(topicId);
+		notFoundIfNull(targetTopic);
 		List<Idea> selectedIdeas = new ArrayList<Idea>();
 		// List<Idea> allIdeas = targetTopic.getIdeas();
 		String selectedIdeasString = "";
