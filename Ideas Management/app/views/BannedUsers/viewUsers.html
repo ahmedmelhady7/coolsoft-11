@@ -2,11 +2,6 @@
 #{extends 'Login/index.html' /}
 #{set title:'Block/Unblock Page' /}
 
-
-#{if check==0}
-<u><font size ="3" color ="red">You are not allowed to view this page</font></u>
-#{/if}
-#{if check==1}
 <a href="@{Login.homePage()}">Back to Home</a>
 <hr>          </hr>
 <u><font size ="4" color ="blue">Enrolled Idea Developers</font></u>
@@ -80,7 +75,7 @@ document.getElementById('2_${c}').value="Block from using";
 #{/if}
 #{/list}
 #{/else}
-#{/if}
+
 
 
 <script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
@@ -131,7 +126,6 @@ function show(userId,type,numId,id,i){
 					 
 					 	$('#5_' + i).click(function(){
 						    $('#8_' + i).hide();
-							 $('#5_' + i).hide();
 						     textarea.hide();
 							 $('#3_' + i).hide();
 						    document.getElementById('1_' + i).disabled = false;
@@ -149,10 +143,8 @@ function show(userId,type,numId,id,i){
 	                
 					
 					}else{
-						alert("User has been blocked from viewing");
 						document.getElementById('1_' + i).value = "Unblock from viewing";
 						//$('#1_' + i).html('Unblock from viewing');
-						//alert($('#1_' + i).text());
 						document.getElementById('2_' + i).disabled = true;
 						var message = textarea.val();
 						$.post('@{block()}', {
@@ -180,7 +172,6 @@ function show(userId,type,numId,id,i){
 				}
 				else{
 					
-					alert("User has been unblocked from viewing");
 				//	$('#1_' + i).html('Block from viewing');
 					document.getElementById('1_' + i).value = "Block from viewing";
 					document.getElementById('2_' + i).disabled = false;
@@ -234,7 +225,6 @@ function show(userId,type,numId,id,i){
 							
 						}
 						else {
-							alert("User has been blocked from using");
 							document.getElementById('2_' + i).value = "Unblock from using";
 							var message = textarea.val();
 							$.post('@{block()}', {
@@ -262,8 +252,7 @@ function show(userId,type,numId,id,i){
 				 }
 				 else{
 				 	  	
-						alert("User has been unblocked from using");
-				 	document.getElementById('2_'+i).value = "Block from using";
+					document.getElementById('2_'+i).value = "Block from using";
 					var message=document.getElementById('1_'+i).value;
 					$.post('@{block()}', {userId :userId,
 					type:type,
