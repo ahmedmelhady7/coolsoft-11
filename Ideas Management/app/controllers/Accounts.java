@@ -76,7 +76,7 @@ public class Accounts extends Controller {
 			System.out.println(message);
 		} else if (!(User.find("byEmail", email).fetch().isEmpty())) {
 			message = "This Email already exists !";
-		} else if ((validation.valid(email)) != null) {
+		} else if (!(validation.email(email).ok)) {
 			message = "Please enter a valid email address";
 			validUserFlag = true;
 			System.out.println(message);
@@ -97,6 +97,12 @@ public class Accounts extends Controller {
 		} else if (username.length() >= 20) {
 			validUserFlag = true;
 			message = "Username cannot exceed 20 characters";
+		} else if (username.length() < 3) {
+			validUserFlag = true;
+			message = "Username cannot exceed 20 characters";
+		} else if (password.length() < 4) {
+			message = "First name cannot exceed 25 characters";
+			validUserFlag = true;
 		} else if (password.length() >= 25) {
 			message = "First name cannot exceed 25 characters";
 			validUserFlag = true;

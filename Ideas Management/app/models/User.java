@@ -31,7 +31,7 @@ import play.libs.Codec;
 @Entity
 public class User extends CoolModel {
 	@Required
-	@Email
+	//@Email
 	@Column(unique = true)
 	public String email;
 	@Required
@@ -221,8 +221,8 @@ public class User extends CoolModel {
 			String profession) {
 		this.email = email;
 		this.username = username;
-		//this.password = Codec.hexMD5(password);
-		this.password =password;
+		this.password = Codec.hexMD5(password);
+		//this.password =password;
 		this.firstName = firstName;
 		this.communityContributionCounter = communityContributionCounter;
 		this.securityQuestion = securityQuestion;
