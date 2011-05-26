@@ -543,7 +543,7 @@
 		                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
 		                   
 		                      	<input type="hidden" name = "justification" id = "justText"/>
-		                       <input type="submit" style="float:right;" title="Hide Topic" class = "linkButton"/>
+		                       <input type="submit" style="float:right;" value="Hide Topic" class = "linkButton"/>
 		                   
 		                 </form> 
 						#{/if}
@@ -553,7 +553,7 @@
 		                #{if topic..hider.username == actor.username}		
 				           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
 			                 		
-		                         <input type="submit" title="Unhide" style="float:right;" class = "linkButton"/>		
+		                         <input type="submit" value="Unhide" style="float:right;" class = "linkButton"/>		
 		                  		
 		                  </form>			
 		                #{/if}		
@@ -587,7 +587,7 @@
 		                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
 		                    <p class="crudDelete">
 		                      	<input type="hidden" name = "justification" id = "justText"/>
-		                       <input type="submit" style="float:right;" title="Hide Topic" class = "linkButton"/>
+		                       <input type="submit" style="float:right;" value="Hide Topic" class = "linkButton"/>
 		                   </p>
 		                 </form> 
 						#{/if}
@@ -597,7 +597,7 @@
 		                #{if topic.hider.username == user.username}		
 				           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
 			                  <p class="crudDelete">		
-		                         <input type="submit"  style="float:right;" title="Unhide" class = "linkButton"/>		
+		                         <input type="submit"  style="float:right;" value="Unhide" class = "linkButton"/>		
 		                      </p>		
 		                  </form>			
 		                #{/if}		

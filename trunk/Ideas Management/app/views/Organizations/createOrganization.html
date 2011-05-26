@@ -3,35 +3,94 @@
     <head>
         <meta name="generator" content="HTML Tidy, see www.w3.org">
 
-        <title>Create Organization</title>
+		<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+	#showCreateOrganization{
+	margin-top: 1%;
+	margin-right: 5%;
+	margin-bottom: 4%;
+	margin-left: 0%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+</style>
     </head>
+	
+			<div id="leftSidebar">
+		    <ul>
+		        <div style="clear: both;">
+		            &nbsp;
+		        </div>
+		        <li>
+		            <ul>
+		            	<li>
+		            		No actions yet
+		            	</li>
+						
+		            </ul>
+		        </li>
+		    </ul>
+		</div>
 
-    <body>
-        #{extends 'main.html' /}
-		#{set title: 'Create Organization' /}
-
-        <p>Please fill the required information.</p>
-		<form name="orderform" action="@{Organizations.createOrg()}" method="POST">
-        Organization Name: <input type="text" id="name" name=
-        "name" required> <br /><br />
-        Privacy Level:<br />
-		<select id="privacyLevel" name="privacyLevel">
-			<option value="Public">Public</option>
-            <option value="Private">Private</option>
-            <option value="Secret">Secret</option>
-		</select>
-		<br />
-		Allow users to create tags?<br>
-		<select id="createTag" name="createTag">
-			<option value="Yes">Yes</option>
-            <option value="No">No</option>
-		</select>
-		<br />
-		<p>Description:</p>
-		<p><textarea id="description" name="description" rows="5" cols="50"></textarea></p>
-		<br />
-		<input type="submit" value="Submit"/>		
-		</form>
-    </body>
+    <div id="page">
+    	<div id="page-bgtop">
+    		<div id="showCreateOrganization">
+    			<body>
+		        #{extends 'login/index.html' /}
+				#{set title: 'Create Organization' /}
+				<h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Create Organization</h2>
+				<br />
+		        <p>Please fill the required information.</p>
+				<form name="orderform" action="@{Organizations.createOrg()}" method="POST">
+		        Organization Name: 
+				<br />
+				<input type="text" id="name" name=
+		        "name" required> <br /><br />
+		        Privacy Level:<br />
+				<select id="privacyLevel" name="privacyLevel">
+					<option value="Public">Public</option>
+		            <option value="Private">Private</option>
+		            <option value="Secret">Secret</option>
+				</select>
+				<br />
+				Allow users to create tags?<br>
+				<select id="createTag" name="createTag">
+					<option value="Yes">Yes</option>
+		            <option value="No">No</option>
+				</select>
+				<br />
+				<p>Description:</p>
+				<p><textarea id="description" name="description" rows="5" cols="50"></textarea></p>
+				<input type="submit" value="Submit" class="linkButton"/>		
+				<br />
+				<br />
+				</form>
+    		</body>
+		</div>
+	</div>
+	</div>
 </html>
 

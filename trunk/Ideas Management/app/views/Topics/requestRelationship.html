@@ -1,14 +1,73 @@
-#{extends 'main.html' /}
+#{extends 'login/index.html' /}
 #{set title:'Request Relationship Creation' /}
 
 <html>
 	<title> Request Relationship Creation </title>
+	
+	<head>
+		      <meta name="generator" content="HTML Tidy, see www.w3.org">
+
+		<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+	#showRequest{
+	margin-top: 1%;
+	margin-right: 5%;
+	margin-bottom: 4%;
+	margin-left: 0%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+</style>
+	</head>
+	
+	<div id="leftSidebar">
+		    <ul>
+		        <div style="clear: both;">
+		            &nbsp;
+		        </div>
+		        <li>
+		            <ul>
+		            	<li>
+		            		No actions yet
+		            	</li>
+						
+		            </ul>
+		        </li>
+		    </ul>
+		</div>
+
+	<div id="page">
+    	<div id="page-bgtop">
+    		<div id="showRequest">
 	<body>
-		<head>
 			<form action="@{CreateRelationshipRequests.createRequest(user.id, source, destination, name, organisation.id, entity.id, topic.id, 1)}" method="post"
 			onsubmit= "return validate()">
 				<p>
-				<h4>Create Relationship:</h4>
+				<h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Create Relationship</h2>
+				<br />
 				</p>
 				</br>
 				</br>
@@ -59,6 +118,8 @@
 				}
 			}
 			</script>
-		</head>
 	</body>
+	</div>
+	</div>
+	</div>
 </html>

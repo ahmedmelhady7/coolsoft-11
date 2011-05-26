@@ -2,26 +2,92 @@
 <html>
     <head>
         <meta name="generator" content="HTML Tidy, see www.w3.org">
-
-        <title>All Organizations</title>
+		<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+	#showViewOrganizations{
+	margin-top: 1%;
+	margin-right: 5%;
+	margin-bottom: 4%;
+	margin-left: 0%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+</style>
     </head>
 
-    <body>
-        #{extends 'main.html' /} 
-		#{set title: 'All Organization' /}
-		#{if organizations.size() > 0}
-		These are the currently available organizations on the system<br />
-		<ul style="list-style: none;">
-			#{list items:organizations, as:'organization'}
-			<li>
-				<a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a> 
-			</li>
-			#{/list}
-		</ul> 
-		#{/if}
-		#{else}
-		There are no available organizations on the system <big><strong>YET!!</strong></big>
-		#{/else}
-    </body>
+        <div id="leftSidebar">
+		    <ul>
+		        <div style="clear: both;">
+		            &nbsp;
+		        </div>
+		        <li>
+		            <ul>
+		            	<li>
+		            		No actions yet
+		            	</li>
+						
+		            </ul>
+		        </li>
+		    </ul>
+		</div>
+
+
+ 	<div id="page">
+    	<div id="page-bgtop">
+    		<div id="showViewOrganizations">
+			    <body>
+			        #{extends 'login/index.html' /} 
+					#{set title: 'All Organization' /}
+					<h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">All Organizations</h2>
+					<br />
+					#{if organizations.size() > 0}
+					These are the currently available organizations on the system<br />
+					<ul style="list-style: none;">
+						#{list items:organizations, as:'organization'}
+						<li>
+							<a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a> 
+						</li>
+						#{/list}
+					</ul> 
+					#{/if}
+					#{else}
+					There are no available organizations on the system <big><strong>YET!!</strong></big>
+					#{/else}
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+			    </body>
+			</div>
+		</div>
+	</div>
 </html>
 

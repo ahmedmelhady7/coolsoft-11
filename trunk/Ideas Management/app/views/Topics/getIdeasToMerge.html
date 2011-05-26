@@ -1,44 +1,42 @@
 #{extends 'login/index.html' /}
-#{extends '/login/index.html' /}
+<html>
+<head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
 
-#{form @Ideas.displayIdeasToMerge(), method:'POST', id:'selectingIdeasForm', onsubmit: 'return validate()',
-       enctype:'multipart/form-data' }
- 	<ul>
- 		#{list items:ideas, as:'idea'}
-	<fieldset>
-        <legend>
-           <input type="checkbox" name="selectedIdeasIds" value=${idea.id} 
-		   onclick = "javascript: toggleCheck('${idea.id}')"/> 
-		   ${idea.title}
-        </legend>
-		${idea.description}
-		<br/>
-		Author: 
-		#{if idea.author.state == "a"}
-		  <a href="#">${idea.author.username}</a>
-		 #{/if}
-		 #{else}
-		  ${idea.author.username}
-		  #{/else}
-		&nbsp&nbsp&nbsp&nbsp
-		Rating: ${idea.rating}
-		<br/>
-			
-		</fieldset>
-		#{/list}
-		<input type = "hidden" name = "topicId" value = ${topicId}>
-		<input type="submit" value="Next Step">
- 	</ul>
-#{/form}
-
-
-
-<!--<div id: "mergingDev">
-	#{form @Topics.getIdeasToMerge(), method:'POST', id:'selectingIdeasForm', onsubmit: 'return validate()',
-       enctype:'multipart/form-data' }
-	   
-	 #{/form}
-</div> -->
+		<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+	#showMerge{
+	margin-top: 1%;
+	margin-right: 5%;
+	margin-bottom: 4%;
+	margin-left: 0%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+</style>
 
 
 <script type="text/javascript" >
@@ -75,3 +73,62 @@
 	}
 	
 	</script>
+    </head>
+	
+			<div id="leftSidebar">
+		    <ul>
+		        <div style="clear: both;">
+		            &nbsp;
+		        </div>
+		        <li>
+		            <ul>
+		            	<li>
+		            		No actions yet
+		            	</li>
+						
+		            </ul>
+		        </li>
+		    </ul>
+		</div>
+
+  <div id="page">
+    	<div id="page-bgtop">
+    		<div id="showMerge">
+<body>
+	<h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Merge Ideas</h2>
+				<br />
+#{form @Ideas.displayIdeasToMerge(), method:'POST', id:'selectingIdeasForm', onsubmit: 'return validate()',
+       enctype:'multipart/form-data' }
+ 	<ul>
+ 		#{list items:ideas, as:'idea'}
+	<fieldset>
+        <legend>
+           <input type="checkbox" name="selectedIdeasIds" value=${idea.id} 
+		   onclick = "javascript: toggleCheck('${idea.id}')"/> 
+		   ${idea.title}
+        </legend>
+		${idea.description}
+		<br/>
+		Author: 
+		#{if idea.author.state == "a"}
+		  <a href="#">${idea.author.username}</a>
+		 #{/if}
+		 #{else}
+		  ${idea.author.username}
+		  #{/else}
+		&nbsp&nbsp&nbsp&nbsp
+		Rating: ${idea.rating}
+		<br/>
+			
+		</fieldset>
+		#{/list}
+		<input type = "hidden" name = "topicId" value = ${topicId}>
+		<input type="image" src="/public/images/icons/next.png" title="Next Step">
+ 	</ul>
+#{/form}
+</body>
+</div>
+	</div>
+	</div>
+	</html>
+

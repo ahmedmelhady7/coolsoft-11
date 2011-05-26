@@ -1,36 +1,43 @@
 #{extends 'login/index.html' /}
-	<body>
-		<h1>Create Topic Relation</h1>
-		<form>
-			<p>
-				<form id="f1" style="display: inline;">
-					<abbr id="rName" style="display: inline;">Relation Name:</abbr> <select id="rels" style="display: inline;"> 
-					<option >choose name</option>
-					#{list items:topic.entity.organization.relationNames, as:'relName'}
-					<option >${relName}</option>
-					#{/list}
-					</select> <input id="button1" type="button" value="Add new name" onclick="buttonOne();" style="display: inline;"></input>
-				</form>
-				<form id="f2" style="display: none;">
-				Relation Name: <input id = "text" type="textbox" required>
-					</select> <input id="button2" type="button" value="Add from list" onclick="buttonTwo();">
-				</form>
-			</p>
-			
-			<p>
-				Related Topic: 
-				
-				<select id="tpc"> 
-					<option>Select Topic</option>
-					#{list items:listOfTopics, as:'topicElement'}
-					<option value="${topicElement.id}">${topicElement.title}</option>
-					#{/list}
-				</select>
-				
-				<input type="submit" value="Create" onclick="kill(${topic.id})">
-			</p>
-		</form>
-	</body>
+<html>
+    <head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
+
+		<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+	#showCreateRelation{
+	margin-top: 1%;
+	margin-right: 5%;
+	margin-bottom: 4%;
+	margin-left: 0%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+</style>
+
 <script type="text/javascript">
 	var check = true;
 					
@@ -82,3 +89,62 @@
 			}
 		}
 </script>
+    </head>
+	
+			<div id="leftSidebar">
+		    <ul>
+		        <div style="clear: both;">
+		            &nbsp;
+		        </div>
+		        <li>
+		            <ul>
+		            	<li>
+		            		No actions yet
+		            	</li>
+						
+		            </ul>
+		        </li>
+		    </ul>
+		</div>
+
+    <div id="page">
+    	<div id="page-bgtop">
+    		<div id="showCreateRelation">	
+	
+	<body>
+		<h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Create Topic Relation</h2>
+				<br />
+		<form>
+			<p>
+				<form id="f1" style="display: inline;">
+					<abbr id="rName" style="display: inline;">Relation Name:</abbr> <select id="rels" style="display: inline;"> 
+					<option >choose name</option>
+					#{list items:topic.entity.organization.relationNames, as:'relName'}
+					<option >${relName}</option>
+					#{/list}
+					</select> <input id="button1" type="button" value="Add new name" onclick="buttonOne();" style="display: inline;" class="linkButton"></input>
+				</form>
+				<form id="f2" style="display: none;">
+				Relation Name: <input id = "text" type="textbox" required>
+					</select> <input id="button2" type="button" value="Add from list" onclick="buttonTwo();" class="linkButton"/>
+				</form>
+			</p>
+			
+			<p>
+				Related Topic: 
+				
+				<select id="tpc"> 
+					<option>Select Topic</option>
+					#{list items:listOfTopics, as:'topicElement'}
+					<option value="${topicElement.id}">${topicElement.title}</option>
+					#{/list}
+				</select>
+				
+				<input type="submit" value="Create" onclick="kill(${topic.id})" class="linkButton"/>
+			</p>
+		</form>
+	</body>
+</div>
+	</div>
+	</div>
+</html>
