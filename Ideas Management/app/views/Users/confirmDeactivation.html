@@ -32,7 +32,6 @@
 function confirm(){
 	  var pass = document.getElementById('pass');
 	if (document.getElementById('check').value == '' && document.getElementById('pass').value == '') {
-		alert("here");
 		$('#text2').show();
 		$('#text1').show();
 		return false;
@@ -59,7 +58,6 @@ function confirm(){
 			}
 			
 			if (document.getElementById('pass').value == '${user.password}' && document.getElementById('check').value != '') {
-				alert("Your account has been deactivated");
 				return true;
 			}
 		
