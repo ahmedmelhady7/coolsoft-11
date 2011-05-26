@@ -39,6 +39,8 @@ public class Label extends CoolModel
 	
 	
 	/**
+	 * Default constructor used to create a label without assigning any ideas to it
+	 * 
 	 * @param name
 	 * 		the label name
 	 * @param user
@@ -53,6 +55,8 @@ public class Label extends CoolModel
 	}
 	
 	/**
+	 * This constructor takes a list of ideas and assigns them to the created label
+	 * 
 	 * @param name
 	 * 		the label name
 	 * @param user
