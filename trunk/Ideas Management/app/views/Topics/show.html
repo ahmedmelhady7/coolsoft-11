@@ -866,7 +866,7 @@
 					
 					#{if idea.isDraft == false}
 					<li>
-						<div class="accordionItem">
+						<div id="ideas" class="accordionItem">
 						<h3><a href="@{Ideas.show(idea.id)}">&nbsp ${idea.title}</a></h3>
 							<div>
 								<p><font size=2>Description: ${idea.description}</font></p>
@@ -948,7 +948,9 @@
 			                 $("#hidden").toggle();
 			           });
 			                $("#unhide").click(function(){
-			                    $("#hidden").hide();
+			                    $("#hidden").remove();
+			                    $("#ideas").hide();
+			                    $("#ideas").show();
 			              });
 			                 </script>
 			                <style type="text/css">

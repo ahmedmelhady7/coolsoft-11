@@ -21,19 +21,6 @@
 <div id="leftSidebar">
   	<br/>
 	<br/>
-  #{if ideaAlreadyReported==false && canReport && notAuthor}
-		  	<br/>
-    		<br/>
-		    <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform">
-        		<input type="hidden"  name="ideaId" value="${ideaId}">
-                <input id="spam" align="right" type="submit" class="linkButton" value="Report Idea As Spam">
-            </form>
-          #{/if}
-          #{if ideaAlreadyReported==true}
-        				<b><font color="Red">you have already reported this idea</font><b>
-          #{/if}
-   
-	<br/>
     #{if notBlockedFromUsing}
     <input type="button" class="linkButton"  id ='share' value="Share idea"/>
 	<div id="shareidea">
@@ -166,7 +153,15 @@
         <div class="post-content">
           <div class="about">Detail:</div>
 		  <h3>${object.description}</h3>
-		  <div class="objectForm">
+	<div class="objectForm">
+	#{if ideaAlreadyReported==false && canReport && notAuthor}
+		  	<br/>
+    		<br/>
+		    <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform" style="float: right;">
+        		<input type="hidden"  name="ideaId" value="${ideaId}">
+                <input id="spam" align="right" class="linkButton" title="Report Idea As Spam" type="image" src="/public/images/icons/red_flag.png">
+            </form>
+          #{/if}
      #{if isAuthor && notInPlan}
 	<form action="@{Topics.deleteIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">
 			<input type="image" style="float:right;" src="/public/images/icons/trash.png"  class="linkButton" title="Delete My Idea" />
@@ -181,7 +176,7 @@
 	#{if canDelete && !isAuthor && notInPlan}
 	<form action="@{Topics.hideIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         	<input type="hidden" name = "justification" id = "justText2">
-            <input type="submit" style="float:right;" class="linkButton" style="color: red;"  value="&{'Hide Idea', type.modelName}" />
+            <input style="float:right;" class="linkButton" style="color: red;"  value="Hide Idea" type="image" src="/public/images/icons/hide-icon.gif"/>
     </form>
     #{/if}
 	<br />
