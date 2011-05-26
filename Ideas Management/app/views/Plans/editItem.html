@@ -1,6 +1,5 @@
-#{extends 'main.html' /}
+#{extends 'planLayout.html' /}
 #{set title:'Edit Item' /}
-
 <style type="text/css">body {
 			font-size:80%;
 			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
@@ -41,25 +40,28 @@
     <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js"></script>
     <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
 </br>
-<input type="text" name= "planstart"id="planstart" vspace="20" readonly value="${item.plan.startDate.format('MM/dd/yyyy')}"/>
-<input type="text" name= "planend"id="planend" vspace="20" readonly value="${item.plan.endDate.format('MM/dd/yyyy')}"/>
+<input type="hidden" name= "planstart"id="planstart" vspace="20" readonly value="${item.plan.startDate.format('MM/dd/yyyy')}"/>
+<input type="hidden" name= "planend"id="planend" vspace="20" readonly value="${item.plan.endDate.format('MM/dd/yyyy')}"/>
 <h1>${item.summary}</h1>
 #{form @Plans.edit2(), method:'POST', id:'edititemForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
 </br>
 Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()" value="${item.startDate.format('MM/dd/yyyy')}"/><label id = "startdateerror"style= "color:Red"> Please Insert the date on which the item starts </label><label id = "dateerror"style= "color:Red">Start date can not be earlier than today's date</label><label id = "gom3aerror"style= "color:Red">Item's start date must be later than the plan's start date</label>
 </br>
-End Date:: <input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()" value="${item.endDate.format('MM/dd/yyyy')}"/><label id = "enddateerror"style= "color:Red"> Please Insert the date on which the item ends </label><label id = "earlyerror"style= "color:Red">Start date must be greater than end date</label><label id = "zikoerror"style= "color:Red">Item's end date must be earlier than the plan's end date</label>
+</br>
+End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()" value="${item.endDate.format('MM/dd/yyyy')}"/><label id = "enddateerror"style= "color:Red"> Please Insert the date on which the item ends </label><label id = "earlyerror"style= "color:Red">Start date must be greater than end date</label><label id = "zikoerror"style= "color:Red">Item's end date must be earlier than the plan's end date</label>
+</br>
+</br>
+<p><b>Insert a Title for the item</b></p>
+<input type = "hidden" name = "planId" value = '${item.plan.id}' >
+<input type = "text" id = "summary" name = "summary" type = "text" size = "30" value="${item.summary}"><label id = "summaryerror"style= "color:Red"> Please  a title for the plan </label>
+</br>
 </br>
 <p><b>Insert the description of the plan</b></p>
 <textarea id="description" name="description" rows="7" cols="50">${item.description}</textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the item </label>
 </br>
-<p><b>Insert a Title for the description</b></p>
-<input type = "hidden" name = "planId" value = '${item.plan.id}' >
-<input type = "text" id = "summary" name = "summary" type = "text" size = "30" value="${item.summary}"><label id = "summaryerror"style= "color:Red"> Please  a title for the plan </label>
-</br>
 <input type = "hidden" name = "itemId" value = '${item.id}'>
-</br>
-<input type = "submit" value ="Edit" >
+</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type = "submit" value ="Save" >
 #{/form}
 <br>
 </div>
@@ -86,7 +88,6 @@ function datepickerB(){
                                             }));
 											}
 function checkall(){
-		alert("7elwa el batta");
 		var start = document.getElementById("datePickerA").value;
 		var end = document.getElementById("datePickerB").value;
 		var desc = document.getElementById("description").value;
