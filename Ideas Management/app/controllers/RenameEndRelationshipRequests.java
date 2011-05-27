@@ -144,6 +144,10 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 		User user = User.findById(userId);
 		Organization organisation = Organization.findById(organisationId);
 		if (type == 0) {
+			if (Organizations.isDuplicateRequest(null, null, null,
+					organisationId, type, 0, requestType, relationId)) {
+				redirect("MainEntitys.viewEntity", entityId, "Request created");
+			}
 			EntityRelationship relation = EntityRelationship
 					.findById(relationId);
 			RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
@@ -165,6 +169,10 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 							+ ")", organisation);		
 			redirect("MainEntitys.viewEntity", entityId, "Request created");
 		} else {
+			if (Organizations.isDuplicateRequest(null, null, null,
+					organisationId, type, 0, requestType, relationId)) {
+				redirect("Topics.show", topicId, "Request created");
+			}
 			TopicRelationship relation = TopicRelationship.findById(relationId);
 			RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
 					user, organisation, relation, type, requestType, null);
