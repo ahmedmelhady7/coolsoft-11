@@ -1,5 +1,8 @@
 package models;
-
+/**
+ * 
+ * @author Lama Ashraf
+ */
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +13,10 @@ import play.db.jpa.Model;
 
 @MappedSuperclass
 public class CoolModel extends Model {
-
+	/**
+     * list of logs 
+     * 
+     */
 	@OneToMany
     public List<Log> logs;
 
