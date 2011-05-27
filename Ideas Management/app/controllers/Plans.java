@@ -657,12 +657,17 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
-	 * @author ${Ibrahim Safwat}
+	 * This method generates the average of the user-entered rating and the rating of the specified plan
 	 * 
-	 * @param rat
-	 *            the user given rating for the specified plan
-	 * @param planID
-	 *            ID of the plan wished to rate rates a given plan
+	 * @author Ibrahim Safwat
+	 * 
+	 * @story C4S09
+	 * 
+	 * @param planId : the id of the plan the user wants to rate
+	 * 
+	 * @param rat : user-entered rating
+	 * 
+	 * @return : void
 	 */
 
 	public static void rate(long planId, int rat) {
@@ -773,14 +778,17 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
-	 * @author ${Ibrahim safwat}
+	 * This method allows users to share plans through notifications
 	 * 
-	 * @param userId
-	 *            User that wants to share the plan
-	 * @param planID
-	 *            ID of the plan to be shared
+	 * @author Ibrahim Safwat
 	 * 
-	 *            shares a plan with a given user
+	 * @story C4S08
+	 * 
+	 * @param userName: username of the user that the notification will be sent to
+	 * 
+	 * @param planId: the ID of the plan that the notification will be sent from
+	 * 
+	 * @return void
 	 */
 	public static boolean sharePlan(String userName, long planID) {
 		User U = User.find("byUsername", userName).first();
