@@ -180,6 +180,12 @@
 		var createRelationship = document.getElementById("object_createRelationship").checked;
 	
 		var link = "/mainentitys/viewentity?id="+entityId;
+		
+		
+		if(${isDefaultEntity}) {
+			link = "/organizations/viewprofile?id=" +${organizationId};
+		}
+		
 		$.post('@{Topics.createDraft()}' ,{title:topicTitle, description:topicDescription, 
 			privacyLevel: privacyLevel, createRelationship: createRelationship,
 			entityId:entityId}, function(){window.location.href=link});					
