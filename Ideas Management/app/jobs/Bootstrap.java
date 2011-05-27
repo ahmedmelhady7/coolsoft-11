@@ -34,139 +34,131 @@ public class Bootstrap extends Job {
 			Role.createOrganizationLeadRole();
 
 			User rf = new User("aymaestro@gmail.com", "majic", "1234", "Ahmed",
-					"Maged", "What is our company's name?", "coolsoft", 0, "11/11/2010", "Egypt", "Programmer");
-			// System.out.println(rf.topicsReported.size());
-			rf.save();		
-			
+					"Maged", "What is our company's name?", "coolsoft", 0,
+					"11/11/2010", "Egypt", "Programmer");
+			rf.save();
+
 			User admin = new User("admin@coolsoft.com", "admin", "1234", "Mr.",
-					"admin", "What is our company's name?", "coolsoft", 0, "11/11/2010", "Egypt", "Programmer");
+					"admin", "What is our company's name?", "coolsoft", 0,
+					"11/11/2010", "Egypt", "Programmer");
 			admin.isAdmin = true;
 			admin._save();
-			
+
 			User lama = new User("lama@coolsoft.com", "lama", "lama", "lama",
-					"ashraf", "What is our company's name?", "coolsoft", 0, "11/06/1990", "Egypt", "Programmer");
+					"ashraf", "What is our company's name?", "coolsoft", 0,
+					"11/06/1990", "Egypt", "Programmer");
 			lama.isAdmin = true;
 			lama._save();
-			
-			User noha = new User("noha@gmail.com", "noha",
-					"1234", "noha", "khater", "What is our company's name?", "coolsoft",
-					0, "11/11/2010",
-					null, "").save();
-			
-			User alia = new User("alia@gmail.com", "alia",
-					"1234", "alia", "el-bolock", "What is our company's name?", "coolsoft",
-					0, "11/11/2010",
-					null, "").save();
-			
+
+			User noha = new User("noha@gmail.com", "noha", "1234", "noha",
+					"khater", "What is our company's name?", "coolsoft", 0,
+					"11/11/2010", null, "").save();
+
+			User alia = new User("alia@gmail.com", "alia", "1234", "alia",
+					"el-bolock", "What is our company's name?", "coolsoft", 0,
+					"11/11/2010", null, "").save();
 
 			User hadi = new User("elhadiahmed3@gmail.com", "hadi.18",
-					"notreal", "Ahmed", "El-Hadi", "What is our company's name?", "coolsoft",
-					0, "11/11/2010",
+					"notreal", "Ahmed", "El-Hadi",
+					"What is our company's name?", "coolsoft", 0, "11/11/2010",
 					null, "");
-			
+
 			hadi._save();
 
 			User barnasa = new User("brns@gmail.com", "brns", "1234",
-					"Abdelrahman", "Ali", "What is our company's name?", "coolsoft", 
-					0, "11/11/2010", "egypt", "student");
+					"Abdelrahman", "Ali", "What is our company's name?",
+					"coolsoft", 0, "11/11/2010", "egypt", "student");
 			barnasa._save();
 
 			User sharaf = new User("sharaf@eg.gov", "sharaf", "1234", "Asam",
-					"Sharaf", "What is our company's name?", "coolsoft",
-					0, "11/11/2010", "Egypt", "Primenister")
-					.save();
+					"Sharaf", "What is our company's name?", "coolsoft", 0,
+					"11/11/2010", "Egypt", "Primenister").save();
 
 			User gamal = new User("gmal@gov.eg", "gmal", "1234", "Yehya",
-					"El Gamal", "What is our company's name?", "coolsoft",
-					0, "11/11/2010", "Egypt", "menister")
-					.save();
+					"El Gamal", "What is our company's name?", "coolsoft", 0,
+					"11/11/2010", "Egypt", "menister").save();
 
 			User khalifa = new User("khalifa@gov.eg", "khalifa", "1234",
-					"Abd El Kawi", "Khalifa", "What is our company's name?", "coolsoft",
-					0, "11/11/2010",
-					"Egypt", "Governer").save();
+					"Abd El Kawi", "Khalifa", "What is our company's name?",
+					"coolsoft", 0, "11/11/2010", "Egypt", "Governer").save();
 
 			User gom3a = new User("mgmohamedganem@gmail.com", "Ghanem", "1234",
-					"Mohamed", "Gomaa", "What is our company's name?", "coolsoft",
-					0, "11/11/2010", "Egypt",
-					"student");
+					"Mohamed", "Gomaa", "What is our company's name?",
+					"coolsoft", 0, "11/11/2010", "Egypt", "student");
 			gom3a._save();
 
 			User khayat = new User("ibrahim.al.khayat@gmail.com", "ialk",
-					"1234", "Ibrahim", "EL-khayat", "What is our company's name?", "coolsoft",
-					0, "11/11/2010",
+					"1234", "Ibrahim", "EL-khayat",
+					"What is our company's name?", "coolsoft", 0, "11/11/2010",
 					"Egypt", "student");
 			khayat._save();
 
 			User mai = new User("mai.jt4@gmail.com", "mai", "1234", "Mai",
-					"Magdy", "What is our company's name?", "coolsoft",
-					0, "11/11/2010", "Egypt", "student");
+					"Magdy", "What is our company's name?", "coolsoft", 0,
+					"11/11/2010", "Egypt", "student");
 			mai._save();
 
 			User u5 = new User("mostafa.aly0@gmail.com", "s3eed", "1234",
-					"mostafa", "Ali", "What is our company's name?", "coolsoft",
-					0, "11/11/2010", "Egypt",
-					"student");
+					"mostafa", "Ali", "What is our company's name?",
+					"coolsoft", 0, "11/11/2010", "Egypt", "student");
 			u5._save();
 
 			User u6 = new User("Ibrahim@gmail.com", "Ibrahim", "1234",
-					"Ibrahim", "Safwat", "What is our company's name?", "coolsoft",
-					0, "11/11/2010", "Egypt",
-					"student");
+					"Ibrahim", "Safwat", "What is our company's name?",
+					"coolsoft", 0, "11/11/2010", "Egypt", "student");
 			u6._save();
 
 			User fatma = new User("testfatma.meawad@guc.edu.eg", "fmeawad",
-					"1234", "Fatma", "Meawad", "What is our company's name?", "coolsoft",
-					0, "11/11/2010",
-					"Egypt", "Professor").save();
+					"1234", "Fatma", "Meawad", "What is our company's name?",
+					"coolsoft", 0, "11/11/2010", "Egypt", "Professor").save();
 
 			User slim = new User("testslim.abdennadher@guc.edu.eg", "mezo",
-					"1234", "Slim", "Abd EL Nadder", "What is our company's name?", "coolsoft",
-					0, "11/11/2010",
+					"1234", "Slim", "Abd EL Nadder",
+					"What is our company's name?", "coolsoft", 0, "11/11/2010",
 					"Egypt", "Professor").save();
 
 			User ashraf = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234",
-					"Ashraf", "Mansoor", "What is our company's name?", "coolsoft",
-					0, "11/11/2010", "Egypt",
-					"student").save();
+					"Ashraf", "Mansoor", "What is our company's name?",
+					"coolsoft", 0, "11/11/2010", "Egypt", "student").save();
 
 			Organization guc = new Organization("GUC", ashraf, 1, true,
 					"The German University in Cairo").save();
-			
-			//faruki
+
+			// faruki
 			MainEntity defaultEntity = new MainEntity("Default", "", guc, false);
 			defaultEntity.save();
-			//faruki
+			// faruki
 
 			Organization egypt = new Organization("Egypt", admin, 2, false,
 					"The National Egyptian Organization").save();
-			
-			//faruki
-			MainEntity defaultEntity1 = new MainEntity("Default", "", egypt, false);
+
+			// faruki
+			MainEntity defaultEntity1 = new MainEntity("Default", "", egypt,
+					false);
 			defaultEntity.save();
-			//faruki
+			// faruki
 
 			Organization gov = new Organization("الحكومة المصرية", sharaf, 0,
 					true, "").save();
-			
-			//faruki
-			MainEntity defaultEntity2 = new MainEntity("Default", "", gov, false);
+
+			// faruki
+			MainEntity defaultEntity2 = new MainEntity("Default", "", gov,
+					false);
 			defaultEntity.save();
-			//faruki
+			// faruki
 
 			Tag tagEducation = new Tag("Education", guc, slim).save();
 			Tag tagGuc = new Tag("GUC", guc, ashraf).save();
 
 			Tag tagEgypt = new Tag("Egypt", gov, sharaf).save();
 			Tag tagGov = new Tag("Government", gov, sharaf).save();
-			
+
 			Tag tag1 = new Tag("Cairo", guc, ashraf).save();
 			Tag tag2 = new Tag("Germany", guc, ashraf).save();
 			Tag tag3 = new Tag("DAAD", guc, ashraf).save();
 			Tag tag4 = new Tag("University", guc, ashraf).save();
 			Tag tag5 = new Tag("Egypt", guc, ashraf).save();
 
-			
 			guc.relatedTags.add(tagGuc);
 			guc.relatedTags.add(tagEducation);
 			guc.relatedTags.add(tag5);
@@ -184,8 +176,7 @@ public class Bootstrap extends Job {
 					"Media Engineering and technology", guc, true).save();
 			gucMet.tagList.add(tagEducation);
 			gucMet._save();
-			
-			
+
 			MainEntity gucCs = new MainEntity("CS",
 					"Computer Science and Engineering", gucMet, guc, false)
 					.save();
@@ -224,15 +215,14 @@ public class Bootstrap extends Job {
 			gucMetStudentUnion._save();
 			gucMetStudentUnion.tags.add(tagGuc);
 			gucMetStudentUnion._save();
-			
-			Topic gucDraft = new Topic("Draft",
-					"Suggestions", 2, ashraf, gucMet, false, true).save();
+
+			Topic gucDraft = new Topic("Draft", "Suggestions", 2, ashraf,
+					gucMet, false, true).save();
 			gucMetStudentUnion._save();
 
 			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
 
-			
 			UserRoleInOrganizations.addEnrolledUser(gom3a, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
 
@@ -316,10 +306,10 @@ public class Bootstrap extends Job {
 
 			UserRoleInOrganizations.addEnrolledUser(hadi, egypt, ideadeveloper,
 					matchChaos.id, "topic");
-			
+
 			UserRoleInOrganizations.addEnrolledUser(hadi, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
-			
+
 			Plan p1 = new Plan("S.U. heads", ashraf, new Date(111, 03, 20),
 					new Date(111, 07, 30), "Plan for SU heads elections",
 					gucMetStudentUnion, "summer break").save();
@@ -328,7 +318,7 @@ public class Bootstrap extends Job {
 			gucMetStudentUnion.save();
 			ashraf.planscreated.add(p1);
 			ashraf.save();
-			
+
 			i6.plan = p1;
 			i6._save();
 			p1.addIdea(i6);
@@ -375,7 +365,9 @@ public class Bootstrap extends Job {
 			item2.save();
 
 			new Comment("here i accept", i1, gom3a).save();
-			new Comment("i love SE course", p1, hadi).save();
+			Comment c1 = new Comment("i love SE course", p1, hadi).save();
+			i1.commentsList.add(c1);
+			i1.save();
 
 		}
 	}
