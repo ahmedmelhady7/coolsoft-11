@@ -32,6 +32,13 @@ public class Idea extends CoolModel {
 	 *         Organization initialization date
 	 */
 	public Date intializedIn;
+	/**
+	 * @author Mohamed Ghanem
+	 * 
+	 *         true if the idea is active and false other wise.
+	 * 
+	 */
+	public boolean active;
 
 	/**
 	 * Idea's description Required for creating an idea
@@ -131,6 +138,7 @@ public class Idea extends CoolModel {
 		this.title = title;
 		this.description = description;
 		intializedIn = new Date();
+		active = true;
 		this.author = user;
 		user.ideasCreated.add(this);
 		this.belongsToTopic = topic;
@@ -168,6 +176,7 @@ public class Idea extends CoolModel {
 			boolean isDraft) {
 		this.title = title;
 		intializedIn = new Date();
+		active = true;
 		this.description = body;
 		this.belongsToTopic = topic;
 		this.author = user;
