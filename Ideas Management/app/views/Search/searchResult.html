@@ -168,41 +168,13 @@ The Search Results Viewer
             </ul>
             #{/if}#{/if}
         </div>
-        <div id='divIt'>
-        #{if lof} 
-        #{if itemsFound} 
-        Found ${itemsFound.size()} item${itemsFound.pluralize()}
-        </br>
-        <ul>
-        #{list items:itemFound, as:'item'}
-        <li>
-            <a href='@{item.viewAssignedItems(item.id)}' target="_parent">${item.summary}</a>
-        </li>#{/list}
-        </br>
-    </ul>
-    #{/if}#{/if}
-</div>
-<div id='divE'>
+		<div id='divE'>
 #{if lof}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}
 </br>
 <ul>
 #{list items:entitiesFound, as:'item'}
 <li>
     <a href='@{MainEntitys.viewEntity(item.id)}' target="_parent">${item.toString()}</a>
-</li>#{/list}
-</br>
-</ul>
-#{/if}#{/if}
-</div>
-<div id='divP'>
-#{if lof} 
-#{if plansFound} 
-Found ${plansFound.size()} plan${plansFound.pluralize()}
-</br>
-<ul>
-#{list items:itemFound, as:'plan'}
-<li>
-    <a href='@{plan.planView(plan.id)}' target="_parent">${plan.title}</a>
 </li>#{/list}
 </br>
 </ul>
@@ -221,6 +193,20 @@ Found ${plansFound.size()} plan${plansFound.pluralize()}
 </ul>
 #{/if}#{/if}
 </div>
+<div id='divP'>
+#{if lof} 
+#{if plansFound} 
+Found ${plansFound.size()} plan${plansFound.pluralize()}
+</br>
+<ul>
+#{list items:plansFound, as:'plan'}
+<li>
+    <a href='@{Plans.planView(plan.id)}' target="_parent">${plan.title}</a>
+</li>#{/list}
+</br>
+</ul>
+#{/if}#{/if}
+</div>
 <div id='divI'>
 #{if lof}#{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}
 </br>
@@ -235,6 +221,20 @@ Found ${plansFound.size()} plan${plansFound.pluralize()}
 #{/if}
 #{if ideasFound.size()>1}
 <a href='javascript: markDuplicate()'>Mark two ideas as duplicate</a>#{/if}#{/if}
+</div>
+        <div id='divIt'>
+        #{if lof} 
+        #{if itemsFound} 
+        Found ${itemsFound.size()} item${itemsFound.pluralize()}
+        </br>
+        <ul>
+        #{list items:itemsFound, as:'item'}
+        <li>
+            <a href='@{Items.viewAssignedItems()}' target="_parent">${item.summary}</a>
+        </li>#{/list}
+        </br>
+    </ul>
+    #{/if}#{/if}
 </div>
 #{else}
 <center>
@@ -267,22 +267,6 @@ Found ${plansFound.size()} plan${plansFound.pluralize()}
 #{/if}
 #{/if}
 </div>
-<div id='divIt1'>
-#{if lof} 
-#{if itemsFound} 
-Found ${itemsFound.size()} item${itemsFound.pluralize()}
-</br>
-<ul>
-#{list items:itemFound, as:'item'}
-<li>
-<a href='@{item.viewAssignedItems(item.id)}' target="_parent">${item.summary}</a>
-</br>Description:
-</br>${item.description}
-</li>#{/list}
-</br>
-</ul>
-#{/if}#{/if}
-</div>
 <div id='divE1'>
 #{if lof}#{if entitiesFound} Found ${entitiesFound.size()} entity${entitiesFound.pluralize()}
 </br>
@@ -292,21 +276,6 @@ Found ${itemsFound.size()} item${itemsFound.pluralize()}
 <a href='@{MainEntitys.show(item.id)}' target="_parent">${item.toString()}</a>
 </br>Description:
 </br>${item.description}
-</li>#{/list}
-</br>
-</ul>
-#{/if}#{/if}
-</div>
-<div id='divP1'>
-#{if lof} 
-#{if plansFound} 
-Found ${plansFound.size()} plan${plansFound.pluralize()}
-</br>
-<ul>
-#{list items:itemFound, as:'plan'}
-<li>
-<a href='@{plan.planView(plan.id)}' target="_parent">${plan.title}</a>
-</br>${plan.description}
 </li>#{/list}
 </br>
 </ul>
@@ -330,6 +299,21 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
 #{/if}
 #{/if}
 </div>
+<div id='divP1'>
+#{if lof} 
+#{if plansFound} 
+Found ${plansFound.size()} plan${plansFound.pluralize()}
+</br>
+<ul>
+#{list items:plansFound, as:'plan'}
+<li>
+<a href='@{Plans.planView(plan.id)}' target="_parent">${plan.title}</a>
+</br>${plan.description}
+</li>#{/list}
+</br>
+</ul>
+#{/if}#{/if}
+</div>
 <div id='divI1'>
 #{if lof}#{if ideasFound} Found ${ideasFound.size()} idea${ideasFound.pluralize()}
 </br>
@@ -346,6 +330,22 @@ Found ${topicsFound.size()} topic${topicsFound.pluralize()}
 #{/if}
 #{if ideasFound.size()>1}
 <a href='javascript: markDuplicate()'>Mark two ideas as duplicate</a>#{/if}#{/if} 
+</div>
+<div id='divIt1'>
+#{if lof} 
+#{if itemsFound} 
+Found ${itemsFound.size()} item${itemsFound.pluralize()}
+</br>
+<ul>
+#{list items:itemsFound, as:'item'}
+<li>
+<a href='@{Items.viewAssignedItems()}' target="_parent">${item.summary}</a>
+</br>Description:
+</br>${item.description}
+</li>#{/list}
+</br>
+</ul>
+#{/if}#{/if}
 </div>
 #{else}
 <center>
