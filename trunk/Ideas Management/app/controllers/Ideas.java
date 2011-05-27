@@ -386,6 +386,7 @@ public class Ideas extends CoolCRUD {
 		ArrayList<Label> ideasLabels = new ArrayList<Label>();
 		boolean notInPlan = (idea.plan==null);
 		boolean active = idea.author.state.equals("a");
+		boolean isAdmin = user.isAdmin;
 		idea.incrmentViewed();
 		idea.save();
 
@@ -424,7 +425,7 @@ public class Ideas extends CoolCRUD {
 			boolean permittedToTagIdea = user.equals(idea.author)
 					|| Users.isPermitted(user, "tag ideas in my organization",
 							 topicId, "topic") || Users.isPermitted(user, "use", topicId, "topic");
-			render(type, ideasLabels, object, /* tags, */user, username, userId,
+			render(type, ideasLabels, object, /* tags, */user,isAdmin, username, userId,
 					canReport, canDelete, comments, topic, plan,
 					permittedToTagIdea,
 					/* openToEdit, */topicId,notInPlan,ideaAlreadyReported, canUse,
