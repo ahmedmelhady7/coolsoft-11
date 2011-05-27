@@ -36,6 +36,35 @@
 	word-wrap: break-word;
 }
 
+.getD{
+	margin-top: 1%;
+	margin-right: 7%;
+	margin-bottom: 4%;
+	margin-left: 0%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #FFFFFF;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
 </style>
 
     </head>
@@ -152,77 +181,35 @@
 				<body>
         #{extends '/login/index.html' /} 
 		
-		<fieldset>
-			<legend>
-				<big><b>Draft Ideas</b></big>
-			</legend>
-			#{if user.getDrafts().size()!=0}
-				#{list items: user.getDrafts() , as:'draft'}
-	               <li>
-				   <fieldset>
-					<p>Title: <a href='@{Ideas.editDraft(draft.id)}'>${draft.title}</a></p>	
-					<p>Description: <br>
-					${draft.description}
-					</p><br>
-					</fieldset>
-	                </li>
-					
-					#{/list} 
-			#{/if}
-			#{else }
-				<p><h3>You don't have any drafts</h3></p>
-			#{/else}
-		</fieldset>
+		<big><b>Draft Ideas</b></big>
+		#{if user.getDrafts().size()!=0}
+			#{list items: user.getDrafts() , as:'draft'}
+				<div class = "getD">
+					<p>Title: <a href='@{Ideas.editDraft(draft.id)}'>${draft.title}</a></p>
+					<p>Description:</p>
+					<p>${draft.description}</p>
+				</div>
+        	#{/list} 
+		#{/if}
+		#{else }
+			<div class = "getD">
+				<p>You don't have any drafts</p>
+			</div>
+		#{/else}
 		
-		<fieldset>
-			<legend>
-				<big><b>Draft Topics</b></big>
-			</legend>
-			#{list items: draftTopics , as:'draftTopic'}
-               <li>
-			   <fieldset>
-               		<legend>
-               			<table>
-						<tr>
-						<td>
-						#{form @Topics.postWithoutEdit(), method:'POST', enctype:'multipart/form-data' }
-							<input type = "hidden" name = "topicId" value = ${draftTopic.getId()}>
-							<input type="submit" value="Post" />
-						#{/form}
-						</td>
-						<td>or</td>
-						<td>
-						#{form @Topics.editDraft(), method:'POST', enctype:'multipart/form-data' }
-							<input type = "hidden" name = "topicId" value = ${draftTopic.getId()}>
-							<input type="submit" value="Edit" class = "linkButton"/>
-						#{/form}
-						</td>
-						<td>
-							#{form @Topics.discardDraftTopic(), method:'POST', enctype:'multipart/form-data' }
-							<input type = "hidden" name = "topicId" value = ${draftTopic.getId()}>
-							<input type="submit" value="Discard" class = "linkButton"/>
-						#{/form}
-						</td>
-						</tr>
-						</table>
-               		</legend>
-				<p>Title: ${draftTopic.title}</p>	
-				<p>Description: <br>
-				${draftTopic.description}
-				</p>
-				PrivacyLevel: ${draftTopic.privacyLevel}
-				<br>
-				CreateRelationship: ${draftTopic.createRelationship}
-				<br>
-	2			</fieldset>
-                </li>
-				
-			#{/list} 
+		<big><b>Draft Topics</b></big>
 			
+			#{list items: draftTopics , as:'draftTopic'}
+               <div class = "getD">
+               	<p>Title: <a href='@{Topics.editDraft(draftTopic.id)}'>${draftTopic.title}</a></p>
+               	<p>Description:	${draftTopic.description}</p>
+				</div>
+			#{/list} 
 			#{if draftTopics.size() == 0}
-				You don't have any draft topics:)
+				<div class = "getD">
+					<p>You don't have any draft topics:)</p>
+				</div>
 			#{/if}
-		</fieldset>
  </body>
  <br />
 			</div>
