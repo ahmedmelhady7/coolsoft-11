@@ -1898,6 +1898,23 @@ public class Users extends CoolCRUD {
 	}
 	
 	/**
+	 * Deletes the notification of the user 	
+	 *
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S14
+	 * 
+	 * @param notId
+	 *            long the notification ID to be deleted
+	 * 
+	 */
+	
+	public static void deleteNotification(long notId) {
+		Notification notification = Notification.findById(notId);
+		notification.delete();
+	}
+	
+	/**
 	 * Renders the view of the notifications list
 	 * 
 	 * @author Ahmed Maged

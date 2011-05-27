@@ -1,6 +1,57 @@
 #{extends 'Login/index.html' /}
 #{set title:'Notification Profile' /}
 
+<style type="text/css">
+#crudShow{
+			margin-top: 2%;
+			margin-right: 9%;
+			margin-bottom: 4%;
+			margin-left: 0%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #bbbbbb;
+			padding-top: 2%;
+			padding-right: 4%;
+			padding-bottom: 0%;
+			padding-left: 4%;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			border-right-width: 2px;
+			border-right-style: solid;
+			border-right-color: #bbbbbb;
+			border-left-width: 2px;
+			border-left-style: solid;
+			border-left-color: #bbbbbb;
+			border-top-width: 2px;
+			border-top-style: solid;
+			border-top-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+#descriptionShow{
+			margin-top: 2%;
+			margin-right: 5%;
+			margin-bottom: 4%;
+			margin-left: 5%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #FFFFFF;
+			padding-top: 2%;
+			padding-right: 4%;
+			padding-bottom: 0%;
+			padding-left: 4%;
+			position: relative;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+</style>
+
 <script type="text/javascript">
 		var en_ids = new Array();
 		var dis_ids = new Array();
@@ -59,6 +110,7 @@
 					<a href="/users/notificationprofileview?type=All"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to Notification Profile</a>
 					<br>
 					<br>
+					<div id="crudShow">
 					<h2>Notification Profile</h2>
 <br>
 <hr>
@@ -101,6 +153,7 @@
 <input class = "linkButton" type="button"  value = "Save changes" onclick="submit()">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cascade: <input type="checkbox" id="cascade">		
 					</div>
+				</div>
 				</div>
 			</div>
 		</div>	
