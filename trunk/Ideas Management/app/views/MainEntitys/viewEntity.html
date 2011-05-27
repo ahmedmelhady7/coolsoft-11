@@ -456,7 +456,9 @@
 				<select id="ent"> 
 					<option>Select Entity</option>
 					#{list items:entityList, as:'entityElement'}
+					#{if entityElement.createRelationship}
 					<option value="${entityElement.id}">${entityElement.name}</option>
+					#{/if}
 					#{/list}
 				</select>
 				
@@ -730,7 +732,6 @@
 			</div>
 			<br />
 			<br />
-		
 				
 			
 					
