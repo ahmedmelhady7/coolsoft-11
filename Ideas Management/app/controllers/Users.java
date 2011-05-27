@@ -555,8 +555,8 @@ public class Users extends CoolCRUD {
 	 */
 	public static void reportCommentAsSpam(long commentId) {
 		Comment comment = Comment.findById(commentId);
-		String description1 = "Your comment in the idea "+ comment.commentedIdea.toString()  + " has been reported as spam";
-		String description2 = "A comment in your idea "+ comment.commentedIdea.toString()  + " has been reported as spam";
+		String description1 = "Your comment "+ comment.comment +"in the idea "+ comment.commentedIdea.toString()  + " has been reported as spam";
+		String description2 = "A comment "+ comment.comment +"in the idea "+ comment.commentedIdea.toString()  + " has been reported as spam";
 		User reporter = Security.getConnected();
 		if (comment.reporters != null){
 			comment.reporters += reporter.id + ",";
@@ -571,7 +571,7 @@ public class Users extends CoolCRUD {
 				Notifications.sendNotification(comment.commentedIdea.author.id, commentId, "comment", "your comment in your idea "+comment.commentedIdea.toString());
 		}
 		else if(comment.commentedPlan!=null){
-			
+			Notifications.sendNotification(comment.commentedIdea.author.id, commentId, "comment", "your comment has been reported as spam "+comment.comment);
 		}
 		//commentSpamView(commentId);
 

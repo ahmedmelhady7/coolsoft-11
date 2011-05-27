@@ -1025,7 +1025,7 @@
 			                </br>
 			                <label>by : <a href="@{Users.viewProfile(idea.author.id)}">${idea.author.username}</a></label>
 			                <br />
-			                <input type="submit" id="unhide_${idea.id}" value="unhide" onclick="unhide(${idea.id})" class = "linkButton"/>
+			                <input type="submit" id="unhide" value="unhide" onclick="unhide(${idea.id})" class = "linkButton"/>
 							</div>
 			                </fieldset>
 			        		#{/list}
@@ -1078,7 +1078,7 @@
 			                $("#showhidden").click(function(){
 			                 $("#hidden").toggle();
 			           });
-			                $("#unhide_${idea.id}").click(function(){
+			                $("#unhide").click(function(){
 			                	$("#hidden").remove
 			                	alert('unhide done');
 			                    window.location.reload();
