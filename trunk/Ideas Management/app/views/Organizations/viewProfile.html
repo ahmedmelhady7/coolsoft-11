@@ -365,7 +365,7 @@ $(document).ready(function(){
         </li>
 		
 		#{if follower == true}
-        <li><a onclick="unfollow('${org.id}');">Unfollow ${org.name}</a></li>
+        <li><a onclick="unfollow('${org.id}');" style="cursor:pointer;">Unfollow ${org.name}</a></li>
 		#{/if}
 		#{else}
 		<li><a href="@{followOrganization(org.id)}">Follow ${org.name}</a></li>
