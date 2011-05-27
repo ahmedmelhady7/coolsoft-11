@@ -93,8 +93,6 @@ public class Topics extends CRUD {
 	 */
 
 	public static void tagTopic(long topicId, String tag) {
-
-		System.out.println("wasal hena " + topicId + " " + tag);
 		Tag tempTag = null;
 		List<Tag> listOfTags = getAvailableTags(topicId);
 		boolean tagAlreadyExists = false;
@@ -117,8 +115,6 @@ public class Topics extends CRUD {
 								"tag", "This topic has been tagged as " + tag);
 					}
 				} else {
-					// tag already exists error message
-					System.out.println("tag already exists");
 					tagAlreadyExists = true;
 				}
 				tagExists = true;
@@ -130,7 +126,6 @@ public class Topics extends CRUD {
 			topic.tags.add(tempTag);
 			tempTag.taggedTopics.add(topic);
 			tempTag.save();
-			System.out.println("new tag created and saved");
 		}
 
 		if (!tagAlreadyExists) {
@@ -159,19 +154,31 @@ public class Topics extends CRUD {
 		JsonObject json = new JsonObject();
 		json.addProperty("tagName", tempTag.name);
 		json.addProperty("tagId", tempTag.id);
-		System.out.println(json.toString());
-		
 		renderJSON(json.toString());
-		// render(tagAlreadyExists, tags, topicId, user);
 	}
 
+	/**
+	 * 
+	 * @description this method checks if the given tag is already in the list of tags related to this topic
+	 * 				to avoid duplication
+	 * 
+	 * @author Mostafa Yasser El Monayer
+	 * 
+	 * @story C3S2
+	 * 
+	 * @param topicId
+	 *            : the topic that is being tagged
+	 * 
+	 * @param tag
+	 *            : the tag that is being added
+	 * 
+	 */
+	
 	public static void checkIfTagAlreadyExists(long topicId, String tag) {
-		System.out.println(topicId + " " + tag);
 		Topic topic = (Topic) Topic.findById(topicId);
 		notFoundIfNull(topic);
 		boolean tagAlreadyExists = false;
 		List<Tag> listOfTags = topic.tags;
-		System.out.println(listOfTags.toString());
 		for (int i = 0; i < listOfTags.size(); i++) {
 			if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
 				tagAlreadyExists = true;
@@ -181,12 +188,26 @@ public class Topics extends CRUD {
 			}
 		}
 		JsonObject json = new JsonObject();
-		System.out.println("preparing json");
 		json.addProperty("tagAlreadyExists", tagAlreadyExists);
-		System.out.println(json.toString());
 		renderJSON(json.toString());
 	}
 
+
+	/**
+	 * 
+	 * @description this method returns the list of tags that are available for that topic to be tagged with
+	 * 
+	 * @author Mostafa Yasser El Monayer
+	 * 
+	 * @story C3S2
+	 * 
+	 * @param topicId
+	 *            : the topic that is being tagged
+	 * 
+	 * @return list of tags
+	 * 
+	 */
+	
 	public static List<Tag> getAvailableTags(long topicId) {
 		List<Tag> listOfTags = new ArrayList<Tag>();
 		List<Tag> globalListOfTags = new ArrayList<Tag>();

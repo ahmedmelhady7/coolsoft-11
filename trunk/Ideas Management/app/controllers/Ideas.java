@@ -658,7 +658,7 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 * @story C3S3, C3S11
 	 * 
-	 * @param ideaID
+	 * @param ideaId
 	 *            : the idea that is being tagged
 	 * 
 	 * @param tag
@@ -667,8 +667,6 @@ public class Ideas extends CoolCRUD {
 	 */
 	
 	public static void tagIdea(long ideaId, String tag) {
-
-		System.out.println("wasal hena " + ideaId + " " + tag);
 		Tag tempTag = null;
 		List<Tag> listOfTags = getAvailableTags(ideaId);
 		boolean tagAlreadyExists = false;
@@ -691,8 +689,6 @@ public class Ideas extends CoolCRUD {
 								"tag", "This topic has been tagged as " + tag);
 					}
 				} else {
-					// tag already exists error message
-					System.out.println("tag already exists");
 					tagAlreadyExists = true;
 				}
 				tagExists = true;
@@ -704,7 +700,6 @@ public class Ideas extends CoolCRUD {
 			idea.tagsList.add(tempTag);
 			tempTag.taggedIdeas.add(idea);
 			tempTag.save();
-			System.out.println("new tag created and saved");
 		}
 
 		if (!tagAlreadyExists) {
@@ -719,18 +714,33 @@ public class Ideas extends CoolCRUD {
 		JsonObject json = new JsonObject();
 		json.addProperty("tagName", tempTag.name);
 		json.addProperty("tagId", tempTag.id);
-		System.out.println(json.toString());
 		
 		renderJSON(json.toString());
-		// render(tagAlreadyExists, tags, topicId, user);
 	}
 
+	/**
+	 * 
+	 * @description this method checks if the given tag is already in the list of tags related to this idea
+	 * 				to avoid duplication
+	 * 
+	 * @author Mostafa Yasser El Monayer
+	 * 
+	 * @story C3S3, C3S11
+	 * 
+	 * @param ideaId
+	 *            : the idea that is being tagged
+	 * 
+	 * @param tag
+	 *            : the tag that is being added
+	 * 
+	 */
+
+	
 	public static void checkIfTagAlreadyExists(long ideaId, String tag) {
 		Idea idea = (Idea) Idea.findById(ideaId);
 		notFoundIfNull(idea);
 		boolean tagAlreadyExists = false;
 		List<Tag> listOfTags = idea.tagsList;
-		System.out.println(listOfTags.toString());
 		for (int i = 0; i < listOfTags.size(); i++) {
 			if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
 				tagAlreadyExists = true;
@@ -740,12 +750,26 @@ public class Ideas extends CoolCRUD {
 			}
 		}
 		JsonObject json = new JsonObject();
-		System.out.println("preparing json");
 		json.addProperty("tagAlreadyExists", tagAlreadyExists);
-		System.out.println(json.toString());
 		renderJSON(json.toString());
 	}
 
+
+	/**
+	 * 
+	 * @description this method returns the list of tags that are available for that idea to be tagged with
+	 * 
+	 * @author Mostafa Yasser El Monayer
+	 * 
+	 * @story C3S3, C3S11
+	 * 
+	 * @param ideaId
+	 *            : the idea that is being tagged
+	 * 
+	 * @return list of tags
+	 * 
+	 */
+	
 	public static List<Tag> getAvailableTags(long ideaId) {
 		List<Tag> listOfTags = new ArrayList<Tag>();
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
