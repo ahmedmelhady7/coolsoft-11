@@ -783,7 +783,7 @@ $(document).ready(function(){
                                         #{/list}
                                         </select>
                                         
-                                        <input type="button" value="Create Relation" onclick="createTRelation()" />
+                                        <input type="button" value="Create Relation" onclick="createTRelation()" /> <font color="red"><span id="t_duplicate"></span></font>
                                         
                                 </form></p>
                                 
@@ -804,7 +804,7 @@ $(document).ready(function(){
                                         #{/list}
                                         </select>
 
-                                        <input type="button" value="Create Relation" onclick="createGRelation()" />                             
+                                        <input type="button" value="Create Relation" onclick="createGRelation()" /> <font color="red"><span id="g_duplicate"></span></font>                      
                                         
                                 </form></p>
                                 
@@ -842,9 +842,9 @@ $(document).ready(function(){
                                                         destinationId: d
                                                 }, function(data){
                                                         if(data == "true"){
-                                                                document.getElementById('e_duplicate').textContent="Relation \"" + n + "\" have been created.";
-//                                                              location.reload();
-                                                                $('#e_duplicate').fadeOut('slow');
+                                                               
+                                                              location.reload();
+                                                                
                                                                 //reset values.
                                                                 
                                                         }else if(data == "false"){
@@ -860,9 +860,9 @@ $(document).ready(function(){
                                         var d = document.getElementById("tpc2").value;
                                         
                                         if (n == "choose name" || s == "Select Topic" || d == "Select Topic") {
-                                                alert("Please fill the required filed(s)");
+                                                document.getElementById('t_duplicate').textContent="Please fill all required field(s).";
                                         }else if (s == d){
-                                                alert("Cannot relate topic to itself!");
+                                                document.getElementById('t_duplicate').textContent="Cannot relate topic to itself!";
                                         }else {
                                                 $.post('@{TopicRelationships.createRelationship()}', {
                                                         name: n,
@@ -870,12 +870,12 @@ $(document).ready(function(){
                                                         destinationId: d
                                                 }, function(data){
                                                         if (data == "true") {
-                                                                alert("you have created relation: " + n);
+                                                                
                                                                 location.reload();
                                                         }
                                                         else 
                                                                 if (data == "false") {
-                                                                        alert("relation already exists!!");
+                                                                       document.getElementById('e_duplicate').textContent="Relation already exists.";
                                                         }
                                                 });
                                         }
@@ -887,9 +887,9 @@ $(document).ready(function(){
                                         var d = document.getElementById("tg2").value;
                                         
                                         if (n == "choose name" || s == "Select Tag" || d == "Select Tag") {
-                                                alert("Please fill the required filed(s)");
+                                                document.getElementById('g_duplicate').textContent="Please fill all required field(s).";
                                         }else if (s == d){
-                                                alert("Cannot relate tag to itself!");
+                                               document.getElementById('g_duplicate').textContent="Cannot relate tag to itself.";
                                         }else {
                                                 $.post('@{TagRelationships.createRelationship()}', {
                                                         name: n,
@@ -897,12 +897,12 @@ $(document).ready(function(){
                                                         destinationId: d
                                                 }, function(data){
                                                         if (data == "true") {
-                                                                alert("you have created relation: " + n);
+                                                               
                                                                 location.reload();
                                                         }
                                                         else 
                                                                 if (data == "false") {
-                                                                        alert("relation already exists!!");
+                                                                       document.getElementById('t_duplicate').textContent="Relation already exists.";
                                                         }
                                                 });
                                         }
