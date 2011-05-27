@@ -150,8 +150,11 @@ public class User extends CoolModel {
 	// List<RequestOfRelationship> requestRelationship;
 	// List<TopicInvitation> topicInvitations;
 
+	
+	/**
+	 *  list of invitations that have been sent by that user
+	 */
 	@OneToMany(mappedBy = "sender")
-	// , cascade = CascadeType.ALL)
 	public List<Invitation> invitation;
 
 	/**
@@ -655,8 +658,8 @@ public class User extends CoolModel {
 	 * 
 	 * @story C1S20
 	 * 
-	 * @return List
-	 * 			List<Notification> the list of the latest notifications
+	 * @return List<Notification>
+	 * 			       the list of the latest notifications
 	 */
 	
 	public List<Notification> getLatest() {		
