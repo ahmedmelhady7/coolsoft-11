@@ -7,6 +7,7 @@ import play.mvc.With;
 
 import models.Idea;
 import models.Label;
+import models.Log;
 import models.User;
 
 /**
@@ -67,12 +68,22 @@ public class Labels extends CoolCRUD
 			
 			Label label = new Label(name,user,choosenIdeas);
 			label.save();
+			
+			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
+	        + " created the label " +"<a href=\"http://localhost:9008/labels/showlabel?labelId=" + label.id +"\">" +  label.name + "</a>";
+			
+			Log.addUserLog(logDescription,user,label);
+			
 			return 1;
 		}
 		else
 		{
 			Label label = new Label(name,user);
 			label.save();
+			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
+	        + " created the label " +"<a href=\"http://localhost:9008/labels/showlabel?labelId=" + label.id +"\">" +  label.name + "</a>";
+			
+			Log.addUserLog(logDescription,user,label);
 			return 1;
 		}
 	}
@@ -85,8 +96,14 @@ public class Labels extends CoolCRUD
 	 */
 	public static void deleteLabel(long labelId)
 	{
+		User user = Security.getConnected();
 		Label label = Label.findById(labelId);
+		String labelName = label.name;
 		label.deleteLabel();
+		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName
+        + " deleted the label "+labelName ;
+		
+		Log.addUserLog(logDescription,user);
 		showAllLabels();
 	}
 	
