@@ -730,13 +730,6 @@
 			 	<input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}" class = "linkButton"></input>
 			#{/if}
 				
-			#{if check1 == 1}
-				 <input type="submit" value="view" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}" class = "linkButton"></input>
-			#{/if}
-			
-			#{if check2 == 1}
-				 <input type="submit" value="use" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}" class = "linkButton"></input>
-			#{/if}
 					
 			#{if manageTopicRequests}
 				<form action="@{TopicRequests.list()}">
