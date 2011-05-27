@@ -266,29 +266,31 @@ $(document).ready(function(){
 						<li>
 							<a href="@{Topics.blank(defaultEntityId)}" title="Post Topic"> Post Topic</a>
 						</li>
-					#{/if}
+			#{/if}
+			
+			#{if settings==1}		
 
 			 <li>
            <a id="requestsLink" style="cursor:pointer;">Requests</a>
 			 <div id="requestsLinks">
            <ul> 	
 			<LI type="disc">
-            	#{if settings==1}
 			     <a href="@{CreateRelationshipRequests.viewRequests(org.id)}">Relationships</a>
-                 #{/if}
 				   </LI>
 				   #{if allowed==1}
 				    <LI type="disc">
-                
 				<a href="@{RequestToJoins.viewRequests(0,org.id)}">Join Requests </a>
-			 
             </LI>
 			   #{/if}
-				
             	  </ul>
        </div>	
 
+             </li>
+             	 #{/if}
+
+
              <li>
+
            <a id="entityLink" style="cursor:pointer;">Entities</a>
 			 <div id="entityLinks">
             <ul>
