@@ -582,4 +582,9 @@ clear: both;
      padding:0!important;
 	 cursor:pointer;
 }
-
+#page3 {
+	width: 60%;
+	margin: 0 auto;
+/* 	float:left; */
+	padding: 0px 0px 0px 0px;
+}
