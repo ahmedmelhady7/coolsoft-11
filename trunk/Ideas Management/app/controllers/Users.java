@@ -542,20 +542,20 @@ public class Users extends CoolCRUD {
 	 */
 	public static void reportCommentAsSpam(long commentId) {
 		Comment comment = Comment.findById(commentId);
-		String description1 = "Your comment " + comment.comment
-				+ "in the idea " + comment.commentedIdea.toString()
-				+ " has been reported as spam";
-		String description2 = "A comment " + comment.comment + "in the idea "
-				+ comment.commentedIdea.toString()
-				+ " has been reported as spam";
 		User reporter = Security.getConnected();
 		if (comment.reporters != null) {
 			comment.reporters += reporter.id + ",";
 			comment.save();
 		}
 		if (comment.commentedIdea != null) {
-			if (comment.commenter.username
-					.equals(comment.commentedIdea.author.username)) {
+			if (comment.commenter.username.equals(comment.commentedIdea.author.username)) {
+				String description1 = "Your comment " + comment.comment
+				+ "in the idea " + comment.commentedIdea.toString()
+				+ " has been reported as spam";
+				String description2 = "A comment " + comment.comment + "in the idea "
+				+ comment.commentedIdea.toString()
+				+ " has been reported as spam";
+		
 				Notifications.sendNotification(comment.commenter.id, commentId,
 						"comment", description1);
 				Notifications.sendNotification(comment.commentedIdea.author.id,
@@ -566,7 +566,7 @@ public class Users extends CoolCRUD {
 								+ comment.commentedIdea.toString());
 		} else if (comment.commentedPlan != null) {
 			Notifications
-					.sendNotification(comment.commentedIdea.author.id,
+					.sendNotification(comment.commenter.id,
 							commentId, "comment",
 							"your comment has been reported as spam "
 									+ comment.comment);
