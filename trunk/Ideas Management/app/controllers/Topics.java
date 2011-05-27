@@ -1831,14 +1831,23 @@ public class Topics extends CRUD {
 		try {
 
 			deleteTopic(id, justification);
+			
 		}
 
 		catch (Exception exception) {
 			flash.error(Messages.get("crud.delete.error", type.modelName));
-			redirect(request.controller + ".show", object._key());
+			if(!entity.equals(entity.organization.entitiesList.get(0)))
+			redirect("mainentitys.viewentity", entity.id);
+			else{
+				redirect("organizations.viewprofile", entity.organization.id);
+			}
 		}
 		flash.success(Messages.get("crud.deleted", type.modelName));
-		redirect("mainentitys.viewentity", entity.id);
+		if(!entity.equals(entity.organization.entitiesList.get(0)))
+			redirect("mainentitys.viewentity", entity.id);
+			else{
+				redirect("organizations.viewprofile", entity.organization.id);
+			}
 	}
 
 	/**
@@ -2004,7 +2013,7 @@ public class Topics extends CRUD {
 						message);
 
 		} catch (Exception e) {
-			redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
+			redirect(request.controller + ".show");
 		}
 		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
