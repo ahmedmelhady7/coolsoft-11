@@ -360,10 +360,10 @@ $(document).ready(function(){
 </div>
 </li>
         <li>
-        	#{if (admin || creator)}<a href="@{Tags.createTag(org.id)}" title="Create a new Tag">Create a Tag</a>
+        	#{if (admin || creator)}<a id="tagLink" style="cursor:pointer;">Create a Tag</a>
         #{/if}
         #{else}
-        #{if (org.createTag) && (!join)}<a href="@{Tags.createTag(org.id)}" title="Create a new Tag">Create a Tag</a>
+        #{if (org.createTag) && (!join)}<a id="tagLink" style="cursor:pointer;">Create a Tag</a>
         #{/if}
         #{/else}
         </li>
@@ -404,7 +404,7 @@ $(document).ready(function(){
 			       
 			       <form action="@{BannedUsers.restrictOrganizersList()}">
 			            <input type="hidden" name="orgId" value='${org.id}'>
-			            <input type="submit" value="Restrict/Derestrict multiple Organizers" class="linkButton">
+			            <input type="submit" value="Restrict/Derestrict many Organizers" class="linkButton">
 			        </form>
 			        </li>
 			        #{/if}
@@ -661,6 +661,15 @@ $(document).ready(function(){
                         autoComplete.Set("group", c);		
 	                    </script>		
 	                </form>#{/if}</div>
+					
+					<div id="createTagbox" style="float: left; color:#0080ff;">
+					<form name="createTag" action="@{Tags.createTagg()}" method="POST">
+					Tag Name: <input type="text" id="name" name="name" required>
+					<input type="hidden" id="orgId" name="orgId" value= "${org.id}"> <br /><br />
+  					<input type="submit" value="Create" class="linkButton"/>
+					</form>
+					</div>
+					
 					<div style="width:20%;">
 						<p><b>List of viewable Tags:</b></p>
 						<div id="tags">
@@ -1069,6 +1078,19 @@ $(document).ready(function(){
 	                invb = true;	
 	            }	
 	        });	
+			
+		var createT = false;
+		$('#createTagbox').hide();
+		$('#tagLink').click(function(){
+			if (createT) {
+				$('#createTagbox').show(500);
+				createT = false;
+			}
+			else {
+				$('#createTagbox').hide(500);
+				createT = true;
+			}
+		})
 		
 		 function autoC(){	
 		 	var emailID=document.getElementById("email");	
