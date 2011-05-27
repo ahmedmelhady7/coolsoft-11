@@ -760,13 +760,17 @@ public class Ideas extends CoolCRUD {
 
 	
 	/**
-	 * @author ${Ibrahim Safwat}
+	 * This method generates the average of the user-entered rating and the rating of the specified idea
 	 * 
-	 * @param rating
-	 *            rating taken from the user
-	 * @param ideaId
-	 *            idea that the user wants to rate
-	 * @description rates an idea if the user is an organizer
+	 * @author Ibrahim Safwat
+	 * 
+	 * @story C4S13
+	 * 
+	 * @param ideaId : the id of the idea the user wants to rate
+	 * 
+	 * @param rat : user-entered rating
+	 * 
+	 * @return : void
 	 */
 
 	public static void rate(long ideaId, int rat) {
@@ -787,13 +791,17 @@ public class Ideas extends CoolCRUD {
 	}
 
 	/**
-	 * @author ${Ibrahim safwat}
+	 * This method allows users to share ideas through notifications
 	 * 
-	 * @param userName
-	 *            User that wants to share the idea
-	 * @param ideaID
-	 *            ID of the idea to be shared
-	 * @description shares a given idea with the given user
+	 * @author Ibrahim Safwat
+	 * 
+	 * @story C4S08
+	 * 
+	 * @param userName: username of the user that the notification will be sent to
+	 * 
+	 * @param ideaId: the ID of the idea that the notification will be sent from
+	 * 
+	 * @return void
 	 */
 	public static void shareIdea(String userName, long ideaId) {
 
@@ -809,13 +817,17 @@ public class Ideas extends CoolCRUD {
 	}
 
 	/**
-	 * @author ${Ibrahim Safwat}
+	 * This method allows organizers to assign ideas certain priorities
 	 * 
-	 * @param priority
-	 *            the priority to be set
-	 * @param ideaId
-	 *            the ID of the idea to prioritize
-	 * @description sets the priority if the user is an organizer
+	 * @author Ibrahim Safwat
+	 * 
+	 * @story C4S13
+	 * 
+	 * @param priority: the priority to be set 
+	 *            
+	 * @param ideaId: the ID of the idea to prioritize
+	 *            
+	 * @return void
 	 */
 	public static void setPriority(String priority, long ideaId) {
 		User user = Security.getConnected();

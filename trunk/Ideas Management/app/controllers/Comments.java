@@ -17,13 +17,20 @@ import models.User;
 public class Comments extends CoolCRUD {
 	
 	/**
+	 * This methods add a user-entered comment to the commentsList of the specified Plan
+	 * 
 	 * @author ${Ibrahim safwat}
+	 * 
+	 * @story C4S08
 	 * 
 	 * @param planID
 	 *            ID of the plan that the user wants to add the comment to
+	 *            
 	 * @param comment
 	 *            Comment to be added to list of comments of the plan
 	 *            addes a comment to a plan
+	 *            
+	 *@return void            
 	 */
 	public static void addCommentToPlan(long planID, String comment) {
 		//planID++;
@@ -35,13 +42,20 @@ public class Comments extends CoolCRUD {
 		redirect("/plans/viewaslist?planId="+p.id);
 	}
 	/**
+	 * This methods add a user-entered comment to the commentsList of the specified Idea
+	 * 
 	 * @author ${Ibrahim safwat}
+	 * 
+	 * @story C4S08
 	 * 
 	 * @param ideaID
 	 *            ID of the idea that the user wants to add the comment to
+	 *            
 	 * @param comment
-	 *            Comment to be added to list of comments of the idea
+	 *            Comment to be added to list of comments of the ida
 	 *            addes a comment to an idea
+	 *            
+	 *@return void
 	 */
 	public static void addCommentToIdea(long ideaID, String comment) {
 		Idea i = Idea.findById(ideaID);
