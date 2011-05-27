@@ -1015,7 +1015,7 @@ public class Users extends CoolCRUD {
 	 * @story C1S7
 	 * 
 	 * @param topic
-	 *            : Topic topic that i want to retrieve all the organizers that
+	 *            Topic topic that i want to retrieve all the organizers that
 	 *            are enrolled in it
 	 * 
 	 * @return List<User> of Organizers in that topic
@@ -1185,10 +1185,10 @@ public class Users extends CoolCRUD {
 	 * @story C1S7
 	 * 
 	 * @param entityTopicId
-	 *            : long entityTopicId is the id of the entity or topic
+	 *            long entityTopicId is the id of the entity or topic
 	 * 
 	 * @param type
-	 *            : String type is the parameter that specifies whether to fetch
+	 *            String type is the parameter that specifies whether to fetch
 	 *            all the idea developers in the required entity or in a certain
 	 *            topic
 	 * 
@@ -1238,7 +1238,8 @@ public class Users extends CoolCRUD {
 	 *            Organization org that contains the entities
 	 * @param user
 	 *            User the intended user
-	 * @return list <MainEntities> list of  entities that the organizer is enrolled in
+	 * @return list <MainEntities> list of entities that the organizer is
+	 *         enrolled in
 	 */
 	public static List<MainEntity> getEntitiesOfOrganizer(Organization org,
 			User user) {
