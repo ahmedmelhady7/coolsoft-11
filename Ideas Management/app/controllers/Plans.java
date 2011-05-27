@@ -1213,9 +1213,7 @@ public class Plans extends CoolCRUD {
 	public static boolean deleteItem(long itemId, int notify) {
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
-		notFoundIfNull(item);
 		Plan plan = Plan.findById(item.plan.id);
-		notFoundIfNull(plan);
 		plan.items.remove(item);
 		plan.save();
 		for (int i = 0; i < item.volunteerRequests.size(); i++) {
@@ -1283,7 +1281,6 @@ public class Plans extends CoolCRUD {
 		User user = Security.getConnected();
 		List<User> toBeNotified = new ArrayList<User>();
 		Plan plan = Plan.findById(planId);
-		notFoundIfNull(plan);
 		String notificationMsg = "The plan " + plan.title + " has been deleted";
 		for (Item item : plan.items) {
 			for (User userAssigned : item.getAssignees()) {
@@ -1319,9 +1316,9 @@ public class Plans extends CoolCRUD {
 		while (!plan.commentsList.isEmpty()) {
 			comment = plan.commentsList.remove(0);
 			plan.save();
-			comment.delete();
+			comment.commentedPlan = null;
+			comment.save();
 		}
-
 		User userRated;
 		while (!plan.usersRated.isEmpty()) {
 			userRated = plan.usersRated.remove(0);
@@ -1350,6 +1347,7 @@ public class Plans extends CoolCRUD {
 		Log.addUserLog(logDescription, user, topic, topic.entity,
 				topic.entity.organization);
 		plan.logs.clear();
+		plan.save();
 		plan.delete();
 		return true;
 	}
