@@ -319,11 +319,21 @@
 			</li>
 			#{/if}
 			<!-- ################## -->			
-			
-			
 			#{if (canRestrict == 1)}
 			<li>
-			<a href = "@{BannedUsers.restrictOrganizerEntityPath(entity.id)}" style="cursor:pointer;" type="submit" ><font size = "2" >Restrict/DeRestrict Organizer</font></a>
+			<a href = "@{BannedUsers.restrictOrganizerEntityPath(entity.id)}" type="submit" >Restrict/Derestrict organizer</a>
+			</li>
+			#{/if}
+			<li>
+			
+				#{if invite == 1}		
+				 <input type="submit" value="Invite Organizers" onclick=location.href="@{Invitations.invite(entity.id)}" class = "linkButton"></input>
+			
+			</li>
+			#{/if}	
+			#{if check == 1}
+			<li>
+			 	<input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}" class = "linkButton"></input>
 			</li>
 			#{/if}
 			<!-- End of sidebar -->
@@ -720,13 +730,7 @@
 			</div>
 			<br />
 			<br />
-			#{if invite == 1}		
-				 <input type="submit" value="Invite Organizers" onclick=location.href="@{Invitations.invite(entity.id)}" class = "linkButton"></input>
-			#{/if}	
-				<br />
-			#{if check == 1}
-			 	<input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}" class = "linkButton"></input>
-			#{/if}
+		
 				
 			
 					
