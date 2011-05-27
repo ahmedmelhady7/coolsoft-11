@@ -32,7 +32,6 @@ public class Logs extends CoolCRUD {
 		User user = Security.getConnected();
 		
 		List<MainEntity> entities = organization.entitiesList;
-		System.out.println(organizationId + "3aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 		List<Log> toFilter = new ArrayList<Log>();
 		List<Log> reversed = new ArrayList<Log>();
 		
@@ -43,7 +42,7 @@ public class Logs extends CoolCRUD {
 
 			else {
 				System.out
-						.println("you are not authorized to view....................");
+						.println("you are not authorized to view");
 			}
 			
 			for(int i = 1; i <= reversed.size(); i++) {
@@ -86,12 +85,12 @@ public class Logs extends CoolCRUD {
 		notFoundIfNull(organization);
 		if(Security.getConnected().isAdmin || Security.getConnected().equals(organization.creator)) {
 		
-		System.out.println("entity id = " + entityId);
+		
 		ArrayList<Log> filtered = new ArrayList<Log>();
 		
 		MainEntity entity = MainEntity.findById(entityId);
 		//notFoundIfNull(entity);
-		System.out.println(id + "searchLog");
+		
 		List<Log> toFilter = new ArrayList<Log>();
 		List<Log> reversed = new ArrayList<Log>();
 		
@@ -107,20 +106,18 @@ public class Logs extends CoolCRUD {
 
 			else {
 				System.out
-						.println("you are not authorized to view....................");
+						.println("you are not authorized to view");
 			}
 		}
 		for(int i = 1; i <= reversed.size(); i++) {
 			toFilter.add(reversed.get(reversed.size() - i));
 		}
 		
-		System.out.println(id + "organization id");
-		System.out.println("111111" + toFilter.size());
+		
 		for (int i = 0; i < toFilter.size(); i++) {
 			if ((toFilter.get(i).actionDescription).toLowerCase().contains(
 					keyword.toLowerCase())) {
-				System.out
-						.println("mohsen" + toFilter.get(i).actionDescription);
+				
 				filtered.add(toFilter.get(i));
 			}
 		}
@@ -128,42 +125,38 @@ public class Logs extends CoolCRUD {
 		
 		if (entityId == 0) {
 			toFilter.clear();
-			System.out.println("entity id  = 0");
+			
 
 			reversed = organization.logs;
-			System.out.println(reversed.size() + "reversed size");
+			
 			
 		} else {
 			toFilter.clear();
-			System.out.println("entity id  != 0");
+			
 			if (Security.getConnected() == organization.creator
 					|| Security.getConnected().isAdmin)
 				reversed = entity.logs;
 
 			else {
 				System.out
-						.println("you are not authorized to view....................");
+						.println("you are not authorized to view");
 			}
 		}
-		System.out.println(reversed.size() + "reversed size lamaaaa");
+		
 		for(int i = 1; i <= reversed.size(); i++) {
 			toFilter.add(reversed.get(reversed.size() - i));
 		}
-		System.out.println(id + "organization id");
-		System.out.println("111111" + toFilter.size());
+		
 		filtered.clear();
 		for (int i = 0; i < toFilter.size(); i++) {
 			if ((toFilter.get(i).actionDescription).toLowerCase().contains(
 					keyword.toLowerCase())) {
-				System.out
-						.println("mohsen" + toFilter.get(i).actionDescription);
+				
 				filtered.add(toFilter.get(i));
 			}
 		}
 		
-		System.out.println(filtered.size() + "hellooo");
-
-		System.out.println(filtered.size() + ">>>>>>>>>");
+	
 		JsonObject json = new JsonObject();
 		String actions = "";
 		String time = "";
@@ -242,7 +235,7 @@ public class Logs extends CoolCRUD {
 		for(int i = 1; i <= reversed.size(); i++) {
 			toFilter.add(reversed.get(reversed.size() - i));
 		}
-		System.out.println("111111" + toFilter.size());
+		
 		for (int i = 0; i < toFilter.size(); i++) {
 			if ((toFilter.get(i).actionDescription).toLowerCase().contains(
 					keyword.toLowerCase())) {
@@ -250,13 +243,13 @@ public class Logs extends CoolCRUD {
 				filtered.add(toFilter.get(i));
 			}
 		}
-		System.out.println(filtered.size() + ">>>>>>>>>");
+		
 		JsonObject json = new JsonObject();
 		String actions = "";
 		String time = "";
 		for (int i = 0; i < filtered.size(); i++) {
 			if (i == filtered.size() - 1) {
-				actions = actions + filtered.get(i).actionDescription + "|";
+				actions = actions + filtered.get(i).actionDescription + "";
 				time = time + filtered.get(i).time + "";
 			}
 			else {
@@ -265,7 +258,7 @@ public class Logs extends CoolCRUD {
 			}
  
 		}
-		System.out.println("filtered" + filtered.size());
+		
 		json.addProperty("actions", actions);
 		json.addProperty("time", time);
 
