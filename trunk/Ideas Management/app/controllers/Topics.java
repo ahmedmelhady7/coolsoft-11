@@ -1436,12 +1436,218 @@ public class Topics extends CRUD {
 	 * 
 	 */
 	public static void viewFollowers(long topicId, String f) {
-		Topic topic = Topic.findById(topicId);
-		notFoundIfNull(topic);
+		Topic temporaryTopic = Topic.findById(topicId);
+		notFoundIfNull(temporaryTopic);
 		User user = Security.getConnected();
+		List<Tag> tags = temporaryTopic.tags;
+		User creator = temporaryTopic.creator;
+		List<User> followers = temporaryTopic.followers;
+		List<Idea> ideas = temporaryTopic.ideas;
+		List<Comment> comments = temporaryTopic.commentsOn;
+		MainEntity entity = temporaryTopic.entity;
+		Plan plan = temporaryTopic.plan;
+		boolean openToEdit = temporaryTopic.openToEdit;
+		int privacyLevel = temporaryTopic.privacyLevel;
+		boolean createRelationship = temporaryTopic.createRelationship;
+		String deleteMessage = "Are you Sure you want to delete the task ?!";
+		boolean deletable = temporaryTopic.isDeletable();
+		boolean hidden = temporaryTopic.hidden;
+		int canClose = 0;
+		int canPlan = 0;
+		int canMerge = 0;
+		int canRestrict = 0;
+		long topicIdLong = topicId;
+		User actor = Security.getConnected();
+		String actionClose = "close a topic and promote it to execution";
+		String actionPlan = "create an action plan to execute an idea";
+		String actionMerge = "merge ideas";
+		Topic targetTopic = Topic.findById(topicIdLong);
+		boolean canReport = Users
+				.isPermitted(user, "use", topicIdLong, "topic");
+		boolean alreadyReported = false;
+		boolean canDelete = Users.isPermitted(actor, "hide and delete an idea",
+				topicIdLong, "topic");
+		boolean alreadyReportedTopic = false;
+		boolean canRequestRelationship = false;
+		boolean topicNotClosed = targetTopic.openToEdit;
+		temporaryTopic.incrmentViewed();
+		temporaryTopic.save();
+		long userId=user.id;
+		for (int i = 0; i < ideas.size(); i++) {
+			Idea idea = ideas.get(i);
+
+			for (int j = 0; j < idea.reporters.size()
+					|| j < actor.ideasReported.size(); j++) {
+				if (idea.reporters.size() > 0
+						&& (actor.toString().equals(
+								idea.reporters.get(j).toString()) || idea
+								.toString().equals(
+										idea.reporters.get(j).toString())))
+					alreadyReported = true;
+			}
+		}
+		ArrayList<User> topicReporters = new ArrayList<User>();
+		String[] topicReportersId = { "0" };
+		User reporter = Security.getConnected();
+		if (targetTopic.reporters != null) {
+			topicReportersId = targetTopic.reporters.split(",");
+			long reporterId = 0;
+			if (!targetTopic.reporters.isEmpty()) {
+				for (int i = 0; i < topicReportersId.length
+						&& targetTopic.reporters != ""; i++) {
+					reporterId = Integer.parseInt(topicReportersId[i]);
+					if (reporterId == reporter.id) {
+						topicReporters.add(reporter);
+					}
+				}
+			}
+		}
+		for (int i = 0; i < topicReporters.size(); i++) {
+			if (reporter.toString().equals(topicReporters.get(i).toString())) {
+				alreadyReportedTopic = true;
+				break;
+			} else
+				alreadyReportedTopic = false;
+		}
+		ArrayList<Idea> hiddenIdeas = new ArrayList<Idea>();
+		for (int i = 0; i < ideas.size(); i++) {
+			if (ideas.get(i).hidden) {
+				hiddenIdeas.add(ideas.get(i));
+			}
+		}
+		int allowed = 0;
+		for (int k = 0; k < ideas.size(); k++) {
+			if (ideas.get(k).hidden)
+				ideas.remove(k);
+			else if (ideas.get(k).isDraft)
+				ideas.remove(k);
+		}
+		int numberOfIdeas = ideas.size();
+		if ((temporaryTopic.privacyLevel == 1)
+				&& Users.isPermitted(
+						actor,
+						"Accept/Reject requests to post in a private topic in entities he/she manages",
+						temporaryTopic.id, "topic"))
+			allowed = 1;
+		// Note isPermitted has a bug here!
+		boolean canPost = Users.isPermitted(Security.getConnected(), "use",
+				temporaryTopic.id, "topic");
+
+		int check = 0;
+		if (Users.isPermitted(Security.getConnected(),
+				"block a user from viewing or using a certain entity",
+				topicIdLong, "topic"))
+			check = 1;
+		int check1 = 0;
+		if (Users.isPermitted(Security.getConnected(), "view", topicIdLong,
+				"topic"))
+			check1 = 1;
+
+		int check2 = 0;
+		if (Users.isPermitted(Security.getConnected(), "use", topicIdLong,
+				"topic"))
+			check2 = 1;
+
+		if (Users.isPermitted(actor, actionClose, topicIdLong, "topic")) {
+			canClose = 1;
+		}
+
+		if (Users.isPermitted(actor, actionPlan, topicIdLong, "topic")) {
+			canPlan = 1;
+		}
+
+		if (Users.isPermitted(actor, actionMerge, topicIdLong, "topic")) {
+			canMerge = 1;
+		}
+
+		int permission = 1;
+
+		if (!Users.isPermitted(actor, "post topics", entity.id, "entity")) {
+			permission = 0;
+		}
+		boolean isIdeaDeveloper = false;
+		List<UserRoleInOrganization> roles = UserRoleInOrganization.find(
+				"byEnrolled", actor).fetch();
+		for (int k = 0; k < roles.size(); k++) {
+			if (roles.get(k).type.equalsIgnoreCase("topic")
+					&& roles.get(k).entityTopicID == topicIdLong) {
+				isIdeaDeveloper = true;
+				break;
+			}
+		}
+		boolean seeRelationStatus = false;
+		if (actor.isAdmin || entity.organization.creator.equals(actor)
+				|| creator.equals(actor)) {
+			seeRelationStatus = true;
+		}
+		boolean isMemeber = Users.getEnrolledUsers(
+				targetTopic.entity.organization).contains(actor);
+		boolean pending = targetTopic.hasRequest(actor.id);
+		boolean canNotPost = (targetTopic.creator.id != actor.id
+				&& !actor.isAdmin && !pending)
+				&& !isIdeaDeveloper && isMemeber;
+		boolean follower = actor.topicsIFollow.contains(targetTopic);
+		boolean canCreateRelationship = TopicRelationships
+				.isAllowedTo(topicIdLong);
+		boolean topicIsLocked = targetTopic.createRelationship;
+		Organization organisation = targetTopic.entity.organization;
+		if (actor.isAdmin || entity.organization.creator.equals(actor)) {
+			canRestrict = 1;
+		}
+		if (Users.getEntityOrganizers(entity).contains(actor)
+				&& Users.isPermitted(actor,
+						"Request to start a relationship with other items",
+						topicId, "topic")) {
+			canRequestRelationship = true;
+		}
+		
+		boolean joined = false;
+		joinedUsersInTopic = searchByTopic(topicId);
+		System.out.println("topic id "+topicId);
+		System.out.println(joinedUsersInTopic);
+		for (int i = 0; i < joinedUsersInTopic.size(); i++) {
+				if(joinedUsersInTopic.get(i).username.equals(user.username));
+					joined=true;
+		}
+		boolean banned = true;
+		
+		
+		if(temporaryTopic.hidden == true)
+			{
+			System.out.println("Hider " + temporaryTopic.hider.id + " , connected User " + user.id);
+			System.out.println("if");
+			if(temporaryTopic.hider.id.compareTo(user.id) ==0){
+				banned = false;
+				System.out.println("if if");
+			}
+			}
+		else{
+			System.out.println("else if");
+			if(temporaryTopic.canView(user)){
+				System.out.println("else if");
+				banned=false;
+			}
+		}
 		if (f.equals("true"))
-			followTopic(topicId);
-		render(topic, user);
+			followTopic(topicId);	
+		if(banned == false){	
+		try {
+
+			render(tags, joined,/* canUse, */alreadyReportedTopic,
+					creator, followers, ideas, canReport,userId,topicNotClosed,hiddenIdeas,
+					numberOfIdeas, comments, entity, canDelete,
+					alreadyReported, plan, openToEdit, privacyLevel,
+					deleteMessage, deletable, topicIdLong, canClose, canPlan,
+					targetTopic, allowed, permission, topicId, canPost,
+					canNotPost, pending, follower, canCreateRelationship,
+					seeRelationStatus, createRelationship, actor, hidden,
+					canRestrict, check, canMerge, canRequestRelationship,
+					topicIsLocked, organisation, check1, check2, user,
+					temporaryTopic);
+
+		} catch (TemplateNotFoundException exception) {
+			
+		}}
 	}
 
 	/**
