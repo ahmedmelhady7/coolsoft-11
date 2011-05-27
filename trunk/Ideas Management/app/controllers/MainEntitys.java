@@ -336,9 +336,6 @@ public class MainEntitys extends CoolCRUD {
 						"enable/disable the user to create their own tags within an organization",
 						org.id, "organization"))
 			settings = 1;
-		System.out.println(settings);
-		System.out.println(user);
-		System.out.println(org);
 		List<MainEntity> entitiesCanBeRelated = new ArrayList<MainEntity>();
 		for (int x = 0; x < entities.size(); x++) {
 			entitiesCanBeRelated.add(entities.get(x));
