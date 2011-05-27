@@ -172,7 +172,7 @@
                          #{list items:user.getRecentActivity(), as:'log'}
                          <ul>
                          	<li>
-                         	${log.actionDescription}
+                         	${log.actionDescription.raw()}
                          	<font size=2 style="float:right;">${log.time}</font>
                          	</li>
                          </ul>
