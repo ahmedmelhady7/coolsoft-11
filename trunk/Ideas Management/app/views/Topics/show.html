@@ -617,7 +617,12 @@
 			<script type="text/javascript" src="/public/javascripts/jquery-1.4.1.js"></script>
 			<br/>
 			
+			#{if !defaultEntity}
 			<div id="backToEntity" ><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a></div>
+			#{/if}
+			#{else}
+			<a href="@{Organizations.viewProfile(organisation.id)}"> Back to ${organisation.name}</a>
+			#{/else}
 			
 			<div id="crudShow" class="${type.name}">
 			    <div id="topicShow" class="objectForm" style="color:#000000;">
@@ -638,10 +643,18 @@
 			            <label for="object_entity">
 			                in
 			            </label>
+						#{if !defaultEntity}
 			            <label id="object_entity" cols="30" rows="1" class="" name="object.entity">
 			            	<a href="@{MainEntitys.viewEntity(entity.id)}"> ${object.entity}</a>
 			                
 			            </label>
+						#{/if}
+						#{else}
+			            
+			            	<a href="@{Organizations.viewProfile(organisation.id)}"> ${organisation.name}</a>
+			                
+			            
+						#{/else}
 						</font>
 						</h3>
 			        </p>
