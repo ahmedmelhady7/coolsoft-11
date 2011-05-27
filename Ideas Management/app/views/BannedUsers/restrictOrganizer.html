@@ -1,7 +1,8 @@
 
 #{extends 'Login/index.html' /}
 #{set title:'Restrict Organizer' /}
-
+<div id="pageNoSideBar">
+<div id="pageNoSideBar-bgtop">
 <!--  <form action="@{Organizations.viewProfile()}">  -->
 <!--              <input type="hidden" name="id" value='${orgId}'>  -->
           <img src="/public/images/arrow_prev.gif"/> <a href = "@{Organizations.viewProfile(orgId)}" name = "back" type="submit" style="color:blue" onmouseout = "back.style.color='blue'" onmouseover="back.style.color='darkblue'">Back to the organization main profile</a>
@@ -27,9 +28,9 @@
 <legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
     <b><u> Organizers' set: </u></b></font></legend> <br />
        <select name = "userId" id = "userss">
-  #{list items:users, as:'user'}
+  #{list items:users, as:'u'}
   
-  <option name = ${user.id} value=${user.id}>${user.firstName} ${user.lastName}</option>
+  <option name = ${u.id} value=${u.id}>${u.firstName} ${u.lastName}</option>
   
    #{/list}
         </select>
@@ -43,7 +44,7 @@
 
 
 
-<form name = "entityList">
+<form id = "ent" name = "entityList">
 <hr> <br /><br /> 
 <fieldset>  
 <legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
@@ -71,7 +72,7 @@
  </fieldset>
 </form>
 
-<input  type="submit" value="Submit" onclick = "getTopic()">
+<input  id = "sub" type="submit" value="Submit" onclick = "getTopic()">
 #{/else}
 
 
@@ -120,7 +121,9 @@
  <br /> <br />
 
 <input name = "neww" type="submit" style="background-color:lightblue" value="Start new Restriction / De-Restriction Process" align = "Right" onclick="Restart()" onmouseout = "neww.style.color='black'" onmouseover="neww.style.color='white'">
-
+<br />
+</div>
+</div>
 
 <script >
 var restActions = {};
@@ -147,7 +150,8 @@ function DHide(){
 }
 
 function submit(){
-	
+	$('#ent').show();
+	$('#sub').show();
 	
 	if (selectEntityBtnFlag == false){
 		selectEntityBtnFlag = true;
@@ -254,7 +258,9 @@ function submit(){
 
 
 function getTopic(){
-	
+
+		
+		
 	if (submitBtnFlag == false){
 		submitBtnFlag = true;
 	
@@ -552,6 +558,12 @@ function getSelectedCheckboxValue(buttonGroup) {
 	});
 	$(function(){
 		$('#rd').hide();
+	});
+	$(function(){
+		$('#ent').hide();
+	});
+	$(function(){
+		$('#sub').hide();
 	});
 	
 	

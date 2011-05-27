@@ -3,7 +3,8 @@
 #{set title:'Restrict Organizer' /}
 
 
-
+<div id="pageNoSideBar">
+  <div id="pageNoSideBar-bgtop">
 
 <!-- <input name = "back" type="submit" style="background-color:limegreen" align = "Right" value="Back to the topic main page"  onclick=location.href="@{Topics.show(topicId)}"  onmouseout = "back.style.color='black'" onmouseover="back.style.color='white'" > <br /> <br /> -->
 <img src="/public/images/arrow_prev.gif"/> <a href = "@{Topics.show(topicId)}" name = "back" type="submit" style="color:blue" onmouseout = "back.style.color='blue'" onmouseover="back.style.color='darkblue'">Back to the topic main profile</a>
@@ -21,9 +22,9 @@
 <legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
     <b><u> Organizers' set: </u></b></font></legend> <br />
        <select name = "userId" id = "userss">
-  #{list items:users, as:'user'}
+  #{list items:users, as:'u'}
   
-  <option name = ${user.id} value=${user.id}>${user.firstName} ${user.lastName}</option>
+  <option name = ${u.id} value=${u.id}>${u.firstName} ${u.lastName}</option>
   
    #{/list}
         </select>
@@ -64,7 +65,10 @@
 <input type="submit" id = "deRestrictBtn" value="De-Restrict" onclick = "deRestrict()"> <div id = "dd"> <p style = "color:#c00">You did not choose any actions !!!</p></div><br /> <br />
 
 <input name = "newww" type="submit" style="background-color:lightblue" value="Start new Restriction / De-Restriction Process" align = "Right" onclick="Restart()"  onmouseout = "newww.style.color='black'" onmouseover="newww.style.color='white'" >
+<br /> <br />
 
+</div>
+</div>
 
 <script >
 var restActions = {};
