@@ -24,7 +24,7 @@ public class Application extends CoolCRUD {
 	
 	/**
 	 * 
-	 * @author Mostafa Ali
+	 * retrieves the homepage
 	 *
 	 */
 	public static void index() {
