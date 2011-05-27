@@ -61,10 +61,10 @@ public class BannedUser extends CoolModel {
 	 *            String action he will be banned from
 	 * 
 	 * @param resourceType
-	 *            the type of the object the action is related to
+	 *            String type of the object the action is related to
 	 * 
 	 * @param resourceId
-	 *            the Id of the Object of that type
+	 *            long Id of the Object of that type
 	 */
 
 	public BannedUser(User banned, Organization org, String action,
