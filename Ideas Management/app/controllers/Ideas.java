@@ -69,6 +69,8 @@ public class Ideas extends CoolCRUD {
 	public static void createIdea(long topicId) {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
+		notFoundIfNull(user);
+		notFoundIfNull(topic);
 		render(topic, user);
 	}
 
@@ -172,6 +174,10 @@ public class Ideas extends CoolCRUD {
 		for (Topic topic : user.topicsCreated)
 			if (topic.isDraft)
 				draftTopics.add(topic);
+		
+		notFoundIfNull(user);
+		notFoundIfNull(draftTopics);
+		notFoundIfNull(drafts);
 
 		render(drafts, draftTopics, user);
 	}
@@ -188,7 +194,8 @@ public class Ideas extends CoolCRUD {
 	public static void editDraft(long ideaId) {
 		Idea idea = Idea.findById(ideaId);
 		User user = Security.getConnected();
-		// flash.success("aho");
+		notFoundIfNull(user);
+		notFoundIfNull(idea);
 		render(idea, user);
 	}
 

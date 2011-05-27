@@ -23,6 +23,7 @@ public class Labels extends CoolCRUD
 	public static void showAllLabels()
 	{
 		User user = Security.getConnected();
+		notFoundIfNull(user);
 		render(user);
 	}
 	
@@ -32,6 +33,7 @@ public class Labels extends CoolCRUD
 	public static void createLabel()
 	{
 		User user = Security.getConnected();
+		notFoundIfNull(user);
 		render(user);
 	}
 	
@@ -104,6 +106,10 @@ public class Labels extends CoolCRUD
 		for(int i =0;i<otherIdeas.size();i++)
 			if(label.ideas.contains(otherIdeas.get(i)))
 				otherIdeas.remove(i);
+		
+		notFoundIfNull(user);
+		notFoundIfNull(label);
+		notFoundIfNull(otherIdeas);
 		
 		render(user,label,otherIdeas);
 	}
