@@ -239,8 +239,8 @@ function respond(stat, id,type,i,c){
 #{if deletionRequests.isEmpty()}
 <i><font size ="3" color ="blue">No new Requests</font></i>
 #{/if}
-<div id = "view">
 #{else}
+<div id = "view">
  #{list items:deletionRequests, as:'request'}
     
       <ul>  <li id="request_2_${request.id}">
@@ -257,10 +257,11 @@ function respond(stat, id,type,i,c){
    </div>
   </ul>  </li>
     #{/list}
-#{/else}
-<br />
+	<br />
 <br />
 </div>
+#{/else}
+
 </div>
 </div>
 </div>

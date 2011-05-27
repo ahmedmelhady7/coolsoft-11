@@ -47,12 +47,14 @@
 <br />
 <br />
 <tr><td><font size ="3" color ="black"> Requests : </font></td></tr>
-
+<br />
+<br />
 #{if requests.isEmpty()}
 <i><font size ="3" color ="blue">No new Requests</font></i>
 #{/if}
- <div id = "view">
+ 
 #{else}
+<div id = "view">
  #{list items:requests, as:'request'}    
         <li id="request_${request.id}">
         	#{if type==1}
@@ -68,10 +70,11 @@
 	    </li>
   
     #{/list}
-#{/else}
-<br />
+	<br />
 <br />
 </div>
+#{/else}
+
 </div>
 </div>
 <script type="text/javascript">
