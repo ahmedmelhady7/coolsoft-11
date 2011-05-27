@@ -25,7 +25,7 @@ public class Application extends CoolCRUD {
 	 * @author Mostafa Ali
 	 * 
 	 * @param string
-	 * 			String , the String(most likely the password) that would be hashed
+	 * 			String , the String that would be hashed
 	 *
 	 * @return hash String
 	 */
