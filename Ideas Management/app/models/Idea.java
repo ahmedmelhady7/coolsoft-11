@@ -53,7 +53,6 @@ public class Idea extends CoolModel {
 	 * the list of comments to an idea
 	 */
 	@OneToMany
-	// (cascade = CascadeType.PERSIST)
 	public List<Comment> commentsList;
 	/**
 	 * a flag that represents if the idea is hidden
