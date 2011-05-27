@@ -54,7 +54,9 @@ public class User extends CoolModel {
 	/**
 	 * Added by Ahmed Maged
 	 */
+	@Required
 	public String securityQuestion;
+	@Required
 	public String answer;
 	// added to know whether a user is an Admin or not
 	public boolean isAdmin;

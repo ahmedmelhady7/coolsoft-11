@@ -1259,91 +1259,7 @@ public class Users extends CoolCRUD {
 	 * 
 	 */
 
-	// public static void create() throws Exception {
-	// // if(Security.getConnected().isAdmin);
-	// ObjectType type = ObjectType.get(Users.class);
-	// notFoundIfNull(type);
-	// Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
-	// constructor.setAccessible(true);
-	// Model object = type.entityClass.newInstance();
-	// User user = (User) object;
-	// Binder.bind(object, "object", params.all());
-	// validation.valid(object);
-	// System.out.println(object.toString());
-	// String errorMessage = "";
-	// try {
-	// if (user.username.length() >= 20) {
-	// errorMessage = "Username cannot exceed 20 characters";
-	// }
-	// if (user.find("ByUsername", user.username) != null) {
-	// errorMessage += "This username already exists !";
-	// }
-	// } catch (NullPointerException e) {
-	// errorMessage = "Username field is required, u must have a username !";
-	// }
-	//
-	// try {
-	// if (user.password.length() >= 20) {
-	// errorMessage += "Password cannot exceed 20 characters";
-	// }
-	//
-	// } catch (NullPointerException e) {
-	// errorMessage += "Password field is required, u must have a username !";
-	// }
-	//
-	// try {
-	// if (user.password.length() >= 20) {
-	// errorMessage += "First name cannot exceed 20 characters";
-	// }
-	//
-	// } catch (NullPointerException e) {
-	// errorMessage += "First name field is required, u must have a username !";
-	// }
-	//
-	// try {
-	//
-	// if (user.find("ByEmail", user.email) != null) {
-	// errorMessage += "This mail already exists !";
-	// }
-	//
-	// } catch (NullPointerException e) {
-	// errorMessage += "Email field is required, u must have a username !";
-	// }
-	// /*if (validation.hasErrors()) {
-	// renderArgs.put("error", Messages.get("crud.hasErrors"));
-	// try {
-	// System.out.println(object.toString() + "!1try");
-	// render(request.controller.replace(".", "/") + "/blank.html",
-	// type, object);
-	// } catch (TemplateNotFoundException e) {
-	// System.out.println(object.toString() + "catch");
-	// render("CRUD/blank.html", type, object);
-	// }
-	// }*/
-	// System.out.println("");
-	//
-	// try {
-	// render(request.controller.replace(".", "/") + "/blank.html",
-	// user.email, user.username, user.password, user.firstName,
-	// user.lastName, user.communityContributionCounter,
-	// user.dateofBirth, user.country, user.profession,
-	// errorMessage);
-	// } catch (TemplateNotFoundException e) {
-	// render("CRUD/blank.html", type);
-	// }
-	// System.out.println(object.toString() + "before the save");
-	// object._save();
-	// flash.success(Messages.get("crud.created", type.modelName));
-	// if (params.get("_save") != null) {
-	// System.out.println(object.toString() + "save condition");
-	// redirect(request.controller + ".list");
-	// }
-	// if (params.get("_saveAndAddAnother") != null) {
-	// redirect(request.controller + ".blank");
-	// }
-	// redirect(request.controller + ".show", object._key());
-	// }
-	public static void create() throws Exception {
+	/*public static void create() throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
@@ -1358,11 +1274,11 @@ public class Users extends CoolCRUD {
 		tmp.username = tmp.username.trim().toLowerCase();
 		tmp.firstName = tmp.firstName.trim();
 		boolean flag = false;
-		/*
+		
 		 * if (User.find("ByEmail", tmp.email) != null ||
 		 * User.find("ByUsername", tmp.username) != null) { flag = true; }
 		 * System.out.println(flag );
-		 */
+		 
 		if (validation.hasErrors()) {
 			System.out.println("lol");
 			if (tmp.email.equals("")) {
@@ -1381,12 +1297,12 @@ public class Users extends CoolCRUD {
 				message = "Username cannot exceed 20 characters";
 			} else if (tmp.password.length() >= 25) {
 				message = "First name cannot exceed 25 characters";
-			} /*
+			} 
 			 * else if (User.find("byEmail", tmp.email) != null) { message =
 			 * "This Email already exists !"; } else if (User.find("byUsername",
 			 * tmp.username) != null) { message =
 			 * "This username already exists !"; }
-			 */
+			 
 
 			try {
 				System.out.println("show user try ");
@@ -1404,6 +1320,116 @@ public class Users extends CoolCRUD {
 		System.out.println("create() object saved");
 		tmp = (User) object;
 		Mail.welcome(tmp);
+		// Calendar cal = new GregorianCalendar();
+		// Logs.addLog( user.getConnected, "add", "User", tmp.username.
+		// cal.getTime() );
+		String message2 = tmp.username + " has been added to users ";
+		System.out.println("id " + tmp.getId());
+
+		flash.success(Messages.get("crud.created", type.modelName,
+				((User) object).getId()));
+		if (params.get("_save") != null) {
+			System.out
+					.println("create() done will redirect to users/show?topicid "
+							+ message2);
+			redirect("/users/show?userId=" + tmp.getId());
+
+		}
+		if (params.get("_saveAndAddAnother") != null) {
+			System.out
+					.println("create() done will redirect to blank.html to add another "
+							+ message2);
+			redirect(request.controller + ".blank", message2);
+		}
+		System.out
+				.println("create() done will redirect to show.html to show created"
+						+ message2);
+		redirect(request.controller + ".view", ((User) object).getId(),
+				message2);
+	}*/
+	public static void create() throws Exception {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		Model object = (Model) constructor.newInstance();
+		Binder.bind(object, "object", params.all());
+		validation.valid(object);
+		String message = "";
+		User tmp = (User) object;
+		System.out.println("create() entered");
+		tmp.email = tmp.email.trim().toLowerCase();
+		tmp.username = tmp.username.trim().toLowerCase();
+		tmp.firstName = tmp.firstName.trim();
+		boolean invalidUserFlag = false;
+		if (!(User.find("byEmail", tmp.email).fetch().isEmpty())) {
+			message = "This Email already exists !";
+			invalidUserFlag =true;
+		} else if (!(validation.email(tmp.email).ok)) {
+			message = "Please enter a valid email address";
+			invalidUserFlag = true;
+			System.out.println(message);
+		} else if (!(User.find("byUsername", tmp.username).fetch().isEmpty())) {
+			message = "This Username already exists !";
+			invalidUserFlag = true;
+		} 
+		if (validation.hasErrors()||invalidUserFlag) {
+			System.out.println("lol");
+			if (tmp.email.equals("")) {
+				message = "A User must have an email";
+				System.out.println(message);
+			} else if (!(User.find("byEmail", tmp.email).fetch().isEmpty())) {
+				message = "This Email already exists !";
+			} else if (!(validation.email(tmp.email).ok)) {
+				message = "Please enter a valid email address";
+				System.out.println(message);
+			} else if (tmp.username.equals("")) {
+				message = "A User must have a username";
+				System.out.println(message);
+			} else if (!(User.find("byUsername", tmp.username).fetch().isEmpty())) {
+				message = "This Username already exists !";
+			} else if (tmp.password.equals("")) {
+				message = "A User must have a password";
+				System.out.println(message);
+			}  else if (tmp.username.length() < 3) {
+				message = "Username cannot be less than 3 characters";
+			} else if (tmp.password.length() < 4) {
+				message = "Password cannot be less than 4 characters";
+			}else if (tmp.firstName.trim().equals("")) {
+				message = "A User must have a first name";
+				System.out.println(message);
+			} else if (tmp.username.length() >= 20) {
+				message = "Username cannot exceed 20 characters";
+			} else if (tmp.password.length() >= 25) {
+				message = "First name cannot exceed 25 characters";
+			}else if (tmp.securityQuestion.trim().equals("")) {
+				message = "A User must have a security Question";
+				System.out.println(message);
+			} else if (tmp.answer.trim().equals("")) {
+				message = "A User must have a security answer";
+				System.out.println(message);
+			}
+
+			try {
+				System.out.println("show user try ");
+				render(request.controller.replace(".", "/") + "/blank.html",
+						type, message);
+			} catch (TemplateNotFoundException e) {
+				System.out.println("show user catch ");
+				render("CRUD/blank.html", type);
+			}
+		}
+
+		System.out.println("create() about to save object");
+		tmp.state = "w";
+		tmp.password = Codec.hexMD5(tmp.password);
+		tmp.activationKey = Application.randomHash(10);
+		object._save();
+		System.out.println("create() object saved");
+		tmp = (User) object;
+		//Mail.welcome(tmp);
+		Mail.activation(tmp, tmp.activationKey);
+		
 		// Calendar cal = new GregorianCalendar();
 		// Logs.addLog( user.getConnected, "add", "User", tmp.username.
 		// cal.getTime() );

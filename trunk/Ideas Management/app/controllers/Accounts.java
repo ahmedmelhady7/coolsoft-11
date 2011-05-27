@@ -26,39 +26,45 @@ public class Accounts extends Controller {
 
 	/**
 	 * 
-	 * This method is responsible for adding an unregistered user
+	 * adds an unregistered to the database and sends a generated activation key after checking that
+	 * this user's info(attributes) are valid
 	 * 
 	 * @author Mostafa Ali
 	 * 
-	 * @story C1S9
+	 * @story C1S10
 	 * 
 	 * @param email
-	 *            : the user's email
+	 *            :String , the user's email
 	 * 
 	 * @param firstName
-	 *            : the user's first name
+	 *            : String ,the user's first name
 	 * 
 	 * @param lastName
-	 *            : the user's last name
+	 *            : String ,the user's last name
 	 * 
 	 * @param username
-	 *            : the user's username
+	 *            : String ,the user's username
 	 * 
 	 * @param password
-	 *            : the user's password
+	 *            : String ,the user's password
 	 * 
 	 * @param profession
-	 *            : the user's profession
+	 *            : String ,the user's profession
 	 * 
 	 * @param communityContributionCounter
 	 *            : the user's community contribution counter
 	 * 
 	 * @param dateofBirth
-	 *            : the user's date of birth
+	 *            : String ,the user's date of birth
 	 * 
 	 * @param country
-	 *            : the user's country
+	 *            : String ,the user's country
 	 * 
+	 * @param securityQuestion 
+	 * 				String , security question of the user
+	 * 
+	 * @param answer
+	 * 				String , the security answer of the user
 	 */
 
 	public static void addUser(String email, String username, String password,
@@ -99,9 +105,9 @@ public class Accounts extends Controller {
 			message = "Username cannot exceed 20 characters";
 		} else if (username.length() < 3) {
 			validUserFlag = true;
-			message = "Username cannot exceed 20 characters";
+			message = "Username cannot be less than 3 characters";
 		} else if (password.length() < 4) {
-			message = "First name cannot exceed 25 characters";
+			message = "Password cannot be less than 4 characters";
 			validUserFlag = true;
 		} else if (password.length() >= 25) {
 			message = "First name cannot exceed 25 characters";
@@ -151,15 +157,13 @@ public class Accounts extends Controller {
 	 * 
 	 * 
 	 */
-	public static boolean activate(long userId) {
+	public static void activate(long userId) {
 		User user = User.findById(userId);
 		if (user.state.equals("a")) {
-			return true;
+			return;
 		}
 		user.state = "a";
 		user._save();
-		return true;
-		
 	}
 
 	/**

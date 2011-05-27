@@ -18,7 +18,7 @@
 		${message}
 	</font>
 	<div class="objectForm">
-	<form name="orderform" action="@{Accounts.addUser()}" method="POST" onsubmit="return jcap();">
+	<form name="orderform" action="@{Accounts.addUser()}" method="POST" onsubmit="return confirm();">
 	
 		<p>
 			<label for="email">
@@ -98,7 +98,7 @@
         <div style="text-align: left;">
            
                 <p>
-                    This field helps prevent automated access.
+                    Please enter this field as it helps prevent automated access.
                 </p>
                 <script type="text/javascript">
                     sjcap();
@@ -434,7 +434,7 @@
         $.getJSON('@{checkUsername()}', { username: unregisteredUsername}, function (x){
         	var goodColor = "#66cc66";
             var badColor = "#ff6666";
-        	alert("hiiii");
+        	//alert("hiiii");
             if(!(x.existingUser))
             	{
             	object_username.style.backgroundColor = goodColor;
@@ -444,6 +444,16 @@
         });
     	
     }
+    
+    function confirm(){
+	
+		if (document.getElementById('pass1').value != document.getElementById('pass2').value) {
+			
+			return false
+		}
+			
+			 return jcap();
+}
     
     function echeck() {
         var str = document.getElementById('email');
