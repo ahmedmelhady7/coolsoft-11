@@ -2104,19 +2104,19 @@ public class BannedUsers extends CoolCRUD {
 			}
 
 		} else {
-            
+
 			BannedUser unblock = BannedUser.find(
 					"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 					action, "entity", entity.id).first();
-			if(unblock != null)
-			    unblock.delete();
+			if (unblock != null)
+				unblock.delete();
 			for (int j = 0; j < entity.topicList.size(); j++) {
 				BannedUser unblock1 = BannedUser.find(
 						"byBannedUserAndActionAndResourceTypeAndResourceID",
 						user, action, "topic", entity.topicList.get(j).id)
 						.first();
-				if(unblock1 != null)
-				    unblock1.delete();
+				if (unblock1 != null)
+					unblock1.delete();
 			}
 
 			List<MainEntity> subentity = entity.subentities;
@@ -2124,8 +2124,8 @@ public class BannedUsers extends CoolCRUD {
 				BannedUser unblock2 = BannedUser.find(
 						"byBannedUserAndActionAndResourceTypeAndResourceID",
 						user, action, "entity", subentity.get(j).id).first();
-			if(unblock2 != null)
-				unblock2.delete();
+				if (unblock2 != null)
+					unblock2.delete();
 
 				for (int k = 0; k < subentity.get(j).topicList.size(); k++) {
 					BannedUser unblock1 = BannedUser
@@ -2133,8 +2133,8 @@ public class BannedUsers extends CoolCRUD {
 									user, action, "topic",
 									subentity.get(j).topicList.get(k).id)
 							.first();
-				if(unblock1 != null)
-					unblock1.delete();
+					if (unblock1 != null)
+						unblock1.delete();
 				}
 			}
 
