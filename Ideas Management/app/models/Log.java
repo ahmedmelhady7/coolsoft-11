@@ -18,7 +18,7 @@ import controllers.Security;
 import play.db.jpa.*;
 
 /**
- *  Model Invitation by Lama Ashraf
+ *  Model Log by Lama Ashraf
  */
 
 @Entity
