@@ -391,7 +391,7 @@ $(document).ready(function(){
         </li>
 		
 		
-		#{if flag == 1}
+		#{if (user.isAdmin || creator)}
 			 <li>         
 			        <form action="@{BannedUsers.restrictOrganizer()}">
 			            <input type="hidden" name="orgId" value='${org.id}'>
