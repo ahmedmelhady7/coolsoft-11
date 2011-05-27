@@ -988,7 +988,7 @@
 			        <ul style="list-style: none;">   
 					#{list items:ideas, as:'idea'}
 					
-					#{if idea.isDraft == false}
+					#{if idea.isDraft == false && idea.hidden==false}
 					<li>
 						<input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
 						 <font size=1 style="float:left;"><a href="@{Users.viewProfile(idea.author.id)}">${idea.author.username}</a></font>
@@ -1013,7 +1013,7 @@
 			                <input id="showhidden" type="submit" value="show hidden Ideas" class = "linkButton"/>
 			                <div id="hidden">
 			                #{list items:hiddenIdeas, as:'idea'}
-			                                <fieldset>
+			                                <fieldset id="hidd">
 			                                </br>
 			                <label style="background-color:#FFFFFF; border-top-left-radius: 10px;border-top-right-radius: 10px;
 							border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; padding:0.3% 2% 0.3% 2%; margin-right:20%;">${idea.title}</label>
@@ -1023,9 +1023,9 @@
 						   border-bottom-left-radius: 10px; border-color:#339CCB; border-width:2px; border-style:solid; padding:2% 2% 2% 2%;"> 
 						   <label>Description : ${idea.description}</label>
 			                </br>
-			                <label>by : <a href="@{Users.viewProfile(userId)}">${idea.author.username}</a></label>
+			                <label>by : <a href="@{Users.viewProfile(idea.author.id)}">${idea.author.username}</a></label>
 			                <br />
-			                <input type="submit" id="unhide" value="unhide" onclick="unhide(${idea.id})" class = "linkButton"/>
+			                <input type="submit" id="unhide_${idea.id}" value="unhide" onclick="unhide(${idea.id})" class = "linkButton"/>
 							</div>
 			                </fieldset>
 			        		#{/list}
@@ -1078,10 +1078,10 @@
 			                $("#showhidden").click(function(){
 			                 $("#hidden").toggle();
 			           });
-			                $("#unhide").click(function(){
-			                    $("#hidden").remove();
-			                    $("#ideas").hide();
-			                    $("#ideas").show();
+			                $("#unhide_${idea.id}").click(function(){
+			                	$("#hidden").remove
+			                	alert('unhide done');
+			                    window.location.reload();
 			              });
 			                 </script>
 			                <style type="text/css">
