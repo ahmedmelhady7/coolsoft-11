@@ -1623,7 +1623,7 @@ public class Plans extends CoolCRUD {
 						+ item.summary
 						+ "</a> to entity: <a href=\"http://localhost:9008/mainentitys/viewentity?id="
 						+ item.relatedEntity.id + "\">"
-						+ item.relatedEntity.name + "</a>", item, item.plan,
+						+ item.relatedEntity.name + "</a>", user, item, item.plan,
 				item.plan.topic, item.plan.topic.entity,
 				item.plan.topic.entity.organization);
 		long id = item.relatedEntity.id;
@@ -1663,7 +1663,7 @@ public class Plans extends CoolCRUD {
 						+ item.summary
 						+ "</a> and entity: <a href=\"http://localhost:9008/mainentitys/viewentity?id="
 						+ item.relatedEntity.id + "\">"
-						+ item.relatedEntity.name + "</a>", item, item.plan,
+						+ item.relatedEntity.name + "</a>", user, item, item.plan,
 				item.plan.topic, item.plan.topic.entity,
 				item.plan.topic.entity.organization);
 		item.relatedEntity.relatedItems.remove(item);

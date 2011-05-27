@@ -74,7 +74,7 @@ public class Items extends CoolCRUD {
 					+ "</a>"
 					+ " by user <a href=\"http://localhost:9008/users/viewprofile?userId="
 					+ user.id + "\">" + user.username + "</a>.";
-			Log.addLog(logDescription, item, item.plan, item.plan.topic,
+			Log.addLog(logDescription, user, item, item.plan, item.plan.topic,
 					item.plan.topic.entity, item.plan.topic.entity.organization);
 			for (User userToNotify : userToNotifyList) {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,
@@ -126,7 +126,7 @@ public class Items extends CoolCRUD {
 					+ item.summary
 					+ "</a> now marked done by user <a href=\"http://localhost:9008/users/viewprofile?userId="
 					+ user.id + "\">" + user.username + "</a>.";
-			Log.addLog(logDescription, item, item.plan, item.plan.topic,
+			Log.addLog(logDescription, user, item, item.plan, item.plan.topic,
 					item.plan.topic.entity, item.plan.topic.entity.organization);
 			break;
 		case 2:
@@ -144,7 +144,7 @@ public class Items extends CoolCRUD {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,
 						"plan", descriptionIfInProgress);
 			}
-			Log.addLog(logDescriptionIfInProgress, item, item.plan,
+			Log.addLog(logDescriptionIfInProgress, user, item, item.plan,
 					item.plan.topic, item.plan.topic.entity,
 					item.plan.topic.entity.organization);
 			break;

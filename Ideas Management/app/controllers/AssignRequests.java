@@ -329,7 +329,7 @@ public class AssignRequests extends CoolCRUD {
 				+ user.username
 				+ "</a> has accepted the assignment to work on item <a href=\"http://localhost:9008/plans/viewaslist?planId="
 				+ item.plan.id + "\">" + item.summary + "</a>.";
-		Log.addLog(logDescription, request.source, request.source.plan,
+		Log.addLog(logDescription, user, request.source, request.source.plan,
 				request.source.plan.topic, request.source.plan.topic.entity,
 				request.source.plan.topic.entity.organization);
 		request.destination.receivedAssignRequests.remove(request);
@@ -346,6 +346,7 @@ public class AssignRequests extends CoolCRUD {
 		request.destination.save();
 		request.sender.save();
 		item.save();
+		request.logs.clear();
 		request.delete();
 		String description = "User " + user.username
 				+ " has accepted the assignment to work on item: "
@@ -384,7 +385,7 @@ public class AssignRequests extends CoolCRUD {
 				+ "\">"
 				+ request.source.summary
 				+ "</a>.";
-		Log.addLog(logDescription, request.source, request.source.plan,
+		Log.addLog(logDescription, user, request.source, request.source.plan,
 				request.source.plan.topic, request.source.plan.topic.entity,
 				request.source.plan.topic.entity.organization);
 		assignRequests.remove(request);
@@ -401,7 +402,7 @@ public class AssignRequests extends CoolCRUD {
 			Notifications.sendNotification(userToNotify.id,
 					request.source.plan.id, "plan", description);
 		}
-
+		request.logs.clear();
 		request.delete();
 	}
 

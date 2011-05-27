@@ -110,7 +110,7 @@ public class VolunteerRequests extends CoolCRUD {
 				+ user.username
 				+ "'s </a> volunteer request on item <a href=\"http://localhost:9008/plans/viewaslist?planId="
 				+ item.plan.id + "\">" + item.summary + "</a>.";
-		Log.addLog(logDescription, item, item.plan, item.plan.topic,
+		Log.addLog(logDescription, organizer, item, item.plan, item.plan.topic,
 				item.plan.topic.entity, item.plan.topic.entity.organization);
 		item.volunteerRequests.remove(request);
 		user.itemsAssigned.add(item);
@@ -167,12 +167,13 @@ public class VolunteerRequests extends CoolCRUD {
 				+ user.username
 				+ "'s </a> volunteer request on item <a href=\"http://localhost:9008/plans/viewaslist?planId="
 				+ item.plan.id + "\">" + item.summary + "</a>.";
-		Log.addLog(logDescription, request, item, item.plan, item.plan.topic,
+		Log.addLog(logDescription, organizer, item, item.plan, item.plan.topic,
 				item.plan.topic.entity, item.plan.topic.entity.organization);
 		user.volunteerRequests.remove(request);
 		item.volunteerRequests.remove(request);
 		user.save();
 		item.save();
+		request.logs.clear();
 		request.delete();
 		String description = "Your request to volunteer on item: "
 				+ item.summary + " has been rejected.";
