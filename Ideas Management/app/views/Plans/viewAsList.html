@@ -50,9 +50,10 @@ Collaborative Thinking | ${plan.title} - View Plan as List
 <div id="planShow"><br/>
 #{if notBlockedFromUsing}
 #{if checkNotRated}
-<form action="@{Plans.rate(plan.id,rat)}" method="GET">
-    <input type="submit" value="Submit rating"/><input type="hidden" name = "planId" value=${plan.id}/>
-    <select name="rat">
+<form action="@{Plans.rate(planId,rating)}" method="GET">
+	<input type="hidden" name = "planId" value = ${plan.id}>
+    <input type="submit" value="Submit rating"/>
+    <select name="rating">
         <option value="0">0</option>
         <option value="1">1</option>
         <option value="2">2</option>
@@ -78,7 +79,7 @@ You have already rated this plan
 			<script type='text/javascript'>
 			function sharePlan(id){
 				var userName = document.getElementById('userName').value;
-				$.post('@{sharePlan()}',{userName: userName, planID: id}, function() {
+				$.post('@{sharePlan()}',{userName: userName, planId: id}, function() {
 					$("#shareSucess").text("notification sent to " + userName+ " successfuly");
 					$("#shareSucess").show();
 				});

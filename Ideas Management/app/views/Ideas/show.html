@@ -57,10 +57,10 @@
 		
  		<br/>
  		<br/>
-		<form action="@{Ideas.rate(ideaId,rat)}" method="GET">
+		<form action="@{Ideas.rate(ideaId,rating)}" method="GET">
 	<div id="rateidea">	
     <input type="submit" value="Submit rating" class="linkButton"/><input type = "hidden" name = "ideaId" value = ${ideaId} >
-    <select name="rat">
+    <select name="rating">
         <option value="0">0</option>
         <option value="1">1</option>
         <option value="2">2</option>

@@ -665,57 +665,29 @@ public class Plans extends CoolCRUD {
 	 * 
 	 * @param planId : the id of the plan the user wants to rate
 	 * 
-	 * @param rat : user-entered rating
+	 * @param rating : user-entered rating
 	 * 
 	 * @return : void
 	 */
 
-	public static void rate(long planId, int rat) {
-		planId++;
-		Plan plan = Plan.findById(planId);
-		User user = Security.getConnected();
-		if (plan.usersRated.contains(user))
-			System.out.print("user already rated");
-		else {
-			System.out.println("user didn't rate yet");
-			plan.usersRated.add(user);
-			if (plan.rating.equals("Not yet rated"))
-				plan.rating = Integer.toString(rat);
+	public static void rate(long planId, int rating) {
+		Plan planInUse = Plan.findById(planId);
+		User userLoggedIn = Security.getConnected();
+
+			planInUse.usersRated.add(userLoggedIn);
+			if (planInUse.rating.equals("Not yet rated"))
+				planInUse.rating = Integer.toString(rating);
 			else {
-				int oldRating = Integer.parseInt(plan.rating);
+				int oldRating = Integer.parseInt(planInUse.rating);
 				int newRating;
-				newRating = (oldRating + rat) / 2;
-				plan.rating = Integer.toString(newRating);
+				newRating = (oldRating + rating) / 2;
+				planInUse.rating = Integer.toString(newRating);
 			}
-			plan.save();
+			planInUse.save();
 			redirect("/plans/viewaslist?planId=" + planId);
-		}
 
 	}
 
-	/**
-	 * @author ${Ibrahim Safwat}
-	 * 
-	 * @param userToCheck
-	 *            User to be checked if he/she is in the list usersRated
-	 * @return checks if a user has rated
-	 */
-	// public static boolean checkRated(User userToCheck, long planID) {
-	// Plan p = Plan.findById(planID);
-	// if(p.usersRated.size()==0)
-	// {
-	// return false;
-	// }
-	// else
-	// {
-	// for (int i = 0; i < p.usersRated.size(); i++)
-	// {
-	// if (userToCheck == p.usersRated.get(i))
-	// return true;
-	// }
-	// }
-	// return false;
-	// }
 
 	/**
 	 * This method takes the parameters from the web page of the plan creation
@@ -790,16 +762,14 @@ public class Plans extends CoolCRUD {
 	 * 
 	 * @return void
 	 */
-	public static boolean sharePlan(String userName, long planID) {
-		User U = User.find("byUsername", userName).first();
-		Plan plan = Plan.findById(planID);
-		String type = "Plan";
-		User user = Security.getConnected();
-		String desc = user.firstName + " " + user.lastName
+	public static void sharePlan(String userName, long planId) {
+		User userChosen = User.find("byUsername", userName).first();
+		User userLoggedIn = Security.getConnected();
+		String desc = userLoggedIn.firstName + " " + userLoggedIn.lastName
 				+ " shared a plan with you";
-		long userId = U.id;
-		Notifications.sendNotification(userId, planID, type, desc);
-		return true;
+
+		Notifications.sendNotification(userChosen.id, planId, "Plan", desc);
+		
 	}
 
 	/**

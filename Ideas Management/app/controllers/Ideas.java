@@ -767,25 +767,24 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 * @param ideaId : the id of the idea the user wants to rate
 	 * 
-	 * @param rat : user-entered rating
+	 * @param rating : user-entered rating
 	 * 
 	 * @return : void
 	 */
 
-	public static void rate(long ideaId, int rat) {
-		User user = Security.getConnected();
-		Idea i = Idea.findById(ideaId);
-		System.out.println("user didn't rate yet");
-		i.usersRated.add(user);
-		if (i.rating.equals("Not yet rated"))
-			i.rating = Integer.toString(rat);
+	public static void rate(long ideaId, int rating) {
+		User userLoggedIn = Security.getConnected();
+		Idea ideaInUse = Idea.findById(ideaId);
+		ideaInUse.usersRated.add(userLoggedIn);
+		if (ideaInUse.rating.equals("Not yet rated"))
+			ideaInUse.rating = Integer.toString(rating);
 		else {
-			int oldRating = Integer.parseInt(i.rating);
+			int oldRating = Integer.parseInt(ideaInUse.rating);
 			int newRating;
-			newRating = (oldRating + rat) / 2;
-			i.rating = Integer.toString(newRating);
+			newRating = (oldRating + rating) / 2;
+			ideaInUse.rating = Integer.toString(newRating);
 		}
-		i.save();
+		ideaInUse.save();
 		redirect("/ideas/show?ideaId=" + ideaId);
 	}
 
@@ -804,14 +803,11 @@ public class Ideas extends CoolCRUD {
 	 */
 	public static void shareIdea(String userName, long ideaId) {
 
-		User U = User.find("byUsername", userName).first();
-		String type = "Idea";
-		User user = Security.getConnected();
-		String desc = user.firstName + " " + user.lastName
+		User userChosen = User.find("byUsername", userName).first();
+		User userLoggedIn = Security.getConnected();
+		String desc = userLoggedIn.firstName + " " + userLoggedIn.lastName
 				+ " shared an Idea with you";
-		long notId = ideaId;
-		long userId = U.id;
-		Notifications.sendNotification(userId, notId, type, desc);
+		Notifications.sendNotification(userChosen.id, ideaId, "Idea", desc);
 
 	}
 
@@ -829,15 +825,11 @@ public class Ideas extends CoolCRUD {
 	 * @return void
 	 */
 	public static void setPriority(String priority, long ideaId) {
-		User user = Security.getConnected();
-		Idea i = Idea.findById(ideaId);
-		long topicId = i.belongsToTopic.id;
-		System.out.println("---------------------------------------");
-		System.out.println("isPermitted raga3et "
-				+ Users.isPermitted(user, "rate/prioritize ideas", topicId,
-						"topic"));
-		i.priority = priority;
-		i.save();
+		User userLoggedIn = Security.getConnected();
+		Idea ideaInUse = Idea.findById(ideaId);
+		long topicId = ideaInUse.belongsToTopic.id;
+		ideaInUse.priority = priority;
+		ideaInUse.save();
 		redirect("/ideas/show?ideaId=" + ideaId);
 	}
 

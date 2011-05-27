@@ -23,7 +23,7 @@ public class Comments extends CoolCRUD {
 	 * 
 	 * @story C4S08
 	 * 
-	 * @param planID
+	 * @param planId
 	 *            ID of the plan that the user wants to add the comment to
 	 *            
 	 * @param comment
@@ -32,14 +32,12 @@ public class Comments extends CoolCRUD {
 	 *            
 	 *@return void            
 	 */
-	public static void addCommentToPlan(long planID, String comment) {
-		//planID++;
-		Plan p = Plan.findById(planID);
-		User user = Security.getConnected();
-		Comment c = new Comment(comment, p, user).save();
-		p.commentsList.add(c);
-		p.save();
-		redirect("/plans/viewaslist?planId="+p.id);
+	public static void addCommentToPlan(long planId, String comment) {
+		Plan planInUse = Plan.findById(planId);
+		User userLoggedIn = Security.getConnected();
+		Comment commentInitialized = new Comment(comment, planInUse, userLoggedIn).save();
+		planInUse.commentsList.add(commentInitialized);
+		planInUse.save();
 	}
 	/**
 	 * This methods add a user-entered comment to the commentsList of the specified Idea
@@ -48,7 +46,7 @@ public class Comments extends CoolCRUD {
 	 * 
 	 * @story C4S08
 	 * 
-	 * @param ideaID
+	 * @param ideaId
 	 *            ID of the idea that the user wants to add the comment to
 	 *            
 	 * @param comment
@@ -57,12 +55,12 @@ public class Comments extends CoolCRUD {
 	 *            
 	 *@return void
 	 */
-	public static void addCommentToIdea(long ideaID, String comment) {
-		Idea i = Idea.findById(ideaID);
-		User user = Security.getConnected();
-		Comment c = new Comment(comment, i, user).save();
-		i.commentsList.add(c);
-		i.save();
+	public static void addCommentToIdea(long ideaId, String comment) {
+		Idea ideaInUse = Idea.findById(ideaId);
+		User userLoggedIn = Security.getConnected();
+		Comment commentInitialized = new Comment(comment, ideaInUse, userLoggedIn).save();
+		ideaInUse.commentsList.add(commentInitialized);
+		ideaInUse.save();
 	}
 
 }
