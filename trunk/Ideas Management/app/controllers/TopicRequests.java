@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.sun.org.apache.bcel.internal.generic.IFNONNULL;
+
 import play.data.binding.Binder;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
@@ -171,6 +173,7 @@ public class TopicRequests extends CoolCRUD{
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		MainEntity entity = MainEntity.findById(entityId);
+		notFoundIfNull(entity);
 		User user = Security.getConnected();
 		System.out.println("blank() for TopicRequests entered entity " + entityId + " and user "
 				+ user.toString());
@@ -267,6 +270,14 @@ public static void acceptRequest(long topicRequestId, String topicDescription) {
 	System.out.println("request deleted");
 	entity.save();
 	System.out.println("entity saved");
+	
+	Notifications.sendNotification(
+			request.requester.id, topic.id, "topic",
+			"The topic request named " + request.title + " has been accepted.");
+	
+	String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + Security.getConnected().id +"\">" + Security.getConnected().firstName + "</a>"
+    + " accepted a topic request with the title " + request.title +" in <a href=\"http://localhost:9008/mainentitys/viewentity?id=" + request.entity.id +"\">" +  request.entity.name + "</a>";
+	Log.addUserLog(logDescription, request.entity, request.entity.organization, Security.getConnected());
 }
 
 /**
@@ -291,6 +302,12 @@ public static void rejectRequest(long topicRequestId) {
 	System.out.println("request deleted");
 	entity.save();
 	System.out.println("entity saved");
+	Notifications.sendNotification(
+			request.requester.id, entity.id, "entity",
+			"The topic request named " + request.title + " has been rejected.");
+	String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + Security.getConnected().id +"\">" + Security.getConnected().firstName + "</a>"
+    + " rejected a topic request with the title " + request.title +" in <a href=\"http://localhost:9008/mainentitys/viewentity?id=" + request.entity.id +"\">" +  request.entity.name + "</a>";
+	Log.addUserLog(logDescription, request.entity, request.entity.organization, Security.getConnected());
 }
 
 }

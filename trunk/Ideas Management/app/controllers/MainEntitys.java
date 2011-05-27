@@ -546,6 +546,7 @@ public class MainEntitys extends CoolCRUD {
 			check2 = 1;
 		boolean follower = user.followingEntities.contains(entity);
 		boolean canCreateRelationship = EntityRelationships.isAllowedTo(id);
+		boolean manageTopicRequests = Users.isPermitted(user, "accept/reject requests to post topics", entity.id, "entity");
 		List<User> followers = entity.followers;
 		List<Plan> plans = Plans.planList("entity", entity.id);
 		List<MainEntity> entityList = new ArrayList<MainEntity>();
@@ -563,7 +564,7 @@ public class MainEntitys extends CoolCRUD {
 				canEdit, canCreateEntity, canCreateSubEntity, follower,
 				canCreateRelationship, canRequest, canRequestRelationship,
 				canRestrict, entityIsLocked, plans, canDeleteEntity, followers,
-				check, check1, check2, entityList);
+				check, check1, check2, entityList, manageTopicRequests);
 		}
 		else {
 			BannedUsers.unauthorized();

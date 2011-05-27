@@ -424,7 +424,8 @@ public class Ideas extends CoolCRUD {
 			System.out.println("show() done, about to render");
 			boolean permittedToTagIdea = user.equals(idea.author)
 					|| Users.isPermitted(user, "tag ideas in my organization",
-							 topicId, "topic") || Users.isPermitted(user, "use", topicId, "topic");
+							 topicId, "topic") || Users.isPermitted(user, "use", topicId, "topic")
+							 || idea.belongsToTopic.entity.organization.createTag;
 			render(type, ideasLabels, object, /* tags, */user,isAdmin, username, userId,
 					canReport, canDelete, comments, topic, plan,
 					permittedToTagIdea,
@@ -709,6 +710,10 @@ public class Ideas extends CoolCRUD {
 		if (!tagAlreadyExists) {
 			Notifications.sendNotification(idea.author.id, ideaId, "idea",
 					"This idea has been tagged as " + tag);
+			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
+            + " added the tag " +"<a href=\"http://localhost:9008/tags/mainpage?tagId=" + tempTag.id +"\">" +  tempTag.name + "</a>"  + " to the idea "
+            + "<a href=\"http://localhost:9008/ideas/show?ideaId=" + idea.id +"\">" + idea.title + "</a>" ;
+			Log.addUserLog(logDescription, idea);
 		}
 		idea.save();
 		JsonObject json = new JsonObject();
