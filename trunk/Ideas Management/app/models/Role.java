@@ -203,7 +203,7 @@ public class Role extends CoolModel {
 	 *            invoked on
 	 * 
 	 * @return boolean true if the passed object has the same name as the Role
-	 *         the method is invoked on , otherwise it retuns false
+	 *         the method is invoked on , otherwise it returns false
 	 */
 	public boolean equals(Object object) {
 		Role r = (Role) object;
