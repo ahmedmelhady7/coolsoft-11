@@ -915,6 +915,14 @@ public class Topics extends CRUD {
 				.isAllowedTo(topicIdLong);
 		boolean topicIsLocked = targetTopic.createRelationship;
 		Organization organisation = targetTopic.entity.organization;
+		
+		//faruki
+		boolean defaultEntity = false;
+		if (targetTopic.entity.equals(organisation.entitiesList.get(0))) {
+			defaultEntity = true;
+		}
+		//faruki
+		
 		if (actor.isAdmin || entity.organization.creator.equals(actor)) {
 			canRestrict = 1;
 		}
@@ -976,7 +984,7 @@ public class Topics extends CRUD {
 					canNotPost, pending, follower, canCreateRelationship,
 					seeRelationStatus, createRelationship, actor, hidden,
 					canRestrict, check, canMerge, canRequestRelationship,
-					topicIsLocked, organisation, check1, check2, user, listOfTopics, temporaryTopic);
+					topicIsLocked, organisation, check1, check2, user, listOfTopics, temporaryTopic, defaultEntity);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
