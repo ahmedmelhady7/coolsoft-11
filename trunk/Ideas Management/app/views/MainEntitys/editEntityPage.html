@@ -126,7 +126,7 @@
             text-align: right;
         }
     </style>
-    <title>Entity Creation Form</title>
+    <title>Entity Editing Form</title>
 </head>
 <body onload="init()">
     <div id="leftSidebar">
@@ -145,12 +145,17 @@
                             <ul>
                                 #{if entities.size() > 0}
                                 #{list items:entities, as:'entity'}
-                                <LI type="disc">
-                                    #{if (entitiesICanView.contains(entity))}<a href="@{MainEntitys.viewEntity(entity.id)}" style="cursor:pointer;">${entity.name}</a>
+                                	#{if (entity.name == "Default")}
+									#{/if}
+							<LI type="disc">
+									#{else}
+                                    #{if (entitiesICanView.contains(entity))}
+									<a href="@{MainEntitys.viewEntity(entity.id)}" style="cursor:pointer;">${entity.name}</a>
                                     #{/if}
                                     #{else}
                                     ${entity.name}
                                     #{/else}
+									#{/else}
                                 </LI>
                                 #{/list}
                                 #{/if}
@@ -254,10 +259,10 @@
 			<HR>
 			<p>Description:</p>
 			<p><textarea id="description" name="description" rows="5" cols="50"
-				>${entity.description}</textarea></p>
+				>${targetEntity.description}</textarea></p>
 			<label id= "descriptionerror"> </label> <br /><br /><br />
 			<HR>
-			#{if entity.createRelationship}
+			#{if targetEntity.createRelationship}
 			<input type="checkbox" id="createRelationship" name="createRelationship" checked>Allow entity to have relationships<br />
 			<HR>
 			#{/if}
