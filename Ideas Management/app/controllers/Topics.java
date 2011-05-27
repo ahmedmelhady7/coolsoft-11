@@ -54,7 +54,6 @@ public class Topics extends CRUD {
 	public static void createRelation(long topicId, long entityId) {
 
 		User user = Security.getConnected();
-		// System.out.println("2ABEL !!!" + entityId + "," + topicId);
 		Topic topic = Topic.findById(topicId);
 		MainEntity entity = MainEntity.findById(entityId);
 		List<Topic> listOfTopics = null;
@@ -919,6 +918,17 @@ public class Topics extends CRUD {
 				banned=false;
 			}
 		}
+		List<Topic> listOfTopics = null;
+		if (entity.topicList != null) {
+			listOfTopics = entity.topicList;
+			listOfTopics.remove(temporaryTopic);
+		}
+		for (int i = 0; i < listOfTopics.size(); i++) {
+			if (!listOfTopics.get(i).createRelationship) {
+				System.out.println(listOfTopics.get(i).createRelationship);
+				listOfTopics.remove(listOfTopics.get(i));
+			}
+		}
 			
 		if(banned == false){	
 		try {
@@ -932,7 +942,7 @@ public class Topics extends CRUD {
 					canNotPost, pending, follower, canCreateRelationship,
 					seeRelationStatus, createRelationship, actor, hidden,
 					canRestrict, check, canMerge, canRequestRelationship,
-					topicIsLocked, organisation, check1, check2, user);
+					topicIsLocked, organisation, check1, check2, user, listOfTopics, temporaryTopic);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
