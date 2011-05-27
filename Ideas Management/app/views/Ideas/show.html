@@ -176,7 +176,7 @@
 	#{if canDelete && !isAuthor && notInPlan}
 	<form action="@{Topics.hideIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         	<input type="hidden" name = "justification" id = "justText2">
-            <input style="float:right;" class="linkButton" style="color: red;"  value="Hide" type="image" src="/public/images/icons/hide-icon.gif"/>
+            <input style="float:right;" class="linkButton" style="color: red;" title="Hide Idea"  value="Hide" type="image" src="/public/images/icons/hide-icon.gif"/>
     </form>
     #{/if}
 	<br />
@@ -202,7 +202,7 @@
  					 
  					#{list comments, as:'comment'} 
  					<div class="comment-metadata">
-						<span class="comment-author">by ${comment.commenter.username}</span>
+						<span class="comment-author"> by <a href="@{Users.viewProfile(comment.commenter.id)}">${comment.commenter.username}</a></font></span>
 						<span class="comment-date">${comment.commentDate}</span>
 					</div>
  					<div class="comment-content">
