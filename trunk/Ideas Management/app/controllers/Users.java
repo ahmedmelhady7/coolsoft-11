@@ -1762,6 +1762,17 @@ public class Users extends CoolCRUD {
 			notification.delete();
 		}
 	}
+	
+	/**
+	 * Renders the view of the notifications list
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S20
+	 * 
+	 * @param type 
+	 * 			string the type of the notifications to be rendered
+	 */
 
 	public static void notificationView(String type) {
 		User user = Security.getConnected();
@@ -1801,6 +1812,20 @@ public class Users extends CoolCRUD {
 		render(user, notificationList, type);
 	}
 
+	/**
+	 * returns a list of notifications according to the type
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S20
+	 * 
+	 * @param type
+	 * 			String the type of the notifications to be selected
+	 *
+	 * @return List<Notification>
+	 * 			the list of notifications to be rendered
+	 */
+	
 	public static List<Notification> getNotificationsFrom(String type) {
 		User user = Security.getConnected();
 		List<Notification> notificationList = new ArrayList<Notification>();
@@ -1815,6 +1840,17 @@ public class Users extends CoolCRUD {
 		return notificationList;
 	}
 
+	/**
+	 * Renders the view of the notification profiles according to the type
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S20
+	 * 
+	 * @param type
+	 * 			String the type of notifications to be rendered
+	 */
+	
 	public static void notificationProfileView(String type) {
 		User user = Security.getConnected();
 		List<NotificationProfile> notificationProfileList = getNotificationProfilesOf(type);
@@ -1860,9 +1896,22 @@ public class Users extends CoolCRUD {
 		}
 		render(user, notificationProfileList, type, select);
 	}
-
-	public static List<NotificationProfile> getNotificationProfilesOf(
-			String type) {
+	
+	/**
+	 * returns a list of notification profiles according to the type
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S20
+	 * 
+	 * @param type
+	 * 			String the type of the notification profiles to be selected
+	 *
+	 * @return List<NotificationProfile>
+	 * 			the list of notification profiles to be rendered
+	 */
+	
+	public static List<NotificationProfile> getNotificationProfilesOf(String type) {
 		User user = Security.getConnected();
 		List<NotificationProfile> notificationProfileList = new ArrayList<NotificationProfile>();
 		if (type.equalsIgnoreCase("All")) {
