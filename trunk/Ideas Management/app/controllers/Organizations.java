@@ -46,7 +46,7 @@ public class Organizations extends CoolCRUD {
 	 * @param relationNames
 	 *            : list of relation names in the organization
 	 * 
-	 * @return boolean value if duplicate(true) or not(false)
+	 * @return boolean
 	 */
 	public static boolean isDuplicate(String relationName,
 			ArrayList<String> relationNames) {
