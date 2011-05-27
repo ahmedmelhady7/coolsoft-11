@@ -9,7 +9,11 @@ import com.google.gson.JsonObject;
 import play.mvc.Controller;
 import models.User;
 import notifiers.Mail;
-
+/**
+ * 
+ * @author Mostafa Ali
+ *
+ */
 public class Accounts extends Controller {
 
 	/**
@@ -35,6 +39,13 @@ public class Accounts extends Controller {
 	 * 
 	 * @param email
 	 *            :String , the user's email
+	 *            
+	 * @param username
+	 *            : String ,the user's username
+	 * 
+	 * @param password
+	 *            : String ,the user's password
+	 * 
 	 * 
 	 * @param firstName
 	 *            : String ,the user's first name
@@ -42,17 +53,15 @@ public class Accounts extends Controller {
 	 * @param lastName
 	 *            : String ,the user's last name
 	 * 
-	 * @param username
-	 *            : String ,the user's username
+	 * @param securityQuestion 
+	 * 				String , security question of the user
 	 * 
-	 * @param password
-	 *            : String ,the user's password
+	 * @param answer
+	 * 				String , the security answer of the user
 	 * 
-	 * @param profession
-	 *            : String ,the user's profession
 	 * 
 	 * @param communityContributionCounter
-	 *            : the user's community contribution counter
+	 *            : int the user's community contribution counter
 	 * 
 	 * @param dateofBirth
 	 *            : String ,the user's date of birth
@@ -60,11 +69,9 @@ public class Accounts extends Controller {
 	 * @param country
 	 *            : String ,the user's country
 	 * 
-	 * @param securityQuestion 
-	 * 				String , security question of the user
+	 * @param profession
+	 *            : String ,the user's profession
 	 * 
-	 * @param answer
-	 * 				String , the security answer of the user
 	 */
 
 	public static void addUser(String email, String username, String password,
@@ -160,7 +167,7 @@ public class Accounts extends Controller {
 	}
 
 	/**
-	 * checks if the given email already exists
+	 * checks if the given email already exists in the database
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -169,7 +176,8 @@ public class Accounts extends Controller {
 	 * @param email
 	 *            String email , the email to check
 	 * 
-	 * 
+	 * @return boolean true : if it exists 
+	 * 					false if it does not
 	 * */
 	public static boolean checkEmail(String email) {
 		User existingUser = User.find("byEmail" + email).first();
@@ -183,8 +191,8 @@ public class Accounts extends Controller {
 	 * 
 	 * @story C1S9 , C1S10
 	 * 
-	 * @param email
-	 *            String email , the email to check
+	 * @param username
+	 *            String username , the username to check
 	 * 
 	 * 
 	 * */
