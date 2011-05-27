@@ -9,21 +9,35 @@
         }
         
         .accordionItem h3 {
-            margin: 0;
-            font-size: 1.1em;
-            border-bottom: 1px solid #66d color: "#150517";
-        }
+        	padding:0.6em 0.6em;
+			font-size:1.1em;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			background-color:#FFFFFF;
+			margin-right:23%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+		}
         
         .accordionItem h3:hover {
             cursor: pointer;
         }
         
         .accordionItem div {
-            margin: 0;
-            padding: 1em 0.4em;
-			 background-color: #eef;
-			 border-bottom: 1px solid #66d; 
-        }
+			padding:0.4em 0.4em;
+			margin-right:23%;
+			margin-bottom:2%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			border-color:#339CCB;
+			border-width:2px;
+			border-style:solid;
+		}
         
         .accordionItem.hide h3 {
         }
@@ -180,13 +194,13 @@
         #{list items:listOfTopicsToBeRendered, as:'topicRequest'}
         <li>
             <div id="accordion_${topicRequest.id}" class="accordionItem">
-                <h3style="backgroud-color:#FFFFFF; border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;"><b>Title:</b> ${topicRequest.title}
+            	<input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
+                 <font size=1><a href="/users/viewprofile?userId=${topicRequest.requester.id}">${topicRequest.requester.username}</a> </font>
+				<h3 style="backgroud-color:#FFFFFF; border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;"> ${topicRequest.title}
 					<br>
-                    <font size=2><b>By:</b> <a href="/users/viewprofile?userId=${topicRequest.requester.id}">${topicRequest.requester.username}</a></font>
-					<font color ="#FF0000" size =3>⊕</font>
-                    <input type="button" value="Rephrase" class="linkButton" onclick="rephraseRequest('${topicRequest.id}');"></h3>
+                    <input type="button" value="Rephrase" class="linkButton" onclick="rephraseRequest('${topicRequest.id}');">
 					<input type="image" src='/public/images/accept.png' align='right' id="accepter" onclick="acceptRequest('${topicRequest.id}');"/>
-					<input type="image" src='/public/images/delete.png' align='right' id="rejecter" onclick="rejectRequest('${topicRequest.id}');"/>
+					<input type="image" src='/public/images/delete.png' align='right' id="rejecter" onclick="rejectRequest('${topicRequest.id}');"/></h3>
 					    <div>
                             <p>
                             	Description:
