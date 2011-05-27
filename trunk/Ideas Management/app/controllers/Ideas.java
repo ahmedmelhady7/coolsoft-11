@@ -876,7 +876,7 @@ public class Ideas extends CoolCRUD {
 	 * @param selectedIdeas
 	 *            : array of the selected ideas ids
 	 * 
-	 * @param TopicId
+	 * @param topicId
 	 *            : the id of the topic t which the ideas belongs
 	 */
 
