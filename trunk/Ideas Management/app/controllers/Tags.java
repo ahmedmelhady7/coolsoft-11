@@ -357,6 +357,8 @@ public class Tags extends CoolCRUD {
 	 * 
 	 * @param tagId
 	 * 			The id of the tag that will be deleted
+	 * 
+	 * @return boolean
 	 */
 	public static boolean delete(long tagId) {
 		Tag tag = Tag.findById(tagId);
