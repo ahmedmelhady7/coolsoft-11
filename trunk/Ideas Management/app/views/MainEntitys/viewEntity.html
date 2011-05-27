@@ -324,7 +324,7 @@
 			
 			#{if (canRestrict == 1)}
 			<li>
-			<input type="submit" value="Restrict/Derestrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerEntityPath(entity.id)}" class = "linkButton"></input>
+			<a href = "@{BannedUsers.restrictOrganizerEntityPath(entity.id)}" style="cursor:pointer;" type="submit" ><font size = "2" >Restrict/DeRestrict Organizer</font></a>
 			</li>
 			#{/if}
 			<!-- End of sidebar -->
@@ -729,6 +729,7 @@
 			 	<input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}" class = "linkButton"></input>
 			#{/if}
 				
+			
 					
 			#{if manageTopicRequests}
 				<form action="@{TopicRequests.list()}">
