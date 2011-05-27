@@ -636,14 +636,11 @@ public class Ideas extends CoolCRUD {
 		//		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(idea);
 		try {
-//				System.out.println("hy3ml delete");
+			if(idea.plan==null)
 				idea.delete();
 		} catch (Exception e) {
-//			flash.error(Messages.get("crud.delete.error", idea.modelName));
-//			redirect(request.controller + ".show", object._key());
 			redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 		}
-//		flash.success(Messages.get("crud.deleted", type.modelName));
 		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
