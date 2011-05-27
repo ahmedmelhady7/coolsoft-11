@@ -141,6 +141,16 @@ pre{
                         margin-top:2%;
                 text-align:right;
         }
+		#relationForma{
+			
+    	border-color: #339CCB;
+   	 	border-radius: 10px 10px 10px 10px;
+    	border-style: solid;
+   	 	border-width: 2px;
+ 	   	margin-right: 7%;
+    	padding: 1em 0.4em;
+			
+		}
                 
                 
 
@@ -722,8 +732,8 @@ $(document).ready(function(){
                                         </form> -->
                                                         
                                                         #{if (admin || creator)}
-                                                        <div style="background:#b2b2b2;">
-                                                        <br />
+                                                        <div id="relationForma">
+                                                 
                                 <h4>Create Relationship between <select id="relType" onchange="showRelationForm()">
                                                 <option>select object</option>
                                                 <option>Entities</option>
@@ -797,7 +807,7 @@ $(document).ready(function(){
                                         <input type="button" value="Create Relation" onclick="createGRelation()" />                             
                                         
                                 </form></p>
-                                <br />
+                                
                                 </div>
                                 #{/if}
                                 
