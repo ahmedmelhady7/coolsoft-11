@@ -321,6 +321,12 @@
 			#{/if}
 			<!-- ################## -->			
 			
+			
+			#{if (canRestrict == 1)}
+			<li>
+			<input type="submit" value="Restrict/Derestrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerEntityPath(entity.id)}" class = "linkButton"></input>
+			</li>
+			#{/if}
 			<!-- End of sidebar -->
             </ul>
         </li>
@@ -747,9 +753,7 @@
 				}
 			</script>
 			
-			#{if (canRestrict == 1)}
-			<input type="submit" value="Restrict/De-Restrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerEntityPath(entity.id)}" class = "linkButton"></input>
-			#{/if}
+			
 		</div>
 		</div>
 		</div>
