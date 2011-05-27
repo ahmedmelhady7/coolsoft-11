@@ -224,13 +224,12 @@
 			#{if (entity.createRelationship == true)}
 			#{if (canCreateRelationship == true)}
 			<a onclick="$('#rForm').slideToggle();" style="cursor:pointer;">Create Relation</a>
+			#{/if}
+			#{/if}
 			</li>			
 			<li>
 				<a onclick="$('#lista').slideToggle()" style="cursor:pointer;">Show Relationships</a>
 			</li>
-			#{/if}
-			#{/if}
-			
 			#{if (canEdit == 1)}
 			<li>
                 <a href="@{MainEntitys.editEntityPage(entity.id)}">Edit ${entity.name}</a>
@@ -638,7 +637,7 @@
 		            	#{/if}
 		             #{/if}
 		             #{if topic.hidden}		
-		                #{if topic..hider.username == actor.username}		
+		                #{if topic.hider.username == actor.username}		
 				           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
 			                 		
 		                         <input type="submit" value="Unhide" style="float:right;" class = "linkButton"/>		
