@@ -207,14 +207,14 @@ public class Users extends CoolCRUD {
 	}
 
 	/**
-	 * renders the form for editing and viewing a user
+	 * allows the user to edit his profile info
 	 * 
 	 * @author Lama Ashraf
 	 * 
 	 * @story C1S1-2
 	 * 
-	 * @param String
-	 *            userId : id of the user we want to show
+	 * @param id
+	 *            String id of the user who wants to edit his profile
 	 * 
 	 */
 	public static void viewMyProfile(String id) {
@@ -1437,7 +1437,7 @@ public class Users extends CoolCRUD {
 		        user.country = country;
 		        user.profession = profession;
 		        String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username + "</a>"
-		        + " has edited his profile" ;
+		        + " has edited his/her profile" ;
 				Log.addUserLog(logDescription, user);
 		        user.save();
 		        redirect("/Users/viewProfile?userId=" + id); 
@@ -2098,11 +2098,11 @@ public class Users extends CoolCRUD {
 			render(request.controller.replace(".", "/") + "/viewProfile.html",
 					message);
 		}
-
+		
 		User user = Security.getConnected();
 		user.password = Codec.hexMD5(pass2);
 		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username + "</a>"
-        + " has changed his password" ;
+        + " has changed his/her password" ;
 		Log.addUserLog(logDescription, user);
 		user.save();
 		viewProfile(user.id);
