@@ -1604,7 +1604,7 @@ public class BannedUsers extends CoolCRUD {
 			int check = 0;
 			if (Users.isPermitted(user,
 					"block a user from viewing or using a certain entity",
-					numId, "entity"))
+					numId, "topic"))
 				check = 1;
 			List<User> users = Users.getIdeaDevelopers(numId, "topic");
 			Topic object = Topic.findById(numId);
