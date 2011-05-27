@@ -135,7 +135,7 @@ public class Bootstrap extends Job {
 			// faruki
 			MainEntity defaultEntity1 = new MainEntity("Default", "", egypt,
 					false);
-			defaultEntity.save();
+			defaultEntity1.save();
 			// faruki
 
 			Organization gov = new Organization("الحكومة المصرية", sharaf, 0,
@@ -144,7 +144,7 @@ public class Bootstrap extends Job {
 			// faruki
 			MainEntity defaultEntity2 = new MainEntity("Default", "", gov,
 					false);
-			defaultEntity.save();
+			defaultEntity2.save();
 			// faruki
 
 			Tag tagEducation = new Tag("Education", guc, slim).save();
