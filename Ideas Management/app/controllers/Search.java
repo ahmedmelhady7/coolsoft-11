@@ -588,7 +588,7 @@ public class Search extends Controller {
 	 * 
 	 */
 
-	public static void sortA() {// char voteOrRate) {// ascending
+	public static void sortA() {// ascending
 		List<Model> toSort = new ArrayList<Model>();
 		List<Model> notToSort = new ArrayList<Model>();
 
