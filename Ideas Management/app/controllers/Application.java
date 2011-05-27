@@ -27,7 +27,7 @@ public class Application extends CoolCRUD {
 	 * @param string
 	 * 			String , the String that would be hashed
 	 *
-	 * @return hash String
+	 * @return  String
 	 */
 	public static String hash( String string )
 	{
@@ -66,8 +66,8 @@ public class Application extends CoolCRUD {
 	 * 
 	 * 
 	 * @param length
-	 *            , The length of the hash string
-	 * @return hash String
+	 *             int The length of the hash string
+	 * @return  String
 	 */
 	public static String randomHash( int length )
 	{

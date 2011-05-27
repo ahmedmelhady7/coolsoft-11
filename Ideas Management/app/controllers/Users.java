@@ -43,7 +43,7 @@ public class Users extends CoolCRUD {
 	 *            : int page of the list we are in
 	 * 
 	 * @param search
-	 *            : String search string
+	 *            : String , the keyword the user want to search for
 	 * 
 	 * @param searchFields
 	 *            : String the fields we want to search
@@ -102,7 +102,7 @@ public class Users extends CoolCRUD {
 	 *            :String id of the user we want to show
 	 * 
 	 * 
-	 * @throws Exception
+	 * @throws TemplateNotFoundException
 	 * 
 	 */
 	public static void view(String userId) {
@@ -166,7 +166,7 @@ public class Users extends CoolCRUD {
 	 *            userId : id of the user we want to show
 	 * 
 	 * 
-	 * @throws Exception
+	 * @throws TemplateNotFoundException
 	 * 
 	 */
 
@@ -1270,6 +1270,7 @@ public class Users extends CoolCRUD {
 	 * 
 	 * @story C1S9
 	 * 
+	 * @throws TemplateNotFoundException
 	 * 
 	 */
 
@@ -1460,6 +1461,7 @@ public class Users extends CoolCRUD {
 	 * @param id
 	 *            :String the user's id
 	 * 
+	 * @throws TemplateNotFoundException
 	 */
 	public static void save(String id) throws Exception {
 		if(Security.getConnected().isAdmin)
@@ -1515,13 +1517,17 @@ public class Users extends CoolCRUD {
 			tmp.email = tmp.email.trim();
 			tmp.email = tmp.email.toLowerCase();
 			tmp.firstName = tmp.firstName.trim();
-			
-
-			if (validation.hasErrors()) {
+			boolean validUserFlag = false;
+			if ((!oldEmail.equals(tmp.email))&& (!(User.find("byEmail", tmp.email).fetch().isEmpty()))){
+				message = "This Email already exists !";
+				validUserFlag = true;
+			} else if (!(validation.email(tmp.email).ok)) {
+				message = "Please enter a valid email address";
+				validUserFlag = true;
+			}
+			if (validation.hasErrors()||validUserFlag) {
 				if (tmp.email.equals("")) {
 					message = "A User must have an email";
-				} else if (tmp.username.length() >= 20) {
-					message = "Username cannot exceed 20 characters";
 				}
 				try {
 					render(request.controller.replace(".", "/") + "/view.html",
