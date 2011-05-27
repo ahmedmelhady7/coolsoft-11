@@ -95,7 +95,7 @@
 </p>
 
 <input type="submit" id ="postButton" value="Post" onclick="post()" class="linkButton"></input> or
-<input type="submit" id ="saveButton" value="Save" onclick="save()" class="linkButton"></input>
+<input type="submit" id ="saveButton" value="Save Now & Return" onclick="saveAndReturn()" class="linkButton"></input>
 <input type="submit" id ="discardButton" value="Discard" onclick="discard()" class="linkButton"></input>
 </body>
 		</div>
@@ -128,7 +128,7 @@
 		
 	}
 	
-	function save() {
+	function saveAndReturn() {
 		setValues();
 		
 		if(topicTitle == "" && topicDescription == "") {
@@ -226,7 +226,7 @@
 					var xx = jQuery.trim(x);
 					var yy = jQuery.trim(y);
 						
-					if(((x != auto.t) || (y != auto.b)|| w != auto.createRelation) && ((xx != "") && (yy != "") ) )
+					if(((x != auto.t) || (y != auto.b)|| w != auto.createRelation || r != auto.pr) && ((xx != "") && (yy != "") ) )
 					{
 							
 						$('#flashAmessage').fadeIn('10');
@@ -240,8 +240,11 @@
 							topicId:auto.kill
 						});
 							
-						auto.t = document.getElementById("titleTextBox").value.toString();
-	            		auto.b = document.getElementById("descriptionTextArea").value.toString();
+						auto.t = x;
+	            		auto.b = y;
+						auto.createRelation = w;
+						auto.pr = r;
+						
 							
 						document.getElementById("flashAmessage").innerHTML = "draft auto saved at " + write;
 						setTimeout("myFader()",'3000');
