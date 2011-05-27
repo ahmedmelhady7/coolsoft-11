@@ -29,6 +29,8 @@ public class MarkRequest extends Controller {
 	 * 
 	 *        method rendering the requests view
 	 * 
+	 * @description: this method renders the view of the duplicate requests
+	 * 
 	 * @return void
 	 */
 
@@ -69,6 +71,8 @@ public class MarkRequest extends Controller {
 	 * @return int : 0 indicating that the request is sent 1 indicating that
 	 *         ideas belong to different topics 2 indicating that a request is
 	 *         already sent to organizer 01 indicating a failure
+	 * 
+	 * @description: this method sends a request to the organizers
 	 * 
 	 */
 
@@ -144,6 +148,9 @@ public class MarkRequest extends Controller {
 	 *            this method performs the accepting action
 	 * 
 	 * @return void
+	 * 
+	 * @descriptions: makes the link between the two ideas on accepting the
+	 *                request
 	 */
 
 	public static void accept(long reqID) {
@@ -183,6 +190,8 @@ public class MarkRequest extends Controller {
 	 *            this method performs the rejecting action
 	 * 
 	 * @return void
+	 * 
+	 * @descriptions: rejects the request and removes it from the database
 	 */
 
 	public static void reject(long reqID) {
