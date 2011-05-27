@@ -39,16 +39,16 @@ public class IbrahimAdel extends UnitTest {
 				"Sharaf", "What is our company's name?", "coolsoft", 0,
 				"2/14/1995", "Egypt", "Primenister").save();
 
-		Organization gov = new Organization("الحكومة المصرية", sharaf, 0, true,
+		Organization government = new Organization("الحكومة المصرية", sharaf, 0, true,
 				"").save();
 
-		UserRoleInOrganizations.addEnrolledUser(sharaf, gov, OrganizationLead);
+		UserRoleInOrganizations.addEnrolledUser(sharaf, government, OrganizationLead);
 
 		User mai = new User("mai.jt4@gmail.com", "mai", "1234", "Mai", "Magdy",
 				"What is our company's name?", "coolsoft", 0, "2/14/1995",
 				"Egypt", "student").save();
 		// had to copy the method body since it contains getConnected
-		long organizationId = gov.id;
+		long organizationId = government.id;
 		String email = mai.email;
 
 		User reciever = User.find("byEmail", email).first();
@@ -89,11 +89,11 @@ public class IbrahimAdel extends UnitTest {
 		assertEquals(false, sharaf.invitation.isEmpty());
 		Invitation invitation2 = Invitation
 				.findById(sharaf.invitation.get(0).id);
-		assertEquals(true, invitation2.organization.equals(gov));
+		assertEquals(true, invitation2.organization.equals(government));
 
 		// accept the invitation
 		assertEquals(false,
-				Users.isPermitted(mai, "view", gov.id, "organization"));
+				Users.isPermitted(mai, "view", government.id, "organization"));
 		// received a notification
 		assertEquals(1, mai.notificationsNumber);
 
@@ -101,9 +101,9 @@ public class IbrahimAdel extends UnitTest {
 		// session
 		// method body
 		int id = 1;
-		long i = invitation2.id;
+		long invitationId = invitation2.id;
 
-		Invitation invite = Invitation.findById(i);
+		Invitation invite = Invitation.findById(invitationId);
 		String roleName = invite.role.toLowerCase();
 		Organization organization = null;
 		MainEntity entity = null;
@@ -289,7 +289,7 @@ public class IbrahimAdel extends UnitTest {
 
 		// joined
 		assertEquals(true,
-				Users.isPermitted(mai, "view", gov.id, "organization"));
+				Users.isPermitted(mai, "view", government.id, "organization"));
 		// invitation is deleted
 		assertEquals(true, Invitation.count() == 0);
 		// another notification is received
