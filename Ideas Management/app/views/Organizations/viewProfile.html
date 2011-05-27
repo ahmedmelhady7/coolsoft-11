@@ -105,9 +105,107 @@ pre{
 	border-top-color: #bbbbbb;
 	word-wrap: break-word;
 }
+
+		.accordionItem h3 {
+			margin-top:2%;
+			font-size:1.1em;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			background-color:#FFFFFF;
+			margin-right:23%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+		}
+		.accordionItem h3:hover {
+			cursor:pointer;
+		}
+		.accordionItem div {
+			padding:1em 0.4em;
+			margin-right:23%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+		}
+		.accordionItem.hide h3 {
+		}
+		.accordionItem.hide div {
+			display:none;
+		}
+		#deleteHide{
+			margin-top:2%;
+		text-align:right;
+        }
+		
+		
+
 </style>
 
 <script type="text/javascript">
+	
+	
+			var accordionItems = new Array();
+
+			function init() {
+
+				// Grab the accordion items from the page
+				var divs = document.getElementsByTagName( 'div' );
+				for ( var i = 0; i < divs.length; i++ ) {
+					if ( divs[i].className == 'accordionItem' )
+						accordionItems.push( divs[i] );
+				}
+
+				// Assign onclick events to the accordion item headings
+				for ( var i = 0; i < accordionItems.length; i++ ) {
+					var h3 = getFirstChildWithTagName( accordionItems[i], 'H3' );
+					h3.onclick = toggleItem;
+				}
+
+				// Hide all accordion item bodies except the first
+				for ( var i = 1; i < accordionItems.length; i++ ) {
+					accordionItems[i].className = 'accordionItem hide';
+				}
+			}
+
+			function toggleItem() {
+				var itemClass = this.parentNode.className;
+
+				// Hide all items
+				for ( var i = 0; i < accordionItems.length; i++ ) {
+					accordionItems[i].className = 'accordionItem hide';
+				}
+
+				// Show this item if it was previously hidden
+				if ( itemClass == 'accordionItem hide' ) {
+					this.parentNode.className = 'accordionItem';
+
+				}
+			}
+
+			function getFirstChildWithTagName( element, tagName ) {
+				for ( var i = 0; i < element.childNodes.length; i++ ) {
+					if ( element.childNodes[i].nodeName == tagName )
+						return element.childNodes[i];
+				}
+				
+			}
+	
+	function prompt1(){
+					var text = prompt("Why do you want to delete/hide this topic?");
+					
+					if(text){
+						document.getElementById("justText").value=text;
+						return true;
+					}
+					else{
+						return false;
+					}
+					
+				}
+	
 $(document).ready(function(){	
 	
 	// create a style switch button
@@ -139,7 +237,9 @@ $(document).ready(function(){
     </head>
 	
 		<div id="leftSidebar">
-           <div style="clear: both;">
+           <br />
+		   <br />
+		   <div style="clear: both;">
 		   				
 		   </div>
 		   <li>
@@ -159,30 +259,13 @@ $(document).ready(function(){
 						<a href="@{Organizations.editOrganization(org.id)}" title="Edit Organization">Edit</a>
 					</li>
 					#{/if}
-			 <li>
-           <a id="requestsLink" style="cursor:pointer;">Requests</a>
-			 <div id="requestsLinks">
-          
-           <ul> 	
-            
-            	
-			<LI type="disc">
-            	#{if settings==1}
-			     <a href="@{CreateRelationshipRequests.viewRequests(org.id)}">Relationships</a>
-                 #{/if}
-				   </LI>
-				   #{if allowed==1}
-				    <LI type="disc">
-                
-				<a href="@{RequestToJoins.viewRequests(0,org.id)}">Join Requests </a>
-			 
-            </LI>
-			   #{/if}
-				
-            
-        </ul>
-       </div>
-       </li>		
+					
+					#{if permission == 1}
+						<li>
+							<a href="@{Topics.blank(defaultEntityId)}" title="Post Topic"> Post Topic</a>
+						</li>
+					#{/if}
+					
              <li>
            <a id="entityLink" style="cursor:pointer;">Entities</a>
 			 <div id="entityLinks">
@@ -212,7 +295,11 @@ $(document).ready(function(){
         </li>
         #{/if}
 		
-		
+		#{if allowed==1}
+		<li>
+		<a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>
+		</li>
+        #{/if}
 		#{if isMember == true || org.privacyLevel == 2 || admin}
 <li>
 		<a href="@{Pictures.index(org.id)}">Gallery</a></li>
@@ -297,7 +384,7 @@ $(document).ready(function(){
 	<div id="page">
     	<div id="page-bgtop">
     		<div id="showViewProfile">
-			    <body>
+			    <body onload="init()">
 			        #{extends 'Login/index.html' /}		
 			        #{set title: 'Organization Profile' /}
 					
@@ -353,19 +440,6 @@ $(document).ready(function(){
 			                entityFlag = true;
 			            }
 			        });
-					  
-			        var requestsFlag = false;
-			        $('#requestsLinks').hide();
-			        $('#requestsLink').click(function(){
-			            if (requestsFlag) {
-			                $('#requestsLinks').show(500);
-			                requestsFlag = false;
-			            }
-			            else {
-			                $('#requestsLinks').hide(500);
-			                requestsFlag = true;
-			            }
-			        });
 		</script>		
 						
 					  <center>
@@ -380,8 +454,114 @@ $(document).ready(function(){
 						 <h2 style="font-size:7;font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">${org.name}</h2>
 						<br />
 						<br />
-			         </center>	
-					<p></p>
+			         </center>
+					 
+					 	       <div id="topics">		
+		        #{if topics.size() > 0}
+				<br />
+				<p>List of Topics:</p>
+		        <ul style="list-style: none;">   
+				#{list items:topics, as:'topic'}
+				
+				#{if topic.isDraft == false}
+				<li>
+					#{if topic.hidden == false}
+					#{if topic.canView(user)}
+					<div class="accordionItem">
+					<h3><a href="@{Topics.show(topic.id)}"> &nbsp ${topic.title}</a>#{if permission == 1}
+		  			   #{if !topic.hidden}
+		   				 #{if topic.isDeletable()}
+		   				   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+		       				 
+		        				<input type="hidden" name = "justification" id = "justText"/>
+		           			    <input type="image" style="float:right;" title="Delete Topic" src="/public/images/icons/trash.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
+		      			    
+		    			   </form> 
+				        #{/if}
+		                #{if !topic.isDeletable()}
+						#{if topic.plan == null}
+		                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+		                   
+		                      	<input type="hidden" name = "justification" id = "justText"/>
+		                       <input type="submit" style="float:right;" value="Hide Topic" class = "linkButton"/>
+		                   
+		                 </form> 
+						#{/if}
+		            	#{/if}
+		             #{/if}
+		             #{if topic.hidden}		
+		                #{if topic..hider.username == actor.username}		
+				           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
+			                 		
+		                         <input type="submit" value="Unhide" style="float:right;" class = "linkButton"/>		
+		                  		
+		                  </form>			
+		                #{/if}		
+		            #{/if}
+		          #{/if}</h3>
+						<div>
+							<p><font size=2>Description: ${topic.description}</font></p>
+							<p><font size=2>Creator: ${topic.creator}</font></p>
+						</div>
+						<br />
+						<br />
+					</div>
+					#{/if}
+					#{/if}
+					#{else}
+					#{if topic.hider.username == user.username && topic.hidden == true}
+					<div class="accordionItem">
+					<h3><a href="@{Topics.show(topic.id)}">&nbsp ${topic.title}</a> <font color ="#FF0000" size =2> &nbsp hidden</font>
+							#{if permission == 1}
+		  			   #{if !topic.hidden}
+		   				 #{if topic.isDeletable()}
+		   				   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+		       				 <p class="crudDelete">
+		        				<input type="hidden" name = "justification" id = "justText"/>
+		           			    <input type="image" style="float:right;" src="/public/images/icons/trash.png" title="Delete Topic" class = "linkButton"/>
+		      			    </p>
+		    			   </form> 
+				        #{/if}
+		                #{if !topic.isDeletable()}
+						#{if topic.plan == null}
+		                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+		                    <p class="crudDelete">
+		                      	<input type="hidden" name = "justification" id = "justText"/>
+		                       <input type="submit" style="float:right;" value="Hide Topic" class = "linkButton"/>
+		                   </p>
+		                 </form> 
+						#{/if}
+		            	#{/if}
+		             #{/if}
+		             #{if topic.hidden}		
+		                #{if topic.hider.username == user.username}		
+				           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
+			                  <p class="crudDelete">		
+		                         <input type="submit"  style="float:right;" value="Unhide" class = "linkButton"/>		
+		                      </p>		
+		                  </form>			
+		                #{/if}		
+		            #{/if}
+		          #{/if}</h3>
+						<div>
+							<p><font size=2>Description: ${topic.description}</font></p>
+							<p><font size=2>Creator: ${topic.creator}</font></p>
+						</div>
+						<br />
+						<br />
+					</div>
+					#{/if}
+					#{/else}
+				</li>
+				#{/if}
+				#{/list}
+				</ul>
+				#{/if}
+				#{else}
+				No topics available for this organization!
+				#{/else}
+			</div>
+					 
 			        #{if join}
 			        <form action="@{Organizations.join()}" method="post">
 			            <input type="hidden" id="organizationId" name="organizationId" value="${org.id}" />Join Organization 
@@ -390,24 +570,21 @@ $(document).ready(function(){
 			            </p>
 			        </form>
 					#{/if}
-			        <br/>
-			        <br/>
-			        
-			     
-			       
+					
+			        #{if settings==1}
+			     <a href="@{CreateRelationshipRequests.viewRequests(org.id)}">Relationship Requests</a>
+			        #{/if}
+			        <br>
 					#{if logFlag == 1}		
 			 			<input type="submit" value="View Logs" onclick=location.href="@{Logs.viewLogs(org.id)}" class="linkButton"></input>
 					#{/if}	
 					<br>
-			        <br>
 			        #{if (requestToJoin == true) && (!admin) && (!alreadyRequested)}
 			        <form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
 			            <input type="hidden" id="orgId" name="orgId" value="${org.id}">Your message: 
 			            <textarea id="description" name="description" rows="5" cols="50">
 			            </textarea>
 			            Request to join <input type="submit" value="Request" class="linkButton">
-			            <br/>
-			            <br/>
 			            <br/>
 			            <br/>
 			        </form>
@@ -435,20 +612,20 @@ $(document).ready(function(){
                         autoComplete.Set("group", c);		
 	                    </script>		
 	                </form>#{/if}</div>
-				<div style="width:20%;">
-					<p><b>List of viewable Tags:</b></p>
-					<div id="tags">
-						<ul>
-							 #{list items:tags, as:'tag'}
-							 <!-- tag1, tag2 ..etc for diffrent sizes link:: http://cssglobe.com/post/4581/tag-clouds-styling-and-adding-sort-options				 -->
-			            <li>
-			                <a class="tag2" href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
-			            </li>
-			            #{/list}
-						</ul>
+					<div style="width:20%;">
+						<p><b>List of viewable Tags:</b></p>
+						<div id="tags">
+							<ul>
+								 #{list items:tags, as:'tag'}
+								 <!-- tag1, tag2 ..etc for diffrent sizes link:: http://cssglobe.com/post/4581/tag-clouds-styling-and-adding-sort-options				 -->
+				            <li>
+				                <a class="tag2" href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
+				            </li>
+				            #{/list}
+							</ul>
+						</div>
 					</div>
-				</div>
-				<br />
+					<br />
 			        #{/else}
 			        #{/else}
 			        #{if flag == 1}

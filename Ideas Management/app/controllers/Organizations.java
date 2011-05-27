@@ -519,6 +519,7 @@ public class Organizations extends CoolCRUD {
 				topics.add(entities.get(x).topicList.get(y));
 			}
 		}
+		
 		for (int x = 0; x < entitiesCanBeRelated.size(); x++) {
 			if (!entitiesCanBeRelated.get(x).createRelationship)
 				entitiesCanBeRelated.remove(entitiesCanBeRelated.get(x));
@@ -594,16 +595,21 @@ public class Organizations extends CoolCRUD {
 				|| Security.getConnected().isAdmin) {
 			logFlag = 1;
 		}
+		
+		int permission =1;
+		if (!Users.isPermitted(user, "post topics", org.id, "organization"))
+			permission = 0;
 
 		long pictureId = org.profilePictureId;
 		List<User> followers = org.followers;
 		MainEntity defaultEntity = org.entitiesList.get(0);
+		long defaultEntityId = defaultEntity.id;
 		List<Plan> plans = Plans.planList("organization", org.id);
 		render(user, org, entities, requestToJoin, canCreateEntity, tags, flag,
 				canInvite, admin, allowed, isMember, settings, creator,
 				alreadyRequested, plans, follower, usernames, join, logFlag,
 				pictureId, topics, entitiesCanBeRelated, entitiesICanView,
-				followers, defaultEntity);
+				followers, defaultEntityId, permission);
 	}
 
 	/**
