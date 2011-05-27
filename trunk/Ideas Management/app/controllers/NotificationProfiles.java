@@ -53,11 +53,13 @@ public class NotificationProfiles extends CoolCRUD {
 	 */
 	
 	public static void enablePreferences(long[] b) {
-		for(int i = 0; i < b.length; i++) {
-			NotificationProfile np = NotificationProfile.findById(b[i]);
-			np.enabled = true;
-			np.save();
-			}			
+		if (b != null) {
+			for(int i = 0; i < b.length; i++) {
+				NotificationProfile notificationProfile = NotificationProfile.findById(b[i]);
+				notificationProfile.enabled = true;
+				notificationProfile.save();
+			}	
+		}				
 	}
 	
 	/**
@@ -72,12 +74,14 @@ public class NotificationProfiles extends CoolCRUD {
 	 * 		long[] The list of notification sources to be disabled.
 	 * 
 	 */
-	public static void disablePreferences(long[] a, boolean cascade) {		
-		for(int i = 0; i < a.length; i++) {
-			NotificationProfile notificationProfile = NotificationProfile.findById(a[i]);
-			notificationProfile.enabled = false;
-			notificationProfile.save();
-			}			
+	public static void disablePreferences(long[] a) {		
+		if (a != null) {
+			for(int i = 0; i < a.length; i++) {
+				NotificationProfile notificationProfile = NotificationProfile.findById(a[i]);
+				notificationProfile.enabled = false;
+				notificationProfile.save();
+			}	
+		}				
 	}
 	
 	/**
@@ -95,12 +99,9 @@ public class NotificationProfiles extends CoolCRUD {
 	
 	public static void enableCascadePreferences(long[] bb) {
 		if (bb == null) {
-			System.out.println("Null22222");
+			return;
 		}
-		User user = Security.getConnected();
-		if (bb == null) {
-			System.out.println("Null");
-		}
+		User user = Security.getConnected();		
 		for(int i = 0; i < bb.length; i++) {
 			NotificationProfile notificationProfile = NotificationProfile.findById(bb[i]);
 			if (notificationProfile.notifiableType.equals("Organization")) {
@@ -284,7 +285,10 @@ public class NotificationProfiles extends CoolCRUD {
 	 * 
 	 */
 	public static void disableCascadePreferences(long[] aa) {
-			User user = Security.getConnected();
+		if (aa == null) {
+			return;
+		}	
+		User user = Security.getConnected();
 			for(int i = 0; i < aa.length; i++) {
 				NotificationProfile notificationProfile = NotificationProfile.findById(aa[i]);
 				if (notificationProfile.notifiableType.equals("Organization")) {					
