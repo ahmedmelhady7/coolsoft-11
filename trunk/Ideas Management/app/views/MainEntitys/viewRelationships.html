@@ -70,7 +70,10 @@
 <div id="pageNoSideBar">
 	 <div id="pageNoSideBar-bgtop">
 	 	<div id="backToOrg" ><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a></div>
-  <div>
+  <div style="background-color:#bbbbbb; border-top-left-radius: 10px;border-top-right-radius: 10px;
+				border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; margin-right:5%;padding:2% 2% 2% 2%;">
+			   <h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">View Relationships</h2>
+				<br />
   	#{if (entity.relationsSource.isEmpty() && entity.relationsDestination.isEmpty())}
 				No relationships are available for this entity.
 				#{/if}
