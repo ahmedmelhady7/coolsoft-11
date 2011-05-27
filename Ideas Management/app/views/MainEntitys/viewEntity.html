@@ -602,7 +602,9 @@
 	       <div id="topicList">		
 		        #{if topicList.size() > 0}
 				<br />
-				<p>List of Topics:</p>
+				<p><font size=5></>List of Topics</font>
+					
+			</p>
 		        <ul style="list-style: none;">   
 				#{list items:topicList, as:'topic'}
 				
@@ -707,6 +709,17 @@
 				#{else}
 				No topics available for this entity!
 				#{/else}
+				#{if permission == 1}
+				<input type="image" src="/public/images/add.png" title="Add A Topic" onclick=location.href="@{Topics.blank(entity.id)}" class = "linkButton"></input>
+				
+			#{/if}
+			    
+			#{else}
+			#{if canRequest == 1}
+				<input type="submit" value="Request A Topic" onclick=location.href="@{TopicRequests.blank(entity.id)}" class = "linkButton"></input>
+				
+			#{/if}
+			#{/else}
 			</div>
 			
 			#{if invite == 1}		
@@ -724,20 +737,6 @@
 			#{if check2 == 1}
 				 <input type="submit" value="use" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}" class = "linkButton"></input>
 			#{/if}
-					
-			#{if permission == 1}
-				<br />
-				<input type="submit" value="Add A Topic" onclick=location.href="@{Topics.blank(entity.id)}" class = "linkButton"></input>
-				<br />
-			#{/if}
-			    
-			#{else}
-			#{if canRequest == 1}
-				<br />
-				<input type="submit" value="Request A Topic" onclick=location.href="@{TopicRequests.blank(entity.id)}" class = "linkButton"></input>
-				<br />
-			#{/if}
-			#{/else}
 					
 				<form action="@{TopicRequests.list()}">
 					<input type="hidden" value=${entity.id} name='entityId'/>

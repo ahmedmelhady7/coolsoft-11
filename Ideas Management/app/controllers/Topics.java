@@ -1392,12 +1392,14 @@ public class Topics extends CRUD {
 				+ entity.id + "\">" + entity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, entity,
 				entity.organization);
+		String notification=  user.username + " edited the topic "
+			+ temporaryTopic.title+ " in entity " + entity.name;
 		List<User> users = Users.getEntityOrganizers(temporaryTopic.entity);
 		if (!users.contains(temporaryTopic.entity.organization.creator))
 			users.add(temporaryTopic.entity.organization.creator);
 		for (int i = 0; i < users.size(); i++)
 			Notifications.sendNotification(users.get(i).id, temporaryTopic.id,
-					"Topic", logDescription);
+					"Topic", notification);
 
 		flash.success(Messages.get("crud.saved", type.modelName,
 				((Topic) object).getId()));

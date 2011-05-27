@@ -449,12 +449,7 @@
         </div>
         <li>
             <ul>
-            	#{if permission == 1}		
-	                <li>		
-	                <input type="submit" value="Edit topic" onclick=location.href="@{Topics.view(topicId)}" class="linkButton">		
-	                </li>		
-					 #{/if}
-				
+            	
 				#{if allowed==1}
 				<li>
 					<input type="submit" value="Join Requests" onclick=location.href="@{RequestToJoins.viewRequests(1,object.id)}" class="linkButton">
@@ -700,8 +695,11 @@
 			                  </form>			
 			                #{/if}		
 			            #{/if}
+						#{if permission == 1}			
+	                		<input type="image" src="/public/images/icons/pencil.png" title="Edit topic" onclick=location.href="@{Topics.view(topicId)}" class="linkButton"></input>	
+					 	#{/if}
+				
 			          #{/if}</div>
-					  <br />
 					  <br />
 						</div>
 				
@@ -997,7 +995,7 @@
 			    <div id="ideas">
 			    	 #{if numberOfIdeas > 0}
 						<br />
-					<p>List of Ideas:</p>
+					<p>List of Ideas</p>
 			        <ul style="list-style: none;">   
 					#{list items:ideas, as:'idea'}
 					
@@ -1020,6 +1018,15 @@
 					#{else}
 					No ideas available for this topic!
 					#{/else}
+					 #{if topicNotClosed && joined}
+			        <input id="postIdea" src="/public/images/add.png" size=2; type="image" title="Post Idea" class = "linkButton"/>
+			        #{/if}
+			        #{if topicNotClosed && joined==false}
+			        <form action="@{Topics.joinToPost()}" method="GET" name="myform">
+			        <input type="hidden" name="userId" value="${userId}">
+			        <input id="postIdea" type="button" value="Join to post" class = "linkButton"/>
+			        </form>
+			        #{/if}
 					<br />
 			<!--		haget hadi	-->
 					#{if canDelete}
@@ -1045,15 +1052,6 @@
 			        </div>
 			        #{/if}
 					<br/>
-			        #{if topicNotClosed && joined}
-			        <input id="postIdea" type="button" value="Post Idea to this topic" class = "linkButton"/>
-			        #{/if}
-			        #{if topicNotClosed && joined==false}
-			        <form action="@{Topics.joinToPost()}" method="GET" name="myform">
-			        <input type="hidden" name="userId" value="${userId}">
-			        <input id="postIdea" type="button" value="Join to post" class = "linkButton"/>
-			        </form>
-			        #{/if}
 			        <div id="postIdeaform">
 			            <p>
 			            <label>Title  <font color="#123456"><span id="flashAmessage"></span></font>
