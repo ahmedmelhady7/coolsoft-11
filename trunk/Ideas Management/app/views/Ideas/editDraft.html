@@ -60,10 +60,10 @@
 				window.location.href = "/ideas/getdrafts"
 			}
 			
-			function myFadex()
+			function myFadex(k)
 			{
 				$('#success').fadeOut('500');
-				window.location.href = "/ideas/list"
+				window.location.href = "/topics/show?topicId="+k
 			}
 			
 			
@@ -147,7 +147,7 @@
 			   {
 			   		$.post('@{Ideas.postDraft()}', {ideaId: id, title: x, description: y });
                		$('#success').html('Posted successfully!');
-			   		setTimeout("myFadex()",'2000');	
+			   		setTimeout("myFadex(${idea.belongsToTopic.id})",'2000');	
 			   }
            }
 		   
