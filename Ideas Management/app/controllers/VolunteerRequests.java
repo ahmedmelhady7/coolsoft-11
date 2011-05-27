@@ -16,8 +16,6 @@ import models.VolunteerRequest;
 @With(Secure.class)
 public class VolunteerRequests extends CoolCRUD {
 
-
-
 	/*
 	 * Extra method. Unused in the mean time.
 	 * 
@@ -30,7 +28,9 @@ public class VolunteerRequests extends CoolCRUD {
 
 	/**
 	 * This method renders the page for allowing the organizer to view the
-	 * volunteer requests to work on items in a certain plan.
+	 * volunteer requests to work on items in a certain plan. The page is
+	 * rendered only after checking if the user is allowed to accept/reject
+	 * volunteer requests.
 	 * 
 	 * @story C5S6
 	 * 
@@ -81,6 +81,7 @@ public class VolunteerRequests extends CoolCRUD {
 	/**
 	 * This method accepts the volunteer request with the given id and sends
 	 * notification to the volunteers and organizers informing them about this.
+	 * The method also logs this action.
 	 * 
 	 * @story C5S6
 	 * 
@@ -142,6 +143,7 @@ public class VolunteerRequests extends CoolCRUD {
 	/**
 	 * This method rejects the volunteer request with the given id and sends
 	 * notification to the volunteers and organizers informing them about this.
+	 * The method also logs this action.
 	 * 
 	 * @story C5S6
 	 * 
