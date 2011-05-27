@@ -303,14 +303,17 @@ public class AssignRequests extends CoolCRUD {
 	}
 
 	/**
-	 * This method accepts the assign request with the given id.
+	 * This method accepts the assign request with the given id. The request is
+	 * removed from the sender's, receiver's and item's assign requests lists.
+	 * The method logs this action and sends notifications to all organizers and
+	 * to users working on this item.
 	 * 
 	 * @story C5S12
 	 * 
 	 * @author Mohamed Mohie
 	 * 
 	 * @param id
-	 *            : ID of the volunteer request to be accepted.
+	 *            : ID of the assign request to be accepted.
 	 */
 	public static void accept(String id) {
 		User user = Security.getConnected();
@@ -355,7 +358,9 @@ public class AssignRequests extends CoolCRUD {
 	}
 
 	/**
-	 * This method rejects the assign request with the given id.
+	 * This method rejects the assign request with the given id. The request is
+	 * removed from the sender's, receiver's and item's assign requests lists.
+	 * The method logs this action and sends notifications to all organizers.
 	 * 
 	 * @story C5S12
 	 * 
