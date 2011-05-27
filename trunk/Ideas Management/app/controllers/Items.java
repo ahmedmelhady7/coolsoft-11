@@ -63,7 +63,6 @@ public class Items extends CoolCRUD {
 				userToNotifyList.add(item.assignees.get(i));
 		}
 		if (item.status == 0) {
-			System.out.println("it is started");
 			item.status = 1;
 			item.save();
 			String description = "Work has started on the following item: "
