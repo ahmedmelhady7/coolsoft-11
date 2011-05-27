@@ -14,8 +14,19 @@ import javax.swing.Timer;
 
 import models.*;
 
+/**
+ * 
+ * @author Mostafa Ali
+ *
+ */
 public class Application extends CoolCRUD {
 
+	
+	/**
+	 * 
+	 * @author Mostafa Ali
+	 *
+	 */
 	public static void index() {
 		render();		
 	}
