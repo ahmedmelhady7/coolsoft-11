@@ -228,8 +228,10 @@ public class Tags extends CoolCRUD {
 					+ org.id + "\">" + org.name + "</a>)", org, user, tag);
 			String description = user.username + " has created a new tag \""
 					+ name + "\" in organization " + org.name;
+			if (!user.equals(org.creator)) {
 			Notifications.sendNotification(org.creator.id, tag.id, "Tag",
 					description);
+			}
 			return tag;
 		}
 		return null;
