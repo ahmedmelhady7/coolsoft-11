@@ -430,7 +430,7 @@ public class Invitations extends CoolCRUD {
 	 * Responds to the user (accept/reject) to the invitation.
 	 * 
 	 * @author ${Mai.Magdy} > if flag is false and role is organizer
-	 * @author ${Fadwa.Sakr} > if flag is true
+	 * @author ${Fadwa.Sakr} 
 	 * @author ${Ibrahim.Khayat} > if flag is false and role is idea developer
 	 * 
 	 * @story C1S4,C2S17
