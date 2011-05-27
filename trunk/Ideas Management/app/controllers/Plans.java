@@ -1744,32 +1744,42 @@ public class Plans extends CoolCRUD {
 		}
 		
 		item.save();
+		String logDescription = "User "
+			+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+			+ user.id + "\">" + user.firstName + " " + user.lastName
+			+ "</a>" + " has tagged " + item.summary;
+			
+			
 		JsonObject json = new JsonObject();
 		if (!tagAlreadyExists) {
 			json.addProperty("name", tagTemp.name);
 			json.addProperty("id", tagTemp.id + "");
+	
 			if(newTag){
 			json.addProperty("success", "1");
+			logDescription+="with a new Tag ";
+				
 			}
 			else{
 				json.addProperty("success", "2");
+			logDescription+="with an already existing Tag";
 			}
+			logDescription+= "<a href=\"http://localhost:9008/tags/mainpage?tagId="
+				+ tagTemp.id + "\">" + tagTemp.name + "</a>";
+
 		}
+		
 		else {
 			json.addProperty("success", "0");
 		}
-		String logDescription = "User "
-			+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
-			+ user.id + "\">" + user.firstName + " " + user.lastName
-			+ "</a>" + " has tagged " + item.summary
-			+ " in the plan "
-			+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
-			+ item.plan.id + "\">" + item.plan.title + "</a>"
-			+ " of the topic "
-			+ "<a href=\"http://localhost:9008/topics/show?topicId="
-			+ item.plan.topic.id + "\">" + item.plan.topic.title + "</a>"
-			+"with the tag"
-			+tagTemp.name;
+		logDescription+= " in the plan "
+		+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+		+ item.plan.id + "\">" + item.plan.title + "</a>"
+		+ " of the topic "
+		+ "<a href=\"http://localhost:9008/topics/show?topicId="
+		+ item.plan.topic.id + "\">" + item.plan.topic.title + "</a>";
+		
+			
 
 	Log.addUserLog(logDescription, user, item, item.plan, item.plan.topic,
 			item.plan.topic.entity, item.plan.topic.entity.organization,tagTemp);
