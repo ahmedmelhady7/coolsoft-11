@@ -190,7 +190,7 @@ public class IbrahimAdel extends UnitTest {
 					roleInOrg._save();
 					user.userRolesInOrganization.add(roleInOrg);
 					user.save();
-					User orgLead = organization.creator;
+					User lead = organization.creator;
 					Notifications
 							.sendNotification(
 									user.id,
@@ -201,7 +201,7 @@ public class IbrahimAdel extends UnitTest {
 											+ organization.name);
 					Notifications
 							.sendNotification(
-									orgLead.id,
+									lead.id,
 									organization.id,
 									"Organization",
 									user.username
