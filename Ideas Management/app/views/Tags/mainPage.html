@@ -46,7 +46,7 @@
             #{/if}
             #{if canCreateRelationship == true}
             <li>
-                <a href="@{Tags.createRelation(tag.id,tag.createdInOrganization.id)}">Create relation</a>
+		    <a id="rButton" style="cursor:pointer;" onclick="$('#rForm').slideToggle();" >Create Relation</a>
             </li>
             #{/if}
             <li>
@@ -81,6 +81,40 @@
             </p>
         </form>#{/if}
     </div>
+	
+	<div id="rForm" style="display:none;">
+		<h1>Create Tag Relation</h1>
+		<form>
+			<p>
+				<form id="f1" style="display: inline;">
+					<abbr id="rName" style="display: inline;">Relation Name:</abbr> <select id="rels" style="display: inline;"> 
+					<option >choose name</option>
+					#{list items:tag.createdInOrganization.relationNames, as:'relName'}
+					<option >${relName}</option>
+					#{/list}
+					</select> <input id="button1" type="button" value="Add new name" onclick="buttonOne();" style="display: inline;"></input>
+				</form>
+				<form id="f2" style="display: none;">
+				Relation Name: <input id = "text" type="textbox" required>
+					</select> <input id="button2" type="button" value="Add from list" onclick="buttonTwo();">
+				</form>
+			</p>
+			
+			<p>
+				Related Tag: 
+				
+				<select id="tg"> 
+					<option>Select Tag</option>
+					#{list items:tagList, as:'tagElement'}
+					<option value="${tagElement.id}">${tagElement.name}</option>
+					#{/list}
+				</select>
+				
+				<input type="submit" value="Create" onclick="kill(${tag.id})">
+			</p>
+		</form>
+	</div>
+	
     <div id="lista" style="display:none;">
         #{if tag.relationsSource != null}
         #{list items:tag.relationsSource, as:'relationElement'}
@@ -167,6 +201,57 @@
     </div>
 </div>
 <script type="text/javascript">
+	var check = true;
+					
+	function buttonOne(){
+		document.getElementById('rels').style.display = 'none';
+		document.getElementById('button1').style.display = 'none';
+		document.getElementById('rName').style.display = 'none';
+		document.getElementById('f2').style.display = 'inline';
+		check = !check;
+	};
+					
+	function buttonTwo(){
+		document.getElementById('f2').style.display = 'none';
+		document.getElementById('rName').style.display = 'inline';
+		document.getElementById('rels').style.display = 'inline';
+		document.getElementById('button1').style.display = 'inline';
+		check = !check;
+	};
+	
+	function kill(a)
+	{
+		
+		
+		if (!check) {
+			var x = document.getElementById("text").value;
+		}
+		else {
+			var x = document.getElementById("rels").value;
+		}
+		var b = document.getElementById("tg").value;
+		
+		if (x == "" || x == "choose name" || b == "Select Tag") {
+			alert("Please enter the Missing field(s)");
+		}
+		else {
+		
+		$.post('@{TagRelationships.createRelationship()}', {
+				name: x,
+				sourceId: a,
+				destinationId: b
+			}, function(data){
+				if(data == "true"){
+					alert("you have created a relation:" + x);
+					var link = "/tags/mainpage?tagId="+a;
+					window.location.href= link
+				}else if(data == "false"){
+					alert("this relation already exists!!");
+				}
+			});			
+		}
+		}
+	
     var ff = false;
     $('#fol').hide();
     $('#folLink').click(function(){
