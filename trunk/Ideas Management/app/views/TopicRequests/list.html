@@ -21,6 +21,8 @@
         .accordionItem div {
             margin: 0;
             padding: 1em 0.4em;
+			 background-color: #eef;
+			 border-bottom: 1px solid #66d; 
         }
         
         .accordionItem.hide h3 {
@@ -68,92 +70,87 @@
 	
     <script type="text/javascript">
         var accordionItems = new Array();
-        
-        function init(){
-        
-            // Grab the accordion items from the page
-            var divs = document.getElementsByTagName('div');
-            for (var i = 0; i < divs.length; i++) {
-                if (divs[i].className == 'accordionItem') 
-                    accordionItems.push(divs[i]);
-            }
-            
-            // Assign onclick events to the accordion item headings
-            for (var i = 0; i < accordionItems.length; i++) {
-                var h3 = getFirstChildWithTagName(accordionItems[i], 'H3');
-                h3.onclick = toggleItem;
-            }
-            
-            // Hide all accordion item bodies except the first
-            for (var i = 1; i < accordionItems.length; i++) {
-                accordionItems[i].className = 'accordionItem hide';
-            }
-        }
-        
-        function toggleItem(){
-            var itemClass = this.parentNode.className;
-            
-            // Hide all items
-            for (var i = 0; i < accordionItems.length; i++) {
-                accordionItems[i].className = 'accordionItem hide';
-            }
-            
-            // Show this item if it was previously hidden
-            if (itemClass == 'accordionItem hide') {
-                this.parentNode.className = 'accordionItem';
-                
-            }
-        }
-        
-        function getFirstChildWithTagName(element, tagName){
-            for (var i = 0; i < element.childNodes.length; i++) {
-                if (element.childNodes[i].nodeName == tagName) 
-                    return element.childNodes[i];
-            }
-            
-        }
-        
-        function endRelation(relId){
-            $.post('@{EntityRelationships.delete()}', {
-                relationId: relId
-            });
-            alert("relation deleted succesfully!");
-            window.location.reload();
-        }
+
+			function init() {
+
+				// Grab the accordion items from the page
+				var divs = document.getElementsByTagName( 'div' );
+				for ( var i = 0; i < divs.length; i++ ) {
+					if ( divs[i].className == 'accordionItem' )
+						accordionItems.push( divs[i] );
+				}
+
+				// Assign onclick events to the accordion item headings
+				for ( var i = 0; i < accordionItems.length; i++ ) {
+					var h3 = getFirstChildWithTagName( accordionItems[i], 'H3' );
+					h3.onclick = toggleItem;
+				}
+
+				// Hide all accordion item bodies
+				for ( var i = 0; i < accordionItems.length; i++ ) {
+					accordionItems[i].className = 'accordionItem hide';
+				}
+			}
+
+			function toggleItem() {
+				var itemClass = this.parentNode.className;
+
+				// Hide all items
+				for ( var i = 0; i < accordionItems.length; i++ ) {
+					accordionItems[i].className = 'accordionItem hide';
+				}
+
+				// Show this item if it was previously hidden
+				if ( itemClass == 'accordionItem hide' ) {
+					this.parentNode.className = 'accordionItem';
+
+				}
+			}
+
+			function getFirstChildWithTagName( element, tagName ) {
+				for ( var i = 0; i < element.childNodes.length; i++ ) {
+					if ( element.childNodes[i].nodeName == tagName )
+						return element.childNodes[i];
+				}
+				
+			}
+			
+			function endRelation(relId){
+				$.post('@{EntityRelationships.delete()}', {relationId: relId});
+				alert("relation deleted succesfully!");
+				window.location.reload();
+			}
         
         function acceptRequest(topicRequestId){
-            $.post('@{TopicRequests.acceptRequest()}', {
+			$.post('@{TopicRequests.acceptRequest()}', {
                 topicRequestId: topicRequestId,
-                topicDescription: document.getElementById("topicDescription").value
+                topicDescription: document.getElementById("topicDescription_" + topicRequestId).value
             }, function(){
-                alert('request accepted');
-                //                        window.location.href = "topicRequests/list";
+                alert('Request Accepted');
+				document.getElementById("accordion_" + topicRequestId).style.display="none";
             });
         }
         
         function rejectRequest(topicRequestId){
-            alert(topicRequestId);
             $.post('@{TopicRequests.rejectRequest()}', {
                 topicRequestId: topicRequestId
             }, function(){
                 alert('request rejected');
-                document.getElementById()
-                //                        window.location.href = "topicRequests/list";
+                document.getElementById("accordion_" + topicRequestId).style.display="none";
             });
         }
         
-        function rephraseRequest(){
-            document.getElementById("topicDescription").disabled = false;
-            document.getElementById("donebutton").disabled = false;
+        function rephraseRequest(requestId){
+            document.getElementById("topicDescription_" + requestId).disabled = false;
+            document.getElementById("donebutton_" + requestId).disabled = false;
         }
         
-        function doneRephrasing(){
-            document.getElementById("topicDescription").disabled = true;
-            document.getElementById("donebutton").disabled = true;
+        function doneRephrasing(requestId){
+            document.getElementById("topicDescription_" + requestId).disabled = true;
+            document.getElementById("donebutton_" + requestId).disabled = true;
         }
     </script>
 </head>
-
 <div id="leftSidebar">
 		    <ul>
 		        <div style="clear: both;">
@@ -173,42 +170,40 @@
 <div id="page">
 	<div id="page-bgtop">
 		<div id="showList">
-			<body onload="init()">
-				<h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Topic Requests</h2>
-				<br />
-				
-			    #{if listOfTopicsToBeRendered.size() > 0}
-			    <br/>
-			    <p>
-			        List of Topics Requests:
-			    </p>
-			    <ul style="list-style: none;">
-			        #{list items:listOfTopicsToBeRendered, as:'topicRequest'}
-			        <li>
-			            <div class="accordionItem">
-			                <h3 style="backgroud-color:#FFFFFF; border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">Title: ${topicRequest.title} 
-			                    <font size=2>
-			                        By: ${topicRequest.requester.username}
-			                    </font>
-			                    <input type="button" value="Rephrase" onclick="rephraseRequest();" class="linkButton"/><input type="button" value="Accept" onclick="acceptRequest('${topicRequest.id}');" class="linkButton"/><input type="button" value="Reject" onclick="rejectRequest('${topicRequest.id}');" class="linkButton"/></h3>
-			                        <div>
-			                            <p>
-			                                Description:
-											<br>
-			                                <textarea id="topicDescription" disabled='true'>
-			                                    ${topicRequest.description}
-			                                </textarea>
-											<br>
-			                                <input type='submit' id='donebutton' value='Done Rephrasing' disabled='true' onclick="doneRephrasing();" class="linkButton"/>
-			                            </p>
-			                        </div>
-			                        </div>
-			                    </li> #{/list}
-			                    </ul>#{/if}
-			                    #{else}
-			                    No topic requests available for this entity!
-			                    #{/else}
- 			</body>
+<body onload="init()">
+    #{if listOfTopicsToBeRendered.size() > 0}
+    <br/>
+    <p>
+        List of Topics Requests:
+    </p>
+    <ul style="list-style: none;">
+        #{list items:listOfTopicsToBeRendered, as:'topicRequest'}
+        <li>
+            <div id="accordion_${topicRequest.id}" class="accordionItem">
+                <h3style="backgroud-color:#FFFFFF; border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;"><b>Title:</b> ${topicRequest.title}
+					<br>
+                    <font size=2><b>By:</b> <a href="/users/viewprofile?userId=${topicRequest.requester.id}">${topicRequest.requester.username}</a></font>
+					<font color ="#FF0000" size =3>⊕</font>
+                    <input type="button" value="Rephrase" class="linkButton" onclick="rephraseRequest('${topicRequest.id}');"></h3>
+					<input type="image" src='/public/images/accept.png' align='right' id="accepter" onclick="acceptRequest('${topicRequest.id}');"/>
+					<input type="image" src='/public/images/delete.png' align='right' id="rejecter" onclick="rejectRequest('${topicRequest.id}');"/>
+					    <div>
+                            <p>
+                            	Description:
+								<br>
+                                <textarea id="topicDescription_${topicRequest.id}" disabled='true'>${topicRequest.description}</textarea>
+								<br>
+                                <input type="submit" id="donebutton_${topicRequest.id}" value='Done Rephrasing' disabled='true' onclick="doneRephrasing('${topicRequest.id}');">
+                            </p>
+                        </div>
+            </div>
+        </li> #{/list}
+    </ul>#{/if}
+                    #{else}
+                    No topic requests are available for this entity!<br>
+                    #{/else}
+					Go back to <a href="/mainentitys/viewentity?id=${entityId}">${entityName}</a>
+                </body>
  		</div>
 	 </div>
  </div>

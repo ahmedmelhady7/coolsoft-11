@@ -189,15 +189,10 @@ public class TopicRequests extends CoolCRUD{
 			render("CRUD/blank.html", type, entityId);
 		}
 		}
-		else{
-			BannedUsers.unauthorized();
-		}
-
 	}
 
 
 /**
- * Overriding the CRUD method list.
  * 
  * @author Mostafa Yasser El Monayer
  * 
@@ -206,8 +201,7 @@ public class TopicRequests extends CoolCRUD{
  * @param entityId
  *            : id of the entity the request is in
  * 
- * @description This method renders the form for requesting a topic in the
- *              entity
+ * @description This method renders the list of topic requests related to a given entity
  * 
  */
 public static void list(long entityId) {
@@ -230,7 +224,8 @@ public static void list(long entityId) {
 	try {
 		System.out.println("list() for TopicRequests done about to render");
 		System.out.println("size = " + listOfTopicsToBeRendered.size());
-		render(entityId, user, listOfTopicsToBeRendered);
+		String entityName = entity.name;
+		render(entityId, user, entityName, listOfTopicsToBeRendered);
 
 	} catch (TemplateNotFoundException exception) {
 		System.out
@@ -239,6 +234,23 @@ public static void list(long entityId) {
 	}
 
 }
+
+/**
+ * 
+ * @author Mostafa Yasser El Monayer
+ * 
+ * @story C3S5
+ * 
+ * @param topicRequestId
+ *            : id of the topic request to be related
+ * 
+ * @param topicDescription
+ *            : description of the topic request in case it was rephrased
+ *            
+ * @descritpion the method takes topic request as input and its description in case it is rephrased as inputs,
+ * 				creates a new topic with the same attributes as the topic request, and deletes it from the DB 
+ * 
+ */
 
 public static void acceptRequest(long topicRequestId, String topicDescription) {
 	System.out.println("wasal el accept" + topicRequestId);
@@ -256,6 +268,19 @@ public static void acceptRequest(long topicRequestId, String topicDescription) {
 	entity.save();
 	System.out.println("entity saved");
 }
+
+/**
+ * 
+ * @author Mostafa Yasser El Monayer
+ * 
+ * @story C3S5
+ * 
+ * @param topicRequestId
+ *            : id of the topic request to be related
+ *            
+ * @descritpion the method takes topic request as input and deletes it from the DB 
+ * 
+ */
 
 public static void rejectRequest(long topicRequestId) {
 	System.out.println("wasal el reject" + topicRequestId);

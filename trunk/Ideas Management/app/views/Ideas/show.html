@@ -176,7 +176,7 @@
 	#{if canDelete && !isAuthor && notInPlan}
 	<form action="@{Topics.hideIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         	<input type="hidden" name = "justification" id = "justText2">
-            <input style="float:right;" class="linkButton" style="color: red;" title="Hide Idea"  value="Hide" type="image" src="/public/images/icons/hide-icon.gif"/>
+            <input style="float:right;" class="linkButton" style="color: red;"  value="Hide" type="image" src="/public/images/icons/hide-icon.gif"/>
     </form>
     #{/if}
 	<br />
@@ -184,13 +184,58 @@
   </div>
   
         </div>    
-    
-	<form action="@{Ideas.tagIdea()}" method="post">
-        	<input type="hidden" value=${ideaId} name='ideaId'>
-			<input type="hidden" value='@@' name='tag'>
-			<input type="image" class="linkButton"  title="Add tags" src="/public/images/icons/tag.png">
-    </form>
-		 <br />
+    	#{if permittedToTagIdea}
+				<input type="image" style="float:left;" title='Add Tags' src='/public/images/tag.png' id="submit" onclick="hideTagger();"/>
+				#{/if}
+				<ul id="tagLister" style="list-style: none; ">
+				#{list items:tags, as:'tag'}
+                <a href="/tags/mainpage?tagId=${tag.id}" style="float:left;">${tag.name} &nbsp </a>
+				#{/list}
+				</ul>
+				#{if permittedToTagIdea}
+                <input type="hidden" id='tags' name="tags" value="">
+				
+				<input type="text" id="tagger" style="display:none; float:left;" name='tag' onkeyup="checkTagValidity('${ideaId}', this.value);">
+				<input id="subb" type="image" src='/public/images/add.png' value="Add Tag" style="display:none; float:left; width:auto; height:auto;" onclick="tagIdea();" disabled='true'>
+				<label id='tagg' style="display:none; float:left;"><font color="#FF0000"> Tag Already Exists!</font></label>
+				<script>
+						function hideTagger(){
+							if (document.getElementById("tagger").style.display == "none") {
+								document.getElementById("tagger").style.display = "block";
+								document.getElementById("tagger").value = "";
+								document.getElementById('subb').style.display = "block";
+							}
+							else {
+								document.getElementById("tagger").style.display = "none";
+								document.getElementById('tagg').style.display = 'none';
+								document.getElementById('subb').style.display = "none";
+							}
+						}
+						function tagIdea(){
+							var tag = document.getElementById('tagger').value;
+							var idea = '${ideaId}';
+							$.getJSON('@{Ideas.tagIdea()}', {ideaId:idea, tag: tag}, function(ideaTags) {
+								$('#tagLister').append("<a href=\"/tags/mainpage?tagId=" + ideaTags.tagId + "\" style=\"float:left;\">&nbsp; " + ideaTags.tagName + "</a>");
+								$('#tagger').val("");
+							});
+						}
+						function checkTagValidity(ideaId, tag){
+							$.getJSON('@{Ideas.checkIfTagAlreadyExists()}', {tag:tag, ideaId:ideaId}, function(tagExists){
+								if(tagExists.tagAlreadyExists == true){
+									document.getElementById('subb').disabled = true;
+									document.getElementById('tagg').style.display = 'block';
+								} else {
+									document.getElementById('tagg').style.display = 'none';
+									document.getElementById('subb').disabled = false;
+								}	
+							});
+						}
+				</script>
+           
+        #{/if}
+		 <br>
+		 <br>
+		 
 		 <input type="image"  class="linkButton" src="/public/images/icons/good.png" id ='like' title="Like" onclick="like()" />
 	   <input type="image"  class="linkButton" src="/public/images/icons/bad.png" id ='dislike' title="Dislike" onclick="disLike()" />
 			
@@ -198,11 +243,11 @@
         <ul id="commentsList" style="list-style: none; ">
  		#{if comments} 
  			<font color="black">Comments</font> 
- 			<br/> 
+ 			<br> 
  					 
  					#{list comments, as:'comment'} 
  					<div class="comment-metadata">
-						<span class="comment-author"> by <a href="@{Users.viewProfile(comment.commenter.id)}">${comment.commenter.username}</a></font></span>
+						<span class="comment-author">by ${comment.commenter.username}</span>
 						<span class="comment-date">${comment.commentDate}</span>
 					</div>
  					<div class="comment-content">
