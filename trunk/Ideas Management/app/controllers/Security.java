@@ -206,7 +206,7 @@ public class Security extends Secure.Security {
 		if(answer.equalsIgnoreCase(userAnswer)) {
 			// should send a generated password by mail
 			String newPassword = generatePassword();
-			user.password = newPassword;
+			user.password = Codec.hexMD5(newPassword);
 			user.save();
 			Mail.recoverPassword(user.username, user.email, newPassword);
 			flash.success("An email is sent to " + user.email 
