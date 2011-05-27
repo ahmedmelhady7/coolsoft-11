@@ -17,7 +17,7 @@
 	</font>
 	<div class="objectForm">
 		#{form action:@save(object._key()), enctype:'multipart/form-data'}
-		#{crud.form fields: ['email','firstName','lastName','communityContributionCounter','dateofBirth',  'country', 'profession']}
+		#{crud.form fields: ['email','firstName','lastName','country', 'profession','isAdmin']}
 		
 		#{crud.custom 'email'}
 		Email
@@ -33,21 +33,13 @@
 		</p>
 		#{/crud.custom }
 		
-		#{crud.custom 'dateofBirth'}
-		<label for="object_dateofBirth">
-				Date Of Birth
-			</label>
-		<p>
-			<input type="text" id="object_dateofBirth" name= "object.dateofBirth"  readonly />
-		</p>
-		#{/crud.custom }
-		
 		#{crud.custom 'country'}
 		<p>
 			<label for="object_country">
 				Country
 			</label> 
-			<select name="object.country" value = ${object.country} size="1">
+			<select name="object.country" size="1">
+			<option value=${object.country}>${object.country}</option>
 				<option value="Egypt">Egypt</option>
 				<option value="Afghanistan">Afghanistan</option>
 				<option value="�land Islands">�land Islands</option>
@@ -324,7 +316,9 @@
 		
 		#{/form}
 	</div>
-	#{if adminFlag == 1}
+	
+	#{if admin == 0}
+	#{if isDeleted == 0}
 	<form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         <p class="crudDelete">
         	<input type="hidden" name = "deletionMessage" id = "justText">
@@ -332,6 +326,15 @@
         </p>
     </form>
 	#{/if}
+	#{/if}
+	
+	#{if isDeleted == 1}
+    <form action="@{undelete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" >
+        <p>
+            <input type="submit" value="&{'crud.delete', type.modelName}" />
+        </p>
+    </form>
+    #{/if}
 	
 	
 </div>

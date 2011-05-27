@@ -110,6 +110,11 @@ public class Users extends CoolCRUD {
 		if (Security.getConnected().isAdmin) {
 			adminFlag = 1;
 		}
+		int admin = 0;
+		if(object.isAdmin)
+		{
+			admin=1;
+		}
 		int isDeleted = 0;
 		if (object.state.equals("d")) {
 			isDeleted = 1;
@@ -118,7 +123,7 @@ public class Users extends CoolCRUD {
 
 			System.out.println("view() done, about to render");
 			render(type, object, username, name, communityContributionCounter,
-					profession, birthDate, userId, adminFlag, isDeleted);
+					profession, birthDate, userId, adminFlag, isDeleted,admin);
 
 		} catch (TemplateNotFoundException e) {
 			System.out
@@ -179,13 +184,18 @@ public class Users extends CoolCRUD {
 		String profession = tmp.profession;
 		String username = tmp.username;
 		String dateofBirth = "" + tmp.dateofBirth;
+		int admin = 0;
+		if(tmp.isAdmin)
+		{
+			admin=1;
+		}
 		int isDeleted = 0;
 		if (tmp.state.equals("d")) {
 			isDeleted = 1;
 		}
 		try {
 			render(type, object, username, name, communityContributionCounter,
-					profession, dateofBirth, userId, isDeleted);
+					profession, dateofBirth, userId, isDeleted,admin);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -1368,7 +1378,10 @@ public class Users extends CoolCRUD {
 		} else if (!(User.find("byUsername", tmp.username).fetch().isEmpty())) {
 			message = "This Username already exists !";
 			invalidUserFlag = true;
-		} 
+		} else if (tmp.password.length() < 4) {
+			message = "Password cannot be less than 4 characters";
+			invalidUserFlag = true;
+		}
 		if (validation.hasErrors()||invalidUserFlag) {
 			System.out.println("lol");
 			if (tmp.email.equals("")) {
@@ -1540,23 +1553,51 @@ public class Users extends CoolCRUD {
 	 * 
 	 */
 	public static void save(String id) throws Exception {
-		System.out.println("mostafaaaaa");
 		// Security.check(Security.getConnected().isAdmin||);
 		ObjectType type = ObjectType.get(Users.class);
 		notFoundIfNull(type);
 		Model object = type.findById(id);
 		User oldUser = (User) object;
-		String oldEmail = oldUser.email;
+		String oldEmail = "" + oldUser.email;
 		char[] oldemailArray = oldEmail.toCharArray();
-		String oldFirstName = oldUser.firstName;
+		String oldFirstName = "" + oldUser.firstName;
 		char[] oldFirstNameArray = oldFirstName.toCharArray();
-		String oldLastName = oldUser.lastName;
-		char[] oldLastNameArray = oldLastName.toCharArray();
-		int oldCommunityContributionCounter = oldUser.communityContributionCounter;
-		String oldCountry = oldUser.country;
-		char[] oldCountryArray = oldCountry.toCharArray();
-		String oldProfession = oldUser.profession;
-		char[] oldProfessionArray = oldProfession.toCharArray();
+		String oldLastName = "" + oldUser.lastName;
+		char[] oldLastNameArray ;
+		String oldCountry = "" + oldUser.country;
+		char[] oldCountryArray ;
+		String oldProfession = "" + oldUser.profession;
+		char[] oldProfessionArray;
+		boolean notEmptyCountry = false;
+		boolean notEmptyLastName = false;
+		boolean notEmptyProfession = false;
+
+		if(oldCountry.trim() != "")
+		{
+			System.out.println(oldCountry);
+			oldCountryArray = oldCountry.toCharArray();
+			notEmptyCountry =true;
+		}
+		else{
+			oldCountryArray = new char[1]; 
+		}
+		if(oldLastName != "")
+		{
+			oldLastNameArray = oldLastName.toCharArray();
+			notEmptyLastName =true;
+		}
+		else{
+			oldLastNameArray = new char[1]; 
+		}
+		if(oldLastName != "")
+		{
+			oldProfessionArray = oldProfession.toCharArray();
+			notEmptyProfession =true;
+		}
+		else{
+			oldProfessionArray = new char[1]; 
+		}
+		
 		Binder.bind(object, "object", params.all());
 		System.out.println(object.toString() + "begin");
 		validation.valid(object);
@@ -1566,26 +1607,16 @@ public class Users extends CoolCRUD {
 		System.out.println("create() entered");
 		tmp.email = tmp.email.trim();
 		tmp.email = tmp.email.toLowerCase();
-		tmp.username = tmp.username.trim();
-		tmp.password = tmp.password.trim();
 		tmp.firstName = tmp.firstName.trim();
-		tmp.lastName = tmp.lastName.trim();
-		tmp.profession = tmp.profession.trim();
+		
 
 		if (validation.hasErrors()) {
 			System.out.println("lol");
 			if (tmp.email.equals("")) {
 				message = "A User must have an email";
 				System.out.println(message);
-			} /*
-			 * else if (tmp.username.trim().equals("")) { message =
-			 * "A User must have a username"; System.out.println(message); }
-			 * else if (tmp.password.trim().equals("")) { message =
-			 * "A User must have a password"; System.out.println(message); }
-			 */else if (tmp.username.length() >= 20) {
+			} else if (tmp.username.length() >= 20) {
 				message = "Username cannot exceed 20 characters";
-			} else if (tmp.password.length() >= 25) {
-				message = "First name cannot exceed 25 characters";
 			}
 			try {
 				System.out.println("show user try ");
@@ -1599,7 +1630,6 @@ public class Users extends CoolCRUD {
 		}
 
 		System.out.println(object.toString() + "before save");
-		tmp.password = Codec.hexMD5(tmp.password);
 		object._save();
 		if (Security.getConnected().isAdmin
 				&& Security.getConnected().id != tmp.id) {
@@ -1607,30 +1637,74 @@ public class Users extends CoolCRUD {
 					"User", "The admin has edited your profile");
 		}
 		if (!(Arrays.equals(oldemailArray, tmp.email.toCharArray()))) {
-			editedMessage += "Email changed to -->  " + tmp.email + "\n";
+			editedMessage += "Email " + oldEmail + " changed to -->  " + tmp.email + "\n";
 		}
 		if (!(Arrays.equals(oldFirstNameArray, tmp.firstName.toCharArray()))) {
-			editedMessage += " First Name changed to -->  " + tmp.firstName
+			editedMessage += " First Name " + oldFirstName + " changed to -->  " + tmp.firstName
 					+ "\n";
 		}
-		if (!(Arrays.equals(oldLastNameArray, tmp.lastName.toCharArray()))) {
-			editedMessage += "  changed to -->  " + tmp.lastName + "\n";
+		if(notEmptyLastName)
+		{
+			if(tmp.lastName.trim().equals(""))
+			{
+				editedMessage += "Last Name " + oldLastName + " removed " + "\n";
+			}
+			else
+			{
+				if (!(Arrays.equals(oldLastNameArray, tmp.lastName.toCharArray()))) {
+					editedMessage += "Last Name " + oldLastName + " changed to -->  " + tmp.lastName + "\n";
+				}
+			}
 		}
-		if (oldUser.communityContributionCounter != tmp.communityContributionCounter) {
-			editedMessage += oldCommunityContributionCounter
-					+ "  changed to -->  " + tmp.communityContributionCounter
-					+ "\n";
+		else
+		{
+			if(!(tmp.lastName.equals("")))
+			{
+				editedMessage += "Last Name " + oldLastName + " added --> " + tmp.lastName + "\n";
+			}
 		}
-		/*
-		 * if(oldUser.dateofBirth !=(tmp.dateofBirth)); { editedMessage +=
-		 * dateofBirth + "  changed to -->  " + tmp.dateofBirth +"\n"; }
-		 */
-		if (!(Arrays.equals(oldCountryArray, tmp.country.toCharArray()))) {
-			editedMessage += "  changed to -->  " + tmp.country + "\n";
+		if(notEmptyProfession)
+		{
+			if(tmp.profession.trim().equals(""))
+			{
+				editedMessage += "Profession " + oldProfession + " removed " + "\n";
+			}
+			else
+			{
+				if (!(Arrays.equals(oldProfessionArray, tmp.profession.toCharArray()))) {
+					editedMessage += "Profession " + oldProfession + " changed to -->  " + tmp.profession + "\n";
+				}
+			}
 		}
-		if (!(Arrays.equals(oldProfessionArray, tmp.profession.toCharArray()))) {
-			editedMessage += " changed to --> " + tmp.profession + "\n";
+		else
+		{
+			if(!(tmp.profession.equals("")))
+			{
+				editedMessage += "Profession " + oldProfession + " added --> " + tmp.profession + "\n";
+			}
 		}
+		if(notEmptyCountry)
+		{
+			if(tmp.country.trim().equals(""))
+			{
+				editedMessage += "Country " + oldCountry + " removed " + "\n";
+			}
+			else
+			{
+				if (!(Arrays.equals(oldCountryArray, tmp.country.toCharArray()))) {
+					editedMessage +=  "Country " + oldCountry + " changed to -->  " + tmp.country + "\n";
+				}
+			}
+		}
+		else
+		{
+			if(!(tmp.country.equals("")))
+			{
+				editedMessage += "Country " + oldCountry + " added --> " + tmp.country + "\n";
+			}
+		}
+		
+		
 		System.out.println("edited" + editedMessage + " all");
 		if (Security.getConnected().isAdmin
 				&& Security.getConnected().id != tmp.id) {
@@ -1755,7 +1829,7 @@ public class Users extends CoolCRUD {
 				user.invitation.get(i).delete();
 			for (int i = 0; i < user.requestsToJoin.size(); i++)
 				user.requestsToJoin.get(i).delete();
-			render(request.controller.replace(".", "/") + "/index.html", x);
+			render(request.controller.replace(".", "/") + "/index.html");
 		} catch (NullPointerException e) {
 			x = "No such User !!";
 			System.out.println(x + "catch");

@@ -36,8 +36,9 @@ public class Security extends Secure.Security {
 	}
 
 	/**
-	 * Needed to check that the logging user has access to the
-	 * web site
+	 * checks that the logging user has access to the
+	 * web site and check if he has not activated his account yet if so the user is
+	 * asked to activate 
 	 * 
 	 * @author Ahmed Maged , Mostafa Ali
 	 * 
