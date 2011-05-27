@@ -1,5 +1,6 @@
 #{extends 'login/index.html' /}
-
+<link type="text/css" href="/public/stylesheets/jquery-ui-.custom.css" rel="Stylesheet" />
+<script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
     <div id = "pageNoSideBar">
        #{if flash.error}
 	   <p style = "color;#c00">
@@ -35,14 +36,14 @@
 		<label>
             Last name : &nbsp;&nbsp;
         </label>
-        <input type="text" name= "lastName" value = ${user.lastName} id="lastName"/>
+        <input type="text" name= "lastName"  id="lastName" value = ${user.lastName}>
         
 <br />
     <br />    
         <label>
             Profession :&nbsp;&nbsp;
         </label>
-        <input type="text" name= "profession" value = ${user.profession} id="profession"/>
+        <input type="text" name= "profession"  id="profession" value = ${user.profession}>
         
 <br />
     <br />    
