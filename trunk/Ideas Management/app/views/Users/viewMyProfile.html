@@ -10,6 +10,57 @@
        <form name = "myForm" action="@{Users.saveMyProfile()}" method="post" onsubmit="return validateForm();">
        
        <input type = "hidden" name = "id" value = ${user.id}>
+	    
+        <label>
+            Username
+        </label>
+        <input type="text" name="username" value = ${user.username} id="username" required/> <label id = "sameUsername" style = "color: red;" hidden = "true">This username already exists</label>
+      
+		<br />
+       <br />
+        <label>
+            E-mail
+        </label>
+        <input type="text" name="mail" value = ${user.email} id="mail" required/>  <label id = "wrongEmail" style = "color: red;" hidden = "true">invalid E-mail</label>
+		<label id = "sameEmail" style = "color: red;" hidden = "true">This E-mail already exists</label>
+      <br />
+<br />
+        <label>
+            First name
+        </label>
+        <input type="text" name="firstName" value = ${user.firstName} id="firstName" required/>
+    <br />
+	<br />	
+		
+		<label>
+            Last name
+        </label>
+        <input type="text" name= "lastName" value = ${user.lastName} id="lastName"/>
+        
+<br />
+    <br />    
+        <label>
+            Profession
+        </label>
+        <input type="text" name= "profession" value = ${user.profession} id="profession"/>
+        
+<br />
+    <br />    
+        <label>
+            Date of birth
+        </label>
+        <input type="text" name = "dateOfBirth" value = ${user.dateofBirth} id="dateOfBirth" readonly/>
+        <script>
+            $(function(){
+                $("#dateOfBirth").datepicker({
+                    changeYear: true,
+                    showButtonPanel: true,minDate:'-90Y 1M 1D',maxDate :+0
+					
+                });
+            });
+        </script>
+       <br />
+        <br />
         <p>
             <label>
                 Country
@@ -280,65 +331,67 @@
         </p>
        <br />
 	   <br />
-        
-        <label>
-            Username
-        </label>
-        <input type="text" name="username" value = ${user.username} id="username" required/>
-      
-		<br />
-       <br />
-        <label>
-            E-mail
-        </label>
-        <input type="text" name="mail" value = ${user.email} id="mail" required/>  <label id = "wrongEmail" style = "color: red;" hidden = "true">invalid E-mail</label>
-
-      <br />
-<br />
-        <label>
-            First name
-        </label>
-        <input type="text" name="firstName" value = ${user.firstName} id="firstName" required/>
-    <br />
-	<br />	
-		
-		<label>
-            Last name
-        </label>
-        <input type="text" name= "lastName" value = ${user.lastName} id="lastName"/>
-        
-<br />
-    <br />    
-        
-        <label>
-            Date of birth
-        </label>
-        <input type="text" name = "dateOfBirth" value = ${user.dateofBirth} id="dateOfBirth" readonly/>
-        <script>
-            $(function(){
-                $("#dateOfBirth").datepicker({
-                    changeYear: true,
-                    showButtonPanel: true,minDate:'-90Y 1M 1D',maxDate :+0
-					
-                });
-            });
-        </script>
-       <br />
-        <br />
+       <input type = "hidden" id = "usernames" value = ${usernames}>
+	   <input type = "hidden" id = "emails" value = ${emails}>
+	   <input type = "hidden" id = "myUsername" value = ${user.username}>
+	   <input type = "hidden" id = "myEmail" value = ${user.email}>
            <input type="submit" id="submit" name="submit" value="save">
         
 		</form>
 		<script type = text/javascript>
-function validateForm()
-{
-var x=document.forms["myForm"]["mail"].value
-var atpos=x.indexOf("@");
-var dotpos=x.lastIndexOf(".");
-if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
-  {
-  $("#wrongEmail").show();
-  return false;
-  }
- 
+function validateForm(){
+	var flag = true;
+	var x = document.forms["myForm"]["mail"].value
+	var atpos = x.indexOf("@");
+	var dotpos = x.lastIndexOf(".");
+	if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
+		$("#sameUsername").hide();
+		$("#sameEmail").hide();
+		$("#wrongEmail").show();
+		flag = false;
+	}
+	var text = $("#username").val();
+	
+	var usernamess = $("#usernames").val() + "";
+	var emailss = $("#emails").val() + "";
+	var myUsername = $("#myUsername").val() + "";
+	var myEmail = $("#myEmail").val() + "";
+	var usernameList = {};
+	usernameList = usernamess.split("|");
+	var emailList = {};
+	emailList = emailss.split("|");
+	
+	if (myUsername != text) {
+		for (var i = 0; i < usernameList.length; i++) {
+			if (usernameList[i] == text) {
+				$("#wrongEmail").hide();
+				$("#sameEmail").hide();
+				$("#sameUsername").show();
+				
+				flag = false;
+				//break;
+			}
+		}
+		
+	}
+	
+	
+	if (myEmail != x) {
+		
+		for (var i = 0; i < emailList.length; i++) {
+			if (emailList[i] == x) {
+				$("#sameUsername").hide();
+				$("#wrongEmail").hide();
+				$("#sameEmail").show();
+				flag = false;
+				//break;
+			}
+		}
+		
+	}
+	
+	return flag;
 }
+
+
 	 </script>
