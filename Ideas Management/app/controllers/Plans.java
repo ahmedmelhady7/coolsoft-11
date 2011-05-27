@@ -1694,15 +1694,14 @@ public class Plans extends CoolCRUD {
 
 		boolean tagAlreadyExists = false;
 		boolean newTag = false;
-		List<Tag> listOfTags = new ArrayList<Tag>();
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
 		globalListOfTags = Tag.findAll();
 
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
 		notFoundIfNull(item);
-		long pId=item.plan.id;
-		Plan plan = Plan.findById(pId);
+		long planId=item.plan.id;
+		Plan plan = Plan.findById(planId);
 		notFoundIfNull(plan);
 
 		Tag tagTemp = null;
