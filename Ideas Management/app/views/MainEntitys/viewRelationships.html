@@ -1,12 +1,77 @@
-#{extends 'main.html' /}
-#{set title:'View Entity Relationships' /}
+#{extends 'login/index.html' /}
+<head>
+<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+		.accordionItem h3 {
+			font-size:1.1em;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			background-color:#FFFFFF;
+			margin-right:23%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+		}
+		.accordionItem h3:hover {
+			cursor:pointer;
+		}
+		.accordionItem div {
+			padding:1em 0.4em;
+			margin-right:23%;
+			border-top-left-radius: 10px;
+	        border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+		}
+		.accordionItem.hide h3 {
+		}
+		.accordionItem.hide div {
+			display:none;
+		}
+	#view{
+			margin-top: 2%;
+			margin-right: 9%;
+			margin-bottom: 4%;
+			margin-left: 0%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #bbbbbb;
+			padding-top: 2%;
+			padding-right: 4%;
+			padding-bottom: 0%;
+			padding-left: 4%;
+			border-bottom-width: 4px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			border-right-width: 4px;
+			border-right-style: solid;
+			border-right-color: #bbbbbb;
+			border-left-width: 4px;
+			border-left-style: solid;
+			border-left-color: #bbbbbb;
+			border-top-width: 4px;
+			border-top-style: solid;
+			border-top-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+	
 
+		</style> 
+</head>
 <html>
-	<title> View Entity Relationships </title>
-	<body>
-		<head>
-			<p>
-				#{if (entity.relationsSource.isEmpty() && entity.relationsDestination.isEmpty())}
+<body>
+	<head>
+<div id="pageNoSideBar">
+	 <div id="pageNoSideBar-bgtop">
+	 	<div id="backToOrg" ><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a></div>
+  <div>
+  	#{if (entity.relationsSource.isEmpty() && entity.relationsDestination.isEmpty())}
 				No relationships are available for this entity.
 				#{/if}
 				#{else}
@@ -14,51 +79,52 @@
 				</br>
 				</br>
 				#{list items: entity.relationsSource, as: 'relation'}
-				<li>
+				<div>
 					<fieldset>
-						<legend>
+				<li id="${relation.id}">						
+				
 							${relation.source} ${relation.name} ${relation.destination}
-						</legend>
+						
 						<form action="@{RenameEndRelationshipRequests.renameRequest(user.id, organisation.id, entity.id, 0, relation.id, 0, 1, newName)}" method="post"
-						onsubmit="return validate()">
-							<input type="text" id="newName" name="newName">
-							<input type = "submit" value = "Request Rename">
-						</form>
+						onsubmit="return validate('newName_${relation.id}')">
+							<input type = "submit" value = "Request Rename" class="linkButton">
+							<input type="text" id="newName_${relation.id}" name="newName">
+							</form>
 						<form action="@{RenameEndRelationshipRequests.deleteRequest(user.id, organisation.id, entity.id, 0, relation.id, 0, 0)}" method="post">
-							<input type = "submit" value = "Request Delete">
+							<input type = "submit" value = "Request Delete" class="linkButton">
 						</form>
-						#{if (canRequestRelationship == true)}
-						#{/if}
+					</li>
 					</fieldset>
-				</li>
+					</div>
 				#{/list}
+				
 				#{list items: entity.relationsDestination, as: 'relation'}
-				<li>
-					<fieldset>
-						<legend>
-							${relation.source} ${relation.name} ${relation.destination}
-						</legend>
+				<div>
+				<fieldset>
+				<li id="${relation.id}">
+							${relation.source} ${relation.name} ${relation.destination}						
 						<form action="@{RenameEndRelationshipRequests.renameRequest(user.id, organisation.id, entity.id, 0, relation.id, 0, 1, newName)}" method="post"
-						onsubmit="return validate()">
-							<input type="text" id="newName" name="newName">
-							<input type = "submit" value = "Request Rename">
+						onsubmit="return validate('newName_${relation.id}')">
+							<input type="text" id="newName_${relation.id}" name="newName" >
+							<input type = "submit" value = "Request Rename" class="linkButton">
 						</form>
 						<form action="@{RenameEndRelationshipRequests.deleteRequest(user.id, organisation.id, entity.id, 0, relation.id, 0, 0)}" method="post">
-							<input type = "submit" value = "Request Delete">
+							<input type = "submit" value = "Request Delete" class="linkButton">
 						</form>
-						#{if (canRequestRelationship == true)}
-						#{/if}
+					</li>
 					</fieldset>
-				</li>
+					</div>
 				#{/list}
 				#{/else}
+				 </div>
+  			
 
-				<script type="text/javascript">function validate() {
-						var n = document.getElementById('newName').value;
+				<script type="text/javascript">function validate(id) {
+						var n = document.getElementById(id).value;
 						if(n == "") {
-							alert("You should enter a name!");
+							alert("Please enter a name!");
 							return false;
-						}
+						}						
 					} </script>
 		</head>
 	</body>
