@@ -1520,7 +1520,7 @@ public class Plans extends CoolCRUD {
 	 * @param planId
 	 *            the id of the plan
 	 * 
-	 * @throws NotFoundIFNull
+	 * 
 	 * 
 	 **/
 
