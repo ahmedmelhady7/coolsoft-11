@@ -61,24 +61,10 @@ public class Topic extends CoolModel {
 	public List<Tag> tags;
 
 	/**
-	 * the list of relationships the topic has
-	 */
-	// public List<Relationship> relationships;
-
-	/**
 	 * the creator of the topic
 	 */
-	// @Required
 	@ManyToOne
 	public User creator;
-
-	/**
-	 * the list of topic organizers
-	 */
-
-	// // to be removed >>>>>>>>>>>>>> change
-	// @ManyToMany
-	// public List<User> organizers;
 
 	/**
 	 * the list of followers of the topic
@@ -86,30 +72,12 @@ public class Topic extends CoolModel {
 	@ManyToMany(mappedBy = "topicsIFollow")
 	public List<User> followers;
 
-	/**
-	 * The list of related topics
-	 */
-	// no mapping
-	// public List<Topic> relatedTopics;
-
-	/*
-	 * the list of users that can access the topic
-	 */
-	// @ManyToMany
-	// public List<User> canAccess;
 
 	/**
 	 * the list of ideas in the topic
 	 */
 	@OneToMany(mappedBy = "belongsToTopic")
-	// , cascade = CascadeType.ALL)
 	public List<Idea> ideas;
-
-	// /**
-	// * the list of reporters of the topic
-	// */
-	// @ManyToMany(mappedBy = "topicsReported")
-	// public List<User> reporters;
 
 	/**
 	 * the reporters of the topic
@@ -121,14 +89,12 @@ public class Topic extends CoolModel {
 	 * the list of comments on the topic
 	 */
 	@OneToMany(mappedBy = "commentedTopic")
-	// , cascade = CascadeType.ALL)
 	public List<Comment> commentsOn;
 
 	/**
 	 * the list of requests to join the topic
 	 */
 	@OneToMany(mappedBy = "topic")
-	// , cascade = CascadeType.ALL)
 	public List<RequestToJoin> requestsToJoin;
 
 	/**
@@ -149,18 +115,9 @@ public class Topic extends CoolModel {
 	@OneToMany(mappedBy = "destinationTopic")
 	public List<CreateRelationshipRequest> relationshipRequestsDestination;
 
-	// @OneToMany(mappedBy = "destinationTopic")
-	// public List<RenameEndRelationshipRequest> renameEndRelationshipRequest;
-
-	/**
-	 * the list of invitations to the topic?
-	 */
-	// public List<TopicInvitation> topicInvitations;
-
 	/**
 	 * the entity the topic is in
 	 */
-	// @Required
 	@ManyToOne
 	public MainEntity entity;
 
@@ -170,7 +127,7 @@ public class Topic extends CoolModel {
 	@OneToOne
 	public Plan plan;
 
-	/*
+	/**
 	 * boolean flag to determine if the topic is closed or not
 	 * 
 	 * @author Mostafa Aboul Atta
@@ -239,13 +196,9 @@ public class Topic extends CoolModel {
 		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
 		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		this.tags = new ArrayList<Tag>();
-		// relationships = new ArrayList<Relationship>();
-		// organizers = new ArrayList<User>();
 		this.followers = new ArrayList<User>();
 		this.ideas = new ArrayList<Idea>();
-		// this.reporters = new ArrayList<User>();
 		this.commentsOn = new ArrayList<Comment>();
-		// canAccess = new ArrayList<User>();
 		this.reporters = "";
 		this.requestsToJoin = new ArrayList<RequestToJoin>();
 		this.createRelationship = createRelationship;
@@ -280,11 +233,9 @@ public class Topic extends CoolModel {
 		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
 		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		this.tags = new ArrayList<Tag>();
-		// organizers = new ArrayList<User>();
 		this.followers = new ArrayList<User>();
 		this.ideas = new ArrayList<Idea>();
 		this.commentsOn = new ArrayList<Comment>();
-		// requestsToJoin = new ArrayList<RequestToJoin>();
 		this.hidden = false;
 		this.reporters = "";
 		this.createRelationship = createRelationship;
@@ -334,17 +285,7 @@ public class Topic extends CoolModel {
 	 */
 
 	public List<User> getOrganizer() {
-		// List<UserRoleInOrganization> o = (List<UserRoleInOrganization>)
-		// UserRoleInOrganization
-		// .find("select uro.enrolled from UserRoleInOrganization uro,Role r where  uro.Role = r and uro.resourceID = ? and r.roleName like ? and uro.resourceType = ? ",
-		// this.id, "organizer", "topic");
-		//
 		List<User> organizer = new ArrayList<User>();
-		// for (int i = 0; i < o.size(); i++) {
-		// organizer.add((o.get(i).enrolled));
-		// }
-		// return organizer;
-
 		List<UserRoleInOrganization> o = UserRoleInOrganization.find(
 				"byEntityTopicIDAndType", this.entity.id, "entity").fetch();
 		for (int i = 0; i < o.size(); i++) {
@@ -372,19 +313,6 @@ public class Topic extends CoolModel {
 		followers.remove(user);
 		_save();
 	}
-
-	// /**
-	// * This Method returns the list of followers in a certain topic
-	// *
-	// * @author Omar Faruki
-	// *
-	// * @story C2S29
-	// *
-	// * @return ArrayList<User>
-	// */
-	// public List<User> getFollowers() {
-	// return (List<User>) this.followers;
-	// }
 
 	/**
 	 * This Method overrides the toString method
@@ -485,39 +413,19 @@ public class Topic extends CoolModel {
 	 * @return boolean
 	 */
 	public boolean isDeletable() {
-		// TODO Auto-generated method stub
-		// if (openToEdit == false)
-		// return false;
 		if (ideas.size() > 0)
 			return false;
 		return true;
 	}
 
-	/*
-	 
-	 * Checks whether a topic can be hidden
-	 * 
-	 * @author Alia El Bolock
-	 * 
-	 * @story C3S9
-	 * 
-	 * @return boolean
-	 *
-	public boolean isHideable() {
-		// TODO Auto-generated method stub
-		if (openToEdit == false)
-			return false;
-
-		return true;
-	}*/
-
+	
 	/**
 	 * Checks whether a certain user can view this topic
 	 * 
 	 * @author Alia El Bolock
 	 * 
 	 * @param user
-	 *            : the user upon which the ckeck should be done
+	 *            : the user upon which the check should be done
 	 * 
 	 * @return boolean
 	 */

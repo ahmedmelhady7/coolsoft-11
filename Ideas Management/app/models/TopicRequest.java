@@ -49,11 +49,6 @@ public class TopicRequest extends CoolModel{
 		 * The message the requester adds to his request
 		 */
 		public String message;
-		
-		
-		
-		
-		
 
 		/**
 		 * Constructor for TopicRequest

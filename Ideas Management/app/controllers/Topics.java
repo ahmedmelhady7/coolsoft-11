@@ -3,7 +3,6 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import models.BannedUser;
 import models.CreateRelationshipRequest;
 import models.EntityRelationship;
@@ -16,16 +15,11 @@ import models.Tag;
 import models.Topic;
 import models.User;
 import models.UserRoleInOrganization;
-
 import java.lang.*;
 import java.lang.reflect.*;
 import java.util.*;
-
 import com.google.gson.JsonObject;
 import com.sun.mail.iap.Response;
-
-//import controllers.CoolCRUD.ObjectType;
-
 import play.data.binding.*;
 import play.db.*;
 import play.exceptions.*;
@@ -58,14 +52,12 @@ public class Topics extends CRUD {
 		Topic topic = Topic.findById(topicId);
 		MainEntity entity = MainEntity.findById(entityId);
 		List<Topic> listOfTopics = null;
-
 		if (entity.topicList != null) {
 			listOfTopics = entity.topicList;
 			listOfTopics.remove(topic);
 		}
 		for (int i = 0; i < listOfTopics.size(); i++) {
 			if (!listOfTopics.get(i).createRelationship) {
-				System.out.println(listOfTopics.get(i).createRelationship);
 				listOfTopics.remove(listOfTopics.get(i));
 			}
 		}
@@ -296,26 +288,6 @@ public class Topics extends CRUD {
 	
 	}
 
-	// /**
-	// *
-	// * This method gets a list of followers for a certain topic
-	// *
-	// * @author Omar Faruki
-	// *
-	// * @story C2S29
-	// *
-	// * @param id
-	// * : id of the topic
-	// *
-	// * @return void
-	// */
-	// public static void viewFollowers(long id) {
-	// Topic topic = Topic.findById(id);
-	// notFoundIfNull(topic);
-	// List<User> follow = topic.followers;
-	// render(follow);
-	// }
-
 	/**
 	 * This Method sends a request to post on a topic for a user to the
 	 * organizer
@@ -358,8 +330,6 @@ public class Topics extends CRUD {
 				.fetch();
 		if (!searchList.contains(org.creator))
 			searchList.add(org.creator);
-		// searchList.add(topic.creator);
-
 		ArrayList<User> organizers = (ArrayList) topic.getOrganizer();
 		for (int i = 0; i < organizers.size(); i++) {
 			if (!searchList.contains(organizers.get(i)))
@@ -369,8 +339,7 @@ public class Topics extends CRUD {
 		List<BannedUser> bannedUserTopic = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
 				"use", "topic", topicId).fetch(); // List of blocked users from
-													// a
-		// topic
+													// a topic
 		List<BannedUser> bannedUserEntity = BannedUser.find(
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
 				"use", "entity", entity.id).fetch(); // list of blocked users
@@ -379,41 +348,21 @@ public class Topics extends CRUD {
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
 				"use", "organization", org.id).fetch(); // list of blocked user
 		// from an organization
-		// List<BannedUser> bannedUserPlan = BannedUser.find(
-		// "byOrganizationAndActionAndResourceTypeAndResourceID", org,
-		// "can post ideas to a Topic", "topic", topicId).fetch(); // list
-		// of
-		// users
-		// banned
-		// from
-		// posting ideas in the
-		// topic
-
+		
 		List<User> bannedUsers = new ArrayList<User>();
 		List<User> user = new ArrayList<User>();
 		List<BannedUser> bannedUser = new ArrayList<BannedUser>(); // list
-		// appending
-		// all the
-		// previous
-		// banneduser
-		// lists
+		// appending all the previous banned user lists
 		bannedUser.addAll(bannedUserTopic);
 		bannedUser.addAll(bannedUserEntity);
 		bannedUser.addAll(bannedUserOrg);
-		// bannedUser.addAll(bannedUserPlan);
-
 		for (int i = 0; i < bannedUser.size(); i++) {
 			bannedUsers.add((bannedUser.get(i)).bannedUser);
 		}
 
 		List<UserRoleInOrganization> allUser = new ArrayList<UserRoleInOrganization>();
-		// List<User> u = new ArrayList<User>();
 		if ((org.privacyLevel == 0 || org.privacyLevel == 1)
 				&& (topic.privacyLevel == 1)) {
-
-			// allUser = (List<UserRoleInOrganization>) UserRoleInOrganization
-			// .find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entitytopicId = ? and r.roleName like ? and and uro.type like ?",
-			// org, id, "idea developer", "topic");
 			allUser = UserRoleInOrganization.find("byEntitytopicIdAndType",
 					topicId, "topic").fetch();
 			for (int i = 0; i < allUser.size(); i++) {
@@ -423,11 +372,6 @@ public class Topics extends CRUD {
 					user.add(allUser.get(i).enrolled);
 				}
 			}
-
-			// for (int i = 0; i < allUser.size(); i++) {
-			// user.add((allUser.get(i)).enrolled);
-			// }
-
 			for (int i = 0; i < bannedUsers.size(); i++) {
 				if (user.contains(bannedUsers.get(i))) {
 					user.remove(bannedUsers.get(i));
@@ -438,10 +382,6 @@ public class Topics extends CRUD {
 
 			if ((org.privacyLevel == 0 || org.privacyLevel == 1)
 					&& (topic.privacyLevel == 2)) {
-				// allUser = (List<UserRoleInOrganization>)
-				// UserRoleInOrganization
-				// .find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entitytopicId = ? and r.roleName like ? and and uro.type like ?",
-				// org, -1, "idea developer", "none");
 				allUser = UserRoleInOrganization.find("byOrganization", org)
 						.fetch();
 				for (int i = 0; i < allUser.size(); i++) {
@@ -450,11 +390,6 @@ public class Topics extends CRUD {
 						user.add(allUser.get(i).enrolled);
 					}
 				}
-
-				// for (int i = 0; i < allUser.size(); i++) {
-				// user.add((allUser.get(i)).enrolled);
-				// }
-
 				for (int i = 0; i < bannedUsers.size(); i++) {
 					if (user.contains(bannedUsers.get(i))) {
 						user.remove(bannedUsers.get(i));
@@ -465,15 +400,6 @@ public class Topics extends CRUD {
 
 			else {
 				if ((org.privacyLevel == 2) && (topic.privacyLevel == 1)) {
-					// allUser = (List<UserRoleInOrganization>)
-					// UserRoleInOrganization
-					// .find("select uro.enrolled from UserRoleInOrganization uro, Role r where uro.Role = r and uro.organization = ? and uro.entitytopicId = ? and r.roleName like ? and and uro.type like ?",
-					// org, id, "idea developer", "topic");
-
-					// for (int i = 0; i < allUser.size(); i++) {
-					// user.add((allUser.get(i)).enrolled);
-					// }
-
 					allUser = UserRoleInOrganization.find(
 							"byEntitytopicIdAndType", topicId, "topic").fetch();
 					for (int i = 0; i < allUser.size(); i++) {
@@ -511,8 +437,6 @@ public class Topics extends CRUD {
 			if (!searchList.contains(user.get(i)))
 				searchList.add(user.get(i));
 		}
-		// searchList.addAll(user);
-
 		int size = searchList.size();
 		ArrayList<User> searchListActive = new ArrayList<User>();
 		for (int i = 0; i < size; i++) {
@@ -550,23 +474,12 @@ public class Topics extends CRUD {
 		String action = "close a topic and promote it to execution";
 		String notificationDescription = "Topic " + targetTopic.title
 				+ " has been closed and promoted to execution.";
-
-		/*
-		 * checks if topic is empty if (targetTopic.getIdeas().size() == 0) {
-		 * System.out.println("Topic has no ideas"); return; }
-		 */
-
-		// closing the topic to editing
 		targetTopic.openToEdit = false;
 		targetTopic.save();
-
-		// Sending Notifications
-		// send notification to organizers
 		for (int i = 0; i < organizers.size(); i++) {
 			Notifications.sendNotification(organizers.get(i).getId(),
 					targetTopic.getId(), "Topic", notificationDescription);
 		}
-		// send notification to followers
 		for (int i = 0; i < followers.size(); i++) {
 			Notifications.sendNotification(followers.get(i).getId(),
 					targetTopic.getId(), "Topic", notificationDescription);
@@ -612,9 +525,8 @@ public class Topics extends CRUD {
 		validation.valid(object);
 		String message = "";
 		Topic temporaryTopic = (Topic) object; // we temporarily save the object
-												// created by
-		// the form in temporaryTopic to validate it before
-		// saving
+											   // created by the form in 
+		                                       //temporaryTopic to validate it before saving
 		MainEntity topicEntity = MainEntity.findById(entityId);
 		MainEntity entity = MainEntity.findById(entityId);
 		temporaryTopic.entity = topicEntity;
@@ -631,7 +543,6 @@ public class Topics extends CRUD {
 		}
 
 		Organization topicOrganization = topicEntity.organization;
-		// ArrayList<Tag> topicTags = (ArrayList<Tag>) temporaryTopic.tags;
 		if (!(topicEntity.followers.size() == 0 || topicOrganization.followers
 				.size() == 0))
 			temporaryTopic.followers = User.find(
@@ -733,11 +644,6 @@ public class Topics extends CRUD {
 				((Topic) object).getId()));
 		if (params.get("_save") != null) {
 			redirect("/topics/show?topicId=" + ((Topic) object).getId());
-
-			// redirect("/topics/show?" + ((Topic) object).getId(), message2);
-			// redirect( "/storys/liststoriesinproject?projectId=" +
-			// temporaryTopic.taskStory.componentID.project.id + "&storyId=" +
-			// temporaryTopic.taskStory.id );
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			render(request.controller.replace(".", "/") + "/blank.html",
@@ -779,8 +685,6 @@ public class Topics extends CRUD {
 		} else {
 			isDefaultEntity = false;
 		}
-		
-		
 		int permission = 1;
 		if (!Users.isPermitted(user, "post topics", entity.id, "entity"))
 			permission = 0;
@@ -795,7 +699,6 @@ public class Topics extends CRUD {
 		} else {
 			BannedUsers.unauthorized();
 		}
-
 	}
 
 	/**
@@ -909,7 +812,6 @@ public class Topics extends CRUD {
 						"Accept/Reject requests to post in a private topic in entities he/she manages",
 						temporaryTopic.id, "topic"))
 			allowed = 1;
-		// Note isPermitted has a bug here!
 		boolean canPost = Users.isPermitted(Security.getConnected(), "use",
 				temporaryTopic.id, "topic");
 
@@ -976,14 +878,10 @@ public class Topics extends CRUD {
 				.isAllowedTo(topicIdLong);
 		boolean topicIsLocked = targetTopic.createRelationship;
 		Organization organisation = targetTopic.entity.organization;
-		
-		//faruki
 		boolean defaultEntity = false;
 		if (targetTopic.entity.equals(organisation.entitiesList.get(0))) {
 			defaultEntity = true;
 		}
-		//faruki
-		
 		if (actor.isAdmin || entity.organization.creator.equals(actor)) {
 			canRestrict = 1;
 		}
@@ -996,8 +894,6 @@ public class Topics extends CRUD {
 
 		boolean joined = false;
 		joinedUsersInTopic = searchByTopic(topicId);
-		System.out.println("topic id " + topicId);
-		System.out.println(joinedUsersInTopic);
 		for (int i = 0; i < joinedUsersInTopic.size(); i++) {
 			if (joinedUsersInTopic.get(i).username.equals(user.username))
 				;
@@ -1006,17 +902,11 @@ public class Topics extends CRUD {
 		boolean banned = true;
 
 		if (temporaryTopic.hidden == true) {
-			System.out.println("Hider " + temporaryTopic.hider.id
-					+ " , connected User " + user.id);
-			System.out.println("if");
 			if (temporaryTopic.hider.id.compareTo(user.id) == 0) {
 				banned = false;
-				System.out.println("if if");
 			}
 		} else {
-			System.out.println("else if");
 			if (temporaryTopic.canView(user)) {
-				System.out.println("else if");
 				banned = false;
 			}
 		}
@@ -1027,16 +917,13 @@ public class Topics extends CRUD {
 		}
 		for (int i = 0; i < listOfTopics.size(); i++) {
 			if (!listOfTopics.get(i).createRelationship) {
-				System.out.println(listOfTopics.get(i).createRelationship);
 				listOfTopics.remove(listOfTopics.get(i));
 			}
 		}
 			
 		if(banned == false){	
 		try {
-			
-
-			render(type, object, tags, joined,/* canUse, */alreadyReportedTopic,
+			render(type, object, tags, joined, alreadyReportedTopic,
 					creator, followers, ideas, canReport,userId,topicNotClosed,
 					hiddenIdeas,numberOfIdeas, comments, entity, canDelete,
 					alreadyReported, plan, openToEdit, privacyLevel,
@@ -1046,7 +933,7 @@ public class Topics extends CRUD {
 					seeRelationStatus, createRelationship, actor, hidden,
 					canRestrict, check, canMerge, canRequestRelationship,
 					topicIsLocked, organisation, check1, check2, user,
-					listOfTopics, allowedToTag, temporaryTopic);
+					listOfTopics, allowedToTag, temporaryTopic, defaultEntity);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,
@@ -1174,7 +1061,6 @@ public class Topics extends CRUD {
 
 			for (int j = 0; j < idea.reporters.size()
 					|| j < actor.ideasReported.size(); j++) {
-				System.out.println("gowa el loop");
 				if (idea.reporters.size() > 0
 						&& (actor.toString().equals(
 								idea.reporters.get(j).toString()) || idea
@@ -1372,9 +1258,8 @@ public class Topics extends CRUD {
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
 		Topic temporaryTopic = (Topic) object; // we temporarily save the object
-												// edited in
-		// the form in temporaryTopic to validate it before
-		// saving
+												// edited in the form in temporaryTopic 
+		                                       //to validate it before saving
 		MainEntity entity = temporaryTopic.entity;
 		User user = Security.getConnected();
 		boolean createRelationship = temporaryTopic.createRelationship;
@@ -1468,8 +1353,9 @@ public class Topics extends CRUD {
 	public static void followTopic(long topicId) {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
-		if (topic.followers.contains(user))
-			System.out.println("You are already a follower");
+		if (topic.followers.contains(user)){
+			
+		}
 		else {
 			topic.followers.add(user);
 			topic.save();
@@ -1601,7 +1487,6 @@ public class Topics extends CRUD {
 						"Accept/Reject requests to post in a private topic in entities he/she manages",
 						temporaryTopic.id, "topic"))
 			allowed = 1;
-		// Note isPermitted has a bug here!
 		boolean canPost = Users.isPermitted(Security.getConnected(), "use",
 				temporaryTopic.id, "topic");
 
@@ -1675,8 +1560,6 @@ public class Topics extends CRUD {
 		
 		boolean joined = false;
 		joinedUsersInTopic = searchByTopic(topicId);
-		System.out.println("topic id "+topicId);
-		System.out.println(joinedUsersInTopic);
 		for (int i = 0; i < joinedUsersInTopic.size(); i++) {
 				if(joinedUsersInTopic.get(i).username.equals(user.username));
 					joined=true;
@@ -1686,17 +1569,12 @@ public class Topics extends CRUD {
 		
 		if(temporaryTopic.hidden == true)
 			{
-			System.out.println("Hider " + temporaryTopic.hider.id + " , connected User " + user.id);
-			System.out.println("if");
 			if(temporaryTopic.hider.id.compareTo(user.id) ==0){
 				banned = false;
-				System.out.println("if if");
 			}
 			}
 		else{
-			System.out.println("else if");
 			if(temporaryTopic.canView(user)){
-				System.out.println("else if");
 				banned=false;
 			}
 		}
@@ -1705,7 +1583,7 @@ public class Topics extends CRUD {
 		if(banned == false){	
 		try {
 
-			render(tags, joined,/* canUse, */alreadyReportedTopic,
+			render(tags, joined, alreadyReportedTopic,
 					creator, followers, ideas, canReport,userId,topicNotClosed,hiddenIdeas,
 					numberOfIdeas, comments, entity, canDelete,
 					alreadyReported, plan, openToEdit, privacyLevel,
@@ -1763,7 +1641,6 @@ public class Topics extends CRUD {
 
 		// added by Mohamed Hisham to delete the topic's relationships whenever
 		// its deleted
-		// {
 		for (int i = 0; i < temporaryTopic.relationsSource.size(); i++) {
 			TopicRelationships.delete(temporaryTopic.relationsSource.get(i).id);
 		}
@@ -1880,10 +1757,6 @@ public class Topics extends CRUD {
 			}
 		}
 		
-		for(int i = 0; i < temporaryTopic.ideas.size(); i++) {
-			//Ideas.delete(temporaryTopic)
-		}
-
 		UserRoleInOrganization.deleteEntityOrTopic(temporaryTopic.id, "topic");
 
 		String justification = "Your Topic was deleted because "
@@ -1939,7 +1812,6 @@ public class Topics extends CRUD {
 			redirect(request.controller + ".show", object._key());
 		}
 		flash.success(Messages.get("crud.deleted", type.modelName));
-		// redirect(request.controller + ".list");
 		redirect("mainentitys.viewentity", entity.id);
 	}
 
@@ -2076,9 +1948,7 @@ public class Topics extends CRUD {
 		Topic topic = Topic.findById(topicId);
 		topic.createRelationship = createRelationship;
 		topic.save();
-		// String topiccId = topicId + "";
 		redirect("Topics.show", topic.id);
-		// Topics.show(topiccId);
 	}
 
 	/**
@@ -2094,7 +1964,6 @@ public class Topics extends CRUD {
 	 * 
 	 */
 	public static void deleteIdea(long ideaId, String justification) {
-		System.out.println("delete bta3ti");
 		Idea idea = Idea.findById(ideaId);
 		String message = "your idea " + idea.title + " has been deleted by "
 				+ Security.getConnected().username + " Justification : "
@@ -2152,7 +2021,6 @@ public class Topics extends CRUD {
 	 *            : the justification note sent to the user
 	 */
 	public static void hideIdea(Long ideaId, String justification) {
-		System.out.println("hide bta3ti");
 		Idea idea = Idea.findById(ideaId);
 		Topic topic = idea.belongsToTopic;
 		User user = Security.getConnected();
@@ -2163,13 +2031,9 @@ public class Topics extends CRUD {
 					message);
 			idea.hidden = true;
 			idea.save();
-			System.out.println("hidden");
-			System.out.println("leaving try");
 
 		} catch (Exception e) {
-			System.out.println("entered catch");
 		}
-		System.out.println("flash.success");
 		redirect("topics.show", topic.id);
 	}
 
@@ -2260,19 +2124,13 @@ public class Topics extends CRUD {
 
 	public static void saveDraft(long topicId, String title,
 			String description, int privacyLevel, boolean createRelationship) {
-
 		Topic targetTopic = Topic.findById(topicId);
-
 		targetTopic.title = title;
 		targetTopic.description = description;
 		targetTopic.privacyLevel = privacyLevel;
 		targetTopic.createRelationship = createRelationship;
 		targetTopic.intializedIn = new Date();
-
 		targetTopic.save();
-		
-		
-
 	}
 
 	/**
@@ -2303,27 +2161,21 @@ public class Topics extends CRUD {
 
 		Topic targetTopic = Topic.findById(topicId);
 		User user = Security.getConnected();
-
 		targetTopic.title = title;
 		targetTopic.description = description;
 		targetTopic.privacyLevel = privacyLevel;
 		targetTopic.createRelationship = createRelationship;
 		targetTopic.intializedIn = new Date();
 		targetTopic.isDraft = false;
-
 		targetTopic.save();
 		user.save();
-		
 		MainEntity entity = targetTopic.entity;
 		Organization organization = entity.organization;
-		
 		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
 			+ " posted Topic " +"<a href=\"http://localhost:9008topics/show?topicId=" + targetTopic.id +"\">" +  
 			targetTopic.title + "</a>" + " to the entity "
 			+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + 
 			entity.id +"\">" + entity.name + "</a>" ;
-		
-		
 		Log.addUserLog(log, user, targetTopic, entity, organization);
 		
 	}
@@ -2342,9 +2194,7 @@ public class Topics extends CRUD {
 	public static void editDraft(long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
 		notFoundIfNull(targetTopic);
-		
 		User user = Security.getConnected();
-		// System.out.println("Topic title:" + targetTopic.title);
 		render(targetTopic, user);
 	}
 
@@ -2387,12 +2237,8 @@ public class Topics extends CRUD {
 		
 		Topic targetTopic = Topic.findById(topicId);
 		User user = Security.getConnected();
-		// MainEntity entity = targetTopic.entity;
-
 		targetTopic.delete();
 		user.save();
-		// entity.save();
-
 		redirect("/ideas/getdrafts");
 
 	}
@@ -2411,7 +2257,6 @@ public class Topics extends CRUD {
 		
 		Topic targetTopic = Topic.findById(topicId);
 		User user = Security.getConnected();
-
 		targetTopic.delete();
 		user.save();
 		
@@ -2434,12 +2279,9 @@ public class Topics extends CRUD {
 		User user = Security.getConnected();
 		MainEntity entity = targetTopic.entity;
 		Organization organiztion = entity.organization;
-		
 		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
 			+ " posted Topic " +"<a href=\"http://localhost:9008topics/show?topicId=" + targetTopic.id +"\">" +  
 			targetTopic.title + "</a>";
-		
-		
 		Log.addUserLog(log, user, targetTopic, organiztion, entity);
 		
 		redirect("/ideas/getdrafts");

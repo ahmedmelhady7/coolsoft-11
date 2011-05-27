@@ -25,8 +25,6 @@ import models.UserRoleInOrganization;
 public class TopicRequests extends CoolCRUD{
 	
 	
-
-	
 	 /** Overriding the CRUD method create.
 	 * 
 	 * @author Alia el Bolock
@@ -54,16 +52,12 @@ public class TopicRequests extends CoolCRUD{
 		validation.valid(object);
 		String message = "";
 		TopicRequest temporaryTopicRequest = (TopicRequest) object; // we temporarily save the object created by
-									// the form in temporaryTopicRequest to validate it before
-									// saving
-		System.out.println("create() entered");
+									                                // the form in temporaryTopicRequest to validate
+		                                                            //it before saving
 		MainEntity entity = MainEntity.findById(entityId);
 		temporaryTopicRequest.entity = entity;
 		User user = Security.getConnected();
 		temporaryTopicRequest.requester = user;
-		System.out
-				.println("the topic before validation check" + temporaryTopicRequest.toString());
-
 		if (temporaryTopicRequest.entity == null) {
 			message = "A Topic must belong to an entity";
 			try {
@@ -73,56 +67,34 @@ public class TopicRequests extends CoolCRUD{
 				render("CRUD/blank.html", type, message, entityId);
 			}
 		}
-		System.out
-		.println("111");
-
-		
 		if (validation.hasErrors()) {
-			System.out
-			.println("entered validation check");
 			if (temporaryTopicRequest.title.equals("")) {
-				System.out
-				.println(message);
 				message = "A Topic must have a title";
 				try {
 					render(request.controller.replace(".", "/") + "/blank.html",
 							entityId, type, temporaryTopicRequest.title, temporaryTopicRequest.entity, temporaryTopicRequest.description,
 							temporaryTopicRequest.message, message);
-					System.out
-					.println("try" + message);
 				} 
 				
 				catch (TemplateNotFoundException exception) {
 					render("CRUD/blank.html", type, entityId);
-					System.out
-					.println("catch" + message);
 				}
 				
 			} else if (temporaryTopicRequest.description.equals("")) {
 				message = "A Topic must have a description";
-				System.out
-				.println(message);
 				
 				try {
 					render(request.controller.replace(".", "/") + "/blank.html",
 							entityId, type, temporaryTopicRequest.title, temporaryTopicRequest.entity, temporaryTopicRequest.description,
 							temporaryTopicRequest.message, message);
-					System.out
-					.println("try" + message);
 				} 
 				
 				catch (TemplateNotFoundException exception) {
 					render("CRUD/blank.html", type, entityId);
-					System.out
-					.println("catch" + message);
 				}
 
 			}
 		}
-		
-		System.out
-		.println("222");
-
 		if (temporaryTopicRequest.privacyLevel < 1 || temporaryTopicRequest.privacyLevel > 2) {
 			message = "The privary level must be either 1 or 2";
 			try {
@@ -175,20 +147,15 @@ public class TopicRequests extends CoolCRUD{
 		MainEntity entity = MainEntity.findById(entityId);
 		notFoundIfNull(entity);
 		User user = Security.getConnected();
-		System.out.println("blank() for TopicRequests entered entity " + entityId + " and user "
-				+ user.toString());
 		int canRequest = 0;
 		if (Users.isPermitted(user, "use", entity.id, "entity"))
 			canRequest = 1;
 		
 		if(canRequest==1){
 		try {
-			System.out.println("blank() for TopicRequests done about to render");
 			render(type, entityId, user);
 
 		} catch (TemplateNotFoundException exception) {
-			System.out
-					.println("blank() for TopicRequests done with exception about to render CRUD/blank.html");
 			render("CRUD/blank.html", type, entityId);
 		}
 		}
@@ -213,8 +180,6 @@ public static void list(long entityId) {
 	List<TopicRequest> listOfTopicsToBeRendered = new ArrayList<TopicRequest>(); 
 	List<TopicRequest> listOfTopicRequests = TopicRequest.findAll();
 	for (int i =0; i < listOfTopicRequests.size(); i++){
-		System.out.println("1 : " + listOfTopicRequests.get(i).entity.toString());
-		System.out.println("2 : " + entity.toString());
 		if (listOfTopicRequests.get(i).entity.equals(entity)){
 			listOfTopicsToBeRendered.add(listOfTopicRequests.get(i));
 		}
