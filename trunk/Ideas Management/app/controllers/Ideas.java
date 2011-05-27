@@ -892,7 +892,6 @@ public class Ideas extends CoolCRUD {
 					+ "%";
 		}
 		long idd = selectedIdeas.get(0).getId();
-		System.out.println(selectedIdeasString + " " + idd);
 
 		render(selectedIdeas, topicId, selectedIdeasString, idd, user);
 	}
