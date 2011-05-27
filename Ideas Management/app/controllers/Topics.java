@@ -2358,16 +2358,14 @@ public class Topics extends CRUD {
 		targetTopic.save();
 		User user = Security.getConnected();
 		MainEntity entity = targetTopic.entity;
-		Organization organization = entity.organization;
+		Organization organiztion = entity.organization;
 		
 		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
 			+ " posted Topic " +"<a href=\"http://localhost:9008topics/show?topicId=" + targetTopic.id +"\">" +  
-			targetTopic.title + "</a>" + " to the entity "
-			+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + 
-			entity.id +"\">" + entity.name + "</a>" ;
+			targetTopic.title + "</a>";
 		
 		
-		Log.addUserLog(log, user, targetTopic, entity, organization);
+		Log.addUserLog(log, user, targetTopic, organiztion, entity);
 		
 		redirect("/ideas/getdrafts");
 	}
