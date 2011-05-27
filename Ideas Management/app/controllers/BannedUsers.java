@@ -54,7 +54,7 @@ public class BannedUsers extends CoolCRUD {
 	public static void restrictOrganizersList(long orgId) {
 
 		Organization organization = Organization.findById(orgId);
-
+        notFoundIfNull(organization);
 		List<User> temp = Users.searchOrganizer(organization);
 		List<User> users = new ArrayList<User>();
 		for (int i = 0; i < temp.size(); i++) {
@@ -89,7 +89,7 @@ public class BannedUsers extends CoolCRUD {
 	public static void restrictOrganizer(long orgId) {
 
 		Organization organization = Organization.findById(orgId);
-
+        notFoundIfNull(organization);
 		List<User> users = Users.searchOrganizer(organization);
 
 		long organizationID = orgId;
@@ -117,6 +117,7 @@ public class BannedUsers extends CoolCRUD {
 	 */
 	public static void viewRestrictedOrganizersTopicPath(long organizationID) {
 		Organization organization = Organization.findById(organizationID);
+		notFoundIfNull(organization);
 		User user = Security.getConnected();
 		List<BannedUser> bannedUsers = BannedUser.find(
 				"select bu from BannedUser bu where bu.organization = ?",
@@ -164,7 +165,9 @@ public class BannedUsers extends CoolCRUD {
 	public static void restrictOrganizerEntityPath(long entityId) {
 
 		MainEntity entity = MainEntity.findById(entityId);
+		notFoundIfNull(entity);
 		Organization organization = entity.organization;
+		notFoundIfNull(organization);
 		long organizationID = organization.getId();
 		List<User> users = Users.getEntityOrganizers(entity);
 		User user = Security.getConnected();
@@ -191,8 +194,11 @@ public class BannedUsers extends CoolCRUD {
 	public static void restrictOrganizerTopicPath(long topicId) {
 
 		Topic topic = Topic.findById(topicId);
+		notFoundIfNull(topic);
 		MainEntity entity = topic.entity;
+		notFoundIfNull(entity);
 		Organization organization = entity.organization;
+		notFoundIfNull(organization);
 		long organizationID = organization.getId();
 
 		List<User> users = Users.getEntityOrganizers(entity);
@@ -234,7 +240,9 @@ public class BannedUsers extends CoolCRUD {
 		} else {
 
 			Organization organization = Organization.findById(organizationId);
+			notFoundIfNull(organization);
 			User user = User.findById(userId[0]);
+			notFoundIfNull(user);
 			finalEntities = Users.getEntitiesOfOrganizer(organization, user);
 
 			for (int i = 1; i < userId.length; i++) {
@@ -289,7 +297,9 @@ public class BannedUsers extends CoolCRUD {
 		} else {
 
 			Organization organization = Organization.findById(organizationId);
+			notFoundIfNull(organization);
 			User user = User.findById(userId);
+			notFoundIfNull(user);
 			entities = Users.getEntitiesOfOrganizer(organization, user);
 
 		}
@@ -336,6 +346,7 @@ public class BannedUsers extends CoolCRUD {
 		}
 		if (topic.equalsIgnoreCase("true")) {
 			MainEntity entity = MainEntity.findById(entityId);
+			notFoundIfNull(entity);
 			List<Topic> entityTopics = entity.topicList;
 			render(entityTopics, organizationId, userId);
 		} else {
@@ -368,6 +379,7 @@ public class BannedUsers extends CoolCRUD {
 		JsonObject json = new JsonObject();
 
 		MainEntity entity = MainEntity.findById(entityId);
+		notFoundIfNull(entity);
 		List<Topic> entityTopics = entity.topicList;
 		String topicsNames = "";
 		String topicsIds = "";
@@ -398,6 +410,7 @@ public class BannedUsers extends CoolCRUD {
 		JsonObject json = new JsonObject();
 
 		MainEntity entity = MainEntity.findById(entityId);
+		notFoundIfNull(entity);
 		List<Topic> entityTopics = entity.topicList;
 		String topicsNames = "";
 		String topicsIds = "";
@@ -425,7 +438,7 @@ public class BannedUsers extends CoolCRUD {
 
 		JsonObject json = new JsonObject();
 		List<String> entityActions = Roles.getRoleActions("organizer");
-
+        notFoundIfNull(entityActions);
 		String stringActions = "";
 		for (int i = 0; i < entityActions.size(); i++) {
 			stringActions += entityActions.get(i) + ",";
@@ -487,9 +500,12 @@ public class BannedUsers extends CoolCRUD {
 
 		JsonObject json = new JsonObject();
 		List<String> entityActions = Roles.getRoleActions("organizer");
+		notFoundIfNull(entityActions);
 		MainEntity entity = MainEntity.findById(entityId);
+		notFoundIfNull(entity);
 		Organization organization = entity.organization;
 		User user = User.findById(userId);
+		notFoundIfNull(user);
 
 		List<BannedUser> restrictedUser = BannedUser
 				.find("select bu from BannedUser bu where bu.organization = ? and bu.bannedUser = ? and bu.resourceType like ? and resourceID = ? ",
@@ -543,10 +559,11 @@ public class BannedUsers extends CoolCRUD {
 
 		List<String> topicActions = Roles.getOrganizerTopicActions();
 		Topic topic = (Topic.findById(topicId));
+		notFoundIfNull(topic);
 		MainEntity entity = topic.entity;
 		Organization organization = entity.organization;
 		User user = User.findById(userId);
-
+        notFoundIfNull(user);
 		if (validation.hasErrors() || topicId == 0) {
 			flash.error("Oops, please select atleast one choise ");
 			topicsEnrolledInOrRedirect(entity.getId(), "topic",
@@ -556,7 +573,7 @@ public class BannedUsers extends CoolCRUD {
 		List<String> restricted = BannedUser
 				.find("select bu.action from BannedUser bu where bu.organization = ? and bu.bannedUser = ? and bu.resourceType like ? and resourceID = ? ",
 						organization, user, "topic", topicId).fetch();
-
+        notFoundIfNull(restricted);
 		for (int i = 0; i < topicActions.size(); i++) {
 
 			if (restricted.contains(topicActions.get(i))) {
@@ -608,6 +625,7 @@ public class BannedUsers extends CoolCRUD {
 		if (type.equalsIgnoreCase("topic")) {
 
 			Topic topic = Topic.findById(entityTopicId);
+			notFoundIfNull(topic);
 			MainEntity entity = topic.entity;
 			Organization org = entity.organization;
 			long organizationId = org.getId();
@@ -621,6 +639,7 @@ public class BannedUsers extends CoolCRUD {
 				changed = BannedUser.banFromActionInTopic(userId,
 						organizationId, actionToDo[i], entityTopicId);
 				User restricted = User.findById(userId);
+				notFoundIfNull(restricted);
 				User restricter = Security.getConnected();
 				String logDescription = "<a href=\"http://l27.0.0.1:9008/users/viewprofile?userId="
 						+ restricter.id
@@ -668,6 +687,7 @@ public class BannedUsers extends CoolCRUD {
 		else {
 
 			MainEntity entity = MainEntity.findById(entityTopicId);
+			notFoundIfNull(entity);
 			Organization org = entity.organization;
 			long organizationId = org.getId();
 
