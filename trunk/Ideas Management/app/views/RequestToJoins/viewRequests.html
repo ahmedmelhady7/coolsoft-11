@@ -57,16 +57,20 @@
 <div id = "view">
  #{list items:requests, as:'request'}    
         <li id="request_${request.id}">
+        	 <font size ="3" color ="black">
         	#{if type==1}
             	A new user <a href="@{Users.viewProfile(request.source.id)}">${request.source.username}</a> Wants to join Topic <a href="@{Topics.show(id)}">${request.topic.title}</a>
 			#{/if}
 			#{else}
               A new user <a href="@{Users.viewProfile(request.source.id)}">${request.source.username}</a> Wants to join Organization  <a href="@{Organizations.viewProfile(id)}"> ${request.organization.name}</a>
 			#{/else}
+			</font>
      <div style="float:right;">       
 			<a onclick="javascript: respondGalal(1,${request.id})"style="cursor:pointer; margin-right:20px"> <img src="/public/images/icons/accept.png" title="Accept" width="24" height="24"/></a>
 			<a onclick = "javascript: respondGalal(0,${request.id})"style="cursor:pointer;"> <img src="/public/images/icons/delete.png" title="Reject" width="24" height="24"/></a>  
-       </div>  
+       </div>  	   
+<br />
+<br />
 	    </li>
   
     #{/list}
