@@ -77,7 +77,7 @@
         <form action="@{Tags.edit()}" method="post">
             <p>
                 <input type="hidden" id="tagId" name="tagId" value="${tag.id}" />
-				Edit Tag Name <input type="text" id="name" name="name" value="${tag.name}" /> <input class="linkButton" type="submit" value="Edit" />
+				Edit Tag Name <input type="text" id="name" name="name" value="${tag.name}" required/> <input class="linkButton" type="submit" value="Edit" />
             </p>
         </form>#{/if}
     </div>
