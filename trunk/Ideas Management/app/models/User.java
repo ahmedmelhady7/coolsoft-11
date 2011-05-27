@@ -763,6 +763,17 @@ public class User extends CoolModel {
 		return reversedList;
 	}
 	
+	/**
+	 * returns a list of the recent five logs of the user
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story CSS design
+	 * 
+	 * @return List<Log>
+	 * 			the list of the last five logs (actions) done by the user.
+	 */
+	
 	public List<Log> getRecentActivity() {
 		List<Log> list = new ArrayList<Log>();
 		int counter = 0;
