@@ -1,6 +1,6 @@
 #{extends 'login/index.html' /}
 
-    
+    <div id = "pageNoSideBar">
        #{if flash.error}
 	   <p style = "color;#c00">
 	   	${flash.error}
@@ -12,42 +12,42 @@
        <input type = "hidden" name = "id" value = ${user.id}>
 	    
         <label>
-            Username
+            Username :&nbsp;&nbsp;
         </label>
         <input type="text" name="username" value = ${user.username} id="username" required/> <label id = "sameUsername" style = "color: red;" hidden = "true">This username already exists</label>
       
 		<br />
        <br />
         <label>
-            E-mail
+            E-mail :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </label>
         <input type="text" name="mail" value = ${user.email} id="mail" required/>  <label id = "wrongEmail" style = "color: red;" hidden = "true">invalid E-mail</label>
 		<label id = "sameEmail" style = "color: red;" hidden = "true">This E-mail already exists</label>
       <br />
 <br />
         <label>
-            First name
+            First name :&nbsp;&nbsp;
         </label>
         <input type="text" name="firstName" value = ${user.firstName} id="firstName" required/>
     <br />
 	<br />	
 		
 		<label>
-            Last name
+            Last name : &nbsp;&nbsp;
         </label>
         <input type="text" name= "lastName" value = ${user.lastName} id="lastName"/>
         
 <br />
     <br />    
         <label>
-            Profession
+            Profession :&nbsp;&nbsp;
         </label>
         <input type="text" name= "profession" value = ${user.profession} id="profession"/>
         
 <br />
     <br />    
         <label>
-            Date of birth
+            Date of birth :&nbsp;
         </label>
         <input type="text" name = "dateOfBirth" value = ${user.dateofBirth} id="dateOfBirth" readonly/>
         <script>
@@ -63,7 +63,7 @@
         <br />
         <p>
             <label>
-                Country
+                Country :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </label>
             <select name="country" size="1" id "country">
                 <option value="${user.country}" selected = "selected">${user.country}</option>
@@ -337,7 +337,7 @@
 	   <input type = "hidden" id = "myEmail" value = ${user.email}>
            <input type="submit" id="submit" name="submit" value="save">
         
-		</form>
+		</form></div>
 		<script type = text/javascript>
 function validateForm(){
 	var flag = true;
