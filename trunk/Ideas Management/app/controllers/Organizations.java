@@ -821,11 +821,10 @@ public class Organizations extends CoolCRUD {
 		Organization organization = Organization.findById(organizationId);
 		notFoundIfNull(organization);
 		List<User> followers = User.findAll();
-		List<Tag> createdTags = organization.createdTags;
-		List<BannedUser> bannedUsers = organization.bannedUsers;
+		List<Tag> createdTags = Tag.findAll();
+		List<BannedUser> bannedUsers = BannedUser.findAll();
 		List<UserRoleInOrganization> users = organization.userRoleInOrg;
-		List<MainEntity> entities = organization.entitiesList;
-		List<Tag> relatedTags = organization.relatedTags;
+		List<MainEntity> entities = MainEntity.findAll();
 		int j = 0;
 		while (j < followers.size()) {
 			if (followers.get(j).followingOrganizations.contains(organization)) {
@@ -836,11 +835,12 @@ public class Organizations extends CoolCRUD {
 		}
 		j = 0;
 		while (j < createdTags.size()) {
-			relatedTags.remove(createdTags.get(j));
-			organization.save();
-			Tags.delete(createdTags.get(j).id);
+			if (createdTags.get(j).createdInOrganization.equals(organization)) {
+				Tags.delete(createdTags.get(j).id);
+			}
 			j++;
 		}
+		List<Tag> relatedTags = organization.relatedTags;
 		if (!relatedTags.isEmpty()) {
 			j = 0;
 			while (j < relatedTags.size()) {
@@ -851,9 +851,19 @@ public class Organizations extends CoolCRUD {
 		}
 		j = 0;
 		while (j < bannedUsers.size()) {
-			BannedUser.delete(bannedUsers.get(j));
+			if (bannedUsers.get(j).organization.equals(organization)) {
+				BannedUser.delete(bannedUsers.get(j));
+			}
 			j++;
 		}
+		List<CreateRelationshipRequest> relations = CreateRelationshipRequest.findAll();
+		j = 0;
+		while (j < relations.size()) {
+			if (relations.get(j).organisation.equals(organization)) {
+				CreateRelationshipRequests.delete(relations.get(j).id);
+			}	
+			j++;
+		}	
 		j = 0;
 		while (j < users.size()) {
 			UserRoleInOrganization.delete(users.get(j));
@@ -861,10 +871,21 @@ public class Organizations extends CoolCRUD {
 		}
 		j = 0;
 		while (j < entities.size()) {
-			MainEntitys.deleteEntity(entities.get(j).id);
+			if (entities.get(j).organization.equals(organization)) {
+				MainEntitys.deleteEntity(entities.get(j).id);
+			}	
+			j++;
+		}
+		List<RenameEndRelationshipRequest> renameRequests = RenameEndRelationshipRequest.findAll();
+		j = 0;
+		while (j < renameRequests.size()) {
+			if (renameRequests.get(j).organisation.equals(organization)) {
+				RenameEndRelationshipRequests.delete(renameRequests.get(j).id);
+			}
 			j++;
 		}
 		organization.creator.createdOrganization.remove(organization);
+		organization.creator.save();
 		// fadwa
 		for (int i = 0; i < organization.joinRequests.size(); i++)
 			organization.joinRequests.get(i).delete();
