@@ -1340,7 +1340,8 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
-	 * Renders the Timeline view of a plan
+	 * The method Renders the Timeline view of a plan, after checking that the user is
+	 * permitted to view the plan.
 	 * 
 	 * @author Alaa Samer
 	 * 
