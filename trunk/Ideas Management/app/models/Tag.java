@@ -69,6 +69,9 @@ public class Tag extends CoolModel {
 	@OneToMany(mappedBy = "source")
 	public List<TagRelationship> relationsSource;
 	
+	/**
+	 * The destination of a relationship between tags
+	 */
 	@OneToMany(mappedBy = "destination")
 	public List<TagRelationship> relationsDestination;
 	
@@ -78,6 +81,9 @@ public class Tag extends CoolModel {
 	@ManyToMany(mappedBy = "tags")
 	public List<Item> taggedItems;
 
+	/**
+	 * List of ideas tagged by this tag
+	 */
 	@ManyToMany(mappedBy = "tagsList")
 	public List<Idea> taggedIdeas;
 

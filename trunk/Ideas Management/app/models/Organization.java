@@ -85,17 +85,20 @@ public class Organization extends CoolModel {
 	public List<Tag> createdTags;
 
 	/**
-	 * **********
+	 * The users banned from the organization
 	 */
 	@OneToMany(mappedBy = "organization")
 	public List<BannedUser> bannedUsers;
 
 	/**
-	 * ***********
+	 * The role of a specific user in that organization
 	 */
 	@OneToMany(mappedBy = "organization")
 	public List<UserRoleInOrganization> userRoleInOrg;
 
+	/**
+	 * A list of requests of users requesting to join the organization
+	 */
 	@OneToMany(mappedBy = "organization")
 	// , cascade = CascadeType.ALL)
 	public List<RequestToJoin> joinRequests;
