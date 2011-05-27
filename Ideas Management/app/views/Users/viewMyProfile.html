@@ -291,7 +291,8 @@
         <label>
             E-mail
         </label>
-        <input type="text" name="mail" value = ${user.email} id="mail" required/> 
+        <input type="text" name="mail" value = ${user.email} id="mail" required/>  <label id = "wrongEmail" style = "color: red;" hidden = "true">invalid E-mail</label>
+
       <br />
 <br />
         <label>
@@ -335,7 +336,7 @@ var atpos=x.indexOf("@");
 var dotpos=x.lastIndexOf(".");
 if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
   {
-  alert("Not a valid e-mail address");
+  $("#wrongEmail").show();
   return false;
   }
  
