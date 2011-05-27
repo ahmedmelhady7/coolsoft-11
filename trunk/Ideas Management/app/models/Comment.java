@@ -67,7 +67,7 @@ public class Comment extends CoolModel {
 		this.comment = comment;
 		this.commentedIdea = commentedIdea;
 		this.commenter = commenter;
-		this.commentDate = new Date();
+		this.commentDate = new Date(); //new Date(2000,5,5); //for testing in the demo; @M Ghanem
 		this.reporters = "";
 	}
 
