@@ -100,8 +100,7 @@ public class Invitations extends CoolCRUD {
 	 * 
 	 * Searches for a user to invite. The result is a list not containing the
 	 * organizers of this entity or the enrolled users in the topic depending on
-	 * the parameter type and the users that have been invited and didn't
-	 * respond yet
+	 * the parameter type
 	 * 
 	 * @author ${Mai.Magdy}, ${Fadwa.Sakr}
 	 * 
@@ -169,7 +168,8 @@ public class Invitations extends CoolCRUD {
 	 * 
 	 * Adds a new invitation and renders the email and the entity then the Mail
 	 * class sends the email, if sending to registered user the receiver will be
-	 * notified with a notification
+	 * notified with a notification, notifications will be sent to all organizers&
+	 * a log will be saved
 	 * 
 	 * @author ${Mai.Magdy},${Fadwa.Sakr}
 	 * 
@@ -285,7 +285,7 @@ public class Invitations extends CoolCRUD {
 			for (int j = 0; j < invalidUsers.size(); j++)
 				Notifications.sendNotification(invalidUsers.get(j).id,
 						entity.id, "entity",
-						"New organizer has been invited to be an organizer to entity  "
+						"New User has been invited to be an organizer to entity  "
 								+ name);
 
 			if (reciever != null) {
@@ -397,6 +397,7 @@ public class Invitations extends CoolCRUD {
 	/**
 	 * 
 	 * Views the received invitations and renders the invitation list
+	 * the invitation will be hidden if the user is blocked
 	 * 
 	 * @author ${Mai.Magdy} , ${Fadwa.Sakr}
 	 * 
@@ -428,6 +429,9 @@ public class Invitations extends CoolCRUD {
 	/**
 	 * 
 	 * Responds to the user (accept/reject) to the invitation.
+	 * if accept he ll be idea developer/organzier and the invitation will be deleted
+	 * if reject the invitation will be deleted, notificatins will be sent
+	 * to all organizers and a log will be saved
 	 * 
 	 * @author ${Mai.Magdy} > if flag is false and role is organizer
 	 * @author ${Fadwa.Sakr} 
