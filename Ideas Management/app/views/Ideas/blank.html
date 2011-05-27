@@ -1,6 +1,79 @@
 #{extends '/ideas/layout.html' /}
+
+<html>
+    <head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
+
+		<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+	#showBlank{
+	margin-top: 1%;
+	margin-right: 5%;
+	margin-bottom: 4%;
+	margin-left: 0%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+</style>
+
+<script type="text/javascript">
+	function save()
+	{
+		var id = ${topic.id};
+		var x = document.getElementById("object_title").value.toString();
+		var y = document.getElementById("object_description").value;
+		$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/ideas/getdrafts"}  );
+		//alert("Idea Saved ");
+	}
+</script>
+    </head>
+	
+			<div id="leftSidebar">
+		    <ul>
+		        <div style="clear: both;">
+		            &nbsp;
+		        </div>
+		        <li>
+		            <ul>
+		            	<li>
+		            		No actions yet
+		            	</li>
+						
+		            </ul>
+		        </li>
+		    </ul>
+		</div>
+
+    <div id="page">
+    	<div id="page-bgtop">
+    		<div id="showBlank">
+    			<body>
+    				<h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Create Idea</h2>
+				<br />
 <div id="crudBlank" class="${type.name}">
-    <h2 id="crudBlankTitle">&{'crud.blank.title', type.modelName}</h2>
     <font color="Red">
         ${message}
     </font>
@@ -16,7 +89,7 @@
             <span class="crudHelp">
                 <font color="Red">
                     *
-                </font>Required
+                </font>
             </span>
         </p>
         #{/crud.custom}
@@ -29,7 +102,7 @@
             <span class="crudHelp">
                 <font color="Red">
                     *
-                </font>Required
+                </font>
             </span>
         </p>
         #{/crud.custom}
@@ -41,13 +114,8 @@
         <input "hidden" type = "sumbit" href="">
     </div>
 </div>
-<script type="text/javascript">
-	function save()
-	{
-		var id = ${topic.id};
-		var x = document.getElementById("object_title").value.toString();
-		var y = document.getElementById("object_description").value;
-		$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/ideas/getdrafts"}  );
-		//alert("Idea Saved ");
-	}
-</script>
+	</body>
+		</div>
+	</div>
+	</div>
+</html>
