@@ -34,7 +34,7 @@ function reject_request(id)
 	padding-top: 2%;
 	padding-right: 4%;
 	padding-bottom: 0%;
-	padding-left: 4%;
+	padding-left: 0%;
 	position: relative;
 	border-bottom-width: 2px;
 	border-bottom-style: solid;
@@ -58,15 +58,13 @@ function reject_request(id)
         		<body>
 #{if assignRequests.size() > 0}<h3>Assignment Requests </h3>
 
-<div id="showRequest"><ul>
+<div id="showRequest"><ul style="list-style: none;">
     #{list items:assignRequests, as:'assignRequest'}
     <li>
-       <fieldset id = "assignRequest_${assignRequest.id}">
-            <legend>
-			<h3>
+       <fieldset id = "assignRequest_${assignRequest.id}" style="background: #eaeeed;">
+            <h3>
              <a href="@{Plans.viewAsList(assignRequest.source.plan.id)}">   ${assignRequest.source.plan.title}</a>
             </h3>
-            </legend>
             Content:  ${assignRequest.content}
             <br/>
 			<a onclick="javascript: reject_request(${assignRequest.id});" style="cursor:pointer; float: right;"/><img src="/public/images/icons/delete.png" title="Reject" width="24" height="24"/></a>
