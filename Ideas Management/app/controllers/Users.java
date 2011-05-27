@@ -733,7 +733,7 @@ public class Users extends CoolCRUD {
 		// }
 		int size = user.size();
 		for (int i = 0; i < size; i++) {
-			if (user.get(i).state == "a") {
+			if (user.get(i).state == "a" && (!userActive.contains(user.get(i)))) {
 				userActive.add(user.get(i));
 			}
 		}
