@@ -23,12 +23,16 @@
 			cursor:pointer;
 		}
 		.accordionItem div {
-			padding:1em 0.4em;
+			padding:0.4em 0.4em;
 			margin-right:23%;
+			margin-bottom:2%;
 			border-top-left-radius: 10px;
 	        border-top-right-radius: 10px;
 			border-bottom-right-radius: 10px;
 			border-bottom-left-radius: 10px;
+			border-color:#339CCB;
+			border-width:2px;
+			border-style:solid;
 		}
 		.accordionItem.hide h3 {
 		}
@@ -403,7 +407,7 @@
 				}
 
 				// Hide all accordion item bodies except the first
-				for ( var i = 1; i < accordionItems.length; i++ ) {
+				for ( var i = 0; i < accordionItems.length; i++ ) {
 					accordionItems[i].className = 'accordionItem hide';
 				}
 			}
@@ -863,11 +867,13 @@
 					
 					#{if idea.isDraft == false}
 					<li>
+						<input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
+						 <font size=1 style="float:left;">${idea.author.username}</font>
+						 <br />
 						<div id="ideas" class="accordionItem">
 						<h3><a href="@{Ideas.show(idea.id)}">&nbsp ${idea.title}</a></h3>
 							<div>
 								<p><font size=2>Description: ${idea.description}</font></p>
-								<p><font size=2>Creator: ${idea.author}</font></p>
 							</div>
 						</div>
 					</li>
@@ -886,13 +892,18 @@
 			                #{list items:hiddenIdeas, as:'idea'}
 			                                <fieldset>
 			                                </br>
-			                <label>${idea.title}</label>
-			                </br>
-			                <label>Description : ${idea.description}</label>
+			                <label style="background-color:#FFFFFF; border-top-left-radius: 10px;border-top-right-radius: 10px;
+							border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; padding:0.3% 2% 0.3% 2%; margin-right:20%;">${idea.title}</label>
+			                <br />
+							<br />
+			               <div style=" border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px; 
+						   border-bottom-left-radius: 10px; border-color:#339CCB; border-width:2px; border-style:solid; padding:2% 2% 2% 2%;"> 
+						   <label>Description : ${idea.description}</label>
 			                </br>
 			                <label>by : ${idea.author.username}</label>
 			                <br />
 			                <input type="submit" id="unhide" value="unhide" onclick="unhide(${idea.id})" class = "linkButton"/>
+							</div>
 			                </fieldset>
 			        		#{/list}
 			        </div>
