@@ -88,6 +88,9 @@ public class MarkRequest extends Controller {
 		int returnint = -1;
 		if (requests.size() == 0) {
 			if (ideaOrg1 == ideaOrg2) {
+				if (idea1.duplicateIdeas.contains(idea2)) {
+					return 3;
+				}
 				LinkDuplicatesRequest request = new LinkDuplicatesRequest(user,
 						idea1, idea2, des);
 				request.save();
@@ -116,6 +119,9 @@ public class MarkRequest extends Controller {
 				}
 			}
 			if (ideaOrg1 == ideaOrg2) {
+				if (idea1.duplicateIdeas.contains(idea2)) {
+					return 3;
+				}
 				LinkDuplicatesRequest request = new LinkDuplicatesRequest(user,
 						idea1, idea2, des);
 				request.save();
