@@ -70,9 +70,7 @@ public class Search extends Controller {
 	 * 
 	 * @story C4S02 :: Advanced Search; display html page to take input and that
 	 *        goes to advSR(...) method.
-	 * 
-	 * @return void
-	 * 
+	 *  
 	 */
 	public static void advancedSearch() {
 		User user = Security.getConnected();
@@ -130,7 +128,7 @@ public class Search extends Controller {
 					entitiesFound, topicsFound, plansFound, itemsFound, user);
 		}
 	}
-
+	
 	/**
 	 * 
 	 * @author M Ghanem
@@ -276,7 +274,7 @@ public class Search extends Controller {
 				for (int j = 0; j < orgs.get(i).entitiesList.size(); j++) {
 					for (int k = 0; k < orgs.get(i).entitiesList.get(j).topicList
 							.size(); k++) {
-						if (orgs.get(i).entitiesList.get(j).topicList.get(j).plan != null) {
+						if (orgs.get(i).entitiesList.get(j).topicList.get(k).plan != null) {
 							currentModels.addAll(orgs.get(i).entitiesList
 									.get(j).topicList.get(k).plan.items);
 						}
