@@ -5,6 +5,55 @@
 </script>
 
 <style type="text/css">
+#crudShow{
+			margin-top: 2%;
+			margin-right: 9%;
+			margin-bottom: 4%;
+			margin-left: 0%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #bbbbbb;
+			padding-top: 2%;
+			padding-right: 4%;
+			padding-bottom: 0%;
+			padding-left: 4%;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			border-right-width: 2px;
+			border-right-style: solid;
+			border-right-color: #bbbbbb;
+			border-left-width: 2px;
+			border-left-style: solid;
+			border-left-color: #bbbbbb;
+			border-top-width: 2px;
+			border-top-style: solid;
+			border-top-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+#descriptionShow{
+			margin-top: 2%;
+			margin-right: 5%;
+			margin-bottom: 4%;
+			margin-left: 5%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #FFFFFF;
+			padding-top: 2%;
+			padding-right: 4%;
+			padding-bottom: 0%;
+			padding-left: 4%;
+			position: relative;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+
 #show{
 	margin-top: 2%;
 	margin-right: 2%;
@@ -35,6 +84,10 @@
 	word-wrap: break-word;
 }
 
+#goRight{
+	padding-left: 20%;
+}
+
 .accordionItem h3 {
             margin: 0;
             font-size: 1.1em;
@@ -55,7 +108,7 @@
         
         .accordionItem.hide div {
             display: none;
-        }
+        }        
 </style>
 
 <div id="leftSidebar">
@@ -80,7 +133,8 @@
 		<div id="page-bgtop">
 			<div id="page-bgbtm">
 				<div id="content">
-					<div class="post">						
+					<div class="post">
+					<div id="crudShow">					
 						<h2>Notification List</h2>
 						<hr>
 						<br>						
@@ -111,24 +165,30 @@
     						#{if notifi.type == 'Tag'}
     						<a href="@{Tags.mainPage(notifi.sourceID)}">${notifi.title}</a>    						
     						#{/if}    						
-    						&nbsp;&nbsp;<font color ="#FF0000" size =4 style="cursor:pointer">⊕</font>
+    						&nbsp;<font color ="#FF0000" size =3 style="cursor:pointer">⊕</font>
     						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    						<i>Delete: </i><input type="checkbox" name="checkfield" id="${notifi.id}" onclick="toggleCheck(${notifi.id})" class="enabled"></h3>  						
-    						<div>    												
-    						<b>Message: </b> ${notifi.description}    						  						    						
+    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    						<i style="float:right;">Delete</i><input type="checkbox" style="float:right;" name="checkfield" id="${notifi.id}" onclick="toggleCheck(${notifi.id})" class="enabled"></h3>  						    						
+    						<div id="descriptionShow">    												
+    						<b>Message: </b> ${notifi.description} 
+    						<a style="cursor:pointer" onclick="kill(${notifi.id})"><img src="/public/images/icons/delete.png" title="delete" style="float:right;" width="10" height="10"/></a>    						    						
+    						
     						</div> 
     						</div>   						
     						</li>
 							</ul>		
 						#{/list}
 						</form>
-						#{if notificationList.size() != 0}  
+						#{if notificationList.size() != 0} 
+						<br> 
 					<a onclick="markAll();" style="cursor:pointer"> Check All </a>
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<a onclick="unmarkAll();" style="cursor:pointer"> Uncheck All</a>
-					<br>	
+					<br>
+					<input class = "linkButton" type="button"  value = "Delete" onclick="submit()">
 					Delete Notifications: <input type="submit" value="Delete" onclick="submit()">						
 					#{/if}									
+					</div>
 					</div>
 				</div>
 			</div>
@@ -243,6 +303,11 @@ function submit() {
 		//window.location.reload();
 	}
 	
+}
+
+function kill(id) {
+	$.post('@{deleteNotification()}', {notId:id});
+	$('#not_' + id).remove();
 }
 
 </script>
