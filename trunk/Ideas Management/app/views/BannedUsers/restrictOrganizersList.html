@@ -1,7 +1,8 @@
 
 #{extends 'Login/index.html' /}
 #{set title:'Restrict Organizer' /}
-
+<div id="pageNoSideBar">
+  <div id="pageNoSideBar-bgtop">
 <!--  <form action="@{Organizations.viewProfile()}">  -->
 <!--              <input type="hidden" name="id" value='${orgId}'>  -->
           <img src="/public/images/arrow_prev.gif"/> <a href = "@{Organizations.viewProfile(orgId)}" name = "back" type="submit" style="color:blue" onmouseout = "back.style.color='blue'" onmouseover="back.style.color='darkblue'">Back to the organization main profile</a>
@@ -27,22 +28,29 @@
 <legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
     <b><u> Organizers' set: </u></b></font></legend> <br />
       
-  #{list items:users, as:'user'}
+  #{list items:users, as:'u'}
   
-  <input type="checkbox" id = "o" name = "org"  value = ${user.id} class = "enabled"/> ${user.firstName} ${user.lastName}<br />
+  <input type="checkbox" id = "o" name = "org"  value = ${u.id} class = "enabled"/> ${u.firstName} ${u.lastName}<br />
    #{/list}
+       
        
 </fieldset>
 </form>
 <br />
 <input type="submit" value="Select Entity" onclick="submit()">
+    <div id = "selectOrg">
+      <p> <font size="2" color="#c00">
+    <b> No Organizers Selected !!</b></font></p>
+       </div>
 
 
 
+<div id = "noCommon"> <font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
+<br />
+    <b><u> Oops There are no common Entities between the selected organizers !!. </u></b></font>
+ </div>
 
-
-
-<form name = "entityList">
+<form  id= "ent" name = "entityList">
 <hr> <br /><br /> 
 <fieldset>  
 <legend><font face="Monotype Corsiva, Verdana" size="5" color="#2B60DE">
@@ -70,7 +78,7 @@
  </fieldset>
 </form>
 
-<input  type="submit" value="Submit" onclick = "getTopic()">
+<input id = "sub" type="submit" value="Submit" onclick = "getTopic()">
 #{/else}
 
 
@@ -119,7 +127,8 @@
 
 <input name = "neww" type="submit" style="background-color:lightblue" value="Start new Restriction / De-Restriction Process" align = "Right" onclick="Restart()" onmouseout = "neww.style.color='black'" onmouseover="neww.style.color='white'">
 
-
+</div>
+</div>
 <script >
 var restActions = {};
 var userID = 0;
@@ -154,6 +163,13 @@ function submit(){
 		//alert("restrictedActions.length" + field.length);
 	  selectedOrganizers = getSelectedCheckboxValue(organizersField);
 	organizationID = ${organizationID};
+	if (selectedOrganizers.length == 0){
+		 $('#selectOrg').show();
+		 selectEntityBtnFlag = false;
+		 
+	}
+	else{
+		$('#selectOrg').hide();
 	$.getJSON( '@{BannedUsers.entitiesEnrolledInGroup()}', { userId: selectedOrganizers , organizationId: ${organizationID}} , function(data) { 
 		
 
@@ -166,8 +182,11 @@ function submit(){
         
         var d={};
         d=data.entityIds.split(",");
-  
-	    
+          if (s.length == 1){
+        	
+        	  $('#noCommon').show();
+          }
+        else{
 	    
 	    for( var i = 0 ; i < s.length-1 ; i++){
 	    	myOption= new Option();
@@ -178,8 +197,14 @@ function submit(){
 	    }
          
 	    $('#topicz').show();
+	    $('#ent').show();
+	    $('#sub').show();
+        }
        
 	   });
+	
+	
+	}
 	
   }
 	else{
@@ -633,6 +658,19 @@ function getSelectedCheckboxValue(buttonGroup) {
 	$(function(){
 		$('#rd').hide();
 	});
+	$(function(){
+		$('#ent').hide();
+	});
+	$(function(){
+		$('#sub').hide();
+	});
+	$(function(){
+		$('#selectOrg').hide();
+	});
+	$(function(){
+		$('#noCommon').hide();
+	});
+	
 	
 </script>
 <script type="text/javascript"> 
