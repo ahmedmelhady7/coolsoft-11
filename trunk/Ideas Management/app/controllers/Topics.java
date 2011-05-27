@@ -1382,6 +1382,7 @@ public class Topics extends CRUD {
 	 */
 	public static void viewFollowers(long topicId, String f) {
 		Topic topic = Topic.findById(topicId);
+		notFoundIfNull(topic);
 		User user = Security.getConnected();
 		if (f.equals("true"))
 			followTopic(topicId);

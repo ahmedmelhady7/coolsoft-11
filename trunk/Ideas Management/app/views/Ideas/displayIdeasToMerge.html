@@ -1,62 +1,43 @@
 #{extends 'main.html' /} 
 #{extends '/login/index.html' /}
+<html>
+    <head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
 
-<div id="pageNoSideBar">
-	<div id="pageNoSideBar-bgtop">
-		
-<table width="500">
-	#{list items:selectedIdeas, as:'idea'}
-	
-	<!--#{if "shouldAddRow()"}
-		<tr>
-	-->
-	#{/if}
-	<td>
-	<fieldset>
-        <legend>
-		   ${idea.title}
-        </legend>
-		${idea.description}
-		<br/>
-		Author: 
-		#{if idea.author.state == "a"}
-		  <a href="#">${idea.author.username}</a>
-		 #{/if}
-		 #{else}
-		  ${idea.author.username}
-		  #{/else}
-		&nbsp&nbsp&nbsp&nbsp
-		Rating: ${idea.rating}
-
-		<br/>
-			
-	</fieldset>
-	</td>	
-	
-	<!--#{if "shouldAddRow()"}
-		<tr>
-	#{/if}
-	incrementInsertedIdeas()
-	-->
-	#{/list}
-</table>
-<div style="center">
-<fieldset>
-		Title: <br>
-		<input type="textbox" size = "50" id="title"></input>  
-		<br>Body: </br>
-		<textarea cols="50" rows="5" id="body"></textarea>  
-		<br></br>
-		
-		<input type="submit" value ="Merge" onclick="callMerge(${topicId})"></input>
-		
-</fieldset>
-
-</div>
-
-		<textarea cols="50" rows="5" id="hiddenIdeasId">${selectedIdeasString}</textarea> 
-</div>
-</div>
+		<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+	#showCreateOrganization{
+	margin-top: 1%;
+	margin-right: 5%;
+	margin-bottom: 4%;
+	margin-left: 0%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 4%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+</style>
 <script type="text/javascript">
 	var insertedIdeas = 0;
 	document.getElementById("hiddenIdeasId").style.display = "none";
@@ -103,3 +84,82 @@
 	
 	
 </script>
+    </head>
+	
+			<div id="leftSidebar">
+		    <ul>
+		        <div style="clear: both;">
+		            &nbsp;
+		        </div>
+		        <li>
+		            <ul>
+		            	<li>
+		            		No actions yet
+		            	</li>
+						
+		            </ul>
+		        </li>
+		    </ul>
+		</div>
+
+    <div id="page">
+    	<div id="page-bgtop">
+    		<div id="showCreateOrganization">
+    			<body>
+    				<h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Create Organization</h2>
+				<br />
+		
+<table width="500">
+	#{list items:selectedIdeas, as:'idea'}
+	
+	<!--#{if "shouldAddRow()"}
+		<tr>
+	-->
+	#{/if}
+	<td>
+	<fieldset>
+        <legend>
+		   ${idea.title}
+        </legend>
+		${idea.description}
+		<br/>
+		Author: 
+		#{if idea.author.state == "a"}
+		  <a href="#">${idea.author.username}</a>
+		 #{/if}
+		 #{else}
+		  ${idea.author.username}
+		  #{/else}
+		&nbsp&nbsp&nbsp&nbsp
+		Rating: ${idea.rating}
+
+		<br/>
+			
+	</fieldset>
+	</td>	
+	
+	<!--#{if "shouldAddRow()"}
+		<tr>
+	#{/if}
+	incrementInsertedIdeas()
+	-->
+	#{/list}
+</table>
+<div style="center">
+<fieldset>
+		Title: <br>
+		<input type="textbox" size = "50" id="title"></input>  
+		<br>Body: </br>
+		<textarea cols="50" rows="5" id="body"></textarea>  
+		<br></br>
+		
+		<input type="submit" value ="Merge" onclick="callMerge(${topicId})" class="linkButton"></input>
+		
+</fieldset>
+<br />
+</div>
+	</body>
+		</div>
+	</div>
+	</div>
+</html>
