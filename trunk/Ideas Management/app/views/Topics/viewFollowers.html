@@ -47,33 +47,177 @@
 		        </div>
 		        <li>
 		            <ul>
-		            	<li>
-		            		No actions yet
-		            	</li>
+		            	#{if permission == 1}		
+	                <li>		
+	                <input type="submit" value="Edit topic" onclick=location.href="@{Topics.view(topicId)}" class="linkButton">		
+	                </li>		
+					 #{/if}
+				
+				#{if allowed==1}
+				<li>
+					<input type="submit" value="Requests" onclick=location.href="@{RequestToJoins.viewRequests(1,object.id)}" class="linkButton">
+                </li>
+                #{/if}
+				
+				#{if allowed==1}
+				<li>
+					<input type="submit" value="Invite"
+					onclick=location.href="@{Invitations.invite(object.id,1,0)}" class="linkButton"/>
+				</li>
+				 #{/if}
+				 
+				#{if alreadyReportedTopic==false && canReport && notAuthor}
+				<li>
+					<form action="@{Users.reportTopicAsSpam()}" method="GET" name="myform">
+						<input type="hidden" name="topicId" value="${topicId}"/>
+						<input id="spam" type="submit" value="Report Topic As Spam" class = "linkButton"/>
+					</form>
+				</li>
+				#{/if}
+				
+				#{if alreadyReportedTopic==true}
+                <li>
+                    <font color="Red">Already reported as spam</font>
+                </li>
+				#{/if}
+				
+				 #{if numberOfIdeas > 1 && canMerge == 1 && openToEdit == true}
+                <li>
+                   #{form @Topics.getIdeasToMerge(), method:'POST', enctype:'multipart/form-data' }
+				       <input type = "hidden" name = "topicId" value = ${topicId}>
+				       <input type="submit" value="Merge Ideas" class = "linkButton"/>
+				   #{/form}
+                </li>
+				#{/if}
+				
+				#{if canClose == 1 && openToEdit == true}
+                <li> 
+					#{form @Topics.closeTopic(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "topicId" value = ${topicId}>
+						<input type="submit" value="Close Topic" class = "linkButton"/>
+					#{/form} 
+		        </li>
+				#{/if} 
+				
+				#{if canClose == 1 && openToEdit == false}
+                <li>
+                    #{form @Topics.reopen(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "topicId" value = ${topicId}>
+						<input type="submit" value="Reopen Topic" class = "linkButton"/>
+					#{/form}
+                </li>
+				#{/if} 
+				
+				
+				#{if canPlan == 1 && plan == null}
+				<li>
+					#{form @Plans.planCreate(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "topicId" value = ${topicIdLong}>
+						<input type="submit" value="Create A plan" class = "linkButton"/>
+					#{/form}
+				</li>
+				#{/if}
+					
+				#{if plan != null}
+				<li>
+					#{form @Plans.viewAsList(), method:'POST', enctype:'multipart/form-data' }
+						<input type = "hidden" name = "planId" value = ${plan.id}>
+						<input type="submit" value="View the plan" class = "linkButton"/>
+					#{/form}
+				</li>
+				#{/if}
+					
+				#{if check == 1}
+				<li>
+					 <input type="submit" value="Block/Unblock developers" onclick=location.href="@{BannedUsers.viewUsers(topicId,1)}" class = "linkButton">
+				</li>
+				#{/if}
+					
+				#{if (targetTopic.createRelationship == true)}
+				#{if (canCreateRelationship == true)}
+				<li>
+						<input type="submit" value="Create Relation" onclick=location.href="@{Topics.createRelation(object.id,object.entity.id)}" class="linkButton">
+				</li>
+				#{/if}
+				#{/if}
+				
+				 #{if (!targetTopic.followers.contains(user))} 
+			     #{if follower == false} 
+				<li>
+						<form action="@{Topics.viewFollowers()}">
+			   				 <input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">
+			       		     <input type="submit" value="Follow ${targetTopic.title}" class = "linkButton">
+			   	 		</form>
+				</li>
+			    #{/if}
+			    #{/if}
+				 
+				#{if follower == true}
+		        <li id="unfollo">
+			    <input type="submit" value="Unfollow ${targetTopic.title} " onclick="unfollow('${topicId}');" class = "linkButton"/>
+				</li>
+			    #{/if}
+				
+				#{if canNotPost == true}
+				<li id="req"><input type="submit" value="Request to post on this topic" onclick="requestToPost('${topicId}');" class="linkButton"></li>
+               #{/if}
+			
+           	   #{if pending == true && canNotPost == false}
+			   <li>Request To Post status: Pending</li>
+           	   #{/if}
+			
+			   <li id="pen">
+	                Request To Post status: Pending
+					<script type="text/javascript">
+						 $('#pen').hide();
+					</script>
+			   </li>
+			   
+			   #{if (canRestrict == 1)}
+			   <li>
+		           <input type="submit" value="Restrict/De-Restrict Organizer" onclick=location.href="@{BannedUsers.restrictOrganizerTopicPath(topicId)}" class = "linkButton">	
+			   </li>
+			   #{/if}
+			   
+			    #{if (canRequestRelationship)}
+			   <li>
+			    	<form action="@{Topics.requestRelationship(user.id, entity.organization.id, entity.id, topicId)}" method="post">
+	 					<input type="submit" value="Request Relationship Creation" class = "linkButton">
+	  				</form>
+				</li>	
+					
+	 			<li>
+	 				<form action="@{Topics.viewRelationships(user.id, entity.organization.id, entity.id, topicId, canRequestRelationship)}" method="post">
+	  					<input type="submit" value="View Relationships" class = "linkButton">
+	  				</form>
+				</li>
+				#{/if}
 						
 		            </ul>
 		        </li>
 		    </ul>
 		</div>
 	
+	<div id="backToOrg" ><a href="@{Topics.show(targetTopic.id)}"> Back to ${targetTopic.title} main page</a></div>
+    <div id="page">
 	<div id="page">
     	<div id="page-bgtop">
     		<div id="showCreateOrganization">
 	<body>
-       <h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000"><a href="@{Topics.show(topic.id)}"> topic.title</a> &nbsp; Followers</h2>
+       <h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000"><a href="@{Topics.show(targetTopic.id)}"> ${targetTopic.title}</a> &nbsp; Followers</h2>
 				<br />
-		#{if topic.followers.size() > 0}
+		#{if targetTopic.followers.size() > 0}
 		These are the currently available followers: <br />
 		<ul style="list-style: none;">
-			#{list items: topic.followers, as:'follower'}
-			<li>
+			#{list items:targetTopic.followers, as:'follower'}
+			<li type="disc">
 				${follower.firstName} ${follower.lastName}
 			</li>
 			#{/list}
 		</ul> 
 		#{/if}
 		#{else}
-		No users are following ${topic.title} at the moment!
+		No users are following ${targetTopic.title} at the moment!
 		#{/else}
     </body>
 		</div>

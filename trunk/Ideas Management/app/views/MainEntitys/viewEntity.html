@@ -219,7 +219,7 @@
             </li>
             #{/if} 
 			<!-- ################## -->
-			
+						
 			<li>
 			#{if (entity.createRelationship == true)}
 			#{if (canCreateRelationship == true)}
@@ -273,25 +273,11 @@
             </li>
             #{/else}
 			<!-- ################## -->	
-           <!-- <li>
-                <a id="followersLink" style="cursor:pointer;">Followers</a>
-                <div id="followersLinks">
-                    <ul>
-                        #{if entity.followers.size()>0}
-                        #{list items:followers, as:'follower'} -->
+          
                         <li>
                             <a href="@{viewFollowers(entity.id, "false")}">View Followers</a>
                         </li>
-                       <!-- #{/list}
-                        #{/if}
-                        #{else}
-                        <LI type="disc">
-                            No Followers Yet!
-                        </LI>
-                        #{/else}
-                    </ul>
-                </div>
-            </li> -->
+                      
 			<!-- ################## -->				
 			#{if (canRequestRelationship == 1)}
 			<li>
