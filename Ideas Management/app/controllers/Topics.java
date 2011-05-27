@@ -2004,7 +2004,7 @@ public class Topics extends CRUD {
 						message);
 
 		} catch (Exception e) {
-			redirect(request.controller + ".show");
+			redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 		}
 		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
