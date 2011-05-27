@@ -24,7 +24,7 @@ Entity List:
   <option name = entity value=${Entity.id}>${Entity.name}</option>
    #{/list}
 </select>
-<input type="button" onclick="javascript: show('${organizationId}');" value="Search" />
+<input type="image" onclick="javascript: show('${organizationId}');" title="Search"  src="/public/images/icons/find.png"/>
 	<br/>
 <br/>
    
@@ -50,7 +50,7 @@ Entity List:
 	<script type="text/javascript">
 
 
-    var pager = new Pager('toFil', 2); 
+    var pager = new Pager('toFil', 10); 
     pager.init(); 
     pager.showPageNav('pager', 'pageNavPosition'); 
     pager.showPage(1);
@@ -97,6 +97,8 @@ function show(id, entityId){
 			 
 			});
 }
+  
+    
 	</script>
 	<style type="text/css">    
        .pg-normal {
