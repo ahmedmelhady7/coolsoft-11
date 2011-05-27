@@ -200,6 +200,8 @@ public class Bootstrap extends Job {
 
 			UserRoleInOrganizations.addEnrolledUser(slim, guc, organizer,
 					gucMet.id, "entity");
+			
+			UserRoleInOrganizations.addEnrolledUser(slim, guc, organizer, gucCs.id, "entity");
 
 			UserRoleInOrganizations.addEnrolledUser(fatma, guc, organizer,
 					gucCs.id, "entity");
