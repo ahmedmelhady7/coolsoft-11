@@ -85,6 +85,7 @@ public class UserRoleInOrganizationTest extends UnitTest {
 		List<User> users = User.findAll();
 		User user = users.get(0);
 		List<Organization> organizations = Organization.findAll();
+		if(organizations.size() > 1){
 		Organization organization = organizations.get(0);
 		Organization organizationTwo = organizations.get(1);
 		List<MainEntity> entities = MainEntity.findAll();
@@ -116,6 +117,7 @@ public class UserRoleInOrganizationTest extends UnitTest {
 				user, roleTwo, organizationTwo , entityId , "entity").first();
 		assertNull(test1);
 		assertNotNull(test2);
+		}
 
 	}
 
