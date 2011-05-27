@@ -75,4 +75,24 @@ public class Abdalrahman extends UnitTest
 		assertNotNull(label);
 		assertEquals(label.ideas.size(),1);
 	}
+	
+	@Test
+	public void saveIdeaAsDraft()
+	{
+		User user = new User("Ashraf@guc.edu.eg", "ElKbeer", "1234", "Ashraf",
+				"Mansoor", "What is our company's name?", "coolsoft", 0,
+				"2/14/1995", "Egypt", "student").save();
+		
+		Organization guc = new Organization("GUC", user, 0, true, "guc").save();
+		
+		MainEntity met = new MainEntity("MET", "Media Engineering", guc, false).save();
+
+		Topic topic = new Topic("T1", "t1", 2, user, met, true).save();
+		
+		Idea idea = new Idea("killw", "kill", user, topic,true);
+		
+		assertNotNull(idea);
+		assertTrue(idea.isDraft);
+	}
+	
 }	
