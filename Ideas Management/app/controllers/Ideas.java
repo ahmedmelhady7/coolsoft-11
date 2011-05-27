@@ -421,10 +421,9 @@ public class Ideas extends CoolCRUD {
 
 		try {
 			System.out.println("show() done, about to render");
-			boolean permittedToTagIdea = Users.isPermitted(user,
-					"tag his/her ideas", ideaId, "idea")
+			boolean permittedToTagIdea = user.equals(idea.author)
 					|| Users.isPermitted(user, "tag ideas in my organization",
-							ideaId, "idea");
+							 topicId, "topic") || Users.isPermitted(user, "use", topicId, "topic");
 			render(type, ideasLabels, object, /* tags, */user, username, userId,
 					canReport, canDelete, comments, topic, plan,
 					permittedToTagIdea,
@@ -670,82 +669,101 @@ public class Ideas extends CoolCRUD {
 	 *            : the tag that is being added
 	 * 
 	 */
-
+	
 	public static void tagIdea(long ideaId, String tag) {
 
+		System.out.println("wasal hena " + ideaId + " " + tag);
+		Tag tempTag = null;
+		List<Tag> listOfTags = getAvailableTags(ideaId);
 		boolean tagAlreadyExists = false;
-		boolean userNotAllowed = false;
 		boolean tagExists = false;
+		User user = (User) Security.getConnected();
+		Idea idea = (Idea) Idea.findById(ideaId);
+		notFoundIfNull(idea);
+
+		for (int i = 0; i < listOfTags.size(); i++) {
+			if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
+				tempTag = listOfTags.get(i);
+				if (!idea.tagsList.contains(tempTag)) {
+					idea.tagsList.add(tempTag);
+					tempTag.taggedIdeas.add(idea);
+					tempTag.save();
+
+					for (int j = 0; j < tempTag.followers.size(); j++) {
+						Notifications.sendNotification(
+								tempTag.followers.get(j).id, tempTag.getId(),
+								"tag", "This topic has been tagged as " + tag);
+					}
+				} else {
+					// tag already exists error message
+					System.out.println("tag already exists");
+					tagAlreadyExists = true;
+				}
+				tagExists = true;
+			}
+		}
+
+		if (!tagExists) {
+			tempTag = new Tag(tag, idea.belongsToTopic.entity.organization, user);
+			idea.tagsList.add(tempTag);
+			tempTag.taggedIdeas.add(idea);
+			tempTag.save();
+			System.out.println("new tag created and saved");
+		}
+
+		if (!tagAlreadyExists) {
+			Notifications.sendNotification(idea.author.id, ideaId, "idea",
+					"This idea has been tagged as " + tag);
+		}
+		idea.save();
+		JsonObject json = new JsonObject();
+		json.addProperty("tagName", tempTag.name);
+		json.addProperty("tagId", tempTag.id);
+		System.out.println(json.toString());
+		
+		renderJSON(json.toString());
+		// render(tagAlreadyExists, tags, topicId, user);
+	}
+
+	public static void checkIfTagAlreadyExists(long ideaId, String tag) {
+		Idea idea = (Idea) Idea.findById(ideaId);
+		notFoundIfNull(idea);
+		boolean tagAlreadyExists = false;
+		List<Tag> listOfTags = idea.tagsList;
+		System.out.println(listOfTags.toString());
+		for (int i = 0; i < listOfTags.size(); i++) {
+			if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
+				tagAlreadyExists = true;
+				break;
+			} else {
+				tagAlreadyExists = false;
+			}
+		}
+		JsonObject json = new JsonObject();
+		System.out.println("preparing json");
+		json.addProperty("tagAlreadyExists", tagAlreadyExists);
+		System.out.println(json.toString());
+		renderJSON(json.toString());
+	}
+
+	public static List<Tag> getAvailableTags(long ideaId) {
 		List<Tag> listOfTags = new ArrayList<Tag>();
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
 		globalListOfTags = Tag.findAll();
-		System.out.println("global = " + globalListOfTags.size());
-		User user = (User) Security.getConnected();
-		Idea idea = (Idea) Idea.findById(ideaId);
-		Topic topic = idea.belongsToTopic;
-		MainEntity entity = topic.entity;
-
-		if (!tag.equals("@@")) {
-
-			if (!Users.isPermitted(user, "tag ideas in my organization",
-					entity.id, "entity")
-					|| !Users.isPermitted(user, "tag his/her ideas", topic.id,
-							"topic")) {
-				// user not allowed
-				System.out.println("user not allowed");
-				userNotAllowed = true;
-			} else {
-				for (int i = 0; i < globalListOfTags.size(); i++) {
-					if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
-							|| idea.belongsToTopic.entity.organization
-									.equals(globalListOfTags.get(i).createdInOrganization)) {
-						listOfTags.add(globalListOfTags.get(i));
-					}
-				}
-				for (int i = 0; i < listOfTags.size(); i++) {
-					if (listOfTags.get(i).getName().equalsIgnoreCase(tag)) {
-						if (!idea.tagsList.contains(listOfTags.get(i))) {
-							idea.tagsList.add(listOfTags.get(i));
-							listOfTags.get(i).taggedIdeas.add(idea);
-							listOfTags.get(i).save();
-							System.out.println("existing tag added");
-							for (int j = 0; j < listOfTags.get(i).followers
-									.size(); j++) {
-								Notifications.sendNotification(
-										listOfTags.get(i).followers.get(j).id,
-										idea.tagsList.get(i).getId(), "tag",
-										"This idea has been tagged as " + tag);
-							}
-						} else {
-							// tag already exists error message
-							System.out.println("tag already exists");
-							tagAlreadyExists = true;
-						}
-						tagExists = true;
-					}
-				}
-
-				if (!tagExists) {
-					Tag temp = new Tag(tag,
-							idea.belongsToTopic.entity.organization, user);
-					idea.tagsList.add(temp);
-					temp.taggedIdeas.add(idea);
-					temp.save();
-					System.out.println("new tag created and added");
-				}
-
-				if (!tagAlreadyExists) {
-					Notifications.sendNotification(idea.author.id, ideaId,
-							"idea", "This idea has been tagged as " + tag);
-				}
+		notFoundIfNull(globalListOfTags);
+		Idea idea = Idea.findById(ideaId);
+		notFoundIfNull(idea);
+		for (int i = 0; i < globalListOfTags.size(); i++) {
+			if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
+					|| idea.belongsToTopic.entity.organization
+							.equals(globalListOfTags.get(i).createdInOrganization)) {
+				listOfTags.add(globalListOfTags.get(i));
 			}
-
 		}
-		idea.save();
-		List<Tag> tags = idea.tagsList;
-		render(tagAlreadyExists, userNotAllowed, tags, ideaId);
+		return listOfTags;
 	}
 
+	
 	/**
 	 * @author ${Ibrahim Safwat}
 	 * 

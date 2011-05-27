@@ -379,10 +379,6 @@
 					$.post('@{unhideIdea()}', {
 						ideaId: id
 					});
-					$("#hiddenidea_" + id).remove();
-					$.post('@{show()}', {
-						topicId: topicId
-					});
 				}	
 				function deletes(id){
 					$.post('@{Ideas.delete()}', {
@@ -544,7 +540,7 @@
 				</li>
 				#{/if}
 				#{/if}
-				
+					
 				<li>
 					<input type="button" value="Show Relationships" onclick="$('#lista').slideToggle();" class="linkButton"/>
 				</li>
@@ -701,13 +697,57 @@
 					  <br />
 					  <br />
 						</div>
-			            
-								
-				  	<form action="@{Topics.tagTopic()}" method="post">		
-	        	             <input type="hidden" value=${topicId} name='topicId'>		
-				             <input type="hidden" value='@@' name='tag'>		
-							 <input type="image" src="/public/images/icons/tag.png" title="Add tags" class = "linkButton">		
-	        		</form>			
+				
+				#{if allowedToTag}
+				<input type="image" title='Add Tags' style="float:left;" src='/public/images/tag.png' id="submit" onclick="hideTagger();"/>
+				#{/if}
+				<ul id="tagLister" style="list-style: none; ">
+				#{list items:tags, as:'tag'}
+                <a href="/tags/mainpage?tagId=${tag.id}" style="float:left;">${tag.name} &nbsp </a>
+				#{/list}
+				</ul>
+				#{if allowedToTag}
+                <input type="hidden" id='tags' name="tags" value="">
+				
+				<input type="text" id="tagger" style="display:none; float:left;" name='tag' onkeyup="checkTagValidity('${topicId}', this.value);">
+				<input id="subb" type="image" src='/public/images/add.png' value="Add Tag" style="display:none; float:left; width:auto; height:auto;" onclick="tagTopic();" disabled='true'>
+				<label id='tagg' style="display:none; float:left;"><font color="#FF0000"> Tag Already Exists!</font></label>
+				<script>
+						function hideTagger(){
+							if (document.getElementById("tagger").style.display == "none") {
+								document.getElementById("tagger").style.display = "block";
+								document.getElementById("tagger").value = "";
+								document.getElementById('subb').style.display = "block";
+							}
+							else {
+								document.getElementById("tagger").style.display = "none";
+								document.getElementById('tagg').style.display = 'none';
+								document.getElementById('subb').style.display = "none";
+							}
+						}
+						function tagTopic(){
+							var tag = document.getElementById('tagger').value;
+							var topic = '${topicId}';
+							$.getJSON('@{Topics.tagTopic()}', {topicId:topic, tag: tag}, function(topicTags) {
+								$('#tagLister').append("<a href=\"/tags/mainpage?tagId=" + topicTags.tagId + "\" style=\"float:left;\">&nbsp; " + topicTags.tagName + "</a>");
+								$('#tagger').val("");
+							});
+						}
+						function checkTagValidity(topicId, tag){
+							$.getJSON('@{Topics.checkIfTagAlreadyExists()}', {tag:tag, topicId:topicId}, function(tagExists){
+								if(tagExists.tagAlreadyExists == true){
+									document.getElementById('subb').disabled = true;
+									document.getElementById('tagg').style.display = 'block';
+								} else {
+									document.getElementById('tagg').style.display = 'none';
+									document.getElementById('subb').disabled = false;
+								}	
+							});
+						}
+				</script>
+           
+        #{/if}
+					
 			
 			        </p>
 			        <br/>
@@ -957,7 +997,7 @@
 					#{if idea.isDraft == false}
 					<li>
 						<input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
-						 <font size=1 style="float:left;"><a href="@{Users.viewProfile(idea.author.id)}">${idea.author.username}</a></font>
+						 <font size=1 style="float:left;">${idea.author.username}</font>
 						 <br />
 						<div id="ideas" class="accordionItem">
 						<h3><a href="@{Ideas.show(idea.id)}">&nbsp ${idea.title}</a></h3>
@@ -979,7 +1019,8 @@
 			                <input id="showhidden" type="submit" value="show hidden Ideas" class = "linkButton"/>
 			                <div id="hidden">
 			                #{list items:hiddenIdeas, as:'idea'}
-			                <div class="" id="hiddenidea_${idea.id}">
+			                                <fieldset>
+			                                </br>
 			                <label style="background-color:#FFFFFF; border-top-left-radius: 10px;border-top-right-radius: 10px;
 							border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; padding:0.3% 2% 0.3% 2%; margin-right:20%;">${idea.title}</label>
 			                <br />
@@ -992,7 +1033,7 @@
 			                <br />
 			                <input type="submit" id="unhide" value="unhide" onclick="unhide(${idea.id})" class = "linkButton"/>
 							</div>
-							</div>
+			                </fieldset>
 			        		#{/list}
 			        </div>
 			        #{/if}
@@ -1043,7 +1084,11 @@
 			                $("#showhidden").click(function(){
 			                 $("#hidden").toggle();
 			           });
-			                
+			                $("#unhide").click(function(){
+			                    $("#hidden").remove();
+			                    $("#ideas").hide();
+			                    $("#ideas").show();
+			              });
 			                 </script>
 			                <style type="text/css">
 			                        #hidden{display: none;}
