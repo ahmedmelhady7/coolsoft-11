@@ -57,10 +57,7 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 		if (type == 0) {
 			if (Organizations.isDuplicateRequest(null, null, newName,
 					organisationId, type, 0, requestType, relationId)) {
-				System.out.println(organisation.renameEndRelationshipRequest
-						.size());
 				redirect("MainEntitys.viewEntity", entityId, "Request created");
-				return;
 			}
 			EntityRelationship relation = EntityRelationship
 					.findById(relationId);
@@ -81,14 +78,11 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 							+ " " + "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
 							+ relation.destination.id + "\">" + relation.destination.name + "</a>" 
 							+ ") with " + newName, organisation);
-						redirect("MainEntitys.viewEntity", entityId, "Request created");
+			redirect("MainEntitys.viewEntity", entityId, "Request created");
 		} else {
 			if (Organizations.isDuplicateRequest(null, null, newName,
 					organisationId, type, 0, requestType, relationId)) {
-				System.out.println(organisation.renameEndRelationshipRequest
-						.size());
 				redirect("Topics.show", topicId, "Request created");
-				return;
 			}
 			TopicRelationship relation = TopicRelationship.findById(relationId);
 			RenameEndRelationshipRequest renameRequest = new RenameEndRelationshipRequest(
