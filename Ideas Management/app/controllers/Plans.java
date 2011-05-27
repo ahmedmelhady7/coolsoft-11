@@ -1519,7 +1519,7 @@ public class Plans extends CoolCRUD {
 	/**
 	 * 
 	 * This method checks first if the user is an organizer then renders the a
-	 * plan and list of items in that plan to the view
+	 * plan and list of items in that plan to the calendar view
 	 * 
 	 * @author Yasmine Elsayed
 	 * 
@@ -1528,6 +1528,7 @@ public class Plans extends CoolCRUD {
 	 * @param planId
 	 *            the id of the plan
 	 * 
+	 * @throws NotFoundIFNull
 	 * 
 	 **/
 
