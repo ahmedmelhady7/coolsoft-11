@@ -21,6 +21,7 @@ import play.i18n.Messages;
 import play.libs.Codec;
 import play.mvc.With;
 import models.*;
+
 import java.util.Arrays;
 
 @With(Secure.class)
@@ -201,22 +202,49 @@ public class Users extends CoolCRUD {
 	 *            userId : id of the user we want to show
 	 * 
 	 */
-	public static void viewMyProfile(String userId) {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		long userID = Long.parseLong(userId);
-		User object = User.findById(userID);
-		notFoundIfNull(object);
-		System.out.println("entered view() for User " + object.username);
-		System.out.println(object.email);
-		System.out.println(object.username);
-		int communityContributionCounter = object.communityContributionCounter;
-		String name = object.firstName + " " + object.lastName;
-		String profession = object.profession;
-		String username = object.username;
-		String birthDate = "" + object.dateofBirth;
-		String password = object.password;
-		String email = object.email;
+	public static void viewMyProfile(String id) {
+		
+		
+		long userID = Long.parseLong(id);
+		User user = User.findById(userID);
+		
+		
+		notFoundIfNull(user);
+		System.out.println("entered view() for User " + user.username);
+		System.out.println(user.email);
+		System.out.println(user.username);
+		
+		String firstName = user.firstName ;
+		String lastName =  user.lastName;
+		String profession = user.profession;
+		String username = user.username;
+		String birthDate = "" + user.dateofBirth;
+		String email = user.email;
+		
+		email = email.trim().toLowerCase();
+		username = username.trim().toLowerCase();
+		firstName = firstName.trim();
+		String message = "";
+	/*	boolean validUserFlag = false;
+		 if ((validation.valid(email)) != null) {
+			message = "Please enter a valid email address";
+			validUserFlag = true;
+			System.out.println(message);
+		}else if (!(User.find("byUsername", username).fetch().isEmpty())) {
+			message = "This Username already exists !";
+		}   else if (username.length() >= 20) {
+			validUserFlag = true;
+			message = "Username cannot exceed 20 characters";
+		}
+		
+		if (validUserFlag) {
+			render(request.controller.replace(".", "/") + "/viewMyProfile.html",
+					message,object);
+		}
+		else{
+			
+			viewProfile(user.id);
+		}*/
 
 		int adminFlag = 0;
 		if (Security.getConnected().isAdmin) {
@@ -225,8 +253,7 @@ public class Users extends CoolCRUD {
 		try {
 
 			System.out.println("view() done, about to render");
-			render(type, object, username, name, communityContributionCounter,
-					profession, birthDate, userId, adminFlag, email, password);
+			render(adminFlag,message, user);
 
 		} catch (TemplateNotFoundException e) {
 			System.out
@@ -728,10 +755,7 @@ public class Users extends CoolCRUD {
 	 */
 	public static boolean isPermitted(User user, String action, long placeId,
 			String placeType) {
-		// User banned =
-		// BannedUser.find("select b.bannedUser from BannedUser b where b.bannedUser = ? and b.resourceID = ? and b.resourceType = ? and b.action =  ",
-		// user);
-
+		
 		BannedUser bannedView = BannedUser.find(
 				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 				"view", placeType, placeId).first();
@@ -753,17 +777,17 @@ public class Users extends CoolCRUD {
 			return false;
 		}
 		if (UserRoleInOrganizations.isOrganizer(user, placeId, placeType)) {
-			System.out.println("aloooooooooo2");
+			
 			List<String> r = Roles.getRoleActions("organizer");
 			if (r.contains(action)) {
-				System.out.println("aloooooooooo3");
+			
 				return true;
 			} else {
 				if (Roles.getRoleActions("idea developer").contains(action)) {
-					System.out.println("aloooooooooo4");
+			
 					return true;
 				} else {
-					System.out.println("aloooooooooo5");
+	
 					return false;
 				}
 			}
@@ -857,12 +881,12 @@ public class Users extends CoolCRUD {
 				}
 			} else {
 				if (org.privacyLevel == 0 || org.privacyLevel == 1) {
-					System.out.println("ANA HENA");
+
 					List<UserRoleInOrganization> allowed = UserRoleInOrganization
 							.find("byEnrolledAndOrganization", user, org)
 							.fetch();
 					if (allowed.size() == 0) {
-						System.out.println("ANA HENA2");
+			
 						return false;
 					} else {
 						if (action.equals("view")) {
@@ -1035,7 +1059,7 @@ public class Users extends CoolCRUD {
 	}
 
 	/**
-	 * gets the list of users who are allowed to delete an idea or a comment
+	 * checks whether  a user is  allowed to delete an idea or a comment
 	 * 
 	 * @author: Lama Ashraf
 	 * 
@@ -1396,7 +1420,79 @@ public class Users extends CoolCRUD {
 		redirect(request.controller + ".view", ((User) object).getId(),
 				message2);
 	}
+	
+	
+	
+	/**
+	 * checks on all the input and make sure that email, username are unique and in the  correct format and then save this changes
+	 * 
+	 * @author lama Ashraf
+	 * 
+	 * @story C1S1-2
+	 * 
+	 * @param id
+	 * 			long user id
+	 * 
+	 * @param username
+	 * 			string new username of the user
+	 * 
+	 * @param mail
+	 * 			string new mail of the user
+	 * 
+	 *@param firstName
+	 *			string new first name of the user
+	 *
+	 *@param lastName
+	 *			string last name of the user
+	 *
+	 *@param dateOfBirth
+	 *			string the new date of birth of the user
+	 *
+	 *@param country
+	 *			string the new country of the user
+	 *
+	 *@param profession
+	 *			string the new profession of the user
+	 */
 
+	public static void saveMyProfile(long id,String username, String mail,String firstName,String lastName,String dateOfBirth, String country,String profession) throws Exception {
+		
+        
+		User user = User.findById(id);
+		
+        notFoundIfNull(user);
+       
+		String usernameOld = user.username;
+		String emailOld = user.email;
+		emailOld = emailOld.trim().toLowerCase();
+		usernameOld = usernameOld.trim().toLowerCase();
+		String message = "";
+		boolean validUserFlag = false;
+		//System.out.println(username + "lllllllllll");
+		//System.out.println(mail + "sssssssssssss");
+		/* if( (!(User.find("byUsername", username).fetch().isEmpty()) && Security.getConnected().username != username)||user.username.length() >20 ) {
+			 	flash.error("error");
+			 String userId = "" + id;
+			 
+			viewMyProfile(userId);
+			 }
+			
+		else{*/
+			
+			 user.username = username;
+		        user.email = mail;
+		        user.firstName = firstName;
+		        user.lastName = lastName;
+		        user.dateofBirth = dateOfBirth;
+		        user.country = country;
+		        user.profession = profession;
+		        System.out.println(user.email + "oldddp");
+		        System.out.println(mail + "newwwww");
+		        user.save();
+		        redirect("/Users/viewProfile?userId=" + id); 
+
+	//}
+	}
 	/**
 	 * overrides the CRUD save method ,used to submit the edit, to make sure
 	 * that the edits are acceptable, and then it renders a message mentioning
@@ -1410,8 +1506,8 @@ public class Users extends CoolCRUD {
 	 *            :String the user's id
 	 * 
 	 */
-
 	public static void save(String id) throws Exception {
+		System.out.println("mostafaaaaa");
 		// Security.check(Security.getConnected().isAdmin||);
 		ObjectType type = ObjectType.get(Users.class);
 		notFoundIfNull(type);
@@ -1527,6 +1623,7 @@ public class Users extends CoolCRUD {
 
 	}
 
+	
 	// /**
 	// * overrides the CRUD view method ,is responsible for deleting a user by
 	// the
@@ -2007,11 +2104,42 @@ public class Users extends CoolCRUD {
 			render();
 	}
 
+	/**
+	 * changes the password of the user after providing his old password and some validations
+	 * 
+	 * @author Lama Ashraf
+	 * 
+	 * @story C1S1-2
+	 * 
+	 * @param pass 2
+	 *            String the new password
+	 * 
+	 */
+	
 	public static void changePassword(String pass2) {
+
+		
+		String message="";
+
+		if (pass2.length() < 25||pass2.length()>3)
+		{
+			User user = Security.getConnected();
+			user.password = Codec.hexMD5(pass2);
+			user.save();
+			viewProfile(user.id);
+		}
+		else
+		{
+			message = "Password cannot exceed 25 characters";
+			render(request.controller.replace(".", "/") + "/viewProfile.html",
+					message);
+		}
+
 		User user = Security.getConnected();
 		user.password = Codec.hexMD5(pass2);
 		user.save();
 		viewProfile(user.id);
+
 	}
 
 }
