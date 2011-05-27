@@ -39,6 +39,70 @@
 }
 </style>
 
+
+
+    </head>
+	
+			<div id="leftSidebar">
+		    <ul>
+		        <div style="clear: both;">
+		            &nbsp;
+		        </div>
+		        <li>
+		            <ul>
+		            	<li>
+		            		No actions yet
+		            	</li>
+						
+		            </ul>
+		        </li>
+		    </ul>
+		</div>
+
+    <div id="page">
+    	<div id="page-bgtop">
+    		<div id="editDraft">
+    			<body>
+<p class="success" id="SaveSuccess"></p>
+
+<style type="text/css">.success {background: #FFF1A8 !important;}
+</style>
+
+
+	<big><big><big><big><b>Edit Draft</b></big></big></big></big>
+	<br>
+	<font size="3px" color="#123456"><span id="flashAmessage"></span></font>
+	<br>
+<p>
+	Title: </br>
+	<input type="textbox" size = "50" id="titleTextBox"></input>
+</p>
+
+<p>
+	Description: <br>
+	<textarea cols="50" rows="5" id="descriptionTextArea"></textarea>
+</p>
+<p>
+	Privacy Level: 
+	<select id="privacyLevelSelect">
+ 		<option value = "1">private</option>
+		<option value = "2">public</option>
+ 	</select>
+</p>
+<p>
+	CreateRelationship
+	<input type="checkbox" id="createRelationshipCheckbox" name="object.createRelationship">
+</p>
+
+<input type="submit" id ="postButton" value="Post" onclick="post()" class="linkButton"></input> or
+<input type="submit" id ="saveButton" value="Save" onclick="save()" class="linkButton"></input>
+<input type="submit" id ="discardButton" value="Discard" onclick="discard()" class="linkButton"></input>
+</body>
+		</div>
+	</div>
+	</div>
+</html>
+
 <script type="text/javascript"> 
 	document.getElementById("titleTextBox").value = "${targetTopic.title}";
 	document.getElementById("descriptionTextArea").innerHTML = "${targetTopic.description}";
@@ -99,65 +163,179 @@
 	
 </script>
 
-    </head>
-	
-			<div id="leftSidebar">
-		    <ul>
-		        <div style="clear: both;">
-		            &nbsp;
-		        </div>
-		        <li>
-		            <ul>
-		            	<li>
-		            		No actions yet
-		            	</li>
+<script type="text/javascript">
+
+				window.onload = auto;
+				
+				function getPrivacyLevel()
+				{
+					var privacyLevelString = document.getElementById("privacyLevelSelect").value.toString();
+					var privacyLevel;
+					
+					if(privacyLevelString == "1") {
+						privacyLevel = 1;
+					} else {
+						privacyLevel = 2;
+					}
+					
+					return privacyLevel;
+					
+				}
+				
+				function save()
+				{
+					var topicTitle 		 = document.getElementById("titleTextBox").value.toString();
+					var topicDescription = document.getElementById("descriptionTextArea").value.toString();
+					
+					if(validate())
+					{
+						var link = "/mainentitys/viewentity?id="+entityId;
 						
-		            </ul>
-		        </li>
-		    </ul>
-		</div>
-
-    <div id="page">
-    	<div id="page-bgtop">
-    		<div id="editDraft">
-    			<body>
-<p class="success" id="SaveSuccess"></p>
-
-<style type="text/css">.success {background: #FFF1A8 !important;}
-</style>
-
-<fieldset>
-	<legend>
-		<big><b>Edit Draft</b></big>
-	</legend>
-<p>
-	Title: </br>
-	<input type="textbox" size = "50" id="titleTextBox"></input>
-</p>
-
-<p>
-	Description: <br>
-	<textarea cols="50" rows="5" id="descriptionTextArea"></textarea>
-</p>
-<p>
-	Privacy Level: 
-	<select id="privacyLevelSelect">
- 		<option value = "1">private</option>
-		<option value = "2">public</option>
- 	</select>
-</p>
-<p>
-	CreateRelationship
-	<input type="checkbox" id="createRelationshipCheckbox" name="object.createRelationship">
-</p>
-</fieldset>
-
-<input type="submit" id ="postButton" value="Post" onclick="post()" class="linkButton"></input> or
-<input type="submit" id ="saveButton" value="Save" onclick="save()" class="linkButton"></input>
-<input type="submit" id ="discardButton" value="Discard" onclick="discard()" class="linkButton"></input>
-</body>
-		</div>
-	</div>
-	</div>
-</html>
+						$.post('@{Topics.createDraft()}' ,
+						{title:topicTitle, description:topicDescription,
+							privacyLevel: privacyLevel, createRelationship: createRelationship,
+							entityId:entityId}, 
+						function(){window.location.href=link});
+					}					
+				}
+				
+				function auto()
+				{
+					if(!auto.t) auto.t = document.getElementById("titleTextBox").value.toString();
+	            	if(!auto.b)	auto.b = document.getElementById("descriptionTextArea").value.toString();
+					if(!auto.pr) auto.pr = getPrivacyLevel();
+					if(!auto.createRelation) auto.createRelation = document.getElementById("createRelationshipCheckbox").checked;
+					if(!auto.kill) auto.kill = ${targetTopic.id};
+					
+					
+	          
+					var x = document.getElementById("titleTextBox").value.toString();
+	            	var y = document.getElementById("descriptionTextArea").value.toString();
+	            	var r = getPrivacyLevel();
+					var w = document.getElementById("createRelationshipCheckbox").checked;
+				   		
+					var currentTime = new Date();
+					var hours = currentTime.getHours();
+					var minutes = currentTime.getMinutes();
+		
+					if (minutes < 10)	
+						minutes = "0" + minutes;
+		
+					var write =(hours + ":" + minutes /*+ ":" + secs + " "*/ );
+					
+					var xx = jQuery.trim(x);
+					var yy = jQuery.trim(y);
+						
+					if(((x != auto.t) || (y != auto.b)|| w != auto.createRelation) && ((xx != "") && (yy != "") ) )
+					{
+							
+						$('#flashAmessage').fadeIn('10');
+							
+						$.post('@{Topics.saveDraft()}', 
+						{
+							title:x, 
+							description:y, 
+							privacyLevel:r, 
+							createRelationship:w,
+							topicId:auto.kill
+						});
+							
+						auto.t = document.getElementById("titleTextBox").value.toString();
+	            		auto.b = document.getElementById("descriptionTextArea").value.toString();
+							
+						document.getElementById("flashAmessage").innerHTML = "draft auto saved at " + write;
+						setTimeout("myFader()",'3000');
+					}
+					
+					
+					setTimeout("auto()",'10000');
+				}
+				
+					function myFader()
+					{
+						$('#flashAmessage').fadeOut('500');
+					}
+					
+					
+						
+					function validate()
+					{
+						var x = document.getElementById("titleTextBox").value.toString();
+						var y = document.getElementById("descriptionTextArea").value.toString();
+					
+						var Tflag = true;
+						var Dflag = true;
+						
+						x = jQuery.trim(x);
+						y = jQuery.trim(y);
+						
+						if(x=="")
+						{
+							document.getElementById("ideaTitleError").innerHTML = "please enter a title for the topic";
+							Tflag = false;
+						}
+						else
+						{
+							document.getElementById("ideaTitleError").innerHTML = "";
+							Tflag = true;
+						}
+						if(y=="")
+						{
+							document.getElementById("ideaDescriptionError").innerHTML = "please enter a body for the topic";
+							Dflag = false;
+						}
+						else
+						{
+							document.getElementById("ideaDescriptionError").innerHTML = "";
+							Dflag = true;
+						}
+						
+						if(Tflag && Dflag)
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+					
+					function validate2()
+					{
+						var x = document.getElementById("titleTextBox").value.toString();
+						var y = document.getElementById("descriptionTextArea").value.toString();
+						
+						var Tflag = true;
+						var Dflag = true;
+						
+						x = jQuery.trim(x);
+						y = jQuery.trim(y);
+						
+						if(x=="")
+						{
+							Tflag = false;
+						}
+						else
+						{
+							Tflag = true;
+						}
+						if(y=="")
+						{
+							Dflag = false;
+						}
+						else
+						{
+							Dflag = true;
+						}
+						
+						if(Tflag && Dflag)
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+			</script>
 
