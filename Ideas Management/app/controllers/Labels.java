@@ -183,9 +183,16 @@ public class Labels extends CoolCRUD
 	 */
 	public static void changeName(long labelId,String newName)
 	{
+		User user = Security.getConnected();
 		Label label = Label.findById(labelId);
+		String oldName = label.name;
 		label.name = newName;
 		label.save();
+		
+		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
+        + " changed the label named "+ oldName +" to <a href=\"http://localhost:9008/labels/showlabel?labelId=" + label.id +"\">" +  label.name + "</a>";
+		
+		Log.addUserLog(logDescription,user,label);
 	}
 	
 	
