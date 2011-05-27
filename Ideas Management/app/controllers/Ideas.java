@@ -634,7 +634,7 @@ public class Ideas extends CoolCRUD {
 		//		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(idea);
 		try {
-				System.out.println("hy3ml delete");
+//				System.out.println("hy3ml delete");
 				idea.delete();
 		} catch (Exception e) {
 //			flash.error(Messages.get("crud.delete.error", idea.modelName));
