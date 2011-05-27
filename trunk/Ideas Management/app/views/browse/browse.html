@@ -78,10 +78,10 @@
 
                 #{list items:Entity.topicList, as: 'topic'}
 				<a ID="x" +'${topic.title}' href="javascript:Toggle('${topic.title}');">[+]</a>
-            	<a href="@{topics.view(topic.id)}">${topic.title}</a>
+            	<a href="@{topics.show(topic.id)}">${topic.title}</a>
 				<div ID='${topic.title}'  style="display:none; margin-left:2em;">
 					#{list items:topic.ideas, as: 'idea'}
-					<a href="@{Ideas.view(idea.id)}">${idea.title}</a>
+					<a href="@{Ideas.show(idea.id)}">${idea.title}</a>
 					</br>
 					#{/list}
             	</div>
