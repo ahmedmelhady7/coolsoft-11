@@ -153,7 +153,7 @@
 			
 		</p>
 	#{/form}
-			
+		
 			<input type="submit" id ="saveAsDraftButton" value="Save as Draft" onclick="saveAsDraft()" class="linkButton"></input>
 			
 	</div>
@@ -162,6 +162,14 @@
 
 <script type="text/javascript">
 				
+	function postAndDiscardDraft() {
+		
+		testing();
+	
+		document.getElementById("save").click();
+		
+	}
+	
 	function saveAsDraft() {
 		var entityId = ${entity.id};
 		var topicId = auto.kill;
@@ -170,11 +178,11 @@
 		var privacyLevel = getPrivacyLevel();
 		
 		var createRelationship = document.getElementById("object_createRelationship").checked;
-					
+	
 		var link = "/mainentitys/viewentity?id="+entityId;
 		$.post('@{Topics.createDraft()}' ,{title:topicTitle, description:topicDescription, 
 			privacyLevel: privacyLevel, createRelationship: createRelationship,
-			topicId:topicId}, function(){window.location.href=link});					
+			entityId:entityId}, function(){window.location.href=link});					
 	}
 	
 	function discardDraft() {
@@ -187,12 +195,12 @@
 	}
 	
 	function testing() {
-		
+		alert("in testing");
 		var id = getKill();
 		alert(id);
-		 $.getJSON( '@{Topics.discardForCrud()}',{topicId:id},  function(data) {
-		 	alert(data);
-		 });
+		$.getJSON( '@{Topics.discardForCrud()}',{topicId:id});
+		 
+		
 	}
 	
 	
