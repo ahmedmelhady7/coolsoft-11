@@ -840,38 +840,6 @@ public class Ideas extends CoolCRUD {
 	}
 
 	/**
-	 * @author Loaay Alkherbawy
-	 * @param ideaId
-	 *            : the Id of the idea that the user likes
-	 * @description: this method sends a notification to the creator telling him
-	 *               who liked his idea
-	 */
-
-	public static void like(long ideaId) {
-		System.out.println("Notification about to be sent");
-		Idea idea = Idea.findById(ideaId);
-		Notifications.sendNotification(idea.author.id, ideaId, "Idea",
-				Security.getConnected().username + " liked your idea "
-						+ idea.title);
-		System.out.println("Notification sent");
-	}
-
-	/**
-	 * @author Loaay Alkherbawy
-	 * @param ideaId
-	 *            : the Id of the idea that the user dislikes
-	 * @description: this method sends a notification to the creator telling him
-	 *               who disliked his idea
-	 */
-
-	public static void disLike(long ideaId) {
-		Idea idea = Idea.findById(ideaId);
-		Notifications.sendNotification(idea.author.id, ideaId, "Idea",
-				Security.getConnected().username + " dis liked your idea "
-						+ idea.title);
-	}
-
-	/**
 	 * @description The method renders the ideas the organizer wants to merge
 	 * 
 	 * @author Mostafa Aboul-Atta

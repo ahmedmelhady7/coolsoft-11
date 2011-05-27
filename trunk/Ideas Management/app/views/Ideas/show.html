@@ -235,10 +235,6 @@
         #{/if}
 		 <br>
 		 <br>
-		 
-		 <input type="image"  class="linkButton" src="/public/images/icons/good.png" id ='like' title="Like" onclick="like()" />
-	   <input type="image"  class="linkButton" src="/public/images/icons/bad.png" id ='dislike' title="Dislike" onclick="disLike()" />
-			
         <div class="comment">
         <ul id="commentsList" style="list-style: none; ">
  		#{if comments} 
@@ -330,25 +326,6 @@
 			</style>
 			             
 	<div>
-		
-				<script type='text/javascript'>
-			;
-			function like(){
-				$.post('@{Ideas.like}',{ideaId: ${ideaId}},function(){
-					alert("you liked this idea");
-					document.getElementById('like').disabled = true;
-					document.getElementById('dislike').disabled = true;
-				});
-				}
-				;
-			function disLike(){
-				$.post('@{Ideas.disLike}',{ideaId: ${ideaId}},function(){
-					alert("you disliked this idea");
-					document.getElementById('like').disabled = true;
-					document.getElementById('dislike').disabled = true;
-				});
-			}
-		</script>
 		#{/if}
 		<br/>
 		<br/>
