@@ -81,7 +81,31 @@ public class TopicRequest extends CoolModel{
 			this.privacyLevel = privacyLevel;
 			this.message = message;
 		}
-		//TODO
+		
+		/**
+		 * Constructor for TopicRequest
+		 * 
+		 * @author Alia El Bolock
+		 * 
+		 * @param requester
+		 * 
+		 * @param entity
+		 * 
+		 * @param title
+		 * 
+		 * @param description
+		 * 
+		 * @param privacyLevel
+		 */
+		public TopicRequest(User requester, MainEntity entity, 
+				String title, String description, int privacyLevel) {
+			this.requester = requester;
+			this.entity = entity;
+			this.title = title;
+			this.description = description;
+			this.privacyLevel = privacyLevel;
+			this.message = "";
+		}
 
 		/**
 		 * Overrides the toString method to get the title of the requested topic and the requester of the topic
