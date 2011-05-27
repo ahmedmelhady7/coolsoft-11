@@ -396,9 +396,145 @@ public class Organizations extends CoolCRUD {
 	public static void viewFollowers(long organizationId, String flag) {
 		Organization org = Organization.findById(organizationId);
 		User user = Security.getConnected();
+		notFoundIfNull(org);
+		List<MainEntity> allEntities = MainEntity.findAll();
+		List<Tag> tags = new ArrayList<Tag>();
+		int i = 0;
+		int allowed = 0;
+		int settings = 0;
+		org.incrmentViewed();
+		org.save();		
+		if (org.privacyLevel == 1
+				&& Users.isPermitted(
+						user,
+						"accept/reject join requests from users to join a private organization",
+						organizationId, "organization"))
+			allowed = 1;
+		if (Users
+				.isPermitted(
+						user,
+						"enable/disable the user to create their own tags within an organization",
+						organizationId, "organization"))
+			settings = 1;
+		while (i < org.relatedTags.size()) {
+			tags.add(org.relatedTags.get(i));
+			i++;
+		}
+		int canCreateEntity = 0;
+		if (user.isAdmin
+				|| Users.isPermitted(user, "create entities", organizationId,
+						"organization")) {
+			canCreateEntity = 1;
+		}
+		List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
+		for (MainEntity entity : allEntities) {
+			if (Users.isPermitted(user, "view", entity.id, "entity")) {
+				entitiesICanView.add(entity);
+			}
+		}
+		List<MainEntity> entities = new ArrayList<MainEntity>();
+		int iii = 1;
+		while (iii < org.entitiesList.size()) {
+			entities.add(org.entitiesList.get(iii));
+			iii++;
+		}
+		List<MainEntity> entitiesCanBeRelated = new ArrayList<MainEntity>();
+		for (int x = 0; x < entities.size(); x++) {
+			entitiesCanBeRelated.add(entities.get(x));
+		}
+		List<Topic> topics = new ArrayList<Topic>();
+		for (int x = 0; x < entities.size(); x++) {
+			for (int y = 0; y < entities.get(x).topicList.size(); y++) {
+				topics.add(entities.get(x).topicList.get(y));
+			}
+		}
+		for (int x = 0; x < entitiesCanBeRelated.size(); x++) {
+			if (!entitiesCanBeRelated.get(x).createRelationship)
+				entitiesCanBeRelated.remove(entitiesCanBeRelated.get(x));
+		}
+		boolean enrolled = false;
+		boolean canInvite = false;
+		if (Users.isPermitted(user,
+				"Invite a user to join a private or secret organization",
+				org.id, "organization")
+				&& org.privacyLevel != 2) {
+			canInvite = true;
+		}
+
+		if (Users.getEnrolledUsers(org).contains(user)) {
+			enrolled = true;
+		}
+		boolean requestToJoin = false;
+		if ((enrolled == false) && (org.privacyLevel == 1)) {
+			requestToJoin = true;
+		}
+		int followFlag = 0;
+		if ((Security.getConnected() == org.creator)
+				|| (Security.getConnected().isAdmin)) {
+			followFlag = 1;
+		}
+		boolean admin = user.isAdmin;
+		boolean isMember = Users.getEnrolledUsers(org).contains(user);
+		boolean creator = false;
+		if (org.creator.equals(user)) {
+			creator = true;
+		}
+		List<RequestToJoin> allRequests = RequestToJoin.findAll();
+		boolean alreadyRequested = false;
+		if ((!user.isAdmin) && (!org.creator.equals(user))
+				&& (!Users.getEnrolledUsers(org).contains(user))
+				&& (org.privacyLevel == 1)) {
+			int ii = 0;
+			while (ii < allRequests.size()) {
+				if (allRequests.get(ii).organization.equals(org)
+						&& allRequests.get(ii).source.equals(user)) {
+					alreadyRequested = true;
+				}
+				ii++;
+			}
+		}
+		boolean follower = user.followingOrganizations.contains(org);
+		List<User> users = User.findAll();
+		String usernames = "";
+		List<User> enrolledUsers = Users.getEnrolledUsers(org);
+		if (canInvite) {
+			for (int j = 0; j < users.size(); j++) {
+				if (users.get(j).state.equalsIgnoreCase("a")
+						&& !enrolledUsers.contains(users.get(j))
+						&& !users.get(j).isAdmin) {
+					if (j < users.size() - 1) {
+						usernames += users.get(j).username + "|";
+					} else {
+						usernames += users.get(j).username;
+					}
+				}
+			}
+		}
+		boolean join = false;
+		if ((!Users.getEnrolledUsers(org).contains(user)) && (!admin)
+				&& (org.privacyLevel == 2)) {
+			join = true;
+		}
+
+		// Lama Ashraf view logs
+
+		int logFlag = 0;
+		if (Security.getConnected().equals(org.creator)
+				|| Security.getConnected().isAdmin) {
+			logFlag = 1;
+		}
+
+		long pictureId = org.profilePictureId;
+		List<User> followers = org.followers;
+		MainEntity defaultEntity = org.entitiesList.get(0);
+		List<Plan> plans = Plans.planList("organization", org.id);
 		if (flag.equals("true"))
 			followOrganization(organizationId);
-		render(org, user);
+		render(user, org, entities, requestToJoin, canCreateEntity, tags, followFlag,
+				canInvite, admin, allowed, isMember, settings, creator,
+				alreadyRequested, plans, follower, usernames, join, logFlag,
+				pictureId, topics, entitiesCanBeRelated, entitiesICanView,
+				followers, defaultEntity);
 	}
 
 	/**

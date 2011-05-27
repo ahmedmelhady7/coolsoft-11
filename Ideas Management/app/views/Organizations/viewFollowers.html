@@ -1,82 +1,242 @@
 <html>
     <head>
         <meta name="generator" content="HTML Tidy, see www.w3.org">
-		<style type="text/css">body {
-			font-size:80%;
-			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
-		}
-	#showViewFollowers{
-	margin-top: 1%;
-	margin-right: 5%;
-	margin-bottom: 4%;
-	margin-left: 0%;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	border-bottom-right-radius: 10px;
-	border-bottom-left-radius: 10px;
-	background-color: #bbbbbb;
-	padding-top: 2%;
-	padding-right: 4%;
-	padding-bottom: 0%;
-	padding-left: 4%;
-	position: relative;
-	border-bottom-width: 2px;
-	border-bottom-style: solid;
-	border-bottom-color: #bbbbbb;
-	border-right-width: 2px;
-	border-right-style: solid;
-	border-right-color: #bbbbbb;
-	border-left-width: 2px;
-	border-left-style: solid;
-	border-left-color: #bbbbbb;
-	border-top-width: 2px;
-	border-top-style: solid;
-	border-top-color: #bbbbbb;
-	word-wrap: break-word;
-}
-</style>
-
-        
+        <style type="text/css">
+            body {
+                font-size: 80%;
+                font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+            }
+            
+            #showViewFollowers {
+                margin-top: 1%;
+                margin-right: 5%;
+                margin-bottom: 4%;
+                margin-left: 0%;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                border-bottom-left-radius: 10px;
+                background-color: #bbbbbb;
+                padding-top: 2%;
+                padding-right: 4%;
+                padding-bottom: 0%;
+                padding-left: 4%;
+                position: relative;
+                border-bottom-width: 2px;
+                border-bottom-style: solid;
+                border-bottom-color: #bbbbbb;
+                border-right-width: 2px;
+                border-right-style: solid;
+                border-right-color: #bbbbbb;
+                border-left-width: 2px;
+                border-left-style: solid;
+                border-left-color: #bbbbbb;
+                border-top-width: 2px;
+                border-top-style: solid;
+                border-top-color: #bbbbbb;
+                word-wrap: break-word;
+            }
+        </style>
     </head>
-	
-	<div id="leftSidebar">
-		    <ul>
-		        <div style="clear: both;">
-		            &nbsp;
-		        </div>
-		        <li>
-		            <ul>
-		            	<li>
-		            		No actions yet
-		            	</li>
-						
-		            </ul>
-		        </li>
-		    </ul>
-	</div>
-	
-	<div id="page">
-    	<div id="page-bgtop">
-    		<div id="showViewFollowers">
-			    <body>
-			    	 <h2 style="font-size:7;font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Edit Organization</h2>
-					<br />
-			        #{extends 'login/index.html' /} 
-					#{if org.followers.size() > 0}
-					These are the currently available followers: <br />
-					<ul style="list-style: none;">
-						#{list items: org.followers, as:'follower'}
-						<li>
-							${follower.firstName} ${follower.lastName}
-						</li>
-						#{/list}
-					</ul> 
-					#{/if}
-					#{else}
-					No users are following ${org.name} at the moment!
-					#{/else}
-			    </body>
-			</div>
-		</div>
-	</div>
+    <div id="leftSidebar">
+        <ul>
+            <div style="clear: both;">
+                &nbsp;
+            </div>
+            <li>
+                <ul>
+                    #{if canInvite == true} 
+                    <li>
+                        <a id="invLink" style="cursor:pointer;">Invite a user</a>
+                    </li>
+                    #{/if}
+                    #{if admin || creator}
+                    <li>
+                        <a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
+                    </li>
+                    <li>
+                        <a href="@{Organizations.editOrganization(org.id)}" title="Edit Organization">Edit</a>
+                    </li>
+                    #{/if}
+                    <li>
+                        <a id="entityLink" style="cursor:pointer;">Entities</a>
+                        <div id="entityLinks">
+                            <ul>
+                                #{if entities.size() > 0}
+                                #{list items:entities, as:'entity'}
+                                <LI type="disc">
+                                    #{if (entitiesICanView.contains(entity))}<a href="@{MainEntitys.viewEntity(entity.id)}" style="cursor:pointer;">${entity.name}</a>
+                                    #{/if}
+                                    #{else}
+                                    ${entity.name}
+                                    #{/else}
+                                </LI>
+                                #{/list}
+                                #{/if}
+                                #{else}
+                                <LI type="disc">
+                                    No Entities Yet!
+                                </LI>
+                                #{/else}
+                            </ul>
+                        </div>
+                    </li>
+                    #{if (canCreateEntity == 1)}
+                    <li>
+                        <a href="@{MainEntitys.goToCreateEntity(org.id)}">Create an Entity</a>
+                    </li>
+                    #{/if}
+                    #{if allowed==1}
+                    <li>
+                        <a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>
+                    </li>
+                    #{/if}
+                    #{if isMember == true || org.privacyLevel == 2 || admin}
+                    <li>
+                        <a href="@{Pictures.index(org.id)}">Gallery</a>
+                    </li>
+                    #{/if}
+                    #{if plans.size()>0}
+                    <li>
+                        <a id="planLink" style="cursor:pointer;">Plans</a>
+                        <div id="plansLinks">
+                            <ul>
+                                #{list items:plans, as:'plan'}
+                                <li>
+                                    <a href="@{Plans.viewAsList(plan.id)}">${plan.title}</a>
+                                </li>
+                                #{/list}
+                            </ul>
+                        </div>
+                    </li>
+                    #{/if}
+                    <li>
+                        <a id="docLink" style="cursor:pointer;">Documents</a>
+                        <div id="documen">
+                            <ul>
+                                #{if creator == true || admin == true}
+                                <li>
+                                    <a href="@{Documents.newDocument(org.id)}">Add new</a>
+                                </li>
+                                #{/if}
+                                #{if isMember == true || org.privacyLevel == 2 || admin}
+                                #{ifnot org.getDocuments()}
+                                <li>
+                                    No documents
+                                </li>
+                                #{/ifnot}
+                                #{list items:org.getDocuments(), as:'document'}
+                                <li>
+                                    <a href="@{Documents.viewDocument(document.id)}">${document.name}</a>
+                                </li>
+                                #{/list}
+                                #{/if}#{else}
+                                <li>
+                                    No public documents
+                                </li>
+                                #{/else}
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        #{if (admin || creator)}<a href="@{Tags.createTag(org.id)}" title="Create a new Tag">Create a Tag</a>
+                        #{/if}
+                        #{else}
+                        #{if (org.createTag) && (!join)}<a href="@{Tags.createTag(org.id)}" title="Create a new Tag">Create a Tag</a>
+                        #{/if}
+                        #{/else}
+                    </li>
+                    #{if follower == true}
+                    <li>
+                        <a onclick="unfollow('${org.id}');">Unfollow ${org.name}</a>
+                    </li>
+                    #{/if}
+                    #{else}
+                    <li>
+                        <a href="@{followOrganization(org.id)}">Follow ${org.name}</a>
+                    </li>
+                    #{/else}
+                </ul>
+            </li>
+        </ul>
+    </div>
+	<div id="backToOrg" ><a href="@{Organizations.viewProfile(org.id)}"> Back to ${org.name} main page</a></div>
+    <div id="page">
+        <div id="page-bgtop">
+            <div id="showViewFollowers">
+                <body>
+                    <h2 style="font-size:7;font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Organization Followers</h2>
+                    <br/>
+                    #{extends 'login/index.html' /} 
+                    #{if org.followers.size() > 0} 
+                    These are the currently available followers: 
+                    <br/>
+                    <ul style="list-style: none;">
+                        #{list items: org.followers, as:'follower'}
+                        <li type="disc">
+                            ${follower.firstName} ${follower.lastName}
+                        </li>
+                        #{/list}
+                    </ul>
+                    #{/if}
+                    #{else}
+                    No users are following ${org.name} at the moment!
+                    #{/else}
+                </body>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var bdocs = false;
+        $('#documen').hide();
+        $('#docLink').click(function(){
+            if (bdocs) {
+                $('#documen').show(500);
+                bdocs = false;
+            }
+            else {
+                $('#documen').hide(500);
+                bdocs = true;
+            }
+        });
+        
+        var planFlag = true;
+        $('#plansLinks').hide();
+        $('#planLink').click(function(){
+            if (planFlag) {
+                $('#plansLinks').show(500);
+                planFlag = false;
+            }
+            else {
+                $('#plansLinks').hide(500);
+                planFlag = true;
+            }
+        });
+        
+        var followerFlag = false;
+        $('#followersLinks').hide();
+        $('#followersLink').click(function(){
+            if (followerFlag) {
+                $('#followersLinks').show(500);
+                followerFlag = false;
+            }
+            else {
+                $('#followersLinks').hide(500);
+                followerFlag = true;
+            }
+        });
+        
+        var entityFlag = false;
+        $('#entityLinks').hide();
+        $('#entityLink').click(function(){
+            if (entityFlag) {
+                $('#entityLinks').show(500);
+                entityFlag = false;
+            }
+            else {
+                $('#entityLinks').hide(500);
+                entityFlag = true;
+            }
+        });
+    </script>
 </html>
