@@ -194,25 +194,41 @@ public class Plan extends CoolModel {
 		return "Title: " + title;
 	}
 
-	public String calculateProgress() {
+	/**
+	 * 
+	 * This method calculates the progress of a plan based on the items'
+	 * statuses and returns this progress as an integer
+	 * 
+	 * @author Mohamed Mohie
+	 * 
+	 * @story C5S7
+	 *  
+	 * @return int: the progress of the plan
+	 */
+	public int calculateProgress() {
 		double sum = 0;
-		String s = "";
+		// String s = "";
+		int sumInt = 0;
+
 		if (!items.isEmpty()) {
+
 			for (Item item : items) {
 				sum += item.status;
 			}
 			double p = sum / (2 * items.size()) * 100;
-			s = s + p;
-			if (s.length() >= 4) {
-				s = s.substring(0, 4);
-				if (s.endsWith("."))
-					s = s.substring(0, 3);
-			}
-		} else {
-			s = "0";
+			sumInt = (int) p;
+			// s = s + p;
+			// if(s.length()>=4) {
+			// s = s.substring(0,4);
+			// if(s.endsWith("."))
+			// s = s.substring(0,3);
+			// }
+			// } else {
+			// s = "0";
+			// }
+			// s += "%";
 		}
-		s += "%";
-		return s;
+		return sumInt;
 	}
 
 	/**

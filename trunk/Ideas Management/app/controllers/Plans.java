@@ -138,7 +138,8 @@ public class Plans extends CoolCRUD {
 	/**
 	 * This Method directly assigns the logged in user to the item, notify the
 	 * other users assigned to the item and the topic organizers and add to the
-	 * logs of the user, item, item's plan, entity, organization given the item id
+	 * logs of the user, item, item's plan, entity, organization given the item
+	 * id
 	 * 
 	 * @story C5S10
 	 * 
@@ -657,15 +658,18 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
-	 * This method generates the average of the user-entered rating and the rating of the specified plan
+	 * This method generates the average of the user-entered rating and the
+	 * rating of the specified plan
 	 * 
 	 * @author Ibrahim Safwat
 	 * 
 	 * @story C4S09
 	 * 
-	 * @param planId : the id of the plan the user wants to rate
+	 * @param planId
+	 *            : the id of the plan the user wants to rate
 	 * 
-	 * @param rating : user-entered rating
+	 * @param rating
+	 *            : user-entered rating
 	 * 
 	 * @return : void
 	 */
@@ -674,20 +678,19 @@ public class Plans extends CoolCRUD {
 		Plan planInUse = Plan.findById(planId);
 		User userLoggedIn = Security.getConnected();
 
-			planInUse.usersRated.add(userLoggedIn);
-			if (planInUse.rating.equals("Not yet rated"))
-				planInUse.rating = Integer.toString(rating);
-			else {
-				int oldRating = Integer.parseInt(planInUse.rating);
-				int newRating;
-				newRating = (oldRating + rating) / 2;
-				planInUse.rating = Integer.toString(newRating);
-			}
-			planInUse.save();
-			redirect("/plans/viewaslist?planId=" + planId);
+		planInUse.usersRated.add(userLoggedIn);
+		if (planInUse.rating.equals("Not yet rated"))
+			planInUse.rating = Integer.toString(rating);
+		else {
+			int oldRating = Integer.parseInt(planInUse.rating);
+			int newRating;
+			newRating = (oldRating + rating) / 2;
+			planInUse.rating = Integer.toString(newRating);
+		}
+		planInUse.save();
+		redirect("/plans/viewaslist?planId=" + planId);
 
 	}
-
 
 	/**
 	 * This method takes the parameters from the web page of the plan creation
@@ -756,9 +759,11 @@ public class Plans extends CoolCRUD {
 	 * 
 	 * @story C4S08
 	 * 
-	 * @param userName: username of the user that the notification will be sent to
+	 * @param userName
+	 *            : username of the user that the notification will be sent to
 	 * 
-	 * @param planId: the ID of the plan that the notification will be sent from
+	 * @param planId
+	 *            : the ID of the plan that the notification will be sent from
 	 * 
 	 * @return void
 	 */
@@ -769,7 +774,7 @@ public class Plans extends CoolCRUD {
 				+ " shared a plan with you";
 
 		Notifications.sendNotification(userChosen.id, planId, "Plan", desc);
-		
+
 	}
 
 	/**
@@ -1567,7 +1572,7 @@ public class Plans extends CoolCRUD {
 	/**
 	 * 
 	 * This method relates a given item to the given entity if the item is not
-	 * related to any entity
+	 * related to any entity and logs this action.
 	 * 
 	 * @author Mohamed Mohie
 	 * 
@@ -1578,8 +1583,6 @@ public class Plans extends CoolCRUD {
 	 * 
 	 * @param entityId
 	 *            the id of the entity
-	 * 
-	 * @return boolean
 	 */
 	public static void relateToEntity(long itemId, long entityId) {
 		User user = Security.getConnected();
@@ -1620,7 +1623,8 @@ public class Plans extends CoolCRUD {
 
 	/**
 	 * 
-	 * This method removes the relation between an item and the entity
+	 * This method removes the relation between an item and the entity and logs
+	 * this action.
 	 * 
 	 * @author Mohamed Mohie
 	 * 
@@ -1628,10 +1632,8 @@ public class Plans extends CoolCRUD {
 	 * 
 	 * @param itemId
 	 *            the id of the item
-	 * 
-	 * @return boolean
 	 */
-	public static boolean removeItemEntityRelation(long itemId) {
+	public static void removeItemEntityRelation(long itemId) {
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
 		notFoundIfNull(item);
@@ -1653,7 +1655,6 @@ public class Plans extends CoolCRUD {
 		item.relatedEntity.save();
 		item.relatedEntity = null;
 		item.save();
-		return true;
 	}
 
 	/**
@@ -1687,24 +1688,22 @@ public class Plans extends CoolCRUD {
 		long pId=item.plan.id;
 		Plan plan = Plan.findById(pId);
 		notFoundIfNull(plan);
-		
 
-		Tag tagTemp=null;
-		
-		tagTemp=Tags.createTag(tag,user,plan.topic.entity.organization.id);
-		if(tagTemp==null){
-			newTag=false;
+		Tag tagTemp = null;
+
+		tagTemp = Tags.createTag(tag, user, plan.topic.entity.organization.id);
+		if (tagTemp == null) {
+			newTag = false;
 			for (int i = 0; i < globalListOfTags.size(); i++) {
-				if(globalListOfTags.get(i).name.equals(tag)){
-					tagTemp=globalListOfTags.get(i);
+				if (globalListOfTags.get(i).name.equals(tag)) {
+					tagTemp = globalListOfTags.get(i);
 				}
 			}
-			
+
+		} else {
+			newTag = true;
 		}
-		else {
-			newTag=true;
-		}
-		
+
 		if (item.tags.contains(tagTemp)) {
 			tagAlreadyExists = true;
 
@@ -1714,49 +1713,44 @@ public class Plans extends CoolCRUD {
 			tagTemp.taggedItems.add(item);
 			tagTemp.save();
 		}
-		
+
 		item.save();
 		String logDescription = "User "
-			+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
-			+ user.id + "\">" + user.firstName + " " + user.lastName
-			+ "</a>" + " has tagged " + item.summary;
-			
-			
+				+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id + "\">" + user.firstName + " " + user.lastName
+				+ "</a>" + " has tagged " + item.summary;
+
 		JsonObject json = new JsonObject();
 		if (!tagAlreadyExists) {
 			json.addProperty("name", tagTemp.name);
 			json.addProperty("id", tagTemp.id + "");
-	
-			if(newTag){
-			json.addProperty("success", "1");
-			logDescription+="with a new Tag ";
-				
-			}
-			else{
+
+			if (newTag) {
+				json.addProperty("success", "1");
+				logDescription += "with a new Tag ";
+
+			} else {
 				json.addProperty("success", "2");
-			logDescription+="with an already existing Tag";
+				logDescription += "with an already existing Tag";
 			}
-			logDescription+= "<a href=\"http://localhost:9008/tags/mainpage?tagId="
-				+ tagTemp.id + "\">" + tagTemp.name + "</a>";
+			logDescription += "<a href=\"http://localhost:9008/tags/mainpage?tagId="
+					+ tagTemp.id + "\">" + tagTemp.name + "</a>";
 
 		}
-		
+
 		else {
 			json.addProperty("success", "0");
 		}
-		logDescription+= " in the plan "
-		+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
-		+ item.plan.id + "\">" + item.plan.title + "</a>"
-		+ " of the topic "
-		+ "<a href=\"http://localhost:9008/topics/show?topicId="
-		+ item.plan.topic.id + "\">" + item.plan.topic.title + "</a>";
-		
-			
+		logDescription += " in the plan "
+				+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+				+ item.plan.id + "\">" + item.plan.title + "</a>"
+				+ " of the topic "
+				+ "<a href=\"http://localhost:9008/topics/show?topicId="
+				+ item.plan.topic.id + "\">" + item.plan.topic.title + "</a>";
 
-	Log.addUserLog(logDescription, user, item, item.plan, item.plan.topic,
-			item.plan.topic.entity, item.plan.topic.entity.organization,tagTemp);
-
-		
+		Log.addUserLog(logDescription, user, item, item.plan, item.plan.topic,
+				item.plan.topic.entity, item.plan.topic.entity.organization,
+				tagTemp);
 
 		renderJSON(json.toString());
 

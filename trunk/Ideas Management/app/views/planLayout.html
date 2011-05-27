@@ -1,4 +1,5 @@
 #{extends 'login/index.html' /}
+
 <style type="text/css">body {
 			font-size:80%;
 			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
@@ -63,6 +64,9 @@
 }
 
 </style>
+  <link href="/public/stylesheets/start/jquery-ui-1.8.13.custom.css" rel="stylesheet" type="text/css"/>
+  <script src="/public/javascripts/jquery-1.5.1.min.js"></script>
+  <script src="/public/javascripts/jquery-ui-1.8.13.custom.min.js"></script>
 #{if canView == true}
 <div id="leftSidebar">
     <ul>
@@ -140,13 +144,19 @@
         <br/>
         <b>Plan rating: </b>
         ${plan.rating}
-        <br/>
+		<br/>
         <b>Plan progress:</b>
-        ${plan.calculateProgress()}
+        ${plan.calculateProgress()}%
+		<div style="width: 50%;" id="progressbar"></div>
         <br/>
     </p>
 	</div>
 	</div>
+	<script>
+  	$(document).ready(function() {
+    $("#progressbar").progressbar({ value: ${plan.calculateProgress()} });
+	});
+  	</script>
     <script type="text/javascript">
         function delPlan(id, topicId){
             var r = confirm("Are You sure you want to delete the plan?");
