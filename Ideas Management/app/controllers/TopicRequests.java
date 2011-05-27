@@ -208,31 +208,22 @@ public class TopicRequests extends CoolCRUD{
  * 
  */
 public static void list(long entityId) {
-	System.out.println("entity = " + entityId);
 	MainEntity entity = MainEntity.findById(entityId);
 	User user = Security.getConnected();
 	List<TopicRequest> listOfTopicsToBeRendered = new ArrayList<TopicRequest>(); 
 	List<TopicRequest> listOfTopicRequests = TopicRequest.findAll();
-	System.out.println("size global = " + listOfTopicRequests.size());
 	for (int i =0; i < listOfTopicRequests.size(); i++){
 		System.out.println("1 : " + listOfTopicRequests.get(i).entity.toString());
 		System.out.println("2 : " + entity.toString());
 		if (listOfTopicRequests.get(i).entity.equals(entity)){
 			listOfTopicsToBeRendered.add(listOfTopicRequests.get(i));
-			System.out.println(listOfTopicRequests.get(i).toString());
 		}
 	}
-	System.out.println("list() for TopicRequests entered entity " + entityId + " and user "
-			+ user.toString());
 	try {
-		System.out.println("list() for TopicRequests done about to render");
-		System.out.println("size = " + listOfTopicsToBeRendered.size());
 		String entityName = entity.name;
 		render(entityId, user, entityName, listOfTopicsToBeRendered);
 
 	} catch (TemplateNotFoundException exception) {
-		System.out
-				.println("list() for TopicRequests done with exception about to render CRUD/list.html");
 		render("CRUD/list.html", entityId, user);
 	}
 
@@ -256,25 +247,15 @@ public static void list(long entityId) {
  */
 
 public static void acceptRequest(long topicRequestId, String topicDescription) {
-	System.out.println("wasal el accept" + topicRequestId);
-	System.out.println(topicDescription);
 	TopicRequest request = (TopicRequest) TopicRequest.findById(topicRequestId);
-	System.out.println(request.toString());
 	Topic topic = new Topic(request.title, topicDescription, request.privacyLevel, request.requester, request.entity, true);
-	System.out.println(topic.toString());
 	topic.save();
-	System.out.println("topic saved");
 	MainEntity entity = request.entity;
-	System.out.println(entity.toString());
 	request.delete();
-	System.out.println("request deleted");
 	entity.save();
-	System.out.println("entity saved");
-	
 	Notifications.sendNotification(
 			request.requester.id, topic.id, "topic",
 			"The topic request named " + request.title + " has been accepted.");
-	
 	String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + Security.getConnected().id +"\">" + Security.getConnected().firstName + "</a>"
     + " accepted a topic request with the title " + request.title +" in <a href=\"http://localhost:9008/mainentitys/viewentity?id=" + request.entity.id +"\">" +  request.entity.name + "</a>";
 	Log.addUserLog(logDescription, request.entity, request.entity.organization, Security.getConnected());
@@ -294,14 +275,10 @@ public static void acceptRequest(long topicRequestId, String topicDescription) {
  */
 
 public static void rejectRequest(long topicRequestId) {
-	System.out.println("wasal el reject" + topicRequestId);
 	TopicRequest request = (TopicRequest) TopicRequest.findById(topicRequestId);
 	MainEntity entity = request.entity;
-	System.out.println(entity.toString());
 	request.delete();
-	System.out.println("request deleted");
 	entity.save();
-	System.out.println("entity saved");
 	Notifications.sendNotification(
 			request.requester.id, entity.id, "entity",
 			"The topic request named " + request.title + " has been rejected.");
