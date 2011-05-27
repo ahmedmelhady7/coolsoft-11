@@ -50,7 +50,6 @@ public class Invitations extends CoolCRUD {
 	public static void invite(long id, int type, int check) {
 
 		User user = Security.getConnected();
-		System.out.println(user);
 		List<User> usersMatched = new ArrayList<User>();
 		for (User user1 : users) {
 			usersMatched.add(user1);
@@ -74,7 +73,7 @@ public class Invitations extends CoolCRUD {
 			}
 
 		} else {
-			System.out.println("topics");
+			
 			Topic topic = Topic.findById(id);
 			notFoundIfNull(topic);
 			if (topic.privacyLevel == 1
@@ -196,10 +195,7 @@ public class Invitations extends CoolCRUD {
 		String role = "";
 		String name;
 		List<User> invalidUsers = new ArrayList<User>();
-		System.out.println(type);
-		System.out.println(email);
-		System.out.println(id);
-		System.out.println(userId);
+		
 		if (type == 0) {
 			entity = MainEntity.findById(id);
 			notFoundIfNull(entity);
@@ -208,7 +204,7 @@ public class Invitations extends CoolCRUD {
 			name = entity.name;
 			invalidUsers.add(entity.organization.creator);
 		} else {
-			System.out.println("HEREEE TOPIC");
+			
 			topic = Topic.findById(id);
 			notFoundIfNull(topic);
 			role = "idea developer";
@@ -230,8 +226,7 @@ public class Invitations extends CoolCRUD {
 								.get(i).entity.parent.equals(entity)))
 					check = true;
 			} else {
-				System.out.println("topic");
-				System.out.println(topic);
+				
 				if (invitation.get(i).email.equals(email)
 						&& (invitation.get(i).topic.equals(topic)))
 					check = true;
@@ -332,7 +327,7 @@ public class Invitations extends CoolCRUD {
 			}
 
 		} else {
-			System.out.println("YESSSSSS");
+			
 			Organization organization = topic.entity.organization;
 			Mail.invite(email, role, organization.name, name, type);
 			user.addInvitation(email, role, organization, null, topic);
@@ -397,7 +392,7 @@ public class Invitations extends CoolCRUD {
 	/**
 	 * 
 	 * Views the received invitations and renders the invitation list
-	 * the invitation will be hidden if the user is blocked
+	 * the invitation will be hidden if the user is blocked	
 	 * 
 	 * @author ${Mai.Magdy} , ${Fadwa.Sakr}
 	 * 
@@ -430,12 +425,12 @@ public class Invitations extends CoolCRUD {
 	 * 
 	 * Responds to the user (accept/reject) to the invitation.
 	 * if accept he ll be idea developer/organzier and the invitation will be deleted
-	 * if reject the invitation will be deleted, notificatins will be sent
+	 * if reject the invitation will be deleted, notifications will be sent
 	 * to all organizers and a log will be saved
 	 * 
-	 * @author ${Mai.Magdy} > if flag is false and role is organizer
+	 * @author ${Mai.Magdy}
 	 * @author ${Fadwa.Sakr} 
-	 * @author ${Ibrahim.Khayat} > if flag is false and role is idea developer
+	 * @author ${Ibrahim.Khayat}
 	 * 
 	 * @story C1S4,C2S17
 	 * 
@@ -450,12 +445,10 @@ public class Invitations extends CoolCRUD {
 	 */
 
 	public static void respond(int id, long i) {
-		System.out.println(id);
-		System.out.println(i);
+		
 		Invitation invite = Invitation.findById(i);
 		notFoundIfNull(invite);
 		String roleName = invite.role.toLowerCase();
-		System.out.println(roleName);
 		Organization organization = null;
 		MainEntity entity = null;
 		Topic topic = null;
@@ -478,7 +471,6 @@ public class Invitations extends CoolCRUD {
 		if (id == 1) {
 
 			if (!flag) {
-				System.out.println("HERE");
 				if (role.roleName.equals("organizer")) {
 					UserRoleInOrganizations.addEnrolledUser(user, organization,
 							role, entity.id, "entity");
@@ -487,7 +479,6 @@ public class Invitations extends CoolCRUD {
 						UserRoleInOrganization oldRole = UserRoleInOrganization.find("byEnrolledAndOrganizationAndEntityTopicIDAndType",user,
 								organization,entity.topicList.get(c).id,
 								"topic").first();
-						System.out.println("YES");
 						if (oldRole != null)
 							oldRole.delete();
 
