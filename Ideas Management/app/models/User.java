@@ -41,7 +41,6 @@ public class User extends CoolModel {
 	public String username;
 	@Required
 	@MinSize(3)
-	@MaxSize(25)
 	public String password;
 	@Required
 	public String firstName;
