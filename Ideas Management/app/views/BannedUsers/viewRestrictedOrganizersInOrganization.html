@@ -1,6 +1,7 @@
 #{extends 'Login/index.html' /}
 #{set title:'View Restricted Organizers' /}
-
+<div id="pageNoSideBar">
+ <div id="pageNoSideBar-bgtop">
 <img src="/public/images/arrow_prev.gif"/> <a href = "@{Organizations.viewProfile(organizationID)}" name = "back" type="submit" style="color:blue" onmouseout = "back.style.color='blue'" onmouseover="back.style.color='darkblue'">Back to the organization main profile</a>
 <br /><br />
 
@@ -11,9 +12,9 @@
  #{/if}   
  #{else}
  <form >
- <input type="radio" id ="Entity"  name="select" value="Entity"  onclick = "createEntityTable()"/> Sort by Entity Name <br />
- <input type="radio" id = "User" name= "select" value="User" onclick = "createUserTable()" /> Sort by User Name <br />
- <input type="radio" id = "Action" name= "select" value="Action" onclick = "createActionTable()" /> Sort by Action Restricted from <br />
+ <input type="radio" id ="Entity"  name="select" value="Entity"  onclick = "common(1)"/> Sort by Entity Name <br />
+ <input type="radio" id = "User" name= "select" value="User" onclick = "common(2)" /> Sort by User Name <br />
+ <input type="radio" id = "Action" name= "select" value="Action" onclick = "common(3)" /> Sort by Action Restricted from <br />
  
  </form>
 
@@ -50,254 +51,17 @@
  
  
  #{/else}
- 
+ </div>
+ </div>
  <script>
  
  
  
  var first = true;
  
- 
- 
- function createActionTable(){
-	 $('#break').hide()       
-		$('#loading').show(1)
-		
-	 
-	 
-	 if(first == false){
-		 for( var i  = 0 ; i <${entityBannedUsers.size()} ; i++){
-		 try {       
-//	 		   var table = document.getElementsById("u");      
-//	 			var rowCount = table.rows.length;           
-//	 			for(var i=0; i<rowCount; i++) {           
-//	 				var row = table.rows[i];             
-//	 				var chkbox = row.cells[0].childNodes[0];     
-//	 				if(null != chkbox && true == chkbox.checked) {        
-//	 					table.deleteRow(i);             
-//	 					rowCount--;               
-//	 					i--;              
-//	 					}          
-//	 				}        
-
-	              
-
-	    theTableBody = document.getElementsByTagName("TBODY").item(0);
-	    theTableBody.deleteRow(1);
-	   
-	
-
-//	 		 tabBody=document.getElementsByTagName("TBODY").item(0);
-//	 		 tabBody.removeChild(row);
-	               }
-
-				
-				catch(e) {       
-					alert(e);       
-					}      
-		 
-		 }
-		 
-		 
-		 if (!document.getElementsByTagName) return;
-// 	     tabBody=document.getElementsByTagName("TBODY").item(0);
-// 	     row=document.createElement("TR");
-// 	     cell1 = document.createElement("TD");
-// 	     cell2 = document.createElement("TD");
-// 	     cell3 = document.createElement("TD");
-// 	     textnode1=document.createTextNode("Main Entity Name");
-// 	     textnode2=document.createTextNode("User's Name");
-// 	     textnode3=document.createTextNode("Action restricted from");
-// 	     cell1.appendChild(textnode1);
-// 	     cell2.appendChild(textnode2);
-// 	     cell3.appendChild(textnode3);
-// 	     row.appendChild(cell1);
-// 	     row.appendChild(cell2);
-// 	     row.appendChild(cell3);
-// 	     tabBody.appendChild(row);
-		 
-		 }
-		 else{
-			 first = false;
-		 }
-	 
-	 
-	 
-	 var username = "";
-		var actionToDo = "";
-		var ID = "";
-		 var content = "";
-	
-	
-	
-	for( var i  = 0 ; i <${entityBannedUsers.size()} ; i++){
-		
-		
-			
-		$.getJSON( '@{BannedUsers.go()}', {order:i ,organizationID  : ${organizationID } , number:3 , type:"entity" } ,  function(data) {
-			
-			username = data.name;
-		 
-		 actionToDo = data.action;
-		 ID = data.resourceId;
-		
-		 content = data.namee;
-			
-			if (!document.getElementsByTagName) return;
-	         tabBody=document.getElementsByTagName("TBODY").item(0);
-	         row=document.createElement("TR");
-	         cell1 = document.createElement("TD");
-	         cell2 = document.createElement("TD");
-	         cell3 = document.createElement("TD");
-	         textnode1=document.createTextNode(content);
-	         textnode2=document.createTextNode(username);
-	         textnode3=document.createTextNode(actionToDo);
-	         cell1.appendChild(textnode1);
-	         cell2.appendChild(textnode2);
-	         cell3.appendChild(textnode3);
-	         row.appendChild(cell1);
-	         row.appendChild(cell2);
-	         row.appendChild(cell3);
-	         tabBody.appendChild(row);
-		 
-		 
-		});
-
-
-		
-		}
-	
-	
-	
-	
-	$('#loading').hide(3000)
-	 $('#break').show(3000)
-	
-	 
- }
- 
 	 
  
- 
- 
- 
- function createEntityTable(){
-	 
-	 $('#break').hide()       
-		$('#loading').show(1)
-		
-	 
-	 
-	 
-	 if(first == false){
-		 for( var i  = 0 ; i <${entityBannedUsers.size()} ; i++){
-		 try {       
-//	 		   var table = document.getElementsById("u");      
-//	 			var rowCount = table.rows.length;           
-//	 			for(var i=0; i<rowCount; i++) {           
-//	 				var row = table.rows[i];             
-//	 				var chkbox = row.cells[0].childNodes[0];     
-//	 				if(null != chkbox && true == chkbox.checked) {        
-//	 					table.deleteRow(i);             
-//	 					rowCount--;               
-//	 					i--;              
-//	 					}          
-//	 				}        
-
-	              
-
-	    theTableBody = document.getElementsByTagName("TBODY").item(0);
-	    theTableBody.deleteRow(1);
-	   
-	
-//	 		 tabBody=document.getElementsByTagName("TBODY").item(0);
-//	 		 tabBody.removeChild(row);
-	               }
-
-				
-				catch(e) {       
-					alert(e);       
-					}      
-		 
-		 }
-		 
-		 
-		 if (!document.getElementsByTagName) return;
-// 	     tabBody=document.getElementsByTagName("TBODY").item(0);
-// 	     row=document.createElement("TR");
-// 	     cell1 = document.createElement("TD");
-// 	     cell2 = document.createElement("TD");
-// 	     cell3 = document.createElement("TD");
-// 	     textnode1=document.createTextNode("Main Entity Name");
-// 	     textnode2=document.createTextNode("User's Name");
-// 	     textnode3=document.createTextNode("Action restricted from");
-// 	     cell1.appendChild(textnode1);
-// 	     cell2.appendChild(textnode2);
-// 	     cell3.appendChild(textnode3);
-// 	     row.appendChild(cell1);
-// 	     row.appendChild(cell2);
-// 	     row.appendChild(cell3);
-// 	     tabBody.appendChild(row);
-		 
-		 }
-		 else{
-			 first = false;
-		 }
-	 
-	 
-	 var username = "";
-		var actionToDo = "";
-		var ID = "";
-		 var content = "";
-	
-	
-	
-	for( var i  = 0 ; i <${entityBannedUsers.size()} ; i++){
-		
-		
-			
-		$.getJSON( '@{BannedUsers.go()}', {order:i ,organizationID  : ${organizationID } , number:1 , type:"entity" } ,  function(data) {
-			
-			username = data.name;
-		 
-		 actionToDo = data.action;
-		 ID = data.resourceId;
-		
-		 content = data.namee;
-			
-			if (!document.getElementsByTagName) return;
-	         tabBody=document.getElementsByTagName("TBODY").item(0);
-	         row=document.createElement("TR");
-	         cell1 = document.createElement("TD");
-	         cell2 = document.createElement("TD");
-	         cell3 = document.createElement("TD");
-	         textnode1=document.createTextNode(content);
-	         textnode2=document.createTextNode(username);
-	         textnode3=document.createTextNode(actionToDo);
-	         cell1.appendChild(textnode1);
-	         cell2.appendChild(textnode2);
-	         cell3.appendChild(textnode3);
-	         row.appendChild(cell1);
-	         row.appendChild(cell2);
-	         row.appendChild(cell3);
-	         tabBody.appendChild(row);
-		 
-		 
-		});
-
-
-		
-		}
-	
-	
-	$('#loading').hide(3000)
-	 $('#break').show(3000)
-	
-	
-	 
- }
- 
- function createUserTable(){
+ function common(key){
 	 $('#break').hide()       
 		$('#loading').show(1)
 		
@@ -305,28 +69,14 @@
 	 if(first == false){
 	 for( var i  = 0 ; i <${entityBannedUsers.size()}; i++){
 	 try {       
-// 		   var table = document.getElementsById("u");      
-// 			var rowCount = table.rows.length;           
-// 			for(var i=0; i<rowCount; i++) {           
-// 				var row = table.rows[i];             
-// 				var chkbox = row.cells[0].childNodes[0];     
-// 				if(null != chkbox && true == chkbox.checked) {        
-// 					table.deleteRow(i);             
-// 					rowCount--;               
-// 					i--;              
-// 					}          
-// 				}        
+
 
               
 
     theTableBody = document.getElementsByTagName("TBODY").item(0);
     theTableBody.deleteRow(1);
    
-
-
-// 		 tabBody=document.getElementsByTagName("TBODY").item(0);
-// 		 tabBody.removeChild(row);
-               }
+            }
 
 			
 			catch(e) {       
@@ -336,22 +86,9 @@
 	 }
 	 
 	 
-	 if (!document.getElementsByTagName) return;
-//      tabBody=document.getElementsByTagName("TBODY").item(0);
-//      row=document.createElement("TR");
-//      cell1 = document.createElement("TD");
-//      cell2 = document.createElement("TD");
-//      cell3 = document.createElement("TD");
-//      textnode1=document.createTextNode("Main Entity Name");
-//      textnode2=document.createTextNode("User's Name");
-//      textnode3=document.createTextNode("Action restricted from");
-//      cell1.appendChild(textnode1);
-//      cell2.appendChild(textnode2);
-//      cell3.appendChild(textnode3);
-//      row.appendChild(cell1);
-//      row.appendChild(cell2);
-//      row.appendChild(cell3);
-//      tabBody.appendChild(row);
+	 if (!document.getElementsByTagName)
+		 return;
+
 	 
 	 }
 	 else{
@@ -372,7 +109,7 @@
 	 		
 			
 				
-			$.getJSON( '@{BannedUsers.go()}', {order:i ,organizationID  : ${organizationID } , number:2 , type:"entity" } ,  function(data) {
+			$.getJSON( '@{BannedUsers.go()}', {order:i ,organizationID  : ${organizationID } , number:key , type:"entity" } ,  function(data) {
 				
 				username = data.name;
 			 
@@ -409,14 +146,7 @@
 		 $('#break').show(3000)
 		
 		
-		
-		
-		
-		
-		
-		
 		}
-	 
  
 
  </script>
