@@ -159,7 +159,7 @@ public class Plans extends CoolCRUD {
 	public static void workOnItem(long itemId) {
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
-
+		notFoundIfNull(item);
 		user.itemsAssigned.add(item);
 		user.save();
 		item.assignees.add(user);
@@ -288,7 +288,7 @@ public class Plans extends CoolCRUD {
 	 */
 	public static void selectedIdeas(long[] checkedIdeas, long planId) {
 		Plan plan = Plan.findById(planId);
-
+		notFoundIfNull(plan);
 		Idea idea;
 		String notificationContent = "";
 
@@ -426,7 +426,10 @@ public class Plans extends CoolCRUD {
 	 */
 	public static void unassociateIdea(long ideaId, long planId) {
 		Idea idea = Idea.findById(ideaId);
+		notFoundIfNull(idea);
 		Plan plan = Plan.findById(planId);
+		notFoundIfNull(plan);
+
 		idea.plan = null;
 		idea.author.communityContributionCounter = idea.author.communityContributionCounter - 13;
 		idea.author.save();
@@ -491,6 +494,7 @@ public class Plans extends CoolCRUD {
 		List<Plan> plans = new ArrayList<Plan>();
 		if (type == "entity") {
 			MainEntity entity = MainEntity.findById(id);
+			notFoundIfNull(entity);
 			List<Topic> topics = entity.topicList;
 			for (int i = 0; i < topics.size(); i++) {
 				if (topics.get(i).plan != null
@@ -501,6 +505,7 @@ public class Plans extends CoolCRUD {
 			}
 		} else {
 			Organization organization = Organization.findById(id);
+			notFoundIfNull(organization);
 			List<MainEntity> entities = organization.entitiesList;
 			MainEntity entity;
 			for (int i = 0; i < entities.size(); i++) {
@@ -537,7 +542,7 @@ public class Plans extends CoolCRUD {
 	public static void sendVolunteerRequest(long itemId, String justification) {
 		User sender = Security.getConnected();
 		Item destination = Item.findById(itemId);
-
+		notFoundIfNull(destination);
 		if (sender.canVolunteer(itemId)) {
 			if (!(destination.status == 2) && !destination.endDatePassed()) {
 				VolunteerRequest volunteerRequest = new VolunteerRequest(
@@ -606,6 +611,7 @@ public class Plans extends CoolCRUD {
 	 */
 	public static void cancelVolunteerRequest(long itemId) {
 		Item item = Item.findById(itemId);
+		notFoundIfNull(item);
 		User user = Security.getConnected();
 		for (VolunteerRequest volunteerRequest : user.volunteerRequests) {
 			if (volunteerRequest.destination.id == itemId) {
@@ -625,9 +631,7 @@ public class Plans extends CoolCRUD {
 						+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
 						+ user.id
 						+ "\">"
-						+ user.firstName
-						+ " "
-						+ user.lastName
+						+ user.username
 						+ "</a>"
 						+ " canceled his/her volunteer request to work on the item "
 						+ item.summary
@@ -1205,7 +1209,9 @@ public class Plans extends CoolCRUD {
 	public static boolean deleteItem(long itemId, int notify) {
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
+		notFoundIfNull(item);
 		Plan plan = Plan.findById(item.plan.id);
+		notFoundIfNull(plan);
 		plan.items.remove(item);
 		plan.save();
 		for (int i = 0; i < item.volunteerRequests.size(); i++) {
@@ -1239,9 +1245,8 @@ public class Plans extends CoolCRUD {
 		String logDescription = "User "
 				+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
 				+ user.id + "\">" + user.firstName + " " + user.lastName
-				+ "</a>"
-				+ " canceled his/her volunteer request to work on the item "
-				+ item.summary + " in the plan "
+				+ "</a>" + " deleted the item " + item.summary
+				+ " in the plan "
 				+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
 				+ plan.id + "\">" + plan.title + "</a>" + " of the topic "
 				+ "<a href=\"http://localhost:9008/topics/show?topicId="
@@ -1274,6 +1279,7 @@ public class Plans extends CoolCRUD {
 		User user = Security.getConnected();
 		List<User> toBeNotified = new ArrayList<User>();
 		Plan plan = Plan.findById(planId);
+		notFoundIfNull(plan);
 		String notificationMsg = "The plan " + plan.title + " has been deleted";
 		for (Item item : plan.items) {
 			for (User userAssigned : item.getAssignees()) {
@@ -1297,10 +1303,7 @@ public class Plans extends CoolCRUD {
 			deleteItem(plan.items.get(0).id, 0);
 			plan.save();
 		}
-		for (int i = 0; i < plan.ideas.size(); i++) {
-			plan.ideas.get(i).author.communityContributionCounter = plan.ideas
-					.get(i).author.communityContributionCounter - 13;
-		}
+
 		Idea idea;
 		while (!plan.ideas.isEmpty()) {
 			idea = plan.ideas.remove(0);
@@ -1520,7 +1523,7 @@ public class Plans extends CoolCRUD {
 	 * @param planId
 	 *            the id of the plan
 	 * 
-	 * 
+	 * @throws NotFoundIFNull
 	 * 
 	 **/
 
@@ -1598,6 +1601,7 @@ public class Plans extends CoolCRUD {
 		Item item = Item.findById(itemId);
 		notFoundIfNull(item);
 		MainEntity entity = MainEntity.findById(entityId);
+		notFoundIfNull(entity);
 		if (!entity.relatedItems.contains(item)) {
 			if (item.relatedEntity == null) {
 				entity.relatedItems.add(item);

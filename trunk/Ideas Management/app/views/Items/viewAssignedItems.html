@@ -1,16 +1,14 @@
 #{extends 'login/index.html' /}
 #{set title:'View list of assigned items' /}
 #{if assignedItems.size() > 0}<h3>Assigned Items </h3>
-
+<br/>
+<div id= "pageNoSideBar">
 <ul style="list-style: none; ">
     #{list items:assignedItems, as:'assignedItem'}
     <li >
         <fieldset style="width:750px;">
-            <legend>
-            	
+
 				<h3>Plan: <a href="@{Plans.viewAsList(assignedItem.plan.id)}">${assignedItem.plan.title}</a></h3>
-               
-            </legend>
 
             Title: ${assignedItem.summary} &nbsp; &nbsp; &nbsp;
 			#{if !assignedItem.endDatePassed()}
@@ -62,7 +60,7 @@
 #{else}
 You are not assigned to any to-do item.
 #{/else}
-
+</div>
 <script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
 </script>
 <script type="text/javascript">
