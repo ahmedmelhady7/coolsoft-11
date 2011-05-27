@@ -696,8 +696,6 @@
 						<div>
 							<p><font size=2>Description: ${topic.description}</font></p>
 						</div>
-						<br />
-						<br />
 					</div>
 					#{/if}
 					#{/else}
@@ -710,18 +708,19 @@
 				No topics available for this entity!
 				#{/else}
 				#{if permission == 1}
-				<input type="image" src="/public/images/add.png" title="Add A Topic" onclick=location.href="@{Topics.blank(entity.id)}" class = "linkButton"></input>
+				<input style="float:right;" type="image" src="/public/images/add.png" title="Add A Topic" onclick=location.href="@{Topics.blank(entity.id)}" class = "linkButton"></input>
 				
 			#{/if}
 			    
 			#{else}
 			#{if canRequest == 1}
-				<input type="submit" value="Request A Topic" onclick=location.href="@{TopicRequests.blank(entity.id)}" class = "linkButton"></input>
+				<input style="float:right;" type="submit" value="Request A Topic" onclick=location.href="@{TopicRequests.blank(entity.id)}" class = "linkButton"></input>
 				
 			#{/if}
 			#{/else}
 			</div>
-			
+			<br />
+			<br />
 			#{if invite == 1}		
 				 <input type="submit" value="Invite Organizers" onclick=location.href="@{Invitations.invite(entity.id)}" class = "linkButton"></input>
 			#{/if}	

@@ -574,6 +574,10 @@ public class Topics extends CRUD {
 	 *              in the Add form of a Topic and if they are valid the object
 	 *              is created and saved and the community contribution counter
 	 *              of the author is incremented.
+	 *              
+	 * @param entityId
+	 *              : Id of the entity where the topic will be created
+	 *              
 	 * @throws Exception
 	 * 
 	 */
