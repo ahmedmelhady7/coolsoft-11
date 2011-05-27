@@ -1,6 +1,7 @@
 package models;
 
 import java.util.Arrays;
+
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -15,9 +16,20 @@ import models.User;
 import controllers.Security;
 
 import play.db.jpa.*;
+
+/**
+ *  Model Invitation by Lama Ashraf
+ */
+
 @Entity
 public class Log extends CoolModel{
+	/**
+	 *  description of the action saved in the log
+	 */
 	public String actionDescription;
+	/**
+	 *  timestamp of the action 
+	 */
 	public String time;
 	
 	/**

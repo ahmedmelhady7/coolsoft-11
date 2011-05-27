@@ -15,7 +15,7 @@ import models.*;
 public class Logs extends CoolCRUD {
 	/**
 	 * 
-	 * responsible for displaying the logs of a certain organization
+	 * responsible for displaying the logs of a certain organization only for the admin and organization lead
 	 * 
 	 * @author ${lama ashraf}
 	 * 
@@ -65,7 +65,7 @@ public class Logs extends CoolCRUD {
 
 	/**
 	 * 
-	 * responsible for searching in the logs of a specific organization
+	 * responsible for searching in the logs of a specific organization, with a specific keyword in a specific entity
 	 * 
 	 * @author ${lama ashraf}
 	 * 
@@ -76,6 +76,8 @@ public class Logs extends CoolCRUD {
 	 * 
 	 * @param id
 	 *            : long organization id
+	 *@param entityId
+	 *            : long entity id
 	 * 
 	 */
 	public static void searchLog(@Required String keyword, long id,
@@ -190,14 +192,11 @@ public class Logs extends CoolCRUD {
 
 	/**
 	 * 
-	 * responsible for viewing of the logs of users
+	 * responsible for viewing of the logs of all users for the admin anly
 	 * 
 	 * @author ${lama ashraf}
 	 * 
 	 * @story C1S8
-	 * 
-	 * @param userId
-	 *            : long id of the user
 	 * 
 	 */
 	public static void viewUserLogs() {
@@ -223,7 +222,7 @@ public class Logs extends CoolCRUD {
 
 	/**
 	 * 
-	 * responsible for searching in the logs
+	 * responsible for searching in the logs for the admin only
 	 * 
 	 * @author ${lama ashraf}
 	 * 
@@ -231,9 +230,6 @@ public class Logs extends CoolCRUD {
 	 * 
 	 * @param keyword
 	 *            : String keyword for searching for in the logs
-	 * 
-	 * @param id
-	 *            : long user id
 	 * 
 	 */
 	public static void searchUserLog(@Required String keyword) {
