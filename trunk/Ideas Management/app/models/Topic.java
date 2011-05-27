@@ -234,6 +234,7 @@ public class Topic extends CoolModel {
 		this.creator = creator;
 		this.entity = entity;
 		this.relationsSource = new ArrayList<TopicRelationship>();
+		this.invitations=new ArrayList <Invitation>();
 		this.relationsDestination = new ArrayList<TopicRelationship>();
 		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
 		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
