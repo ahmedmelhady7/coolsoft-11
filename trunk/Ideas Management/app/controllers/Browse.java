@@ -38,6 +38,7 @@ public class Browse extends Controller {
 	 * 
 	 *        this method loops on the list of organizations to browse them
 	 *        appropiatly
+	 *@return void
 	 * 
 	 */
 	public static void browse() {
