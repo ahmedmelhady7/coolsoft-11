@@ -150,10 +150,12 @@
 			<input id = "save" type="submit" name="_save" value="&{'crud.save', type.modelName}" class="linkButton"/>
 			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" class="linkButton"/>
 			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" class="linkButton"/>
+			
 		</p>
 	#{/form}
 			
 			<input type="submit" id ="saveAsDraftButton" value="Save as Draft" onclick="saveAsDraft()" class="linkButton"></input>
+			
 	</div>
 
 </div>
@@ -170,16 +172,36 @@
 		var createRelationship = document.getElementById("object_createRelationship").checked;
 					
 		var link = "/mainentitys/viewentity?id="+entityId;
-		$.post('@{Topics.saveDraft()}' ,{title:topicTitle, description:topicDescription, 
+		$.post('@{Topics.createDraft()}' ,{title:topicTitle, description:topicDescription, 
 			privacyLevel: privacyLevel, createRelationship: createRelationship,
 			topicId:topicId}, function(){window.location.href=link});					
+	}
+	
+	function discardDraft() {
+		if (getSavedCounter() != 0) {
+			$.post('@{Topics.discardDraftTopic()}', {
+				topicId: getKill()
+			});
+		}
+		return true;
+	}
+	
+	function testing() {
+		
+		var id = getKill();
+		alert(id);
+		 $.getJSON( '@{Topics.discardForCrud()}',{topicId:id},  function(data) {
+		 	alert(data);
+		 });
 	}
 	
 	
 </script>
 <script type="text/javascript">
 
-				window.onload = auto;
+				//window.onload = auto;
+				if(!auto.kill) auto.kill = 0;
+				if(!auto.c) auto.c = 0;
 				
 				function getPrivacyLevel()
 				{
@@ -239,6 +261,7 @@
 						function(data){
 							id = data;
 							auto.kill = id;
+							
 							var currentTime = new Date();
 							var hours = currentTime.getHours();
 							var minutes = currentTime.getMinutes();
@@ -258,10 +281,13 @@
 				
 				function auto()
 				{
-					if(!auto.c) auto.c = 0;
+					
 					if(!auto.t) auto.t = document.getElementById("object_title").value.toString();
 	            	if(!auto.b)	auto.b = document.getElementById("object_description").value.toString();
-					if(!auto.kill) auto.kill = 0;
+					if(!auto.pr) auto.pr = getPrivacyLevel();
+					if(!auto.createRelation) auto.createRelation = document.getElementById("object_createRelationship").checked;
+					
+					
 					
 	                if (auto.c == 0) 
 					{
@@ -286,7 +312,7 @@
 						var xx = jQuery.trim(x);
 						var yy = jQuery.trim(y);
 						
-						if(((x != auto.t) || (y != auto.b)) && ((xx != "") && (yy != "") ) )
+						if(((x != auto.t) || (y != auto.b)|| w != auto.createRelation || r != auto.pr) && ((xx != "") && (yy != "") ) )
 						{
 							
 							$('#flashAmessage').fadeIn('10');
@@ -300,8 +326,10 @@
 								topicId:auto.kill
 							});
 							
-							auto.t = document.getElementById("object_title").value.toString();
-		            		auto.b = document.getElementById("object_description").value.toString();
+							auto.t = x;
+	            			auto.b = y;
+							auto.createRelation = w;
+							auto.pr = r;
 							
 							document.getElementById("flashAmessage").innerHTML = "draft auto saved at " + write;
 							setTimeout("myFader()",'3000');
@@ -396,6 +424,14 @@
 						{
 							return false;
 						}
+					}
+					
+					function getKill() {
+						return auto.kill;
+					}
+					
+					function getSavedCounter() {
+						return auto.c;
 					}
 			</script>
 	
