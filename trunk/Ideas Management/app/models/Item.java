@@ -134,9 +134,8 @@ public class Item extends CoolModel {
 	 */
 	public List <User> getAssignees() {
 		List <User> assignedUsers = new ArrayList<User> ();
-	
 		for(User user:assignees){
-			if(user.state == "a") {
+			if(user.state.equals("a")) {
 				assignedUsers.add(user);
 			}
 		}

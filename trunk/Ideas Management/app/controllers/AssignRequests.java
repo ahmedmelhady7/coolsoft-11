@@ -144,9 +144,7 @@ public class AssignRequests extends CoolCRUD {
 							+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
 							+ sender.id
 							+ "\">"
-							+ sender.firstName
-							+ " "
-							+ sender.lastName
+							+ sender.username
 							+ "</a>"
 							+ " sent an asssignment request to "
 							+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
