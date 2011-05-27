@@ -87,6 +87,8 @@ public class Search extends Controller {
 	 * @description Method that renders the searchResult View and divides the
 	 *              listOfResults to 4 lists according to the type of the result
 	 *              to render it
+	 * 
+	 * @return void
 	 */
 	public static void searchResult() {
 		String connected = Security.connected();
@@ -129,8 +131,6 @@ public class Search extends Controller {
 		}
 	}
 
-	
-	
 	/**
 	 * 
 	 * @author M Ghanem
@@ -303,6 +303,8 @@ public class Search extends Controller {
 	 * @description the method that calls all the helper methods
 	 *              searchForOrganization, searchForEntity, searchForIdea,
 	 *              searchForTopic and sums up the results in one list
+	 * 
+	 * @return void
 	 */
 	public static void quickSearch(String keyword) {
 		listOfResults = new ArrayList<Model>();
@@ -545,9 +547,10 @@ public class Search extends Controller {
 	}
 
 	/**
-	 * @description: method handelingOrAnd decides which list is to be passed for the filter
-	 * method if the choice is and so we will need to filter on the filtered
-	 * list but if or then we filter on the main list
+	 * @description: method handelingOrAnd decides which list is to be passed
+	 *               for the filter method if the choice is and so we will need
+	 *               to filter on the filtered list but if or then we filter on
+	 *               the main list
 	 * 
 	 * @author Monica Yousry
 	 * 
@@ -556,8 +559,8 @@ public class Search extends Controller {
 	 * @param andOr
 	 *            :: "char"; of the filter option view as input from user
 	 * 
-     * @return void.
-     *
+	 * @return void.
+	 * 
 	 */
 
 	public static void handelingOrAnd(char andOr) {
@@ -571,10 +574,10 @@ public class Search extends Controller {
 
 	/**
 	 * 
-	 * @description: sortA method sorts according to rates (known from input) in ascending
-	 * order
+	 * @description: sortA method sorts according to rates (known from input) in
+	 *               ascending order
 	 * 
-	 * task.
+	 *               task.
 	 * 
 	 * 
 	 * @author Monica Yousry
@@ -583,7 +586,7 @@ public class Search extends Controller {
 	 * 
 	 * 
 	 * 
-     * @return void
+	 * @return void
 	 * 
 	 */
 
@@ -658,17 +661,18 @@ public class Search extends Controller {
 
 	/**
 	 * 
-	 * @description: sortD_Views method sorts according to views in descending order
+	 * @description: sortD_Views method sorts according to views in descending
+	 *               order
 	 * 
-	 * task.
+	 *               task.
 	 * 
 	 * 
 	 * @author Monica Yousry
 	 * 
 	 * @story C4S04 sort descending the search result according to views
 	 * 
-	 *
-	 * @return void 
+	 * 
+	 * @return void
 	 * 
 	 * 
 	 */
@@ -924,16 +928,17 @@ public class Search extends Controller {
 
 	/**
 	 * 
-	 * @description: sortA_Views method sorts according to views in ascending order
+	 * @description: sortA_Views method sorts according to views in ascending
+	 *               order
 	 * 
-	 * task.
+	 *               task.
 	 * 
 	 * 
 	 * @author Monica Yousry
 	 * 
 	 * @story C4S04 sort ascending the search result according to views
 	 * 
-	 * @return void  
+	 * @return void
 	 * 
 	 * 
 	 */
