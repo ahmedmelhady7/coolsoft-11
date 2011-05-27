@@ -484,12 +484,12 @@ public class Ideas extends CoolCRUD {
 		notFoundIfNull(type);
 		Model object = type.findById(ideaId);
 		notFoundIfNull(object);
-		Idea i = (Idea) object;
+		Idea idea = (Idea) object;
 		// List<Tag> tags = i.tagsList;
-		User author = i.author;
-		List<Comment> comments = i.commentsList;
-		Plan plan = i.plan;
-		Topic topic = i.belongsToTopic;
+		User author = idea.author;
+		List<Comment> comments = idea.commentsList;
+		Plan plan = idea.plan;
+		Topic topic = idea.belongsToTopic;
 		// boolean openToEdit = i.openToEdit;
 		String deletemessage = "Are you Sure you want to delete the task ?!";
 		// boolean deletable = i.isDeletable();
