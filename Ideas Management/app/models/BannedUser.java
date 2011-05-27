@@ -51,13 +51,12 @@ public class BannedUser extends CoolModel {
 	 * 
 	 * @param banned
 	 *            User The banned user
-	 * 
-	 * @param action
-	 *            String action he will be banned from
-	 * 
+	 *
 	 * @param org
 	 *            Organization org at which this user will be banned from that
 	 *            action
+	 * @param action
+	 *            String action he will be banned from
 	 * 
 	 * @param resourceType
 	 *            the type of the object the action is related to
@@ -77,19 +76,21 @@ public class BannedUser extends CoolModel {
 	}
 
 	/**
-	 * used if  the action the user is banned from is
-	 * related to a certain object
+	 * used if the action the user is banned from is related to a certain object
 	 * 
 	 * @author:Nada Ossama
 	 * 
 	 * @story:C1S7
 	 * 
-	 * @param banned : User The banned user
+	 * @param banned
+	 *            User The banned user
 	 * 
-	 * @param action : String The action he will be banned from
+	 * @param org
+	 *            Organization at which this user will be banned from an action
 	 * 
-	 * @param org : Organization at which this user will be banned from that
-	 * action
+	 * @param action
+	 *            String The action he will be banned from
+	 * 
 	 */
 
 	public BannedUser(User banned, Organization org, String action) {
