@@ -379,9 +379,9 @@ $(document).ready(function(){
             <a href="@{viewFollowers(org.id, "false")}">View Followers</a>
         </li>
 		
-		<li> 
+		
 		#{if flag == 1}
-			         
+			 <li>         
 			        <form action="@{BannedUsers.restrictOrganizer()}">
 			            <input type="hidden" name="orgId" value='${org.id}'>
 			             <input type="submit" value="Restrict/Derestrict organizers" class="linkButton">
@@ -401,8 +401,14 @@ $(document).ready(function(){
 			            <input type="hidden" name="organizationID" value='${org.id}'>
 			            <input type="submit" value="Restricted Organizers in Topics" class="linkButton">
 			        </form>
+			       
+			       <form action="@{BannedUsers.restrictOrganizersList()}">
+			            <input type="hidden" name="orgId" value='${org.id}'>
+			            <input type="submit" value="Restrict/Derestrict multiple Organizers" class="linkButton">
+			        </form>
+			        </li>
 			        #{/if}
-		 </li>
+		 
 
 		</ul>
 		</li>		
