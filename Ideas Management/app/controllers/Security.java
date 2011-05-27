@@ -53,8 +53,7 @@ public class Security extends Secure.Security {
 	 * 			true if the user is authorised false otherwise
 	 */
 
-	public static boolean authenticate(String username, String password) {
-		String tempPass = password;
+	public static boolean authenticate(String username, String password) {		
 		password = Codec.hexMD5(password);		
 		User user = User.find(
 				"select u from User u where (u.username=? and u.password = ?)",
@@ -65,7 +64,7 @@ public class Security extends Secure.Security {
 				return false;
 			}
 			if (user.state.equals("w")) {
-				activationKey(user.username, tempPass);
+				activationKey(user.username);
 			}
 			session.put("user_id", user.id);
 			return true;
@@ -74,22 +73,50 @@ public class Security extends Secure.Security {
 		return false;		
 	}
 	
-	public static void activationKey(String username, String password) {
+	/**
+	 * Renders the view of the for the user to enter his activation key
+	 * to activate his account.
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S18
+	 * 
+	 * @param username
+	 * 			String the username of the user who is activating his password	
+	 */
+	
+	public static void activationKey(String username) {
 		User user = User.find("select u from User u where u.username=?", 
 				username).first();
-		render(user, password);
+		render(user);
 	}
+	
+	/**
+	 * Checks the activation key of the user and if correct changes his state so that
+	 * he can login.
+	 * 
+	 * @author Ahmed Maged
+	 * 
+	 * @story C1S18
+	 * 
+	 * @param username
+	 * 			String the username of the user who is activating his password
+	 * @param password
+	 * 			String the user's password
+	 * @param actKey
+	 * 			String the user's activation key
+	 */
 	
 	public static void checkKey(String username, String password, @Required String actKey) {
 		User user = User.find("select u from User u where u.username=?", 
 				username).first();	
 		if (validation.hasErrors()) {
 			flash.error("You must enter the activation key to login");
-			activationKey(user.username, password);
+			activationKey(user.username);
 		}
 		if (actKey.trim().equals("")) {
 			flash.error("You must enter the activation key to login");
-			activationKey(user.username, password);
+			activationKey(user.username);
 		}
 		if (user.activationKey.equals(actKey)) {
 			user.state = "h";
@@ -99,7 +126,7 @@ public class Security extends Secure.Security {
 			Login.homePage();
 		} else {
 			flash.error("Incorrect activation keyyyyyyyy");
-			activationKey(user.username, password);
+			activationKey(user.username);
 		}
 	}
 	

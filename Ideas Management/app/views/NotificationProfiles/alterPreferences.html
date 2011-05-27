@@ -10,11 +10,10 @@
 				alert('No changes to perform!!');
 			} else {				
 				var r=confirm("Are You sure you want to save changes?");
-				if (r == true) {
-					var c = confirm("Do you want to cascade the profiles");
-					if(c == true) {
-						$.post('@{disableCascadePreferences()}', {a:dis_ids});
-						$.post('@{enableCascadePreferences()}', {b:en_ids});
+				if (r == true) {										
+					if(document.getElementById('cascade').checked == true) {
+						$.post('@{disableCascadePreferences()}', {aa:dis_ids});
+						$.post('@{enableCascadePreferences()}', {bb:en_ids});
 					} else {
 						$.post('@{disablePreferences()}', {a:dis_ids});
 						$.post('@{enablePreferences()}', {b:en_ids});
@@ -24,6 +23,7 @@
 				}	
 				dis_ids = new Array();
 				en_ids = new Array();
+				document.getElementById('cascade').checked = false;
 				if(counter == 1) {
 					var field = document.myform.checkfield;
 					field.checked = false;
@@ -99,7 +99,7 @@
 <br>
 
 <input class = "linkButton" type="button"  value = "Save changes" onclick="submit()">
-					
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cascade: <input type="checkbox" id="cascade">		
 					</div>
 				</div>
 			</div>
