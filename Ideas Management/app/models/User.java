@@ -637,11 +637,10 @@ public class User extends CoolModel {
 	 * 			the number of notifications that the user has
 	 */
 	
-	public int getNotificationNumber() {
-		User user = Security.getConnected();
+	public int getNotificationNumber() {		
 		int notificationCount = 0;
-		for (int i = 0; i < user.notifications.size(); i++) {
-			if (!user.notifications.get(i).seen) {
+		for (int i = 0; i < this.notifications.size(); i++) {
+			if (!this.notifications.get(i).seen) {
 				notificationCount++;
 			}
 		}
@@ -660,16 +659,37 @@ public class User extends CoolModel {
 	 * 			List<Notification> the list of the latest notifications
 	 */
 	
-	public List<Notification> getLatest() {
-		User user = Security.getConnected();
+	public List<Notification> getLatest() {		
 		List<Notification> list = new ArrayList<Notification>();
-		for (int i = 0; i < user.notifications.size(); i++) {
-			if (user.notifications.get(i).status.equals("New")) {
-				list.add(user.notifications.get(i));
+		int counter = 0;
+		for (int i = 0; i < this.notifications.size(); i++) {
+			if (this.notifications.get(i).status.equals("New")) {
+				list.add(this.notifications.get(i));
+				counter++;
+				if (counter == 5) {
+					break;
+				}
 			}
 		}
+		List<Notification> reversedList = new ArrayList<Notification>();
+		for (int i = list.size() - 1; i >= 0; i--) {
+			reversedList.add(list.get(i));
+		}
+		return reversedList;
+	}
+	
+	public List<Log> getRecentActivity() {
+		List<Log> list = new ArrayList<Log>();
+		int counter = 0;
+		for (int i = 0; i < this.logs.size(); i++) {
+			list.add(this.logs.get(i));
+			counter++;
+			if (counter == 5) {
+				break;
+			}
+		}		
 		return list;
-	}		
+	}
 
 	
 	/**

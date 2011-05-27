@@ -66,7 +66,7 @@ a:hover {
 /* Header */
 
 #header-wrapper {
-	height: 100px;
+	height: 125px;
 	background: #1582AB;
 	border-bottom: 10px solid #2AA1CC;
 }
@@ -96,16 +96,15 @@ line-height:17px;}
 	width: 350px;
 	margin: 0;
 	padding: 0;
-	color: #000000;
-	
+	color: #000000;	
 }
 
 #logo h1, #logo p {
 }
 
 #logo h1 {
-	margin-left: 60px;
-	padding: 40p 0px 0px 80px;
+	margin-left: 10px;
+	padding: 40p 0px 0px 40px;
 	letter-spacing: -1px;
 	font-size: 2.5em;
 	background: redc;
@@ -114,9 +113,9 @@ line-height:17px;}
 #logo p {
 	margin: 0;
 	padding: 0px 0 0 62px;
-	font: normal 14px Georgia, "Times New Roman", Times, serif;
+	font: normal 16px Georgia, "Times New Roman", Times, serif;
 	font-style: italic;
-	color: #FFFFFF;
+	color: #000000;
 } 
 
 #logo a {
