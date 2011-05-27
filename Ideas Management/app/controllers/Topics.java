@@ -2353,7 +2353,6 @@ public class Topics extends CRUD {
 	 * 
 	 */
 	public static void discardDraftTopic(long topicId) {
-		System.out.println("-------------------------------- in discardddddddd");
 		
 		Topic targetTopic = Topic.findById(topicId);
 		User user = Security.getConnected();
@@ -2378,13 +2377,13 @@ public class Topics extends CRUD {
 	 */
 	
 	public static void discardForCrud(long topicId) {
-		System.out.println("-------------------------I'm in the function");
+		
 		Topic targetTopic = Topic.findById(topicId);
 		User user = Security.getConnected();
 
 		targetTopic.delete();
 		user.save();
-		System.out.println("I deleted");
+		
 	}
 	
 	/**
