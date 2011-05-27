@@ -299,6 +299,7 @@ public class Users extends CoolCRUD {
 
 	public static void viewProfile(long userId) {
 		User user = Security.getConnected();
+		notFoundIfNull(user);
 		boolean flag = true;
 		if (user.id == userId) {
 			User otherUser = Security.getConnected();
@@ -1688,6 +1689,17 @@ public class Users extends CoolCRUD {
 				for (int i = 0; i < user.requestsToJoin.size(); i++)
 					user.requestsToJoin.get(i).delete();
 				render(request.controller.replace(".", "/") + "/index.html");
+				/**
+				 * Added by Ahmed Maged to delete the user's notifications and notification Profile
+				 */
+				for (int i = 0; i < user.notifications.size(); i++) {
+					Notification notification = user.notifications.get(i);
+					notification.delete();
+				}
+				for (int i = 0; i < user.notificationProfiles.size(); i++) {
+					NotificationProfile notificationProfile = user.notificationProfiles.get(i);
+					notificationProfile.delete();
+				}
 			} catch (NullPointerException e) {
 				render(request.controller.replace(".", "/") + "/index.html");
 			}
@@ -1784,6 +1796,7 @@ public class Users extends CoolCRUD {
 
 	public static void showNotifications() {
 		User user = Security.getConnected();
+		notFoundIfNull(user);
 		for (int i = 0; i < user.notifications.size(); i++) {
 			if (user.notifications.get(i).seen) {
 				Notification notification = user.notifications.get(i);
@@ -1865,7 +1878,7 @@ public class Users extends CoolCRUD {
 
 	public static void notificationView(String type) {
 		User user = Security.getConnected();
-		// System.out.println(type);
+		notFoundIfNull(user);
 		List<Notification> notificationList = getNotificationsFrom(type);
 		if (type.equals("All")) {
 			type = "";
@@ -1942,6 +1955,7 @@ public class Users extends CoolCRUD {
 	
 	public static void notificationProfileView(String type) {
 		User user = Security.getConnected();
+		notFoundIfNull(user);
 		List<NotificationProfile> notificationProfileList = getNotificationProfilesOf(type);
 		String select = "";
 		if (type.equals("All")) {

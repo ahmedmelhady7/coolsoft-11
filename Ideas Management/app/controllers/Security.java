@@ -89,6 +89,7 @@ public class Security extends Secure.Security {
 	public static void activationKey(String username) {
 		User user = User.find("select u from User u where u.username=?", 
 				username).first();
+		notFoundIfNull(user);		
 		render(user);
 	}
 	
@@ -111,6 +112,7 @@ public class Security extends Secure.Security {
 	public static void checkKey(String username, String password, @Required String actKey) {
 		User user = User.find("select u from User u where u.username=?", 
 				username).first();	
+		notFoundIfNull(user);
 		if (validation.hasErrors()) {
 			flash.error("You must enter the activation key to login");
 			activationKey(user.username);
