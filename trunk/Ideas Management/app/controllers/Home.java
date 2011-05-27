@@ -9,7 +9,7 @@ import models.User;
 import play.mvc.Controller;
 
 /**
- * Creates the home page of the web site
+ * Creates the home page of the web site, and the contact and about pages
  * 
  * @author Ahmed Maged
  *
