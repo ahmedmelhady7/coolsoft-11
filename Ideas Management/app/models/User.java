@@ -302,14 +302,13 @@ public class User extends CoolModel {
 		Invitation invite = new Invitation(email, entity, organization, role,
 				this, topic).save();
 		this.invitation.add(invite);
+		
+		organization.invitation.add(invite);
 		if (topic != null)
 			topic.invitations.add(invite);
-		else {
-			organization.invitation.add(invite);
-			if (entity != null)
-				entity.invitationList.add(invite);
+		if (entity != null)
+			entity.invitationList.add(invite);
 
-		}
 		this.save();
 	}
 
