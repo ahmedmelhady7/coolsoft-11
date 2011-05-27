@@ -176,12 +176,7 @@ public class MainEntitys extends CoolCRUD {
 				"block a user from viewing or using a certain entity",
 				entity.id, "entity"))
 			check = 1;
-		int check1 = 0;
-		if (Users.isPermitted(user, "view", entity.id, "entity"))
-			check1 = 1;
-		int check2 = 0;
-		if (Users.isPermitted(user, "use", entity.id, "entity"))
-			check2 = 1;
+		
 		boolean follower = user.followingEntities.contains(entity);
 		boolean canCreateRelationship = EntityRelationships
 				.isAllowedTo(entityId);
@@ -189,7 +184,7 @@ public class MainEntitys extends CoolCRUD {
 				canEdit, canCreateEntity, canCreateSubEntity, follower,
 				canCreateRelationship, canRequest, canRequestRelationship,
 				canRestrict, entityIsLocked, plans, canDeleteEntity, followers,
-				check, check1, check2);
+				check);
 		if (flag.equals("true"))
 			followEntity(entityId);
 		render(user, org, entities, plans, entitiesICanView, followers, entity,
