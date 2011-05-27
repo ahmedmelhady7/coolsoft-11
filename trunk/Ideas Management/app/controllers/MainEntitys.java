@@ -484,7 +484,9 @@ public class MainEntitys extends CoolCRUD {
 		Organization org = entity.organization;
 		List<MainEntity> subentities = entity.subentities;
 		List<Topic> topicList = entity.topicList;
-
+		//faruki
+		Organization organization = entity.organization;
+		if (!organization.entitiesList.get(0).equals(entity)) {
 		entity.incrmentViewed();
 		entity.save();
 
@@ -562,6 +564,10 @@ public class MainEntitys extends CoolCRUD {
 				canCreateRelationship, canRequest, canRequestRelationship,
 				canRestrict, entityIsLocked, plans, canDeleteEntity, followers,
 				check, check1, check2, entityList);
+		}
+		else {
+			BannedUsers.unauthorized();
+		}
 	}
 
 	/**
