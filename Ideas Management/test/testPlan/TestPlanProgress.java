@@ -48,30 +48,30 @@ public class TestPlanProgress extends UnitTest {
 		Plan plan = new Plan("S.U. heads", ashraf, new Date(111, 03, 20),
 				new Date(111, 07, 30), "Plan for SU heads elections",
 				gucMetStudentUnion, "summer break").save();
-		Item item1 = new Item(
+		Item firstItem = new Item(
 				new Date(111, 05, 01),
 				new Date(111, 04, 20),
 				"One of the members who is not runing for elections should organize a debate between the candidates",
 				plan, "Candidates Debate");
-		item1.save();
+		firstItem.save();
 
-		Item item2 = new Item(
+		Item secondItem = new Item(
 				new Date(111, 05, 01),
 				new Date(111, 06, 20),
 				"One of the members who is not runing for elections should organize a debate between the candidates",
 				plan, "Candidates Debate");
 		
 
-		plan.items.add(item1);
-		plan.items.add(item2);
+		plan.items.add(firstItem);
+		plan.items.add(secondItem);
 		plan.save();
-		item2.save();
-		item1.status = 2;
-		item1.save();
+		secondItem.save();
+		firstItem.status = 2;
+		firstItem.save();
 		assertEquals(50, plan.calculateProgress());
 		
-		item2.status = 1;
-		item2.save();
+		secondItem.status = 1;
+		secondItem.save();
 		assertEquals(75, plan.calculateProgress());
 
 	}
