@@ -691,6 +691,7 @@ public class User extends CoolModel {
 		List<Organization> organizations = new ArrayList<Organization>();
 		int i = 0;
 		while (i < this.userRolesInOrganization.size()) {
+			if(!organizations.contains(userRolesInOrganization.get(i).organization))
 				organizations.add(userRolesInOrganization.get(i).organization);
 			i++;
 		}

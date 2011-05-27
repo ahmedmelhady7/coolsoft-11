@@ -159,7 +159,30 @@ $(document).ready(function(){
 						<a href="@{Organizations.editOrganization(org.id)}" title="Edit Organization">Edit</a>
 					</li>
 					#{/if}
-					
+			 <li>
+           <a id="requestsLink" style="cursor:pointer;">Requests</a>
+			 <div id="requestsLinks">
+          
+           <ul> 	
+            
+            	
+			<LI type="disc">
+            	#{if settings==1}
+			     <a href="@{CreateRelationshipRequests.viewRequests(org.id)}">Relationships</a>
+                 #{/if}
+				   </LI>
+				   #{if allowed==1}
+				    <LI type="disc">
+                
+				<a href="@{RequestToJoins.viewRequests(0,org.id)}">Join Requests </a>
+			 
+            </LI>
+			   #{/if}
+				
+            
+        </ul>
+       </div>
+       </li>		
              <li>
            <a id="entityLink" style="cursor:pointer;">Entities</a>
 			 <div id="entityLinks">
@@ -189,11 +212,7 @@ $(document).ready(function(){
         </li>
         #{/if}
 		
-		#{if allowed==1}
-		<li>
-		<a href="@{RequestToJoins.viewRequests(0,org.id)}">Requests</a>
-		</li>
-        #{/if}
+		
 		#{if isMember == true || org.privacyLevel == 2 || admin}
 <li>
 		<a href="@{Pictures.index(org.id)}">Gallery</a></li>
@@ -334,6 +353,19 @@ $(document).ready(function(){
 			                entityFlag = true;
 			            }
 			        });
+					  
+			        var requestsFlag = false;
+			        $('#requestsLinks').hide();
+			        $('#requestsLink').click(function(){
+			            if (requestsFlag) {
+			                $('#requestsLinks').show(500);
+			                requestsFlag = false;
+			            }
+			            else {
+			                $('#requestsLinks').hide(500);
+			                requestsFlag = true;
+			            }
+			        });
 		</script>		
 						
 					  <center>
@@ -361,11 +393,8 @@ $(document).ready(function(){
 			        <br/>
 			        <br/>
 			        
-			        #{if settings==1}
-			     <a href="@{CreateRelationshipRequests.viewRequests(org.id)}">Relationship Requests</a>
-			        #{/if}
-			        <br>
-			        <br>
+			     
+			       
 					#{if logFlag == 1}		
 			 			<input type="submit" value="View Logs" onclick=location.href="@{Logs.viewLogs(org.id)}" class="linkButton"></input>
 					#{/if}	

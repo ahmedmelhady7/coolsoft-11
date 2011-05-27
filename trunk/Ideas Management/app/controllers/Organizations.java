@@ -454,7 +454,7 @@ public class Organizations extends CoolCRUD {
 		if (Users
 				.isPermitted(
 						user,
-						"enable/disable the user to create their own tags within an organization",
+						"accept/reject join requests from users to join a private organization",
 						id, "organization"))
 			settings = 1;
 		System.out.println(settings);
