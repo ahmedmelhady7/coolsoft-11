@@ -818,8 +818,8 @@ public class MainEntitys extends CoolCRUD {
 			CreateRelationshipRequests
 					.delete(entity.relationshipRequestsDestination.get(j).id);
 		}
-		size = entity.topicList.size();
-		for (int j = 0; j < size; j++) {
+		//size = entity.topicList.size();
+		for (int j = 0; j < entity.topicList.size(); j++) {
 			Topics.deleteTopicInternally("" + entity.topicList.get(j).id);
 		}
 		size = allEntities.size();
@@ -841,11 +841,16 @@ public class MainEntitys extends CoolCRUD {
 
 		size = entity.topicRequests.size();
 		for (int i = 0; i < size; i++) {
-			// TopicRequests.delete(entity.topicRequests.get(i).id);
+			TopicRequests.delete(""+entity.topicRequests.get(i).id);
 		}
+		
+		List<Item> allItems = Item.findAll();
 		size = entity.relatedItems.size();
 		for (int i = 0; i < size; i++) {
-			// Items.delete(entity.relatedItems.get(i).id);
+			if(allItems.get(i).relatedEntity.equals(entity)) {
+				allItems.get(i).relatedEntity = null;
+				allItems.get(i).save();
+			}
 		}
 		entity.logs.clear();
 		entity.delete();
