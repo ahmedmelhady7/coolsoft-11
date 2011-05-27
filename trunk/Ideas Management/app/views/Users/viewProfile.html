@@ -69,11 +69,119 @@
 					<div style="clear: both;">&nbsp;</div>
 					<big><b>Date of Birth: </b></big> &nbsp;&nbsp; <i>${otherUser.dateofBirth}</i> <br>
 					<div style="clear: both;">&nbsp;</div>
-					<big><b>Community Contribution Counter: </b></big> &nbsp;&nbsp; <i>${otherUser.communityContributionCounter}</i> <br>
 					<div style="clear: both;">&nbsp;</div>
 					<big><b>Country: </b></big> &nbsp;&nbsp; <i>${otherUser.country}</i> <br>
 					<div style="clear: both;">&nbsp;</div>
-					<big><b>Profession: </b></big> &nbsp;&nbsp; <i>${otherUser.profession}</i></p>										
+					<big><b>Profession: </b></big> &nbsp;&nbsp; <i>${otherUser.profession}</i></p>
+					#{if otherUser.communityContributionCounter>=0 && otherUser.communityContributionCounter<=5 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/e1.gif"></input>
+								
+								Airman
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=6 && otherUser.communityContributionCounter<=10 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/e2.gif"></input>
+								
+								Airman First Class
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=11 && otherUser.communityContributionCounter<=15 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/e3.gif"></input>
+								
+								Senior Airman
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=16 && otherUser.communityContributionCounter<=20 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/e4.gif"></input>
+								
+								Staff Sergeant
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=21 && otherUser.communityContributionCounter<=25 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/e5.gif"></input>
+								
+								Technical Sergeant
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=26 && otherUser.communityContributionCounter<=30 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/e6.gif"></input>
+								
+								Master Sergeant
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=31 && otherUser.communityContributionCounter<=35 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/e7.gif"></input>
+								
+								Senior Master Sergeant
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=36 && otherUser.communityContributionCounter<=40 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/o1.gif"></input>
+								
+								Second Lieutenant
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=41 && otherUser.communityContributionCounter<=45 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/o2.gif"></input>
+								
+								First Lieutenant
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=46 && otherUser.communityContributionCounter<=50 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/o3.gif"></input>
+								
+								Captain
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=51 && otherUser.communityContributionCounter<=55 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/o4.gif"></input>
+								
+								Major
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=56 && otherUser.communityContributionCounter<=60 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/o5.gif"></input>
+								
+								Lieutenant Colonel
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=61 && otherUser.communityContributionCounter<=65 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/o6.gif"></input>
+								
+								Colonel
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=66 && otherUser.communityContributionCounter<=70 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/o7.gif"></input>
+								
+								Brigadier General
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=71 && otherUser.communityContributionCounter<=75 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/o8.gif"></input>
+								
+								Major General
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=76 && otherUser.communityContributionCounter<=80 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/o9.gif"></input>
+								
+								Lieutenant General
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=81 && otherUser.communityContributionCounter<=85 && !otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/o10.gif"></input>
+								
+								General Air Force Chief of Staff
+								#{/if}
+								
+								#{if otherUser.communityContributionCounter>=86 || otherUser.isAdmin}
+								<input type="image" src="/public/images/ranks/o11.png"></input>
+								
+								General of the Air Force
+								#{/if}
+								 
+								 (${otherUser.communityContributionCounter})									
 					</div>								
 			</div>
 		</div>

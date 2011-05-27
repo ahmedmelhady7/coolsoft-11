@@ -88,13 +88,12 @@
 			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
 		}
 		.accordionItem h3 {
-			margin-top:2%;
 			font-size:1.1em;
 			border-bottom-width: 2px;
 			border-bottom-style: solid;
 			border-bottom-color: #bbbbbb;
 			background-color:#FFFFFF;
-			margin-right:23%;
+			margin-right:7%;
 			border-top-left-radius: 10px;
 	        border-top-right-radius: 10px;
 			border-bottom-right-radius: 10px;
@@ -105,11 +104,14 @@
 		}
 		.accordionItem div {
 			padding:1em 0.4em;
-			margin-right:23%;
+			margin-right:7%;
 			border-top-left-radius: 10px;
 	        border-top-right-radius: 10px;
 			border-bottom-right-radius: 10px;
 			border-bottom-left-radius: 10px;
+			border-color:#339CCB;
+			border-width:2px;
+			border-style:solid;
 		}
 		.accordionItem.hide h3 {
 		}
@@ -149,7 +151,7 @@
 				}
 
 				// Hide all accordion item bodies except the first
-				for ( var i = 1; i < accordionItems.length; i++ ) {
+				for ( var i = 0; i < accordionItems.length; i++ ) {
 					accordionItems[i].className = 'accordionItem hide';
 				}
 			}
@@ -527,6 +529,9 @@
 				<li>
 					#{if topic.hidden == false}
 					#{if topic.canView(user)}
+					<input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
+						 <font size=1 style="float:left;">${topic.creator.username}</font>
+						 <br />
 					<div class="accordionItem">
 					<h3><a href="@{Topics.show(topic.id)}"> &nbsp ${topic.title}</a>#{if permission == 1}
 		  			   #{if !topic.hidden}
@@ -561,7 +566,6 @@
 		          #{/if}</h3>
 						<div>
 							<p><font size=2>Description: ${topic.description}</font></p>
-							<p><font size=2>Creator: ${topic.creator}</font></p>
 						</div>
 						<br />
 						<br />
@@ -570,6 +574,9 @@
 					#{/if}
 					#{else}
 					#{if topic.hider.username == user.username && topic.hidden == true}
+					<input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
+						 <font size=1 style="float:left;">${topic.creator.username}</font>
+						 <br />
 					<div class="accordionItem">
 					<h3><a href="@{Topics.show(topic.id)}">&nbsp ${topic.title}</a> <font color ="#FF0000" size =2> &nbsp hidden</font>
 							#{if permission == 1}
@@ -605,7 +612,6 @@
 		          #{/if}</h3>
 						<div>
 							<p><font size=2>Description: ${topic.description}</font></p>
-							<p><font size=2>Creator: ${topic.creator}</font></p>
 						</div>
 						<br />
 						<br />
