@@ -702,7 +702,7 @@ public class User extends CoolModel {
 	 * @story C1S20
 	 * 
 	 * @return List<Notification>
-	 * 			       the list of the latest notifications
+	 * 			       the list of the user's latest notifications
 	 */
 	
 	public List<Notification> getLatest() {		
