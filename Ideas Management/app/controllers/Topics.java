@@ -148,6 +148,12 @@ public class Topics extends CRUD {
 			Notifications.sendNotification(
 					topic.entity.organization.creator.id, topicId, "topic",
 					"This topic has been tagged as " + tag);
+			
+			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
+            + " added the tag " +"<a href=\"http://localhost:9008/tags/mainpage?tagId=" + tempTag.id +"\">" +  tempTag.name + "</a>"  + " to the topic "
+            + "<a href=\"http://localhost:9008/topics/show?topicId=" + topic.id +"\">" + topic.title + "</a>" ;
+			Log.addUserLog(logDescription, topic);
+			
 		}
 		topic.save();
 		JsonObject json = new JsonObject();
@@ -879,7 +885,8 @@ public class Topics extends CRUD {
 			check = 1;
 
 		boolean allowedToTag = Users.isPermitted(user, "tag topics", topicId,
-				"topic") || Users.isPermitted(user, "use", topicId, "topic");
+				"topic") || Users.isPermitted(user, "use", topicId, "topic") || 
+				temporaryTopic.entity.organization.createTag;
 
 		int check1 = 0;
 		if (Users.isPermitted(Security.getConnected(), "view", topicIdLong,
@@ -995,15 +1002,16 @@ public class Topics extends CRUD {
 			
 
 			render(type, object, tags, joined,/* canUse, */alreadyReportedTopic,
-					creator, followers, ideas, canReport,userId,topicNotClosed,hiddenIdeas,
-					numberOfIdeas, comments, entity, canDelete,
+					creator, followers, ideas, canReport,userId,topicNotClosed,
+					hiddenIdeas,numberOfIdeas, comments, entity, canDelete,
 					alreadyReported, plan, openToEdit, privacyLevel,
 					deleteMessage, deletable, topicIdLong, canClose, canPlan,
 					targetTopic, allowed, permission, topicId, canPost,
 					canNotPost, pending, follower, canCreateRelationship,
 					seeRelationStatus, createRelationship, actor, hidden,
 					canRestrict, check, canMerge, canRequestRelationship,
-					topicIsLocked, organisation, check1, check2, user, listOfTopics, temporaryTopic, defaultEntity);
+					topicIsLocked, organisation, check1, check2, user,
+					listOfTopics, allowedToTag, temporaryTopic);
 
 		} catch (TemplateNotFoundException exception) {
 			render("CRUD/show.html", type, object, topicId,

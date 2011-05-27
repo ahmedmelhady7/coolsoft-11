@@ -738,11 +738,12 @@
 				 <input type="submit" value="use" onclick=location.href="@{BannedUsers.viewUsers(entity.id,0)}" class = "linkButton"></input>
 			#{/if}
 					
+			#{if manageTopicRequests}
 				<form action="@{TopicRequests.list()}">
 					<input type="hidden" value=${entity.id} name='entityId'/>
 					<input type="submit" value="View topic requests" class = "linkButton"/>
 				</form>
-			
+			#{/if}
 			<script type="text/javascript">function unfollow(id) {
 					$.post('@{Users.unfollowEntity()}', {
 						entityId: id
