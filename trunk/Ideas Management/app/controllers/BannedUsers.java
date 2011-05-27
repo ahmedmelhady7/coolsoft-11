@@ -17,48 +17,14 @@ import models.Organization;
 import models.Role;
 import models.Topic;
 import models.User;
-
+/**
+ * 
+ * @author Nada Ossama
+ *
+ */
 @With(Secure.class)
 public class BannedUsers extends CoolCRUD {
-	@Before
-	/**
-	 * just for testing
-	 */
-	public static void restrictOrganizerrr() {
-		// User u = (User) User.findAll().get(0);
-		// Organization org = new Organization("coooolSoft", u);
-		// MainEntity e = (MainEntity) MainEntity.findAll().get(0);
-		// long id = e.getId();
-		// System.out.println(id);
-		List<Organization> organizations = Organization.findAll();
-		// System.out.println(o.isEmpty() + "yaaaaaaaaaaaaaaaaaaaaaaaaaaaah");
-		Organization organization = organizations.get(0);
-
-		// System.out.println("ya raaaaaaaaaaaab" + organization.name + "  " );
-		long organizationID = organizations.get(0).getId();
-		// MainEntity entity = organization.entitiesList.get(1);
-		// long entityId = entity.getId();
-		// Topic topic = entity.topicList.get(0);
-		// System.out.println(organizationID);
-		// long topicId = topic.getId();
-
-		/**
-		 * testing area
-		 */
-		restrictOrganizer(organizationID);
-		// restrictOrganizerEntityPath(entityId);
-		// restrictOrganizerTopicPath(topicId);
-	}
-
-	/**
-	 * just for testing
-	 */
-
-	public static void viewOrganizers() {
-		// viewRestrictedOrganizersInOrganization(1);
-		viewRestrictedOrganizersTopicPath(1);
-	}
-
+	
 	/**
 	 * This method renders the unauthorized page
 	 * 
@@ -117,7 +83,7 @@ public class BannedUsers extends CoolCRUD {
 	 * @story C1S7 , C1S19
 	 * 
 	 * 
-	 * @param orgID
+	 * @param orgId
 	 *            long id of the organization
 	 */
 	public static void restrictOrganizer(long orgId) {
@@ -308,7 +274,7 @@ public class BannedUsers extends CoolCRUD {
 	 * 
 	 * @author Nada Ossama
 	 * 
-	 * @param userID
+	 * @param userId
 	 *            long id of the user to be restricted
 	 * @param organizationId
 	 *            long id of the organization he will be restricted in
@@ -324,15 +290,11 @@ public class BannedUsers extends CoolCRUD {
 			restrictOrganizer(organizationId);
 		} else {
 
-			// System.out.println(organizationId);
+			
 			Organization organization = Organization.findById(organizationId);
 			User user = User.findById(userId);
 			entities = Users.getEntitiesOfOrganizer(organization, user);
-			// System.out.println("++++" + entities.isEmpty());
-
-			// render(user, organizationId, entities);
-			// MainEntity x = new MainEntity("MET", "fjfkj", organization);
-			// entities.add(x);
+		
 		}
 
 		String entity = "";
@@ -407,11 +369,6 @@ public class BannedUsers extends CoolCRUD {
 
 		JsonObject json = new JsonObject();
 
-		// if (validation.hasErrors() || entityId == 0) {
-		// flash.error("Oops, please select atleast one choise ");
-		// entitiesEnrolledIn(userId,organizationId);
-		// }
-
 		MainEntity entity = MainEntity.findById(entityId);
 		List<Topic> entityTopics = entity.topicList;
 		String topicsNames = "";
@@ -458,7 +415,8 @@ public class BannedUsers extends CoolCRUD {
 	}
 
 	/**
-	 * gets all the actions of the organizer
+	 * gets all the default actions of an organizer such that those actions are
+	 * related to the whole entity
 	 * 
 	 * @author Nada Ossama
 	 * 
@@ -483,7 +441,8 @@ public class BannedUsers extends CoolCRUD {
 	}
 
 	/**
-	 * gets all the actions of the organizer role
+	 * gets all the default actions of the organizer role that are related to
+	 * topics only
 	 * 
 	 * @author Nada Ossama
 	 * 
@@ -527,8 +486,7 @@ public class BannedUsers extends CoolCRUD {
 	public static void entityActions(long entityId, long organizationId,
 			long userId) {
 
-		// System.out.println("NADAaaaAAA" + entityId + "org" + organizationId +
-		// "user" + userId);
+		
 		JsonObject json = new JsonObject();
 		List<String> entityActions = Roles.getRoleActions("organizer");
 		MainEntity entity = MainEntity.findById(entityId);
@@ -641,6 +599,8 @@ public class BannedUsers extends CoolCRUD {
 	 *            : long id of the topic or entity to be restricted in
 	 * @param userId
 	 *            : long Id of the user to be restricted
+	 * 
+	 * @return boolean indicating the successfulness of the restriction process
 	 */
 
 	public static boolean restrictFinal(@Required String[] actionToDo,
@@ -735,6 +695,8 @@ public class BannedUsers extends CoolCRUD {
 	 *            : String the type is either topic or entity
 	 * @param entityTopicId
 	 *            : long id of the topic or entity to be restricted in
+	 *            
+	 *@return boolean indicating the successfulness of the change         
 	 */
 
 	public static boolean restrictGroupFinal(@Required String[] actionToDo,
@@ -907,9 +869,6 @@ public class BannedUsers extends CoolCRUD {
 	 * @author Nada Ossama
 	 * 
 	 * @story C1S19
-	 * 
-	 * @param userId
-	 *            : long userId is the id of the user to be de-restricted
 	 * 
 	 * @param actionsRestricted
 	 *            : String [] that represents the list of actions to be
@@ -1112,10 +1071,12 @@ public class BannedUsers extends CoolCRUD {
 	 * @story C1S7
 	 * 
 	 * @param idd
-	 *            , String idd is the of the object to be mapped
+	 *             String idd is the id of the object to be mapped
 	 * 
 	 * @param type
-	 *            , is the type of the object to be mapped
+	 *             is the type of the object to be mapped
+	 *             
+	 * @return String that is the name of the entity or the title of the topic            
 	 */
 
 	public static String maps(String idd, String type) {
@@ -1367,10 +1328,7 @@ public class BannedUsers extends CoolCRUD {
 	 * @param organizationID
 	 *            : long id of the organization
 	 */
-	public static void dummy() {
-		restrictGroupInSelectedEntity(1);
-	}
-
+	
 	public static void restrictGroupInSelectedEntity(long organizationID) {
 
 		Organization organization = Organization.findById(organizationID);
@@ -1827,7 +1785,9 @@ public class BannedUsers extends CoolCRUD {
 		MainEntity entity = MainEntity.findById(entId);
 		notFoundIfNull(entity);
 		User user = User.findById(userId);
+
 		notFoundIfNull(user);
+
 
 		if (choice == 0) {
 			BannedUser block = new BannedUser(user, entity.organization,
