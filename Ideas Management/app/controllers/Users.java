@@ -1909,19 +1909,6 @@ public class Users extends CoolCRUD {
 
 	}
 
-	/**
-	 * un-hashed the pass and check if the password enterd is correct
-	 * 
-	 * @story C1S5
-	 * 
-	 * @author Mai Magdy
-	 * 
-	 */
-	public static int checkPass(String pass) {
-		User user = Security.getConnected();
-		pass = Codec.hexMD5(pass);
-		return (pass.equals(user.password)) ? 1 : 0;
-	}
 
 	/**
 	 * Deactivate the account of that user by setting the state to "n"
@@ -1968,11 +1955,6 @@ public class Users extends CoolCRUD {
 		user.state = "a";
 		user._save();
 
-		Invitation invite = Invitation.find("byEmail", user.email).first();
-
-		if (invite != null)
-			Invitations.view();
-		else
 			render();
 	}
 
