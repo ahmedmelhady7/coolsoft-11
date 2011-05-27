@@ -891,8 +891,10 @@ public class Organizations extends CoolCRUD {
                 organization.creator.createdOrganization.remove(organization);
                 organization.creator.save();
                 // fadwa
-                for (int i = 0; i < organization.joinRequests.size(); i++)
+                for (int i = 0; i < organization.joinRequests.size(); i++){
                         organization.joinRequests.get(i).delete();
+                        organization.save();
+                }
                 // fadwa
 
                 // Mai Magdy
