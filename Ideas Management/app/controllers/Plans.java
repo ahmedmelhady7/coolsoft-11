@@ -121,7 +121,15 @@ public class Plans extends CoolCRUD {
 					listOfTags += globalListOfTags.get(i) + "|";
 				}
 			}
-			List<MainEntity> entitiesList = plan.topic.entity.organization.entitiesList;
+			
+			//faruki
+			List<MainEntity> entitiesList = new ArrayList<MainEntity>();
+			int iii = 1;
+			while (iii < plan.topic.entity.organization.entitiesList.size()) {
+				entitiesList.add(plan.topic.entity.organization.entitiesList.get(iii));
+				iii++;
+			}
+			//faruki
 			render(plan, itemsList, user, canAssign, canEdit, canView,
 					canDelete, isOrganizer, canIdea, comments, entitiesList,
 					listOfTags, notBlockedFromUsing, userNames);
