@@ -41,11 +41,12 @@
     <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js"></script>
     <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
 <h1> Edit Action plan </h1>
+<input type="hidden" name= "planstart"id="planstart" vspace="20" readonly value="${plan.intializedIn.format('MM/dd/yyyy')}"/>
 #{form @Plans.edit(), method:'POST', id:'planeditingnForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
 Plan title:<input type= "text" id = "title" name = "title" size= "30" value="${plan.title}"><label id = "titleerror" style= "color:Red"> Please Insert a title for the plan </label>
 </br>
 </br>
-Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"value="${plan.startDate.format('MM/dd/yyyy')}"/><label id = "startdateerror"style= "color:Red"> Please Insert the date on which the plan starts </label><label id = "dateerror"style= "color:Red">Start date can not be earlier than today's date</label>
+Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"value="${plan.startDate.format('MM/dd/yyyy')}"/><label id = "startdateerror"style= "color:Red"> Please Insert the date on which the plan starts </label><label id = "dateerror"style= "color:Red">Start date can not be earlier than the original date</label>
 </br>
 </br>
 End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"value="${plan.endDate.format('MM/dd/yyyy')}"/><label id = "enddateerror"style= "color:Red"> Please Insert the date on which the plan ends </label><label id = "earlyerror"style= "color:Red">Start date must be greater than end date</label>
@@ -133,13 +134,14 @@ End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspac
 		}
 		var sd = new Date("" +document.getElementById("datePickerA").value.toString());
 		var ed = new Date("" +document.getElementById("datePickerB").value.toString());
+		var ziko = new Date(""+document.getElementById("planstart").value.toString());
 		if(ed <sd){
 			$('#earlyerror').show();
 			return false;
 		}else{
 			$('#earlyerror').hide();
 		}
-		if(sd< new Date()){
+		if(sd< ziko){
 			$('#dateerror').show();
 			return false;
 		}else{
