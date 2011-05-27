@@ -556,7 +556,8 @@ public class Search extends Controller {
 	 * @param andOr
 	 *            :: "char"; of the filter option view as input from user
 	 * 
-	 * 
+     * @return void.
+     *
 	 */
 
 	public static void handelingOrAnd(char andOr) {
@@ -582,6 +583,7 @@ public class Search extends Controller {
 	 * 
 	 * 
 	 * 
+     * @return void
 	 * 
 	 */
 
@@ -665,7 +667,8 @@ public class Search extends Controller {
 	 * 
 	 * @story C4S04 sort descending the search result according to views
 	 * 
-	 * 
+	 *
+	 * @return void 
 	 * 
 	 * 
 	 */
@@ -930,7 +933,7 @@ public class Search extends Controller {
 	 * 
 	 * @story C4S04 sort ascending the search result according to views
 	 * 
-	 * 
+	 * @return void  
 	 * 
 	 * 
 	 */
