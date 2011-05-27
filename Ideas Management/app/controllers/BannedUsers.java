@@ -1764,6 +1764,7 @@ public class BannedUsers extends CoolCRUD {
 					Notifications.sendNotification(userId, numId, "entity",
 							"You have been unblocked from viewing entity "
 									+ entity.name);
+					System.out.println("HERE");
 					doBlock(userId, numId, 1, 0);
 
 				}
@@ -2072,7 +2073,6 @@ public class BannedUsers extends CoolCRUD {
 			action = "view";
 		else
 			action = "use";
-
 		MainEntity entity = MainEntity.findById(entId);
 		notFoundIfNull(entity);
 		User user = User.findById(userId);
@@ -2104,18 +2104,19 @@ public class BannedUsers extends CoolCRUD {
 			}
 
 		} else {
-
+            
 			BannedUser unblock = BannedUser.find(
 					"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 					action, "entity", entity.id).first();
-			unblock.delete();
-
+			if(unblock != null)
+			    unblock.delete();
 			for (int j = 0; j < entity.topicList.size(); j++) {
 				BannedUser unblock1 = BannedUser.find(
 						"byBannedUserAndActionAndResourceTypeAndResourceID",
 						user, action, "topic", entity.topicList.get(j).id)
 						.first();
-				unblock1.delete();
+				if(unblock1 != null)
+				    unblock1.delete();
 			}
 
 			List<MainEntity> subentity = entity.subentities;
@@ -2123,7 +2124,7 @@ public class BannedUsers extends CoolCRUD {
 				BannedUser unblock2 = BannedUser.find(
 						"byBannedUserAndActionAndResourceTypeAndResourceID",
 						user, action, "entity", subentity.get(j).id).first();
-
+			if(unblock2 != null)
 				unblock2.delete();
 
 				for (int k = 0; k < subentity.get(j).topicList.size(); k++) {
@@ -2132,7 +2133,7 @@ public class BannedUsers extends CoolCRUD {
 									user, action, "topic",
 									subentity.get(j).topicList.get(k).id)
 							.first();
-
+				if(unblock1 != null)
 					unblock1.delete();
 				}
 			}
