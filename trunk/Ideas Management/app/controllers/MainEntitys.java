@@ -868,8 +868,7 @@ public class MainEntitys extends CoolCRUD {
 	public static void deleteEntity(long entityId) {
 		deleteEntityHelper(entityId);
 		MainEntity entity = MainEntity.findById(entityId);
-		redirect("Organizations.viewProfile", entity.organization.id,
-		"Entity created");
+		Login.homePage();
 	}
 
 }
