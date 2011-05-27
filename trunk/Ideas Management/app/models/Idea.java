@@ -250,8 +250,9 @@ public class Idea extends CoolModel {
 	}
 
 	/**
-	 * @author monica yousry this method increments the counter viewed
-	 * 
+	 * @author monica yousry 
+	 * @description this method increments the counter viewed
+	 * @return void
 	 */
 	public void incrmentViewed() {
 		this.viewed++;
