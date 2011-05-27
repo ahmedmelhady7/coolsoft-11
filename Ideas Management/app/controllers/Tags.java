@@ -112,7 +112,7 @@ public class Tags extends CoolCRUD {
 		try {
 			Tag tag = Tags.createTag(name, user, orgId);
 			String namee = tag.name;
-			System.out.println(namee);
+			
 			flash.success("Your tag has been created!!");
 		}
 		catch(NullPointerException e) {
