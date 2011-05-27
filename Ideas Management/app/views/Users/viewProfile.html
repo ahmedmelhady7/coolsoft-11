@@ -307,34 +307,34 @@
 
 <script type="text/javascript">
     function checkPass(){
-      var pass1 = document.getElementById('pass1');
-      var pass2 = document.getElementById('pass2');
+     var hashed1 = MD5(document.getElementById('pass1').value);
+      var hashed2 = MD5(document.getElementById('pass2').value)
       var message = document.getElementById('confirmMessage2');
       var goodColor = "#66cc66";
       var badColor = "#ff6666";
-      if(pass1.value == pass2.value){
-        pass2.style.backgroundColor = goodColor;
+      if(hashed1.value == hashed2.value){
+        hashed2.style.backgroundColor = goodColor;
         message.style.color = goodColor;
         message.innerHTML = "Passwords Match!"
       }else{
-        pass2.style.backgroundColor = badColor;
+        hashed2.style.backgroundColor = badColor;
         message.style.color = badColor;
         message.innerHTML = "Passwords Do Not Match!"
       }
     }
 	
 	function oldPass() {
-		var pass = document.getElementById('pass');
+		var hashed = MD5(document.getElementById('pass').value)
 		var message = document.getElementById('confirmMessage1');
       var goodColor = "#66cc66";
       var badColor = "#ff6666";
-		if(pass.value == '${user.password}') {
-	pass.style.backgroundColor = goodColor;
+		if(hashed.value == '${user.password}') {
+		hashed.style.backgroundColor = goodColor;
         message.style.color = goodColor;
 		message.innerHTML = "Correct"
 		
 		}else{
-        pass.style.backgroundColor = badColor;
+        hashed.style.backgroundColor = badColor;
         message.style.color = badColor;
         message.innerHTML = "Wrong Password!"
 		
