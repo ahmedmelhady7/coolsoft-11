@@ -142,7 +142,11 @@
 						<i>You have no notifications ${type}!!</i>
 						#{/if}
 						<form name="myform">
-						#{list items:notificationList, as:'notifi'}
+						#{if notificationList.size() != 0}
+						<i>Notifications ${type}</i>
+						<br>
+						#{/if}	
+						#{list items:notificationList, as:'notifi'}											
 						<ul>							
 							<li id="not_${notifi.id}">
 							<div class="accordionItem">

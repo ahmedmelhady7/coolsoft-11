@@ -10,6 +10,38 @@
 <script src="/public/javascripts/SearchScript.js" type="text/javascript">
 </script>
 <link href="/public/stylesheets/searchStyle.css" type="text/css" />
+
+<style type="text/css">
+#crudShow{
+			margin-top: 2%;
+			margin-right: 9%;
+			margin-bottom: 4%;
+			margin-left: 0%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #bbbbbb;
+			padding-top: 2%;
+			padding-right: 4%;
+			padding-bottom: 0%;
+			padding-left: 4%;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			border-right-width: 2px;
+			border-right-style: solid;
+			border-right-color: #bbbbbb;
+			border-left-width: 2px;
+			border-left-style: solid;
+			border-left-color: #bbbbbb;
+			border-top-width: 2px;
+			border-top-style: solid;
+			border-top-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+</style>
+
 <!-- side bar -->
 <div id="hmenu">
     <ul>
@@ -69,21 +101,23 @@
                     <ul style>
                         <li>
                             <b>From: </b>
-                            ${notifi.type}: <b>#{if notifi.type == 'Plan'}<a href="@{Plans.viewAsList(notifi.sourceID)}">${notifi.title}</a> #{/if} 
+                            ${notifi.type}: #{if notifi.type == 'Plan'}<a href="@{Plans.viewAsList(notifi.sourceID)}">${notifi.title}</a> #{/if} 
                                 #{if notifi.type == 'Topic'}<a href="@{Topics.show(notifi.sourceID)}">${notifi.title}</a> #{/if} 
                                 #{if notifi.type == 'Idea'}<a href="@{Ideas.show(notifi.sourceID)}">${notifi.title}</a> #{/if} 
                                 #{if notifi.type == 'Entity'}<a href="@{MainEntitys.viewEntity(notifi.sourceID)}">${notifi.title}</a> #{/if} 
                                 #{if notifi.type == 'Organization'}<a href="@{Organizations.viewProfile(notifi.sourceID)}">${notifi.title}</a> #{/if} 
                                 #{if notifi.type == 'Tag'}<a href="@{Tags.mainPage(notifi.sourceID)}">${notifi.title}</a> #{/if} 
                                 <br>
-                                <b>Message:</b><font size=2>${notifi.description}</font>
+                                <div id="crudShow">
+                                <b>Message:</b><font size=1>${notifi.description}</font>
+                                </div>
                                 </li>
                             </ul>
                             #{/list} 
                             </div>
                             <a href="/users/notificationview?type=All">All Notifications</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a id="hide" style="cursor:pointer">Hide</a>
+                            <a id="hide" style="cursor:pointer">Hide <img src="/public/images/icons/up.png" title="up" width="14" height="10"/></a>
                         </div>
                         </li>
         
