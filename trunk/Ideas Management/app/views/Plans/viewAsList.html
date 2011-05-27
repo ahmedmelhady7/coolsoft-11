@@ -422,16 +422,25 @@ Please contact
                            
                                 		}, function(tagTemp) {
 											$("#noTagLabel_" + id).remove();
-											if( tagTemp.success == "1") {
-											var tagId = tagTemp.id;
-											
-											var url = "<li><a href=\"http://localhost:9008/tags/mainpage?tagId=" + tagId + "\">"+tagTemp.name+"</a></li>";
-											 $("#tags_" + id).append(url);
-											$("#tagSuccess_" + id).html("Item tagged successfuly");
-											 } else {
-										   $("#tagSuccess_" + id).html("Tag already exists");
-
-											 }
+											if (tagTemp.success == "1") {
+												var tagId = tagTemp.id;
+												
+												var url = "<li><a href=\"http://localhost:9008/tags/mainpage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
+												$("#tags_" + id).append(url);
+												$("#tagSuccess_" + id).html("New Tag is created successfuly");
+											}
+											else 
+												if (tagTemp.success == "2") {
+													var tagId = tagTemp.id;
+													
+													var url = "<li><a href=\"http://localhost:9008/tags/mainpage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
+													$("#tags_" + id).append(url);
+													$("#tagSuccess_" + id).html("Item is tagged successfuly");
+												}
+												else {
+													$("#tagSuccess_" + id).html("Tag already exists");
+													
+												}
 										});
 										
 						  	
