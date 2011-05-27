@@ -2150,6 +2150,10 @@ public class Topics extends CRUD {
 	 *            : The title of the topic
 	 * @param description
 	 *            : the description of the topic
+	 * @param privacyLevel       
+	 *     		  : privacy level of the topic
+	 * @param createRelationship
+	 * 			  : can the topic create relationship
 	 * @param entityId
 	 *            : the id
 	 */
