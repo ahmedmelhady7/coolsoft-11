@@ -50,13 +50,13 @@ public class Bootstrap extends Job {
 			lama.isAdmin = true;
 			lama._save();
 
-			User noha = new User("noha@gmail.com", "noha", "1234", "noha",
-					"khater", "What is our company's name?", "coolsoft", 0,
-					"11/11/2010", null, "").save();
+			new User("noha@gmail.com", "noha", "1234", "noha", "khater",
+					"What is our company's name?", "coolsoft", 0, "11/11/2010",
+					null, "").save();
 
-			User alia = new User("alia@gmail.com", "alia", "1234", "alia",
-					"el-bolock", "What is our company's name?", "coolsoft", 0,
-					"11/11/2010", null, "").save();
+			new User("alia@gmail.com", "alia", "1234", "alia", "el-bolock",
+					"What is our company's name?", "coolsoft", 0, "11/11/2010",
+					null, "").save();
 
 			User hadi = new User("elhadiahmed3@gmail.com", "hadi.18",
 					"notreal", "Ahmed", "El-Hadi",
@@ -78,9 +78,9 @@ public class Bootstrap extends Job {
 					"El Gamal", "What is our company's name?", "coolsoft", 0,
 					"11/11/2010", "Egypt", "menister").save();
 
-			User khalifa = new User("khalifa@gov.eg", "khalifa", "1234",
-					"Abd El Kawi", "Khalifa", "What is our company's name?",
-					"coolsoft", 0, "11/11/2010", "Egypt", "Governer").save();
+			new User("khalifa@gov.eg", "khalifa", "1234", "Abd El Kawi",
+					"Khalifa", "What is our company's name?", "coolsoft", 0,
+					"11/11/2010", "Egypt", "Governer").save();
 
 			User gom3a = new User("mgmohamedganem@gmail.com", "Ghanem", "1234",
 					"Mohamed", "Gomaa", "What is our company's name?",
@@ -200,8 +200,9 @@ public class Bootstrap extends Job {
 
 			UserRoleInOrganizations.addEnrolledUser(slim, guc, organizer,
 					gucMet.id, "entity");
-			
-			UserRoleInOrganizations.addEnrolledUser(slim, guc, organizer, gucCs.id, "entity");
+
+			UserRoleInOrganizations.addEnrolledUser(slim, guc, organizer,
+					gucCs.id, "entity");
 
 			UserRoleInOrganizations.addEnrolledUser(fatma, guc, organizer,
 					gucCs.id, "entity");
@@ -218,8 +219,8 @@ public class Bootstrap extends Job {
 			gucMetStudentUnion.tags.add(tagGuc);
 			gucMetStudentUnion._save();
 
-			Topic gucDraft = new Topic("Draft", "Suggestions", 2, ashraf,
-					gucMet, false, true).save();
+			new Topic("Draft", "Suggestions", 2, ashraf, gucMet, false, true)
+					.save();
 			gucMetStudentUnion._save();
 
 			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
