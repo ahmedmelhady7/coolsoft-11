@@ -11,66 +11,75 @@ import models.Role;
 import models.Topic;
 import models.User;
 import models.UserRoleInOrganization;
+
 /**
  * 
  * @author Nada Ossama
- *
+ * 
  */
 @With(Secure.class)
 public class UserRoleInOrganizations extends CoolCRUD {
 
 	/**
-	 * adds a new enrolled user in the organization where his role
-	 * is not related to a specific topic, entity .. etc
+	 * adds a new enrolled user in the organization where his role is not
+	 * related to a specific topic, entity .. etc
 	 * 
 	 * @author Nada Ossama
 	 * 
 	 * @story :C1S7
 	 * 
-	 * @param user: User that is enrolled 
+	 * @param user
+	 *             User that is enrolled
 	 * 
-	 * @param org: Organization org the User user is enrolled in
+	 * @param org
+	 *             Organization org the User user is enrolled in
 	 * 
-	 * @param role: the role of that user in this organization
+	 * @param role
+	 *             the role of that user in this organization
 	 * 
-	 * return boolean indicating the successfulness of the operation
+	 *            return boolean indicating the successfulness of the operation
 	 */
 
 	public static boolean addEnrolledUser(User user, Organization org, Role role) {
 
-		try{UserRoleInOrganization userRoleInOrg = 
-		new UserRoleInOrganization(user, org, role).save();
-		user.userRolesInOrganization.add(userRoleInOrg);
-		org.userRoleInOrg.add(userRoleInOrg);
-		role.userRoleInOrganization.add(userRoleInOrg);
-		user.save();
-		org.save();
-		role.save();
-		return true;
-		}
-		catch(Exception e){
+		try {
+			UserRoleInOrganization userRoleInOrg = new UserRoleInOrganization(
+					user, org, role).save();
+			user.userRolesInOrganization.add(userRoleInOrg);
+			org.userRoleInOrg.add(userRoleInOrg);
+			role.userRoleInOrganization.add(userRoleInOrg);
+			user.save();
+			org.save();
+			role.save();
+			return true;
+		} catch (Exception e) {
 			return false;
 		}
 	}
 
 	/**
-	 * adds a new enrolled user in the organization where his role
-	 * is related to a specific topic, entity .. etc
+	 * adds a new enrolled user in the organization where his role is related to
+	 * a specific topic, entity .. etc
 	 * 
 	 * @author Nada Ossama
 	 * 
 	 * @story :C1S7
 	 * 
-	 * @param user: User user the enrolled user
+	 * @param user
+	 *            : User user the enrolled user
 	 * 
-	 * @param org: Organization org that the User user is enrolled in
+	 * @param org
+	 *            : Organization org that the User user is enrolled in
 	 * 
-	 * @param role: Role role of that user in this organization
+	 * @param role
+	 *            : Role role of that user in this organization
 	 * 
-	 * @param entityOrTopicId : long id of the entity or topic the role of that
-	 * user is related to
+	 * @param entityOrTopicId
+	 *            : long id of the entity or topic the role of that user is
+	 *            related to
 	 * 
-	 * @param type: String type (entity / topic)
+	 * @param type
+	 *            : String type (entity / topic)
 	 * 
 	 * @return boolean indicating the successfulness of the operation
 	 */
@@ -78,8 +87,8 @@ public class UserRoleInOrganizations extends CoolCRUD {
 	public static boolean addEnrolledUser(User user, Organization org,
 			Role role, long entityOrTopicId, String type) {
 
-		UserRoleInOrganization userRoleInOrg = new UserRoleInOrganization(user, org, role, entityOrTopicId, type)
-				.save();
+		UserRoleInOrganization userRoleInOrg = new UserRoleInOrganization(user,
+				org, role, entityOrTopicId, type).save();
 		user.userRolesInOrganization.add(userRoleInOrg);
 		org.userRoleInOrg.add(userRoleInOrg);
 		role.userRoleInOrganization.add(userRoleInOrg);
@@ -137,7 +146,5 @@ public class UserRoleInOrganizations extends CoolCRUD {
 		return false;
 
 	}
-	
-	
 
 }
