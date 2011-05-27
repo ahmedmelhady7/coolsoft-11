@@ -1716,6 +1716,8 @@ public class Topics extends CRUD {
 		Plan plan = temporaryTopic.plan;
 		String message = "Topic " + temporaryTopic.title + " has been deleted";
 		List<User> users = Users.getEntityOrganizers(entity);
+		List<MainEntity> allEntities = MainEntity.findAll();
+		List<Idea> allIdeas = Idea.findAll();
 
 		// added by Mohamed Hisham to delete the topic's relationships whenever
 		// its deleted
@@ -1760,8 +1762,13 @@ public class Topics extends CRUD {
 				followers.get(i).topicsIFollow.remove(temporaryTopic);
 				followers.get(i).save();
 			}
+		}		
+		for(int i = 0; i < temporaryTopic.ideas.size(); i++) {
+			Ideas.delete(temporaryTopic.ideas.get(i).id);
 		}
-		
+		for(int i = 0; i<temporaryTopic.commentsOn.size();i++) {
+			Comments.deleteComment(temporaryTopic.commentsOn.get(i).id);
+		}
 		UserRoleInOrganization.deleteEntityOrTopic(temporaryTopic.id, "topic");
 
 		String justification = "Your Topic was deleted because "
@@ -1774,6 +1781,20 @@ public class Topics extends CRUD {
 		for (int i = 0; i < temporaryTopic.followers.size(); i++)
 			Notifications.sendNotification(temporaryTopic.followers.get(i)
 					.getId(), entity.getId(), "entity", message);
+		for(int i = 0; i < allEntities.size();i++) {
+			if(allEntities.get(i).topicList.contains(temporaryTopic)) {
+				allEntities.get(i).topicList.remove(temporaryTopic);
+				allEntities.get(i).save();
+			}
+		}
+		for (int j = 0; j < temporaryTopic.relationshipRequestsSource.size(); j++) {
+			CreateRelationshipRequests.delete(temporaryTopic.relationshipRequestsSource
+					.get(j).id);
+		}
+		for (int j = 0; j < temporaryTopic.relationshipRequestsDestination.size(); j++) {
+			CreateRelationshipRequests.delete(temporaryTopic.relationshipRequestsDestination
+					.get(j).id);
+		}
 		Notifications.sendNotification(temporaryTopic.creator.getId(),
 				entity.getId(), "entity", justification);
 		String logDescription = "The topic " + temporaryTopic.title
