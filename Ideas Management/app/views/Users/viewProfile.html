@@ -83,11 +83,15 @@
 
 <div id="leftSidebar">
 <ul>
+#{if user.id == otherUser.id}
 <li><a href="@{Users.editProfile()}">Edit Profile</a></li>
 <li><a style="cursor:pointer" id="cap" >Change Password</a></li>
+#{/if}
+#{else}
+<li><a href="@{Users.viewProfile(user.id)}">My Profile</a></li>
+#{/else}
 </ul>
 </div>
-
 <div id="page">
 		<div id="page-bgtop">
 			<div id="page-bgbtm">
