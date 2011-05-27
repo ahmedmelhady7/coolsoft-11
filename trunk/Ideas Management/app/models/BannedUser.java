@@ -10,26 +10,27 @@ import javax.persistence.OneToMany;
 import controllers.Roles;
 
 import play.db.jpa.Model;
+
 /**
  * 
  * @author Nada Ossama
- *
+ * 
  */
 @Entity
 public class BannedUser extends CoolModel {
-   /**
-    * the organization to be banned in 
-    */
+	/**
+	 * the organization to be banned in
+	 */
 	@ManyToOne
 	public Organization organization;
-     /**
-      * the user to be banned
-      */
+	/**
+	 * the user to be banned
+	 */
 	@ManyToOne
 	public User bannedUser;
-     /**
-      * the action that the user will be bannedFrom
-      */
+	/**
+	 * the action that the user will be bannedFrom
+	 */
 	public String action;
 	/**
 	 * the type of a resource in the organization (entity , topic) that the user
@@ -43,7 +44,8 @@ public class BannedUser extends CoolModel {
 	public long resourceID;
 
 	/**
-	 * used if the action the user is banned from is related to a certain object
+	 * used if the action the user is banned from is not related to a certain
+	 * object within the organization
 	 * 
 	 * @autor:Nada Ossama
 	 * 
@@ -51,7 +53,7 @@ public class BannedUser extends CoolModel {
 	 * 
 	 * @param banned
 	 *            User The banned user
-	 *
+	 * 
 	 * @param org
 	 *            Organization org at which this user will be banned from that
 	 *            action
@@ -98,7 +100,7 @@ public class BannedUser extends CoolModel {
 		this.action = action;
 		organization = org;
 	}
-	
+
 	/**
 	 * this method deletes a certain record from the table
 	 * 
@@ -142,8 +144,6 @@ public class BannedUser extends CoolModel {
 			}
 		}
 	}
-    
-
 
 	/**
 	 * block a user from a certain action within an entity and cascade that
@@ -151,6 +151,72 @@ public class BannedUser extends CoolModel {
 	 * was topic related
 	 * 
 	 * @author: Nada Ossama
+	 * 
+	 * @story :C1S7
+	 * 
+	 * @param userID
+	 *            long ID of the User to be blocked
+	 * 
+	 * @param organizationID
+	 *            long id that this entity belongs to
+	 * 
+	 * @param action
+	 *            String action that the user will be banned from
+	 * 
+	 * @param entityID
+	 *            long id the ID of that entity
+	 * 
+	 * @return boolean : false if found banned otherwise return true
+	 * 
+	 */
+	public static boolean banFromActionInEntity(long userID,
+			long organizationID, String action, long entityID) {
+		User myBannedUser = User.findById(userID);
+		Organization myOrganization = Organization.findById(organizationID);
+
+		BannedUser test = BannedUser
+				.find("select bu from BannedUser bu where bu.bannedUser = ? and bu.organization = ? and bu.action like ? and bu.resourceType like ? and bu.resourceID = ?",
+						myBannedUser, myOrganization, action, "entity",
+						entityID).first();
+
+		if (test != null) {
+			return false;
+		}
+
+		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
+				action, "entity", entityID);
+		newBannedUser.save();
+		myBannedUser.bannedUsers.add(newBannedUser);
+		myOrganization.bannedUsers.add(newBannedUser);
+
+		ArrayList<String> topicActions = (ArrayList<String>) Roles
+				.getOrganizerTopicActions();
+
+		MainEntity mainEntity = MainEntity.findById(entityID);
+		List<MainEntity> subEntities = mainEntity.subentities;
+
+		for (int i = 0; i < subEntities.size(); i++) {
+			MainEntity subEntity = subEntities.get(i);
+			banFromActionInEntity(userID, organizationID, action,
+					subEntity.getId());
+		}
+
+		if (topicActions.contains(action)) {
+			MainEntity entity = MainEntity.findById(entityID);
+			List<Topic> entityTopics = entity.topicList;
+			for (int i = 0; i < entityTopics.size(); i++) {
+				long topicId = entityTopics.get(i).getId();
+				banFromActionInTopic(userID, organizationID, action, topicId);
+			}
+
+		}
+		return true;
+	}
+
+	/**
+	 * block a user from a certain action within a topic
+	 * 
+	 * @author : Nada Ossama
 	 * 
 	 * @story :C1S7
 	 * 
@@ -163,75 +229,8 @@ public class BannedUser extends CoolModel {
 	 * @param action
 	 *            : String action that the user will be banned from
 	 * 
-	 * @param entityID
-	 *            : long id the ID of that entity
-	 * 
-	 * @return boolean : false if found banned otherwise return true
-	 * 
-	 */
-	public static boolean banFromActionInEntity(long userID, long organizationID,
-			String action, long entityID) {
-		User myBannedUser = User.findById(userID);
-		Organization myOrganization = Organization.findById(organizationID);
-
-		BannedUser test = BannedUser.find(
-				"select bu from BannedUser bu where bu.bannedUser = ? and bu.organization = ? and bu.action like ? and bu.resourceType like ? and bu.resourceID = ?",
-				myBannedUser, myOrganization, action, "entity", entityID)
-				.first();
-
-		if (test != null) {
-			return false;
-		}
-
-		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
-				action, "entity", entityID);
-		newBannedUser.save();
-    	myBannedUser.bannedUsers.add(newBannedUser);
-		myOrganization.bannedUsers.add(newBannedUser);
-		
-		ArrayList<String> topicActions = (ArrayList<String>) Roles.getOrganizerTopicActions();
-		/**
-		 * cascade the restriction in the sub-entities
-		 */
-		MainEntity mainEntity = MainEntity.findById(entityID);
-		List <MainEntity> subEntities = mainEntity.subentities;
-		
-			for(int i = 0 ; i < subEntities.size() ; i++){
-				MainEntity subEntity = subEntities.get(i);
-				banFromActionInEntity(userID ,organizationID , action ,subEntity.getId());
-			}
-			
-		
-		/**
-		 * cascade the restriction if the action is topic related
-		 */
-		if(topicActions.contains(action)){
-			MainEntity entity = MainEntity.findById(entityID);
-			List<Topic> entityTopics = entity.topicList;
-			for(int i = 0 ; i < entityTopics.size() ; i++){
-				long topicId = entityTopics.get(i).getId();
-				banFromActionInTopic(userID, organizationID, action, topicId);
-			}
-			
-		}
-		return true;
-	}
-
-	/**
-	 * block a user from a certain action within a
-	 * topic
-	 * 
-	 * @author : Nada Ossama
-	 * 
-	 * @story :C1S7
-	 * 
-	 * @param userID : long ID of the User to be blocked
-	 * 
-	 * @param organizationID : long id that this entity belongs to
-	 * 
-	 * @param action : String action that the user will be banned from
-	 * 
-	 * @param topicID : long id the ID of that topic
+	 * @param topicID
+	 *            : long id the ID of that topic
 	 * 
 	 * @return boolean to indicates the successfulness of the operation
 	 */
@@ -239,71 +238,70 @@ public class BannedUser extends CoolModel {
 			long organizationID, String action, long topicID) {
 		User myBannedUser = User.findById(userID);
 		Organization myOrganization = Organization.findById(organizationID);
-		BannedUser test = BannedUser.find(
-				"select bu from BannedUser bu where bu.bannedUser = ? and bu.organization = ? and bu.action like ? and bu.resourceType like ? and bu.resourceID = ?",
-				myBannedUser, myOrganization, action, "topic", topicID)
+		BannedUser test = BannedUser
+				.find("select bu from BannedUser bu where bu.bannedUser = ? and bu.organization = ? and bu.action like ? and bu.resourceType like ? and bu.resourceID = ?",
+						myBannedUser, myOrganization, action, "topic", topicID)
 				.first();
 
 		if (test != null) {
 			return false;
 		}
-		
-		
+
 		BannedUser newBannedUser = new BannedUser(myBannedUser, myOrganization,
 				action, "topic", topicID);
 		newBannedUser.save();
-    	myBannedUser.bannedUsers.add(newBannedUser);
+		myBannedUser.bannedUsers.add(newBannedUser);
 		myOrganization.bannedUsers.add(newBannedUser);
 		return true;
 	}
 
-
 	/**
-	 * de-restricts an organizer from a certain action within a specified topic and cascades the 
-	 * de-restriction to the rest of the entity
+	 * de-restricts an organizer from a certain action within a specified topic
+	 * and cascades the de-restriction to the rest of the entity
 	 * 
 	 * @author Nada Ossama
 	 * 
 	 * @story C1S19
 	 * 
-	 * @param userID : long user ID is the id of the organizer to be direstricted
-	 * @param action : String action to be de restricted from
-	 * @param topicID : long topicID is the id of the topic to be derestricted from
+	 * @param userID
+	 *            : long user ID is the id of the organizer to be direstricted
+	 * @param action
+	 *            : String action to be de restricted from
+	 * @param topicID
+	 *            : long topicID is the id of the topic to be derestricted from
 	 */
-	
-	
-	public static void deRestrictFromTopic(long userID  ,String action , long topicID ){
+
+	public static void deRestrictFromTopic(long userID, String action,
+			long topicID) {
 		User user = User.findById(userID);
 		Topic topic = Topic.findById(topicID);
 		MainEntity entity = topic.entity;
 		long entityID = entity.getId();
 		Organization organization = entity.organization;
-		
-		BannedUser restricted = BannedUser.find( "select bu from BannedUser bu where bu.organization = ? and bu.bannedUser = ?" +
-				" and bu.action like ? and bu.resourceType = ? and bu.resourceID = ? "  ,organization,user,action,"topic",topicID ).first();
-		
-		
-		if(restricted != null){
+
+		BannedUser restricted = BannedUser
+				.find("select bu from BannedUser bu where bu.organization = ? and bu.bannedUser = ?"
+						+ " and bu.action like ? and bu.resourceType = ? and bu.resourceID = ? ",
+						organization, user, action, "topic", topicID).first();
+
+		if (restricted != null) {
 			user.bannedUsers.remove(restricted);
 			organization.bannedUsers.remove(restricted);
 			restricted.delete();
 		}
-		
-		
-		
-		BannedUser restrictedInEntity = BannedUser.find( "select bu from BannedUser bu where bu.organization = ? and bu.bannedUser = ?" +
-				" and bu.action like ? and bu.resourceType = ? and bu.resourceID = ? "  ,organization,user,action,"entity",entityID ).first();
-		if(restrictedInEntity != null){
+
+		BannedUser restrictedInEntity = BannedUser
+				.find("select bu from BannedUser bu where bu.organization = ? and bu.bannedUser = ?"
+						+ " and bu.action like ? and bu.resourceType = ? and bu.resourceID = ? ",
+						organization, user, action, "entity", entityID).first();
+		if (restrictedInEntity != null) {
 			deRestrictFromEntityNoCascading(userID, action, entityID);
 		}
-		
-		
-		
+
 	}
-	
+
 	/**
 	 * 
-	 * TO BE REMOVED
 	 * de-restricts a certain user from a certain action in a certain entity
 	 * without cascading the derestricton process to the topics within that
 	 * entity
@@ -321,26 +319,25 @@ public class BannedUser extends CoolModel {
 	 *            : long entityID is the id of the entity to be de-restricted
 	 *            from
 	 */
-	public static void deRestrictFromEntityNoCascading(long userID , String action , long entityID){
-	
+	public static void deRestrictFromEntityNoCascading(long userID,
+			String action, long entityID) {
+
 		User user = User.findById(userID);
 		MainEntity entity = MainEntity.findById(entityID);
 		Organization organization = entity.organization;
-		
-		BannedUser restricted = BannedUser.find( "select bu from BannedUser bu where bu.organization = ? and bu.bannedUser = ?" +
-				" and bu.action like ? and bu.resourceType = ? and bu.resourceID = ? "  ,organization,user,action,"entity",entityID).first();
-		
-		
-		if(restricted !=null){
+
+		BannedUser restricted = BannedUser
+				.find("select bu from BannedUser bu where bu.organization = ? and bu.bannedUser = ?"
+						+ " and bu.action like ? and bu.resourceType = ? and bu.resourceID = ? ",
+						organization, user, action, "entity", entityID).first();
+
+		if (restricted != null) {
 			user.bannedUsers.remove(restricted);
 			organization.bannedUsers.remove(restricted);
 			restricted.delete();
-			
+
 		}
-		
-		
-		
-		
+
 	}
 
 	/**
@@ -358,54 +355,42 @@ public class BannedUser extends CoolModel {
 	 * @param entityID
 	 *            : long entityID is the id of the entity to be de-restricted in
 	 */
-	
-	public static void deRestrictFromEntityWithCascading(long userID , String action , long entityID){
-		
+
+	public static void deRestrictFromEntityWithCascading(long userID,
+			String action, long entityID) {
+
 		User user = User.findById(userID);
 		MainEntity entity = MainEntity.findById(entityID);
 		Organization organization = entity.organization;
 		List<Topic> topicsList = entity.topicList;
 		List<String> topicActions = Roles.getOrganizerTopicActions();
-		
-		
-		/**
-		 * if the action passed belongs to the list of topicActions then cascade
-		 * the de-restriction
-		 */
-		if(topicActions.contains(action)){
-			for(int i = 0 ; i < topicsList.size(); i++ ){
+
+		if (topicActions.contains(action)) {
+			for (int i = 0; i < topicsList.size(); i++) {
 				Topic topic = topicsList.get(i);
 				long topicID = topic.getId();
 				deRestrictFromTopic(userID, action, topicID);
-				
+
 			}
 		}
-		/**
-		 * whether the action belongs to topics or not it will be de-restricted in the entity 
-		 */
-		
-		BannedUser restricted = BannedUser.find( "select bu from BannedUser bu where bu.organization = ? and bu.bannedUser = ?" +
-				" and bu.action like ? and bu.resourceType = ? and bu.resourceID = ? "  ,organization,user,action,"entity",entityID).first();
-		
-		
-		if(restricted != null){
+
+		BannedUser restricted = BannedUser
+				.find("select bu from BannedUser bu where bu.organization = ? and bu.bannedUser = ?"
+						+ " and bu.action like ? and bu.resourceType = ? and bu.resourceID = ? ",
+						organization, user, action, "entity", entityID).first();
+
+		if (restricted != null) {
 			user.bannedUsers.remove(restricted);
 			organization.bannedUsers.remove(restricted);
 			restricted.delete();
 		}
-		
-		
-		
-		/**
-		 * cascade the de-restriction from the sub-entities
-		 */
-		
-		List <MainEntity> subEntities = entity.subentities;
-		for(int i = 0 ; i < subEntities.size() ; i++){
+
+		List<MainEntity> subEntities = entity.subentities;
+		for (int i = 0; i < subEntities.size(); i++) {
 			MainEntity subEntity = subEntities.get(i);
 			deRestrictFromEntityWithCascading(userID, action, subEntity.getId());
 		}
-		
+
 	}
 
 }
