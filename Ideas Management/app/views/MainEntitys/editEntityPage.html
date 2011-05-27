@@ -128,7 +128,7 @@
     </style>
     <title>Entity Editing Form</title>
 </head>
-<body onload="init()">
+
     <div id="leftSidebar">
         <ul>
             <div style="clear: both;">
@@ -248,31 +248,34 @@
                 <div id="backToOrg">
                     <a href="@{MainEntitys.viewEntity(targetEntity.id)}">Back to ${targetEntity.name}</a>
                 </div>
+				<div style="background-color:#bbbbbb; border-top-left-radius: 10px;border-top-right-radius: 10px;
+				border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; margin-right:5%;padding:2% 2% 2% 2%;">
+			   <h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Edit Entity</h2>
+				<br />
                 <form name="entityForm" action="@{MainEntitys.editEntity()}" method="POST"
         onsubmit= "return validate()">
         	<input type="hidden" name="entityId" value="${targetEntity.id}">		
-			<HR>
+			
 			Entity Name: <input type="text" id="name" name="name"
 			value="${targetEntity.name}"> 
 			<br />
 			<label id= "nameerror"> </label><br />
-			<HR>
+			
 			<p>Description:</p>
 			<p><textarea id="description" name="description" rows="5" cols="50"
 				>${targetEntity.description}</textarea></p>
 			<label id= "descriptionerror"> </label> <br /><br /><br />
-			<HR>
+			
 			#{if targetEntity.createRelationship}
 			<input type="checkbox" id="createRelationship" name="createRelationship" checked>Allow entity to have relationships<br />
-			<HR>
+			
 			#{/if}
 			#{else}
 			<input type="checkbox" id="createRelationship" name="createRelationship">Allow entity to have relationships<br />
-			<HR>
 			#{/else}
-			<input type="submit" onclick="get_Value()" value = "Save">
-			<HR>
+			<input type="submit" onclick="get_Value()" value = "Save" class="linkButton">
 			</form>
+			</div>
                 <script type="text/javascript">
                     function redirect(){
                         document.location.href = "@{Organizations.viewProfile(org.id)}";
