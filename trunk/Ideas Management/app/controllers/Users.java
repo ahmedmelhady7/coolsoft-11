@@ -204,9 +204,7 @@ public class Users extends CoolCRUD {
 		User user = User.findById(userID);
 
 		notFoundIfNull(user);
-		System.out.println("entered view() for User " + user.username);
-		System.out.println(user.email);
-		System.out.println(user.username);
+		
 
 		String firstName = user.firstName;
 		String lastName = user.lastName;
@@ -239,13 +237,11 @@ public class Users extends CoolCRUD {
 		}
 		try {
 
-			System.out.println("view() done, about to render" + usernames
-					+ " | " + emails);
+			
 			render(user, usernames, emails);
 
 		} catch (TemplateNotFoundException e) {
-			System.out
-					.println("view() done with exception, rendering to CRUD/show.html");
+			
 			render("/users/view.html");
 		}
 	}
@@ -983,7 +979,7 @@ public class Users extends CoolCRUD {
 			}
 		}
 
-		System.out.println("you entered an invalid type");
+		
 		return false;
 
 	}
