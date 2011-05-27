@@ -32,7 +32,8 @@ public class Users extends CoolCRUD {
 
 	/**
 	 * 
-	 * overrides the CRUD list method ,renders the list of users
+	 * overrides the CRUD list method ,renders the list of users if the connected user is an admin 
+	 * otherwise it redirects him to another page informing him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -57,31 +58,41 @@ public class Users extends CoolCRUD {
 	 */
 	public static void list(int page, String search, String searchFields,
 			String orderBy, String order) {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		if (page < 1) {
-			page = 1;
+		if(Security.getConnected().isAdmin)
+		{
+			ObjectType type = ObjectType.get(getControllerClass());
+			notFoundIfNull(type);
+			if (page < 1) {
+				page = 1;
+			}
+			System.out.println("list() entered ");
+			List<Model> objects = type.findPage(page, search, searchFields,
+					orderBy, order, (String) request.args.get("where"));
+			Long count = type.count(search, searchFields,
+					(String) request.args.get("where"));
+			Long totalCount = type.count(null, null,
+					(String) request.args.get("where"));
+			try {
+				System.out.println("list() done, will render ");
+				render(type, objects, count, totalCount, page, orderBy, order);
+			} catch (TemplateNotFoundException e) {
+				System.out
+						.println("list() done with exceptions, will render CRUD/list.html ");
+				render("CRUD/list.html", type, objects, count, totalCount, page,
+						orderBy, order);
+			}
 		}
-		System.out.println("list() entered ");
-		List<Model> objects = type.findPage(page, search, searchFields,
-				orderBy, order, (String) request.args.get("where"));
-		Long count = type.count(search, searchFields,
-				(String) request.args.get("where"));
-		Long totalCount = type.count(null, null,
-				(String) request.args.get("where"));
-		try {
-			System.out.println("list() done, will render ");
-			render(type, objects, count, totalCount, page, orderBy, order);
-		} catch (TemplateNotFoundException e) {
-			System.out
-					.println("list() done with exceptions, will render CRUD/list.html ");
-			render("CRUD/list.html", type, objects, count, totalCount, page,
-					orderBy, order);
+		else
+		{
+			BannedUsers.unauthorized();
 		}
+		
 	}
 
 	/**
-	 * overrides the CRUD view method and renders the form for viewing a user
+	 * overrides the CRUD view method and renders the form for viewing / editing a user if the 
+	 * connected user is a system admin otherwise it redirects him to another page informing 
+	 * him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -95,49 +106,57 @@ public class Users extends CoolCRUD {
 	 * 
 	 */
 	public static void view(String userId) {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		long userID = Long.parseLong(userId);
-		User object = User.findById(userID);
-		notFoundIfNull(object);
-		System.out.println("entered view() for User " + object.username);
-		System.out.println(object.email);
-		System.out.println(object.username);
-		int communityContributionCounter = object.communityContributionCounter;
-		String name = object.firstName + " " + object.lastName;
-		String profession = object.profession;
-		String username = object.username;
-		String birthDate = "" + object.dateofBirth;
-
-		int adminFlag = 0;
-		if (Security.getConnected().isAdmin) {
-			adminFlag = 1;
-		}
-		int admin = 0;
-		if(object.isAdmin)
+		if(Security.getConnected().isAdmin)
 		{
-			admin=1;
-		}
-		int isDeleted = 0;
-		if (object.state.equals("d")) {
-			isDeleted = 1;
-		}
-		try {
+			ObjectType type = ObjectType.get(getControllerClass());
+			notFoundIfNull(type);
+			long userID = Long.parseLong(userId);
+			User object = User.findById(userID);
+			notFoundIfNull(object);
+			System.out.println("entered view() for User " + object.username);
+			System.out.println(object.email);
+			System.out.println(object.username);
+			int communityContributionCounter = object.communityContributionCounter;
+			String name = object.firstName + " " + object.lastName;
+			String profession = object.profession;
+			String username = object.username;
+			String birthDate = "" + object.dateofBirth;
 
-			System.out.println("view() done, about to render");
-			render(type, object, username, name, communityContributionCounter,
-					profession, birthDate, userId, adminFlag, isDeleted,admin);
+			int adminFlag = 0;
+			if (Security.getConnected().isAdmin) {
+				adminFlag = 1;
+			}
+			int admin = 0;
+			if(object.isAdmin)
+			{
+				admin=1;
+			}
+			int isDeleted = 0;
+			if (object.state.equals("d")) {
+				isDeleted = 1;
+			}
+			try {
 
-		} catch (TemplateNotFoundException e) {
-			System.out
-					.println("view() done with exception, rendering to CRUD/show.html");
-			render("/users/view.html");
+				System.out.println("view() done, about to render");
+				render(type, object, username, name, communityContributionCounter,
+						profession, birthDate, userId, adminFlag, isDeleted,admin);
+
+			} catch (TemplateNotFoundException e) {
+				System.out
+						.println("view() done with exception, rendering to CRUD/show.html");
+				render("/users/view.html");
+			}
+		}
+		else
+		{
+			BannedUsers.unauthorized();
 		}
 	}
 
 	/**
 	 * overrides the CRUD show method,renders the form for editing and viewing a
-	 * user
+	 * user if the connected user is a system admin otherwise it redirects him to another page 
+	 * informing him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -150,57 +169,40 @@ public class Users extends CoolCRUD {
 	 * @throws Exception
 	 * 
 	 */
-	// public static void show(String userId) {
-	// ObjectType type = ObjectType.get(getControllerClass());
-	// notFoundIfNull(type);
-	// long userID = Long.parseLong(userId);
-	// User object = User.findById(userID);
-	// notFoundIfNull(object);
-	// System.out.println("entered view() for User " + object.username);
-	// System.out.println(object.email);
-	// System.out.println(object.username);
-	// int communityContributionCounter = object.communityContributionCounter;
-	// String name = object.firstName + " " + object.lastName;
-	// String profession = object.profession;
-	// String username = object.username;
-	// String birthDate = "" + object.dateofBirth;
-	// try {
-	// System.out.println("show() done, about to render");
-	// render(type, object, username, name, communityContributionCounter,
-	// profession, birthDate, userId);
-	// } catch (TemplateNotFoundException e) {
-	// System.out
-	// .println("show() done with exception, rendering to CRUD/show.html");
-	// render("CRUD/show.html", type, object);
-	// }
-	// }
 
 	public static void show(String userId) {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		Model object = type.findById(userId);
-		notFoundIfNull(object);
-		System.out.println("entered show() for user " + userId);
-		User tmp = (User) object;
-		int communityContributionCounter = tmp.communityContributionCounter;
-		String name = tmp.firstName + " " + tmp.lastName;
-		String profession = tmp.profession;
-		String username = tmp.username;
-		String dateofBirth = "" + tmp.dateofBirth;
-		int admin = 0;
-		if(tmp.isAdmin)
+		if(Security.getConnected().isAdmin)
 		{
-			admin=1;
+			ObjectType type = ObjectType.get(getControllerClass());
+			notFoundIfNull(type);
+			Model object = type.findById(userId);
+			notFoundIfNull(object);
+			System.out.println("entered show() for user " + userId);
+			User tmp = (User) object;
+			int communityContributionCounter = tmp.communityContributionCounter;
+			String name = tmp.firstName + " " + tmp.lastName;
+			String profession = tmp.profession;
+			String username = tmp.username;
+			String dateofBirth = "" + tmp.dateofBirth;
+			int admin = 0;
+			if(tmp.isAdmin)
+			{
+				admin=1;
+			}
+			int isDeleted = 0;
+			if (tmp.state.equals("d")) {
+				isDeleted = 1;
+			}
+			try {
+				render(type, object, username, name, communityContributionCounter,
+						profession, dateofBirth, userId, isDeleted,admin);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/show.html", type, object);
+			}
 		}
-		int isDeleted = 0;
-		if (tmp.state.equals("d")) {
-			isDeleted = 1;
-		}
-		try {
-			render(type, object, username, name, communityContributionCounter,
-					profession, dateofBirth, userId, isDeleted,admin);
-		} catch (TemplateNotFoundException e) {
-			render("CRUD/show.html", type, object);
+		else
+		{
+			BannedUsers.unauthorized();
 		}
 	}
 
@@ -309,7 +311,9 @@ public class Users extends CoolCRUD {
 	}
 
 	/**
-	 * Overrides the CRUD method blank, renders the form for creating a user
+	 * Overrides the CRUD method blank, renders the form for creating a user if the 
+	 * connected user is a system admin otherwise it redirects him to another page informing 
+	 * him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -320,25 +324,33 @@ public class Users extends CoolCRUD {
 	 * 
 	 */
 	public static void blank() throws Exception {
-		ObjectType type = ObjectType.get(Users.class);
-		notFoundIfNull(type);
-		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
-		constructor.setAccessible(true);
-		Model object = (Model) constructor.newInstance();
-		User user = Security.getConnected();
-		int adminFlag = 0;
-		int unregisteredUser = 0;
-		try {
-			if (user.isAdmin) {
-				adminFlag = 1;
+		if(Security.getConnected().isAdmin)
+		{
+			ObjectType type = ObjectType.get(Users.class);
+			notFoundIfNull(type);
+			Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+			constructor.setAccessible(true);
+			Model object = (Model) constructor.newInstance();
+			User user = Security.getConnected();
+			int adminFlag = 0;
+			int unregisteredUser = 0;
+			try {
+				if (user.isAdmin) {
+					adminFlag = 1;
+				}
+			} catch (NullPointerException e) {
+				unregisteredUser = 1;
 			}
-		} catch (NullPointerException e) {
-			unregisteredUser = 1;
+			try {
+				render(type, object, adminFlag, unregisteredUser);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type, object);
+			}
+			
 		}
-		try {
-			render(type, object, adminFlag, unregisteredUser);
-		} catch (TemplateNotFoundException e) {
-			render("CRUD/blank.html", type, object);
+		else
+		{
+			BannedUsers.unauthorized();
 		}
 	}
 
@@ -1249,7 +1261,9 @@ public class Users extends CoolCRUD {
 	/**
 	 * overrides the CRUD create method that is used to create a new user and
 	 * make sure that this user is valid, and then it renders a message
-	 * mentioning whether the operation was successful or not.
+	 * mentioning whether the operation was successful or not that is if the 
+	 * connected user is a system admin otherwise it redirects him to another page informing 
+	 * him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1258,206 +1272,114 @@ public class Users extends CoolCRUD {
 	 * 
 	 */
 
-	/*public static void create() throws Exception {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
-		constructor.setAccessible(true);
-		Model object = (Model) constructor.newInstance();
-		Binder.bind(object, "object", params.all());
-		validation.valid(object);
-		String message = "";
-		User tmp = (User) object;
-		System.out.println("create() entered");
-		tmp.email = tmp.email.trim().toLowerCase();
-		tmp.username = tmp.username.trim().toLowerCase();
-		tmp.firstName = tmp.firstName.trim();
-		boolean flag = false;
-		
-		 * if (User.find("ByEmail", tmp.email) != null ||
-		 * User.find("ByUsername", tmp.username) != null) { flag = true; }
-		 * System.out.println(flag );
-		 
-		if (validation.hasErrors()) {
-			System.out.println("lol");
-			if (tmp.email.equals("")) {
-				message = "A User must have an email";
-				System.out.println(message);
-			} else if (tmp.username.equals("")) {
-				message = "A User must have a username";
-				System.out.println(message);
-			} else if (tmp.password.equals("")) {
-				message = "A User must have a password";
-				System.out.println(message);
-			} else if (tmp.firstName.trim().equals("")) {
-				message = "A User must have a first name";
-				System.out.println(message);
-			} else if (tmp.username.length() >= 20) {
-				message = "Username cannot exceed 20 characters";
-			} else if (tmp.password.length() >= 25) {
-				message = "First name cannot exceed 25 characters";
-			} 
-			 * else if (User.find("byEmail", tmp.email) != null) { message =
-			 * "This Email already exists !"; } else if (User.find("byUsername",
-			 * tmp.username) != null) { message =
-			 * "This username already exists !"; }
-			 
-
-			try {
-				System.out.println("show user try ");
-				render(request.controller.replace(".", "/") + "/blank.html",
-						type, message);
-			} catch (TemplateNotFoundException e) {
-				System.out.println("show user catch ");
-				render("CRUD/blank.html", type);
-			}
-		}
-
-		System.out.println("create() about to save object");
-		tmp.state = "w";
-		object._save();
-		System.out.println("create() object saved");
-		tmp = (User) object;
-		Mail.welcome(tmp);
-		// Calendar cal = new GregorianCalendar();
-		// Logs.addLog( user.getConnected, "add", "User", tmp.username.
-		// cal.getTime() );
-		String message2 = tmp.username + " has been added to users ";
-		System.out.println("id " + tmp.getId());
-
-		flash.success(Messages.get("crud.created", type.modelName,
-				((User) object).getId()));
-		if (params.get("_save") != null) {
-			System.out
-					.println("create() done will redirect to users/show?topicid "
-							+ message2);
-			redirect("/users/show?userId=" + tmp.getId());
-
-		}
-		if (params.get("_saveAndAddAnother") != null) {
-			System.out
-					.println("create() done will redirect to blank.html to add another "
-							+ message2);
-			redirect(request.controller + ".blank", message2);
-		}
-		System.out
-				.println("create() done will redirect to show.html to show created"
-						+ message2);
-		redirect(request.controller + ".view", ((User) object).getId(),
-				message2);
-	}*/
 	public static void create() throws Exception {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
-		constructor.setAccessible(true);
-		Model object = (Model) constructor.newInstance();
-		Binder.bind(object, "object", params.all());
-		validation.valid(object);
-		String message = "";
-		User tmp = (User) object;
-		System.out.println("create() entered");
-		tmp.email = tmp.email.trim().toLowerCase();
-		tmp.username = tmp.username.trim().toLowerCase();
-		tmp.firstName = tmp.firstName.trim();
-		boolean invalidUserFlag = false;
-		if (!(User.find("byEmail", tmp.email).fetch().isEmpty())) {
-			message = "This Email already exists !";
-			invalidUserFlag =true;
-		} else if (!(validation.email(tmp.email).ok)) {
-			message = "Please enter a valid email address";
-			invalidUserFlag = true;
-			System.out.println(message);
-		} else if (!(User.find("byUsername", tmp.username).fetch().isEmpty())) {
-			message = "This Username already exists !";
-			invalidUserFlag = true;
-		} else if (tmp.password.length() < 4) {
-			message = "Password cannot be less than 4 characters";
-			invalidUserFlag = true;
-		}
-		if (validation.hasErrors()||invalidUserFlag) {
-			System.out.println("lol");
-			if (tmp.email.equals("")) {
-				message = "A User must have an email";
-				System.out.println(message);
-			} else if (!(User.find("byEmail", tmp.email).fetch().isEmpty())) {
+		if(Security.getConnected().isAdmin)
+		{
+			ObjectType type = ObjectType.get(getControllerClass());
+			notFoundIfNull(type);
+			Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+			constructor.setAccessible(true);
+			Model object = (Model) constructor.newInstance();
+			Binder.bind(object, "object", params.all());
+			validation.valid(object);
+			String message = "";
+			User tmp = (User) object;
+			System.out.println("create() entered");
+			tmp.email = tmp.email.trim().toLowerCase();
+			tmp.username = tmp.username.trim().toLowerCase();
+			tmp.firstName = tmp.firstName.trim();
+			boolean invalidUserFlag = false;
+			if (!(User.find("byEmail", tmp.email).fetch().isEmpty())) {
 				message = "This Email already exists !";
+				invalidUserFlag =true;
 			} else if (!(validation.email(tmp.email).ok)) {
 				message = "Please enter a valid email address";
-				System.out.println(message);
-			} else if (tmp.username.equals("")) {
-				message = "A User must have a username";
+				invalidUserFlag = true;
 				System.out.println(message);
 			} else if (!(User.find("byUsername", tmp.username).fetch().isEmpty())) {
 				message = "This Username already exists !";
-			} else if (tmp.password.equals("")) {
-				message = "A User must have a password";
-				System.out.println(message);
-			}  else if (tmp.username.length() < 3) {
-				message = "Username cannot be less than 3 characters";
+				invalidUserFlag = true;
 			} else if (tmp.password.length() < 4) {
 				message = "Password cannot be less than 4 characters";
-			}else if (tmp.firstName.trim().equals("")) {
-				message = "A User must have a first name";
-				System.out.println(message);
-			} else if (tmp.username.length() >= 20) {
-				message = "Username cannot exceed 20 characters";
-			} else if (tmp.password.length() >= 25) {
-				message = "First name cannot exceed 25 characters";
-			}else if (tmp.securityQuestion.trim().equals("")) {
-				message = "A User must have a security Question";
-				System.out.println(message);
-			} else if (tmp.answer.trim().equals("")) {
-				message = "A User must have a security answer";
-				System.out.println(message);
+				invalidUserFlag = true;
+			}
+			if (validation.hasErrors()||invalidUserFlag) {
+				System.out.println("lol");
+				if (tmp.email.equals("")) {
+					message = "A User must have an email";
+					System.out.println(message);
+				} else if (!(User.find("byEmail", tmp.email).fetch().isEmpty())) {
+					message = "This Email already exists !";
+				} else if (!(validation.email(tmp.email).ok)) {
+					message = "Please enter a valid email address";
+					System.out.println(message);
+				} else if (tmp.username.equals("")) {
+					message = "A User must have a username";
+					System.out.println(message);
+				} else if (!(User.find("byUsername", tmp.username).fetch().isEmpty())) {
+					message = "This Username already exists !";
+				} else if (tmp.password.equals("")) {
+					message = "A User must have a password";
+					System.out.println(message);
+				}  else if (tmp.username.length() < 3) {
+					message = "Username cannot be less than 3 characters";
+				} else if (tmp.password.length() < 4) {
+					message = "Password cannot be less than 4 characters";
+				}else if (tmp.firstName.trim().equals("")) {
+					message = "A User must have a first name";
+					System.out.println(message);
+				} else if (tmp.username.length() >= 20) {
+					message = "Username cannot exceed 20 characters";
+				} else if (tmp.password.length() >= 25) {
+					message = "First name cannot exceed 25 characters";
+				}else if (tmp.securityQuestion.trim().equals("")) {
+					message = "A User must have a security Question";
+					System.out.println(message);
+				} else if (tmp.answer.trim().equals("")) {
+					message = "A User must have a security answer";
+					System.out.println(message);
+				}
+
+				try {
+					System.out.println("show user try ");
+					render(request.controller.replace(".", "/") + "/blank.html",
+							type, message);
+				} catch (TemplateNotFoundException e) {
+					System.out.println("show user catch ");
+					render("CRUD/blank.html", type);
+				}
 			}
 
-			try {
-				System.out.println("show user try ");
-				render(request.controller.replace(".", "/") + "/blank.html",
-						type, message);
-			} catch (TemplateNotFoundException e) {
-				System.out.println("show user catch ");
-				render("CRUD/blank.html", type);
+			tmp.state = "w";
+			tmp.password = Codec.hexMD5(tmp.password);
+			tmp.activationKey = Application.randomHash(10);
+			object._save();
+			System.out.println("create() object saved");
+			tmp = (User) object;
+			//Mail.welcome(tmp);
+			Mail.activation(tmp, tmp.activationKey);
+			Log.addUserLog("Admin " + "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ Security.getConnected().id+ "\">" + Security.getConnected().firstName + "</a>" + " "
+					+ " has added " + "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ tmp.id + "\">" + tmp.firstName + "</a>"
+					+ "'s profile" , tmp);
+			String message2 = tmp.username + " has been added to users ";
+			flash.success(Messages.get("crud.created", type.modelName,
+					((User) object).getId()));
+			if (params.get("_save") != null) {
+				redirect("/users/show?userId=" + tmp.getId());
+
 			}
+			if (params.get("_saveAndAddAnother") != null) {
+				redirect(request.controller + ".blank", message2);
+			}
+			redirect(request.controller + ".view", ((User) object).getId(),
+					message2);
 		}
-
-		System.out.println("create() about to save object");
-		tmp.state = "w";
-		tmp.password = Codec.hexMD5(tmp.password);
-		tmp.activationKey = Application.randomHash(10);
-		object._save();
-		System.out.println("create() object saved");
-		tmp = (User) object;
-		//Mail.welcome(tmp);
-		Mail.activation(tmp, tmp.activationKey);
-		
-		// Calendar cal = new GregorianCalendar();
-		// Logs.addLog( user.getConnected, "add", "User", tmp.username.
-		// cal.getTime() );
-		String message2 = tmp.username + " has been added to users ";
-		System.out.println("id " + tmp.getId());
-
-		flash.success(Messages.get("crud.created", type.modelName,
-				((User) object).getId()));
-		if (params.get("_save") != null) {
-			System.out
-					.println("create() done will redirect to users/show?topicid "
-							+ message2);
-			redirect("/users/show?userId=" + tmp.getId());
-
+		else
+		{
+			BannedUsers.unauthorized();
 		}
-		if (params.get("_saveAndAddAnother") != null) {
-			System.out
-					.println("create() done will redirect to blank.html to add another "
-							+ message2);
-			redirect(request.controller + ".blank", message2);
-		}
-		System.out
-				.println("create() done will redirect to show.html to show created"
-						+ message2);
-		redirect(request.controller + ".view", ((User) object).getId(),
-				message2);
 	}
 	
 	
@@ -1526,7 +1448,9 @@ public class Users extends CoolCRUD {
 	/**
 	 * overrides the CRUD save method ,used to submit the edit, to make sure
 	 * that the edits are acceptable, and then it renders a message mentioning
-	 * whether the operation was successful or not.
+	 * whether the operation was successful or not that is if the 
+	 * connected user is a system admin otherwise it redirects him to another page informing 
+	 * him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1537,230 +1461,177 @@ public class Users extends CoolCRUD {
 	 * 
 	 */
 	public static void save(String id) throws Exception {
-		// Security.check(Security.getConnected().isAdmin||);
-		ObjectType type = ObjectType.get(Users.class);
-		notFoundIfNull(type);
-		Model object = type.findById(id);
-		User oldUser = (User) object;
-		String oldEmail = "" + oldUser.email;
-		char[] oldemailArray = oldEmail.toCharArray();
-		String oldFirstName = "" + oldUser.firstName;
-		char[] oldFirstNameArray = oldFirstName.toCharArray();
-		String oldLastName = "" + oldUser.lastName;
-		char[] oldLastNameArray ;
-		String oldCountry = "" + oldUser.country;
-		char[] oldCountryArray ;
-		String oldProfession = "" + oldUser.profession;
-		char[] oldProfessionArray;
-		boolean notEmptyCountry = false;
-		boolean notEmptyLastName = false;
-		boolean notEmptyProfession = false;
-
-		if(oldCountry.trim() != "")
+		if(Security.getConnected().isAdmin)
 		{
-			System.out.println(oldCountry);
-			oldCountryArray = oldCountry.toCharArray();
-			notEmptyCountry =true;
-		}
-		else{
-			oldCountryArray = new char[1]; 
-		}
-		if(oldLastName != "")
-		{
-			oldLastNameArray = oldLastName.toCharArray();
-			notEmptyLastName =true;
-		}
-		else{
-			oldLastNameArray = new char[1]; 
-		}
-		if(oldLastName != "")
-		{
-			oldProfessionArray = oldProfession.toCharArray();
-			notEmptyProfession =true;
-		}
-		else{
-			oldProfessionArray = new char[1]; 
-		}
-		
-		Binder.bind(object, "object", params.all());
-		System.out.println(object.toString() + "begin");
-		validation.valid(object);
-		String editedMessage = "User : " + oldUser.username + "\n";
-		String message = "";
-		User tmp = (User) object;
-		System.out.println("create() entered");
-		tmp.email = tmp.email.trim();
-		tmp.email = tmp.email.toLowerCase();
-		tmp.firstName = tmp.firstName.trim();
-		
+			ObjectType type = ObjectType.get(Users.class);
+			notFoundIfNull(type);
+			Model object = type.findById(id);
+			User oldUser = (User) object;
+			String oldEmail = "" + oldUser.email;
+			char[] oldemailArray = oldEmail.toCharArray();
+			String oldFirstName = "" + oldUser.firstName;
+			char[] oldFirstNameArray = oldFirstName.toCharArray();
+			String oldLastName = "" + oldUser.lastName;
+			char[] oldLastNameArray ;
+			String oldCountry = "" + oldUser.country;
+			char[] oldCountryArray ;
+			String oldProfession = "" + oldUser.profession;
+			char[] oldProfessionArray;
+			boolean notEmptyCountry = false;
+			boolean notEmptyLastName = false;
+			boolean notEmptyProfession = false;
 
-		if (validation.hasErrors()) {
-			System.out.println("lol");
-			if (tmp.email.equals("")) {
-				message = "A User must have an email";
-				System.out.println(message);
-			} else if (tmp.username.length() >= 20) {
-				message = "Username cannot exceed 20 characters";
-			}
-			try {
-				System.out.println("show user try ");
-				render(request.controller.replace(".", "/") + "/view.html",
-						object, type, message);
-
-			} catch (TemplateNotFoundException e) {
-				System.out.println("show user catch ");
-				render("CRUD/blank.html", type);
-			}
-		}
-
-		System.out.println(object.toString() + "before save");
-		object._save();
-		if (Security.getConnected().isAdmin
-				&& Security.getConnected().id != tmp.id) {
-			Notifications.sendNotification(tmp.id, Security.getConnected().id,
-					"User", "The admin has edited your profile");
-		}
-		if (!(Arrays.equals(oldemailArray, tmp.email.toCharArray()))) {
-			editedMessage += "Email " + oldEmail + " changed to -->  " + tmp.email + "\n";
-		}
-		if (!(Arrays.equals(oldFirstNameArray, tmp.firstName.toCharArray()))) {
-			editedMessage += " First Name " + oldFirstName + " changed to -->  " + tmp.firstName
-					+ "\n";
-		}
-		if(notEmptyLastName)
-		{
-			if(tmp.lastName.trim().equals(""))
+			if(oldCountry.trim() != "")
 			{
-				editedMessage += "Last Name " + oldLastName + " removed " + "\n";
+				oldCountryArray = oldCountry.toCharArray();
+				notEmptyCountry =true;
+			}
+			else{
+				oldCountryArray = new char[1]; 
+			}
+			if(oldLastName != "")
+			{
+				oldLastNameArray = oldLastName.toCharArray();
+				notEmptyLastName =true;
+			}
+			else{
+				oldLastNameArray = new char[1]; 
+			}
+			if(oldLastName != "")
+			{
+				oldProfessionArray = oldProfession.toCharArray();
+				notEmptyProfession =true;
+			}
+			else{
+				oldProfessionArray = new char[1]; 
+			}
+			
+			Binder.bind(object, "object", params.all());
+			validation.valid(object);
+			String editedMessage = "User : " + oldUser.username + "\n";
+			String message = "";
+			User tmp = (User) object;
+			tmp.email = tmp.email.trim();
+			tmp.email = tmp.email.toLowerCase();
+			tmp.firstName = tmp.firstName.trim();
+			
+
+			if (validation.hasErrors()) {
+				if (tmp.email.equals("")) {
+					message = "A User must have an email";
+				} else if (tmp.username.length() >= 20) {
+					message = "Username cannot exceed 20 characters";
+				}
+				try {
+					render(request.controller.replace(".", "/") + "/view.html",
+							object, type, message);
+
+				} catch (TemplateNotFoundException e) {
+					render("CRUD/blank.html", type);
+				}
+			}
+			object._save();
+			if (!(Arrays.equals(oldemailArray, tmp.email.toCharArray()))) {
+				editedMessage += "Email " + oldEmail + " changed to -->  " + tmp.email + "\n";
+			}
+			if (!(Arrays.equals(oldFirstNameArray, tmp.firstName.toCharArray()))) {
+				editedMessage += " First Name " + oldFirstName + " changed to -->  " + tmp.firstName
+						+ "\n";
+			}
+			if(notEmptyLastName)
+			{
+				if(tmp.lastName.trim().equals(""))
+				{
+					editedMessage += "Last Name " + oldLastName + " removed " + "\n";
+				}
+				else
+				{
+					if (!(Arrays.equals(oldLastNameArray, tmp.lastName.toCharArray()))) {
+						editedMessage += "Last Name " + oldLastName + " changed to -->  " + tmp.lastName + "\n";
+					}
+				}
 			}
 			else
 			{
-				if (!(Arrays.equals(oldLastNameArray, tmp.lastName.toCharArray()))) {
-					editedMessage += "Last Name " + oldLastName + " changed to -->  " + tmp.lastName + "\n";
+				if(!(tmp.lastName.equals("")))
+				{
+					editedMessage += "Last Name " + oldLastName + " added --> " + tmp.lastName + "\n";
 				}
 			}
-		}
-		else
-		{
-			if(!(tmp.lastName.equals("")))
+			if(notEmptyProfession)
 			{
-				editedMessage += "Last Name " + oldLastName + " added --> " + tmp.lastName + "\n";
-			}
-		}
-		if(notEmptyProfession)
-		{
-			if(tmp.profession.trim().equals(""))
-			{
-				editedMessage += "Profession " + oldProfession + " removed " + "\n";
+				if(tmp.profession.trim().equals(""))
+				{
+					editedMessage += "Profession " + oldProfession + " removed " + "\n";
+				}
+				else
+				{
+					if (!(Arrays.equals(oldProfessionArray, tmp.profession.toCharArray()))) {
+						editedMessage += "Profession " + oldProfession + " changed to -->  " + tmp.profession + "\n";
+					}
+				}
 			}
 			else
 			{
-				if (!(Arrays.equals(oldProfessionArray, tmp.profession.toCharArray()))) {
-					editedMessage += "Profession " + oldProfession + " changed to -->  " + tmp.profession + "\n";
+				if(!(tmp.profession.equals("")))
+				{
+					editedMessage += "Profession " + oldProfession + " added --> " + tmp.profession + "\n";
 				}
 			}
-		}
-		else
-		{
-			if(!(tmp.profession.equals("")))
+			if(notEmptyCountry)
 			{
-				editedMessage += "Profession " + oldProfession + " added --> " + tmp.profession + "\n";
-			}
-		}
-		if(notEmptyCountry)
-		{
-			if(tmp.country.trim().equals(""))
-			{
-				editedMessage += "Country " + oldCountry + " removed " + "\n";
+				if(tmp.country.trim().equals(""))
+				{
+					editedMessage += "Country " + oldCountry + " removed " + "\n";
+				}
+				else
+				{
+					if (!(Arrays.equals(oldCountryArray, tmp.country.toCharArray()))) {
+						editedMessage +=  "Country " + oldCountry + " changed to -->  " + tmp.country + "\n";
+					}
+				}
 			}
 			else
 			{
-				if (!(Arrays.equals(oldCountryArray, tmp.country.toCharArray()))) {
-					editedMessage +=  "Country " + oldCountry + " changed to -->  " + tmp.country + "\n";
+				if(!(tmp.country.equals("")))
+				{
+					editedMessage += "Country " + oldCountry + " added --> " + tmp.country + "\n";
 				}
 			}
+			
+			if (Security.getConnected().isAdmin
+					&& Security.getConnected().id != tmp.id) {
+				Notifications.sendNotification(tmp.id, Security.getConnected().id,
+						"User", "The admin has edited your profile"+"\n" + editedMessage);
+				Log.addUserLog("Admin " + "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ Security.getConnected().id+ "\">" + Security.getConnected().firstName + "</a>" + " "
+						+ " has edited " + "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ tmp.id + "\">" + tmp.firstName + "</a>"
+						+ "'s profile" + "\n" + editedMessage, tmp);
+			}
+			flash.success(Messages.get("crud.saved", type.modelName));
+			if (params.get("_save") != null) {
+				if (Security.getConnected().isAdmin) {
+					redirect(request.controller + ".list");
+				} 
+			}
+			redirect(request.controller + ".show", object._key());
+
 		}
 		else
 		{
-			if(!(tmp.country.equals("")))
-			{
-				editedMessage += "Country " + oldCountry + " added --> " + tmp.country + "\n";
-			}
+			BannedUsers.unauthorized();
 		}
-		
-		
-		System.out.println("edited" + editedMessage + " all");
-		if (Security.getConnected().isAdmin
-				&& Security.getConnected().id != tmp.id) {
-			Log.addUserLog("Admin " + Security.getConnected().firstName + " "
-					+ Security.getConnected().lastName + " has edited "
-					+ tmp.username + "'s profile" + "\n" + editedMessage, tmp);
-		}
-		System.out.println(object.toString() + "after the save");
-		flash.success(Messages.get("crud.saved", type.modelName));
-		if (params.get("_save") != null) {
-			if (Security.getConnected().isAdmin) {
-				redirect(request.controller + ".list");
-			} else {
-				String url = " the user is clickable"
-						+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
-						+ tmp.id + "\">" + tmp.firstName + "</a>";
-				Log.addUserLog(url, Security.getConnected());
-
-				redirect("/Users/viewProfile?userId=" + id); // was showProfile
-			}
-		}
-		redirect(request.controller + ".show", object._key());
-
 	}
 
-	
-	// /**
-	// * overrides the CRUD view method ,is responsible for deleting a user by
-	// the
-	// * System admin after specifying that user's id , and then it renders a
-	// * message confirming whether the delete was successful or not
-	// *
-	// * @author Mostafa Ali
-	// *
-	// * @story C1S9
-	// *
-	// * @param id
-	// * :String the user's id
-	// *
-	// *
-	// * */
-	// public static void delete(String id) {
-	// long userId = Long.parseLong(id);
-	// User user = User.findById(userId);
-	// String x = "";
-	// try {
-	//
-	// if (!(user.state.equals("n"))) {
-	// user.state = "d";
-	// user._save();
-	// x = "deletion successful";
-	// System.out.println(x + "  first if");
-	// Mail.deletion(user, "");
-	// } else {
-	// x = "You can not delete a user who's deactivated his account !";
-	// System.out.println(x + "else");
-	// }
-	// render(request.controller.replace(".", "/") + "/index.html", x);
-	// } catch (NullPointerException e) {
-	// x = "No such User !!";
-	// System.out.println(x + "catch");
-	// render(request.controller.replace(".", "/") + "/index.html");
-	//
-	// }
-	//
-	// }
 
 	/**
 	 * deletes a user after the system admin ( the one who's requesting the
 	 * delete) specifies the user's id and the reason for the deletion , then it
 	 * sends a mail to the deleted user notifying him of both the event and the
-	 * reason
+	 * reason if the 
+	 * connected user is a system admin otherwise it redirects him to another page informing 
+	 * him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1774,58 +1645,57 @@ public class Users extends CoolCRUD {
 	 * 
 	 * */
 	public static void delete(String id, String deletionMessage) {
-		long userId = Long.parseLong(id);
-		User user = User.findById(userId);
-		String x = "";
-		try {
+		if(Security.getConnected().isAdmin)
+		{
+			long userId = Long.parseLong(id);
+			User user = User.findById(userId);
+			try {
 
-			if (!(user.state.equals("n"))) {
-				user.state = "d";
-				user._save();
-				x = "deletion successful";
-				/*
-				 * >>>>> Added by Salma Osama to: delete the volunteerRequests
-				 * and the receivedAssignRequests of the user : remove the user
-				 * from the list of assignees of the items he's assigned to
-				 */
-				for (int i = 0; i < user.volunteerRequests.size(); i++) {
-					user.volunteerRequests.get(i).delete();
+				if (!(user.state.equals("n"))) {
+					user.state = "d";
+					user._save();
+					/*
+					 * >>>>> Added by Salma Osama to: delete the volunteerRequests
+					 * and the receivedAssignRequests of the user : remove the user
+					 * from the list of assignees of the items he's assigned to
+					 */
+					for (int i = 0; i < user.volunteerRequests.size(); i++) {
+						user.volunteerRequests.get(i).delete();
+					}
+					for (int i = 0; i < user.receivedAssignRequests.size(); i++) {
+						user.receivedAssignRequests.get(i).delete();
+					}
+					Item item;
+					while (!user.itemsAssigned.isEmpty()) {
+						item = user.itemsAssigned.remove(0);
+						item.assignees.remove(user);
+						item.save();
+						user.save();
+					}
+					// >>>>>> end of Salma's part :)
+					Mail.deletion(user, deletionMessage);
+				} else {
 				}
-				for (int i = 0; i < user.receivedAssignRequests.size(); i++) {
-					user.receivedAssignRequests.get(i).delete();
-				}
-				Item item;
-				while (!user.itemsAssigned.isEmpty()) {
-					item = user.itemsAssigned.remove(0);
-					item.assignees.remove(user);
-					item.save();
-					user.save();
-				}
-				// >>>>>> end of Salma's part :)
-				System.out.println(x + "  first if");
-				System.out.println("message" + deletionMessage);
-				Mail.deletion(user, deletionMessage);
-			} else {
-				x = "You can not delete a user who's deactivated his account !";
-				System.out.println(x + "else");
+				for (int i = 0; i < user.invitation.size(); i++)
+					user.invitation.get(i).delete();
+				for (int i = 0; i < user.requestsToJoin.size(); i++)
+					user.requestsToJoin.get(i).delete();
+				render(request.controller.replace(".", "/") + "/index.html");
+			} catch (NullPointerException e) {
+				render(request.controller.replace(".", "/") + "/index.html");
 			}
-			for (int i = 0; i < user.invitation.size(); i++)
-				user.invitation.get(i).delete();
-			for (int i = 0; i < user.requestsToJoin.size(); i++)
-				user.requestsToJoin.get(i).delete();
-			render(request.controller.replace(".", "/") + "/index.html");
-		} catch (NullPointerException e) {
-			x = "No such User !!";
-			System.out.println(x + "catch");
-			render(request.controller.replace(".", "/") + "/index.html");
-
 		}
-
+		else
+		{
+			BannedUsers.unauthorized();
+		}
 	}
 
 	/**
 	 * undeletes a user by the system admin, then sends an email to the
-	 * undeleted user notifying him of the event
+	 * undeleted user notifying him of the event that is if the 
+	 * connected user is a system admin otherwise it redirects him to another page informing 
+	 * him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1837,21 +1707,28 @@ public class Users extends CoolCRUD {
 	 * 
 	 * */
 	public static void undelete(String id) {
-		long userId = Long.parseLong(id);
-		User user = User.findById(userId);
-		String x = "";
-		try {
+		if(Security.getConnected().isAdmin)
+		{
+			long userId = Long.parseLong(id);
+			User user = User.findById(userId);
+			String x = "";
+			try {
 
-			if (!(user.state.equals("d"))) {
-				return;
+				if (!(user.state.equals("d"))) {
+					return;
+				}
+				user.state = "a";
+				user._save();
+				Mail.forgiven(user);
+				render(request.controller.replace(".", "/") + "/index.html", x);
+			} catch (NullPointerException e) {
+				render(request.controller.replace(".", "/") + "/index.html");
+
 			}
-			user.state = "a";
-			user._save();
-			Mail.forgiven(user);
-			render(request.controller.replace(".", "/") + "/index.html", x);
-		} catch (NullPointerException e) {
-			render(request.controller.replace(".", "/") + "/index.html");
-
+		}
+		else
+		{
+			BannedUsers.unauthorized();
 		}
 	}
 
@@ -2189,28 +2066,6 @@ public class Users extends CoolCRUD {
 		logout();
 	}
 
-	/**
-	 * activates the account of that user by setting the state to "a" and then
-	 * renders a message
-	 * 
-	 * @author Mostafa Ali , Mai Magdy
-	 * 
-	 * @story C1S10,C1S11
-	 * 
-	 * @params userId long Id of the user that his account ll be activated
-	 * 
-	 * 
-	 */
-	public static void activate(long userId) {
-		User user = User.findById(userId);
-		if (user.state.equals("a")) {
-			return;
-		}
-		user.state = "a";
-		user._save();
-
-			render();
-	}
 
 	/**
 	 * changes the password of the user after providing his old password and some validations
