@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import models.CreateRelationshipRequest;
@@ -11,10 +12,16 @@ import models.MainEntity;
 import models.Organization;
 import models.Topic;
 import models.User;
+import play.test.Fixtures;
 import play.test.UnitTest;
 
 public class Abdalrahman extends UnitTest
 {
+	@Before
+	public void setUp() {
+		Fixtures.deleteAll();
+	}
+	
 	@Test
 	public void createDraft()
 	{
