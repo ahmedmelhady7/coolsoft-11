@@ -379,6 +379,10 @@
 					$.post('@{unhideIdea()}', {
 						ideaId: id
 					});
+					$("#hiddenidea_" + id).remove();
+					$.post('@{show()}', {
+						topicId: topicId
+					});
 				}	
 				function deletes(id){
 					$.post('@{Ideas.delete()}', {
@@ -953,7 +957,7 @@
 					#{if idea.isDraft == false}
 					<li>
 						<input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
-						 <font size=1 style="float:left;">${idea.author.username}</font>
+						 <font size=1 style="float:left;"><a href="@{Users.viewProfile(idea.author.id)}">${idea.author.username}</a></font>
 						 <br />
 						<div id="ideas" class="accordionItem">
 						<h3><a href="@{Ideas.show(idea.id)}">&nbsp ${idea.title}</a></h3>
@@ -975,8 +979,7 @@
 			                <input id="showhidden" type="submit" value="show hidden Ideas" class = "linkButton"/>
 			                <div id="hidden">
 			                #{list items:hiddenIdeas, as:'idea'}
-			                                <fieldset>
-			                                </br>
+			                <div class="" id="hiddenidea_${idea.id}">
 			                <label style="background-color:#FFFFFF; border-top-left-radius: 10px;border-top-right-radius: 10px;
 							border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; padding:0.3% 2% 0.3% 2%; margin-right:20%;">${idea.title}</label>
 			                <br />
@@ -989,7 +992,7 @@
 			                <br />
 			                <input type="submit" id="unhide" value="unhide" onclick="unhide(${idea.id})" class = "linkButton"/>
 							</div>
-			                </fieldset>
+							</div>
 			        		#{/list}
 			        </div>
 			        #{/if}
@@ -1040,11 +1043,7 @@
 			                $("#showhidden").click(function(){
 			                 $("#hidden").toggle();
 			           });
-			                $("#unhide").click(function(){
-			                    $("#hidden").remove();
-			                    $("#ideas").hide();
-			                    $("#ideas").show();
-			              });
+			                
 			                 </script>
 			                <style type="text/css">
 			                        #hidden{display: none;}
