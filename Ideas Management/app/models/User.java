@@ -608,9 +608,21 @@ public class User extends CoolModel {
 
 		return (ArrayList<Idea>) drafts;
 	}
+	
+	public int topicDraftsCount()
+	{
+		//topicsCreated
+		List<Topic> drafts = new ArrayList<Topic>();
+
+		for (Topic topic : this.topicsCreated)
+			if (topic.isDraft)
+				drafts.add(topic);
+
+		return drafts.size();
+	}
 
 	public int getDraftsCount() {
-		return this.getDrafts().size();
+		return this.getDrafts().size()+topicDraftsCount();
 	}
 
 	/**
