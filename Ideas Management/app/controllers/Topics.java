@@ -2340,7 +2340,6 @@ public class Topics extends CRUD {
 		targetTopic.delete();
 		user.save();
 		System.out.println("I deleted");
-		renderJSON("done");
 	}
 	
 	/**
