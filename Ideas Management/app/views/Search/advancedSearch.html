@@ -401,7 +401,7 @@
         <div style="padding-top: 25px; color: #000000>
             <div class="tabholder" id="tabholder_articles">
                 <span class="activeTab" id="tab5" onMouseOver="hover(this);" onClick="showNewPanel(5);" onMouseOut="setState(5);">Advanced Search&nbsp;</span>
-                <!--span class="inactiveTab" id="tab1" onMouseOver="hover(this);" onClick="showNewPanel(1);" onMouseOut="setState(1);" style="margin-left: 5px; font-size: 12px;">Internet Web Search</span-->
+                <span class="inactiveTab" id="tab1" onMouseOver="hover(this);" onClick="showNewPanel(1);" onMouseOut="setState(1);" style="margin-left: 5px; font-size: 12px;">Internet Web Search</span>
                 <!--span class="inactiveTab" id="tab2" onMouseOver="hover(this);" onClick="showNewPanel(2);" onMouseOut="setState(2);" style="margin-left: 5px; font-size: 12px;">Find User</span-->
 				<!--span class="inactiveTab" id="tab6" onMouseOver="hover(this);" onClick="showNewPanel(6);" onMouseOut="setState(6);" style="margin-left: 5px; font-size: 12px;">TBD !</span-->
             </div>
@@ -621,6 +621,20 @@
                 </div>
             </div><!--Find User-->
             <div id="panel1" class="content_articles">
+            	<br />
+            	<form method="get" action="http://google.com">				
+                    Search Using Google ...  
+					<input type="text" style="border: 1px solid rgb(126, 157, 185); padding: 2px; background: url(&quot;http://www.google.com/cse/intl/en/images/google_custom_search_watermark.gif&quot;) no-repeat scroll left center rgb(255, 255, 255);" size="31" name="q">
+                    <input type="hidden" name="hl" value="en">
+                    <input class="lsb" type="submit" onclick="this.checked=1" name="btnG" value="Search">
+				</form>	
+				<br />
+				<form method="get" action="http://search.yahoo.com/">				
+                    Search Using Yahoo &nbsp;... 
+					<input id="yschsp" size="31" style="border: 1px solid rgb(126, 157, 185); padding: 2px; background: url("/public/images/yahoo.jpg") no-repeat scroll left center rgb(255, 255, 255);"class="sd" type="text" autofocus="" autocomplete="off" value="" name="p" title="Up and down arrows for suggestions; ` access key to move between panels.">
+					<input id="yschbt" class="sbb-sd" type="submit" value="Search">
+				</form>	
+				
             </div>
             <!--Internet Web Search-->
             <div id="panel2" class="content_articles">
