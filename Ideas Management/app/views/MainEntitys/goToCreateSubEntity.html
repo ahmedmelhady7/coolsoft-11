@@ -242,14 +242,17 @@
                 <div id="backToOrg">
                     <a href="@{MainEntitys.viewEntity(parent.id)}">Back to ${parent.name}</a>
                 </div>
+				<div style="background-color:#bbbbbb; border-top-left-radius: 10px;border-top-right-radius: 10px;
+				border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; margin-right:5%;padding:2% 2% 2% 2%;">
+			   <h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Create Subentity</h2>
+				<br />
                 <form name="entityForm" action="@{MainEntitys.createSubEntity()}" method="POST"
                 onsubmit= "return validate()">
-                <input type = "hidden" name = "orgId" value = ${org.id}><input type = "hidden" name = "parentId" value = ${parent.id}><HR> Entity Name: <input type="text" id="name" name="name">
+                <input type = "hidden" name = "orgId" value = ${org.id}><input type = "hidden" name = "parentId" value = ${parent.id}> Entity Name: <input type="text" id="name" name="name">
                 <br/>
                 <label id= "nameerror">
                 </label>
                 <br/>
-                <HR>
                 <p>
                     Description:
                 </p>
@@ -260,10 +263,11 @@
                 <label id= "descriptionerror">
                 </label>
                 <br/>
-                <HR><input type="checkbox" id="createRelationship" name="createRelationship">Allow subentity to have relationships
+                <input type="checkbox" id="createRelationship" name="createRelationship">Allow subentity to have relationships
                 <br/>
-                <HR><input type="submit" onclick="get_Value()" value="Create"><HR>
+                <input type="submit" onclick="get_Value()" value="Create" class="linkButton">
                 </form>
+				</div>
                 <script type="text/javascript">
                     function redirect(){
                         document.location.href = "@{Organizations.viewProfile(org.id)}";
