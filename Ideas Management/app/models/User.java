@@ -784,7 +784,11 @@ public class User extends CoolModel {
 				break;
 			}
 		}		
-		return list;
+		List<Log> reversedList = new ArrayList<Log>();
+		for (int i = list.size() - 1; i >= 0; i--) {
+			reversedList.add(list.get(i));
+		}
+		return reversedList;		
 	}
 
 	
