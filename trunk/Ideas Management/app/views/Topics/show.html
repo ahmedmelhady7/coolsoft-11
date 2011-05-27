@@ -617,14 +617,6 @@
 			<script type="text/javascript" src="/public/javascripts/jquery-1.4.1.js"></script>
 			<br/>
 			
-			
-			
-			<table id = "success" border="0" bgcolor="#FF0000" cellspacing="0" id ="toFil">
-					<tr><td><font size ="3" color ="black"><i>
-								<font color="#000000"><b><i>Topic Has been Reported As Spam</i></b></font>                
-			        </i></font></td></tr>
-			</table>
-			
 			<div id="backToEntity" ><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a></div>
 			
 			<div id="crudShow" class="${type.name}">
@@ -999,7 +991,7 @@
 					#{if idea.isDraft == false}
 					<li>
 						<input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
-						 <font size=1 style="float:left;">${idea.author.username}</font>
+						 <font size=1 style="float:left;"><a href="@{Users.viewProfile(idea.author.id)}">${idea.author.username}</a></font>
 						 <br />
 						<div id="ideas" class="accordionItem">
 						<h3><a href="@{Ideas.show(idea.id)}">&nbsp ${idea.title}</a></h3>
@@ -1031,7 +1023,7 @@
 						   border-bottom-left-radius: 10px; border-color:#339CCB; border-width:2px; border-style:solid; padding:2% 2% 2% 2%;"> 
 						   <label>Description : ${idea.description}</label>
 			                </br>
-			                <label>by : ${idea.author.username}</label>
+			                <label>by : <a href="@{Users.viewProfile(userId)}">${idea.author.username}</a></label>
 			                <br />
 			                <input type="submit" id="unhide" value="unhide" onclick="unhide(${idea.id})" class = "linkButton"/>
 							</div>

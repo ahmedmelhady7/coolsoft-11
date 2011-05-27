@@ -163,12 +163,12 @@
             </form>
           #{/if}
      #{if isAuthor && notInPlan}
-	<form action="@{Topics.deleteIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">
+	<form action="@{Ideas.delete(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">
 			<input type="image" style="float:right;" src="/public/images/icons/trash.png"  class="linkButton" title="Delete My Idea" />
 	</form>
 	#{/if}
 	#{if canDelete && !isAuthor && notInPlan}
-		<form action="@{Topics.deleteIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+		<form action="@{Topics.deleteIdea(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         	<input type="hidden" name = "justification" id = "justText">
             <input type="image" style="float:right;" src="/public/images/icons/trash.png"  class="linkButton" title="Delete Idea"/>
     </form>
@@ -247,7 +247,7 @@
  					 
  					#{list comments, as:'comment'} 
  					<div class="comment-metadata">
-						<span class="comment-author">by ${comment.commenter.username}</span>
+						<span class="comment-author">by : <a href="@{Users.viewProfile(comment.commenter.id)}">${comment.commenter.username}</a></span>
 						<span class="comment-date">${comment.commentDate}</span>
 					</div>
  					<div class="comment-content">

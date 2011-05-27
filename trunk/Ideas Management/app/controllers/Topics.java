@@ -1821,13 +1821,14 @@ public class Topics extends CRUD {
 		String message = "your idea " + idea.title + " has been deleted by "
 				+ Security.getConnected().username + " Justification : "
 				+ justification;
-
+		List<Comment> commentslist = Comment.find("byCommentedIdea", idea).fetch();
 		try {
-			if (idea.plan == null) {
+				for(int i=0;i<commentslist.size();i++){
+					commentslist.get(i).delete();
+				}
 				idea.delete();
 				Notifications.sendNotification(idea.author.id, idea.id, "Idea",
 						message);
-			}
 
 		} catch (Exception e) {
 			redirect(request.controller + ".show");
