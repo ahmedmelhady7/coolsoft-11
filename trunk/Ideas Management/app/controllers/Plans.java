@@ -1684,7 +1684,9 @@ public class Plans extends CoolCRUD {
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
 		notFoundIfNull(item);
-		Plan plan = item.plan;
+		long pId=item.plan.id;
+		Plan plan = Plan.findById(pId);
+		notFoundIfNull(plan);
 		
 
 		Tag tagTemp=null;
