@@ -285,7 +285,7 @@ public class Tags extends CoolCRUD {
 	 */
 	public static void edit(long tagId, String name) {
 		User user = Security.getConnected();
-		if(!name.equals("")) {
+		
 		Tag tag = Tag.findById(tagId);
 		notFoundIfNull(tag);
 		Organization tagOrganization = tag.createdInOrganization;
@@ -343,10 +343,6 @@ public class Tags extends CoolCRUD {
 		}
 		else {
 			flash.error("There is already a tag with the same name");
-		}
-		}
-		else {
-			flash.error("Please insert a valid name");
 		}
 		Tags.mainPage(tagId);
 		}
