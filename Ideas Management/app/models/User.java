@@ -33,169 +33,221 @@ public class User extends CoolModel {
 	@Required
 	//@Email
 	@Column(unique = true)
+	/**
+	 * user's email
+	 */
 	public String email;
+	
+	/**
+	 * user's username
+	 */
 	@Required
 	@MinSize(3)
 	@MaxSize(20)
 	@Column(unique = true)
 	public String username;
+	
+	/**
+	 * user's password
+	 */
 	@Required
 	@MinSize(3)
 	public String password;
+	
+	/**
+	 * user's first name
+	 */
 	@Required
 	public String firstName;
+	/**
+	 * user's last name
+	 */
 	public String lastName;
+	/**
+	 * user's country
+	 */
 	public String country;
+	/**
+	 * user's date of birth
+	 */
 	public String dateofBirth;
+	/**
+	 * user's counter of contributions in the site
+	 */
 	public int communityContributionCounter;
+	/**
+	 * user's activation key that is needed to activate the account
+	 */
 	public String activationKey;
+	/**
+	 * 
+	 */
 	public String confirmPassword;
 	/**
-	 * Added by Ahmed Maged
+	 *  user's security question that is needed when forgetting password
 	 */
 	@Required
 	public String securityQuestion;
+	/**
+	 * answer of the security question
+	 */
 	@Required
 	public String answer;
-	// added to know whether a user is an Admin or not
+	/**
+	 *  whether a user is an Admin or not
+	 */
 	public boolean isAdmin;
 	/**
 	 * state represents the state of the user whether he is active, deleted, not
 	 * active a -> active , d -> deleted , n -> not active
 	 */
 	public String state;
+	/**
+	 * user's profession
+	 */
 	public String profession;
+	/**
+	 * user's number of notifications
+	 */
 	public int notificationsNumber;
-
+     
+	/**
+	 *  list of topics craeted by the user
+	 */
 	@OneToMany(mappedBy = "creator")
-	// , cascade = CascadeType.PERSIST)
 	public List<Topic> topicsCreated;
 
 	/**
-	 * id of the profile Picture
+	 * id of the user's profile Picture
 	 */
 	public long profilePictureId;
 
-	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>change
-	// @ManyToMany(mappedBy = "enrolledUsers")
-	// public List<Organization> enrolled;
-
+	/**
+	 * list of organizations created by the user
+	 */
 	@OneToMany(mappedBy = "creator")
-	// , cascade = CascadeType.ALL)
 	public List<Organization> createdOrganization;
 
-	// // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> change
-	// @ManyToMany(mappedBy = "organizers")
-	// // , cascade = CascadeType.PERSIST)
-	// public List<Topic> topicsIOrganize;
-
+	/**
+	 * list of plans rated by the user
+	 */
 	@ManyToMany(mappedBy = "usersRated")
 	public List<Plan> ratedPlans;
 	/**
-	 * Added by Alia, but whoever is responsible for it please check the cascade
-	 * etc.
+	 * list of topics that is followed by the user
 	 */
-
 	@ManyToMany
-	// , cascade = CascadeType.PERSIST)
 	public List<Topic> topicsIFollow;
-
+	/**
+	 * list of ideas created by the user
+	 */
 	@OneToMany(mappedBy = "author")
-	// , cascade = CascadeType.ALL)
 	public List<Idea> ideasCreated;
 	/**
-	 * ideas reported by the user
-	 * 
-	 * @author ${Ahmed El-Hadi}
+	 * list of ideas reported by the user
 	 * 
 	 **/
 	@ManyToMany
 	public List<Idea> ideasReported;
-
+	/**
+	 * list of ideas rated by the user
+	 */
 	@ManyToMany(mappedBy = "usersRated")
 	public List<Idea> ideasRated;
-
+	/**
+	 * list of items assigned to the user
+	 */
 	@ManyToMany
-	// (cascade = CascadeType.PERSIST)
 	public List<Item> itemsAssigned;
-
+	/**
+	 * list of user's notifications profile
+	 */
 	@OneToMany(mappedBy = "user")
 	public List<NotificationProfile> notificationProfiles;
+	/**
+	 * list of user's notifications
+	 */
 	@OneToMany(mappedBy = "directedTo")
 	public List<Notification> notifications;
 
-	// code 3'lt
+	/**
+	 * list of entities followed by the user
+	 */
 	@ManyToMany
-	// (mappedBy = "followers")
 	public List<MainEntity> followingEntities;
 
-	// related to sprint 2
+	/**
+	 * list of tags followed by the user
+	 */
 	@ManyToMany
 	public List<Tag> followingTags;
 
+	/**
+	 * list of organization followed by the user
+	 */
 	@ManyToMany
-	// (mappedBy = "followers")
 	public List<Organization> followingOrganizations;
 
-	// @ManyToMany(mappedBy = "canAccess", cascade = CascadeType.PERSIST)
-	// public List<Topic> accessedTopics;
-
-	// List<Request> requests;
-	// List<Comment> commentsPosted;
-	// List<LinkDuplicates> linkDuplicates;
-
-	@OneToMany(mappedBy = "source")
-	// , cascade = CascadeType.ALL)
-	public List<RequestToJoin> requestsToJoin;
-	// List<RequestOfRelationship> requestRelationship;
-	// List<TopicInvitation> topicInvitations;
-
-	
 	/**
-	 *  list of invitations that have been sent by that user
+	 * list of requests to join organization sent by the user
+	 */
+	@OneToMany(mappedBy = "source")
+	public List<RequestToJoin> requestsToJoin;
+	/**
+	 *  list of invitations sent by the user
 	 */
 	@OneToMany(mappedBy = "sender")
 	public List<Invitation> invitation;
 
 	/**
-	 *  list of invitations that have been sent by that user
+	 *  list of volunteer requests sent by the user
 	 */
 	@OneToMany(mappedBy = "sender")
 	public List<VolunteerRequest> volunteerRequests;
-
+	/**
+	 * list of assigned request sent by the user
+	 */
 	@OneToMany(mappedBy = "sender")
-	// , cascade = CascadeType.ALL)
 	public List<AssignRequest> sentAssignRequests;
-
+	/**
+	 * list of assigned request sent to the user
+	 */
 	@OneToMany(mappedBy = "destination")
-	// , cascade = CascadeType.ALL)
 	public List<AssignRequest> receivedAssignRequests;
-
+	/**
+	 * list of link-duplicate request sent by the user
+	 */
 	@OneToMany(mappedBy = "sender")
-	// , cascade = CascadeType.ALL)
 	public List<LinkDuplicatesRequest> sentMarkingRequests;
-
+	/**
+	 * list of link-duplicate request sent tothe user
+	 */
 	@OneToMany(mappedBy = "idea1")
-	// , cascade = CascadeType.ALL)
 	public List<LinkDuplicatesRequest> receivedMarkingRequests;
-
+	/**
+	 * list of bannedUser that have been banned by the user
+	 */
 	@OneToMany(mappedBy = "bannedUser")
-	// , cascade = CascadeType.ALL)
 	public List<BannedUser> bannedUsers;
-
+	/**
+	 * list of roles that the user has in each organization
+	 */
 	@OneToMany(mappedBy = "enrolled")
-	// , cascade = CascadeType.ALL)
 	public List<UserRoleInOrganization> userRolesInOrganization;
-
+	/**
+	 * list of plans created by the user
+	 */
 	@OneToMany(mappedBy = "madeBy")
-	// , cascade = CascadeType.PERSIST)
 	public List<Plan> planscreated;
-
+	/**
+	 * list of labels owned by the user
+	 */
 	@OneToMany(mappedBy = "user")
 	public List<Label> myLabels;
-
+	/**
+	 * list of topic request sent by the user
+	 */
 	@OneToMany(mappedBy = "requester")
-	// , cascade = CascadeType.ALL)
 	public List<TopicRequest> topicRequests;
 
 	/**
@@ -267,7 +319,6 @@ public class User extends CoolModel {
 		this.email = email;
 		this.username = username;
 		this.password = Codec.hexMD5(password);
-		//this.password =password;
 		this.firstName = firstName;
 		this.communityContributionCounter = communityContributionCounter;
 		this.securityQuestion = securityQuestion;
@@ -275,28 +326,22 @@ public class User extends CoolModel {
 		this.dateofBirth = dateofBirth;
 		this.country = country;
 		this.lastName = lastName;
-		// this.roles = new ArrayList<Role>();
 		this.ideasCreated = new ArrayList<Idea>();
 		this.itemsAssigned = new ArrayList<Item>();
-		// this.topicsIOrganize = new ArrayList<Topic>();
 		this.topicsCreated = new ArrayList<Topic>();
 		this.volunteerRequests = new ArrayList<VolunteerRequest>();
 		this.sentAssignRequests = new ArrayList<AssignRequest>();
 		this.receivedAssignRequests = new ArrayList<AssignRequest>();
-		// this.accessedTopics = new ArrayList<Topic>();
 		notificationProfiles = new ArrayList<NotificationProfile>();
 		notifications = new ArrayList<Notification>();
 		bannedUsers = new ArrayList<BannedUser>();
 		this.state="a";
-		// added
 		userRolesInOrganization = new ArrayList<UserRoleInOrganization>();
 		invitation = new ArrayList<Invitation>();
-		// this.enrolled = new ArrayList<Organization>();
 		this.createdOrganization = new ArrayList<Organization>();
 		followingOrganizations = new ArrayList<Organization>();
 		planscreated = new ArrayList<Plan>();
 		this.ideasReported = new ArrayList<Idea>();
-//		this.topicsReported = new ArrayList<Topic>();
 		followingEntities = new ArrayList<MainEntity>();
 		topicsIFollow = new ArrayList<Topic>();
 		this.ideasRated = new ArrayList<Idea>();
@@ -304,13 +349,7 @@ public class User extends CoolModel {
 		profilePictureId = -1;
 		notificationsNumber = notifications.size();
 		followingTags = new ArrayList();
-		// requests=new ArrayList<Request>();
-		// commentsPosted = new ArrayList<Comment>();
-		// linkDuplicates = new ArrayList<LinkDuplicates>();
 
-		// requestsToJoin = new ArrayList<RequestToJoin>();
-		// requestRelationship = new ArrayList<RequestOfRelationship>();
-		// topicInvitations = new ArrayList<TopicInvitation>();
 
 	}
 
@@ -657,7 +696,7 @@ public class User extends CoolModel {
 	
 	public int topicDraftsCount()
 	{
-		//topicsCreated
+	
 		List<Topic> drafts = new ArrayList<Topic>();
 
 		for (Topic topic : this.topicsCreated)
