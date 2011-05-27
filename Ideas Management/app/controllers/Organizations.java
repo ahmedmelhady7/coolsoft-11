@@ -672,7 +672,6 @@ public class Organizations extends CoolCRUD {
 				|| (Security.getConnected().isAdmin)) {
 			flag = 1;
 		}
-		boolean admin = user.isAdmin;
 		boolean isMember = Users.getEnrolledUsers(org).contains(user);
 		boolean creator = false;
 		if (org.creator.equals(user)) {
@@ -710,7 +709,7 @@ public class Organizations extends CoolCRUD {
 			}
 		}
 		boolean join = false;
-		if ((!Users.getEnrolledUsers(org).contains(user)) && (!admin)
+		if ((!Users.getEnrolledUsers(org).contains(user)) && (!user.isAdmin)
 				&& (org.privacyLevel == 2)) {
 			join = true;
 		}
@@ -737,7 +736,7 @@ public class Organizations extends CoolCRUD {
 		} else {
 			List<Plan> plans = Plans.planList("organization", org.id);
 			render(user, org, entities, requestToJoin, canCreateEntity, tags,
-					flag, canInvite, admin, allowed, isMember, settings,
+					flag, canInvite, allowed, isMember, settings,
 					creator, alreadyRequested, plans, follower, usernames,
 					join, logFlag, pictureId, topics, entitiesCanBeRelated,
 					entitiesICanView, followers, defaultEntityId, permission);

@@ -237,7 +237,18 @@ $(document).ready(function(){
 });
 </script>
     </head>
-	
+	#{if flash.success}
+   <p style="color:green">
+    <font size=4>${flash.success}</font>
+   </p>
+   <br>
+#{/if}
+#{if flash.error}
+   <p style="color:red">
+    <font size=4>${flash.error}</font>
+   </p>
+   <br>
+#{/if}
 		<div id="leftSidebar">
            <br />
 		   <br />
@@ -253,7 +264,7 @@ $(document).ready(function(){
 							<a id="invLink" style="cursor:pointer;">Invite a user</a>		
 						</li>		
 						#{/if}
-					#{if admin || creator}
+					#{if user.isAdmin || creator}
 					<li>
 						<a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
 					</li>
@@ -319,7 +330,7 @@ $(document).ready(function(){
         </li>
         #{/if}
 
-		#{if isMember == true || org.privacyLevel == 2 || admin}
+		#{if isMember == true || org.privacyLevel == 2 || user.isAdmin}
 <li>
 		<a href="@{Pictures.index(org.id)}">Gallery</a></li>
 				#{/if}
@@ -341,10 +352,10 @@ $(document).ready(function(){
 		<a id="docLink" style="cursor:pointer;">Documents</a>
 <div id="documen">
 	<ul>
-	#{if creator == true || admin == true}
+	#{if creator == true || user.isAdmin == true}
 	<li><a href="@{Documents.newDocument(org.id)}">Add new</a></li>
 	#{/if}
-	#{if isMember == true || org.privacyLevel == 2 || admin}
+	#{if isMember == true || org.privacyLevel == 2 || user.isAdmin}
 #{ifnot org.getDocuments()}
 <li>No documents</li>
 #{/ifnot}
@@ -360,7 +371,7 @@ $(document).ready(function(){
 </div>
 </li>
         <li>
-        	#{if (admin || creator)}<a id="tagLink" style="cursor:pointer;">Create a Tag</a>
+        	#{if (user.isAdmin || creator)}<a id="tagLink" style="cursor:pointer;">Create a Tag</a>
         #{/if}
         #{else}
         #{if (org.createTag) && (!join)}<a id="tagLink" style="cursor:pointer;">Create a Tag</a>
@@ -628,7 +639,7 @@ $(document).ready(function(){
 			 			<input type="submit" value="View Logs" onclick=location.href="@{Logs.viewLogs(org.id)}" class="linkButton"></input>
 					#{/if}	
 					<br>
-			        #{if (requestToJoin == true) && (!admin) && (!alreadyRequested)}
+			        #{if (requestToJoin == true) && (!user.isAdmin) && (!alreadyRequested)}
 			        <form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
 			            <input type="hidden" id="orgId" name="orgId" value="${org.id}">Your message: 
 			            <textarea id="description" name="description" rows="5" cols="50">
@@ -721,7 +732,7 @@ $(document).ready(function(){
 			                     
 			                </form> -->
 							
-							#{if (admin || creator)}
+							#{if (user.isAdmin || creator)}
 							<div style="background:#b2b2b2;">
 							<br />
 				<h4>Create Relationship between <select id="relType" onchange="showRelationForm()">
@@ -801,7 +812,7 @@ $(document).ready(function(){
 				</div>
 				#{/if}
 				
-				#{if isMember == true || org.privacyLevel == 2 || admin}
+				#{if isMember == true || org.privacyLevel == 2 || user.isAdmin}
                 <form action="@{Contribution.contribution()}" method="post">
 			                    <input type="hidden" name="id" value="${org.id}">Contribution Points: <input type="submit" value="View" class="linkButton">
                 </form>
