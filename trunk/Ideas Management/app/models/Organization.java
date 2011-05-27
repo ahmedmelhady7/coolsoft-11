@@ -175,9 +175,12 @@ public class Organization extends CoolModel {
 		this.viewed = 0;
 		//faruki
 		this.bannedUsers = new ArrayList<BannedUser>();
+		renameEndRelationshipRequest = new ArrayList<RenameEndRelationshipRequest>();
+		createRelationshipRequest = new ArrayList<CreateRelationshipRequest>();
 		//faruki
 
-		bannedUsers = new ArrayList<BannedUser>();
+//		bannedUsers = new ArrayList<BannedUser>();
+		
 		relationNames = new ArrayList<String>() {
 			{
 				add("manages");
@@ -259,6 +262,8 @@ public class Organization extends CoolModel {
 
 		//faruki
 		this.bannedUsers = new ArrayList<BannedUser>();
+		createRelationshipRequest = new ArrayList<CreateRelationshipRequest>();
+		renameEndRelationshipRequest = new ArrayList<RenameEndRelationshipRequest>();
 		//faruki
 
 		this.viewed = 0;
