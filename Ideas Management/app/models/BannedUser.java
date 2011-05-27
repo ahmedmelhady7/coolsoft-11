@@ -10,38 +10,60 @@ import javax.persistence.OneToMany;
 import controllers.Roles;
 
 import play.db.jpa.Model;
-
+/**
+ * 
+ * @author Nada Ossama
+ *
+ */
 @Entity
 public class BannedUser extends CoolModel {
-
+   /**
+    * the organization to be banned in 
+    */
 	@ManyToOne
 	public Organization organization;
-
+     /**
+      * the user to be banned
+      */
 	@ManyToOne
 	public User bannedUser;
-
+     /**
+      * the action that the user will be bannedFrom
+      */
 	public String action;
+	/**
+	 * the type of a resource in the organization (entity , topic) that the user
+	 * will be banned from if any
+	 */
 	public String resourceType;
+	/**
+	 * the id of a resource in the organization (entity , topic) that the user
+	 * will be banned from if any
+	 */
 	public long resourceID;
 
 	/**
-	 *used if the action the user is banned from is related
-	 * to a certain object
+	 * used if the action the user is banned from is related to a certain object
 	 * 
 	 * @autor:Nada Ossama
 	 * 
 	 * @story :C1S7
 	 * 
-	 * @param banned : User The banned user
+	 * @param banned
+	 *            User The banned user
 	 * 
-	 * @param action :String action he will be banned from
+	 * @param action
+	 *            String action he will be banned from
 	 * 
-	 * @param org : Organization org at which this user will be banned from that
-	 *       action
+	 * @param org
+	 *            Organization org at which this user will be banned from that
+	 *            action
 	 * 
-	 * @param resourceType: the type of the object the action is related to
+	 * @param resourceType
+	 *            the type of the object the action is related to
 	 * 
-	 * @param resourceId : the Id of the Object of that type
+	 * @param resourceId
+	 *            the Id of the Object of that type
 	 */
 
 	public BannedUser(User banned, Organization org, String action,
