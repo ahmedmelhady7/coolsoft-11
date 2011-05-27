@@ -184,7 +184,7 @@ public class Plans extends CoolCRUD {
 		}
 		String logDescription = "User "
 				+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
-				+ user.id + "\">" + user.firstName + " " + user.lastName
+				+ user.id + "\">" + user.username
 				+ "</a>" + " is now working on the item " + item.summary
 				+ " in the plan "
 				+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
@@ -315,9 +315,7 @@ public class Plans extends CoolCRUD {
 					+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
 					+ idea.author.id
 					+ "\">"
-					+ idea.author.firstName
-					+ " "
-					+ idea.author.lastName
+					+ idea.author.username
 					+ "</a>"
 					+ " has been promoted to exection in the plan "
 					+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
@@ -452,9 +450,7 @@ public class Plans extends CoolCRUD {
 				+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
 				+ idea.author.id
 				+ "\">"
-				+ idea.author.firstName
-				+ " "
-				+ idea.author.lastName
+				+ idea.author.username
 				+ "</a>"
 				+ " has been removed from the plan "
 				+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
@@ -568,9 +564,7 @@ public class Plans extends CoolCRUD {
 						+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
 						+ sender.id
 						+ "\">"
-						+ sender.firstName
-						+ " "
-						+ sender.lastName
+						+ sender.username
 						+ "</a>"
 						+ " is requesting to volunteer to work on the item "
 						+ destination.summary
@@ -1246,7 +1240,7 @@ public class Plans extends CoolCRUD {
 		}
 		String logDescription = "User "
 				+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
-				+ user.id + "\">" + user.firstName + " " + user.lastName
+				+ user.id + "\">" + user.username
 				+ "</a>" + " deleted the item " + item.summary
 				+ " in the plan "
 				+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
@@ -1339,7 +1333,7 @@ public class Plans extends CoolCRUD {
 		topic.save();
 		String logDescription = "User "
 				+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
-				+ user.id + "\">" + user.firstName + " " + user.lastName
+				+ user.id + "\">" + user.username
 				+ "</a>" + " deleted the plan " + plan.title + " of the topic "
 				+ "<a href=\"http://localhost:9008/topics/show?topicId="
 				+ topic.id + "\">" + topic.title + "</a>";
