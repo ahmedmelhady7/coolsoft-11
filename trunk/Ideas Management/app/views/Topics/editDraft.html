@@ -131,8 +131,8 @@
 	function saveAndReturn() {
 		setValues();
 		
-		if(topicTitle == "" && topicDescription == "") {
-			alert("Nothing to save");
+		if(topicTitle == "" || topicDescription == "") {
+			alert("Please enter title and description");
 			return;
 		}
 		
