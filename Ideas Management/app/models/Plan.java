@@ -14,14 +14,14 @@ public class Plan extends CoolModel {
 
 	@Required
 	public String title;
-	
+
 	/**
 	 * @author Mohamed Ghanem
 	 * 
-	 * Organization initialization date
+	 *         Organization initialization date
 	 */
 	public Date intializedIn;
-	
+
 	@Required
 	public String status;
 
@@ -72,13 +72,12 @@ public class Plan extends CoolModel {
 	 * @author ${Ibrahim Safwat} List of comments in that plan
 	 */
 
-	
 	/**
 	 * @auther monica counter to check how many times this topic is viewed to be
 	 *         used in sorting
 	 */
 	public int viewed;
-	
+
 	/**
 	 * This is a constructor for the plan
 	 * 
@@ -118,7 +117,7 @@ public class Plan extends CoolModel {
 		this.viewed = 0;
 		this.items = new ArrayList<Item>();
 		this.ideas = new ArrayList<Idea>();
-		
+
 		this.rating = "Not yet rated";
 		this.commentsList = new ArrayList<Comment>();
 		this.usersRated = new ArrayList<User>();
@@ -190,41 +189,39 @@ public class Plan extends CoolModel {
 		this.ideas.add(idea);
 		this.save();
 	}
-	
+
 	public String toString() {
 		return "Title: " + title;
 	}
-	
+
 	public String calculateProgress() {
 		double sum = 0;
 		String s = "";
-		if(!items.isEmpty()) {
-		for (Item item : items) {
-			sum += item.status;
-		}
-		double p = sum / (2 * items.size()) * 100;
-		 s = s + p;
-		if(s.length()>=4) {
-		s = s.substring(0,4);
-		if(s.endsWith("."))
-			s = s.substring(0,3);
-		}
+		if (!items.isEmpty()) {
+			for (Item item : items) {
+				sum += item.status;
+			}
+			double p = sum / (2 * items.size()) * 100;
+			s = s + p;
+			if (s.length() >= 4) {
+				s = s.substring(0, 4);
+				if (s.endsWith("."))
+					s = s.substring(0, 3);
+			}
 		} else {
 			s = "0";
 		}
-		s +=  "%";
+		s += "%";
 		return s;
 	}
 
-
 	/**
-	 * @author monica yousry 
+	 * @author monica yousry
 	 * @description: this method increments the counter viewed
-	 *
+	 * @return void
 	 */
 	public void incrmentViewed() {
 		this.viewed++;
 	}
 
-	
 }
