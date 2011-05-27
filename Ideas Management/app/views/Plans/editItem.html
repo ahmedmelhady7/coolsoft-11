@@ -45,7 +45,7 @@
 <h1>${item.summary}</h1>
 #{form @Plans.edit2(), method:'POST', id:'edititemForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
 </br>
-Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()" value="${item.startDate.format('MM/dd/yyyy')}"/><label id = "startdateerror"style= "color:Red"> Please Insert the date on which the item starts </label><label id = "dateerror"style= "color:Red">Start date can not be earlier than today's date</label><label id = "gom3aerror"style= "color:Red">Item's start date must be later than the plan's start date</label>
+Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()" value="${item.startDate.format('MM/dd/yyyy')}"/><label id = "startdateerror"style= "color:Red"> Please Insert the date on which the item starts </label><label id = "gom3aerror"style= "color:Red">Item's start date must be later than the plan's start date</label>
 </br>
 </br>
 End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()" value="${item.endDate.format('MM/dd/yyyy')}"/><label id = "enddateerror"style= "color:Red"> Please Insert the date on which the item ends </label><label id = "earlyerror"style= "color:Red">Start date must be greater than end date</label><label id = "zikoerror"style= "color:Red">Item's end date must be earlier than the plan's end date</label>
@@ -129,12 +129,6 @@ function checkall(){
 			return false;
 		}else{
 			$('#earlyerror').hide();
-		}
-		if(sd< new Date()){
-			$('#dateerror').show();
-			return false;
-		}else{
-			$('#dateerror').hide();
 		}
 		if(sd <gom3a){
 		$('#gom3aerror').show();
