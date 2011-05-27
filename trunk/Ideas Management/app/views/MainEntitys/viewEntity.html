@@ -219,6 +219,19 @@
             </li>
             #{/if} 
 			<!-- ################## -->
+			
+			<li>
+			#{if (entity.createRelationship == true)}
+			#{if (canCreateRelationship == true)}
+			<a onclick="$('#rForm').slideToggle();" style="cursor:pointer;">Create Relation</a>
+			#{/if}
+			#{/if}
+			</li>
+			
+			<li>
+				<a onclick="$('#lista').slideToggle()" style="cursor:pointer;">Show Relationships</a>
+			</li>
+			
 			#{if (canEdit == 1)}
 			<li>
                 <a href="@{MainEntitys.editEntityPage(entity.id)}">Edit ${entity.name}</a>
@@ -419,15 +432,40 @@
 				<br />
 		   </div>
 			
-			#{if (entity.createRelationship == true)}
-			#{if (canCreateRelationship == true)}
-			<a href="@{MainEntitys.createRelation(entity.id,org.id)}">Create Relation</a>
-			<br />
-			#{/if}
-			#{/if}
-			<div>
-				<a onclick="$('#lista').slideToggle()">Show Relationships</a>
-				   <div id="lista" style="display: none;">
+			<div id="rForm" style="display: none;">
+				<h1>Create Entity Relation</h1>
+		<form>
+			<p>
+				<form id="f1" style="display: inline;">
+					<abbr id="rName" style="display: inline;">Relation Name:</abbr> <select id="rels" style="display: inline;"> 
+					<option >choose name</option>
+					#{list items:entity.organization.relationNames, as:'relName'}
+					<option >${relName}</option>
+					#{/list}
+					</select> <input id="button1" type="button" value="Add new name" onclick="buttonOne();" style="display: inline;"></input>
+				</form>
+				<form id="f2" style="display: none;">
+				Relation Name: <input id = "text" type="textbox" required>
+					</select> <input id="button2" type="button" value="Add from list" onclick="buttonTwo();">
+				</form>
+			</p>
+			
+			<p>
+				Related Entity: 
+				
+				<select id="ent"> 
+					<option>Select Entity</option>
+					#{list items:entityList, as:'entityElement'}
+					<option value="${entityElement.id}">${entityElement.name}</option>
+					#{/list}
+				</select>
+				
+				<input type="submit" value="Create" onclick="kill(${entity.id})">
+			</p>
+		</form>
+			</div>
+			
+			<div id="lista" style="display: none;">
 				   	#{if entity.relationsSource != null}
 				      #{list items:entity.relationsSource, as:'relationElement'}
 							<ul><a href="/mainentitys/viewentity?id=${relationElement.source.id}">${relationElement.source.name}</a> <input id="textToRename_${relationElement.id}" type="text" value=${relationElement.name} style="display:none;"/><q id=${relationElement.id}>${relationElement.name}</q> <a href="/mainentitys/viewentity?id=${relationElement.destination.id}">${relationElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="image" src="/public/images/icons/accept.png" title="Done" style="display:none;" id="renameDone_${relationElement.id}" onclick="actionRename(${relationElement.id})"/><input id="renameButton_${relationElement.id}" type="image" title="edit" src="/public/images/icons/pencil.png" onclick="showRename(${relationElement.id})"/> <input type="image" src="/public/images/icons/delete.png" title="end" onclick="endRelation(${relationElement.id})" /> <span id="span_${relationElement.id}" style="color:red;"></span>#{/if}</ul>
@@ -439,10 +477,62 @@
 							<ul><a href="/mainentitys/viewentity?id=${relElement.source.id}">${relElement.source.name}</a> <input id="textToRename2_${relElement.id}" type="text" value=${relElement.name} style="display:none;"/><q id=${relElement.id}>${relElement.name}</q> <a href="/mainentitys/viewentity?id=${relElement.destination.id}">${relElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="image" src="/public/images/icons/accept.png" title="Done" style="display:none;" id="renameDone2_${relElement.id}" onclick="actionRename2(${relElement.id})"/><input id="renameButton2_${relElement.id}" type="image" title="edit" src="/public/images/icons/pencil.png" onclick="showRename2(${relElement.id})"/> <input type="image" src="/public/images/icons/delete.png" title="end" onclick="endRelation(${relElement.id})" /> <span id="span_${relElement.id}" style="color:red;"></span>#{/if}</ul>
 					  #{/list}
 				   	#{/if}
-				   </div>
 			</div>
 			<head>
 			<script type="text/javascript">
+				var check = true;
+					
+	function buttonOne(){
+		document.getElementById('rels').style.display = 'none';
+		document.getElementById('button1').style.display = 'none';
+		document.getElementById('rName').style.display = 'none';
+		document.getElementById('f2').style.display = 'inline';
+		check = !check;
+	};
+					
+	function buttonTwo(){
+		document.getElementById('f2').style.display = 'none';
+		document.getElementById('rName').style.display = 'inline';
+		document.getElementById('rels').style.display = 'inline';
+		document.getElementById('button1').style.display = 'inline';
+		check = !check;
+	};
+	
+	function kill(a)
+	{
+		
+		
+		if (!check) {
+			var x = document.getElementById("text").value;
+		}
+		else {
+			var x = document.getElementById("rels").value;
+		}
+		var b = document.getElementById("ent").value;
+		
+		if (x == "" || x == "choose name" || b == "Select Entity") {
+			alert("Please enter the Missing field(s)");
+		}
+		else {
+			$.post('@{EntityRelationships.createRelationship()}', {
+				name: x,
+				sourceId: a,
+				destinationId: b
+			}, function(data){
+				if(data == "true"){
+					alert("you have created a relation:" + x);
+					var link = "/mainentitys/viewentity?id="+a;
+					window.location.href= link
+				}else if(data == "false"){
+					alert("this relation already exists!!");
+				}
+			});
+			
+			}
+		}
+				
+				
+				
 									   	function showRename(relId)
 	{
 	$('#' + relId).hide();
