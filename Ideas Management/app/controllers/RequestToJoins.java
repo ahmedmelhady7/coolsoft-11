@@ -37,15 +37,17 @@ public class RequestToJoins extends CoolCRUD {
 		System.out.println("will view");
 		List<RequestToJoin> requests = new ArrayList<RequestToJoin>();
 		String name;
+		Topic topic = null ;
+		Organization organization =null;
 		User user = Security.getConnected();
 		if (type == 1) {
-			Topic topic = Topic.findById(id);
+			 topic = Topic.findById(id);
 			notFoundIfNull(topic);
 			if(!topic.hidden)
 			requests = topic.requestsToJoin;
 			name = topic.title;
 		} else {
-			Organization organization = Organization.findById(id);
+			 organization = Organization.findById(id);
 			System.out.println(organization);
 			notFoundIfNull(organization);
 			requests = organization.joinRequests;
@@ -60,9 +62,17 @@ public class RequestToJoins extends CoolCRUD {
 				i--;
 			}
 		}
-
+		if(type==1){
+       if( topic.privacyLevel==1 &&Users.isPermitted(user, "Accept/Reject requests to post in a private topic in entities he/she manages", id,"topic")||user.isAdmin)
 		render(requests, type, id, name,user);
-	}
+		}
+		else{
+			if(organization.privacyLevel==1&&Users.isPermitted(user,"accept/reject join requests from users to join a private organization", id,"organization")||user.isAdmin)
+				render(requests, type, id, name,user);
+				}
+		BannedUsers.unauthorized();
+		}
+
 
 	/**
 	 * 
@@ -104,11 +114,24 @@ public class RequestToJoins extends CoolCRUD {
 				organization.joinRequests.remove(request);
 				System.out.println(organization.joinRequests);
 				System.out.println(users);
-				Log.addUserLog("User " + reciever.firstName + " "
-						+ reciever.lastName + " has accepted user "
-						+ user.firstName + " " + user.lastName
-						+ " request to join organization " + organization.name,
-						organization, request);
+				String logDescription ="<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ reciever.id
+					+ "\">"
+					+ reciever.username
+					+ " "
+					+ "</a>"
+					+ " has accepted user "
+					+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ user.id
+					+ "\">"
+					+ user.username
+					+ " "
+					+ "</a>"
+					+ " request to join "
+					+ "<a href=\"http://localhost:9008/organizations/viewProfile?id="
+					+organization.id + "\">" + organization.name + "</a>" + " organization";
+
+				Log.addUserLog(logDescription,user,reciever,organization);
 				Notifications.sendNotification(user.id, organization.id,
 						"Organization", "Your Request has been approved");
 
@@ -125,12 +148,23 @@ public class RequestToJoins extends CoolCRUD {
 				UserRoleInOrganizations.addEnrolledUser(user, organization,
 						role, topic.id, "topic");
 				topic.requestsToJoin.remove(request);
-
-				Log.addUserLog("User " + reciever.firstName + " "
-						+ reciever.lastName + " has accepted user "
-						+ user.firstName + " " + user.lastName
-						+ " request to join topic " + topic.title,
-						organization, request,topic);
+				String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ reciever.id
+					+ "\">"
+					+ reciever.username
+					+ " "
+					+ "</a>"
+					+ " has accepted user "
+					+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ user.id
+					+ "\">"
+					+ user.username
+					+ "</a>"
+					+ " request to join "
+					+ "<a href=\"http://localhost:9008/topics/show?id="
+					+topic.id + "\">" + topic.title + "</a>" + " topic";
+				Log.addUserLog(logDescription,
+						organization, entity,topic);
 
 				for (int i = 0; i < organizers.size(); i++)
 					Notifications.sendNotification(organizers.get(i).id,
@@ -147,12 +181,25 @@ public class RequestToJoins extends CoolCRUD {
 				System.out.println("request will be rejected");
 				Organization organization = request.organization;
 				organization.joinRequests.remove(request);
-				Log.addUserLog("User " + reciever.firstName + " "
-						+ reciever.lastName + " has rejected user "
-						+ user.firstName + " " + user.lastName
-						+ " request to join organization " + organization.name,
-						organization, request,reciever,user);
-				Notifications.sendNotification(user.id, organization.id,
+				String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ reciever.id
+					+ "\">"
+					+ reciever.username
+					+ " "
+					+ "</a>"
+					+ " has rejected user "
+					+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ user.id
+					+ "\">"
+					+ user.username
+					+ " "
+					+ "</a>"
+					+ " request to join "
+					+ "<a href=\"http://localhost:9008/organizations/viewProfile?id="
+					+organization.id + "\">" + organization.name + "</a>" + " organization";
+
+				Log.addUserLog(logDescription,user,reciever,organization);
+Notifications.sendNotification(user.id, organization.id,
 						"Organization", "Your Request has been rejected");
 
 			} else {
@@ -160,14 +207,24 @@ public class RequestToJoins extends CoolCRUD {
 				MainEntity entity = topic.entity;
 				Organization organization = entity.organization;
 				topic.requestsToJoin.remove(request);
-				Log.addUserLog("User " + reciever.firstName + " "
-						+ reciever.lastName + " has rejected user "
-						+ user.firstName + " " + user.lastName
-						+ " request to join organization " + topic.title,
-						topic, request,reciever,user,organization);
-
-				// Notifications.sendNotification(users, topic.id, "Topic",
-				// "Your Request has been rejected");
+				String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ reciever.id
+					+ "\">"
+					+ reciever.username
+					+ " "
+					+ "</a>"
+					+ " has rejected user "
+					+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ user.id
+					+ "\">"
+					+ user.username
+					+ " "
+					+ "</a>"
+					+ "request to join "
+					+ "<a href=\"http://localhost:9008/topics/show?id="
+					+topic.id + "\">" + topic.title + "</a>" + " topic";
+				Log.addUserLog(logDescription,
+						organization, entity,topic);
 
 				Notifications.sendNotification(user.id, topic.id, "Topic",
 						"Your Request has been rejected");

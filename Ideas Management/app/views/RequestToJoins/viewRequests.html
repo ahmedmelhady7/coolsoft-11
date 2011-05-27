@@ -1,5 +1,41 @@
 #{extends 'login/index.html' /}
- #{if type==1}
+<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+#view{
+			margin-top: 2%;
+			margin-right: 9%;
+			margin-bottom: 4%;
+			margin-left: 0%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #bbbbbb;
+			padding-top: 2%;
+			padding-right: 4%;
+			padding-bottom: 0%;
+			padding-left: 4%;
+			border-bottom-width: 4px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			border-right-width: 4px;
+			border-right-style: solid;
+			border-right-color: #bbbbbb;
+			border-left-width: 4px;
+			border-left-style: solid;
+			border-left-color: #bbbbbb;
+			border-top-width: 4px;
+			border-top-style: solid;
+			border-top-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+	</style>
+
+<div id="pageNoSideBar">
+	 <div id="pageNoSideBar-bgtop">
+	 	 #{if type==1}
        <a href="@{Topics.show(id)}">Back to ${name}</a>           
 			#{/if}
 			#{else}
@@ -8,32 +44,36 @@
 
 <br />
 <br />
-<font  size ="3" color ="black" > Requests : </font>
 <br />
 <br />
+<tr><td><font size ="3" color ="black"> Requests : </font></td></tr>
+
 #{if requests.isEmpty()}
 <i><font size ="3" color ="blue">No new Requests</font></i>
 #{/if}
+ <div id = "view">
 #{else}
- #{list items:requests, as:'request'}
-    <li>
-        <fieldset id="request_${request.id}">
-        	        <tr><td><font size ="3" color ="black">
+ #{list items:requests, as:'request'}    
+        <li id="request_${request.id}">
         	#{if type==1}
-            	A new user ${request.source.username} Wants to join Topic ${request.topic.title}
+            	A new user <a href="@{Users.viewProfile(request.source.id)}">${request.source.username}</a> Wants to join Topic <a href="@{Topics.show(id)}">${request.topic.title}</a>
 			#{/if}
 			#{else}
-              A new user ${request.source.username} Wants to join Organization ${request.organization.name}
+              A new user <a href="@{Users.viewProfile(request.source.id)}">${request.source.username}</a> Wants to join Organization  <a href="@{Organizations.viewProfile(id)}"> ${request.organization.name}</a>
 			#{/else}
-
-			<input type = "button" value = "Accept" onclick="javascript: respondGalal(1,${request.id})">
-			<input type = "button" value = "Reject" onclick="javascript: respondGalal(0,${request.id})">
-        </fieldset>
-    </li>
+     <div style="float:right;">       
+			<a onclick="javascript: respondGalal(1,${request.id})"style="cursor:pointer; margin-right:20px"> <img src="/public/images/icons/accept.png" title="Accept" width="24" height="24"/></a>
+			<a onclick = "javascript: respondGalal(0,${request.id})"style="cursor:pointer;"> <img src="/public/images/icons/delete.png" title="Reject" width="24" height="24"/></a>  
+       </div>  
+	    </li>
+  
     #{/list}
 #{/else}
-
-
+<br />
+<br />
+</div>
+</div>
+</div>
 <script type="text/javascript">
 function respondGalal(stat, id){
 	if (stat == 1) {

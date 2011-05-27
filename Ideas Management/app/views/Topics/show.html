@@ -453,15 +453,13 @@
 				
 				#{if allowed==1}
 				<li>
-					<input type="submit" value="Requests" onclick=location.href="@{RequestToJoins.viewRequests(1,object.id)}" class="linkButton">
+					<input type="submit" value="Join Requests" onclick=location.href="@{RequestToJoins.viewRequests(1,object.id)}" class="linkButton">
                 </li>
-                #{/if}
-				
-				#{if allowed==1}
 				<li>
-					<input type="submit" value="Invite"
+					<input type="submit" value="Invite Developers"
 					onclick=location.href="@{Invitations.invite(object.id,1,0)}" class="linkButton"/>
 				</li>
+                
 				 #{/if}
 				 
 				#{if alreadyReportedTopic==false && canReport && notAuthor}
