@@ -411,7 +411,7 @@ public class User extends CoolModel {
 	 *            assign requests received by the user
 	 */
 	public void addReceivedAssignRequest(AssignRequest receivedAssignRequest) {
-		sentAssignRequests.add(receivedAssignRequest);
+		receivedAssignRequests.add(receivedAssignRequest);
 		this.save();
 	}
 
