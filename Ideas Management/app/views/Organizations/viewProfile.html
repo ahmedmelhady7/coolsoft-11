@@ -4,311 +4,300 @@
         <meta name="generator" content="HTML Tidy, see www.w3.org">
         <script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js">
         </script>
-				<script type="text/javascript" src="/public/javascripts/jquery.js"></script>
-		<script type="text/javascript" src="/public/javascripts/tinysort.js"></script>
-		<style>	
+                                <script type="text/javascript" src="/public/javascripts/jquery.js"></script>
+                <script type="text/javascript" src="/public/javascripts/tinysort.js"></script>
+                <style> 
 img{border:none;}
 pre{
-	display:block;
-	font:12px "Courier New", Courier, monospace;
-	padding:10px;
-	border:1px solid #bae2f0;
-	background:#e3f4f9;	
-	margin:.5em 0;
-	width:25%;
-	}	
-	
-	#tags ul{
-		margin:1em 0;
-		padding:.5em 10px;
-		text-align:center;
-		background:#71b5e9 repeat-x;		
-		}
-	#tags li{
-		margin:0;
-		padding:0;
-		list-style:none;
-		display:inline;
-		}
-	#tags li a{
-		text-decoration:none;
-		color:#fff;
-		padding:0 2px;	
-		}
-	#tags li a:hover{	
-		color:#cff400;
-		}		
-	
-	.tag1{font-size:100%;}
-	.tag2{font-size:120%;}
-	.tag3{font-size:140%;}
-	.tag4{font-size:160%;}
-	.tag5{font-size:180%;}
-	
-	/* alternative layout */
+        display:block;
+        font:12px "Courier New", Courier, monospace;
+        padding:10px;
+        border:1px solid #bae2f0;
+        background:#e3f4f9;     
+        margin:.5em 0;
+        width:25%;
+        }       
+        
+        #tags ul{
+                margin:1em 0;
+                padding:.5em 10px;
+                text-align:center;
+                background:#71b5e9 repeat-x;            
+                }
+        #tags li{
+                margin:0;
+                padding:0;
+                list-style:none;
+                display:inline;
+                }
+        #tags li a{
+                text-decoration:none;
+                color:#fff;
+                padding:0 2px;  
+                }
+        #tags li a:hover{       
+                color:#cff400;
+                }               
+        
+        .tag1{font-size:100%;}
+        .tag2{font-size:120%;}
+        .tag3{font-size:140%;}
+        .tag4{font-size:160%;}
+        .tag5{font-size:180%;}
+        
+        /* alternative layout */
 
-	#tags .alt{
-		text-align:left;
-		padding:0;
-		background:none;
-		}
-	#tags .alt li{
-		padding:2px 10px;
-		background:#efefef;
-		display:block;
-		}
-	#tags .alt .tag1, 
-	#tags .alt .tag2, 
-	#tags .alt .tag3, 
-	#tags .alt .tag4, 
-	#tags .alt .tag5{font-size:100%;}
-	#tags .alt .tag1{background:#7cc0f4;}
-	#tags .alt .tag2{background:#67abe0;}
-	#tags .alt .tag3{background:#4d92c7;}
-	#tags .alt .tag4{background:#3277ad;}
-	#tags .alt .tag5{background:#266ca2;}
-	
-	.btn{display:block;}
+        #tags .alt{
+                text-align:left;
+                padding:0;
+                background:none;
+                }
+        #tags .alt li{
+                padding:2px 10px;
+                background:#efefef;
+                display:block;
+                }
+        #tags .alt .tag1, 
+        #tags .alt .tag2, 
+        #tags .alt .tag3, 
+        #tags .alt .tag4, 
+        #tags .alt .tag5{font-size:100%;}
+        #tags .alt .tag1{background:#7cc0f4;}
+        #tags .alt .tag2{background:#67abe0;}
+        #tags .alt .tag3{background:#4d92c7;}
+        #tags .alt .tag4{background:#3277ad;}
+        #tags .alt .tag5{background:#266ca2;}
+        
+        .btn{display:block;}
 
 </style>
 
 <style type="text/css">body {
-			font-size:80%;
-			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
-		}
-	#showViewProfile{
-	margin-top: 1%;
-	margin-right: 5%;
-	margin-bottom: 4%;
-	margin-left: 0%;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	border-bottom-right-radius: 10px;
-	border-bottom-left-radius: 10px;
-	background-color: #bbbbbb;
-	padding-top: 2%;
-	padding-right: 4%;
-	padding-bottom: 0%;
-	padding-left: 4%;
-	position: relative;
-	border-bottom-width: 2px;
-	border-bottom-style: solid;
-	border-bottom-color: #bbbbbb;
-	border-right-width: 2px;
-	border-right-style: solid;
-	border-right-color: #bbbbbb;
-	border-left-width: 2px;
-	border-left-style: solid;
-	border-left-color: #bbbbbb;
-	border-top-width: 2px;
-	border-top-style: solid;
-	border-top-color: #bbbbbb;
-	word-wrap: break-word;
+                        font-size:80%;
+                        font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+                }
+        #showViewProfile{
+        margin-top: 1%;
+        margin-right: 5%;
+        margin-bottom: 4%;
+        margin-left: 0%;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        background-color: #bbbbbb;
+        padding-top: 2%;
+        padding-right: 4%;
+        padding-bottom: 0%;
+        padding-left: 4%;
+        position: relative;
+        border-bottom-width: 2px;
+        border-bottom-style: solid;
+        border-bottom-color: #bbbbbb;
+        border-right-width: 2px;
+        border-right-style: solid;
+        border-right-color: #bbbbbb;
+        border-left-width: 2px;
+        border-left-style: solid;
+        border-left-color: #bbbbbb;
+        border-top-width: 2px;
+        border-top-style: solid;
+        border-top-color: #bbbbbb;
+        word-wrap: break-word;
 }
 
-		.accordionItem h3 {
-			font-size:1.1em;
-			border-bottom-width: 2px;
-			border-bottom-style: solid;
-			border-bottom-color: #bbbbbb;
-			background-color:#FFFFFF;
-			margin-right:7%;
-			border-top-left-radius: 10px;
-	        border-top-right-radius: 10px;
-			border-bottom-right-radius: 10px;
-			border-bottom-left-radius: 10px;
-		}
-		.accordionItem h3:hover {
-			cursor:pointer;
-		}
-		.accordionItem div {
-			padding:1em 0.4em;
-			margin-right:7%;
-			border-top-left-radius: 10px;
-	        border-top-right-radius: 10px;
-			border-bottom-right-radius: 10px;
-			border-bottom-left-radius: 10px;
-			border-color:#339CCB;
-			border-width:2px;
-			border-style:solid;
-		}
-		.accordionItem.hide h3 {
-		}
-		.accordionItem.hide div {
-			display:none;
-		}
-		#deleteHide{
-			margin-top:2%;
-		text-align:right;
+                .accordionItem h3 {
+                        font-size:1.1em;
+                        border-bottom-width: 2px;
+                        border-bottom-style: solid;
+                        border-bottom-color: #bbbbbb;
+                        background-color:#FFFFFF;
+                        margin-right:7%;
+                        border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                        border-bottom-right-radius: 10px;
+                        border-bottom-left-radius: 10px;
+                }
+                .accordionItem h3:hover {
+                        cursor:pointer;
+                }
+                .accordionItem div {
+                        padding:1em 0.4em;
+                        margin-right:7%;
+                        border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                        border-bottom-right-radius: 10px;
+                        border-bottom-left-radius: 10px;
+                        border-color:#339CCB;
+                        border-width:2px;
+                        border-style:solid;
+                }
+                .accordionItem.hide h3 {
+                }
+                .accordionItem.hide div {
+                        display:none;
+                }
+                #deleteHide{
+                        margin-top:2%;
+                text-align:right;
         }
-		
-		
+                
+                
 
 </style>
 
 <script type="text/javascript">
-	
-	
-			var accordionItems = new Array();
+        
+        
+                        var accordionItems = new Array();
 
-			function init() {
+                        function init() {
 
-				// Grab the accordion items from the page
-				var divs = document.getElementsByTagName( 'div' );
-				for ( var i = 0; i < divs.length; i++ ) {
-					if ( divs[i].className == 'accordionItem' )
-						accordionItems.push( divs[i] );
-				}
+                                // Grab the accordion items from the page
+                                var divs = document.getElementsByTagName( 'div' );
+                                for ( var i = 0; i < divs.length; i++ ) {
+                                        if ( divs[i].className == 'accordionItem' )
+                                                accordionItems.push( divs[i] );
+                                }
 
-				// Assign onclick events to the accordion item headings
-				for ( var i = 0; i < accordionItems.length; i++ ) {
-					var h3 = getFirstChildWithTagName( accordionItems[i], 'H3' );
-					h3.onclick = toggleItem;
-				}
+                                // Assign onclick events to the accordion item headings
+                                for ( var i = 0; i < accordionItems.length; i++ ) {
+                                        var h3 = getFirstChildWithTagName( accordionItems[i], 'H3' );
+                                        h3.onclick = toggleItem;
+                                }
 
-				// Hide all accordion item bodies except the first
-				for ( var i = 0; i < accordionItems.length; i++ ) {
-					accordionItems[i].className = 'accordionItem hide';
-				}
-			}
+                                // Hide all accordion item bodies except the first
+                                for ( var i = 0; i < accordionItems.length; i++ ) {
+                                        accordionItems[i].className = 'accordionItem hide';
+                                }
+                        }
 
-			function toggleItem() {
-				var itemClass = this.parentNode.className;
+                        function toggleItem() {
+                                var itemClass = this.parentNode.className;
 
-				// Hide all items
-				for ( var i = 0; i < accordionItems.length; i++ ) {
-					accordionItems[i].className = 'accordionItem hide';
-				}
+                                // Hide all items
+                                for ( var i = 0; i < accordionItems.length; i++ ) {
+                                        accordionItems[i].className = 'accordionItem hide';
+                                }
 
-				// Show this item if it was previously hidden
-				if ( itemClass == 'accordionItem hide' ) {
-					this.parentNode.className = 'accordionItem';
+                                // Show this item if it was previously hidden
+                                if ( itemClass == 'accordionItem hide' ) {
+                                        this.parentNode.className = 'accordionItem';
 
-				}
-			}
+                                }
+                        }
 
-			function getFirstChildWithTagName( element, tagName ) {
-				for ( var i = 0; i < element.childNodes.length; i++ ) {
-					if ( element.childNodes[i].nodeName == tagName )
-						return element.childNodes[i];
-				}
-				
-			}
-	
-	function prompt1(){
-					var text = prompt("Why do you want to delete/hide this topic?");
-					
-					if(text){
-						document.getElementById("justText").value=text;
-						return true;
-					}
-					else{
-						return false;
-					}
-					
-				}
-	
-$(document).ready(function(){	
-	
-	// create a style switch button
-	var switcher = $('<a href="javascript:void(0)" class="btn">Change appearance</a>').toggle(
-		function(){
-			$("#tags ul").hide().addClass("alt").fadeIn("fast");
-		},
-		function(){
-			$("#tags ul").hide().removeClass("alt").fadeIn("fast");
-		}
-	);
- 	$('#tags').append(switcher);
-	
-	// create a sort by alphabet button
-	var sortabc = $('<a href="javascript:void(0)" class="btn">Sort alphabetically</a>').toggle(
-		function(){
-			$("#tags ul li").tsort({order:"asc"});
-		},	
-		function(){
-			$("#tags ul li").tsort({order:"desc"});
-		}		
-		);
- 	$('#tags').append(sortabc);		
-	
-	// create a sort by alphabet button			
-	
+                        function getFirstChildWithTagName( element, tagName ) {
+                                for ( var i = 0; i < element.childNodes.length; i++ ) {
+                                        if ( element.childNodes[i].nodeName == tagName )
+                                                return element.childNodes[i];
+                                }
+                                
+                        }
+        
+        function prompt1(){
+                                        var text = prompt("Why do you want to delete/hide this topic?");
+                                        
+                                        if(text){
+                                                document.getElementById("justText").value=text;
+                                                return true;
+                                        }
+                                        else{
+                                                return false;
+                                        }
+                                        
+                                }
+        
+$(document).ready(function(){   
+        
+        // create a style switch button
+        var switcher = $('<a href="javascript:void(0)" class="btn">Change appearance</a>').toggle(
+                function(){
+                        $("#tags ul").hide().addClass("alt").fadeIn("fast");
+                },
+                function(){
+                        $("#tags ul").hide().removeClass("alt").fadeIn("fast");
+                }
+        );
+        $('#tags').append(switcher);
+        
+        // create a sort by alphabet button
+        var sortabc = $('<a href="javascript:void(0)" class="btn">Sort alphabetically</a>').toggle(
+                function(){
+                        $("#tags ul li").tsort({order:"asc"});
+                },      
+                function(){
+                        $("#tags ul li").tsort({order:"desc"});
+                }               
+                );
+        $('#tags').append(sortabc);             
+        
+        // create a sort by alphabet button                     
+        
 });
 </script>
     </head>
-	#{if flash.success}
-   <p style="color:green">
-    <font size=4>${flash.success}</font>
-   </p>
-   <br>
-#{/if}
-#{if flash.error}
-   <p style="color:red">
-    <font size=4>${flash.error}</font>
-   </p>
-   <br>
-#{/if}
-		<div id="leftSidebar">
+        
+                <div id="leftSidebar">
            <br />
-		   <br />
-		   <div style="clear: both;">
-		   				
-		   </div>
-		   <li>
-		   
-		  	<ul>
-		  		
-					#{if canInvite == true}		
-						<li>		
-							<a id="invLink" style="cursor:pointer;">Invite a user</a>		
-						</li>		
-						#{/if}
-					#{if user.isAdmin || creator}
-					<li>
-						<a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
-					</li>
-					<li>
-						<a href="@{Organizations.editOrganization(org.id)}" title="Edit Organization">Edit</a>
-					</li>
-					#{/if}
-					
-					#{if permission == 1}
-						<li>
-							<a href="@{Topics.blank(defaultEntityId)}" title="Post Topic"> Post Topic</a>
-						</li>
-			#{/if}
-			
-			#{if settings==1}		
+                   <br />
+                   <div style="clear: both;">
+                                                
+                   </div>
+                   <li>
+                   
+                        <ul>
+                                
+                                        #{if canInvite == true}         
+                                                <li>            
+                                                        <a id="invLink" style="cursor:pointer;">Invite a user</a>               
+                                                </li>           
+                                                #{/if}
+                                        #{if admin || creator}
+                                        <li>
+                                                <a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
+                                        </li>
+                                        <li>
+                                                <a href="@{Organizations.editOrganization(org.id)}" title="Edit Organization">Edit</a>
+                                        </li>
+                                        #{/if}
+                                        
+                                        #{if permission == 1}
+                                                <li>
+                                                        <a href="@{Topics.blank(defaultEntityId)}" title="Post Topic"> Post Topic</a>
+                                                </li>
+                        #{/if}
+                        
+                        #{if settings==1}               
 
-			 <li>
+                         <li>
            <a id="requestsLink" style="cursor:pointer;">Requests</a>
-			 <div id="requestsLinks">
-           <ul> 	
-			<LI type="disc">
-			     <a href="@{CreateRelationshipRequests.viewRequests(org.id)}">Relationships</a>
-				   </LI>
-				   #{if allowed==1}
-				    <LI type="disc">
-				<a href="@{RequestToJoins.viewRequests(0,org.id)}">Join Requests </a>
+                         <div id="requestsLinks">
+           <ul>         
+                        <LI type="disc">
+                             <a href="@{CreateRelationshipRequests.viewRequests(org.id)}">Relationships</a>
+                                   </LI>
+                                   #{if allowed==1}
+                                    <LI type="disc">
+                                <a href="@{RequestToJoins.viewRequests(0,org.id)}">Join Requests </a>
             </LI>
-			   #{/if}
-            	  </ul>
-       </div>	
+                           #{/if}
+                  </ul>
+       </div>   
 
              </li>
-             	 #{/if}
+                 #{/if}
 
 
              <li>
 
            <a id="entityLink" style="cursor:pointer;">Entities</a>
-			 <div id="entityLinks">
+                         <div id="entityLinks">
             <ul>
-            	#{if entities.size() > 0}
+                #{if entities.size() > 0}
             #{list items:entities, as:'entity'}
             <LI type="disc">
-            	#{if (entitiesICanView.contains(entity))}
+                #{if (entitiesICanView.contains(entity))}
                 <a href="@{MainEntitys.viewEntity(entity.id)}" style="cursor:pointer;">${entity.name}</a>
                 #{/if}
                 #{else}
@@ -330,689 +319,689 @@ $(document).ready(function(){
         </li>
         #{/if}
 
-		#{if isMember == true || org.privacyLevel == 2 || user.isAdmin}
+                #{if isMember == true || org.privacyLevel == 2 || admin}
 <li>
-		<a href="@{Pictures.index(org.id)}">Gallery</a></li>
-				#{/if}
-		#{if plans.size()>0}
+                <a href="@{Pictures.index(org.id)}">Gallery</a></li>
+                                #{/if}
+                #{if plans.size()>0}
         <li>
            <a id="planLink" style="cursor:pointer;">Plans</a>
-			 <div id="plansLinks">
+                         <div id="plansLinks">
             <ul>
-            	#{list items:plans, as:'plan'}
-				<li>
-				     <a href="@{Plans.viewAsList(plan.id)}">${plan.title}</a>
+                #{list items:plans, as:'plan'}
+                                <li>
+                                     <a href="@{Plans.viewAsList(plan.id)}">${plan.title}</a>
                 </li>
-				#{/list}
-			</ul>
-			</div>
-		</li>
-		#{/if}
+                                #{/list}
+                        </ul>
+                        </div>
+                </li>
+                #{/if}
 <li>
-		<a id="docLink" style="cursor:pointer;">Documents</a>
+                <a id="docLink" style="cursor:pointer;">Documents</a>
 <div id="documen">
-	<ul>
-	#{if creator == true || user.isAdmin == true}
-	<li><a href="@{Documents.newDocument(org.id)}">Add new</a></li>
-	#{/if}
-	#{if isMember == true || org.privacyLevel == 2 || user.isAdmin}
+        <ul>
+        #{if creator == true || admin == true}
+        <li><a href="@{Documents.newDocument(org.id)}">Add new</a></li>
+        #{/if}
+        #{if isMember == true || org.privacyLevel == 2 || admin}
 #{ifnot org.getDocuments()}
 <li>No documents</li>
 #{/ifnot}
     #{list items:org.getDocuments(), as:'document'}
     <li>
-    	<a href="@{Documents.viewDocument(document.id)}">${document.name}</a>
-	</li>
-	#{/list}
-	#{/if}#{else}
-	<li>No public documents</li>
-	#{/else}
-	</ul>
+        <a href="@{Documents.viewDocument(document.id)}">${document.name}</a>
+        </li>
+        #{/list}
+        #{/if}#{else}
+        <li>No public documents</li>
+        #{/else}
+        </ul>
 </div>
 </li>
         <li>
-        	#{if (user.isAdmin || creator)}<a id="tagLink" style="cursor:pointer;">Create a Tag</a>
+                #{if (admin || creator)}<a id="tagLink" style="cursor:pointer;">Create a Tag</a>
         #{/if}
         #{else}
         #{if (org.createTag) && (!join)}<a id="tagLink" style="cursor:pointer;">Create a Tag</a>
         #{/if}
         #{/else}
         </li>
-		
-		#{if follower == true}
+                
+                #{if follower == true}
         <li><a onclick="unfollow('${org.id}');" style="cursor:pointer;">Unfollow ${org.name}</a></li>
-		#{/if}
-		#{else}
-		<li><a href="@{followOrganization(org.id)}">Follow ${org.name}</a></li>
-		#{/else}
-		
+                #{/if}
+                #{else}
+                <li><a href="@{followOrganization(org.id)}">Follow ${org.name}</a></li>
+                #{/else}
+                
        <li>
             <a href="@{viewFollowers(org.id, "false")}">View Followers</a>
         </li>
-		
-		
-		#{if (user.isAdmin || creator)}
-			 <li>         
-			        <form action="@{BannedUsers.restrictOrganizer()}">
-			            <input type="hidden" name="orgId" value='${org.id}'>
-			             <input type="submit" value="Restrict/Derestrict organizers" class="linkButton">
-			        </form>
-			         
-			         <form action="@{BannedUsers.restrictGroupInSelectedEntity()}">
-			            <input type="hidden" name="organizationID" value='${org.id}'>
-			            <input type="submit" size = 2 value='Restrict/Derestrict organizers group' class="linkButton"> 
-			        </form>
-			        
-			        <form action="@{BannedUsers.viewRestrictedOrganizersInOrganization()}">
-			            <input type="hidden" name="organizationID" value='${org.id}'>
-			             <input type="submit" value="Restricted Organizers in Entities" class="linkButton">
-			        </form>
-			        
-			        <form action="@{BannedUsers.viewRestrictedOrganizersTopicPath()}">
-			            <input type="hidden" name="organizationID" value='${org.id}'>
-			            <input type="submit" value="Restricted Organizers in Topics" class="linkButton">
-			        </form>
-			       
-			       <form action="@{BannedUsers.restrictOrganizersList()}">
-			            <input type="hidden" name="orgId" value='${org.id}'>
-			            <input type="submit" value="Restrict/Derestrict many Organizers" class="linkButton">
-			        </form>
-			        </li>
-			        #{/if}
-		 
+                
+                
+                #{if flag == 1}
+                         <li>         
+                                <form action="@{BannedUsers.restrictOrganizer()}">
+                                    <input type="hidden" name="orgId" value='${org.id}'>
+                                     <input type="submit" value="Restrict/Derestrict organizers" class="linkButton">
+                                </form>
+                                 
+                                 <form action="@{BannedUsers.restrictGroupInSelectedEntity()}">
+                                    <input type="hidden" name="organizationID" value='${org.id}'>
+                                    <input type="submit" size = 2 value='Restrict/Derestrict organizers group' class="linkButton"> 
+                                </form>
+                                
+                                <form action="@{BannedUsers.viewRestrictedOrganizersInOrganization()}">
+                                    <input type="hidden" name="organizationID" value='${org.id}'>
+                                     <input type="submit" value="Restricted Organizers in Entities" class="linkButton">
+                                </form>
+                                
+                                <form action="@{BannedUsers.viewRestrictedOrganizersTopicPath()}">
+                                    <input type="hidden" name="organizationID" value='${org.id}'>
+                                    <input type="submit" value="Restricted Organizers in Topics" class="linkButton">
+                                </form>
+                               
+                               <form action="@{BannedUsers.restrictOrganizersList()}">
+                                    <input type="hidden" name="orgId" value='${org.id}'>
+                                    <input type="submit" value="Restrict/Derestrict many Organizers" class="linkButton">
+                                </form>
+                                </li>
+                                #{/if}
+                 
 
-		</ul>
-		</li>		
-		</div>
-	
-	<div id="page">
-    	<div id="page-bgtop">
-    		<div id="showViewProfile">
-			    <body onload="init()">
-			        #{extends 'Login/index.html' /}		
-			        #{set title: 'Organization Profile' /}
-					
-			<script type="text/javascript">
-				var bdocs = false;
-				$('#documen').hide();	
-				 $('#docLink').click(function(){
-			            if (bdocs) {
-			                $('#documen').show(500);
-			                bdocs = false;
-			            }
-			            else {
-			                $('#documen').hide(500);
-			                bdocs = true;
-			            }
-			        });
-				        
-						var planFlag = true;
-			        $('#plansLinks').hide();
-			        $('#planLink').click(function(){
-			            if (planFlag) {
-			                $('#plansLinks').show(500);
-			                planFlag = false;
-			            }
-			            else {
-			                $('#plansLinks').hide(500);
-			                planFlag = true;
-			            }
-			        });
-			        
-			        var followerFlag = false;
-			        $('#followersLinks').hide();
-			        $('#followersLink').click(function(){
-			            if (followerFlag) {
-			                $('#followersLinks').show(500);
-			                followerFlag = false;
-			            }
-			            else {
-			                $('#followersLinks').hide(500);
-			                followerFlag = true;
-			            }
-			        });
-			        
-			        var entityFlag = false;
-			        $('#entityLinks').hide();
-			        $('#entityLink').click(function(){
-			            if (entityFlag) {
-			                $('#entityLinks').show(500);
-			                entityFlag = false;
-			            }
-			            else {
-			                $('#entityLinks').hide(500);
-			                entityFlag = true;
-			            }
-			        });
+                </ul>
+                </li>           
+                </div>
+        
+        <div id="page">
+        <div id="page-bgtop">
+                <div id="showViewProfile">
+                            <body onload="init()">
+                                #{extends 'Login/index.html' /}         
+                                #{set title: 'Organization Profile' /}
+                                        
+                        <script type="text/javascript">
+                                var bdocs = false;
+                                $('#documen').hide();   
+                                 $('#docLink').click(function(){
+                                    if (bdocs) {
+                                        $('#documen').show(500);
+                                        bdocs = false;
+                                    }
+                                    else {
+                                        $('#documen').hide(500);
+                                        bdocs = true;
+                                    }
+                                });
+                                        
+                                                var planFlag = true;
+                                $('#plansLinks').hide();
+                                $('#planLink').click(function(){
+                                    if (planFlag) {
+                                        $('#plansLinks').show(500);
+                                        planFlag = false;
+                                    }
+                                    else {
+                                        $('#plansLinks').hide(500);
+                                        planFlag = true;
+                                    }
+                                });
+                                
+                                var followerFlag = false;
+                                $('#followersLinks').hide();
+                                $('#followersLink').click(function(){
+                                    if (followerFlag) {
+                                        $('#followersLinks').show(500);
+                                        followerFlag = false;
+                                    }
+                                    else {
+                                        $('#followersLinks').hide(500);
+                                        followerFlag = true;
+                                    }
+                                });
+                                
+                                var entityFlag = false;
+                                $('#entityLinks').hide();
+                                $('#entityLink').click(function(){
+                                    if (entityFlag) {
+                                        $('#entityLinks').show(500);
+                                        entityFlag = false;
+                                    }
+                                    else {
+                                        $('#entityLinks').hide(500);
+                                        entityFlag = true;
+                                    }
+                                });
                    var requestsFlag = false;
-			        $('#requestsLinks').hide();
-			        $('#requestsLink').click(function(){
-			            if (requestsFlag) {
-			                $('#requestsLinks').show(500);
-			                requestsFlag = false;
-			            }
-			            else {
-			                $('#requestsLinks').hide(500);
-			                requestsFlag = true;
-			            }
-			        });
-		</script>		
-						
-					  <center>
-			        	#{if org.profilePictureId != -1}
-						#{list items:pictureId, as:'id'}
-						<img src="@{Pictures.getPicture(id)}" width="75" height="75"/>
-						#{/list}
-						#{/if}
-						#{if org.profilePictureId == -1}
-						<img src="/public/images/org.png" width="75" height="75"/>
-						#{/if}
-						 <h2 style="font-size:7;font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">${org.name}</h2>
-						<br />
-						<br />
-			         </center>
-					 
-			<div id="topics">		
-		        #{if topics.size() > 0}
-				<br />
-				<h3><p>List of Topics:</p></h3>
-		        <ul style="list-style: none;">   
-				#{list items:topics, as:'topic'}
-				
-				#{if topic.isDraft == false}
-				<li>
-					#{if topic.hidden == false}
-					#{if topic.canView(user)}
-					
-					<input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
-						 <font size=1 style="float:left;">${topic.creator.username}</font>
-						 <br />
-					<div class="accordionItem">
-					<h3><a href="@{Topics.show(topic.id)}"> &nbsp ${topic.title}</a>#{if permission == 1}
-		  			   #{if !topic.hidden}
-		   				 #{if topic.isDeletable()}
-		   				   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-		       				 
-		        				<input type="hidden" name = "justification" id = "justText"/>
-		           			    <input type="image" style="float:right;" title="Delete Topic" src="/public/images/icons/trash.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
-		      			    
-		    			   </form> 
-				        #{/if}
-		                #{if !topic.isDeletable()}
-						#{if topic.plan == null}
-		                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-		                   
-		                      	<input type="hidden" name = "justification" id = "justText"/>
-		                       <input type="submit" style="float:right;" value="Hide Topic" class = "linkButton"/>
-		                   
-		                 </form> 
-						#{/if}
-		            	#{/if}
-		             #{/if}
-		             #{if topic.hidden}		
-		                #{if topic..hider.username == actor.username}		
-				           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
-			                 		
-		                         <input type="submit" value="Unhide" style="float:right;" class = "linkButton"/>		
-		                  		
-		                  </form>			
-		                #{/if}		
-		            #{/if}
-		          #{/if}</h3>
-						<div>
-							<p><font size=2>Description: ${topic.description}</font></p>
-						</div>
-						<br />
-						<br />
-					</div>
-					#{/if}
-					#{/if}
-					#{else}
-					#{if topic.hider.username == user.username && topic.hidden == true}
-					
-					<input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
-						 <font size=1 style="float:left;">${topic.creator.username}</font>
-						 <br />
-					<div class="accordionItem">
-					<h3><a href="@{Topics.show(topic.id)}">&nbsp ${topic.title}</a> <font color ="#FF0000" size =2> &nbsp hidden</font>
-							#{if permission == 1}
-		  			   #{if !topic.hidden}
-		   				 #{if topic.isDeletable()}
-		   				   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-		       				 <p class="crudDelete">
-		        				<input type="hidden" name = "justification" id = "justText"/>
-		           			    <input type="image" style="float:right;" src="/public/images/icons/trash.png" title="Delete Topic" class = "linkButton"/>
-		      			    </p>
-		    			   </form> 
-				        #{/if}
-		                #{if !topic.isDeletable()}
-						#{if topic.plan == null}
-		                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-		                    <p class="crudDelete">
-		                      	<input type="hidden" name = "justification" id = "justText"/>
-		                       <input type="submit" style="float:right;" value="Hide Topic" class = "linkButton"/>
-		                   </p>
-		                 </form> 
-						#{/if}
-		            	#{/if}
-		             #{/if}
-		             #{if topic.hidden}		
-		                #{if topic.hider.username == user.username}		
-				           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
-			                  <p class="crudDelete">		
-		                         <input type="submit"  style="float:right;" value="Unhide" class = "linkButton"/>		
-		                      </p>		
-		                  </form>			
-		                #{/if}		
-		            #{/if}
-		          #{/if}</h3>
-						<div>
-							<p><font size=2>Description: ${topic.description}</font></p>
-						</div>
-						<br />
-						<br />
-					</div>
-					#{/if}
-					#{/else}
-				</li>
-				#{/if}
-				#{/list}
-				</ul>
-				#{/if}
-				#{else}
-				No topics available for this organization!
-				#{/else}
-			</div>
-					 
-			        #{if join}
-			        <form action="@{Organizations.join()}" method="post">
-			            <input type="hidden" id="organizationId" name="organizationId" value="${org.id}" />Join Organization 
-			            <p>
-			                <input type="submit" value="Join" class="linkButton"/>
-			            </p>
-			        </form>
-					#{/if}
-					
-			       
-			        <br>
-					#{if logFlag == 1}		
-			 			<input type="submit" value="View Logs" onclick=location.href="@{Logs.viewLogs(org.id)}" class="linkButton"></input>
-					#{/if}	
-					<br>
-			        #{if (requestToJoin == true) && (!user.isAdmin) && (!alreadyRequested)}
-			        <form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
-			            <input type="hidden" id="orgId" name="orgId" value="${org.id}">Your message: 
-			            <textarea id="description" name="description" rows="5" cols="50">
-			            </textarea>
-			            Request to join <input type="submit" value="Request" class="linkButton">
-			            <br/>
-			            <br/>
-			        </form>
-			        #{/if}
-			        #{else}
-			        #{if alreadyRequested}
-			        <big>
-			            <b>Your request has already been sent!!</b>
-			        </big>
-			        #{/if}
-			        #{else}
-					<br />
-					<div id="invbox" style="float: left; color:#0080ff;">		
-					#{if canInvite == true}		
-	                <form onsubmit="help('${org.id}', email.value);" method="post">		
-	                    <input type="hidden" id='users' name="users" value="${usernames}">		
-						<br /> Invite an Idea Developer		
-	                    <br> Username/Email: <input type="text" id="email" name="email" autoComplete="group"/>		
-	                    <br> Invite by: <input type="radio" id="s" name="select" value="username" onclick="autoC();" checked> Username <input type="radio" name="select" value="email" onclick="autoC();"> E-Mail  
-						<input type="submit" value="Invite" class="linkButton"/>		
-	                    <script language="javascript" type="text/javascript">		
-	                        var a = document.getElementById('users');		
-                        b = a.value + "";		
-	                        c = b.split("|");		
-                        autoComplete.Set("group", c);		
-	                    </script>		
-	                </form>#{/if}</div>
-					
-					<div id="createTagbox" style="float: left; color:#0080ff;">
-					<form name="createTag" action="@{Tags.createTagg()}" method="POST">
-					Tag Name: <input type="text" id="name" name="name" required>
-					<input type="hidden" id="orgId" name="orgId" value= "${org.id}"> <br /><br />
-  					<input type="submit" value="Create" class="linkButton"/>
-					</form>
-					</div>
-					
-					<div style="width:20%;">
-						<p><b>List of viewable Tags:</b></p>
-						<div id="tags">
-							<ul>
-								 #{list items:tags, as:'tag'}
-								 <!-- tag1, tag2 ..etc for diffrent sizes link:: http://cssglobe.com/post/4581/tag-clouds-styling-and-adding-sort-options				 -->
-				            <li>
-				                <a class="tag2" href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
-				            </li>
-				            #{/list}
-							</ul>
-						</div>
-					</div>
-					<br />
-			        #{/else}
-			        #{/else}
-			        
-			        <!--     </body> -->
-			        <!-- </html> -->
-			        <!-- <script type="text/javascript"> -->
-			        <!-- function test(){ -->
-			        <!-- 	//var v = document.getElementById('selec').selectedIndex; -->
-			        <!-- 	var a = document.getElementById('selec').value; -->
-			        <!-- 	//alert("function" +  a); -->
-			        <!-- 	if(a!='Tags') -->
-			        <!-- 	if(a == 0){ -->
-			        <!-- 		//alert("function2" +  ${org.id}); -->
-			        <!-- 	$.post('@{Organizations.enableTags()}',{id:${org.id}}); -->
-			        <!-- 		alert("Options is enabled"); -->
-			        <!-- 	} -->
-			        <!-- 	else{ -->
-			        <!-- 		//alert("function2" +  ${org.id}); -->
-			        <!-- 	$.post('@{Organizations.disableTags()}',{id:${org.id}}); -->
-			        <!-- 		alert("Options is disabled"); -->
-			        <!-- 	} -->
-			        <!-- 	} -->
-			        <!-- </script> -->
-			        <!-- ======= -->
-			       <!--<form action="@{Organizations.viewFollowers()}">
-			             <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="flag" value="true">#{if (!org.followers.contains(user))}
-			            <p>
-			                Follow ${org.name} <input type="submit" value="Follow">
-			                <br/>
-			                #{/if}
-			                </form> 
-			                <form action="@{Organizations.viewFollowers()}">
-			                    <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="flag" value="false">View ${org.name} Followers <input type="submit" value="Followers">
-			                    <br/>
-			                     
-			                </form> -->
-							
-							#{if (user.isAdmin || creator)}
-							<div style="background:#b2b2b2;">
-							<br />
-				<h4>Create Relationship between <select id="relType" onchange="showRelationForm()">
-						<option>select object</option>
-						<option>Entities</option>
-						<option>Topics</option>
-						<option>Tags</option>
-					</select> :</h4>
-					name: <select id="rels"> 
-					<option>choose name</option>
-					#{list items:org.relationNames, as:'relName'}
-					<option>${relName}</option>
-					#{/list}
-					</select> <input id="rTextForm" type="text" /> <input type="image" src="/public/images/icons/add.png" title="add new name" onclick="addName()" /> <font color="red"><span id="duplicate"></span></font>
-				
-				<p><form id="eform" style="display: none;">
-					
-					Source: <select id="ent1">
-					<option>Select Entity</option>
-					#{list items:entitiesCanBeRelated, as:'entityElement'}
-					<option value="${entityElement.id}">${entityElement.name}</option>
-					#{/list}
-					</select>
-					
-					Destination: <select id="ent2">
-					<option>Select Entity</option>
-					#{list items:entitiesCanBeRelated, as:'entityElement'}
-					<option value="${entityElement.id}">${entityElement.name}</option>
-					#{/list}
-					</select>			
-					
-					<input type="button" value="Create Relation" onclick="createERelation()"/> <font color="red"><span id="e_duplicate"></span></font>
-					
-				</form></p>
-				<p>
-				<form id="tform" style="display: none;">
-										
-					Source: <select id="tpc1"> 
-					<option>Select Topic</option>
-					#{list items:topics, as:'topicElement'}
-					<option value="${topicElement.id}">${topicElement.title}</option>
-					#{/list}
-					</select>
-					
-					Destination: <select id="tpc2"> 
-					<option>Select Topic</option>
-					#{list items:topics, as:'topicElement'}
-					<option value="${topicElement.id}">${topicElement.title}</option>
-					#{/list}
-					</select>
-					
-					<input type="button" value="Create Relation" onclick="createTRelation()" />
-					
-				</form></p>
-				
-				
-			<p>	<form id="gform" style="display: none;">
-										
-					Source: <select id="tg1"> 
-					<option>Select Tag</option>
-					#{list items:tags, as:'tagElement'}
-					<option value="${tagElement.id}">${tagElement.name}</option>
-					#{/list}
-					</select>
+                                $('#requestsLinks').hide();
+                                $('#requestsLink').click(function(){
+                                    if (requestsFlag) {
+                                        $('#requestsLinks').show(500);
+                                        requestsFlag = false;
+                                    }
+                                    else {
+                                        $('#requestsLinks').hide(500);
+                                        requestsFlag = true;
+                                    }
+                                });
+                </script>               
+                                                
+                                          <center>
+                                        #{if org.profilePictureId != -1}
+                                                #{list items:pictureId, as:'id'}
+                                                <img src="@{Pictures.getPicture(id)}" width="75" height="75"/>
+                                                #{/list}
+                                                #{/if}
+                                                #{if org.profilePictureId == -1}
+                                                <img src="/public/images/org.png" width="75" height="75"/>
+                                                #{/if}
+                                                 <h2 style="font-size:7;font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">${org.name}</h2>
+                                                <br />
+                                                <br />
+                                 </center>
+                                         
+                        <div id="topics">               
+                        #{if topics.size() > 0}
+                                <br />
+                                <h3><p>List of Topics:</p></h3>
+                        <ul style="list-style: none;">   
+                                #{list items:topics, as:'topic'}
+                                
+                                #{if topic.isDraft == false}
+                                <li>
+                                        #{if topic.hidden == false}
+                                        #{if topic.canView(user)}
+                                        
+                                        <input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
+                                                 <font size=1 style="float:left;">${topic.creator.username}</font>
+                                                 <br />
+                                        <div class="accordionItem">
+                                        <h3><a href="@{Topics.show(topic.id)}"> &nbsp ${topic.title}</a>#{if permission == 1}
+                                           #{if !topic.hidden}
+                                                 #{if topic.isDeletable()}
+                                                   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+                                                 
+                                                        <input type="hidden" name = "justification" id = "justText"/>
+                                                    <input type="image" style="float:right;" title="Delete Topic" src="/public/images/icons/trash.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
+                                            
+                                           </form> 
+                                        #{/if}
+                                #{if !topic.isDeletable()}
+                                                #{if topic.plan == null}
+                                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+                                   
+                                        <input type="hidden" name = "justification" id = "justText"/>
+                                       <input type="submit" style="float:right;" value="Hide Topic" class = "linkButton"/>
+                                   
+                                 </form> 
+                                                #{/if}
+                                #{/if}
+                             #{/if}
+                             #{if topic.hidden}         
+                                #{if topic..hider.username == actor.username}           
+                                           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">                
+                                                        
+                                         <input type="submit" value="Unhide" style="float:right;" class = "linkButton"/>                
+                                                
+                                  </form>                       
+                                #{/if}          
+                            #{/if}
+                          #{/if}</h3>
+                                                <div>
+                                                        <p><font size=2>Description: ${topic.description}</font></p>
+                                                </div>
+                                                <br />
+                                                <br />
+                                        </div>
+                                        #{/if}
+                                        #{/if}
+                                        #{else}
+                                        #{if topic.hider.username == user.username && topic.hidden == true}
+                                        
+                                        <input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
+                                                 <font size=1 style="float:left;">${topic.creator.username}</font>
+                                                 <br />
+                                        <div class="accordionItem">
+                                        <h3><a href="@{Topics.show(topic.id)}">&nbsp ${topic.title}</a> <font color ="#FF0000" size =2> &nbsp hidden</font>
+                                                        #{if permission == 1}
+                                           #{if !topic.hidden}
+                                                 #{if topic.isDeletable()}
+                                                   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+                                                 <p class="crudDelete">
+                                                        <input type="hidden" name = "justification" id = "justText"/>
+                                                    <input type="image" style="float:right;" src="/public/images/icons/trash.png" title="Delete Topic" class = "linkButton"/>
+                                            </p>
+                                           </form> 
+                                        #{/if}
+                                #{if !topic.isDeletable()}
+                                                #{if topic.plan == null}
+                                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+                                    <p class="crudDelete">
+                                        <input type="hidden" name = "justification" id = "justText"/>
+                                       <input type="submit" style="float:right;" value="Hide Topic" class = "linkButton"/>
+                                   </p>
+                                 </form> 
+                                                #{/if}
+                                #{/if}
+                             #{/if}
+                             #{if topic.hidden}         
+                                #{if topic.hider.username == user.username}             
+                                           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">                
+                                          <p class="crudDelete">                
+                                         <input type="submit"  style="float:right;" value="Unhide" class = "linkButton"/>               
+                                      </p>              
+                                  </form>                       
+                                #{/if}          
+                            #{/if}
+                          #{/if}</h3>
+                                                <div>
+                                                        <p><font size=2>Description: ${topic.description}</font></p>
+                                                </div>
+                                                <br />
+                                                <br />
+                                        </div>
+                                        #{/if}
+                                        #{/else}
+                                </li>
+                                #{/if}
+                                #{/list}
+                                </ul>
+                                #{/if}
+                                #{else}
+                                No topics available for this organization!
+                                #{/else}
+                        </div>
+                                         
+                                #{if join}
+                                <form action="@{Organizations.join()}" method="post">
+                                    <input type="hidden" id="organizationId" name="organizationId" value="${org.id}" />Join Organization 
+                                    <p>
+                                        <input type="submit" value="Join" class="linkButton"/>
+                                    </p>
+                                </form>
+                                        #{/if}
+                                        
+                               
+                                <br>
+                                        #{if logFlag == 1}              
+                                                <input type="submit" value="View Logs" onclick=location.href="@{Logs.viewLogs(org.id)}" class="linkButton"></input>
+                                        #{/if}  
+                                        <br>
+                                #{if (requestToJoin == true) && (!admin) && (!alreadyRequested)}
+                                <form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
+                                    <input type="hidden" id="orgId" name="orgId" value="${org.id}">Your message: 
+                                    <textarea id="description" name="description" rows="5" cols="50">
+                                    </textarea>
+                                    Request to join <input type="submit" value="Request" class="linkButton">
+                                    <br/>
+                                    <br/>
+                                </form>
+                                #{/if}
+                                #{else}
+                                #{if alreadyRequested}
+                                <big>
+                                    <b>Your request has already been sent!!</b>
+                                </big>
+                                #{/if}
+                                #{else}
+                                        <br />
+                                        <div id="invbox" style="float: left; color:#0080ff;">           
+                                        #{if canInvite == true}         
+                        <form onsubmit="help('${org.id}', email.value);" method="post">         
+                            <input type="hidden" id='users' name="users" value="${usernames}">          
+                                                <br /> Invite an Idea Developer         
+                            <br> Username/Email: <input type="text" id="email" name="email" autoComplete="group"/>              
+                            <br> Invite by: <input type="radio" id="s" name="select" value="username" onclick="autoC();" checked> Username <input type="radio" name="select" value="email" onclick="autoC();"> E-Mail  
+                                                <input type="submit" value="Invite" class="linkButton"/>                
+                            <script language="javascript" type="text/javascript">               
+                                var a = document.getElementById('users');               
+                        b = a.value + "";               
+                                c = b.split("|");               
+                        autoComplete.Set("group", c);           
+                            </script>           
+                        </form>#{/if}</div>
+                                        
+                                        <div id="createTagbox" style="float: left; color:#0080ff;">
+                                        <form name="createTag" action="@{Tags.createTagg()}" method="POST">
+                                        Tag Name: <input type="text" id="name" name="name" required>
+                                        <input type="hidden" id="orgId" name="orgId" value= "${org.id}"> <br /><br />
+                                        <input type="submit" value="Create" class="linkButton"/>
+                                        </form>
+                                        </div>
+                                        
+                                        <div style="width:20%;">
+                                                <p><b>List of viewable Tags:</b></p>
+                                                <div id="tags">
+                                                        <ul>
+                                                                 #{list items:tags, as:'tag'}
+                                                                 <!-- tag1, tag2 ..etc for diffrent sizes link:: http://cssglobe.com/post/4581/tag-clouds-styling-and-adding-sort-options                                -->
+                                            <li>
+                                                <a class="tag2" href="@{Tags.mainPage(tag.id)}">${tag.name}</a>
+                                            </li>
+                                            #{/list}
+                                                        </ul>
+                                                </div>
+                                        </div>
+                                        <br />
+                                #{/else}
+                                #{/else}
+                                
+                                <!--     </body> -->
+                                <!-- </html> -->
+                                <!-- <script type="text/javascript"> -->
+                                <!-- function test(){ -->
+                                <!--    //var v = document.getElementById('selec').selectedIndex; -->
+                                <!--    var a = document.getElementById('selec').value; -->
+                                <!--    //alert("function" +  a); -->
+                                <!--    if(a!='Tags') -->
+                                <!--    if(a == 0){ -->
+                                <!--            //alert("function2" +  ${org.id}); -->
+                                <!--    $.post('@{Organizations.enableTags()}',{id:${org.id}}); -->
+                                <!--            alert("Options is enabled"); -->
+                                <!--    } -->
+                                <!--    else{ -->
+                                <!--            //alert("function2" +  ${org.id}); -->
+                                <!--    $.post('@{Organizations.disableTags()}',{id:${org.id}}); -->
+                                <!--            alert("Options is disabled"); -->
+                                <!--    } -->
+                                <!--    } -->
+                                <!-- </script> -->
+                                <!-- ======= -->
+                               <!--<form action="@{Organizations.viewFollowers()}">
+                                     <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="flag" value="true">#{if (!org.followers.contains(user))}
+                                    <p>
+                                        Follow ${org.name} <input type="submit" value="Follow">
+                                        <br/>
+                                        #{/if}
+                                        </form> 
+                                        <form action="@{Organizations.viewFollowers()}">
+                                            <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="flag" value="false">View ${org.name} Followers <input type="submit" value="Followers">
+                                            <br/>
+                                             
+                                        </form> -->
+                                                        
+                                                        #{if (admin || creator)}
+                                                        <div style="background:#b2b2b2;">
+                                                        <br />
+                                <h4>Create Relationship between <select id="relType" onchange="showRelationForm()">
+                                                <option>select object</option>
+                                                <option>Entities</option>
+                                                <option>Topics</option>
+                                                <option>Tags</option>
+                                        </select> :</h4>
+                                        name: <select id="rels"> 
+                                        <option>choose name</option>
+                                        #{list items:org.relationNames, as:'relName'}
+                                        <option>${relName}</option>
+                                        #{/list}
+                                        </select> <input id="rTextForm" type="text" /> <input type="image" src="/public/images/icons/add.png" title="add new name" onclick="addName()" /> <font color="red"><span id="duplicate"></span></font>
+                                
+                                <p><form id="eform" style="display: none;">
+                                        
+                                        Source: <select id="ent1">
+                                        <option>Select Entity</option>
+                                        #{list items:entitiesCanBeRelated, as:'entityElement'}
+                                        <option value="${entityElement.id}">${entityElement.name}</option>
+                                        #{/list}
+                                        </select>
+                                        
+                                        Destination: <select id="ent2">
+                                        <option>Select Entity</option>
+                                        #{list items:entitiesCanBeRelated, as:'entityElement'}
+                                        <option value="${entityElement.id}">${entityElement.name}</option>
+                                        #{/list}
+                                        </select>                       
+                                        
+                                        <input type="button" value="Create Relation" onclick="createERelation()"/> <font color="red"><span id="e_duplicate"></span></font>
+                                        
+                                </form></p>
+                                <p>
+                                <form id="tform" style="display: none;">
+                                                                                
+                                        Source: <select id="tpc1"> 
+                                        <option>Select Topic</option>
+                                        #{list items:topics, as:'topicElement'}
+                                        <option value="${topicElement.id}">${topicElement.title}</option>
+                                        #{/list}
+                                        </select>
+                                        
+                                        Destination: <select id="tpc2"> 
+                                        <option>Select Topic</option>
+                                        #{list items:topics, as:'topicElement'}
+                                        <option value="${topicElement.id}">${topicElement.title}</option>
+                                        #{/list}
+                                        </select>
+                                        
+                                        <input type="button" value="Create Relation" onclick="createTRelation()" />
+                                        
+                                </form></p>
+                                
+                                
+                        <p>     <form id="gform" style="display: none;">
+                                                                                
+                                        Source: <select id="tg1"> 
+                                        <option>Select Tag</option>
+                                        #{list items:tags, as:'tagElement'}
+                                        <option value="${tagElement.id}">${tagElement.name}</option>
+                                        #{/list}
+                                        </select>
 
-					Destination: <select id="tg2"> 
-					<option>Select Tag</option>
-					#{list items:tags, as:'tagElement'}
-					<option value="${tagElement.id}">${tagElement.name}</option>
-					#{/list}
-					</select>
+                                        Destination: <select id="tg2"> 
+                                        <option>Select Tag</option>
+                                        #{list items:tags, as:'tagElement'}
+                                        <option value="${tagElement.id}">${tagElement.name}</option>
+                                        #{/list}
+                                        </select>
 
-					<input type="button" value="Create Relation" onclick="createGRelation()" />				
-					
-				</form></p>
-				<br />
-				</div>
-				#{/if}
-				
-				#{if isMember == true || org.privacyLevel == 2 || user.isAdmin}
+                                        <input type="button" value="Create Relation" onclick="createGRelation()" />                             
+                                        
+                                </form></p>
+                                <br />
+                                </div>
+                                #{/if}
+                                
+                                #{if isMember == true || org.privacyLevel == 2 || admin}
                 <form action="@{Contribution.contribution()}" method="post">
-			                    <input type="hidden" name="id" value="${org.id}">Contribution Points: <input type="submit" value="View" class="linkButton">
+                                            <input type="hidden" name="id" value="${org.id}">Contribution Points: <input type="submit" value="View" class="linkButton">
                 </form>
-				#{/if}
-							 </body>
-			     
-			</div>
-		</div>
-	</div>       
+                                #{/if}
+                                                         </body>
+                             
+                        </div>
+                </div>
+        </div>       
             </html>
             <script type="text/javascript">
-            	
-				function createERelation(){
-					var n = document.getElementById("rels").value;
-					var s = document.getElementById("ent1").value;
-					var d = document.getElementById("ent2").value;
-					
-					var tmp_n;
-					
-					if (n == "choose name" || s == "Select Entity" || d == "Select Entity") {
-						document.getElementById('e_duplicate').textContent="Please fill all required field(s).";
-					}else if (s == d){
-						document.getElementById('e_duplicate').textContent="Cannot relate entity to itself!";
-					}else {
-						$.post('@{EntityRelationships.createRelationship()}', {
-							name: n,
-							sourceId: s,
-							destinationId: d
-						}, function(data){
-							if(data == "true"){
-								document.getElementById('e_duplicate').textContent="Relation \"" + n + "\" have been created.";
-//								location.reload();
-								$('#e_duplicate').fadeOut('slow');
-								//reset values.
-								
-							}else if(data == "false"){
-								document.getElementById('e_duplicate').textContent="Relation already exists.";
-							}
-						});
-					}
-				}
-				
-				function createTRelation(){
-					var n = document.getElementById("rels").value;
-					var s = document.getElementById("tpc1").value;
-					var d = document.getElementById("tpc2").value;
-					
-					if (n == "choose name" || s == "Select Topic" || d == "Select Topic") {
-						alert("Please fill the required filed(s)");
-					}else if (s == d){
-						alert("Cannot relate topic to itself!");
-					}else {
-						$.post('@{TopicRelationships.createRelationship()}', {
-							name: n,
-							sourceId: s,
-							destinationId: d
-						}, function(data){
-							if (data == "true") {
-								alert("you have created relation: " + n);
-								location.reload();
-							}
-							else 
-								if (data == "false") {
-									alert("relation already exists!!");
-							}
-						});
-					}
-				}
-				
-				function createGRelation(){
-					var n = document.getElementById("rels").value;
-					var s = document.getElementById("tg1").value;
-					var d = document.getElementById("tg2").value;
-					
-					if (n == "choose name" || s == "Select Tag" || d == "Select Tag") {
-						alert("Please fill the required filed(s)");
-					}else if (s == d){
-						alert("Cannot relate tag to itself!");
-					}else {
-						$.post('@{TagRelationships.createRelationship()}', {
-							name: n,
-							sourceId: s,
-							destinationId: d
-						}, function(data){
-							if (data == "true") {
-								alert("you have created relation: " + n);
-								location.reload();
-							}
-							else 
-								if (data == "false") {
-									alert("relation already exists!!");
-							}
-						});
-					}
-				}
-				
-				
-				function showRelationForm(){
-					var txt = document.getElementById('relType').value;
-					if(txt == "Entities"){
-						$('#tform').hide();
-						$('#gform').hide();
-						$('#eform').slideToggle();
-					}else if(txt == "Topics"){
-						$('#eform').hide();
-						$('#gform').hide();
-						$('#tform').slideToggle();
-					}else if(txt == "Tags"){
-						$('#eform').hide();
-						$('#tform').hide();
-						$('#gform').slideToggle();
-					}else{
-						$('#eform').hide();
-						$('#tform').hide();
-						$('#gform').hide();
-					}
-				}
-				
-				function addName(){
-					var strg = document.getElementById('rTextForm').value;
-					if (strg != "") {
-						$.post('@{Organizations.addRelationName()}',{organizationId:${org.id}, name:strg},
-						function(data){
-							if (data == "false") {
-							document.getElementById('duplicate').textContent="";
-							var option = document.createElement("option");
-							option.textContent = strg;
-							document.getElementById('rels').options.add(option);
-							document.getElementById('rTextForm').value = "";
-						}
-						else if(data == "true"){
-							document.getElementById('duplicate').textContent="Name already exists.";
-						}
-						});
-					}else{
-						document.getElementById('duplicate').textContent="Please enter a name.";
-					}
-				}
+                
+                                function createERelation(){
+                                        var n = document.getElementById("rels").value;
+                                        var s = document.getElementById("ent1").value;
+                                        var d = document.getElementById("ent2").value;
+                                        
+                                        var tmp_n;
+                                        
+                                        if (n == "choose name" || s == "Select Entity" || d == "Select Entity") {
+                                                document.getElementById('e_duplicate').textContent="Please fill all required field(s).";
+                                        }else if (s == d){
+                                                document.getElementById('e_duplicate').textContent="Cannot relate entity to itself!";
+                                        }else {
+                                                $.post('@{EntityRelationships.createRelationship()}', {
+                                                        name: n,
+                                                        sourceId: s,
+                                                        destinationId: d
+                                                }, function(data){
+                                                        if(data == "true"){
+                                                                document.getElementById('e_duplicate').textContent="Relation \"" + n + "\" have been created.";
+//                                                              location.reload();
+                                                                $('#e_duplicate').fadeOut('slow');
+                                                                //reset values.
+                                                                
+                                                        }else if(data == "false"){
+                                                                document.getElementById('e_duplicate').textContent="Relation already exists.";
+                                                        }
+                                                });
+                                        }
+                                }
+                                
+                                function createTRelation(){
+                                        var n = document.getElementById("rels").value;
+                                        var s = document.getElementById("tpc1").value;
+                                        var d = document.getElementById("tpc2").value;
+                                        
+                                        if (n == "choose name" || s == "Select Topic" || d == "Select Topic") {
+                                                alert("Please fill the required filed(s)");
+                                        }else if (s == d){
+                                                alert("Cannot relate topic to itself!");
+                                        }else {
+                                                $.post('@{TopicRelationships.createRelationship()}', {
+                                                        name: n,
+                                                        sourceId: s,
+                                                        destinationId: d
+                                                }, function(data){
+                                                        if (data == "true") {
+                                                                alert("you have created relation: " + n);
+                                                                location.reload();
+                                                        }
+                                                        else 
+                                                                if (data == "false") {
+                                                                        alert("relation already exists!!");
+                                                        }
+                                                });
+                                        }
+                                }
+                                
+                                function createGRelation(){
+                                        var n = document.getElementById("rels").value;
+                                        var s = document.getElementById("tg1").value;
+                                        var d = document.getElementById("tg2").value;
+                                        
+                                        if (n == "choose name" || s == "Select Tag" || d == "Select Tag") {
+                                                alert("Please fill the required filed(s)");
+                                        }else if (s == d){
+                                                alert("Cannot relate tag to itself!");
+                                        }else {
+                                                $.post('@{TagRelationships.createRelationship()}', {
+                                                        name: n,
+                                                        sourceId: s,
+                                                        destinationId: d
+                                                }, function(data){
+                                                        if (data == "true") {
+                                                                alert("you have created relation: " + n);
+                                                                location.reload();
+                                                        }
+                                                        else 
+                                                                if (data == "false") {
+                                                                        alert("relation already exists!!");
+                                                        }
+                                                });
+                                        }
+                                }
+                                
+                                
+                                function showRelationForm(){
+                                        var txt = document.getElementById('relType').value;
+                                        if(txt == "Entities"){
+                                                $('#tform').hide();
+                                                $('#gform').hide();
+                                                $('#eform').slideToggle();
+                                        }else if(txt == "Topics"){
+                                                $('#eform').hide();
+                                                $('#gform').hide();
+                                                $('#tform').slideToggle();
+                                        }else if(txt == "Tags"){
+                                                $('#eform').hide();
+                                                $('#tform').hide();
+                                                $('#gform').slideToggle();
+                                        }else{
+                                                $('#eform').hide();
+                                                $('#tform').hide();
+                                                $('#gform').hide();
+                                        }
+                                }
+                                
+                                function addName(){
+                                        var strg = document.getElementById('rTextForm').value;
+                                        if (strg != "") {
+                                                $.post('@{Organizations.addRelationName()}',{organizationId:${org.id}, name:strg},
+                                                function(data){
+                                                        if (data == "false") {
+                                                        document.getElementById('duplicate').textContent="";
+                                                        var option = document.createElement("option");
+                                                        option.textContent = strg;
+                                                        document.getElementById('rels').options.add(option);
+                                                        document.getElementById('rTextForm').value = "";
+                                                }
+                                                else if(data == "true"){
+                                                        document.getElementById('duplicate').textContent="Name already exists.";
+                                                }
+                                                });
+                                        }else{
+                                                document.getElementById('duplicate').textContent="Please enter a name.";
+                                        }
+                                }
 
-				
-				
+                                
+                                
                                 function echeck(str) {
                                 
-                                		var at="@"
-                                		var dot="."
-                                		var lat=str.indexOf(at)
-                                		var lstr=str.length
-                                		var ldot=str.indexOf(dot)
-                                		if (str.indexOf(at)==-1){
-                                		   alert("Please enter a valid email address")
-                                		   return false
-                                		}
+                                                var at="@"
+                                                var dot="."
+                                                var lat=str.indexOf(at)
+                                                var lstr=str.length
+                                                var ldot=str.indexOf(dot)
+                                                if (str.indexOf(at)==-1){
+                                                   alert("Please enter a valid email address")
+                                                   return false
+                                                }
                                 
-                                		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
-                                		   alert("Please enter a valid email address")
-                                		   return false
-                                		}
+                                                if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
+                                                   alert("Please enter a valid email address")
+                                                   return false
+                                                }
                                 
-                                		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
-                                		    alert("Please enter a valid email address")
-                                		    return false
-                                		}
+                                                if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
+                                                    alert("Please enter a valid email address")
+                                                    return false
+                                                }
                                 
-                                		 if (str.indexOf(at,(lat+1))!=-1){
-                                		    alert("Please enter a valid email address")
-                                		    return false
-                                		 }
+                                                 if (str.indexOf(at,(lat+1))!=-1){
+                                                    alert("Please enter a valid email address")
+                                                    return false
+                                                 }
                                 
-                                		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
-                                		    alert("Please enter a valid email address")
-                                		    return false
-                                		 }
+                                                 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
+                                                    alert("Please enter a valid email address")
+                                                    return false
+                                                 }
                                 
-                                		 if (str.indexOf(dot,(lat+2))==-1){
-                                		    alert("Please enter a valid email address")
-                                		    return false
-                                		 }
-                                		
-                                		 if (str.indexOf(" ")!=-1){
-                                		    alert("Please enter a valid email address")
-                                		    return false
-                                		 }
+                                                 if (str.indexOf(dot,(lat+2))==-1){
+                                                    alert("Please enter a valid email address")
+                                                    return false
+                                                 }
+                                                
+                                                 if (str.indexOf(" ")!=-1){
+                                                    alert("Please enter a valid email address")
+                                                    return false
+                                                 }
                                 
-                                 		 return true				
-                                	}
+                                                 return true                            
+                                        }
                                 
                                 function ValidateForm(){
-                                	var emailID=document.getElementById("email");
-                                	
-                                	if ((emailID.value==null)||(emailID.value=="")){
-                                		alert("Please enter a valid email address")
-                                		emailID.focus()
-                                		return false
-                                	}
-                                	if (echeck(emailID.value)==false){
-                                		emailID.value=""
-                                		emailID.focus()
-                                		return false
-                                	}
-                                	return true
+                                        var emailID=document.getElementById("email");
+                                        
+                                        if ((emailID.value==null)||(emailID.value=="")){
+                                                alert("Please enter a valid email address")
+                                                emailID.focus()
+                                                return false
+                                        }
+                                        if (echeck(emailID.value)==false){
+                                                emailID.value=""
+                                                emailID.focus()
+                                                return false
+                                        }
+                                        return true
                                  }
                                             function test(){
                                             //var v = document.getElementById('selec').selectedIndex;
@@ -1023,98 +1012,98 @@ $(document).ready(function(){
                                             //alert("function2" +  ${org.id});
                                             $.post('@{Organizations.enableTags()}',{id:${org.id}});
                                             alert("Options is enabled");
-                                		  location.reload(true);
-                                		
+                                                  location.reload(true);
+                                                
                                             }
                                             else{
                                             //alert("function2" +  ${org.id});
                                             $.post('@{Organizations.disableTags()}',{id:${org.id}});
                                             alert("Options is disabled");
-                                			  location.reload(true);
+                                                          location.reload(true);
                                             }
-                                				
+                                                                
                                             }
-                                		function unfollow(id){
-                                		$.post('@{Users.unfollowOrganization()}', {
-                                			organizationId: id
-                                		});
-                                		alert("done");
-                                		location.reload(true);
-                                	}
+                                                function unfollow(id){
+                                                $.post('@{Users.unfollowOrganization()}', {
+                                                        organizationId: id
+                                                });
+                                                alert("done");
+                                                location.reload(true);
+                                        }
                                     function help(id, e){
-                                		s = document.getElementById("s").checked;
+                                                s = document.getElementById("s").checked;
                                         if (!s) {
                                            if(ValidateForm()) {
-                                		   	send(id, e, true);
-                                		   }
-                                			} else {
-                                				if (username()) {
-                                				send(id, e, false);
-                                				}
-                                			}
+                                                        send(id, e, true);
+                                                   }
+                                                        } else {
+                                                                if (username()) {
+                                                                send(id, e, false);
+                                                                }
+                                                        }
                                     }
-                                	function send(id, e, b) {
-                                		$.post('@{Organizations.sendInvitation()}', {
-                                			organizationId:id,
-                                			email:e,
-                                			byMail:b
-                                		});
-										alert("invitation sent");
-                                		document.getElementById("email").value = "Invitation has been sent";
-                                	}
-                                	function username() {
-                                		var name = document.getElementById("email").value;
-                                		var a = document.getElementById('users');
-                                				b = a.value + "";
-                                    			c = b.split("|");
-                                				for (var i = 0; i < c.length; i++) {
-                                				if (c[i] == name) {
-                                				return true;
-                                				}
-                                				}
-                                				alert("User with this username does not exist");
-                                			return false;
-                                			}
-											
-											
-					var invb = false;	
-		$('#invbox').hide();	
-		 $('#invLink').click(function(){	
-	            if (invb) {	
-	                $('#invbox').show(500);	
-	                invb = false;	
-	            }	
-	            else {
-	                $('#invbox').hide(500);	
-	                invb = true;	
-	            }	
-	        });	
-			
-		var createT = false;
-		$('#createTagbox').hide();
-		$('#tagLink').click(function(){
-			if (createT) {
-				$('#createTagbox').show(500);
-				createT = false;
-			}
-			else {
-				$('#createTagbox').hide(500);
-				createT = true;
-			}
-		})
-		
-		 function autoC(){	
-		 	var emailID=document.getElementById("email");	
-	        var auto=document.getElementById("s").checked;	
-			if (!auto) {	
-			emailID.setAttribute('autocomplete', 'off');
-				}
-				else {	
-					emailID.setAttribute('autocomplete', "group");	
-	            }	
-	        }
-			
-		
+                                        function send(id, e, b) {
+                                                $.post('@{Organizations.sendInvitation()}', {
+                                                        organizationId:id,
+                                                        email:e,
+                                                        byMail:b
+                                                });
+                                                                                alert("invitation sent");
+                                                document.getElementById("email").value = "Invitation has been sent";
+                                        }
+                                        function username() {
+                                                var name = document.getElementById("email").value;
+                                                var a = document.getElementById('users');
+                                                                b = a.value + "";
+                                                        c = b.split("|");
+                                                                for (var i = 0; i < c.length; i++) {
+                                                                if (c[i] == name) {
+                                                                return true;
+                                                                }
+                                                                }
+                                                                alert("User with this username does not exist");
+                                                        return false;
+                                                        }
+                                                                                        
+                                                                                        
+                                        var invb = false;       
+                $('#invbox').hide();    
+                 $('#invLink').click(function(){        
+                    if (invb) { 
+                        $('#invbox').show(500); 
+                        invb = false;   
+                    }   
+                    else {
+                        $('#invbox').hide(500); 
+                        invb = true;    
+                    }   
+                });     
+                        
+                var createT = false;
+                $('#createTagbox').hide();
+                $('#tagLink').click(function(){
+                        if (createT) {
+                                $('#createTagbox').show(500);
+                                createT = false;
+                        }
+                        else {
+                                $('#createTagbox').hide(500);
+                                createT = true;
+                        }
+                })
+                
+                 function autoC(){      
+                        var emailID=document.getElementById("email");   
+                var auto=document.getElementById("s").checked;  
+                        if (!auto) {    
+                        emailID.setAttribute('autocomplete', 'off');
+                                }
+                                else {  
+                                        emailID.setAttribute('autocomplete', "group");  
+                    }   
+                }
+                        
+                
                                             
                             
             </script>
