@@ -32,6 +32,7 @@ import play.i18n.Messages;
 import play.mvc.Router;
 import play.mvc.With;
 import controllers.CoolCRUD.ObjectType;
+import controllers.Tags;
 
 @With(Secure.class)
 public class Plans extends CoolCRUD {
@@ -1703,30 +1704,26 @@ public class Plans extends CoolCRUD {
 
 		User user = Security.getConnected();
 		Item item = Item.findById(itemId);
+		notFoundIfNull(item);
 		Plan plan = item.plan;
-		MainEntity entity = plan.topic.entity;
+		
 
-		for (int i = 0; i < globalListOfTags.size(); i++) {
-			if (globalListOfTags.get(i).createdInOrganization.privacyLevel == 2
-					|| plan.topic.entity.organization.equals(globalListOfTags
-							.get(i).createdInOrganization)) {
-				listOfTags.add(globalListOfTags.get(i));
+		Tag tagTemp=null;
+		
+		tagTemp=Tags.createTag(tag,user,plan.topic.entity.organization.id);
+		if(tagTemp==null){
+			newTag=false;
+			for (int i = 0; i < globalListOfTags.size(); i++) {
+				if(globalListOfTags.get(i).name.equals(tag)){
+					tagTemp=globalListOfTags.get(i);
+				}
 			}
+			
 		}
-		Tag tagTemp = null;
-		for (int i = 0; i < listOfTags.size(); i++) {
-			if (listOfTags.get(i).name.equalsIgnoreCase(tag)) {
-				tagTemp = listOfTags.get(i);
-				break;
-
-			}
+		else {
+			newTag=true;
 		}
-		if (tagTemp == null) {
-			newTag = true;
-			tagTemp = new Tag(tag, plan.topic.entity.organization, user);
-			tagTemp.save();
-
-		}
+		
 		if (item.tags.contains(tagTemp)) {
 			tagAlreadyExists = true;
 
@@ -1736,16 +1733,39 @@ public class Plans extends CoolCRUD {
 			tagTemp.taggedItems.add(item);
 			tagTemp.save();
 		}
-
+		
 		item.save();
 		JsonObject json = new JsonObject();
 		if (!tagAlreadyExists) {
 			json.addProperty("name", tagTemp.name);
 			json.addProperty("id", tagTemp.id + "");
+			if(newTag){
 			json.addProperty("success", "1");
-		} else {
+			}
+			else{
+				json.addProperty("success", "2");
+			}
+		}
+		else {
 			json.addProperty("success", "0");
 		}
+		String logDescription = "User "
+			+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+			+ user.id + "\">" + user.firstName + " " + user.lastName
+			+ "</a>" + " has tagged " + item.summary
+			+ " in the plan "
+			+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+			+ item.plan.id + "\">" + item.plan.title + "</a>"
+			+ " of the topic "
+			+ "<a href=\"http://localhost:9008/topics/show?topicId="
+			+ item.plan.topic.id + "\">" + item.plan.topic.title + "</a>"
+			+"with the tag"
+			+tagTemp.name;
+
+	Log.addUserLog(logDescription, user, item, item.plan, item.plan.topic,
+			item.plan.topic.entity, item.plan.topic.entity.organization,tagTemp);
+
+		
 
 		renderJSON(json.toString());
 
