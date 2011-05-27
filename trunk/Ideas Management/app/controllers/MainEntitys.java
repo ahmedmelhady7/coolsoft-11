@@ -754,7 +754,7 @@ public class MainEntitys extends CoolCRUD {
 	}
 
 	/**
-	 * deletes the entity.
+	 * helper method for deleting an entity.
 	 * 
 	 * @author Noha Khater
 	 * 
@@ -763,7 +763,7 @@ public class MainEntitys extends CoolCRUD {
 	 * 
 	 * @return boolean
 	 */
-	public static boolean deleteEntity(long entityId) {
+	public static boolean deleteEntityHelper(long entityId) {
 		MainEntity entity = MainEntity.findById(entityId);
 		List<Organization> allOrganizations = Organization.findAll();
 		List<MainEntity> allEntities = MainEntity.findAll();
@@ -855,6 +855,21 @@ public class MainEntitys extends CoolCRUD {
 		entity.logs.clear();
 		entity.delete();
 		return true;
+	}
+	
+	/**
+	 * deletes the entity.
+	 * 
+	 * @author Noha Khater
+	 * 
+	 * @param entityId
+	 *            the id of the entity to be deleted.
+	 */
+	public static void deleteEntity(long entityId) {
+		deleteEntityHelper(entityId);
+		MainEntity entity = MainEntity.findById(entityId);
+		redirect("Organizations.viewProfile", entity.organization.id,
+		"Entity created");
 	}
 
 }
