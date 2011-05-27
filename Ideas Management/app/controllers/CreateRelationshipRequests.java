@@ -125,11 +125,6 @@ public class CreateRelationshipRequests extends CoolCRUD {
 
 	public static void respondToRequests(int status, long id, int type,
 			int whichList) {
-		System.out.println("here");
-		System.out.println(status);
-		System.out.println(id);
-		System.out.println(type);
-		System.out.println(whichList);
 		Organization organization;
 		User user = Security.getConnected();
 		CreateRelationshipRequest createRequest;
@@ -141,12 +136,10 @@ public class CreateRelationshipRequests extends CoolCRUD {
 
 				MainEntity source = createRequest.sourceEntity;
 				MainEntity destination = createRequest.destinationEntity;
-				// organization = source.organization;
+	
 				if (status == 1) {
 					EntityRelationships.createRelationship(createRequest.name,
 							source.id, destination.id);
-					System.out.println(user);
-					System.out.println(organization);
 					String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
@@ -197,11 +190,9 @@ public class CreateRelationshipRequests extends CoolCRUD {
 			}
 
 			else {
-				System.out.println("topic");
+				
 				Topic source = createRequest.sourceTopic;
 				Topic destination = createRequest.destinationTopic;
-				// MainEntity sourceEntity = source.entity;
-				// organization = sourceEntity.organization;
 				if (status == 1) {
 					TopicRelationships.createRelationship(createRequest.name,
 							source.id, destination.id);
@@ -268,15 +259,15 @@ public class CreateRelationshipRequests extends CoolCRUD {
 
 		else {
 			renameRequest = RenameEndRelationshipRequest.findById(id);
-			System.out.println(renameRequest);
+			
 			organization = renameRequest.organisation;
 			if (type == 0) {
 				EntityRelationship relation = renameRequest.entityRelationship;
 				String oldName = relation.name;
-				System.out.println("oldName");
+				
 				if (status == 1) {
 					if (renameRequest.requestType == 0) {
-						System.out.println(relation);
+				
 
 						for (int i = 0; i < relation.renameEndRequests.size(); i++) {
 							if (!relation.renameEndRequests.get(i).equals(
@@ -285,7 +276,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								relation.save();
 							}
 						}
-						System.out.println(relation.renameEndRequests);
+						
 						relation.source.relationsSource.remove(relation);
 						relation.source.save();
 						relation.destination.relationsDestination
@@ -316,11 +307,10 @@ public class CreateRelationshipRequests extends CoolCRUD {
 						relation.save();
 						renameRequest.delete();
 
-						System.out.println(relation.renameEndRequests);
 						relation.delete();
 
 					} else {
-						System.out.println("rename");
+					
 						relation.name = renameRequest.newName;
 						relation.save();
 						for (int i = 0; i < relation.renameEndRequests.size(); i++) {
@@ -414,7 +404,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 				if (status == 1) {
 					if (renameRequest.requestType == 0) {
 
-						System.out.println(relation);
+					
 						for (int i = 0; i < relation.renameEndRequests.size(); i++) {
 							if (!relation.renameEndRequests.get(i).equals(
 									renameRequest))
@@ -453,7 +443,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 						relation.delete();
 
 					} else {
-						System.out.println("will rename");
+						
 						relation.name = renameRequest.newName;
 						relation.save();
 						for (int i = 0; i < relation.renameEndRequests.size(); i++) {

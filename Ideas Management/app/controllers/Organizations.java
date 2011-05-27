@@ -126,16 +126,11 @@ public class Organizations extends CoolCRUD {
 	 */
 
 	public static void enableTags(long id) {
-		System.out.println("enabling");
-		System.out.println(id);
 		Organization organization = Organization.findById(id);
-		System.out.println(organization);
+
 		notFoundIfNull(organization);
 		organization.createTag = true;
 		organization.save();
-		System.out.println(organization.createTag);
-		System.out.println(getPrivacyLevel(id));
-
 	}
 
 	/**
@@ -154,15 +149,12 @@ public class Organizations extends CoolCRUD {
 	 */
 
 	public static void disableTags(Long id) {
-		System.out.println("disabling");
+
 		Organization organization = Organization.findById(id);
-		System.out.println(organization);
-		System.out.println(id);
+
 		notFoundIfNull(organization);
 		organization.createTag = false;
 		organization.save();
-		System.out.println(organization.createTag);
-		System.out.println(getPrivacyLevel(id));
 
 	}
 
@@ -321,16 +313,18 @@ public class Organizations extends CoolCRUD {
 			}
 			Organization org = new Organization(name, creator, privacyLevell,
 					createTagg, description).save();
-			Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
-					+ creator.id
-					+ "\">"
-					+ creator.firstName
-					+ " "
-					+ creator.lastName
-					+ "</a>"
-					+ " has created the organisation ("
-					+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
-					+ org.id + "\">" + org.name + "</a>" + ")", creator, org);
+			Log.addUserLog(
+					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ creator.id
+							+ "\">"
+							+ creator.firstName
+							+ " "
+							+ creator.lastName
+							+ "</a>"
+							+ " has created the organisation ("
+							+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
+							+ org.id + "\">" + org.name + "</a>" + ")",
+					creator, org);
 			Role role = Roles.getRoleByName("organizationLead");
 			UserRoleInOrganizations.addEnrolledUser(creator, org, role);
 			MainEntity defaultEntity = new MainEntity("Default", "", org, false);
@@ -403,7 +397,7 @@ public class Organizations extends CoolCRUD {
 		int allowed = 0;
 		int settings = 0;
 		org.incrmentViewed();
-		org.save();		
+		org.save();
 		if (org.privacyLevel == 1
 				&& Users.isPermitted(
 						user,
@@ -530,11 +524,11 @@ public class Organizations extends CoolCRUD {
 		List<Plan> plans = Plans.planList("organization", org.id);
 		if (flag.equals("true"))
 			followOrganization(organizationId);
-		render(user, org, entities, requestToJoin, canCreateEntity, tags, followFlag,
-				canInvite, admin, allowed, isMember, settings, creator,
-				alreadyRequested, plans, follower, usernames, join, logFlag,
-				pictureId, topics, entitiesCanBeRelated, entitiesICanView,
-				followers, defaultEntity);
+		render(user, org, entities, requestToJoin, canCreateEntity, tags,
+				followFlag, canInvite, admin, allowed, isMember, settings,
+				creator, alreadyRequested, plans, follower, usernames, join,
+				logFlag, pictureId, topics, entitiesCanBeRelated,
+				entitiesICanView, followers, defaultEntity);
 	}
 
 	/**
@@ -576,22 +570,23 @@ public class Organizations extends CoolCRUD {
 		int i = 0;
 		int allowed = 0;
 		int settings = 0;
-		
 
 		org.incrmentViewed();
 		org.save();
-		
+
 		if (org.privacyLevel == 1
-				&&( Users.isPermitted(
-						user,
-						"accept/reject join requests from users to join a private organization",
-						id, "organization")||user.isAdmin))
+				&& (Users
+						.isPermitted(
+								user,
+								"accept/reject join requests from users to join a private organization",
+								id, "organization") || user.isAdmin))
 			allowed = 1;
 		if (Users
 				.isPermitted(
 						user,
 						"accept/reject join requests from users to join a private organization",
-						id, "organization")||user.isAdmin)
+						id, "organization")
+				|| user.isAdmin)
 			settings = 1;
 		// while (i < org.createdTags.size()) {
 		// tags.add(org.createdTags.get(i));
@@ -646,12 +641,12 @@ public class Organizations extends CoolCRUD {
 			entitiesCanBeRelated.add(entities.get(x));
 		}
 		List<Topic> topics = new ArrayList<Topic>();
-//		for (int x = 0; x < entities.size(); x++) {
-			for (int y = 0; y < org.entitiesList.get(0).topicList.size(); y++) {
-				topics.add(org.entitiesList.get(0).topicList.get(y));
-			}
-//		}
-		
+		// for (int x = 0; x < entities.size(); x++) {
+		for (int y = 0; y < org.entitiesList.get(0).topicList.size(); y++) {
+			topics.add(org.entitiesList.get(0).topicList.get(y));
+		}
+		// }
+
 		for (int x = 0; x < entitiesCanBeRelated.size(); x++) {
 			if (!entitiesCanBeRelated.get(x).createRelationship)
 				entitiesCanBeRelated.remove(entitiesCanBeRelated.get(x));
@@ -727,8 +722,8 @@ public class Organizations extends CoolCRUD {
 				|| Security.getConnected().isAdmin) {
 			logFlag = 1;
 		}
-		
-		int permission =1;
+
+		int permission = 1;
 		if (!Users.isPermitted(user, "post topics", org.id, "organization"))
 			permission = 0;
 
@@ -736,16 +731,16 @@ public class Organizations extends CoolCRUD {
 		List<User> followers = org.followers;
 		MainEntity defaultEntity = org.entitiesList.get(0);
 		long defaultEntityId = defaultEntity.id;
-		if ((org.privacyLevel == 0) && (!Users.getEnrolledUsers(org).contains(user))) {
+		if ((org.privacyLevel == 0)
+				&& (!Users.getEnrolledUsers(org).contains(user))) {
 			BannedUsers.unauthorized();
-		}
-		else {
-		List<Plan> plans = Plans.planList("organization", org.id);
-		render(user, org, entities, requestToJoin, canCreateEntity, tags, flag,
-				canInvite, admin, allowed, isMember, settings, creator,
-				alreadyRequested, plans, follower, usernames, join, logFlag,
-				pictureId, topics, entitiesCanBeRelated, entitiesICanView,
-				followers, defaultEntityId, permission);
+		} else {
+			List<Plan> plans = Plans.planList("organization", org.id);
+			render(user, org, entities, requestToJoin, canCreateEntity, tags,
+					flag, canInvite, admin, allowed, isMember, settings,
+					creator, alreadyRequested, plans, follower, usernames,
+					join, logFlag, pictureId, topics, entitiesCanBeRelated,
+					entitiesICanView, followers, defaultEntityId, permission);
 		}
 	}
 
@@ -796,16 +791,18 @@ public class Organizations extends CoolCRUD {
 		Organization organization = Organization.findById(organizationId);
 		notFoundIfNull(organization);
 		User user = Security.getConnected();
-		Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
-				+ user.id
-				+ "\">"
-				+ user.firstName
-				+ " "
-				+ user.lastName
-				+ "</a>"
-				+ " has joined the organisation ("
-				+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
-				+ organization.id + "\">" + organization.name + "</a>" + ")",user, organization);
+		Log.addUserLog(
+				"<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ user.id
+						+ "\">"
+						+ user.firstName
+						+ " "
+						+ user.lastName
+						+ "</a>"
+						+ " has joined the organisation ("
+						+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
+						+ organization.id + "\">" + organization.name + "</a>"
+						+ ")", user, organization);
 		Role role = Roles.getRoleByName("idea developer");
 		UserRoleInOrganizations.addEnrolledUser(user, organization, role);
 		Organizations.viewProfile(organizationId);
@@ -861,14 +858,15 @@ public class Organizations extends CoolCRUD {
 			}
 			j++;
 		}
-		List<CreateRelationshipRequest> relations = CreateRelationshipRequest.findAll();
+		List<CreateRelationshipRequest> relations = CreateRelationshipRequest
+				.findAll();
 		j = 0;
 		while (j < relations.size()) {
 			if (relations.get(j).organisation.equals(organization)) {
 				CreateRelationshipRequests.delete(relations.get(j).id);
-			}	
+			}
 			j++;
-		}	
+		}
 		j = 0;
 		while (j < users.size()) {
 			UserRoleInOrganization.delete(users.get(j));
@@ -878,10 +876,11 @@ public class Organizations extends CoolCRUD {
 		while (j < entities.size()) {
 			if (entities.get(j).organization.equals(organization)) {
 				MainEntitys.deleteEntity(entities.get(j).id);
-			}	
+			}
 			j++;
 		}
-		List<RenameEndRelationshipRequest> renameRequests = RenameEndRelationshipRequest.findAll();
+		List<RenameEndRelationshipRequest> renameRequests = RenameEndRelationshipRequest
+				.findAll();
 		j = 0;
 		while (j < renameRequests.size()) {
 			if (renameRequests.get(j).organisation.equals(organization)) {
@@ -906,15 +905,12 @@ public class Organizations extends CoolCRUD {
 		organization.logs.clear();
 
 		organization.delete();
-		Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
-				+ user.id
-				+ "\">"
-				+ user.firstName
-				+ " "
-				+ user.lastName
-				+ "</a>"
-				+ " deleted the organisation ("
-				+ organization.name + ")", user);
+		Log.addUserLog(
+				"<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ user.id + "\">" + user.firstName + " "
+						+ user.lastName + "</a>"
+						+ " deleted the organisation (" + organization.name
+						+ ")", user);
 		Login.homePage();
 	}
 
@@ -934,8 +930,7 @@ public class Organizations extends CoolCRUD {
 		User user = Security.getConnected();
 		if (user.isAdmin || organization.creator.equals(user)) {
 			render(organization, user);
-		}
-		else {
+		} else {
 			BannedUsers.unauthorized();
 		}
 	}
@@ -981,16 +976,18 @@ public class Organizations extends CoolCRUD {
 		organization.createTag = createTagg;
 		organization.description = description;
 		organization.save();
-		Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
-				+ user.id
-				+ "\">"
-				+ user.firstName
-				+ " "
-				+ user.lastName
-				+ "</a>"
-				+ " has edited the organisation ("
-				+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
-				+ organization.id + "\">" + organization.name + "</a>" + ")", user, organization);
+		Log.addUserLog(
+				"<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ user.id
+						+ "\">"
+						+ user.firstName
+						+ " "
+						+ user.lastName
+						+ "</a>"
+						+ " has edited the organisation ("
+						+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
+						+ organization.id + "\">" + organization.name + "</a>"
+						+ ")", user, organization);
 		Organizations.viewProfile(organizationId);
 	}
 
