@@ -646,11 +646,11 @@ public class Organizations extends CoolCRUD {
 			entitiesCanBeRelated.add(entities.get(x));
 		}
 		List<Topic> topics = new ArrayList<Topic>();
-		for (int x = 0; x < entities.size(); x++) {
-			for (int y = 0; y < entities.get(x).topicList.size(); y++) {
-				topics.add(entities.get(x).topicList.get(y));
+//		for (int x = 0; x < entities.size(); x++) {
+			for (int y = 0; y < org.entitiesList.get(0).topicList.size(); y++) {
+				topics.add(org.entitiesList.get(0).topicList.get(y));
 			}
-		}
+//		}
 		
 		for (int x = 0; x < entitiesCanBeRelated.size(); x++) {
 			if (!entitiesCanBeRelated.get(x).createRelationship)
@@ -736,12 +736,17 @@ public class Organizations extends CoolCRUD {
 		List<User> followers = org.followers;
 		MainEntity defaultEntity = org.entitiesList.get(0);
 		long defaultEntityId = defaultEntity.id;
+		if ((org.privacyLevel == 0) && (!Users.getEnrolledUsers(org).contains(user))) {
+			BannedUsers.unauthorized();
+		}
+		else {
 		List<Plan> plans = Plans.planList("organization", org.id);
 		render(user, org, entities, requestToJoin, canCreateEntity, tags, flag,
 				canInvite, admin, allowed, isMember, settings, creator,
 				alreadyRequested, plans, follower, usernames, join, logFlag,
 				pictureId, topics, entitiesCanBeRelated, entitiesICanView,
 				followers, defaultEntityId, permission);
+		}
 	}
 
 	/**
@@ -927,7 +932,12 @@ public class Organizations extends CoolCRUD {
 		Organization organization = Organization.findById(organizationId);
 		notFoundIfNull(organization);
 		User user = Security.getConnected();
-		render(organization, user);
+		if (user.isAdmin || organization.creator.equals(user)) {
+			render(organization, user);
+		}
+		else {
+			BannedUsers.unauthorized();
+		}
 	}
 
 	/**
