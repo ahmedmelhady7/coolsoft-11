@@ -2101,6 +2101,8 @@ public class Topics extends CRUD {
 	 * 
 	 */
 	public static void discardDraftTopic(long topicId) {
+		System.out.println("-------------------------------- in discardddddddd");
+		
 		Topic targetTopic = Topic.findById(topicId);
 		User user = Security.getConnected();
 		// MainEntity entity = targetTopic.entity;
@@ -2111,6 +2113,27 @@ public class Topics extends CRUD {
 
 		redirect("/ideas/getdrafts");
 
+	}
+	
+	/**
+	 * @Description This method discard a draft topic before
+	 * publishing it using crud
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @param topicId
+	 *            The id of the draft that to be deleted
+	 */
+	
+	public static void discardForCrud(long topicId) {
+		System.out.println("-------------------------I'm in the function");
+		Topic targetTopic = Topic.findById(topicId);
+		User user = Security.getConnected();
+
+		targetTopic.delete();
+		user.save();
+		System.out.println("I deleted");
+		renderJSON("done");
 	}
 	
 	/**
