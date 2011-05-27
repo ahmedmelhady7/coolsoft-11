@@ -598,6 +598,10 @@ Found ${itemsFound.size()} item${itemsFound.pluralize()}
 			document.getElementById('errors').innerHTML = '<font color="red">Ideas relate to different topics</font>';
             document.getElementById('errors1').innerHTML = '<font color="red">Ideas relate to different topics</font>';	
 			}
+			if(kill == 3){
+			document.getElementById('errors').innerHTML = '<font color="red">Ideas are alredy duplicates</font>';
+            document.getElementById('errors1').innerHTML = '<font color="red">Ideas are already duplicates</font>';	
+			}
             });
             for (i = 0; i < marked.length; i++) {
                 x = document.getElementsByTagName("input");
