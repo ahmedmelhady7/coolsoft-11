@@ -1161,7 +1161,7 @@ public class Plans extends CoolCRUD {
 		List<User> topicOrganizers = item.plan.topic.getOrganizer();
 		for (int i = 0; i < topicOrganizers.size(); i++) {
 			Notifications.sendNotification(topicOrganizers.get(i).id,
-					item.plan.id, "plan", "This item has been edited");
+					item.plan.id, "plan", "The item: " + item.summary + " has been edited in plan: " + item.plan.title);
 		}
 
 		List<User> assignees = item.assignees;
