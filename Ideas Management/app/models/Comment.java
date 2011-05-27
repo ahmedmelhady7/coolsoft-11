@@ -93,12 +93,9 @@ public class Comment extends CoolModel {
 		User reporter = User.findById(reporterId);
 		ArrayList<User> commentReporters = new ArrayList<User>();
 		String[] commentReportersId = { "0" };
-		System.out.println("ana hena fel comment" + reporterId);
 		long reporterId2=0;
 		if (reporters != null) {
 			commentReportersId = reporters.split(",");
-			System.out.println(commentReportersId.length);
-			System.out.println(reporters + " hhhhhhhhhhhhhhhhh");
 			if (!reporters.isEmpty()) {
 				for (int i = 0; i < commentReportersId.length
 						&& reporters != ""; i++) {
