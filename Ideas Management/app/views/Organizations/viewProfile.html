@@ -267,6 +267,27 @@ $(document).ready(function(){
 							<a href="@{Topics.blank(defaultEntityId)}" title="Post Topic"> Post Topic</a>
 						</li>
 					#{/if}
+<<<<<<< .mine
+					 <li>
+           <a id="requestsLink" style="cursor:pointer;">Requests</a>
+			 <div id="requestsLinks">
+           <ul> 	
+			<LI type="disc">
+            	#{if settings==1}
+			     <a href="@{CreateRelationshipRequests.viewRequests(org.id)}">Relationships</a>
+                 #{/if}
+				   </LI>
+				   #{if allowed==1}
+				    <LI type="disc">
+                
+				<a href="@{RequestToJoins.viewRequests(0,org.id)}">Join Requests </a>
+			 
+            </LI>
+			   #{/if}
+				
+            	  </ul>
+       </div>	
+=======
 			 <li>
            <a id="requestsLink" style="cursor:pointer;">Requests</a>
 			 <div id="requestsLinks">
@@ -286,6 +307,7 @@ $(document).ready(function(){
 				
             	  </ul>
        </div>	
+>>>>>>> .r2436
              <li>
            <a id="entityLink" style="cursor:pointer;">Entities</a>
 			 <div id="entityLinks">
@@ -314,7 +336,7 @@ $(document).ready(function(){
         <a href="@{MainEntitys.goToCreateEntity(org.id)}">Create an Entity</a>
         </li>
         #{/if}
-	
+
 		#{if isMember == true || org.privacyLevel == 2 || admin}
 <li>
 		<a href="@{Pictures.index(org.id)}">Gallery</a></li>
@@ -371,10 +393,35 @@ $(document).ready(function(){
 		<li><a href="@{followOrganization(org.id)}">Follow ${org.name}</a></li>
 		#{/else}
 		
-        <li>
+       <li>
             <a href="@{viewFollowers(org.id, "false")}">View Followers</a>
         </li>
 		
+		<li> 
+		#{if flag == 1}
+			         
+			        <form action="@{BannedUsers.restrictOrganizer()}">
+			            <input type="hidden" name="orgId" value='${org.id}'>
+			             <input type="submit" value="Restrict/Derestrict organizers" class="linkButton">
+			        </form>
+			         
+			         <form action="@{BannedUsers.restrictGroupInSelectedEntity()}">
+			            <input type="hidden" name="organizationID" value='${org.id}'>
+			            <input type="submit" size = 2 value='Restrict/Derestrict organizers group' class="linkButton"> 
+			        </form>
+			        
+			        <form action="@{BannedUsers.viewRestrictedOrganizersInOrganization()}">
+			            <input type="hidden" name="organizationID" value='${org.id}'>
+			             <input type="submit" value="Restricted Organizers in Entities" class="linkButton">
+			        </form>
+			        
+			        <form action="@{BannedUsers.viewRestrictedOrganizersTopicPath()}">
+			            <input type="hidden" name="organizationID" value='${org.id}'>
+			            <input type="submit" value="Restricted Organizers in Topics" class="linkButton">
+			        </form>
+			        #{/if}
+		 </li>
+
 		</ul>
 		</li>		
 		</div>
@@ -438,8 +485,7 @@ $(document).ready(function(){
 			                entityFlag = true;
 			            }
 			        });
-					   	  
-			        var requestsFlag = false;
+                   var requestsFlag = false;
 			        $('#requestsLinks').hide();
 			        $('#requestsLink').click(function(){
 			            if (requestsFlag) {
@@ -643,28 +689,7 @@ $(document).ready(function(){
 					<br />
 			        #{/else}
 			        #{/else}
-			        #{if flag == 1}
-			         
-			        <form action="@{BannedUsers.restrictOrganizer()}">
-			            <input type="hidden" name="orgId" value='${org.id}'>
-			            Restrict / De-Restrict organizers in this organization: <input type="submit" value="view" class="linkButton">
-			        </form>
-			         <br />
-			         <form action="@{BannedUsers.restrictGroupInSelectedEntity()}">
-			            <input type="hidden" name="organizationID" value='${org.id}'>
-			            Restrict Group of organizers in a certain Entity or Topic : <input type="submit" value="view" class="linkButton">
-			        </form>
-			        <br />
-			        <form action="@{BannedUsers.viewRestrictedOrganizersInOrganization()}">
-			            <input type="hidden" name="organizationID" value='${org.id}'>
-			            View Restricted Organizers in Entities: <input type="submit" value="view" class="linkButton">
-			        </form>
-			        <br />
-			        <form action="@{BannedUsers.viewRestrictedOrganizersTopicPath()}">
-			            <input type="hidden" name="organizationID" value='${org.id}'>
-			            View Restricted Organizers in Topics: <input type="submit" value="view" class="linkButton">
-			        </form>
-			        #{/if}
+			        
 			        <!--     </body> -->
 			        <!-- </html> -->
 			        <!-- <script type="text/javascript"> -->
