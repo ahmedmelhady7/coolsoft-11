@@ -708,7 +708,7 @@ public class Plans extends CoolCRUD {
 	 * This method takes the parameters from the web page of the plan creation
 	 * to instantiate a plan object, it also sends a notification to the
 	 * organizers of the topic, updates the log and then calls a method to view
-	 * the plan as a list
+	 * the plan as a list.
 	 * 
 	 * @story C5S1
 	 * 
@@ -790,9 +790,10 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
-	 * This Method renders the page for adding items
+	 * This Method renders the page for adding items, it checks if for user permissions before
+	 * taking the user to the designated page.
 	 * 
-	 * @story C5S1
+	 * @story C5S16
 	 * 
 	 * @author Hassan Ziko
 	 * 
@@ -857,9 +858,10 @@ public class Plans extends CoolCRUD {
 
 	/**
 	 * This method takes the parameters of the item from the web page to
-	 * instantiate an item and add it to the list of items of a plan
+	 * instantiate an item and add it to the list of items of a plan, it also sends users notifications
+	 * and updates the log.
 	 * 
-	 * @story C5S1
+	 * @story C5S16
 	 * 
 	 * @author Hassan Ziko
 	 * 
@@ -917,7 +919,7 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
-	 * This method renders the page for editing a plan
+	 * This method renders the page for editing a plan, it checks if the user can edit the plan or not.
 	 * 
 	 * @story C5S3
 	 * 
@@ -982,9 +984,10 @@ public class Plans extends CoolCRUD {
 	}
 
 	/**
-	 * This method renders the page for editing a plan
+	 * This method renders the page for editing an item, it checks if the user can edit the item
+	 * or not, before taking the user to the page.
 	 * 
-	 * @story C5S3
+	 * @story C5S16
 	 * 
 	 * @author Hassan Ziko
 	 * 
@@ -1125,9 +1128,10 @@ public class Plans extends CoolCRUD {
 
 	/**
 	 * This method takes the parameters from the web page of the item editing to
-	 * edit in a certain item
+	 * edit in a certain item, it also sends notifications to the users working on the item and the 
+	 * organizer that the plan has been edited, and then updates the log.
 	 * 
-	 * @story C5S3
+	 * @story C5S16
 	 * 
 	 * @author Hassan Ziko
 	 * 
