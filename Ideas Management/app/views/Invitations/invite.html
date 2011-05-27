@@ -94,7 +94,7 @@
 <a href="@{Invitations.send(type,usersMatched.get(u).email,entity.id,usersMatched.get(u).id)}"/><img src="/public/images/icons/mail_send.png" title="invite" width="30" height="30" align="right"/></a>
 #{/if}
 #{else}
-<a href="@{Invitations.send(type,usersMatched.get(u).email,topic.id,usersMatched.get(u).id)}">invite</a>
+<a href="@{Invitations.send(type,usersMatched.get(u).email,topic.id,usersMatched.get(u).id)}"><img src="/public/images/icons/mail_send.png" title="invite" width="30" height="30" align="right"/></a>
 #{/else}
 #{/else}
 </li>

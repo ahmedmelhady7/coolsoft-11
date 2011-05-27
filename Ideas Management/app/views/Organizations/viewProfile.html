@@ -270,24 +270,22 @@ $(document).ready(function(){
 			 <li>
            <a id="requestsLink" style="cursor:pointer;">Requests</a>
 			 <div id="requestsLinks">
-            <ul>
-            	
-            <LI type="disc">
-             #{if settings==1}
-		    <a href="@{CreateRelationshipRequests.viewRequests(org.id)}">Relationship Requests</a>
-			   #{/if}	
+           <ul> 	
+			<LI type="disc">
+            	#{if settings==1}
+			     <a href="@{CreateRelationshipRequests.viewRequests(org.id)}">Relationships</a>
+                 #{/if}
+				   </LI>
+				   #{if allowed==1}
+				    <LI type="disc">
+                
+				<a href="@{RequestToJoins.viewRequests(0,org.id)}">Join Requests </a>
+			 
             </LI>
-          
-            <LI type="disc">
-            		
-		#{if allowed==1}
-		<a href="@{RequestToJoins.viewRequests(0,org.id)}">Join Requests</a>
-        #{/if}
-            	</LI>
-           
-        </ul>
-       </div>
-       </li>		
+			   #{/if}
+				
+            	  </ul>
+       </div>	
              <li>
            <a id="entityLink" style="cursor:pointer;">Entities</a>
 			 <div id="entityLinks">
@@ -440,16 +438,17 @@ $(document).ready(function(){
 			                entityFlag = true;
 			            }
 			        });
-					        var requestsFlag = false;
+					   	  
+			        var requestsFlag = false;
 			        $('#requestsLinks').hide();
 			        $('#requestsLink').click(function(){
-			            if (requestFlag) {
+			            if (requestsFlag) {
 			                $('#requestsLinks').show(500);
 			                requestsFlag = false;
 			            }
 			            else {
 			                $('#requestsLinks').hide(500);
-			                requestFlag = true;
+			                requestsFlag = true;
 			            }
 			        });
 		</script>		

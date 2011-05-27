@@ -582,21 +582,17 @@ public class Organizations extends CoolCRUD {
 		org.save();
 		
 		if (org.privacyLevel == 1
-				&& Users.isPermitted(
+				&&( Users.isPermitted(
 						user,
 						"accept/reject join requests from users to join a private organization",
-						id, "organization"))
+						id, "organization")||user.isAdmin))
 			allowed = 1;
 		if (Users
 				.isPermitted(
 						user,
 						"accept/reject join requests from users to join a private organization",
-						id, "organization"))
+						id, "organization")||user.isAdmin)
 			settings = 1;
-		System.out.println(settings);
-		System.out.println(user);
-		System.out.println(org);
-
 		// while (i < org.createdTags.size()) {
 		// tags.add(org.createdTags.get(i));
 		// i++;
