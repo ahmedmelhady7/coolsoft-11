@@ -316,6 +316,7 @@ public class BannedUserTest extends UnitTest {
 			/**
 			 * cascade a restriction from  the MainEntity entity to the Topic topic
 			 */
+			
 			BannedUser.banFromActionInEntity(user.id, entity.organization.id, action, entity.id);
 			/**
 			 * cascade the de-restriction from the topic to entity
