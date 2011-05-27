@@ -40,7 +40,8 @@
 </style>
 <script type="text/javascript">
 	var insertedIdeas = 0;
-	document.getElementById("hiddenIdeasId").style.display = "none";
+	
+
 	function shouldAddRow() {
 		if(insertedIdeas % 3 == 0) {
 			alert("I'm the function");
@@ -154,7 +155,7 @@
 		<br></br>
 		
 		<input type="submit" value ="Merge" onclick="callMerge(${topicId})" class="linkButton"></input>
-		
+		<textarea cols="50" rows="5" id="hiddenIdeasId">${selectedIdeasString}</textarea>
 </fieldset>
 <br />
 </div>
@@ -163,3 +164,7 @@
 	</div>
 	</div>
 </html>
+<script type="text/javascript"> 
+	document.getElementById("hiddenIdeasId").style.display = "none";
+
+</script>
