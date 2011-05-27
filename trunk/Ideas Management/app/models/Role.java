@@ -78,6 +78,7 @@ public class Role extends CoolModel {
 				+ "Invite a user to join a private or secret organization;"
 				+ "Add images and documents to the organization profile;"
 				+ "post topics;"
+				+ "accept/reject requests to post topics;"
 				+
 				// starting from here the actions are related to topics
 				"tag ideas in my organization;"
