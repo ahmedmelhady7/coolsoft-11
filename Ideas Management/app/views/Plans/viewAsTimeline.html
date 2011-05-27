@@ -14,11 +14,11 @@
                 #{/if} 
                 #{if canIdea == 1} 
                 <li>
-                    <a href="@{Plans.addIdea(plan.id)}">Associate ideas to plan</a>
+                    <a href="@{Plans.addIdea(plan.id)}">Associate ideas</a>
                 </li>
                 #{/if}
                 <li>
-                    <a href="@{Plans.planView(plan.id)}">Promoted Ideas </a>
+                    <a href="@{Plans.planView(plan.id)}">Promoted Ideas</a>
                 </li>
                 #{if canEdit == 1}
                 <li>
@@ -30,11 +30,11 @@
 				#{/if} 
 				#{if canDelete}
 				<li>
-				  	<a href="#" onclick="delPlan(${plan.id}, ${plan.topic.id})">delete plan</a>
+				  	<a href="#" onclick="delPlan(${plan.id}, ${plan.topic.id})">Delete plan</a>
 				</li>
                 #{/if} 
                 <li>
-                    <a href="@{Plans.viewAsList(plan.id)}">View list of to-do items</a>
+                    <a href="@{Plans.viewAsList(plan.id)}">To-do items</a>
                 </li>
                 <li>
                     <a href="@{Plans.viewAsCalendar(plan.id)}">View plan calendar</a>
@@ -47,8 +47,8 @@
     </ul>
 </div>
 <body >
-	<h1 align="center"> ${plan.title}
-		</h1>
+	    <h1 align="center" style="font-size:xx-large; ">${plan.title}</h1>
+    <br/>
 
 <br/>
     <script type="text/javascript">

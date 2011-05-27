@@ -53,7 +53,7 @@ Collaborative Thinking | ${plan.title} - View Plan as List
 #{if checkNotRated}
 <form action="@{Plans.rate(planId,rating)}" method="GET">
 	<input type="hidden" name = "planId" value = ${plan.id}>
-    <input type="submit" value="Submit rating"/>
+    <input type="submit" value="Submit rating" class = "linkButton"/>
     <select name="rating">
         <option value="0">0</option>
         <option value="1">1</option>
@@ -69,7 +69,7 @@ You have already rated this plan
 #{/else}
 <br/>
 <div>
-    <input type="submit" value="Share with user" onclick="sharePlan(${plan.id})"/>
+    <input type="submit" value="Share with user" onclick="sharePlan(${plan.id});" class  = "linkButton"/>
 	<select id="userName" name = "userName"> 
 					#{list userNames, as:'name'}
 					<option>${name}</option>
@@ -98,12 +98,11 @@ You have already rated this plan
     #{list items:itemsList, as:'item'}
     <div id = "listItem_${item.id}">
         <br/>
-        <fieldset>
-            <legend>
-                <h3>
+        <fieldset style="background: #eaeeed;">
+
+			 <h3>
                 ${item.summary}
             </h3>
-            </legend>
             Item Description: ${item.description}
             <br/>
             Status: #{if item.status == 0}New
@@ -145,28 +144,27 @@ You have already rated this plan
                 #{/if}
 				#{else}
 				<li id = "noUserLabel_${item.id}">
-				<label >There are no users assigned to this item</label>
+				<label>There are no users assigned to this item</label>
 				</li>
 				#{/else}
             </ul>
-			
-			
-			<div id="invbox">			 
+			Tags: 		
+			<div id="invbox">		 
 			#{if canEdit == 1}
-			 Tags:
-                    <input type="hidden" id='tags' name="tags" value="${listOfTags}" >
-				    <input type="text" id="tag_${item.id}" name="tag" autoComplete="group" />
-                    <input type="button" value="Tag" onclick="tagitem(${item.id});"/>
+			 
+                    <input type="hidden" id='tags' name="tags" value="${listOfTags}">
+                    <input type="text" id="tag_${item.id}" name="tag" autoComplete="group"/>
+                    <a value="Tag" onclick="tagitem(${item.id});" style="cursor: pointer;"><img src="/public/images/icons/add.png" title="add tag" width="20" height="20"/></a>
 					<label id = "tagSuccess_${item.id}"> </label>	
 					
 			  #{/if}
-			 
-			  <script language="javascript" type="text/javascript" >
+			  <script language="javascript" type="text/javascript">
                         var a = document.getElementById('tags');
                         b = a.value + "";
                         c = b.split("|");
                         autoComplete.Set("group", c);
                     </script>
+                    
 			 </div>
 			 <br>
            <ul id = "tags_${item.id}" style="list-style: none; ">
@@ -235,6 +233,7 @@ You have already rated this plan
                     </font>Required
                 </span>
                 <br/>
+				<label id = "emptyJust_${item.id}" style = "color: red;" hidden = "true">you have to enter a justification</label>
                 <input type="button" onclick="send(${item.id});" value = "send request">&nbsp;&nbsp;&nbsp;<input type="button" onclick="cancel(${item.id});" value = "cancel">
             </div>
             <br/>
@@ -244,14 +243,15 @@ You have already rated this plan
 				$('#vr_' + ${item.id}).show();			
 				</script>
             #{/if}
-				            #{if canEdit == 1}
-			 <a href="@{Plans.editItem(item.id)}" style=" float:right;">Edit this item</a>#{/if}
-            #{if canEdit == 1}
+			      #{if canEdit == 1}
             <a onclick="delItem(${item.id})" style="cursor:pointer; float:right;">
 			<img src="/public/images/icons/trash.png" title="Delete item" width="25" height="20"/></a>
-            #{/if}
+            #{/if}  &nbsp;&nbsp;&nbsp;
+				            #{if canEdit == 1}
+			 <a href="@{Plans.editItem(item.id)}" style=" float:right;">Edit this item</a>#{/if}
+      
         </fieldset>
-    
+    <br/>
 	</div>
 
     #{/list}
@@ -348,7 +348,7 @@ Please contact
                 		function send(id) {
                 					var x = $("#text_" + id).val();
                 		if (x == null || x.trim() == "") {
-                			alert("you have to enter a justification");
+                			$("#emptyJust_" + id).show();
                 		}
                 		else {
                 			$.post('@{sendVolunteerRequest()}', {
@@ -357,6 +357,7 @@ Please contact
                 			});
 							$("#text_" + id).val("");
                 			$("#item_" + id).hide();
+							$("#emptyJust_" + id).hide();
 							$('#pend_' + id).show();
                 			
                 		}	
@@ -423,35 +424,35 @@ Please contact
                           }
 						  function tagitem(id){
 						  	var tagt= document.getElementById("tag_" + id).value;
-							$("#tag_" + id).val("");
-							$.getJSON('@{tagItem()}', {
-                                		     itemId:id,
-                                			tag:tagt
-                           
-                                		}, function(tagTemp) {
-											$("#noTagLabel_" + id).remove();
-											if (tagTemp.success == "1") {
-												var tagId = tagTemp.id;
-												
-												var url = "<li><a href=\"http://localhost:9008/tags/mainpage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
-												$("#tags_" + id).append(url);
-												$("#tagSuccess_" + id).html("New Tag is created successfuly");
-											}
-											else 
-												if (tagTemp.success == "2") {
-													var tagId = tagTemp.id;
-													
-													var url = "<li><a href=\"http://localhost:9008/tags/mainpage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
-													$("#tags_" + id).append(url);
-													$("#tagSuccess_" + id).html("Item is tagged successfuly");
-												}
-												else {
-													$("#tagSuccess_" + id).html("Tag already exists");
-													
-												}
-										});
+							if (!(tagt == null || tagt.trim() == "")) {
+								$.getJSON('@{tagItem()}', {
+									itemId: id,
+									tag: tagt
+								
+								}, function(tagTemp){
+									$("#noTagLabel_" + id).remove();
+									if (tagTemp.success == "1") {
+										var tagId = tagTemp.id;
 										
-						  	
+										var url = "<li><a href=\"http://localhost:9008/tags/mainpage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
+										$("#tags_" + id).append(url);
+										$("#tagSuccess_" + id).html("New Tag is created successfuly");
+									}
+									else 
+										if (tagTemp.success == "2") {
+											var tagId = tagTemp.id;
+											
+											var url = "<li><a href=\"http://localhost:9008/tags/mainpage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
+											$("#tags_" + id).append(url);
+											$("#tagSuccess_" + id).html("Item is tagged successfuly");
+										}
+										else {
+											$("#tagSuccess_" + id).html("Tag already exists");
+											
+										}
+								});
+								$("#tag_" + id).val("");
+							}
 						  }
 						  	
 </script>

@@ -63,10 +63,9 @@ Ideas associated to this plan:
     #{list items:ideas, as:'idea'}
     <div id = "idea_${idea.id}">
     	<script type="text/javascript"> count = count+1;   </script>
-        <fieldset style="width:600px;">
-            <legend>
-              <b> Title:</b> <a href="@{Ideas.show(idea.id)}"> ${idea.title}</a>
-            </legend>
+        <fieldset  style="background: #eaeeed;">
+
+			<b> Title:</b> <a href="@{Ideas.show(idea.id)}"> ${idea.title}</a>
             Description: ${idea.description}
             <br/>
             Author: 
@@ -81,9 +80,10 @@ Ideas associated to this plan:
 			#{if canIdea == 1}
            
 			<a onclick="submit(${idea.id}, ${plan.id})" style="cursor:pointer; float:right;">
-			<img src="/public/images/Cross.png" title="Remove from plan" width="25" height="20"/></a>
+			<img src="/public/images/delete.png" title="Remove from plan" width="25" height="20"/></a>
        		#{/if}
 	    </fieldset>
+		<br/>
     </div>#{/list}
 #{/if}
 #{else}
