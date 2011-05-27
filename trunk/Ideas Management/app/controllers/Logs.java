@@ -187,7 +187,7 @@ public class Logs extends CoolCRUD {
 
 	/**
 	 * 
-	 * responsible for viewing of the logs of all users for the admin anly
+	 * responsible for viewing of the logs of all users for the admin only
 	 * 
 	 * @author ${lama ashraf}
 	 * 
@@ -217,7 +217,7 @@ public class Logs extends CoolCRUD {
 
 	/**
 	 * 
-	 * responsible for searching in the logs for the admin only
+	 * responsible for searching in the logs, only the admin is permitted to do so 
 	 * 
 	 * @author ${lama ashraf}
 	 * 
