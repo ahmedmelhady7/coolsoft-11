@@ -1671,7 +1671,7 @@ public class Plans extends CoolCRUD {
 	 * can tag the item, searches for the tag in the global list of tags, if
 	 * found it checks if the item had the same tag already or add the new one
 	 * to the list if not it creates a new tag, save it and add it to the list,
-	 * it updates the log then it renders JSONObject containing the Tag.
+	 * it updates the log then it renders JSONObject containing the Tag to the viewAsList view.
 	 * 
 	 * @author Yasmine Elsayed
 	 * 
