@@ -1462,8 +1462,8 @@ public class BannedUsers extends CoolCRUD {
 	}
 
 	/**
-	 * block/unblock an idea developer from viewing/using a certain topic calls
-	 * doBlock() to block from entity
+	 * block/unblock an idea developer from viewing/using a certain topic or calls
+	 * doBlock() to block from a certain entity
 	 * 
 	 * @author Mai Magdy
 	 * 
