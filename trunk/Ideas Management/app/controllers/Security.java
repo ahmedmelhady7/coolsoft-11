@@ -123,8 +123,7 @@ public class Security extends Secure.Security {
 		}
 		if (user.activationKey.equals(actKey)) {
 			user.state = "h";
-			user._save();
-			System.out.println(username + " " + password);
+			user._save();			
 			authenticate(username, password);
 			Login.homePage();
 		} else {
