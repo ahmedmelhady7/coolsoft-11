@@ -523,8 +523,11 @@ public class Topic extends CoolModel {
 	 */
 	public boolean canView(User user) {
 		boolean canView = false;
+		if(Users.isPermitted(user, "view", this.entity.organization.id, "organization"))
+		{
 		if (Users.isPermitted(user, "view", this.id, "topic"))
 			canView = true;
+		}
 		return canView;
 	}
 
