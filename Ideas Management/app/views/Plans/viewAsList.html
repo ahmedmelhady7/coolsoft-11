@@ -4,6 +4,7 @@
 Collaborative Thinking | ${plan.title} - View Plan as List
 #{/set}
 <script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js"></script>
+<script type="text/javascript" src="/public/javascripts/jquery.js"></script>
 
 <style type="text/css">body {
 			font-size:80%;
@@ -148,20 +149,24 @@ You have already rated this plan
 				</li>
 				#{/else}
             </ul>
-			Tags: 			 
+			
+			
+			<div id="invbox">			 
 			#{if canEdit == 1}
-			 
-                    <input type="hidden" id='tags' name="tags" value="${listOfTags}">
-                    <input type="text" id="tag_${item.id}" name="tag" autoComplete="group"/>
+			 Tags:
+                    <input type="hidden" id='tags' name="tags" value="${listOfTags}" >
+				    <input type="text" id="tag_${item.id}" name="tag" autoComplete="group" />
                     <input type="button" value="Tag" onclick="tagitem(${item.id});"/>
 					<label id = "tagSuccess_${item.id}"> </label>	
 			  #{/if}
-			  <script language="javascript" type="text/javascript">
+			 
+			  <script language="javascript" type="text/javascript" >
                         var a = document.getElementById('tags');
                         b = a.value + "";
                         c = b.split("|");
                         autoComplete.Set("group", c);
                     </script>
+			 </div>
            <ul id = "tags_${item.id}" style="list-style: none; ">
                 #{if item.tags.size() > 0} 
                 #{list items:item.tags, as:'tag'}
