@@ -530,7 +530,7 @@ public class Topic extends CoolModel {
 	/**
 	 * @author monica yousry 
 	 * @description: this method increments the counter viewed
-	 *
+	 * @return void
 	 */
 	public void incrmentViewed() {
 		this.viewed++;
