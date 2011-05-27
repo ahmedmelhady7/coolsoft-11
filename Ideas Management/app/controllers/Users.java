@@ -32,8 +32,9 @@ public class Users extends CoolCRUD {
 
 	/**
 	 * 
-	 * overrides the CRUD list method ,renders the list of users if the connected user is an admin 
-	 * otherwise it redirects him to another page informing him he's not authorized to view the list
+	 * overrides the CRUD list method ,renders the list of users if the
+	 * connected user is an admin otherwise it redirects him to another page
+	 * informing him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -58,14 +59,12 @@ public class Users extends CoolCRUD {
 	 */
 	public static void list(int page, String search, String searchFields,
 			String orderBy, String order) {
-		if(Security.getConnected().isAdmin)
-		{
+		if (Security.getConnected().isAdmin) {
 			ObjectType type = ObjectType.get(getControllerClass());
 			notFoundIfNull(type);
 			if (page < 1) {
 				page = 1;
 			}
-			System.out.println("list() entered ");
 			List<Model> objects = type.findPage(page, search, searchFields,
 					orderBy, order, (String) request.args.get("where"));
 			Long count = type.count(search, searchFields,
@@ -73,26 +72,21 @@ public class Users extends CoolCRUD {
 			Long totalCount = type.count(null, null,
 					(String) request.args.get("where"));
 			try {
-				System.out.println("list() done, will render ");
 				render(type, objects, count, totalCount, page, orderBy, order);
 			} catch (TemplateNotFoundException e) {
-				System.out
-						.println("list() done with exceptions, will render CRUD/list.html ");
-				render("CRUD/list.html", type, objects, count, totalCount, page,
-						orderBy, order);
+				render("CRUD/list.html", type, objects, count, totalCount,
+						page, orderBy, order);
 			}
-		}
-		else
-		{
+		} else {
 			BannedUsers.unauthorized();
 		}
-		
+
 	}
 
 	/**
-	 * overrides the CRUD view method and renders the form for viewing / editing a user if the 
-	 * connected user is a system admin otherwise it redirects him to another page informing 
-	 * him he's not authorized to view the list
+	 * overrides the CRUD view method and renders the form for viewing / editing
+	 * a user if the connected user is a system admin otherwise it redirects him
+	 * to another page informing him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -106,16 +100,12 @@ public class Users extends CoolCRUD {
 	 * 
 	 */
 	public static void view(String userId) {
-		if(Security.getConnected().isAdmin)
-		{
+		if (Security.getConnected().isAdmin) {
 			ObjectType type = ObjectType.get(getControllerClass());
 			notFoundIfNull(type);
 			long userID = Long.parseLong(userId);
 			User object = User.findById(userID);
 			notFoundIfNull(object);
-			System.out.println("entered view() for User " + object.username);
-			System.out.println(object.email);
-			System.out.println(object.username);
 			int communityContributionCounter = object.communityContributionCounter;
 			String name = object.firstName + " " + object.lastName;
 			String profession = object.profession;
@@ -127,9 +117,8 @@ public class Users extends CoolCRUD {
 				adminFlag = 1;
 			}
 			int admin = 0;
-			if(object.isAdmin)
-			{
-				admin=1;
+			if (object.isAdmin) {
+				admin = 1;
 			}
 			int isDeleted = 0;
 			if (object.state.equals("d")) {
@@ -137,26 +126,22 @@ public class Users extends CoolCRUD {
 			}
 			try {
 
-				System.out.println("view() done, about to render");
-				render(type, object, username, name, communityContributionCounter,
-						profession, birthDate, userId, adminFlag, isDeleted,admin);
+				render(type, object, username, name,
+						communityContributionCounter, profession, birthDate,
+						userId, adminFlag, isDeleted, admin);
 
 			} catch (TemplateNotFoundException e) {
-				System.out
-						.println("view() done with exception, rendering to CRUD/show.html");
 				render("/users/view.html");
 			}
-		}
-		else
-		{
+		} else {
 			BannedUsers.unauthorized();
 		}
 	}
 
 	/**
 	 * overrides the CRUD show method,renders the form for editing and viewing a
-	 * user if the connected user is a system admin otherwise it redirects him to another page 
-	 * informing him he's not authorized to view the list
+	 * user if the connected user is a system admin otherwise it redirects him
+	 * to another page informing him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -171,13 +156,11 @@ public class Users extends CoolCRUD {
 	 */
 
 	public static void show(String userId) {
-		if(Security.getConnected().isAdmin)
-		{
+		if (Security.getConnected().isAdmin) {
 			ObjectType type = ObjectType.get(getControllerClass());
 			notFoundIfNull(type);
 			Model object = type.findById(userId);
 			notFoundIfNull(object);
-			System.out.println("entered show() for user " + userId);
 			User tmp = (User) object;
 			int communityContributionCounter = tmp.communityContributionCounter;
 			String name = tmp.firstName + " " + tmp.lastName;
@@ -185,74 +168,69 @@ public class Users extends CoolCRUD {
 			String username = tmp.username;
 			String dateofBirth = "" + tmp.dateofBirth;
 			int admin = 0;
-			if(tmp.isAdmin)
-			{
-				admin=1;
+			if (tmp.isAdmin) {
+				admin = 1;
 			}
 			int isDeleted = 0;
 			if (tmp.state.equals("d")) {
 				isDeleted = 1;
 			}
 			try {
-				render(type, object, username, name, communityContributionCounter,
-						profession, dateofBirth, userId, isDeleted,admin);
+				render(type, object, username, name,
+						communityContributionCounter, profession, dateofBirth,
+						userId, isDeleted, admin);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/show.html", type, object);
 			}
-		}
-		else
-		{
+		} else {
 			BannedUsers.unauthorized();
 		}
 	}
 
 	/**
-	 * allows the user to edit his profile info
+	 * renders the form for editing and viewing a user
 	 * 
 	 * @author Lama Ashraf
 	 * 
 	 * @story C1S1-2
 	 * 
-	 * @param id
-	 *            String id of the user who wants to edit his profile
+	 * @param String
+	 *            userId : id of the user we want to show
 	 * 
 	 */
 	public static void viewMyProfile(String id) {
-		
-		
+
 		long userID = Long.parseLong(id);
 		User user = User.findById(userID);
-		
-		
+
 		notFoundIfNull(user);
 		System.out.println("entered view() for User " + user.username);
 		System.out.println(user.email);
 		System.out.println(user.username);
-		
-		String firstName = user.firstName ;
-		String lastName =  user.lastName;
+
+		String firstName = user.firstName;
+		String lastName = user.lastName;
 		String profession = user.profession;
 		String username = user.username;
 		String birthDate = "" + user.dateofBirth;
 		String email = user.email;
-		
+
 		email = email.trim().toLowerCase();
 		username = username.trim().toLowerCase();
 		firstName = firstName.trim();
 		List<User> userList = User.findAll();
 		String emails = "";
 		String usernames = "";
-		
+
 		for (int i = 0; i < userList.size(); i++) {
 			if (i == userList.size() - 1) {
 				usernames = usernames + userList.get(i).username + "";
 				emails = emails + userList.get(i).email + "";
-			}
-			else {
+			} else {
 				usernames = usernames + userList.get(i).username + "|";
 				emails = emails + userList.get(i).email + "|";
 			}
- 
+
 		}
 
 		int adminFlag = 0;
@@ -261,8 +239,9 @@ public class Users extends CoolCRUD {
 		}
 		try {
 
-			System.out.println("view() done, about to render" + usernames + " | " + emails);
-			render(user, usernames, emails );
+			System.out.println("view() done, about to render" + usernames
+					+ " | " + emails);
+			render(user, usernames, emails);
 
 		} catch (TemplateNotFoundException e) {
 			System.out
@@ -312,9 +291,9 @@ public class Users extends CoolCRUD {
 	}
 
 	/**
-	 * Overrides the CRUD method blank, renders the form for creating a user if the 
-	 * connected user is a system admin otherwise it redirects him to another page informing 
-	 * him he's not authorized to view the list
+	 * Overrides the CRUD method blank, renders the form for creating a user if
+	 * the connected user is a system admin otherwise it redirects him to
+	 * another page informing him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -325,11 +304,11 @@ public class Users extends CoolCRUD {
 	 * 
 	 */
 	public static void blank() throws Exception {
-		if(Security.getConnected().isAdmin)
-		{
+		if (Security.getConnected().isAdmin) {
 			ObjectType type = ObjectType.get(Users.class);
 			notFoundIfNull(type);
-			Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+			Constructor<?> constructor = type.entityClass
+					.getDeclaredConstructor();
 			constructor.setAccessible(true);
 			Model object = (Model) constructor.newInstance();
 			User user = Security.getConnected();
@@ -347,10 +326,8 @@ public class Users extends CoolCRUD {
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/blank.html", type, object);
 			}
-			
-		}
-		else
-		{
+
+		} else {
 			BannedUsers.unauthorized();
 		}
 	}
@@ -565,25 +542,36 @@ public class Users extends CoolCRUD {
 	 */
 	public static void reportCommentAsSpam(long commentId) {
 		Comment comment = Comment.findById(commentId);
-		String description1 = "Your comment "+ comment.comment +"in the idea "+ comment.commentedIdea.toString()  + " has been reported as spam";
-		String description2 = "A comment "+ comment.comment +"in the idea "+ comment.commentedIdea.toString()  + " has been reported as spam";
+		String description1 = "Your comment " + comment.comment
+				+ "in the idea " + comment.commentedIdea.toString()
+				+ " has been reported as spam";
+		String description2 = "A comment " + comment.comment + "in the idea "
+				+ comment.commentedIdea.toString()
+				+ " has been reported as spam";
 		User reporter = Security.getConnected();
-		if (comment.reporters != null){
+		if (comment.reporters != null) {
 			comment.reporters += reporter.id + ",";
-		comment.save();
+			comment.save();
 		}
-		if(comment.commentedIdea!=null){
-			if(comment.commenter.username.equals(comment.commentedIdea.author.username)){
-			Notifications.sendNotification(comment.commenter.id, commentId, "comment", description1);
-			Notifications.sendNotification(comment.commentedIdea.author.id, commentId, "comment", description2);
-			}
-			else
-				Notifications.sendNotification(comment.commentedIdea.author.id, commentId, "comment", "your comment in your idea "+comment.commentedIdea.toString());
+		if (comment.commentedIdea != null) {
+			if (comment.commenter.username
+					.equals(comment.commentedIdea.author.username)) {
+				Notifications.sendNotification(comment.commenter.id, commentId,
+						"comment", description1);
+				Notifications.sendNotification(comment.commentedIdea.author.id,
+						commentId, "comment", description2);
+			} else
+				Notifications.sendNotification(comment.commentedIdea.author.id,
+						commentId, "comment", "your comment in your idea "
+								+ comment.commentedIdea.toString());
+		} else if (comment.commentedPlan != null) {
+			Notifications
+					.sendNotification(comment.commentedIdea.author.id,
+							commentId, "comment",
+							"your comment has been reported as spam "
+									+ comment.comment);
 		}
-		else if(comment.commentedPlan!=null){
-			Notifications.sendNotification(comment.commentedIdea.author.id, commentId, "comment", "your comment has been reported as spam "+comment.comment);
-		}
-		//commentSpamView(commentId);
+		// commentSpamView(commentId);
 
 	}
 
@@ -676,8 +664,7 @@ public class Users extends CoolCRUD {
 					"%" + keyword + "%").<User> fetch();
 			searchResultByProfession = User.find("byProfessionLike",
 					"%" + keyword + "%").<User> fetch();
-			searchResultByEmail = User.find("byEmail",keyword )
-					.<User> fetch();
+			searchResultByEmail = User.find("byEmail", keyword).<User> fetch();
 		}
 
 		int nameSize = searchResultByName.size();
@@ -704,7 +691,7 @@ public class Users extends CoolCRUD {
 		search.addAll(searchResultByEmailActive);
 		search.addAll(searchResultByNameActive);
 		search.addAll(searchResultByProfessionActive);
-		
+
 		return search;
 
 	}
@@ -778,7 +765,7 @@ public class Users extends CoolCRUD {
 	 */
 	public static boolean isPermitted(User user, String action, long placeId,
 			String placeType) {
-		
+
 		BannedUser bannedView = BannedUser.find(
 				"byBannedUserAndActionAndResourceTypeAndResourceID", user,
 				"view", placeType, placeId).first();
@@ -800,17 +787,17 @@ public class Users extends CoolCRUD {
 			return false;
 		}
 		if (UserRoleInOrganizations.isOrganizer(user, placeId, placeType)) {
-			
+
 			List<String> r = Roles.getRoleActions("organizer");
 			if (r.contains(action)) {
-			
+
 				return true;
 			} else {
 				if (Roles.getRoleActions("idea developer").contains(action)) {
-			
+
 					return true;
 				} else {
-	
+
 					return false;
 				}
 			}
@@ -909,7 +896,7 @@ public class Users extends CoolCRUD {
 							.find("byEnrolledAndOrganization", user, org)
 							.fetch();
 					if (allowed.size() == 0) {
-			
+
 						return false;
 					} else {
 						if (action.equals("view")) {
@@ -1082,7 +1069,7 @@ public class Users extends CoolCRUD {
 	}
 
 	/**
-	 * checks whether  a user is  allowed to delete an idea or a comment
+	 * checks whether a user is allowed to delete an idea or a comment
 	 * 
 	 * @author: Lama Ashraf
 	 * 
@@ -1263,9 +1250,9 @@ public class Users extends CoolCRUD {
 	/**
 	 * overrides the CRUD create method that is used to create a new user and
 	 * make sure that this user is valid, and then it renders a message
-	 * mentioning whether the operation was successful or not that is if the 
-	 * connected user is a system admin otherwise it redirects him to another page informing 
-	 * him he's not authorized to view the list
+	 * mentioning whether the operation was successful or not that is if the
+	 * connected user is a system admin otherwise it redirects him to another
+	 * page informing him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1276,79 +1263,69 @@ public class Users extends CoolCRUD {
 	 */
 
 	public static void create() throws Exception {
-		if(Security.getConnected().isAdmin)
-		{
+		if (Security.getConnected().isAdmin) {
 			ObjectType type = ObjectType.get(getControllerClass());
 			notFoundIfNull(type);
-			Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+			Constructor<?> constructor = type.entityClass
+					.getDeclaredConstructor();
 			constructor.setAccessible(true);
 			Model object = (Model) constructor.newInstance();
 			Binder.bind(object, "object", params.all());
 			validation.valid(object);
 			String message = "";
 			User tmp = (User) object;
-			System.out.println("create() entered");
 			tmp.email = tmp.email.trim().toLowerCase();
 			tmp.username = tmp.username.trim().toLowerCase();
 			tmp.firstName = tmp.firstName.trim();
 			boolean invalidUserFlag = false;
 			if (!(User.find("byEmail", tmp.email).fetch().isEmpty())) {
 				message = "This Email already exists !";
-				invalidUserFlag =true;
+				invalidUserFlag = true;
 			} else if (!(validation.email(tmp.email).ok)) {
 				message = "Please enter a valid email address";
 				invalidUserFlag = true;
-				System.out.println(message);
-			} else if (!(User.find("byUsername", tmp.username).fetch().isEmpty())) {
+			} else if (!(User.find("byUsername", tmp.username).fetch()
+					.isEmpty())) {
 				message = "This Username already exists !";
 				invalidUserFlag = true;
 			} else if (tmp.password.length() < 4) {
 				message = "Password cannot be less than 4 characters";
 				invalidUserFlag = true;
 			}
-			if (validation.hasErrors()||invalidUserFlag) {
-				System.out.println("lol");
+			if (validation.hasErrors() || invalidUserFlag) {
 				if (tmp.email.equals("")) {
 					message = "A User must have an email";
-					System.out.println(message);
 				} else if (!(User.find("byEmail", tmp.email).fetch().isEmpty())) {
 					message = "This Email already exists !";
 				} else if (!(validation.email(tmp.email).ok)) {
 					message = "Please enter a valid email address";
-					System.out.println(message);
 				} else if (tmp.username.equals("")) {
 					message = "A User must have a username";
-					System.out.println(message);
-				} else if (!(User.find("byUsername", tmp.username).fetch().isEmpty())) {
+				} else if (!(User.find("byUsername", tmp.username).fetch()
+						.isEmpty())) {
 					message = "This Username already exists !";
 				} else if (tmp.password.equals("")) {
 					message = "A User must have a password";
-					System.out.println(message);
-				}  else if (tmp.username.length() < 3) {
+				} else if (tmp.username.length() < 3) {
 					message = "Username cannot be less than 3 characters";
 				} else if (tmp.password.length() < 4) {
 					message = "Password cannot be less than 4 characters";
-				}else if (tmp.firstName.trim().equals("")) {
+				} else if (tmp.firstName.trim().equals("")) {
 					message = "A User must have a first name";
-					System.out.println(message);
 				} else if (tmp.username.length() >= 20) {
 					message = "Username cannot exceed 20 characters";
 				} else if (tmp.password.length() >= 25) {
 					message = "First name cannot exceed 25 characters";
-				}else if (tmp.securityQuestion.trim().equals("")) {
+				} else if (tmp.securityQuestion.trim().equals("")) {
 					message = "A User must have a security Question";
-					System.out.println(message);
 				} else if (tmp.answer.trim().equals("")) {
 					message = "A User must have a security answer";
-					System.out.println(message);
 				}
 
 				try {
-					System.out.println("show user try ");
 					render(request.controller.replace(".", "/") + "/blank.html",
 							type, message);
 				} catch (TemplateNotFoundException e) {
-					System.out.println("show user catch ");
 					render("CRUD/blank.html", type);
 				}
 			}
@@ -1357,15 +1334,21 @@ public class Users extends CoolCRUD {
 			tmp.password = Codec.hexMD5(tmp.password);
 			tmp.activationKey = Application.randomHash(10);
 			object._save();
-			System.out.println("create() object saved");
 			tmp = (User) object;
-			//Mail.welcome(tmp);
+			// Mail.welcome(tmp);
 			Mail.activation(tmp, tmp.activationKey);
-			Log.addUserLog("Admin " + "<a href=\"http://localhost:9008/users/viewprofile?userId="
-					+ Security.getConnected().id+ "\">" + Security.getConnected().firstName + "</a>" + " "
-					+ " has added " + "<a href=\"http://localhost:9008/users/viewprofile?userId="
-					+ tmp.id + "\">" + tmp.firstName + "</a>"
-					+ "'s profile" , tmp);
+			Log.addUserLog(
+					"Admin "
+							+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ Security.getConnected().id
+							+ "\">"
+							+ Security.getConnected().firstName
+							+ "</a>"
+							+ " "
+							+ " has added "
+							+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ tmp.id + "\">" + tmp.firstName + "</a>"
+							+ "'s profile", tmp);
 			String message2 = tmp.username + " has been added to users ";
 			flash.success(Messages.get("crud.created", type.modelName,
 					((User) object).getId()));
@@ -1378,81 +1361,81 @@ public class Users extends CoolCRUD {
 			}
 			redirect(request.controller + ".view", ((User) object).getId(),
 					message2);
-		}
-		else
-		{
+		} else {
 			BannedUsers.unauthorized();
 		}
 	}
-	
-	
-	
+
 	/**
-	 * checks on all the input and make sure that email, username are unique and in the  correct format and then save this changes
+	 * checks on all the input and make sure that email, username are unique and
+	 * in the correct format and then save this changes
 	 * 
 	 * @author lama Ashraf
 	 * 
 	 * @story C1S1-2
 	 * 
 	 * @param id
-	 * 			long user id
+	 *            long user id
 	 * 
 	 * @param username
-	 * 			string new username of the user
+	 *            string new username of the user
 	 * 
 	 * @param mail
-	 * 			string new mail of the user
+	 *            string new mail of the user
 	 * 
-	 *@param firstName
-	 *			string new first name of the user
-	 *
-	 *@param lastName
-	 *			string last name of the user
-	 *
-	 *@param dateOfBirth
-	 *			string the new date of birth of the user
-	 *
-	 *@param country
-	 *			string the new country of the user
-	 *
-	 *@param profession
-	 *			string the new profession of the user
+	 * @param firstName
+	 *            string new first name of the user
+	 * 
+	 * @param lastName
+	 *            string last name of the user
+	 * 
+	 * @param dateOfBirth
+	 *            string the new date of birth of the user
+	 * 
+	 * @param country
+	 *            string the new country of the user
+	 * 
+	 * @param profession
+	 *            string the new profession of the user
 	 */
 
-	public static void saveMyProfile(long id,String username, String mail,String firstName,String lastName,String dateOfBirth, String country,String profession) throws Exception {
-		
-        
+	public static void saveMyProfile(long id, String username, String mail,
+			String firstName, String lastName, String dateOfBirth,
+			String country, String profession) throws Exception {
+
 		User user = User.findById(id);
-		
-        notFoundIfNull(user);
-       
+
+		notFoundIfNull(user);
+
 		String usernameOld = user.username;
 		String emailOld = user.email;
 		emailOld = emailOld.trim().toLowerCase();
 		usernameOld = usernameOld.trim().toLowerCase();
-	
-			 user.username = username;
-		        user.email = mail;
-		        user.firstName = firstName;
-		        user.lastName = lastName;
-		        user.dateofBirth = dateOfBirth;
-		        user.country = country;
-		        user.profession = profession;
-		        String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username + "</a>"
-		        + " has edited his/her profile" ;
-				Log.addUserLog(logDescription, user);
-		        user.save();
-		        redirect("/Users/viewProfile?userId=" + id); 
 
-	
+		user.username = username;
+		user.email = mail;
+		user.firstName = firstName;
+		user.lastName = lastName;
+		user.dateofBirth = dateOfBirth;
+		user.country = country;
+		user.profession = profession;
+		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.username
+				+ "</a>"
+				+ " has edited his profile";
+		Log.addUserLog(logDescription, user);
+		user.save();
+		redirect("/Users/viewProfile?userId=" + id);
+
 	}
-	
-	
+
 	/**
 	 * overrides the CRUD save method ,used to submit the edit, to make sure
 	 * that the edits are acceptable, and then it renders a message mentioning
-	 * whether the operation was successful or not that is if the 
-	 * connected user is a system admin otherwise it redirects him to another page informing 
+	 * whether the operation was successful or not that is if the connected user
+	 * is a system admin otherwise it redirects him to another page informing
 	 * him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
@@ -1465,8 +1448,7 @@ public class Users extends CoolCRUD {
 	 * @throws TemplateNotFoundException
 	 */
 	public static void save(String id) throws Exception {
-		if(Security.getConnected().isAdmin)
-		{
+		if (Security.getConnected().isAdmin) {
 			ObjectType type = ObjectType.get(Users.class);
 			notFoundIfNull(type);
 			Model object = type.findById(id);
@@ -1476,40 +1458,34 @@ public class Users extends CoolCRUD {
 			String oldFirstName = "" + oldUser.firstName;
 			char[] oldFirstNameArray = oldFirstName.toCharArray();
 			String oldLastName = "" + oldUser.lastName;
-			char[] oldLastNameArray ;
+			char[] oldLastNameArray;
 			String oldCountry = "" + oldUser.country;
-			char[] oldCountryArray ;
+			char[] oldCountryArray;
 			String oldProfession = "" + oldUser.profession;
 			char[] oldProfessionArray;
 			boolean notEmptyCountry = false;
 			boolean notEmptyLastName = false;
 			boolean notEmptyProfession = false;
 
-			if(oldCountry.trim() != "")
-			{
+			if (oldCountry.trim() != "") {
 				oldCountryArray = oldCountry.toCharArray();
-				notEmptyCountry =true;
+				notEmptyCountry = true;
+			} else {
+				oldCountryArray = new char[1];
 			}
-			else{
-				oldCountryArray = new char[1]; 
-			}
-			if(oldLastName != "")
-			{
+			if (oldLastName != "") {
 				oldLastNameArray = oldLastName.toCharArray();
-				notEmptyLastName =true;
+				notEmptyLastName = true;
+			} else {
+				oldLastNameArray = new char[1];
 			}
-			else{
-				oldLastNameArray = new char[1]; 
-			}
-			if(oldLastName != "")
-			{
+			if (oldLastName != "") {
 				oldProfessionArray = oldProfession.toCharArray();
-				notEmptyProfession =true;
+				notEmptyProfession = true;
+			} else {
+				oldProfessionArray = new char[1];
 			}
-			else{
-				oldProfessionArray = new char[1]; 
-			}
-			
+
 			Binder.bind(object, "object", params.all());
 			validation.valid(object);
 			String editedMessage = "User : " + oldUser.username + "\n";
@@ -1519,14 +1495,15 @@ public class Users extends CoolCRUD {
 			tmp.email = tmp.email.toLowerCase();
 			tmp.firstName = tmp.firstName.trim();
 			boolean validUserFlag = false;
-			if ((!oldEmail.equals(tmp.email))&& (!(User.find("byEmail", tmp.email).fetch().isEmpty()))){
+			if ((!oldEmail.equals(tmp.email))
+					&& (!(User.find("byEmail", tmp.email).fetch().isEmpty()))) {
 				message = "This Email already exists !";
 				validUserFlag = true;
 			} else if (!(validation.email(tmp.email).ok)) {
 				message = "Please enter a valid email address";
 				validUserFlag = true;
 			}
-			if (validation.hasErrors()||validUserFlag) {
+			if (validation.hasErrors() || validUserFlag) {
 				if (tmp.email.equals("")) {
 					message = "A User must have an email";
 				}
@@ -1540,106 +1517,103 @@ public class Users extends CoolCRUD {
 			}
 			object._save();
 			if (!(Arrays.equals(oldemailArray, tmp.email.toCharArray()))) {
-				editedMessage += "Email " + oldEmail + " changed to -->  " + tmp.email + "\n";
+				editedMessage += "Email " + oldEmail + " changed to -->  "
+						+ tmp.email + "\n";
 			}
 			if (!(Arrays.equals(oldFirstNameArray, tmp.firstName.toCharArray()))) {
-				editedMessage += " First Name " + oldFirstName + " changed to -->  " + tmp.firstName
-						+ "\n";
+				editedMessage += " First Name " + oldFirstName
+						+ " changed to -->  " + tmp.firstName + "\n";
 			}
-			if(notEmptyLastName)
-			{
-				if(tmp.lastName.trim().equals(""))
-				{
-					editedMessage += "Last Name " + oldLastName + " removed " + "\n";
-				}
-				else
-				{
-					if (!(Arrays.equals(oldLastNameArray, tmp.lastName.toCharArray()))) {
-						editedMessage += "Last Name " + oldLastName + " changed to -->  " + tmp.lastName + "\n";
+			if (notEmptyLastName) {
+				if (tmp.lastName.trim().equals("")) {
+					editedMessage += "Last Name " + oldLastName + " removed "
+							+ "\n";
+				} else {
+					if (!(Arrays.equals(oldLastNameArray,
+							tmp.lastName.toCharArray()))) {
+						editedMessage += "Last Name " + oldLastName
+								+ " changed to -->  " + tmp.lastName + "\n";
 					}
 				}
-			}
-			else
-			{
-				if(!(tmp.lastName.equals("")))
-				{
-					editedMessage += "Last Name " + oldLastName + " added --> " + tmp.lastName + "\n";
+			} else {
+				if (!(tmp.lastName.equals(""))) {
+					editedMessage += "Last Name " + oldLastName + " added --> "
+							+ tmp.lastName + "\n";
 				}
 			}
-			if(notEmptyProfession)
-			{
-				if(tmp.profession.trim().equals(""))
-				{
-					editedMessage += "Profession " + oldProfession + " removed " + "\n";
-				}
-				else
-				{
-					if (!(Arrays.equals(oldProfessionArray, tmp.profession.toCharArray()))) {
-						editedMessage += "Profession " + oldProfession + " changed to -->  " + tmp.profession + "\n";
+			if (notEmptyProfession) {
+				if (tmp.profession.trim().equals("")) {
+					editedMessage += "Profession " + oldProfession
+							+ " removed " + "\n";
+				} else {
+					if (!(Arrays.equals(oldProfessionArray,
+							tmp.profession.toCharArray()))) {
+						editedMessage += "Profession " + oldProfession
+								+ " changed to -->  " + tmp.profession + "\n";
 					}
 				}
-			}
-			else
-			{
-				if(!(tmp.profession.equals("")))
-				{
-					editedMessage += "Profession " + oldProfession + " added --> " + tmp.profession + "\n";
+			} else {
+				if (!(tmp.profession.equals(""))) {
+					editedMessage += "Profession " + oldProfession
+							+ " added --> " + tmp.profession + "\n";
 				}
 			}
-			if(notEmptyCountry)
-			{
-				if(tmp.country.trim().equals(""))
-				{
-					editedMessage += "Country " + oldCountry + " removed " + "\n";
-				}
-				else
-				{
-					if (!(Arrays.equals(oldCountryArray, tmp.country.toCharArray()))) {
-						editedMessage +=  "Country " + oldCountry + " changed to -->  " + tmp.country + "\n";
+			if (notEmptyCountry) {
+				if (tmp.country.trim().equals("")) {
+					editedMessage += "Country " + oldCountry + " removed "
+							+ "\n";
+				} else {
+					if (!(Arrays.equals(oldCountryArray,
+							tmp.country.toCharArray()))) {
+						editedMessage += "Country " + oldCountry
+								+ " changed to -->  " + tmp.country + "\n";
 					}
 				}
-			}
-			else
-			{
-				if(!(tmp.country.equals("")))
-				{
-					editedMessage += "Country " + oldCountry + " added --> " + tmp.country + "\n";
+			} else {
+				if (!(tmp.country.equals(""))) {
+					editedMessage += "Country " + oldCountry + " added --> "
+							+ tmp.country + "\n";
 				}
 			}
-			
+
 			if (Security.getConnected().isAdmin
 					&& Security.getConnected().id != tmp.id) {
-				Notifications.sendNotification(tmp.id, Security.getConnected().id,
-						"User", "The admin has edited your profile"+"\n" + editedMessage);
-				Log.addUserLog("Admin " + "<a href=\"http://localhost:9008/users/viewprofile?userId="
-						+ Security.getConnected().id+ "\">" + Security.getConnected().firstName + "</a>" + " "
-						+ " has edited " + "<a href=\"http://localhost:9008/users/viewprofile?userId="
-						+ tmp.id + "\">" + tmp.firstName + "</a>"
-						+ "'s profile" + "\n" + editedMessage, tmp);
+				Notifications.sendNotification(tmp.id,
+						Security.getConnected().id, "User",
+						"The admin has edited your profile" + "\n"
+								+ editedMessage);
+				Log.addUserLog(
+						"Admin "
+								+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+								+ Security.getConnected().id
+								+ "\">"
+								+ Security.getConnected().firstName
+								+ "</a>"
+								+ " "
+								+ " has edited "
+								+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+								+ tmp.id + "\">" + tmp.firstName + "</a>"
+								+ "'s profile" + "\n" + editedMessage, tmp);
 			}
 			flash.success(Messages.get("crud.saved", type.modelName));
 			if (params.get("_save") != null) {
 				if (Security.getConnected().isAdmin) {
 					redirect(request.controller + ".list");
-				} 
+				}
 			}
 			redirect(request.controller + ".show", object._key());
 
-		}
-		else
-		{
+		} else {
 			BannedUsers.unauthorized();
 		}
 	}
-
 
 	/**
 	 * deletes a user after the system admin ( the one who's requesting the
 	 * delete) specifies the user's id and the reason for the deletion , then it
 	 * sends a mail to the deleted user notifying him of both the event and the
-	 * reason if the 
-	 * connected user is a system admin otherwise it redirects him to another page informing 
-	 * him he's not authorized to view the list
+	 * reason if the connected user is a system admin otherwise it redirects him
+	 * to another page informing him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -1653,8 +1627,7 @@ public class Users extends CoolCRUD {
 	 * 
 	 * */
 	public static void delete(String id, String deletionMessage) {
-		if(Security.getConnected().isAdmin)
-		{
+		if (Security.getConnected().isAdmin) {
 			long userId = Long.parseLong(id);
 			User user = User.findById(userId);
 			try {
@@ -1663,9 +1636,10 @@ public class Users extends CoolCRUD {
 					user.state = "d";
 					user._save();
 					/*
-					 * >>>>> Added by Salma Osama to: delete the volunteerRequests
-					 * and the receivedAssignRequests of the user : remove the user
-					 * from the list of assignees of the items he's assigned to
+					 * >>>>> Added by Salma Osama to: delete the
+					 * volunteerRequests and the receivedAssignRequests of the
+					 * user : remove the user from the list of assignees of the
+					 * items he's assigned to
 					 */
 					for (int i = 0; i < user.volunteerRequests.size(); i++) {
 						user.volunteerRequests.get(i).delete();
@@ -1703,17 +1677,15 @@ public class Users extends CoolCRUD {
 			} catch (NullPointerException e) {
 				render(request.controller.replace(".", "/") + "/index.html");
 			}
-		}
-		else
-		{
+		} else {
 			BannedUsers.unauthorized();
 		}
 	}
 
 	/**
 	 * undeletes a user by the system admin, then sends an email to the
-	 * undeleted user notifying him of the event that is if the 
-	 * connected user is a system admin otherwise it redirects him to another page informing 
+	 * undeleted user notifying him of the event that is if the connected user
+	 * is a system admin otherwise it redirects him to another page informing
 	 * him he's not authorized to view the list
 	 * 
 	 * @author Mostafa Ali
@@ -1726,8 +1698,7 @@ public class Users extends CoolCRUD {
 	 * 
 	 * */
 	public static void undelete(String id) {
-		if(Security.getConnected().isAdmin)
-		{
+		if (Security.getConnected().isAdmin) {
 			long userId = Long.parseLong(id);
 			User user = User.findById(userId);
 			String x = "";
@@ -1744,9 +1715,7 @@ public class Users extends CoolCRUD {
 				render(request.controller.replace(".", "/") + "/index.html");
 
 			}
-		}
-		else
-		{
+		} else {
 			BannedUsers.unauthorized();
 		}
 	}
@@ -1847,10 +1816,10 @@ public class Users extends CoolCRUD {
 			notification.delete();
 		}
 	}
-	
+
 	/**
-	 * Deletes the notification of the user 	
-	 *
+	 * Deletes the notification of the user
+	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S14
@@ -1859,12 +1828,12 @@ public class Users extends CoolCRUD {
 	 *            long the notification ID to be deleted
 	 * 
 	 */
-	
+
 	public static void deleteNotification(long notId) {
 		Notification notification = Notification.findById(notId);
 		notification.delete();
 	}
-	
+
 	/**
 	 * Renders the view of the notifications list
 	 * 
@@ -1872,8 +1841,8 @@ public class Users extends CoolCRUD {
 	 * 
 	 * @story C1S20
 	 * 
-	 * @param type 
-	 * 			string the type of the notifications to be rendered
+	 * @param type
+	 *            string the type of the notifications to be rendered
 	 */
 
 	public static void notificationView(String type) {
@@ -1922,12 +1891,11 @@ public class Users extends CoolCRUD {
 	 * @story C1S20
 	 * 
 	 * @param type
-	 * 			String the type of the notifications to be selected
-	 *
-	 * @return List<Notification>
-	 * 			the list of notifications to be rendered
+	 *            String the type of the notifications to be selected
+	 * 
+	 * @return List<Notification> the list of notifications to be rendered
 	 */
-	
+
 	public static List<Notification> getNotificationsFrom(String type) {
 		User user = Security.getConnected();
 		List<Notification> notificationList = new ArrayList<Notification>();
@@ -1950,9 +1918,9 @@ public class Users extends CoolCRUD {
 	 * @story C1S20
 	 * 
 	 * @param type
-	 * 			String the type of notifications to be rendered
+	 *            String the type of notifications to be rendered
 	 */
-	
+
 	public static void notificationProfileView(String type) {
 		User user = Security.getConnected();
 		notFoundIfNull(user);
@@ -1999,7 +1967,7 @@ public class Users extends CoolCRUD {
 		}
 		render(user, notificationProfileList, type, select);
 	}
-	
+
 	/**
 	 * returns a list of notification profiles according to the type
 	 * 
@@ -2008,13 +1976,14 @@ public class Users extends CoolCRUD {
 	 * @story C1S20
 	 * 
 	 * @param type
-	 * 			String the type of the notification profiles to be selected
-	 *
-	 * @return List<NotificationProfile>
-	 * 			the list of notification profiles to be rendered
+	 *            String the type of the notification profiles to be selected
+	 * 
+	 * @return List<NotificationProfile> the list of notification profiles to be
+	 *         rendered
 	 */
-	
-	public static List<NotificationProfile> getNotificationProfilesOf(String type) {
+
+	public static List<NotificationProfile> getNotificationProfilesOf(
+			String type) {
 		User user = Security.getConnected();
 		List<NotificationProfile> notificationProfileList = new ArrayList<NotificationProfile>();
 		if (type.equalsIgnoreCase("All")) {
@@ -2061,7 +2030,6 @@ public class Users extends CoolCRUD {
 
 	}
 
-
 	/**
 	 * Deactivate the account of that user by setting the state to "n"
 	 * 
@@ -2087,42 +2055,42 @@ public class Users extends CoolCRUD {
 		logout();
 	}
 
-
 	/**
-	 * changes the password of the user after providing his old password and some validations
+	 * changes the password of the user after providing his old password and
+	 * some validations
 	 * 
 	 * @author Lama Ashraf
 	 * 
 	 * @story C1S1-2
 	 * 
-	 * @param pass 2
-	 *            String the new password
+	 * @param pass
+	 *            2 String the new password
 	 * 
 	 */
-	
+
 	public static void changePassword(String pass2) {
 
-		
-		String message="";
+		String message = "";
 
-		if (pass2.length() < 25||pass2.length()>3)
-		{
+		if (pass2.length() < 25 || pass2.length() > 3) {
 			User user = Security.getConnected();
 			user.password = Codec.hexMD5(pass2);
 			user.save();
 			viewProfile(user.id);
-		}
-		else
-		{
+		} else {
 			message = "Password cannot exceed 25 characters";
 			render(request.controller.replace(".", "/") + "/viewProfile.html",
 					message);
 		}
-		
+
 		User user = Security.getConnected();
 		user.password = Codec.hexMD5(pass2);
-		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username + "</a>"
-        + " has changed his/her password" ;
+		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.username
+				+ "</a>"
+				+ " has changed his password";
 		Log.addUserLog(logDescription, user);
 		user.save();
 		viewProfile(user.id);
