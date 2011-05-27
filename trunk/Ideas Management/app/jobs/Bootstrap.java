@@ -224,6 +224,10 @@ public class Bootstrap extends Job {
 			gucMetStudentUnion._save();
 			gucMetStudentUnion.tags.add(tagGuc);
 			gucMetStudentUnion._save();
+			
+			Topic gucDraft = new Topic("Draft",
+					"Suggestions", 2, ashraf, gucMet, false, true).save();
+			gucMetStudentUnion._save();
 
 			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
 					gucMetStudentUnion.id, "topic");
