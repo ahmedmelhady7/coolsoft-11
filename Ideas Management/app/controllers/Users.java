@@ -9,6 +9,9 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
+
+import com.google.gson.JsonObject;
+
 import controllers.CoolCRUD.ObjectType;
 import notifiers.Mail;
 import play.data.binding.Binder;
@@ -234,27 +237,21 @@ public class Users extends CoolCRUD {
 		email = email.trim().toLowerCase();
 		username = username.trim().toLowerCase();
 		firstName = firstName.trim();
-		String message = "";
-	/*	boolean validUserFlag = false;
-		 if ((validation.valid(email)) != null) {
-			message = "Please enter a valid email address";
-			validUserFlag = true;
-			System.out.println(message);
-		}else if (!(User.find("byUsername", username).fetch().isEmpty())) {
-			message = "This Username already exists !";
-		}   else if (username.length() >= 20) {
-			validUserFlag = true;
-			message = "Username cannot exceed 20 characters";
-		}
+		List<User> userList = User.findAll();
+		String emails = "";
+		String usernames = "";
 		
-		if (validUserFlag) {
-			render(request.controller.replace(".", "/") + "/viewMyProfile.html",
-					message,object);
+		for (int i = 0; i < userList.size(); i++) {
+			if (i == userList.size() - 1) {
+				usernames = usernames + userList.get(i).username + "";
+				emails = emails + userList.get(i).email + "";
+			}
+			else {
+				usernames = usernames + userList.get(i).username + "|";
+				emails = emails + userList.get(i).email + "|";
+			}
+ 
 		}
-		else{
-			
-			viewProfile(user.id);
-		}*/
 
 		int adminFlag = 0;
 		if (Security.getConnected().isAdmin) {
@@ -262,8 +259,8 @@ public class Users extends CoolCRUD {
 		}
 		try {
 
-			System.out.println("view() done, about to render");
-			render(adminFlag,message, user);
+			System.out.println("view() done, about to render" + usernames + " | " + emails);
+			render(user, usernames, emails );
 
 		} catch (TemplateNotFoundException e) {
 			System.out
@@ -277,7 +274,7 @@ public class Users extends CoolCRUD {
 	 * 
 	 * @author Lama Ashraf
 	 * 
-	 * @story C1S2-1
+	 * @story C1S1-2
 	 * 
 	 * 
 	 */
@@ -666,7 +663,7 @@ public class Users extends CoolCRUD {
 					"%" + keyword + "%").<User> fetch();
 			searchResultByProfession = User.find("byProfessionLike",
 					"%" + keyword + "%").<User> fetch();
-			searchResultByEmail = User.find("byEmailLike", "%" + keyword + "%")
+			searchResultByEmail = User.find("byEmail",keyword )
 					.<User> fetch();
 		}
 
@@ -694,11 +691,7 @@ public class Users extends CoolCRUD {
 		search.addAll(searchResultByEmailActive);
 		search.addAll(searchResultByNameActive);
 		search.addAll(searchResultByProfessionActive);
-
-		// searchResultByName.addAll(searchResultByProfession);
-		// searchResultByName.addAll(searchResultByEmail);
-		// render(searchResultByName, searchResultByProfession,
-		// searchResultByEmail);
+		
 		return search;
 
 	}
@@ -1512,19 +1505,7 @@ public class Users extends CoolCRUD {
 		String emailOld = user.email;
 		emailOld = emailOld.trim().toLowerCase();
 		usernameOld = usernameOld.trim().toLowerCase();
-		String message = "";
-		boolean validUserFlag = false;
-		//System.out.println(username + "lllllllllll");
-		//System.out.println(mail + "sssssssssssss");
-		/* if( (!(User.find("byUsername", username).fetch().isEmpty()) && Security.getConnected().username != username)||user.username.length() >20 ) {
-			 	flash.error("error");
-			 String userId = "" + id;
-			 
-			viewMyProfile(userId);
-			 }
-			
-		else{*/
-			
+	
 			 user.username = username;
 		        user.email = mail;
 		        user.firstName = firstName;
@@ -1532,13 +1513,16 @@ public class Users extends CoolCRUD {
 		        user.dateofBirth = dateOfBirth;
 		        user.country = country;
 		        user.profession = profession;
-		        System.out.println(user.email + "oldddp");
-		        System.out.println(mail + "newwwww");
+		        String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username + "</a>"
+		        + " has edited his profile" ;
+				Log.addUserLog(logDescription, user);
 		        user.save();
 		        redirect("/Users/viewProfile?userId=" + id); 
 
-	//}
+	
 	}
+	
+	
 	/**
 	 * overrides the CRUD save method ,used to submit the edit, to make sure
 	 * that the edits are acceptable, and then it renders a message mentioning
@@ -2261,6 +2245,9 @@ public class Users extends CoolCRUD {
 
 		User user = Security.getConnected();
 		user.password = Codec.hexMD5(pass2);
+		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username + "</a>"
+        + " has changed his password" ;
+		Log.addUserLog(logDescription, user);
 		user.save();
 		viewProfile(user.id);
 
