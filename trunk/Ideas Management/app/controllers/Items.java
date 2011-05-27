@@ -120,11 +120,11 @@ public class Items extends CoolCRUD {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,
 						"plan", description);
 			}
-			String logDescription = "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+			String logDescription = "Item <a href=\"http://localhost:9008/plans/viewaslist?planId="
 					+ item.plan.id
 					+ "\">"
 					+ item.summary
-					+ ": Item now marked done by user <a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ "</a> now marked done by user <a href=\"http://localhost:9008/users/viewprofile?userId="
 					+ user.id + "\">" + user.username + "</a>.";
 			Log.addLog(logDescription, item, item.plan, item.plan.topic,
 					item.plan.topic.entity, item.plan.topic.entity.organization);
@@ -134,11 +134,11 @@ public class Items extends CoolCRUD {
 			String descriptionIfInProgress = item.summary
 					+ ": Item now marked in progress by user: " + user.username
 					+ ".";
-			String logDescriptionIfInProgress = "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+			String logDescriptionIfInProgress = "Item <a href=\"http://localhost:9008/plans/viewaslist?planId="
 					+ item.plan.id
 					+ "\">"
 					+ item.summary
-					+ ": Item now marked in progress by user <a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ "</a> now marked in progress by user <a href=\"http://localhost:9008/users/viewprofile?userId="
 					+ user.id + "\">" + user.username + "</a>.";
 			for (User userToNotify : userToNotifyList) {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,
