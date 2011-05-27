@@ -259,7 +259,13 @@ public class Tags extends CoolCRUD {
 		}
 		boolean follower = user.followingTags.contains(tag);
 		boolean canCreateRelationship = TagRelationships.isAllowedTo(tagId);
-		render(tag, followers, topics, organizations, entities, ideas, follower, user, canCreateRelationship, allowed);
+		List<Tag> tagList = null;
+
+		if (tag.createdInOrganization.createdTags != null) {
+			tagList = tag.createdInOrganization.createdTags;
+			tagList.remove(tag);
+		}
+		render(tag, followers, topics, organizations, entities, ideas, follower, user, canCreateRelationship, allowed, tagList);
 	}
 	
 	/**

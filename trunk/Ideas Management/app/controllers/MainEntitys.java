@@ -545,11 +545,22 @@ public class MainEntitys extends CoolCRUD {
 		boolean canCreateRelationship = EntityRelationships.isAllowedTo(id);
 		List<User> followers = entity.followers;
 		List<Plan> plans = Plans.planList("entity", entity.id);
+		List<MainEntity> entityList = new ArrayList<MainEntity>();
+
+		if (entity.organization.entitiesList != null) {
+			entityList = entity.organization.entitiesList;
+			entityList.remove(entity);
+		}
+
+		for (int i = 0; i < entityList.size(); i++) {
+			if (!entityList.get(i).createRelationship)
+				entityList.remove(entityList.get(i));
+		}
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity, canCreateSubEntity, follower,
 				canCreateRelationship, canRequest, canRequestRelationship,
 				canRestrict, entityIsLocked, plans, canDeleteEntity, followers,
-				check, check1, check2);
+				check, check1, check2, entityList);
 	}
 
 	/**
