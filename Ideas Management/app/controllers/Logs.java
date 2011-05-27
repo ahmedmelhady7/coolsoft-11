@@ -32,6 +32,8 @@ public class Logs extends CoolCRUD {
 		User user = Security.getConnected();
 		
 		List<MainEntity> entities = organization.entitiesList;
+		
+		entities.remove(0);
 		List<Log> toFilter = new ArrayList<Log>();
 		List<Log> reversed = new ArrayList<Log>();
 		
