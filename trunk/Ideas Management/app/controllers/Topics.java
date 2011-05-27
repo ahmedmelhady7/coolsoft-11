@@ -770,14 +770,24 @@ public class Topics extends CRUD {
 		User user = Security.getConnected();
 		// handle permissions, depending on the privacyLevel the user will be
 		// directed to a different page
-
+		Organization organization = entity.organization;
+		long organizationId = organization.id;
+		boolean isDefaultEntity;
+		
+		if(entity.equals(organization.entitiesList.get(0))) {
+			isDefaultEntity = true;
+		} else {
+			isDefaultEntity = false;
+		}
+		
+		
 		int permission = 1;
 		if (!Users.isPermitted(user, "post topics", entity.id, "entity"))
 			permission = 0;
 
 		if (permission == 1) {
 			try {
-				render(type, entityId, user, entity);
+				render(type, entityId, user, entity, isDefaultEntity, organizationId);
 
 			} catch (TemplateNotFoundException exception) {
 				render("CRUD/blank.html", type, entityId, user, entity);
