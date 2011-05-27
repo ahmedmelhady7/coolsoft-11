@@ -47,7 +47,7 @@
                                 <input type="text" name="keywords" id="keywords" value = "Enter a keyword here" onfocus="this.value=''" " onfocusout='' onkeypress='javaScript: quickSearchScript()' /><input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick='javaScript: quickSearchScript()'/>
                                 <br>
                                 <small>
-                                    <i><a href="/AdvancedSearch">Advanced Search</a></i>
+                                    <i><a id="advo" style="cursor: pointer;" >Advanced Search</a></i>
                                 </small>
                             </div>
                             <div style="clear: both;">
@@ -419,6 +419,8 @@
                     </div>
                     <iframe id="searchview" src="/searchResult" scripts="/public/javascripts/SearchScript.js" class="/public/stylesheets/searchStyle.css" language="text/javascript" frameborder='no' allowtransparency='yes' style='display:none' height = 100% width=75%>
                     </iframe>
+					<iframe id="advSearch" src="/AdvancedSearch" frameborder='no' allowtransparency='yes' style='display:none' height = 120% width=76%>
+                    </iframe>
                 </body>
                 <script type="text/javascript" language="javascript">
                     $('#follow').hide();
@@ -558,8 +560,25 @@
                         padding: 0 !important;
                     }
                 </style>
-                <script type="text/javascript">
-                    
+                <script type="text/javascript">                    
+					var b = true;
+					$('#advSearch').hide();
+					//function goo(){
+					$(function(){	
+						$('#advo').click(function(){
+							if (b) {
+								document.getElementById('layout').style.display = 'none';
+								$('#advSearch').show(1000);
+								b = false;
+							}else{
+								document.getElementById("advSearch").src = "/AdvancedSearch";
+								$('#advSearch').hide();
+								$('#advSearch').show(1000);
+								b=true;
+							}
+						});
+					});
+					//}
                     function step1(){
                         document.getElementById('searchview').style.display = 'none';
                     }

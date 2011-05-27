@@ -1,4 +1,4 @@
-#{extends 'Login/index.html' /}  <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <link type="text/css" href="/public/stylesheets/jquery-ui-.custom.css" rel="Stylesheet" />
     <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js"></script>
@@ -629,7 +629,7 @@
 			/**
         	 * Date Pickers JS
         	 */
-        	$(function(){
+        	
 				$("#na1").hide();
                 $($("#datePickerB").datepicker({
                     changeYear: true,
@@ -720,12 +720,12 @@
                     $("#na2").hide(500);
                     $("#addE").hide(500);
                 });
-            });
+            
 			
 			/**
 			 * part of {All of these words} JS
 			 */
-        	$(function(){
+        	
 				$('#shw').hide();
 	            $('#remRaw').hide();
 	            $('#o').hide();
@@ -779,12 +779,12 @@
 	                n--;
 	                m--;
 	            });
-			});
+			
 			
 			/**
 			 * part of {Exact phrase} JS
 			 */
-			$(function(){
+			
                 $('#inExOp').hide();
                 $('#remInEx').hide();
                 $('#inEx').click(function(){
@@ -798,7 +798,7 @@
                     $('#inExOp').hide(500);
                     $('#remInEx').hide(500);
                 });
-			});
+			
 			
 			/**
 			 * part of {Organizations type} JS
@@ -980,7 +980,7 @@
 						dateE:dateE
                     }, function(){
                         alert('enter func');
-                        window.location.href = "/searchResult";
+                        window.location.href = "/advSearchResult";
                         alert('enter end');
                     });
 				} else {
