@@ -17,6 +17,7 @@
 			<label for="object_email">
 				E-mail
 			</label>
+			&nbsp;
 			<input type = "text" id="object_email" size=35 class="" name="object.email" required onkeyup="echeck();">
 			<span id="validEmail" class="validEmail"></span>
 			<span class="crudHelp" >
@@ -32,7 +33,9 @@
 			<label for="object_username">
 				username
 			</label>
-			<textarea id="object_username" cols="15" rows="1" class="" name="object.username"></textarea>
+			&nbsp;
+			<input type="text" size =20 class = "" id="object_username" name=object.username onblur='checkUsername()'; required/>
+			<span id="usernameMessage" class="usernameMessage"></span>
 			<span class="crudHelp" >
 				<font color="Red">
 					*
@@ -46,7 +49,8 @@
 			<label for="object_password">
 				Password
 			</label>
-			<input type="password" size="25" class="" name="object.password" id="pass1">
+			&nbsp;
+			<input type="password" size="25" class="" name="object.password" id="pass1" onkeyup="checkPass(); return false;">
 			<span class="crudHelp" >
 				<font color="Red">
 					*
@@ -57,17 +61,52 @@
 			<label>
 				Confirm Password
 			</label>
-			<input type="password" size="25" name="pass2" id="pass2" onkeyup="checkPass(); return false;" >
+			&nbsp;
+			<input type="password" size="25" name="object.confirmPassword" id="pass2" onkeyup="checkPass(); return false;"  >
         <span id="confirmMessage" class="confirmMessage"></span>
 		</p>
+		
 		#{/crud.custom }
+		
+		
+		#{crud.custom 'securityQuestion'}
+		<p>
+			<label for="object_securityQuestion">
+				Security Question
+			</label>
+			&nbsp;
+			<input type="text" id="object_securityQuestion" size=25 class="" name="object.securityQuestion" required/>
+			<span class="crudHelp" >
+				<font color="Red">
+					*
+				</font>Required
+			</span>
+		</p>
+		#{/crud.custom}
+		
+		
+		#{crud.custom 'answer'}
+		<p>
+			<label for="object_answer">
+				firstName
+			</label>
+			&nbsp;
+			<input type="text" id="object_answer" size=15 class="" name="object.answer" required/>
+			<span class="crudHelp" >
+				<font color="Red">
+					*
+				</font>Required
+			</span>
+		</p>
+		#{/crud.custom}
 		
 		#{crud.custom 'firstName'}
 		<p>
 			<label for="object_firstName">
 				firstName
 			</label>
-			<textarea id="object_firstName" cols="15" rows="1" class="" name="object.firstName"></textarea>
+			&nbsp;
+			<input type="text" id="object_firstName" size=15 class="" name="object.firstName" required/>
 			<span class="crudHelp" >
 				<font color="Red">
 					*
@@ -81,21 +120,10 @@
 			<label for="object_lastName">
 				Last Name
 			</label>
-			<textarea id="object_lastName" cols="15" rows="1" class="" name="object.lastName"></textarea>
+			<input type="text" id="object_lastName" size=15 class="" name="object.lastName" required/>
 		</p>
 		#{/crud.custom }
 		
-		#{crud.custom 'communityContributionCounter'}
-		<p>
-			<label for="object_communityContributionCounter">
-				Community Contribution Counter
-			</label>
-			<input type = "text" size="10" class = "" name="object.communityContributionCounter" onkeyup="checkCCC(); return false;">
-			<textarea id="communityContributionCounter" cols="15" rows="1" class="" name="object.communityContributionCounter" onkeyup = "checkCCC(); return false;" ></textarea>
-			<span id="validMessage" class="validMessage"></span>
-		</p>
-		#{/crud.custom }
-
 		#{crud.custom 'dateofBirth'}
 		<label for="object_dateofBirth">
 				Date Of Birth
@@ -112,6 +140,7 @@
 				Country
 			</label> 
 			<select name="object.country" size="1">
+				<option value="Egypt">Egypt</option>
 				<option value="Afghanistan">Afghanistan</option>
 				<option value="Åland Islands">Åland Islands</option>
 				<option value="Albania">Albania</option>
@@ -181,7 +210,6 @@
 				<option value="Dominican Republic">Dominican Republic</option>
 				<option value="East Timor">East Timor</option>
 				<option value="Ecuador">Ecuador</option>
-				<option value="Egypt">Egypt</option>
 				<option value="El Salvador">El Salvador</option>
 				<option value="Equatorial Guinea">Equatorial Guinea</option>
 				<option value="Eritrea">Eritrea</option>
@@ -388,7 +416,7 @@
 
 		#{/crud.form }
 		<p class="crudButtons">
-			<input type="submit"  id = "save"  name="_save" value="&{'crud.save', type.modelName}" />
+			<input type="submit"  id = "save"  name="_save" value="&{'crud.save', type.modelName}" onclick="return confirm();"/>
 			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
 			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
 		</p>
@@ -436,22 +464,51 @@
     }
 </script>
  <script type="text/javascript">
-    function checkPass(){
-      var pass1 = document.getElementById('pass1');
-      var pass2 = document.getElementById('pass2');
-      var message = document.getElementById('confirmMessage');
-      var goodColor = "#66cc66";
-      var badColor = "#ff6666";
-      if(pass1.value == pass2.value){
-        pass2.style.backgroundColor = goodColor;
-        message.style.color = goodColor;
-        message.innerHTML = "Passwords Match!"
-      }else{
-        pass2.style.backgroundColor = badColor;
-        message.style.color = badColor;
-        message.innerHTML = "Passwords Do Not Match!"
-      }
+ function checkPass(){
+     var pass1 = document.getElementById('pass1');
+     var pass2 = document.getElementById('pass2');
+     var message = document.getElementById('confirmMessage');
+     var goodColor = "#66cc66";
+     var badColor = "#ff6666";
+     if(pass1.value == pass2.value && pass1.value != ""){
+       pass2.style.backgroundColor = goodColor;
+       message.style.color = goodColor;
+       message.innerHTML = "Passwords Match!"
+     }else{
+   	  pass2.style.backgroundColor = badColor;
+         message.style.color = badColor;
+   	  if(pass1.value == "" && pass2.value == "" )
+   	  {
+             message.innerHTML = "Password field cannot be empty !"
+   	  }
+   	  else
+   	  {
+             message.innerHTML = "Passwords Do Not Match!"
+   	  }
+     }
+   }   
+
+    function checkUsername(){
+    	var unregisteredUsername = document.getElementById('object_username');
+        var message = document.getElementById('userMessage');
+        var exist = $.post('@{Accounts.checkUsername()
+        }', { username: unregisteredUsername});
+    	var goodColor = "#66cc66";
+        var badColor = "#ff6666";
+        if(!exist)
+        	{
+        	object_username.style.backgroundColor = goodColor;
+            message.style.color = goodColor;
+            message.innerHTML = "Username available"
+        	}
     }
+    function confirm(){
+		if (document.getElementById('pass1').value != document.getElementById('pass2').value) {
+			
+			return false;
+		}
+}
+    
     function echeck() {
         var str = document.getElementById('object_email').value +"";
         var validEmailMessage =document.getElementById('validEmail');
@@ -513,19 +570,11 @@
 
  		 return true				
 	}
-    function checkCCC(){
-    	var message = document.getElementById('validMessage');
-    	if (!IsNumeric(document.getElementById('communityContributionCounter'))) 
-    	   {
-            message.innerHTML = "The community contribution counter must be a number !"
-    	   }
-
-    }
     </script>
     <script>
     $(function(){
 		$("#object_dateofBirth").datepicker({ minDate:"-90Y -1M -5D",
-			maxDate:+32,
+			maxDate:"-10Y -11M",
 			changeYear: true,
             showButtonPanel: true});
 	});
