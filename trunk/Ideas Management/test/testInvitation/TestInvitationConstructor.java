@@ -38,6 +38,8 @@ public class TestInvitationConstructor extends UnitTest {
 		assertNotNull(entityInvitation);
 		Invitation topicInvitation = new Invitation(email,null,guc,role,slim,gucMetStudentUnion).save();
 		assertNotNull(topicInvitation);
+		Invitation organizationInvitation = new Invitation(email,null,guc,role,slim,null).save();
+		assertNotNull(organizationInvitation);
 		
 	}
 }
