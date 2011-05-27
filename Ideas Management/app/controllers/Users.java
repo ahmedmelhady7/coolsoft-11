@@ -527,7 +527,6 @@ public class Users extends CoolCRUD {
 	public static void TopicSpamView(long topicId) {
 		boolean alreadyReported = false;
 		Topic topic = Topic.findById(topicId);
-		User reporter = Security.getConnected();
 		redirect("/topics/show?topicId=" + topic.getId(), alreadyReported);
 		// render(alreadyReported);
 	}
@@ -552,8 +551,6 @@ public class Users extends CoolCRUD {
 		if (comment.reporters != null){
 			comment.reporters += reporter.id + ",";
 		comment.save();
-		System.out.println(comment.reporters + "aaaa");
-
 		}
 		if(comment.commentedIdea!=null){
 			if(comment.commenter.username.equals(comment.commentedIdea.author.username)){
@@ -586,7 +583,6 @@ public class Users extends CoolCRUD {
 		boolean alreadyReported = false;
 		Comment comment = Comment.findById(commentId);
 		Idea idea = comment.commentedIdea;
-		User reporter = Security.getConnected();
 		// for (int i = 0; i < topic.reporters.size(); i++) {
 		// if (reporter.username.equals(topic.reporters.get(i).username))
 		// alreadyReported = true;}

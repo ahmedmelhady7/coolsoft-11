@@ -630,7 +630,6 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 */
 	public static void delete(long ideaId) {
-		String justification = "";
 		Idea idea = Idea.findById(ideaId);
 		//		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(idea);
