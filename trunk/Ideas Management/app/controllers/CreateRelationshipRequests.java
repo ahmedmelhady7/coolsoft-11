@@ -559,9 +559,6 @@ public class CreateRelationshipRequests extends CoolCRUD {
 
 			if (Organizations.isDuplicateRequest(source, destination, name,
 					organisationId, type, 1, 0, 0)) {
-				System.out.println(organisation.createRelationshipRequest
-						.size());
-
 				redirect("MainEntitys.viewEntity", entityId, "Request created");
 				return;
 			}
@@ -583,14 +580,10 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							+ " entities: (" + sourceEntity.name + " " + name
 							+ " " + destinationEntity.name + ")", sourceEntity,
 					destinationEntity, relationRequest, organisation, user);
-			System.out.println(organisation.createRelationshipRequest.size());
 			redirect("MainEntitys.viewEntity", entityId, "Request created");
 		} else {
 			if (Organizations.isDuplicateRequest(source, destination, name,
 					organisationId, type, 1, 0, 0)) {
-				System.out.println(organisation.createRelationshipRequest
-						.size());
-
 				redirect("MainEntitys.viewEntity", entityId, "Request created");
 				return;
 			}
@@ -612,12 +605,20 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							+ " topics: (" + sourceTopic.title + " " + name
 							+ " " + destinationTopic.title + ")", sourceTopic,
 					destinationTopic, relationRequest, organisation, user);
-			System.out.println(organisation.createRelationshipRequest.size());
 			redirect("Topics.show", topicId, "Request created");
 
 		}
 	}
 
+	/**
+	 * deletes relationship request
+	 * 
+	 * @author Noha Khater
+	 * 
+	 * @param id the id of the request to be deleted
+	 * 
+	 * @return boolean
+	 */
 	public static boolean delete(Long id) {
 		CreateRelationshipRequest request = CreateRelationshipRequest
 				.findById(id);
