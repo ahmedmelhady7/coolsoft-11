@@ -203,7 +203,32 @@
                <div class = "getD">
                	<p>Title: <a href='@{Topics.editDraft(draftTopic.id)}'>${draftTopic.title}</a></p>
                	<p>Description:	${draftTopic.description}</p>
+				
+				<table>
+					<tr>
+						<td>
+				#{form @Topics.postWithoutEdit(), method:'POST', enctype:'multipart/form-data' }
+				<input type = "hidden" name = "topicId" value = ${draftTopic.getId()}>
+				<input type="submit" value="Post" class = "linkButton"/>
+				#{/form}
+						</td>
+						<td>
+				#{form @Topics.editDraft(), method:'POST', enctype:'multipart/form-data' }
+				<input type = "hidden" name = "topicId" value = ${draftTopic.getId()}>
+				<input type="submit" value="Edit" class = "linkButton"/>
+				#{/form}
+						</td>
+						<td>
+				#{form @Topics.discardDraftTopic(), method:'POST', enctype:'multipart/form-data' }
+				<input type = "hidden" name = "topicId" value = ${draftTopic.getId()}>
+				<input type="submit" value="Discard" class = "linkButton"/>
+				#{/form}
+						</td>
+				</tr>
+				</table>
 				</div>
+				</span>
+				
 			#{/list} 
 			#{if draftTopics.size() == 0}
 				<div class = "getD">
