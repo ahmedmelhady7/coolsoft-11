@@ -926,23 +926,26 @@ public class Ideas extends CoolCRUD {
 		ideaToKeep = selectedIdeas.get(0);
 		contributorsList.add(ideaToKeep.author.username);
 
-		newDescription = newDescription + " " + "\nContributers: ";
+		if(isDifferentContributors(selectedIdeas)){
+			newDescription = newDescription + " " + "\nContributers: ";
 
-		for (int i = 1; i < selectedIdeas.size(); i++) {
-			String contributor = selectedIdeas.get(i).author.username;
-			if (i == selectedIdeas.size() - 1) {
-				if (contributorsList.indexOf(contributor) == -1) {
-					allContributors = allContributors + contributor;
-					contributorsList.add(contributor);
-				}
-			} else {
-				if (contributorsList.indexOf(contributor) == -1) {
-					allContributors = allContributors + contributor + ", ";
-					contributorsList.add(contributor);
+			for (int i = 1; i < selectedIdeas.size(); i++) {
+				String contributor = selectedIdeas.get(i).author.username;
+				if (i == selectedIdeas.size() - 1) {
+					if (contributorsList.indexOf(contributor) == -1) {
+						allContributors = allContributors + contributor;
+						contributorsList.add(contributor);
+					}
+				} else {
+					if (contributorsList.indexOf(contributor) == -1) {
+						allContributors = allContributors + contributor + ", ";
+						contributorsList.add(contributor);
+					}
 				}
 			}
+			
+	
 		}
-
 		allContributors = allContributors + " \n" + "Merger: "
 				+ merger.username;
 		newDescription = newDescription + allContributors;
@@ -968,6 +971,7 @@ public class Ideas extends CoolCRUD {
 		Log.addUserLog(log, user,ideaToKeep, targetTopic, entity, organization);
 		
 	}
+
 
 	/**
 	 * @description takes an array of ideas ids and the topic id they belong to
@@ -1032,5 +1036,30 @@ public class Ideas extends CoolCRUD {
 		json.addProperty("commentDate", c.commentDate + "");
 
 		renderJSON(json.toString());
+	}
+	
+	/**
+	 * @description checks if all contributors are different from the author
+	 * 
+	 * @author Mostafa Aboul Atta
+	 * 
+	 * @story C3S7
+	 * 
+	 * @param selectedIdeas
+	 * 			the list of selected ideas
+	 * @return
+	 * 			true if yes
+	 * 			false if no
+	 */
+	private static boolean isDifferentContributors(List<Idea> selectedIdeas) {
+		
+		String author = selectedIdeas.get(0).author.username;
+		for(int i = 1; i < selectedIdeas.size(); i++) {
+			String contributor = selectedIdeas.get(i).author.username;
+			if(author != contributor) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
