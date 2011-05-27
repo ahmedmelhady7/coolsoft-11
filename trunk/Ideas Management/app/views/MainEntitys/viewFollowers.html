@@ -199,7 +199,7 @@
 			</script>
     </head>
 
-    <body onload="init()">
+    
          #{extends 'Login/index.html' /}			
         #{set title: 'Entity Profile' /}        
 	<div id="leftSidebar">
@@ -209,8 +209,7 @@
             <ul>
             	<br />
 				<br />
-				<br />
-				<br />
+				
             #{if (canCreateSubEntity == 1)}
             <li>
                 <a href="@{MainEntitys.goToCreateSubEntity(org.id,entity.id)}">Create SubEntity</a>
@@ -390,7 +389,10 @@
 	    <br />
 			
 	  <div id="backToOrg" ><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a></div>	
-	<div>
+	<div style="background-color:#bbbbbb; border-top-left-radius: 10px;border-top-right-radius: 10px;
+				border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; margin-right:5%;padding:2% 2% 2% 2%;">
+			   <h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Entity Followers</h2>
+				<br />
 		#{if entity.followers.size() > 0}
 		These are the currently available followers: <br />
 		<ul style="list-style: none;">
@@ -405,6 +407,9 @@
 		No users are following ${entity.name} at the moment!
 		#{/else} 
 	</div>	
+	</div>
+	</div>
+	</body>
 	  
 			<head>
 			<script type="text/javascript">
