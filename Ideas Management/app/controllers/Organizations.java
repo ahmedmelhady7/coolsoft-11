@@ -641,11 +641,12 @@ public class Organizations extends CoolCRUD {
                         entitiesCanBeRelated.add(entities.get(x));
                 }
                 List<Topic> topics = new ArrayList<Topic>();
-                // for (int x = 0; x < entities.size(); x++) {
-                for (int y = 0; y < org.entitiesList.get(0).topicList.size(); y++) {
-                        topics.add(org.entitiesList.get(0).topicList.get(y));
+                 for (int x = 0; x < entities.size(); x++) {
+                for (int y = 0; y < org.entitiesList.get(x).topicList.size(); y++) {
+                	if(!org.entitiesList.get(x).topicList.get(y).isDraft && !org.entitiesList.get(x).topicList.get(y).hidden)
+                        topics.add(org.entitiesList.get(x).topicList.get(y));
                 }
-                // }
+                 }
 
                 for (int x = 0; x < entitiesCanBeRelated.size(); x++) {
                         if (!entitiesCanBeRelated.get(x).createRelationship)
@@ -891,10 +892,8 @@ public class Organizations extends CoolCRUD {
                 organization.creator.createdOrganization.remove(organization);
                 organization.creator.save();
                 // fadwa
-                for (int i = 0; i < organization.joinRequests.size(); i++){
+                for (int i = 0; i < organization.joinRequests.size(); i++)
                         organization.joinRequests.get(i).delete();
-                        organization.save();
-                }
                 // fadwa
 
                 // Mai Magdy
