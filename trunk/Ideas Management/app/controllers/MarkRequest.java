@@ -78,27 +78,28 @@ public class MarkRequest extends Controller {
 
 	public static int sendRequest(long idea1ID, long idea2ID, String des) {
 		User user = Security.getConnected();
-		Idea i1 = Idea.findById(idea1ID);
-		Idea i2 = Idea.findById(idea2ID);
-		notFoundIfNull(i1);
-		notFoundIfNull(i2);
-		Long ideaOrg1 = i1.belongsToTopic.id;
-		Long ideaOrg2 = i2.belongsToTopic.id;
+		Idea idea1 = Idea.findById(idea1ID);
+		Idea idea2 = Idea.findById(idea2ID);
+		notFoundIfNull(idea1);
+		notFoundIfNull(idea2);
+		Long ideaOrg1 = idea1.belongsToTopic.id;
+		Long ideaOrg2 = idea2.belongsToTopic.id;
 		List<LinkDuplicatesRequest> requests = LinkDuplicatesRequest.findAll();
 		int returnint = -1;
 		if (requests.size() == 0) {
 			if (ideaOrg1 == ideaOrg2) {
 				LinkDuplicatesRequest request = new LinkDuplicatesRequest(user,
-						i1, i2, des);
+						idea1, idea2, des);
 				request.save();
 				user.sentMarkingRequests.add(request);
 				user.save();
-				i1.belongsToTopic.creator.receivedMarkingRequests.add(request);
-				i1.belongsToTopic.creator.save();
-				for (int j = 0; j < i1.belongsToTopic.getOrganizer().size(); j++) {
-					i1.belongsToTopic.getOrganizer().get(j).receivedMarkingRequests
+				idea1.belongsToTopic.creator.receivedMarkingRequests
+						.add(request);
+				idea1.belongsToTopic.creator.save();
+				for (int j = 0; j < idea1.belongsToTopic.getOrganizer().size(); j++) {
+					idea1.belongsToTopic.getOrganizer().get(j).receivedMarkingRequests
 							.add(request);
-					i1.belongsToTopic.getOrganizer().get(j).save();
+					idea1.belongsToTopic.getOrganizer().get(j).save();
 					user.sentMarkingRequests.add(request);
 					user.save();
 				}
@@ -108,24 +109,25 @@ public class MarkRequest extends Controller {
 			}
 		} else {
 			for (int i = 0; i < requests.size(); i++) {
-				if ((requests.get(i).idea1.id == i1.id && requests.get(i).idea2.id == i2.id)
-						|| (requests.get(i).idea1.id == i2.id && requests
-								.get(i).idea2.id == i1.id)) {
+				if ((requests.get(i).idea1.id == idea1.id && requests.get(i).idea2.id == idea2.id)
+						|| (requests.get(i).idea1.id == idea2.id && requests
+								.get(i).idea2.id == idea1.id)) {
 					return 2;
 				}
 			}
 			if (ideaOrg1 == ideaOrg2) {
 				LinkDuplicatesRequest request = new LinkDuplicatesRequest(user,
-						i1, i2, des);
+						idea1, idea2, des);
 				request.save();
 				user.sentMarkingRequests.add(request);
 				user.save();
-				i1.belongsToTopic.creator.receivedMarkingRequests.add(request);
-				i1.belongsToTopic.creator.save();
-				for (int j = 0; j < i1.belongsToTopic.getOrganizer().size(); j++) {
-					i1.belongsToTopic.getOrganizer().get(j).receivedMarkingRequests
+				idea1.belongsToTopic.creator.receivedMarkingRequests
+						.add(request);
+				idea1.belongsToTopic.creator.save();
+				for (int j = 0; j < idea1.belongsToTopic.getOrganizer().size(); j++) {
+					idea1.belongsToTopic.getOrganizer().get(j).receivedMarkingRequests
 							.add(request);
-					i1.belongsToTopic.getOrganizer().get(j).save();
+					idea1.belongsToTopic.getOrganizer().get(j).save();
 					user.sentMarkingRequests.add(request);
 					user.save();
 				}
@@ -156,26 +158,26 @@ public class MarkRequest extends Controller {
 	public static void accept(long reqID) {
 		User user = Security.getConnected();
 		LinkDuplicatesRequest request = LinkDuplicatesRequest.findById(reqID);
-		Idea i1 = request.idea1;
-		Idea i2 = request.idea2;
-		i1.duplicateIdeas.add(i2);
-		i1.save();
-		i2.duplicateIdeas.add(i1);
-		i2.save();
+		Idea idea1 = request.idea1;
+		Idea idea2 = request.idea2;
+		idea1.duplicateIdeas.add(idea2);
+		idea1.save();
+		idea2.duplicateIdeas.add(idea1);
+		idea2.save();
 		User sender = request.sender;
-		i1.belongsToTopic.creator.receivedMarkingRequests.remove(request);
-		i1.belongsToTopic.creator.save();
-		for (int i = 0; i < i1.belongsToTopic.getOrganizer().size(); i++) {
-			if (i1.belongsToTopic.getOrganizer().get(i).id != user.id) {
-				Notifications.sendNotification(i1.belongsToTopic.getOrganizer()
-						.get(i).id, i1.id, "Idea",
+		idea1.belongsToTopic.creator.receivedMarkingRequests.remove(request);
+		idea1.belongsToTopic.creator.save();
+		for (int i = 0; i < idea1.belongsToTopic.getOrganizer().size(); i++) {
+			if (idea1.belongsToTopic.getOrganizer().get(i).id != user.id) {
+				Notifications.sendNotification(idea1.belongsToTopic
+						.getOrganizer().get(i).id, idea1.id, "Idea",
 						"An organizer approved the duplicating request");
 			}
 		}
 		sender.sentMarkingRequests.remove(request);
 		sender.save();
 		request.delete();
-		Notifications.sendNotification(sender.id, i1.id, "Idea",
+		Notifications.sendNotification(sender.id, idea1.id, "Idea",
 				"An organizer approved your duplicating request");
 	}
 
@@ -196,25 +198,25 @@ public class MarkRequest extends Controller {
 
 	public static void reject(long reqID) {
 		LinkDuplicatesRequest request = LinkDuplicatesRequest.findById(reqID);
-		Idea i1 = request.idea1;
-		Idea i2 = request.idea2;
+		Idea idea1 = request.idea1;
+		Idea idea2 = request.idea2;
 		User user = Security.getConnected();
-		i1.duplicateIdeas.add(i2);
-		i2.duplicateIdeas.add(i1);
+		idea1.duplicateIdeas.add(idea2);
+		idea2.duplicateIdeas.add(idea1);
 		User sender = request.sender;
-		i1.belongsToTopic.creator.receivedMarkingRequests.remove(request);
-		i1.belongsToTopic.creator.save();
-		for (int i = 0; i < i1.belongsToTopic.getOrganizer().size(); i++) {
-			if (i1.belongsToTopic.getOrganizer().get(i).id != user.id) {
-				Notifications.sendNotification(i1.belongsToTopic.getOrganizer()
-						.get(i).id, i1.id, "Idea",
+		idea1.belongsToTopic.creator.receivedMarkingRequests.remove(request);
+		idea1.belongsToTopic.creator.save();
+		for (int i = 0; i < idea1.belongsToTopic.getOrganizer().size(); i++) {
+			if (idea1.belongsToTopic.getOrganizer().get(i).id != user.id) {
+				Notifications.sendNotification(idea1.belongsToTopic
+						.getOrganizer().get(i).id, idea1.id, "Idea",
 						"An organizer rejected the duplicating request");
 			}
 		}
 		sender.sentMarkingRequests.remove(request);
 		sender.save();
 		request.delete();
-		Notifications.sendNotification(sender.id, i1.id, "Idea",
+		Notifications.sendNotification(sender.id, idea1.id, "Idea",
 				"An organizer rejected your duplicating request");
 	}
 }
