@@ -366,13 +366,24 @@ public class Topic extends CoolModel {
 		User user = User.findById(userId);
 		if (!hasRequest(userId)) {
 			RequestToJoin r;
-			if (getOrganizer().size() > 0) {
+			List<User> organizaers = getOrganizer();
+			if (organizaers.size() > 0) {
 				r = new RequestToJoin(user, this, this.entity.organization,
 						"I would like to post").save();
-
+				for (int i = 0; i > organizaers.size(); i++)
+					Notifications.sendNotification(organizaers.get(i).id, id,
+							"topic", user.username
+									+ " has requested to post on topic "
+									+ title);
+				Notifications.sendNotification(entity.organization.creator.id,
+						id, "topic", user.username
+								+ " has requested to post on topic " + title);
 			} else {
 				r = new RequestToJoin(user, this, this.entity.organization,
 						"I would like to post").save();
+				Notifications.sendNotification(entity.organization.creator.id,
+						id, "topic", user.username
+								+ " has requested to post on topic " + title);
 			}
 			requestsToJoin.add(r);
 			_save();
