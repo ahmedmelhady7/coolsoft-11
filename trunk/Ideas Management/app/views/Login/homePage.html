@@ -1,33 +1,235 @@
 #{extends 'Login/index.html' /}
 #{set title:'Home Page' /}
 
+<style type="text/css">
+#crudShow{
+			margin-top: 2%;
+			margin-right: 0%;
+			margin-bottom: 4%;
+			margin-left: 0%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #bbbbbb;
+			padding-top: 2%;
+			padding-right: 0%;
+			padding-bottom: 0%;
+			padding-left: 14%;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			border-right-width: 2px;
+			border-right-style: solid;
+			border-right-color: #bbbbbb;
+			border-left-width: 2px;
+			border-left-style: solid;
+			border-left-color: #bbbbbb;
+			border-top-width: 2px;
+			border-top-style: solid;
+			border-top-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+#crudShow h3:hover{
+	text-decoration:underline;
+}
+#descriptionShow{
+			margin-top: 2%;
+			margin-right: 5%;
+			margin-bottom: 4%;
+			margin-left: 5%;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background-color: #FFFFFF;
+			padding-top: 2%;
+			padding-right: 4%;
+			padding-bottom: 0%;
+			padding-left: 4%;
+			position: relative;
+			border-bottom-width: 2px;
+			border-bottom-style: solid;
+			border-bottom-color: #bbbbbb;
+			word-wrap: break-word;
+		}
+		
+#pageForHome {
+	width: 74%;
+	float:left;
+	margin: auto;	
+	padding-left: 4%;
+}
 
-<script src="/public/javascripts/bmi.js" language="javascript">
-</script>
+#pageForHome-bgtop {
+	padding: 20px 0px;
+}
+</style>
 
 
+
+<div id="pageForHome">
+		<div id="pageForHome-bgtop">			
+				<div id="content">
+					<div class="post">
 #{if flash.success}
    <p style="color:green">
     <font size=4>${flash.success}</font>
    </p>
+   <br>
 #{/if}
 #{if flash.error}
    <p style="color:red">
     <font size=4>${flash.error}</font>
    </p>
+   <br>
 #{/if}
+			<div id="crudShow">			
+					<h1><font size=6 style="color:black">Welcome to Ideas Management</font></h1>
+					<br>
+					<br>					
+					<h3 style="color:blue" id="opOrg" style="cursor:pointer"> <img src="/public/images/icons/database.png" width="14px" height="14px">
+					 My Organizations</h3>
+					<br>
+					<div id="orgList">
+					<div id="descriptionShow">
+					#{ifnot user.getOrganizations()}
+					<i>You are currently not enrolled in any organizations</i>
+					#{/ifnot}
+					<ul>
+					#{list items:user.getOrganizations(), as:'org'}
+					<li>
+					<a href="@{Organizations.viewProfile(org.id)}">${org.name}</a>
+					</li>
+					#{/list}
+					</ul>
+					</div>
+					</div>
+					<br>					
+					<h3 style="color:blue" id="opFollow" style="cursor:pointer"> 
+					<img src="/public/images/icons/database.png" width="14px" height="14px"> My Follow List</h3>
+					<br>
+					<div id="followList">
+					<div id="descriptionShow">
+					<b>Organizations</b>
+                        #{ifnot user.followingOrganizations}
+                         <br/>
+                         <i>No organizations</i> 
+                         #{/ifnot}
+                                   <ul>
+                                   #{list items:user.followingOrganizations, as:'organization'}
+                                           <li>
+                                           <a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>  <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="org('${organization.id}');"/>
+                                            </li>
+                                   #{/list}
+                                   </ul>
+                      <b>Entities</b>
+                          #{ifnot user.followingEntities}
+                          <br/>
+                          <i>No entities</i> 
+                          #{/ifnot}
+                                  <ul>
+                                  #{list items:user.followingEntities, as:'entity'}
+                                  <li>
+                                  <a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>   <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="entity('${entity.id}');"/>
+                                  </li>
+                                  #{/list}
+                                  </ul>
+                       <b>Topics</b>
+                           #{ifnot user.topicsIFollow}
+                           <br/>
+                           <i>No topics</i> 
+                           #{/ifnot}
+                                   <ul>
+                                   #{list items:user.topicsIFollow, as:'topic'}
+                                   <li>
+                                   <a href="@{Topics.show(topic.id)}">${topic.title}</a>  <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="topic('${topic.id}');"/>
+                                   </li>
+                                   #{/list}
+                                   </ul>
+                         <b>Tags</b>
+                            #{ifnot user.followingTags}
+                            <br/>
+                            <i>No tags</i> 
+                            #{/ifnot}                                           
+								    <ul>
+                                    #{list items:user.followingTags, as:'tag'}
+                                     <li>
+                                    <a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>  <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="tag('${tag.id}');"/>
+                                    </li>
+                                    #{/list}
+                                    </ul>
+                         </div>
+                         </div>
+                         <br>                         
+                         <h3 style="color:blue" id="opRec" style="cursor:pointer"> <img src="/public/images/icons/database.png" width="14px" height="14px"> Recent Activities</h3>
+                         <br>
+                         <div id="recentList">
+                         <div id="descriptionShow">
+                         #{if user.getRecentActivity().size() == 0}
+                         <i>You have no recent activities!!</i>
+                         #{/if}
+                         #{list items:user.getRecentActivity(), as:'log'}
+                         <ul>
+                         	<li>
+                         	${log.actionDescription}
+                         	<font size=2 style="float:right;">${log.time}</font>
+                         	</li>
+                         </ul>
+                         #{/list}
+                         </div>                         
+                         </div>
+				 </div>
+			</div>
+					
+			</div>
+		</div>
+	</div>
 
-<h1>Welcome</h1>
 
-<form action="@{Notifications.notificationIndex()}" method="post">
-	Send Notification: <i>(just for testing)</i><input type="submit" value="Notify">
-</form>
-<br>
-<br>
-<a href="/users/notificationview?type=All">View Notifications</a>
-<br>
-<a href="/users/notificationprofileview?type=All">View Notification Profiles</a>
-<br>
-<br>
+
+<script type="text/javascript" language="javascript">
+     $('#followList').hide();
+     $('#orgList').hide();
+     $('#recentList').hide();
+     $(function(){
+    	var org=true;
+    	var follow=true;
+    	var recent=true;
+    	$('#opOrg').click(function(){
+            if (org) {
+                $('#orgList').show(500);
+                org = false;
+            }
+            else {
+                $('#orgList').hide(500);
+                org = true;
+            }
+        });
+    	
+    	$('#opFollow').click(function(){
+            if (follow) {
+                $('#followList').show(500);
+                follow = false;
+            }
+            else {
+                $('#followList').hide(500);
+                follow = true;
+            }
+        });
+    	
+    	$('#opRec').click(function(){
+            if (recent) {
+                $('#recentList').show(500);
+                recent = false;
+            }
+            else {
+                $('#recentList').hide(500);
+                recent = true;
+            }
+        });
+     });
+     
+</script>                
 
 
