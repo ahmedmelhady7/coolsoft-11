@@ -1,63 +1,244 @@
-#{extends 'main.html' /}
+#{extends 'login/index.html' /}
 #{set title:'Request Relationship Creation' /}
-
 <html>
-	<title> Request Relationship Creation </title>
-	<body>
-		<head>
-			<form action="@{CreateRelationshipRequests.createRequest(user.id, source, destination, name, organisation.id, entity.id, 0, 0)}" method="post"
-			onsubmit= "return validate()">
-				<p>
-				<h4>Create Relationship:</h4>
-				</p>
-				</br>
-				</br>
-				<p>
-				Source Entity:
-				<select name="source" id="sourceEntity">
-					#{list items: organisation.entitiesList, as:'entity'}
-					#{if (entity.createRelationship == true)}
-						<option>${entity.name}</option>
-					#{/if}
-					#{/list}
-				</select>
-				</br>
-				</p>
-				<p>
-				Relationship Name:
-				<select name="name" id="relationName">
-					#{list items: organisation.relationNames, as:'name'}
-					<option>${name}</option>
-					#{/list}
-				</select>
-				</br>
-				</p>
-				<p>
-				Destination Entity:
-				<select name="destination" id="destinationEntity">
-					#{list items: organisation.entitiesList, as:'entity'}
-					#{if (entity.createRelationship == true)}
-						<option>${entity.name}</option>
-					#{/if}
-					#{/list}
-				</select>
-				</br>
-				</br>
-				</p>
-				<input type="submit" value="Request Creation" />
-			</form>
-			<script type="text/javascript">
-			
-			function validate() {
-				var src = document.getElementById('sourceEntity').value;
-				var dst = document.getElementById('destinationEntity').value;
-				if (src == dst) {
-					alert("The source and destination should be different");
-					return false;
-				} 
-				alert("Your request has been sent");				
-			}
-			</script>
-		</head>
-	</body>
+    <title>Request Relationship Creation </title>
+    <head>
+        <meta name="generator" content="HTML Tidy, see www.w3.org">
+        <style type="text/css">
+            body {
+                font-size: 80%;
+                font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+            }
+            
+            #showRequest {
+                margin-top: 1%;
+                margin-right: 5%;
+                margin-bottom: 4%;
+                margin-left: 0%;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                border-bottom-left-radius: 10px;
+                background-color: #bbbbbb;
+                padding-top: 2%;
+                padding-right: 4%;
+                padding-bottom: 0%;
+                padding-left: 4%;
+                position: relative;
+                border-bottom-width: 2px;
+                border-bottom-style: solid;
+                border-bottom-color: #bbbbbb;
+                border-right-width: 2px;
+                border-right-style: solid;
+                border-right-color: #bbbbbb;
+                border-left-width: 2px;
+                border-left-style: solid;
+                border-left-color: #bbbbbb;
+                border-top-width: 2px;
+                border-top-style: solid;
+                border-top-color: #bbbbbb;
+                word-wrap: break-word;
+            }
+        </style>
+    </head>
+    <div id="leftSidebar">
+        <ul>
+            <div style="clear: both;">
+                &nbsp;
+            </div>
+            <li>
+            <ul>
+                #{if (canCreateSubEntity == 1)}
+                <li>
+                    <a href="@{MainEntitys.goToCreateSubEntity(organisation.id,entity.id)}">Create SubEntity</a>
+                </li>
+                #{/if} <!-- ################## -->
+                <li>
+                #{if (canEdit == 1)}
+                <li>
+                    <a href="@{MainEntitys.editEntityPage(entity.id)}">Edit ${entity.name}</a>
+                </li>
+                #{/if}<!-- ################## -->#{if (canDeleteEntity == 1)}
+                <li>
+                    <a href="@{MainEntitys.deleteEntity(entity.id)}">Delete ${entity.name}</a>
+                </li>
+                #{/if} <!-- ################## -->
+                <li>
+                    <a id="subentityLink" style="cursor:pointer;">Subentities </a>
+                    <div id="subentityLinks">
+                        <ul>
+                            #{if (subentities.size() > 0)}
+                            #{list items:subentities, as:'subentity'}
+                            <li type="disc">
+                                <a href="@{MainEntitys.viewEntity(subentity.id)}">${subentity.name}</a>
+                            </li>
+                            #{/list}
+                            #{/if}
+                            #{else}
+                            <li type="disc">
+                                No subentities yet!
+                            </li>
+                            #{/else}
+                        </ul>
+                    </div>
+                </li>
+                <!-- ################## -->#{if follower == true}
+                <li>
+                    <a onclick="unfollow('${entity.id}');">Unfollow ${entity.name}</a>
+                </li>
+                #{/if}
+                #{else}
+                <li>
+                    <a href="@{followEntity(entity.id)}">Follow ${entity.name}</a>
+                </li>
+                #{/else}<!-- ################## -->
+                <li>
+                    <a href="@{viewFollowers(entity.id, "false")}">View Followers</a>
+                </li>
+                <!-- ################## --> #{if (canRequestRelationship == 1)}
+                <li>
+                    <a href="@{MainEntitys.requestRelationship(user.id, organisation.id, entity.id)}">Request Relationship</a>
+                </li>
+                #{/if}<!-- ################## -->#{if (canRequestRelationship == 1)}
+                <li>
+                    <a href="@{MainEntitys.viewRelationships(user.id, organisation.id, entity.id, canRequestRelationship)}">View Relationships</a>
+                </li>
+                #{/if} <!-- ################## --> #{if plans.size()>0}
+                <li>
+                    <a id="planLink" style="cursor:pointer;">Plans </a>
+                    <div id="plansLinks">
+                        <ul>
+                            #{list items:plans, as:'plan'}
+                            <li>
+                                <a href="@{Plans.viewAsList(plan.id)}">${plan.title} </a>
+                            </li>
+                            #{/list}
+                        </ul>
+                    </div>
+                </li>
+                #{/if}<!-- ################## -->#{if entity.relatedItems.size()>0}
+                <li>
+                    <a id="relatedItemsLink" style="cursor:pointer;">Related Items </a>
+                    <div id="relatedItemsLinks">
+                        <ul>
+                            #{list items:entity.relatedItems, as:'item'}
+                            <li>
+                                <a href="@{Plans.viewAsList(item.plan.id)}">${item.summary} </a>
+                            </li>
+                            #{/list}
+                        </ul>
+                    </div>
+                </li>
+                #{/if}<!-- ################## -->
+            </ul>
+            </li>
+        </ul>
+    </div>
+    <div id="page">
+        <div id="page-bgtop">
+            <div id="showRequest">
+                <body>
+                <form action="@{CreateRelationshipRequests.createRequest(user.id, source, destination, name, organisation.id, entity.id, 0, 0)}" method="post" onsubmit="return validate()">
+                <p>
+                    <h2 style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">Create Relationship</h2>
+                    <br/>
+                </p>
+                </br>
+                </br>
+                <p>
+                Source Entity:
+                <select name="source" id="sourceEntity">
+                    #{list items: organisation.entitiesList, as:'entity'}
+                    #{if (entity.createRelationship == true)}<option>${entity.name}</option>
+                    #{/if}
+                    #{/list}
+                </select>
+                </br>
+            </p>
+            <p>
+            Relationship Name:
+            <select name="name" id="relationName">
+                #{list items: organisation.relationNames, as:'name'}<option>${name}</option>
+                #{/list}
+            </select>
+            </br>
+        </p>
+        <p>
+            Destination Entity:
+            <select name="destination" id="destinationEntity">
+                #{list items: organisation.entitiesList, as:'entity'}
+                #{if (entity.createRelationship == true)}<option>${entity.name}</option>
+                #{/if}
+                #{/list}
+            </select>
+        </p>
+        <input type="submit" value="Request Creation" class="linkButton" />
+        </form>
+        <script type="text/javascript">
+            			        var planFlag = true;
+            		        $('#plansLinks').hide();
+            		        $('#planLink').click(function(){
+            		            if (planFlag) {
+            		                $('#plansLinks').show(500);
+            		                planFlag = false;
+            		            }
+            		            else {
+            		                $('#plansLinks').hide(500);
+            		                planFlag = true;
+            		            }
+            		        });
+            				
+            				var relatedItemsFlag = true;
+            		        $('#relatedItemsLinks').hide();
+            		        $('#relatedItemsLink').click(function(){
+            		            if (relatedItemsFlag) {
+            		                $('#relatedItemsLinks').show(500);
+            		                relatedItemsFlag = false;
+            		            }
+            		            else {
+            		                $('#relatedItemsLinks').hide(500);
+            		                relatedItemsFlag = true;
+            		            }
+            		        });
+            				
+            				var subentityFlag = true;
+            		        $('#subentityLinks').hide();
+            		        $('#subentityLink').click(function(){
+            		            if (subentityFlag) {
+            		                $('#subentityLinks').show(500);
+            		                subentityFlag = false;
+            		            }
+            		            else {
+            		                $('#subentityLinks').hide(500);
+            		                subentityFlag = true;
+            		            }
+            		        });
+            				
+                            var followerFlag = false;
+                            $('#followersLinks').hide();
+                            $('#followersLink').click(function(){
+                                if (followerFlag) {
+                                    $('#followersLinks').show(500);
+                                    followerFlag = false;
+                                }
+                                else {
+                                    $('#followersLinks').hide(500);
+                                    followerFlag = true;
+                                }
+                            });
+        function validate() {
+        var src = document.getElementById('sourceEntity').value;
+        var dst = document.getElementById('destinationEntity').value;
+        if (src == dst) {
+        alert("The source and destination should be different");
+        return false;
+        } else {
+        alert("Your request has been sent.");
+        }
+        }
+    </script>
+</body>
+</div>
+</div>
+</div>
 </html>
