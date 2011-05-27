@@ -424,13 +424,13 @@ public class Ideas extends CoolCRUD {
 			System.out.println("show() done, about to render");
 			boolean permittedToTagIdea = user.equals(idea.author)
 					|| Users.isPermitted(user, "tag ideas in my organization",
-							 topicId, "topic") || Users.isPermitted(user, "use", topicId, "topic")
-							 || idea.belongsToTopic.entity.organization.createTag;
-			render(type, ideasLabels, object, /* tags, */user,isAdmin, username, userId,
+							 topicId, "topic") || Users.isPermitted(user, "use", topicId, "topic");
+			List<Tag> tags = idea.tagsList;
+			render(type, ideasLabels, object, tags, user,isAdmin, username, userId,
 					canReport, canDelete, comments, topic, plan,
 					permittedToTagIdea,
 					/* openToEdit, */topicId,notInPlan,ideaAlreadyReported, canUse,
-					deletemessage, /*
+					deletemessage,  /*
 									 * deletable ,
 									 */
 					ideaId, rate, idea, priority, userNames, checkPermitted,
@@ -476,7 +476,7 @@ public class Ideas extends CoolCRUD {
 	 * @param Ideaid
 	 *            : id of the idea to be show
 	 * 
-	 * @description This method is resposible for viewing an idea
+	 * @description This method is responsible for viewing an idea
 	 * 
 	 * 
 	 */
@@ -692,7 +692,7 @@ public class Ideas extends CoolCRUD {
 			}
 		}
 
-		if (!tagExists) {
+		if (!tagExists && idea.belongsToTopic.entity.organization.createTag) {
 			tempTag = new Tag(tag, idea.belongsToTopic.entity.organization, user);
 			idea.tagsList.add(tempTag);
 			tempTag.taggedIdeas.add(idea);
@@ -889,6 +889,7 @@ public class Ideas extends CoolCRUD {
 					+ "%";
 		}
 		long idd = selectedIdeas.get(0).getId();
+		System.out.println(selectedIdeasString + " " + idd);
 
 		render(selectedIdeas, topicId, selectedIdeasString, idd, user);
 	}

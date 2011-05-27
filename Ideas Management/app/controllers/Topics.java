@@ -113,7 +113,7 @@ public class Topics extends CRUD {
 			}
 		}
 
-		if (!tagExists) {
+		if (!tagExists && topic.entity.organization.createTag) {
 			tempTag = new Tag(tag, topic.entity.organization, user);
 			topic.tags.add(tempTag);
 			tempTag.taggedTopics.add(topic);
@@ -823,8 +823,7 @@ public class Topics extends CRUD {
 			check = 1;
 
 		boolean allowedToTag = Users.isPermitted(user, "tag topics", topicId,
-				"topic") || Users.isPermitted(user, "use", topicId, "topic") || 
-				temporaryTopic.entity.organization.createTag;
+				"topic") || Users.isPermitted(user, "use", topicId, "topic");
 
 		int check1 = 0;
 		if (Users.isPermitted(Security.getConnected(), "view", topicIdLong,
@@ -1831,23 +1830,14 @@ public class Topics extends CRUD {
 		try {
 
 			deleteTopic(id, justification);
-			
 		}
 
 		catch (Exception exception) {
 			flash.error(Messages.get("crud.delete.error", type.modelName));
-			if(!entity.equals(entity.organization.entitiesList.get(0)))
-			redirect("mainentitys.viewentity", entity.id);
-			else{
-				redirect("organizations.viewprofile", entity.organization.id);
-			}
+			redirect(request.controller + ".show", object._key());
 		}
 		flash.success(Messages.get("crud.deleted", type.modelName));
-		if(!entity.equals(entity.organization.entitiesList.get(0)))
-			redirect("mainentitys.viewentity", entity.id);
-			else{
-				redirect("organizations.viewprofile", entity.organization.id);
-			}
+		redirect("mainentitys.viewentity", entity.id);
 	}
 
 	/**
