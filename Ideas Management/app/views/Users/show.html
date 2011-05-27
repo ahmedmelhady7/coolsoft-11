@@ -1,4 +1,10 @@
 #{extends '/users/layout.html' /}
+
+#{if request.actionMethod != 'index'}
+            <div id="crudBreadcrumb">
+                #{crud.navigation /}
+            </div>
+#{/if}
 <h3>
 <label>
 	View User
@@ -12,7 +18,7 @@
 	<div class="objectForm">
 		#{form action:@view(object._key()), enctype:'multipart/form-data'}
 
-		#{crud.form fields: ['email','username', 'firstName','lastName', 'communityContributionCounter','dateofBirth',  'country', 'profession']}
+		#{crud.form fields: ['email','username', 'firstName','lastName', 'communityContributionCounter','dateofBirth',  'country', 'profession','isAdmin']}
 
 		#{crud.custom 'email'}
 		<p>
@@ -84,19 +90,34 @@
 			<textarea disabled= true id="object_profession" cols="30" rows="1" class="" name="object.profession">${object.profession}</textarea>
 		</p>
 		#{/crud.custom }
+		
 
 		#{/crud.form }
 		<button type="submit" onclick= >
 			Edit
 		</button>
 		#{/form}
+		
+	#{if admin == 0}	
+	#{if isDeleted == 0}
 	</div>
 	<form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         <p class="crudDelete">
         	<input type="hidden" name = "deletionMessage" id = "justText">
-            <input type="submit" value="&{'crud.delete', type.modelName}" />
+            <input type="submit" value="&{'Delete User', type.modelName}" />
         </p>
     </form>
+    #{/if}
+    #{/if}
+    
+    
+    #{if isDeleted == 1}
+    <form action="@{undelete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" >
+        <p class="crudDelete">
+            <input type="submit" value="&{'Undelete User', type.modelName}" />
+        </p>
+    </form>
+    #{/if}
 </div>
 
 <script type="text/javascript">
