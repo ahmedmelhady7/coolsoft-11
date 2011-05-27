@@ -1443,6 +1443,7 @@ public class BannedUsers extends CoolCRUD {
 
 			List<User> users = Users.getIdeaDevelopers(numId, "entity");
 			MainEntity object = MainEntity.findById(numId);
+			notFoundIfNull(object);
 			List<Integer> count = new ArrayList<Integer>();
 			for (int i = 0; i < users.size(); i++) {
 				BannedUser banned1 = BannedUser.find(
@@ -1474,6 +1475,7 @@ public class BannedUsers extends CoolCRUD {
 				check = 1;
 			List<User> users = Users.getIdeaDevelopers(numId, "topic");
 			Topic object = Topic.findById(numId);
+			notFoundIfNull(object);
 			List<Integer> count = new ArrayList<Integer>();
 			for (int i = 0; i < users.size(); i++) {
 				BannedUser banned1 = BannedUser.find(
@@ -1536,6 +1538,7 @@ public class BannedUsers extends CoolCRUD {
 			String text, String message) {
 
 		User user = User.findById(userId);
+		notFoundIfNull(user);
 		User organizer = Security.getConnected();
 
 		List<User> organizers = new ArrayList<User>();
@@ -1544,7 +1547,7 @@ public class BannedUsers extends CoolCRUD {
 
 		if (id == 0) {
 			entity = MainEntity.findById(numId);
-
+			notFoundIfNull(entity);
 			if (type == 0) {
 
 				if (text.equals("Block from viewing")) {
@@ -1661,6 +1664,7 @@ public class BannedUsers extends CoolCRUD {
 			}
 		} else {
 			topic = Topic.findById(numId);
+			notFoundIfNull(topic);
 			entity = topic.entity;
 			organizers = Users.getEntityOrganizers(entity);
 			organizers.remove(user);
@@ -1821,7 +1825,9 @@ public class BannedUsers extends CoolCRUD {
 			action = "use";
 
 		MainEntity entity = MainEntity.findById(entId);
+		notFoundIfNull(entity);
 		User user = User.findById(userId);
+		notFoundIfNull(user);
 
 		if (choice == 0) {
 			BannedUser block = new BannedUser(user, entity.organization,
