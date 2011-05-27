@@ -70,7 +70,7 @@ public class Search extends Controller {
 	 * 
 	 * @story C4S02 :: Advanced Search; display html page to take input and that
 	 *        goes to advSR(...) method.
-	 *  
+	 * 
 	 */
 	public static void advancedSearch() {
 		User user = Security.getConnected();
@@ -128,7 +128,7 @@ public class Search extends Controller {
 					entitiesFound, topicsFound, plansFound, itemsFound, user);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @author M Ghanem
@@ -340,7 +340,7 @@ public class Search extends Controller {
 	 * @param keyword
 	 *            : the keyword the user enters to search for
 	 * 
-	 * @return List<Object>
+	 * @return List<Organization>
 	 * 
 	 * @description the method that searches for organizations with the keyword
 	 *              given
@@ -394,7 +394,7 @@ public class Search extends Controller {
 	 * @param keyword
 	 *            : the keyword the user enters to search for
 	 * 
-	 * @return List<Object>
+	 * @return List<MainEntity>
 	 * 
 	 * @description the method that searches for entities with the keyword given
 	 */
@@ -445,7 +445,7 @@ public class Search extends Controller {
 	 * @param keyword
 	 *            : the keyword the user enters to search for
 	 * 
-	 * @return List<Object>
+	 * @return List<Idea>
 	 * 
 	 * @description the method that searches for ideas with the keyword given
 	 */
@@ -500,7 +500,7 @@ public class Search extends Controller {
 	 * @param keyword
 	 *            : the keyword the user enters to search for
 	 * 
-	 * @return List<Object>
+	 * @return List<Topic>
 	 * 
 	 * @description the method that searches for Topics with the keyword given
 	 */
