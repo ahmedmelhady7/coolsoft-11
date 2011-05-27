@@ -678,6 +678,7 @@ public class Topics extends CRUD {
 		// directed to a different page
 		Organization organization = entity.organization;
 		long organizationId = organization.id;
+		String organizationName = organization.name;
 		boolean isDefaultEntity;
 		
 		if(entity.equals(organization.entitiesList.get(0))) {
@@ -691,10 +692,10 @@ public class Topics extends CRUD {
 
 		if (permission == 1) {
 			try {
-				render(type, entityId, user, entity, isDefaultEntity, organizationId);
+				render(type, entityId, user, entity, isDefaultEntity, organizationId,organizationName);
 
 			} catch (TemplateNotFoundException exception) {
-				render("CRUD/blank.html", type, entityId, user, entity);
+				render("CRUD/blank.html", type, entityId, user, entity,isDefaultEntity,organizationName);
 			}
 		} else {
 			BannedUsers.unauthorized();
@@ -1161,6 +1162,10 @@ public class Topics extends CRUD {
 						topicIdLong, "Topic")) {
 			canRequestRelationship = true;
 		}
+		boolean defaultEntity = false;
+		if (targetTopic.entity.equals(organization.entitiesList.get(0))) {
+			defaultEntity = true;
+		}
 
 		if (permission == 1) {
 			try {
@@ -1170,7 +1175,7 @@ public class Topics extends CRUD {
 						alreadyReportedTopic, canReport, numberOfIdeas,
 						canClose, canMerge, canPlan, check,
 						canCreateRelationship, follower, canNotPost, pending,
-						canRestrict, organization, canRequestRelationship);
+						canRestrict, organization, canRequestRelationship,defaultEntity);
 			} catch (TemplateNotFoundException exception) {
 				render("/topics/view.html", type, object, tags, creator,
 						followers, ideas, comments, entity, plan, openToEdit,
@@ -1179,7 +1184,7 @@ public class Topics extends CRUD {
 						alreadyReportedTopic, canReport, numberOfIdeas,
 						canClose, canMerge, canPlan, check,
 						canCreateRelationship, follower, canNotPost, pending,
-						canRestrict, canRequestRelationship, organization);
+						canRestrict, canRequestRelationship, organization,defaultEntity);
 			}
 		} else {
 			BannedUsers.unauthorized();

@@ -97,7 +97,12 @@
     </ul>
 </div>
 
-<div id="backToEntity" ><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a></div>
+#{if !isDefaultEntity}
+			<div id="backToEntity" ><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a></div>
+			#{/if}
+			#{else}
+			<a href="@{Organizations.viewProfile(organizationId)}"> Back to ${organizationName}</a>
+			#{/else}
 <div id="crudShow" class="${type.name}">
 	
 	<h2 id="crudBlankTitle" style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">&{'crud.blank.title', type.modelName}</h2>

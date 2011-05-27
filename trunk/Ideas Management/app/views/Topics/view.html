@@ -250,7 +250,13 @@ xx            </ul>
 
 <div id="page">
 	<div id="page-bgtop">
-	<div id = "backToEntity"><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a> </div>
+		#{if !defaultEntity}
+			<div id="backToEntity" ><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a></div>
+			#{/if}
+			#{else}
+			<a href="@{Organizations.viewProfile(organization.id)}"> Back to ${organization.name}</a>
+			#{/else}
+	
     <div id="crudShow">
     
 	<div id="topicShow" class="objectForm">
