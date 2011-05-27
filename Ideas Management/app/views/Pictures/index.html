@@ -27,6 +27,10 @@
 	#{/else}
 	</center>
 <br />
+#{ifnot pictures}
+<center><h2>Gallery is Empty</h2></center>
+#{/ifnot}
+#{else}
     <div id="container">
         <h1>Gallery</h1>
         <div class="navigation-container">
@@ -71,6 +75,7 @@
         </div>
     </div>
 </div>
+#{/else}
 <script type="text/javascript">
     jQuery(document).ready(function($){
         // We only want these styles applied when javascript is enabled
