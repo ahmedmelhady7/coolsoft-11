@@ -101,6 +101,7 @@ public class UserRoleInOrganization extends CoolModel {
 
 	}
 
+	
 	/**
 	 * returns the role of a user in the organization
 	 * 
