@@ -37,7 +37,9 @@ public class Items extends CoolCRUD {
 	/**
 	 * 
 	 * This method changes the item with the given id's status from "New" (0) to
-	 * "In progress" (1).
+	 * "In progress" (1). The method then logs this action and sends
+	 * notifications to organizers and other assigned users informing them about
+	 * this change.
 	 * 
 	 * @author Mohamed Mohie
 	 * 
@@ -52,6 +54,9 @@ public class Items extends CoolCRUD {
 		notFoundIfNull(item);
 		List<User> userToNotifyList = new ArrayList<User>();
 		userToNotifyList.addAll(item.plan.topic.getOrganizer());
+		if (userToNotifyList.contains(user)) {
+			userToNotifyList.remove(user);
+		}
 		for (int i = 0; i < item.assignees.size(); i++) {
 			if (item.assignees.get(i).id != user.id
 					&& !userToNotifyList.contains(item.assignees.get(i)))
@@ -82,7 +87,9 @@ public class Items extends CoolCRUD {
 	/**
 	 * 
 	 * This method changes the item with the given id's status from
-	 * "In progress" (1) to "Done" (2) and vice versa.
+	 * "In progress" (1) to "Done" (2) and vice versa. The method then logs this
+	 * action and sends notifications to organizers and other assigned users
+	 * informing them about this change.
 	 * 
 	 * @author Mohamed Mohie
 	 * 
@@ -97,6 +104,9 @@ public class Items extends CoolCRUD {
 		notFoundIfNull(item);
 		List<User> userToNotifyList = new ArrayList<User>();
 		userToNotifyList.addAll(item.plan.topic.getOrganizer());
+		if (userToNotifyList.contains(user)) {
+			userToNotifyList.remove(user);
+		}
 		for (int i = 0; i < item.assignees.size(); i++) {
 			if (item.assignees.get(i).id != user.id
 					&& !userToNotifyList.contains(item.assignees.get(i)))
