@@ -31,11 +31,11 @@ public class Contribution extends Controller
 		List<User> users = Users.getEnrolledUsers((Organization)Organization.findById(id));
 		
 		User temp;
-		int n=users.size();
+		int number=users.size();
 
-		for(int i=0; i<n; i++)
+		for(int i=0; i<number; i++)
 		{
-		   for(int j = 1; j < (n-i); j++)
+		   for(int j = 1; j < (number-i); j++)
 		   {
 		        if((users.get(j-1).communityContributionCounter) > (users.get(j).communityContributionCounter))
 		        {
