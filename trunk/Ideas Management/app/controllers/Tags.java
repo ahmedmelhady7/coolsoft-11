@@ -287,6 +287,7 @@ public class Tags extends CoolCRUD {
 		Tag tag = Tag.findById(tagId);
 		notFoundIfNull(tag);
 		Organization tagOrganization = tag.createdInOrganization;
+		if (user.isAdmin || tag.creator.equals(user) || tagOrganization.creator.equals(user)) {
 		List<Tag> tags = new ArrayList<Tag>();
 		List<Organization> allOrganizations = Organization.findAll();
 		boolean duplicate = false;
@@ -346,6 +347,10 @@ public class Tags extends CoolCRUD {
 			flash.error("Please insert a valid name");
 		}
 		Tags.mainPage(tagId);
+		}
+		else {
+			BannedUsers.unauthorized();
+		}
 	}
 	
 	/**
