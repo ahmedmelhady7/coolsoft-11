@@ -97,7 +97,7 @@
                                 #{if user.profilePictureId != -1} 
                                 #{list items:user.profilePictureId, as:'id'}<img src="@{Pictures.getPicture(id)}" width="40" height="40"/>#{/list}
                                 #{/if}
-                                #{if user.profilePictureId == -1}<img src="/public/images/icons/user.png" width="40" height="40"/>#{/if}
+                                #{if user.profilePictureId == -1} <img src="/public/images/icons/user.png" width="40" height="40"/>#{/if}
                                 <br>
                                 <b>E-Mail: </b>
                                 ${user.email} 
