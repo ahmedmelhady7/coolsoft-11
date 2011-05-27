@@ -217,7 +217,48 @@ public class User extends CoolModel {
 	public List<Tag> createdTags;
 
 	/**
+	 * 
+	 * adds an unregistered to the database 
+	 * 
 	 * @author Mostafa Ali
+	 * 
+	 * @story C1S10
+	 * 
+	 * @param email
+	 *            :String , the user's email
+	 *            
+	 * @param username
+	 *            : String ,the user's username
+	 * 
+	 * @param password
+	 *            : String ,the user's password
+	 * 
+	 * 
+	 * @param firstName
+	 *            : String ,the user's first name
+	 * 
+	 * @param lastName
+	 *            : String ,the user's last name
+	 * 
+	 * @param securityQuestion 
+	 * 				String , security question of the user
+	 * 
+	 * @param answer
+	 * 				String , the security answer of the user
+	 * 
+	 * 
+	 * @param communityContributionCounter
+	 *            : int the user's community contribution counter
+	 * 
+	 * @param dateofBirth
+	 *            : String ,the user's date of birth
+	 * 
+	 * @param country
+	 *            : String ,the user's country
+	 * 
+	 * @param profession
+	 *            : String ,the user's profession
+	 * 
 	 */
 	public User(String email, String username, String password,
 			String firstName, String lastName, String securityQuestion, String answer,
@@ -258,7 +299,6 @@ public class User extends CoolModel {
 		followingEntities = new ArrayList<MainEntity>();
 		topicsIFollow = new ArrayList<Topic>();
 		this.ideasRated = new ArrayList<Idea>();
-		this.state = "a";
 		this.profession = profession;
 		profilePictureId = -1;
 		notificationsNumber = notifications.size();
@@ -481,6 +521,8 @@ public class User extends CoolModel {
 	 * Override the toString method to see the name & the username
 	 * 
 	 * @author Mostafa Ali
+	 * 
+	 * @story C1S9
 	 * 
 	 * @return String
 	 */
