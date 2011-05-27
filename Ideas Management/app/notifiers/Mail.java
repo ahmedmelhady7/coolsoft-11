@@ -22,17 +22,17 @@ public class Mail extends Mailer {
 	 * 
 	 * @story C1S6
 	 * 
-	 * @param role
-	 *            String role whether idea developer/organizer
-	 * 
 	 * @param email
 	 *            String email the invitation will be sent to
 	 * 
+	 * @param role
+	 *            String role whether idea developer/organizer
+	 *            
 	 * @param organization
 	 *            String organization name that sends the invitation
 	 * 
-	 * @param entity
-	 *            String entity name that sends the invitation whether its an
+	 * @param source
+	 *            String source name that sends the invitation whether its an
 	 *            entity/topic
 	 * 
 	 * @param type
@@ -41,7 +41,7 @@ public class Mail extends Mailer {
 	 */
 
 	public static void invite(String email, String role, String organization,
-			String entity, int type) {
+			String source, int type) {
 		addRecipient(email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Invitation");
@@ -51,11 +51,11 @@ public class Mail extends Mailer {
 		int check = 1;
 		if (user == null)
 			id = 0;
-		if (entity == "")
+		if (source == "")
 			check = 0;
 		if (role.equals("ideadeveloper"))
 			role = " idea developer";
-		send(user, role, url, organization, entity, id, check, type);
+		send(user, role, url, organization, source, id, check, type);
 
 	}
 
