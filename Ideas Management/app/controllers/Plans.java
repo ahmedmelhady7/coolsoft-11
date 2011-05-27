@@ -1163,7 +1163,7 @@ public class Plans extends CoolCRUD {
 		List<User> assignees = item.assignees;
 		for (int j = 0; j < assignees.size(); j++) {
 			Notifications.sendNotification(assignees.get(j).id, item.plan.id,
-					"plan", "This item has been edited");
+					"plan", "The item: " + item.summary + " has been edited in plan: " + item.plan.title);
 		}
 		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
 				+ user.id
