@@ -79,27 +79,22 @@ public class Accounts extends Controller {
 		if (email.equals("")) {
 			message = "A User must have an email";
 			validUserFlag = true;
-			System.out.println(message);
 		} else if (!(User.find("byEmail", email).fetch().isEmpty())) {
 			message = "This Email already exists !";
 		} else if (!(validation.email(email).ok)) {
 			message = "Please enter a valid email address";
 			validUserFlag = true;
-			System.out.println(message);
 		}else if (username.equals("")) {
 			message = "A User must have a username";
 			validUserFlag = true;
-			System.out.println(message);
 		}else if (!(User.find("byUsername", username).fetch().isEmpty())) {
 			message = "This Username already exists !";
 		} else if (password.equals("")) {
 			message = "A User must have a password";
 			validUserFlag = true;
-			System.out.println(message);
 		} else if (firstName.equals("")) {
 			message = "A User must have a first name";
 			validUserFlag = true;
-			System.out.println(message);
 		} else if (username.length() >= 20) {
 			validUserFlag = true;
 			message = "Username cannot exceed 20 characters";
@@ -115,11 +110,9 @@ public class Accounts extends Controller {
 		} else if (securityQuestion.equals("")) {
 			message = "A User must have a security Question";
 			validUserFlag = true;
-			System.out.println(message);
 		} else if (answer.trim().equals("")) {
 			message = "A User must have a security answer";
 			validUserFlag = true;
-			System.out.println(message);
 		}
 
 		if (validUserFlag) {
