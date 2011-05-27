@@ -181,6 +181,18 @@
 	
 		var link = "/mainentitys/viewentity?id="+entityId;
 		
+		if(topicTitle == "" && topicDescription == "") {
+			alert("Please enter title and decription");
+			return;
+			} 
+		if(topicTitle == "") {
+			alert("Please enter the title");
+			return;
+		}
+		if(topicDescription == "") {
+			alert("Please enter the description");
+			return;
+		}
 		
 		if(${isDefaultEntity}) {
 			link = "/organizations/viewprofile?id=" +${organizationId};
