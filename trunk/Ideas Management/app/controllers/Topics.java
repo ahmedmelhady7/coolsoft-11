@@ -643,24 +643,43 @@ public class Topics extends CRUD {
 		((Topic) object).openToEdit = true;
 		object._save();
 		temporaryTopic = (Topic) object;
-		// String message2 = temporaryTopic.creator.username
-		// + " has Created the topic " + temporaryTopic.title + " in "
-		// + temporaryTopic.entity;
-		if (temporaryTopic.followers != null) {
+		
+		if(temporaryTopic.entity != temporaryTopic.entity.organization.entitiesList.get(0))
+		{if (temporaryTopic.followers != null) {
 			for (int i = 0; i < temporaryTopic.followers.size(); i++)
 				Notifications.sendNotification(temporaryTopic.followers.get(i)
 						.getId(), temporaryTopic.id, "Topic", "A new Topic: '"
 						+ temporaryTopic.title + "' has been added in entity '"
 						+ temporaryTopic.entity.name + "'");
+		}} 
+		else{
+			if (temporaryTopic.followers != null) {
+				for (int i = 0; i < temporaryTopic.followers.size(); i++)
+					Notifications.sendNotification(temporaryTopic.followers.get(i)
+							.getId(), temporaryTopic.id, "Topic", "A new Topic: '"
+							+ temporaryTopic.title + "' has been added in the organization '"
+							+ temporaryTopic.entity.organization.name + "'");
+			}
 		}
 
 		List<User> users = Users.getEntityOrganizers(temporaryTopic.entity);
 		users.add(temporaryTopic.entity.organization.creator);
-		for (int i = 0; i < users.size(); i++)
+		
+		if(temporaryTopic.entity != temporaryTopic.entity.organization.entitiesList.get(0))
+		{for (int i = 0; i < users.size(); i++)
 			Notifications.sendNotification(users.get(i).id, temporaryTopic.id,
 					"Topic", "A new Topic: '" + temporaryTopic.title
 							+ "' has been added in entity '"
 							+ temporaryTopic.entity.name + "'");
+		}
+		else{
+			for (int i = 0; i < users.size(); i++){
+				Notifications.sendNotification(users.get(i).id, temporaryTopic.id,
+						"Topic", "A new Topic: '" + temporaryTopic.title
+								+ "' has been added in the organization '"
+								+ temporaryTopic.entity.organization.name + "'");
+			}
+		}
 
 		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
 				+ user.id
