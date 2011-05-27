@@ -1,12 +1,75 @@
 #{extends 'login/index.html' /}
 #{set title:'View list of assigned items' /}
+<html>
+<head>
+<script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
+</script>
+<script type="text/javascript">
+	
+function start_task(id)
+  {
+	$.post('@{startItem()}' , {id: id});
+	alert("Task is now in progress. Good luck!");
+	window.location.reload();
+  }
+
+function toggle_task(id)
+  {
+	$.getJSON( '@{toggleItem()}' , {id: id}, function(obj) {	
+				$("#itemLabel_" + id).html(obj.name);
+});
+	
+	//window.location.reload();
+  }
+
+</script>	
+
+<style type="text/css">body {
+			font-size:80%;
+			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
+		}
+	#showItem{
+	margin-top: 1%;
+	margin-right: 3%;
+	margin-bottom: 4%;
+	margin-left: 0%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #bbbbbb;
+	padding-top: 2%;
+	padding-right: 4%;
+	padding-bottom: 0%;
+	padding-left: 0%;
+	position: relative;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #bbbbbb;
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #bbbbbb;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #bbbbbb;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #bbbbbb;
+	word-wrap: break-word;
+}
+
+</style>
+</head>
+<div id= "pageNoSideBar">
+	<div id="pageNoSideBar-bgtop">
+	<body>
 #{if assignedItems.size() > 0}<h3>Assigned Items </h3>
 <br/>
-<div id= "pageNoSideBar">
-<ul style="list-style: none; ">
+
+<div id="showItem"><ul style="list-style: none;">
     #{list items:assignedItems, as:'assignedItem'}
     <li >
-        <fieldset style="width:750px;">
+        <fieldset style="background: #eaeeed;">
 
 				<h3>Plan: <a href="@{Plans.viewAsList(assignedItem.plan.id)}">${assignedItem.plan.title}</a></h3>
 
@@ -52,33 +115,15 @@
                 </li>
                 #{/list}
             </ul>
-        </fieldset>
+        </fieldset><br/>
     </li>
     #{/list}
-</ul>
+</ul></div>
 #{/if}
 #{else}
 You are not assigned to any to-do item.
 #{/else}
 </div>
-<script src="@{'/public/javascripts/jquery-1.5.2.min.js'}" type="text/javascript" charset="utf-8">
-</script>
-<script type="text/javascript">
-	
-function start_task(id)
-  {
-	$.post('@{startItem()}' , {id: id});
-	alert("Task is now in progress. Good luck!");
-	window.location.reload();
-  }
-
-function toggle_task(id)
-  {
-	$.getJSON( '@{toggleItem()}' , {id: id}, function(obj) {	
-				$("#itemLabel_" + id).html(obj.name);
-});
-	
-	//window.location.reload();
-  }
-
-</script>
+</div>
+</body>
+</html>
