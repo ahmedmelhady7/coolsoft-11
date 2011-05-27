@@ -45,10 +45,7 @@ public class Logs extends CoolCRUD {
 					|| Security.getConnected().isAdmin)
 				reversed = organization.logs;
 
-			else {
-				System.out
-						.println("you are not authorized to view");
-			}
+			
 			
 			for(int i = 1; i <= reversed.size(); i++) {
 				toFilter.add(reversed.get(reversed.size() - i));
@@ -109,10 +106,7 @@ public class Logs extends CoolCRUD {
 					|| Security.getConnected().isAdmin)
 				reversed = organization.logs;
 
-			else {
-				System.out
-						.println("you are not authorized to view");
-			}
+			
 		}
 		for(int i = 1; i <= reversed.size(); i++) {
 			toFilter.add(reversed.get(reversed.size() - i));
