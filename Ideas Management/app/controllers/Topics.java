@@ -1763,7 +1763,7 @@ public class Topics extends CRUD {
 			}
 		}		
 		for(int i = 0; i < temporaryTopic.ideas.size(); i++) {
-			Ideas.delete(temporaryTopic.ideas.get(i).id);
+			Ideas.delete(temporaryTopic.ideas.get(i).id,"");
 		}
 		for(int i = 0; i<temporaryTopic.commentsOn.size();i++) {
 			Comments.deleteComment(temporaryTopic.commentsOn.get(i).id);
@@ -1987,23 +1987,34 @@ public class Topics extends CRUD {
 	 * @description This method deletes and idea from the database
 	 * 
 	 * 
-	 */
+	 */ 
 	public static void deleteIdea(long ideaId, String justification) {
 		Idea idea = Idea.findById(ideaId);
 		String message = "your idea " + idea.title + " has been deleted by "
 				+ Security.getConnected().username + " Justification : "
 				+ justification;
+		System.out.println("ssssssssssssss lesa");
 		List<Comment> commentslist = Comment.find("byCommentedIdea", idea).fetch();
+		System.out.println("aywaaaaaaaaaa");
 		try {
 				for(int i=0;i<commentslist.size();i++){
-					commentslist.get(i).delete();
+					Comments.deleteComment(commentslist.get(i).getId());
+					System.out.println("deleted comment "+i);
 				}
+				System.out.println("3ml delete lel comments");
+//				printing
+				System.out.println(idea.belongsToTopic);
+				System.out.println(idea.commentsList);
+				System.out.println(idea.plan);
+				System.out.println(idea.delete().toString());
+				idea.save();
 				idea.delete();
 				Notifications.sendNotification(idea.author.id, idea.id, "Idea",
 						message);
 
 		} catch (Exception e) {
-			redirect(request.controller + ".show");
+			System.out.println(e.getStackTrace());
+			redirect(request.controller + ".view");
 		}
 		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}

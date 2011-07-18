@@ -17,12 +17,59 @@
 		display: none;
 		text-align: right;
 	}
+	#anchor1:hover { 
+		background-image : url(/public/images/icons/trash.png); 
+	}
+h13 {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:initial;
+  background-image:url(/public/images/blu.png);
+  background-origin:initial;
+  background-position:0 0;
+  background-repeat:no-repeat no-repeat;
+  color:#FFFFFF;
+  font-family:Arial;
+  font-size:10px;
+  font-weight:400;
+  height:33px;
+  padding-bottom:0;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:7px;
+  text-transform:uppercase;
+  color:white;
+  font-weight:700;
+  padding-bottom:20px;
+}
+.jquery-ratings-star {
+  width: 36px;
+  height: 36px;
+  background-image: url('empty-star.png');
+  background-repeat: no-repeat;
+  position: relative;
+  float: left;
+  margin-right: 2px;
+}
+
+.jquery-ratings-full {
+  background-image: url('full-star.png');
+}
 </style>
 <div id="leftSidebar">
   	<br/><br/><br/><br/><br/><br/>
-	<li>
+	<h13>Share</h13>
+  	</br>
+  	</br>
+	<a href="http://www.facebook.com/sharer.php?u=http://localhost:9008/ideas/show?ideaId=${ideaId}&t=Idea - ${idea.title}" rel="external,nofollow" target="_blank">
+	<img src="/public/images/Facebook.png" style="size:auto;" alt="Share on Facebook"/>
+	</a>
+	<a href="http://twitter.com/home?status=Idea - ${idea.title} http://localhost:9008/ideas/show?ideaId=${ideaId}" rel="external,nofollow" target="_blank">
+	<img src="/public/images/twitter.png" alt="Tweet this"/>
+	</a>
+	</br>
     #{if notBlockedFromUsing}
-    <input type="button" class="linkButton"  id ='share' value="Share idea"/>
+    <input type="button" class="linkButton"  id ='share' value="Share idea with a user"/>
 	<div id="shareidea">
 			<input type="submit" onclick = "share()" class="linkButton"  value="Share with user" /><input type="hidden" name="ideaId" value="${ideaId}">
 			
@@ -31,6 +78,7 @@
 					<option>${name}</option>
 					#{/list}
 					</select>
+	
 			<br/>
 			<div id = "shareSuccess" class = "div_suc">Notification sent successfully to user</div>
 			<script type='text/javascript'>
@@ -47,6 +95,11 @@
 		</br>
 		#{/if}
 		<font color="#4E4848">Idea rating : ${rate}</font>
+		 <div id="example-1"></div> <br />
+    		Your Rating: <span id="example-rating-1">not set</span>
+    		<br /><br />
+    		<div id="example-2"></div> <br />
+    		Your Rating: <span id="example-rating-2">not set</span>
 		<br/>
 		<br/>
 	</li>	
@@ -137,7 +190,11 @@
             	<h3 class"post-metadata">
             	<span class "post-author">
             	#{if active}
-            	by <a href="@{Users.viewProfile(userId)}">${username}</a>
+            	by
+            	<a href="@{Users.viewProfile(userId)}">#{if user.profilePictureId != -1} 
+                  #{list items:user.profilePictureId, as:'id'}<img src="@{Pictures.getPicture(id)}" width="40" height="40"/>#{/list}
+                  #{/if}
+                  #{if user.profilePictureId == -1} <img src="/public/images/icons/user.png" width="40" height="40"/>#{/if} ${username}</a>
             	#{/if}
             	#{if !active}
             	<font>by ${username}</font>
@@ -170,9 +227,9 @@
 	</form>
 	#{/if}
 	#{if canDelete && !isAuthor && notInPlan}
-		<form action="@{Topics.deleteIdea(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+		<form action="@{Ideas.delete(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         	<input type="hidden" name = "justification" id = "justText">
-            <input type="image" style="float:right;" src="/public/images/icons/trash.png"  class="linkButton" title="Delete Idea"/>
+            <input type="image" src="/public/images/icons/trash.png"  style="float:right;" class="linkButton" title="Delete Idea"/>
     </form>
 	#{/if}
 	#{if canDelete && (!isAuthor||isAdmin) && notInPlan}
