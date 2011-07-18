@@ -96,7 +96,7 @@
     				<a href="@{Topics.show(notifi.notifiableId)}">${notifi.title}</a>
     				#{/if} 
     				#{if notifi.notifiableType == 'Idea'}
-    				<a href="@{Ideas.show(notifi.notifiableId)}">${notifi.title}</a>
+    				<a href="@{Ideas.show(notifi.notifiableId)}">${notifi.toString()}</a>
     				#{/if} 
     				#{if notifi.notifiableType == 'Entity'}
     				<a href="@{MainEntitys.viewEntity(notifi.notifiableId)}">${notifi.title}</a>

@@ -691,9 +691,7 @@
 			             #{if hidden}		
 			                #{if object.hider.username == actor.username}		
 					           <form action="@{unhide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
-				                  <p class="crudDelete">		
 			                         <input type="submit" style="float:right;" value="Unhide" class = "linkButton"/>		
-			                      </p>		
 			                  </form>			
 			                #{/if}		
 			            #{/if}
@@ -1035,19 +1033,18 @@
 			                <input id="showhidden" type="submit" value="show hidden Ideas" class = "linkButton"/>
 			                <div id="hidden">
 			                #{list items:hiddenIdeas, as:'idea'}
-			                                <fieldset id="hidd">
-			                                </br>
+			                <fieldset id="hidd_${idea.id}">
+			                <br/>
 			                <label style="background-color:#FFFFFF; border-top-left-radius: 10px;border-top-right-radius: 10px;
 							border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; padding:0.3% 2% 0.3% 2%; margin-right:20%;">${idea.title}</label>
-			                <br />
-							<br />
-			               <div style=" border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px; 
+			                <br/><br/>
+			                <div style=" border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px; 
 						   border-bottom-left-radius: 10px; border-color:#339CCB; border-width:2px; border-style:solid; padding:2% 2% 2% 2%;"> 
 						   <label>Description : ${idea.description}</label>
 			                </br>
 			                <label>by : <a href="@{Users.viewProfile(idea.author.id)}">${idea.author.username}</a></label>
 			                <br />
-			                <input type="submit" id="unhide" value="unhide" onclick="unhide(${idea.id})" class = "linkButton"/>
+			                <input type="submit" id="unhide_${idea.id}"+ value="unhide" onclick="unhide(${idea.id})" class = "linkButton"/>
 							</div>
 			                </fieldset>
 			        		#{/list}
@@ -1091,8 +1088,8 @@
 			                $("#showhidden").click(function(){
 			                 $("#hidden").toggle();
 			           });
-			                $("#unhide").click(function(){
-			                	$("#hidden").remove
+			                $("#unhide_${idea.id}").click(function(){
+			                	$("#hidd_${idea.id}").remove
 			                	alert('unhide done');
 			                    window.location.reload();
 			              });

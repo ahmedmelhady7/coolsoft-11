@@ -144,7 +144,7 @@ public class Ideas extends CoolCRUD {
 		idea.description = description;
 		idea.save();
 		JsonObject json = new JsonObject();
-	
+
 		json.addProperty("id", idea.id);
 		renderJSON(json.toString());
 		// flash.success("aho");
@@ -174,7 +174,7 @@ public class Ideas extends CoolCRUD {
 		for (Topic topic : user.topicsCreated)
 			if (topic.isDraft)
 				draftTopics.add(topic);
-		
+
 		notFoundIfNull(user);
 		notFoundIfNull(draftTopics);
 		notFoundIfNull(drafts);
@@ -384,7 +384,7 @@ public class Ideas extends CoolCRUD {
 		boolean notBlockedFromUsing = Users.isPermitted(user, "use", topicId,
 				"topic");
 		ArrayList<Label> ideasLabels = new ArrayList<Label>();
-		boolean notInPlan = (idea.plan==null);
+		boolean notInPlan = (idea.plan == null);
 		boolean active = idea.author.state.equals("a");
 		boolean isAdmin = user.isAdmin;
 		idea.incrmentViewed();
@@ -424,15 +424,16 @@ public class Ideas extends CoolCRUD {
 			System.out.println("show() done, about to render");
 			boolean permittedToTagIdea = user.equals(idea.author)
 					|| Users.isPermitted(user, "tag ideas in my organization",
-							 topicId, "topic") || Users.isPermitted(user, "use", topicId, "topic");
+							topicId, "topic")
+					|| Users.isPermitted(user, "use", topicId, "topic");
 			List<Tag> tags = idea.tagsList;
-			render(type, ideasLabels, object, tags, user,isAdmin, username, userId,
-					canReport, canDelete, comments, topic, plan,
+			render(type, ideasLabels, object, tags, user, isAdmin, username,
+					userId, canReport, canDelete, comments, topic, plan,
 					permittedToTagIdea,
-					/* openToEdit, */topicId,notInPlan,ideaAlreadyReported, canUse,
-					deletemessage,  /*
-									 * deletable ,
-									 */
+					/* openToEdit, */topicId, notInPlan, ideaAlreadyReported,
+					canUse, deletemessage, /*
+											 * deletable ,
+											 */
 					ideaId, rate, idea, priority, userNames, checkPermitted,
 					checkNotRated, notBlockedFromUsing);
 		} catch (TemplateNotFoundException e) {
@@ -631,17 +632,56 @@ public class Ideas extends CoolCRUD {
 	 * @description This method deletes and idea from the database
 	 * 
 	 */
-	public static void delete(long ideaId) {
+	public static void delete(long ideaId, String justification) {
 		Idea idea = Idea.findById(ideaId);
-		//		ObjectType type = ObjectType.get(getControllerClass());
+		Topic topic = idea.belongsToTopic;
+		String message = "your idea " + idea.title + " has been deleted by "
+				+ Security.getConnected().username + " Justification : "
+				+ justification;
+
 		notFoundIfNull(idea);
-		try {
-			if(idea.plan==null)
-				idea.delete();
-		} catch (Exception e) {
+		if (Security.getConnected().equals(idea.author)) {
+			List<Comment> commentslist = Comment.find("byCommentedIdea", idea)
+					.fetch();
+			for (int i = 0; i < commentslist.size(); i++) {
+				System.out.println(commentslist);
+				commentslist.get(i).deleteComment(commentslist.get(i).getId());
+				System.out.println(commentslist);
+			}
+			try {
+				if (idea.plan == null) {
+					System.out.println("foo2 el delete");
+					idea.delete();
+					System.out.println("ta7t el delete");
+					topic.save();
+					System.out.println("3ml save lel topic");
+				}
+			} catch (Exception e) {
+				redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
+			}
+			redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
+		} else {
+			List<Comment> commentslist = Comment.find("byCommentedIdea", idea)
+					.fetch();
+			for (int i = 0; i < commentslist.size(); i++) {
+				Comments.deleteComment(commentslist.get(i).getId());
+			}
+			try {
+				if (idea.plan == null) {
+					System.out.println("foo2 el delete");
+					idea.delete();
+					System.out.println("ta7t el delete");
+					topic.save();
+					System.out.println("3ml save lel topic");
+					Notifications.sendNotification(idea.author.id, idea.id,
+							"Idea", message);
+
+				}
+			} catch (Exception e) {
+				redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
+			}
 			redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 		}
-		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
 	/**
@@ -662,7 +702,7 @@ public class Ideas extends CoolCRUD {
 	 *            : the tag that is being added
 	 * 
 	 */
-	
+
 	public static void tagIdea(long ideaId, String tag) {
 		Tag tempTag = null;
 		List<Tag> listOfTags = getAvailableTags(ideaId);
@@ -693,7 +733,8 @@ public class Ideas extends CoolCRUD {
 		}
 
 		if (!tagExists && idea.belongsToTopic.entity.organization.createTag) {
-			tempTag = new Tag(tag, idea.belongsToTopic.entity.organization, user);
+			tempTag = new Tag(tag, idea.belongsToTopic.entity.organization,
+					user);
 			idea.tagsList.add(tempTag);
 			tempTag.taggedIdeas.add(idea);
 			tempTag.save();
@@ -702,23 +743,34 @@ public class Ideas extends CoolCRUD {
 		if (!tagAlreadyExists) {
 			Notifications.sendNotification(idea.author.id, ideaId, "idea",
 					"This idea has been tagged as " + tag);
-			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
-            + " added the tag " +"<a href=\"http://localhost:9008/tags/mainpage?tagId=" + tempTag.id +"\">" +  tempTag.name + "</a>"  + " to the idea "
-            + "<a href=\"http://localhost:9008/ideas/show?ideaId=" + idea.id +"\">" + idea.title + "</a>" ;
+			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					+ user.id
+					+ "\">"
+					+ user.firstName
+					+ "</a>"
+					+ " added the tag "
+					+ "<a href=\"http://localhost:9008/tags/mainpage?tagId="
+					+ tempTag.id
+					+ "\">"
+					+ tempTag.name
+					+ "</a>"
+					+ " to the idea "
+					+ "<a href=\"http://localhost:9008/ideas/show?ideaId="
+					+ idea.id + "\">" + idea.title + "</a>";
 			Log.addUserLog(logDescription, idea);
 		}
 		idea.save();
 		JsonObject json = new JsonObject();
 		json.addProperty("tagName", tempTag.name);
 		json.addProperty("tagId", tempTag.id);
-		
+
 		renderJSON(json.toString());
 	}
 
 	/**
 	 * 
-	 * @description this method checks if the given tag is already in the list of tags related to this idea
-	 * 				to avoid duplication
+	 * @description this method checks if the given tag is already in the list
+	 *              of tags related to this idea to avoid duplication
 	 * 
 	 * @author Mostafa Yasser El Monayer
 	 * 
@@ -732,7 +784,6 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 */
 
-	
 	public static void checkIfTagAlreadyExists(long ideaId, String tag) {
 		Idea idea = (Idea) Idea.findById(ideaId);
 		notFoundIfNull(idea);
@@ -751,10 +802,10 @@ public class Ideas extends CoolCRUD {
 		renderJSON(json.toString());
 	}
 
-
 	/**
 	 * 
-	 * @description this method returns the list of tags that are available for that idea to be tagged with
+	 * @description this method returns the list of tags that are available for
+	 *              that idea to be tagged with
 	 * 
 	 * @author Mostafa Yasser El Monayer
 	 * 
@@ -766,7 +817,7 @@ public class Ideas extends CoolCRUD {
 	 * @return list of tags
 	 * 
 	 */
-	
+
 	public static List<Tag> getAvailableTags(long ideaId) {
 		List<Tag> listOfTags = new ArrayList<Tag>();
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
@@ -784,17 +835,19 @@ public class Ideas extends CoolCRUD {
 		return listOfTags;
 	}
 
-	
 	/**
-	 * This method generates the average of the user-entered rating and the rating of the specified idea
+	 * This method generates the average of the user-entered rating and the
+	 * rating of the specified idea
 	 * 
 	 * @author Ibrahim Safwat
 	 * 
 	 * @story C4S13
 	 * 
-	 * @param ideaId : the id of the idea the user wants to rate
+	 * @param ideaId
+	 *            : the id of the idea the user wants to rate
 	 * 
-	 * @param rating : user-entered rating
+	 * @param rating
+	 *            : user-entered rating
 	 * 
 	 * @return : void
 	 */
@@ -822,9 +875,11 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 * @story C4S08
 	 * 
-	 * @param userName: username of the user that the notification will be sent to
+	 * @param userName
+	 *            : username of the user that the notification will be sent to
 	 * 
-	 * @param ideaId: the ID of the idea that the notification will be sent from
+	 * @param ideaId
+	 *            : the ID of the idea that the notification will be sent from
 	 * 
 	 * @return void
 	 */
@@ -845,10 +900,12 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 * @story C4S13
 	 * 
-	 * @param priority: the priority to be set 
-	 *            
-	 * @param ideaId: the ID of the idea to prioritize
-	 *            
+	 * @param priority
+	 *            : the priority to be set
+	 * 
+	 * @param ideaId
+	 *            : the ID of the idea to prioritize
+	 * 
 	 * @return void
 	 */
 	public static void setPriority(String priority, long ideaId) {
@@ -923,7 +980,7 @@ public class Ideas extends CoolCRUD {
 		User merger = Security.getConnected();
 		ArrayList<String> contributorsList = new ArrayList<String>();
 		User user = Security.getConnected();
-		
+
 		String[] ideasIdsString = oldIdeas.split("%");
 		long[] ideasIds = new long[ideasIdsString.length];
 		List<Idea> selectedIdeas = new ArrayList<Idea>();
@@ -937,7 +994,7 @@ public class Ideas extends CoolCRUD {
 		ideaToKeep = selectedIdeas.get(0);
 		contributorsList.add(ideaToKeep.author.username);
 
-		if(isDifferentContributors(selectedIdeas)){
+		if (isDifferentContributors(selectedIdeas)) {
 			newDescription = newDescription + " " + "\nContributers: ";
 
 			for (int i = 1; i < selectedIdeas.size(); i++) {
@@ -954,8 +1011,7 @@ public class Ideas extends CoolCRUD {
 					}
 				}
 			}
-			
-	
+
 		}
 		allContributors = allContributors + " \n" + "Merger: "
 				+ merger.username;
@@ -971,18 +1027,28 @@ public class Ideas extends CoolCRUD {
 
 		ideaToKeep.save();
 		targetTopic.save();
-		
-		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
-        + " merged ideas " +"<a href=\"http://localhost:9008/ideas/show?ideaId=" + ideaToKeep.id +"\">" +  ideaToKeep.title + "</a>"  + " of the topic "
-        + "<a href=\"http://localhost:9008/topics/show?topicId=" + targetTopic.id +"\">" + targetTopic.title + "</a>" ;
-		
+
+		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.firstName
+				+ "</a>"
+				+ " merged ideas "
+				+ "<a href=\"http://localhost:9008/ideas/show?ideaId="
+				+ ideaToKeep.id
+				+ "\">"
+				+ ideaToKeep.title
+				+ "</a>"
+				+ " of the topic "
+				+ "<a href=\"http://localhost:9008/topics/show?topicId="
+				+ targetTopic.id + "\">" + targetTopic.title + "</a>";
+
 		MainEntity entity = targetTopic.entity;
 		Organization organization = entity.organization;
-		
-		Log.addUserLog(log, user,ideaToKeep, targetTopic, entity, organization);
-		
-	}
 
+		Log.addUserLog(log, user, ideaToKeep, targetTopic, entity, organization);
+
+	}
 
 	/**
 	 * @description takes an array of ideas ids and the topic id they belong to
@@ -1021,7 +1087,6 @@ public class Ideas extends CoolCRUD {
 
 		}
 
-
 		return selectedIdeas;
 	}
 
@@ -1045,10 +1110,10 @@ public class Ideas extends CoolCRUD {
 		json.addProperty("commentMsg", comment);
 		json.addProperty("commentUser", user.username);
 		json.addProperty("commentDate", c.commentDate + "");
-
+		json.addProperty("userPic", user.profilePictureId + "");
 		renderJSON(json.toString());
 	}
-	
+
 	/**
 	 * @description checks if all contributors are different from the author
 	 * 
@@ -1057,17 +1122,15 @@ public class Ideas extends CoolCRUD {
 	 * @story C3S7
 	 * 
 	 * @param selectedIdeas
-	 * 			the list of selected ideas
-	 * @return
-	 * 			true if yes
-	 * 			false if no
+	 *            the list of selected ideas
+	 * @return true if yes false if no
 	 */
 	private static boolean isDifferentContributors(List<Idea> selectedIdeas) {
-		
+
 		String author = selectedIdeas.get(0).author.username;
-		for(int i = 1; i < selectedIdeas.size(); i++) {
+		for (int i = 1; i < selectedIdeas.size(); i++) {
 			String contributor = selectedIdeas.get(i).author.username;
-			if(author != contributor) {
+			if (author != contributor) {
 				return true;
 			}
 		}
