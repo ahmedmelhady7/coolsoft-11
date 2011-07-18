@@ -261,7 +261,7 @@ public class Search extends Controller {
 							.size(); k++)
 						currentModels
 								.addAll(orgs.get(i).entitiesList.get(j).topicList
-										.get(i).ideas);
+										.get(k).ideas);
 			}
 			AdvancedSearch.solvingIdeaQuery(keyWords, keyWordsIn, isExact,
 					listOfResults, currentModels);

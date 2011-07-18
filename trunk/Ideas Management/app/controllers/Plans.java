@@ -1409,7 +1409,7 @@ public class Plans extends CoolCRUD {
 			}
 
 			FileWriter fstream;
-			fstream = new FileWriter("Ideas-Management/public/xml/out.xml");
+			fstream = new FileWriter("public/xml/out.xml");
 			BufferedWriter out = new BufferedWriter(fstream);
 
 			out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");

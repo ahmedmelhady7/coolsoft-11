@@ -20,7 +20,6 @@ import play.db.jpa.Model;
  * @author Mohamed Ghanem
  * 
  */
-
 public class AdvancedSearch {
 
 	/**
@@ -2995,7 +2994,7 @@ public class AdvancedSearch {
 	 * @story C4S02 advanced search
 	 * 
 	 * @Description this method solve the Query the user entered to search with
-	 *              by finding the required Items to the result .
+	 *              special timing for the result .
 	 * 
 	 * @param dateA
 	 *            'String' contains the After date
@@ -3006,9 +3005,11 @@ public class AdvancedSearch {
 	 * @param dateE
 	 *            'String' contains the Exact date
 	 * 
-	 * @param listOfResults 'List<Model>' list of result 
+	 * @param listOfResults
+	 *            'List<Model>' list of result
 	 * 
 	 */
+	@SuppressWarnings("deprecation")
 	public static void constrainTime(String dateA, String dateB, String dateE,
 			List<Model> listOfResults) {
 		Date after = null;
@@ -3016,20 +3017,20 @@ public class AdvancedSearch {
 		if (dateE.compareTo("") == 0) {
 			if (dateA.compareTo("") != 0) {
 				String[] dA = dateA.split("/");
-				after = new Date(Integer.parseInt(dA[2]),
-						Integer.parseInt(dA[0]), Integer.parseInt(dA[1]));
+				after = new Date(Integer.parseInt(dA[2]) - 1900,
+						Integer.parseInt(dA[0]) - 1, Integer.parseInt(dA[1]));
 			}
 			if (dateB.compareTo("") != 0) {
 				String[] dB = dateB.split("/");
-				before = new Date(Integer.parseInt(dB[2]),
-						Integer.parseInt(dB[0]), Integer.parseInt(dB[1]));
+				before = new Date(Integer.parseInt(dB[2]) - 1900,
+						Integer.parseInt(dB[0]) - 1, Integer.parseInt(dB[1]));
 			}
 		} else {
 			String[] dE = dateE.split("/");
-			after = new Date(Integer.parseInt(dE[2]),
+			after = new Date(Integer.parseInt(dE[2]) - 1900,
+					Integer.parseInt(dE[0]) - 1, Integer.parseInt(dE[1]) + 1);
+			before = new Date(Integer.parseInt(dE[2]) - 1900,
 					Integer.parseInt(dE[0]) - 1, Integer.parseInt(dE[1]));
-			before = new Date(Integer.parseInt(dE[2]),
-					Integer.parseInt(dE[0]) + 1, Integer.parseInt(dE[1]));
 		}
 		if (after != null) {
 			for (int i = listOfResults.size() - 1; i >= 0; i--) {
@@ -3059,14 +3060,14 @@ public class AdvancedSearch {
 						listOfResults.remove(i);
 					}
 				} else if (listOfResults.get(i) instanceof Item) {
-					if (after.before(((Item) listOfResults.get(i)).startDate)) {
+					if (after.after(((Item) listOfResults.get(i)).endDate)) {
 						listOfResults.remove(i);
 					}
 				}
 			}
 		}
 		if (before != null) {
-			for (int i = listOfResults.size() - 1; i > 0; i--) {
+			for (int i = listOfResults.size() - 1; i >= 0; i--) {
 				if (listOfResults.get(i) instanceof Organization) {
 					if (before
 							.after(((Organization) listOfResults.get(i)).intializedIn)) {
@@ -3093,7 +3094,7 @@ public class AdvancedSearch {
 						listOfResults.remove(i);
 					}
 				} else if (listOfResults.get(i) instanceof Item) {
-					if (before.after(((Item) listOfResults.get(i)).endDate)) {
+					if (before.before(((Item) listOfResults.get(i)).startDate)) {
 						listOfResults.remove(i);
 					}
 				}
