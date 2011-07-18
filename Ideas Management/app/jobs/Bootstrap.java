@@ -20,10 +20,10 @@ import models.*;
  * @version 2.0
  * 
  */
-
 @OnApplicationStart
 public class Bootstrap extends Job {
 
+	@SuppressWarnings("deprecation")
 	public void doJob() {
 
 		if (User.count() < 5) {
@@ -260,7 +260,9 @@ public class Bootstrap extends Job {
 
 			Idea i1 = new Idea("Law Improvement",
 					"Adding restrcitions on businessmen", barnasa, govImp, true);
+			i1.active = false;
 			i1.save();
+
 			barnasa.save();
 
 			Idea i2 = new Idea("Human Rights",
@@ -292,6 +294,7 @@ public class Bootstrap extends Job {
 			hadi.save();
 
 			Idea i7 = new Idea("Blank", "Blank", sharaf, govImp);
+			i7.active = false;
 			i7.save();
 			sharaf.save();
 

@@ -72,6 +72,7 @@ public abstract class CoolCRUD extends CRUD {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void attachment(String id, String field) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -343,6 +344,7 @@ public abstract class CoolCRUD extends CRUD {
 			public boolean multiple;
 			public boolean required;
 
+			@SuppressWarnings("deprecation")
 			public ObjectField(Model.Property property) {
 				Field field = property.field;
 				this.property = property;
