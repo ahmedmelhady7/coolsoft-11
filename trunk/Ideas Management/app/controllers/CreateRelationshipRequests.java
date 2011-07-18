@@ -140,7 +140,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 				if (status == 1) {
 					EntityRelationships.createRelationship(createRequest.name,
 							source.id, destination.id);
-					String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
@@ -149,13 +149,13 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							+ " has accepted request to create relationship "
 							+ createRequest.name
 							+" between entities "
-							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+							+ "<a href=\"/mainentitys/viewentity?id="
 							+ source.id
 							+ "\">"
 							+ source.name
 							+ "</a>"
 							+ " and "
-							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+							+ "<a href=\"/mainentitys/viewentity?id="
 							+ destination.id
 							+ "\">"
 							+ destination.name
@@ -165,20 +165,20 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							destination, source);
 
 				} else {
-					String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ " "
 							+ "</a>"
 							+ " has rejectted request to create relationship between entities "
-							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+							+ "<a href=\"/mainentitys/viewentity?id="
 							+ source.id
 							+ "\">"
 							+ source.name
 							+ "</a>"
 							+ " and "
-							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+							+ "<a href=\"/mainentitys/viewentity?id="
 							+ destination.id
 							+ "\">"
 							+ destination.name
@@ -196,7 +196,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 				if (status == 1) {
 					TopicRelationships.createRelationship(createRequest.name,
 							source.id, destination.id);
-					String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
@@ -205,13 +205,13 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							+ " has accepted request to create relationship " 
 							+ createRequest.name 
 							+" between topics "
-							+ "<a href=\"http://localhost:9008/topics/show?id="
+							+ "<a href=\"/topics/show?id="
 							+ source.id
 							+ "\">"
 							+ source.title
 							+ "</a>"
 							+ " and "
-							+ "<a href=\"http://localhost:9008/topics/show?id="
+							+ "<a href=\"/topics/show?id="
 							+ destination.id
 							+ "\">"
 							+ destination.title
@@ -220,20 +220,20 @@ public class CreateRelationshipRequests extends CoolCRUD {
 					Log.addUserLog(logDescription, organization, user,
 							destination, source, source.entity);
 				} else {
-					String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ " "
 							+ "</a>"
 							+ " has accepted rejected to create relationship between topics "
-							+ "<a href=\"http://localhost:9008/topics/show?id="
+							+ "<a href=\"/topics/show?id="
 							+ source.id
 							+ "\">"
 							+ source.title
 							+ "</a>"
 							+ " and "
-							+ "<a href=\"http://localhost:9008/topics/show?id="
+							+ "<a href=\"/topics/show?id="
 							+ destination.id
 							+ "\">"
 							+ destination.title
@@ -282,20 +282,20 @@ public class CreateRelationshipRequests extends CoolCRUD {
 						relation.destination.relationsDestination
 								.remove(relation);
 						relation.destination.save();
-						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						String logDescription = "<a href=\"/users/viewprofile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
 								+ " "
 								+ "</a>"
 								+ " has accepted request to end relationship between entities "
-								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ "<a href=\"/mainentitys/viewentity?id="
 								+ relation.source.id
 								+ "\">"
 								+ relation.source.name
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ "<a href=\"/mainentitys/viewentity?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.name + "</a>";
@@ -318,7 +318,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							relation.save();
 						}
 
-						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						String logDescription = "<a href=\"/users/viewprofile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
@@ -329,13 +329,13 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								+ " to"
 								+ renameRequest.newName
 								+ "between entities"
-								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ "<a href=\"/mainentitys/viewentity?id="
 								+ relation.source.id
 								+ "\">"
 								+ relation.source.name
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ "<a href=\"/mainentitys/viewentity?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.name + "</a>";
@@ -345,7 +345,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 					}
 				} else {
 					if (renameRequest.requestType == 0) {
-						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						String logDescription = "<a href=\"/users/viewprofile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
@@ -354,13 +354,13 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								+ " has rejected request to end relationship "
 								+ relation.name
 								+ " between entities "
-								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ "<a href=\"/mainentitys/viewentity?id="
 								+ relation.source.id
 								+ "\">"
 								+ relation.source.name
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ "<a href=\"/mainentitys/viewentity?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.name + "</a>";
@@ -369,7 +369,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								relation.destination, relation.source);
 
 					} else {
-						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						String logDescription = "<a href=\"/users/viewprofile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
@@ -380,13 +380,13 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								+ " to "
 								+ renameRequest.newName
 								+ " between entities "
-								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ "<a href=\"/mainentitys/viewentity?id="
 								+ relation.source.id
 								+ "\">"
 								+ relation.source.name
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ "<a href=\"/mainentitys/viewentity?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.name + "</a>";
@@ -416,20 +416,20 @@ public class CreateRelationshipRequests extends CoolCRUD {
 						relation.destination.relationsDestination
 								.remove(relation);
 						relation.destination.save();
-						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						String logDescription = "<a href=\"/users/viewprofile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
 								+ " "
 								+ "</a>"
 								+ " has accepted request to end relationship between topics "
-								+ "<a href=\"http://localhost:9008/topicss/show?id="
+								+ "<a href=\"/topicss/show?id="
 								+ relation.source.id
 								+ "\">"
 								+ relation.source.title
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ "<a href=\"/mainentitys/viewentity?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.title + "</a>";
@@ -451,7 +451,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							relation.save();
 						}
 
-						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						String logDescription = "<a href=\"/users/viewprofile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
@@ -462,13 +462,13 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								+ " to"
 								+ renameRequest.newName
 								+ "between topicss"
-								+ "<a href=\"http://localhost:9008/topics/show?id="
+								+ "<a href=\"/topics/show?id="
 								+ relation.source.id
 								+ "\">"
 								+ relation.source.title
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"http://localhost:9008/topics/show?id="
+								+ "<a href=\"/topics/show?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.title + "</a>";
@@ -480,20 +480,20 @@ public class CreateRelationshipRequests extends CoolCRUD {
 					}
 				} else {
 					if (renameRequest.requestType == 0) {
-						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						String logDescription = "<a href=\"/users/viewprofile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
 								+ " "
 								+ "</a>"
 								+ " has rejected request to end relationship between topics "
-								+ "<a href=\"http://localhost:9008/topicss/show?id="
+								+ "<a href=\"/topicss/show?id="
 								+ relation.source.id
 								+ "\">"
 								+ relation.source.title
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+								+ "<a href=\"/mainentitys/viewentity?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.title + "</a>";
@@ -504,7 +504,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								relation.destination.entity);
 
 					} else {
-						String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						String logDescription = "<a href=\"/users/viewprofile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
@@ -515,13 +515,13 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								+ " to"
 								+ renameRequest.newName
 								+ "between topicss"
-								+ "<a href=\"http://localhost:9008/topics/show?id="
+								+ "<a href=\"/topics/show?id="
 								+ relation.source.id
 								+ "\">"
 								+ relation.source.title
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"http://localhost:9008/topics/show?id="
+								+ "<a href=\"/topics/show?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.title + "</a>";
