@@ -141,13 +141,13 @@ public class AssignRequests extends CoolCRUD {
 							"plan", description);
 
 					String logDescription = "User "
-							+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ "<a href=\"/users/viewprofile?userId="
 							+ sender.id
 							+ "\">"
 							+ sender.username
 							+ "</a>"
 							+ " sent an asssignment request to "
-							+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ "<a href=\"/users/viewprofile?userId="
 							+ destination.id
 							+ "\">"
 							+ destination.firstName
@@ -157,13 +157,13 @@ public class AssignRequests extends CoolCRUD {
 							+ " to work on the item "
 							+ source.summary
 							+ " in the plan "
-							+ "<a href=\"http://localhost:9008/plans/viewaslist?planId="
+							+ "<a href=\"/plans/viewaslist?planId="
 							+ source.plan.id
 							+ "\">"
 							+ source.plan.title
 							+ "</a>"
 							+ " of the topic "
-							+ "<a href=\"http://localhost:9008/topics/show?topicId="
+							+ "<a href=\"/topics/show?topicId="
 							+ source.plan.topic.id
 							+ "\">"
 							+ source.plan.topic.title + "</a>";
@@ -321,11 +321,11 @@ public class AssignRequests extends CoolCRUD {
 		notFoundIfNull(request);
 		assignRequests.remove(request);
 		Item item = request.source;
-		String logDescription = "User <a href=\"http://localhost:9008/users/viewprofile?userId="
+		String logDescription = "User <a href=\"/users/viewprofile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
-				+ "</a> has accepted the assignment to work on item <a href=\"http://localhost:9008/plans/viewaslist?planId="
+				+ "</a> has accepted the assignment to work on item <a href=\"/plans/viewaslist?planId="
 				+ item.plan.id + "\">" + item.summary + "</a>.";
 		Log.addLog(logDescription, user, request.source, request.source.plan,
 				request.source.plan.topic, request.source.plan.topic.entity,
@@ -374,11 +374,11 @@ public class AssignRequests extends CoolCRUD {
 		List<AssignRequest> assignRequests = user.receivedAssignRequests;
 		AssignRequest request = AssignRequest.findById(reqId);
 		notFoundIfNull(request);
-		String logDescription = "User <a href=\"http://localhost:9008/users/viewprofile?userId="
+		String logDescription = "User <a href=\"/users/viewprofile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
-				+ "</a> has rejected the assignment to work on item <a href=\"http://localhost:9008/plans/viewaslist?planId="
+				+ "</a> has rejected the assignment to work on item <a href=\"/plans/viewaslist?planId="
 				+ request.source.plan.id
 				+ "\">"
 				+ request.source.summary

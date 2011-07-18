@@ -82,22 +82,25 @@ public class EntityRelationships extends CoolCRUD {
 			}
 			Log
 					.addUserLog(
-							"User \"<a href=\"/users/viewprofile?userId="
+							"<a href=\"/users/viewprofile?userId="
 									+ Security.getConnected().id
 									+ "\">"
-									+ Security.getConnected().firstName
-									+ " "
-									+ Security.getConnected().lastName
-									+ "</a>\" "
-									+ "created a relationship \""
+									+ Security.getConnected().username
+									+ "</a>" 
+									+ "created a relationship "
 									+ name
-									+ "\" between entities \"<a href=\"/mainentitys/viewentity?id="
+									+ " between entities"
+									+"<a href=\"/mainentitys/viewentity?id="
 									+ source.id
 									+ "\">"
 									+ source.name
-									+ "\"</a> and \"<a href=\"/mainentitys/viewentity?id="
-									+ destination.id + "\">" + destination.name
-									+ "</a>\"", Security.getConnected(),
+									+ "</a>" 
+									+"and " 
+									+"<a href=\"/mainentitys/viewentity?id="
+									+ destination.id 
+									+ "\">" 
+									+ destination.name
+									+ "</a>", Security.getConnected(),
 							source, destination, source.organization);
 			return true;
 		}
@@ -154,25 +157,31 @@ public class EntityRelationships extends CoolCRUD {
 			if (!relationDuplicate(relationTemp)) {
 				Log
 						.addUserLog(
-								"User \"<a href=\"/users/viewprofile?userId="
+								"<a href=\"/users/viewprofile?userId="
 										+ Security.getConnected().id
 										+ "\">"
-										+ Security.getConnected().firstName
-										+ " "
-										+ Security.getConnected().lastName
-										+ "</a>\" "
-										+ "renamed the relationship \""
+										+ Security.getConnected().username
+										+ "</a>"
+										+ "renamed the relationship "
 										+ relation.name
-										+ "\" between entities \"<a href=\"/mainentitys/viewentity?id="
+										+ "between entities" 
+										+"<a href=\"/mainentitys/viewentity?id="
 										+ relation.source.id
 										+ "\">"
 										+ relation.source.name
-										+ "</a>\" and \"<a href=\"/mainentitys/viewentity?id="
-										+ relation.destination.id + "\">"
+										+ "</a>" 
+										+ "and "
+										+ "<a href=\"/mainentitys/viewentity?id="
+										+ relation.destination.id 
+										+ "\">"
 										+ relation.destination.name
-										+ "</a>\" to \"" + newName + "\"",
+										+ "</a>" 
+										+"to " 
+										+ newName ,
 								Security.getConnected(), relation.source,
 								relation.destination,
+								
+								
 								relation.source.organization);
 				for (int i = 0; i < relation.renameEndRequests.size(); i++) {
 					RenameEndRelationshipRequests
@@ -201,16 +210,23 @@ public class EntityRelationships extends CoolCRUD {
 	public static boolean delete(long relationId) {
 		EntityRelationship relation = EntityRelationship.findById(relationId);
 		notFoundIfNull(relation);
-		Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
-				+ Security.getConnected().id + "\">"
-				+ Security.getConnected().firstName + " "
-				+ Security.getConnected().lastName + "</a>\" "
-				+ "deleted the relationship \"" + relation.name
-				+ "\" between entities \"<a href=\"/mainentitys/viewentity?id="
-				+ "\">" + relation.source.name
-				+ "</a>\" and \"<a href=\"/mainentitys/viewentity?id="
-				+ relation.destination.id + "\">" + relation.destination.name
-				+ "</a>\"", Security.getConnected(), relation.source,
+		Log.addUserLog("<a href=\"/users/viewprofile?userId="
+				+ Security.getConnected().id 
+				+ "\">"
+				+ Security.getConnected().username
+				+ "</a>"
+				+ "deleted the relationship " + relation.name
+				+ " between entities " 
+				+"<a href=\"/mainentitys/viewentity?id="
+				+ "\">" 
+				+ relation.source.name
+				+ "</a>" 
+				+" and " 
+				+ "<a href=\"/mainentitys/viewentity?id="
+				+ relation.destination.id 
+				+ "\">" 
+				+ relation.destination.name
+				+ "</a>", Security.getConnected(), relation.source,
 				relation.destination, relation.source.organization);
 		relation.source.relationsSource.remove(relation);
 		relation.destination.relationsDestination.remove(relation);
