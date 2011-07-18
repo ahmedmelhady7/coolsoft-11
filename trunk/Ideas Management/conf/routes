@@ -15,14 +15,11 @@ GET     /public/                                staticDir:public
 *       /{controller}/{action}                  {controller}.{action}
 
 # Import CRUD routes
-*     /admin                                    module:crud
+*      /admin                                    module:crud
 
 # Import Secure routes
 *      /                                        module:secure
 
-# Import AdvancedSearch routes
-*      /AdvancedSearch                          Search.advancedSearch
-  
 # Import ViewSearchResults routes
 *      /searchResult                    		Search.searchResult
 
