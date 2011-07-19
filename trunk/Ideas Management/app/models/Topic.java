@@ -72,7 +72,6 @@ public class Topic extends CoolModel {
 	@ManyToMany(mappedBy = "topicsIFollow")
 	public List<User> followers;
 
-
 	/**
 	 * the list of ideas in the topic
 	 */
@@ -191,14 +190,14 @@ public class Topic extends CoolModel {
 		this.creator = creator;
 		this.entity = entity;
 		this.relationsSource = new ArrayList<TopicRelationship>();
-		this.invitations=new ArrayList <Invitation>();
+		this.invitations = new ArrayList<Invitation>();
 		this.relationsDestination = new ArrayList<TopicRelationship>();
 		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
 		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
 		this.tags = new ArrayList<Tag>();
 		this.followers = new ArrayList<User>();
 		this.ideas = new ArrayList<Idea>();
-		this.commentsOn = new ArrayList<Comment>();
+		// this.commentsOn = new ArrayList<Comment>();
 		this.reporters = "";
 		this.requestsToJoin = new ArrayList<RequestToJoin>();
 		this.createRelationship = createRelationship;
@@ -235,13 +234,13 @@ public class Topic extends CoolModel {
 		this.tags = new ArrayList<Tag>();
 		this.followers = new ArrayList<User>();
 		this.ideas = new ArrayList<Idea>();
-		this.commentsOn = new ArrayList<Comment>();
+		// this.commentsOn = new ArrayList<Comment>();
 		this.hidden = false;
 		this.reporters = "";
 		this.createRelationship = createRelationship;
 		this.openToEdit = true;
 		this.isDraft = false;
-		this.viewed=0;
+		this.viewed = 0;
 	}
 
 	/**
@@ -271,7 +270,7 @@ public class Topic extends CoolModel {
 		this(title, description, privacyLevel, creator, entity,
 				createRelationship);
 		this.isDraft = true;
-		this.viewed=0;
+		this.viewed = 0;
 	}
 
 	/**
@@ -429,7 +428,6 @@ public class Topic extends CoolModel {
 		return true;
 	}
 
-	
 	/**
 	 * Checks whether a certain user can view this topic
 	 * 
@@ -442,16 +440,16 @@ public class Topic extends CoolModel {
 	 */
 	public boolean canView(User user) {
 		boolean canView = false;
-		if(Users.isPermitted(user, "view", this.entity.organization.id, "organization"))
-		{
-		if (Users.isPermitted(user, "view", this.id, "topic"))
-			canView = true;
+		if (Users.isPermitted(user, "view", this.entity.organization.id,
+				"organization")) {
+			if (Users.isPermitted(user, "view", this.id, "topic"))
+				canView = true;
 		}
 		return canView;
 	}
 
 	/**
-	 * @author monica yousry 
+	 * @author monica yousry
 	 * @description: this method increments the counter viewed
 	 * @return void
 	 */
