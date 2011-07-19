@@ -136,9 +136,11 @@ public class Topics extends CRUD {
 					topic.entity.organization.creator.id, topicId, "topic",
 					"This topic has been tagged as " + tag);
 			
-			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
-            + " added the tag " +"<a href=\"http://localhost:9008/tags/mainpage?tagId=" + tempTag.id +"\">" +  tempTag.name + "</a>"  + " to the topic "
-            + "<a href=\"http://localhost:9008/topics/show?topicId=" + topic.id +"\">" + topic.title + "</a>" ;
+			String logDescription = "<a href=\"/users/viewprofile?userId=" + user.id +"\">" 
+			+ user.username + "</a>"
+            + " added the tag " +"<a href=\"/tags/mainpage?tagId=" 
+            + tempTag.id +"\">" +  tempTag.name + "</a>"  + " to the topic "
+            + "<a href=\"/topics/show?topicId=" + topic.id +"\">" + topic.title + "</a>" ;
 			Log.addUserLog(logDescription, topic);
 			
 		}
@@ -276,8 +278,9 @@ public class Topics extends CRUD {
 		
 		
 		
-		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
-        + " reopened Topic " +"<a href=\"http://localhost:9008topics/show?topicId==" + targetTopic.id +"\">" +  targetTopic.title + "</a>";
+		String log = "<a href=\"/users/viewprofile?userId=" + user.id +"\">" + user.username + "</a>"
+        + " reopened Topic " +"<a href=\"/topics/show?topicId=" 
+        + targetTopic.id +"\">" +  targetTopic.title + "</a>";
 		
 		MainEntity entity = targetTopic.entity;
 		Organization organization = entity.organization;
@@ -485,8 +488,9 @@ public class Topics extends CRUD {
 					targetTopic.getId(), "Topic", notificationDescription);
 		}
 		
-		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + actor.id +"\">" + actor.firstName + "</a>"
-        + " closed Topic " +"<a href=\"http://localhost:9008topics/show?topicId==" + targetTopic.id +"\">" +  targetTopic.title + "</a>";
+		String log = "<a href=\"/users/viewprofile?userId=" + actor.id +"\">" + actor.username 
+		+ "</a>"
+        + " closed Topic " +"<a href=\"/topics/show?topicId=" + targetTopic.id +"\">" +  targetTopic.title + "</a>";
 		
 		MainEntity entity = targetTopic.entity;
 		Organization organization = entity.organization;
@@ -623,19 +627,19 @@ public class Topics extends CRUD {
 			}
 		}
 
-		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+		String logDescription = "<a href=\"/users/viewprofile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
 				+ "</a>"
 				+ " created the topic "
-				+ "<a href=\"http://localhost:9008/topics/show?topicId="
+				+ "<a href=\"/topics/show?topicId="
 				+ temporaryTopic.id
 				+ "\">"
 				+ temporaryTopic.title
 				+ "</a>"
 				+ " from entity "
-				+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+				+ "<a href=\"/mainentitys/viewentity?id="
 				+ topicEntity.id + "\">" + topicEntity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, topicEntity,
 				topicEntity.organization);
@@ -1332,19 +1336,19 @@ public class Topics extends CRUD {
 		}
 
 		object._save();
-		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+		String logDescription = "<a href=\"/users/viewprofile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
 				+ "</a>"
 				+ " edited the topic "
-				+ "<a href=\"http://localhost:9008/topics/show?topicId="
+				+ "<a href=\"/topics/show?topicId="
 				+ temporaryTopic.id
 				+ "\">"
 				+ temporaryTopic.title
 				+ "</a>"
 				+ " in entity "
-				+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+				+ "<a href=\"/mainentitys/viewentity?id="
 				+ entity.id + "\">" + entity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, entity,
 				entity.organization);
@@ -1390,7 +1394,7 @@ public class Topics extends CRUD {
 			user.topicsIFollow.add(topic);
 			user.save();
 			Log.addUserLog(
-					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+					"<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
 							+ user.firstName
@@ -1398,7 +1402,7 @@ public class Topics extends CRUD {
 							+ user.lastName
 							+ "</a>"
 							+ " has followed the topic ("
-							+ "<a href=\"http://localhost:9008/topics/show?topicId="
+							+ "<a href=\"/topics/show?topicId="
 							+ topic.id + "\">" + topic.title + "</a>" + ")",
 					topic.entity.organization);
 			redirect(request.controller + ".show", topic.id,
@@ -1692,19 +1696,19 @@ public class Topics extends CRUD {
 
 		UserRoleInOrganization.deleteEntityOrTopic(temporaryTopic.id, "topic");
 
-		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+		String logDescription = "<a href=\"/users/viewprofile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
 				+ "</a>"
 				+ " deleted the topic "
-				+ "<a href=\"http://localhost:9008/topics/show?topicId="
+				+ "<a href=\"/topics/show?topicId="
 				+ temporaryTopic.id
 				+ "\">"
 				+ temporaryTopic.title
 				+ "</a>"
 				+ " from entity "
-				+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+				+ "<a href=\"/mainentitys/viewentity?id="
 				+ entity.id + "\">" + entity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, entity,
 				entity.organization);
@@ -1822,7 +1826,7 @@ public class Topics extends CRUD {
 				entity.getId(), "entity", justification);
 		String logDescription = "The topic " + temporaryTopic.title
 				+ " in entity "
-				+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+				+ "<a href=\"/mainentitys/viewentity?id="
 				+ entity.id + "\">" + entity.name + "</a>" + "was deleted";
 		Log.addUserLog(logDescription, temporaryTopic, entity,
 				entity.organization);
@@ -1901,19 +1905,19 @@ public class Topics extends CRUD {
 					entity.getId(), "entity", "Your Topic was hidden because "
 							+ justification);
 
-			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+			String logDescription = "<a href=\"/users/viewprofile?userId="
 					+ user.id
 					+ "\">"
 					+ user.username
 					+ "</a>"
 					+ " hid the topic "
-					+ "<a href=\"http://localhost:9008/topics/show?topicId="
+					+ "<a href=\"/topics/show?topicId="
 					+ temporaryTopic.id
 					+ "\">"
 					+ temporaryTopic.title
 					+ "</a>"
 					+ " from entity "
-					+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id="
+					+ "<a href=\"/mainentitys/viewentity?id="
 					+ entity.id + "\">" + entity.name + "</a>";
 			Log.addUserLog(logDescription, temporaryTopic, user, entity,
 					entity.organization);
@@ -1959,9 +1963,12 @@ public class Topics extends CRUD {
 				Notifications.sendNotification(temporaryTopic.followers.get(i)
 						.getId(), entity.getId(), "entity", message);
 
-			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
-	        + " unhid the topic " +"<a href=\"http://localhost:9008/topics/show?topicId=" + temporaryTopic.id +"\">" + temporaryTopic.title + "</a>"
-	        + " from entity " + "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + entity.id +"\">" + entity.name + "</a>";
+			String logDescription = "<a href=\"/users/viewprofile?userId=" 
+				+ user.id +"\">" + user.username + "</a>"
+	        + " unhid the topic " +"<a href=\"/topics/show?topicId=" 
+	        + temporaryTopic.id +"\">" + temporaryTopic.title + "</a>"
+	        + " from entity " + "<a href=\"/mainentitys/viewentity?id=" 
+	        + entity.id +"\">" + entity.name + "</a>";
 			Log.addUserLog(logDescription, temporaryTopic, user, entity,
 					entity.organization);
 
@@ -2231,10 +2238,11 @@ public class Topics extends CRUD {
 		user.save();
 		MainEntity entity = targetTopic.entity;
 		Organization organization = entity.organization;
-		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
-			+ " posted Topic " +"<a href=\"http://localhost:9008topics/show?topicId=" + targetTopic.id +"\">" +  
+		String log = "<a href=\"/users/viewprofile?userId=" + user.id +"\">" 
+		+ user.username + "</a>"
+			+ " posted Topic " +"<a href=\"/topics/show?topicId=" + targetTopic.id +"\">" +  
 			targetTopic.title + "</a>" + " to the entity "
-			+ "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + 
+			+ "<a href=\"/mainentitys/viewentity?id=" + 
 			entity.id +"\">" + entity.name + "</a>" ;
 		Log.addUserLog(log, user, targetTopic, entity, organization);
 		
@@ -2339,8 +2347,9 @@ public class Topics extends CRUD {
 		User user = Security.getConnected();
 		MainEntity entity = targetTopic.entity;
 		Organization organiztion = entity.organization;
-		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
-			+ " posted Topic " +"<a href=\"http://localhost:9008topics/show?topicId=" + targetTopic.id +"\">" +  
+		String log = "<a href=\"/users/viewprofile?userId=" + user.id +"\">" 
+		+ user.username + "</a>"
+			+ " posted Topic " +"<a href=\"/show?topicId=" + targetTopic.id +"\">" +  
 			targetTopic.title + "</a>";
 		Log.addUserLog(log, user, targetTopic, organiztion, entity);
 		

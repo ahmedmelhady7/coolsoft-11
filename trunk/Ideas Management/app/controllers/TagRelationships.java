@@ -71,15 +71,14 @@ public class TagRelationships extends CoolCRUD {
 							+ "\" is created now between tags \"" + source.name
 							+ "\" and \"" + destination.name + "\".");
 
-			Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
+			Log.addUserLog("<a href=\"/users/viewprofile?userId="
 					+ Security.getConnected().id + "\">"
-					+ Security.getConnected().firstName + " "
-					+ Security.getConnected().lastName + "</a>\" "
-					+ "created a relationship \"" + name
-					+ "\" between tags \"<a href=\"/tags/mainpage?tagId="
+					+ Security.getConnected().username + "</a>"
+					+ "created a relationship " + name
+					+ " between tags " + "<a href=\"/tags/mainpage?tagId="
 					+ source.id + "\">" + source.name
-					+ "</a>\" and \"<a href=\"/tags/mainpage?tagId="
-					+ destination.id + "\">" + destination.name + "</a>\"",
+					+ "</a>" + "and" + "<a href=\"/tags/mainpage?tagId="
+					+ destination.id + "\">" + destination.name + "</a>",
 					Security.getConnected(), source, destination,
 					source.createdInOrganization);
 
@@ -136,17 +135,16 @@ public class TagRelationships extends CoolCRUD {
 				relation.source, relation.destination);
 		if (relation.name != newName) {
 			if (!relationDuplicate(relationTemp)) {
-				Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
+				Log.addUserLog("<a href=\"/users/viewprofile?userId="
 						+ Security.getConnected().id + "\">"
-						+ Security.getConnected().firstName + " "
-						+ Security.getConnected().lastName + "</a>\" "
-						+ "renamed the relationship \"" + relation.name
-						+ "\" between tags \"<a href=\"/tags/mainpage?tagId="
+						+ Security.getConnected().username+ "</a>"
+						+ " renamed the relationship " + relation.name
+						+ " between tags "+ "<a href=\"/tags/mainpage?tagId="
 						+ relation.source.id + "\">" + relation.source.name
-						+ "</a>\" and \"<a href=\"/tags/mainpage?tagId="
+						+ "</a>" + "and"  + "<a href=\"/tags/mainpage?tagId="
 						+ relation.destination.id + "\">"
-						+ relation.destination.name + "</a>\" to \"" + newName
-						+ "\"", Security.getConnected(), relation.source,
+						+ relation.destination.name + "</a>" + "to" + "" + newName
+						, Security.getConnected(), relation.source,
 						relation.destination,
 						relation.source.createdInOrganization);
 				relation.name = newName;
@@ -171,16 +169,15 @@ public class TagRelationships extends CoolCRUD {
 	public static boolean delete(long relationId) {
 		TagRelationship relation = TagRelationship.findById(relationId);
 		notFoundIfNull(relation);
-		Log.addUserLog("User \"<a href=\"/users/viewprofile?userId="
+		Log.addUserLog("<a href=\"/users/viewprofile?userId="
 				+ Security.getConnected().id + "\">"
-				+ Security.getConnected().firstName + " "
-				+ Security.getConnected().lastName + "</a>\" "
-				+ "deleted the relationship \"" + relation.name
-				+ "\" between tags \"<a href=\"/tags/mainpage?tagId="
+				+ Security.getConnected().username + "</a>"
+				+ " deleted the relationship " + relation.name
+				+ " between tags " + "<a href=\"/tags/mainpage?tagId="
 				+ relation.source.id + "\">" + relation.source.name
-				+ "</a>\" and \"<a href=\"/tags/mainpage?tagId="
+				+ "</a>" + "and" + "<a href=\"/tags/mainpage?tagId="
 				+ relation.destination.id + "\">" + relation.destination.name
-				+ "</a>\"", Security.getConnected(), relation.source,
+				+ "</a>", Security.getConnected(), relation.source,
 				relation.destination, relation.source.createdInOrganization);
 		relation.source.relationsSource.remove(relation);
 		relation.destination.relationsDestination.remove(relation);

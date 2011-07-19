@@ -1335,14 +1335,14 @@ public class Users extends CoolCRUD {
 			Mail.activation(tmp, tmp.activationKey);
 			Log.addUserLog(
 					"Admin "
-							+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ "<a href=\"/users/viewprofile?userId="
 							+ Security.getConnected().id
 							+ "\">"
-							+ Security.getConnected().firstName
+							+ Security.getConnected().username
 							+ "</a>"
 							+ " "
 							+ " has added "
-							+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+							+ "<a href=\"/users/viewprofile?userId="
 							+ tmp.id + "\">" + tmp.firstName + "</a>"
 							+ "'s profile", tmp);
 			String message2 = tmp.username + " has been added to users ";
@@ -1415,7 +1415,7 @@ public class Users extends CoolCRUD {
 		user.dateofBirth = dateOfBirth;
 		user.country = country;
 		user.profession = profession;
-		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+		String logDescription = "<a href=\"/users/viewprofile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
@@ -1580,15 +1580,15 @@ public class Users extends CoolCRUD {
 								+ editedMessage);
 				Log.addUserLog(
 						"Admin "
-								+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+								+ "<a href=\"/users/viewprofile?userId="
 								+ Security.getConnected().id
 								+ "\">"
-								+ Security.getConnected().firstName
+								+ Security.getConnected().username
 								+ "</a>"
 								+ " "
 								+ " has edited "
-								+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
-								+ tmp.id + "\">" + tmp.firstName + "</a>"
+								+ "<a href=\"/users/viewprofile?userId="
+								+ tmp.id + "\">" + tmp.username + "</a>"
 								+ "'s profile" + "\n" + editedMessage, tmp);
 			}
 			flash.success(Messages.get("crud.saved", type.modelName));
@@ -2081,7 +2081,7 @@ public class Users extends CoolCRUD {
 
 		User user = Security.getConnected();
 		user.password = Codec.hexMD5(pass2);
-		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+		String logDescription = "<a href=\"/users/viewprofile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username

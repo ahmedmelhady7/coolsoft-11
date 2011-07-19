@@ -107,9 +107,12 @@ public class TopicRequests extends CoolCRUD{
 
 		}
 		
-		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.username +  "</a>"
-        + " requested a topic " +"<a href=\"http://localhost:9008/topics/show?topicId=" + temporaryTopicRequest.id +"\">" + temporaryTopicRequest.title + "</a>"
-        + " in entity " + "<a href=\"http://localhost:9008/mainentitys/viewentity?id=" + entity.id +"\">" + entity.name + "</a>";
+		String logDescription = "<a href=\"/users/viewprofile?userId=" + user.id +"\">" 
+		+ user.username +  "</a>"
+        + " requested a topic " +"<a href=\"/topics/show?topicId=" + temporaryTopicRequest.id 
+        +"\">" + temporaryTopicRequest.title + "</a>"
+        + " in entity " + "<a href=\"/mainentitys/viewentity?id=" 
+        + entity.id +"\">" + entity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopicRequest, user, entity,
 				entity.organization);
 		
@@ -221,8 +224,10 @@ public static void acceptRequest(long topicRequestId, String topicDescription) {
 	Notifications.sendNotification(
 			request.requester.id, topic.id, "topic",
 			"The topic request named " + request.title + " has been accepted.");
-	String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + Security.getConnected().id +"\">" + Security.getConnected().firstName + "</a>"
-    + " accepted a topic request with the title " + request.title +" in <a href=\"http://localhost:9008/mainentitys/viewentity?id=" + request.entity.id +"\">" +  request.entity.name + "</a>";
+	String logDescription = "<a href=\"/users/viewprofile?userId=" 
+		+ Security.getConnected().id +"\">" + Security.getConnected().username + "</a>"
+    + " accepted a topic request with the title " + request.title +" in <a href=\"/mainentitys/viewentity?id=" 
+    + request.entity.id +"\">" +  request.entity.name + "</a>";
 	Log.addUserLog(logDescription, request.entity, request.entity.organization, Security.getConnected());
 }
 
@@ -247,8 +252,10 @@ public static void rejectRequest(long topicRequestId) {
 	Notifications.sendNotification(
 			request.requester.id, entity.id, "entity",
 			"The topic request named " + request.title + " has been rejected.");
-	String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + Security.getConnected().id +"\">" + Security.getConnected().firstName + "</a>"
-    + " rejected a topic request with the title " + request.title +" in <a href=\"http://localhost:9008/mainentitys/viewentity?id=" + request.entity.id +"\">" +  request.entity.name + "</a>";
+	String logDescription = "<a href=\"/users/viewprofile?userId=" 
+		+ Security.getConnected().id +"\">" + Security.getConnected().username + "</a>"
+    + " rejected a topic request with the title " + request.title +" in <a href=\"/mainentitys/viewentity?id=" 
+    + request.entity.id +"\">" +  request.entity.name + "</a>";
 	Log.addUserLog(logDescription, request.entity, request.entity.organization, Security.getConnected());
 }
 

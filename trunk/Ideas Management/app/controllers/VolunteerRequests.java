@@ -100,15 +100,15 @@ public class VolunteerRequests extends CoolCRUD {
 		List<User> userToNotifyList = new ArrayList<User>();
 		for (int i = 0; i < item.assignees.size(); i++)
 			userToNotifyList.add(item.assignees.get(i));
-		String logDescription = "Organizer <a href=\"http://localhost:9008/users/viewprofile?userId="
+		String logDescription = "<a href=\"/users/viewprofile?userId="
 				+ organizer.id
 				+ "\">"
 				+ organizer.username
-				+ "</a> has accepted user <a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ "</a> has accepted user <a href=\"/users/viewprofile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
-				+ "'s </a> volunteer request on item <a href=\"http://localhost:9008/plans/viewaslist?planId="
+				+ "'s </a> volunteer request on item <a href=\"/plans/viewaslist?planId="
 				+ item.plan.id + "\">" + item.summary + "</a>.";
 		Log.addLog(logDescription, organizer, item, item.plan, item.plan.topic,
 				item.plan.topic.entity, item.plan.topic.entity.organization);
@@ -157,15 +157,15 @@ public class VolunteerRequests extends CoolCRUD {
 		User organizer = Security.getConnected();
 		User user = request.sender;
 		Item item = request.destination;
-		String logDescription = "Organizer <a href=\"http://localhost:9008/users/viewprofile?userId="
+		String logDescription = "<a href=\"/users/viewprofile?userId="
 				+ organizer.id
 				+ "\">"
 				+ organizer.username
-				+ "</a> has rejected user <a href=\"http://localhost:9008/users/viewprofile?userId="
+				+ "</a> has rejected user <a href=\"/users/viewprofile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
-				+ "'s </a> volunteer request on item <a href=\"http://localhost:9008/plans/viewaslist?planId="
+				+ "'s </a> volunteer request on item <a href=\"/plans/viewaslist?planId="
 				+ item.plan.id + "\">" + item.summary + "</a>.";
 		Log.addLog(logDescription, organizer, item, item.plan, item.plan.topic,
 				item.plan.topic.entity, item.plan.topic.entity.organization);

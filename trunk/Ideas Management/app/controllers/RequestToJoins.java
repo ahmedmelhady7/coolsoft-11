@@ -110,21 +110,21 @@ public class RequestToJoins extends CoolCRUD {
 				UserRoleInOrganizations.addEnrolledUser(user, organization,
 						role);
 				organization.joinRequests.remove(request);
-				String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				String logDescription = "<a href=\"/users/viewprofile?userId="
 						+ reciever.id
 						+ "\">"
 						+ reciever.username
 						+ " "
 						+ "</a>"
 						+ " has accepted user "
-						+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ "<a href=\"/users/viewprofile?userId="
 						+ user.id
 						+ "\">"
 						+ user.username
 						+ " "
 						+ "</a>"
 						+ " request to join "
-						+ "<a href=\"http://localhost:9008/organizations/viewProfile?id="
+						+ "<a href=\"/organizations/viewProfile?id="
 						+ organization.id
 						+ "\">"
 						+ organization.name
@@ -148,20 +148,20 @@ public class RequestToJoins extends CoolCRUD {
 				UserRoleInOrganizations.addEnrolledUser(user, organization,
 						role, topic.id, "topic");
 				topic.requestsToJoin.remove(request);
-				String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				String logDescription = "<a href=\"/users/viewprofile?userId="
 						+ reciever.id
 						+ "\">"
 						+ reciever.username
 						+ " "
 						+ "</a>"
 						+ " has accepted user "
-						+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ "<a href=\"/users/viewprofile?userId="
 						+ user.id
 						+ "\">"
 						+ user.username
 						+ "</a>"
 						+ " request to join "
-						+ "<a href=\"http://localhost:9008/topics/show?id="
+						+ "<a href=\"/topics/show?id="
 						+ topic.id + "\">" + topic.title + "</a>" + " topic";
 				Log.addUserLog(logDescription, organization, entity, topic);
 
@@ -179,21 +179,21 @@ public class RequestToJoins extends CoolCRUD {
 			if (request.organization != null) {
 				Organization organization = request.organization;
 				organization.joinRequests.remove(request);
-				String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				String logDescription = "<a href=\"/users/viewprofile?userId="
 						+ reciever.id
 						+ "\">"
 						+ reciever.username
 						+ " "
 						+ "</a>"
 						+ " has rejected user "
-						+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ "<a href=\"/users/viewprofile?userId="
 						+ user.id
 						+ "\">"
 						+ user.username
 						+ " "
 						+ "</a>"
 						+ " request to join "
-						+ "<a href=\"http://localhost:9008/organizations/viewProfile?id="
+						+ "<a href=\"/organizations/viewProfile?id="
 						+ organization.id
 						+ "\">"
 						+ organization.name
@@ -209,21 +209,21 @@ public class RequestToJoins extends CoolCRUD {
 				MainEntity entity = topic.entity;
 				Organization organization = entity.organization;
 				topic.requestsToJoin.remove(request);
-				String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+				String logDescription = "<a href=\"/users/viewprofile?userId="
 						+ reciever.id
 						+ "\">"
 						+ reciever.username
 						+ " "
 						+ "</a>"
 						+ " has rejected user "
-						+ "<a href=\"http://localhost:9008/users/viewprofile?userId="
+						+ "<a href=\"/users/viewprofile?userId="
 						+ user.id
 						+ "\">"
 						+ user.username
 						+ " "
 						+ "</a>"
 						+ "request to join "
-						+ "<a href=\"http://localhost:9008/topics/show?id="
+						+ "<a href=\"/topics/show?id="
 						+ topic.id + "\">" + topic.title + "</a>" + " topic";
 				Log.addUserLog(logDescription, organization, entity, topic);
 
@@ -262,7 +262,7 @@ public class RequestToJoins extends CoolCRUD {
 					organization, description).save();
 			organization.joinRequests.add(request);
 			Log.addUserLog(
-					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+					"<a href=\"/users/viewprofile?userId="
 							+ requester.id
 							+ "\">"
 							+ requester.firstName
@@ -270,7 +270,7 @@ public class RequestToJoins extends CoolCRUD {
 							+ requester.lastName
 							+ "</a>"
 							+ " has requested to join the organisation ("
-							+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
+							+ "<a href=\"/organizations/viewprofile?id="
 							+ organization.id + "\">" + organization.name
 							+ "</a>" + ")", requester, organization);
 			flash.success("Your request has been successfully been sent!!");
