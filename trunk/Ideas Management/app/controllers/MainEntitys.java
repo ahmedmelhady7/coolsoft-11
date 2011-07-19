@@ -83,16 +83,17 @@ public class MainEntitys extends CoolCRUD {
 			user.followingEntities.add(entity);
 			user.save();
 			Log.addUserLog(
-					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+					"<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
-							+ user.firstName
-							+ " "
-							+ user.lastName
+							+ user.username
 							+ "</a>"
-							+ " has followed the entity ("
-							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
-							+ entity.id + "\">" + entity.name + "</a>" + ")",
+							+ " has followed the entity "
+							+ "<a href=\"/mainentitys/viewentity?mainentityId="
+							+ entity.id 
+							+ "\">" 
+							+ entity.name 
+							+ "</a>",
 					entity.organization);
 			redirect(request.controller + ".viewEntity", entity.id,
 					"You are now a follower");
@@ -225,16 +226,14 @@ public class MainEntitys extends CoolCRUD {
 					createRelationship);
 			entity.save();
 			Log.addUserLog(
-					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+					"<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
-							+ user.firstName
-							+ " "
-							+ user.lastName
+							+ user.username
 							+ "</a>"
-							+ " has created the entity ("
-							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
-							+ entity.id + "\">" + entity.name + "</a>" + ")",
+							+ " has created the entity "
+							+ "<a href=\"/mainentitys/viewentity?mainentityId="
+							+ entity.id + "\">" + entity.name + "</a>",
 					organisation);
 		}
 		redirect("Organizations.viewProfile", organisation.id, "Entity created");
@@ -278,22 +277,20 @@ public class MainEntitys extends CoolCRUD {
 					organisation, createRelationship);
 			entity.save();
 			Log.addUserLog(
-					"<a href=\"http://localhost:9008/users/viewprofile?userId="
+					"<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
-							+ user.firstName
-							+ " "
-							+ user.lastName
+							+ user.username
 							+ "</a>"
-							+ " has created the subentity ("
-							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
+							+ " has created the subentity "
+							+ "<a href=\"/mainentitys/viewentity?mainentityId="
 							+ entity.id
 							+ "\">"
 							+ entity.name
 							+ "</a>"
-							+ ") for the entity ("
-							+ "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
-							+ parent.id + "\">" + parent.name + "</a>" + ")",
+							+ " for the entity "
+							+ "<a href=\"/mainentitys/viewentity?mainentityId="
+							+ parent.id + "\">" + parent.name + "</a>",
 					organisation);
 		}
 		redirect("Organizations.viewProfile", organisation.id,
@@ -620,16 +617,14 @@ public class MainEntitys extends CoolCRUD {
 		entity.createRelationship = createRelationship;
 		entity.save();
 		Log.addUserLog(
-				"<a href=\"http://localhost:9008/users/viewprofile?userId="
+				"<a href=\"/users/viewprofile?userId="
 						+ user.id
 						+ "\">"
-						+ user.firstName
-						+ " "
-						+ user.lastName
+						+ user.username
 						+ "</a>"
-						+ " has edited the entity ("
-						+ "<a href=\"http://localhost:9008/mainentitys/viewentity?mainentityId="
-						+ entity.id + "\">" + entity.name + "</a>" + ")",
+						+ " has edited the entity "
+						+ "<a href=\"/mainentitys/viewentity?mainentityId="
+						+ entity.id + "\">" + entity.name + "</a>",
 				entity.organization);
 		redirect(request.controller + ".viewEntity", entity.id,
 				"Entity created");

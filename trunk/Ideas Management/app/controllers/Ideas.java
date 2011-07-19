@@ -609,7 +609,7 @@ public class Ideas extends CoolCRUD {
 				render("CRUD/show.html", type);
 			}
 		}
-
+		
 		object._save();
 
 		flash.success(Messages.get("crud.saved", type.modelName,
@@ -744,20 +744,22 @@ public class Ideas extends CoolCRUD {
 		if (!tagAlreadyExists) {
 			Notifications.sendNotification(idea.author.id, ideaId, "idea",
 					"This idea has been tagged as " + tag);
-			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+			String logDescription = "<a href=\"/users/viewprofile?userId="
 					+ user.id
 					+ "\">"
-					+ user.firstName
+					+ user.username
 					+ "</a>"
 					+ " added the tag "
-					+ "<a href=\"http://localhost:9008/tags/mainpage?tagId="
+					+ "<a href=\"/tags/mainpage?tagId="
 					+ tempTag.id
 					+ "\">"
 					+ tempTag.name
 					+ "</a>"
 					+ " to the idea "
-					+ "<a href=\"http://localhost:9008/ideas/show?ideaId="
-					+ idea.id + "\">" + idea.title + "</a>";
+					+ "<a href=\"/ideas/show?ideaId="
+					+ idea.id + "\">" 
+					+ idea.title 
+					+ "</a>";
 			Log.addUserLog(logDescription, idea);
 		}
 		idea.save();
@@ -1030,20 +1032,23 @@ public class Ideas extends CoolCRUD {
 		ideaToKeep.save();
 		targetTopic.save();
 
-		String log = "<a href=\"http://localhost:9008/users/viewprofile?userId="
+		String log = "<a href=\"/users/viewprofile?userId="
 				+ user.id
 				+ "\">"
-				+ user.firstName
+				+ user.username
 				+ "</a>"
 				+ " merged ideas "
-				+ "<a href=\"http://localhost:9008/ideas/show?ideaId="
+				+ "<a href=\"/ideas/show?ideaId="
 				+ ideaToKeep.id
 				+ "\">"
 				+ ideaToKeep.title
 				+ "</a>"
 				+ " of the topic "
-				+ "<a href=\"http://localhost:9008/topics/show?topicId="
-				+ targetTopic.id + "\">" + targetTopic.title + "</a>";
+				+ "<a href=\"/topics/show?topicId="
+				+ targetTopic.id 
+				+ "\">" 
+				+ targetTopic.title 
+				+ "</a>";
 
 		MainEntity entity = targetTopic.entity;
 		Organization organization = entity.organization;

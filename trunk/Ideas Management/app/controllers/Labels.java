@@ -69,8 +69,17 @@ public class Labels extends CoolCRUD
 			Label label = new Label(name,user,choosenIdeas);
 			label.save();
 			
-			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
-	        + " created the label " +"<a href=\"http://localhost:9008/labels/showlabel?labelId=" + label.id +"\">" +  label.name + "</a>";
+			String logDescription = "<a href=\"/users/viewprofile?userId=" 
+				+ user.id 
+				+"\">" 
+				+ user.username 
+				+ "</a>"
+				+ " created the label " 
+				+"<a href=\"/labels/showlabel?labelId=" 
+				+ label.id 
+				+"\">" 
+				+  label.name 
+				+ "</a>";
 			
 			Log.addUserLog(logDescription,user,label);
 			
@@ -80,8 +89,17 @@ public class Labels extends CoolCRUD
 		{
 			Label label = new Label(name,user);
 			label.save();
-			String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
-	        + " created the label " +"<a href=\"http://localhost:9008/labels/showlabel?labelId=" + label.id +"\">" +  label.name + "</a>";
+			String logDescription = "<a href=\"/users/viewprofile?userId=" 
+				+ user.id 
+				+"\">" 
+				+ user.username 
+				+ "</a>"
+				+ " created the label " 
+				+"<a href=\"/labels/showlabel?labelId=" 
+				+ label.id 
+				+"\">" 
+				+label.name 
+				+ "</a>";
 			
 			Log.addUserLog(logDescription,user,label);
 			return 1;
@@ -100,8 +118,12 @@ public class Labels extends CoolCRUD
 		Label label = Label.findById(labelId);
 		String labelName = label.name;
 		label.deleteLabel();
-		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName
-        + " deleted the label "+labelName ;
+		String logDescription = "<a href=\"/users/viewprofile?userId=" 
+			+ user.id 
+			+"\">" 
+			+ user.username
+			+" deleted the label "
+			+labelName ;
 		
 		Log.addUserLog(logDescription,user);
 		showAllLabels();
@@ -189,8 +211,18 @@ public class Labels extends CoolCRUD
 		label.name = newName;
 		label.save();
 		
-		String logDescription = "<a href=\"http://localhost:9008/users/viewprofile?userId=" + user.id +"\">" + user.firstName + "</a>"
-        + " changed the label named "+ oldName +" to <a href=\"http://localhost:9008/labels/showlabel?labelId=" + label.id +"\">" +  label.name + "</a>";
+		String logDescription = "<a href=\"/users/viewprofile?userId=" 
+			+ user.id 
+			+"\">" 
+			+user.username 
+			+"</a>"
+			+" changed the label named "
+			+oldName 
+			+" to <a href=\"/labels/showlabel?labelId=" 
+			+label.id 
+			+"\">" 
+			+label.name 
+			+"</a>";
 		
 		Log.addUserLog(logDescription,user,label);
 	}
