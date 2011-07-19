@@ -356,6 +356,7 @@ public class Ideas extends CoolCRUD {
 	 * @description This method renders the form for editing and viewing an idea
 	 * 
 	 */
+	@SuppressWarnings("unused")
 	public static void show(long ideaId) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -908,6 +909,7 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 * @return void
 	 */
+	@SuppressWarnings("unused")
 	public static void setPriority(String priority, long ideaId) {
 		User userLoggedIn = Security.getConnected();
 		Idea ideaInUse = Idea.findById(ideaId);
@@ -1135,5 +1137,23 @@ public class Ideas extends CoolCRUD {
 			}
 		}
 		return false;
+	}
+	/**
+	*	Author ${Ahmed El-Hadi}
+	*/
+	public static void delComments(long ideaId) {
+		Idea idea = Idea.findById(ideaId);
+		//int size = idea.commentsList.size();
+		System.out.println(idea.commentsList + "*********abl el delete "
+				+ idea.commentsList.get(0).id);
+		// for (int i = 0; i < size; i++) {
+		// idea.commentsList.get(i).delete();
+		// idea.save();
+		// }
+		Comment c = Comment.findById((long) 3);
+		c.delete();
+		c.commentedIdea.save();
+		System.out.println("b3d el delete **********" + idea.commentsList);
+		redirect("/ideas/show?ideaId=" + ideaId);
 	}
 }

@@ -226,6 +226,9 @@ h13 {
 			<input type="image" style="float:right;" src="/public/images/icons/trash.png"  class="linkButton" title="Delete My Idea" />
 	</form>
 	#{/if}
+	<form action="@{Ideas.delComments(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">
+			<input type="submit" style="float:right;" src=""  class="linkButton" name="Delete All comments" />
+	</form>
 	#{if canDelete && !isAuthor && notInPlan}
 		<form action="@{Ideas.delete(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         	<input type="hidden" name = "justification" id = "justText">
