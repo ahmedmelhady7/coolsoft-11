@@ -214,18 +214,16 @@ public class Tags extends CoolCRUD {
 			org.save();
 			user.createdTags.add(tag);
 			user.save();
-			Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
+			Log.addUserLog("<a href=\"/users/viewprofile?userId="
 					+ user.id
 					+ "\">"
-					+ user.firstName
-					+ " "
-					+ user.lastName
+					+ user.username
 					+ "</a>"
-					+ " has created the tag ("
-					+ "<a href=\"http://localhost:9008/tags/mainPage?tagId="
-					+ tag.id + "\">" + tag.name + "</a>" + ") in organization ("
-					+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
-					+ org.id + "\">" + org.name + "</a>)", org, user, tag);
+					+ " has created the tag "
+					+ "<a href=\"/tags/mainPage?tagId="
+					+ tag.id + "\">" + tag.name + "</a>" + " in organization "
+					+ "<a href=\"/organizations/viewprofile?id="
+					+ org.id + "\">" + org.name + "</a>", org, user, tag);
 			String description = user.username + " has created a new tag \""
 					+ name + "\" in organization " + org.name;
 			if (!user.equals(org.creator)) {
@@ -327,18 +325,16 @@ public class Tags extends CoolCRUD {
 			String oldName = tag.name;
 			tag.name = name;
 			tag.save();
-			Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
+			Log.addUserLog("<a href=\"/users/viewprofile?userId="
 					+ user.id
 					+ "\">"
-					+ user.firstName
-					+ " "
-					+ user.lastName
+					+ user.username
 					+ "</a>"
-					+ " has changed the tag name from (" + oldName + ") to ("
-					+ "<a href=\"http://localhost:9008/tags/mainPage?tagId="
-					+ tag.id + "\">" + tag.name + "</a>" + ") in organization ("
-					+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
-					+ tagOrganization.id + "\">" + tagOrganization.name + "</a>)", tagOrganization, user, tag);
+					+ " has changed the tag name from " + oldName + " to "
+					+ "<a href=\"/tags/mainPage?tagId="
+					+ tag.id + "\">" + tag.name + "</a>" + " in organization "
+					+ "<a href=\"/organizations/viewprofile?id="
+					+ tagOrganization.id + "\">" + tagOrganization.name + "</a>", tagOrganization, user, tag);
 			flash.success("DONE");
 		}
 		else {
@@ -430,16 +426,14 @@ public class Tags extends CoolCRUD {
 			TagRelationships.delete(tag.relationsDestination.get(j).id);
 		}
 		tag.logs.clear();
-		Log.addUserLog("<a href=\"http://localhost:9008/users/viewprofile?userId="
+		Log.addUserLog("<a href=\"/users/viewprofile?userId="
 				+ user.id
 				+ "\">"
-				+ user.firstName
-				+ " "
-				+ user.lastName
+				+ user.username
 				+ "</a>"
-				+ " has created the organisation ("
-				+ "<a href=\"http://localhost:9008/organizations/viewprofile?id="
-				+ organization.id + "\">" + organization.name + "</a>" + ")", user, organization);
+				+ " has created the organisation "
+				+ "<a href=\"/organizations/viewprofile?id="
+				+ organization.id + "\">" + organization.name + "</a>", user, organization);
 		tag.delete();
 		return true;
 	}
