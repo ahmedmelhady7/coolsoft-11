@@ -75,6 +75,7 @@ public class Comments extends CoolCRUD {
 		User userLoggedIn = Security.getConnected();
 		Comment commentInitialized = new Comment(comment, ideaInUse,
 				userLoggedIn).save();
+		userLoggedIn.hisComments.add(commentInitialized);
 		ideaInUse.commentsList.add(commentInitialized);
 		ideaInUse.save();
 	}
@@ -93,7 +94,7 @@ public class Comments extends CoolCRUD {
 		List<Topic> allTopics = Topic.findAll();
 		List<Idea> allIdeas = Idea.findAll();
 		List<Plan> allPlans = Plan.findAll();
-
+		
 		for (int i = 0; i < allTopics.size(); i++) {
 			if (allTopics.get(i).commentsOn.contains(comment)) {
 				allTopics.get(i).commentsOn.remove(comment);
@@ -113,42 +114,5 @@ public class Comments extends CoolCRUD {
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * deletes a comment
-	 * 
-	 * @author Noha Khater
-	 * 
-	 * @param commentId
-	 *            : the id of the comment to be deleted
-	 * @return boolean
-	 */
-	public static void deleteComments(long commentId) {
-		Comment comment = Comment.findById(commentId);
-		List<Topic> allTopics = Topic.findAll();
-		System.out.println(allTopics + "");
-		List<Idea> allIdeas = Idea.findAll();
-		List<Plan> allPlans = Plan.findAll();
-		System.out.println(allTopics);
-		for (int i = 0; i < allTopics.size(); i++) {
-			if (allTopics.get(i).commentsOn.contains(comment)) {
-				allTopics.get(i).commentsOn.remove(comment);
-				allTopics.get(i).save();
-			}
-		}
-		for (int i = 0; i < allIdeas.size(); i++) {
-			if (allIdeas.get(i).commentsList.contains(comment)) {
-				allIdeas.get(i).commentsList.remove(comment);
-				allIdeas.get(i).save();
-			}
-		}
-		for (int i = 0; i < allPlans.size(); i++) {
-			if (allPlans.get(i).commentsList.contains(comment)) {
-				allPlans.get(i).commentsList.remove(comment);
-				allPlans.get(i).save();
-			}
-		}
-		return;
 	}
 }

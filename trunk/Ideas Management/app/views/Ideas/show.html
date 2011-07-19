@@ -1,25 +1,25 @@
 #{extends 'login/index.html' /}
 #{stylesheet src:"ideas.css" /}
 <style type="text/css">
-	#labels li
-	{
-		display: inline;
-		list-style-type: none;
-		padding-right: 20px;
-	}
-	.div_err{
-		color: red;
-		display: none;
-		text-align: right;
-	}
-	.div_suc{
-		color: green;
-		display: none;
-		text-align: right;
-	}
-	#anchor1:hover { 
-		background-image : url(/public/images/icons/trash.png); 
-	}
+        #labels li
+        {
+                display: inline;
+                list-style-type: none;
+                padding-right: 20px;
+        }
+        .div_err{
+                color: red;
+                display: none;
+                text-align: right;
+        }
+        .div_suc{
+                color: green;
+                display: none;
+                text-align: right;
+        }
+        #anchor1:hover { 
+                background-image : url(/public/images/icons/trash.png); 
+        }
 #h13 {
   background-attachment:initial;
   background-clip:initial;
@@ -57,59 +57,59 @@
 }
 </style>
 <div id="leftSidebar">
-  	<br/><br/><br/><br/><br/><br/>
-	<div id="h13">Share</div>
-	<a href="http://www.facebook.com/sharer.php?u=http://localhost:9008/ideas/show?ideaId=${ideaId}&t=Idea - ${idea.title}" rel="external,nofollow" target="_blank">
-	<img src="/public/images/Facebook.png" style="size:auto;" alt="Share on Facebook"/>
-	</a>
-	<a href="http://twitter.com/home?status=Idea - ${idea.title} http://localhost:9008/ideas/show?ideaId=${ideaId}" rel="external,nofollow" target="_blank">
-	<img src="/public/images/twitter.png" alt="Tweet this"/>
-	</a>
-	</br>
+        <br/><br/><br/><br/><br/><br/>
+        <div id="h13">Share</div>
+        <a href="http://www.facebook.com/sharer.php?u=http://localhost:9008/ideas/show?ideaId=${ideaId}&t=Idea - ${idea.title}" rel="external,nofollow" target="_blank">
+        <img src="/public/images/Facebook.png" style="size:auto;" alt="Share on Facebook"/>
+        </a>
+        <a href="http://twitter.com/home?status=Idea - ${idea.title} http://localhost:9008/ideas/show?ideaId=${ideaId}" rel="external,nofollow" target="_blank">
+        <img src="/public/images/twitter.png" alt="Tweet this"/>
+        </a>
+        </br>
     #{if notBlockedFromUsing}
     <input type="button" class="linkButton"  id ='share' value="Share idea with a user"/>
-	<div id="shareidea">
-			<input type="submit" onclick = "share()" class="linkButton"  value="Share with user" /><input type="hidden" name="ideaId" value="${ideaId}">
-			
-			<select id="userName" name = "userName"> 
-					#{list userNames, as:'name'}
-					<option>${name}</option>
-					#{/list}
-					</select>
-	
-			<br/>
-			<div id = "shareSuccess" class = "div_suc">Notification sent successfully to user</div>
-			<script type='text/javascript'>
-			function share(){
-				
-				var userName = document.getElementById('userName').value
-				$.post('@{Ideas.shareIdea()}',{userName: userName, ideaId: ${ideaId}},function(){
-					document.getElementById('shareSuccess').style.display = 'inline'
-				});
-				}
-			</script>
-			</div>		
-		</br>
-		</br>
-		#{/if}
-		<font color="#4E4848">Idea rating : ${rate}</font>
-		 <div id="example-1"></div> <br />
-    		Your Rating: <span id="example-rating-1">not set</span>
-    		<br /><br />
-    		<div id="example-2"></div> <br />
-    		Your Rating: <span id="example-rating-2">not set</span>
-		<br/>
-		<br/>
-	</li>	
- 		#{if notBlockedFromUsing}
- 		#{if checkPermitted}
- 		#{if checkNotRated}
-		<input type="button" class="linkButton" id ='rate' value="Rate idea"/>
-		
- 		<br/>
- 		<br/>
-		<form action="@{Ideas.rate(ideaId,rating)}" method="GET">
-	<div id="rateidea">	
+        <div id="shareidea">
+                        <input type="submit" onclick = "share()" class="linkButton"  value="Share with user" /><input type="hidden" name="ideaId" value="${ideaId}">
+                        
+                        <select id="userName" name = "userName"> 
+                                        #{list userNames, as:'name'}
+                                        <option>${name}</option>
+                                        #{/list}
+                                        </select>
+        
+                        <br/>
+                        <div id = "shareSuccess" class = "div_suc">Notification sent successfully to user</div>
+                        <script type='text/javascript'>
+                        function share(){
+                                
+                                var userName = document.getElementById('userName').value
+                                $.post('@{Ideas.shareIdea()}',{userName: userName, ideaId: ${ideaId}},function(){
+                                        document.getElementById('shareSuccess').style.display = 'inline'
+                                });
+                                }
+                        </script>
+                        </div>          
+                </br>
+                </br>
+                #{/if}
+                <font color="#4E4848">Idea rating : ${rate}</font>
+                 <div id="example-1"></div> <br />
+                Your Rating: <span id="example-rating-1">not set</span>
+                <br /><br />
+                <div id="example-2"></div> <br />
+                Your Rating: <span id="example-rating-2">not set</span>
+                <br/>
+                <br/>
+        </li>   
+                #{if notBlockedFromUsing}
+                #{if checkPermitted}
+                #{if checkNotRated}
+                <input type="button" class="linkButton" id ='rate' value="Rate idea"/>
+                
+                <br/>
+                <br/>
+                <form action="@{Ideas.rate(ideaId,rating)}" method="GET">
+        <div id="rateidea">     
     <input type="submit" value="Submit rating" class="linkButton"/><input type = "hidden" name = "ideaId" value = ${ideaId} >
     <select name="rating">
         <option value="0">0</option>
@@ -121,37 +121,37 @@
     </select>
     </div>
 </form>
-		#{/if}
-		#{else}
-		<font  id='rated'>You have already rated this idea</font>
-		<br/>
-		<br/>
-		#{/else}
-		#{/if}	
-		#{/if}
-		#{if notBlockedFromUsing}
-		#{if checkPermitted}
-		<input type="button" class="linkButton" id ='prior' value="Prioritize idea"/>
-		<br/>
-		<br/>
-		<font color="#4E4848">Idea priority : ${priority}</font>	
-		<br/>
-		<br/>
-		<form id="prioritizeidea" action = @{Ideas.setPriority()} method = "GET">
-		<input type = "hidden" name = "ideaId" value = ${ideaId} >
-		<br />
-		<input type = "radio" name = "priority" value = "critical" checked ="checked"/> critical
-		<br />
-		<input type = "radio" name = "priority" value = "high"/> high
-		<br />
-		<input type = "radio" name = "priority" value = "medium"/> medium
-		<br />
-		<input type = "radio" name = "priority" value = "low"/> low
-		<br />
-		<input type ="submit" class="linkButton" value = "Submit Priority"/>
-		</form>
-		#{/if}
-		#{/if}
+                #{/if}
+                #{else}
+                <font  id='rated'>You have already rated this idea</font>
+                <br/>
+                <br/>
+                #{/else}
+                #{/if}  
+                #{/if}
+                #{if notBlockedFromUsing}
+                #{if checkPermitted}
+                <input type="button" class="linkButton" id ='prior' value="Prioritize idea"/>
+                <br/>
+                <br/>
+                <font color="#4E4848">Idea priority : ${priority}</font>        
+                <br/>
+                <br/>
+                <form id="prioritizeidea" action = @{Ideas.setPriority()} method = "GET">
+                <input type = "hidden" name = "ideaId" value = ${ideaId} >
+                <br />
+                <input type = "radio" name = "priority" value = "critical" checked ="checked"/> critical
+                <br />
+                <input type = "radio" name = "priority" value = "high"/> high
+                <br />
+                <input type = "radio" name = "priority" value = "medium"/> medium
+                <br />
+                <input type = "radio" name = "priority" value = "low"/> low
+                <br />
+                <input type ="submit" class="linkButton" value = "Submit Priority"/>
+                </form>
+                #{/if}
+                #{/if}
 </div>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <br />
@@ -160,21 +160,16 @@
 <br/>
 <br/>
 <div id="main" class ="post">
-<h3>
-    <label>
-        View idea
-    </label>
-</h3>
 <div>
 <div id="labelsContainer">
-	<ul id="labels">
-	 	#{if ideasLabels.isEmpty()==false}
-			<li><font color="#123456">Labels:</font></li>
-		#{/if}
-		#{list items:ideasLabels, as:'label'}
-			<li><a href='@{Labels.showLabel(label.id)}'>${label.name}</a></li>
-		#{/list}
-	</ul>
+        <ul id="labels">
+                #{if ideasLabels.isEmpty()==false}
+                        <li><font color="#123456">Labels:</font></li>
+                #{/if}
+                #{list items:ideasLabels, as:'label'}
+                        <li><a href='@{Labels.showLabel(label.id)}'>${label.name}</a></li>
+                #{/list}
+        </ul>
 </div>
     <font color="Red">
         ${message}
@@ -185,22 +180,22 @@
         <p>
             <h2 class="post-title">
             ${object.title}
-            	<h3 class"post-metadata">
-            	<span class "post-author">
-            	#{if active}
-            	by
-            	<a href="@{Users.viewProfile(userId)}">#{if user.profilePictureId != -1} 
+                <h3 class"post-metadata">
+                <span class "post-author">
+                #{if active}
+                by
+                <a href="@{Users.viewProfile(userId)}">#{if user.profilePictureId != -1} 
                   #{list items:user.profilePictureId, as:'id'}<img src="@{Pictures.getPicture(id)}" width="40" height="40"/>#{/list}
                   #{/if}
                   #{if user.profilePictureId == -1} <img src="/public/images/icons/user.png" width="40" height="40"/>#{/if} ${username}</a>
-            	#{/if}
-            	#{if !active}
-            	<font>by ${username}</font>
-            	#{/if}
-            	</span>
-            	<span class "post-tags">
+                #{/if}
+                #{if !active}
+                <font>by ${username}</font>
+                #{/if}
+                </span>
+                <span class "post-tags">
 
-            	</span>
+                </span>
             </h3>
             </h2>
         </p>
@@ -209,207 +204,207 @@
         </p>
         <div class="post-content">
           <div class="about">Detail:</div>
-		  <h3>${object.description}</h3>
-	<div class="objectForm">
-	#{if ideaAlreadyReported==false && canReport && notAuthor}
-		  	<br/>
-    		<br/>
-		    <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform" style="float: right;">
-        		<input type="hidden"  name="ideaId" value="${ideaId}">
+                  <h3>${object.description}</h3>
+        <div class="objectForm">
+        #{if ideaAlreadyReported==false && canReport && notAuthor}
+                        <br/>
+                <br/>
+                    <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform" style="float: right;">
+                        <input type="hidden"  name="ideaId" value="${ideaId}">
                 <input id="spam" align="right" class="linkButton" title="Report Idea As Spam" type="image" src="/public/images/icons/red_flag.png">
             </form>
           #{/if}
      #{if isAuthor && notInPlan}
-	<form action="@{Ideas.delete(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">
-			<input type="image" style="float:right;" src="/public/images/icons/trash.png"  class="linkButton" title="Delete My Idea" />
-	</form>
-	#{/if}
-	<form action="@{Ideas.delComments(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">
-			<input type="hidden" value="Delete All comments" />
-	</form>
-	#{if canDelete && !isAuthor && notInPlan}
-		<form action="@{Ideas.delete(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-        	<input type="hidden" name = "justification" id = "justText">
+        <form action="@{Ideas.delete(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">
+                        <input type="image" style="float:right;" src="/public/images/icons/trash.png"  class="linkButton" title="Delete My Idea" />
+        </form>
+        #{/if}
+        <form action="@{Ideas.delComments(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">
+                        <input type="submit" value="Delete All comments" />
+        </form>
+        #{if canDelete && !isAuthor && notInPlan}
+                <form action="@{Ideas.delete(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+                <input type="hidden" name = "justification" id = "justText">
             <input type="image" src="/public/images/icons/trash.png"  style="float:right;" class="linkButton" title="Delete Idea"/>
     </form>
-	#{/if}
-	#{if canDelete && (!isAuthor||isAdmin) && notInPlan}
-	<form action="@{Topics.hideIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-        	<input type="hidden" name = "justification" id = "justText2">
+        #{/if}
+        #{if canDelete && (!isAuthor||isAdmin) && notInPlan}
+        <form action="@{Topics.hideIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+                <input type="hidden" name = "justification" id = "justText2">
             <input style="float:right;" class="linkButton" style="color: red;"  title="Hide Idea" type="image" src="/public/images/icons/hide-icon.gif"/>
     </form>
     #{/if}
-	<br />
+        <br />
   <br />
   </div>
   
         </div>    
-    	#{if permittedToTagIdea}
-				<input type="image" style="float:left;" title='Add Tags' src='/public/images/tag.png' id="submit" onclick="hideTagger();"/>
-				#{/if}
-				<ul id="tagLister" style="list-style: none; ">
-				#{list items:tags, as:'tag'}
+        #{if permittedToTagIdea}
+                                <input type="image" style="float:left;" title='Add Tags' src='/public/images/tag.png' id="submit" onclick="hideTagger();"/>
+                                #{/if}
+                                <ul id="tagLister" style="list-style: none; ">
+                                #{list items:tags, as:'tag'}
                 <a href="/tags/mainpage?tagId=${tag.id}" style="float:left;">${tag.name} &nbsp </a>
-				#{/list}
-				</ul>
-				#{if permittedToTagIdea}
+                                #{/list}
+                                </ul>
+                                #{if permittedToTagIdea}
                 <input type="hidden" id='tags' name="tags" value="">
-				<input type="text" maxlength='12' id="tagger" style="display:none; float:left;" name='tag' onkeyup="checkTagValidity('${ideaId}', this.value);">
-				<input id="subb" type="image" src='/public/images/add.png' title="Add" style="display:none; float:left; width:auto; height:auto;" onclick="tagIdea();" disabled='true'>
-				<label id='tagg' style="display:none; float:left;"><font color="#FF0000"> Tag Already Exists!</font></label>
-				<script>
-						function hideTagger(){
-							if (document.getElementById("tagger").style.display == "none") {
-								document.getElementById("tagger").style.display = "block";
-								document.getElementById("tagger").value = "";
-								document.getElementById('subb').style.display = "block";
-							}
-							else {
-								document.getElementById("tagger").style.display = "none";
-								document.getElementById('tagg').style.display = 'none';
-								document.getElementById('subb').style.display = "none";
-							}
-						}
-						function tagIdea(){
-							var tag = document.getElementById('tagger').value;
-							var idea = '${ideaId}';
-							$.getJSON('@{Ideas.tagIdea()}', {ideaId:idea, tag: tag}, function(ideaTags) {
-								$('#tagLister').append("<a href=\"/tags/mainpage?tagId=" + ideaTags.tagId + "\" style=\"float:left;\">&nbsp; " + ideaTags.tagName + "</a>");
-								$('#tagger').val("");
-							});
-						}
-						function checkTagValidity(ideaId, tag){
-							$.getJSON('@{Ideas.checkIfTagAlreadyExists()}', {tag:tag, ideaId:ideaId}, function(tagExists){
-								if(tagExists.tagAlreadyExists == true){
-									document.getElementById('subb').disabled = true;
-									document.getElementById('tagg').style.display = 'block';
-								} else {
-									document.getElementById('tagg').style.display = 'none';
-									document.getElementById('subb').disabled = false;
-								}	
-							});
-						}
-				</script>
+                                <input type="text" maxlength='12' id="tagger" style="display:none; float:left;" name='tag' onkeyup="checkTagValidity('${ideaId}', this.value);">
+                                <input id="subb" type="image" src='/public/images/add.png' title="Add" style="display:none; float:left; width:auto; height:auto;" onclick="tagIdea();" disabled='true'>
+                                <label id='tagg' style="display:none; float:left;"><font color="#FF0000"> Tag Already Exists!</font></label>
+                                <script>
+                                                function hideTagger(){
+                                                        if (document.getElementById("tagger").style.display == "none") {
+                                                                document.getElementById("tagger").style.display = "block";
+                                                                document.getElementById("tagger").value = "";
+                                                                document.getElementById('subb').style.display = "block";
+                                                        }
+                                                        else {
+                                                                document.getElementById("tagger").style.display = "none";
+                                                                document.getElementById('tagg').style.display = 'none';
+                                                                document.getElementById('subb').style.display = "none";
+                                                        }
+                                                }
+                                                function tagIdea(){
+                                                        var tag = document.getElementById('tagger').value;
+                                                        var idea = '${ideaId}';
+                                                        $.getJSON('@{Ideas.tagIdea()}', {ideaId:idea, tag: tag}, function(ideaTags) {
+                                                                $('#tagLister').append("<a href=\"/tags/mainpage?tagId=" + ideaTags.tagId + "\" style=\"float:left;\">&nbsp; " + ideaTags.tagName + "</a>");
+                                                                $('#tagger').val("");
+                                                        });
+                                                }
+                                                function checkTagValidity(ideaId, tag){
+                                                        $.getJSON('@{Ideas.checkIfTagAlreadyExists()}', {tag:tag, ideaId:ideaId}, function(tagExists){
+                                                                if(tagExists.tagAlreadyExists == true){
+                                                                        document.getElementById('subb').disabled = true;
+                                                                        document.getElementById('tagg').style.display = 'block';
+                                                                } else {
+                                                                        document.getElementById('tagg').style.display = 'none';
+                                                                        document.getElementById('subb').disabled = false;
+                                                                }       
+                                                        });
+                                                }
+                                </script>
            
         #{/if}
-		 <br>
-		 <br>
+                 <br>
+                 <br>
         <div class="comment">
         <ul id="commentsList" style="list-style: none; ">
- 		#{if comments} 
- 			<font color="black">Comments</font> 
- 			<br> 
- 					 
- 					#{list comments, as:'comment'} 
- 					<div class="comment-metadata">
-						<span class="comment-author">by : <a href="@{Users.viewProfile(comment.commenter.id)}">${comment.commenter.username}</a></span>
-						<span class="comment-date">${comment.commentDate}</span>
-					</div>
- 					<div class="comment-content">
- 						<div class="about">Detail:</div>
- 						<li><a>${comment.comment}</a></li>
- 						#{if comment.commenter.username != user.username && !comment.reported(user.id)}
- 						<input id = "reportBtn_${comment.id}" onclick = "reportComment(${comment.id});" style="float: right;" type="image" src="/public/images/icons/red_flag.png" />
- 						#{/if}
-						<br />
- 					</div>
- 					#{/list} 
- 		#{/if} 
-		</ul>
- 		#{else}<label id = "noComments">No comments posted </label>#{/else}
- 		</div>
+                #{if comments} 
+                        <font color="black">Comments</font> 
+                        <br> 
+                                         
+                                        #{list comments, as:'comment'} 
+                                        <div class="comment-metadata">
+                                                <span class="comment-author">by : <a href="@{Users.viewProfile(comment.commenter.id)}">${comment.commenter.username}</a></span>
+                                                <span class="comment-date">${comment.commentDate}</span>
+                                        </div>
+                                        <div class="comment-content">
+                                                <div class="about">Detail:</div>
+                                                <li><a>${comment.comment}</a></li>
+                                                #{if comment.commenter.username != user.username && !comment.reported(user.id)}
+                                                <input id = "reportBtn_${comment.id}" onclick = "reportComment(${comment.id});" style="float: right;" type="image" src="/public/images/icons/red_flag.png" />
+                                                #{/if}
+                                                <br />
+                                        </div>
+                                        #{/list} 
+                #{/if} 
+                </ul>
+                #{else}<label id = "noComments">No comments posted </label>#{/else}
+                </div>
    #{if notBlockedFromUsing}
-			<div class="comment-content" style = "margin-left: 10%; margin-right: 10%"><textarea name = "comment" id= "commentTxt" rows="7" cols="63"></textarea>
-			<br/>
-			<label id = "emptyComment" style = "color: red;" hidden = "true">You have to enter a comment</label>
-			</div>
-			<input class = "linkButton" style = "margin-right: 10%; float: right;" type = "image" value = "Comment" title="Comment" src="/public/images/icons/comment.png" onclick="comment(${ideaId});" >
+                        <div class="comment-content" style = "margin-left: 10%; margin-right: 10%"><textarea name = "comment" id= "commentTxt" rows="7" cols="63"></textarea>
+                        <br/>
+                        <label id = "emptyComment" style = "color: red;" hidden = "true">You have to enter a comment</label>
+                        </div>
+                        <input class = "linkButton" style = "margin-right: 10%; float: right;" type = "image" value = "Comment" title="Comment" src="/public/images/icons/comment.png" onclick="comment(${ideaId});" >
 #{/if}
 <br/>
 <br/>
- 		</div>
+                </div>
             <script type="text/javascript">
             
             function reportComment(id) {
-            	$.post('@{Users.reportCommentAsSpam()}', {commentId: id});
-            	$("#reportBtn_" + id).remove();
-            	
+                $.post('@{Users.reportCommentAsSpam()}', {commentId: id});
+                $("#reportBtn_" + id).remove();
+                
             }
-			  function comment(id) {
-		   			  	var text = $('#commentTxt').val();
-						if (text == null || text.trim() == "") {
-						$("#emptyComment").show();
-						
-						}
-						else {
-							$('#commentTxt').val("");
-							$.getJSON('@{addCommentToIdea()}', {
-								ideaID:id, comment: text
-							}, function(comm){
-								$("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " + comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li><br/></div>");
-							});
-								$("#emptyComment").hide();
-								$("#noComments").hide();
-						}
+                          function comment(id) {
+                                                var text = $('#commentTxt').val();
+                                                if (text == null || text.trim() == "") {
+                                                $("#emptyComment").show();
+                                                
+                                                }
+                                                else {
+                                                        $('#commentTxt').val("");
+                                                        $.getJSON('@{addCommentToIdea()}', {
+                                                                ideaID:id, comment: text
+                                                        }, function(comm){
+                                                                $("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " + comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li><br/></div>");
+                                                        });
+                                                                $("#emptyComment").hide();
+                                                                $("#noComments").hide();
+                                                }
 
-				  }
-            	function prompt1(){
-					var text = prompt("Why do you want to delete/hide this idea?");
-					
-					if(text){
-						document.getElementById("justText").value=text;
-						document.getElementById("justText2").value=text;
-						return true;
-					}
-					else{
-						return false;
-					}
-					
-				}
-            	$('#share').click(function(){
-                	$('#shareidea').toggle();});
-            	$('#rate').click(function(){
-                	$('#rateidea').toggle();
-                	$('#rated').toggle();});
-            	$('#prior').click(function(){
-                	$('#prioritizeidea').toggle();});
-            	
+                                  }
+                function prompt1(){
+                                        var text = prompt("Why do you want to delete/hide this idea?");
+                                        
+                                        if(text){
+                                                document.getElementById("justText").value=text;
+                                                document.getElementById("justText2").value=text;
+                                                return true;
+                                        }
+                                        else{
+                                                return false;
+                                        }
+                                        
+                                }
+                $('#share').click(function(){
+                        $('#shareidea').toggle();});
+                $('#rate').click(function(){
+                        $('#rateidea').toggle();
+                        $('#rated').toggle();});
+                $('#prior').click(function(){
+                        $('#prioritizeidea').toggle();});
+                
             </script>
-			<style type="text/css">
-					#shareidea{display: none;}
-			</style>
-			<style type="text/css">
-					#rateidea{display: none;}
-			</style>
-			<style type="text/css">
-					#prioritizeidea{display: none;}
-			</style>
-			             
-	<div>
-		
-		<br/>
-		<br/>
-		<div id='div1' align='left' style="display: none"></div>
-		<br/>
-		<form>
-			#{if idea.duplicateIdeas}
-			<big><b><font color="#4E4848">List Of Duplicates</font></b></big>
-			#{list items:idea.duplicateIdeas , as:'idea'}
-			<li>
-				<a href='@{Ideas.show(idea.id)}' ><b><font color="#4E4848">${idea.title}</font></b></a>
-			</li>
-			#{/list}
-			#{/if}
-		</form>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		</div>
+                        <style type="text/css">
+                                        #shareidea{display: none;}
+                        </style>
+                        <style type="text/css">
+                                        #rateidea{display: none;}
+                        </style>
+                        <style type="text/css">
+                                        #prioritizeidea{display: none;}
+                        </style>
+                                     
+        <div>
+                
+                <br/>
+                <br/>
+                <div id='div1' align='left' style="display: none"></div>
+                <br/>
+                <form>
+                        #{if idea.duplicateIdeas}
+                        <big><b><font color="#4E4848">List Of Duplicates</font></b></big>
+                        #{list items:idea.duplicateIdeas , as:'idea'}
+                        <li>
+                                <a href='@{Ideas.show(idea.id)}' ><b><font color="#4E4848">${idea.title}</font></b></a>
+                        </li>
+                        #{/list}
+                        #{/if}
+                </form>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                </div>
         </br>
         </div>
 </div>

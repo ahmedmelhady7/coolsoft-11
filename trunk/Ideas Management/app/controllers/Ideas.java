@@ -379,6 +379,7 @@ public class Ideas extends CoolCRUD {
 		boolean canDelete = Users.isPermitted(user, "hide and delete an idea",
 				topicId, "topic");
 		boolean ideaAlreadyReported = false;
+		User author = idea.author;
 		boolean notAuthor = !idea.author.username.equals(user.username);
 		String username = idea.author.username;
 		long userId = idea.author.id;
@@ -435,7 +436,7 @@ public class Ideas extends CoolCRUD {
 					canUse, deletemessage, /*
 											 * deletable ,
 											 */
-					ideaId, rate, idea, priority, userNames, checkPermitted,
+					ideaId, rate, idea, priority,author, userNames, checkPermitted,
 					checkNotRated, notBlockedFromUsing);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
@@ -646,7 +647,8 @@ public class Ideas extends CoolCRUD {
 					.fetch();
 			for (int i = 0; i < commentslist.size(); i++) {
 				System.out.println(commentslist);
-				commentslist.get(i).deleteComment(commentslist.get(i).getId());
+				commentslist.get(i).delete();
+				idea.save();
 				System.out.println(commentslist);
 			}
 			try {
@@ -665,7 +667,10 @@ public class Ideas extends CoolCRUD {
 			List<Comment> commentslist = Comment.find("byCommentedIdea", idea)
 					.fetch();
 			for (int i = 0; i < commentslist.size(); i++) {
-				Comments.deleteComment(commentslist.get(i).getId());
+				System.out.println(commentslist);
+				commentslist.get(i).delete();
+				idea.save();
+				System.out.println(commentslist);
 			}
 			try {
 				if (idea.plan == null) {
@@ -1110,6 +1115,8 @@ public class Ideas extends CoolCRUD {
 		Idea i = Idea.findById(ideaID);
 		User user = Security.getConnected();
 		Comment c = new Comment(comment, i, user).save();
+		user.hisComments.add(c);
+		user.save();
 		i.commentsList.add(c);
 		i.save();
 
@@ -1143,22 +1150,29 @@ public class Ideas extends CoolCRUD {
 		}
 		return false;
 	}
+
 	/**
-	*	Author ${Ahmed El-Hadi}
-	*/
+	 * Author ${Ahmed El-Hadi}
+	 */
 	public static void delComments(long ideaId) {
 		Idea idea = Idea.findById(ideaId);
-		//int size = idea.commentsList.size();
-		System.out.println(idea.commentsList + "*********abl el delete "
-				+ idea.commentsList.get(0).id);
-		// for (int i = 0; i < size; i++) {
-		// idea.commentsList.get(i).delete();
-		// idea.save();
-		// }
-		Comment c = Comment.findById((long) 3);
-		c.delete();
-		c.commentedIdea.save();
+		int size = idea.commentsList.size();
+		System.out.println("size aho "+size);
+		for (int i = 0; i < size; i++) {
+			System.out.println(idea.commentsList + "*********abl el delete ");
+//			Comments.deleteComment(idea.commentsList.get(i).id);
+			idea.commentsList.get(i).commenter.hisComments.clear();
+			idea.commentsList.get(i).commenter.save();
+			System.out.println(idea.commentsList.get(i).commenter.hisComments);
+			idea.commentsList.clear();
+			idea.save();
+			idea.belongsToTopic.save();
+			idea.belongsToTopic.entity.save();
+			idea.belongsToTopic.entity.organization.save();
+		}
 		System.out.println("b3d el delete **********" + idea.commentsList);
+		idea.save();
+		System.out.println(idea.commentsList);
 		redirect("/ideas/show?ideaId=" + ideaId);
 	}
 }

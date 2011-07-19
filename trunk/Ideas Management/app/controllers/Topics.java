@@ -770,6 +770,30 @@ public class Topics extends CRUD {
 					alreadyReported = true;
 			}
 		}
+		//begin New Hadi
+			//for public topic
+//				List<User> ideaDevelopersInTopic = Users.getIdeaDevelopers(topicId, "topic");
+//				System.out.println("joined users " + ideaDevelopersInTopic);
+				boolean userJoinedPublic = false;
+				boolean userJoinedPrivate = false;
+				boolean privateTopic = false;
+				if(user.username.equals(temporaryTopic.creator.username))
+					userJoinedPublic=true;
+				if(temporaryTopic.privacyLevel==2){
+//					for (int i = 0; i < ideaDevelopersInTopic.size(); i++) {
+//						if(user.username.equals(ideaDevelopersInTopic.get(i).username))
+//						userJoinedPublic=true;
+//					}
+				}
+			//for private topic
+//				if(temporaryTopic.privacyLevel==1){
+//					privateTopic=true;
+//					for (int i = 0; i < ideaDevelopersInTopic.size(); i++) {
+//						if(user.username.equals(ideaDevelopersInTopic.get(i).username))
+//							userJoinedPrivate=true;
+//					}
+//				}
+		//End New Hadi
 		ArrayList<User> topicReporters = new ArrayList<User>();
 		String[] topicReportersId = { "0" };
 		User reporter = Security.getConnected();
@@ -924,7 +948,7 @@ public class Topics extends CRUD {
 		if(banned == false){	
 		try {
 			render(type, object, tags, joined, alreadyReportedTopic,
-					creator, followers, ideas, canReport,userId,topicNotClosed,
+					creator, followers, ideas, userJoinedPublic, userJoinedPrivate, privateTopic, canReport,userId,topicNotClosed,
 					hiddenIdeas,numberOfIdeas, comments, entity, canDelete,
 					alreadyReported, plan, openToEdit, privacyLevel,
 					deleteMessage, deletable, topicIdLong, canClose, canPlan,
@@ -2322,7 +2346,7 @@ public class Topics extends CRUD {
 		
 		redirect("/ideas/getdrafts");
 	}
-
+	
 	/**
 	 * @author Ahmed El-Hadi
 	 * 
@@ -2331,8 +2355,11 @@ public class Topics extends CRUD {
 	 * 
 	 * @description : the method which let the user join a topic to post in it
 	 */
-	public static void joinToPost(long userId) {
+	public static void joinToPost(long userId,long topicId) {
 		User user = User.findById(userId);
-		joinedUsersInTopic.add(user);
+		Topic topic = Topic.findById(topicId);
+		System.out.println(UserRoleInOrganizations.addEnrolledUser(user, topic.entity.organization, new Role("idea developer","post topics")));
+		//System.out.println(UserRoleInOrganizations.addEnrolledUser(user, topic.entity.organization, new Role("idea developer","post topics"), topicId, "topic"));
+		redirect("/topics/show?topicId="+topicId);
 	}
 }

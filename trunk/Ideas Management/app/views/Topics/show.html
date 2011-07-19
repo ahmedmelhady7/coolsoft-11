@@ -1,5 +1,4 @@
-
-		<script src="/public/javascripts/bmi.js" language="javascript"></script>	
+<script src="/public/javascripts/bmi.js" language="javascript"></script>	
 #{extends 'login/index.html' /}
 #{stylesheet src:"ideas.css" /}
 <head>
@@ -1018,13 +1017,17 @@
 					#{else}
 					No ideas available for this topic!
 					#{/else}
-					 #{if topicNotClosed && joined}
+					 #{if topicNotClosed && userJoinedPublic}
 			        <input id="postIdea" src="/public/images/add.png" size=2; type="image" title="Post Idea" class = "linkButton"/>
 			        #{/if}
-			        #{if topicNotClosed && joined==false}
+			        #{if topicNotClosed && userJoinedPublic && userJoinedPrivate}
+			        <input id="postIdea" src="/public/images/add.png" size=2; type="image" title="Post Idea" class = "linkButton"/>
+			        #{/if}
+			        #{if topicNotClosed && userJoinedPublic==false && privateTopic==false}
 			        <form action="@{Topics.joinToPost()}" method="GET" name="myform">
 			        <input type="hidden" name="userId" value="${userId}">
-			        <input id="postIdea" type="button" value="Join to post" class = "linkButton"/>
+			        <input type="hidden" name="topicId" value="${topicId}">
+			        <input id="postIdea" type="submit" value="Join to post" class = "linkButton"/>
 			        </form>
 			        #{/if}
 					<br />
