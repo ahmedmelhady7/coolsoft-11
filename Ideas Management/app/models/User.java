@@ -129,6 +129,12 @@ public class User extends CoolModel {
 	public List<Organization> createdOrganization;
 
 	/**
+	 * list of comments created by the user
+	 */
+	@OneToMany(mappedBy = "commenter")
+	public List<Comment> hisComments;
+	
+	/**
 	 * list of plans rated by the user
 	 */
 	@ManyToMany(mappedBy = "usersRated")
