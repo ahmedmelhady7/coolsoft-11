@@ -1,50 +1,53 @@
 #{extends 'main.html' /}
 #{set title:'Ideas Management' /}
-<script src="/public/javascripts/topbar_message/jquery.js" type="text/javascript">
-</script>
-<script src="/public/javascripts/topbar_message/juery.topbar.js" type="text/javascript">
-</script>
-<link href="/public/javascripts/jnotify/jquery.jnotify.css" rel="stylesheet" type="text/css" />
-<script src="/public/javascripts/jnotify/jquery.jnotify.js" type="text/javascript">
-</script>
-<script src="/public/javascripts/SearchScript.js" type="text/javascript">
-</script>
-<link href="/public/stylesheets/searchStyle.css" type="text/css" />
 
-<style type="text/css">
-#crudShow{
-			margin-top: 2%;
-			margin-right: 9%;
-			margin-bottom: 4%;
-			margin-left: 0%;
-			border-top-left-radius: 10px;
-			border-top-right-radius: 10px;
-			border-bottom-right-radius: 10px;
-			border-bottom-left-radius: 10px;
-			background-color: #bbbbbb;
-			padding-top: 2%;
-			padding-right: 4%;
-			padding-bottom: 0%;
-			padding-left: 4%;
-			border-bottom-width: 2px;
-			border-bottom-style: solid;
-			border-bottom-color: #bbbbbb;
-			border-right-width: 2px;
-			border-right-style: solid;
-			border-right-color: #bbbbbb;
-			border-left-width: 2px;
-			border-left-style: solid;
-			border-left-color: #bbbbbb;
-			border-top-width: 2px;
-			border-top-style: solid;
-			border-top-color: #bbbbbb;
-			word-wrap: break-word;
-		}
+<script src="/public/javascripts/topbar_message/jquery.js" type="text/javascript"></script>
+<script src="/public/javascripts/topbar_message/juery.topbar.js" type="text/javascript"></script>
+<link href="/public/javascripts/jnotify/jquery.jnotify.css" rel="stylesheet" type="text/css" />
+<script src="/public/javascripts/jnotify/jquery.jnotify.js" type="text/javascript"></script>
+<script src="/public/javascripts/SearchScript.js" type="text/javascript"></script>
+<link href="/public/stylesheets/searchStyle.css" type="text/css" />
+<link rel="stylesheet" href="/public/stylesheets/general.css" type="text/css" media="screen" />
+<script src="/public/javascripts/jquery-1.2.6.min.js" type="text/javascript"></script>
+<script src="/public/javascripts/popup.js" type="text/javascript"></script>
+
+<style type="text/css">#crudShow {
+		margin-top: 2%;
+		margin-right: 9%;
+		margin-bottom: 4%;
+		margin-left: 0%;
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+		background-color: #bbbbbb;
+		padding-top: 2%;
+		padding-right: 4%;
+		padding-bottom: 0%;
+		padding-left: 4%;
+		border-bottom-width: 2px;
+		border-bottom-style: solid;
+		border-bottom-color: #bbbbbb;
+		border-right-width: 2px;
+		border-right-style: solid;
+		border-right-color: #bbbbbb;
+		border-left-width: 2px;
+		border-left-style: solid;
+		border-left-color: #bbbbbb;
+		border-top-width: 2px;
+		border-top-style: solid;
+		border-top-color: #bbbbbb;
+		word-wrap: break-word;
+	}
 </style>
 
 <!-- side bar -->
 <div id="hmenu">
     <ul>
+    	<li>
+        	#{if user.isAdmin}<a id="button">Feedback</a>
+        	#{/if}
+        </li>
         <li>
             <a href="@{Users.viewProfile(user.id)}">Profile</a>
         </li>
@@ -67,6 +70,7 @@
             #{if !user.isAdmin}<a href="@{Invitations.view()}">Invitations</a>
             #{/if}
         </li>
+        
     </ul>
 </div>
 <div id="leftSidebar">
@@ -464,156 +468,136 @@
 					<iframe id="advSearch" src="/Search/AdvancedSearch" frameborder='no' allowtransparency='yes' style='display:none' height = 120% width=76%>
                     </iframe>
                 </body>
-                <script type="text/javascript" language="javascript">
-                    $('#follow').hide();
-                    var fol = false;
-                    var doc = false;
+                <script type="text/javascript" language="javascript">$('#follow').hide();
+					var fol = false;
+					var doc = false;
 					var organ = false;
 					$('#enrolledInOrganizations').hide();
-                    $('#docs').hide();
-                    $('#not-body').hide();
-                    $('#viewed').hide();
-                    $(function(){
-                        var app1 = true;
-                        $('#o1').hide();
-                        $('#a1').click(function(){
-                            if (app1) {
-                                $('#o1').show(500);
-                                app1 = false;
-                            }
-                            else {
-                                $('#o1').hide(500);
-                                app1 = true;
-                            }
-                        });
-                        
-                        var app2 = true;
-                        $('#o2').hide();
-                        $('#a2').click(function(){
-                            if (app2) {
-                                $('#o2').show(500);
-                                app2 = false;
-                            }
-                            else {
-                                $('#o2').hide(500);
-                                app2 = true;
-                            }
-                        });
-                        
-                        var app3 = true;
-                        $('#o3').hide();
-                        $('#a3').click(function(){
-                            if (app3) {
-                                $('#o3').show(500);
-                                app3 = false;
-                            }
-                            else {
-                                $('#o3').hide(500);
-                                app3 = true;
-                            }
-                        });
-                        
-                        var app4 = true;
-                        $('#o4').hide();
-                        $('#a4').click(function(){
-                            if (app4) {
-                                $('#o4').show(500);
-                                app4 = false;
-                            }
-                            else {
-                                $('#o4').hide(500);
-                                app4 = true;
-                            }
-                        });
-                        
-                        var app5 = true;
-                        
-                        
-                        var app6 = true;
-                        $('#o6').hide();
-                        $('#a6').click(function(){
-                            if (app6) {
-                                $('#o6').show(500);
-                                app6 = false;
-                            }
-                            else {
-                                $('#o6').hide(500);
-                                app6 = true;
-                            }
-                        });
-                        
-                        $("#demo01").click(function(){
-                            $('#demo01-body').showTopbarMessage();
-                        });
-                        var show = true;
-                        $("#not").click(function(){
-                            if (show) {
-                                $('#not-body').show(500);
-                                $.post('@{Users.showNotifications()}');
-                                document.getElementById("not").text = 'Notifications (No New)';
-                                show = false;
-                            }
-                            else {
-                                $('#not-body').hide(500);
-                                show = true;
-                            }
-                            
-                        });
-                        $("#hide").click(function(){
-                            if (show) {
-                                $('#not-body').show(500);
-                                $.post('@{Users.showNotifications()}');
-                                document.getElementById("not").text = 'Notifications (No New)';
-                                show = false;
-                            }
-                            else {
-                                $('#not-body').hide(500);
-                                show = true;
-                            }
-                            
-                        });
-                        
-                        $("#demo02").click(function(){
-                            $('#demo02-body').showTopbarMessage({
-                                close: 5000
-                            });
-                        });
-                        
-                        $("#demo03").click(function(){
-                            $('#demo03-body').showTopbarMessage({
-                                background: "#093",
-                                close: 2000
-                            });
-                        });
-                        
-                        $("#demo04").click(function(){
-                            $('#demo04-body').showTopbarMessage({
-                                height: "150px",
-                                close: 2000
-                            });
-                        });
-                    });
-                </script>
-                <style>
-                    h3 {
-                        cursor: pointer;
-                        color: #003366;
-                        font-family: Arial, Helvetica, sans-serif;
-                        padding: 0 !important;
-                    }
-                </style>
-                <script type="text/javascript">                    
-					var b = true;
+					$('#docs').hide();
+					$('#not-body').hide();
+					$('#viewed').hide();
+					$( function() {
+						var app1 = true;
+						$('#o1').hide();
+						$('#a1').click( function() {
+							if (app1) {
+								$('#o1').show(500);
+								app1 = false;
+							} else {
+								$('#o1').hide(500);
+								app1 = true;
+							}
+						});
+						var app2 = true;
+						$('#o2').hide();
+						$('#a2').click( function() {
+							if (app2) {
+								$('#o2').show(500);
+								app2 = false;
+							} else {
+								$('#o2').hide(500);
+								app2 = true;
+							}
+						});
+						var app3 = true;
+						$('#o3').hide();
+						$('#a3').click( function() {
+							if (app3) {
+								$('#o3').show(500);
+								app3 = false;
+							} else {
+								$('#o3').hide(500);
+								app3 = true;
+							}
+						});
+						var app4 = true;
+						$('#o4').hide();
+						$('#a4').click( function() {
+							if (app4) {
+								$('#o4').show(500);
+								app4 = false;
+							} else {
+								$('#o4').hide(500);
+								app4 = true;
+							}
+						});
+						var app5 = true;
+
+						var app6 = true;
+						$('#o6').hide();
+						$('#a6').click( function() {
+							if (app6) {
+								$('#o6').show(500);
+								app6 = false;
+							} else {
+								$('#o6').hide(500);
+								app6 = true;
+							}
+						});
+						$("#demo01").click( function() {
+							$('#demo01-body').showTopbarMessage();
+						});
+						var show = true;
+						$("#not").click( function() {
+							if (show) {
+								$('#not-body').show(500);
+								$.post('@{Users.showNotifications()}');
+								document.getElementById("not").text = 'Notifications (No New)';
+								show = false;
+							} else {
+								$('#not-body').hide(500);
+								show = true;
+							}
+
+						});
+						$("#hide").click( function() {
+							if (show) {
+								$('#not-body').show(500);
+								$.post('@{Users.showNotifications()}');
+								document.getElementById("not").text = 'Notifications (No New)';
+								show = false;
+							} else {
+								$('#not-body').hide(500);
+								show = true;
+							}
+
+						});
+						$("#demo02").click( function() {
+							$('#demo02-body').showTopbarMessage({
+								close: 5000
+							});
+						});
+						$("#demo03").click( function() {
+							$('#demo03-body').showTopbarMessage({
+								background: "#093",
+								close: 2000
+							});
+						});
+						$("#demo04").click( function() {
+							$('#demo04-body').showTopbarMessage({
+								height: "150px",
+								close: 2000
+							});
+						});
+					});</script>
+                <style>h3 {
+						cursor: pointer;
+						color: #003366;
+						font-family: Arial, Helvetica, sans-serif;
+						padding: 0 !important;
+					}
+</style>
+                <script type="text/javascript">var b = true;
 					$('#advSearch').hide();
 					//function goo(){
-					$(function(){	
-						$('#advo').click(function(){
+					$( function() {
+						$('#advo').click( function() {
 							$('#searchview').hide();
 							if (b) {
 								document.getElementById('layout').style.display = 'none';
 								$('#advSearch').show(1000);
 								b = false;
-							}else{
+							} else {
 								document.getElementById("advSearch").src = "/AdvancedSearch";
 								$('#advSearch').hide();
 								$('#advSearch').show(1000);
@@ -622,93 +606,123 @@
 						});
 					});
 					//}
-                    function step1(){
-                        document.getElementById('searchview').style.display = 'none';
-                    }
-                    
-                    function quickSearchScript(){
-                        var s = document.getElementById('keywords').value;
-                        if (s.length < 2) {
-                            document.getElementById('searchview').style.display = 'none';
+					function step1() {
+						document.getElementById('searchview').style.display = 'none';
+					}
+
+					function quickSearchScript() {
+						var s = document.getElementById('keywords').value;
+						if (s.length < 2) {
+							document.getElementById('searchview').style.display = 'none';
 							document.getElementById('layout').style.display = 'block';
-                        }
-                        else {
-                            $.post('@{Search.quickSearch()}', {
-                                keyword: document.getElementById('keywords').value
-                            }, function(){
-                            });
-                            document.getElementById('searchview').canHaveChildren = false;
-                            document.getElementById('searchview').src = '/searchResult';
-                            document.getElementById('searchview').style.display = 'block';
+						} else {
+							$.post('@{Search.quickSearch()}', {
+								keyword: document.getElementById('keywords').value
+							}, function() {
+							});
+							document.getElementById('searchview').canHaveChildren = false;
+							document.getElementById('searchview').src = '/searchResult';
+							document.getElementById('searchview').style.display = 'block';
 							document.getElementById('layout').style.display = 'none';
 							document.getElementById('advSearch').style.display = 'none';
-                        }
-                    }
-                    
-                    function tag(id){
-                        $.post('@{Users.unfollowTag()}', {
-                            tagId: id
-                        });
-                        alert("done!");
-                        location.reload(true);
-                    }
-                    
-                    function topic(id){
-                        $.post('@{Users.unfollowTopic()}', {
-                            topicId: id
-                        });
-                        alert("done!");
-                        location.reload(true);
-                    }
-                    
-                    function org(id){
-                        $.post('@{Users.unfollowOrganization()}', {
-                            organizationId: id
-                        });
-                        alert("done!");
-                        location.reload(true);
-                    }
-                    
-                    function entity(id){
-                        $.post('@{Users.unfollowEntity()}', {
-                            entityId: id
-                        });
-                        alert("done!");
-                        location.reload(true);
-                    }
-                    
-                    function follows(){
-                        if (!fol) {
-                            $('#follow').show(500);
-                            fol = true;
-                        }
-                        else {
-                            $('#follow').hide(500);
-                            fol = false;
-                        }
-                    }
-                    
-                    function showDoc(){
-                        if (!doc) {
-                            $('#docs').show(500);
-                            doc = true;
-                        }
-                        else {
-                            $('#docs').hide(500);
-                            doc = false;
-                        }
-                    }
-					
-					function enrolledOrganizations(){
-                        if (!organ) {
-                            $('#docs').hide(500);
-                            doc = false;
-                            $('#enrolledInOrganizations').show(500);
-                            organ = true;
-                        }
-                        else {
-                            $('#enrolledInOrganizations').hide(500);
-                            organ = false;
-                        }
-                    }
-                </script>
+						}
+					}
+
+					function tag(id) {
+						$.post('@{Users.unfollowTag()}', {
+							tagId: id
+						});
+						alert("done!");
+						location.reload(true);
+					}
+
+					function topic(id) {
+						$.post('@{Users.unfollowTopic()}', {
+							topicId: id
+						});
+						alert("done!");
+						location.reload(true);
+					}
+
+					function org(id) {
+						$.post('@{Users.unfollowOrganization()}', {
+							organizationId: id
+						});
+						alert("done!");
+						location.reload(true);
+					}
+
+					function entity(id) {
+						$.post('@{Users.unfollowEntity()}', {
+							entityId: id
+						});
+						alert("done!");
+						location.reload(true);
+					}
+
+					function follows() {
+						if (!fol) {
+							$('#follow').show(500);
+							fol = true;
+						} else {
+							$('#follow').hide(500);
+							fol = false;
+						}
+					}
+
+					function showDoc() {
+						if (!doc) {
+							$('#docs').show(500);
+							doc = true;
+						} else {
+							$('#docs').hide(500);
+							doc = false;
+						}
+					}
+
+					function enrolledOrganizations() {
+						if (!organ) {
+							$('#docs').hide(500);
+							doc = false;
+							$('#enrolledInOrganizations').show(500);
+							organ = true;
+						} else {
+							$('#enrolledInOrganizations').hide(500);
+							organ = false;
+						}
+					}</script>
+<div>
+	<div id="popupContact">
+		<a id="popupContactClose">x</a>
+		<h1>We appreciate your collaboration</h1>
+		<p id="contactArea">
+			<label>
+				Your Email <font color="red"> *</font>
+			</label>
+			<input type="email" name="feedbackerEmail" id="contact" size=20 required/>
+			<br/><br/>
+			<label>
+				Regarding what entity
+			</label>
+			<select name="subject" id="subject" size="1">
+				<option value="Other">Other</option>
+				<option value="User">User</option>
+				<option value="Organization">Organization</option>
+				<option value="Topic">Topic</option>
+				<option value="Idea">Idea</option>
+				<option value="Comment">Comment</option>
+		    </select>
+		    <br/><br/>
+			<label>
+				Feedback <font color="red"> *</font>
+			</label>
+			<textarea name="feedback" id="feedback" rows="6" cols="40" required></textarea>
+			<br/><br/>
+			<input type="submit" value="Give Feedback"/>
+			<br/><br/>
+			Click on X (right-top) or Click Out from the popup to close the popup!
+		 	<br/><br/>
+		</p>
+	</div>
+	<div id="backgroundPopup"></div>
+</div>
