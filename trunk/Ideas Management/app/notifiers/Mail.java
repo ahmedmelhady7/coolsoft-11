@@ -266,7 +266,6 @@ public class Mail extends Mailer {
 	 *            :String the reason for which the user has been deleted
 	 */
 	public static void deletion(User user, String message) {
-		System.out.println(user.email);
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Your account has been deleted ! ");
@@ -276,8 +275,8 @@ public class Mail extends Mailer {
 	}
 	
 	/**
-	 * sends an email to the person who was deleted by the admin , notifying him he was brought
-	 *  back(undeleted)
+	 * sends an email to the person who was deleted by the admin, notifying him he was 
+	 * brought back(undeleted)
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -287,13 +286,39 @@ public class Mail extends Mailer {
 	 *            :User the user
 	 */
 	public static void forgiven(User user) {
-		System.out.println(user.email);
 		addRecipient(user.email);
 		setFrom("CoolSoft011@gmail.com");
 		setSubject("Welcome back ! ");
 		String url = "http://localhost:9008";
 		send(user,url);
 
+	}
+	
+	/**
+	 * sends an email to the admins containing feedback, whether to notify a probelm or 
+	 * offer a suggestion
+	 * 
+	 * @author Mostafa Ali
+	 * 
+	 * 
+	 * 
+	 * @param email
+	 *            :String the email of the user who gave the feedback
+	 *            
+	 * @param feedback
+	 *            :String the message the user wants to report
+	 *            
+	 * @param subject 
+	 * 				:String the subject of the feedback (the feedback is regarding which 
+	 *				entity or problem)
+	 */
+	public static void sendFeedback(String feedbackerEmail,String feedback,String subject)
+	{
+		addRecipient("mostafa.aly0@gmail.com");
+		//addRecipient("ideas-management@googlegroups.com");
+		setFrom(feedbackerEmail);
+		setSubject(subject);
+		send(feedback);
 	}
 
 	
