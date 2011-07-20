@@ -436,8 +436,8 @@ public class Ideas extends CoolCRUD {
 					canUse, deletemessage, /*
 											 * deletable ,
 											 */
-					ideaId, rate, idea, priority,author, userNames, checkPermitted,
-					checkNotRated, notBlockedFromUsing);
+					ideaId, rate, idea, priority, author, userNames,
+					checkPermitted, checkNotRated, notBlockedFromUsing);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -610,7 +610,7 @@ public class Ideas extends CoolCRUD {
 				render("CRUD/show.html", type);
 			}
 		}
-		
+
 		object._save();
 
 		flash.success(Messages.get("crud.saved", type.modelName,
@@ -634,7 +634,7 @@ public class Ideas extends CoolCRUD {
 	 * @description This method deletes and idea from the database
 	 * 
 	 */
-	public static void delete(long ideaId, String justification) {
+	public static boolean delete(long ideaId, String justification) {
 		Idea idea = Idea.findById(ideaId);
 		Topic topic = idea.belongsToTopic;
 		String message = "your idea " + idea.title + " has been deleted by "
@@ -658,11 +658,11 @@ public class Ideas extends CoolCRUD {
 					System.out.println("ta7t el delete");
 					topic.save();
 					System.out.println("3ml save lel topic");
+					return true;
 				}
 			} catch (Exception e) {
 				redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 			}
-			redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 		} else {
 			List<Comment> commentslist = Comment.find("byCommentedIdea", idea)
 					.fetch();
@@ -686,8 +686,15 @@ public class Ideas extends CoolCRUD {
 			} catch (Exception e) {
 				redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 			}
-			redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
+
 		}
+		return false;
+	}
+
+	public static void deleteIdea(long ideaId, String justification) {
+		Idea idea = Idea.findById(ideaId);
+		delete(ideaId, justification);
+		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
 	/**
@@ -750,21 +757,11 @@ public class Ideas extends CoolCRUD {
 			Notifications.sendNotification(idea.author.id, ideaId, "idea",
 					"This idea has been tagged as " + tag);
 			String logDescription = "<a href=\"/users/viewprofile?userId="
-					+ user.id
-					+ "\">"
-					+ user.username
-					+ "</a>"
-					+ " added the tag "
-					+ "<a href=\"/tags/mainpage?tagId="
-					+ tempTag.id
-					+ "\">"
-					+ tempTag.name
-					+ "</a>"
-					+ " to the idea "
-					+ "<a href=\"/ideas/show?ideaId="
-					+ idea.id + "\">" 
-					+ idea.title 
-					+ "</a>";
+					+ user.id + "\">" + user.username + "</a>"
+					+ " added the tag " + "<a href=\"/tags/mainpage?tagId="
+					+ tempTag.id + "\">" + tempTag.name + "</a>"
+					+ " to the idea " + "<a href=\"/ideas/show?ideaId="
+					+ idea.id + "\">" + idea.title + "</a>";
 			Log.addUserLog(logDescription, idea);
 		}
 		idea.save();
@@ -1037,23 +1034,12 @@ public class Ideas extends CoolCRUD {
 		ideaToKeep.save();
 		targetTopic.save();
 
-		String log = "<a href=\"/users/viewprofile?userId="
-				+ user.id
-				+ "\">"
-				+ user.username
-				+ "</a>"
-				+ " merged ideas "
-				+ "<a href=\"/ideas/show?ideaId="
-				+ ideaToKeep.id
-				+ "\">"
-				+ ideaToKeep.title
-				+ "</a>"
-				+ " of the topic "
-				+ "<a href=\"/topics/show?topicId="
-				+ targetTopic.id 
-				+ "\">" 
-				+ targetTopic.title 
-				+ "</a>";
+		String log = "<a href=\"/users/viewprofile?userId=" + user.id + "\">"
+				+ user.username + "</a>" + " merged ideas "
+				+ "<a href=\"/ideas/show?ideaId=" + ideaToKeep.id + "\">"
+				+ ideaToKeep.title + "</a>" + " of the topic "
+				+ "<a href=\"/topics/show?topicId=" + targetTopic.id + "\">"
+				+ targetTopic.title + "</a>";
 
 		MainEntity entity = targetTopic.entity;
 		Organization organization = entity.organization;
@@ -1157,10 +1143,10 @@ public class Ideas extends CoolCRUD {
 	public static void delComments(long ideaId) {
 		Idea idea = Idea.findById(ideaId);
 		int size = idea.commentsList.size();
-		System.out.println("size aho "+size);
+		System.out.println("size aho " + size);
 		for (int i = 0; i < size; i++) {
 			System.out.println(idea.commentsList + "*********abl el delete ");
-//			Comments.deleteComment(idea.commentsList.get(i).id);
+			// Comments.deleteComment(idea.commentsList.get(i).id);
 			idea.commentsList.get(i).commenter.hisComments.clear();
 			idea.commentsList.get(i).commenter.save();
 			System.out.println(idea.commentsList.get(i).commenter.hisComments);
