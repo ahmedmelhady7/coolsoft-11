@@ -1,15 +1,161 @@
-#{extends '/ideas/layout.html' /}<h3>
-    <label>
-        View Idea
-    </label>
-</h3>
+#{extends '/ideas/layout.html' /}
+#{stylesheet src:"ideas.css" /}
+<style type="text/css">
+        #labels li
+        {
+                display: inline;
+                list-style-type: none;
+                padding-right: 20px;
+        }
+        .div_err{
+                color: red;
+                display: none;
+                text-align: right;
+        }
+        .div_suc{
+                color: green;
+                display: none;
+                text-align: right;
+        }
+        #anchor1:hover { 
+                background-image : url(/public/images/icons/trash.png); 
+        }
+#h13 {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:initial;
+  background-image:url(/public/images/blu.png);
+  background-origin:initial;
+  background-position:0 0;
+  background-repeat:no-repeat no-repeat;
+  color:#FFFFFF;
+  font-family:Arial;
+  font-size:10px;
+  font-weight:400;
+  height:33px;
+  padding-bottom:0;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:7px;
+  text-transform:uppercase;
+  color:white;
+  font-weight:700;
+  padding-bottom:7px;
+}
+.jquery-ratings-star {
+  width: 36px;
+  height: 36px;
+  background-image: url('empty-star.png');
+  background-repeat: no-repeat;
+  position: relative;
+  float: left;
+  margin-right: 2px;
+}
+
+.jquery-ratings-full {
+  background-image: url('full-star.png');
+}
+</style>
+<div id="leftSidebar">
+        <br/><br/><br/><br/><br/><br/>
+    #{if notBlockedFromUsing}
+    <input type="button" class="linkButton"  id ='share' value="Share idea with a user"/>
+        <div id="shareidea">
+                        <input type="submit" onclick = "share()" class="linkButton"  value="Share with user" /><input type="hidden" name="ideaId" value="${ideaId}">
+                        
+                        <select id="userName" name = "userName"> 
+                                        #{list userNames, as:'name'}
+                                        <option>${name}</option>
+                                        #{/list}
+                                        </select>
+        
+                        <br/>
+                        <div id = "shareSuccess" class = "div_suc">Notification sent successfully to user</div>
+                        <script type='text/javascript'>
+                        function share(){
+                                
+                                var userName = document.getElementById('userName').value
+                                $.post('@{Ideas.shareIdea()}',{userName: userName, ideaId: ${ideaId}},function(){
+                                        document.getElementById('shareSuccess').style.display = 'inline'
+                                });
+                                }
+                        </script>
+                        </div>          
+                </br>
+                </br>
+                #{/if}
+                <font color="#4E4848">Idea rating : ${rate}</font>
+                 <div id="example-1"></div> <br />
+                Your Rating: <span id="example-rating-1">not set</span>
+                <br /><br />
+                <div id="example-2"></div> <br />
+                Your Rating: <span id="example-rating-2">not set</span>
+                <br/>
+                <br/>
+        </li>   
+                #{if notBlockedFromUsing}
+                #{if checkPermitted}
+                #{if checkNotRated}
+                <input type="button" class="linkButton" id ='rate' value="Rate idea"/>
+                
+                <br/>
+                <br/>
+                <form action="@{Ideas.rate(ideaId,rating)}" method="GET">
+        <div id="rateidea">     
+    <input type="submit" value="Submit rating" class="linkButton"/><input type = "hidden" name = "ideaId" value = ${ideaId} >
+    <select name="rating">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    </div>
+</form>
+                #{/if}
+                #{else}
+                <font  id='rated'>You have already rated this idea</font>
+                <br/>
+                <br/>
+                #{/else}
+                #{/if}  
+                #{/if}
+                #{if notBlockedFromUsing}
+                #{if checkPermitted}
+                <input type="button" class="linkButton" id ='prior' value="Prioritize idea"/>
+                <br/>
+                <br/>
+                <font color="#4E4848">Idea priority : ${priority}</font>        
+                <br/>
+                <br/>
+                <form id="prioritizeidea" action = @{Ideas.setPriority()} method = "GET">
+                <input type = "hidden" name = "ideaId" value = ${ideaId} >
+                <br />
+                <input type = "radio" name = "priority" value = "critical" checked ="checked"/> critical
+                <br />
+                <input type = "radio" name = "priority" value = "high"/> high
+                <br />
+                <input type = "radio" name = "priority" value = "medium"/> medium
+                <br />
+                <input type = "radio" name = "priority" value = "low"/> low
+                <br />
+                <input type ="submit" class="linkButton" value = "Submit Priority"/>
+                </form>
+                #{/if}
+                #{/if}
+</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br />
+<br />
+<div id="main" class="post">
 <div id="crudShow" class="${type.name}">
     <font color="Red">
         ${message}
     </font>
     <div class="objectForm">
         #{form action:@show(object._key()), enctype:'multipart/form-data'}
-        #{crud.form fields: ['author','belongsToTopic','title','description','isDraft']}
+        #{crud.form fields: ['author','belongsToTopic','title','description']}
         #{crud.custom 'author'}
         <p>
             <label for="object_creator">
@@ -18,7 +164,7 @@
             <textarea disabled= true id="object_creator" cols="30" rows="1" class="" name="object.privacyLevel">${object.author}
             </textarea>
         </p>
-        #{/crud.custom }'
+        #{/crud.custom }
         #{crud.custom 'belongsToTopic'}
         <p>
             <label for="object_creator">
@@ -45,5 +191,7 @@
         #{/crud.custom}
         #{/crud.form }
         <p class="crudButtons">
-            <input type="submit" name="_save" value="&{'crud.save', type.modelName}" /><input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
-        </p>#{/form}
+                        <input type="submit" name="_save" value="&{'crud.save', type.modelName}" class="linkButton"/>
+                        <input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" class="linkButton"/>
+                </p>#{/form}
+       </div>
