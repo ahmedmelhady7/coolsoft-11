@@ -150,9 +150,7 @@ public class AssignRequests extends CoolCRUD {
 							+ "<a href=\"/users/viewprofile?userId="
 							+ destination.id
 							+ "\">"
-							+ destination.firstName
-							+ " "
-							+ destination.lastName
+							+ destination.username
 							+ "</a>"
 							+ " to work on the item "
 							+ source.summary
