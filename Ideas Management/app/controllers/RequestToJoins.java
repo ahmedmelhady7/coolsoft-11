@@ -140,7 +140,6 @@ public class RequestToJoins extends CoolCRUD {
 				MainEntity entity = topic.entity;
 				List<User> organizers = Users.getEntityOrganizers(entity);
 				Organization organization = entity.organization;
-
 				organizers.remove(reciever);
 				// if(!organizers.contains(organization.creator))
 				organizers.add(organization.creator);

@@ -195,11 +195,13 @@
                 <font>by ${username}</font>
                 #{/if}                
                 </span>
-                <span class "post-tags">
-
+                <span class "post-comments">
+				| ${numberOfComments} Comments
+                #{if latest!=null}
+                , latest by ${latest.username}
+                #{/if}                
                 </span>
-                | ${numberOfComments} Comments
-            </h3>
+                </h3>
             </h2>
         </p>
         <p>

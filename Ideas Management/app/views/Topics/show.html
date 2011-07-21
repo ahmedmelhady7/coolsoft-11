@@ -1017,15 +1017,11 @@
 					#{else}
 					No ideas available for this topic!
 					#{/else}
-					 #{if topicNotClosed && userJoinedPublic}
+					 #{if topicNotClosed && !privateTopic && userJoinedPublic}
 			        <input id="postIdea" src="/public/images/add.png" size=2; type="image" title="Post Idea" class = "linkButton"/>
 			        #{/if}
-			        #{if topicNotClosed && userJoinedPublic && userJoinedPrivate}
-			        <input id="postIdea" src="/public/images/add.png" size=2; type="image" title="Post Idea" class = "linkButton"/>
-			        #{/if}
-			        #{if topicNotClosed && userJoinedPublic==false && privateTopic==false}
+			        #{if topicNotClosed && !userJoinedPublic && !privateTopic}
 			        <form action="@{Topics.joinToPost()}" method="GET" name="myform">
-			        <input type="hidden" name="userId" value="${userId}">
 			        <input type="hidden" name="topicId" value="${topicId}">
 			        <input id="postIdea" type="submit" value="Join to post" class = "linkButton"/>
 			        </form>
@@ -1043,7 +1039,7 @@
 			                <br/><br/>
 			                <div style=" border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px; 
 						   border-bottom-left-radius: 10px; border-color:#339CCB; border-width:2px; border-style:solid; padding:2% 2% 2% 2%;"> 
-						   <label>Description : ${idea.description}</label>
+						   <label>${idea.description}</label>
 			                </br>
 			                <label>by : <a href="@{Users.viewProfile(idea.author.id)}">${idea.author.username}</a></label>
 			                <br />

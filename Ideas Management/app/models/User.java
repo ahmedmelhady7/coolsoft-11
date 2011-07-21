@@ -116,7 +116,7 @@ public class User extends CoolModel {
 	 */
 	@OneToMany(mappedBy = "creator")
 	public List<Topic> topicsCreated;
-
+	
 	/**
 	 * id of the user's profile Picture
 	 */
