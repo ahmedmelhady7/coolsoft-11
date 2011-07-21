@@ -180,10 +180,12 @@
         <p>
             <h2 class="post-title">
             ${object.title}
+				<br/>
                 <h3 class"post-metadata">
+                by
                 <span class "post-author">
                 #{if active}
-                by
+                
                 <a href="@{Users.viewProfile(userId)}">#{if user.profilePictureId != -1} 
                   #{list items:user.profilePictureId, as:'id'}<img src="@{Pictures.getPicture(id)}" width="40" height="40"/>#{/list}
                   #{/if}
@@ -191,11 +193,12 @@
                 #{/if}
                 #{if !active}
                 <font>by ${username}</font>
-                #{/if}
+                #{/if}                
                 </span>
                 <span class "post-tags">
 
                 </span>
+                | ${numberOfComments} Comments
             </h3>
             </h2>
         </p>
@@ -305,7 +308,9 @@
                                                 #{if comment.commenter.username != user.username && !comment.reported(user.id)}
                                                 <input id = "reportBtn_${comment.id}" onclick = "reportComment(${comment.id});" style="float: right;" type="image" src="/public/images/icons/red_flag.png" />
                                                 #{/if}
+                                                #{if comment.commenter.username == user.username || isAdmin || !notAuthor}
                                                 <input id = "deleteBtn_${comment.id}" onclick = "deleteComment(${comment.id});" title="delete comment" style="float: right;" type="image" src="/public/images/icons/trash.png" />
+                                                #{/if}
                                                 <br />
                                         </div>
                                         </div>
@@ -330,6 +335,12 @@
                 $.post('@{Users.reportCommentAsSpam()}', {commentId: id});
                 $("#reportBtn_" + id).remove();
                 
+            }
+            function showDelete(id){
+            	$.post('@{Ideas.isCommenter()}', {commentId: id});
+            	$("#deleteBtn_" + id).show();
+            	$("#showDelete").remove();
+            	
             }
             function deleteComment(id) {
                 $.post('@{Ideas.delComments()}', {commentId: id});
