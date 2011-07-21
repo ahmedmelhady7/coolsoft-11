@@ -369,6 +369,11 @@ public class Ideas extends CoolCRUD {
 		User user = Security.getConnected();
 		List<Comment> comments = idea.commentsList;
 		int numberOfComments =comments.size();
+		User latest = null;
+		if(numberOfComments>0)
+		latest = comments.get(numberOfComments-1).commenter;
+		if(latest !=null && numberOfComments>1 && latest.isAdmin)
+		latest=comments.get(numberOfComments-2).commenter;
 		Plan plan = idea.plan;
 		Topic topic = idea.belongsToTopic;
 		long topicId = topic.id;
@@ -432,7 +437,7 @@ public class Ideas extends CoolCRUD {
 					|| Users.isPermitted(user, "use", topicId, "topic");
 			List<Tag> tags = idea.tagsList;
 			render(type, ideasLabels, object, tags, user, isAdmin, username,
-					userId, canReport, canDelete,loggedInId , comments, numberOfComments,topic, plan,
+					userId, canReport, canDelete,loggedInId , latest, comments, numberOfComments,topic, plan,
 					permittedToTagIdea,
 					/* openToEdit, */topicId, notInPlan, ideaAlreadyReported,
 					canUse, deletemessage, /*

@@ -778,25 +778,30 @@ public class Topics extends CRUD {
 			//for public topic
 //				List<User> ideaDevelopersInTopic = Users.getIdeaDevelopers(topicId, "topic");
 //				System.out.println("joined users " + ideaDevelopersInTopic);
+//				System.out.println("show topic joined users"+temporaryTopic.joinedUsers);
 				boolean userJoinedPublic = false;
 				boolean userJoinedPrivate = false;
 				boolean privateTopic = false;
-				if(user.username.equals(temporaryTopic.creator.username))
+				if(user.username.equals(temporaryTopic.creator.username) || user.isAdmin || user.username.equals(temporaryTopic.entity.organization.creator.username))
 					userJoinedPublic=true;
 				if(temporaryTopic.privacyLevel==2){
-//					for (int i = 0; i < ideaDevelopersInTopic.size(); i++) {
-//						if(user.username.equals(ideaDevelopersInTopic.get(i).username))
+//					for (int i = 0; i < temporaryTopic.joinedUsers.size(); i++) {
+//						if(user.username.equals(temporaryTopic.joinedUsers.get(i).username))
 //						userJoinedPublic=true;
 //					}
 				}
 			//for private topic
-//				if(temporaryTopic.privacyLevel==1){
-//					privateTopic=true;
-//					for (int i = 0; i < ideaDevelopersInTopic.size(); i++) {
-//						if(user.username.equals(ideaDevelopersInTopic.get(i).username))
-//							userJoinedPrivate=true;
+				if(temporaryTopic.privacyLevel==1){
+					privateTopic=true;
+					if(user.username.equals(temporaryTopic.creator.username) || user.isAdmin || user.username.equals(temporaryTopic.entity.organization.creator.username))
+						userJoinedPrivate=true;
+				else{
+//					for (int i = 0; i < temporaryTopic.joinedUsers.size(); i++) {
+//						if(user.username.equals(temporaryTopic.joinedUsers.get(i).username))
+//						userJoinedPrivate=true;
 //					}
-//				}
+				}
+				}
 		//End New Hadi
 		ArrayList<User> topicReporters = new ArrayList<User>();
 		String[] topicReportersId = { "0" };
@@ -1791,7 +1796,7 @@ public class Topics extends CRUD {
 			}
 		}		
 		for(int i = 0; i < temporaryTopic.ideas.size(); i++) {
-			Ideas.delete(temporaryTopic.ideas.get(i).id,"");
+			Ideas.delete(temporaryTopic.ideas.get(i).id,"The Topic has been deleted");
 		}
 		for(int i = 0; i<temporaryTopic.commentsOn.size();i++) {
 			Comments.deleteComment(temporaryTopic.commentsOn.get(i).id);
@@ -2364,11 +2369,12 @@ public class Topics extends CRUD {
 	 * 
 	 * @description : the method which let the user join a topic to post in it
 	 */
-	public static void joinToPost(long userId,long topicId) {
-		User user = User.findById(userId);
+	public static void joinToPost(long topicId) {
+		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
-		System.out.println(UserRoleInOrganizations.addEnrolledUser(user, topic.entity.organization, new Role("idea developer","post topics")));
-		//System.out.println(UserRoleInOrganizations.addEnrolledUser(user, topic.entity.organization, new Role("idea developer","post topics"), topicId, "topic"));
+//		user.topicsJoined.add(topic);
+//		topic.joinedUsers.add(user);
+		topic.save();
 		redirect("/topics/show?topicId="+topicId);
 	}
 }

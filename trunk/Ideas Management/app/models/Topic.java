@@ -77,7 +77,7 @@ public class Topic extends CoolModel {
 	 */
 	@OneToMany(mappedBy = "belongsToTopic")
 	public List<Idea> ideas;
-
+	
 	/**
 	 * the reporters of the topic
 	 */
@@ -197,7 +197,7 @@ public class Topic extends CoolModel {
 		this.tags = new ArrayList<Tag>();
 		this.followers = new ArrayList<User>();
 		this.ideas = new ArrayList<Idea>();
-		// this.commentsOn = new ArrayList<Comment>();
+		this.commentsOn = new ArrayList<Comment>();
 		this.reporters = "";
 		this.requestsToJoin = new ArrayList<RequestToJoin>();
 		this.createRelationship = createRelationship;

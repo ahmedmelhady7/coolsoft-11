@@ -113,12 +113,13 @@
 }
 
 .post .post-author {
+	color: #BAC36E;
     font-size: 130%;
     font-weight: bold;
 }
 
 .post .post-metadata a {
-    color: #9FA85D;
+    color: #BAC36E;
 }
 
 .post .post-content {
