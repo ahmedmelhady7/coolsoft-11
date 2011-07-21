@@ -196,7 +196,15 @@
                 #{/if}                
                 </span>
                 <span class "post-comments">
+                #{if numberOfComments > 1}
 				| ${numberOfComments} Comments
+				#{/if}
+				#{if numberOfComments == 1}
+				| ${numberOfComments} Comment
+				#{/if}
+				#{if numberOfComments == 0}
+				| no Comments
+				#{/if}
                 #{if latest!=null}
                 , latest by ${latest.username}
                 #{/if}                
