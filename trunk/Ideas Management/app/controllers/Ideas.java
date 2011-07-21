@@ -1163,7 +1163,9 @@ public class Ideas extends CoolCRUD {
 				if(commentslist.get(i).id==commentId)
 				commentslist.get(i).delete();
 				idea.save();
-				System.out.println(commentslist);
+				if(commentslist.get(i).commenter.id!=Security.getConnected().id)
+				Notifications.sendNotification(commentslist.get(i).commenter.id, idea.id, "Idea",
+						"Your comment "+commentslist.get(i).comment+" has been Deleted by The user "+Security.getConnected().username);
 		}
 		int size = idea.commentsList.size();
 		System.out.println("size aho " + size);
