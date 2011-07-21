@@ -45,7 +45,7 @@
 <div id="hmenu">
     <ul>
     	<li>
-        	#{if user.isAdmin}<a id="button">Feedback</a>
+        	#{if !user.isAdmin}<a id="button">Feedback</a>
         	#{/if}
         </li>
         <li>
