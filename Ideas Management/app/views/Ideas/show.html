@@ -218,7 +218,6 @@
         <form action="@{Ideas.deleteIdea(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">
                         <input type="image" style="float:right;" src="/public/images/icons/trash.png"  class="linkButton" title="Delete My Idea" />
         </form>
-		<input type="image" align="right" style="float:right;"  src="/public/images/icons/pencil.png" title="Edit Idea" onclick=location.href="@{Ideas.view(ideaId)}" class="linkButton"></input>
         #{/if}
         #{if canDelete && !isAuthor && notInPlan}
                 <form action="@{Ideas.deleteIdea(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
@@ -294,7 +293,8 @@
                         <font color="black">Comments</font> 
                         <br> 
                                          
-                                        #{list comments, as:'comment'} 
+                                        #{list comments, as:'comment'}
+                                        <div id="comment_${comment.id}"> 
                                         <div class="comment-metadata">
                                                 <span class="comment-author">by : <a href="@{Users.viewProfile(comment.commenter.id)}">${comment.commenter.username}</a></span>
                                                 <span class="comment-date">${comment.commentDate}</span>
@@ -305,7 +305,9 @@
                                                 #{if comment.commenter.username != user.username && !comment.reported(user.id)}
                                                 <input id = "reportBtn_${comment.id}" onclick = "reportComment(${comment.id});" style="float: right;" type="image" src="/public/images/icons/red_flag.png" />
                                                 #{/if}
+                                                <input id = "deleteBtn_${comment.id}" onclick = "deleteComment(${comment.id});" title="delete comment" style="float: right;" type="image" src="/public/images/icons/trash.png" />
                                                 <br />
+                                        </div>
                                         </div>
                                         #{/list} 
                 #{/if} 
@@ -327,6 +329,12 @@
             function reportComment(id) {
                 $.post('@{Users.reportCommentAsSpam()}', {commentId: id});
                 $("#reportBtn_" + id).remove();
+                
+            }
+            function deleteComment(id) {
+                $.post('@{Ideas.delComments()}', {commentId: id});
+                $("#deleteBtn_" + id).remove();
+                $("#comment_" + id).remove();
                 
             }
                           function comment(id) {
