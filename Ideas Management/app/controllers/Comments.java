@@ -16,6 +16,7 @@ import play.mvc.With;
 import sun.net.www.content.text.plain;
 import models.Comment;
 import models.Idea;
+import models.Log;
 import models.Plan;
 import models.Topic;
 import models.User;
@@ -51,6 +52,16 @@ public class Comments extends CoolCRUD {
 				userLoggedIn).save();
 		planInUse.commentsList.add(commentInitialized);
 		planInUse.save();
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+			+ userLoggedIn.id + "\">" 
+			+ userLoggedIn.username + "</a>" 
+			+ " added a comment to plan " +"<a href=\"/plans/viewaslist?planId="
+			+ planId
+			+ "\">"
+			+ planInUse.title
+			+ "</a>";
+	 Log.addLog(logDescription, userLoggedIn, commentInitialized, planInUse, planInUse.topic,
+			planInUse.topic.entity, planInUse.topic.entity.organization);
 	}
 
 	/**
@@ -78,6 +89,17 @@ public class Comments extends CoolCRUD {
 		userLoggedIn.hisComments.add(commentInitialized);
 		ideaInUse.commentsList.add(commentInitialized);
 		ideaInUse.save();
+		
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+			+ userLoggedIn.id + "\">" 
+			+ userLoggedIn.username + "</a>" 
+			+ " added a comment to idea " +"<a href=\"/ideas/show?ideaId="
+			+ ideaId
+			+ "\">"
+			+ ideaInUse.title
+			+ "</a>";
+	 Log.addLog(logDescription, userLoggedIn, commentInitialized, ideaInUse, ideaInUse.plan,
+			ideaInUse.plan.topic, ideaInUse.plan.topic.entity, ideaInUse.plan.topic.entity.organization);
 	}
 
 	/**

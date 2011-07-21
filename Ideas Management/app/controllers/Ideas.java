@@ -112,6 +112,17 @@ public class Ideas extends CoolCRUD {
 		idea.author.communityContributionCounter++;
 		idea.author.save();
 		idea.save();
+		
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+			+ user.id + "\">" 
+			+ user.username + "</a>" 
+			+ " posted an idea " +"<a href=\"/ideas/show?ideaId="
+			+ ideaId
+			+ "\">"
+			+ idea.title
+			+ "</a>";
+	 Log.addLog(logDescription, user, idea, idea.plan, idea.plan.topic,
+			idea.plan.topic.entity, idea.plan.topic.entity.organization);
 
 		JsonObject json = new JsonObject();
 		json.addProperty("title", idea.title);
@@ -291,6 +302,17 @@ public class Ideas extends CoolCRUD {
 		object._save();
 		String anothermessage = "you have created a new idea with title "
 				+ idea.title + " and with description " + idea.description;
+		
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+			+ author.id + "\">" 
+			+ author.username + "</a>" 
+			+ " created an idea " +"<a href=\"/ideas/show?ideaId="
+			+ idea.id
+			+ "\">"
+			+ idea.title
+			+ "</a>";
+	 Log.addLog(logDescription, author, idea.plan, idea.plan.topic,
+			idea.plan.topic.entity, idea.plan.topic.entity.organization);
 		flash.success(Messages.get("crud.created", type.modelName,
 				((Idea) object).getId()));
 		if (params.get("_save") != null) {
@@ -303,6 +325,8 @@ public class Ideas extends CoolCRUD {
 					anothermessage);
 
 		}
+		
+		
 	}
 
 	/**
@@ -619,7 +643,16 @@ public class Ideas extends CoolCRUD {
 		}
 
 		object._save();
-
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+			+ myUser.id + "\">" 
+			+ myUser.username + "</a>" 
+			+ " edited the idea  " +"<a href=\"/ideas/show?ideaId="
+			+ i.id
+			+ "\">"
+			+ i.title
+			+ "</a>";
+	 Log.addLog(logDescription, myUser, i.plan, i.plan.topic,
+			i.plan.topic.entity, i.plan.topic.entity.organization);
 		flash.success(Messages.get("crud.saved", type.modelName,
 				((Idea) object).getId()));
 		if (params.get("_save") != null) {

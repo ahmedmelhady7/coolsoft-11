@@ -571,7 +571,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 					user, sourceEntity, destinationEntity, name, organisation,
 					type);
 			relationRequest.save();
-			Log.addUserLog(
+			/*Log.addUserLog(
 					"User "
 							+ user.firstName
 							+ " "
@@ -579,7 +579,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							+ " has requested to create the following relationship between"
 							+ " entities: (" + sourceEntity.name + " " + name
 							+ " " + destinationEntity.name + ")", sourceEntity,
-					destinationEntity, relationRequest, organisation, user);
+					destinationEntity, relationRequest, organisation, user);*/
 			redirect("MainEntitys.viewEntity", entityId, "Request created");
 		} else {
 			if (Organizations.isDuplicateRequest(source, destination, name,

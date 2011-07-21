@@ -644,15 +644,13 @@ public class BannedUsers extends CoolCRUD {
 				String logDescription = "<a href=\"/users/viewprofile?userId="
 						+ restricter.id
 						+ "\">"
-						+ restricter.firstName
+						+ restricter.username
 						+ "</a>"
 						+ " has restricted the organizer : "
 						+ "<a href=\"/users/viewprofile?userId="
 						+ restricted.id
 						+ "\">"
-						+ restricted.firstName
-						+ " "
-						+ restricted.lastName
+						+ restricted.username
 						+ "</a>"
 						+ " from : "
 						+ actionToDo[i]
@@ -705,15 +703,13 @@ public class BannedUsers extends CoolCRUD {
 				String logDescription = "<a href=\"/users/viewprofile?userId="
 						+ restricter.id
 						+ "\">"
-						+ restricter.firstName
+						+ restricter.username
 						+ "</a>"
 						+ " has restricted "
 						+ "<a href=\"/users/viewprofile?userId="
 						+ restricted.id
 						+ "\">"
-						+ restricted.firstName
-						+ " "
-						+ restricted.lastName
+						+ restricted.username
 						+ "</a>"
 						+ " from : "
 						+ actionToDo[i]
@@ -784,15 +780,13 @@ public class BannedUsers extends CoolCRUD {
 					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ restricter.id
 							+ "\">"
-							+ restricter.firstName
+							+ restricter.username
 							+ "</a>"
 							+ " has restricted the organizer : "
 							+ "<a href=\"/users/viewprofile?userId="
 							+ restricted.id
 							+ "\">"
-							+ restricted.firstName
-							+ " "
-							+ restricted.lastName
+							+ restricted.username
 							+ "</a>"
 							+ " from : "
 							+ actionToDo[i]
@@ -843,15 +837,13 @@ public class BannedUsers extends CoolCRUD {
 					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ restricter.id
 							+ "\">"
-							+ restricter.firstName
+							+ restricter.username
 							+ "</a>"
 							+ " has restricted the organizer : "
 							+ "<a href=\"/users/viewprofile?userId="
 							+ restricted.id
 							+ "\">"
-							+ restricted.firstName
-							+ " "
-							+ restricted.lastName
+							+ restricted.username
 							+ "</a>"
 							+ " from : "
 							+ actionToDo[i]
@@ -925,15 +917,13 @@ public class BannedUsers extends CoolCRUD {
 				String logDescription = "<a href=\"/users/viewprofile?userId="
 						+ restricter.id
 						+ "\">"
-						+ restricter.firstName
+						+ restricter.username
 						+ "</a>"
 						+ " has de-restricted the organizer : "
 						+ "<a href=\"/users/viewprofile?userId="
 						+ restricted.id
 						+ "\">"
-						+ restricted.firstName
-						+ " "
-						+ restricted.lastName
+						+ restricted.username
 						+ "</a>"
 						+ " from : "
 						+ actionsRestricted[i]
@@ -979,15 +969,13 @@ public class BannedUsers extends CoolCRUD {
 				String logDescription = "<a href=\"/users/viewprofile?userId="
 						+ restricter.id
 						+ "\">"
-						+ restricter.firstName
+						+ restricter.username
 						+ "</a>"
 						+ " has de-restricted the organizer : "
 						+ "<a href=\"/users/viewprofile?userId="
 						+ restricted.id
 						+ "\">"
-						+ restricted.firstName
-						+ " "
-						+ restricted.lastName
+						+ restricted.username
 						+ "</a>"
 						+ " from : "
 						+ actionsRestricted[i]
@@ -1055,15 +1043,13 @@ public class BannedUsers extends CoolCRUD {
 					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ restricter.id
 							+ "\">"
-							+ restricter.firstName
+							+ restricter.username
 							+ "</a>"
 							+ " has de-restricted the organizer "
 							+ "<a href=\"/users/viewprofile?userId="
 							+ restricted.id
 							+ "\">"
-							+ restricted.firstName
-							+ " "
-							+ restricted.lastName
+							+ restricted.username
 							+ "</a>"
 							+ " from : "
 							+ actionsRestricted[i]
@@ -1113,15 +1099,13 @@ public class BannedUsers extends CoolCRUD {
 					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ restricter.id
 							+ "\">"
-							+ restricter.firstName
+							+ restricter.username
 							+ "</a>"
 							+ " has de-restricted the organizer "
 							+ "<a href=\"/users/viewprofile?userId="
 							+ restricted.id
 							+ "\">"
-							+ restricted.firstName
-							+ " "
-							+ restricted.lastName
+							+ restricted.username
 							+ "</a>"
 							+ " from : "
 							+ actionsRestricted[i]
@@ -1708,17 +1692,13 @@ public class BannedUsers extends CoolCRUD {
 					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ organizer.id
 							+ "\">"
-							+ organizer.firstName
-							+ " "
-							+ organizer.lastName
+							+ organizer.username
 							+ "</a>"
 							+ " blocked "
 							+ "<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
-							+ user.firstName
-							+ " "
-							+ user.lastName
+							+ user.username
 							+ "</a>"
 							+ " from viewing entity "
 							+ "<a href=\"/mainentitys/viewentity?id="
@@ -1750,17 +1730,13 @@ public class BannedUsers extends CoolCRUD {
 					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ organizer.id
 							+ "\">"
-							+ organizer.firstName
-							+ " "
-							+ organizer.lastName
+							+ organizer.username
 							+ "</a>"
 							+ " unblocked "
 							+ "<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
-							+ user.firstName
-							+ " "
-							+ user.lastName
+							+ user.username
 							+ "</a>"
 							+ " from viewing entity "
 							+ "<a href=\"/mainentitys/viewentity?id="
@@ -1794,17 +1770,13 @@ public class BannedUsers extends CoolCRUD {
 					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ organizer.id
 							+ "\">"
-							+ organizer.firstName
-							+ " "
-							+ organizer.lastName
+							+ organizer.username
 							+ "</a>"
 							+ " blocked "
 							+ "<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
-							+ user.firstName
-							+ " "
-							+ user.lastName
+							+ user.username
 							+ "</a>"
 							+ " from using entity "
 							+ "<a href=\"/mainentitys/viewentity?id="
@@ -1836,17 +1808,13 @@ public class BannedUsers extends CoolCRUD {
 					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ organizer.id
 							+ "\">"
-							+ organizer.firstName
-							+ " "
-							+ organizer.lastName
+							+ organizer.username
 							+ "</a>"
 							+ " unblocked "
 							+ "<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
-							+ user.firstName
-							+ " "
-							+ user.lastName
+							+ user.username
 							+ "</a>"
 							+ " from using entity "
 							+ "<a href=\"/mainentitys/viewentity?id="
@@ -1890,17 +1858,13 @@ public class BannedUsers extends CoolCRUD {
 					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ organizer.id
 							+ "\">"
-							+ organizer.firstName
-							+ " "
-							+ organizer.lastName
+							+ organizer.username
 							+ "</a>"
 							+ " blocked "
 							+ "<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
-							+ user.firstName
-							+ " "
-							+ user.lastName
+							+ user.username
 							+ "</a>"
 							+ " from viewing topic "
 							+ "<a href=\"/topics/show?id="
@@ -1935,17 +1899,13 @@ public class BannedUsers extends CoolCRUD {
 					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ organizer.id
 							+ "\">"
-							+ organizer.firstName
-							+ " "
-							+ organizer.lastName
+							+ organizer.username
 							+ "</a>"
 							+ " unblocked "
 							+ "<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
-							+ user.firstName
-							+ " "
-							+ user.lastName
+							+ user.username
 							+ "</a>"
 							+ " from viewing topic "
 							+ "<a href=\"/topics/show?id="
@@ -1979,17 +1939,12 @@ public class BannedUsers extends CoolCRUD {
 					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ organizer.id
 							+ "\">"
-							+ organizer.firstName
-							+ " "
-							+ organizer.lastName
-							+ "</a>"
+							+ organizer.username
 							+ " blocked "
 							+ "<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
-							+ user.firstName
-							+ " "
-							+ user.lastName
+							+ user.username
 							+ "</a>"
 							+ " from using topic "
 							+ "<a href=\"/topics/show?id="
@@ -2023,17 +1978,13 @@ public class BannedUsers extends CoolCRUD {
 					String logDescription = "<a href=\"/users/viewprofile?userId="
 							+ organizer.id
 							+ "\">"
-							+ organizer.firstName
-							+ " "
-							+ organizer.lastName
+							+ organizer.username
 							+ "</a>"
 							+ " unblocked "
 							+ "<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
-							+ user.firstName
-							+ " "
-							+ user.lastName
+							+ user.username
 							+ "</a>"
 							+ " from using topic "
 							+ "<a href=\"/topics/show?id="
