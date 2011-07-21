@@ -20,6 +20,8 @@ import java.lang.reflect.*;
 import java.util.*;
 import com.google.gson.JsonObject;
 import com.sun.mail.iap.Response;
+
+import controllers.CRUD.ObjectType;
 import play.data.binding.*;
 import play.db.*;
 import play.exceptions.*;
@@ -528,19 +530,25 @@ public class Topics extends CRUD {
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
 		String message = "";
+		User user = Security.getConnected();
 		Topic temporaryTopic = (Topic) object; // we temporarily save the object
 											   // created by the form in 
 		                                       //temporaryTopic to validate it before saving
+		List<MainEntity> listOfEntities = MainEntity.findAll();
+		temporaryTopic.creator = user;
 		MainEntity topicEntity = MainEntity.findById(entityId);
 		MainEntity entity = MainEntity.findById(entityId);
-		temporaryTopic.entity = topicEntity;
-		User user = Security.getConnected();
-		temporaryTopic.creator = user;
+		if (!user.isAdmin){
+			temporaryTopic.entity = topicEntity;
+		}
+		else{
+			topicEntity = temporaryTopic.entity;
+		}
 		if (temporaryTopic.entity == null) {
 			message = "A Topic must belong to an entity";
 			try {
 				render(request.controller.replace(".", "/") + "/blank.html",
-						type, message, entityId, user);
+						type, message, entityId, user, listOfEntities);
 			} catch (TemplateNotFoundException exception) {
 				render("CRUD/blank.html", type, message, entityId, user);
 			}
@@ -651,7 +659,7 @@ public class Topics extends CRUD {
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			render(request.controller.replace(".", "/") + "/blank.html",
-					entityId, user, entity);
+					entityId, user, entity, listOfEntities);
 		}
 		redirect(request.controller + ".view", ((Topic) object).getId());
 	}
@@ -680,11 +688,12 @@ public class Topics extends CRUD {
 		User user = Security.getConnected();
 		// handle permissions, depending on the privacyLevel the user will be
 		// directed to a different page
+		List<MainEntity> listOfEntities = MainEntity.findAll();
+		if(entity != null){
 		Organization organization = entity.organization;
 		long organizationId = organization.id;
 		String organizationName = organization.name;
 		boolean isDefaultEntity;
-		
 		if(entity.equals(organization.entitiesList.get(0))) {
 			isDefaultEntity = true;
 		} else {
@@ -696,7 +705,7 @@ public class Topics extends CRUD {
 
 		if (permission == 1) {
 			try {
-				render(type, entityId, user, entity, isDefaultEntity, organizationId,organizationName);
+				render("Topics/blank.html", type, entityId, user, entity, isDefaultEntity, organizationId, organizationName);
 
 			} catch (TemplateNotFoundException exception) {
 				render("CRUD/blank.html", type, entityId, user, entity,isDefaultEntity,organizationName);
@@ -704,7 +713,64 @@ public class Topics extends CRUD {
 		} else {
 			BannedUsers.unauthorized();
 		}
+		}
+		else{
+			if(user.isAdmin){
+				try {
+					render("CoolCRUD/blank.html", type, user, listOfEntities);
+
+				} catch (Exception exception) {
+					render("CoolCRUD/blank.html", type, user, listOfEntities);
+				}
+			}
+			
+			else{
+				BannedUsers.unauthorized();
+			}
+		}
 	}
+	
+	/*public static void blank() throws Exception {
+        ObjectType type = ObjectType.get(getControllerClass());
+        notFoundIfNull(type);
+        Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        Model object = (Model) constructor.newInstance();
+        User user = Security.getConnected();
+		List<MainEntity> listOfEntities = MainEntity.findAll();
+        try {
+            render(type, object, user, listOfEntities);
+        } catch (TemplateNotFoundException e) {
+            render("CRUD/blank.html", type, object, user, listOfEntities);
+        }
+    }
+
+    public static void create() throws Exception {
+        ObjectType type = ObjectType.get(getControllerClass());
+        notFoundIfNull(type);
+        Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        Model object = (Model) constructor.newInstance();
+        Binder.bind(object, "object", params.all());
+        validation.valid(object);
+        if (validation.hasErrors()) {
+            renderArgs.put("error", Messages.get("crud.hasErrors"));
+            try {
+                render(request.controller.replace(".", "/") + "/blank.html", type, object);
+            } catch (TemplateNotFoundException e) {
+                render("CRUD/blank.html", type, object);
+            }
+        }
+        object._save();
+        flash.success(Messages.get("crud.created", type.modelName));
+        if (params.get("_save") != null) {
+            redirect(request.controller + ".list");
+        }
+        if (params.get("_saveAndAddAnother") != null) {
+            redirect(request.controller + ".blank");
+        }
+        redirect(request.controller + ".show", object._key());
+    }*/
 
 	/**
 	 * Overriding the CRUD method show.

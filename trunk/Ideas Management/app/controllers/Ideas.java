@@ -229,11 +229,28 @@ public class Ideas extends CoolCRUD {
 		notFoundIfNull(type);
 		Topic topic = Topic.findById(topicId);
 		User user = Security.getConnected();
+		List<MainEntity> listOfEntities = MainEntity.findAll();
+		if(!user.isAdmin){
 		try {
 			render(type, topic, user, topicId);
 
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/blank.html", type, topicId);
+		}
+		}
+		else{
+		if(user.isAdmin){
+			try {
+				render("CoolCRUD/blank.html", type, user, listOfEntities);
+
+			} catch (Exception exception) {
+				render("CoolCRUD/blank.html", type, user, listOfEntities);
+			}
+		}
+		
+		else{
+			BannedUsers.unauthorized();
+		}
 		}
 
 	}
@@ -267,7 +284,12 @@ public class Ideas extends CoolCRUD {
 		Topic topic = Topic.findById(topicId);// topicId);
 		User author = Security.getConnected();
 		Idea idea = (Idea) object;
-		idea.belongsToTopic = topic;
+		if (!author.isAdmin){
+			idea.belongsToTopic = topic;
+		}
+		else{
+			topic = idea.belongsToTopic;
+		}
 		idea.author = author;
 		String message = "";
 		if (idea.belongsToTopic == null) {
