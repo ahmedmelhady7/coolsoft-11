@@ -1140,8 +1140,17 @@ public class Ideas extends CoolCRUD {
 	/**
 	 * Author ${Ahmed El-Hadi}
 	 */
-	public static void delComments(long ideaId) {
-		Idea idea = Idea.findById(ideaId);
+	public static void delComments(long commentId) {
+		Comment c = Comment.findById(commentId);
+		Idea idea = c.commentedIdea;
+		List<Comment> commentslist = Comment.find("byCommentedIdea", idea)
+		.fetch();
+		for (int i = 0; i < commentslist.size(); i++) {
+				if(commentslist.get(i).id==commentId)
+				commentslist.get(i).delete();
+				idea.save();
+				System.out.println(commentslist);
+		}
 		int size = idea.commentsList.size();
 		System.out.println("size aho " + size);
 		for (int i = 0; i < size; i++) {
@@ -1159,6 +1168,6 @@ public class Ideas extends CoolCRUD {
 		System.out.println("b3d el delete **********" + idea.commentsList);
 		idea.save();
 		System.out.println(idea.commentsList);
-		redirect("/ideas/show?ideaId=" + ideaId);
+		redirect("/ideas/show?ideaId=" + idea.id);
 	}
 }
