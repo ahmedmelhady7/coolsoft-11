@@ -1004,7 +1004,21 @@
 						 <font size=1 style="float:left;"><a href="@{Users.viewProfile(idea.author.id)}">${idea.author.username}</a></font>
 						 <br />
 						<div id="ideas" class="accordionItem">
-						<h3><a href="@{Ideas.show(idea.id)}">&nbsp ${idea.title}</a></h3>
+						<h3>
+							<a href="@{Ideas.show(idea.id)}">&nbsp ${idea.title}</a>
+							#{if idea.commentsList.size() > 1}
+								| ${idea.commentsList.size()} Comments
+							#{/if}
+							#{if idea.commentsList.size() == 1}
+								| 1 Comment
+							#{/if}
+							#{if idea.commentsList.size() == 0}
+								| no Comments
+							#{/if}
+							#{if idea.commentsList.size() > 1}
+                				, latest by ${idea.commentsList.get(idea.commentsList.size()-1).commenter.username}
+                			#{/if}
+						</h3>
 							<div>
 								<p><font size=2>Description: ${idea.description}</font></p>
 							</div>
