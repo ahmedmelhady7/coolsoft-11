@@ -42,7 +42,7 @@
 <script type="text/javascript">
 	function save()
 	{
-		var id = ${topic.id};
+		var id = ${topicId};
 		var x = document.getElementById("object_title").value.toString();
 		var y = document.getElementById("object_description").value;
 		$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/ideas/getdrafts"}  );

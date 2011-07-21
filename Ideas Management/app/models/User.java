@@ -573,8 +573,7 @@ public class User extends CoolModel {
 	 * @return String
 	 */
 	public String toString() {
-		return this.firstName + " " + this.lastName + "\t" + "username "
-				+ this.username;
+		return this.firstName + " " + this.lastName;
 	}
 
 	/**

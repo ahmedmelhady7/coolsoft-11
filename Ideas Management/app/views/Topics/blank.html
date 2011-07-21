@@ -96,13 +96,14 @@
         </li>
     </ul>
 </div>
-
-#{if !isDefaultEntity}
-			<div id="backToEntity" ><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a></div>
+	#{if !user.isAdmin}
+			#{if !isDefaultEntity}
+				<div id="backToEntity" ><a href="@{MainEntitys.viewEntity(entity.id)}"> Back to ${entity.name}</a></div>
 			#{/if}
 			#{else}
-			<a href="@{Organizations.viewProfile(organizationId)}"> Back to ${organizationName}</a>
+				<a href="@{Organizations.viewProfile(organizationId)}"> Back to ${organizationName}</a>
 			#{/else}
+	#{/if}
 <div id="crudShow" class="${type.name}">
 	
 	<h2 id="crudBlankTitle" style="font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">&{'crud.blank.title', type.modelName}</h2>
@@ -112,7 +113,7 @@
 	
 	<div class="objectForm">
 	#{form action:@create(entityId), enctype:'multipart/form-data'}
-	#{crud.form fields: ['title', 'description', 'privacyLevel', 'createRelationship']}
+	#{crud.form fields: ['title', 'description', 'entity', 'privacyLevel', 'createRelationship']}
 		
 			#{crud.custom 'title'}
 	  		<p> 
@@ -131,6 +132,21 @@
 			<span class="crudHelp" ><font color="Red">*</font></span> 
  			</p> 
 			#{/crud.custom}
+			
+			#{crud.custom 'entity'}
+			#{if user.isAdmin}
+			<p> 
+ 			<label for="object_entity">Entity</label> 
+			<select name="object.entity" id="object_entity"> 
+				<option>Select Entity</option>
+				#{list items:listOfEntities, as:'mainentity'}
+				<option value="${mainentity.id}">${mainentity.name}</option>					
+				#{/list}
+			</select>
+ 			<span class="crudHelp" ><font color="Red">*</font></span> 
+			</p> 
+			#{/if}
+			#{/crud.custom } 
 			
 			#{crud.custom 'privacyLevel'}
 			<p> 
@@ -158,9 +174,8 @@
 			
 		</p>
 	#{/form}
-		
 			<input type="submit" id ="saveAsDraftButton" value="Save as Draft" onclick="saveAsDraft()" class="linkButton"></input>
-			
+	
 	</div>
 
 </div>
@@ -176,7 +191,39 @@
 	}
 	
 	function saveAsDraft() {
-		var entityId = ${entity.id};
+		var entityId = ${entityId};
+		var topicId = auto.kill;
+		var topicTitle = document.getElementById("object_title").value.toString();
+		var topicDescription = document.getElementById("object_description").value.toString();
+		var privacyLevel = getPrivacyLevel();
+		var createRelationship = document.getElementById("object_createRelationship").checked;
+	    var link = "/mainentitys/viewentity?id="+entityId;
+		
+		if(topicTitle == "" && topicDescription == "") {
+			alert("Please enter title and decription");
+			return;
+			} 
+		if(topicTitle == "") {
+			alert("Please enter the title");
+			return;
+		}
+		if(topicDescription == "") {
+			alert("Please enter the description");
+			return;
+		}
+		
+		if(${isDefaultEntity}) {
+			link = "/organizations/viewprofile?id=" +${organizationId};
+		}
+		
+		$.post('@{Topics.createDraft()}' ,{title:topicTitle, description:topicDescription, 
+			privacyLevel: privacyLevel, createRelationship: createRelationship,
+			entityId:entityId}, function(){window.location.href=link});					
+	}
+	
+	function saveAsDraftA() {
+		var entity = document.getElementById("object_entity").value.toString();
+		var entityId = entity.id;
 		var topicId = auto.kill;
 		var topicTitle = document.getElementById("object_title").value.toString();
 		var topicDescription = document.getElementById("object_description").value.toString();
