@@ -92,7 +92,7 @@ public class Bootstrap extends Job {
 					"What is our company's name?", "coolsoft", 0, "11/11/2010",
 					"Egypt", "student");
 			khayat._save();
-
+			
 			User mai = new User("mai.jt4@gmail.com", "mai", "1234", "Mai",
 					"Magdy", "What is our company's name?", "coolsoft", 0,
 					"11/11/2010", "Egypt", "student");
@@ -215,6 +215,12 @@ public class Bootstrap extends Job {
 
 			Topic gucMetStudentUnion = new Topic("Student union",
 					"Suggestions", 2, ashraf, gucMet, true).save();
+			gucMetStudentUnion._save();
+			gucMetStudentUnion.tags.add(tagGuc);
+			gucMetStudentUnion._save();
+			
+			Topic gucSummerCamp= new Topic("GUC Summer Camp",
+					"It's Fun we all love the spirit thanks to Dr. Fatma", 2, ashraf, gucMet, true).save();
 			gucMetStudentUnion._save();
 			gucMetStudentUnion.tags.add(tagGuc);
 			gucMetStudentUnion._save();
