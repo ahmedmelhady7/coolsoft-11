@@ -368,6 +368,7 @@ public class Ideas extends CoolCRUD {
 		// List<Tag> tags = i.tagsList;
 		User user = Security.getConnected();
 		List<Comment> comments = idea.commentsList;
+		int numberOfComments =comments.size();
 		Plan plan = idea.plan;
 		Topic topic = idea.belongsToTopic;
 		long topicId = topic.id;
@@ -383,6 +384,7 @@ public class Ideas extends CoolCRUD {
 		boolean notAuthor = !idea.author.username.equals(user.username);
 		String username = idea.author.username;
 		long userId = idea.author.id;
+		long loggedInId = user.id;
 		boolean notBlockedFromUsing = Users.isPermitted(user, "use", topicId,
 				"topic");
 		ArrayList<Label> ideasLabels = new ArrayList<Label>();
@@ -430,7 +432,7 @@ public class Ideas extends CoolCRUD {
 					|| Users.isPermitted(user, "use", topicId, "topic");
 			List<Tag> tags = idea.tagsList;
 			render(type, ideasLabels, object, tags, user, isAdmin, username,
-					userId, canReport, canDelete, comments, topic, plan,
+					userId, canReport, canDelete,loggedInId , comments, numberOfComments,topic, plan,
 					permittedToTagIdea,
 					/* openToEdit, */topicId, notInPlan, ideaAlreadyReported,
 					canUse, deletemessage, /*
@@ -1137,6 +1139,18 @@ public class Ideas extends CoolCRUD {
 		return false;
 	}
 
+
+	/**
+	 * Author ${Ahmed El-Hadi}
+	 */
+	public static boolean isCommenter(long commentId){
+		Comment c = Comment.findById(commentId);
+		User user = Security.getConnected();
+		if(c.commenter.username.equals(user.username))
+			return true;
+		return false;
+	}
+	
 	/**
 	 * Author ${Ahmed El-Hadi}
 	 */
