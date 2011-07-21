@@ -842,8 +842,7 @@ public class Topics extends CRUD {
 		}
 		//begin New Hadi
 			//for public topic
-//				List<User> ideaDevelopersInTopic = Users.getIdeaDevelopers(topicId, "topic");
-//				System.out.println("joined users " + ideaDevelopersInTopic);
+				System.out.println("joined users " + searchByTopic(temporaryTopic.id));
 //				System.out.println("show topic joined users"+temporaryTopic.joinedUsers);
 				boolean userJoinedPublic = false;
 				boolean userJoinedPrivate = false;
@@ -851,21 +850,27 @@ public class Topics extends CRUD {
 				if(user.username.equals(temporaryTopic.creator.username) || user.isAdmin || user.username.equals(temporaryTopic.entity.organization.creator.username))
 					userJoinedPublic=true;
 				if(temporaryTopic.privacyLevel==2){
-//					for (int i = 0; i < temporaryTopic.joinedUsers.size(); i++) {
-//						if(user.username.equals(temporaryTopic.joinedUsers.get(i).username))
-//						userJoinedPublic=true;
-//					}
+					for (int i = 0; i < user.userRolesInOrganization.size(); i++) {
+						System.out.println(user.userRolesInOrganization.get(i).role);
+						if(user.userRolesInOrganization.get(i).role.equals(new Role("idea developer", "use")))
+						userJoinedPublic=true;
+					}
 				}
 			//for private topic
 				if(temporaryTopic.privacyLevel==1){
 					privateTopic=true;
+					for (int i = 0; i < user.userRolesInOrganization.size(); i++) {
+						if(user.userRolesInOrganization.get(i).role.equals(new Role("organizer", "use")))
+							userJoinedPrivate=true;
+					}
 					if(user.username.equals(temporaryTopic.creator.username) || user.isAdmin || user.username.equals(temporaryTopic.entity.organization.creator.username))
 						userJoinedPrivate=true;
 				else{
-//					for (int i = 0; i < temporaryTopic.joinedUsers.size(); i++) {
-//						if(user.username.equals(temporaryTopic.joinedUsers.get(i).username))
-//						userJoinedPrivate=true;
-//					}
+					System.out.println("aheeeh "+ user.userRolesInOrganization);
+					for (int i = 0; i < user.userRolesInOrganization.size(); i++) {
+						if(user.userRolesInOrganization.get(i).role.equals(new Role("idea developer", "use")))
+						userJoinedPrivate=true;
+					}
 				}
 				}
 		//End New Hadi

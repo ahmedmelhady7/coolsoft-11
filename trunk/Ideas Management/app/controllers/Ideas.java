@@ -273,7 +273,7 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 */
 
-	public static void create(long topicId) throws Exception {
+	public static void create(long topicId,String title,String description) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
@@ -284,6 +284,9 @@ public class Ideas extends CoolCRUD {
 		Topic topic = Topic.findById(topicId);// topicId);
 		User author = Security.getConnected();
 		Idea idea = (Idea) object;
+		idea.title=title;
+		idea.description=description;
+		idea.save();
 		if (!author.isAdmin){
 			idea.belongsToTopic = topic;
 		}

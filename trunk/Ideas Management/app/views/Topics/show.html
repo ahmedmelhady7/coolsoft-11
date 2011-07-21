@@ -566,7 +566,7 @@
 				 	</form>
 			    </li>
 				
-				#{if canNotPost == true}
+				#{if canNotPost == true && privateTopic}
 				<li id="req"><input type="submit" value="Request to post on this topic" onclick="requestToPost('${topicId}');" class="linkButton"></li>
                #{/if}
 			
@@ -1015,7 +1015,7 @@
 							#{if idea.commentsList.size() == 0}
 								| no Comments
 							#{/if}
-							#{if idea.commentsList.size() > 1}
+							#{if idea.commentsList.size() > 0}
                 				, latest by ${idea.commentsList.get(idea.commentsList.size()-1).commenter.username}
                 			#{/if}
 						</h3>
@@ -1031,7 +1031,10 @@
 					#{else}
 					No ideas available for this topic!
 					#{/else}
-					 #{if topicNotClosed && !privateTopic && userJoinedPublic}
+					#{if topicNotClosed && !privateTopic && userJoinedPublic}
+			        <input id="postIdea" src="/public/images/add.png" size=2; type="image" title="Post Idea" class = "linkButton"/>
+			        #{/if}
+			        #{if topicNotClosed && privateTopic && userJoinedPrivate}
 			        <input id="postIdea" src="/public/images/add.png" size=2; type="image" title="Post Idea" class = "linkButton"/>
 			        #{/if}
 			        #{if topicNotClosed && !userJoinedPublic && !privateTopic}
