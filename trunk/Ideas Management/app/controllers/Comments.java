@@ -98,8 +98,8 @@ public class Comments extends CoolCRUD {
 			+ "\">"
 			+ ideaInUse.title
 			+ "</a>";
-	 Log.addLog(logDescription, userLoggedIn, commentInitialized, ideaInUse, ideaInUse.plan,
-			ideaInUse.plan.topic, ideaInUse.plan.topic.entity, ideaInUse.plan.topic.entity.organization);
+	 Log.addLog(logDescription, userLoggedIn, commentInitialized, ideaInUse, ideaInUse.belongsToTopic,
+			 ideaInUse.belongsToTopic.entity, ideaInUse.belongsToTopic.entity.organization);
 	}
 
 	/**
