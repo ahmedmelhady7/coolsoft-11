@@ -834,7 +834,7 @@ public class Organizations extends CoolCRUD {
 		}
 		j = 0;
 		while (j < createdTags.size()) {
-			if (createdTags.get(j).createdInOrganization.equals(organization)) {
+			if (createdTags.get(j).createdInOrganization == organization) {
 				Tags.delete(createdTags.get(j).id);
 			}
 			j++;
@@ -850,7 +850,7 @@ public class Organizations extends CoolCRUD {
 		}
 		j = 0;
 		while (j < bannedUsers.size()) {
-			if (bannedUsers.get(j).organization.equals(organization)) {
+			if (bannedUsers.get(j).organization==organization) {
 				BannedUser.delete(bannedUsers.get(j));
 			}
 			j++;
@@ -859,7 +859,7 @@ public class Organizations extends CoolCRUD {
 				.findAll();
 		j = 0;
 		while (j < relations.size()) {
-			if (relations.get(j).organisation.equals(organization)) {
+			if (relations.get(j).organisation==organization) {
 				CreateRelationshipRequests.delete(relations.get(j).id);
 			}
 			j++;
@@ -871,8 +871,9 @@ public class Organizations extends CoolCRUD {
 		}
 		j = 0;
 		while (j < entities.size()) {
-			if (entities.get(j).organization.equals(organization)) {
-				MainEntitys.deleteEntity(entities.get(j).id);
+			if (entities.get(j).organization== organization) {
+				MainEntitys.deleteEntityHelper(entities.get(j).id);
+				System.out.println("deleted entity " + j);
 			}
 			j++;
 		}
@@ -880,7 +881,7 @@ public class Organizations extends CoolCRUD {
 				.findAll();
 		j = 0;
 		while (j < renameRequests.size()) {
-			if (renameRequests.get(j).organisation.equals(organization)) {
+			if (renameRequests.get(j).organisation == organization) {
 				RenameEndRelationshipRequests.delete(renameRequests.get(j).id);
 			}
 			j++;

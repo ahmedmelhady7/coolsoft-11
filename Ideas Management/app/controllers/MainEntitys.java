@@ -468,14 +468,17 @@ public class MainEntitys extends CoolCRUD {
 	 * 
 	 */
 	public static void viewEntity(long id) {
+		System.out.println("view");
 		User user = Security.getConnected();
 		MainEntity entity = MainEntity.findById(id);
+		notFoundIfNull(entity);
+		System.out.println(entity.name);
 		Organization org = entity.organization;
 		List<MainEntity> subentities = entity.subentities;
 		List<Topic> topicList = entity.topicList;
 		//faruki
 		Organization organization = entity.organization;
-		if (!organization.entitiesList.get(0).equals(entity)) {
+		if (organization.entitiesList.get(0) != entity) {
 		entity.incrmentViewed();
 		entity.save();
 
@@ -842,7 +845,7 @@ public class MainEntitys extends CoolCRUD {
 		List<Item> allItems = Item.findAll();
 		size = entity.relatedItems.size();
 		for (int i = 0; i < size; i++) {
-			if(allItems.get(i).relatedEntity.equals(entity)) {
+			if(allItems.get(i).relatedEntity==entity) {
 				allItems.get(i).relatedEntity = null;
 				allItems.get(i).save();
 			}
