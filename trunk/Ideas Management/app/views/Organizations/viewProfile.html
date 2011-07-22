@@ -661,7 +661,7 @@ $(document).ready(function(){
                         <form onsubmit="help('${org.id}', email.value);" method="post">         
                             <input type="hidden" id='users' name="users" value="${usernames}">          
                                                 <br /> Invite an Idea Developer         
-                            <br> Username/Email: <input type="text" id="email" name="email" autoComplete="group"/>              
+                            <br> Username/Email: <input type="text" id="email" name="email" autoComplete="group" required/>              
                             <br> Invite by: <input type="radio" id="s" name="select" value="username" onclick="autoC();" checked> Username <input type="radio" name="select" value="email" onclick="autoC();"> E-Mail  
                                                 <input type="submit" value="Invite" class="linkButton"/>                
                             <script language="javascript" type="text/javascript">               
