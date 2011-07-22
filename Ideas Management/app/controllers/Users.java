@@ -446,6 +446,16 @@ public class Users extends CoolCRUD {
 		Mail.reportAsSpamMail(/* organizers.get(j) */idea.belongsToTopic.creator,
 				reporter, idea, idea.description, idea.title);
 		// }
+		
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+			+ reporter.id + "\">" 
+			+ reporter.username + "</a>" 
+			+ " reported the idea  "
+			+ "<a href=\"/ideas/show?ideaId=" + idea.id + "\">" + idea.title + "</a>" + " as spam.";
+	 Log.addLog(logDescription, reporter, idea, 
+			 idea.plan, idea.plan.topic, idea.plan.topic.entity, idea.plan.topic.entity.organization);
+		
+		
 		idea.save();
 		reporter.save();
 		ideaSpamView(ideaId);
@@ -499,6 +509,16 @@ public class Users extends CoolCRUD {
 			Mail.reportTopicMail(topic.creator, reporter, topic,
 					topic.description, topic.title);
 		}
+		
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+			+ reporter.id + "\">" 
+			+ reporter.username + "</a>" 
+			+ " reported the topic  "
+			+ "<a href=\"/topics/show?topicId=" + topic.id + "\">" + topic.title + "</a>" + " as spam.";
+	 Log.addLog(logDescription, reporter, 
+			 topic, topic.entity, topic.entity.organization);
+		
+		
 		topic.save();
 		reporter.save();
 		TopicSpamView(topicId);
@@ -560,14 +580,39 @@ public class Users extends CoolCRUD {
 				Notifications.sendNotification(comment.commentedIdea.author.id,
 						commentId, "comment", "your comment in your idea "
 								+ comment.commentedIdea.toString());
+		
+			String logDescription = "<a href=\"/users/viewprofile?userId="
+				+ reporter.id + "\">" 
+				+ reporter.username + "</a>" 
+				+ " reported a comment on the idea  "
+				+ "<a href=\"/ideas/show?ideaId=" 
+				+ comment.commentedIdea.id + "\">" 
+				+ comment.commentedIdea.title + "</a>" + " as spam.";
+		 Log.addLog(logDescription, reporter, comment, comment.commentedIdea, 
+				 comment.commentedIdea.plan, comment.commentedIdea.plan.topic,
+				 comment.commentedIdea.plan.topic.entity, comment.commentedIdea.plan.topic.entity.organization);
+			
+		
 		} else if (comment.commentedPlan != null) {
 			Notifications
 					.sendNotification(comment.commenter.id,
 							commentId, "comment",
 							"your comment has been reported as spam "
 									+ comment.comment);
+			
+			String logDescription = "<a href=\"/users/viewprofile?userId="
+				+ reporter.id + "\">" 
+				+ reporter.username + "</a>" 
+				+ " reported a comment on the plan  "
+				+ "<a href=\"/plans/viewaslist?planId=" + comment.commentedPlan.id + "\">" + comment.commentedPlan.title + "</a>" + " as spam.";
+		 Log.addLog(logDescription, reporter, comment, 
+				 comment.commentedPlan, comment.commentedPlan.topic, comment.commentedPlan.topic.entity,
+				 comment.commentedPlan.topic.entity.organization);
+			
 		}
 		// commentSpamView(commentId);
+		
+		
 
 	}
 

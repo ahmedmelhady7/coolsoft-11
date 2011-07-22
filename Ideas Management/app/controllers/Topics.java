@@ -256,6 +256,18 @@ public class Topics extends CRUD {
 		user.communityContributionCounter++;
 		user.save();
 		idea.save();
+		
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+			+ user.id + "\">" 
+			+ user.username + "</a>" 
+			+ "posted an  " +"<a href=\"/ideas/show?ideaId="
+			+ idea.id
+			+ "\">"
+			+ idea.title
+			+ "</a>" + " to topic " + "<a href=\"/topics/show?topicId=" + topic.id 
+			+ "\">" + topic.title + "</a>";
+	 Log.addLog(logDescription, user, idea,topic,
+			topic.entity, topic.entity.organization);
 	}
 
 	/**
@@ -1473,9 +1485,7 @@ public class Topics extends CRUD {
 					"<a href=\"/users/viewprofile?userId="
 							+ user.id
 							+ "\">"
-							+ user.firstName
-							+ " "
-							+ user.lastName
+							+ user.username
 							+ "</a>"
 							+ " has followed the topic ("
 							+ "<a href=\"/topics/show?topicId="
@@ -2114,6 +2124,15 @@ public class Topics extends CRUD {
 				System.out.println(idea.commentsList);
 				System.out.println(idea.plan);
 				System.out.println(idea.delete().toString());
+				
+				String logDescription = "<a href=\"/users/viewprofile?userId="
+					+ Security.getConnected().id + "\">" 
+					+ Security.getConnected().username + "</a>" 
+					+ " deleted the idea  "
+					+ idea.title;
+			 Log.addLog(logDescription, Security.getConnected(), idea.plan, idea.plan.topic, idea.plan.topic.entity, idea.plan.topic.entity.organization);
+				
+				
 				idea.save();
 				idea.delete();
 				Notifications.sendNotification(idea.author.id, idea.id, "Idea",
@@ -2123,6 +2142,7 @@ public class Topics extends CRUD {
 			System.out.println(e.getStackTrace());
 			redirect(request.controller + ".view");
 		}
+		
 		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
