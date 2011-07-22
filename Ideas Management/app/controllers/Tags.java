@@ -431,7 +431,7 @@ public class Tags extends CoolCRUD {
 				+ "\">"
 				+ user.username
 				+ "</a>"
-				+ " has created the organisation "
+				+ " has deleted the tag  " + tag.name + " in organization" 
 				+ "<a href=\"/organizations/viewprofile?id="
 				+ organization.id + "\">" + organization.name + "</a>", user, organization);
 		tag.delete();
