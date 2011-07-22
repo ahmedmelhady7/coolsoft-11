@@ -220,11 +220,9 @@ public class Bootstrap extends Job {
 			gucMetStudentUnion._save();
 			
 			Topic gucSummerCamp= new Topic("GUC Summer Camp",
-					"It's Fun we all love the spirit thanks to Dr. Fatma", 2, ashraf, gucMet, true).save();
-			gucMetStudentUnion._save();
+					"It's Fun we all love the spirit thanks to Dr. Fatma", 2, ashraf, gucCs, true).save();
+			gucSummerCamp._save();
 
-			new Topic("Draft", "Suggestions", 2, ashraf, gucMet, false, true)
-					.save();
 			gucMetStudentUnion._save();
 
 			UserRoleInOrganizations.addEnrolledUser(khayat, guc, ideadeveloper,
