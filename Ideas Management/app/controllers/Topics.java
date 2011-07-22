@@ -2130,7 +2130,7 @@ public class Topics extends CRUD {
 					+ Security.getConnected().username + "</a>" 
 					+ " deleted the idea  "
 					+ idea.title;
-			 Log.addLog(logDescription, Security.getConnected(), idea.plan, idea.plan.topic, idea.plan.topic.entity, idea.plan.topic.entity.organization);
+			 Log.addLog(logDescription, Security.getConnected(), idea, idea.belongsToTopic, idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
 				
 				
 				idea.save();
