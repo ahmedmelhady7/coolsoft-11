@@ -121,8 +121,8 @@ public class Ideas extends CoolCRUD {
 			+ "\">"
 			+ idea.title
 			+ "</a>";
-	 Log.addLog(logDescription, user, idea, idea.plan, idea.plan.topic,
-			idea.plan.topic.entity, idea.plan.topic.entity.organization);
+	 Log.addLog(logDescription, user, idea, idea.plan, idea.belongsToTopic,
+			idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
 
 		JsonObject json = new JsonObject();
 		json.addProperty("title", idea.title);
@@ -336,8 +336,8 @@ public class Ideas extends CoolCRUD {
 			+ "\">"
 			+ idea.title
 			+ "</a>";
-	 Log.addLog(logDescription, author, idea.plan, idea.plan.topic,
-			idea.plan.topic.entity, idea.plan.topic.entity.organization);
+	 Log.addLog(logDescription, author, idea, idea.belongsToTopic,
+			idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
 		flash.success(Messages.get("crud.created", type.modelName,
 				((Idea) object).getId()));
 		if (params.get("_save") != null) {
@@ -676,8 +676,8 @@ public class Ideas extends CoolCRUD {
 			+ "\">"
 			+ i.title
 			+ "</a>";
-	 Log.addLog(logDescription, myUser, i.plan, i.plan.topic,
-			i.plan.topic.entity, i.plan.topic.entity.organization);
+	 Log.addLog(logDescription, myUser, i, i.belongsToTopic,
+			i.belongsToTopic.entity, i.belongsToTopic.entity.organization);
 		flash.success(Messages.get("crud.saved", type.modelName,
 				((Idea) object).getId()));
 		if (params.get("_save") != null) {
@@ -827,7 +827,7 @@ public class Ideas extends CoolCRUD {
 					+ tempTag.id + "\">" + tempTag.name + "</a>"
 					+ " to the idea " + "<a href=\"/ideas/show?ideaId="
 					+ idea.id + "\">" + idea.title + "</a>";
-			Log.addUserLog(logDescription, idea);
+			Log.addUserLog(logDescription, idea, idea.belongsToTopic, idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
 		}
 		idea.save();
 		JsonObject json = new JsonObject();
