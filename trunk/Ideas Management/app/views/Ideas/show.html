@@ -180,7 +180,7 @@
         <p>
             <h2 class="post-title">
             ${object.title}
-				<br/>
+            	<br/>
                 <h3 class"post-metadata">
                 by
                 <span class "post-author">
@@ -192,8 +192,8 @@
                   #{if user.profilePictureId == -1} <img src="/public/images/icons/user.png" width="40" height="40"/>#{/if} ${username}</a>
                 #{/if}
                 #{if !active}
-                <font>by ${username}</font>
-                #{/if}                
+                <font>${username}</font>
+                #{/if}
                 </span>
                 <span class "post-comments">
                 #{if numberOfComments > 1}
@@ -209,7 +209,7 @@
                 , latest by ${latest.username}
                 #{/if}                
                 </span>
-                </h3>
+            </h3>
             </h2>
         </p>
         <p>
@@ -239,11 +239,7 @@
     </form>
         #{/if}
         #{if canDelete && (!isAuthor||isAdmin) && notInPlan}
-        <form action="@{Topics.hideIdea(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-                <input type="hidden" name = "justification" id = "justText2">
-            <input style="float:right;" class="linkButton" style="color: red;"  title="Hide Idea" type="image" src="/public/images/icons/hide-icon.gif"/>
-    </form>
-        <input type="image" align="right" style="float:right;"  src="/public/images/icons/pencil.png" title="Edit Idea" onclick=location.href="@{Ideas.view(ideaId)}" class="linkButton"></input>
+    <input type="image" align="right" style="float:right;"  src="/public/images/icons/pencil.png" title="Edit Idea" onclick=location.href="@{Ideas.view(ideaId)}" class="linkButton"></input>
     #{/if}
         <br />
   <br />
@@ -346,12 +342,6 @@
                 $("#reportBtn_" + id).remove();
                 
             }
-            function showDelete(id){
-            	$.post('@{Ideas.isCommenter()}', {commentId: id});
-            	$("#deleteBtn_" + id).show();
-            	$("#showDelete").remove();
-            	
-            }
             function deleteComment(id) {
                 $.post('@{Ideas.delComments()}', {commentId: id});
                 $("#deleteBtn_" + id).remove();
@@ -369,7 +359,8 @@
                                                         $.getJSON('@{addCommentToIdea()}', {
                                                                 ideaID:id, comment: text
                                                         }, function(comm){
-                                                                $("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " + comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li><br/></div>");
+$("#commentsList").append("<div id=\"lastComment\"><div  class=\"comment-metadata\"><span class=\"comment-author\">by : "+"<a href=\"@{Users.viewProfile(user.id)}\">${loggedInUsername}</a>" +"</span><span class=\"comment-date\">" +"moments ago"+ "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div>"+"<input id=\"delLastComment\" type=\"image\" src=\"/public/images/icons/trash.png\" style=\"float:right;\"/>"+"<li><a>" + text + "</a></li><br/></div></div>");
+                                                                $('#delLastComment').click(function(){$('#lastComment').remove();});
                                                         });
                                                                 $("#emptyComment").hide();
                                                                 $("#noComments").hide();

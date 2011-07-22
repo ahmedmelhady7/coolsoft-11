@@ -452,10 +452,14 @@ public class Users extends CoolCRUD {
 			+ reporter.username + "</a>" 
 			+ " reported the idea  "
 			+ "<a href=\"/ideas/show?ideaId=" + idea.id + "\">" + idea.title + "</a>" + " as spam.";
-	 Log.addLog(logDescription, reporter, idea, 
-			 idea.plan, idea.plan.topic, idea.plan.topic.entity, idea.plan.topic.entity.organization);
-		
-		
+//	 Log.addLog(logDescription, reporter, idea, 
+//			 idea.plan, idea.plan.topic, idea.plan.topic.entity, idea.plan.topic.entity.organization);
+		if(idea.plan!=null)
+		Log.addLog(logDescription, reporter, idea, 
+				 idea.plan, idea.belongsToTopic, idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
+		else
+			Log.addLog(logDescription, reporter, idea, idea.belongsToTopic, idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
+
 		idea.save();
 		reporter.save();
 		ideaSpamView(ideaId);
