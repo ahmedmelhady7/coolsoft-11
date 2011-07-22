@@ -776,8 +776,20 @@ public class Plans extends CoolCRUD {
 		User userLoggedIn = Security.getConnected();
 		String desc = userLoggedIn.firstName + " " + userLoggedIn.lastName
 				+ " shared a plan with you";
-
+		Plan plan = Plan.findById(planId);
 		Notifications.sendNotification(userChosen.id, planId, "Plan", desc);
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+			+ Security.getConnected().id + "\">" 
+			+ Security.getConnected().username + "</a>" 
+			+ " shared a plan  " +"<a href=\"/plans/viewaslist?planId="
+			+ planId
+			+ "\">"
+			+ plan.title
+			+ "</a>" + " with " + "<a href=\"/users/viewprofile?userId=" + userChosen.id + "\">" 
+			+ userChosen.username + "</a>" ;
+					
+	 Log.addLog(logDescription, Security.getConnected(), userChosen, plan.topic,
+			plan.topic.entity, plan.topic.entity.organization);
 
 	}
 
