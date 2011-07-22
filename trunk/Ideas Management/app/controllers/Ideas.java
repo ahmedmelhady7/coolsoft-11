@@ -309,7 +309,6 @@ public class Ideas extends CoolCRUD {
 			if (idea.title.equals("")) {
 				message = "An Idea must have a title";
 			} else if (idea.description.equals("")) {
-				message = "An Idea must have a description";
 
 			}
 
@@ -759,6 +758,16 @@ public class Ideas extends CoolCRUD {
 	public static void deleteIdea(long ideaId, String justification) {
 		System.out.println("delete idea aho");
 		Idea idea = Idea.findById(ideaId);
+		
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+			+ Security.getConnected().id + "\">" 
+			+ Security.getConnected().username + "</a>" 
+			+ " deleted the idea " 
+			+ idea.title + "that belongs to topic  "
+			+ "<a href=\"/topics/show?topicId=" + idea.belongsToTopic.id + "\">" + idea.belongsToTopic.title
+			+ "</a>";
+	 Log.addLog(logDescription, Security.getConnected(), idea, idea.belongsToTopic,
+			 idea.belongsToTopic.entity.organization,  idea.belongsToTopic.entity);
 		delete(ideaId, justification);
 		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}

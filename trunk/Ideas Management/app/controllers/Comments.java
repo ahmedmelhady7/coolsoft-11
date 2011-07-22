@@ -120,21 +120,56 @@ public class Comments extends CoolCRUD {
 		for (int i = 0; i < allTopics.size(); i++) {
 			if (allTopics.get(i).commentsOn.contains(comment)) {
 				allTopics.get(i).commentsOn.remove(comment);
+				
+				String logDescription = "<a href=\"/users/viewprofile?userId="
+					+ Security.getConnected().id + "\">" 
+					+ Security.getConnected().username + "</a>" 
+					+ " deleted a comment on the topic " +"<a href=\"/topics/show?topicId="
+					+ allTopics.get(i).id
+					+ "\">"
+					+ allTopics.get(i).title
+					+ "</a>";
+			 Log.addLog(logDescription, Security.getConnected(), comment, allTopics.get(i).entity, allTopics.get(i),
+					 allTopics.get(i).entity.organization);
 				allTopics.get(i).save();
 			}
 		}
 		for (int i = 0; i < allIdeas.size(); i++) {
 			if (allIdeas.get(i).commentsList.contains(comment)) {
 				allIdeas.get(i).commentsList.remove(comment);
+				
+				String logDescription = "<a href=\"/users/viewprofile?userId="
+					+ Security.getConnected().id + "\">" 
+					+ Security.getConnected().username + "</a>" 
+					+ " deleted a comment on the idea " +"<a href=\"/ideas/show?ideaId="
+					+ allIdeas.get(i).id
+					+ "\">"
+					+ allIdeas.get(i).title
+					+ "</a>";
+			 Log.addLog(logDescription, Security.getConnected(), comment, allIdeas.get(i).belongsToTopic, allIdeas.get(i),
+					 allIdeas.get(i).belongsToTopic.entity.organization,  allIdeas.get(i).belongsToTopic.entity);
 				allIdeas.get(i).save();
 			}
 		}
 		for (int i = 0; i < allPlans.size(); i++) {
 			if (allPlans.get(i).commentsList.contains(comment)) {
 				allPlans.get(i).commentsList.remove(comment);
+				
+				String logDescription = "<a href=\"/users/viewprofile?userId="
+					+ Security.getConnected().id + "\">" 
+					+ Security.getConnected().username + "</a>" 
+					+ " deleted a comment on the idea " +"<a href=\"/plans/viewaslist?planId="
+					+ allPlans.get(i).id
+					+ "\">"
+					+ allPlans.get(i).title
+					+ "</a>";
+			 Log.addLog(logDescription, Security.getConnected(), comment, allPlans.get(i).topic, allPlans.get(i),
+					 allPlans.get(i).topic.entity.organization,  allPlans.get(i).topic.entity);
 				allPlans.get(i).save();
 			}
 		}
+		
+		
 		return true;
 	}
 }
