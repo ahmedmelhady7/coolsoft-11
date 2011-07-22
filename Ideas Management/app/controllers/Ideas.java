@@ -437,6 +437,7 @@ public class Ideas extends CoolCRUD {
 		User author = idea.author;
 		boolean notAuthor = !idea.author.username.equals(user.username);
 		String username = idea.author.username;
+		String loggedInUsername = user.username;
 		long userId = idea.author.id;
 		long loggedInId = user.id;
 		boolean notBlockedFromUsing = Users.isPermitted(user, "use", topicId,
@@ -485,7 +486,7 @@ public class Ideas extends CoolCRUD {
 							topicId, "topic")
 					|| Users.isPermitted(user, "use", topicId, "topic");
 			List<Tag> tags = idea.tagsList;
-			render(type, ideasLabels, object, tags, user, isAdmin, username,
+			render(type, ideasLabels, object, tags, user, isAdmin, username,loggedInUsername,
 					userId, canReport, canDelete,loggedInId , latest, comments, numberOfComments,topic, plan,
 					permittedToTagIdea,
 					/* openToEdit, */topicId, notInPlan, ideaAlreadyReported,
@@ -732,13 +733,12 @@ public class Ideas extends CoolCRUD {
 			List<Comment> commentslist = Comment.find("byCommentedIdea", idea)
 					.fetch();
 			for (int i = 0; i < commentslist.size(); i++) {
-				System.out.println(commentslist);
 				commentslist.get(i).delete();
 				idea.save();
-				System.out.println(commentslist);
 			}
 			try {
 				if (idea.plan == null) {
+					System.out.println(commentslist);
 					System.out.println("foo2 el delete");
 					idea.delete();
 					System.out.println("ta7t el delete");
@@ -757,6 +757,7 @@ public class Ideas extends CoolCRUD {
 	}
 
 	public static void deleteIdea(long ideaId, String justification) {
+		System.out.println("delete idea aho");
 		Idea idea = Idea.findById(ideaId);
 		delete(ideaId, justification);
 		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);

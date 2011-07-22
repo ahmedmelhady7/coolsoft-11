@@ -1045,28 +1045,6 @@
 			        #{/if}
 					<br />
 			<!--		haget hadi	-->
-					#{if canDelete}
-			                <input id="showhidden" type="submit" value="show hidden Ideas" class = "linkButton"/>
-			                <div id="hidden">
-			                #{list items:hiddenIdeas, as:'idea'}
-			                <fieldset id="hidd_${idea.id}">
-			                <br/>
-			                <label style="background-color:#FFFFFF; border-top-left-radius: 10px;border-top-right-radius: 10px;
-							border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; padding:0.3% 2% 0.3% 2%; margin-right:20%;">${idea.title}</label>
-			                <br/><br/>
-			                <div style=" border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px; 
-						   border-bottom-left-radius: 10px; border-color:#339CCB; border-width:2px; border-style:solid; padding:2% 2% 2% 2%;"> 
-						   <label>${idea.description}</label>
-			                </br>
-			                <label>by : <a href="@{Users.viewProfile(idea.author.id)}">${idea.author.username}</a></label>
-			                <br />
-			                <input type="submit" id="unhide_${idea.id}"+ value="unhide" onclick="unhide(${idea.id})" class = "linkButton"/>
-							</div>
-			                </fieldset>
-			        		#{/list}
-			        </div>
-			        #{/if}
-					<br/>
 			        <div id="postIdeaform">
 			            <p>
 			            <label>Title  <font color="#123456"><span id="flashAmessage"></span></font>
