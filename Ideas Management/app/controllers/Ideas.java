@@ -758,17 +758,18 @@ public class Ideas extends CoolCRUD {
 	public static void deleteIdea(long ideaId, String justification) {
 		System.out.println("delete idea aho");
 		Idea idea = Idea.findById(ideaId);
-		
+		String ideaTitle = idea.title;
+		Topic ideaTopic = idea.belongsToTopic;
+		delete(ideaId, justification);
 		String logDescription = "<a href=\"/users/viewprofile?userId="
 			+ Security.getConnected().id + "\">" 
 			+ Security.getConnected().username + "</a>" 
 			+ " deleted the idea " 
-			+ idea.title + "that belongs to topic  "
-			+ "<a href=\"/topics/show?topicId=" + idea.belongsToTopic.id + "\">" + idea.belongsToTopic.title
+			+ ideaTitle + " that belongs to topic  "
+			+ "<a href=\"/topics/show?topicId=" + ideaTopic.id + "\">" + ideaTopic.title
 			+ "</a>";
 	 Log.addLog(logDescription, Security.getConnected(), idea, idea.belongsToTopic,
 			 idea.belongsToTopic.entity.organization,  idea.belongsToTopic.entity);
-		delete(ideaId, justification);
 		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
