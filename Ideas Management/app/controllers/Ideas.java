@@ -713,16 +713,6 @@ public class Ideas extends CoolCRUD {
 			for (int i = 0; i < commentslist.size(); i++) {
 				commentslist.get(i).delete();
 				idea.save();
-				String logDescription = "<a href=\"/users/viewprofile?userId="
-					+ Security.getConnected().id + "\">" 
-					+ Security.getConnected().username + "</a>" 
-					+ " deleted a comment on the idea " +"<a href=\"/ideas/show?ideaId="
-					+ idea.id
-					+ "\">"
-					+ idea.title
-					+ "</a>";
-				Log.addLog(logDescription, Security.getConnected(), commentslist.get(i), idea.belongsToTopic, idea,
-					 idea.belongsToTopic.entity.organization,  idea.belongsToTopic.entity);
 			}
 			try {
 				if (idea.plan == null) {
@@ -1245,16 +1235,6 @@ public class Ideas extends CoolCRUD {
 				if(commentslist.get(i).id==commentId)
 				commentslist.get(i).delete();
 				idea.save();
-				String logDescription = "<a href=\"/users/viewprofile?userId="
-					+ Security.getConnected().id + "\">" 
-					+ Security.getConnected().username + "</a>" 
-					+ " deleted a comment on the idea " +"<a href=\"/ideas/show?ideaId="
-					+ idea.id
-					+ "\">"
-					+ idea.title
-					+ "</a>";
-			 Log.addLog(logDescription, Security.getConnected(), c, idea.belongsToTopic, idea,
-					 idea.belongsToTopic.entity.organization,  idea.belongsToTopic.entity);
 				if(commentslist.get(i).commenter.id!=Security.getConnected().id)
 				Notifications.sendNotification(commentslist.get(i).commenter.id, idea.id, "Idea",
 						"Your comment "+commentslist.get(i).comment+" has been Deleted by The user "+Security.getConnected().username);
