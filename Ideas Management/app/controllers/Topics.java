@@ -245,18 +245,20 @@ public class Topics extends CRUD {
 	public static void postIdea(long topicId, String title, String description) {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
+		if(title.equals(null) || description.equals(null) || title.trim().equals("") || description.trim().equals(""))
+			return;
 		for (int i = 0; i < topic.ideas.size(); i++) {
-			if (topic.ideas.get(i).title.equals(title)
-					&& topic.ideas.get(i).description.equals(description))
-				return;
+			if(topic.ideas.get(i).isDraft && topic.ideas.get(i).title.equals(title) && topic.ideas.get(i).author.username.equals(user.username)){
+				Idea idea = Idea.findById(topic.ideas.get(i).id);
+				idea.delete();
+			}
 		}
-		Idea idea = new Idea(title, description, user, topic);
+		Idea idea = new Idea(title, description, user, topic).save();
 		topic.ideas.add(idea);
 		topic.save();
 		user.communityContributionCounter++;
 		user.save();
 		idea.save();
-		
 		String logDescription = "<a href=\"/users/viewprofile?userId="
 			+ user.id + "\">" 
 			+ user.username + "</a>" 
@@ -268,6 +270,7 @@ public class Topics extends CRUD {
 			+ "\">" + topic.title + "</a>";
 	 Log.addLog(logDescription, user, idea,topic,
 			topic.entity, topic.entity.organization);
+	 redirect("/topics/show?topicId=" + topicId);
 	}
 
 	/**

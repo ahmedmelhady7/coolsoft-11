@@ -123,13 +123,7 @@ public class Ideas extends CoolCRUD {
 			+ "</a>";
 	 Log.addLog(logDescription, user, idea, idea.plan, idea.belongsToTopic,
 			idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
-
-		JsonObject json = new JsonObject();
-		json.addProperty("title", idea.title);
-		json.addProperty("description", idea.description);
-		json.addProperty("author", user.username);
-		json.addProperty("id", idea.id);
-		renderJSON(json.toString());
+		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
 	/**
