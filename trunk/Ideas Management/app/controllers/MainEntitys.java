@@ -478,7 +478,7 @@ public class MainEntitys extends CoolCRUD {
 		List<Topic> topicList = entity.topicList;
 		//faruki
 		Organization organization = entity.organization;
-		if (organization.entitiesList.get(0) != entity) {
+	
 		entity.incrmentViewed();
 		entity.save();
 
@@ -558,10 +558,8 @@ public class MainEntitys extends CoolCRUD {
 				canRestrict, entityIsLocked, plans, canDeleteEntity, followers,
 				check, check1, check2, entityList, manageTopicRequests);
 		}
-		else {
-			BannedUsers.unauthorized();
-		}
-	}
+		
+	
 
 	/**
 	 * This method that renders the page for editing any entity
@@ -763,13 +761,16 @@ public class MainEntitys extends CoolCRUD {
 	 */
 	public static boolean deleteEntityHelper(long entityId) {
 		MainEntity entity = MainEntity.findById(entityId);
+		System.out.println("will now delete entity " + entity.name);
 		List<Organization> allOrganizations = Organization.findAll();
 		List<MainEntity> allEntities = MainEntity.findAll();
 		List<Tag> tags = Tag.findAll();
 		List<User> followers = User.findAll();
+		List<Topic> topicList =entity.topicList;
 		int size = allOrganizations.size();
 		for (int i = 0; i < size; i++) {
 			if (allOrganizations.get(i).entitiesList.contains(entity)) {
+				System.out.println("organization "+allOrganizations.get(i).name);
 				allOrganizations.get(i).entitiesList.remove(entity);
 				allOrganizations.get(i).save();
 			}
@@ -777,6 +778,7 @@ public class MainEntitys extends CoolCRUD {
 		size = followers.size();
 		for (int i = 0; i < size; i++) {
 			if (followers.get(i).followingEntities.contains(entity)) {
+				System.out.println("followers " +followers.get(i));
 				followers.get(i).followingEntities.remove(entity);
 				followers.get(i).save();
 			}
@@ -784,6 +786,7 @@ public class MainEntitys extends CoolCRUD {
 		size = tags.size();
 		for (int i = 0; i < size; i++) {
 			if (tags.get(i).entities.contains(entity)) {
+				System.out.println("tags " + tags.get(i).name);
 				tags.get(i).entities.remove(entity);
 				tags.get(i).save();
 			}
@@ -816,30 +819,39 @@ public class MainEntitys extends CoolCRUD {
 			CreateRelationshipRequests
 					.delete(entity.relationshipRequestsDestination.get(j).id);
 		}
-		//size = entity.topicList.size();
-		for (int j = 0; j < entity.topicList.size(); j++) {
+	//	size = topicList.size();
+		for (int j = 0; j <entity.topicList.size(); j++) {
+			System.out.println("topics " + entity.topicList.get(j).title);
 			Topics.deleteTopicInternally("" + entity.topicList.get(j).id);
+	
+			j--;
 		}
 		size = allEntities.size();
 		for (int i = 0; i < size; i++) {
 			if (allEntities.get(i).subentities.contains(entity)) {
+				System.out.println("subentities remove " + allEntities.get(i).name);
 				allEntities.get(i).subentities.remove(entity);
+
 				allEntities.get(i).save();
 			}
 		}
-		size = entity.subentities.size();
-		for (int i = 0; i < size; i++) {
-			MainEntitys.deleteEntity(entity.subentities.get(i).id);
+		for (int i = 0; i <entity.subentities.size(); i++) {
+			System.out.println("subentities delete " + entity.subentities.get(i).name);
+			MainEntitys.deleteEntityHelper(entity.subentities.get(i).id);
 		}
+		
 		// Mai Magdy
 		List<Invitation> invite = Invitation.find("byEntity", entity).fetch();
-		for (int i = 0; i < invite.size(); i++)
+		for (int i = 0; i < invite.size(); i++){
 			invite.get(i).delete();
+			i--;
+		}
 		//
 
 		size = entity.topicRequests.size();
 		for (int i = 0; i < size; i++) {
 			TopicRequests.delete(""+entity.topicRequests.get(i).id);
+			i--;
 		}
 		
 		List<Item> allItems = Item.findAll();
@@ -859,7 +871,7 @@ public class MainEntitys extends CoolCRUD {
 	 * deletes the entity.
 	 * 
 	 * @author Noha Khater
-	 * 
+	 *  
 	 * @param entityId
 	 *            the id of the entity to be deleted.
 	 */

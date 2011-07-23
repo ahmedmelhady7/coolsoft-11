@@ -390,22 +390,8 @@ public class Organizations extends CoolCRUD {
 		List<MainEntity> allEntities = MainEntity.findAll();
 		List<Tag> tags = new ArrayList<Tag>();
 		int i = 0;
-		int allowed = 0;
-		int settings = 0;
 		org.incrmentViewed();
 		org.save();
-		if (org.privacyLevel == 1
-				&& Users.isPermitted(
-						user,
-						"accept/reject join requests from users to join a private organization",
-						organizationId, "organization"))
-			allowed = 1;
-		if (Users
-				.isPermitted(
-						user,
-						"enable/disable the user to create their own tags within an organization",
-						organizationId, "organization"))
-			settings = 1;
 		while (i < org.relatedTags.size()) {
 			tags.add(org.relatedTags.get(i));
 			i++;
@@ -521,7 +507,7 @@ public class Organizations extends CoolCRUD {
 		if (flag.equals("true"))
 			followOrganization(organizationId);
 		render(user, org, entities, requestToJoin, canCreateEntity, tags,
-				followFlag, canInvite, admin, allowed, isMember, settings,
+				followFlag, canInvite, admin,isMember,
 				creator, alreadyRequested, plans, follower, usernames, join,
 				logFlag, pictureId, topics, entitiesCanBeRelated,
 				entitiesICanView, followers, defaultEntity);
@@ -584,6 +570,7 @@ public class Organizations extends CoolCRUD {
                                                 id, "organization")
                                 || user.isAdmin)
                         settings = 1;
+                System.out.println(settings);
                 // while (i < org.createdTags.size()) {
                 // tags.add(org.createdTags.get(i));
                 // i++;
@@ -817,6 +804,7 @@ public class Organizations extends CoolCRUD {
 	public static void deleteOrganization(long organizationId) {
 		User user = Security.getConnected();
 		Organization organization = Organization.findById(organizationId);
+	System.out.println(organizationId);
 		notFoundIfNull(organization);
 		List<User> followers = User.findAll();
 		List<Tag> createdTags = Tag.findAll();
@@ -824,88 +812,121 @@ public class Organizations extends CoolCRUD {
 		List<UserRoleInOrganization> users = organization.userRoleInOrg;
 		List<MainEntity> entities = MainEntity.findAll();
 		int j = 0;
-		while (j < followers.size()) {
+		int size =0;
+		size=followers.size();
+		while (j < size) {
+		
 			if (followers.get(j).followingOrganizations.contains(organization)) {
 				followers.get(j).followingOrganizations.remove(organization);
 				followers.get(j).save();
+				System.out.println("followers " + j);
 			}
 			j++;
 		}
 		j = 0;
-		while (j < createdTags.size()) {
+		size = createdTags.size();
+		while (j < size) {
 			if (createdTags.get(j).createdInOrganization == organization) {
 				Tags.delete(createdTags.get(j).id);
+				System.out.println("tag "+createdTags.get(j)+"" +j);
 			}
 			j++;
 		}
 		List<Tag> relatedTags = organization.relatedTags;
-		if (!relatedTags.isEmpty()) {
-			j = 0;
-			while (j < relatedTags.size()) {
+			size=relatedTags.size();
+			while (j <size ) {
 				relatedTags.get(j).organizations.remove(organization);
 				relatedTags.get(j).save();
+				System.out.println("related tags "+relatedTags.get(j)+"" +j);
 				j++;
-			}
 		}
+			relatedTags.clear();
+			
 		j = 0;
-		while (j < bannedUsers.size()) {
+		size= bannedUsers.size();
+		while (j <size) {
 			if (bannedUsers.get(j).organization==organization) {
 				BannedUser.delete(bannedUsers.get(j));
+				System.out.println("banned user " +j);
 			}
 			j++;
 		}
 		List<CreateRelationshipRequest> relations = CreateRelationshipRequest
 				.findAll();
 		j = 0;
-		while (j < relations.size()) {
+		size=relations.size();
+		while (j <size ) {
 			if (relations.get(j).organisation==organization) {
 				CreateRelationshipRequests.delete(relations.get(j).id);
+				System.out.println("relation creation request " +j);
 			}
 			j++;
 		}
 		j = 0;
 		while (j < users.size()) {
 			UserRoleInOrganization.delete(users.get(j));
+			System.out.println("user role " +j);
 			j++;
 		}
+	
 		j = 0;
-		while (j < entities.size()) {
-			if (entities.get(j).organization== organization) {
-				MainEntitys.deleteEntityHelper(entities.get(j).id);
-				System.out.println("deleted entity " + j);
-			}
+		entities = organization.entitiesList;
+		List<MainEntity> subEntities = new ArrayList <MainEntity>() ;
+		size=entities.size();
+		
+		while (j < size) {
+			System.out.println("all subentities before " + subEntities + j + size);
+		    subEntities.addAll(entities.get(j).subentities);
+			System.out.println("all subentities after " + subEntities + j + size);
 			j++;
 		}
+		entities.removeAll(subEntities);
+		for(int i=0;i<entities.size();i++){
+			System.out.println(entities.size());
+			System.out.println("all entities " + entities + i +entities.size() );
+				MainEntitys.deleteEntityHelper(entities.get(i).id);
+				i--;
+				//System.out.println("deleted entity "+entities.get(i).name+ ""+ i+entities.size());
+		}
+		
+		
 		List<RenameEndRelationshipRequest> renameRequests = RenameEndRelationshipRequest
 				.findAll();
 		j = 0;
-		while (j < renameRequests.size()) {
+		size = renameRequests.size();
+		while (j < size) {
 			if (renameRequests.get(j).organisation == organization) {
 				RenameEndRelationshipRequests.delete(renameRequests.get(j).id);
+				System.out.println("rename reltions requests " +j);
 			}
 			j++;
 		}
 		organization.creator.createdOrganization.remove(organization);
 		organization.creator.save();
 		// fadwa
-		for (int i = 0; i < organization.joinRequests.size(); i++)
+		for (int i = 0; i < organization.joinRequests.size(); i++){
 			organization.joinRequests.get(i).delete();
+			i--;
+		}
 		// fadwa
 
 		// Mai Magdy
 		List<Invitation> invite = Invitation.find("byOrganization",
 				organization).fetch();
-		for (int i = 0; i < invite.size(); i++)
+		size=invite.size();
+		for (int i = 0; i < size; i++)
 			invite.get(i).delete();
 		//
-
 		organization.logs.clear();
-
-		organization.delete();
+		organization.save();
+		System.out.println("5alas logs");
 		Log.addUserLog(
 				"<a href=\"/users/viewprofile?userId="
 						+ user.id + "\">" + user.username + "</a>"
 						+ " deleted the organisation " + organization.name, user);
+		System.out.println("hadelete");
+		//organization.delete();
+		System.out.println("delete");
 		Login.homePage();
 	}
 
