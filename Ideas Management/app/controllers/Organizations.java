@@ -863,9 +863,12 @@ public class Organizations extends CoolCRUD {
 			j++;
 		}
 		j = 0;
-		while (j < users.size()) {
-			UserRoleInOrganization.delete(users.get(j));
+		size = users.size();
+		while (j < size) {
+			 
+			UserRoleInOrganization.delete(users.get(0));
 			System.out.println("user role " +j);
+			
 			j++;
 		}
 	
@@ -903,6 +906,7 @@ public class Organizations extends CoolCRUD {
 		}
 		organization.creator.createdOrganization.remove(organization);
 		organization.creator.save();
+		organization.save();
 		// fadwa
 		for (int i = 0; i < organization.joinRequests.size(); i++){
 			organization.joinRequests.get(i).delete();
@@ -918,6 +922,7 @@ public class Organizations extends CoolCRUD {
 			invite.get(i).delete();
 		//
 		organization.logs.clear();
+		organization.relationNames.clear();
 		organization.save();
 		System.out.println("5alas logs");
 		Log.addUserLog(
@@ -925,7 +930,23 @@ public class Organizations extends CoolCRUD {
 						+ user.id + "\">" + user.username + "</a>"
 						+ " deleted the organisation " + organization.name, user);
 		System.out.println("hadelete");
-		//organization.delete();
+		System.out.println(organization.bannedUsers.isEmpty() + "banned userrrrrr");
+		System.out.println(organization.createdTags.isEmpty() + "created tagsssss");
+		System.out.println(organization.createRelationshipRequest.isEmpty() + "create relationship requestssss");
+		System.out.println((organization.creator.createdOrganization.contains(organization)) + "creator");
+		System.out.println(organization.entitiesList.isEmpty() + "entities list");
+		System.out.println(organization.followers.isEmpty() + "followers");
+		System.out.println(organization.invitation.isEmpty() + "invitation");
+		System.out.println(organization.joinRequests.isEmpty() + "join requests");
+		System.out.println(organization.logs.isEmpty() + "logs");
+		System.out.println(organization.relatedTags.isEmpty() + "related tags");
+		System.out.println(organization.relationNames.isEmpty() + "relation names");
+		System.out.println(organization.renameEndRelationshipRequest.isEmpty() + "rename end relationship request");
+		System.out.println(organization.userRoleInOrg.isEmpty() + "user role in org");
+		System.out.println(organization.userRoleInOrg + "  ");
+		
+		
+		organization.delete();
 		System.out.println("delete");
 		Login.homePage();
 	}
