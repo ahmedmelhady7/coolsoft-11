@@ -239,7 +239,7 @@
     </form>
         #{/if}
         #{if canDelete && (!isAuthor||isAdmin) && notInPlan}
-    <input type="image" align="right" style="float:right;"  src="/public/images/icons/pencil.png" title="Edit Idea" onclick=location.href="@{Ideas.view(ideaId)}" class="linkButton"></input>
+    <!--<input type="image" align="right" style="float:right;"  src="/public/images/icons/pencil.png" title="Edit Idea" onclick=location.href="@{Ideas.view(ideaId)}" class="linkButton"></input>-->
     #{/if}
         <br />
   <br />
@@ -359,9 +359,10 @@
                                                         $.getJSON('@{addCommentToIdea()}', {
                                                                 ideaID:id, comment: text
                                                         }, function(comm){
-$("#commentsList").append("<div id=\"lastComment\"><div  class=\"comment-metadata\"><span class=\"comment-author\">by : "+"<a href=\"@{Users.viewProfile(user.id)}\">${loggedInUsername}</a>" +"</span><span class=\"comment-date\">" +"moments ago"+ "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div>"+"<input id=\"delLastComment\" type=\"image\" src=\"/public/images/icons/trash.png\" style=\"float:right;\"/>"+"<li><a>" + text + "</a></li><br/></div></div>");
-                                                                $('#delLastComment').click(function(){$('#lastComment').remove();});
+$("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-metadata\"><span class=\"comment-author\">by : "+"<a href=\"@{Users.viewProfile(user.id)}\">${loggedInUsername}</a>" +"</span><span class=\"comment-date\">" +"moments ago"+ "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div>"+"<input id=\"deleteBtnn_${id}\" onclick=\"deleteComment(${id});\" type=\"image\" src=\"/public/images/icons/trash.png\" style=\"float:right;\"/>"+"<li><a>" + text + "</a></li><br/></div></div>");                                                                
                                                         });
+                                                        		$("#deleteBtnn_" + id).click(function(){
+                        											$("#commentt_" + id).remove();});
                                                                 $("#emptyComment").hide();
                                                                 $("#noComments").hide();
                                                 }

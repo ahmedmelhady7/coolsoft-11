@@ -418,8 +418,11 @@ public class Ideas extends CoolCRUD {
 		List<Comment> comments = idea.commentsList;
 		int numberOfComments =comments.size();
 		User latest = null;
-		if(numberOfComments>0)
+		long lastId = 0;
+		if(numberOfComments>0){
 		latest = comments.get(numberOfComments-1).commenter;
+		lastId = comments.get(numberOfComments-1).id;
+		}
 		if(latest !=null && numberOfComments>1 && latest.isAdmin)
 		latest=comments.get(numberOfComments-2).commenter;
 		Plan plan = idea.plan;
@@ -486,7 +489,7 @@ public class Ideas extends CoolCRUD {
 					|| Users.isPermitted(user, "use", topicId, "topic");
 			List<Tag> tags = idea.tagsList;
 			render(type, ideasLabels, object, tags, user, isAdmin, username,loggedInUsername,
-					userId, canReport, canDelete,loggedInId , latest, comments, numberOfComments,topic, plan,
+					userId, canReport, canDelete,loggedInId , latest, comments, lastId, numberOfComments,topic, plan,
 					permittedToTagIdea,
 					/* openToEdit, */topicId, notInPlan, ideaAlreadyReported,
 					canUse, deletemessage, /*
@@ -702,6 +705,9 @@ public class Ideas extends CoolCRUD {
 	public static boolean delete(long ideaId, String justification) {
 		Idea idea = Idea.findById(ideaId);
 		Topic topic = idea.belongsToTopic;
+		long topicId=topic.id;
+		String title = idea.title;
+		String topicTitle = topic.title;
 		String message = "your idea " + idea.title + " has been deleted by "
 				+ Security.getConnected().username + " Justification : "
 				+ justification;
@@ -711,10 +717,18 @@ public class Ideas extends CoolCRUD {
 			List<Comment> commentslist = Comment.find("byCommentedIdea", idea)
 					.fetch();
 			for (int i = 0; i < commentslist.size(); i++) {
-				System.out.println(commentslist);
 				commentslist.get(i).delete();
 				idea.save();
-				System.out.println(commentslist);
+				String logDescription = "<a href=\"/users/viewprofile?userId="
+					+ Security.getConnected().id + "\">" 
+					+ Security.getConnected().username + "</a>" 
+					+ " deleted a comment on the idea " +"<a href=\"/ideas/show?ideaId="
+					+ idea.id
+					+ "\">"
+					+ idea.title
+					+ "</a>";
+				Log.addLog(logDescription, Security.getConnected(), commentslist.get(i), idea.belongsToTopic, idea,
+					 idea.belongsToTopic.entity.organization,  idea.belongsToTopic.entity);
 			}
 			try {
 				if (idea.plan == null) {
@@ -752,6 +766,15 @@ public class Ideas extends CoolCRUD {
 			}
 
 		}
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+			+ Security.getConnected().id + "\">" 
+			+ Security.getConnected().username + "</a>" 
+			+ " deleted the idea " 
+			+ title + "that belongs to topic  "
+			+ "<a href=\"/topics/show?topicId=" + topicId + "\">" + topicTitle
+			+ "</a>";
+		Log.addLog(logDescription, Security.getConnected(), topic,
+			 topic.entity.organization,  topic.entity);
 		return false;
 	}
 
@@ -761,15 +784,6 @@ public class Ideas extends CoolCRUD {
 		String ideaTitle = idea.title;
 		Topic ideaTopic = idea.belongsToTopic;
 		delete(ideaId, justification);
-		String logDescription = "<a href=\"/users/viewprofile?userId="
-			+ Security.getConnected().id + "\">" 
-			+ Security.getConnected().username + "</a>" 
-			+ " deleted the idea " 
-			+ ideaTitle + " that belongs to topic  "
-			+ "<a href=\"/topics/show?topicId=" + ideaTopic.id + "\">" + ideaTopic.title
-			+ "</a>";
-	 Log.addLog(logDescription, Security.getConnected(), idea, idea.belongsToTopic,
-			 idea.belongsToTopic.entity.organization,  idea.belongsToTopic.entity);
 		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
@@ -1237,6 +1251,16 @@ public class Ideas extends CoolCRUD {
 				if(commentslist.get(i).id==commentId)
 				commentslist.get(i).delete();
 				idea.save();
+				String logDescription = "<a href=\"/users/viewprofile?userId="
+					+ Security.getConnected().id + "\">" 
+					+ Security.getConnected().username + "</a>" 
+					+ " deleted a comment on the idea " +"<a href=\"/ideas/show?ideaId="
+					+ idea.id
+					+ "\">"
+					+ idea.title
+					+ "</a>";
+			 Log.addLog(logDescription, Security.getConnected(), c, idea.belongsToTopic, idea,
+					 idea.belongsToTopic.entity.organization,  idea.belongsToTopic.entity);
 				if(commentslist.get(i).commenter.id!=Security.getConnected().id)
 				Notifications.sendNotification(commentslist.get(i).commenter.id, idea.id, "Idea",
 						"Your comment "+commentslist.get(i).comment+" has been Deleted by The user "+Security.getConnected().username);
