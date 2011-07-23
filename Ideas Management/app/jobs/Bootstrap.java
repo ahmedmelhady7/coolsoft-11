@@ -64,7 +64,22 @@ public class Bootstrap extends Job {
 					null, "");
 
 			hadi._save();
+			Role hadiRole = new Role("idea developer", "user").save();
 
+			User anon = new User("anon@gmail.com", "anon",
+					"anon", "anon", "aymous",
+					"What is our company's name?", "coolsoft", 0, "11/11/2010",
+					null, "");
+
+			anon._save();
+
+			User anona = new User("anona@gmail.com", "anona",
+					"anona", "anona", "ymous",
+					"What is our company's name?", "coolsoft", 0, "11/11/2010",
+					null, "");
+
+			anona._save();
+			
 			User barnasa = new User("brns@gmail.com", "brns", "1234",
 					"Abdelrahman", "Ali", "What is our company's name?",
 					"coolsoft", 0, "11/11/2010", "egypt", "student");
@@ -124,6 +139,13 @@ public class Bootstrap extends Job {
 			Organization guc = new Organization("GUC", ashraf, 1, true,
 					"The German University in Cairo").save();
 
+			UserRoleInOrganizations.addEnrolledUser(hadi, guc, hadiRole);
+			hadi._save();
+			
+			UserRoleInOrganizations.addEnrolledUser(anona, guc, hadiRole);
+			anona._save();
+			
+			
 			// faruki
 			MainEntity defaultEntity = new MainEntity("Default", "", guc, false);
 			defaultEntity.save();

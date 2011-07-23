@@ -1036,11 +1036,14 @@
 			        #{/if}
 			        #{if topicNotClosed && privateTopic && userJoinedPrivate}
 			        <input id="postIdea" src="/public/images/add.png" size=2; type="image" title="Post Idea" class = "linkButton"/>
+			        <style type="text/css">
+			                        #req{display: none;}
+			        </style>
 			        #{/if}
 			        #{if topicNotClosed && !userJoinedPublic && !privateTopic}
 			        <form action="@{Topics.joinToPost()}" method="GET" name="myform">
 			        <input type="hidden" name="topicId" value="${topicId}">
-			        <input id="postIdea" type="submit" value="Join to post" class = "linkButton"/>
+			        <input id="postIdeaa" type="submit" value="Join to post" class = "linkButton"/>
 			        </form>
 			        #{/if}
 					<br />

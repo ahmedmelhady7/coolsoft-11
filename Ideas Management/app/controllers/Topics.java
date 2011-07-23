@@ -855,7 +855,6 @@ public class Topics extends CRUD {
 		//begin New Hadi
 			//for public topic
 				System.out.println("joined users " + searchByTopic(temporaryTopic.id));
-//				System.out.println("show topic joined users"+temporaryTopic.joinedUsers);
 				boolean userJoinedPublic = false;
 				boolean userJoinedPrivate = false;
 				boolean privateTopic = false;
@@ -877,11 +876,10 @@ public class Topics extends CRUD {
 					}
 					if(user.username.equals(temporaryTopic.creator.username) || user.isAdmin || user.username.equals(temporaryTopic.entity.organization.creator.username))
 						userJoinedPrivate=true;
-				else{
-					System.out.println("aheeeh "+ user.userRolesInOrganization);
-					for (int i = 0; i < user.userRolesInOrganization.size(); i++) {
-						if(user.userRolesInOrganization.get(i).role.equals(new Role("idea developer", "use")))
-						userJoinedPrivate=true;
+					else{
+						for (int i = 0; i < user.userRolesInOrganization.size(); i++) {
+								if(user.userRolesInOrganization.get(i).role.equals(new Role("idea developer", "use")))
+								userJoinedPrivate=true;
 					}
 				}
 				}
@@ -2463,8 +2461,8 @@ public class Topics extends CRUD {
 	public static void joinToPost(long topicId) {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
-//		user.topicsJoined.add(topic);
-//		topic.joinedUsers.add(user);
+		Role role = new Role("idea developer", "use").save();
+		UserRoleInOrganizations.addEnrolledUser(user, topic.entity.organization, role, topicId, "topic");
 		topic.save();
 		redirect("/topics/show?topicId="+topicId);
 	}
