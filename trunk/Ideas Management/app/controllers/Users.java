@@ -345,8 +345,15 @@ public class Users extends CoolCRUD {
 	public static void followTag(long tagId, long userId) {
 		Tag tag = Tag.findById(tagId);
 		User user = User.findById(userId);
-		tag.follow(user);
-		user.follow(tag);
+		/**
+		 * added by Mostafa Ali to make sure that a deleted user cannot follow a tag
+		 */
+		if(!(user.state.equals("d")))
+		{
+			tag.follow(user);
+			user.follow(tag);
+		}
+		
 	}
 
 	/**
@@ -1299,6 +1306,7 @@ public class Users extends CoolCRUD {
 	 * connected user is a system admin otherwise it redirects him to another
 	 * page informing him he's not authorized to view the list
 	 * 
+	 * 
 	 * @author Mostafa Ali
 	 * 
 	 * @story C1S9
@@ -1627,18 +1635,36 @@ public class Users extends CoolCRUD {
 						Security.getConnected().id, "User",
 						"The admin has edited your profile" + "\n"
 								+ editedMessage);
-				Log.addUserLog(
-						"Admin "
-								+ "<a href=\"/users/viewprofile?userId="
-								+ Security.getConnected().id
-								+ "\">"
-								+ Security.getConnected().username
-								+ "</a>"
-								+ " "
-								+ " has edited "
-								+ "<a href=\"/users/viewprofile?userId="
-								+ tmp.id + "\">" + tmp.username + "</a>"
-								+ "'s profile" + "\n" + editedMessage, tmp);
+				if(tmp.state.equals("d"))
+				{
+					Log.addUserLog(
+							"Admin "
+									+ "<a href=\"/users/viewprofile?userId="
+									+ Security.getConnected().id
+									+ "\">"
+									+ Security.getConnected().username
+									+ "</a>"
+									+ " "
+									+ " has edited "
+									+ tmp.username 
+									+ "'s profile" + "\n" + editedMessage, tmp);
+				}
+				else
+				{
+					Log.addUserLog(
+							"Admin "
+									+ "<a href=\"/users/viewprofile?userId="
+									+ Security.getConnected().id
+									+ "\">"
+									+ Security.getConnected().username
+									+ "</a>"
+									+ " "
+									+ " has edited "
+									+ "<a href=\"/users/viewprofile?userId="
+									+ tmp.id + "\">" + tmp.username + "</a>"
+									+ "'s profile" + "\n" + editedMessage, tmp);
+				}
+				
 			}
 			flash.success(Messages.get("crud.saved", type.modelName));
 			if (params.get("_save") != null) {
@@ -1706,7 +1732,19 @@ public class Users extends CoolCRUD {
 				for (int i = 0; i < user.invitation.size(); i++)
 					user.invitation.get(i).delete();
 				for (int i = 0; i < user.requestsToJoin.size(); i++)
+				{
 					user.requestsToJoin.get(i).delete();
+				}
+				Log.addUserLog(
+						"Admin "
+								+ "<a href=\"/users/viewprofile?userId="
+								+ Security.getConnected().id
+								+ "\">"
+								+ Security.getConnected().username
+								+ "</a>"
+								+ " has deleted "
+								+ "<a href=\"/users/viewprofile?userId="
+								+ user.id + "\">" + user.username + "</a>",user);
 				render(request.controller.replace(".", "/") + "/index.html");
 				/**
 				 * Added by Ahmed Maged to delete the user's notifications and notification Profile
@@ -1754,6 +1792,16 @@ public class Users extends CoolCRUD {
 				}
 				user.state = "a";
 				user._save();
+				Log.addUserLog(
+						"Admin "
+								+ "<a href=\"/users/viewprofile?userId="
+								+ Security.getConnected().id
+								+ "\">"
+								+ Security.getConnected().username
+								+ "</a>"
+								+ " has undeleted "
+								+ "<a href=\"/users/viewprofile?userId="
+								+ user.id + "\">" + user.username + "</a>",user);
 				Mail.forgiven(user);
 				render(request.controller.replace(".", "/") + "/index.html", x);
 			} catch (NullPointerException e) {
