@@ -1,6 +1,7 @@
-<script src="/public/javascripts/bmi.js" language="javascript"></script>	
 #{extends 'login/index.html' /}
 #{stylesheet src:"ideas.css" /}
+<script src="/public/javascripts/bmi.js" language="javascript"></script>
+<script type="text/javascript" src="/public/javascripts/jquery.min.js"></script>
 <head>
 		<style type="text/css">body {
 			font-size:80%;
@@ -1052,7 +1053,7 @@
 			            <p>
 			            <label>Title  <font color="#123456"><span id="flashAmessage"></span></font>
 			            </br>        
-			                <input type="text" id="ideaTitle" cols="30" rows="1" class="" name="object.title" required></input>
+			         <input type="text" id="ideaTitle" cols="30" rows="1" class="" name="object.title" required></input>
 			            <span id = "ideaTitleError">
 			                <font color="Red">
 			                    *
@@ -1065,19 +1066,44 @@
 			                Description
 			            </label>
 			            </br>
-			            <textarea id="ideaDescription" cols="50" rows="5" class="" name="object.description" required></textarea>
+			<textarea id="ideaDescription" cols="50" rows="5" class="" name="object.description" required></textarea>
 			            <span id="ideaDescriptionError">
 			                <font color="Red">
 			                    *
 			                </font>Required
 			            </span>
 			            </p>
-			                        <input id ="draftSaver" type="submit"  value="Save as Draft" onclick="save()" class = "linkButton"></input>
-			                <input type="submit" value="post" onclick="postIt()" class = "linkButton"></input>
+<label id = "emptyComment" style = "color: red;" hidden = "true">You have to enter a title and description</label>
+<br/>
+<input id ="draftSaver" type="submit"  value="Save as Draft" onclick="save()" class = "linkButton"></input>
+<!--<input id ="postIt" type="submit" value="post" onclick="postIt();" class = "linkButton"></input>-->
+<div id="fokak">
+<!--<form action="@{Topics.postIdea(topicId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">-->
+	<input type="hidden" name = "title" id = "titleText">
+	<input type="hidden" name = "description" id = "descText">
+	<input type="submit" class="linkButton" onclick="post(${topicId});" value="Post Idea"/>
+<!--</form>-->
+</div>
 			                <style type="text/css">
 			                        #postIdeaform{display: none;}
 			                </style>
 			                <script type="text/javascript">
+			                function post(id) {
+                                  var titl = $('#ideaTitle').val();
+                                  var desc = $('#ideaDescription').val();
+                                   if (titl == null || titl.trim() == "" || desc == null || desc.trim() == "") {
+                                       $("#emptyComment").show();
+                                   }
+                                   else {
+                                   	/*document.getElementById("titleText").value=titl;
+                                   	document.getElementById("descText").value=desc;*/
+                                   	$.post('@{Topics.postIdea()}', {
+                                                                topicId:id, title: titl, description: desc
+                                                      },function(){location.reload();});
+									$("#emptyComment").hide();
+                                   }
+
+                                  }
 			                $("#postIdea").click(function(){
 			                        $("#postIdeaform").toggle();
 			                        auto();
