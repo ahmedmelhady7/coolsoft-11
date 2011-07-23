@@ -731,8 +731,7 @@ public class Organizations extends CoolCRUD {
 					MainEntity defaultEntity = org.entitiesList.get(0);
 					defaultEntityId = defaultEntity.id;
                 }
-                if ((org.privacyLevel == 0)
-                                && (!Users.getEnrolledUsers(org).contains(user))) {
+                if (! Users.isPermitted(user, "view", org.id, "organization")) {
                         BannedUsers.unauthorized();
                 } else {
                         List<Plan> plans = Plans.planList("organization", org.id);
