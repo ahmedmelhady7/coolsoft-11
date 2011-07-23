@@ -146,8 +146,11 @@ public class UserRoleInOrganization extends CoolModel {
 		Role role = userRoleInOrg.role;
 		try {
 			user.userRolesInOrganization.remove(userRoleInOrg);
+			user.save();
 			organiztion.userRoleInOrg.remove(userRoleInOrg);
+			organiztion.save();
 			role.userRoleInOrganization.remove(userRoleInOrg);
+			role.save();
 			userRoleInOrg.delete();
 			return true;
 		} catch (Exception e) {
