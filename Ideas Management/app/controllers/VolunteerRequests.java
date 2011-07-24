@@ -16,16 +16,6 @@ import models.VolunteerRequest;
 @With(Secure.class)
 public class VolunteerRequests extends CoolCRUD {
 
-	/*
-	 * Extra method. Unused in the mean time.
-	 * 
-	 * public static void viewMyRequests(long userId) {
-	 * 
-	 * User user = User.findById(userId); List<VolunteerRequest>
-	 * myVolunteerRequests = user.volunteerRequests; render(user,
-	 * myVolunteerRequests);}
-	 */
-
 	/**
 	 * This method renders the page for allowing the organizer to view the
 	 * volunteer requests to work on items in a certain plan. The page is
@@ -58,17 +48,30 @@ public class VolunteerRequests extends CoolCRUD {
 				VolunteerRequest currentRequest;
 				for (int j = 0; j < itemRequests.size(); j++) {
 					currentRequest = itemRequests.get(j);
-					if (!currentRequest.destination.endDatePassed()
-							&& !currentRequest.destination.assignees
-									.contains(currentRequest.sender)
-							&& Topics.searchByTopic(plan.topic.id).contains(
-									user)
-							&& currentRequest.destination.status != 2
-							&& currentRequest.sender.state == "a"
-							&& Users.isPermitted(currentRequest.sender, "use",
-									currentRequest.destination.plan.topic.id,
-									"topic")) {
-						planVolunteerRequests.add(currentRequest);
+					if (currentRequest.destination.endDatePassed() || currentRequest.sender.state.equals("d")) {
+						currentRequest.destination.volunteerRequests
+								.remove(currentRequest);
+						currentRequest.sender.volunteerRequests
+								.remove(currentRequest);
+						currentRequest.logs.clear();
+						currentRequest.destination.save();
+						currentRequest.sender.save();
+						currentRequest.delete();
+					} else {
+						if (!currentRequest.destination.endDatePassed()
+								&& !currentRequest.destination.assignees
+										.contains(currentRequest.sender)
+								&& Topics.searchByTopic(plan.topic.id)
+										.contains(user)
+								&& currentRequest.destination.status != 2
+								&& currentRequest.sender.state == "a"
+								&& Users.isPermitted(
+										currentRequest.sender,
+										"use",
+										currentRequest.destination.plan.topic.id,
+										"topic")) {
+							planVolunteerRequests.add(currentRequest);
+						}
 					}
 				}
 			}
@@ -91,7 +94,6 @@ public class VolunteerRequests extends CoolCRUD {
 	 *            : ID of the volunteer request to be accepted.
 	 */
 	public static void accept(long requestId) {
-		// long reqId = Long.parseLong(requestId);
 		VolunteerRequest request = VolunteerRequest.findById(requestId);
 		User organizer = Security.getConnected();
 		User user = request.sender;
@@ -110,7 +112,7 @@ public class VolunteerRequests extends CoolCRUD {
 				+ user.username
 				+ "'s </a> volunteer request on item <a href=\"/plans/viewaslist?planId="
 				+ item.plan.id + "\">" + item.summary + "</a>.";
-		Log.addLog(logDescription, organizer, item, item.plan, item.plan.topic,
+		Log.addUserLog(logDescription, organizer, item, item.plan, item.plan.topic,
 				item.plan.topic.entity, item.plan.topic.entity.organization);
 		item.volunteerRequests.remove(request);
 		user.itemsAssigned.add(item);
@@ -167,7 +169,7 @@ public class VolunteerRequests extends CoolCRUD {
 				+ user.username
 				+ "'s </a> volunteer request on item <a href=\"/plans/viewaslist?planId="
 				+ item.plan.id + "\">" + item.summary + "</a>.";
-		Log.addLog(logDescription, organizer, item, item.plan, item.plan.topic,
+		Log.addUserLog(logDescription, organizer, item, item.plan, item.plan.topic,
 				item.plan.topic.entity, item.plan.topic.entity.organization);
 		user.volunteerRequests.remove(request);
 		item.volunteerRequests.remove(request);

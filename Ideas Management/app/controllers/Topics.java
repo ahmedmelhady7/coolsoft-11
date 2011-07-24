@@ -137,14 +137,15 @@ public class Topics extends CRUD {
 			Notifications.sendNotification(
 					topic.entity.organization.creator.id, topicId, "topic",
 					"This topic has been tagged as " + tag);
-			
-			String logDescription = "<a href=\"/users/viewprofile?userId=" + user.id +"\">" 
-			+ user.username + "</a>"
-            + " added the tag " +"<a href=\"/tags/mainpage?tagId=" 
-            + tempTag.id +"\">" +  tempTag.name + "</a>"  + " to the topic "
-            + "<a href=\"/topics/show?topicId=" + topic.id +"\">" + topic.title + "</a>" ;
+
+			String logDescription = "<a href=\"/users/viewprofile?userId="
+					+ user.id + "\">" + user.username + "</a>"
+					+ " added the tag " + "<a href=\"/tags/mainpage?tagId="
+					+ tempTag.id + "\">" + tempTag.name + "</a>"
+					+ " to the topic " + "<a href=\"/topics/show?topicId="
+					+ topic.id + "\">" + topic.title + "</a>";
 			Log.addUserLog(logDescription, topic);
-			
+
 		}
 		topic.save();
 		JsonObject json = new JsonObject();
@@ -155,8 +156,8 @@ public class Topics extends CRUD {
 
 	/**
 	 * 
-	 * @description this method checks if the given tag is already in the list of tags related to this topic
-	 * 				to avoid duplication
+	 * @description this method checks if the given tag is already in the list
+	 *              of tags related to this topic to avoid duplication
 	 * 
 	 * @author Mostafa Yasser El Monayer
 	 * 
@@ -169,7 +170,7 @@ public class Topics extends CRUD {
 	 *            : the tag that is being added
 	 * 
 	 */
-	
+
 	public static void checkIfTagAlreadyExists(long topicId, String tag) {
 		Topic topic = (Topic) Topic.findById(topicId);
 		notFoundIfNull(topic);
@@ -188,10 +189,10 @@ public class Topics extends CRUD {
 		renderJSON(json.toString());
 	}
 
-
 	/**
 	 * 
-	 * @description this method returns the list of tags that are available for that topic to be tagged with
+	 * @description this method returns the list of tags that are available for
+	 *              that topic to be tagged with
 	 * 
 	 * @author Mostafa Yasser El Monayer
 	 * 
@@ -203,7 +204,7 @@ public class Topics extends CRUD {
 	 * @return list of tags
 	 * 
 	 */
-	
+
 	public static List<Tag> getAvailableTags(long topicId) {
 		List<Tag> listOfTags = new ArrayList<Tag>();
 		List<Tag> globalListOfTags = new ArrayList<Tag>();
@@ -245,10 +246,13 @@ public class Topics extends CRUD {
 	public static void postIdea(long topicId, String title, String description) {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
-		if(title.equals(null) || description.equals(null) || title.trim().equals("") || description.trim().equals(""))
+		if (title.equals(null) || description.equals(null)
+				|| title.trim().equals("") || description.trim().equals(""))
 			return;
 		for (int i = 0; i < topic.ideas.size(); i++) {
-			if(topic.ideas.get(i).isDraft && topic.ideas.get(i).title.equals(title) && topic.ideas.get(i).author.username.equals(user.username)){
+			if (topic.ideas.get(i).isDraft
+					&& topic.ideas.get(i).title.equals(title)
+					&& topic.ideas.get(i).author.username.equals(user.username)) {
 				Idea idea = Idea.findById(topic.ideas.get(i).id);
 				idea.delete();
 			}
@@ -260,17 +264,14 @@ public class Topics extends CRUD {
 		user.save();
 		idea.save();
 		String logDescription = "<a href=\"/users/viewprofile?userId="
-			+ user.id + "\">" 
-			+ user.username + "</a>" 
-			+ "posted an  " +"<a href=\"/ideas/show?ideaId="
-			+ idea.id
-			+ "\">"
-			+ idea.title
-			+ "</a>" + " to topic " + "<a href=\"/topics/show?topicId=" + topic.id 
-			+ "\">" + topic.title + "</a>";
-	 Log.addLog(logDescription, user, idea,topic,
-			topic.entity, topic.entity.organization);
-	 redirect("/topics/show?topicId=" + topicId);
+				+ user.id + "\">" + user.username + "</a>" + "posted an  "
+				+ "<a href=\"/ideas/show?ideaId=" + idea.id + "\">"
+				+ idea.title + "</a>" + " to topic "
+				+ "<a href=\"/topics/show?topicId=" + topic.id + "\">"
+				+ topic.title + "</a>";
+		Log.addUserLog(logDescription, user, idea, topic, topic.entity,
+				topic.entity.organization);
+		redirect("/topics/show?topicId=" + topicId);
 	}
 
 	/**
@@ -286,26 +287,25 @@ public class Topics extends CRUD {
 	 *            : the id of the topic that to be reopened
 	 */
 	public static void reopen(long topicId) {
-		
+
 		User user = Security.getConnected();
 		Topic targetTopic = Topic.findById(topicId);
 		notFoundIfNull(targetTopic);
 		targetTopic.openToEdit = true;
 		targetTopic.save();
-		
-		
-		
-		String log = "<a href=\"/users/viewprofile?userId=" + user.id +"\">" + user.username + "</a>"
-        + " reopened Topic " +"<a href=\"/topics/show?topicId=" 
-        + targetTopic.id +"\">" +  targetTopic.title + "</a>";
-		
+
+		String log = "<a href=\"/users/viewprofile?userId=" + user.id + "\">"
+				+ user.username + "</a>" + " reopened Topic "
+				+ "<a href=\"/topics/show?topicId=" + targetTopic.id + "\">"
+				+ targetTopic.title + "</a>";
+
 		MainEntity entity = targetTopic.entity;
 		Organization organization = entity.organization;
-		
+
 		Log.addUserLog(log, user, targetTopic, entity, organization);
-		
+
 		redirect("/topics/show?topicId=" + topicId);
-	
+
 	}
 
 	/**
@@ -368,7 +368,7 @@ public class Topics extends CRUD {
 				"byOrganizationAndActionAndResourceTypeAndResourceID", org,
 				"use", "organization", org.id).fetch(); // list of blocked user
 		// from an organization
-		
+
 		List<User> bannedUsers = new ArrayList<User>();
 		List<User> user = new ArrayList<User>();
 		List<BannedUser> bannedUser = new ArrayList<BannedUser>(); // list
@@ -486,7 +486,7 @@ public class Topics extends CRUD {
 		long topicIdLong = Long.parseLong(topicId);
 		Topic targetTopic = Topic.findById(topicIdLong);
 		notFoundIfNull(targetTopic);
-		
+
 		User actor = User.findById(Security.getConnected().id);
 		List<User> organizers = targetTopic.getOrganizer();
 		List<User> followers = targetTopic.followers;
@@ -504,16 +504,17 @@ public class Topics extends CRUD {
 			Notifications.sendNotification(followers.get(i).getId(),
 					targetTopic.getId(), "Topic", notificationDescription);
 		}
-		
-		String log = "<a href=\"/users/viewprofile?userId=" + actor.id +"\">" + actor.username 
-		+ "</a>"
-        + " closed Topic " +"<a href=\"/topics/show?topicId=" + targetTopic.id +"\">" +  targetTopic.title + "</a>";
-		
+
+		String log = "<a href=\"/users/viewprofile?userId=" + actor.id + "\">"
+				+ actor.username + "</a>" + " closed Topic "
+				+ "<a href=\"/topics/show?topicId=" + targetTopic.id + "\">"
+				+ targetTopic.title + "</a>";
+
 		MainEntity entity = targetTopic.entity;
 		Organization organization = entity.organization;
-		
+
 		Log.addUserLog(log, actor, targetTopic, entity, organization);
-		
+
 		redirect("/topics/show?topicId=" + topicId);
 	}
 
@@ -529,10 +530,10 @@ public class Topics extends CRUD {
 	 *              in the Add form of a Topic and if they are valid the object
 	 *              is created and saved and the community contribution counter
 	 *              of the author is incremented.
-	 *              
+	 * 
 	 * @param entityId
-	 *              : Id of the entity where the topic will be created
-	 *              
+	 *            : Id of the entity where the topic will be created
+	 * 
 	 * @throws Exception
 	 * 
 	 */
@@ -547,19 +548,19 @@ public class Topics extends CRUD {
 		String message = "";
 		User user = Security.getConnected();
 		Topic temporaryTopic = (Topic) object; // we temporarily save the object
-											   // created by the form in 
-		                                       //temporaryTopic to validate it before saving
+												// created by the form in
+												// temporaryTopic to validate it
+												// before saving
 		List<MainEntity> listOfEntities = MainEntity.findAll();
 		temporaryTopic.creator = user;
 		MainEntity topicEntity = MainEntity.findById(entityId);
 		MainEntity entity = MainEntity.findById(entityId);
-		if (!user.isAdmin){
-			
+		if (!user.isAdmin) {
+
 			temporaryTopic.entity = topicEntity;
-		}
-		else{
+		} else {
 			if (entity == null)
-			topicEntity = temporaryTopic.entity;
+				topicEntity = temporaryTopic.entity;
 			else
 				temporaryTopic.entity = topicEntity;
 		}
@@ -616,57 +617,60 @@ public class Topics extends CRUD {
 		((Topic) object).openToEdit = true;
 		object._save();
 		temporaryTopic = (Topic) object;
-		
-		if(temporaryTopic.entity != temporaryTopic.entity.organization.entitiesList.get(0))
-		{if (temporaryTopic.followers != null) {
-			for (int i = 0; i < temporaryTopic.followers.size(); i++)
-				Notifications.sendNotification(temporaryTopic.followers.get(i)
-						.getId(), temporaryTopic.id, "Topic", "A new Topic: '"
-						+ temporaryTopic.title + "' has been added in entity '"
-						+ temporaryTopic.entity.name + "'");
-		}} 
-		else{
+
+		if (temporaryTopic.entity != temporaryTopic.entity.organization.entitiesList
+				.get(0)) {
 			if (temporaryTopic.followers != null) {
 				for (int i = 0; i < temporaryTopic.followers.size(); i++)
-					Notifications.sendNotification(temporaryTopic.followers.get(i)
-							.getId(), temporaryTopic.id, "Topic", "A new Topic: '"
-							+ temporaryTopic.title + "' has been added in the organization '"
-							+ temporaryTopic.entity.organization.name + "'");
+					Notifications.sendNotification(temporaryTopic.followers
+							.get(i).getId(), temporaryTopic.id, "Topic",
+							"A new Topic: '" + temporaryTopic.title
+									+ "' has been added in entity '"
+									+ temporaryTopic.entity.name + "'");
+			}
+		} else {
+			if (temporaryTopic.followers != null) {
+				for (int i = 0; i < temporaryTopic.followers.size(); i++)
+					Notifications.sendNotification(temporaryTopic.followers
+							.get(i).getId(), temporaryTopic.id, "Topic",
+							"A new Topic: '" + temporaryTopic.title
+									+ "' has been added in the organization '"
+									+ temporaryTopic.entity.organization.name
+									+ "'");
 			}
 		}
 
 		List<User> users = Users.getEntityOrganizers(temporaryTopic.entity);
 		users.add(temporaryTopic.entity.organization.creator);
-		
-		if(temporaryTopic.entity != temporaryTopic.entity.organization.entitiesList.get(0))
-		{for (int i = 0; i < users.size(); i++)
-			Notifications.sendNotification(users.get(i).id, temporaryTopic.id,
-					"Topic", "A new Topic: '" + temporaryTopic.title
-							+ "' has been added in entity '"
-							+ temporaryTopic.entity.name + "'");
-		}
-		else{
-			for (int i = 0; i < users.size(); i++){
-				Notifications.sendNotification(users.get(i).id, temporaryTopic.id,
-						"Topic", "A new Topic: '" + temporaryTopic.title
-								+ "' has been added in the organization '"
-								+ temporaryTopic.entity.organization.name + "'");
+
+		if (temporaryTopic.entity != temporaryTopic.entity.organization.entitiesList
+				.get(0)) {
+			for (int i = 0; i < users.size(); i++)
+				Notifications.sendNotification(users.get(i).id,
+						temporaryTopic.id, "Topic", "A new Topic: '"
+								+ temporaryTopic.title
+								+ "' has been added in entity '"
+								+ temporaryTopic.entity.name + "'");
+		} else {
+			for (int i = 0; i < users.size(); i++) {
+				Notifications
+						.sendNotification(
+								users.get(i).id,
+								temporaryTopic.id,
+								"Topic",
+								"A new Topic: '"
+										+ temporaryTopic.title
+										+ "' has been added in the organization '"
+										+ temporaryTopic.entity.organization.name
+										+ "'");
 			}
 		}
 
 		String logDescription = "<a href=\"/users/viewprofile?userId="
-				+ user.id
-				+ "\">"
-				+ user.username
-				+ "</a>"
-				+ " created the topic "
-				+ "<a href=\"/topics/show?topicId="
-				+ temporaryTopic.id
-				+ "\">"
-				+ temporaryTopic.title
-				+ "</a>"
-				+ " from entity "
-				+ "<a href=\"/mainentitys/viewentity?id="
+				+ user.id + "\">" + user.username + "</a>"
+				+ " created the topic " + "<a href=\"/topics/show?topicId="
+				+ temporaryTopic.id + "\">" + temporaryTopic.title + "</a>"
+				+ " from entity " + "<a href=\"/mainentitys/viewentity?id="
 				+ topicEntity.id + "\">" + topicEntity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, topicEntity,
 				topicEntity.organization);
@@ -708,33 +712,34 @@ public class Topics extends CRUD {
 		// handle permissions, depending on the privacyLevel the user will be
 		// directed to a different page
 		List<MainEntity> listOfEntities = MainEntity.findAll();
-		if(entity != null){
-		Organization organization = entity.organization;
-		long organizationId = organization.id;
-		String organizationName = organization.name;
-		boolean isDefaultEntity;
-		if(entity.equals(organization.entitiesList.get(0))) {
-			isDefaultEntity = true;
-		} else {
-			isDefaultEntity = false;
-		}
-		int permission = 1;
-		if (!Users.isPermitted(user, "post topics", entity.id, "entity"))
-			permission = 0;
+		if (entity != null) {
+			Organization organization = entity.organization;
+			long organizationId = organization.id;
+			String organizationName = organization.name;
+			boolean isDefaultEntity;
+			if (entity.equals(organization.entitiesList.get(0))) {
+				isDefaultEntity = true;
+			} else {
+				isDefaultEntity = false;
+			}
+			int permission = 1;
+			if (!Users.isPermitted(user, "post topics", entity.id, "entity"))
+				permission = 0;
 
-		if (permission == 1) {
-			try {
-				render("Topics/blank.html", type, entityId, user, entity, isDefaultEntity, organizationId, organizationName);
+			if (permission == 1) {
+				try {
+					render("Topics/blank.html", type, entityId, user, entity,
+							isDefaultEntity, organizationId, organizationName);
 
-			} catch (TemplateNotFoundException exception) {
-				render("CRUD/blank.html", type, entityId, user, entity,isDefaultEntity,organizationName);
+				} catch (TemplateNotFoundException exception) {
+					render("CRUD/blank.html", type, entityId, user, entity,
+							isDefaultEntity, organizationName);
+				}
+			} else {
+				BannedUsers.unauthorized();
 			}
 		} else {
-			BannedUsers.unauthorized();
-		}
-		}
-		else{
-			if(user.isAdmin){
+			if (user.isAdmin) {
 				try {
 					render("CoolCRUD/blank.html", type, user, listOfEntities);
 
@@ -742,54 +747,40 @@ public class Topics extends CRUD {
 					render("CoolCRUD/blank.html", type, user, listOfEntities);
 				}
 			}
-			
-			else{
+
+			else {
 				BannedUsers.unauthorized();
 			}
 		}
 	}
-	
-	/*public static void blank() throws Exception {
-        ObjectType type = ObjectType.get(getControllerClass());
-        notFoundIfNull(type);
-        Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        Model object = (Model) constructor.newInstance();
-        User user = Security.getConnected();
-		List<MainEntity> listOfEntities = MainEntity.findAll();
-        try {
-            render(type, object, user, listOfEntities);
-        } catch (TemplateNotFoundException e) {
-            render("CRUD/blank.html", type, object, user, listOfEntities);
-        }
-    }
 
-    public static void create() throws Exception {
-        ObjectType type = ObjectType.get(getControllerClass());
-        notFoundIfNull(type);
-        Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        Model object = (Model) constructor.newInstance();
-        Binder.bind(object, "object", params.all());
-        validation.valid(object);
-        if (validation.hasErrors()) {
-            renderArgs.put("error", Messages.get("crud.hasErrors"));
-            try {
-                render(request.controller.replace(".", "/") + "/blank.html", type, object);
-            } catch (TemplateNotFoundException e) {
-                render("CRUD/blank.html", type, object);
-            }
-        }
-        object._save();
-        flash.success(Messages.get("crud.created", type.modelName));
-        if (params.get("_save") != null) {
-            redirect(request.controller + ".list");
-        }
-        if (params.get("_saveAndAddAnother") != null) {
-            redirect(request.controller + ".blank");
-        }
-        redirect(request.controller + ".show", object._key());
-    }*/
+	/*
+	 * public static void blank() throws Exception { ObjectType type =
+	 * ObjectType.get(getControllerClass()); notFoundIfNull(type);
+	 * Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+	 * constructor.setAccessible(true); Model object = (Model)
+	 * constructor.newInstance(); User user = Security.getConnected();
+	 * List<MainEntity> listOfEntities = MainEntity.findAll(); try {
+	 * render(type, object, user, listOfEntities); } catch
+	 * (TemplateNotFoundException e) { render("CRUD/blank.html", type, object,
+	 * user, listOfEntities); } }
+	 * 
+	 * public static void create() throws Exception { ObjectType type =
+	 * ObjectType.get(getControllerClass()); notFoundIfNull(type);
+	 * Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+	 * constructor.setAccessible(true); Model object = (Model)
+	 * constructor.newInstance(); Binder.bind(object, "object", params.all());
+	 * validation.valid(object); if (validation.hasErrors()) {
+	 * renderArgs.put("error", Messages.get("crud.hasErrors")); try {
+	 * render(request.controller.replace(".", "/") + "/blank.html", type,
+	 * object); } catch (TemplateNotFoundException e) {
+	 * render("CRUD/blank.html", type, object); } } object._save();
+	 * flash.success(Messages.get("crud.created", type.modelName)); if
+	 * (params.get("_save") != null) { redirect(request.controller + ".list"); }
+	 * if (params.get("_saveAndAddAnother") != null) {
+	 * redirect(request.controller + ".blank"); } redirect(request.controller +
+	 * ".show", object._key()); }
+	 */
 
 	/**
 	 * Overriding the CRUD method show.
@@ -859,38 +850,47 @@ public class Topics extends CRUD {
 					alreadyReported = true;
 			}
 		}
-		//begin New Hadi
-			//for public topic
-				System.out.println("joined users " + searchByTopic(temporaryTopic.id));
-				boolean userJoinedPublic = false;
-				boolean userJoinedPrivate = false;
-				boolean privateTopic = false;
-				if(user.username.equals(temporaryTopic.creator.username) || user.isAdmin || user.username.equals(temporaryTopic.entity.organization.creator.username))
-					userJoinedPublic=true;
-				if(temporaryTopic.privacyLevel==2){
-					for (int i = 0; i < user.userRolesInOrganization.size(); i++) {
-						System.out.println(user.userRolesInOrganization.get(i).role);
-						if(user.userRolesInOrganization.get(i).role.equals(new Role("idea developer", "use")))
-						userJoinedPublic=true;
-					}
+		// begin New Hadi
+		// for public topic
+		System.out.println("joined users " + searchByTopic(temporaryTopic.id));
+		boolean userJoinedPublic = false;
+		boolean userJoinedPrivate = false;
+		boolean privateTopic = false;
+		if (user.username.equals(temporaryTopic.creator.username)
+				|| user.isAdmin
+				|| user.username
+						.equals(temporaryTopic.entity.organization.creator.username))
+			userJoinedPublic = true;
+		if (temporaryTopic.privacyLevel == 2) {
+			for (int i = 0; i < user.userRolesInOrganization.size(); i++) {
+				System.out.println(user.userRolesInOrganization.get(i).role);
+				if (user.userRolesInOrganization.get(i).role.equals(new Role(
+						"idea developer", "use")))
+					userJoinedPublic = true;
+			}
+		}
+		// for private topic
+		if (temporaryTopic.privacyLevel == 1) {
+			privateTopic = true;
+			for (int i = 0; i < user.userRolesInOrganization.size(); i++) {
+				if (user.userRolesInOrganization.get(i).role.equals(new Role(
+						"organizer", "use")))
+					userJoinedPrivate = true;
+			}
+			if (user.username.equals(temporaryTopic.creator.username)
+					|| user.isAdmin
+					|| user.username
+							.equals(temporaryTopic.entity.organization.creator.username))
+				userJoinedPrivate = true;
+			else {
+				for (int i = 0; i < user.userRolesInOrganization.size(); i++) {
+					if (user.userRolesInOrganization.get(i).role
+							.equals(new Role("idea developer", "use")))
+						userJoinedPrivate = true;
 				}
-			//for private topic
-				if(temporaryTopic.privacyLevel==1){
-					privateTopic=true;
-					for (int i = 0; i < user.userRolesInOrganization.size(); i++) {
-						if(user.userRolesInOrganization.get(i).role.equals(new Role("organizer", "use")))
-							userJoinedPrivate=true;
-					}
-					if(user.username.equals(temporaryTopic.creator.username) || user.isAdmin || user.username.equals(temporaryTopic.entity.organization.creator.username))
-						userJoinedPrivate=true;
-					else{
-						for (int i = 0; i < user.userRolesInOrganization.size(); i++) {
-								if(user.userRolesInOrganization.get(i).role.equals(new Role("idea developer", "use")))
-								userJoinedPrivate=true;
-					}
-				}
-				}
-		//End New Hadi
+			}
+		}
+		// End New Hadi
 		ArrayList<User> topicReporters = new ArrayList<User>();
 		String[] topicReportersId = { "0" };
 		User reporter = Security.getConnected();
@@ -1041,26 +1041,28 @@ public class Topics extends CRUD {
 				listOfTopics.remove(listOfTopics.get(i));
 			}
 		}
-			
-		if(banned == false){	
-		try {
-			render(type, object, tags, joined, alreadyReportedTopic,
-					creator, followers, ideas, userJoinedPublic, userJoinedPrivate, privateTopic, canReport,userId,topicNotClosed,
-					hiddenIdeas,numberOfIdeas, comments, entity, canDelete,
-					alreadyReported, plan, openToEdit, privacyLevel,
-					deleteMessage, deletable, topicIdLong, canClose, canPlan,
-					targetTopic, allowed, permission, topicId, canPost,
-					canNotPost, pending, follower, canCreateRelationship,
-					seeRelationStatus, createRelationship, actor, hidden,
-					canRestrict, check, canMerge, canRequestRelationship,
-					topicIsLocked, organisation, check1, check2, user,
-					listOfTopics, allowedToTag, temporaryTopic, defaultEntity);
 
-		} catch (TemplateNotFoundException exception) {
-			render("CRUD/show.html", type, object, topicId,
-					canCreateRelationship, user);
-		}}
-		else{
+		if (banned == false) {
+			try {
+				render(type, object, tags, joined, alreadyReportedTopic,
+						creator, followers, ideas, userJoinedPublic,
+						userJoinedPrivate, privateTopic, canReport, userId,
+						topicNotClosed, hiddenIdeas, numberOfIdeas, comments,
+						entity, canDelete, alreadyReported, plan, openToEdit,
+						privacyLevel, deleteMessage, deletable, topicIdLong,
+						canClose, canPlan, targetTopic, allowed, permission,
+						topicId, canPost, canNotPost, pending, follower,
+						canCreateRelationship, seeRelationStatus,
+						createRelationship, actor, hidden, canRestrict, check,
+						canMerge, canRequestRelationship, topicIsLocked,
+						organisation, check1, check2, user, listOfTopics,
+						allowedToTag, temporaryTopic, defaultEntity);
+
+			} catch (TemplateNotFoundException exception) {
+				render("CRUD/show.html", type, object, topicId,
+						canCreateRelationship, user);
+			}
+		} else {
 			BannedUsers.unauthorized();
 		}
 	}
@@ -1295,7 +1297,8 @@ public class Topics extends CRUD {
 						alreadyReportedTopic, canReport, numberOfIdeas,
 						canClose, canMerge, canPlan, check,
 						canCreateRelationship, follower, canNotPost, pending,
-						canRestrict, organization, canRequestRelationship,defaultEntity);
+						canRestrict, organization, canRequestRelationship,
+						defaultEntity);
 			} catch (TemplateNotFoundException exception) {
 				render("/topics/view.html", type, object, tags, creator,
 						followers, ideas, comments, entity, plan, openToEdit,
@@ -1304,7 +1307,8 @@ public class Topics extends CRUD {
 						alreadyReportedTopic, canReport, numberOfIdeas,
 						canClose, canMerge, canPlan, check,
 						canCreateRelationship, follower, canNotPost, pending,
-						canRestrict, canRequestRelationship, organization,defaultEntity);
+						canRestrict, canRequestRelationship, organization,
+						defaultEntity);
 			}
 		} else {
 			BannedUsers.unauthorized();
@@ -1383,8 +1387,9 @@ public class Topics extends CRUD {
 		Binder.bind(object, "object", params.all());
 		validation.valid(object);
 		Topic temporaryTopic = (Topic) object; // we temporarily save the object
-												// edited in the form in temporaryTopic 
-		                                       //to validate it before saving
+												// edited in the form in
+												// temporaryTopic
+												// to validate it before saving
 		MainEntity entity = temporaryTopic.entity;
 		User user = Security.getConnected();
 		boolean createRelationship = temporaryTopic.createRelationship;
@@ -1430,23 +1435,15 @@ public class Topics extends CRUD {
 
 		object._save();
 		String logDescription = "<a href=\"/users/viewprofile?userId="
-				+ user.id
-				+ "\">"
-				+ user.username
-				+ "</a>"
-				+ " edited the topic "
-				+ "<a href=\"/topics/show?topicId="
-				+ temporaryTopic.id
-				+ "\">"
-				+ temporaryTopic.title
-				+ "</a>"
-				+ " in entity "
-				+ "<a href=\"/mainentitys/viewentity?id="
+				+ user.id + "\">" + user.username + "</a>"
+				+ " edited the topic " + "<a href=\"/topics/show?topicId="
+				+ temporaryTopic.id + "\">" + temporaryTopic.title + "</a>"
+				+ " in entity " + "<a href=\"/mainentitys/viewentity?id="
 				+ entity.id + "\">" + entity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, entity,
 				entity.organization);
-		String notification=  user.username + " edited the topic "
-			+ temporaryTopic.title+ " in entity " + entity.name;
+		String notification = user.username + " edited the topic "
+				+ temporaryTopic.title + " in entity " + entity.name;
 		List<User> users = Users.getEntityOrganizers(temporaryTopic.entity);
 		if (!users.contains(temporaryTopic.entity.organization.creator))
 			users.add(temporaryTopic.entity.organization.creator);
@@ -1478,24 +1475,18 @@ public class Topics extends CRUD {
 	public static void followTopic(long topicId) {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
-		if (topic.followers.contains(user)){
-			
-		}
-		else {
+		if (topic.followers.contains(user)) {
+
+		} else {
 			topic.followers.add(user);
 			topic.save();
 			user.topicsIFollow.add(topic);
 			user.save();
-			Log.addUserLog(
-					"<a href=\"/users/viewprofile?userId="
-							+ user.id
-							+ "\">"
-							+ user.username
-							+ "</a>"
-							+ " has followed the topic ("
-							+ "<a href=\"/topics/show?topicId="
-							+ topic.id + "\">" + topic.title + "</a>" + ")",
-					topic.entity.organization);
+			Log.addUserLog("<a href=\"/users/viewprofile?userId=" + user.id
+					+ "\">" + user.username + "</a>"
+					+ " has followed the topic ("
+					+ "<a href=\"/topics/show?topicId=" + topic.id + "\">"
+					+ topic.title + "</a>" + ")", topic.entity.organization);
 			redirect(request.controller + ".show", topic.id,
 					"You are now a follower");
 		}
@@ -1553,7 +1544,7 @@ public class Topics extends CRUD {
 		boolean topicNotClosed = targetTopic.openToEdit;
 		temporaryTopic.incrmentViewed();
 		temporaryTopic.save();
-		long userId=user.id;
+		long userId = user.id;
 		for (int i = 0; i < ideas.size(); i++) {
 			Idea idea = ideas.get(i);
 
@@ -1680,47 +1671,46 @@ public class Topics extends CRUD {
 						topicId, "topic")) {
 			canRequestRelationship = true;
 		}
-		
+
 		boolean joined = false;
 		joinedUsersInTopic = searchByTopic(topicId);
 		for (int i = 0; i < joinedUsersInTopic.size(); i++) {
-				if(joinedUsersInTopic.get(i).username.equals(user.username));
-					joined=true;
+			if (joinedUsersInTopic.get(i).username.equals(user.username))
+				;
+			joined = true;
 		}
 		boolean banned = true;
-		
-		
-		if(temporaryTopic.hidden == true)
-			{
-			if(temporaryTopic.hider.id.compareTo(user.id) ==0){
+
+		if (temporaryTopic.hidden == true) {
+			if (temporaryTopic.hider.id.compareTo(user.id) == 0) {
 				banned = false;
 			}
-			}
-		else{
-			if(temporaryTopic.canView(user)){
-				banned=false;
+		} else {
+			if (temporaryTopic.canView(user)) {
+				banned = false;
 			}
 		}
 		if (f.equals("true"))
-			followTopic(topicId);	
-		if(banned == false){	
-		try {
+			followTopic(topicId);
+		if (banned == false) {
+			try {
 
-			render(tags, joined, alreadyReportedTopic,
-					creator, followers, ideas, canReport,userId,topicNotClosed,hiddenIdeas,
-					numberOfIdeas, comments, entity, canDelete,
-					alreadyReported, plan, openToEdit, privacyLevel,
-					deleteMessage, deletable, topicIdLong, canClose, canPlan,
-					targetTopic, allowed, permission, topicId, canPost,
-					canNotPost, pending, follower, canCreateRelationship,
-					seeRelationStatus, createRelationship, actor, hidden,
-					canRestrict, check, canMerge, canRequestRelationship,
-					topicIsLocked, organisation, check1, check2, user,
-					temporaryTopic);
+				render(tags, joined, alreadyReportedTopic, creator, followers,
+						ideas, canReport, userId, topicNotClosed, hiddenIdeas,
+						numberOfIdeas, comments, entity, canDelete,
+						alreadyReported, plan, openToEdit, privacyLevel,
+						deleteMessage, deletable, topicIdLong, canClose,
+						canPlan, targetTopic, allowed, permission, topicId,
+						canPost, canNotPost, pending, follower,
+						canCreateRelationship, seeRelationStatus,
+						createRelationship, actor, hidden, canRestrict, check,
+						canMerge, canRequestRelationship, topicIsLocked,
+						organisation, check1, check2, user, temporaryTopic);
 
-		} catch (TemplateNotFoundException exception) {
-			
-		}}
+			} catch (TemplateNotFoundException exception) {
+
+			}
+		}
 	}
 
 	/**
@@ -1788,18 +1778,10 @@ public class Topics extends CRUD {
 		UserRoleInOrganization.deleteEntityOrTopic(temporaryTopic.id, "topic");
 
 		String logDescription = "<a href=\"/users/viewprofile?userId="
-				+ user.id
-				+ "\">"
-				+ user.username
-				+ "</a>"
-				+ " deleted the topic "
-				+ "<a href=\"/topics/show?topicId="
-				+ temporaryTopic.id
-				+ "\">"
-				+ temporaryTopic.title
-				+ "</a>"
-				+ " from entity "
-				+ "<a href=\"/mainentitys/viewentity?id="
+				+ user.id + "\">" + user.username + "</a>"
+				+ " deleted the topic " + "<a href=\"/topics/show?topicId="
+				+ temporaryTopic.id + "\">" + temporaryTopic.title + "</a>"
+				+ " from entity " + "<a href=\"/mainentitys/viewentity?id="
 				+ entity.id + "\">" + entity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, entity,
 				entity.organization);
@@ -1827,7 +1809,7 @@ public class Topics extends CRUD {
 		long temporaryTopicId = Long.parseLong(id);
 		List<Tag> tags = Tag.findAll();
 		List<User> allUsers = User.findAll();
-		Topic temporaryTopic  = Topic.findById(temporaryTopicId);
+		Topic temporaryTopic = Topic.findById(temporaryTopicId);
 		List<User> followers = temporaryTopic.followers;
 		notFoundIfNull(temporaryTopic);
 		MainEntity entity = temporaryTopic.entity;
@@ -1860,31 +1842,32 @@ public class Topics extends CRUD {
 		for (int i = 0; i < temporaryTopic.invitations.size(); i++)
 			temporaryTopic.invitations.get(i).delete();
 		// fadwa
-		
-		for(int i = 0; i < tags.size(); i++) {
-			if(tags.get(i).taggedTopics.contains(temporaryTopic)) {
+
+		for (int i = 0; i < tags.size(); i++) {
+			if (tags.get(i).taggedTopics.contains(temporaryTopic)) {
 				tags.get(i).taggedTopics.remove(temporaryTopic);
 				tags.get(i).save();
 			}
 		}
-		
-		for(int i = 0; i < allUsers.size();i++) {
-			if(allUsers.get(i).topicsCreated.contains(temporaryTopic)) {
+
+		for (int i = 0; i < allUsers.size(); i++) {
+			if (allUsers.get(i).topicsCreated.contains(temporaryTopic)) {
 				allUsers.get(i).topicsCreated.remove(temporaryTopic);
 				allUsers.get(i).save();
 			}
 		}
-		
-		for(int i = 0; i < followers.size();i++) {
-			if(followers.get(i).topicsIFollow.contains(temporaryTopic)) {
+
+		for (int i = 0; i < followers.size(); i++) {
+			if (followers.get(i).topicsIFollow.contains(temporaryTopic)) {
 				followers.get(i).topicsIFollow.remove(temporaryTopic);
 				followers.get(i).save();
 			}
-		}		
-		for(int i = 0; i < temporaryTopic.ideas.size(); i++) {
-			Ideas.delete(temporaryTopic.ideas.get(i).id,"The Topic has been deleted");
 		}
-		for(int i = 0; i<temporaryTopic.commentsOn.size();i++) {
+		for (int i = 0; i < temporaryTopic.ideas.size(); i++) {
+			Ideas.delete(temporaryTopic.ideas.get(i).id,
+					"The Topic has been deleted");
+		}
+		for (int i = 0; i < temporaryTopic.commentsOn.size(); i++) {
 			Comments.deleteComment(temporaryTopic.commentsOn.get(i).id);
 		}
 		UserRoleInOrganization.deleteEntityOrTopic(temporaryTopic.id, "topic");
@@ -1899,25 +1882,26 @@ public class Topics extends CRUD {
 		for (int i = 0; i < temporaryTopic.followers.size(); i++)
 			Notifications.sendNotification(temporaryTopic.followers.get(i)
 					.getId(), entity.getId(), "entity", message);
-		for(int i = 0; i < allEntities.size();i++) {
-			if(allEntities.get(i).topicList.contains(temporaryTopic)) {
+		for (int i = 0; i < allEntities.size(); i++) {
+			if (allEntities.get(i).topicList.contains(temporaryTopic)) {
 				allEntities.get(i).topicList.remove(temporaryTopic);
 				allEntities.get(i).save();
 			}
 		}
 		for (int j = 0; j < temporaryTopic.relationshipRequestsSource.size(); j++) {
-			CreateRelationshipRequests.delete(temporaryTopic.relationshipRequestsSource
-					.get(j).id);
+			CreateRelationshipRequests
+					.delete(temporaryTopic.relationshipRequestsSource.get(j).id);
 		}
-		for (int j = 0; j < temporaryTopic.relationshipRequestsDestination.size(); j++) {
-			CreateRelationshipRequests.delete(temporaryTopic.relationshipRequestsDestination
-					.get(j).id);
+		for (int j = 0; j < temporaryTopic.relationshipRequestsDestination
+				.size(); j++) {
+			CreateRelationshipRequests
+					.delete(temporaryTopic.relationshipRequestsDestination
+							.get(j).id);
 		}
 		Notifications.sendNotification(temporaryTopic.creator.getId(),
 				entity.getId(), "entity", justification);
 		String logDescription = "The topic " + temporaryTopic.title
-				+ " in entity "
-				+ "<a href=\"/mainentitys/viewentity?id="
+				+ " in entity " + "<a href=\"/mainentitys/viewentity?id="
 				+ entity.id + "\">" + entity.name + "</a>" + "was deleted";
 		Log.addUserLog(logDescription, temporaryTopic, entity,
 				entity.organization);
@@ -1997,18 +1981,10 @@ public class Topics extends CRUD {
 							+ justification);
 
 			String logDescription = "<a href=\"/users/viewprofile?userId="
-					+ user.id
-					+ "\">"
-					+ user.username
-					+ "</a>"
-					+ " hid the topic "
-					+ "<a href=\"/topics/show?topicId="
-					+ temporaryTopic.id
-					+ "\">"
-					+ temporaryTopic.title
-					+ "</a>"
-					+ " from entity "
-					+ "<a href=\"/mainentitys/viewentity?id="
+					+ user.id + "\">" + user.username + "</a>"
+					+ " hid the topic " + "<a href=\"/topics/show?topicId="
+					+ temporaryTopic.id + "\">" + temporaryTopic.title + "</a>"
+					+ " from entity " + "<a href=\"/mainentitys/viewentity?id="
 					+ entity.id + "\">" + entity.name + "</a>";
 			Log.addUserLog(logDescription, temporaryTopic, user, entity,
 					entity.organization);
@@ -2054,12 +2030,12 @@ public class Topics extends CRUD {
 				Notifications.sendNotification(temporaryTopic.followers.get(i)
 						.getId(), entity.getId(), "entity", message);
 
-			String logDescription = "<a href=\"/users/viewprofile?userId=" 
-				+ user.id +"\">" + user.username + "</a>"
-	        + " unhid the topic " +"<a href=\"/topics/show?topicId=" 
-	        + temporaryTopic.id +"\">" + temporaryTopic.title + "</a>"
-	        + " from entity " + "<a href=\"/mainentitys/viewentity?id=" 
-	        + entity.id +"\">" + entity.name + "</a>";
+			String logDescription = "<a href=\"/users/viewprofile?userId="
+					+ user.id + "\">" + user.username + "</a>"
+					+ " unhid the topic " + "<a href=\"/topics/show?topicId="
+					+ temporaryTopic.id + "\">" + temporaryTopic.title + "</a>"
+					+ " from entity " + "<a href=\"/mainentitys/viewentity?id="
+					+ entity.id + "\">" + entity.name + "</a>";
 			Log.addUserLog(logDescription, temporaryTopic, user, entity,
 					entity.organization);
 
@@ -2109,45 +2085,46 @@ public class Topics extends CRUD {
 	 * @description This method deletes and idea from the database
 	 * 
 	 * 
-	 */ 
+	 */
 	public static void deleteIdea(long ideaId, String justification) {
 		Idea idea = Idea.findById(ideaId);
 		String message = "your idea " + idea.title + " has been deleted by "
 				+ Security.getConnected().username + " Justification : "
 				+ justification;
 		System.out.println("ssssssssssssss lesa");
-		List<Comment> commentslist = Comment.find("byCommentedIdea", idea).fetch();
+		List<Comment> commentslist = Comment.find("byCommentedIdea", idea)
+				.fetch();
 		System.out.println("aywaaaaaaaaaa");
 		try {
-				for(int i=0;i<commentslist.size();i++){
-					Comments.deleteComment(commentslist.get(i).getId());
-					System.out.println("deleted comment "+i);
-				}
-				System.out.println("3ml delete lel comments");
-//				printing
-				System.out.println(idea.belongsToTopic);
-				System.out.println(idea.commentsList);
-				System.out.println(idea.plan);
-				System.out.println(idea.delete().toString());
-				
-				String logDescription = "<a href=\"/users/viewprofile?userId="
-					+ Security.getConnected().id + "\">" 
-					+ Security.getConnected().username + "</a>" 
-					+ " deleted the idea  "
-					+ idea.title;
-			 Log.addLog(logDescription, Security.getConnected(), idea, idea.belongsToTopic, idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
-				
-				
-				idea.save();
-				idea.delete();
-				Notifications.sendNotification(idea.author.id, idea.id, "Idea",
-						message);
+			for (int i = 0; i < commentslist.size(); i++) {
+				Comments.deleteComment(commentslist.get(i).getId());
+				System.out.println("deleted comment " + i);
+			}
+			System.out.println("3ml delete lel comments");
+			// printing
+			System.out.println(idea.belongsToTopic);
+			System.out.println(idea.commentsList);
+			System.out.println(idea.plan);
+			System.out.println(idea.delete().toString());
+
+			String logDescription = "<a href=\"/users/viewprofile?userId="
+					+ Security.getConnected().id + "\">"
+					+ Security.getConnected().username + "</a>"
+					+ " deleted the idea  " + idea.title;
+			Log.addUserLog(logDescription, Security.getConnected(), idea,
+					idea.belongsToTopic, idea.belongsToTopic.entity,
+					idea.belongsToTopic.entity.organization);
+
+			idea.save();
+			idea.delete();
+			Notifications.sendNotification(idea.author.id, idea.id, "Idea",
+					message);
 
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());
 			redirect(request.controller + ".view");
 		}
-		
+
 		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
@@ -2246,10 +2223,10 @@ public class Topics extends CRUD {
 	 *            : The title of the topic
 	 * @param description
 	 *            : the description of the topic
-	 * @param privacyLevel       
-	 *     		  : privacy level of the topic
+	 * @param privacyLevel
+	 *            : privacy level of the topic
 	 * @param createRelationship
-	 * 			  : can the topic create relationship
+	 *            : can the topic create relationship
 	 * @param entityId
 	 *            : the id
 	 */
@@ -2339,14 +2316,14 @@ public class Topics extends CRUD {
 		user.save();
 		MainEntity entity = targetTopic.entity;
 		Organization organization = entity.organization;
-		String log = "<a href=\"/users/viewprofile?userId=" + user.id +"\">" 
-		+ user.username + "</a>"
-			+ " posted Topic " +"<a href=\"/topics/show?topicId=" + targetTopic.id +"\">" +  
-			targetTopic.title + "</a>" + " to the entity "
-			+ "<a href=\"/mainentitys/viewentity?id=" + 
-			entity.id +"\">" + entity.name + "</a>" ;
+		String log = "<a href=\"/users/viewprofile?userId=" + user.id + "\">"
+				+ user.username + "</a>" + " posted Topic "
+				+ "<a href=\"/topics/show?topicId=" + targetTopic.id + "\">"
+				+ targetTopic.title + "</a>" + " to the entity "
+				+ "<a href=\"/mainentitys/viewentity?id=" + entity.id + "\">"
+				+ entity.name + "</a>";
 		Log.addUserLog(log, user, targetTopic, entity, organization);
-		
+
 	}
 
 	/**
@@ -2403,7 +2380,7 @@ public class Topics extends CRUD {
 	 * 
 	 */
 	public static void discardDraftTopic(long topicId) {
-		
+
 		Topic targetTopic = Topic.findById(topicId);
 		User user = Security.getConnected();
 		targetTopic.delete();
@@ -2411,33 +2388,33 @@ public class Topics extends CRUD {
 		redirect("/ideas/getdrafts");
 
 	}
-	
+
 	/**
-	 * @Description This method discard a draft topic before
-	 * publishing it using crud
+	 * @Description This method discard a draft topic before publishing it using
+	 *              crud
 	 * 
 	 * @author Mostafa Aboul Atta
 	 * 
 	 * @param topicId
 	 *            The id of the draft that to be deleted
 	 */
-	
+
 	public static void discardForCrud(long topicId) {
-		
+
 		Topic targetTopic = Topic.findById(topicId);
 		User user = Security.getConnected();
 		targetTopic.delete();
 		user.save();
-		
+
 	}
-	
+
 	/**
 	 * @Description: this method post a draft topic directly without editing
 	 * 
 	 * @author Mostafa Aboul Atta
 	 * 
 	 * @param topicId
-	 * 			: the ID of the topic to be posted
+	 *            : the ID of the topic to be posted
 	 */
 	public static void postWithoutEdit(long topicId) {
 		Topic targetTopic = Topic.findById(topicId);
@@ -2448,15 +2425,15 @@ public class Topics extends CRUD {
 		User user = Security.getConnected();
 		MainEntity entity = targetTopic.entity;
 		Organization organiztion = entity.organization;
-		String log = "<a href=\"/users/viewprofile?userId=" + user.id +"\">" 
-		+ user.username + "</a>"
-			+ " posted Topic " +"<a href=\"/show?topicId=" + targetTopic.id +"\">" +  
-			targetTopic.title + "</a>";
+		String log = "<a href=\"/users/viewprofile?userId=" + user.id + "\">"
+				+ user.username + "</a>" + " posted Topic "
+				+ "<a href=\"/show?topicId=" + targetTopic.id + "\">"
+				+ targetTopic.title + "</a>";
 		Log.addUserLog(log, user, targetTopic, organiztion, entity);
-		
+
 		redirect("/ideas/getdrafts");
 	}
-	
+
 	/**
 	 * @author Ahmed El-Hadi
 	 * 
@@ -2469,8 +2446,9 @@ public class Topics extends CRUD {
 		User user = Security.getConnected();
 		Topic topic = Topic.findById(topicId);
 		Role role = new Role("idea developer", "use").save();
-		UserRoleInOrganizations.addEnrolledUser(user, topic.entity.organization, role, topicId, "topic");
+		UserRoleInOrganizations.addEnrolledUser(user,
+				topic.entity.organization, role, topicId, "topic");
 		topic.save();
-		redirect("/topics/show?topicId="+topicId);
+		redirect("/topics/show?topicId=" + topicId);
 	}
 }

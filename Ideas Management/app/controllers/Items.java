@@ -74,7 +74,7 @@ public class Items extends CoolCRUD {
 					+ "</a>"
 					+ " by user <a href=\"/users/viewprofile?userId="
 					+ user.id + "\">" + user.username + "</a>.";
-			Log.addLog(logDescription, user, item, item.plan, item.plan.topic,
+			Log.addUserLog(logDescription, user, item, item.plan, item.plan.topic,
 					item.plan.topic.entity, item.plan.topic.entity.organization);
 			for (User userToNotify : userToNotifyList) {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,
@@ -144,7 +144,7 @@ public class Items extends CoolCRUD {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,
 						"plan", descriptionIfInProgress);
 			}
-			Log.addLog(logDescriptionIfInProgress, user, item, item.plan,
+			Log.addUserLog(logDescriptionIfInProgress, user, item, item.plan,
 					item.plan.topic, item.plan.topic.entity,
 					item.plan.topic.entity.organization);
 			break;
