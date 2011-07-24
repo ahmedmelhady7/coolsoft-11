@@ -800,30 +800,30 @@ public class MainEntitys extends CoolCRUD {
 		// EntityRelationships.deleteER(entity.relationsDestination.get(j).id);
 		// }
 		// Mohamed Hisham {
-		size = entity.relationsSource.size();
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i <entity.relationsSource.size(); i++) {
 			EntityRelationships.delete(entity.relationsSource.get(i).id);
+			i--;
 		}
-		size = entity.relationsDestination.size();
-		for (int i = 0; i < size; i++) {
+
+		for (int i = 0; i < entity.relationsDestination.size(); i++) {
 			EntityRelationships.delete(entity.relationsDestination.get(i).id);
+			i--;
 		}
 		// }
 		size = entity.relationshipRequestsSource.size();
 		for (int j = 0; j < size; j++) {
 			CreateRelationshipRequests.delete(entity.relationshipRequestsSource
-					.get(j).id);
+					.get(0).id);
 		}
 		size = entity.relationshipRequestsDestination.size();
 		for (int j = 0; j < size; j++) {
 			CreateRelationshipRequests
-					.delete(entity.relationshipRequestsDestination.get(j).id);
+					.delete(entity.relationshipRequestsDestination.get(0).id);
 		}
 	//	size = topicList.size();
 		for (int j = 0; j <entity.topicList.size(); j++) {
 			System.out.println("topics " + entity.topicList.get(j).title);
 			Topics.deleteTopicInternally("" + entity.topicList.get(j).id);
-	
 			j--;
 		}
 		size = allEntities.size();
@@ -838,6 +838,7 @@ public class MainEntitys extends CoolCRUD {
 		for (int i = 0; i <entity.subentities.size(); i++) {
 			System.out.println("subentities delete " + entity.subentities.get(i).name);
 			MainEntitys.deleteEntityHelper(entity.subentities.get(i).id);
+			i--;
 		}
 		
 		// Mai Magdy

@@ -259,7 +259,6 @@ public class CreateRelationshipRequests extends CoolCRUD {
 
 		else {
 			renameRequest = RenameEndRelationshipRequest.findById(id);
-			
 			organization = renameRequest.organisation;
 			if (type == 0) {
 				EntityRelationship relation = renameRequest.entityRelationship;
@@ -274,6 +273,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 									renameRequest)) {
 								relation.renameEndRequests.get(i).delete();
 								relation.save();
+								i--;
 							}
 						}
 						
@@ -316,6 +316,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 						for (int i = 0; i < relation.renameEndRequests.size(); i++) {
 							relation.renameEndRequests.get(i).delete();
 							relation.save();
+							i--;
 						}
 
 						String logDescription = "<a href=\"/users/viewprofile?userId="
@@ -407,9 +408,11 @@ public class CreateRelationshipRequests extends CoolCRUD {
 					
 						for (int i = 0; i < relation.renameEndRequests.size(); i++) {
 							if (!relation.renameEndRequests.get(i).equals(
-									renameRequest))
+									renameRequest)){
 								relation.renameEndRequests.get(i).delete();
 							relation.save();
+							i--;
+							}
 						}
 						relation.source.relationsSource.remove(relation);
 						relation.source.save();
@@ -449,6 +452,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 						for (int i = 0; i < relation.renameEndRequests.size(); i++) {
 							relation.renameEndRequests.get(i).delete();
 							relation.save();
+							i--;
 						}
 
 						String logDescription = "<a href=\"/users/viewprofile?userId="
