@@ -52,6 +52,7 @@
             <a href="@{Users.viewProfile(user.id)}">Profile</a>
         </li>
         <!--<li><a href="@{Browse.browse()}">Browse All</a></li>-->
+        <li><a href="@{Organizations.viewAllOrganizations()}">Browse All Organization</a></li>
         <li>
             <a id="not" style="cursor:pointer">Notifications 
                 #{if user.getNotificationNumber() == 0}
@@ -677,7 +678,24 @@
 							doc = false;
 						}
 					}
+					
+					function browserName()
+					{
+						var contact = $('#feedbackerEmail').val();
+						var comment = $('#feedback').val();
+						var entity = $('#subject').val();
+						var browsername = navigator.appCodeName;
+						if(contact==null || comment==null || entity==null || contact.trim()=="" || comment.trim()=="" || entity.trim()=="")
+						{
+							$("#emptyComment").show();
+						}
+						else{
+							
+						  $.post('@{Users.feedbackMail()}', {feedbackerEmail: contact, feedback: comment,browser: browsername, subject: entity},function(){location.reload();});
 
+						}
+						
+					}
 					function enrolledOrganizations() {
 						if (!organ) {
 							$('#docs').hide(500);
@@ -697,7 +715,7 @@
 			<label>
 				Your Email <font color="red"> *</font>
 			</label>
-			<input type="email" name="feedbackerEmail" id="contact" size=20 required/>
+			<input type="email" name="feedbackerEmail" id="feedbackerEmail" size=20 required/>
 			<br/><br/>
 			<label>
 				Regarding what entity
@@ -716,7 +734,9 @@
 			</label>
 			<textarea name="feedback" id="feedback" rows="6" cols="40" required></textarea>
 			<br/><br/>
-			<input type="submit" value="Give Feedback"/>
+			<label id = "emptyComment" style = "color: red;" hidden = "true">All fields are REQUIRED</label>
+			<br/><br/>
+			<input type="submit" onclick="browserName()" value="Give Feedback"/>
 			<br/><br/>
 			Click on X (right-top) or Click Out from the popup to close the popup!
 		 	<br/><br/>

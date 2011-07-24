@@ -312,13 +312,13 @@ public class Mail extends Mailer {
 	 * 				:String the subject of the feedback (the feedback is regarding which 
 	 *				entity or problem)
 	 */
-	public static void sendFeedback(String feedbackerEmail,String feedback,String subject)
+	public static void sendFeedback(String feedbackerEmail,String feedback,String browser,String subject)
 	{
 		addRecipient("mostafa.aly0@gmail.com");
 		//addRecipient("ideas-management@googlegroups.com");
 		setFrom(feedbackerEmail);
-		setSubject(subject);
-		send(feedback);
+		setSubject("Feedback regarding " + subject);
+		send(feedback,browser);
 	}
 
 	
