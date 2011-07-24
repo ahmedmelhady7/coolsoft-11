@@ -10,6 +10,7 @@ import controllers.CoolCRUD.ObjectType;
 import play.data.validation.Required;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
+import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.With;
 import models.CreateRelationshipRequest;
@@ -878,8 +879,32 @@ public class MainEntitys extends CoolCRUD {
 	 */
 	public static void deleteEntity(long entityId) {
 		deleteEntityHelper(entityId);
-		MainEntity entity = MainEntity.findById(entityId);
 		Login.homePage();
 	}
+	
+	/**
+	 * Ovverides CRUD's delete and deletes an entity
+	 * 
+	 * @author Alia El Bolock
+	 * 
+	 * @param id
+	 *            : the id of the entity to be deleted
+	 * 
+	 */
+	public static void delete(String id) {
+        ObjectType type = ObjectType.get(getControllerClass());
+        notFoundIfNull(type);
+        Model object = type.findById(id);
+        notFoundIfNull(object);
+        long entityId = Long.parseLong(id);
+        try {
+        	deleteEntityHelper(entityId);
+        } catch (Exception e) {
+            flash.error(Messages.get("crud.delete.error", type.modelName));
+            redirect(request.controller + ".show", object._key());
+        }
+        flash.success(Messages.get("crud.deleted", type.modelName));
+        redirect(request.controller + ".list");
+    }
 
 }

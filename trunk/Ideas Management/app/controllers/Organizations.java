@@ -12,6 +12,7 @@ import play.data.validation.Required;
 import play.data.validation.Validation;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
+import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.With;
 import controllers.CoolCRUD.ObjectType;
@@ -970,6 +971,31 @@ public class Organizations extends CoolCRUD {
 			BannedUsers.unauthorized();
 		}
 	}
+	
+	/**
+	 * Ovverides CRUD's delete and deletes an organization
+	 * 
+	 * @author Alia El Bolock
+	 * 
+	 * @param id
+	 *            : the id of the organization to be deleted
+	 * 
+	 */
+	public static void delete(String id) {
+        ObjectType type = ObjectType.get(getControllerClass());
+        notFoundIfNull(type);
+        Model object = type.findById(id);
+        notFoundIfNull(object);
+        long organizationId = Long.parseLong(id);
+        try {
+        	deleteOrganization(organizationId);
+        } catch (Exception e) {
+            flash.error(Messages.get("crud.delete.error", type.modelName));
+            redirect(request.controller + ".show", object._key());
+        }
+        flash.success(Messages.get("crud.deleted", type.modelName));
+        redirect(request.controller + ".list");
+    }
 
 	/**
 	 * This method edits the Organization
