@@ -1353,6 +1353,31 @@ public class Plans extends CoolCRUD {
 		plan.delete();
 		return true;
 	}
+	
+	/**
+	 * Ovverides CRUD's delete and deletes a plan
+	 * 
+	 * @author Alia El Bolock
+	 * 
+	 * @param id
+	 *            : the id of the plan to be deleted
+	 * 
+	 */
+	public static void delete(String id) {
+        ObjectType type = ObjectType.get(getControllerClass());
+        notFoundIfNull(type);
+        Model object = type.findById(id);
+        notFoundIfNull(object);
+        long planId = Long.parseLong(id);
+        try {
+        	deletePlan(planId);
+        } catch (Exception e) {
+            flash.error(Messages.get("crud.delete.error", type.modelName));
+            redirect(request.controller + ".show", object._key());
+        }
+        flash.success(Messages.get("crud.deleted", type.modelName));
+        redirect(request.controller + ".list");
+    }
 
 	/**
 	 * The method Renders the Timeline view of a plan, after checking that the user is

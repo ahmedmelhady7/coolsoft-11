@@ -554,10 +554,14 @@ public class Topics extends CRUD {
 		MainEntity topicEntity = MainEntity.findById(entityId);
 		MainEntity entity = MainEntity.findById(entityId);
 		if (!user.isAdmin){
+			
 			temporaryTopic.entity = topicEntity;
 		}
 		else{
+			if (entity == null)
 			topicEntity = temporaryTopic.entity;
+			else
+				temporaryTopic.entity = topicEntity;
 		}
 		if (temporaryTopic.entity == null) {
 			message = "A Topic must belong to an entity";
