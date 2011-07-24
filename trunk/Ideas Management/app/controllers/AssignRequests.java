@@ -284,15 +284,26 @@ public class AssignRequests extends CoolCRUD {
 
 		for (int i = 0; i < user.receivedAssignRequests.size(); i++) {
 			AssignRequest currentRequest = user.receivedAssignRequests.get(i);
-			if (!currentRequest.source.endDatePassed()
-					&& Topics
-							.searchByTopic(currentRequest.source.plan.topic.id)
-							.contains(user)
-					&& currentRequest.source.status != 2
-					&& Users.isPermitted(user, "use",
-							currentRequest.source.plan.topic.id, "topic")
-					&& !user.itemsAssigned.contains(currentRequest.source)) {
-				assignRequests.add(currentRequest);
+			if (currentRequest.source.endDatePassed()) {
+				currentRequest.source.assignRequests.remove(currentRequest);
+				user.receivedAssignRequests.remove(currentRequest);
+				currentRequest.sender.sentAssignRequests.remove(currentRequest);
+				user.save();
+				currentRequest.sender.save();
+				currentRequest.source.save();
+				currentRequest.logs.clear();
+				currentRequest.delete();
+			} else {
+				if (!currentRequest.source.endDatePassed()
+						&& Topics.searchByTopic(
+								currentRequest.source.plan.topic.id).contains(
+								user)
+						&& currentRequest.source.status != 2
+						&& Users.isPermitted(user, "use",
+								currentRequest.source.plan.topic.id, "topic")
+						&& !user.itemsAssigned.contains(currentRequest.source)) {
+					assignRequests.add(currentRequest);
+				}
 			}
 		}
 		render(user, assignRequests);
@@ -325,7 +336,7 @@ public class AssignRequests extends CoolCRUD {
 				+ user.username
 				+ "</a> has accepted the assignment to work on item <a href=\"/plans/viewaslist?planId="
 				+ item.plan.id + "\">" + item.summary + "</a>.";
-		Log.addLog(logDescription, user, request.source, request.source.plan,
+		Log.addUserLog(logDescription, user, request.source, request.source.plan,
 				request.source.plan.topic, request.source.plan.topic.entity,
 				request.source.plan.topic.entity.organization);
 		request.destination.receivedAssignRequests.remove(request);
@@ -377,11 +388,9 @@ public class AssignRequests extends CoolCRUD {
 				+ "\">"
 				+ user.username
 				+ "</a> has rejected the assignment to work on item <a href=\"/plans/viewaslist?planId="
-				+ request.source.plan.id
-				+ "\">"
-				+ request.source.summary
+				+ request.source.plan.id + "\">" + request.source.summary
 				+ "</a>.";
-		Log.addLog(logDescription, user, request.source, request.source.plan,
+		Log.addUserLog(logDescription, user, request.source, request.source.plan,
 				request.source.plan.topic, request.source.plan.topic.entity,
 				request.source.plan.topic.entity.organization);
 		assignRequests.remove(request);

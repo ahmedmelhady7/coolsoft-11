@@ -60,7 +60,7 @@ public class Comments extends CoolCRUD {
 			+ "\">"
 			+ planInUse.title
 			+ "</a>";
-	 Log.addLog(logDescription, userLoggedIn, commentInitialized, planInUse, planInUse.topic,
+	 Log.addUserLog(logDescription, userLoggedIn, commentInitialized, planInUse, planInUse.topic,
 			planInUse.topic.entity, planInUse.topic.entity.organization);
 	}
 
@@ -98,7 +98,7 @@ public class Comments extends CoolCRUD {
 			+ "\">"
 			+ ideaInUse.title
 			+ "</a>";
-	 Log.addLog(logDescription, userLoggedIn, commentInitialized, ideaInUse, ideaInUse.belongsToTopic,
+	 Log.addUserLog(logDescription, userLoggedIn, commentInitialized, ideaInUse, ideaInUse.belongsToTopic,
 			 ideaInUse.belongsToTopic.entity, ideaInUse.belongsToTopic.entity.organization);
 	}
 
@@ -129,7 +129,7 @@ public class Comments extends CoolCRUD {
 					+ "\">"
 					+ allTopics.get(i).title
 					+ "</a>";
-			 Log.addLog(logDescription, Security.getConnected(), comment, allTopics.get(i).entity, allTopics.get(i),
+			 Log.addUserLog(logDescription, Security.getConnected(), comment, allTopics.get(i).entity, allTopics.get(i),
 					 allTopics.get(i).entity.organization);
 				allTopics.get(i).save();
 			}
@@ -146,7 +146,7 @@ public class Comments extends CoolCRUD {
 					+ "\">"
 					+ allIdeas.get(i).title
 					+ "</a>";
-			 Log.addLog(logDescription, Security.getConnected(), comment, allIdeas.get(i).belongsToTopic, allIdeas.get(i),
+			 Log.addUserLog(logDescription, Security.getConnected(), comment, allIdeas.get(i).belongsToTopic, allIdeas.get(i),
 					 allIdeas.get(i).belongsToTopic.entity.organization,  allIdeas.get(i).belongsToTopic.entity);
 				allIdeas.get(i).save();
 			}
@@ -163,7 +163,7 @@ public class Comments extends CoolCRUD {
 					+ "\">"
 					+ allPlans.get(i).title
 					+ "</a>";
-			 Log.addLog(logDescription, Security.getConnected(), comment, allPlans.get(i).topic, allPlans.get(i),
+			 Log.addUserLog(logDescription, Security.getConnected(), comment, allPlans.get(i).topic, allPlans.get(i),
 					 allPlans.get(i).topic.entity.organization,  allPlans.get(i).topic.entity);
 				allPlans.get(i).save();
 			}

@@ -112,17 +112,14 @@ public class Ideas extends CoolCRUD {
 		idea.author.communityContributionCounter++;
 		idea.author.save();
 		idea.save();
-		
+
 		String logDescription = "<a href=\"/users/viewprofile?userId="
-			+ user.id + "\">" 
-			+ user.username + "</a>" 
-			+ " posted an idea " +"<a href=\"/ideas/show?ideaId="
-			+ ideaId
-			+ "\">"
-			+ idea.title
-			+ "</a>";
-	 Log.addLog(logDescription, user, idea, idea.plan, idea.belongsToTopic,
-			idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
+				+ user.id + "\">" + user.username + "</a>" + " posted an idea "
+				+ "<a href=\"/ideas/show?ideaId=" + ideaId + "\">" + idea.title
+				+ "</a>";
+		Log.addUserLog(logDescription, user, idea, idea.plan, idea.belongsToTopic,
+				idea.belongsToTopic.entity,
+				idea.belongsToTopic.entity.organization);
 		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
@@ -224,27 +221,26 @@ public class Ideas extends CoolCRUD {
 		Topic topic = Topic.findById(topicId);
 		User user = Security.getConnected();
 		List<MainEntity> listOfEntities = MainEntity.findAll();
-		if(!user.isAdmin){
-		try {
-			render(type, topic, user, topicId);
-
-		} catch (TemplateNotFoundException e) {
-			render("CRUD/blank.html", type, topicId);
-		}
-		}
-		else{
-		if(user.isAdmin){
+		if (!user.isAdmin) {
 			try {
-				render("CoolCRUD/blank.html", type, user, listOfEntities);
+				render(type, topic, user, topicId);
 
-			} catch (Exception exception) {
-				render("CoolCRUD/blank.html", type, user, listOfEntities);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type, topicId);
 			}
-		}
-		
-		else{
-			BannedUsers.unauthorized();
-		}
+		} else {
+			if (user.isAdmin) {
+				try {
+					render("CoolCRUD/blank.html", type, user, listOfEntities);
+
+				} catch (Exception exception) {
+					render("CoolCRUD/blank.html", type, user, listOfEntities);
+				}
+			}
+
+			else {
+				BannedUsers.unauthorized();
+			}
 		}
 
 	}
@@ -267,7 +263,8 @@ public class Ideas extends CoolCRUD {
 	 * 
 	 */
 
-	public static void create(long topicId,String title,String description) throws Exception {
+	public static void create(long topicId, String title, String description)
+			throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
@@ -278,13 +275,12 @@ public class Ideas extends CoolCRUD {
 		Topic topic = Topic.findById(topicId);// topicId);
 		User author = Security.getConnected();
 		Idea idea = (Idea) object;
-		idea.title=title;
-		idea.description=description;
+		idea.title = title;
+		idea.description = description;
 		idea.save();
-		if (!author.isAdmin){
+		if (!author.isAdmin) {
 			idea.belongsToTopic = topic;
-		}
-		else{
+		} else {
 			topic = idea.belongsToTopic;
 		}
 		idea.author = author;
@@ -320,17 +316,14 @@ public class Ideas extends CoolCRUD {
 		object._save();
 		String anothermessage = "you have created a new idea with title "
 				+ idea.title + " and with description " + idea.description;
-		
+
 		String logDescription = "<a href=\"/users/viewprofile?userId="
-			+ author.id + "\">" 
-			+ author.username + "</a>" 
-			+ " created an idea " +"<a href=\"/ideas/show?ideaId="
-			+ idea.id
-			+ "\">"
-			+ idea.title
-			+ "</a>";
-	 Log.addLog(logDescription, author, idea, idea.belongsToTopic,
-			idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
+				+ author.id + "\">" + author.username + "</a>"
+				+ " created an idea " + "<a href=\"/ideas/show?ideaId="
+				+ idea.id + "\">" + idea.title + "</a>";
+		Log.addUserLog(logDescription, author, idea, idea.belongsToTopic,
+				idea.belongsToTopic.entity,
+				idea.belongsToTopic.entity.organization);
 		flash.success(Messages.get("crud.created", type.modelName,
 				((Idea) object).getId()));
 		if (params.get("_save") != null) {
@@ -343,8 +336,7 @@ public class Ideas extends CoolCRUD {
 					anothermessage);
 
 		}
-		
-		
+
 	}
 
 	/**
@@ -410,15 +402,15 @@ public class Ideas extends CoolCRUD {
 		// List<Tag> tags = i.tagsList;
 		User user = Security.getConnected();
 		List<Comment> comments = idea.commentsList;
-		int numberOfComments =comments.size();
+		int numberOfComments = comments.size();
 		User latest = null;
 		long lastId = 0;
-		if(numberOfComments>0){
-		latest = comments.get(numberOfComments-1).commenter;
-		lastId = comments.get(numberOfComments-1).id;
+		if (numberOfComments > 0) {
+			latest = comments.get(numberOfComments - 1).commenter;
+			lastId = comments.get(numberOfComments - 1).id;
 		}
-		if(latest !=null && numberOfComments>1 && latest.isAdmin)
-		latest=comments.get(numberOfComments-2).commenter;
+		if (latest != null && numberOfComments > 1 && latest.isAdmin)
+			latest = comments.get(numberOfComments - 2).commenter;
 		Plan plan = idea.plan;
 		Topic topic = idea.belongsToTopic;
 		long topicId = topic.id;
@@ -482,8 +474,9 @@ public class Ideas extends CoolCRUD {
 							topicId, "topic")
 					|| Users.isPermitted(user, "use", topicId, "topic");
 			List<Tag> tags = idea.tagsList;
-			render(type, ideasLabels, object, tags, user, isAdmin, username,loggedInUsername,
-					userId, canReport, canDelete,loggedInId , latest, comments, lastId, numberOfComments,topic, plan,
+			render(type, ideasLabels, object, tags, user, isAdmin, username,
+					loggedInUsername, userId, canReport, canDelete, loggedInId,
+					latest, comments, lastId, numberOfComments, topic, plan,
 					permittedToTagIdea,
 					/* openToEdit, */topicId, notInPlan, ideaAlreadyReported,
 					canUse, deletemessage, /*
@@ -666,15 +659,11 @@ public class Ideas extends CoolCRUD {
 
 		object._save();
 		String logDescription = "<a href=\"/users/viewprofile?userId="
-			+ myUser.id + "\">" 
-			+ myUser.username + "</a>" 
-			+ " edited the idea  " +"<a href=\"/ideas/show?ideaId="
-			+ i.id
-			+ "\">"
-			+ i.title
-			+ "</a>";
-	 Log.addLog(logDescription, myUser, i, i.belongsToTopic,
-			i.belongsToTopic.entity, i.belongsToTopic.entity.organization);
+				+ myUser.id + "\">" + myUser.username + "</a>"
+				+ " edited the idea  " + "<a href=\"/ideas/show?ideaId=" + i.id
+				+ "\">" + i.title + "</a>";
+		Log.addUserLog(logDescription, myUser, i, i.belongsToTopic,
+				i.belongsToTopic.entity, i.belongsToTopic.entity.organization);
 		flash.success(Messages.get("crud.saved", type.modelName,
 				((Idea) object).getId()));
 		if (params.get("_save") != null) {
@@ -699,7 +688,7 @@ public class Ideas extends CoolCRUD {
 	public static boolean delete(long ideaId, String justification) {
 		Idea idea = Idea.findById(ideaId);
 		Topic topic = idea.belongsToTopic;
-		long topicId=topic.id;
+		long topicId = topic.id;
 		String title = idea.title;
 		String topicTitle = topic.title;
 		String message = "your idea " + idea.title + " has been deleted by "
@@ -751,14 +740,13 @@ public class Ideas extends CoolCRUD {
 
 		}
 		String logDescription = "<a href=\"/users/viewprofile?userId="
-			+ Security.getConnected().id + "\">" 
-			+ Security.getConnected().username + "</a>" 
-			+ " deleted the idea " 
-			+ title + "that belongs to topic  "
-			+ "<a href=\"/topics/show?topicId=" + topicId + "\">" + topicTitle
-			+ "</a>";
-		Log.addLog(logDescription, Security.getConnected(), topic,
-			 topic.entity.organization,  topic.entity);
+				+ Security.getConnected().id + "\">"
+				+ Security.getConnected().username + "</a>"
+				+ " deleted the idea " + title + "that belongs to topic  "
+				+ "<a href=\"/topics/show?topicId=" + topicId + "\">"
+				+ topicTitle + "</a>";
+		Log.addUserLog(logDescription, Security.getConnected(), topic,
+				topic.entity.organization, topic.entity);
 		return false;
 	}
 
@@ -836,7 +824,9 @@ public class Ideas extends CoolCRUD {
 					+ tempTag.id + "\">" + tempTag.name + "</a>"
 					+ " to the idea " + "<a href=\"/ideas/show?ideaId="
 					+ idea.id + "\">" + idea.title + "</a>";
-			Log.addUserLog(logDescription, idea, idea.belongsToTopic, idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
+			Log.addUserLog(logDescription, idea, idea.belongsToTopic,
+					idea.belongsToTopic.entity,
+					idea.belongsToTopic.entity.organization);
 		}
 		idea.save();
 		JsonObject json = new JsonObject();
@@ -935,15 +925,34 @@ public class Ideas extends CoolCRUD {
 		User userLoggedIn = Security.getConnected();
 		Idea ideaInUse = Idea.findById(ideaId);
 		ideaInUse.usersRated.add(userLoggedIn);
-		if (ideaInUse.rating.equals("Not yet rated"))
+		String logDescription;
+		if (ideaInUse.rating.equals("Not yet rated")) {
 			ideaInUse.rating = Integer.toString(rating);
-		else {
+			logDescription = "<a href=\"/users/viewprofile?userId="
+					+ userLoggedIn.id
+					+ "\">"
+					+ userLoggedIn.username
+					+ "</a> has rated the following idea: <a href=\"/ideas/show?ideaId="
+					+ ideaId + "\">" + ideaInUse.title + "</a> (" + rating
+					+ ") and the rating is (" + rating + ") now.";
+		} else {
 			int oldRating = Integer.parseInt(ideaInUse.rating);
 			int newRating;
 			newRating = (oldRating + rating) / 2;
 			ideaInUse.rating = Integer.toString(newRating);
+			logDescription = "<a href=\"/users/viewprofile?userId="
+					+ userLoggedIn.id
+					+ "\">"
+					+ userLoggedIn.username
+					+ "</a> has rated the following idea: <a href=\"/ideas/show?ideaId="
+					+ ideaId + "\">" + ideaInUse.title + "</a>" + rating
+					+ " and the rating is" + newRating + "now.";
 		}
 		ideaInUse.save();
+
+		Log.addUserLog(logDescription, userLoggedIn, ideaInUse,
+				ideaInUse.belongsToTopic, ideaInUse.belongsToTopic.entity,
+				ideaInUse.belongsToTopic.entity.organization);
 		redirect("/ideas/show?ideaId=" + ideaId);
 	}
 
@@ -966,9 +975,22 @@ public class Ideas extends CoolCRUD {
 
 		User userChosen = User.find("byUsername", userName).first();
 		User userLoggedIn = Security.getConnected();
-		String desc = userLoggedIn.firstName + " " + userLoggedIn.lastName
-				+ " shared an Idea with you";
+		Idea idea = Idea.findById(ideaId);
+		String desc = userLoggedIn.username + " shared idea: \"" + idea.title
+				+ "\" with you.";
 		Notifications.sendNotification(userChosen.id, ideaId, "Idea", desc);
+
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+				+ userLoggedIn.id
+				+ "\">"
+				+ userLoggedIn.username
+				+ "</a> has shared the following idea: <a href=\"/ideas/show?ideaId="
+				+ ideaId + "\">" + idea.title
+				+ "</a> with <a href=\"/users/viewprofile?userId="
+				+ userChosen.id + "\">" + userChosen.username + "</a>.";
+		Log.addUserLog(logDescription, userLoggedIn, idea, idea.belongsToTopic,
+				idea.belongsToTopic.entity,
+				idea.belongsToTopic.entity.organization);
 
 	}
 
@@ -994,6 +1016,18 @@ public class Ideas extends CoolCRUD {
 		long topicId = ideaInUse.belongsToTopic.id;
 		ideaInUse.priority = priority;
 		ideaInUse.save();
+
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+				+ userLoggedIn.id
+				+ "\">"
+				+ userLoggedIn.username
+				+ "</a> has set the priority of the following idea: <a href=\"/ideas/show?ideaId="
+				+ ideaId + "\">" + ideaInUse.title + "</a> to:  \"" + priority
+				+ "\".";
+		Log.addUserLog(logDescription, userLoggedIn, ideaInUse,
+				ideaInUse.belongsToTopic, ideaInUse.belongsToTopic.entity,
+				ideaInUse.belongsToTopic.entity.organization);
+
 		redirect("/ideas/show?ideaId=" + ideaId);
 	}
 
@@ -1171,20 +1205,38 @@ public class Ideas extends CoolCRUD {
 	 *            Comment to be added to list of comments of the idea addes a
 	 *            comment to an idea
 	 */
+
 	public static void addCommentToIdea(long ideaID, String comment) {
-		Idea i = Idea.findById(ideaID);
+		Idea idea = Idea.findById(ideaID);
 		User user = Security.getConnected();
-		Comment c = new Comment(comment, i, user).save();
+		Comment c = new Comment(comment, idea, user).save();
 		user.hisComments.add(c);
 		user.save();
-		i.commentsList.add(c);
-		i.save();
+		idea.commentsList.add(c);
+		idea.save();
+
+		String description = user.username + " has commented on your idea: "
+				+ idea.title + ".";
+
+		Notifications.sendNotification(idea.author.id, idea.id, "Idea",
+				description);
+
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+				+ user.id
+				+ "\">"
+				+ user.username
+				+ "</a> has commented on the following idea: <a href=\"/ideas/show?ideaId="
+				+ idea.id + "\">" + idea.title + "</a>.";
+		Log.addUserLog(logDescription, user, idea, idea.belongsToTopic,
+				idea.belongsToTopic.entity,
+				idea.belongsToTopic.entity.organization);
 
 		JsonObject json = new JsonObject();
 		json.addProperty("commentMsg", comment);
 		json.addProperty("commentUser", user.username);
 		json.addProperty("commentDate", c.commentDate + "");
 		json.addProperty("userPic", user.profilePictureId + "");
+
 		renderJSON(json.toString());
 	}
 
@@ -1211,18 +1263,17 @@ public class Ideas extends CoolCRUD {
 		return false;
 	}
 
-
 	/**
 	 * Author ${Ahmed El-Hadi}
 	 */
-	public static boolean isCommenter(long commentId){
+	public static boolean isCommenter(long commentId) {
 		Comment c = Comment.findById(commentId);
 		User user = Security.getConnected();
-		if(c.commenter.username.equals(user.username))
+		if (c.commenter.username.equals(user.username))
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Author ${Ahmed El-Hadi}
 	 */
@@ -1230,14 +1281,29 @@ public class Ideas extends CoolCRUD {
 		Comment c = Comment.findById(commentId);
 		Idea idea = c.commentedIdea;
 		List<Comment> commentslist = Comment.find("byCommentedIdea", idea)
-		.fetch();
+				.fetch();
+		String logDescription = "<a href=\"/users/viewprofile?userId="
+				+ Security.getConnected().id + "\">"
+				+ Security.getConnected().username + "</a>"
+				+ " deleted a comment on the idea "
+				+ "<a href=\"/ideas/show?ideaId=" + idea.id + "\">"
+				+ idea.title + "</a>";
+		Log.addUserLog(logDescription, Security.getConnected(), c,
+				idea.belongsToTopic, idea,
+				idea.belongsToTopic.entity.organization,
+				idea.belongsToTopic.entity);
 		for (int i = 0; i < commentslist.size(); i++) {
-				if(commentslist.get(i).id==commentId)
+			if (commentslist.get(i).id == commentId)
 				commentslist.get(i).delete();
-				idea.save();
-				if(commentslist.get(i).commenter.id!=Security.getConnected().id)
-				Notifications.sendNotification(commentslist.get(i).commenter.id, idea.id, "Idea",
-						"Your comment "+commentslist.get(i).comment+" has been Deleted by The user "+Security.getConnected().username);
+			idea.save();
+			if (commentslist.get(i).commenter.id != Security.getConnected().id)
+				Notifications.sendNotification(
+						commentslist.get(i).commenter.id,
+						idea.id,
+						"Idea",
+						"Your comment " + commentslist.get(i).comment
+								+ " has been Deleted by The user "
+								+ Security.getConnected().username);
 		}
 		int size = idea.commentsList.size();
 		System.out.println("size aho " + size);
