@@ -810,7 +810,8 @@ public class Organizations extends CoolCRUD {
 		List<Tag> createdTags = Tag.findAll();
 		List<BannedUser> bannedUsers = BannedUser.findAll();
 		List<UserRoleInOrganization> users = organization.userRoleInOrg;
-		List<MainEntity> entities = MainEntity.findAll();
+		List<MainEntity> entities = organization.entitiesList;
+		List<MainEntity> subEntities = new ArrayList <MainEntity>() ;
 		int j = 0;
 		int size =0;
 		size=followers.size();
@@ -846,20 +847,18 @@ public class Organizations extends CoolCRUD {
 		size= bannedUsers.size();
 		while (j <size) {
 			if (bannedUsers.get(j).organization==organization) {
-				BannedUser.delete(bannedUsers.get(j));
+				BannedUser.delete(bannedUsers.get(0));
 				System.out.println("banned user " +j);
 			}
 			j++;
 		}
-		List<CreateRelationshipRequest> relations = CreateRelationshipRequest
-				.findAll();
+		List<CreateRelationshipRequest> relations =organization.createRelationshipRequest;
+				
 		j = 0;
 		size=relations.size();
 		while (j <size ) {
-			if (relations.get(j).organisation==organization) {
-				CreateRelationshipRequests.delete(relations.get(j).id);
-				System.out.println("relation creation request " +j);
-			}
+				CreateRelationshipRequests.delete(relations.get(0).id);
+				System.out.println("relation creation request " +j);			
 			j++;
 		}
 		j = 0;
@@ -873,8 +872,7 @@ public class Organizations extends CoolCRUD {
 		}
 	
 		j = 0;
-		entities = organization.entitiesList;
-		List<MainEntity> subEntities = new ArrayList <MainEntity>() ;
+
 		size=entities.size();
 		
 		while (j < size) {
@@ -899,14 +897,13 @@ public class Organizations extends CoolCRUD {
 		size = renameRequests.size();
 		while (j < size) {
 			if (renameRequests.get(j).organisation == organization) {
-				RenameEndRelationshipRequests.delete(renameRequests.get(j).id);
+				RenameEndRelationshipRequests.delete(renameRequests.get(0).id);
 				System.out.println("rename reltions requests " +j);
 			}
 			j++;
 		}
 		organization.creator.createdOrganization.remove(organization);
 		organization.creator.save();
-		organization.save();
 		// fadwa
 		for (int i = 0; i < organization.joinRequests.size(); i++){
 			organization.joinRequests.get(i).delete();
@@ -918,8 +915,10 @@ public class Organizations extends CoolCRUD {
 		List<Invitation> invite = Invitation.find("byOrganization",
 				organization).fetch();
 		size=invite.size();
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < size; i++){
 			invite.get(i).delete();
+			i--;
+		}
 		//
 		organization.logs.clear();
 		organization.relationNames.clear();
