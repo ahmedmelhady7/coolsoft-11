@@ -2189,5 +2189,8 @@ public class Users extends CoolCRUD {
 		viewProfile(user.id);
 
 	}
+	public static void feedbackMail(String feedbackerEmail,String feedback,String browser,String subject){
+		Mail.sendFeedback(feedbackerEmail, feedback, browser, subject);
+	}
 
 }
