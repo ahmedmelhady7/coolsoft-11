@@ -115,7 +115,9 @@ public class BannedUser extends CoolModel {
 		Organization organization = toBeDeleted.organization;
 		User deletedUser = toBeDeleted.bannedUser;
 		deletedUser.bannedUsers.remove(toBeDeleted);
+		deletedUser.save();
 		organization.bannedUsers.remove(toBeDeleted);
+		organization.save();
 		toBeDeleted.delete();
 	}
 

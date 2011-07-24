@@ -265,9 +265,11 @@ public class MainEntitys extends CoolCRUD {
 	 */
 	public static void createSubEntity(String name, String description,
 			long parentId, long orgId, boolean createRelationship) {
+		System.out.println("create subentity");
 		boolean canCreate = true;
 		MainEntity parent = MainEntity.findById(parentId);
-		Organization organisation = Organization.findById(orgId);
+		System.out.println("parent " + parent.name);
+		Organization organization = Organization.findById(orgId);
 		User user = Security.getConnected();
 		for (int i = 0; i < parent.subentities.size(); i++) {
 			if (parent.subentities.get(i).name.equalsIgnoreCase(name))
@@ -275,8 +277,9 @@ public class MainEntitys extends CoolCRUD {
 		}
 		if (canCreate) {
 			MainEntity entity = new MainEntity(name, description, parent,
-					organisation, createRelationship);
+					organization, createRelationship);
 			entity.save();
+			System.out.println("will create now");
 			Log.addUserLog(
 					"<a href=\"/users/viewprofile?userId="
 							+ user.id
@@ -292,9 +295,28 @@ public class MainEntitys extends CoolCRUD {
 							+ " for the entity "
 							+ "<a href=\"/mainentitys/viewentity?mainentityId="
 							+ parent.id + "\">" + parent.name + "</a>",
-					organisation);
+					organization);
+			List<User> receivers = Users.getEntityOrganizers(parent);
+			int size = receivers.size();
+			for (int j = 0; j < size; j++) {
+				Users.getEntityOrganizers(entity).add(receivers.get(j));
+			}
+			receivers.add(organization.creator);
+			for (int i = 0; i < size; i++) {
+				Notifications.sendNotification(receivers.get(i).id, parent.id,
+						"entity", "A new subentity (" + name
+								+ ") has been created for the entity ("
+								+ parent.name + ")");
+			}
+			size = organization.followers.size();
+			for (int i = 0; i < size; i++) {
+				Notifications.sendNotification(organization.followers.get(i).id, organization.id,
+						"organization", "A new entity (" + name
+								+ ") has been created in " + organization.name);
+			}
+		
 		}
-		redirect("Organizations.viewProfile", organisation.id,
+		redirect("Organizations.viewProfile", organization.id,
 				"SubEntity created");
 	}
 
@@ -507,6 +529,7 @@ public class MainEntitys extends CoolCRUD {
 		int canRequestRelationship = 0;
 		int canRestrict = 0;
 		boolean entityIsLocked = entity.createRelationship;
+		System.out.println("ENTITY "+entity);
 		List<User> allowed = Users.getEntityOrganizers(entity);
 		if (org.creator.equals(user) || user.isAdmin) {
 			canRestrict = 1;

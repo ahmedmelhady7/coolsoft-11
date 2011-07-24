@@ -232,25 +232,7 @@ public class MainEntity extends CoolModel {
 		this.relationsDestination = new ArrayList<EntityRelationship>();
 		this.relationshipRequestsSource = new ArrayList<CreateRelationshipRequest>();
 		this.relationshipRequestsDestination = new ArrayList<CreateRelationshipRequest>();
-		List<User> receivers = Users.getEntityOrganizers(parent);
-		int size = receivers.size();
 		this.createRelationship = createRelationship;
-		for (int j = 0; j < size; j++) {
-			Users.getEntityOrganizers(this).add(receivers.get(j));
-		}
-		receivers.add(org.creator);
-		for (int i = 0; i < size; i++) {
-			Notifications.sendNotification(receivers.get(i).id, parent.id,
-					"entity", "A new subentity (" + name
-							+ ") has been created for the entity ("
-							+ parent.name + ")");
-		}
-		size = org.followers.size();
-		for (int i = 0; i < size; i++) {
-			Notifications.sendNotification(org.followers.get(i).id, org.id,
-					"organization", "A new entity (" + name
-							+ ") has been created in " + org.name);
-		}
 	}
 
 	/**
