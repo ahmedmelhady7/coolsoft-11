@@ -240,12 +240,14 @@
  						 }
 			           }
         </script>
+        <!--<input type="image" align="right" style="float:right;"  src="/public/images/icons/pencil.png" title="Edit Idea" onclick=location.href="@{Ideas.view(ideaId)}" class="linkButton"></input>-->
         #{/if}
         #{if canDelete && !isAuthor && notInPlan}
                 <form action="@{Ideas.deleteIdea(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
                 <input type="hidden" name = "justification" id = "justText">
             <input type="image" src="/public/images/icons/trash.png"  style="float:right;" class="linkButton" title="Delete Idea"/>
     </form>
+    <input type="image" align="right" style="float:right;"  src="/public/images/icons/pencil.png" title="Edit Idea" onclick=location.href="@{Ideas.view(ideaId)}" class="linkButton"></input>
         #{/if}
         #{if canDelete && (!isAuthor||isAdmin) && notInPlan}
     <!--<input type="image" align="right" style="float:right;"  src="/public/images/icons/pencil.png" title="Edit Idea" onclick=location.href="@{Ideas.view(ideaId)}" class="linkButton"></input>-->
@@ -352,10 +354,14 @@
                 
             }
             function deleteComment(id) {
-                $.post('@{Ideas.delComments()}', {commentId: id});
-                $("#deleteBtn_" + id).remove();
-                $("#comment_" + id).remove();
+						 var where_to= confirm("Do you really want to delete this comment ?");
+						 var text = "";
+ 						 if (where_to== true){
+   							$.post('@{Ideas.delComments()}', {commentId: id});
+                			$("#deleteBtn_" + id).remove();
+                			$("#comment_" + id).remove();
                 
+ 						 }
             }
                           function comment(id) {
                                                 var text = $('#commentTxt').val();
@@ -368,7 +374,7 @@
                                                         $.getJSON('@{addCommentToIdea()}', {
                                                                 ideaID:id, comment: text
                                                         }, function(comm){
-$("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-metadata\"><span class=\"comment-author\">by : "+"<a href=\"@{Users.viewProfile(user.id)}\">${loggedInUsername}</a>" +"</span><span class=\"comment-date\">" +"moments ago"+ "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div>"+"<input id=\"deleteBtnn_${id}\" onclick=\"deleteComment(${id});\" type=\"image\" src=\"/public/images/icons/trash.png\" style=\"float:right;\"/>"+"<li><a>" + text + "</a></li><br/></div></div>");                                                                
+$("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-metadata\"><span class=\"comment-author\">by : "+"<a href=\"@{Users.viewProfile(user.id)}\">${loggedInUsername}</a>" +"</span><span class=\"comment-date\">" +"moments ago"+ "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div>"+"<li><a>" + text + "</a></li><br/></div></div>");                                                                
                                                         });
                                                         		$("#deleteBtnn_" + id).click(function(){
                         											$("#commentt_" + id).remove();});
@@ -439,3 +445,4 @@ $("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-meta
 </div>
 </div>    
 </div>
+<!--+"<input id=\"deleteBtnn_${id}\" onclick=\"deleteComment(${id});\" type=\"image\" src=\"/public/images/icons/trash.png\" style=\"float:right;\"/>"-->
