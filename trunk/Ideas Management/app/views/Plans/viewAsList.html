@@ -280,9 +280,10 @@ Please contact
  		#{if comments} 
  			<font color="black"> <h3> Comments</h3></font> 
  			<br/>
- 					#{list comments, as:'comment'} 
+ 					#{list comments, as:'comment'}
+ 					<div id="comment_${comment.id}"> 
  					<div class="comment-metadata">
-						<span class="comment-author">by ${comment.commenter.username}</span>
+						<span class="comment-author">by : <a href="@{Users.viewProfile(comment.commenter.id)}">${comment.commenter.username}</a></span>
 						<span class="comment-date">${comment.commentDate}</span>
 					</div>
  					<div class="comment-content">
@@ -292,7 +293,11 @@ Please contact
 					#{if comment.commenter.username != user.username && !comment.reported(user.id)}
  						<input id = "reportBtn_${comment.id}" onclick = "reportComment(${comment.id});" style="float: right;" type="image" src="/public/images/icons/red_flag.png" />
  						#{/if}
+ 					#{if comment.commenter.username == user.username || isAdmin || !notAuthor}
+                        <input id = "deleteBtn_${comment.id}" onclick = "deleteComment(${comment.id});" title="delete comment" style="float: right;" type="image" src="/public/images/icons/trash.png" />
+                     #{/if}
 					<br/></div>
+					</div>
  					#{/list} 
 					
  					<br/>
@@ -306,11 +311,21 @@ Please contact
 			<label id = "emptyComment" style = "color: red;" hidden = "true">You have to enter a comment</label>
 			</div>
 			<br/>
-			<input class = "linkButton" style = "margin-left: 17%; float: right;" type = "button" value = "Comment" onclick="comment(${plan.id});" >
+			<input class = "linkButton" type = "image" title="Comment" src="/public/images/icons/comment.png" style = "margin-left: 17%; float: right;" type = "button" onclick="comment(${plan.id});" >
 #{/if}
 <br/>
 <br/>
 <script type="text/javascript">
+					function deleteComment(id) {
+						 var where_to= confirm("Do you really want to delete this comment ?");
+						 var text = "";
+ 						 if (where_to== true){
+   							$.post('@{Plans.delComments()}', {commentId: id});
+                			$("#deleteBtn_" + id).remove();
+                			$("#comment_" + id).remove();
+                
+ 						 }
+            }
                 	$(".req").hide();
                 	  var count = ${itemsList.size()};
 		function reportComment(id) {
@@ -330,8 +345,8 @@ Please contact
 								comment: text,
 								planID: id
 							}, function(comm){
-								$("#commentsList").append("<div class=\"comment-metadata\"><span class=\"comment-author\">by " + comm.commentUser + "</span><span class=\"comment-date\">" + comm.commentDate + "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div><li><a>" + text + "</a></li><br/></div>");
-							});
+$("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-metadata\"><span class=\"comment-author\">by : "+"<a href=\"@{Users.viewProfile(user.id)}\">${user.username}</a>" +"</span><span class=\"comment-date\">" +"moments ago"+ "</span></div><div class=\"comment-content\"><div class=\"about\">Detail:</div>"+"<li><a>" + text + "</a></li><br/></div></div>");                                                                
+                                                        });
 								$("#emptyComment").hide();
 								$("#noComments").hide();
 						}

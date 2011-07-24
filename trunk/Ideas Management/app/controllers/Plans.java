@@ -1764,5 +1764,34 @@ public class Plans extends CoolCRUD {
 		renderJSON(json.toString());
 
 	}
+	/**
+	 * Author ${Ahmed El-Hadi}
+	 */
+	public static void delComments(long commentId) {
+		Comment c = Comment.findById(commentId);
+		Plan plan = c.commentedPlan;
+		List<Comment> commentslist = Comment.find("byCommentedPlan", plan)
+		.fetch();
+		User commenter = null;
+		for (int i = 0; i < commentslist.size();  i++) {
+			commenter = commentslist.get(i).commenter;
+				if(commentslist.get(i).id==commentId){
+					commentslist.get(i).delete();
+					commentslist.clear();
+					commenter.save();
+					plan.save();
+					i--;
+					if(commenter.id!=Security.getConnected().id)
+						Notifications.sendNotification(commenter.id, plan.id, "Idea",
+								"Your comment on the plan "+plan.title+" has been Deleted by The user "+Security.getConnected().username);
+				}
+				plan.save();
+		}
+		System.out.println("b3d el delete **********" + plan.commentsList);
+		plan.save();
+		System.out.println(plan.commentsList);
+		redirect("/plans/viewaslist?planId=" + plan.id);
+	}
+
 
 }

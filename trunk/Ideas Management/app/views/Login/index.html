@@ -45,8 +45,8 @@
 <div id="hmenu">
     <ul>
     	<li>
-        	#{if !user.isAdmin}<a id="button">Feedback</a>
-        	#{/if}
+        	#{ifnot user.isAdmin}<a id="button">Feedback</a>
+        	#{/ifnot}
         </li>
         <li>
             <a href="@{Users.viewProfile(user.id)}">Profile</a>
