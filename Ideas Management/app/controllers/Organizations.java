@@ -719,16 +719,14 @@ public class Organizations extends CoolCRUD {
 					MainEntity defaultEntity = org.entitiesList.get(0);
 					defaultEntityId = defaultEntity.id;
                 }
-                if (! Users.isPermitted(user, "view", org.id, "organization")) {
-                        BannedUsers.unauthorized();
-                } else {
+              
                         List<Plan> plans = Plans.planList("organization", org.id);
                         render(user, org, entities, requestToJoin, canCreateEntity, tags,
                                         flag, canInvite, admin, allowed, isMember, settings,
                                         creator, alreadyRequested, plans, follower, usernames,
                                         join, logFlag, pictureId, topics, entitiesCanBeRelated,
                                         entitiesICanView, followers, defaultEntityId, permission);
-                }
+                
         }
 
 	/**
@@ -906,10 +904,14 @@ public class Organizations extends CoolCRUD {
 		organization.creator.createdOrganization.remove(organization);
 		organization.creator.save();
 		// fadwa
+		RequestToJoin request;
 		for (int i = 0; i < organization.joinRequests.size(); i++){
-			organization.joinRequests.get(i).delete();
+			request=organization.joinRequests.get(i);
+			organization.joinRequests.remove(request);
+			request.delete();
 			i--;
 		}
+		
 		// fadwa
 
 		// Mai Magdy
