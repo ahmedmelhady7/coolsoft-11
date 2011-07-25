@@ -670,13 +670,27 @@
 						<div id="deleteHide">#{if permission == 1}
 			  			   #{if !hidden}
 			   				 #{if deletable}
+			    			   #{ifnot isCreator}
 			   				   <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
 			       				 <p class="crudDelete">
 			        				<input type="hidden" name = "justification" id = "justText"/>
 			           			    <input type="image" style="float:right;" src="/public/images/icons/trash.png" title="&{'crud.delete', type.modelName}" class = "linkButton"/>
 			      			    </p>
-			    			   </form> 
+			    			   </form>
+			    			   #{/ifnot}
+			    			   #{if isCreator}
+			    			    <input type="image" id="delMine" style="float:right;" src="/public/images/icons/trash.png"  class="linkButton" onclick="deleteTopic(${topicId})" title="Delete My Topic" />
+			    			   #{/if} 
 					        #{/if}
+					        <script type="text/javascript">
+					        function deleteTopic(ids) {
+						 var where_to= confirm("Do you really want to delete this comment ?");
+						 var text = "";
+ 						 if (where_to== true){
+   							$.post('@{Topics.delete()}', {id: ids, justification:text},function(){history.go(-1);});
+ 						 }
+            }
+            </script>
 			                #{if !deletable}
 							#{if object.plan == null}
 			                  <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">

@@ -2,7 +2,7 @@
 #{set title:'View Restricted Organizers' /}
 <div id="pageNoSideBar">
  <div id="pageNoSideBar-bgtop">
-<img src="/public/images/arrow_prev.gif"/> <a href = "@{Organizations.viewProfile(organizationID)}" name = "back" type="submit" style="color:blue" onmouseout = "back.style.color='blue'" onmouseover="back.style.color='darkblue'">Back to the organization main profile</a>
+<img src="@{'public/images/arrow_prev.gif'}"/> <a href = "@{Organizations.viewProfile(organizationID)}" name = "back" type="submit" style="color:blue" onmouseout = "back.style.color='blue'" onmouseover="back.style.color='darkblue'">Back to the organization main profile</a>
 <br /><br />
 
 #{if entityBannedUsers.isEmpty()}
@@ -19,7 +19,7 @@
  </form>
 
 <div  align="center">
-<img id = "loading" src="/public/images/loading.gif" alt="[loading]"/> 
+<img id = "loading" src="@{'public/images/loading.gif'}" alt="[loading]"/> 
 </div>
 <div id = "break">
 <br /> <br /> <br /> 

@@ -1,5 +1,5 @@
 #{extends 'Login/index.html' /}<!-- copy from here -->
-<script type="text/javascript" src="/public/javascripts/tiny_mce/tiny_mce.js">
+<script type="text/javascript" src="@{'public/javascripts/tiny_mce/tiny_mce.js'}">
 </script>
 <script type="text/javascript">
     tinyMCE.init({
@@ -33,7 +33,7 @@
 <div id="page">
 	<input type="hidden" id= "i" value="${document.userOrganizationId}">
     <center><p>
-        <b>${document.name}</b>   <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="del('${document.id}');">
+        <b>${document.name}</b>   <input type="image" src="@{'public/images/Cross.png'}" width="10" height="10" onclick="del('${document.id}');">
         #{if canEdit == true}
         <form action="@{Documents.editDocument()}" method="post">
             <input type="hidden" name="id" value="${document.id}">

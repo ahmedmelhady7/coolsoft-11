@@ -841,6 +841,7 @@ public class Topics extends CoolCRUD {
 		temporaryTopic.incrmentViewed();
 		temporaryTopic.save();
 		long userId = user.id;
+		boolean isCreator = user.username.equals(temporaryTopic.creator.username);
 		for (int i = 0; i < ideas.size(); i++) {
 			Idea idea = ideas.get(i);
 
@@ -1053,7 +1054,7 @@ public class Topics extends CoolCRUD {
 						userJoinedPrivate, privateTopic, canReport, userId,
 						topicNotClosed, hiddenIdeas, numberOfIdeas, comments,
 						entity, canDelete, alreadyReported, plan, openToEdit,
-						privacyLevel, deleteMessage, deletable, topicIdLong,
+						privacyLevel, isCreator, deleteMessage, deletable, topicIdLong,
 						canClose, canPlan, targetTopic, allowed, permission,
 						topicId, canPost, canNotPost, pending, follower,
 						canCreateRelationship, seeRelationStatus,

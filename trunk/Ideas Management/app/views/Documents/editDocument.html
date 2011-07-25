@@ -1,5 +1,5 @@
 #{extends 'Login/index.html' /}<!-- copy from here -->
-<script type="text/javascript" src="/public/javascripts/tiny_mce/tiny_mce.js">
+<script type="text/javascript" src="@{'public/javascripts/tiny_mce/tiny_mce.js'}">
 </script>
 <input type="hidden" id="username" value="${user.username}"><input type="hidden" id="userId" value="${user.id}">
 <script type="text/javascript">
@@ -68,7 +68,7 @@
 </script>
 <div id="page">
 <center>
-    Title: <input type="text" id="title" Name="title" value="${document.name}">    <input type="submit" value="save" onclick="save('${document.id}');">   <input type="image" src="/public/images/Cross.png" width="15" height="15" onclick="del('${document.id}');">
+    Title: <input type="text" id="title" Name="title" value="${document.name}">    <input type="submit" value="save" onclick="save('${document.id}');">   <input type="image" src="@{'public/images/Cross.png'}" width="15" height="15" onclick="del('${document.id}');">
     </center><textarea id="data" name="data" rows="30" cols="80" style="width: 40%">${document.data}</textarea>
 <input type="hidden" id= "b" value="${document.isOrganization}">
 <input type="hidden" id= "i" value="${document.userOrganizationId}">
