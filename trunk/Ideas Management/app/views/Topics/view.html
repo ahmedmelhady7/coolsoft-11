@@ -333,7 +333,7 @@
     <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         <p class="crudDelete">
         	<input type="hidden" name = "justification" id = "justText">
-            <input type="image" src="/public/images/icons/trash.png" style="float:right;" title="&{'crud.delete', type.modelName}" />
+            <input type="image" src="@{'public/images/icons/trash.png'}" style="float:right;" title="&{'crud.delete', type.modelName}" />
         </p>
     </form> #{/if}
     #{if !deletable}
@@ -341,7 +341,7 @@
     <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
         <p class="crudDelete">
         	<input type="hidden" name = "justification" id = "justText">
-            <input type="image" src="/public/images/icons/hide-icon.gif" style="float:right;" title="Hide" class="linkButton"/>
+            <input type="image" src="@{'public/images/icons/hide-icon.gif'}" style="float:right;" title="Hide" class="linkButton"/>
         </p>
     </form> #{/if}
 	 #{/if}
