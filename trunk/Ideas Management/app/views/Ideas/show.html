@@ -179,7 +179,7 @@
     <div id="main2">
         <p>
             <h2 class="post-title">
-            ${object.title}
+            <font size = "6"  color="#000000">  ${object.title} </font> 
             	<br/>
                 <h3 class"post-metadata">
                 by
@@ -240,17 +240,15 @@
  						 }
 			           }
         </script>
-        <!--<input type="image" align="right" style="float:right;"  src="/public/images/icons/pencil.png" title="Edit Idea" onclick=location.href="@{Ideas.view(ideaId)}" class="linkButton"></input>-->
         #{/if}
         #{if canDelete && !isAuthor && notInPlan}
                 <form action="@{Ideas.deleteIdea(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
                 <input type="hidden" name = "justification" id = "justText">
             <input type="image" src="/public/images/icons/trash.png"  style="float:right;" class="linkButton" title="Delete Idea"/>
     </form>
+      #{/if}
+        #{if canDelete || isAuthor || isAdmin}
     <input type="image" align="right" style="float:right;"  src="/public/images/icons/pencil.png" title="Edit Idea" onclick=location.href="@{Ideas.view(ideaId)}" class="linkButton"></input>
-        #{/if}
-        #{if canDelete && (!isAuthor||isAdmin) && notInPlan}
-    <!--<input type="image" align="right" style="float:right;"  src="/public/images/icons/pencil.png" title="Edit Idea" onclick=location.href="@{Ideas.view(ideaId)}" class="linkButton"></input>-->
     #{/if}
         <br />
   <br />

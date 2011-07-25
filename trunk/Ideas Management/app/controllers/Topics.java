@@ -30,8 +30,12 @@ import play.mvc.With;
 import models.*;
 import notifiers.Mail;
 
+/**
+ * @author ${Alia El-Bolock}
+ * 
+ */
 @With(Secure.class)
-public class Topics extends CRUD {
+public class Topics extends CoolCRUD {
 	static List<User> joinedUsersInTopic = new ArrayList<User>();
 
 	/**
@@ -1312,54 +1316,6 @@ public class Topics extends CRUD {
 			}
 		} else {
 			BannedUsers.unauthorized();
-		}
-	}
-
-	/**
-	 * Overriding the CRUD method list.
-	 * 
-	 * @author Alia el Bolock
-	 * 
-	 * @story C3S1
-	 * 
-	 * @param page
-	 *            : page of the list we are in
-	 * 
-	 * @param search
-	 *            : search string
-	 * 
-	 * @param searchFields
-	 *            : the fields we want to search
-	 * 
-	 * @param orderBy
-	 *            : criteria to order list by
-	 * 
-	 * @param order
-	 *            : the order of the list
-	 * 
-	 * @description This method renders the list of topics, with search and sort
-	 *              options
-	 * 
-	 */
-	public static void list(int page, String search, String searchFields,
-			String orderBy, String order) {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		User user = Security.getConnected();
-		if (page < 1) {
-			page = 1;
-		}
-		List<Model> objects = type.findPage(page, search, searchFields,
-				orderBy, order, (String) request.args.get("where"));
-		Long count = type.count(search, searchFields,
-				(String) request.args.get("where"));
-		Long totalCount = type.count(null, null,
-				(String) request.args.get("where"));
-		try {
-			render(type, objects, count, totalCount, page, orderBy, order, user);
-		} catch (TemplateNotFoundException exception) {
-			render("CRUD/list.html", type, objects, count, totalCount, page,
-					orderBy, order, user);
 		}
 	}
 
