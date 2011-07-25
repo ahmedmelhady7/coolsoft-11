@@ -5,7 +5,7 @@
         document.getElementById('panel5').style.display = 'none';
         document.getElementById('panel2').style.display = 'none';
         document.getElementById('tabholder_articles').style.display = 'none';
-        document.getElementById('load').innerHTML = '<center><img src='/public/images/Searching.gif'/></center>';
+        document.getElementById('load').innerHTML = '<center><img src=@{'public/images/Searching.gif'}/></center>';
         setTimeout('showNewPanel(5)', 2500);
     }
     
