@@ -256,21 +256,14 @@ $(document).ready(function(){
                    </div>
                    <li>
                    
-                        <ul>
+                        <ul style="list-style: none; ">
                                 
-                                        #{if canInvite == true}         
+                                    #{if canInvite == true}         
                                                 <li>            
                                                         <a id="invLink" style="cursor:pointer;">Invite a user</a>               
                                                 </li>           
                                                 #{/if}
-                                        #{if admin || creator}
-                                        <li>
-                                                <a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
-                                        </li>
-                                        <li>
-                                                <a href="@{Organizations.editOrganization(org.id)}" title="Edit Organization">Edit</a>
-                                        </li>
-                                        #{/if}
+                                  
                                         
                                         #{if permission == 1}
                                                 <li>
@@ -280,6 +273,13 @@ $(document).ready(function(){
                         
                         #{if settings==1}               
 
+                                        <li>
+                                                <a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
+                                        </li>
+                                        <li>
+                                                <a href="@{Organizations.editOrganization(org.id)}" title="Edit Organization">Edit</a>
+                                        </li>
+                                       
                          <li>
            <a id="requestsLink" style="cursor:pointer;">Requests</a>
                          <div id="requestsLinks">
@@ -296,6 +296,63 @@ $(document).ready(function(){
        </div>   
 
              </li>
+			   
+       <li>
+        <a href="@{MainEntitys.goToCreateEntity(org.id)}">Create an Entity</a>
+        </li>
+		<li>
+		                      <input type="submit" value=" View Logs" onclick=location.href="@{Logs.viewLogs(org.id)}" class="linkButton"></input>
+           </li>                          
+						                             
+                         <li>
+           <a id="restrictionLink" style="cursor:pointer;">Restrict/Derestrict</a>
+                         <div id="restrictionLinks">
+           <ul>         
+                        <LI type="disc">
+                             <form action="@{BannedUsers.restrictOrganizer()}">
+                                    <input type="hidden" name="orgId" value='${org.id}'>
+                                     <input type="submit" value=" One Organizer" class="linkButton">
+                                </form>
+                                   </LI>
+								    <LI type="disc">
+                             <form action="@{BannedUsers.restrictGroupInSelectedEntity()}">
+                                    <input type="hidden" name="organizationID" value='${org.id}'>
+                                    <input type="submit" size = 2 value='All Organziers' class="linkButton"> 
+                                </form>
+                                   </LI>
+								  
+								   <LI>
+								   	 <form action="@{BannedUsers.restrictOrganizersList()}">
+                                    <input type="hidden" name="orgId" value='${org.id}'>
+                                    <input type="submit" value="Many Organizers" class="linkButton">
+                                </form>
+								   	</LI>
+
+                  </ul>
+       </div>   
+
+             </li>				
+                         <li>         
+                            <a id="viewLink" style="cursor:pointer;">View Restricted</a>
+                         <div id="viewLinks">      
+                            <ul>     
+                               
+                                <LI>
+                                <form action="@{BannedUsers.viewRestrictedOrganizersInOrganization()}">
+                                    <input type="hidden" name="organizationID" value='${org.id}'>
+                                     <input type="submit" value=" In Entities" class="linkButton">
+                                </form>
+								</LI>
+                                <LI>
+                                <form action="@{BannedUsers.viewRestrictedOrganizersTopicPath()}">
+                                    <input type="hidden" name="organizationID" value='${org.id}'>
+                                    <input type="submit" value=" In Topics" class="linkButton">
+                                </form>
+                               </LI>
+                              </ul>
+							  </div>
+                                </li>
+       
                  #{/if}
 
 
@@ -322,12 +379,7 @@ $(document).ready(function(){
         </ul>
        </div>
        </li>
-       
-       #{if (canCreateEntity == 1)}
-       <li>
-        <a href="@{MainEntitys.goToCreateEntity(org.id)}">Create an Entity</a>
-        </li>
-        #{/if}
+     
 
                 #{if isMember == true || org.privacyLevel == 2 || admin}
 <li>
@@ -388,37 +440,6 @@ $(document).ready(function(){
        <li>
             <a href="@{viewFollowers(org.id, "false")}">View Followers</a>
         </li>
-                
-                
-                #{if flag == 1}
-                         <li>         
-                                <form action="@{BannedUsers.restrictOrganizer()}">
-                                    <input type="hidden" name="orgId" value='${org.id}'>
-                                     <input type="submit" value="Restrict/Derestrict organizers" class="linkButton">
-                                </form>
-                                 
-                                 <form action="@{BannedUsers.restrictGroupInSelectedEntity()}">
-                                    <input type="hidden" name="organizationID" value='${org.id}'>
-                                    <input type="submit" size = 2 value='Restrict/Derestrict organizers group' class="linkButton"> 
-                                </form>
-                                
-                                <form action="@{BannedUsers.viewRestrictedOrganizersInOrganization()}">
-                                    <input type="hidden" name="organizationID" value='${org.id}'>
-                                     <input type="submit" value="Restricted Organizers in Entities" class="linkButton">
-                                </form>
-                                
-                                <form action="@{BannedUsers.viewRestrictedOrganizersTopicPath()}">
-                                    <input type="hidden" name="organizationID" value='${org.id}'>
-                                    <input type="submit" value="Restricted Organizers in Topics" class="linkButton">
-                                </form>
-                               
-                               <form action="@{BannedUsers.restrictOrganizersList()}">
-                                    <input type="hidden" name="orgId" value='${org.id}'>
-                                    <input type="submit" value="Restrict/Derestrict many Organizers" class="linkButton">
-                                </form>
-                                </li>
-                                #{/if}
-                 
 
                 </ul>
                 </li>           
@@ -495,149 +516,110 @@ $(document).ready(function(){
                                         requestsFlag = true;
                                     }
                                 });
+								      var restrictionFlag = false;
+                                $('#restrictionLinks').hide();
+                                $('#restrictionLink').click(function(){
+                                    if (restrictionFlag) {
+                                        $('#restrictionLinks').show(500);
+                                        restrictionFlag = false;
+                                    }
+                                    else {
+                                        $('#restrictionLinks').hide(500);
+                                        restrictionFlag = true;
+                                    }
+                                });
+									      var viewFlag = false;
+                                $('#viewLinks').hide();
+                                $('#viewLink').click(function(){
+                                    if (viewFlag) {
+                                        $('#viewLinks').show(500);
+                                        viewFlag = false;
+                                    }
+                                    else {
+                                        $('#viewLinks').hide(500);
+                                        viewFlag = true;
+                                    }
+                                });
                 </script>               
                                                 
                                           <center>
+                                          	     #{if join}
+                        <div style="float:left;">
+									       <a href="@{Organizations.join(org.id)}">Join</a>
+                   </div>
+                                        #{/if}
                                         #{if org.profilePictureId != -1}
                                                 #{list items:pictureId, as:'id'}
                                                 <img src="@{Pictures.getPicture(id)}" width="75" height="75"/>
                                                 #{/list}
                                                 #{/if}
-                                                #{if org.profilePictureId == -1}
+                                                #{else}
                                                 <img src="/public/images/org.png" width="75" height="75"/>
-                                                #{/if}
+                                                #{/else}
                                                  <h2 style="font-size:7;font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">${org.name}</h2>
+												<br />
                                                 <br />
-                                                <br />
+												           
+                           
                                  </center>
                                          
                         <div id="topics">               
                         #{if topics.size() > 0}
-                                <br />
-                                <h3><p>List of Topics:</p></h3>
-                        <ul style="list-style: none;">   
+                           <br />
+                           <h3><p>List of Topics:</p></h3>
+                        	 <ul style="list-style: none;">   
                                 #{list items:topics, as:'topic'}
-                                
-                                #{if topic.isDraft == false}
-                                <li>
-                                        #{if topic.hidden == false}
-                                        #{if topic.canView(user)}
-                                        
+                               	   <li>
+                                     #{if topic.canView(user)}
                                         <input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
-                                                 <font size=1 style="float:left;">${topic.creator.username}</font>
-                                                 <br />
+                                        	<font size=1 style="float:left;">${topic.creator.username}</font>
+                                            <br />
                                         <div class="accordionItem">
-                                        <h3><a href="@{Topics.show(topic.id)}"> &nbsp ${topic.title}</a>#{if permission == 1}
-                                           #{if !topic.hidden}
-                                                 #{if topic.isDeletable()}
-                                                   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-                                                 
-                                                        <input type="hidden" name = "justification" id = "justText"/>
-                                                    <input type="image" style="float:right;" title="Delete Topic" src="/public/images/icons/trash.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
-                                            
-                                           </form> 
-                                        #{/if}
-                                #{if !topic.isDeletable()}
-                                                #{if topic.plan == null}
-                                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-                                   
-                                        <input type="hidden" name = "justification" id = "justText"/>
-                                       <input type="submit" style="float:right;" value="Hide Topic" class = "linkButton"/>
-                                   
-                                 </form> 
-                                                #{/if}
-                                #{/if}
-                             #{/if}
-                             #{if topic.hidden}         
-                                #{if topic..hider.username == actor.username}           
-                                           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">                
-                                                        
-                                         <input type="submit" value="Unhide" style="float:right;" class = "linkButton"/>                
-                                                
-                                  </form>                       
-                                #{/if}          
-                            #{/if}
-                          #{/if}</h3>
-                                                <div>
-                                                        <p><font size=2>Description: ${topic.description}</font></p>
+	                                        <h3><a href="@{Topics.show(topic.id)}"> &nbsp ${topic.title}</a>
+											#{if permission == 1}
+				                                #{if topic.isDeletable()}
+				                                	<form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+				                                   		<input type="hidden" name = "justification" id = "justText"/>
+				                                        <input type="image" style="float:right;" title="Delete Topic" src="/public/images/icons/trash.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
+				                                    </form> 
+				                                #{/if}
+												
+				                                #{else}
+				                               		#{if topic.plan == null}
+				                                    	<form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
+				                                   			<input type="hidden" name = "justification" id = "justText"/>
+				                                       		<input type="submit" style="float:right;" value="Hide Topic" class = "linkButton"/>
+				                                   		</form> 
+				                                    #{/if}
+				                                #{/else}
+												
+				                             	#{if topic.hidden}         
+				                                	#{if topic.hider.username == userName}           
+				                                        <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">                
+				                                        	<input type="submit" value="Unhide" style="float:right;" class = "linkButton"/>                
+				                                        </form>                       
+				                                	#{/if}          
+				                           		#{/if}
+				                          	#{/if}
+											</h3>
+                                        		<div>
+                                                	<p><font size=2>Description: ${topic.description}</font></p>
                                                 </div>
-                                                <br />
-                                                <br />
+                                            <br />
+                                            <br />
                                         </div>
-                                        #{/if}
-                                        #{/if}
-                                        #{else}
-                                        #{if topic.hider.username == user.username && topic.hidden == true}
-                                        
-                                        <input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
-                                                 <font size=1 style="float:left;">${topic.creator.username}</font>
-                                                 <br />
-                                        <div class="accordionItem">
-                                        <h3><a href="@{Topics.show(topic.id)}">&nbsp ${topic.title}</a> <font color ="#FF0000" size =2> &nbsp hidden</font>
-                                                        #{if permission == 1}
-                                           #{if !topic.hidden}
-                                                 #{if topic.isDeletable()}
-                                                   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-                                                 <p class="crudDelete">
-                                                        <input type="hidden" name = "justification" id = "justText"/>
-                                                    <input type="image" style="float:right;" src="/public/images/icons/trash.png" title="Delete Topic" class = "linkButton"/>
-                                            </p>
-                                           </form> 
-                                        #{/if}
-                                #{if !topic.isDeletable()}
-                                                #{if topic.plan == null}
-                                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-                                    <p class="crudDelete">
-                                        <input type="hidden" name = "justification" id = "justText"/>
-                                       <input type="submit" style="float:right;" value="Hide Topic" class = "linkButton"/>
-                                   </p>
-                                 </form> 
-                                                #{/if}
-                                #{/if}
-                             #{/if}
-                             #{if topic.hidden}         
-                                #{if topic.hider.username == user.username}             
-                                           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">                
-                                          <p class="crudDelete">                
-                                         <input type="submit"  style="float:right;" value="Unhide" class = "linkButton"/>               
-                                      </p>              
-                                  </form>                       
-                                #{/if}          
-                            #{/if}
-                          #{/if}</h3>
-                                                <div>
-                                                        <p><font size=2>Description: ${topic.description}</font></p>
-                                                </div>
-                                                <br />
-                                                <br />
-                                        </div>
-                                        #{/if}
-                                        #{/else}
-                                </li>
-                                #{/if}
+                                     #{/if}
+                                   </li>
                                 #{/list}
-                                </ul>
-                                #{/if}
-                                #{else}
-                                No topics available for this organization!
-                                #{/else}
+                             </ul>
+                        #{/if}
+                        #{else}
+                        	No topics available for this organization!
+                        #{/else}
                         </div>
-                                         
-                                #{if join}
-                                <form action="@{Organizations.join()}" method="post">
-                                    <input type="hidden" id="organizationId" name="organizationId" value="${org.id}" />Join Organization 
-                                    <p>
-                                        <input type="submit" value="Join" class="linkButton"/>
-                                    </p>
-                                </form>
-                                        #{/if}
+                              
                                         
-                               
-                                <br>
-                                        #{if logFlag == 1}              
-                                                <input type="submit" value="View Logs" onclick=location.href="@{Logs.viewLogs(org.id)}" class="linkButton"></input>
-                                        #{/if}  
-                                        <br>
+                  
                                 #{if (requestToJoin == true) && (!admin) && (!alreadyRequested)}
                                 <form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
                                     <input type="hidden" id="orgId" name="orgId" value="${org.id}">Your message: 
@@ -683,7 +665,7 @@ $(document).ready(function(){
                                         <div style="width:20%;">
                                                 <p><b>List of viewable Tags:</b></p>
                                                 <div id="tags">
-                                                        <ul>
+                                                        <ul style="list-style: none; ">
                                                                  #{list items:tags, as:'tag'}
                                                                  <!-- tag1, tag2 ..etc for diffrent sizes link:: http://cssglobe.com/post/4581/tag-clouds-styling-and-adding-sort-options                                -->
                                             <li>

@@ -47,8 +47,10 @@ public class MainEntitys extends CoolCRUD {
 	public static void createRelation(long entityId, long organizationId) {
 
 		MainEntity entity = MainEntity.findById(entityId);
+		notFoundIfNull(entity);
 		Organization organization = Organization.findById(organizationId);
 		List<MainEntity> entityList = new ArrayList<MainEntity>();
+		notFoundIfNull(organization);
 
 		if (organization.entitiesList != null) {
 			entityList = organization.entitiesList;
@@ -117,7 +119,9 @@ public class MainEntitys extends CoolCRUD {
 	 */
 	public static void viewFollowers(long entityId, String flag) {
 		MainEntity entity = MainEntity.findById(entityId);
+		notFoundIfNull(entity);
 		User user = Security.getConnected();
+		
 		Organization org = Organization.findById(entity.organization.id);
 		List<MainEntity> entities = org.entitiesList;
 		List<Topic> topicList = entity.topicList;
@@ -495,6 +499,7 @@ public class MainEntitys extends CoolCRUD {
 		User user = Security.getConnected();
 		MainEntity entity = MainEntity.findById(id);
 		notFoundIfNull(entity);
+		if(Users.isPermitted(user,"view", id,"entity")){
 		System.out.println(entity.name);
 		Organization org = entity.organization;
 		List<MainEntity> subentities = entity.subentities;
@@ -581,6 +586,10 @@ public class MainEntitys extends CoolCRUD {
 				canCreateRelationship, canRequest, canRequestRelationship,
 				canRestrict, entityIsLocked, plans, canDeleteEntity, followers,
 				check, check1, check2, entityList, manageTopicRequests);
+		}
+		else{
+			BannedUsers.unauthorized();
+		}
 		}
 		
 	

@@ -877,7 +877,7 @@ public class Users extends CoolCRUD {
 
 			}
 
-			if (org.privacyLevel == 0 || org.privacyLevel == 1) {
+			if (org.privacyLevel == 0) {
 
 				List<UserRoleInOrganization> allowed = UserRoleInOrganization
 						.find("byEnrolledAndOrganization", user, org).fetch();
@@ -891,6 +891,22 @@ public class Users extends CoolCRUD {
 					}
 				}
 			} else {
+				if( org.privacyLevel == 1 && action.equals("view"))
+					return true;
+				if (org.privacyLevel == 1) {
+
+					List<UserRoleInOrganization> allowed = UserRoleInOrganization
+							.find("byEnrolledAndOrganization", user, org).fetch();
+					if (allowed.size() == 0) {
+						return false;
+					} else {
+						if (Roles.getRoleActions("idea developer").contains(action)) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
 				if (action.equals("view")) {
 					return true;
 				}
