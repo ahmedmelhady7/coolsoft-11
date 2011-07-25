@@ -8,7 +8,7 @@
 
 <!-- Begin
 
-var imgdir = "/public/images/cimg/"; // identify directory where captcha images are located
+var imgdir = @{'public/images/cimg/'}; // identify directory where captcha images are located
 var jfldid = "uword"; // identify word field id name
 var jfldsz = 20; // identify word field size
 
@@ -94,6 +94,7 @@ function jcap(){
 var uword = hex_md5(document.getElementById(jfldid).value);
 
 if (uword==cword[anum-1]) {
+	 alert("Password has been changed successfuly");
 return true;
 }
 
