@@ -1,9 +1,9 @@
 #{extends 'planLayout.html' /}
 #{stylesheet src:"ideas.css" /}
 #{set 'title'}
-Collaborative Thinking | ${plan.title} - View Plan as List
+Ideas Management | ${plan.title} - View Plan as List
 #{/set}
-<script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js"></script>
+<script language="javascript" type="text/javascript" src=@{'public/javascripts/autocomplete.js'}></script>
 
 
 <style type="text/css">body {
@@ -127,7 +127,7 @@ You have already rated this plan
             <br/>
 			 Assigned Users: 
 			            #{if canAssign == 1 && !(item.status == 2)&& !item.endDatePassed()}
-            <a href="@{AssignRequests.assign(item.id, plan.id)}"> <img src="/public/images/icons/add.png" title="assign a user" width="20" height="20"/></a>
+            <a href="@{AssignRequests.assign(item.id, plan.id)}"> <img src=@{'public/images/icons/add.png'} title="assign a user" width="20" height="20"/></a>
             #{/if}
   #{if user.canWork(item.id) && !(item.status == 2) && !item.endDatePassed()}
 			  <input class = "linkButton" type="button" id = "buttonWork_${item.id}" onclick="workItem(${item.id},'${user.username}');" value = "work on this item">
@@ -154,7 +154,7 @@ You have already rated this plan
 			 
                     <input type="hidden" id='tags' name="tags" value="${listOfTags}">
                     <input type="text" id="tag_${item.id}" name="tag" autoComplete="group"/>
-                    <a value="Tag" onclick="tagitem(${item.id});" style="cursor: pointer;"><img src="/public/images/icons/add.png" title="add tag" width="20" height="20"/></a>
+                    <a value="Tag" onclick="tagitem(${item.id});" style="cursor: pointer;"><img src=@{'public/images/icons/add.png'} title="add tag" width="20" height="20"/></a>
 					<label id = "tagSuccess_${item.id}"> </label>	
 					
 			  #{/if}
@@ -187,7 +187,7 @@ You have already rated this plan
             #{if item.isRelatedToEntity() == true} 
             <div id = "removeEntity_${item.id}">
                 Related to entity: <a href="@{MainEntitys.viewEntity(item.relatedEntity.id)}">${item.relatedEntity}</a>
-                <a onclick="javascript: remove_entity(${item.id});" style="cursor:pointer;" /><img src="/public/images/icons/delete.png" title="Remove relationship" width="24" height="24"/></a>
+                <a onclick="javascript: remove_entity(${item.id});" style="cursor:pointer;" /><img src=@{'public/images/icons/delete.png'} title="Remove relationship" width="24" height="24"/></a>
             </div>
 			#{/if} 
             #{else} 
@@ -197,7 +197,7 @@ You have already rated this plan
                     #{list items:entitiesList, as:'ent'}<option value = ${ent.id}>${ent.name}</option>
                     #{/list}
                 </select>
-                <a onclick="javascript: relate_entity(${item.id});" style="cursor:pointer;" /><img src="/public/images/icons/accept.png" title="Relate" width="24" height="24"/></a>
+                <a onclick="javascript: relate_entity(${item.id});" style="cursor:pointer;" /><img src=@{'public/images/icons/accept.png'} title="Relate" width="24" height="24"/></a>
             </div>
 			#{/else}
             #{/if}
@@ -206,11 +206,11 @@ You have already rated this plan
 			Related to entity: <a href="@{MainEntitys.viewEntity(item.relatedEntity.id)}">${item.relatedEntity}</a>
 			#{/if}
 			#{/else}
-			<a id ="removeButton_${item.id}" hidden ="true" onclick="javascript: remove_entity(${item.id});" style="cursor:pointer;float: left;" /><img src="/public/images/icons/delete.png" title="Remove relationship" width="24" height="24"/></a>            
+			<a id ="removeButton_${item.id}" hidden ="true" onclick="javascript: remove_entity(${item.id});" style="cursor:pointer;float: left;" /><img src=@{'public/images/icons/delete.png'} title="Remove relationship" width="24" height="24"/></a>            
                 <div id = "pend_${item.id}" hidden = true>
 				Pending volunteer Request &nbsp;&nbsp;&nbsp;
 				<a onclick="cancelReq(${item.id});" style="cursor:pointer;">
-			<img src="/public/images/icons/delete.png" title="Cancel request" width="25" height="20"/></a>
+			<img src=@{'public/images/icons/delete.png'} title="Cancel request" width="25" height="20"/></a>
 				 </div>
 		 #{if user.pendingVolunteerRequest(item.id)&& !(item.status == 2) && !item.endDatePassed()}
 		 			<script type="text/javascript">
@@ -245,7 +245,7 @@ You have already rated this plan
             #{/if}
 			      #{if canEdit == 1}
             <a onclick="delItem(${item.id})" style="cursor:pointer; float:right;">
-			<img src="/public/images/icons/trash.png" title="Delete item" width="25" height="20"/></a>
+			<img src=@{'public/images/icons/trash.png'} title="Delete item" width="25" height="20"/></a>
             #{/if}  &nbsp;&nbsp;&nbsp;
 				            #{if canEdit == 1}
 			 <a href="@{Plans.editItem(item.id)}" style=" float:right;">Edit this item</a>#{/if}
@@ -291,10 +291,10 @@ Please contact
  						<li><a>${comment.comment}</a></li>
 	
 					#{if comment.commenter.username != user.username && !comment.reported(user.id)}
- 						<input id = "reportBtn_${comment.id}" onclick = "reportComment(${comment.id});" style="float: right;" type="image" src="/public/images/icons/red_flag.png" />
+ 						<input id = "reportBtn_${comment.id}" onclick = "reportComment(${comment.id});" style="float: right;" type="image" src=@{'public/images/icons/red_flag.png'} />
  						#{/if}
  					#{if comment.commenter.username == user.username || isAdmin || !notAuthor}
-                        <input id = "deleteBtn_${comment.id}" onclick = "deleteComment(${comment.id});" title="delete comment" style="float: right;" type="image" src="/public/images/icons/trash.png" />
+                        <input id = "deleteBtn_${comment.id}" onclick = "deleteComment(${comment.id});" title="delete comment" style="float: right;" type="image" src=@{'public/images/icons/trash.png'} />
                      #{/if}
 					<br/></div>
 					</div>
@@ -311,7 +311,7 @@ Please contact
 			<label id = "emptyComment" style = "color: red;" hidden = "true">You have to enter a comment</label>
 			</div>
 			<br/>
-			<input class = "linkButton" type = "image" title="Comment" src="/public/images/icons/comment.png" style = "margin-left: 17%; float: right;" type = "button" onclick="comment(${plan.id});" >
+			<input class = "linkButton" type = "image" title="Comment" src=@{'public/images/icons/comment.png'} style = "margin-left: 17%; float: right;" type = "button" onclick="comment(${plan.id});" >
 #{/if}
 <br/>
 <br/>
@@ -400,7 +400,7 @@ $("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-meta
                 			$.post('@{workOnItem()}', {itemId:id});
                 			$("#buttonWork_" + id).remove();
 							$("#noUserLabel_" + id).remove();
-                		    $("#assignees_" + id).append("<li> <a href=\"http://localhost:9008/users/viewprofile?userId=" + ${user.id} + "\">"+name+"</a> </li>");
+                		    $("#assignees_" + id).append("<li> <a href=\"/users/viewprofile?userId=" + ${user.id} + "\">"+name+"</a> </li>");
 						
                 	}	
                 	
@@ -426,7 +426,7 @@ $("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-meta
 						   
 							var eId = entityReturned.id;
 							var eName = entityReturned.name;
-						   $("#entityRelated_" + item).html("<div id = \"removeEntity_" + item + "\">Related to entity: <a href=\"http://localhost:9008/mainentitys/viewentity?id=" + eId + "\">"+eName+"</a></div>");
+						   $("#entityRelated_" + item).html("<div id = \"removeEntity_" + item + "\">Related to entity: <a href=\"/mainentitys/viewentity?id=" + eId + "\">"+eName+"</a></div>");
 						});$("#removeButton_" + item).show();
                           }
                                       
@@ -449,7 +449,7 @@ $("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-meta
 									if (tagTemp.success == "1") {
 										var tagId = tagTemp.id;
 										
-										var url = "<li><a href=\"http://localhost:9008/tags/mainpage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
+										var url = "<li><a href=\"/tags/mainpage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
 										$("#tags_" + id).append(url);
 										$("#tagSuccess_" + id).html("New Tag is created successfuly");
 									}
@@ -457,7 +457,7 @@ $("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-meta
 										if (tagTemp.success == "2") {
 											var tagId = tagTemp.id;
 											
-											var url = "<li><a href=\"http://localhost:9008/tags/mainpage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
+											var url = "<li><a href=\"/tags/mainpage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
 											$("#tags_" + id).append(url);
 											$("#tagSuccess_" + id).html("Item is tagged successfuly");
 										}

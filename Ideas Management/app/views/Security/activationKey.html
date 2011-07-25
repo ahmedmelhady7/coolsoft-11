@@ -8,7 +8,7 @@
 	padding: 58px 76px 0 76px;
 	color: #ebebeb;
 	font: 12px Arial, Helvetica, sans-serif;
-	background: url(/public/images/login-box-backg.png) no-repeat left top;
+	background: url(@{'public/images/login-box-backg.png'}) no-repeat left top;
 }
 
 #login-box img {
@@ -84,7 +84,7 @@
 		<span class="login-box-options"><a href="/secure/login" style="margin-left:30px;">Back to login..</a></span>
 		<br/>
 		<br/>
-		<input type="image" src="/public/images/submit-btn.png" width="103" height="42" style="margin-left:90px;" alt="Submit button">		
+		<input type="image" src=@{'public/images/submit-btn.png'} width="103" height="42" style="margin-left:90px;" alt="Submit button">		
 	</form>	
 	#{if flash.success}
 	<br><br><br>
