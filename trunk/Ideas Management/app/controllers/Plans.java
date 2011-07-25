@@ -622,7 +622,8 @@ public class Plans extends CoolCRUD {
 	 */
 	public static void planCreate(long topicId) {
 		User user = Security.getConnected();
-		render(topicId, user);
+		Topic topic = Topic.findById(topicId);
+		render(topicId, user, topic);
 	}
 
 	/**

@@ -37,9 +37,9 @@
 </style>
 
 <div id="showAddItem">
-	<link type="text/css" href="/public/stylesheets/jquery-ui-.custom.css" rel="Stylesheet" />
-    <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js"></script>
-    <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
+	<link type="text/css" href=@{'public/stylesheets/jquery-ui-.custom.css'} rel="Stylesheet" />
+    <script type="text/javascript" src=@{'public/javascripts/jquery-1.5.2.min.js'}></script>
+    <script type="text/javascript" src=@{'public/javascripts/jquery-ui-.custom.min.js'}></script>
 <h1> Add Item </h1>
 <input type="hidden" name= "planstart"id="planstart" vspace="20" readonly value="${plan.startDate.format('MM/dd/yyyy')}"/>
 <input type="hidden" name= "planend"id="planend" vspace="20" readonly value="${plan.endDate.format('MM/dd/yyyy')}"/>

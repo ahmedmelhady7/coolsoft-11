@@ -37,19 +37,19 @@
 </style>
 
 <div id="showEditPlan">
-	<link type="text/css" href="/public/stylesheets/jquery-ui-.custom.css" rel="Stylesheet" />
-    <script type="text/javascript" src="/public/javascripts/jquery-1.5.2.min.js"></script>
-    <script type="text/javascript" src="/public/javascripts/jquery-ui-.custom.min.js"></script>
-<h1> Edit Action plan </h1>
+	<link type="text/css" href=@{'public/stylesheets/jquery-ui-.custom.css'} rel="Stylesheet" />
+    <script type="text/javascript" src=@{'public/javascripts/jquery-1.5.2.min.js'}></script>
+    <script type="text/javascript" src=@{'public/javascripts/jquery-ui-.custom.min.js'}></script>
+<h3><b>Edit Action Plan</b></h3><br />
 <input type="hidden" name= "planstart"id="planstart" vspace="20" readonly value="${plan.intializedIn.format('MM/dd/yyyy')}"/>
 #{form @Plans.edit(), method:'POST', id:'planeditingnForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
-Plan title:<input type= "text" id = "title" name = "title" size= "30" value="${plan.title}"><label id = "titleerror" style= "color:Red"> Please Insert a title for the plan </label>
+<b>Plan title:</b>&nbsp;&nbsp;&nbsp;<input type= "text" id = "title" name = "title" size= "30" value="${plan.title}"><label id = "titleerror" style= "color:Red"> Please insert a title for the plan </label>
 </br>
 </br>
-Start Date:: <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"value="${plan.startDate.format('MM/dd/yyyy')}"/><label id = "startdateerror"style= "color:Red"> Please Insert the date on which the plan starts </label><label id = "dateerror"style= "color:Red">Start date can not be earlier than the original date</label>
+<b>Start Date:</b> <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"value="${plan.startDate.format('MM/dd/yyyy')}"/><label id = "startdateerror"style= "color:Red"> Please insert the date on which the plan starts </label><label id = "dateerror"style= "color:Red">Start date can not be earlier than today's date</label>
 </br>
 </br>
-End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"value="${plan.endDate.format('MM/dd/yyyy')}"/><label id = "enddateerror"style= "color:Red"> Please Insert the date on which the plan ends </label><label id = "earlyerror"style= "color:Red">Start date must be greater than end date</label>
+<b>End Date:</b> &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspace="20" readonly onclick= "datepickerB()"value="${plan.endDate.format('MM/dd/yyyy')}"/><label id = "enddateerror"style= "color:Red"> Please insert the date on which the plan ends </label><label id = "earlyerror"style= "color:Red">End date must be greater than start date</label>
 </br>
 </br>
 <p><b>Insert the description of the plan</b></p>
@@ -63,8 +63,8 @@ End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspac
 </br>
 </br>
 <input type = "hidden" name = "planId" value = '${plan.id}' >
-</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type = "submit" value ="Save">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input class = "linkButton" type="submit" onclick="checkall()" value = "Save">
 #{/form}
 <br>
 </div>
@@ -129,9 +129,7 @@ End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspac
 		}else{
 			$('#requirementerror').hide();
 		}
-		if(flag == 1){
-			return false;
-		}
+		
 		var sd = new Date("" +document.getElementById("datePickerA").value.toString());
 		var ed = new Date("" +document.getElementById("datePickerB").value.toString());
 		var ziko = new Date(""+document.getElementById("planstart").value.toString());
@@ -146,6 +144,9 @@ End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspac
 			return false;
 		}else{
 			$('#dateerror').hide();
+		}
+		if(flag == 1){
+			return false;
 		}
 	}
 </script>
