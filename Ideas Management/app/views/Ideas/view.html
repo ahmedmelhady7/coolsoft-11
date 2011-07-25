@@ -154,7 +154,7 @@
         ${message}
     </font>
     <div class="objectForm">
-        #{form action:@show(object._key()), enctype:'multipart/form-data'}
+        #{form action:@save(object._key()), enctype:'multipart/form-data'}
         #{crud.form fields: ['author','belongsToTopic','title','description']}
         #{crud.custom 'author'}
         <p>

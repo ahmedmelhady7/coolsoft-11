@@ -59,7 +59,7 @@ public abstract class CoolCRUD extends CRUD {
 		}
 	}
 
-	public static void show(String id) {
+	public static void crudShow(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Model object = type.findById(id);
@@ -68,7 +68,7 @@ public abstract class CoolCRUD extends CRUD {
 		try {
 			render(type, object, user);
 		} catch (TemplateNotFoundException e) {
-			render("CoolCRUD/show.html", type, object, user);
+			render("CoolCRUD/crudShow.html", type, object, user);
 		}
 	}
 
@@ -109,10 +109,10 @@ public abstract class CoolCRUD extends CRUD {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
 			User user = Security.getConnected();
 			try {
-				render(request.controller.replace(".", "/") + "/show.html",
+				render(request.controller.replace(".", "/") + "/crudShow.html",
 						type, object, user);
 			} catch (TemplateNotFoundException e) {
-				render("CoolCRUD/show.html", type, object, user);
+				render("CoolCRUD/crudShow.html", type, object, user);
 			}
 		}
 		object._save();
@@ -120,7 +120,7 @@ public abstract class CoolCRUD extends CRUD {
 		if (params.get("_save") != null) {
 			redirect(request.controller + ".list");
 		}
-		redirect(request.controller + ".show", object._key());
+		redirect(request.controller + ".crudShow", object._key());
 	}
 
 	public static void blank() throws Exception {
@@ -163,7 +163,7 @@ public abstract class CoolCRUD extends CRUD {
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect(request.controller + ".blank");
 		}
-		redirect(request.controller + ".show", object._key());
+		redirect(request.controller + ".crudShow", object._key());
 	}
 
 	public static void delete(String id) {
@@ -175,7 +175,7 @@ public abstract class CoolCRUD extends CRUD {
 			object._delete();
 		} catch (Exception e) {
 			flash.error(Messages.get("crud.delete.error", type.modelName));
-			redirect(request.controller + ".show", object._key());
+			redirect(request.controller + ".crudShow", object._key());
 		}
 		flash.success(Messages.get("crud.deleted", type.modelName));
 		redirect(request.controller + ".list");
