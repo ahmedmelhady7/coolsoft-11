@@ -2,10 +2,10 @@
 <html>
     <head>
         <meta name="generator" content="HTML Tidy, see www.w3.org">
-        <script language="javascript" type="text/javascript" src="/public/javascripts/autocomplete.js">
+        <script language="javascript" type="text/javascript" src=@{'public/javascripts/autocomplete.js'}>
         </script>
-                                <script type="text/javascript" src="/public/javascripts/jquery.js"></script>
-                <script type="text/javascript" src="/public/javascripts/tinysort.js"></script>
+                                <script type="text/javascript" src=@{'public/javascripts/jquery.js'}></script>
+                <script type="text/javascript" src=@{'public/javascripts/tinysort.js'}></script>
                 <style> 
 img{border:none;}
 pre{
@@ -564,7 +564,7 @@ $(document).ready(function(){
                                                 #{/list}
                                                 #{/if}
                                                 #{else}
-                                                <img src="/public/images/org.png" width="75" height="75"/>
+                                                <img src=@{'public/images/org.png'} width="75" height="75"/>
                                                 #{/else}
                                                  <h2 style="font-size:7;font-family:'Lucida Grande',Verdana,Arial,Sans-Serif; color:#000000">${org.name}</h2>
 												<br />
@@ -581,7 +581,7 @@ $(document).ready(function(){
                                 #{list items:topics, as:'topic'}
                                	   <li>
                                      #{if topic.canView(user)}
-                                        <input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
+                                        <input style="float:left;" type="image" src=@{'public/images/icons/suser.png'}/>
                                         	<font size=1 style="float:left;">${topic.creator.username}</font>
                                             <br />
                                         <div class="accordionItem">
@@ -590,7 +590,7 @@ $(document).ready(function(){
 				                                #{if topic.isDeletable()}
 				                                	<form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
 				                                   		<input type="hidden" name = "justification" id = "justText"/>
-				                                        <input type="image" style="float:right;" title="Delete Topic" src="/public/images/icons/trash.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
+				                                        <input type="image" style="float:right;" title="Delete Topic" src=@{'public/images/icons/trash.png'} value="&{'crud.delete', type.modelName}" class = "linkButton"/>
 				                                    </form> 
 				                                #{/if}
 												
@@ -737,7 +737,7 @@ $(document).ready(function(){
                                         #{list items:org.relationNames, as:'relName'}
                                         <option>${relName}</option>
                                         #{/list}
-                                        </select> <input id="rTextForm" type="text" /> <input type="image" src="/public/images/icons/add.png" title="add new name" onclick="addName()" /> <font color="red"><span id="duplicate"></span></font>
+                                        </select> <input id="rTextForm" type="text" /> <input type="image" src=@{'public/images/icons/add.png'} title="add new name" onclick="addName()" /> <font color="red"><span id="duplicate"></span></font>
                                 
                                 <p><form id="eform" style="display: none;">
                                         
