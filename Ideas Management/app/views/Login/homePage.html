@@ -88,7 +88,7 @@
 					<h1><font size=6 style="color:black">Welcome to Ideas Management</font></h1>
 					<br>
 					<br>					
-					<h3 style="color:blue" id="opOrg" style="cursor:pointer"> <img src="/public/images/icons/database.png" width="14px" height="14px">
+					<h3 style="color:blue" id="opOrg" style="cursor:pointer"> <img src="@{'public/images/icons/database.png'}" width="14px" height="14px">
 					 My Organizations</h3>
 					<br>
 					<div id="orgList">
@@ -107,7 +107,7 @@
 					</div>
 					<br>					
 					<h3 style="color:blue" id="opFollow" style="cursor:pointer"> 
-					<img src="/public/images/icons/database.png" width="14px" height="14px"> My Follow List</h3>
+					<img src="@{'public/images/icons/database.png'}" width="14px" height="14px"> My Follow List</h3>
 					<br>
 					<div id="followList">
 					<div id="descriptionShow">
@@ -119,7 +119,7 @@
                                    <ul>
                                    #{list items:user.followingOrganizations, as:'organization'}
                                            <li>
-                                           <a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>  <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="org('${organization.id}');"/>
+                                           <a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>  <input type="image" src="@{'public/images/Cross.png'}" width="10" height="10" onclick="org('${organization.id}');"/>
                                             </li>
                                    #{/list}
                                    </ul>
@@ -131,7 +131,7 @@
                                   <ul>
                                   #{list items:user.followingEntities, as:'entity'}
                                   <li>
-                                  <a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>   <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="entity('${entity.id}');"/>
+                                  <a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>   <input type="image" src="@{'public/images/Cross.png'}" width="10" height="10" onclick="entity('${entity.id}');"/>
                                   </li>
                                   #{/list}
                                   </ul>
@@ -143,7 +143,7 @@
                                    <ul>
                                    #{list items:user.topicsIFollow, as:'topic'}
                                    <li>
-                                   <a href="@{Topics.show(topic.id)}">${topic.title}</a>  <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="topic('${topic.id}');"/>
+                                   <a href="@{Topics.show(topic.id)}">${topic.title}</a>  <input type="image" src="@{'public/images/Cross.png'}" width="10" height="10" onclick="topic('${topic.id}');"/>
                                    </li>
                                    #{/list}
                                    </ul>
@@ -155,14 +155,14 @@
 								    <ul>
                                     #{list items:user.followingTags, as:'tag'}
                                      <li>
-                                    <a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>  <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="tag('${tag.id}');"/>
+                                    <a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>  <input type="image" src="@{'public/images/Cross.png'}" width="10" height="10" onclick="tag('${tag.id}');"/>
                                     </li>
                                     #{/list}
                                     </ul>
                          </div>
                          </div>
                          <br>                         
-                         <h3 style="color:blue" id="opRec" style="cursor:pointer"> <img src="/public/images/icons/database.png" width="14px" height="14px"> Recent Activities</h3>
+                         <h3 style="color:blue" id="opRec" style="cursor:pointer"> <img src="@{'public/images/icons/database.png'}" width="14px" height="14px"> Recent Activities</h3>
                          <br>
                          <div id="recentList">
                          <div id="descriptionShow">

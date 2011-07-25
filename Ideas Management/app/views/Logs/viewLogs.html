@@ -25,7 +25,7 @@ Entity List:
   <option name = entity value=${Entity.id}>${Entity.name}</option>
    #{/list}
 </select>
-<input type="image" onclick="javascript: show('${organizationId}');" title="Search"  src="/public/images/icons/find.png"/>
+<input type="image" onclick="javascript: show('${organizationId}');" title="Search"  src="@{'public/images/icons/find.png'}"/>
 	<br/>
 <br/>
    
@@ -47,10 +47,10 @@ Entity List:
 
 <div id="pageNavPosition"></div>
 
-<script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
+<script src = "@{'public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
 	</script>
 	
-<script src="@{'/public/javascripts/paging.js'}"></script>
+<script src="@{'public/javascripts/paging.js'}"></script>
 	
 	<script type="text/javascript">
 

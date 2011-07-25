@@ -1,15 +1,15 @@
 #{extends 'main.html' /}
 #{set title:'Ideas Management' /}
 
-<script src="/public/javascripts/topbar_message/jquery.js" type="text/javascript"></script>
-<script src="/public/javascripts/topbar_message/juery.topbar.js" type="text/javascript"></script>
-<link href="/public/javascripts/jnotify/jquery.jnotify.css" rel="stylesheet" type="text/css" />
-<script src="/public/javascripts/jnotify/jquery.jnotify.js" type="text/javascript"></script>
-<script src="/public/javascripts/SearchScript.js" type="text/javascript"></script>
-<link href="/public/stylesheets/searchStyle.css" type="text/css" />
-<link rel="stylesheet" href="/public/stylesheets/general.css" type="text/css" media="screen" />
-<script src="/public/javascripts/jquery-1.2.6.min.js" type="text/javascript"></script>
-<script src="/public/javascripts/popup.js" type="text/javascript"></script>
+<script src="@{'public/javascripts/topbar_message/jquery.js'}" type="text/javascript"></script>
+<script src="@{'public/javascripts/topbar_message/juery.topbar.js'}" type="text/javascript"></script>
+<link href="@{'public/javascripts/jnotify/jquery.jnotify.css'}" rel="stylesheet" type="text/css" />
+<script src="@{'public/javascripts/jnotify/jquery.jnotify.js'}" type="text/javascript"></script>
+<script src="@{'public/javascripts/SearchScript.js'}" type="text/javascript"></script>
+<link href="@{'public/stylesheets/searchStyle.css'}" type="text/css" />
+<link rel="stylesheet" href="@{'public/stylesheets/general.css'}" type="text/css" media="screen" />
+<script src="@{'public/javascripts/jquery-1.2.6.min.js'}" type="text/javascript"></script>
+<script src="@{'public/javascripts/popup.js'}" type="text/javascript"></script>
 
 <style type="text/css">#crudShow {
 		margin-top: 2%;
@@ -80,7 +80,7 @@
                             <div id="search">
                                 Search: 
                                 <br>
-                                <input type="text" name="keywords" id="keywords" onfocus="this.value=''" " onfocusout='' onkeypress='javaScript: quickSearchScript()' /><input type="image" src='/public/images/Search.jpg' id="submit" name="submit" value="GO" onclick='javaScript: quickSearchScript()'/>
+                                <input type="text" name="keywords" id="keywords" onfocus="this.value=''" " onfocusout='' onkeypress='javaScript: quickSearchScript()' /><input type="image" src="@{'public/images/Search.jpg'}" id="submit" name="submit" value="GO" onclick='javaScript: quickSearchScript()'/>
                                 <br>
                                 <small>
                                     <i><a id="advo" style="cursor: pointer;" >Advanced Search</a></i>
@@ -121,7 +121,7 @@
                             </div>
                             <a href="/users/notificationview?type=All">All Notifications</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a id="hide" style="cursor:pointer">Hide <img src="/public/images/icons/up.png" title="up" width="14" height="10"/></a>
+                            <a id="hide" style="cursor:pointer">Hide <img src="@{'public/images/icons/up.png'}" title="up" width="14" height="10"/></a>
                         </div>
                         </li>
         
@@ -135,116 +135,116 @@
                                 #{if user.profilePictureId != -1} 
                                 #{list items:user.profilePictureId, as:'id'}<img src="@{Pictures.getPicture(id)}" width="40" height="40"/>#{/list}
                                 #{/if}
-                                #{if user.profilePictureId == -1} <img src="/public/images/icons/user.png" width="40" height="40"/>#{/if}
+                                #{if user.profilePictureId == -1} <img src="@{'public/images/icons/user.png'}" width="40" height="40"/>#{/if}
                                 <br>
                                 <b>E-Mail: </b>
                                 ${user.email} 
                                 <br>
                                 
 								#{if user.communityContributionCounter>=0 && user.communityContributionCounter<=5 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/e1.gif"></input>
+								<input type="image" src="@{'public/images/ranks/e1.gif'}"></input>
 								<br />
 								Airman
 								#{/if}
 								
 								#{if user.communityContributionCounter>=6 && user.communityContributionCounter<=10 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/e2.gif"></input>
+								<input type="image" src="@{'public/images/ranks/e2.gif'}"></input>
 								<br />
 								Airman First Class
 								#{/if}
 								
 								#{if user.communityContributionCounter>=11 && user.communityContributionCounter<=15 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/e3.gif"></input>
+								<input type="image" src="@{'public/images/ranks/e3.gif'}"></input>
 								<br />
 								Senior Airman
 								#{/if}
 								
 								#{if user.communityContributionCounter>=16 && user.communityContributionCounter<=20 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/e4.gif"></input>
+								<input type="image" src="@{'public/images/ranks/e4.gif'}"></input>
 								<br />
 								Staff Sergeant
 								#{/if}
 								
 								#{if user.communityContributionCounter>=21 && user.communityContributionCounter<=25 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/e5.gif"></input>
+								<input type="image" src="@{'public/images/ranks/e5.gif'}"></input>
 								<br />
 								Technical Sergeant
 								#{/if}
 								
 								#{if user.communityContributionCounter>=26 && user.communityContributionCounter<=30 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/e6.gif"></input>
+								<input type="image" src="@{'public/images/ranks/e6.gif'}"></input>
 								<br />
 								Master Sergeant
 								#{/if}
 								
 								#{if user.communityContributionCounter>=31 && user.communityContributionCounter<=35 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/e7.gif"></input>
+								<input type="image" src="@{'public/images/ranks/e7.gif'}"></input>
 								<br />
 								Senior Master Sergeant
 								#{/if}
 								
 								#{if user.communityContributionCounter>=36 && user.communityContributionCounter<=40 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/o1.gif"></input>
+								<input type="image" src="@{'public/images/ranks/o1.gif'}"></input>
 								<br />
 								Second Lieutenant
 								#{/if}
 								
 								#{if user.communityContributionCounter>=41 && user.communityContributionCounter<=45 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/o2.gif"></input>
+								<input type="image" src="@{'public/images/ranks/o2.gif'}"></input>
 								<br />
 								First Lieutenant
 								#{/if}
 								
 								#{if user.communityContributionCounter>=46 && user.communityContributionCounter<=50 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/o3.gif"></input>
+								<input type="image" src="@{'public/images/ranks/o3.gif'}"></input>
 								<br />
 								Captain
 								#{/if}
 								
 								#{if user.communityContributionCounter>=51 && user.communityContributionCounter<=55 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/o4.gif"></input>
+								<input type="image" src="@{'public/images/ranks/o4.gif'}"></input>
 								<br />
 								Major
 								#{/if}
 								
 								#{if user.communityContributionCounter>=56 && user.communityContributionCounter<=60 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/o5.gif"></input>
+								<input type="image" src="@{'public/images/ranks/o5.gif'}"></input>
 								<br />
 								Lieutenant Colonel
 								#{/if}
 								
 								#{if user.communityContributionCounter>=61 && user.communityContributionCounter<=65 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/o6.gif"></input>
+								<input type="image" src="@{'public/images/ranks/o6.gif'}"></input>
 								<br />
 								Colonel
 								#{/if}
 								
 								#{if user.communityContributionCounter>=66 && user.communityContributionCounter<=70 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/o7.gif"></input>
+								<input type="image" src="@{'public/images/ranks/o7.gif'}"></input>
 								<br />
 								Brigadier General
 								#{/if}
 								
 								#{if user.communityContributionCounter>=71 && user.communityContributionCounter<=75 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/o8.gif"></input>
+								<input type="image" src="@{'public/images/ranks/o8.gif'}"></input>
 								<br />
 								Major General
 								#{/if}
 								
 								#{if user.communityContributionCounter>=76 && user.communityContributionCounter<=80 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/o9.gif"></input>
+								<input type="image" src="@{'public/images/ranks/o9.gif'}"></input>
 								<br />
 								Lieutenant General
 								#{/if}
 								
 								#{if user.communityContributionCounter>=81 && user.communityContributionCounter<=85 && !user.isAdmin}
-								<input type="image" src="/public/images/ranks/o10.gif"></input>
+								<input type="image" src="@{'public/images/ranks/o10.gif'}"></input>
 								<br />
 								General Air Force Chief of Staff
 								#{/if}
 								
 								#{if user.communityContributionCounter>=86 || user.isAdmin}
-								<input type="image" src="/public/images/ranks/o11.png"></input>
+								<input type="image" src="@{'public/images/ranks/o11.png'}"></input>
 								<br />
 								General of the Air Force
 								#{/if}
@@ -316,7 +316,7 @@
                                             <ul>
                                                 #{list items:user.followingOrganizations, as:'organization'}
                                                 <li>
-                                                 <a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>  <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="org('${organization.id}');"/>
+                                                 <a href="@{Organizations.viewProfile(organization.id)}">${organization.name}</a>  <input type="image" src="@{'public/images/Cross.png'}" width="10" height="10" onclick="org('${organization.id}');"/>
                                                 </li>
                                                 #{/list}
                                             </ul>
@@ -328,7 +328,7 @@
                                             <ul>
                                                 #{list items:user.followingEntities, as:'entity'}
                                                 <li>
-                                                   <a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>   <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="entity('${entity.id}');"/>
+                                                   <a href="@{MainEntitys.viewEntity(entity.id)}">${entity.name}</a>   <input type="image" src="@{'public/images/Cross.png'}" width="10" height="10" onclick="entity('${entity.id}');"/>
                                                 </li>
                                                 #{/list}
                                             </ul>
@@ -340,7 +340,7 @@
                                             <ul>
                                                 #{list items:user.topicsIFollow, as:'topic'}
                                                 <li>
-                                                    <a href="@{Topics.show(topic.id)}">${topic.title}</a>  <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="topic('${topic.id}');"/>
+                                                    <a href="@{Topics.show(topic.id)}">${topic.title}</a>  <input type="image" src="@{'public/images/Cross.png'}" width="10" height="10" onclick="topic('${topic.id}');"/>
                                                 </li>
                                                 #{/list}
                                             </ul>
@@ -353,7 +353,7 @@
 											<ul>
                                                 #{list items:user.followingTags, as:'tag'}
                                                 <li>
-                                                    <a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>  <input type="image" src="/public/images/Cross.png" width="10" height="10" onclick="tag('${tag.id}');"/>
+                                                    <a href="@{Tags.mainPage(tag.id)}">${tag.name}</a>  <input type="image" src="@{'public/images/Cross.png'}" width="10" height="10" onclick="tag('${tag.id}');"/>
                                                 </li>
                                                 #{/list}
                                             </ul>
@@ -462,7 +462,7 @@
                     <div id = 'layout'>
                         #{doLayout /}
                     </div>
-                    <iframe id="searchview" src="/searchResult" scripts="/public/javascripts/SearchScript.js" class="/public/stylesheets/searchStyle.css" language="text/javascript" frameborder='no' allowtransparency='yes' style='display:none' height = 100% width=75%>
+                    <iframe id="searchview" src="/searchResult" scripts="@{'public/javascripts/SearchScript.js'}" class="@{'public/stylesheets/searchStyle.css'}" language="text/javascript" frameborder='no' allowtransparency='yes' style='display:none' height = 100% width=75%>
                     </iframe>
 					<iframe id="advSearch" src="/Search/AdvancedSearch" frameborder='no' allowtransparency='yes' style='display:none' height = 120% width=76%>
                     </iframe>

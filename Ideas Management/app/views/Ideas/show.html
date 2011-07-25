@@ -18,13 +18,13 @@
                 text-align: right;
         }
         #anchor1:hover { 
-                background-image : url(/public/images/icons/trash.png); 
+                background-image : url(@{'public/images/icons/trash.png'}); 
         }
 #h13 {
   background-attachment:initial;
   background-clip:initial;
   background-color:initial;
-  background-image:url(/public/images/blu.png);
+  background-image:url(@{'public/images/blu.png'});
   background-origin:initial;
   background-position:0 0;
   background-repeat:no-repeat no-repeat;
@@ -60,10 +60,10 @@
         <br/><br/><br/><br/><br/><br/>
         <div id="h13">Share</div>
         <a href="http://www.facebook.com/sharer.php?u=http://localhost:9008/ideas/show?ideaId=${ideaId}&t=Idea - ${idea.title}" rel="external,nofollow" target="_blank">
-        <img src="/public/images/Facebook.png" style="size:auto;" alt="Share on Facebook"/>
+        <img src="@{'public/images/Facebook.png'}" style="size:auto;" alt="Share on Facebook"/>
         </a>
         <a href="http://twitter.com/home?status=Idea - ${idea.title} http://localhost:9008/ideas/show?ideaId=${ideaId}" rel="external,nofollow" target="_blank">
-        <img src="/public/images/twitter.png" alt="Tweet this"/>
+        <img src="@{'public/images/twitter.png'}" alt="Tweet this"/>
         </a>
         </br></br></br>
     #{if notBlockedFromUsing}
@@ -189,7 +189,7 @@
                 <a href="@{Users.viewProfile(userId)}">#{if user.profilePictureId != -1} 
                   #{list items:user.profilePictureId, as:'id'}<img src="@{Pictures.getPicture(id)}" width="40" height="40"/>#{/list}
                   #{/if}
-                  #{if user.profilePictureId == -1} <img src="/public/images/icons/user.png" width="40" height="40"/>#{/if} ${username}</a>
+                  #{if user.profilePictureId == -1} <img src="@{'public/images/icons/user.png'}" width="40" height="40"/>#{/if} ${username}</a>
                 #{/if}
                 #{if !active}
                 <font>${username}</font>
@@ -224,12 +224,12 @@
                 <br/>
                     <form action="@{Users.reportIdeaAsSpam()}" method="GET" name="myform" style="float: right;">
                         <input type="hidden"  name="ideaId" value="${ideaId}">
-                <input id="spam" align="right" class="linkButton" title="Report Idea As Spam" type="image" src="/public/images/icons/red_flag.png">
+                <input id="spam" align="right" class="linkButton" title="Report Idea As Spam" type="image" src="@{'public/images/icons/red_flag.png'}">
             </form>
           #{/if}
      #{if isAuthor && notInPlan}
         <!--<form action="@{Ideas.deleteIdea(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">-->
-                        <input type="image" id="delMine" style="float:right;" src="/public/images/icons/trash.png"  class="linkButton" onclick="delmine(${ideaId})" title="Delete My Idea" />
+                        <input type="image" id="delMine" style="float:right;" src="@{'public/images/icons/trash.png'}"  class="linkButton" onclick="delmine(${ideaId})" title="Delete My Idea" />
         <script type="text/javascript">
 				function delmine(id){
 						 var where_to= confirm("Do you really want to delete this idea ? \n hint this mean that all comments inside this idea will be deleted");
@@ -244,11 +244,11 @@
         #{if canDelete && !isAuthor && notInPlan}
                 <form action="@{Ideas.deleteIdea(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
                 <input type="hidden" name = "justification" id = "justText">
-            <input type="image" src="/public/images/icons/trash.png"  style="float:right;" class="linkButton" title="Delete Idea"/>
+            <input type="image" src="@{'public/images/icons/trash.png'}"  style="float:right;" class="linkButton" title="Delete Idea"/>
     </form>
       #{/if}
         #{if canDelete || isAuthor || isAdmin}
-    <input type="image" align="right" style="float:right;"  src="/public/images/icons/pencil.png" title="Edit Idea" onclick=location.href="@{Ideas.view(ideaId)}" class="linkButton"></input>
+    <input type="image" align="right" style="float:right;"  src="@{'public/images/icons/pencil.png'}" title="Edit Idea" onclick=location.href="@{Ideas.view(ideaId)}" class="linkButton"></input>
     #{/if}
         <br />
   <br />
@@ -256,7 +256,7 @@
   
         </div>    
         #{if permittedToTagIdea}
-                                <input type="image" style="float:left;" title='Add Tags' src='/public/images/tag.png' id="submit" onclick="hideTagger();"/>
+                                <input type="image" style="float:left;" title='Add Tags' src="@{'public/images/tag.png'}" id="submit" onclick="hideTagger();"/>
                                 #{/if}
                                 <ul id="tagLister" style="list-style: none; ">
                                 #{list items:tags, as:'tag'}
@@ -266,7 +266,7 @@
                                 #{if permittedToTagIdea}
                 <input type="hidden" id='tags' name="tags" value="">
                                 <input type="text" maxlength='12' id="tagger" style="display:none; float:left;" name='tag' onkeyup="checkTagValidity('${ideaId}', this.value);">
-                                <input id="subb" type="image" src='/public/images/add.png' title="Add" style="display:none; float:left; width:auto; height:auto;" onclick="tagIdea();" disabled='true'>
+                                <input id="subb" type="image" src="@{'public/images/add.png'}" title="Add" style="display:none; float:left; width:auto; height:auto;" onclick="tagIdea();" disabled='true'>
                                 <label id='tagg' style="display:none; float:left;"><font color="#FF0000"> Tag Already Exists!</font></label>
                                 <script>
                                                 function hideTagger(){
@@ -321,10 +321,10 @@
                                                 <div class="about">Detail:</div>
                                                 <li><a>${comment.comment}</a></li>
                                                 #{if comment.commenter.username != user.username && !comment.reported(user.id)}
-                                                <input id = "reportBtn_${comment.id}" onclick = "reportComment(${comment.id});" style="float: right;" type="image" src="/public/images/icons/red_flag.png" />
+                                                <input id = "reportBtn_${comment.id}" onclick = "reportComment(${comment.id});" style="float: right;" type="image" src="@{'public/images/icons/red_flag.png'}" />
                                                 #{/if}
                                                 #{if comment.commenter.username == user.username || isAdmin || !notAuthor}
-                                                <input id = "deleteBtn_${comment.id}" onclick = "deleteComment(${comment.id});" title="delete comment" style="float: right;" type="image" src="/public/images/icons/trash.png" />
+                                                <input id = "deleteBtn_${comment.id}" onclick = "deleteComment(${comment.id});" title="delete comment" style="float: right;" type="image" src="@{'public/images/icons/trash.png'}" />
                                                 #{/if}
                                                 <br />
                                         </div>
@@ -339,7 +339,7 @@
                         <br/>
                         <label id = "emptyComment" style = "color: red;" hidden = "true">You have to enter a comment</label>
                         </div>
-                        <input class = "linkButton" style = "margin-right: 10%; float: right;" type = "image" value = "Comment" title="Comment" src="/public/images/icons/comment.png" onclick="comment(${ideaId});" >
+                        <input class = "linkButton" style = "margin-right: 10%; float: right;" type = "image" value = "Comment" title="Comment" src="@{'public/images/icons/comment.png'}" onclick="comment(${ideaId});" >
 #{/if}
 <br/>
 <br/>
