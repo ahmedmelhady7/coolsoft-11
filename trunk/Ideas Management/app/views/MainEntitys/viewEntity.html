@@ -1,6 +1,6 @@
  #{extends 'Login/index.html' /}		
 #{set title: 'Entity Profile' /}        
-	<script src="/public/javascripts/bmi.js" language="javascript"></script>	
+	<script src=@{'public/javascripts/bmi.js'} language="javascript"></script>	
 	
 	<style>
 		#crudShow{
@@ -479,13 +479,13 @@
 			<div id="lista" style="display: none;">
 				   	#{if entity.relationsSource != null}
 				      #{list items:entity.relationsSource, as:'relationElement'}
-							<ul><a href="/mainentitys/viewentity?id=${relationElement.source.id}">${relationElement.source.name}</a> <input id="textToRename_${relationElement.id}" type="text" value=${relationElement.name} style="display:none;"/><q id=${relationElement.id}>${relationElement.name}</q> <a href="/mainentitys/viewentity?id=${relationElement.destination.id}">${relationElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="image" src="/public/images/icons/accept.png" title="Done" style="display:none;" id="renameDone_${relationElement.id}" onclick="actionRename(${relationElement.id})"/><input id="renameButton_${relationElement.id}" type="image" title="edit" src="/public/images/icons/pencil.png" onclick="showRename(${relationElement.id})"/> <input type="image" src="/public/images/icons/delete.png" title="end" onclick="endRelation(${relationElement.id})" /> <span id="span_${relationElement.id}" style="color:red;"></span>#{/if}</ul>
+							<ul><a href="/mainentitys/viewentity?id=${relationElement.source.id}">${relationElement.source.name}</a> <input id="textToRename_${relationElement.id}" type="text" value=${relationElement.name} style="display:none;"/><q id=${relationElement.id}>${relationElement.name}</q> <a href="/mainentitys/viewentity?id=${relationElement.destination.id}">${relationElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="image" src=@{'public/images/icons/accept.png'} title="Done" style="display:none;" id="renameDone_${relationElement.id}" onclick="actionRename(${relationElement.id})"/><input id="renameButton_${relationElement.id}" type="image" title="edit" src=@{'public/images/icons/pencil.png'} onclick="showRename(${relationElement.id})"/> <input type="image" src=@{'public/images/icons/delete.png'} title="end" onclick="endRelation(${relationElement.id})" /> <span id="span_${relationElement.id}" style="color:red;"></span>#{/if}</ul>
 					  #{/list}	
 					#{/if}
 					#{if entity.relationsDestination != null}
 					  
 					  #{list items:entity.relationsDestination, as:'relElement'}
-							<ul><a href="/mainentitys/viewentity?id=${relElement.source.id}">${relElement.source.name}</a> <input id="textToRename2_${relElement.id}" type="text" value=${relElement.name} style="display:none;"/><q id=${relElement.id}>${relElement.name}</q> <a href="/mainentitys/viewentity?id=${relElement.destination.id}">${relElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="image" src="/public/images/icons/accept.png" title="Done" style="display:none;" id="renameDone2_${relElement.id}" onclick="actionRename2(${relElement.id})"/><input id="renameButton2_${relElement.id}" type="image" title="edit" src="/public/images/icons/pencil.png" onclick="showRename2(${relElement.id})"/> <input type="image" src="/public/images/icons/delete.png" title="end" onclick="endRelation(${relElement.id})" /> <span id="span_${relElement.id}" style="color:red;"></span>#{/if}</ul>
+							<ul><a href="/mainentitys/viewentity?id=${relElement.source.id}">${relElement.source.name}</a> <input id="textToRename2_${relElement.id}" type="text" value=${relElement.name} style="display:none;"/><q id=${relElement.id}>${relElement.name}</q> <a href="/mainentitys/viewentity?id=${relElement.destination.id}">${relElement.destination.name}</a> #{if (canCreateRelationship == true)}<input type="image" src=@{'public/images/icons/accept.png'} title="Done" style="display:none;" id="renameDone2_${relElement.id}" onclick="actionRename2(${relElement.id})"/><input id="renameButton2_${relElement.id}" type="image" title="edit" src=@{'public/images/icons/pencil.png'} onclick="showRename2(${relElement.id})"/> <input type="image" src=@{'public/images/icons/delete.png'} title="end" onclick="endRelation(${relElement.id})" /> <span id="span_${relElement.id}" style="color:red;"></span>#{/if}</ul>
 					  #{/list}
 				   	#{/if}
 			</div>
@@ -632,7 +632,7 @@
 				<li>
 					#{if topic.hidden == false}
 					#{if topic.canView(user)}
-					<input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
+					<input style="float:left;" type="image" src=@{'public/images/icons/suser.png'}/>
 						 <font size=1 style="float:left;">${topic.creator.username}</font>
 						 <br />
 					<div class="accordionItem">
@@ -642,7 +642,7 @@
 		   				   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
 		       				 
 		        				<input type="hidden" name = "justification" id = "justText"/>
-		           			    <input type="image" style="float:right;" title="Delete Topic" src="/public/images/icons/trash.png" value="&{'crud.delete', type.modelName}" class = "linkButton"/>
+		           			    <input type="image" style="float:right;" title="Delete Topic" src=@{'public/images/icons/trash.png'} value="&{'crud.delete', type.modelName}" class = "linkButton"/>
 		      			    
 		    			   </form> 
 				        #{/if}
@@ -651,7 +651,7 @@
 		                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
 		                   
 		                      	<input type="hidden" name = "justification" id = "justText"/>
-		                       <input type="image" src="/public/images/icons/hide-icon.gif" style="float:right;" title="Hide Topic" class = "linkButton"/>
+		                       <input type="image" src=@{'public/images/icons/hide-icon.gif'} style="float:right;" title="Hide Topic" class = "linkButton"/>
 		                   
 		                 </form> 
 						#{/if}
@@ -677,7 +677,7 @@
 					#{/if}
 					#{else}
 					#{if topic.hider.username == user.username && topic.hidden == true}
-					<input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
+					<input style="float:left;" type="image" src=@{'public/images/icons/suser.png'}/>
 						 <font size=1 style="float:left;">${topic.creator.username}</font>
 						 <br />
 					<div class="accordionItem">
@@ -688,7 +688,7 @@
 		   				   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
 		       				 <p class="crudDelete">
 		        				<input type="hidden" name = "justification" id = "justText"/>
-		           			    <input type="image" style="float:right;" src="/public/images/icons/trash.png" title="Delete Topic" class = "linkButton"/>
+		           			    <input type="image" style="float:right;" src=@{'public/images/icons/trash.png'} title="Delete Topic" class = "linkButton"/>
 		      			    </p>
 		    			   </form> 
 				        #{/if}
@@ -697,7 +697,7 @@
 		                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
 		                    <p class="crudDelete">
 		                      	<input type="hidden" name = "justification" id = "justText"/>
-		                       <input type="image" src="/public/images/icons/hide-icon.gif" style="float:right;" title="Hide Topic" class = "linkButton"/>
+		                       <input type="image" src=@{'public/images/icons/hide-icon.gif'} style="float:right;" title="Hide Topic" class = "linkButton"/>
 		                   </p>
 		                 </form> 
 						#{/if}
@@ -728,7 +728,7 @@
 				No topics available for this entity!
 				#{/else}
 				#{if permission == 1}
-				<input style="float:right;" type="image" src="/public/images/add.png" title="Add A Topic" onclick=location.href="@{Topics.blank(entity.id)}" class = "linkButton"></input>
+				<input style="float:right;" type="image" src=@{'public/images/add.png'} title="Add A Topic" onclick=location.href="@{Topics.blank(entity.id)}" class = "linkButton"></input>
 				
 			#{/if}
 			    
