@@ -1,7 +1,7 @@
 #{extends 'login/index.html' /}
 #{stylesheet src:"ideas.css" /}
-<script src="/public/javascripts/bmi.js" language="javascript"></script>
-<script type="text/javascript" src="/public/javascripts/jquery.min.js"></script>
+<script src="@{'public/javascripts/bmi.js'}" language="javascript"></script>
+<script type="text/javascript" src="@{'public/javascripts/jquery.min.js'}"></script>
 <head>
 		<style type="text/css">body {
 			font-size:80%;
@@ -611,7 +611,7 @@
 	<div id ="page">
 		<div id="page-bgtop">
 			#{script src:"jquery-1.5.2.min.js" /}
-			<script type="text/javascript" src="/public/javascripts/jquery-1.4.1.js"></script>
+			<script type="text/javascript" src="@{'public/javascripts/jquery-1.4.1.js'}"></script>
 			<br/>
 			
 			#{if !defaultEntity}
@@ -674,12 +674,12 @@
 			   				   <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
 			       				 <p class="crudDelete">
 			        				<input type="hidden" name = "justification" id = "justText"/>
-			           			    <input type="image" style="float:right;" src="/public/images/icons/trash.png" title="&{'crud.delete', type.modelName}" class = "linkButton"/>
+			           			    <input type="image" style="float:right;" src="@{'public/images/icons/trash.png'}" title="&{'crud.delete', type.modelName}" class = "linkButton"/>
 			      			    </p>
 			    			   </form>
 			    			   #{/ifnot}
 			    			   #{if isCreator}
-			    			    <input type="image" id="delMine" style="float:right;" src="/public/images/icons/trash.png"  class="linkButton" onclick="deleteTopic(${topicId})" title="Delete My Topic" />
+			    			    <input type="image" id="delMine" style="float:right;" src="@{'public/images/icons/trash.png'}"  class="linkButton" onclick="deleteTopic(${topicId})" title="Delete My Topic" />
 			    			   #{/if} 
 					        #{/if}
 					        <script type="text/javascript">
@@ -696,7 +696,7 @@
 			                  <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
 			                    <p class="crudDelete">
 			                      	<input type="hidden" name = "justification" id = "justText"/>
-			                       <input type="image" src="/public/images/icons/hide-icon.gif" style="float:right;" title="Hide Topic" class = "linkButton"/>
+			                       <input type="image" src="@{'public/images/icons/hide-icon.gif'}" style="float:right;" title="Hide Topic" class = "linkButton"/>
 			                   </p>
 			                 </form> 
 							#{/if}
@@ -710,7 +710,7 @@
 			                #{/if}		
 			            #{/if}
 						#{if permission == 1}			
-	                		<input type="image" src="/public/images/icons/pencil.png" title="Edit topic" onclick=location.href="@{Topics.view(topicId)}" class="linkButton"></input>	
+	                		<input type="image" src="@{'public/images/icons/pencil.png'}" title="Edit topic" onclick=location.href="@{Topics.view(topicId)}" class="linkButton"></input>	
 					 	#{/if}
 				
 			          #{/if}</div>
@@ -718,7 +718,7 @@
 						</div>
 				
 				#{if allowedToTag}
-				<input type="image" title='Add Tags' style="float:left;" src='/public/images/tag.png' id="submit" onclick="hideTagger();"/>
+				<input type="image" title='Add Tags' style="float:left;" src='@{'public/images/tag.png'}' id="submit" onclick="hideTagger();"/>
 				#{/if}
 				<ul id="tagLister" style="list-style: none; ">
 				#{list items:tags, as:'tag'}
@@ -729,7 +729,7 @@
                 <input type="hidden" id='tags' name="tags" value="">
 				
 				<input type="text" maxlength='12' id="tagger" style="display:none; float:left;" name='tag' onkeyup="checkTagValidity('${topicId}', this.value);">
-				<input id="subb" type="image" src='/public/images/add.png' value="Add Tag" style="display:none; float:left; width:auto; height:auto;" onclick="tagTopic();" disabled='true'>
+				<input id="subb" type="image" src='@{'public/images/add.png'}' value="Add Tag" style="display:none; float:left; width:auto; height:auto;" onclick="tagTopic();" disabled='true'>
 				<label id='tagg' style="display:none; float:left;"><font color="#FF0000"> Tag Already Exists!</font></label>
 				<script>
 						function hideTagger(){
@@ -844,12 +844,12 @@
 						   <div id="lista" style="display: none;">
 						   	#{if targetTopic.relationsSource != null}
 						      #{list items:targetTopic.relationsSource, as:'relationElement'}
-									<ul><a href="/topics/show?topicId=${relationElement.source.id}">${relationElement.source.title}</a> <input id="textToRename_${relationElement.id}" type="text" value=${relationElement.name} style="display:none;"/><q id=${relationElement.id}>${relationElement.name}</q> <a href="/topics/show?topicId=${relationElement.destination.id}">${relationElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="image" src="/public/images/icons/accept.png" title="Done" style="display:none;" id="renameDone_${relationElement.id}" onclick="actionRename(${relationElement.id})"/><input id="renameButton_${relationElement.id}" type="image" src="/public/images/icons/pencil.png" title="edit" onclick="showRename(${relationElement.id})"/> <input type="image" src="/public/images/icons/delete.png" title="end relationship" onclick="endRelation(${relationElement.id})" /> <span id="span_${relationElement.id}" style="color:red;"></span>#{/if}</ul>
+									<ul><a href="/topics/show?topicId=${relationElement.source.id}">${relationElement.source.title}</a> <input id="textToRename_${relationElement.id}" type="text" value=${relationElement.name} style="display:none;"/><q id=${relationElement.id}>${relationElement.name}</q> <a href="/topics/show?topicId=${relationElement.destination.id}">${relationElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="image" src="@{'public/images/icons/accept.png'}" title="Done" style="display:none;" id="renameDone_${relationElement.id}" onclick="actionRename(${relationElement.id})"/><input id="renameButton_${relationElement.id}" type="image" src="@{'public/images/icons/pencil.png'}" title="edit" onclick="showRename(${relationElement.id})"/> <input type="image" src="@{'public/images/icons/delete.png'}" title="end relationship" onclick="endRelation(${relationElement.id})" /> <span id="span_${relationElement.id}" style="color:red;"></span>#{/if}</ul>
 							  #{/list}
 							#{/if}
 							#{if targetTopic.relationsDestination != null}
 							  #{list items:targetTopic.relationsDestination, as:'relElement'}
-									<ul><a href="/topics/show?topicId=${relElement.source.id}">${relElement.source.title}</a> <input id="textToRename2_${relElement.id}" type="text" value=${relElement.name} style="display:none;"/><q id=${relElement.id}>${relElement.name}</q> <a href="/topics/show?topicId=${relElement.destination.id}"> ${relElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="image" src="/public/images/icons/accept.png" title="Done" style="display:none;" id="renameDone2_${relElement.id}" onclick="actionRename2(${relElement.id})"/><input id="renameButton2_${relElement.id}" type="image" src="/public/images/icons/pencil.png" title="edit" onclick="showRename2(${relElement.id})"/> <input type="image" src="/public/images/icons/delete.png" title="end" onclick="endRelation(${relElement.id})" /> <span id="span_${relElement.id}" style="color:red;"></span>#{/if}</ul>
+									<ul><a href="/topics/show?topicId=${relElement.source.id}">${relElement.source.title}</a> <input id="textToRename2_${relElement.id}" type="text" value=${relElement.name} style="display:none;"/><q id=${relElement.id}>${relElement.name}</q> <a href="/topics/show?topicId=${relElement.destination.id}"> ${relElement.destination.title}</a> #{if (canCreateRelationship == true)}<input type="image" src="@{'public/images/icons/accept.png'}" title="Done" style="display:none;" id="renameDone2_${relElement.id}" onclick="actionRename2(${relElement.id})"/><input id="renameButton2_${relElement.id}" type="image" src="@{'public/images/icons/pencil.png'}" title="edit" onclick="showRename2(${relElement.id})"/> <input type="image" src="@{'public/images/icons/delete.png'}" title="end" onclick="endRelation(${relElement.id})" /> <span id="span_${relElement.id}" style="color:red;"></span>#{/if}</ul>
 							  #{/list}
 							#{/if}
 						   </div>
@@ -1015,7 +1015,7 @@
 					
 					#{if idea.isDraft == false && idea.hidden==false}
 					<li>
-						<input style="float:left;" type="image" src="/public/images/icons/suser.png"/>
+						<input style="float:left;" type="image" src="@{public/images/icons/suser.png'}"/>
 						 <font size=1 style="float:left;"><a href="@{Users.viewProfile(idea.author.id)}">${idea.author.username}</a></font>
 						 <br />
 						<div id="ideas" class="accordionItem">
@@ -1047,10 +1047,10 @@
 					No ideas available for this topic!
 					#{/else}
 					#{if topicNotClosed && !privateTopic && userJoinedPublic}
-			        <input id="postIdea" src="/public/images/add.png" size=2; type="image" title="Post Idea" class = "linkButton"/>
+			        <input id="postIdea" src="@{'public/images/add.png'}" size=2; type="image" title="Post Idea" class = "linkButton"/>
 			        #{/if}
 			        #{if topicNotClosed && privateTopic && userJoinedPrivate}
-			        <input id="postIdea" src="/public/images/add.png" size=2; type="image" title="Post Idea" class = "linkButton"/>
+			        <input id="postIdea" src="@{'public/images/add.png'}" size=2; type="image" title="Post Idea" class = "linkButton"/>
 			        <style type="text/css">
 			                        #req{display: none;}
 			        </style>
