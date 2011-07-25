@@ -6,7 +6,7 @@
 var debug = false;
 
 var StarryDefaults = {
-		sprite: "/public/images/stars.gif",
+		sprite: @{'public/images/stars.gif'},
 		width: 30,
 		height: 30,
 		startAt: 0,
