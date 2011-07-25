@@ -67,8 +67,8 @@ function reject_request(id)
             </h3>
             Content:  ${assignRequest.content}
             <br/>
-			<a onclick="javascript: reject_request(${assignRequest.id});" style="cursor:pointer; float: right;"/><img src="/public/images/icons/delete.png" title="Reject" width="24" height="24"/></a>
-            <a onclick="javascript: accept_request(${assignRequest.id});" style="cursor:pointer; float: right;"/><img src="/public/images/icons/accept.png" title="Accept" width="24" height="24"/></a>
+			<a onclick="javascript: reject_request(${assignRequest.id});" style="cursor:pointer; float: right;"/><img src="@{'public/images/icons/delete.png'}" title="Reject" width="24" height="24"/></a>
+            <a onclick="javascript: accept_request(${assignRequest.id});" style="cursor:pointer; float: right;"/><img src="@{'public/images/icons/accept.png'}" title="Accept" width="24" height="24"/></a>
        </fieldset> <br/>
     </li>
     #{/list}

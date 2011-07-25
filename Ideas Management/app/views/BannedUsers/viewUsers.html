@@ -3,10 +3,10 @@
 #{set title:'Block/Unblock Page' /}
 
 #{if num==0}
-<a href="@{MainEntitys.viewEntity(object.id)}"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to ${object.name}</a>
+<a href="@{MainEntitys.viewEntity(object.id)}"><img src="@{'public/images/icons/back.png'}" title="back" width="25" height="12"/> Back to ${object.name}</a>
 #{/if}
 #{else}
-<a href="@{Topics.show(object.id)}"><img src="/public/images/icons/back.png" title="back" width="25" height="12"/> Back to ${object.title}</a>
+<a href="@{Topics.show(object.id)}"><img src="@{'public/images/icons/back.png'}" title="back" width="25" height="12"/> Back to ${object.title}</a>
 #{/else}
 <hr>          </hr>
 <u><font size ="4" color ="blue">Enrolled Idea Developers</font></u>
@@ -27,7 +27,7 @@
 <li>
 <a href="@{Users.viewProfile(users.get(u).id)}">${users.get(u).username}</a>
 <br/>
-<font size ="3" color ="black">${users.get(u).firstName} ${users.get(u).lastName}</font><a onclick="javascript: hide('${u}');" id="9_${u}"/><img src="/public/images/icons/blocked.png" title="Block/Unblock" width="30" height="30" align="right"/></a><a onclick="javascript: view('${u}');" id="10_${u}"  style="display:none"/><img src="/public/images/icons/blocked.png" title="Block/Unblock" width="30" height="20" align="right"/></a>
+<font size ="3" color ="black">${users.get(u).firstName} ${users.get(u).lastName}</font><a onclick="javascript: hide('${u}');" id="9_${u}"/><img src="@{'public/images/icons/blocked.png'}" title="Block/Unblock" width="30" height="30" align="right"/></a><a onclick="javascript: view('${u}');" id="10_${u}"  style="display:none"/><img src="@{'public/images/icons/blocked.png'}" title="Block/Unblock" width="30" height="20" align="right"/></a>
 <br/>
 <input class = "linkButton" type="button" onclick="show('${users.get(u).id}',0,'${object.id}','${num}','${u}');" id="1_${u}" value="Block from viewing" style="display:none"/>
 <input class = "linkButton" type="button" onclick="show('${users.get(u).id}',1,'${object.id}','${num}','${u}');"  id="2_${u}" value="Block from using" style="display:none"/>
@@ -83,7 +83,7 @@ document.getElementById('2_${c}').value="Block from using";
 
 
 
-<script src = "@{'/public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
+<script src = "@{'public/javascripts/jquery-1.5.2.min.js'}" type = "text/javascript">
 
 	</script>
 	
