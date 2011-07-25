@@ -547,12 +547,15 @@ public class Organizations extends CoolCRUD {
                 User user = Security.getConnected();
                 Organization org = Organization.findById(id);
                 notFoundIfNull(org);
+                if(Users.isPermitted(user, "view", org.id, "organization")){
                 List<MainEntity> allEntities = MainEntity.findAll();
                 List<Tag> tags = new ArrayList<Tag>();
                 // List<Tag> allTags = Tag.findAll();
                 int i = 0;
                 int allowed = 0;
                 int settings = 0;
+                boolean admin = user.isAdmin;
+                boolean isMember = Users.getEnrolledUsers(org).contains(user);
 
                 org.incrmentViewed();
                 org.save();
@@ -562,14 +565,14 @@ public class Organizations extends CoolCRUD {
                                                 .isPermitted(
                                                                 user,
                                                                 "accept/reject join requests from users to join a private organization",
-                                                                id, "organization") || user.isAdmin))
+                                                                id, "organization")))
                         allowed = 1;
                 if (Users
                                 .isPermitted(
                                                 user,
                                                 "accept/reject join requests from users to join a private organization",
                                                 id, "organization")
-                                || user.isAdmin)
+                                )
                         settings = 1;
                 System.out.println(settings);
                 // while (i < org.createdTags.size()) {
@@ -601,12 +604,12 @@ public class Organizations extends CoolCRUD {
                 // i++;
                 // }
                 // }
-                int canCreateEntity = 0;
+              /*  int canCreateEntity = 0;
                 if (user.isAdmin
                                 || Users.isPermitted(user, "create entities", id,
                                                 "organization")) {
                         canCreateEntity = 1;
-                }
+                }*/
                 List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
                 for (MainEntity entity : allEntities) {
                         if (Users.isPermitted(user, "view", entity.id, "entity")) {
@@ -627,16 +630,19 @@ public class Organizations extends CoolCRUD {
                 List<Topic> topics = new ArrayList<Topic>();
                  for (int x = 0; x < entities.size(); x++) {
                 for (int y = 0; y < org.entitiesList.get(x).topicList.size(); y++) {
-                	if(!org.entitiesList.get(x).topicList.get(y).isDraft && !org.entitiesList.get(x).topicList.get(y).hidden)
+                	if(!org.entitiesList.get(x).topicList.get(y).isDraft && !org.entitiesList.get(x).topicList.get(y).hidden || !org.entitiesList.get(x).topicList.get(y).isDraft && org.entitiesList.get(x).topicList.get(y).hidden && org.entitiesList.get(x).topicList.get(y).creator == user)
                         topics.add(org.entitiesList.get(x).topicList.get(y));
                 }
                  }
+                 
+                 String userName = user.username;
+          
 
                 for (int x = 0; x < entitiesCanBeRelated.size(); x++) {
                         if (!entitiesCanBeRelated.get(x).createRelationship)
                                 entitiesCanBeRelated.remove(entitiesCanBeRelated.get(x));
                 }
-                boolean enrolled = false;
+               // boolean enrolled = false;
                 boolean canInvite = false;
                 if (Users.isPermitted(user,
                                 "Invite a user to join a private or secret organization",
@@ -645,28 +651,28 @@ public class Organizations extends CoolCRUD {
                         canInvite = true;
                 }
 
-                if (Users.getEnrolledUsers(org).contains(user)) {
-                        enrolled = true;
-                }
+                //if (Users.getEnrolledUsers(org).contains(user)) {
+                       // enrolled = true;
+                //}
                 boolean requestToJoin = false;
-                if ((enrolled == false) && (org.privacyLevel == 1)) {
+                if ((isMember == false) && (org.privacyLevel == 1)) {
                         requestToJoin = true;
                 }
-                int flag = 0;
-                if ((Security.getConnected() == org.creator)
+               /*8int flag = 0;
+                if ((user == org.creator)
                                 || (Security.getConnected().isAdmin)) {
                         flag = 1;
-                }
-                boolean admin = user.isAdmin;
-                boolean isMember = Users.getEnrolledUsers(org).contains(user);
-                boolean creator = false;
+                }*/
+          
+               /* boolean creator = false;
                 if (org.creator.equals(user)) {
                         creator = true;
-                }
+                }*/
                 List<RequestToJoin> allRequests = RequestToJoin.findAll();
+                List<User> enrolledUsers = Users.getEnrolledUsers(org);
                 boolean alreadyRequested = false;
                 if ((!user.isAdmin) && (!org.creator.equals(user))
-                                && (!Users.getEnrolledUsers(org).contains(user))
+                                && (!enrolledUsers.contains(user))
                                 && (org.privacyLevel == 1)) {
                         int ii = 0;
                         while (ii < allRequests.size()) {
@@ -680,7 +686,7 @@ public class Organizations extends CoolCRUD {
                 boolean follower = user.followingOrganizations.contains(org);
                 List<User> users = User.findAll();
                 String usernames = "";
-                List<User> enrolledUsers = Users.getEnrolledUsers(org);
+            
                 if (canInvite) {
                         for (int j = 0; j < users.size(); j++) {
                                 if (users.get(j).state.equalsIgnoreCase("a")
@@ -695,18 +701,18 @@ public class Organizations extends CoolCRUD {
                         }
                 }
                 boolean join = false;
-                if ((!Users.getEnrolledUsers(org).contains(user)) && (!admin)
+                if ((!isMember) && (!admin)
                                 && (org.privacyLevel == 2)) {
                         join = true;
                 }
 
                 // Lama Ashraf view logs
 
-                int logFlag = 0;
-                if (Security.getConnected().equals(org.creator)
+              /*  int logFlag = 0;
+                if (user.equals(org.creator)
                                 || Security.getConnected().isAdmin) {
                         logFlag = 1;
-                }
+                }*/
 
                 int permission = 1;
                 if (!Users.isPermitted(user, "post topics", org.id, "organization"))
@@ -721,11 +727,15 @@ public class Organizations extends CoolCRUD {
                 }
               
                         List<Plan> plans = Plans.planList("organization", org.id);
-                        render(user, org, entities, requestToJoin, canCreateEntity, tags,
-                                        flag, canInvite, admin, allowed, isMember, settings,
-                                        creator, alreadyRequested, plans, follower, usernames,
-                                        join, logFlag, pictureId, topics, entitiesCanBeRelated,
-                                        entitiesICanView, followers, defaultEntityId, permission);
+                        render(user, org, entities, requestToJoin, tags,
+                                         canInvite, admin, allowed, isMember, settings,
+                                         alreadyRequested, plans, follower, usernames,
+                                        join, pictureId, topics, entitiesCanBeRelated,
+                                        entitiesICanView, followers, defaultEntityId, permission, userName);
+                }
+                else{
+                	BannedUsers.unauthorized();
+                }
                 
         }
 
