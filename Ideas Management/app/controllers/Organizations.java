@@ -51,9 +51,9 @@ public class Organizations extends CoolCRUD {
 	 * @return boolean
 	 */
 	public static boolean isDuplicate(String relationName,
-			ArrayList<String> relationNames) {
+			List<OrganizationRelationsNames> relationNames) {
 		for (int i = 0; i < relationNames.size(); i++) {
-			if (relationName.equals(relationNames.get(i)))
+			if ( relationName.equals(relationNames.get(i).name))
 				return true;
 		}
 		return false;
@@ -79,11 +79,15 @@ public class Organizations extends CoolCRUD {
 
 	public static boolean addRelationName(long organizationId, String name) {
 		Organization organization = Organization.findById(organizationId);
+		notFoundIfNull(organization);
 		boolean isDuplicate = true;
-		if (!organization.relationNames.contains(name)) {
+		if (!isDuplicate(name,organization.relationNames)) {
 			isDuplicate = false;
-			organization.relationNames.add(new OrganizationRelationsNames(name,organization));
+			OrganizationRelationsNames relationName =new OrganizationRelationsNames(name,organization).save();
+			System.out.println(relationName);
+			organization.relationNames.add(relationName);
 			organization.save();
+			System.out.println(isDuplicate);
 		}
 		return isDuplicate;
 	}
@@ -726,13 +730,17 @@ public class Organizations extends CoolCRUD {
 					MainEntity defaultEntity = org.entitiesList.get(0);
 					defaultEntityId = defaultEntity.id;
                 }
-              
+				List<String> relationNames = new ArrayList<String>();
+				
+				for(int j=0;j<org.relationNames.size();j++)
+					relationNames.add(org.relationNames.get(j).name);
+              System.out.println("names : " +relationNames);
                         List<Plan> plans = Plans.planList("organization", org.id);
                         render(user, org, entities, requestToJoin, tags,
                                          canInvite, admin, allowed, isMember, settings,
                                          alreadyRequested, plans, follower, usernames,
                                         join, pictureId, topics, entitiesCanBeRelated,
-                                        entitiesICanView, followers, defaultEntityId, permission, userName);
+                                        entitiesICanView, followers, defaultEntityId, permission, userName,relationNames);
                 }
                 else{
                 	BannedUsers.unauthorized();
@@ -934,8 +942,13 @@ public class Organizations extends CoolCRUD {
 			i--;
 		}
 		//
+		for(int i=0;i<	organization.relationNames.size();i++){
+			organization.relationNames.get(i).delete();
+			organization.save();
+			i--;
+		}
 		organization.logs.clear();
-		organization.relationNames.clear();
+	
 		organization.save();
 		System.out.println("5alas logs");
 		Log.addUserLog(

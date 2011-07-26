@@ -14,8 +14,6 @@ public class OrganizationRelationsNames extends CoolModel {
 	
 	public OrganizationRelationsNames(String name, Organization organization){
 		this.name = name;
-		
-	
 		this.organization=organization;
 	}
 	
