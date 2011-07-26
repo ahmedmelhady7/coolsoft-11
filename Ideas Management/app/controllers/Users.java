@@ -1761,7 +1761,7 @@ public class Users extends CoolCRUD {
 								+ " has deleted "
 								+ "<a href=\"/users/viewprofile?userId="
 								+ user.id + "\">" + user.username + "</a>",user);
-				render(request.controller.replace(".", "/") + "/index.html");
+				redirect("/users/list");
 				/**
 				 * Added by Ahmed Maged to delete the user's notifications and notification Profile
 				 */
@@ -1819,7 +1819,7 @@ public class Users extends CoolCRUD {
 								+ "<a href=\"/users/viewprofile?userId="
 								+ user.id + "\">" + user.username + "</a>",user);
 				Mail.forgiven(user);
-				render(request.controller.replace(".", "/") + "/index.html", x);
+				redirect("/users/list");
 			} catch (NullPointerException e) {
 				render(request.controller.replace(".", "/") + "/index.html");
 
