@@ -121,7 +121,7 @@ public class Labels extends CoolCRUD
 		String logDescription = "<a href=\"/Users/viewProfile?userId=" 
 			+ user.id 
 			+"\">" 
-			+ user.username
+			+ user.username + "</a>"
 			+" deleted the label "
 			+labelName ;
 		
