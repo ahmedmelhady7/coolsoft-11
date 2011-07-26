@@ -57,14 +57,14 @@
         <li>
 			<h2>Notifications From</h2>
 			<ul>
-				<li><a href="/Users/notificationprofileview?type=All">All</a></li>
-				<li><a href="/Users/notificationprofileview?type=Organization">Organizations</a></li>
-				<li><a href="/Users/notificationprofileview?type=Entity">Entities</a></li>
-				<li><a href="/Users/notificationprofileview?type=Topic">Topics</a></li>
-				<li><a href="/Users/notificationprofileview?type=Idea">Ideas</a></li>
-				<li><a href="/Users/notificationprofileview?type=Plan">Plans</a></li>
-				<li><a href="/Users/notificationprofileview?type=Tag">Tags</a></li>
-				<li><a href="/Users/notificationprofileview?type=User">Users</a></li>
+				<li><a href="/Users/notificationProfileView?type=All">All</a></li>
+				<li><a href="/Users/notificationProfileView?type=Organization">Organizations</a></li>
+				<li><a href="/Users/notificationProfileView?type=Entity">Entities</a></li>
+				<li><a href="/Users/notificationProfileView?type=Topic">Topics</a></li>
+				<li><a href="/Users/notificationProfileView?type=Idea">Ideas</a></li>
+				<li><a href="/Users/notificationProfileView?type=Plan">Plans</a></li>
+				<li><a href="/Users/notificationProfileView?type=Tag">Tags</a></li>
+				<li><a href="/Users/notificationProfileView?type=User">Users</a></li>
 			</ul>        
         </li>        
     </ul>
@@ -121,7 +121,7 @@
 					#{/list}
 					</ul>
 					#{if notificationProfileList.size() != 0}										
-					<form action="/notificationprofiles/alterpreferences?type=${select}" method="post">					
+					<form action="/Notificationprofiles/alterPreferences?type=${select}" method="post">					
 					<input class = "linkButton" type="submit"  value = "Edit Preferences">
 					</form>					
 					#{/if}
