@@ -1,4 +1,4 @@
-#{extends 'login/index.html' /}
+#{extends 'Login/index.html' /}
 
 <style>
 #deleteHide{
@@ -213,7 +213,7 @@
 		}
 		
 		if(${isDefaultEntity}) {
-			link = "/organizations/viewprofile?id=" +${organizationId};
+			link = "/Organizations/viewprofile?id=" +${organizationId};
 		}
 		
 		$.post('@{Topics.createDraft()}' ,{title:topicTitle, description:topicDescription, 
@@ -231,7 +231,7 @@
 		
 		var createRelationship = document.getElementById("object_createRelationship").checked;
 	
-		var link = "/mainentitys/viewentity?id="+entityId;
+		var link = "/Mainentitys/viewentity?id="+entityId;
 		
 		if(topicTitle == "" && topicDescription == "") {
 			alert("Please enter title and decription");
@@ -247,7 +247,7 @@
 		}
 		
 		if(${isDefaultEntity}) {
-			link = "/organizations/viewprofile?id=" +${organizationId};
+			link = "/Organizations/viewprofile?id=" +${organizationId};
 		}
 		
 		$.post('@{Topics.createDraft()}' ,{title:topicTitle, description:topicDescription, 
@@ -304,7 +304,7 @@
 					
 					if(validate())
 					{
-						var link = "/mainentitys/viewentity?id="+entityId;
+						var link = "/Mainentitys/viewentity?id="+entityId;
 						
 						$.post('@{Topics.createDraft()}' ,
 						{title:topicTitle, description:topicDescription,
