@@ -1,7 +1,7 @@
 #{extends 'Login/index.html' /}
 #{set title:'Notifications' /}
 
-<script src="/public/javascripts/bmi.js" language="javascript">
+<script src="@{'public/javascripts/bmi.js'}" language="javascript">
 </script>
 
 <style type="text/css">
@@ -178,8 +178,7 @@
     						<i style="float:right;">Delete</i><input type="checkbox" style="float:right;" name="checkfield" id="${notifi.id}" onclick="toggleCheck(${notifi.id})" class="enabled"></h3>  						    						
     						<div id="descriptionShow">    												
     						<b>Message: </b> ${notifi.description} 
-    						<a style="cursor:pointer" onclick="kill(${notifi.id})"><img src="/public/images/icons/delete.png" title="delete" style="float:right;" width="10" height="10"/></a>    						    						
-    						
+    						<a style="cursor:pointer" onclick="kill(${notifi.id})"><img src="@{'/public/images/icons/delete.png'}" title="delete" style="float:right;" width="10" height="10"/></a>    						    						
     						</div> 
     						</div>   						
     						</li>
