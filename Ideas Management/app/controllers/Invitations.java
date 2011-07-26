@@ -286,19 +286,19 @@ public class Invitations extends CoolCRUD {
 								+ name);
 
 			if (reciever != null) {
-				String logDescription = "<a href=\"/users/viewprofile?userId="
+				String logDescription = "<a href=\"/Users/viewProfile?userId="
 						+ user.id
 						+ "\">"
 						+ user.username
 						+ "</a>"
 						+ " has invited user "
-						+ "<a href=\"/users/viewprofile?userId="
+						+ "<a href=\"/Users/viewProfile?userId="
 						+ reciever.id
 						+ "\">"
 						+ reciever.username
 						+ "</a>"
 						+ " to be organizer to "
-						+ "<a href=\"/mainentitys/viewentity?id="
+						+ "<a href=\"/Mainentitys/viewEntity?id="
 						+ entity.id + "\">" + entity.name + "</a>" + " entity";
 
 				Log.addUserLog(logDescription, entity.organization, entity,
@@ -307,7 +307,7 @@ public class Invitations extends CoolCRUD {
 						"organization",
 						"You have received a new invitation from " + name);
 			} else {
-				String logDescription = "<a href=\"/users/viewprofile?userId="
+				String logDescription = "<a href=\"/Users/viewProfile?userId="
 						+ user.id
 						+ "\">"
 						+ user.username
@@ -315,7 +315,7 @@ public class Invitations extends CoolCRUD {
 						+ " has invited unregiseterd user with email"
 						+ email
 						+ " to be organizer to "
-						+ "<a href=\"/mainentitys/viewentity?id="
+						+ "<a href=\"/Mainentitys/viewEntity?id="
 						+ entity.id + "\">" + entity.name + "</a>" + " entity";
 
 				Log.addUserLog(logDescription, entity.organization, entity,
@@ -334,19 +334,19 @@ public class Invitations extends CoolCRUD {
 								+ name);
 
 			if (reciever != null) {
-				String description = "<a href=\"/users/viewprofile?userId="
+				String description = "<a href=\"/Users/viewProfile?userId="
 						+ user.id
 						+ "\">"
 						+ user.username
 						+ "</a>"
 						+ " has invited user "
-						+ "<a href=\"/users/viewprofile?userId="
+						+ "<a href=\"/Users/viewProfile?userId="
 						+ reciever.id
 						+ "\">"
 						+ reciever.username
 						+ "</a>"
 						+ " to be an idea developer in "
-						+ "<a href=\"/topics/show?id="
+						+ "<a href=\"/Topics/show?id="
 						+ topic.id + "\">" + topic.title + "</a>" + " topic";
 
 				Log.addUserLog(description, organization, topic.entity, topic,
@@ -355,7 +355,7 @@ public class Invitations extends CoolCRUD {
 						"You have received a new invitation from " + name);
 			} else {
 
-				String description = "<a href=\"/users/viewprofile?userId="
+				String description = "<a href=\"/Users/viewProfile?userId="
 						+ user.id
 						+ "\">"
 						+ user.username
@@ -363,7 +363,7 @@ public class Invitations extends CoolCRUD {
 						+ " has invited an unregiseterd user with email "
 						+ email
 						+ " to be an idea developer in "
-						+ "<a href=\"/topics/show?id="
+						+ "<a href=\"/Topics/show?id="
 						+ topic.id + "\">" + topic.title + "</a>" + " topic";
 
 				Log.addUserLog(description, organization, topic.entity, topic,
@@ -519,13 +519,13 @@ public class Invitations extends CoolCRUD {
 												+ " has been added as an organizer to entity  "
 												+ entity.name);
 
-					String logDescription = "<a href=\"/users/viewprofile?userId="
+					String logDescription = "<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ "</a>"
 							+ " has accepted the invitation to be organizer to Entity "
-							+ "<a href=\"/mainentitys/viewentity?id="
+							+ "<a href=\"/Mainentitys/viewEntity?id="
 							+ entity.id + "\">" + entity.name + "</a>";
 
 					Log.addUserLog(logDescription, entity.organization, user);
@@ -565,13 +565,13 @@ public class Invitations extends CoolCRUD {
 						}
 					}
 
-					String description = "<a href=\"/users/viewprofile?userId="
+					String description = "<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ "</a>"
 							+ " has accepted the invitation to join organization "
-							+ "<a href=\"/organizations/viewProfile?id="
+							+ "<a href=\"/Organizations/viewProfile?id="
 							+ organization.id
 							+ "\">"
 							+ organization.name
@@ -588,13 +588,13 @@ public class Invitations extends CoolCRUD {
 							topic.id, "topic", " A new User " + user.username
 									+ " has joined topic " + topic.title);
 
-				String description = "<a href=\"/users/viewprofile?userId="
+				String description = "<a href=\"/Users/viewProfile?userId="
 						+ user.id
 						+ "\">"
 						+ user.username
 						+ "</a>"
 						+ " has accepted the invitation to be an idea developer  in topic "
-						+ "<a href=\"/topics/show?id="
+						+ "<a href=\"/Topics/show?id="
 						+ topic.id + "\">" + topic.title + "</a>";
 
 				Log.addUserLog(description, topic, organization, entity, user);
@@ -621,13 +621,13 @@ public class Invitations extends CoolCRUD {
 												+ "has rejected the invitation to be an organizer to Entity  "
 												+ entity.name);
 
-					String logDescription = "<a href=\"/users/viewprofile?userId="
+					String logDescription = "<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ "</a>"
 							+ " has rejected the invitation to be organizer to entity "
-							+ "<a href=\"/mainentitys/viewentity?id="
+							+ "<a href=\"/Mainentitys/viewEntity?id="
 							+ entity.id + "\">" + entity.name + "</a>";
 
 					Log.addUserLog(logDescription, organization, entity, user);
@@ -646,13 +646,13 @@ public class Invitations extends CoolCRUD {
 											+ " has rejected the invitation to join topic "
 											+ topic.title);
 
-				String logDescription = "<a href=\"/users/viewprofile?userId="
+				String logDescription = "<a href=\"/Users/viewProfile?userId="
 						+ user.id
 						+ "\">"
 						+ user.username
 						+ "</a>"
 						+ " has rejected the invitation to join topic "
-						+ "<a href=\"/topics/show?topicId="
+						+ "<a href=\"/Topics/show?topicId="
 						+ topic.id + "\">" + topic.title + "</a>";
 				Log.addUserLog(logDescription, organization, entity, topic,
 						user);

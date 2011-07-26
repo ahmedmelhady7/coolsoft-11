@@ -52,10 +52,10 @@ public class Comments extends CoolCRUD {
 				userLoggedIn).save();
 		planInUse.commentsList.add(commentInitialized);
 		planInUse.save();
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 			+ userLoggedIn.id + "\">" 
 			+ userLoggedIn.username + "</a>" 
-			+ " added a comment to plan " +"<a href=\"/plans/viewaslist?planId="
+			+ " added a comment to plan " +"<a href=\"/Plans/viewAsList?planId="
 			+ planId
 			+ "\">"
 			+ planInUse.title
@@ -90,10 +90,10 @@ public class Comments extends CoolCRUD {
 		ideaInUse.commentsList.add(commentInitialized);
 		ideaInUse.save();
 		
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 			+ userLoggedIn.id + "\">" 
 			+ userLoggedIn.username + "</a>" 
-			+ " added a comment to idea " +"<a href=\"/ideas/show?ideaId="
+			+ " added a comment to idea " +"<a href=\"/Ideas/show?ideaId="
 			+ ideaId
 			+ "\">"
 			+ ideaInUse.title
@@ -121,10 +121,10 @@ public class Comments extends CoolCRUD {
 			if (allTopics.get(i).commentsOn.contains(comment)) {
 				allTopics.get(i).commentsOn.remove(comment);
 				
-				String logDescription = "<a href=\"/users/viewprofile?userId="
+				String logDescription = "<a href=\"/Users/viewProfile?userId="
 					+ Security.getConnected().id + "\">" 
 					+ Security.getConnected().username + "</a>" 
-					+ " deleted a comment on the topic " +"<a href=\"/topics/show?topicId="
+					+ " deleted a comment on the topic " +"<a href=\"/Topics/show?topicId="
 					+ allTopics.get(i).id
 					+ "\">"
 					+ allTopics.get(i).title
@@ -138,10 +138,10 @@ public class Comments extends CoolCRUD {
 			if (allIdeas.get(i).commentsList.contains(comment)) {
 				allIdeas.get(i).commentsList.remove(comment);
 				
-				String logDescription = "<a href=\"/users/viewprofile?userId="
+				String logDescription = "<a href=\"/Users/viewProfile?userId="
 					+ Security.getConnected().id + "\">" 
 					+ Security.getConnected().username + "</a>" 
-					+ " deleted a comment on the idea " +"<a href=\"/ideas/show?ideaId="
+					+ " deleted a comment on the idea " +"<a href=\"/Ideas/show?ideaId="
 					+ allIdeas.get(i).id
 					+ "\">"
 					+ allIdeas.get(i).title
@@ -155,10 +155,10 @@ public class Comments extends CoolCRUD {
 			if (allPlans.get(i).commentsList.contains(comment)) {
 				allPlans.get(i).commentsList.remove(comment);
 				
-				String logDescription = "<a href=\"/users/viewprofile?userId="
+				String logDescription = "<a href=\"/Users/viewProfile?userId="
 					+ Security.getConnected().id + "\">" 
 					+ Security.getConnected().username + "</a>" 
-					+ " deleted a comment on the idea " +"<a href=\"/plans/viewaslist?planId="
+					+ " deleted a comment on the idea " +"<a href=\"/Plans/viewAsList?planId="
 					+ allPlans.get(i).id
 					+ "\">"
 					+ allPlans.get(i).title

@@ -140,7 +140,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 				if (status == 1) {
 					EntityRelationships.createRelationship(createRequest.name,
 							source.id, destination.id);
-					String logDescription = "<a href=\"/users/viewprofile?userId="
+					String logDescription = "<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
@@ -149,13 +149,13 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							+ " has accepted request to create relationship "
 							+ createRequest.name
 							+" between entities "
-							+ "<a href=\"/mainentitys/viewentity?id="
+							+ "<a href=\"/Mainentitys/viewEntity?id="
 							+ source.id
 							+ "\">"
 							+ source.name
 							+ "</a>"
 							+ " and "
-							+ "<a href=\"/mainentitys/viewentity?id="
+							+ "<a href=\"/Mainentitys/viewEntity?id="
 							+ destination.id
 							+ "\">"
 							+ destination.name
@@ -165,20 +165,20 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							destination, source);
 
 				} else {
-					String logDescription = "<a href=\"/users/viewprofile?userId="
+					String logDescription = "<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ " "
 							+ "</a>"
 							+ " has rejectted request to create relationship between entities "
-							+ "<a href=\"/mainentitys/viewentity?id="
+							+ "<a href=\"/Mainentitys/viewEntity?id="
 							+ source.id
 							+ "\">"
 							+ source.name
 							+ "</a>"
 							+ " and "
-							+ "<a href=\"/mainentitys/viewentity?id="
+							+ "<a href=\"/Mainentitys/viewEntity?id="
 							+ destination.id
 							+ "\">"
 							+ destination.name
@@ -196,7 +196,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 				if (status == 1) {
 					TopicRelationships.createRelationship(createRequest.name,
 							source.id, destination.id);
-					String logDescription = "<a href=\"/users/viewprofile?userId="
+					String logDescription = "<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
@@ -220,7 +220,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 					Log.addUserLog(logDescription, organization, user,
 							destination, source, source.entity);
 				} else {
-					String logDescription = "<a href=\"/users/viewprofile?userId="
+					String logDescription = "<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
@@ -282,20 +282,20 @@ public class CreateRelationshipRequests extends CoolCRUD {
 						relation.destination.relationsDestination
 								.remove(relation);
 						relation.destination.save();
-						String logDescription = "<a href=\"/users/viewprofile?userId="
+						String logDescription = "<a href=\"/Users/viewProfile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
 								+ " "
 								+ "</a>"
 								+ " has accepted request to end relationship between entities "
-								+ "<a href=\"/mainentitys/viewentity?id="
+								+ "<a href=\"/Mainentitys/viewEntity?id="
 								+ relation.source.id
 								+ "\">"
 								+ relation.source.name
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"/mainentitys/viewentity?id="
+								+ "<a href=\"/Mainentitys/viewEntity?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.name + "</a>";
@@ -319,7 +319,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							i--;
 						}
 
-						String logDescription = "<a href=\"/users/viewprofile?userId="
+						String logDescription = "<a href=\"/Users/viewProfile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
@@ -330,13 +330,13 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								+ " to"
 								+ renameRequest.newName
 								+ "between entities"
-								+ "<a href=\"/mainentitys/viewentity?id="
+								+ "<a href=\"/Mainentitys/viewEntity?id="
 								+ relation.source.id
 								+ "\">"
 								+ relation.source.name
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"/mainentitys/viewentity?id="
+								+ "<a href=\"/Mainentitys/viewEntity?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.name + "</a>";
@@ -346,7 +346,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 					}
 				} else {
 					if (renameRequest.requestType == 0) {
-						String logDescription = "<a href=\"/users/viewprofile?userId="
+						String logDescription = "<a href=\"/Users/viewProfile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
@@ -355,13 +355,13 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								+ " has rejected request to end relationship "
 								+ relation.name
 								+ " between entities "
-								+ "<a href=\"/mainentitys/viewentity?id="
+								+ "<a href=\"/Mainentitys/viewEntity?id="
 								+ relation.source.id
 								+ "\">"
 								+ relation.source.name
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"/mainentitys/viewentity?id="
+								+ "<a href=\"/Mainentitys/viewEntity?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.name + "</a>";
@@ -370,7 +370,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								relation.destination, relation.source);
 
 					} else {
-						String logDescription = "<a href=\"/users/viewprofile?userId="
+						String logDescription = "<a href=\"/Users/viewProfile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
@@ -381,13 +381,13 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								+ " to "
 								+ renameRequest.newName
 								+ " between entities "
-								+ "<a href=\"/mainentitys/viewentity?id="
+								+ "<a href=\"/Mainentitys/viewEntity?id="
 								+ relation.source.id
 								+ "\">"
 								+ relation.source.name
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"/mainentitys/viewentity?id="
+								+ "<a href=\"/Mainentitys/viewEntity?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.name + "</a>";
@@ -419,7 +419,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 						relation.destination.relationsDestination
 								.remove(relation);
 						relation.destination.save();
-						String logDescription = "<a href=\"/users/viewprofile?userId="
+						String logDescription = "<a href=\"/Users/viewProfile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
@@ -432,7 +432,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								+ relation.source.title
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"/mainentitys/viewentity?id="
+								+ "<a href=\"/Mainentitys/viewEntity?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.title + "</a>";
@@ -455,7 +455,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							i--;
 						}
 
-						String logDescription = "<a href=\"/users/viewprofile?userId="
+						String logDescription = "<a href=\"/Users/viewProfile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
@@ -484,7 +484,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 					}
 				} else {
 					if (renameRequest.requestType == 0) {
-						String logDescription = "<a href=\"/users/viewprofile?userId="
+						String logDescription = "<a href=\"/Users/viewProfile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
@@ -497,7 +497,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								+ relation.source.title
 								+ "</a>"
 								+ " and "
-								+ "<a href=\"/mainentitys/viewentity?id="
+								+ "<a href=\"/Mainentitys/viewEntity?id="
 								+ relation.destination.id
 								+ "\">"
 								+ relation.destination.title + "</a>";
@@ -508,7 +508,7 @@ public class CreateRelationshipRequests extends CoolCRUD {
 								relation.destination.entity);
 
 					} else {
-						String logDescription = "<a href=\"/users/viewprofile?userId="
+						String logDescription = "<a href=\"/Users/viewProfile?userId="
 								+ user.id
 								+ "\">"
 								+ user.username
