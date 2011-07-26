@@ -69,13 +69,13 @@ public class Labels extends CoolCRUD
 			Label label = new Label(name,user,choosenIdeas);
 			label.save();
 			
-			String logDescription = "<a href=\"/users/viewprofile?userId=" 
+			String logDescription = "<a href=\"/Users/viewProfile?userId=" 
 				+ user.id 
 				+"\">" 
 				+ user.username 
 				+ "</a>"
 				+ " created the label " 
-				+"<a href=\"/labels/showlabel?labelId=" 
+				+"<a href=\"/Labels/showLabel?labelId=" 
 				+ label.id 
 				+"\">" 
 				+  label.name 
@@ -89,13 +89,13 @@ public class Labels extends CoolCRUD
 		{
 			Label label = new Label(name,user);
 			label.save();
-			String logDescription = "<a href=\"/users/viewprofile?userId=" 
+			String logDescription = "<a href=\"/Users/viewProfile?userId=" 
 				+ user.id 
 				+"\">" 
 				+ user.username 
 				+ "</a>"
 				+ " created the label " 
-				+"<a href=\"/labels/showlabel?labelId=" 
+				+"<a href=\"/Labels/showLabel?labelId=" 
 				+ label.id 
 				+"\">" 
 				+label.name 
@@ -118,7 +118,7 @@ public class Labels extends CoolCRUD
 		Label label = Label.findById(labelId);
 		String labelName = label.name;
 		label.deleteLabel();
-		String logDescription = "<a href=\"/users/viewprofile?userId=" 
+		String logDescription = "<a href=\"/Users/viewProfile?userId=" 
 			+ user.id 
 			+"\">" 
 			+ user.username
@@ -211,14 +211,14 @@ public class Labels extends CoolCRUD
 		label.name = newName;
 		label.save();
 		
-		String logDescription = "<a href=\"/users/viewprofile?userId=" 
+		String logDescription = "<a href=\"/Users/viewProfile?userId=" 
 			+ user.id 
 			+"\">" 
 			+user.username 
 			+"</a>"
 			+" changed the label named "
 			+oldName 
-			+" to <a href=\"/labels/showlabel?labelId=" 
+			+" to <a href=\"/Labels/showLabel?labelId=" 
 			+label.id 
 			+"\">" 
 			+label.name 
