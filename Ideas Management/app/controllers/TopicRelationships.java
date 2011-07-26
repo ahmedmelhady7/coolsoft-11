@@ -77,7 +77,7 @@ public class TopicRelationships extends CoolCRUD {
 								+ source.title + "\" and \""
 								+ destination.title + "\".");
 			}
-			Log.addUserLog("<a href=\"/users/viewprofile?userId="
+			Log.addUserLog("<a href=\"/Users/viewProfile?userId="
 					+ Security.getConnected().id + "\">"
 					+ Security.getConnected().username+ "</a>" 
 					+ "created a relationship " + name
@@ -140,7 +140,7 @@ public class TopicRelationships extends CoolCRUD {
 				relation.source, relation.destination);
 		if (relation.name != newName) {
 			if (!relationDuplicate(relationTemp)) {
-				Log.addUserLog("<a href=\"/users/viewprofile?userId="
+				Log.addUserLog("<a href=\"/Users/viewProfile?userId="
 						+ Security.getConnected().id + "\">"
 						+ Security.getConnected().username + "</a>"
 						+ " renamed the relationship " + relation.name
@@ -180,7 +180,7 @@ public class TopicRelationships extends CoolCRUD {
 	public static boolean delete(long relationId) {
 		TopicRelationship relation = TopicRelationship.findById(relationId);
 		notFoundIfNull(relation);
-		Log.addUserLog("<a href=\"/users/viewprofile?userId="
+		Log.addUserLog("<a href=\"/Users/viewProfile?userId="
 				+ Security.getConnected().id + "\">"
 				+ Security.getConnected().username + "</a>"
 				+ " deleted the relationship " +  relation.name

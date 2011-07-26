@@ -107,11 +107,11 @@ public class TopicRequests extends CoolCRUD{
 
 		}
 		
-		String logDescription = "<a href=\"/users/viewprofile?userId=" + user.id +"\">" 
+		String logDescription = "<a href=\"/Users/viewProfile?userId=" + user.id +"\">" 
 		+ user.username +  "</a>"
-        + " requested a topic " +"<a href=\"/topics/show?topicId=" + temporaryTopicRequest.id 
+        + " requested a topic " +"<a href=\"/Topics/show?topicId=" + temporaryTopicRequest.id 
         +"\">" + temporaryTopicRequest.title + "</a>"
-        + " in entity " + "<a href=\"/mainentitys/viewentity?id=" 
+        + " in entity " + "<a href=\"/MainEntitys/viewEntity?id=" 
         + entity.id +"\">" + entity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopicRequest, user, entity,
 				entity.organization);
@@ -224,9 +224,9 @@ public static void acceptRequest(long topicRequestId, String topicDescription) {
 	Notifications.sendNotification(
 			request.requester.id, topic.id, "topic",
 			"The topic request named " + request.title + " has been accepted.");
-	String logDescription = "<a href=\"/users/viewprofile?userId=" 
+	String logDescription = "<a href=\"/Users/viewProfile?userId=" 
 		+ Security.getConnected().id +"\">" + Security.getConnected().username + "</a>"
-    + " accepted a topic request with the title " + request.title +" in <a href=\"/mainentitys/viewentity?id=" 
+    + " accepted a topic request with the title " + request.title +" in <a href=\"/MainEntitys/viewEntity?id=" 
     + request.entity.id +"\">" +  request.entity.name + "</a>";
 	Log.addUserLog(logDescription, request.entity, request.entity.organization, Security.getConnected());
 }
@@ -252,9 +252,9 @@ public static void rejectRequest(long topicRequestId) {
 	Notifications.sendNotification(
 			request.requester.id, entity.id, "entity",
 			"The topic request named " + request.title + " has been rejected.");
-	String logDescription = "<a href=\"/users/viewprofile?userId=" 
+	String logDescription = "<a href=\"/Users/viewProfile?userId=" 
 		+ Security.getConnected().id +"\">" + Security.getConnected().username + "</a>"
-    + " rejected a topic request with the title " + request.title +" in <a href=\"/mainentitys/viewentity?id=" 
+    + " rejected a topic request with the title " + request.title +" in <a href=\"/MainEntitys/viewEntity?id=" 
     + request.entity.id +"\">" +  request.entity.name + "</a>";
 	Log.addUserLog(logDescription, request.entity, request.entity.organization, Security.getConnected());
 }

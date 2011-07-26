@@ -65,16 +65,16 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 					user, organisation, relation, type, requestType, newName);
 			renameRequest.save();
 			Log.addUserLog(
-					"<a href=\"/users/viewprofile?userId="
+					"<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ "</a>"
 							+ " has requested to rename the following relationship between"
-							+ "<a href=\"/mainentitys/viewentity?mainentityId="
+							+ "<a href=\"/MainEntitys/viewEntity?mainentityId="
 							+ relation.source.id + "\">" + relation.source.name + "</a>" +" " 
 							+ relation.name
-							+ " " + "<a href=\"/mainentitys/viewentity?mainentityId="
+							+ " " + "<a href=\"/MainEntitys/viewEntity?mainentityId="
 							+ relation.destination.id + "\">" + relation.destination.name + "</a>" 
 							+ " with " + newName, organisation);
 			redirect("MainEntitys.viewEntity", entityId, "Request created");
@@ -88,16 +88,16 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 					user, organisation, relation, type, requestType, newName);
 			renameRequest.save();
 			Log.addUserLog(
-					"<a href=\"/users/viewprofile?userId="
+					"<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ "</a>"
 							+ " has requested to rename the following relationship between topics: "
-							+ "<a href=\"/topics/show?topicId="
+							+ "<a href=\"/Topics/show?topicId="
 							+ relation.source.id + "\">" + relation.source.title + "</a>" +" " 
 							+ relation.name
-							+ " " + "<a href=\"/topics/show?topicId="
+							+ " " + "<a href=\"/Topics/show?topicId="
 							+ relation.destination.id + "\">" + relation.destination.title + "</a>" 
 							+ " with " + newName, organisation);
 			redirect("Topics.show", topicId, "Request created");
@@ -152,16 +152,16 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 					user, organisation, relation, type, requestType, null);
 			renameRequest.save();
 			Log.addUserLog(
-					"<a href=\"/users/viewprofile?userId="
+					"<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ "</a>"
 							+ " has requested to delete the following relationship between"
-							+ "<a href=\"/mainentitys/viewentity?mainentityId="
+							+ "<a href=\"/MainEntitys/viewEntity?mainentityId="
 							+ relation.source.id + "\">" + relation.source.name + "</a>" +" " 
 							+ relation.name
-							+ " " + "<a href=\"/mainentitys/viewentity?mainentityId="
+							+ " " + "<a href=\"/MainEntitys/viewEntity?mainentityId="
 							+ relation.destination.id + "\">" + relation.destination.name + "</a>" 
 							, organisation);		
 			redirect("MainEntitys.viewEntity", entityId, "Request created");
@@ -175,16 +175,16 @@ public class RenameEndRelationshipRequests extends CoolCRUD {
 					user, organisation, relation, type, requestType, null);
 			renameRequest.save();
 			Log.addUserLog(
-					"<a href=\"/users/viewprofile?userId="
+					"<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ "</a>"
 							+ " has requested to delete the following relationship between topics: "
-							+ "<a href=\"/topics/show?topicId="
+							+ "<a href=\"/Topics/show?topicId="
 							+ relation.source.id + "\">" + relation.source.title + "</a>" 
 							+" " + relation.name
-							+ " " + "<a href=\"/topics/show?topicId="
+							+ " " + "<a href=\"/Topics/show?topicId="
 							+ relation.destination.id + "\">" + relation.destination.title + "</a>" 
 							, organisation);
 			redirect("Topics.show", topicId, "Request created");

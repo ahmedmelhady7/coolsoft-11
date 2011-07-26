@@ -1,4 +1,4 @@
-#{extends 'login/index.html' /}
+#{extends 'Login/index.html' /}
 #{stylesheet src:"ideas.css" /}
 <style type="text/css">
         #labels li
@@ -59,10 +59,10 @@
 <div id="leftSidebar">
         <br/><br/><br/><br/><br/><br/>
         <div id="h13">Share</div>
-        <a href="http://www.facebook.com/sharer.php?u=http://localhost:9008/ideas/show?ideaId=${ideaId}&t=Idea - ${idea.title}" rel="external,nofollow" target="_blank">
+        <a href="http://www.facebook.com/sharer.php?u=/Ideas/show?ideaId=${ideaId}&t=Idea - ${idea.title}" rel="external,nofollow" target="_blank">
         <img src="@{'public/images/Facebook.png'}" style="size:auto;" alt="Share on Facebook"/>
         </a>
-        <a href="http://twitter.com/home?status=Idea - ${idea.title} http://localhost:9008/ideas/show?ideaId=${ideaId}" rel="external,nofollow" target="_blank">
+        <a href="http://twitter.com/home?status=Idea - ${idea.title} http:/Ideas/show?ideaId=${ideaId}" rel="external,nofollow" target="_blank">
         <img src="@{'public/images/twitter.png'}" alt="Tweet this"/>
         </a>
         </br></br></br>
@@ -260,7 +260,7 @@
                                 #{/if}
                                 <ul id="tagLister" style="list-style: none; ">
                                 #{list items:tags, as:'tag'}
-                <a href="/tags/mainpage?tagId=${tag.id}" style="float:left;">${tag.name} &nbsp </a>
+                <a href="/Tags/mainpage?tagId=${tag.id}" style="float:left;">${tag.name} &nbsp </a>
                                 #{/list}
                                 </ul>
                                 #{if permittedToTagIdea}

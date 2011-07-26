@@ -63,7 +63,7 @@
                 #{/else}</a>
         </li>
         <li>
-            <a href="/users/notificationprofileview?type=All">Notification Profile</a>
+            <a href="/Users/notificationProfileView?type=All">Notification Profile</a>
         </li>
         <li>
             #{if !user.isAdmin}<a href="@{Invitations.view()}">Invitations</a>
@@ -119,7 +119,7 @@
                             </ul>
                             #{/list} 
                             </div>
-                            <a href="/users/notificationview?type=All">All Notifications</a>
+                            <a href="/Users/notificationView?type=All">All Notifications</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <a id="hide" style="cursor:pointer">Hide <img src="@{'public/images/icons/up.png'}" title="up" width="14" height="10"/></a>
                         </div>
@@ -254,7 +254,7 @@
                                 #{if !user.isAdmin}<a href="@{Users.confirmDeactivation()}">Deactivate</a>
                                 <br>
                                 #{/if} 
-                                #{if user.isAdmin}<a href="http://localhost:9008/admin">Admin View</a>
+                                #{if user.isAdmin}<a href="/admin">Admin View</a>
                                 <br>
                                 <a href="@{Logs.viewUserLogs()}">View Logs</a>
                                 <br>

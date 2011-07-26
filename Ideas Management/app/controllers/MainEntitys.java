@@ -86,13 +86,13 @@ public class MainEntitys extends CoolCRUD {
 			user.followingEntities.add(entity);
 			user.save();
 			Log.addUserLog(
-					"<a href=\"/users/viewprofile?userId="
+					"<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ "</a>"
 							+ " has followed the entity "
-							+ "<a href=\"/mainentitys/viewentity?mainentityId="
+							+ "<a href=\"/MainEntitys/viewEntity?mainentityId="
 							+ entity.id 
 							+ "\">" 
 							+ entity.name 
@@ -231,13 +231,13 @@ public class MainEntitys extends CoolCRUD {
 					createRelationship);
 			entity.save();
 			Log.addUserLog(
-					"<a href=\"/users/viewprofile?userId="
+					"<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ "</a>"
 							+ " has created the entity "
-							+ "<a href=\"/mainentitys/viewentity?mainentityId="
+							+ "<a href=\"/MainEntitys/viewEntity?mainentityId="
 							+ entity.id + "\">" + entity.name + "</a>",
 					organisation);
 		}
@@ -285,19 +285,19 @@ public class MainEntitys extends CoolCRUD {
 			entity.save();
 			System.out.println("will create now");
 			Log.addUserLog(
-					"<a href=\"/users/viewprofile?userId="
+					"<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ "</a>"
 							+ " has created the subentity "
-							+ "<a href=\"/mainentitys/viewentity?mainentityId="
+							+ "<a href=\"/MainEntitys/viewEntity?mainentityId="
 							+ entity.id
 							+ "\">"
 							+ entity.name
 							+ "</a>"
 							+ " for the entity "
-							+ "<a href=\"/mainentitys/viewentity?mainentityId="
+							+ "<a href=\"/MainEntitys/viewEntity?mainentityId="
 							+ parent.id + "\">" + parent.name + "</a>",
 					organization);
 			List<User> receivers = Users.getEntityOrganizers(parent);
@@ -651,13 +651,13 @@ public class MainEntitys extends CoolCRUD {
 		entity.createRelationship = createRelationship;
 		entity.save();
 		Log.addUserLog(
-				"<a href=\"/users/viewprofile?userId="
+				"<a href=\"/Users/viewProfile?userId="
 						+ user.id
 						+ "\">"
 						+ user.username
 						+ "</a>"
 						+ " has edited the entity "
-						+ "<a href=\"/mainentitys/viewentity?mainentityId="
+						+ "<a href=\"/MainEntitys/viewEntity?mainentityId="
 						+ entity.id + "\">" + entity.name + "</a>",
 				entity.organization);
 		redirect(request.controller + ".viewEntity", entity.id,
