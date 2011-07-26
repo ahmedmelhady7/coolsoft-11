@@ -400,7 +400,7 @@ $("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-meta
                 			$.post('@{workOnItem()}', {itemId:id});
                 			$("#buttonWork_" + id).remove();
 							$("#noUserLabel_" + id).remove();
-                		    $("#assignees_" + id).append("<li> <a href=\"/users/viewprofile?userId=" + ${user.id} + "\">"+name+"</a> </li>");
+                		    $("#assignees_" + id).append("<li> <a href=\"Users/viewProfile?userId=" + ${user.id} + "\">"+name+"</a> </li>");
 						
                 	}	
                 	
@@ -426,7 +426,7 @@ $("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-meta
 						   
 							var eId = entityReturned.id;
 							var eName = entityReturned.name;
-						   $("#entityRelated_" + item).html("<div id = \"removeEntity_" + item + "\">Related to entity: <a href=\"/mainentitys/viewentity?id=" + eId + "\">"+eName+"</a></div>");
+						   $("#entityRelated_" + item).html("<div id = \"removeEntity_" + item + "\">Related to entity: <a href=\"/Mainentitys/viewEntity?id=" + eId + "\">"+eName+"</a></div>");
 						});$("#removeButton_" + item).show();
                           }
                                       
@@ -449,7 +449,7 @@ $("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-meta
 									if (tagTemp.success == "1") {
 										var tagId = tagTemp.id;
 										
-										var url = "<li><a href=\"/tags/mainpage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
+										var url = "<li><a href=\"/Tags/mainPage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
 										$("#tags_" + id).append(url);
 										$("#tagSuccess_" + id).html("New Tag is created successfuly");
 									}
@@ -457,7 +457,7 @@ $("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-meta
 										if (tagTemp.success == "2") {
 											var tagId = tagTemp.id;
 											
-											var url = "<li><a href=\"/tags/mainpage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
+											var url = "<li><a href=\"/Tags/mainPage?tagId=" + tagId + "\">" + tagTemp.name + "</a></li>";
 											$("#tags_" + id).append(url);
 											$("#tagSuccess_" + id).html("Item is tagged successfuly");
 										}
