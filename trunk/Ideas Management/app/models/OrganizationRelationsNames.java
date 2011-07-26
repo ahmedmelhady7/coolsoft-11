@@ -6,6 +6,7 @@ public class OrganizationRelationsNames extends CoolModel {
 	
 	public String name ;
 	
+	
 	@ManyToOne
    public Organization organization;
 	
