@@ -23,6 +23,7 @@ import models.Invitation;
 import models.Log;
 import models.MainEntity;
 import models.Organization;
+import models.OrganizationRelationsNames;
 import models.Plan;
 import models.RenameEndRelationshipRequest;
 import models.RequestToJoin;
@@ -79,9 +80,9 @@ public class Organizations extends CoolCRUD {
 	public static boolean addRelationName(long organizationId, String name) {
 		Organization organization = Organization.findById(organizationId);
 		boolean isDuplicate = true;
-		if (!isDuplicate(name, organization.relationNames)) {
+		if (!organization.relationNames.contains(name)) {
 			isDuplicate = false;
-			organization.relationNames.add(name);
+			organization.relationNames.add(new OrganizationRelationsNames(name,organization));
 			organization.save();
 		}
 		return isDuplicate;

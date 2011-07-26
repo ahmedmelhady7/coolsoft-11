@@ -53,14 +53,15 @@ public class EntityRelationships extends CoolCRUD {
 		notFoundIfNull(destination);
 		EntityRelationship relation = new EntityRelationship(name, source,
 				destination);
+		Organization organization = source.organization;
 		if (!relationDuplicate(relation)) {
 			relation.source.relationsSource.add(relation);
 			relation.destination.relationsDestination.add(relation);
-			if (!isDuplicate(name, relation.source.organization.relationNames))
-				relation.source.organization.relationNames.add(name);
+			if (!relation.source.organization.relationNames.contains(name))
+				relation.source.organization.relationNames.add(new OrganizationRelationsNames(name,organization));
 
 			relation.save();
-			Organization organization = relation.source.organization;
+		
 			organization.save();
 
 			for (int i = 0; i < Users.getEntityOrganizers(source).size(); i++) {
