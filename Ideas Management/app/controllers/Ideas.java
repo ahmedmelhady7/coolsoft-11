@@ -123,7 +123,7 @@ public class Ideas extends CoolCRUD {
 			+ "</a>";
 	 Log.addLog(logDescription, user, idea, idea.plan, idea.belongsToTopic,
 			idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
-		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
+		redirect("/Topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
 	/**
@@ -335,7 +335,7 @@ public class Ideas extends CoolCRUD {
 				((Idea) object).getId()));
 		if (params.get("_save") != null) {
 
-			redirect("/ideas/show?ideaId=" + ((Idea) object).getId());
+			redirect("/Ideas/show?ideaId=" + ((Idea) object).getId());
 			if (params.get("_saveAndAddAnother") != null) {
 				redirect(request.controller + ".blank", anothermessage);
 			}
@@ -519,7 +519,7 @@ public class Ideas extends CoolCRUD {
 		Idea i = (Idea) object;
 		flash.success(Messages.get("crud.edit", type.modelName,
 				((Idea) object).getId()));
-		redirect("/ideas/show?ideaId=" + ((Idea) object).getId(), i);
+		redirect("/Ideas/show?ideaId=" + ((Idea) object).getId(), i);
 	}
 
 	/**
@@ -724,7 +724,7 @@ public class Ideas extends CoolCRUD {
 					return true;
 				}
 			} catch (Exception e) {
-				redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
+				redirect("/Topics/show?topicId=" + idea.belongsToTopic.id);
 			}
 		} else {
 			List<Comment> commentslist = Comment.find("byCommentedIdea", idea)
@@ -746,7 +746,7 @@ public class Ideas extends CoolCRUD {
 
 				}
 			} catch (Exception e) {
-				redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
+				redirect("/Topics/show?topicId=" + idea.belongsToTopic.id);
 			}
 
 		}
@@ -768,7 +768,7 @@ public class Ideas extends CoolCRUD {
 		String ideaTitle = idea.title;
 		Topic ideaTopic = idea.belongsToTopic;
 		delete(ideaId, justification);
-		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
+		redirect("/Topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
 	/**
@@ -944,7 +944,7 @@ public class Ideas extends CoolCRUD {
 			ideaInUse.rating = Integer.toString(newRating);
 		}
 		ideaInUse.save();
-		redirect("/ideas/show?ideaId=" + ideaId);
+		redirect("/Ideas/show?ideaId=" + ideaId);
 	}
 
 	/**
@@ -994,7 +994,7 @@ public class Ideas extends CoolCRUD {
 		long topicId = ideaInUse.belongsToTopic.id;
 		ideaInUse.priority = priority;
 		ideaInUse.save();
-		redirect("/ideas/show?ideaId=" + ideaId);
+		redirect("/Ideas/show?ideaId=" + ideaId);
 	}
 
 	/**
@@ -1266,6 +1266,6 @@ public class Ideas extends CoolCRUD {
 		System.out.println("b3d el delete **********" + idea.commentsList);
 		idea.save();
 		System.out.println(idea.commentsList);
-		redirect("/ideas/show?ideaId=" + idea.id);
+		redirect("/Ideas/show?ideaId=" + idea.id);
 	}
 }

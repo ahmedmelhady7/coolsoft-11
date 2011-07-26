@@ -493,7 +493,7 @@ public class Users extends CoolCRUD {
 			if (reporter.username.equals(idea.reporters.get(i).username))
 				alreadyReported = true;
 		}
-		redirect("/ideas/show?ideaId=" + idea.getId(), alreadyReported);
+		redirect("/Ideas/show?ideaId=" + idea.getId(), alreadyReported);
 		// render(alreadyReported);
 	}
 
@@ -551,7 +551,7 @@ public class Users extends CoolCRUD {
 	public static void TopicSpamView(long topicId) {
 		boolean alreadyReported = false;
 		Topic topic = Topic.findById(topicId);
-		redirect("/topics/show?topicId=" + topic.getId(), alreadyReported);
+		redirect("/Topics/show?topicId=" + topic.getId(), alreadyReported);
 		// render(alreadyReported);
 	}
 
@@ -646,7 +646,7 @@ public class Users extends CoolCRUD {
 		// for (int i = 0; i < topic.reporters.size(); i++) {
 		// if (reporter.username.equals(topic.reporters.get(i).username))
 		// alreadyReported = true;}
-		redirect("/ideas/show?ideaId=" + idea.getId(), alreadyReported);
+		redirect("/Ideas/show?ideaId=" + idea.getId(), alreadyReported);
 		// render(alreadyReported);
 	}
 
@@ -1422,7 +1422,7 @@ public class Users extends CoolCRUD {
 			flash.success(Messages.get("crud.created", type.modelName,
 					((User) object).getId()));
 			if (params.get("_save") != null) {
-				redirect("/users/show?userId=" + tmp.getId());
+				redirect("/Users/show?userId=" + tmp.getId());
 
 			}
 			if (params.get("_saveAndAddAnother") != null) {
@@ -1761,7 +1761,7 @@ public class Users extends CoolCRUD {
 								+ " has deleted "
 								+ "<a href=\"/Users/viewProfile?userId="
 								+ user.id + "\">" + user.username + "</a>",user);
-				redirect("/users/list");
+				redirect("/Users/list");
 				/**
 				 * Added by Ahmed Maged to delete the user's notifications and notification Profile
 				 */
@@ -1819,7 +1819,7 @@ public class Users extends CoolCRUD {
 								+ "<a href=\"/Users/viewProfile?userId="
 								+ user.id + "\">" + user.username + "</a>",user);
 				Mail.forgiven(user);
-				redirect("/users/list");
+				redirect("/Users/list");
 			} catch (NullPointerException e) {
 				render(request.controller.replace(".", "/") + "/index.html");
 

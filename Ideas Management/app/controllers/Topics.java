@@ -275,7 +275,7 @@ public class Topics extends CoolCRUD {
 				+ topic.title + "</a>";
 		Log.addUserLog(logDescription, user, idea, topic, topic.entity,
 				topic.entity.organization);
-		redirect("/topics/show?topicId=" + topicId);
+		redirect("/Topics/show?topicId=" + topicId);
 	}
 
 	/**
@@ -308,7 +308,7 @@ public class Topics extends CoolCRUD {
 
 		Log.addUserLog(log, user, targetTopic, entity, organization);
 
-		redirect("/topics/show?topicId=" + topicId);
+		redirect("/Topics/show?topicId=" + topicId);
 
 	}
 
@@ -519,7 +519,7 @@ public class Topics extends CoolCRUD {
 
 		Log.addUserLog(log, actor, targetTopic, entity, organization);
 
-		redirect("/topics/show?topicId=" + topicId);
+		redirect("/Topics/show?topicId=" + topicId);
 	}
 
 	/**
@@ -682,7 +682,7 @@ public class Topics extends CoolCRUD {
 		flash.success(Messages.get("crud.created", type.modelName,
 				((Topic) object).getId()));
 		if (params.get("_save") != null) {
-			redirect("/topics/show?topicId=" + ((Topic) object).getId());
+			redirect("/Topics/show?topicId=" + ((Topic) object).getId());
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			render(request.controller.replace(".", "/") + "/blank.html",
@@ -1411,7 +1411,7 @@ public class Topics extends CoolCRUD {
 		flash.success(Messages.get("crud.saved", type.modelName,
 				((Topic) object).getId()));
 		if (params.get("_save") != null) {
-			redirect("/topics/show?topicId=" + ((Topic) object).getId());
+			redirect("/Topics/show?topicId=" + ((Topic) object).getId());
 
 		}
 		redirect(request.controller + ".view", ((Topic) object).getId());
@@ -2082,7 +2082,7 @@ public class Topics extends CoolCRUD {
 			redirect(request.controller + ".view");
 		}
 
-		redirect("/topics/show?topicId=" + idea.belongsToTopic.id);
+		redirect("/Topics/show?topicId=" + idea.belongsToTopic.id);
 	}
 
 	/**
@@ -2106,7 +2106,7 @@ public class Topics extends CoolCRUD {
 		Notifications
 				.sendNotification(idea.author.id, idea.id, "Idea", message);
 
-		redirect("topics/show?topicId=" + idea.belongsToTopic.id);
+		redirect("Topics/show?topicId=" + idea.belongsToTopic.id);
 
 	}
 
@@ -2406,6 +2406,6 @@ public class Topics extends CoolCRUD {
 		UserRoleInOrganizations.addEnrolledUser(user,
 				topic.entity.organization, role, topicId, "topic");
 		topic.save();
-		redirect("/topics/show?topicId=" + topicId);
+		redirect("/Topics/show?topicId=" + topicId);
 	}
 }
