@@ -205,13 +205,13 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							+ " has accepted request to create relationship " 
 							+ createRequest.name 
 							+" between topics "
-							+ "<a href=\"/topics/show?id="
+							+ "<a href=\"/Topics/show?id="
 							+ source.id
 							+ "\">"
 							+ source.title
 							+ "</a>"
 							+ " and "
-							+ "<a href=\"/topics/show?id="
+							+ "<a href=\"/Topics/show?id="
 							+ destination.id
 							+ "\">"
 							+ destination.title
@@ -227,13 +227,13 @@ public class CreateRelationshipRequests extends CoolCRUD {
 							+ " "
 							+ "</a>"
 							+ " has accepted rejected to create relationship between topics "
-							+ "<a href=\"/topics/show?id="
+							+ "<a href=\"/Topics/show?id="
 							+ source.id
 							+ "\">"
 							+ source.title
 							+ "</a>"
 							+ " and "
-							+ "<a href=\"/topics/show?id="
+							+ "<a href=\"/Topics/show?id="
 							+ destination.id
 							+ "\">"
 							+ destination.title
