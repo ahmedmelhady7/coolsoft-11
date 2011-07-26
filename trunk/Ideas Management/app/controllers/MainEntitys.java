@@ -910,8 +910,19 @@ public class MainEntitys extends CoolCRUD {
 	 *            the id of the entity to be deleted.
 	 */
 	public static void deleteEntity(long entityId) {
-		deleteEntityHelper(entityId);
-		Login.homePage();
+
+		MainEntity entity = MainEntity.findById(entityId);
+		notFoundIfNull(entity);
+		Organization organization = entity.organization;
+User user = Security.getConnected();
+	List<User>	organizers = Users.getEntityOrganizers(entity);
+	organizers.add(organization.creator);
+	for (int i = 0; i < organizers.size(); i++)
+		Notifications.sendNotification(organizers.get(i).id,
+				entityId, "Entity", " User " + user.username
+						+ " has deleted entity " + entity.name);
+	deleteEntityHelper(entityId);
+		Organizations.viewProfile(entity.organization.id);
 	}
 	
 	/**
