@@ -45,7 +45,7 @@
 		var id = ${topicId};
 		var x = document.getElementById("object_title").value.toString();
 		var y = document.getElementById("object_description").value;
-		$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/ideas/getdrafts"}  );
+		$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/Ideas/getDrafts"}  );
 		//alert("Idea Saved ");
 	}
 </script>

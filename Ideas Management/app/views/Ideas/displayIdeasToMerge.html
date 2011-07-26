@@ -75,7 +75,7 @@
 			alert("Please enter the description of the idea");
 			return;
 		}
-		var link = "/topics/show?topicId="+topicId;
+		var link = "/Topics/show?topicId="+topicId;
 		$.post('@{Ideas.mergeIdeas()}' ,{topicId:topicId, oldIdeas:IdeasIds, 
 						newTitle:title, newDescription:body },function(){window.location.href=link});
 		
