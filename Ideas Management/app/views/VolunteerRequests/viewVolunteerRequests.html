@@ -53,8 +53,8 @@
             Sender: <a href = "@{Users.viewProfile(request.sender.id)}">${request.sender.username}</a>
             <br/>
             Justification:  ${request.justification} &nbsp; &nbsp; &nbsp; &nbsp;
-			<a onclick="javascript: reject_request(${request.id});" style="cursor:pointer; float: right;" /><img src="/public/images/icons/delete.png" title="Reject" width="24" height="24"/></a>
-            <a onclick="javascript: accept_request(${request.id});" style="cursor:pointer; float: right;" /><img src="/public/images/icons/accept.png" title="Accept" width="24" height="24"/></a>
+			<a onclick="javascript: reject_request(${request.id});" style="cursor:pointer; float: right;" /><img src="@{'/public/images/icons/delete.png'}" title="Reject" width="24" height="24"/></a>
+            <a onclick="javascript: accept_request(${request.id});" style="cursor:pointer; float: right;" /><img src="@{'/public/images/icons/accept.png'}" title="Accept" width="24" height="24"/></a>
         </fieldset><br/>
     </li>
     #{/list}
