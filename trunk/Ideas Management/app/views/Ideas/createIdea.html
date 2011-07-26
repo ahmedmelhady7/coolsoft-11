@@ -9,7 +9,7 @@
 			{
 				var x = document.getElementById("title").value.toString();
 				var y = document.getElementById("body").value;
-				$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/ideas/getdrafts"}  );
+				$.post('@{Ideas.createDraft()}' ,{title:x, description:y, topicId:id},function(){window.location.href= "/Ideas/getDrafts"}  );
 				alert("Idea Saved ");
 			}
 			
@@ -17,7 +17,7 @@
 			{
 				var x = document.getElementById("title").value.toString();
 				var y = document.getElementById("body").value.toString();
-				$.post('@{Ideas.doCreateIdea()}' ,{topicId:id,title:x,body:y},function(){window.location.href= "/ideas/list"});
+				$.post('@{Ideas.doCreateIdea()}' ,{topicId:id,title:x,body:y},function(){window.location.href= "/Ideas/list"});
 			}
 		</script>
     </head>
