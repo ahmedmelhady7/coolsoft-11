@@ -1,4 +1,4 @@
-#{extends '/login/index.html' /}
+#{extends '/Login/index.html' /}
 <script src="@{'public/javascripts/bmi.js'}" language="javascript">
 </script>
 <head>
@@ -195,7 +195,7 @@
         <li>
             <div id="accordion_${topicRequest.id}" class="accordionItem">
             	<input style="float:left;" type="image" src="@{'public/images/icons/suser.png'}"/>
-                 <font size=1><a href="/users/viewprofile?userId=${topicRequest.requester.id}">${topicRequest.requester.username}</a> </font>
+                 <font size=1><a href="/Users/viewprofile?userId=${topicRequest.requester.id}">${topicRequest.requester.username}</a> </font>
 				<h3 style="backgroud-color:#FFFFFF; border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;"> ${topicRequest.title}
 					<br>
                     <input type="button" value="Rephrase" class="linkButton" onclick="rephraseRequest('${topicRequest.id}');">
@@ -216,7 +216,7 @@
                     #{else}
                     No topic requests are available for this entity!<br>
                     #{/else}
-					Go back to <a href="/mainentitys/viewentity?id=${entityId}">${entityName}</a>
+					Go back to <a href="/Mainentitys/viewentity?id=${entityId}">${entityName}</a>
                 </body>
  		</div>
 	 </div>
