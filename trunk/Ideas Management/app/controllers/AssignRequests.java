@@ -141,13 +141,13 @@ public class AssignRequests extends CoolCRUD {
 							"plan", description);
 
 					String logDescription = "User "
-							+ "<a href=\"/users/viewprofile?userId="
+							+ "<a href=\"/Users/viewProfile?userId="
 							+ sender.id
 							+ "\">"
 							+ sender.username
 							+ "</a>"
 							+ " sent an asssignment request to "
-							+ "<a href=\"/users/viewprofile?userId="
+							+ "<a href=\"/Users/viewProfile?userId="
 							+ destination.id
 							+ "\">"
 							+ destination.username
@@ -155,13 +155,13 @@ public class AssignRequests extends CoolCRUD {
 							+ " to work on the item "
 							+ source.summary
 							+ " in the plan "
-							+ "<a href=\"/plans/viewaslist?planId="
+							+ "<a href=\"/Plans/viewAsList?planId="
 							+ source.plan.id
 							+ "\">"
 							+ source.plan.title
 							+ "</a>"
 							+ " of the topic "
-							+ "<a href=\"/topics/show?topicId="
+							+ "<a href=\"/Topics/show?topicId="
 							+ source.plan.topic.id
 							+ "\">"
 							+ source.plan.topic.title + "</a>";
@@ -330,11 +330,11 @@ public class AssignRequests extends CoolCRUD {
 		notFoundIfNull(request);
 		assignRequests.remove(request);
 		Item item = request.source;
-		String logDescription = "User <a href=\"/users/viewprofile?userId="
+		String logDescription = "User <a href=\"/Users/viewProfile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
-				+ "</a> has accepted the assignment to work on item <a href=\"/plans/viewaslist?planId="
+				+ "</a> has accepted the assignment to work on item <a href=\"/Plans/viewAsList?planId="
 				+ item.plan.id + "\">" + item.summary + "</a>.";
 		Log.addUserLog(logDescription, user, request.source, request.source.plan,
 				request.source.plan.topic, request.source.plan.topic.entity,
@@ -383,11 +383,11 @@ public class AssignRequests extends CoolCRUD {
 		List<AssignRequest> assignRequests = user.receivedAssignRequests;
 		AssignRequest request = AssignRequest.findById(reqId);
 		notFoundIfNull(request);
-		String logDescription = "User <a href=\"/users/viewprofile?userId="
+		String logDescription = "User <a href=\"/Users/viewProfile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
-				+ "</a> has rejected the assignment to work on item <a href=\"/plans/viewaslist?planId="
+				+ "</a> has rejected the assignment to work on item <a href=\"/Plans/viewAsList?planId="
 				+ request.source.plan.id + "\">" + request.source.summary
 				+ "</a>.";
 		Log.addUserLog(logDescription, user, request.source, request.source.plan,

@@ -113,10 +113,10 @@ public class Ideas extends CoolCRUD {
 		idea.author.save();
 		idea.save();
 		
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 			+ user.id + "\">" 
 			+ user.username + "</a>" 
-			+ " posted an idea " +"<a href=\"/ideas/show?ideaId="
+			+ " posted an idea " +"<a href=\"/Ideas/show?ideaId="
 			+ ideaId
 			+ "\">"
 			+ idea.title
@@ -321,10 +321,10 @@ public class Ideas extends CoolCRUD {
 		String anothermessage = "you have created a new idea with title "
 				+ idea.title + " and with description " + idea.description;
 		
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 			+ author.id + "\">" 
 			+ author.username + "</a>" 
-			+ " created an idea " +"<a href=\"/ideas/show?ideaId="
+			+ " created an idea " +"<a href=\"/Ideas/show?ideaId="
 			+ idea.id
 			+ "\">"
 			+ idea.title
@@ -665,10 +665,10 @@ public class Ideas extends CoolCRUD {
 		}
 
 		object._save();
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 			+ myUser.id + "\">" 
 			+ myUser.username + "</a>" 
-			+ " edited the idea  " +"<a href=\"/ideas/show?ideaId="
+			+ " edited the idea  " +"<a href=\"/Ideas/show?ideaId="
 			+ i.id
 			+ "\">"
 			+ i.title
@@ -750,12 +750,12 @@ public class Ideas extends CoolCRUD {
 			}
 
 		}
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 			+ Security.getConnected().id + "\">" 
 			+ Security.getConnected().username + "</a>" 
 			+ " deleted the idea " 
 			+ title + "that belongs to topic  "
-			+ "<a href=\"/topics/show?topicId=" + topicId + "\">" + topicTitle
+			+ "<a href=\"/Topics/show?topicId=" + topicId + "\">" + topicTitle
 			+ "</a>";
 		Log.addLog(logDescription, Security.getConnected(), topic,
 			 topic.entity.organization,  topic.entity);
@@ -830,11 +830,11 @@ public class Ideas extends CoolCRUD {
 		if (!tagAlreadyExists) {
 			Notifications.sendNotification(idea.author.id, ideaId, "idea",
 					"This idea has been tagged as " + tag);
-			String logDescription = "<a href=\"/users/viewprofile?userId="
+			String logDescription = "<a href=\"/Users/viewProfile?userId="
 					+ user.id + "\">" + user.username + "</a>"
-					+ " added the tag " + "<a href=\"/tags/mainpage?tagId="
+					+ " added the tag " + "<a href=\"/Tags/mainPage?tagId="
 					+ tempTag.id + "\">" + tempTag.name + "</a>"
-					+ " to the idea " + "<a href=\"/ideas/show?ideaId="
+					+ " to the idea " + "<a href=\"/Ideas/show?ideaId="
 					+ idea.id + "\">" + idea.title + "</a>";
 			Log.addUserLog(logDescription, idea, idea.belongsToTopic, idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
 		}
@@ -1108,11 +1108,11 @@ public class Ideas extends CoolCRUD {
 		ideaToKeep.save();
 		targetTopic.save();
 
-		String log = "<a href=\"/users/viewprofile?userId=" + user.id + "\">"
+		String log = "<a href=\"/Users/viewProfile?userId=" + user.id + "\">"
 				+ user.username + "</a>" + " merged ideas "
-				+ "<a href=\"/ideas/show?ideaId=" + ideaToKeep.id + "\">"
+				+ "<a href=\"/Ideas/show?ideaId=" + ideaToKeep.id + "\">"
 				+ ideaToKeep.title + "</a>" + " of the topic "
-				+ "<a href=\"/topics/show?topicId=" + targetTopic.id + "\">"
+				+ "<a href=\"/Topics/show?topicId=" + targetTopic.id + "\">"
 				+ targetTopic.title + "</a>";
 
 		MainEntity entity = targetTopic.entity;

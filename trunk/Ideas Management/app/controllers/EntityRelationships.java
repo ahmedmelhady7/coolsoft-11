@@ -82,7 +82,7 @@ public class EntityRelationships extends CoolCRUD {
 			}
 			Log
 					.addUserLog(
-							"<a href=\"/users/viewprofile?userId="
+							"<a href=\"/Users/viewProfile?userId="
 									+ Security.getConnected().id
 									+ "\">"
 									+ Security.getConnected().username
@@ -90,13 +90,13 @@ public class EntityRelationships extends CoolCRUD {
 									+ "created a relationship "
 									+ name
 									+ " between entities"
-									+"<a href=\"/mainentitys/viewentity?id="
+									+"<a href=\"/Mainentitys/viewEntity?id="
 									+ source.id
 									+ "\">"
 									+ source.name
 									+ "</a>" 
 									+"and " 
-									+"<a href=\"/mainentitys/viewentity?id="
+									+"<a href=\"/Mainentitys/viewEntity?id="
 									+ destination.id 
 									+ "\">" 
 									+ destination.name
@@ -157,7 +157,7 @@ public class EntityRelationships extends CoolCRUD {
 			if (!relationDuplicate(relationTemp)) {
 				Log
 						.addUserLog(
-								"<a href=\"/users/viewprofile?userId="
+								"<a href=\"/Users/viewProfile?userId="
 										+ Security.getConnected().id
 										+ "\">"
 										+ Security.getConnected().username
@@ -165,13 +165,13 @@ public class EntityRelationships extends CoolCRUD {
 										+ "renamed the relationship "
 										+ relation.name
 										+ "between entities" 
-										+"<a href=\"/mainentitys/viewentity?id="
+										+"<a href=\"/Mainentitys/viewEntity?id="
 										+ relation.source.id
 										+ "\">"
 										+ relation.source.name
 										+ "</a>" 
 										+ "and "
-										+ "<a href=\"/mainentitys/viewentity?id="
+										+ "<a href=\"/MainEntitys/viewEntity?id="
 										+ relation.destination.id 
 										+ "\">"
 										+ relation.destination.name
@@ -210,19 +210,19 @@ public class EntityRelationships extends CoolCRUD {
 	public static boolean delete(long relationId) {
 		EntityRelationship relation = EntityRelationship.findById(relationId);
 		notFoundIfNull(relation);
-		Log.addUserLog("<a href=\"/users/viewprofile?userId="
+		Log.addUserLog("<a href=\"/Users/viewProfile?userId="
 				+ Security.getConnected().id 
 				+ "\">"
 				+ Security.getConnected().username
 				+ "</a>"
 				+ "deleted the relationship " + relation.name
 				+ " between entities " 
-				+"<a href=\"/mainentitys/viewentity?id="
+				+"<a href=\"/Mainentitys/viewEntity?id="
 				+ "\">" 
 				+ relation.source.name
 				+ "</a>" 
 				+" and " 
-				+ "<a href=\"/mainentitys/viewentity?id="
+				+ "<a href=\"/Mainentitys/viewEntity?id="
 				+ relation.destination.id 
 				+ "\">" 
 				+ relation.destination.name
