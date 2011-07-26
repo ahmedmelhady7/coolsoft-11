@@ -67,12 +67,12 @@ public class Items extends CoolCRUD {
 			item.save();
 			String description = "Work has started on the following item: "
 					+ item.summary + " by user" + user.username + ".";
-			String logDescription = "Work has started on the following item: <a href=\"/plans/viewaslist?planId="
+			String logDescription = "Work has started on the following item: <a href=\"/Plans/viewAsList?planId="
 					+ item.plan.id
 					+ "\">"
 					+ item.summary
 					+ "</a>"
-					+ " by user <a href=\"/users/viewprofile?userId="
+					+ " by user <a href=\"/Users/viewProfile?userId="
 					+ user.id + "\">" + user.username + "</a>.";
 			Log.addUserLog(logDescription, user, item, item.plan, item.plan.topic,
 					item.plan.topic.entity, item.plan.topic.entity.organization);
@@ -120,11 +120,11 @@ public class Items extends CoolCRUD {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,
 						"plan", description);
 			}
-			String logDescription = "Item <a href=\"/plans/viewaslist?planId="
+			String logDescription = "Item <a href=\"/Plans/viewAsList?planId="
 					+ item.plan.id
 					+ "\">"
 					+ item.summary
-					+ "</a> now marked done by user <a href=\"/users/viewprofile?userId="
+					+ "</a> now marked done by user <a href=\"/Users/viewProfile?userId="
 					+ user.id + "\">" + user.username + "</a>.";
 			Log.addLog(logDescription, user, item, item.plan, item.plan.topic,
 					item.plan.topic.entity, item.plan.topic.entity.organization);
@@ -134,11 +134,11 @@ public class Items extends CoolCRUD {
 			String descriptionIfInProgress = item.summary
 					+ ": Item now marked in progress by user: " + user.username
 					+ ".";
-			String logDescriptionIfInProgress = "Item <a href=\"/plans/viewaslist?planId="
+			String logDescriptionIfInProgress = "Item <a href=\"/Plans/viewAsList?planId="
 					+ item.plan.id
 					+ "\">"
 					+ item.summary
-					+ "</a> now marked in progress by user <a href=\"/users/viewprofile?userId="
+					+ "</a> now marked in progress by user <a href=\"/Users/viewProfile?userId="
 					+ user.id + "\">" + user.username + "</a>.";
 			for (User userToNotify : userToNotifyList) {
 				Notifications.sendNotification(userToNotify.id, item.plan.id,

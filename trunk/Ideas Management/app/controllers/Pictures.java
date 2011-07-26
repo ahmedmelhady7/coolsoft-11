@@ -9,8 +9,6 @@ import models.Organization;
 import models.Picture;
 import models.User;
 
-import org.hsqldb.store.BitMap;
-
 /**
  * This is the controller for Picture model
  * 
