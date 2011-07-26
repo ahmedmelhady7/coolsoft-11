@@ -142,11 +142,11 @@ public class Topics extends CoolCRUD {
 					topic.entity.organization.creator.id, topicId, "topic",
 					"This topic has been tagged as " + tag);
 
-			String logDescription = "<a href=\"/users/viewprofile?userId="
+			String logDescription = "<a href=\"/Users/viewProfile?userId="
 					+ user.id + "\">" + user.username + "</a>"
-					+ " added the tag " + "<a href=\"/tags/mainpage?tagId="
+					+ " added the tag " + "<a href=\"/Tags/mainPage?tagId="
 					+ tempTag.id + "\">" + tempTag.name + "</a>"
-					+ " to the topic " + "<a href=\"/topics/show?topicId="
+					+ " to the topic " + "<a href=\"/Topics/show?topicId="
 					+ topic.id + "\">" + topic.title + "</a>";
 			Log.addUserLog(logDescription, topic);
 
@@ -267,11 +267,11 @@ public class Topics extends CoolCRUD {
 		user.communityContributionCounter++;
 		user.save();
 		idea.save();
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 				+ user.id + "\">" + user.username + "</a>" + "posted an  "
-				+ "<a href=\"/ideas/show?ideaId=" + idea.id + "\">"
+				+ "<a href=\"/Ideas/show?ideaId=" + idea.id + "\">"
 				+ idea.title + "</a>" + " to topic "
-				+ "<a href=\"/topics/show?topicId=" + topic.id + "\">"
+				+ "<a href=\"/Topics/show?topicId=" + topic.id + "\">"
 				+ topic.title + "</a>";
 		Log.addUserLog(logDescription, user, idea, topic, topic.entity,
 				topic.entity.organization);
@@ -298,9 +298,9 @@ public class Topics extends CoolCRUD {
 		targetTopic.openToEdit = true;
 		targetTopic.save();
 
-		String log = "<a href=\"/users/viewprofile?userId=" + user.id + "\">"
+		String log = "<a href=\"/Users/viewProfile?userId=" + user.id + "\">"
 				+ user.username + "</a>" + " reopened Topic "
-				+ "<a href=\"/topics/show?topicId=" + targetTopic.id + "\">"
+				+ "<a href=\"/Topics/show?topicId=" + targetTopic.id + "\">"
 				+ targetTopic.title + "</a>";
 
 		MainEntity entity = targetTopic.entity;
@@ -509,9 +509,9 @@ public class Topics extends CoolCRUD {
 					targetTopic.getId(), "Topic", notificationDescription);
 		}
 
-		String log = "<a href=\"/users/viewprofile?userId=" + actor.id + "\">"
+		String log = "<a href=\"/Users/viewProfile?userId=" + actor.id + "\">"
 				+ actor.username + "</a>" + " closed Topic "
-				+ "<a href=\"/topics/show?topicId=" + targetTopic.id + "\">"
+				+ "<a href=\"/Topics/show?topicId=" + targetTopic.id + "\">"
 				+ targetTopic.title + "</a>";
 
 		MainEntity entity = targetTopic.entity;
@@ -670,11 +670,11 @@ public class Topics extends CoolCRUD {
 			}
 		}
 
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 				+ user.id + "\">" + user.username + "</a>"
-				+ " created the topic " + "<a href=\"/topics/show?topicId="
+				+ " created the topic " + "<a href=\"/Topics/show?topicId="
 				+ temporaryTopic.id + "\">" + temporaryTopic.title + "</a>"
-				+ " from entity " + "<a href=\"/mainentitys/viewentity?id="
+				+ " from entity " + "<a href=\"/MainEntitys/viewEntity?id="
 				+ topicEntity.id + "\">" + topicEntity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, topicEntity,
 				topicEntity.organization);
@@ -1391,11 +1391,11 @@ public class Topics extends CoolCRUD {
 		}
 
 		object._save();
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewpProfile?userId="
 				+ user.id + "\">" + user.username + "</a>"
-				+ " edited the topic " + "<a href=\"/topics/show?topicId="
+				+ " edited the topic " + "<a href=\"/Topics/show?topicId="
 				+ temporaryTopic.id + "\">" + temporaryTopic.title + "</a>"
-				+ " in entity " + "<a href=\"/mainentitys/viewentity?id="
+				+ " in entity " + "<a href=\"/MainEntitys/viewEntity?id="
 				+ entity.id + "\">" + entity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, entity,
 				entity.organization);
@@ -1439,10 +1439,10 @@ public class Topics extends CoolCRUD {
 			topic.save();
 			user.topicsIFollow.add(topic);
 			user.save();
-			Log.addUserLog("<a href=\"/users/viewprofile?userId=" + user.id
+			Log.addUserLog("<a href=\"/Users/viewProfile?userId=" + user.id
 					+ "\">" + user.username + "</a>"
 					+ " has followed the topic ("
-					+ "<a href=\"/topics/show?topicId=" + topic.id + "\">"
+					+ "<a href=\"/Topics/show?topicId=" + topic.id + "\">"
 					+ topic.title + "</a>" + ")", topic.entity.organization);
 			redirect(request.controller + ".show", topic.id,
 					"You are now a follower");
@@ -1734,11 +1734,11 @@ public class Topics extends CoolCRUD {
 
 		UserRoleInOrganization.deleteEntityOrTopic(temporaryTopic.id, "topic");
 
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 				+ user.id + "\">" + user.username + "</a>"
-				+ " deleted the topic " + "<a href=\"/topics/show?topicId="
+				+ " deleted the topic " + "<a href=\"/Topics/show?topicId="
 				+ temporaryTopic.id + "\">" + temporaryTopic.title + "</a>"
-				+ " from entity " + "<a href=\"/mainentitys/viewentity?id="
+				+ " from entity " + "<a href=\"/MainEntitys/viewEntity?id="
 				+ entity.id + "\">" + entity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, entity,
 				entity.organization);
@@ -1858,7 +1858,7 @@ public class Topics extends CoolCRUD {
 		Notifications.sendNotification(temporaryTopic.creator.getId(),
 				entity.getId(), "entity", justification);
 		String logDescription = "The topic " + temporaryTopic.title
-				+ " in entity " + "<a href=\"/mainentitys/viewentity?id="
+				+ " in entity " + "<a href=\"/MainEntitys/viewEntity?id="
 				+ entity.id + "\">" + entity.name + "</a>" + "was deleted";
 		Log.addUserLog(logDescription, temporaryTopic, entity,
 				entity.organization);
@@ -1937,11 +1937,11 @@ public class Topics extends CoolCRUD {
 					entity.getId(), "entity", "Your Topic was hidden because "
 							+ justification);
 
-			String logDescription = "<a href=\"/users/viewprofile?userId="
+			String logDescription = "<a href=\"/Users/viewProfile?userId="
 					+ user.id + "\">" + user.username + "</a>"
-					+ " hid the topic " + "<a href=\"/topics/show?topicId="
+					+ " hid the topic " + "<a href=\"/Topics/show?topicId="
 					+ temporaryTopic.id + "\">" + temporaryTopic.title + "</a>"
-					+ " from entity " + "<a href=\"/mainentitys/viewentity?id="
+					+ " from entity " + "<a href=\"/MainEntitys/viewEntity?id="
 					+ entity.id + "\">" + entity.name + "</a>";
 			Log.addUserLog(logDescription, temporaryTopic, user, entity,
 					entity.organization);
@@ -1987,11 +1987,11 @@ public class Topics extends CoolCRUD {
 				Notifications.sendNotification(temporaryTopic.followers.get(i)
 						.getId(), entity.getId(), "entity", message);
 
-			String logDescription = "<a href=\"/users/viewprofile?userId="
+			String logDescription = "<a href=\"/Users/viewProfile?userId="
 					+ user.id + "\">" + user.username + "</a>"
-					+ " unhid the topic " + "<a href=\"/topics/show?topicId="
+					+ " unhid the topic " + "<a href=\"/Topics/show?topicId="
 					+ temporaryTopic.id + "\">" + temporaryTopic.title + "</a>"
-					+ " from entity " + "<a href=\"/mainentitys/viewentity?id="
+					+ " from entity " + "<a href=\"/MainEntitys/viewEntity?id="
 					+ entity.id + "\">" + entity.name + "</a>";
 			Log.addUserLog(logDescription, temporaryTopic, user, entity,
 					entity.organization);
@@ -2064,7 +2064,7 @@ public class Topics extends CoolCRUD {
 			System.out.println(idea.plan);
 			System.out.println(idea.delete().toString());
 
-			String logDescription = "<a href=\"/users/viewprofile?userId="
+			String logDescription = "<a href=\"/Users/viewProfile?userId="
 					+ Security.getConnected().id + "\">"
 					+ Security.getConnected().username + "</a>"
 					+ " deleted the idea  " + idea.title;
@@ -2273,11 +2273,11 @@ public class Topics extends CoolCRUD {
 		user.save();
 		MainEntity entity = targetTopic.entity;
 		Organization organization = entity.organization;
-		String log = "<a href=\"/users/viewprofile?userId=" + user.id + "\">"
+		String log = "<a href=\"/Users/viewProfile?userId=" + user.id + "\">"
 				+ user.username + "</a>" + " posted Topic "
-				+ "<a href=\"/topics/show?topicId=" + targetTopic.id + "\">"
+				+ "<a href=\"/Topics/show?topicId=" + targetTopic.id + "\">"
 				+ targetTopic.title + "</a>" + " to the entity "
-				+ "<a href=\"/mainentitys/viewentity?id=" + entity.id + "\">"
+				+ "<a href=\"/MainEntitys/viewEntity?id=" + entity.id + "\">"
 				+ entity.name + "</a>";
 		Log.addUserLog(log, user, targetTopic, entity, organization);
 
@@ -2382,7 +2382,7 @@ public class Topics extends CoolCRUD {
 		User user = Security.getConnected();
 		MainEntity entity = targetTopic.entity;
 		Organization organiztion = entity.organization;
-		String log = "<a href=\"/users/viewprofile?userId=" + user.id + "\">"
+		String log = "<a href=\"/Users/viewProfile?userId=" + user.id + "\">"
 				+ user.username + "</a>" + " posted Topic "
 				+ "<a href=\"/show?topicId=" + targetTopic.id + "\">"
 				+ targetTopic.title + "</a>";

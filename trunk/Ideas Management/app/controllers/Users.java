@@ -454,11 +454,11 @@ public class Users extends CoolCRUD {
 				reporter, idea, idea.description, idea.title);
 		// }
 		
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 			+ reporter.id + "\">" 
 			+ reporter.username + "</a>" 
 			+ " reported the idea  "
-			+ "<a href=\"/ideas/show?ideaId=" + idea.id + "\">" + idea.title + "</a>" + " as spam.";
+			+ "<a href=\"/Ideas/show?ideaId=" + idea.id + "\">" + idea.title + "</a>" + " as spam.";
 //	 Log.addLog(logDescription, reporter, idea, 
 //			 idea.plan, idea.plan.topic, idea.plan.topic.entity, idea.plan.topic.entity.organization);
 		if(idea.plan!=null)
@@ -521,11 +521,11 @@ public class Users extends CoolCRUD {
 					topic.description, topic.title);
 		}
 		
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 			+ reporter.id + "\">" 
 			+ reporter.username + "</a>" 
 			+ " reported the topic  "
-			+ "<a href=\"/topics/show?topicId=" + topic.id + "\">" + topic.title + "</a>" + " as spam.";
+			+ "<a href=\"/Topics/show?topicId=" + topic.id + "\">" + topic.title + "</a>" + " as spam.";
 	 Log.addLog(logDescription, reporter, 
 			 topic, topic.entity, topic.entity.organization);
 		
@@ -592,11 +592,11 @@ public class Users extends CoolCRUD {
 						commentId, "comment", "your comment in your idea "
 								+ comment.commentedIdea.toString());
 		
-			String logDescription = "<a href=\"/users/viewprofile?userId="
+			String logDescription = "<a href=\"/Users/viewProfile?userId="
 				+ reporter.id + "\">" 
 				+ reporter.username + "</a>" 
 				+ " reported a comment on the idea  "
-				+ "<a href=\"/ideas/show?ideaId=" 
+				+ "<a href=\"/Ideas/show?ideaId=" 
 				+ comment.commentedIdea.id + "\">" 
 				+ comment.commentedIdea.title + "</a>" + " as spam.";
 		 Log.addLog(logDescription, reporter, comment, comment.commentedIdea, 
@@ -611,11 +611,11 @@ public class Users extends CoolCRUD {
 							"your comment has been reported as spam "
 									+ comment.comment);
 			
-			String logDescription = "<a href=\"/users/viewprofile?userId="
+			String logDescription = "<a href=\"/Users/viewProfile?userId="
 				+ reporter.id + "\">" 
 				+ reporter.username + "</a>" 
 				+ " reported a comment on the plan  "
-				+ "<a href=\"/plans/viewaslist?planId=" + comment.commentedPlan.id + "\">" + comment.commentedPlan.title + "</a>" + " as spam.";
+				+ "<a href=\"/Plans/viewAsList?planId=" + comment.commentedPlan.id + "\">" + comment.commentedPlan.title + "</a>" + " as spam.";
 		 Log.addLog(logDescription, reporter, comment, 
 				 comment.commentedPlan, comment.commentedPlan.topic, comment.commentedPlan.topic.entity,
 				 comment.commentedPlan.topic.entity.organization);
@@ -1408,14 +1408,14 @@ public class Users extends CoolCRUD {
 			Mail.activation(tmp, tmp.activationKey);
 			Log.addUserLog(
 					"Admin "
-							+ "<a href=\"/users/viewprofile?userId="
+							+ "<a href=\"/Users/viewProfile?userId="
 							+ Security.getConnected().id
 							+ "\">"
 							+ Security.getConnected().username
 							+ "</a>"
 							+ " "
 							+ " has added "
-							+ "<a href=\"/users/viewprofile?userId="
+							+ "<a href=\"/Users/viewProfile?userId="
 							+ tmp.id + "\">" + tmp.firstName + "</a>"
 							+ "'s profile", tmp);
 			String message2 = tmp.username + " has been added to users ";
@@ -1488,7 +1488,7 @@ public class Users extends CoolCRUD {
 		user.dateofBirth = dateOfBirth;
 		user.country = country;
 		user.profession = profession;
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
@@ -1655,7 +1655,7 @@ public class Users extends CoolCRUD {
 				{
 					Log.addUserLog(
 							"Admin "
-									+ "<a href=\"/users/viewprofile?userId="
+									+ "<a href=\"/Users/viewProfile?userId="
 									+ Security.getConnected().id
 									+ "\">"
 									+ Security.getConnected().username
@@ -1669,14 +1669,14 @@ public class Users extends CoolCRUD {
 				{
 					Log.addUserLog(
 							"Admin "
-									+ "<a href=\"/users/viewprofile?userId="
+									+ "<a href=\"/Users/viewProfile?userId="
 									+ Security.getConnected().id
 									+ "\">"
 									+ Security.getConnected().username
 									+ "</a>"
 									+ " "
 									+ " has edited "
-									+ "<a href=\"/users/viewprofile?userId="
+									+ "<a href=\"/Users/viewProfile?userId="
 									+ tmp.id + "\">" + tmp.username + "</a>"
 									+ "'s profile" + "\n" + editedMessage, tmp);
 				}
@@ -1753,13 +1753,13 @@ public class Users extends CoolCRUD {
 				}
 				Log.addUserLog(
 						"Admin "
-								+ "<a href=\"/users/viewprofile?userId="
+								+ "<a href=\"/Users/viewProfile?userId="
 								+ Security.getConnected().id
 								+ "\">"
 								+ Security.getConnected().username
 								+ "</a>"
 								+ " has deleted "
-								+ "<a href=\"/users/viewprofile?userId="
+								+ "<a href=\"/Users/viewProfile?userId="
 								+ user.id + "\">" + user.username + "</a>",user);
 				redirect("/users/list");
 				/**
@@ -1810,13 +1810,13 @@ public class Users extends CoolCRUD {
 				user._save();
 				Log.addUserLog(
 						"Admin "
-								+ "<a href=\"/users/viewprofile?userId="
+								+ "<a href=\"/Users/viewProfile?userId="
 								+ Security.getConnected().id
 								+ "\">"
 								+ Security.getConnected().username
 								+ "</a>"
 								+ " has undeleted "
-								+ "<a href=\"/users/viewprofile?userId="
+								+ "<a href=\"/Users/viewProfile?userId="
 								+ user.id + "\">" + user.username + "</a>",user);
 				Mail.forgiven(user);
 				redirect("/users/list");
@@ -2194,7 +2194,7 @@ public class Users extends CoolCRUD {
 
 		User user = Security.getConnected();
 		user.password = Codec.hexMD5(pass2);
-		String logDescription = "<a href=\"/users/viewprofile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username

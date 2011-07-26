@@ -71,13 +71,13 @@ public class TagRelationships extends CoolCRUD {
 							+ "\" is created now between tags \"" + source.name
 							+ "\" and \"" + destination.name + "\".");
 
-			Log.addUserLog("<a href=\"/users/viewprofile?userId="
+			Log.addUserLog("<a href=\"/Users/viewProfile?userId="
 					+ Security.getConnected().id + "\">"
 					+ Security.getConnected().username + "</a>"
 					+ "created a relationship " + name
-					+ " between tags " + "<a href=\"/tags/mainpage?tagId="
+					+ " between tags " + "<a href=\"/Tags/mainPage?tagId="
 					+ source.id + "\">" + source.name
-					+ "</a>" + "and" + "<a href=\"/tags/mainpage?tagId="
+					+ "</a>" + "and" + "<a href=\"/Tags/mainPage?tagId="
 					+ destination.id + "\">" + destination.name + "</a>",
 					Security.getConnected(), source, destination,
 					source.createdInOrganization);
@@ -135,13 +135,13 @@ public class TagRelationships extends CoolCRUD {
 				relation.source, relation.destination);
 		if (relation.name != newName) {
 			if (!relationDuplicate(relationTemp)) {
-				Log.addUserLog("<a href=\"/users/viewprofile?userId="
+				Log.addUserLog("<a href=\"/Users/viewProfile?userId="
 						+ Security.getConnected().id + "\">"
 						+ Security.getConnected().username+ "</a>"
 						+ " renamed the relationship " + relation.name
-						+ " between tags "+ "<a href=\"/tags/mainpage?tagId="
+						+ " between tags "+ "<a href=\"/Tags/mainPage?tagId="
 						+ relation.source.id + "\">" + relation.source.name
-						+ "</a>" + "and"  + "<a href=\"/tags/mainpage?tagId="
+						+ "</a>" + "and"  + "<a href=\"/Tags/mainPage?tagId="
 						+ relation.destination.id + "\">"
 						+ relation.destination.name + "</a>" + "to" + "" + newName
 						, Security.getConnected(), relation.source,
@@ -169,13 +169,13 @@ public class TagRelationships extends CoolCRUD {
 	public static boolean delete(long relationId) {
 		TagRelationship relation = TagRelationship.findById(relationId);
 		notFoundIfNull(relation);
-		Log.addUserLog("<a href=\"/users/viewprofile?userId="
+		Log.addUserLog("<a href=\"/Users/viewProfile?userId="
 				+ Security.getConnected().id + "\">"
 				+ Security.getConnected().username + "</a>"
 				+ " deleted the relationship " + relation.name
-				+ " between tags " + "<a href=\"/tags/mainpage?tagId="
+				+ " between tags " + "<a href=\"/Tags/mainPage?tagId="
 				+ relation.source.id + "\">" + relation.source.name
-				+ "</a>" + "and" + "<a href=\"/tags/mainpage?tagId="
+				+ "</a>" + "and" + "<a href=\"/Tags/mainPage?tagId="
 				+ relation.destination.id + "\">" + relation.destination.name
 				+ "</a>", Security.getConnected(), relation.source,
 				relation.destination, relation.source.createdInOrganization);

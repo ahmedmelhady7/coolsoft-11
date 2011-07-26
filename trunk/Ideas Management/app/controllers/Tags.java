@@ -214,15 +214,15 @@ public class Tags extends CoolCRUD {
 			org.save();
 			user.createdTags.add(tag);
 			user.save();
-			Log.addUserLog("<a href=\"/users/viewprofile?userId="
+			Log.addUserLog("<a href=\"/Users/viewProfile?userId="
 					+ user.id
 					+ "\">"
 					+ user.username
 					+ "</a>"
 					+ " has created the tag "
-					+ "<a href=\"/tags/mainPage?tagId="
+					+ "<a href=\"/Tags/mainPage?tagId="
 					+ tag.id + "\">" + tag.name + "</a>" + " in organization "
-					+ "<a href=\"/organizations/viewprofile?id="
+					+ "<a href=\"/Organizations/viewProfile?id="
 					+ org.id + "\">" + org.name + "</a>", org, user, tag);
 			String description = user.username + " has created a new tag \""
 					+ name + "\" in organization " + org.name;
@@ -325,15 +325,15 @@ public class Tags extends CoolCRUD {
 			String oldName = tag.name;
 			tag.name = name;
 			tag.save();
-			Log.addUserLog("<a href=\"/users/viewprofile?userId="
+			Log.addUserLog("<a href=\"/Users/viewProfile?userId="
 					+ user.id
 					+ "\">"
 					+ user.username
 					+ "</a>"
 					+ " has changed the tag name from " + oldName + " to "
-					+ "<a href=\"/tags/mainPage?tagId="
+					+ "<a href=\"/Tags/mainPage?tagId="
 					+ tag.id + "\">" + tag.name + "</a>" + " in organization "
-					+ "<a href=\"/organizations/viewprofile?id="
+					+ "<a href=\"/Organizations/viewProfile?id="
 					+ tagOrganization.id + "\">" + tagOrganization.name + "</a>", tagOrganization, user, tag);
 			flash.success("DONE");
 		}
@@ -426,13 +426,13 @@ public class Tags extends CoolCRUD {
 			TagRelationships.delete(tag.relationsDestination.get(j).id);
 		}
 		tag.logs.clear();
-		Log.addUserLog("<a href=\"/users/viewprofile?userId="
+		Log.addUserLog("<a href=\"/Users/viewProfile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
 				+ "</a>"
 				+ " has deleted the tag  " + tag.name + " in organization" 
-				+ "<a href=\"/organizations/viewprofile?id="
+				+ "<a href=\"/Organizations/viewProfile?id="
 				+ organization.id + "\">" + organization.name + "</a>", user, organization);
 		tag.delete();
 		return true;

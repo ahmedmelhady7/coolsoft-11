@@ -315,13 +315,13 @@ public class Organizations extends CoolCRUD {
 			Organization org = new Organization(name, creator, privacyLevell,
 					createTagg, description).save();
 			Log.addUserLog(
-					"<a href=\"/users/viewprofile?userId="
+					"<a href=\"/Users/viewProfile?userId="
 							+ creator.id
 							+ "\">"
 							+ creator.username
 							+ "</a>"
 							+ " has created the organisation "
-							+ "<a href=\"/organizations/viewprofile?id="
+							+ "<a href=\"/Organizations/viewProfile?id="
 							+ org.id + "\">" + org.name + "</a>",
 					creator, org);
 			Role role = Roles.getRoleByName("organizationLead");
@@ -356,13 +356,13 @@ public class Organizations extends CoolCRUD {
 			user.followingOrganizations.add(org);
 			user.save();
 			Log.addUserLog(
-					"<a href=\"/users/viewprofile?userId="
+					"<a href=\"/Users/viewProfile?userId="
 							+ user.id
 							+ "\">"
 							+ user.username
 							+ "</a>"
 							+ " has followed the organisation "
-							+ "<a href=\"/organizations/viewprofile?id="
+							+ "<a href=\"/Organizations/viewProfile?id="
 							+ org.id + "\">" + org.name + "</a>", org);
 			redirect(request.controller + ".viewProfile", org.id,
 					"You are now a follower");
@@ -787,13 +787,13 @@ public class Organizations extends CoolCRUD {
 		notFoundIfNull(organization);
 		User user = Security.getConnected();
 		Log.addUserLog(
-				"<a href=\"/users/viewprofile?userId="
+				"<a href=\"/Users/viewProfile?userId="
 						+ user.id
 						+ "\">"
 						+ user.username
 						+ "</a>"
 						+ " has joined the organisation "
-						+ "<a href=\"/organizations/viewprofile?id="
+						+ "<a href=\"/Organizations/viewProfile?id="
 						+ organization.id + "\">" + organization.name + "</a>", user, organization);
 		Role role = Roles.getRoleByName("idea developer");
 		UserRoleInOrganizations.addEnrolledUser(user, organization, role);
@@ -938,7 +938,7 @@ public class Organizations extends CoolCRUD {
 		organization.save();
 		System.out.println("5alas logs");
 		Log.addUserLog(
-				"<a href=\"/users/viewprofile?userId="
+				"<a href=\"/Users/viewProfile?userId="
 						+ user.id + "\">" + user.username + "</a>"
 						+ " deleted the organisation " + organization.name, user);
 		System.out.println("hadelete");
@@ -1051,13 +1051,13 @@ public class Organizations extends CoolCRUD {
 		organization.description = description;
 		organization.save();
 		Log.addUserLog(
-				"<a href=\"/users/viewprofile?userId="
+				"<a href=\"/Users/viewProfile?userId="
 						+ user.id
 						+ "\">"
 						+ user.username
 						+ "</a>"
 						+ " has edited the organisation "
-						+ "<a href=\"/organizations/viewprofile?id="
+						+ "<a href=\"/Organizations/viewProfile?id="
 						+ organization.id + "\">" + organization.name + "</a>"
 						, user, organization);
 		Organizations.viewProfile(organizationId);
