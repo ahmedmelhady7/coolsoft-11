@@ -413,7 +413,7 @@ $(document).ready(function(){
                 <a id="docLink" style="cursor:pointer;">Documents</a>
 <div id="documen">
         <ul>
-        #{if creator == true || admin == true}
+        #{if settings == 1 || admin == true}
         <li><a href="@{Documents.newDocument(org.id)}">Add new</a></li>
         #{/if}
         #{if isMember == true || org.privacyLevel == 2 || admin}
@@ -432,7 +432,7 @@ $(document).ready(function(){
 </div>
 </li>
         <li>
-                #{if (admin || creator)}<a id="tagLink" style="cursor:pointer;">Create a Tag</a>
+                #{if (admin || settings==1)}<a id="tagLink" style="cursor:pointer;">Create a Tag</a>
         #{/if}
         #{else}
         #{if (org.createTag) && (!join)}<a id="tagLink" style="cursor:pointer;">Create a Tag</a>
@@ -723,7 +723,7 @@ $(document).ready(function(){
                                              
                                         </form> -->
                                                         
-                                                        #{if (admin || creator)}
+                                                        #{if (settings==1)}
                                                         <div id="relationForma">
                                                  
                                 <h4>Create Relationship between <select id="relType" onchange="showRelationForm()">
@@ -734,7 +734,7 @@ $(document).ready(function(){
                                         </select> :</h4>
                                         name: <select id="rels"> 
                                         <option>choose name</option>
-                                        #{list items:org.relationNames, as:'relName'}
+                                        #{list items:relationNames, as:'relName'}
                                         <option>${relName}</option>
                                         #{/list}
                                         </select> <input id="rTextForm" type="text" /> <input type="image" src=@{'public/images/icons/add.png'} title="add new name" onclick="addName()" /> <font color="red"><span id="duplicate"></span></font>
