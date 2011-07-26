@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
@@ -106,7 +107,8 @@ public class Organization extends CoolModel {
 	/**
 	 * list of the created relations names in the organization
 	 */
-	public ArrayList<String> relationNames;
+	@OneToMany(mappedBy = "organization")
+	public List<OrganizationRelationsNames> relationNames;
 
 	/**
 	 * list of invitations that sent by the organization
@@ -181,13 +183,8 @@ public class Organization extends CoolModel {
 
 //		bannedUsers = new ArrayList<BannedUser>();
 		
-		relationNames = new ArrayList<String>() {
-			{
-				add("manages");
-				add("has many");
-				add("belongs to");
-			}
-		};
+		relationNames = new ArrayList<OrganizationRelationsNames>() ;
+		
 		profilePictureId = -1;
 
 		// for testing
@@ -264,18 +261,11 @@ public class Organization extends CoolModel {
 		this.bannedUsers = new ArrayList<BannedUser>();
 		createRelationshipRequest = new ArrayList<CreateRelationshipRequest>();
 		renameEndRelationshipRequest = new ArrayList<RenameEndRelationshipRequest>();
+		relationNames = new ArrayList<OrganizationRelationsNames>() ;
 		//faruki
 
 		this.viewed = 0;
 
-
-		relationNames = new ArrayList<String>() {
-			{
-				add("manages");
-				add("has many");
-				add("belongs to");
-			}
-		};
 		profilePictureId = -1;
 		// for testing
 		// relationNames.add("manages");

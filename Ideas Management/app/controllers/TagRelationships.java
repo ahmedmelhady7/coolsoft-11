@@ -44,15 +44,15 @@ public class TagRelationships extends CoolCRUD {
 		notFoundIfNull(destination);
 		TagRelationship relation = new TagRelationship(name, source,
 				destination);
+		Organization organization = relation.source.createdInOrganization;
 		if (!relationDuplicate(relation)) {
 			relation.source.relationsSource.add(relation);
 			relation.destination.relationsDestination.add(relation);
 
-			if (!isDuplicate(name,
-					relation.source.createdInOrganization.relationNames))
-				relation.source.createdInOrganization.relationNames.add(name);
+			if (!organization.relationNames.contains(name))
+				organization.relationNames.add(new OrganizationRelationsNames(name,organization));
 
-			Organization organization = relation.source.createdInOrganization;
+
 			organization.save();
 			relation.save();
 

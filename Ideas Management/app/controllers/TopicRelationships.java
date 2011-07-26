@@ -44,15 +44,15 @@ public class TopicRelationships extends CoolCRUD {
 		notFoundIfNull(destination);
 		TopicRelationship relation = new TopicRelationship(name, source,
 				destination);
+		Organization organization = relation.source.entity.organization;
 		if (!relationDuplicate(relation)) {
 			relation.source.relationsSource.add(relation);
 			relation.destination.relationsDestination.add(relation);
-			if (!isDuplicate(name,
-					relation.source.entity.organization.relationNames))
-				relation.source.entity.organization.relationNames.add(name);
+			if (!organization.relationNames.contains(name))
+			organization.relationNames.add(new OrganizationRelationsNames(name,organization));
 
 			relation.save();
-			Organization organization = relation.source.entity.organization;
+			
 			organization.save();
 
 			if (!relation.source.entity.equals(relation.destination.entity)) {
