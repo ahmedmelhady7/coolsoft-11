@@ -750,7 +750,7 @@ public class Ideas extends CoolCRUD {
 			}
 
 		}
-		String logDescription = "<a href=\"/Users/viewProfile?userId="
+		String logDescription = "<a href=\"Users/viewProfile?userId="
 			+ Security.getConnected().id + "\">" 
 			+ Security.getConnected().username + "</a>" 
 			+ " deleted the idea " 
