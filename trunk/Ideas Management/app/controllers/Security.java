@@ -7,6 +7,7 @@ import notifiers.Mail;
 import play.data.validation.Required;
 import play.libs.Codec;
 import play.mvc.With;
+import sun.security.action.GetBooleanAction;
 import models.Log;
 import models.User;
 
@@ -14,14 +15,13 @@ import models.User;
  * Manages the login actions, and the password recovery
  * 
  * @author Ahmed Maged
- *
+ * 
  */
 
 public class Security extends Secure.Security {
 
 	/**
-	 * Used to get the user who is already connected on the
-	 * session.
+	 * Used to get the user who is already connected on the session.
 	 * 
 	 * @author Ahmed Maged
 	 * 
@@ -31,36 +31,67 @@ public class Security extends Secure.Security {
 	 * 
 	 */
 	public static User getConnected() {
+		if (renderArgs.get("baseurl") == null) {
+			setBaseURL();
+		}
+		System.out.println("---- LOOOOL ---" + renderArgs.get("baseurl"));
 		String id = session.get("user_id");
 		return User.findById(Long.parseLong(id == null ? "0" : id));
 	}
 
+	public static int setBaseURL() {
+		// System.out.println("baseURL: " + renderArgs.get("baseurl"));
+		// System.out.println("URL: " + request.url);
+		// System.out.println("ACTION: " + request.action);
+		// System.out.println("DOMAIN: " + request.domain);
+		// System.out.println("HOST: " + request.host);
+		int index = request.url.indexOf("admin");
+		String temp = "";
+		if (index != -1) {
+			temp = request.url.substring(0, index);
+		} else {
+			String temp2 = request.action.substring(0,
+					request.action.indexOf(".")).toLowerCase();
+			// System.out.println("temp2: " + temp2);
+			if (temp2.equalsIgnoreCase("home")) {
+				temp2 = request.url;
+			} else {
+				int temp1 = request.url.toLowerCase().indexOf(temp2);
+				// System.out.println("temp1: " + temp1);
+				// System.out.println("----------------------");
+				temp = request.url.substring(0, temp1);
+				// System.out.println("temp: " + temp);
+			}
+		}
+		// System.out.println("LOOOOL: " + temp);
+		renderArgs.put("baseurl", temp);
+		return 0;
+	}
+
 	/**
-	 * checks that the logging user has access to the
-	 * web site and check if he has not activated his account yet if so the user is
-	 * asked to activate 
+	 * checks that the logging user has access to the web site and check if he
+	 * has not activated his account yet if so the user is asked to activate
 	 * 
 	 * @author Ahmed Maged , Mostafa Ali
 	 * 
 	 * @stroy C1S18
 	 * 
-	 * @param username 
-	 * 			String the username of the logging user
+	 * @param username
+	 *            String the username of the logging user
 	 * 
-	 * @param password 
-	 * 			String the password of the user
+	 * @param password
+	 *            String the password of the user
 	 * 
-	 * @return boolean 
-	 * 			true if the user is authorised false otherwise
+	 * @return boolean true if the user is authorised false otherwise
 	 */
 
-	public static boolean authenticate(String username, String password) {		
-		password = Codec.hexMD5(password);		
+	public static boolean authenticate(String username, String password) {
+		password = Codec.hexMD5(password);
 		User user = User.find(
 				"select u from User u where (u.username=? and u.password = ?)",
 				username, password).first();
 		if (user != null) {
-			if(user.state.equals("d")) {
+			if (user.state.equals("d")) {
 				flash.error("Your account has been deleted");
 				return false;
 			}
@@ -71,47 +102,48 @@ public class Security extends Secure.Security {
 			return true;
 		}
 		flash.error("Incorrect username or password");
-		return false;		
+		return false;
 	}
-	
+
 	/**
-	 * Renders the view of the for the user to enter his activation key
-	 * to activate his account.
+	 * Renders the view of the for the user to enter his activation key to
+	 * activate his account.
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S18
 	 * 
 	 * @param username
-	 * 			String the username of the user who is activating his password	
+	 *            String the username of the user who is activating his password
 	 */
-	
+
 	public static void activationKey(String username) {
-		User user = User.find("select u from User u where u.username=?", 
+		User user = User.find("select u from User u where u.username=?",
 				username).first();
-		notFoundIfNull(user);		
+		notFoundIfNull(user);
 		render(user);
 	}
-	
+
 	/**
-	 * Checks the activation key of the user and if correct changes his state so that
-	 * he can login.
+	 * Checks the activation key of the user and if correct changes his state so
+	 * that he can login.
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S18
 	 * 
 	 * @param username
-	 * 			String the username of the user who is activating his password
+	 *            String the username of the user who is activating his password
 	 * @param password
-	 * 			String the user's password
+	 *            String the user's password
 	 * @param actKey
-	 * 			String the user's activation key
+	 *            String the user's activation key
 	 */
-	
-	public static void checkKey(String username, String password, @Required String actKey) {
-		User user = User.find("select u from User u where u.username=?", 
-				username).first();	
+
+	public static void checkKey(String username, String password,
+			@Required String actKey) {
+		User user = User.find("select u from User u where u.username=?",
+				username).first();
 		notFoundIfNull(user);
 		if (validation.hasErrors()) {
 			flash.error("You must enter the activation key to login");
@@ -123,7 +155,7 @@ public class Security extends Secure.Security {
 		}
 		if (user.activationKey.equals(actKey)) {
 			user.state = "h";
-			user._save();			
+			user._save();
 			authenticate(username, password);
 			Login.homePage();
 		} else {
@@ -131,7 +163,7 @@ public class Security extends Secure.Security {
 			activationKey(user.username);
 		}
 	}
-	
+
 	/**
 	 * renders the forgot password view.
 	 * 
@@ -140,77 +172,79 @@ public class Security extends Secure.Security {
 	 * @story C1S21
 	 * 
 	 */
-	
+
 	public static void forgotPassword() {
 		render();
 	}
-	
+
 	/**
-	 * checks that the entered username or e-mail belongs to an existing
-	 * user, and if so displays the user's security question.
+	 * checks that the entered username or e-mail belongs to an existing user,
+	 * and if so displays the user's security question.
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S21
 	 * 
-	 * @param username 
-	 *			String the username or the e-mail of the user who forgot his password 
-	 *
+	 * @param username
+	 *            String the username or the e-mail of the user who forgot his
+	 *            password
+	 * 
 	 */
-	
-	public static void checkUsername( @Required String username, boolean flag) {
-		if( validation.hasErrors() )
-		{
-			flash.error( "Please enter a valid username/Email" );
+
+	public static void checkUsername(@Required String username, boolean flag) {
+		if (validation.hasErrors()) {
+			flash.error("Please enter a valid username/Email");
 			Security.forgotPassword();
 		}
-		User user = User.find( "select u from User u where u.email=? or u.username=?", username.toLowerCase(), username ).first();
-		if(user == null || user.state.equals("d")) {
-			flash.error( "This username/Email does not exist" );
+		User user = User.find(
+				"select u from User u where u.email=? or u.username=?",
+				username.toLowerCase(), username).first();
+		if (user == null || user.state.equals("d")) {
+			flash.error("This username/Email does not exist");
 			Security.forgotPassword();
 		} else {
 			render(user, flag);
 		}
 	}
-	
+
 	/**
-	 * recovers the password of the user by sending it to his e-mail address,
-	 * if he answered the security question correctly.
+	 * recovers the password of the user by sending it to his e-mail address, if
+	 * he answered the security question correctly.
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S21
 	 * 
-	 * @param username 
-	 * 			String the username or the e-mail of the user who forgot his password
+	 * @param username
+	 *            String the username or the e-mail of the user who forgot his
+	 *            password
 	 * @param answer
-	 * 			String the answer of the security question
-	 * 	
+	 *            String the answer of the security question
+	 * 
 	 */
-	
+
 	public static void recoverPassword(String username, @Required String answer) {
-		//User user = User.find("ByUsername", username).first();
-		if( validation.hasErrors() )
-		{
-			flash.error( "You must answer the question!" );
+		// User user = User.find("ByUsername", username).first();
+		if (validation.hasErrors()) {
+			flash.error("You must answer the question!");
 			boolean flag = false;
 			Security.checkUsername(username, flag);
 		}
-		User user = User.find("select u from User u where u.username=?", 
+		User user = User.find("select u from User u where u.username=?",
 				username).first();
-		if(answer == null) {
+		if (answer == null) {
 			flash.error("You must answer the security question!");
 			boolean flag = false;
 			Security.checkUsername(username, flag);
 		}
 		String userAnswer = user.answer;
-		if(answer.equalsIgnoreCase(userAnswer)) {
+		if (answer.equalsIgnoreCase(userAnswer)) {
 			// should send a generated password by mail
 			String newPassword = generatePassword();
 			user.password = Codec.hexMD5(newPassword);
 			user.save();
 			Mail.recoverPassword(user.username, user.email, newPassword);
-			flash.success("An email is sent to " + user.email 
+			flash.success("An email is sent to " + user.email
 					+ " with your new password \n");
 			boolean flag = true;
 			Security.checkUsername(username, flag);
@@ -220,24 +254,23 @@ public class Security extends Secure.Security {
 			Security.checkUsername(username, flag);
 		}
 	}
-	
+
 	/**
 	 * Generates a random password of length 7
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S21
-	 * 	 
-	 * @return String
-	 * 			the new generated password
+	 * 
+	 * @return String the new generated password
 	 */
-	
+
 	public static String generatePassword() {
 		LinkedList<String> chars = new LinkedList<String>();
 		char current = 'a';
 		int number = 0;
 		// add all the characters in a list of characters
-		for(int i = 0; i < 26; i++) {
+		for (int i = 0; i < 26; i++) {
 			chars.add(current + "");
 			String tmp = ("" + current).toUpperCase();
 			chars.add(tmp);
@@ -247,7 +280,7 @@ public class Security extends Secure.Security {
 		}
 		// generate a random password of length 7
 		String password = "";
-		for(int i = 0; i < 7; i++) {
+		for (int i = 0; i < 7; i++) {
 			int x = (int) (Math.random() * (chars.size() - 1));
 			password += chars.get(x);
 		}

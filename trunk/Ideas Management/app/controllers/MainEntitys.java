@@ -11,6 +11,7 @@ import play.data.validation.Required;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
+import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
 import models.CreateRelationshipRequest;
@@ -495,8 +496,8 @@ public class MainEntitys extends CoolCRUD {
 	 * 
 	 */
 	public static void viewEntity(long id) {
-		System.out.println("view");
 		User user = Security.getConnected();
+		String baseurl = (String) routeArgs.get("baseurl");
 		MainEntity entity = MainEntity.findById(id);
 		notFoundIfNull(entity);
 		if(Users.isPermitted(user,"view", id,"entity")){

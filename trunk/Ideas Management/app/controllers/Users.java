@@ -1114,12 +1114,14 @@ public class Users extends CoolCRUD {
 	 * @return List <User> Organizers in that entity
 	 */
 	public static List<User> getEntityOrganizers(MainEntity entity) {
+		System.out.println(entity.name);
 		List<User> enrolled = new ArrayList<User>();
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
 		if (entity != null) {
+			System.out.println("ezay da5alt?!!!");
 			Organization organization = entity.organization;
 
-			long entityId = entity.getId();
+			long entityId = entity.id;
 			organizers = UserRoleInOrganization
 					.find("select uro from UserRoleInOrganization uro where uro.organization = ? and uro.entityTopicID = ? and uro.type like ?",
 							organization, entityId, "entity").fetch();
@@ -1488,7 +1490,7 @@ public class Users extends CoolCRUD {
 		user.dateofBirth = dateOfBirth;
 		user.country = country;
 		user.profession = profession;
-		String logDescription = "<a href=\"/Users/viewProfile?userId="
+		String logDescription = "<a href=\""+renderArgs.get("baseurl")+"/Users/viewProfile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
