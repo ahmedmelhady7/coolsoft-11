@@ -8,7 +8,7 @@ import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
-public class LinkDuplicatesRequest extends Model {
+public class LinkDuplicatesRequest extends CoolModel{
 	/**
 	 * The Ideas declared as duplicates
 	 */
