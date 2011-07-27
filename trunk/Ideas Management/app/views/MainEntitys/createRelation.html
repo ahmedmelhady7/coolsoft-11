@@ -73,7 +73,7 @@
 			}, function(data){
 				if(data == "true"){
 					alert("you have created a relation:" + x);
-					var link = "/Mainentitys/viewEntity?id="+a;
+					var link = "@{Mainentitys.viewEntity(a)}";
 					window.location.href= link
 				}else if(data == "false"){
 					alert("this relation already exists!!");

@@ -260,7 +260,7 @@
                                 #{/if}
                                 <ul id="tagLister" style="list-style: none; ">
                                 #{list items:tags, as:'tag'}
-                <a href="/Tags/mainpage?tagId=${tag.id}" style="float:left;">${tag.name} &nbsp </a>
+                <a href="/Tags/mainPage?tagId=${tag.id}" style="float:left;">${tag.name} &nbsp </a>
                                 #{/list}
                                 </ul>
                                 #{if permittedToTagIdea}
@@ -284,8 +284,10 @@
                                                 function tagIdea(){
                                                         var tag = document.getElementById('tagger').value;
                                                         var idea = '${ideaId}';
+														alert(baseurl);
                                                         $.getJSON('@{Ideas.tagIdea()}', {ideaId:idea, tag: tag}, function(ideaTags) {
-                                                                $('#tagLister').append("<a href=\"/tags/mainpage?tagId=" + ideaTags.tagId + "\" style=\"float:left;\">&nbsp; " + ideaTags.tagName + "</a>");
+															alert(baseurl);
+                                                                $('#tagLister').append("<a href=\""+baseurl+"Tags/mainPage?tagId=" + ideaTags.tagId + "\" style=\"float:left;\">&nbsp; " + ideaTags.tagName + "</a>");
                                                                 $('#tagger').val("");
                                                         });
                                                 }
