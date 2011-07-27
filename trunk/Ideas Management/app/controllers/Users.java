@@ -1829,38 +1829,6 @@ public class Users extends CoolCRUD {
 		}
 	}
 
-	/**
-	 * Renders the list of notifications of the user, to the view to display the
-	 * notifications.
-	 * 
-	 * @author Ahmed Maged
-	 * 
-	 * @story C1S14
-	 * 
-	 */
-
-	public static void viewNotifications() {
-		User user = Security.getConnected();
-		for (int i = 0; i < user.notifications.size(); i++) {
-			if (user.notifications.get(i).seen) {
-				Notification notification = user.notifications.get(i);
-				notification.status = "Old";
-				notification.save();
-			} else {
-				Notification notification = user.notifications.get(i);
-				notification.status = "*New";
-				notification.seen = true;
-				notification.save();
-			}
-		}
-		user.save();
-		List<Notification> temp = user.notifications;
-		List<Notification> nList = new ArrayList<Notification>();
-		for (int i = temp.size() - 1; i > -1; i--) {
-			nList.add(temp.get(i));
-		}
-		render(user, nList);
-	}
 
 	/**
 	 * Changes the status of the notifications when the user views the latest
@@ -1888,22 +1856,6 @@ public class Users extends CoolCRUD {
 			}
 		}
 		user.save();
-	}
-
-	/**
-	 * Renders the list of notification profiles for the user to view and edit
-	 * his preferences.
-	 * 
-	 * @author Ahmed Maged
-	 * 
-	 * @story C1S14
-	 * 
-	 */
-
-	public static void viewNotificationProfile() {
-		User user = Security.getConnected();
-		List<NotificationProfile> npList = user.notificationProfiles;
-		render(user, npList);
 	}
 
 	/**
