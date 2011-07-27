@@ -91,9 +91,9 @@
         });
 		alert("Document Created");
 		if (b == "false") {
-			window.location = "http://localhost:9008/";	
+			window.location = "@{Login.homePage()}";	
 		} else {		 
-			window.location = "http://localhost:9008/organizations/viewProfile?id=" + id;
+			window.location = "@{Organizations.viewProfile(id)}";
 		}
 	}
 </script>
