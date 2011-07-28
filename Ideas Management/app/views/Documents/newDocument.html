@@ -88,12 +88,10 @@
             isOrganization: b,
             title: name,
             data: data
-        });
-		alert("Document Created");
-		if (b == "false") {
+        }, function(){if (!${isOrganization}) {
 			window.location = "@{Login.homePage()}";	
 		} else {		 
 			window.location = "@{Organizations.viewProfile(id)}";
-		}
+		}});
 	}
 </script>
