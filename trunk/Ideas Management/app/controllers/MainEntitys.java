@@ -582,11 +582,16 @@ public class MainEntitys extends CoolCRUD {
 			if (!entityList.get(i).createRelationship)
 				entityList.remove(entityList.get(i));
 		}
+		List<String> relationNames = new ArrayList<String>();
+		
+		for(int j=0;j<org.relationNames.size();j++)
+			relationNames.add(org.relationNames.get(j).name);
+		
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity, canCreateSubEntity, follower,
 				canCreateRelationship, canRequest, canRequestRelationship,
 				canRestrict, entityIsLocked, plans, canDeleteEntity, followers,
-				check, check1, check2, entityList, manageTopicRequests);
+				check, check1, check2, entityList, manageTopicRequests,relationNames);
 		}
 		else{
 			BannedUsers.unauthorized();
