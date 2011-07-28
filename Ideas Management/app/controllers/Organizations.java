@@ -943,7 +943,10 @@ public class Organizations extends CoolCRUD {
 		}
 		//
 		for(int i=0;i<	organization.relationNames.size();i++){
-			organization.relationNames.get(i).delete();
+			System.out.println(organization.relationNames);
+			OrganizationRelationsNames relationName = organization.relationNames.get(i);
+			organization.relationNames.remove(relationName);
+			relationName.delete();
 			organization.save();
 			i--;
 		}
