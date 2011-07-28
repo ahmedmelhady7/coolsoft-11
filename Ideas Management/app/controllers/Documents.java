@@ -56,7 +56,8 @@ public class Documents extends CoolCRUD {
 	 */
 	public static void createDocument(long id, boolean isOrganization,
 			String title, String data) {
-		new Document(title, data, id, isOrganization).save();
+		Document document = new Document(title, data, id, isOrganization).save();
+//		viewDocument(document.id);
 	}
 
 	/**
