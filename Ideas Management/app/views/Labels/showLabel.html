@@ -49,7 +49,7 @@
 			
 			if(validate())
 			{
-				var link = "/labels/showLabel?labelId="+id;
+				var link = "@{Labels.showLabel(id)}" ;
 				$.post('@{changeName()}' ,{labelId:id, newName:name},function(){window.location.href=link});
 			}
 			else
