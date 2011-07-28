@@ -284,9 +284,7 @@
                                                 function tagIdea(){
                                                         var tag = document.getElementById('tagger').value;
                                                         var idea = '${ideaId}';
-														alert(baseurl);
                                                         $.getJSON('@{Ideas.tagIdea()}', {ideaId:idea, tag: tag}, function(ideaTags) {
-															alert(baseurl);
                                                                 $('#tagLister').append("<a href=\""+baseurl+"Tags/mainPage?tagId=" + ideaTags.tagId + "\" style=\"float:left;\">&nbsp; " + ideaTags.tagName + "</a>");
                                                                 $('#tagger').val("");
                                                         });
