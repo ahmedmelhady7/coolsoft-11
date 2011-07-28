@@ -265,7 +265,7 @@ No items exist in plan.
 Please contact
     #{list items:plan.topic.getOrganizer(), as:'organizer'}
     <li>
-        <a href="#">${organizer.username}</a>
+        <a href="@{Users.viewProfile(organizer.id)}">${organizer.username}</a>
     </li>
     #{/list}
 </ul>
@@ -400,7 +400,7 @@ $("#commentsList").append("<div id=\"commentt_${id}\"><div  class=\"comment-meta
                 			$.post('@{workOnItem()}', {itemId:id});
                 			$("#buttonWork_" + id).remove();
 							$("#noUserLabel_" + id).remove();
-                		    $("#assignees_" + id).append("<li> <a href=\"Users/viewProfile?userId=" + ${user.id} + "\">"+name+"</a> </li>");
+                		    $("#assignees_" + id).append("<li> "<a href=\"@{Users.viewProfile(user.id)}\">${user.username}</a> </li>");
 						
                 	}	
                 	
