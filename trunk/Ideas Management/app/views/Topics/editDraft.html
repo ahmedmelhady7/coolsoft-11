@@ -136,16 +136,15 @@
 			return;
 		}
 		
-		var link = "/ideas/getdrafts";
 		$.post('@{Topics.saveDraft()}' ,{topicId:${targetTopic.getId()}, title:topicTitle, description:topicDescription, 
-			privacyLevel: privacyLevel, createRelationship: createRelationship}, function(){window.location.href=link});
+			privacyLevel: privacyLevel, createRelationship: createRelationship}, function(){window.location.href="@{Ideas.getDrafts()}"});
 			
 		
 	}
 	
 	function discard() {
 		var link = "/Ideas/getdrafts";
-		$.post('@{Topics.discardDraftTopic()}' ,{topicId:${targetTopic.getId()}}, function(){window.location.href=link});
+		$.post('@{Topics.discardDraftTopic()}' ,{topicId:${targetTopic.getId()}}, function(){window.location.href="@{Ideas.getDrafts()}"});
 	}
 	
 	function post() {
@@ -155,9 +154,8 @@
 			alert("Title and Description must be entered");
 			return;
 		}
-		var link = "/Ideas/getdrafts";
 		$.post('@{Topics.postDraftTopic()}' ,{topicId:${targetTopic.getId()}, title:topicTitle, description:topicDescription, 
-			privacyLevel: privacyLevel, createRelationship: createRelationship}, function(){window.location.href=link});
+			privacyLevel: privacyLevel, createRelationship: createRelationship}, function(){window.location.href="@{Ideas.getDrafts()}"});
 	}
 	
 	
@@ -189,13 +187,12 @@
 					
 					if(validate())
 					{
-						var link = "/Mainentitys/viewentity?id="+entityId;
 						
 						$.post('@{Topics.createDraft()}' ,
 						{title:topicTitle, description:topicDescription,
 							privacyLevel: privacyLevel, createRelationship: createRelationship,
 							entityId:entityId}, 
-						function(){window.location.href=link});
+						function(){window.location.href="@{MainEntitys.viewEntity(entityId)})";
 					}					
 				}
 				
