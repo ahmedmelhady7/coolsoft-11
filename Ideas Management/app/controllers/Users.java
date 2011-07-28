@@ -7,7 +7,10 @@ package controllers;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.persistence.Query;
 
 import com.google.gson.JsonObject;
@@ -22,6 +25,7 @@ import play.db.jpa.JPA;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import play.libs.Codec;
+import play.mvc.Router;
 import play.mvc.With;
 import models.*;
 
@@ -1490,8 +1494,11 @@ public class Users extends CoolCRUD {
 		user.dateofBirth = dateOfBirth;
 		user.country = country;
 		user.profession = profession;
-		String logDescription = "<a href=\""+renderArgs.get("baseurl")+"/Users/viewProfile?userId="
-				+ user.id
+		Map paramters = new HashMap<String, Object>();
+		paramters.put("userId",user.id );
+		String url = Router.reverse("Users.viewProfile",paramters).url;
+		System.out.println(url);
+		String logDescription = "<a href=\""+url
 				+ "\">"
 				+ user.username
 				+ "</a>"
