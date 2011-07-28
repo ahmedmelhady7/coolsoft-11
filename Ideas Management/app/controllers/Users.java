@@ -1498,7 +1498,7 @@ public class Users extends CoolCRUD {
 				+ " has edited his profile";
 		Log.addUserLog(logDescription, user);
 		user.save();
-		redirect("/Users/viewProfile?userId=" + id);
+		Users.viewProfile(id);
 
 	}
 
