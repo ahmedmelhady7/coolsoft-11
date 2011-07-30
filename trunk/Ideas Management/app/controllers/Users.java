@@ -2166,6 +2166,8 @@ public class Users extends CoolCRUD {
 	}
 	public static void feedbackMail(String feedbackerEmail,String feedback,String browser,String subject){
 		Mail.sendFeedback(feedbackerEmail, feedback, browser, subject);
+		Notifications.sendNotification(2, 1, "Organization",feedback+" "+feedbackerEmail);
+		Notifications.sendNotification(3, 1, "Organization",feedback+" "+feedbackerEmail);
 	}
 
 }
