@@ -8,7 +8,7 @@
 
 <!-- Begin
 
-var imgdir = @{'public/images/cimg/'}; // identify directory where captcha images are located
+var imgdir = "/public/images/cimg/"; // identify directory where captcha images are located
 var jfldid = "uword"; // identify word field id name
 var jfldsz = 20; // identify word field size
 
