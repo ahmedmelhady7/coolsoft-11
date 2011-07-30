@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.lang.reflect.*;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 
 import models.User;
 //import models.Project;
@@ -26,6 +27,7 @@ public class Log extends CoolModel{
 	/**
 	 *  description of the action saved in the log
 	 */
+	@Lob
 	public String actionDescription;
 	/**
 	 *  timestamp of the action 
