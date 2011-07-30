@@ -1333,7 +1333,7 @@ public class Plans extends CoolCRUD {
 	 * 
 	 * @throws java.text.ParseException
 	 */
-	public static void viewasTimeline(long planId) throws IOException,
+	public static void viewAsTimeline(long planId) throws IOException,
 			ParseException, java.text.ParseException {
 
 		User user = Security.getConnected();
