@@ -260,7 +260,7 @@
                                 #{/if}
                                 <ul id="tagLister" style="list-style: none; ">
                                 #{list items:tags, as:'tag'}
-                <a href="@{'Tags.mainPage(tag.id)'}" style="float:left;">${tag.name} &nbsp </a>
+                <a href="@{Tags.mainPage(tag.id)}" style="float:left;">${tag.name} &nbsp </a>
                                 #{/list}
                                 </ul>
                                 #{if permittedToTagIdea}
