@@ -1383,6 +1383,7 @@ public class Plans extends CoolCRUD {
 
 			FileWriter fstream;
 			fstream = new FileWriter("public/xml/out.xml");
+			//fstream = new FileWriter("/var/lib/tomcat6/webapps/ideas/ROOT/WEB-INF/application/public/xml/out.xml");
 			BufferedWriter out = new BufferedWriter(fstream);
 
 			out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
@@ -1406,7 +1407,7 @@ public class Plans extends CoolCRUD {
 			out.write("START");
 			out.write("\"");
 			out.write(" ");
-			out.write("icon=\"/public/rer7.png\"");
+			out.write("icon=\"/public/images/rer7.png\"");
 			out.write(">");
 			out.write(plan.description);
 			out.write("</event>");
@@ -1428,7 +1429,7 @@ public class Plans extends CoolCRUD {
 			out.write("END");
 			out.write("\"");
 			out.write(" ");
-			out.write("icon=\"/public/rer7.png\"");
+			out.write("icon=\"/public/images/rer7.png\"");
 			out.write(">");
 
 			out.write("</event>");
