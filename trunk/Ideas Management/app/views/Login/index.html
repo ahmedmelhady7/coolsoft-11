@@ -1,6 +1,5 @@
 #{extends 'main.html' /}
 #{set title:'Ideas Management' /}
-<script type="text/JavaScript">var baseurl = '${basurl}' </script>
 <script src="@{'public/javascripts/topbar_message/jquery.js'}" type="text/javascript"></script>
 <script src="@{'public/javascripts/topbar_message/juery.topbar.js'}" type="text/javascript"></script>
 <link href="@{'public/javascripts/jnotify/jquery.jnotify.css'}" rel="stylesheet" type="text/css" />
@@ -254,7 +253,7 @@
                                 #{if !user.isAdmin}<a href="@{Users.confirmDeactivation()}">Deactivate</a>
                                 <br>
                                 #{/if} 
-                                #{if user.isAdmin}<a href="${baseurl}admin">Admin View</a>
+                                #{if user.isAdmin}<a href="/admin">Admin View</a>
                                 <br>
                                 <a href="@{Logs.viewUserLogs()}">View Logs</a>
                                 <br>

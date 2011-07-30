@@ -31,10 +31,6 @@ public class Security extends Secure.Security {
 	 * 
 	 */
 	public static User getConnected() {
-		if (renderArgs.get("baseurl") == null) {
-			setBaseURL();
-		}
-		System.out.println("---- LOOOOL ---" + renderArgs.get("baseurl"));
 		String id = session.get("user_id");
 		return User.findById(Long.parseLong(id == null ? "0" : id));
 	}

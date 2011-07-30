@@ -1494,11 +1494,9 @@ public class Users extends CoolCRUD {
 		user.dateofBirth = dateOfBirth;
 		user.country = country;
 		user.profession = profession;
-		Map paramters = new HashMap<String, Object>();
-		paramters.put("userId",user.id );
-		String url = Router.reverse("Users.viewProfile",paramters).url;
-		System.out.println(url);
-		String logDescription = "<a href=\""+url
+
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
+				+ user.id
 				+ "\">"
 				+ user.username
 				+ "</a>"
