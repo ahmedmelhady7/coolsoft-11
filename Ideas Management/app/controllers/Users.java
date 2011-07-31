@@ -203,50 +203,63 @@ public class Users extends CoolCRUD {
 	 * 
 	 */
 	public static void viewMyProfile(String id) {
+		/**
+		 * the method was surrounded by a check to make 
+		 * sure that user is editing his profile only
+		 * 
+		 * added by Mostafa Ali
+		 */
+		long longId = Long.parseLong(id);
+		if(Security.getConnected().id==longId)
+		{
+			long userID = Long.parseLong(id);
+			User user = User.findById(userID);
 
-		long userID = Long.parseLong(id);
-		User user = User.findById(userID);
+			notFoundIfNull(user);
+			
 
-		notFoundIfNull(user);
-		
+			String firstName = user.firstName;
+			String lastName = user.lastName;
+			String profession = user.profession;
+			String username = user.username;
+			String birthDate = "" + user.dateofBirth;
+			String email = user.email;
 
-		String firstName = user.firstName;
-		String lastName = user.lastName;
-		String profession = user.profession;
-		String username = user.username;
-		String birthDate = "" + user.dateofBirth;
-		String email = user.email;
+			email = email.trim().toLowerCase();
+			username = username.trim().toLowerCase();
+			firstName = firstName.trim();
+			List<User> userList = User.findAll();
+			String emails = "";
+			String usernames = "";
 
-		email = email.trim().toLowerCase();
-		username = username.trim().toLowerCase();
-		firstName = firstName.trim();
-		List<User> userList = User.findAll();
-		String emails = "";
-		String usernames = "";
+			for (int i = 0; i < userList.size(); i++) {
+				if (i == userList.size() - 1) {
+					usernames = usernames + userList.get(i).username + "";
+					emails = emails + userList.get(i).email + "";
+				} else {
+					usernames = usernames + userList.get(i).username + "|";
+					emails = emails + userList.get(i).email + "|";
+				}
 
-		for (int i = 0; i < userList.size(); i++) {
-			if (i == userList.size() - 1) {
-				usernames = usernames + userList.get(i).username + "";
-				emails = emails + userList.get(i).email + "";
-			} else {
-				usernames = usernames + userList.get(i).username + "|";
-				emails = emails + userList.get(i).email + "|";
 			}
 
+			int adminFlag = 0;
+			if (Security.getConnected().isAdmin) {
+				adminFlag = 1;
+			}
+			try {
+
+				
+				render(user, usernames, emails);
+
+			} catch (TemplateNotFoundException e) {
+				
+				render("/users/view.html");
+			}
 		}
-
-		int adminFlag = 0;
-		if (Security.getConnected().isAdmin) {
-			adminFlag = 1;
-		}
-		try {
-
-			
-			render(user, usernames, emails);
-
-		} catch (TemplateNotFoundException e) {
-			
-			render("/users/view.html");
+		else
+		{
+			BannedUsers.unauthorized();
 		}
 	}
 
