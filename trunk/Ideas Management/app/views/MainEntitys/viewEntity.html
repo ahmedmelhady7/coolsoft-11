@@ -749,7 +749,7 @@
 			
 					
 			#{if manageTopicRequests}
-				<form action="@{TopicRequests.list()}">
+				<form action="@{TopicRequests.requestsList()}">
 					<input type="hidden" value=${entity.id} name='entityId'/>
 					<input type="submit" value="View topic requests" class = "linkButton"/>
 				</form>

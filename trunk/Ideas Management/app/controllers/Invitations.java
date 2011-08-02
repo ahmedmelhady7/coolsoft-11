@@ -50,14 +50,13 @@ public class Invitations extends CoolCRUD {
 	public static void invite(long id, int type, int check) {
 
 		User user = Security.getConnected();
-		List<User> usersMatched = new ArrayList<User>();
-		for (User user1 : users) {
-			usersMatched.add(user1);
-		}
-		List<Integer> usersInvited = new ArrayList<Integer>();
-		for (Integer item : done) {
-			usersInvited.add(item);
-		}
+		List<User> usersMatched = users;
+		
+		List<Integer> usersInvited = done;
+		
+		System.out.println("users " + usersMatched);
+		System.out.println("usersss " + usersInvited);
+		
 		if (type == 0) {
 			if (Users
 					.isPermitted(
@@ -120,8 +119,7 @@ public class Invitations extends CoolCRUD {
 
 		List<User> filter = Users.searchUser(name);
 		List<User> userFilter = new ArrayList<User>();
-		List<User> postsInTopic = Topics.searchByTopic(id);
-		notFoundIfNull(postsInTopic);
+		
 		List<Integer> invited = new ArrayList<Integer>();
 
 		if (validation.hasErrors()) {
@@ -143,6 +141,8 @@ public class Invitations extends CoolCRUD {
 			}
 
 		} else {
+			List<User> postsInTopic = Topics.searchByTopic(id);
+			notFoundIfNull(postsInTopic);
 			for (int i = 0; i < filter.size(); i++) {
 				if (!postsInTopic.contains(filter.get(i))
 						|| filter.get(i).isAdmin) {

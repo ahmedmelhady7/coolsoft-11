@@ -177,7 +177,7 @@ public class TopicRequests extends CoolCRUD{
  * @description This method renders the list of topic requests related to a given entity
  * 
  */
-public static void list(long entityId) {
+public static void requestsList(long entityId) {
 	MainEntity entity = MainEntity.findById(entityId);
 	User user = Security.getConnected();
 	List<TopicRequest> listOfTopicsToBeRendered = new ArrayList<TopicRequest>(); 
@@ -188,8 +188,13 @@ public static void list(long entityId) {
 		}
 	}
 	try {
+		if(entity != null){
 		String entityName = entity.name;
-		render(entityId, user, entityName, listOfTopicsToBeRendered);
+		render(entityId, user, entityName, listOfTopicsToBeRendered);}
+		else{
+			render(entityId, user, listOfTopicsToBeRendered);
+		}
+		
 
 	} catch (TemplateNotFoundException exception) {
 		render("CRUD/list.html", entityId, user);
