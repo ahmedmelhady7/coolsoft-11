@@ -337,7 +337,7 @@
                 </ul>
                 #{else}<label id = "noComments">No comments posted </label>#{/else}
                 </div>
-   #{if notBlockedFromUsing}
+   #{if notBlockedFromUsing || !notAuthor}
                         <div class="comment-content" style = "margin-left: 10%; margin-right: 10%"><textarea name = "comment" id= "commentTxt" rows="7" cols="63"></textarea>
                         <br/>
                         <label id = "emptyComment" style = "color: red;" hidden = "true">You have to enter a comment</label>

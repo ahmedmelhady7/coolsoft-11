@@ -25,6 +25,7 @@ public class Idea extends CoolModel {
 	 * Idea's Tittle Required for creating an idea
 	 */
 	@Required
+	@MaxSize(30)
 	public String title;
 	/**
 	 * @author Mohamed Ghanem
