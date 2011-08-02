@@ -31,9 +31,13 @@ public abstract class CoolCRUD extends CRUD {
 	public static void index() {
 		User user = Security.getConnected();
 		if (user.isAdmin)
+		{
 			render("CoolCRUD/index.html", user);
+		}
 		else
-			render("Login/homepage.html", user);
+		{
+			BannedUsers.unauthorized();
+		}
 
 	}
 
