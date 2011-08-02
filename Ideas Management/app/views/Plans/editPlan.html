@@ -1,6 +1,10 @@
 #{extends 'planLayout.html' /}
 #{set title:'Edit Plan' /}
-
+<link type="text/css" href=@{'public/stylesheets/jquery-ui-.custom.css'} rel="Stylesheet" />
+    <script type="text/javascript" src=@{'public/javascripts/jquery-1.5.2.min.js'}>
+    </script>
+    <script type="text/javascript" src=@{'public/javascripts/jquery-ui-.custom.min.js'}>
+    </script>
 <style type="text/css">body {
 			font-size:80%;
 			font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;
@@ -37,9 +41,7 @@
 </style>
 
 <div id="showEditPlan">
-	<link type="text/css" href=@{'public/stylesheets/jquery-ui-.custom.css'} rel="Stylesheet" />
-    <script type="text/javascript" src=@{'public/javascripts/jquery-1.5.2.min.js'}></script>
-    <script type="text/javascript" src=@{'public/javascripts/jquery-ui-.custom.min.js'}></script>
+	
 <h3><b>Edit Action Plan</b></h3><br />
 <input type="hidden" name= "planstart"id="planstart" vspace="20" readonly value="${plan.intializedIn.format('MM/dd/yyyy')}"/>
 #{form @Plans.edit(), method:'POST', id:'planeditingnForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
@@ -77,18 +79,20 @@
 	$('#requirementerror').hide();
 	$('#earlyerror').hide();
 	$('#dateerror').hide();
-	function datepickerA(){
-		$($("#datePickerA").datepicker({
-                                                changeYear: true,
-                                                showButtonPanel: true
-                                            }));
-	}
-	function datepickerB(){
-		$($("#datePickerB").datepicker({
-                                                changeYear: true,
-                                                showButtonPanel: true
-                                            }));
-	}
+	 $(function(){
+                $("#datePickerA").datepicker({
+                    changeYear: true,
+                    showButtonPanel: true
+					
+                });
+            });
+	 $(function(){
+                $("#datePickerB").datepicker({
+                    changeYear: true,
+                    showButtonPanel: true
+					
+                });
+            });
 	function checkall(){
 		var t = document.getElementById("title").value;
 		var desc = document.getElementById("description").value;
