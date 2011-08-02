@@ -42,11 +42,21 @@ public class Pictures extends Controller {
 		} else {
 			isOrganization = true;
 			pictures = Picture.find("byUserOrganizationId", id).fetch();
+			notFoundIfNull(pictures);
 			for (int i = 0; i < pictures.size(); i++) {
 				if (!pictures.get(i).isOrganization)
 					pictures.remove(i);
 			}
-			canDelete = (((Organization) Organization.findById(id)).creator.id == user.id)
+			/**
+			 * added by Mostafa Ali , just in case the user manipulated 
+			 * the url and entered a non existent id 
+			 */
+			Organization org = ((Organization) Organization.findById(id));
+			notFoundIfNull(org);
+			/**
+			 * 
+			 */
+			canDelete = (org.creator.id == user.id)
 					|| user.isAdmin;
 
 		}
@@ -93,6 +103,14 @@ public class Pictures extends Controller {
 	 */
 	public static void getPicture(long id) {
 		Picture picture = Picture.findById(id);
+		/**
+		 * added by Mostafa Ali , just in case the user manipulated 
+		 * the url and entered a non existent id 
+		 */
+		notFoundIfNull(picture);
+		/**
+		 * 
+		 */
 		response.setContentTypeIfNotSet(picture.image.type());
 		renderBinary(picture.image.get());
 	}
