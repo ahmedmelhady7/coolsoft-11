@@ -231,12 +231,13 @@
         <!--<form action="@{Ideas.deleteIdea(ideaId)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">-->
                         <input type="image" id="delMine" style="float:right;" src="@{'public/images/icons/trash.png'}"  class="linkButton" onclick="delmine(${ideaId})" title="Delete My Idea" />
         <script type="text/javascript">
+        		var tid = '${topicId}';
 				function delmine(id){
 						 var where_to= confirm("Do you really want to delete this idea ? \n hint this mean that all comments inside this idea will be deleted");
 						 var text = "";
  						 if (where_to== true){
    							$.post('@{Ideas.deleteIdea()}',{ideaId: id, justification: text},
-   							function(){history.go(-1);});
+   							function(){location.href="@{Topics.show(tid)}"});
  						 }
 			           }
         </script>
