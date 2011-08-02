@@ -79,7 +79,9 @@ public class Documents extends CoolCRUD {
 					.findById(document.userOrganizationId)).creator.id == user.id) || user.isAdmin;
 		} else {
 			canEdit = (user.id == document.userOrganizationId) || user.isAdmin;
-			} 
+			}
+		if(!Security.getConnected().id.equals(document.userOrganizationId) && !document.isOrganization && !Security.getConnected().isAdmin)
+			BannedUsers.unauthorized();
 		render(document, canEdit, user);
 	}
 
