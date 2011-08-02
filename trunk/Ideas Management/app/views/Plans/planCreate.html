@@ -81,18 +81,20 @@
 	$('#requirementerror').hide();
 	$('#earlyerror').hide();
 	$('#dateerror').hide();
-	function datepickerA(){
-		$($("#datePickerA").datepicker({
-                                                changeYear: true,
-                                                showButtonPanel: true
-                                            }));
-	}
-	function datepickerB(){
-		$($("#datePickerB").datepicker({
-                                                changeYear: true,
-                                                showButtonPanel: true
-                                            }));
-	}
+	$(function datepickerA(){
+                $("#datePickerA").datepicker({
+                    changeYear: true,
+                    showButtonPanel: true
+					
+                });
+            });
+	$(function datepickerB(){
+                $("#datePickerB").datepicker({
+                    changeYear: true,
+                    showButtonPanel: true
+					
+                });
+            });
 	function checkall(){
 		var t = document.getElementById("title").value;
 		var desc = document.getElementById("description").value;
