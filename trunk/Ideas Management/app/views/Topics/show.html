@@ -1089,6 +1089,8 @@
 			            </p>
 <label id = "emptyComment" style = "color: red;" hidden = "true">You have to enter a title and description</label>
 <br/>
+<label id = "longTitle" style = "color: red;" hidden = "true">You have to enter a title with less than 30 characters</label>
+<br/>
 <input id ="draftSaver" type="submit"  value="Save as Draft" onclick="save()" class = "linkButton"></input>
 <!--<input id ="postIt" type="submit" value="post" onclick="postIt();" class = "linkButton"></input>-->
 <div id="fokak">
@@ -1104,9 +1106,16 @@
 			                <script type="text/javascript">
 			                function post(id) {
                                   var titl = $('#ideaTitle').val();
+                                  var len = titl.length;
                                   var desc = $('#ideaDescription').val();
                                    if (titl == null || titl.trim() == "" || desc == null || desc.trim() == "") {
                                        $("#emptyComment").show();
+                                       $("#longTitle").hide();
+                                   }
+                                   else if (len>30) {
+                                   	   //alert(title.length);
+                                   	   $("#emptyComment").hide();
+                                       $("#longTitle").show();
                                    }
                                    else {
                                    	/*document.getElementById("titleText").value=titl;
@@ -1115,6 +1124,7 @@
                                                                 topicId:id, title: titl, description: desc
                                                       },function(){location.reload();});
 									$("#emptyComment").hide();
+									$("#longTitle").hide();
                                    }
 
                                   }
