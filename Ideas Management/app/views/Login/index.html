@@ -692,11 +692,14 @@
 		<a id="popupContactClose">x</a>
 		<h1>We appreciate your collaboration</h1>
 		<p id="contactArea">
+			<label><font color="red"> You must enter a valid email to be able to submit your feedback</font></label>
+			<br/>
 			<label>
-				Your Email <font color="red"> *</font>
+				Email <font color="red"> *</font>
+			<br/>
 			</label>
-			<input type="email" name="feedbackerEmail" id="feedbackerEmail" size=20 required/>
-			<br/><br/>
+		    <input type="email" name="feedbackerEmail" id="feedbackerEmail" size=20 required/>
+			<br/>
 			<label>
 				Regarding what entity
 			</label>
@@ -707,18 +710,22 @@
 				<option value="Topic">Topic</option>
 				<option value="Idea">Idea</option>
 				<option value="Comment">Comment</option>
+				<option value="Document">Document</option>
+				<option value="Pictures">Pictures</option>
+				<option value="Notification">Notification</option>
+				<option value="Plans">Plans</option>
 		    </select>
-		    <br/><br/>
+		    <br/>
 			<label>
 				Feedback <font color="red"> *</font>
 			</label>
 			<textarea name="feedback" id="feedback" rows="6" cols="40" required></textarea>
-			<br/><br/>
+			<br/>
 			<label id = "emptyComment" style = "color: red;" hidden = "true">All fields are REQUIRED</label>
-			<br/><br/>
+			<br/>
 			<input type="submit" onclick="browserName()" value="Give Feedback"/>
-			<br/><br/>
-			Click on X (right-top) or Click Out from the popup to close the popup!
+			<br/>
+			Click on X (right-top) or Click Out from the popup to close it!
 		 	<br/><br/>
 		</p>
 	</div>
