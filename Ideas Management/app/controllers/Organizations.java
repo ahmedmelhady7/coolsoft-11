@@ -640,6 +640,8 @@ public class Organizations extends CoolCRUD {
                 }
                  }
                  
+                 int numberOfTags = tags.size();
+                 
                  String userName = user.username;
           
 
@@ -744,7 +746,9 @@ public class Organizations extends CoolCRUD {
                                          canInvite, admin, allowed, isMember, settings,
                                          alreadyRequested, plans, follower, usernames,
                                         join, pictureId, topics, entitiesCanBeRelated,
-                                        entitiesICanView, followers, defaultEntityId, permission, userName,relationNames, contUsers);
+                                        entitiesICanView, followers, defaultEntityId, 
+                                        permission, userName,relationNames, contUsers, 
+                                        numberOfTags);
                 }
                 else{
                 	BannedUsers.unauthorized();
