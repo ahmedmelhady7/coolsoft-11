@@ -804,10 +804,17 @@ $(document).ready(function(){
                                 #{/if}
                                 
                                 #{if isMember == true || org.privacyLevel == 2 || admin}
-                <form action="@{Contribution.contribution()}" method="post">
-                                            <input type="hidden" name="id" value="${org.id}">Contribution Points: <input type="submit" value="View" class="linkButton">
-                </form>
+                			Contribution Points: <a onclick="$('#lista').slideToggle()" style="cursor:pointer;">view</a>
+											<div id="lista" style="display:none;">
+											#{list items:contUsers, as: 'user'}
+		<ul>
+			<li>${user.username} : ${user.communityContributionCounter} </li>
+		
+		</ul>
+	#{/list}
+                
                                 #{/if}
+								</div>
                                                          </body>
                              
                         </div>
