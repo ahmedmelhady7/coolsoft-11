@@ -736,11 +736,15 @@ public class Organizations extends CoolCRUD {
 					relationNames.add(org.relationNames.get(j).name);
               System.out.println("names : " +relationNames);
                         List<Plan> plans = Plans.planList("organization", org.id);
+                        
+                        
+                        //cont points
+                       List<User> contUsers =  Contribution.contribution(org.id);
                         render(user, org, entities, requestToJoin, tags,
                                          canInvite, admin, allowed, isMember, settings,
                                          alreadyRequested, plans, follower, usernames,
                                         join, pictureId, topics, entitiesCanBeRelated,
-                                        entitiesICanView, followers, defaultEntityId, permission, userName,relationNames);
+                                        entitiesICanView, followers, defaultEntityId, permission, userName,relationNames, contUsers);
                 }
                 else{
                 	BannedUsers.unauthorized();
