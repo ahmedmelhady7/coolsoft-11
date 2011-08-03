@@ -23,7 +23,7 @@ public class Contribution extends Controller
 	  * 
 	  */
 	
-	public static void contribution(long id)
+	public static List<User> contribution(long id)
 	{
 		//User user = Security.getConnected();
 		User user = Security.getConnected();
@@ -45,7 +45,7 @@ public class Contribution extends Controller
 		        }
 		   }
 		}
-		render(users,user);
+		return users;
 	}  
 	   
 }
