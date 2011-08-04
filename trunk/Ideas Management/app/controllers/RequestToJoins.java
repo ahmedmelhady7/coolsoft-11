@@ -260,6 +260,9 @@ public class RequestToJoins extends CoolCRUD {
 			RequestToJoin request = new RequestToJoin(requester, null,
 					organization, description).save();
 			organization.joinRequests.add(request);
+			
+			Notifications.sendNotification(organization.creator.id, orgId, "Organization", requester.username + " has requested to join the organisation.");
+
 			Log.addUserLog(
 					"<a href=\"/Users/viewProfile?userId="
 							+ requester.id

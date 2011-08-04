@@ -183,14 +183,13 @@ public class Plans extends CoolCRUD {
 						item.plan.id, "plan", notificationMsg);
 			}
 		}
-		String logDescription = "User "
-				+ "<a href=\"/Users/viewProfile?userId=" + user.id + "\">"
-				+ user.username + "</a>" + " is now working on the item "
-				+ item.summary + " in the plan "
-				+ "<a href=\"/Plans/viewAsList?planId=" + item.plan.id + "\">"
-				+ item.plan.title + "</a>" + " of the topic "
-				+ "<a href=\"/Topics/show?topicId=" + item.plan.topic.id
-				+ "\">" + item.plan.topic.title + "</a>";
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
+				+ user.id + "\">" + user.username + "</a>"
+				+ " is now working on the item " + item.summary
+				+ " in the plan " + "<a href=\"/Plans/viewAsList?planId="
+				+ item.plan.id + "\">" + item.plan.title + "</a>"
+				+ " of the topic " + "<a href=\"/Topics/show?topicId="
+				+ item.plan.topic.id + "\">" + item.plan.topic.title + "</a>";
 
 		Log.addUserLog(logDescription, user, item, item.plan, item.plan.topic,
 				item.plan.topic.entity, item.plan.topic.entity.organization);
@@ -299,8 +298,8 @@ public class Plans extends CoolCRUD {
 			idea.author.communityContributionCounter = idea.author.communityContributionCounter + 13;
 			idea.author.save();
 			plan.save();
-			notificationContent = "Congratulations!! your idea: " + idea.title
-					+ "have been promoted to execution in the following plan "
+			notificationContent = "Congratulations! Your idea: " + idea.title
+					+ "has been promoted to execution in the following plan: "
 					+ plan.title + " of the topic: " + plan.topic.title;
 			Notifications.sendNotification(idea.author.id, plan.id, "plan",
 					notificationContent);
@@ -657,7 +656,7 @@ public class Plans extends CoolCRUD {
 			planInUse.rating = Integer.toString(newRating);
 		}
 		planInUse.save();
-		redirect("/plans/viewaslist?planId=" + planId);
+		redirect("/Plans/viewAsList?planId=" + planId);
 
 	}
 
@@ -697,9 +696,11 @@ public class Plans extends CoolCRUD {
 		plan.save();
 		List<User> topicOrganizers = plan.topic.getOrganizer();
 		for (int i = 0; i < topicOrganizers.size(); i++) {
-			Notifications.sendNotification(topicOrganizers.get(i).id, plan.id,
-					"plan", "A new plan: " + plan.title
-							+ " has been created in topic: " + topic.title);
+			if (topicOrganizers.get(i).id != user.id) {
+				Notifications.sendNotification(topicOrganizers.get(i).id,
+						plan.id, "plan", "A new plan: " + plan.title
+								+ " has been created in topic: " + topic.title);
+			}
 		}
 		String logDescription = "<a href=\"/Users/viewProfile?userId="
 				+ user.id + "\">" + user.username + "</a>"
@@ -851,13 +852,17 @@ public class Plans extends CoolCRUD {
 		Plan plan = Plan.findById(planId);
 		notFoundIfNull(plan);
 		plan.addItem(sd, ed, description, summary);
+
 		List<User> topicOrganizers = plan.topic.getOrganizer();
 		for (int i = 0; i < topicOrganizers.size(); i++) {
-			Notifications.sendNotification(topicOrganizers.get(i).id, plan.id,
-					"plan", "A new plan: " + plan.title
-							+ "has been created in the topic: "
-							+ plan.topic.title);
+			if (topicOrganizers.get(i).id != user.id) {
+				Notifications.sendNotification(topicOrganizers.get(i).id,
+						plan.id, "plan", "A new plan: " + plan.title
+								+ "has been created in the topic: "
+								+ plan.topic.title);
+			}
 		}
+
 		String logDescription = "<a href=\"/Users/viewProfile?userId="
 				+ user.id + "\">" + user.username + "</a>"
 				+ " added an item in  "
@@ -867,6 +872,7 @@ public class Plans extends CoolCRUD {
 				+ plan.topic.title + "</a>";
 		Log.addUserLog(logDescription, user, plan, plan.topic.entity,
 				plan.topic.entity.organization);
+
 		if (check != null && check.equals("checked")) {
 			addItem(plan.id);
 		} else {
@@ -1051,10 +1057,12 @@ public class Plans extends CoolCRUD {
 
 		List<User> topicOrganizers = plan.topic.getOrganizer();
 		for (int i = 0; i < topicOrganizers.size(); i++) {
-			Notifications.sendNotification(topicOrganizers.get(i).id, plan.id,
-					"plan", "The action plan: " + plan.title
-							+ " has been edited" + "in the topic: "
-							+ plan.topic.title);
+			if (topicOrganizers.get(i).id != user.id) {
+				Notifications.sendNotification(topicOrganizers.get(i).id,
+						plan.id, "plan", "The action plan: " + plan.title
+								+ " has been edited" + "in the topic: "
+								+ plan.topic.title);
+			}
 		}
 		List<User> assignees = new ArrayList<User>();
 		for (int i = 0; i < plan.items.size(); i++) {
@@ -1114,9 +1122,12 @@ public class Plans extends CoolCRUD {
 
 		List<User> topicOrganizers = item.plan.topic.getOrganizer();
 		for (int i = 0; i < topicOrganizers.size(); i++) {
-			Notifications.sendNotification(topicOrganizers.get(i).id,
-					item.plan.id, "plan", "The item: " + item.summary
-							+ " has been edited in plan: " + item.plan.title);
+			if (topicOrganizers.get(i).id != user.id) {
+				Notifications.sendNotification(topicOrganizers.get(i).id,
+						item.plan.id, "plan", "The item: " + item.summary
+								+ " has been edited in plan: "
+								+ item.plan.title);
+			}
 		}
 
 		List<User> assignees = item.assignees;
@@ -1383,7 +1394,8 @@ public class Plans extends CoolCRUD {
 
 			FileWriter fstream;
 			fstream = new FileWriter("public/xml/out.xml");
-			//fstream = new FileWriter("/var/lib/tomcat6/webapps/ideas/ROOT/WEB-INF/application/public/xml/out.xml");
+			// fstream = new
+			// FileWriter("/var/lib/tomcat6/webapps/ideas/ROOT/WEB-INF/application/public/xml/out.xml");
 			BufferedWriter out = new BufferedWriter(fstream);
 
 			out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
@@ -1749,14 +1761,14 @@ public class Plans extends CoolCRUD {
 		plan.save();
 		c.save();
 
-		String logDescription = "User <a href=\"/Users/viewProfile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 				+ user.id
 				+ "\">"
 				+ user.username
 				+ "</a> has commented on the following plan: <a href=\"/Ideas/show?ideaId="
 				+ plan.id + "\">" + plan.title + "</a>.";
-		Log.addUserLog(logDescription, user, plan, plan.topic, plan.topic.entity,
-				plan.topic.entity.organization);
+		Log.addUserLog(logDescription, user, plan, plan.topic,
+				plan.topic.entity, plan.topic.entity.organization);
 
 		JsonObject json = new JsonObject();
 		json.addProperty("commentMsg", comment);
@@ -1766,6 +1778,7 @@ public class Plans extends CoolCRUD {
 		renderJSON(json.toString());
 
 	}
+
 	/**
 	 * Author ${Ahmed El-Hadi}
 	 */
@@ -1773,27 +1786,29 @@ public class Plans extends CoolCRUD {
 		Comment c = Comment.findById(commentId);
 		Plan plan = c.commentedPlan;
 		List<Comment> commentslist = Comment.find("byCommentedPlan", plan)
-		.fetch();
+				.fetch();
 		User commenter = null;
-		for (int i = 0; i < commentslist.size();  i++) {
+		for (int i = 0; i < commentslist.size(); i++) {
 			commenter = commentslist.get(i).commenter;
-				if(commentslist.get(i).id==commentId){
-					commentslist.get(i).delete();
-					commentslist.clear();
-					commenter.save();
-					plan.save();
-					i--;
-					if(commenter.id!=Security.getConnected().id)
-						Notifications.sendNotification(commenter.id, plan.id, "Idea",
-								"Your comment on the plan "+plan.title+" has been Deleted by The user "+Security.getConnected().username);
-				}
+			if (commentslist.get(i).id == commentId) {
+				commentslist.get(i).delete();
+				commentslist.clear();
+				commenter.save();
 				plan.save();
+				i--;
+				if (commenter.id != Security.getConnected().id)
+					Notifications.sendNotification(
+							commenter.id,
+							plan.id,
+							"Idea",
+							"Your comment on the plan " + plan.title
+									+ " has been deleted by "
+									+ Security.getConnected().username);
+			}
+			plan.save();
 		}
-		System.out.println("b3d el delete **********" + plan.commentsList);
 		plan.save();
-		System.out.println(plan.commentsList);
-		redirect("/plans/viewaslist?planId=" + plan.id);
+		redirect("/Plans/viewAsList?planId=" + plan.id);
 	}
-
 
 }

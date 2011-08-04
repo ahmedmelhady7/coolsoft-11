@@ -17,7 +17,7 @@
 		}
 		else {
 		
-			$.post('@{sendRequests()}', {itemId:itemId,userIds:ids}, function() {
+			$.post('@{AssignRequests.sendRequests()}', {itemId:itemId,userIds:ids}, function() {
 								
 				for (var i = 0; i < ids.length; i = i + 1) {
 					$('#user_' + ids[i]).remove();

@@ -133,11 +133,11 @@
     	<b> Topic: </b> <a href="@{Topics.show(plan.topic.id)}">${plan.topic.title}</a>
 		<br>
         <b>Created by: </b>
-        ${plan.madeBy.username}
+        <a href="@{Users.viewProfile(plan.madeBy.id)}">${plan.madeBy.username}</a>
         <br/>
-        <b>StartDate: </b>${plan.startDate.format('dd MMM yy')}
+        <b>Start Date: </b>${plan.startDate.format('dd MMM yy')}
         <br/>
-        <b>EndDate: </b>${plan.endDate.format('dd MMM yy')}
+        <b>End Date: </b>${plan.endDate.format('dd MMM yy')}
         <br/>
         <b>Description:</b>
         ${plan.description}
