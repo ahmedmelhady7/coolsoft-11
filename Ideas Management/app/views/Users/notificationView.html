@@ -42,15 +42,15 @@
 			border-top-right-radius: 10px;
 			border-bottom-right-radius: 10px;
 			border-bottom-left-radius: 10px;
-			background-color: #FFFFFF;
+			background-color: #bbbbbb;
 			padding-top: 2%;
 			padding-right: 4%;
 			padding-bottom: 0%;
 			padding-left: 4%;
 			position: relative;
-			border-bottom-width: 2px;
-			border-bottom-style: solid;
-			border-bottom-color: #bbbbbb;
+			border-width: 2px;
+			border-style: solid;
+			border-color: #FFFFFF;
 			word-wrap: break-word;
 		}
 
@@ -92,6 +92,11 @@
             margin: 0;
             font-size: 1.1em;
             border-bottom: 1px solid #66d color: "#150517";
+			background-color: #FFFFFF;
+			border-top-left-radius: 10px;
+      		border-top-right-radius: 10px;
+        	border-bottom-right-radius: 10px;
+        	border-bottom-left-radius: 10px;
         }
         
         .accordionItem h3:hover {
@@ -172,7 +177,7 @@
     						#{if notifi.type == 'User'}
     						<a href="@{Users.viewProfile(notifi.sourceID)}">${notifi.title}</a>    						
     						#{/if}     						
-    						&nbsp;<font color ="#FF0000" size =3 style="cursor:pointer">⊕</font>
+    						&nbsp;
     						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     						<i style="float:right;">Delete</i><input type="checkbox" style="float:right;" name="checkfield" id="${notifi.id}" onclick="toggleCheck(${notifi.id})" class="enabled"></h3>  						    						
