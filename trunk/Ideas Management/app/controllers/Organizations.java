@@ -2,6 +2,7 @@ package controllers;
 
 import groovy.util.ObjectGraphBuilder.RelationNameResolver;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -640,8 +641,6 @@ public class Organizations extends CoolCRUD {
                 }
                  }
                  
-                 int numberOfTags = tags.size();
-                 
                  String userName = user.username;
           
 
@@ -739,16 +738,11 @@ public class Organizations extends CoolCRUD {
               System.out.println("names : " +relationNames);
                         List<Plan> plans = Plans.planList("organization", org.id);
                         
-                        
-                        //cont points
-                       List<User> contUsers =  Contribution.contribution(org.id);
                         render(user, org, entities, requestToJoin, tags,
                                          canInvite, admin, allowed, isMember, settings,
                                          alreadyRequested, plans, follower, usernames,
                                         join, pictureId, topics, entitiesCanBeRelated,
-                                        entitiesICanView, followers, defaultEntityId, 
-                                        permission, userName,relationNames, contUsers, 
-                                        numberOfTags);
+                                        entitiesICanView, followers, defaultEntityId, permission, userName,relationNames);
                 }
                 else{
                 	BannedUsers.unauthorized();
@@ -832,6 +826,7 @@ public class Organizations extends CoolCRUD {
 		Organization organization = Organization.findById(organizationId);
 	System.out.println(organizationId);
 		notFoundIfNull(organization);
+		if(organization.creator==user || user.isAdmin){
 		List<User> followers = User.findAll();
 		List<Tag> createdTags = Tag.findAll();
 		List<BannedUser> bannedUsers = BannedUser.findAll();
@@ -873,7 +868,7 @@ public class Organizations extends CoolCRUD {
 		size= bannedUsers.size();
 		while (j <size) {
 			if (bannedUsers.get(j).organization==organization) {
-				BannedUser.delete(bannedUsers.get(0));
+				BannedUser.delete(bannedUsers.get(j));
 				System.out.println("banned user " +j);
 			}
 			j++;
@@ -917,15 +912,14 @@ public class Organizations extends CoolCRUD {
 		}
 		
 		
-		List<RenameEndRelationshipRequest> renameRequests = RenameEndRelationshipRequest
-				.findAll();
+		List<RenameEndRelationshipRequest> renameRequests = organization.renameEndRelationshipRequest;
 		j = 0;
 		size = renameRequests.size();
 		while (j < size) {
-			if (renameRequests.get(j).organisation == organization) {
+	
 				RenameEndRelationshipRequests.delete(renameRequests.get(0).id);
 				System.out.println("rename reltions requests " +j);
-			}
+			
 			j++;
 		}
 		organization.creator.createdOrganization.remove(organization);
@@ -986,6 +980,10 @@ public class Organizations extends CoolCRUD {
 		organization.delete();
 		System.out.println("delete");
 		Login.homePage();
+		}
+		else{
+			BannedUsers.unauthorized();
+		}
 	}
 
 	/**
