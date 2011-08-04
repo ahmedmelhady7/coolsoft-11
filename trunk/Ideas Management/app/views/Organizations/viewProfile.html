@@ -812,15 +812,15 @@ $(document).ready(function(){
                                 #{if isMember == true || org.privacyLevel == 2 || admin}
                 			Contribution Points: <a onclick="$('#lista').slideToggle()" style="cursor:pointer;">view</a>
 											<div id="lista" style="display:none;">
-											#{list items:contUsers, as: 'user'}
+											#{list items:contUsers, as: 'userc'}
 		<ul>
-			<li>${user.username} : ${user.communityContributionCounter} </li>
+			<li>${userc.username} : ${userc.communityContributionCounter} </li>
 		
 		</ul>
 	#{/list}
-                
+                </div>
                                 #{/if}
-								</div>
+								
                                                          </body>
                              
                         </div>
