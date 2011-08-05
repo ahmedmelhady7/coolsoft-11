@@ -1391,7 +1391,7 @@ public class Topics extends CoolCRUD {
 		}
 
 		object._save();
-		String logDescription = "<a href=\"/Users/viewpProfile?userId="
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
 				+ user.id + "\">" + user.username + "</a>"
 				+ " edited the topic " + "<a href=\"/Topics/show?topicId="
 				+ temporaryTopic.id + "\">" + temporaryTopic.title + "</a>"
