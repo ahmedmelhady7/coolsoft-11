@@ -72,6 +72,7 @@ public class Documents extends CoolCRUD {
 	 */
 	public static void viewDocument(long id) {
 		Document document = Document.findById(id);
+		notFoundIfNull(document);
 		boolean canEdit = false;
 		User user = Security.getConnected();
 		if (document.isOrganization) {
