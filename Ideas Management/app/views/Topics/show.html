@@ -547,7 +547,7 @@
 				<li>
 						<form action="@{Topics.viewFollowers()}">
 			   				 <input type="hidden" name="topicId" value="${targetTopic.id}"><input type="hidden" name="f" value="true">
-			       		     <input type="submit" value="Follow ${targetTopic.title}" class = "linkButton">
+			       		     <input type="submit" value="Follow Topic" class = "linkButton">
 			   	 		</form>
 				</li>
 			    #{/if}
@@ -555,7 +555,7 @@
 				 
 				#{if follower == true}
 		        <li id="unfollo">
-			    <input type="submit" value="Unfollow ${targetTopic.title} " onclick="unfollow('${topicId}');" class = "linkButton"/>
+			    <input type="submit" value="Unfollow Topic " onclick="unfollow('${topicId}');" class = "linkButton"/>
 				</li>
 			    #{/if}
 			      

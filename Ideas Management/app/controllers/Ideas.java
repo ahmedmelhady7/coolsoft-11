@@ -112,7 +112,6 @@ public class Ideas extends CoolCRUD {
 		idea.author.communityContributionCounter++;
 		idea.author.save();
 		idea.save();
-		
 		String logDescription = "<a href=\"/Users/viewProfile?userId="
 			+ user.id + "\">" 
 			+ user.username + "</a>" 
@@ -121,7 +120,7 @@ public class Ideas extends CoolCRUD {
 			+ "\">"
 			+ idea.title
 			+ "</a>";
-	 Log.addLog(logDescription, user, idea, idea.plan, idea.belongsToTopic,
+		Log.addLog(logDescription, user, idea, idea.plan, idea.belongsToTopic,
 			idea.belongsToTopic.entity, idea.belongsToTopic.entity.organization);
 		redirect("/Topics/show?topicId=" + idea.belongsToTopic.id);
 	}
