@@ -21,27 +21,22 @@
                 background-image : url(@{'public/images/icons/trash.png'}); 
         }
 #h13 {
-  background-attachment:initial;
-  background-clip:initial;
-  background-color:initial;
   background-image:url(@{'public/images/blu.png'});
   background-origin:initial;
   background-position:0 0;
   background-repeat:no-repeat no-repeat;
   color:#FFFFFF;
   font-family:Arial;
-  font-size:10px;
+  font-size:20px;
   font-weight:400;
   height:33px;
   padding-bottom:0;
   padding-left:5px;
   padding-right:5px;
-  padding-top:7px;
-  text-transform:uppercase;
-  color:white;
-  font-weight:700;
-  padding-bottom:7px;
-}
+  -webkit-border-radius: 16px;
+  -webkit-box-shadow: 0 2px 0 #93A045;
+  -moz-border-radius: 16px;
+  }
 .jquery-ratings-star {
   width: 36px;
   height: 36px;
@@ -59,6 +54,7 @@
 <div id="leftSidebar">
         <br/><br/><br/><br/><br/><br/>
         <div id="h13">Share</div>
+        <br/><br/>
         <a href="http://www.facebook.com/sharer.php?u=/Ideas/show?ideaId=${ideaId}&t=Idea - ${idea.title}" rel="external,nofollow" target="_blank">
         <img src="@{'public/images/Facebook.png'}" style="size:auto;" alt="Share on Facebook"/>
         </a>
