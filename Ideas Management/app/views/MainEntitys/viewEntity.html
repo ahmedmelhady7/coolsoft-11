@@ -640,8 +640,8 @@
 						 <font size=1 style="float:left;">${topic.creator.username}</font>
 						 <br />
 					<div class="accordionItem">
-					<h3><a href="@{Topics.show(topic.id)}"> &nbsp ${topic.title}</a>#{if permission == 1}
-		  			   #{if !topic.hidden}
+					<h3><a href="@{Topics.show(topic.id)}"> &nbsp ${topic.title}</a>
+					#{if permission == 1}
 		   				 #{if topic.isDeletable()}
 		   				   <form action="@{Topics.delete(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
 		       				 
@@ -650,26 +650,6 @@
 		      			    
 		    			   </form> 
 				        #{/if}
-		                #{if !topic.isDeletable()}
-						#{if topic.plan == null}
-		                  <form action="@{Topics.hide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-		                   
-		                      	<input type="hidden" name = "justification" id = "justText"/>
-		                       <input type="image" src=@{'public/images/icons/hide-icon.gif'} style="float:right;" title="Hide Topic" class = "linkButton"/>
-		                   
-		                 </form> 
-						#{/if}
-		            	#{/if}
-		             #{/if}
-		             #{if topic.hidden}		
-		                #{if topic.hider.username == actor.username}		
-				           <form action="@{Topics.unhide(topic.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
-			                 		
-		                         <input type="submit" value="Unhide" style="float:right;" class = "linkButton"/>		
-		                  		
-		                  </form>			
-		                #{/if}		
-		            #{/if}
 		          #{/if}</h3>
 						<div>
 							<p><font size=2>Description: ${topic.description}</font></p>
