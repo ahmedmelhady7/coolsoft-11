@@ -5,8 +5,7 @@ Title: ${item.summary}
 #{if success == 0}
 Please state why you want to work on this item.
 #{form @VolunteerRequests.sendVolunteerRequest(), method:'POST', id:'creationForm', onsubmit: 'return validate()', enctype:'multipart/form-data' }
-<textarea id="just" name = "justification" rows="7" cols="50">
-</textarea>
+<textarea id="just" name = "justification" rows="7" cols="50" required></textarea>
 <input type = "hidden" name = "itemId" value = ${item.id} >
 <br/>
 <input type="submit" value="send" />

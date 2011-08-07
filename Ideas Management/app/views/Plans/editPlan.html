@@ -45,7 +45,7 @@
 <h3><b>Edit Action Plan</b></h3><br />
 <input type="hidden" name= "planstart"id="planstart" vspace="20" readonly value="${plan.intializedIn.format('MM/dd/yyyy')}"/>
 #{form @Plans.edit(), method:'POST', id:'planeditingnForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
-<b>Plan title:</b>&nbsp;&nbsp;&nbsp;<input type= "text" id = "title" name = "title" size= "30" value="${plan.title}"><label id = "titleerror" style= "color:Red"> Please insert a title for the plan </label>
+<b>Plan title:</b>&nbsp;&nbsp;&nbsp;<input type= "text" id = "title" name = "title" size= "30" value="${plan.title}" required/><label id = "titleerror" style= "color:Red"> Please insert a title for the plan </label>
 </br>
 </br>
 <b>Start Date:</b> <input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"value="${plan.startDate.format('MM/dd/yyyy')}"/><label id = "startdateerror"style= "color:Red"> Please insert the date on which the plan starts </label><label id = "dateerror"style= "color:Red">Start date can not be earlier than today's date</label>
@@ -55,13 +55,11 @@
 </br>
 </br>
 <p><b>Insert the description of the plan</b></p>
-<textarea id = "description" name = "description" rows= "7" cols = "50">${plan.description}
-</textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the plan </label>
+<textarea id = "description" name = "description" rows= "7" cols = "50" required>${plan.description}</textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the plan </label>
 </br>
 </br>
 <p><b>Insert the requirements of the plan</b></p>
-<textarea id = "requirement" name = "requirement" rows = "7" cols = "50" >${plan.requirement}
-</textarea><label id = "requirementerror"style= "color:Red"> Please insert the requirements of the plan </label>
+<textarea id = "requirement" name = "requirement" rows = "7" cols = "50" required>${plan.requirement}</textarea><label id = "requirementerror"style= "color:Red"> Please insert the requirements of the plan </label>
 </br>
 </br>
 <input type = "hidden" name = "planId" value = '${plan.id}' >

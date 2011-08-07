@@ -54,11 +54,11 @@ End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspac
 </br>
 <p><b>Insert a Title for the item</b></p>
 <input type = "hidden" name = "planId" value = ${plan.id} >
-<input type = "text" id = "summary" name = "summary" type = "text" size = "30"><label id = "summaryerror"style= "color:Red"> Please  a title for the plan </label>
+<input type = "text" id = "summary" name = "summary" type = "text" size = "30" required/><label id = "summaryerror"style= "color:Red"> Please insert a title for the plan </label>
 </br>
 </br>
 <p><b>Insert the description of the item</b></p>
-<textarea id="description" name="description" rows="7" cols="50"></textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the item </label>
+<textarea id="description" name="description" rows="7" cols="50" required></textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the item </label>
 </br>
 </br>
 To add another item check here <input type="checkbox" name = "check" value = "checked">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

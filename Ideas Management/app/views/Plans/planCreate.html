@@ -50,7 +50,7 @@
 <h3><b>Create Plan</b></h3>
 <br />
 #{form @Plans.myCreate(), method:'POST', id:'plancreationForm', onsubmit: 'return checkall()', enctype:'multipart/form-data' }
-<b>Plan title:</b>&nbsp;&nbsp;&nbsp;&nbsp;<input type= "text" id = "title" name = "title" size= "30"><label id = "titleerror" style= "color:Red"> Please insert a title for the plan </label>
+<b>Plan title:</b>&nbsp;&nbsp;&nbsp;&nbsp;<input type= "text" id = "title" name = "title" size= "30" required/><label id = "titleerror" style= "color:Red"> Please insert a title for the plan </label>
 </br>
 </br>
 <b>Start Date:</b> &nbsp;<input type="text" name= "startDate"id="datePickerA" vspace="20" readonly onclick= "datepickerA()"/><label id = "startdateerror"style= "color:Red"> Please insert the date on which the plan starts </label><label id = "dateerror"style= "color:Red">Start date can not be earlier than today's date</label>
@@ -60,14 +60,12 @@
 </br>
 </br>
 <p><b>Insert the description of the plan</b></p>
-<textarea id = "description" name = "description" rows= "7" cols = "50">
-</textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the plan </label>
+<textarea id = "description" name = "description" rows= "7" cols = "50" required></textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the plan </label>
 </br>
 </br>
 <input type = "hidden" name = "topicId" value = ${topicId} >
 <p><b>Insert the requirements of the plan</b></p>
-<textarea id = "requirement" name = "requirement" rows = "7" cols = "50">
-</textarea><label id = "requirementerror"style= "color:Red"> Please insert the requirements of the plan </label>
+<textarea id = "requirement" name = "requirement" rows = "7" cols = "50" required></textarea><label id = "requirementerror"style= "color:Red"> Please insert the requirements of the plan </label>
 </br>
 </br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input class = "linkButton" type="submit" onclick="checkall()" value = "Create">

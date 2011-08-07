@@ -257,13 +257,12 @@
         	<input type="hidden" name="entityId" value="${targetEntity.id}">		
 			
 			Entity Name: <input type="text" id="name" name="name"
-			value="${targetEntity.name}"> 
+			value="${targetEntity.name}" required/> 
 			<br />
 			<label id= "nameerror"> </label><br />
 			
 			<p>Description:</p>
-			<p><textarea id="description" name="description" rows="5" cols="50"
-				>${targetEntity.description}</textarea></p>
+			<p><textarea id="description" name="description" rows="5" cols="50" required>${targetEntity.description}</textarea></p>
 			<label id= "descriptionerror"> </label> <br /><br /><br />
 			
 			#{if targetEntity.createRelationship}
