@@ -615,10 +615,14 @@ $(document).ready(function(){
                   
                                 #{if (requestToJoin == true) && (!admin) && (!alreadyRequested)}
                                 <form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
-                                    <input type="hidden" id="orgId" name="orgId" value="${org.id}">Your message: 
-                                    <textarea id="description" name="description" rows="5" cols="50">
-                                    </textarea>
-                                    Request to join <input type="submit" value="Request" class="linkButton">
+                                    <input type="hidden" id="orgId" name="orgId" value="${org.id}">
+									Would you like to join this private organization? Please state why and we will shortly get back to your request
+									</br>
+									</br>
+                                    <textarea id="description" name="description" rows="3" cols="72" required></textarea>
+									</br>
+									</br>
+                                    <input type="submit" value="Submit Request" style="float:right;" class="linkButton">
                                     <br/>
                                     <br/>
                                 </form>

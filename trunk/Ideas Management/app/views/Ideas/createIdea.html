@@ -26,9 +26,9 @@
         #{extends '/Login/index.html' /}
 		
 		<p>Title: </p>
-		<input type="textbox" size = "50" id="title"></input>  
+		<input type="textbox" size = "50" id="title" required></input>  
 		<p>Body: </p>
-		<textarea cols="50" rows="5" id="body"></textarea>  
+		<textarea cols="50" rows="5" id="body" required></textarea>  
 		<br></br>
 		<input type="submit" value ="Save" onclick="save(${topic.id})"></input>
 		<input type="submit" value ="Post" onclick="post(${topic.id})"></input>
