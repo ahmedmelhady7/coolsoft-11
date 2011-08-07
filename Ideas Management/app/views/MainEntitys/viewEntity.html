@@ -246,9 +246,9 @@
 			<script type="text/javascript">
 				function delentity(id){
 						 var where_to= confirm("Do you really want to delete this entity ? \n hint this mean that all topic and ideas and comments inside this entity will be deleted");
- 						 if (where_to== true){
+						 if (where_to== true){
    							$.post('@{MainEntitys.deleteEntity()}',{entityId: id},
-							function(){window.location.href = "@{Login.homePage()}";});
+							function(){window.location.href = "@{Organizations.profile()}";});
  						 }
 			           }
         	</script>	

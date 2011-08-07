@@ -928,7 +928,8 @@ User user = Security.getConnected();
 				entityId, "Entity", " User " + user.username
 						+ " has deleted entity " + entity.name);
 	deleteEntityHelper(entityId);
-		Organizations.viewProfile(entity.organization.id);
+	redirect("Organizations.viewProfile", entity.organization.id, "Entity deleted");
+		//Organizations.viewProfile(entity.organization.id);
 	}
 	
 	/**

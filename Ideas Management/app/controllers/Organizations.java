@@ -38,6 +38,7 @@ import models.UserRoleInOrganization;
 @With(Secure.class)
 public class Organizations extends CoolCRUD {
 
+	public static long orgId;
 	/**
 	 * checks relation name for duplicate
 	 * 
@@ -562,7 +563,7 @@ public class Organizations extends CoolCRUD {
                 int settings = 0;
                 boolean admin = user.isAdmin;
                 boolean isMember = Users.getEnrolledUsers(org).contains(user);
-
+                orgId = org.id;
                 org.incrmentViewed();
                 org.save();
 
@@ -749,6 +750,11 @@ public class Organizations extends CoolCRUD {
                 }
                 
         }
+	
+	public static void profile(){
+		viewProfile(orgId);
+		
+	}
 
 	/**
 	 * A method to view all organizations that a user can see
