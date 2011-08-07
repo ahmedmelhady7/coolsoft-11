@@ -248,8 +248,14 @@
 				<br />
                 <form name="entityForm" action="@{MainEntitys.createSubEntity()}" method="POST"
                 onsubmit= "return validate()">
-                <input type = "hidden" name = "orgId" value = ${org.id}><input type = "hidden" name = "parentId" value = ${parent.id}> Entity Name: <input type="text" id="name" name="name">
-                <br/>
+                <input type = "hidden" name = "orgId" value = ${org.id}><input type = "hidden" name = "parentId" value = ${parent.id}> 
+				<p>
+				Entity Name: 
+				</p>
+				<p>
+				<input type="text" id="name" name="name" required>
+                </p>
+				<br/>
                 <label id= "nameerror">
                 </label>
                 <br/>
@@ -257,8 +263,7 @@
                     Description:
                 </p>
                 <p>
-                    <textarea id="description" name="description" rows="5" cols="50">
-                    </textarea>
+                    <textarea id="description" name="description" rows="5" cols="50" required></textarea>
                 </p>
                 <label id= "descriptionerror">
                 </label>

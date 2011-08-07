@@ -668,7 +668,7 @@
 						</font>
 						<br />
 						<div id="deleteHide">#{if permission == 1}
-			  			   #{if !hidden}
+			  			   
 			   				 #{if deletable}
 			    			   #{ifnot isCreator}
 			   				   <form action="@{delete(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
@@ -691,24 +691,6 @@
  						 }
             }
             </script>
-			                #{if !deletable}
-							#{if object.plan == null}
-			                  <form action="@{hide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return prompt1();">
-			                    <p class="crudDelete">
-			                      	<input type="hidden" name = "justification" id = "justText"/>
-			                       <input type="image" src="@{'public/images/icons/hide-icon.gif'}" style="float:right;" title="Hide Topic" class = "linkButton"/>
-			                   </p>
-			                 </form> 
-							#{/if}
-			            	#{/if}
-			             #{/if}
-			             #{if hidden}		
-			                #{if object.hider.username == actor.username}		
-					           <form action="@{unhide(object.id)}" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('Are you sure you want to unhide this topic?');">		
-			                         <input type="submit" style="float:right;" value="Unhide" class = "linkButton"/>		
-			                  </form>			
-			                #{/if}		
-			            #{/if}
 						#{if permission == 1}			
 	                		<input type="image" src="@{'public/images/icons/pencil.png'}" title="Edit topic" onclick=location.href="@{Topics.view(topicId)}" class="linkButton"></input>	
 					 	#{/if}

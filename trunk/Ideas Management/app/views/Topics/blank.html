@@ -113,7 +113,7 @@
 	
 	<div class="objectForm">
 	#{form action:@create(entityId), enctype:'multipart/form-data'}
-	#{crud.form fields: ['title', 'description', 'entity', 'privacyLevel', 'createRelationship']}
+	#{crud.form fields: ['title', 'description', 'privacyLevel', 'createRelationship']}
 		
 			#{crud.custom 'title'}
 	  		<p> 
@@ -133,20 +133,6 @@
  			</p> 
 			#{/crud.custom}
 			
-			#{crud.custom 'entity'}
-			#{if user.isAdmin}
-			<p> 
- 			<label for="object_entity">Entity</label> 
-			<select name="object.entity" id="object_entity"> 
-				<option>Select Entity</option>
-				#{list items:listOfEntities, as:'mainentity'}
-				<option value="${mainentity.id}">${mainentity.name}</option>					
-				#{/list}
-			</select>
- 			<span class="crudHelp" ><font color="Red">*</font></span> 
-			</p> 
-			#{/if}
-			#{/crud.custom } 
 			
 			#{crud.custom 'privacyLevel'}
 			<p> 
