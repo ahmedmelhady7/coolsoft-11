@@ -43,9 +43,9 @@ public class Mail extends Mailer {
 	public static void invite(String email, String role, String organization,
 			String source, int type) {
 		addRecipient(email);
-		setFrom("CoolSoft011@gmail.com");
+		setFrom("noreply@g-beehive.com");
 		setSubject("Invitation");
-		String url = "http://localhost:9008/invitations/view";
+		String url = "http://ideas.g-osc.com/invitations/view";
 		User user = User.find("byEmail", email).first();
 		int id = 1;
 		int check = 1;
@@ -73,9 +73,9 @@ public class Mail extends Mailer {
 	public static void deactivate() {
 		User user = Security.getConnected();
 		addRecipient(user.email);
-		setFrom("CoolSoft011@gmail.com");
+		setFrom("noreply@g-beehive.com");
 		setSubject("Deactivation");
-		String url = "http://localhost:9008";
+		String url = "http://ideas.g-osc.com";
 		send(user, url);
 
 	}
@@ -93,7 +93,7 @@ public class Mail extends Mailer {
 	public static void reactivate() {
 		User user = Security.getConnected();
 		addRecipient(user.email);
-		setFrom("CoolSoft011@gmail.com");
+		setFrom("noreply@g-beehive.com");
 		setSubject("Reactivation");
 		send(user);
 
@@ -122,8 +122,8 @@ public class Mail extends Mailer {
 			Idea reportedIdea, String description, String title) {
 		long ideaId = reportedIdea.id;
 		addRecipient(/*topicOrganizer.email*/"elhadiahmed3@gmail.com");
-		String url = "http://localhost:9008/ideas/show?ideaId="+ideaId;
-		setFrom("coolsoft-11@gmail.com");
+		String url = "http://ideas.g-osc.com/ideas/show?ideaId="+ideaId;
+		setFrom("noreply@g-beehive.com");
 		setSubject("An Idea is Reported as a Spam");
 		send(topicOrganizer, reporter, reportedIdea, description, title, url);
 	}
@@ -150,9 +150,9 @@ public class Mail extends Mailer {
 	public static void reportTopicMail(User reciever, User reporter,
 		Topic reportedTopic, String description, String title) {
 		long topicId = reportedTopic.id;
-		String url = "http://localhost:9008/ideas/show?ideaId="+topicId;
+		String url = "http://ideas.g-osc.com/ideas/show?ideaId="+topicId;
 		addRecipient("elhadiahmed3@gmail.com");
-		setFrom("coolsoft-11@gmail.com");
+		setFrom("noreply@g-beehive.com");
 		setSubject("A Topic has been Reported as a Spam");
 		send(reciever, reporter, topicId, description, title,url);
 	}
@@ -177,9 +177,9 @@ public class Mail extends Mailer {
 			Comment comment, String comment2) {
 		long commentId = comment.id;
 		long ideaId = comment.commentedIdea.id;
-		String url = "http://localhost:9008/ideas/show?ideaId="+ideaId;
+		String url = "http://ideas.g-osc.com/ideas/show?ideaId="+ideaId;
 		addRecipient("elhadiahmed3@gmail.com");
-		setFrom("coolsoft-11@gmail.com");
+		setFrom("noreply@g-beehive.com");
 		setSubject("A Topic has been Reported as a Spam");
 		send(reciever, reporter, commentId, comment,comment2,url);
 		
@@ -205,9 +205,9 @@ public class Mail extends Mailer {
 			String password) {
 		System.out.println(email);
 		addRecipient(email);
-		setFrom("coolsoft-11@gmail.com");
+		setFrom("noreply@g-beehive.com");
 		setSubject("No Reply: Password recovery");
-		String url = "http://localhost:9008/secure/login";
+		String url = "http://ideas.g-osc.com/secure/login";
 		send(username, password, url);
 	}
 
@@ -224,9 +224,9 @@ public class Mail extends Mailer {
 	 */
 	public static void welcome(User user) {
 		addRecipient(user.email);
-		setFrom("CoolSoft011@gmail.com");
+		setFrom("noreply@g-beehive.com");
 		setSubject("Welcome");
-		String url = "http://localhost:9008";
+		String url ="http://ideas.g-osc.com";
 		send(user, url);
 
 	}
@@ -244,9 +244,9 @@ public class Mail extends Mailer {
 	 */
 	public static void activation(User user,String activationKey) {
 		addRecipient(user.email);
-		setFrom("CoolSoft011@gmail.com");
+		setFrom("noreply@g-beehive.com");
 		setSubject("Welcome to CoolSoft, activate your account ");
-		String url = "http://localhost:9008";
+		String url = "http://ideas.g-osc.com";
 		send(user, activationKey,url);
 
 	}
@@ -267,7 +267,7 @@ public class Mail extends Mailer {
 	 */
 	public static void deletion(User user, String message) {
 		addRecipient(user.email);
-		setFrom("CoolSoft011@gmail.com");
+		setFrom("noreply@g-beehive.com");
 		setSubject("Your account has been deleted ! ");
 		System.out.println(user);
 		send(user, message);
@@ -287,9 +287,9 @@ public class Mail extends Mailer {
 	 */
 	public static void forgiven(User user) {
 		addRecipient(user.email);
-		setFrom("CoolSoft011@gmail.com");
+		setFrom("noreply@g-beehive.com");
 		setSubject("Welcome back ! ");
-		String url = "http://localhost:9008";
+		String url = "http://ideas.g-osc.com";
 		send(user,url);
 
 	}
@@ -314,8 +314,8 @@ public class Mail extends Mailer {
 	 */
 	public static void sendFeedback(String feedbackerEmail,String feedback,String browser,String subject)
 	{
-		addRecipient("mostafa.aly0@gmail.com");
-		//addRecipient("ideas-management@googlegroups.com");
+		//addRecipient("mostafa.aly0@gmail.com");
+		addRecipient("ideas-management@googlegroups.com");
 		setFrom(feedbackerEmail);
 		setSubject("Feedback regarding " + subject);
 		send(feedback,browser);
