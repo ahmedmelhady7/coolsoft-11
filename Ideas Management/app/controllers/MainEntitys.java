@@ -497,7 +497,7 @@ public class MainEntitys extends CoolCRUD {
 	 */
 	public static void viewEntity(long id) {
 		User user = Security.getConnected();
-		String baseurl = (String) routeArgs.get("baseurl");
+		//String baseurl = (String) routeArgs.get("baseurl");
 		MainEntity entity = MainEntity.findById(id);
 		notFoundIfNull(entity);
 		if(Users.isPermitted(user,"view", id,"entity")){
@@ -506,8 +506,7 @@ public class MainEntitys extends CoolCRUD {
 		List<MainEntity> subentities = entity.subentities;
 		List<Topic> topicList = entity.topicList;
 		//faruki
-		Organization organization = entity.organization;
-	
+		//Organization organization = entity.organization;
 		entity.incrmentViewed();
 		entity.save();
 
@@ -586,6 +585,7 @@ public class MainEntitys extends CoolCRUD {
 		
 		for(int j=0;j<org.relationNames.size();j++)
 			relationNames.add(org.relationNames.get(j).name);
+
 		
 		render(user, org, entity, subentities, topicList, permission, invite,
 				canEdit, canCreateEntity, canCreateSubEntity, follower,
