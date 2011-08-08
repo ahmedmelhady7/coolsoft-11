@@ -51,10 +51,9 @@ public class Invitations extends CoolCRUD {
 
 		User user = Security.getConnected();
 		List<User> usersMatched = users;
-		
 		List<Integer> usersInvited = done;
 		
-		System.out.println("users " + usersMatched);
+		System.out.println("users " + users);
 		System.out.println("usersss " + usersInvited);
 		
 		if (type == 0) {
@@ -64,6 +63,7 @@ public class Invitations extends CoolCRUD {
 							"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
 							id, "entity")) {
 				MainEntity entity = MainEntity.findById(id);
+System.out.println("____________"+users.toString());
 
 				render(type, check, entity, usersMatched, user, usersInvited);
 			} else {
@@ -81,7 +81,7 @@ public class Invitations extends CoolCRUD {
 									user,
 									"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
 									id, "topic") || user.isAdmin)) {
-
+				System.out.println("__()()()_______"+users.toString());
 				render(type, check, topic, usersMatched, user, usersInvited);
 
 			}
@@ -118,9 +118,11 @@ public class Invitations extends CoolCRUD {
 	public static void searchUser(int type, long id, @Required String name) {
 
 		List<User> filter = Users.searchUser(name);
-		List<User> userFilter = new ArrayList<User>();
+		//List<User> userFilter = new ArrayList<User>();
 		
-		List<Integer> invited = new ArrayList<Integer>();
+		//List<Integer> invited = new ArrayList<Integer>();
+		done.clear();
+		users.clear();
 
 		if (validation.hasErrors()) {
 			flash.error("Please enter name/email first!");
@@ -137,7 +139,7 @@ public class Invitations extends CoolCRUD {
 			for (int i = 0; i < filter.size(); i++) {
 				if (!organizers.contains(filter.get(i))
 						|| filter.get(i).isAdmin)
-					userFilter.add(filter.get(i));
+					users.add(filter.get(i));
 			}
 
 		} else {
@@ -146,21 +148,21 @@ public class Invitations extends CoolCRUD {
 			for (int i = 0; i < filter.size(); i++) {
 				if (!postsInTopic.contains(filter.get(i))
 						|| filter.get(i).isAdmin) {
-					userFilter.add(filter.get(i));
+					users.add(filter.get(i));
 				}
 			}
 		}
 
-		for (int i = 0; i < userFilter.size(); i++) {
+		for (int i = 0; i < users.size(); i++) {
 			Invitation sent = Invitation.find("byEmail",
-					userFilter.get(i).email).first();
+					users.get(i).email).first();
 			if (sent != null)
-				invited.add(1); // userFilter.remove(i);
+				done.add(1); // userFilter.remove(i);
 			else
-				invited.add(0);
+				done.add(0);
 		}
-		users = userFilter;
-		done = invited;
+		//users = userFilter;
+		//done = invited;
 		invite(id, type, 1);
 
 	}
