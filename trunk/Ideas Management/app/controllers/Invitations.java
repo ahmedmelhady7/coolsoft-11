@@ -23,8 +23,9 @@ import com.google.gson.JsonObject;
 
 @With(Secure.class)
 public class Invitations extends CoolCRUD {
-	public static ArrayList<User> users = new ArrayList<User>();
-	public static ArrayList<Integer> done = new ArrayList<Integer>();
+	
+	public static String users="";
+	public static String done="";
 
 	/**
 	 * 
@@ -50,11 +51,23 @@ public class Invitations extends CoolCRUD {
 	public static void invite(long id, int type, int check) {
 
 		User user = Security.getConnected();
-		ArrayList<User> usersMatched = users;
-		ArrayList<Integer> usersInvited = done;
-		
-		System.out.println("users " + users);
-		System.out.println("usersss " + usersInvited);
+		List usersMatched = new ArrayList<User>();
+	    List usersInvited  =new ArrayList<Integer>();
+		String[] Ids = users.split(";");
+		String[]checks = done.split(";");
+		if(users!=""){
+		for(int i =0;i<Ids.length;i++){
+			User found  = User.findById(Long.parseLong(Ids[i]));
+			usersMatched.add(found);
+		}
+		for(int i =0;i<checks.length;i++){
+			 Integer number  = Integer.parseInt(checks[i]);
+			usersInvited.add(number);
+		}
+		}
+
+		System.out.println("users " + usersMatched);
+		System.out.println("usersss " + usersInvited);	
 		
 		if (type == 0) {
 			if (Users
@@ -63,7 +76,6 @@ public class Invitations extends CoolCRUD {
 							"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
 							id, "entity")) {
 				MainEntity entity = MainEntity.findById(id);
-System.out.println("____________"+users.toString());
 
 				render(type, check, entity, usersMatched, user, usersInvited);
 			} else {
@@ -81,7 +93,6 @@ System.out.println("____________"+users.toString());
 									user,
 									"invite Organizer or Idea Developer to become Organizer or Idea Developer in an entity he/she manages",
 									id, "topic") || user.isAdmin)) {
-				System.out.println("__()()()_______"+users.toString());
 				render(type, check, topic, usersMatched, user, usersInvited);
 
 			}
@@ -118,11 +129,11 @@ System.out.println("____________"+users.toString());
 	public static void searchUser(int type, long id, @Required String name) {
 
 		List<User> filter = Users.searchUser(name);
-		//List<User> userFilter = new ArrayList<User>();
+		ArrayList<User> userFilter = new ArrayList<User>();
 		
-		//List<Integer> invited = new ArrayList<Integer>();
-		done.clear();
-		users.clear();
+		ArrayList<Integer> invited = new ArrayList<Integer>();
+		users="";
+		done="";
 
 		if (validation.hasErrors()) {
 			flash.error("Please enter name/email first!");
@@ -139,7 +150,7 @@ System.out.println("____________"+users.toString());
 			for (int i = 0; i < filter.size(); i++) {
 				if (!organizers.contains(filter.get(i))
 						|| filter.get(i).isAdmin)
-					users.add(filter.get(i));
+					users=filter.get(i).id+";";
 			}
 
 		} else {
@@ -148,21 +159,31 @@ System.out.println("____________"+users.toString());
 			for (int i = 0; i < filter.size(); i++) {
 				if (!postsInTopic.contains(filter.get(i))
 						|| filter.get(i).isAdmin) {
-					users.add(filter.get(i));
+					users=filter.get(i).id+";";
 				}
 			}
 		}
-
-		for (int i = 0; i < users.size(); i++) {
+		String temp = users;
+		String[] checks = temp.split(";");
+		
+		if(temp!=""){
+		for(int i =0;i<checks.length;i++){
+			User found  = User.findById(Long.parseLong(checks[i]));
+			userFilter.add(found);
+		}
+		}
+		for (int i = 0; i < userFilter.size(); i++) {
 			Invitation sent = Invitation.find("byEmail",
-					users.get(i).email).first();
+					userFilter.get(i).email).first();
 			if (sent != null)
-				done.add(1); // userFilter.remove(i);
+			done=1+";"; // userFilter.remove(i);
 			else
-				done.add(0);
+			done=0+";";
 		}
 		//users = userFilter;
 		//done = invited;
+		System.out.println("users : " +users);
+		System.out.println("done : "+done);
 		invite(id, type, 1);
 
 	}
@@ -199,6 +220,8 @@ System.out.println("____________"+users.toString());
 		String role = "";
 		String name;
 		List<User> invalidUsers = new ArrayList<User>();
+		//ArrayList<User> users = new ArrayList<User>();
+		//ArrayList<Integer> checks = new ArrayList<Integer>();
 		
 		if (type == 0) {
 			entity = MainEntity.findById(id);
