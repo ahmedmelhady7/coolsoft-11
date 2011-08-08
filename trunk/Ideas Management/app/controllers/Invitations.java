@@ -23,8 +23,8 @@ import com.google.gson.JsonObject;
 
 @With(Secure.class)
 public class Invitations extends CoolCRUD {
-	public static List<User> users = new ArrayList<User>();
-	public static List<Integer> done = new ArrayList<Integer>();
+	public static ArrayList<User> users = new ArrayList<User>();
+	public static ArrayList<Integer> done = new ArrayList<Integer>();
 
 	/**
 	 * 
@@ -50,8 +50,8 @@ public class Invitations extends CoolCRUD {
 	public static void invite(long id, int type, int check) {
 
 		User user = Security.getConnected();
-		List<User> usersMatched = users;
-		List<Integer> usersInvited = done;
+		ArrayList<User> usersMatched = users;
+		ArrayList<Integer> usersInvited = done;
 		
 		System.out.println("users " + users);
 		System.out.println("usersss " + usersInvited);
