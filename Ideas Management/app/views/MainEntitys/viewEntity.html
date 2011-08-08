@@ -718,7 +718,7 @@
 			    
 			#{else}
 			#{if canRequest == 1}
-				<input style="float:right;" type="submit" value="Request A Topic" onclick=location.href="@{TopicRequests.blank(entity.id)}" class = "linkButton"></input>
+				<input style="float:right;" type="submit" value="Request A Topic" onclick=location.href="@{TopicRequests.requestsBlank(entity.id)}" class = "linkButton"></input>
 				
 			#{/if}
 			#{/else}

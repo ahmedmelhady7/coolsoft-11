@@ -144,7 +144,7 @@ public class TopicRequests extends CoolCRUD{
 	 *              entity
 	 * 
 	 */
-	public static void blank(long entityId) {
+	public static void requestsBlank(long entityId) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		MainEntity entity = MainEntity.findById(entityId);
