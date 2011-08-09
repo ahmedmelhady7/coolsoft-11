@@ -933,6 +933,8 @@ public class Topics extends CoolCRUD {
 				ideas.remove(k);
 		}
 		int numberOfIdeas = ideas.size();
+		User latest = ideas.get(numberOfIdeas-1).author;
+		Boolean active = temporaryTopic.creator.state.equals("a");
 		if ((temporaryTopic.privacyLevel == 1)
 				&& Users.isPermitted(
 						actor,
@@ -1049,7 +1051,7 @@ public class Topics extends CoolCRUD {
 
 		if (banned == false) {
 			try {
-				render(type, object, tags, joined, alreadyReportedTopic,
+				render(type, object, active, tags, joined, alreadyReportedTopic,
 						creator, followers, ideas, userJoinedPublic,
 						userJoinedPrivate, privateTopic, canReport, userId,
 						topicNotClosed, hiddenIdeas, numberOfIdeas, comments,
@@ -1061,7 +1063,7 @@ public class Topics extends CoolCRUD {
 						createRelationship, actor, hidden, canRestrict, check,
 						canMerge, canRequestRelationship, topicIsLocked,
 						organisation, check1, check2, user, listOfTopics,
-						allowedToTag, temporaryTopic, defaultEntity);
+						allowedToTag,latest, temporaryTopic, defaultEntity);
 
 			} catch (TemplateNotFoundException exception) {
 				render("CRUD/show.html", type, object, topicId,

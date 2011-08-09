@@ -195,7 +195,7 @@
 				| no Comments
 				#{/if}
                 #{if latest!=null}
-                , latest by ${latest.username}
+                , latest by <a href="@{Users.viewProfile(latest.id)}">${latest.username}</a>
                 #{/if}                
                 </span>
             </h3>
@@ -306,8 +306,20 @@
                                         #{list comments, as:'comment'}
                                         <div id="comment_${comment.id}"> 
                                         <div class="comment-metadata">
-                                                <span class="comment-author">by : <a href="@{Users.viewProfile(comment.commenter.id)}">${comment.commenter.username}</a></span>
-                                                <span class="comment-date">${comment.commentDate}</span>
+                                                <span class="comment-author">by :                   	
+                #{if active}
+                <a href="@{Users.viewProfile(comment.commenter.id)}"/>
+               		#{if comment.commenter.profilePictureId != -1} 
+                  #{list items:comment.commenter.profilePictureId, as:'id'}<img src="@{Pictures.getPicture(id)}" width="40" height="40"/>#{/list}
+                  #{/if}
+                  #{if comment.commenter.profilePictureId == -1} <img src="@{'public/images/icons/user.png'}" width="40" height="40"/>#{/if} ${comment.commenter.username}</a>
+                #{/if}
+                #{if !active}
+                ${comment.commenter.username}
+                #{/if}
+                
+                                                </span>
+          <span class="comment-date">${comment.commentDate}</span>
                                         </div>
                                         <div class="comment-content">
                                                 <div class="about">Detail:</div>
