@@ -631,7 +631,18 @@
 			                by
 			            </label>
 			            <label id="object_creator" cols="30" rows="1" class="" name="object.creator">
-			            	<a href="@{Users.viewProfile(object.creator.id)}">${object.creator.username}</a>
+			            	
+                #{if active}
+                <a href="@{Users.viewProfile(object.creator.id)}">${object.creator.username}</a>
+                #{if object.creator.profilePictureId != -1} 
+                  #{list items:object.creator.profilePictureId, as:'id'}<img src="@{Pictures.getPicture(id)}" width="40" height="40"/>#{/list}
+                #{/if}
+                  #{if object.creator.profilePictureId == -1} <img src="@{'public/images/icons/user.png'}" width="40" height="40"/>#{/if} ${username}</a>
+                #{/if}
+                #{if !active}
+                <font>${object.creator.username}</font>
+                #{/if}
+                
 			            </label>
 						</font>
 			            </label>	
@@ -653,6 +664,21 @@
 			            
 						#{/else}
 						</font>
+						
+						<!--Hadi-->
+			            #{if numberOfIdeas > 1}
+							| ${numberOfIdeas} Ideas
+						#{/if}
+						#{if numberOfIdeas == 1}
+							| ${numberOfIdeas} Ideas
+						#{/if}
+						#{if numberOfIdeas == 0}
+							| no Ideas
+						#{/if}
+                		#{if latest!=null}
+                			, latest by <a href="@{Users.viewProfile(latest.id)}">${latest.username}</a>
+                		#{/if}
+                		<!--Hadi end-->
 						</h3>
 			        </p>
 			       
