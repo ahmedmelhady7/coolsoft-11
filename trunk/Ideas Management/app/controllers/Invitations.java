@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 @With(Secure.class)
 public class Invitations extends CoolCRUD {
 	
+	public static int x;
 	public static String users="";
 	public static String done="";
 
@@ -184,7 +185,8 @@ public class Invitations extends CoolCRUD {
 		//done = invited;
 		System.out.println("users : " +users);
 		System.out.println("done : "+done);
-		invite(id, type, 1);
+		x=1;
+		invite(id, type,x);
 
 	}
 
