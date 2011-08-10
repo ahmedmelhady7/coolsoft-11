@@ -139,19 +139,18 @@
                     <br/>
                     <br/>
                     <br/>
+					
                     <li>
                         <a id="entityLink" style="cursor:pointer;">Entities</a>
                         <div id="entityLinks">
                             <ul>
                                 #{if entities.size() > 0}
                                 #{list items:entities, as:'entity'}
-                                <LI type="disc">
-                                    #{if (entitiesICanView.contains(entity))}<a href="@{MainEntitys.viewEntity(entity.id)}" style="cursor:pointer;">${entity.name}</a>
-                                    #{/if}
-                                    #{else}
-                                    ${entity.name}
-                                    #{/else}
+                                #{if (entitiesICanView.contains(entity))}
+								<LI type="disc">
+                                    <a href="@{MainEntitys.viewEntity(entity.id)}" style="cursor:pointer;">${entity.name}</a>
                                 </LI>
+								#{/if}
                                 #{/list}
                                 #{/if}
                                 #{else}
@@ -253,25 +252,30 @@
 				    <input type = "hidden" name = "orgId" value = ${org.id}>Entity Name: 
 					<br />
 					<br />
-					<input type="text" id="name" name="name" required>
-                    <br/>
+					<input type="text" id="name" name="name" >
+                    <font color="Red">
+                    <br />
                     <label id= "nameerror">
                     </label>
+					</font>
                     <br/>
                     <p>
                         Description:
                     </p>
                     <p>
-                        <textarea id="description" name="description" rows="5" cols="50" required></textarea>
+                        <textarea id="description" name="description" rows="5" cols="50" ></textarea>
                     </p>
+					<font color="Red">
                     <label id= "descriptionerror">
                     </label>
+					</font>
                     <br/>
                     <br/>
                     <br/>
                     <input type="checkbox" id="createRelationship" name="createRelationship">Allow entity to have relationships
                     <br/>
-                    <input type="submit" onclick="get_Value()" value="Create">
+					<br />
+                    <input type="submit" onclick="get_Value()" value="Create" class="linkButton">
                 </form></div>
                 <script type="text/javascript">
                     function redirect(){

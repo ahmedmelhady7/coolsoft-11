@@ -620,7 +620,8 @@ public class Organizations extends CoolCRUD {
                 List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
                 for (MainEntity entity : allEntities) {
                         if (Users.isPermitted(user, "view", entity.id, "entity")) {
-                                entitiesICanView.add(entity);
+                        	if(entity.name != "Default")
+                            entitiesICanView.add(entity);
                         }
                 }
 
