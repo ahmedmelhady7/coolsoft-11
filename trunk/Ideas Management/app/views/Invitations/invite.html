@@ -48,11 +48,12 @@
 
 <div id="block" >
 <input class = "linkButton" type="button" onclick="javascript: show();" value="Invite by mail" id="button1" /> 
-<form action="@{Invitations.searchUser()}" method="GET" name="myform"">
+<form action="@{Invitations.invite()}" method="GET" name="myform"">
 <table border="0" bgcolor="#ececec" cellspacing="5">
 <tr><td><u> You can search by name/email for users to invite </u></td></tr>
 <tr><td>Name/Email <input type="text" size="25" name="name"></td></tr>
 <tr><td></td><td><button class = "linkButton" type="submit" value="search"><img src="@{'public/images/icons/mail_search.png'}" title="search" width="35" height="25"/></button>
+<input type = "hidden" name ="check" value = 1>
 <input type = "hidden" name ="type" value = ${type}>
 #{if type==0}
 <input type = "hidden" name ="id" value = ${entity.id}>
@@ -73,7 +74,7 @@
 <br/>
 <br/>
 <table border="0" bgcolor="#ececec" cellspacing="2">
-#{if usersMatched.isEmpty()}
+#{if userFilter.isEmpty()}
 <tr><td><u><font size ="3" color ="black">No user Found</font></u></td><td>
 #{/if}
 </table>
@@ -84,17 +85,17 @@
         
         <li>
         	  <ul>
-#{list items:0..usersMatched.size()-1, as:'u'} 
+#{list items:0..userFilter.size()-1, as:'u'} 
 <li>
-<font size ="3"><a href="@{Users.viewProfile(usersMatched.get(u).id)}">${usersMatched.get(u).username}</a></font>
-#{if usersInvited.get(u)==1}
+<font size ="3"><a href="@{Users.viewProfile(userFilter.get(u).id)}">${userFilter.get(u).username}</a></font>
+#{if invited.get(u)==1}
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><i><font size ="2" color ="blue">pending</font></i></label>#{/if}
 #{else}
 #{if type==0}
-<a href="@{Invitations.send(type,usersMatched.get(u).email,entity.id,usersMatched.get(u).id)}"/><img src="@{'public/images/icons/mail_send.png'}" title="invite" width="30" height="30" align="right"/></a>
+<a href="@{Invitations.send(type,userFilter.get(u).email,entity.id,userFilter.get(u).id)}"/><img src="@{'public/images/icons/mail_send.png'}" title="invite" width="30" height="30" align="right"/></a>
 #{/if}
 #{else}
-<a href="@{Invitations.send(type,usersMatched.get(u).email,topic.id,usersMatched.get(u).id)}"><img src="@{'public/images/icons/mail_send.png'}" title="invite" width="30" height="30" align="right"/></a>
+<a href="@{Invitations.send(type,userFilter.get(u).email,topic.id,userFilter.get(u).id)}"><img src="@{'public/images/icons/mail_send.png'}" title="invite" width="30" height="30" align="right"/></a>
 #{/else}
 #{/else}
 </li>

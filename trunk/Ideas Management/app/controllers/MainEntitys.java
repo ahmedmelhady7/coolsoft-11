@@ -223,6 +223,14 @@ public class MainEntitys extends CoolCRUD {
 		boolean canCreate = true;
 		User user = Security.getConnected();
 		Organization organisation = Organization.findById(orgId);
+		String message = "";
+		if(name == null){
+			message = "An entity must have a name.";
+			
+		}
+		if(description == null){
+			message = "An entity must have a decsription.";
+		}
 		for (int i = 0; i < organisation.entitiesList.size(); i++) {
 			if (organisation.entitiesList.get(i).name.equalsIgnoreCase(name))
 				canCreate = false;
@@ -511,6 +519,7 @@ public class MainEntitys extends CoolCRUD {
 		//Organization organization = entity.organization;
 		entity.incrmentViewed();
 		entity.save();
+		String name ="";
 
 		int canCreateEntity = 0;
 		int canCreateSubEntity = 0;
@@ -593,7 +602,7 @@ public class MainEntitys extends CoolCRUD {
 				canEdit, canCreateEntity, canCreateSubEntity, follower,
 				canCreateRelationship, canRequest, canRequestRelationship,
 				canRestrict, entityIsLocked, plans, canDeleteEntity, followers,
-				check, check1, check2, entityList, manageTopicRequests,relationNames);
+				check, check1, check2, entityList, manageTopicRequests,relationNames,name);
 		}
 		else{
 			BannedUsers.unauthorized();

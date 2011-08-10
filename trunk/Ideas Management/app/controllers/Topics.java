@@ -1052,7 +1052,7 @@ public class Topics extends CoolCRUD {
 				listOfTopics.remove(listOfTopics.get(i));
 			}
 		}
-
+String name ="";
 		if (banned == false) {
 			try {
 				render(type, object, active, tags, joined, alreadyReportedTopic,
@@ -1067,7 +1067,7 @@ public class Topics extends CoolCRUD {
 						createRelationship, actor, hidden, canRestrict, check,
 						canMerge, canRequestRelationship, topicIsLocked,
 						organisation, check1, check2, user, listOfTopics,
-						allowedToTag,latest, temporaryTopic, defaultEntity);
+						allowedToTag,latest, temporaryTopic, defaultEntity,name);
 
 			} catch (TemplateNotFoundException exception) {
 				render("CRUD/show.html", type, object, topicId,
