@@ -148,7 +148,7 @@ public class Idea extends CoolModel {
 		this.commentsList = new ArrayList<Comment>();
 		this.reporters = new ArrayList<User>();
 		this.usersRated = new ArrayList<User>();
-		this.rating = "Not yet rated";
+		this.rating = "0";
 		this.priority = "Not yet prioritized";
 		this.hidden = false;
 		this.viewed = 0;
@@ -187,7 +187,7 @@ public class Idea extends CoolModel {
 		this.commentsList = new ArrayList<Comment>();
 		this.reporters = new ArrayList<User>();
 		this.usersRated = new ArrayList<User>();
-		this.rating = "Not yet rated";
+		this.rating = "0";
 		this.priority = "Not yet prioritized";
 		this.viewed=0;
 		this.hidden = false;
