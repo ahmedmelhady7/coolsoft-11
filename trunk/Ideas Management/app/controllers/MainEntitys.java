@@ -344,6 +344,7 @@ public class MainEntitys extends CoolCRUD {
 		List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
 		for (MainEntity entity : entities) {
 			if (Users.isPermitted(user, "view", entity.id, "entity")) {
+				if(entity.name != "Default")
 				entitiesICanView.add(entity);
 			}
 		}
@@ -476,6 +477,7 @@ public class MainEntitys extends CoolCRUD {
 		List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
 		for (MainEntity entity : entities) {
 			if (Users.isPermitted(user, "view", entity.id, "entity")) {
+				if(entity.name != "Default")
 				entitiesICanView.add(entity);
 			}
 		}
