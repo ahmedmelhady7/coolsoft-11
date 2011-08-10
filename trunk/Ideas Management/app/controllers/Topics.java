@@ -933,7 +933,11 @@ public class Topics extends CoolCRUD {
 				ideas.remove(k);
 		}
 		int numberOfIdeas = ideas.size();
-		User latest = ideas.get(numberOfIdeas-1).author;
+		User latest;
+		if(numberOfIdeas!=0)
+		latest = ideas.get(numberOfIdeas-1).author;
+		else
+		latest = null;
 		Boolean active = temporaryTopic.creator.state.equals("a");
 		if ((temporaryTopic.privacyLevel == 1)
 				&& Users.isPermitted(
