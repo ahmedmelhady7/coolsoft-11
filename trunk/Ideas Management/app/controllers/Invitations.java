@@ -24,8 +24,6 @@ import com.google.gson.JsonObject;
 @With(Secure.class)
 public class Invitations extends CoolCRUD {
 
-
-
 	/**
 	 * 
 	 * Renders the entity/topic to the invitation home page that contains search
@@ -48,12 +46,12 @@ public class Invitations extends CoolCRUD {
 	 * 
 	 */
 	public static void invite(String name, long id, int type, int check) {
-	
+
 		List<User> userFilter = new ArrayList<User>();
 		List<Integer> invited = new ArrayList<Integer>();
 		User user = Security.getConnected();
 		if (check == 1) {
-			
+
 			List<User> filter = Users.searchUser(name);
 
 			if (validation.hasErrors()) {
@@ -94,6 +92,8 @@ public class Invitations extends CoolCRUD {
 			}
 		}
 
+		System.out.println("users : " + userFilter);
+		System.out.println("checks : " + invited);
 		if (type == 0) {
 			if (Users
 					.isPermitted(
@@ -151,50 +151,36 @@ public class Invitations extends CoolCRUD {
 	 *            String name of the user to search for
 	 * 
 	 */
-	/*public static void searchUser(int type, long id, @Required String name) {
-
-		List<User> filter = Users.searchUser(name);
-
-		if (validation.hasErrors()) {
-			flash.error("Please enter name/email first!");
-			invite("", id, type, 0);
-
-		}
-
-		if (type == 0) {
-			MainEntity entity = MainEntity.findById(id);
-			notFoundIfNull(entity);
-			List<User> organizers = Users.getEntityOrganizers(entity);
-			organizers.add(entity.organization.creator);
-			for (int i = 0; i < filter.size(); i++) {
-				if (!organizers.contains(filter.get(i))
-						|| filter.get(i).isAdmin)
-					userFilter.add(filter.get(i));
-			}
-
-		} else {
-			List<User> postsInTopic = Topics.searchByTopic(id);
-			notFoundIfNull(postsInTopic);
-			for (int i = 0; i < filter.size(); i++) {
-				if (!postsInTopic.contains(filter.get(i))
-						|| filter.get(i).isAdmin) {
-					userFilter.add(filter.get(i));
-				}
-			}
-		}
-
-		for (int i = 0; i < userFilter.size(); i++) {
-			Invitation sent = Invitation.find("byEmail",
-					userFilter.get(i).email).first();
-			if (sent != null)
-				invited.add(1);
-			else
-				invited.add(0);
-		}
-
-		invite("", id, type, 0);
-
-	}*/
+	/*
+	 * public static void searchUser(int type, long id, @Required String name) {
+	 * 
+	 * List<User> filter = Users.searchUser(name);
+	 * 
+	 * if (validation.hasErrors()) {
+	 * flash.error("Please enter name/email first!"); invite("", id, type, 0);
+	 * 
+	 * }
+	 * 
+	 * if (type == 0) { MainEntity entity = MainEntity.findById(id);
+	 * notFoundIfNull(entity); List<User> organizers =
+	 * Users.getEntityOrganizers(entity);
+	 * organizers.add(entity.organization.creator); for (int i = 0; i <
+	 * filter.size(); i++) { if (!organizers.contains(filter.get(i)) ||
+	 * filter.get(i).isAdmin) userFilter.add(filter.get(i)); }
+	 * 
+	 * } else { List<User> postsInTopic = Topics.searchByTopic(id);
+	 * notFoundIfNull(postsInTopic); for (int i = 0; i < filter.size(); i++) {
+	 * if (!postsInTopic.contains(filter.get(i)) || filter.get(i).isAdmin) {
+	 * userFilter.add(filter.get(i)); } } }
+	 * 
+	 * for (int i = 0; i < userFilter.size(); i++) { Invitation sent =
+	 * Invitation.find("byEmail", userFilter.get(i).email).first(); if (sent !=
+	 * null) invited.add(1); else invited.add(0); }
+	 * 
+	 * invite("", id, type, 0);
+	 * 
+	 * }
+	 */
 
 	/**
 	 * 
