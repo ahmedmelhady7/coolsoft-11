@@ -274,17 +274,19 @@ $(document).ready(function(){
                         #{if settings==1}               
 
                                         <li>
-                                                <a href="@{Organizations.deleteOrganization(org.id)}" title="Delete Organization">Delete</a>
-                                                <!--<a onclick="delorg(org.id)" title="Delete Organization">Delete</a>-->
+                                              <a onclick="delorg(${org.id})" title="Delete Organization">Delete</a>
                                         </li>
                                     <script type="text/javascript">
 				function delorg(id){
 						 var where_to= confirm("Do you really want to delete this organization ? \n hint this mean that all the entities, subentities, topics, ideas and comments inside this organization will be deleted");
  						 if (where_to== true){
    							$.post('@{Organizations.deleteOrganization()}',{organizationId: id},
-   							function(){history.go(-1);});
+							function(){window.location.href = "@{Login.homePage()}";});
  						 }
-			           }
+							
+   						    
+ 						 }
+			           
         	</script>
                                         <li>
                                                 <a href="@{Organizations.editOrganization(org.id)}" title="Edit Organization">Edit</a>
@@ -678,41 +680,7 @@ $(document).ready(function(){
                                         <br />
                                 #{/else}
                                 #{/else}
-                                
-                                <!--     </body> -->
-                                <!-- </html> -->
-                                <!-- <script type="text/javascript"> -->
-                                <!-- function test(){ -->
-                                <!--    //var v = document.getElementById('selec').selectedIndex; -->
-                                <!--    var a = document.getElementById('selec').value; -->
-                                <!--    //alert("function" +  a); -->
-                                <!--    if(a!='Tags') -->
-                                <!--    if(a == 0){ -->
-                                <!--            //alert("function2" +  ${org.id}); -->
-                                <!--    $.post('@{Organizations.enableTags()}',{id:${org.id}}); -->
-                                <!--            alert("Options is enabled"); -->
-                                <!--    } -->
-                                <!--    else{ -->
-                                <!--            //alert("function2" +  ${org.id}); -->
-                                <!--    $.post('@{Organizations.disableTags()}',{id:${org.id}}); -->
-                                <!--            alert("Options is disabled"); -->
-                                <!--    } -->
-                                <!--    } -->
-                                <!-- </script> -->
-                                <!-- ======= -->
-                               <!--<form action="@{Organizations.viewFollowers()}">
-                                     <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="flag" value="true">#{if (!org.followers.contains(user))}
-                                    <p>
-                                        Follow ${org.name} <input type="submit" value="Follow">
-                                        <br/>
-                                        #{/if}
-                                        </form> 
-                                        <form action="@{Organizations.viewFollowers()}">
-                                            <input type="hidden" name="organizationId" value="${org.id}"><input type="hidden" name="flag" value="false">View ${org.name} Followers <input type="submit" value="Followers">
-                                            <br/>
-                                             
-                                        </form> -->
-                                                        
+                              
                                                         #{if (settings==1)}
                                                         <div id="relationForma">
                                                  
@@ -791,12 +759,11 @@ $(document).ready(function(){
                                 </form></p>
                                 
                                 </div>
-                                #{/if}
-                                
-                                #{if isMember == true || org.privacyLevel == 2 || admin}
-                			Contribution Points: <a onclick="$('#lista').slideToggle()" style="cursor:pointer;">view</a>
+								<br />
+								<br />
+								Active Users: <a onclick="$('#lista').slideToggle()" style="cursor:pointer;">view</a>
 											<div id="lista" style="display:none;">
-											#{list items:contUsers, as: 'userc'}
+											#{list items:topUsers, as: 'userc'}
 		<ul>
 			<li>${userc.username} : ${userc.communityContributionCounter} </li>
 		
@@ -804,6 +771,8 @@ $(document).ready(function(){
 	#{/list}
                 </div>
                                 #{/if}
+                                
+                         
 								
                                                          </body>
                              
