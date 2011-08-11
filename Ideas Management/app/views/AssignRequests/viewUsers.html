@@ -47,6 +47,9 @@
 	}
 </script>
 <div id= "pageNoSideBar">
+<div id="pageNoSideBar-bgtop">
+<a href="@{Plans.viewAsList(planId)}">Go back to plan</a>
+<br/><br/>
 <h3>Item: <b>${item.summary}</b></h3>
 <br/>
 You can also search for a certain nonblocked user from the plan's topic user by username, email or profession
@@ -83,8 +86,6 @@ You can also search for a certain nonblocked user from the plan's topic user by 
 #{else}
 There are no users that match your criteria
 #{/else}
-<br/>
-<br/>
-<a href="@{Plans.viewAsList(planId)}">Go back to plan</a>
 
+</div>
 </div>
