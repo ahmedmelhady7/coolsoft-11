@@ -738,13 +738,37 @@ public class Organizations extends CoolCRUD {
 				for(int j=0;j<org.relationNames.size();j++)
 					relationNames.add(org.relationNames.get(j).name);
               System.out.println("names : " +relationNames);
+              
                         List<Plan> plans = Plans.planList("organization", org.id);
+                        List<User> contributionUsers = Users.getEnrolledUsers((Organization)Organization.findById(id));
+                        List<User> topUsers = new ArrayList<User>();
+
+                		User temp;
+                		int number=contributionUsers.size();
+
+                		for(int l=0; l<number; l++)
+                		{
+                		   for(int j = 1; j < (number-i); j++)
+                		   {
+                		        if((contributionUsers.get(j-1).communityContributionCounter) > (contributionUsers.get(j).communityContributionCounter))
+                		        {
+                		          temp = contributionUsers.get(j-1);
+                		          contributionUsers.set(j-1,contributionUsers.get(j));
+                		          contributionUsers.set(j,temp);
+                		        }
+                		   }
+                		}
+                		for(int j=0;j<4&&j<contributionUsers.size();j++)
+                			
+                			topUsers.add(contributionUsers.get(j));
+                			
+
                         
                         render(user, org, entities, requestToJoin, tags,
                                          canInvite, admin, allowed, isMember, settings,
                                          alreadyRequested, plans, follower, usernames,
                                         join, pictureId, topics, entitiesCanBeRelated,
-                                        entitiesICanView, followers, defaultEntityId, permission, userName,relationNames);
+                                        entitiesICanView, followers, defaultEntityId, permission, userName,relationNames,topUsers);
                 }
                 else{
                 	BannedUsers.unauthorized();
