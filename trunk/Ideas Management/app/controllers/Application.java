@@ -2,6 +2,8 @@ package controllers;
 
 
 import play.*;
+import play.cache.Cache;
+import play.libs.Images;
 import play.mvc.*;
 
 import java.awt.event.ActionListener;
@@ -68,7 +70,16 @@ public class Application extends CoolCRUD {
 		}
 		return hashedString;
 	}
-
+	
+	
+	public static void captcha(String id) {
+	    Images.Captcha captcha = Images.captcha();
+	    String code = captcha.getText("#E4EAFD");
+	    Cache.set(id, code, "10mn");
+	    renderBinary(captcha);
+	}
+	
+	
 
 	/**
 	 * Generates a random hash String with a specified length
