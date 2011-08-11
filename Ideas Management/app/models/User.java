@@ -328,7 +328,7 @@ public class User extends CoolModel {
 		this.firstName = firstName;
 		this.communityContributionCounter = communityContributionCounter;
 		this.securityQuestion = securityQuestion;
-		this.answer = answer;
+		this.answer = Codec.hexMD5(answer);
 		this.dateofBirth = dateofBirth;
 		this.country = country;
 		this.lastName = lastName;
@@ -338,23 +338,23 @@ public class User extends CoolModel {
 		this.volunteerRequests = new ArrayList<VolunteerRequest>();
 		this.sentAssignRequests = new ArrayList<AssignRequest>();
 		this.receivedAssignRequests = new ArrayList<AssignRequest>();
-		notificationProfiles = new ArrayList<NotificationProfile>();
-		notifications = new ArrayList<Notification>();
-		bannedUsers = new ArrayList<BannedUser>();
+		this.notificationProfiles = new ArrayList<NotificationProfile>();
+		this.notifications = new ArrayList<Notification>();
+		this.bannedUsers = new ArrayList<BannedUser>();
 		this.state="a";
-		userRolesInOrganization = new ArrayList<UserRoleInOrganization>();
-		invitation = new ArrayList<Invitation>();
+		this.userRolesInOrganization = new ArrayList<UserRoleInOrganization>();
+		this.invitation = new ArrayList<Invitation>();
 		this.createdOrganization = new ArrayList<Organization>();
-		followingOrganizations = new ArrayList<Organization>();
-		planscreated = new ArrayList<Plan>();
+		this.followingOrganizations = new ArrayList<Organization>();
+		this.planscreated = new ArrayList<Plan>();
 		this.ideasReported = new ArrayList<Idea>();
-		followingEntities = new ArrayList<MainEntity>();
-		topicsIFollow = new ArrayList<Topic>();
+		this.followingEntities = new ArrayList<MainEntity>();
+		this.topicsIFollow = new ArrayList<Topic>();
 		this.ideasRated = new ArrayList<Idea>();
 		this.profession = profession;
-		profilePictureId = -1;
-		notificationsNumber = notifications.size();
-		followingTags = new ArrayList();
+		this.profilePictureId = -1;
+		this.notificationsNumber = notifications.size();
+		this.followingTags = new ArrayList();
 
 
 	}
