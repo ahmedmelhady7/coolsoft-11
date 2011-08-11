@@ -246,10 +246,10 @@ You have already rated this plan
             #{/if}
 			      #{if canEdit == 1}
             <a onclick="delItem(${item.id})" style="cursor:pointer; float:right;">
-			<img src=@{'public/images/icons/trash.png'} title="Delete item" width="25" height="20"/></a>
+			<img src=@{'public/images/icons/trash.png'} title="Delete item" width="22" height="22"/></a>
             #{/if}  &nbsp;&nbsp;&nbsp;
 				            #{if canEdit == 1}
-			 <a href="@{Plans.editItem(item.id)}" style=" float:right;">Edit this item</a>#{/if}
+			 <a href="@{Plans.editItem(item.id)}" style=" float:right;"><img src=@{'public/images/icons/pencil.png'} title="Edit item" width="22" height="22"/></a>#{/if}
       
         </fieldset>
     <br/>

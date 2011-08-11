@@ -53,11 +53,11 @@ End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspac
 </br>
 <p><b>Insert a Title for the item</b></p>
 <input type = "hidden" name = "planId" value = '${item.plan.id}' >
-<input type = "text" id = "summary" name = "summary" type = "text" size = "30" value="${item.summary}" required/><label id = "summaryerror"style= "color:Red"> Please  a title for the plan </label>
+<input type = "text" id = "summary" name = "summary" type = "text" size = "30" value="${item.summary}"><label id = "summaryerror"style= "color:Red"> Please  a title for the plan </label>
 </br>
 </br>
-<p><b>Insert the description of the item</b></p>
-<textarea id="description" name="description" rows="7" cols="50" required>${item.description}</textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the item </label>
+<p><b>Insert the description of the plan</b></p>
+<textarea id="description" name="description" rows="7" cols="50">${item.description}</textarea><label id = "descriptionerror"style= "color:Red"> Please insert a description for the item </label>
 </br>
 <input type = "hidden" name = "itemId" value = '${item.id}'>
 </br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -75,18 +75,20 @@ End Date:: &nbsp;&nbsp;<input type="text" name= "endDate" id="datePickerB" vspac
 	$('#dateerror').hide();
 	$('#gom3aerror').hide();
 	$('#zikoerror').hide();
-function datepickerA(){
-		$($("#datePickerA").datepicker({
-                                                changeYear: true,
-                                                showButtonPanel: true
-                                            }));
-											}
-function datepickerB(){
-		$($("#datePickerB").datepicker({
-                                                changeYear: true,
-                                                showButtonPanel: true
-                                            }));
-											}
+	$(function datepickerA(){
+                $("#datePickerA").datepicker({
+                    changeYear: true,
+                    showButtonPanel: true
+					
+                });
+            });
+	$(function datepickerB(){
+                $("#datePickerB").datepicker({
+                    changeYear: true,
+                    showButtonPanel: true
+					
+                });
+            });
 function checkall(){
 		var start = document.getElementById("datePickerA").value;
 		var end = document.getElementById("datePickerB").value;
