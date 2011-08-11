@@ -53,7 +53,7 @@ public class Invitations extends CoolCRUD {
 		if (check == 1) {
 
 			List<User> filter = Users.searchUser(name);
-
+            System.out.println("filter : " + filter);
 			if (validation.hasErrors()) {
 				flash.error("Please enter name/email first!");
 				invite("", id, type, 0);
@@ -70,6 +70,7 @@ public class Invitations extends CoolCRUD {
 							|| filter.get(i).isAdmin)
 						userFilter.add(filter.get(i));
 				}
+				System.out.println("user filter before :" + userFilter);
 
 			} else {
 				List<User> postsInTopic = Topics.searchByTopic(id);
