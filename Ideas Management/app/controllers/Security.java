@@ -234,7 +234,7 @@ public class Security extends Secure.Security {
 			Security.checkUsername(username, flag);
 		}
 		String userAnswer = user.answer;
-		if (answer.equalsIgnoreCase(userAnswer)) {
+		if (Codec.hexMD5(answer).equalsIgnoreCase(userAnswer)) {
 			// should send a generated password by mail
 			String newPassword = generatePassword();
 			user.password = Codec.hexMD5(newPassword);

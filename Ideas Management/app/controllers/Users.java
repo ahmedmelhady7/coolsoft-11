@@ -1420,6 +1420,7 @@ public class Users extends CoolCRUD {
 
 			tmp.state = "w";
 			tmp.password = Codec.hexMD5(tmp.password);
+			tmp.answer=Codec.hexMD5(tmp.answer);
 			tmp.activationKey = Application.randomHash(10);
 			object._save();
 			tmp = (User) object;
