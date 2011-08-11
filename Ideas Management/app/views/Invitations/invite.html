@@ -48,22 +48,22 @@
 
 <div id="block" >
 <input class = "linkButton" type="button" onclick="javascript: show();" value="Invite by mail" id="button1" /> 
-<form action="@{Invitations.invite()}" method="GET" name="myform"">
+<form action="@{Invitations.invite()}" method="GET" name="myform">
 <table border="0" bgcolor="#ececec" cellspacing="5">
 <tr><td><u> You can search by name/email for users to invite </u></td></tr>
 <tr><td>Name/Email <input type="text" size="25" name="name"></td></tr>
-<tr><td></td><td><button class = "linkButton" type="submit" value="search"><img src="@{'public/images/icons/mail_search.png'}" title="search" width="35" height="25"/></button>
-<input type = "hidden" name ="check" value = 1>
-<input type = "hidden" name ="type" value = ${type}>
+<tr><td></td><td><button class = "linkButton" type="submit" value="search"><img src="@{'public/images/icons/mail_search.png'}" title="search" width="35" height="25"/></button></td></tr>
 #{if type==0}
 <input type = "hidden" name ="id" value = ${entity.id}>
 #{/if}
 #{else}
 <input type = "hidden" name ="id" value = ${topic.id}>
 #{/else}
-
+<input type = "hidden" name ="type" value = ${type}>
+<input type = "hidden" name ="check" value = 1>
 </table>
 </form>
+
 #{if check==1}
 <div id="appear">
 <br/>
