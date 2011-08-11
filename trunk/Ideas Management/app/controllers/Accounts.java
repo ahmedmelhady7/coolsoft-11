@@ -204,11 +204,12 @@ public class Accounts extends Controller {
 		 * "User already exists!" + "\t" + "Please choose another username " );
 		 * }
 		 */
-		JsonObject json = new JsonObject();
+		//JsonObject json = new JsonObject();
 		User existingUser = User.find("byUsername" + username).first();
-		json.addProperty("existingUser", (existingUser != null));
-		renderJSON(json.toString());
-
+		boolean exists = existingUser != null;
+		//json.addProperty("existingUser", (existingUser != null));
+		//renderJSON(json.toString());
+		renderJSON(exists);
 	}
 
 }
