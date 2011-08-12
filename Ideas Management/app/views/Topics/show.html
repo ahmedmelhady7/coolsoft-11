@@ -451,7 +451,12 @@
         </div>
         <li>
             <ul>
-            	
+            	<a href="http://www.facebook.com/sharer.php?u=/Topics/show?topicId=${topicId}&t=Topic - ${targetTopic.title}" rel="external,nofollow" target="_blank">
+        <img src="@{'public/images/Facebook.png'}" style="size:auto;" alt="Share on Facebook"/>
+        </a>
+        <a href="http://twitter.com/home?status=Topic - ${targetTopic.title} http:/Topics/show?TopicId=${topicId}" rel="external,nofollow" target="_blank">
+        <img src="@{'public/images/twitter.png'}" alt="Tweet this"/>
+        </a>
 				#{if allowed==1}
 				<li>
 					<input type="submit" value="Join Requests" onclick=location.href="@{RequestToJoins.viewRequests(1,object.id)}" class="linkButton">
@@ -710,10 +715,10 @@
 					        #{/if}
 					        <script type="text/javascript">
 					        function deleteTopic(ids) {
-						 var where_to= confirm("Do you really want to delete this comment ?");
+						 var where_to= confirm("Do you really want to delete this Topic ?");
 						 var text = "";
  						 if (where_to== true){
-   							$.post('@{Topics.delete()}', {id: ids, justification:text},function(){history.go(-1);});
+   							$.post('@{Topics.delete()}', {id: ids, justification:text},function(){location.href="/organizations/viewprofile?id="+ ${orgId}});
  						 }
             }
             </script>
