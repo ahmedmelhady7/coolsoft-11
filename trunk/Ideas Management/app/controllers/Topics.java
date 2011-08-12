@@ -1052,11 +1052,12 @@ public class Topics extends CoolCRUD {
 				listOfTopics.remove(listOfTopics.get(i));
 			}
 		}
-String name ="";
+		long orgId = temporaryTopic.entity.organization.id;
+		String name ="";
 		if (banned == false) {
 			try {
 				render(type, object, active, tags, joined, alreadyReportedTopic,
-						creator, followers, ideas, userJoinedPublic,
+						creator, followers, orgId, ideas, userJoinedPublic,
 						userJoinedPrivate, privateTopic, canReport, userId,
 						topicNotClosed, hiddenIdeas, numberOfIdeas, comments,
 						entity, canDelete, alreadyReported, plan, openToEdit,
