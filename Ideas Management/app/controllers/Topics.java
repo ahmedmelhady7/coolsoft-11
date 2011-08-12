@@ -1894,6 +1894,7 @@ public class Topics extends CoolCRUD {
 		notFoundIfNull(object);
 		Topic temporaryTopic = (Topic) object;
 		MainEntity entity = temporaryTopic.entity;
+		Organization organization = entity.organization;
 		try {
 
 			deleteTopic(id, justification);
@@ -1904,7 +1905,10 @@ public class Topics extends CoolCRUD {
 			redirect(request.controller + ".show", object._key());
 		}
 		flash.success(Messages.get("crud.deleted", type.modelName));
-		redirect("mainentitys.viewentity", entity.id);
+		if(entity.name != "Default")
+			redirect("mainentitys.viewentity", entity.id);
+		else
+			redirect("organizations.viewprofile", organization.id);
 	}
 
 	/**
