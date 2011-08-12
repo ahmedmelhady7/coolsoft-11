@@ -245,7 +245,7 @@ public class Mail extends Mailer {
 	public static void activation(User user,String activationKey) {
 		addRecipient(user.email);
 		setFrom("noreply@g-beehive.com");
-		setSubject("Welcome to CoolSoft, activate your account ");
+		setSubject("Welcome, activate your account ");
 		String url = "http://ideas.g-osc.com";
 		send(user, activationKey,url);
 
@@ -269,7 +269,6 @@ public class Mail extends Mailer {
 		addRecipient(user.email);
 		setFrom("noreply@g-beehive.com");
 		setSubject("Your account has been deleted ! ");
-		System.out.println(user);
 		send(user, message);
 
 	}
