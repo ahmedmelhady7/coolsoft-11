@@ -45,7 +45,7 @@ public class Mail extends Mailer {
 		addRecipient(email);
 		setFrom("noreply@g-beehive.com");
 		setSubject("Invitation");
-		String url = "http://ideas.g-osc.com/invitations/view";
+		String url = "http://ideas.g-osc.com/accounts/register";
 		User user = User.find("byEmail", email).first();
 		int id = 1;
 		int check = 1;

@@ -609,9 +609,23 @@ $(document).ready(function(){
                         	No topics available for this organization!
                         #{/else}
                         </div>
-                              
+                                   
+                         <div id="invbox" style="float: left; color:#0080ff;">           
+                                        #{if canInvite == true}         
+                        <form onsubmit="help('${org.id}', email.value);" method="post">         
+                            <input type="hidden" id='users' name="users" value="${usernames}">          
+                                                <br /> Invite an Idea Developer         
+                            <br> Username/Email: <input type="text" id="email" name="email" autoComplete="group" required/>              
+                            <br> Invite by: <input type="radio" id="s" name="select" value="username" onclick="autoC();" checked> Username <input type="radio" name="select" value="email" onclick="autoC();"> E-Mail  
+                                                <input type="submit" value="Invite" class="linkButton"/>                
+                            <script language="javascript" type="text/javascript">               
+                                var a = document.getElementById('users');               
+                        b = a.value + "";               
+                                c = b.split("|");               
+                        autoComplete.Set("group", c);           
+                            </script>           
+                        </form>#{/if}</div>
                                         
-                  
                                 #{if (requestToJoin == true) && (!admin) && (!alreadyRequested)}
                                 <form action="@{RequestToJoins.requestToJoinOrganization()}" method="post">
                                     <input type="hidden" id="orgId" name="orgId" value="${org.id}">
@@ -634,22 +648,7 @@ $(document).ready(function(){
                                 #{/if}
                                 #{else}
                                         <br />
-                                        <div id="invbox" style="float: left; color:#0080ff;">           
-                                        #{if canInvite == true}         
-                        <form onsubmit="help('${org.id}', email.value);" method="post">         
-                            <input type="hidden" id='users' name="users" value="${usernames}">          
-                                                <br /> Invite an Idea Developer         
-                            <br> Username/Email: <input type="text" id="email" name="email" autoComplete="group" required/>              
-                            <br> Invite by: <input type="radio" id="s" name="select" value="username" onclick="autoC();" checked> Username <input type="radio" name="select" value="email" onclick="autoC();"> E-Mail  
-                                                <input type="submit" value="Invite" class="linkButton"/>                
-                            <script language="javascript" type="text/javascript">               
-                                var a = document.getElementById('users');               
-                        b = a.value + "";               
-                                c = b.split("|");               
-                        autoComplete.Set("group", c);           
-                            </script>           
-                        </form>#{/if}</div>
-                                        
+                                 
                                         <div id="createTagbox" style="float: left; color:#0080ff;">
                                         <form name="createTag" action="@{Tags.createTagg()}" method="POST">
                                         Tag Name: <input type="text" id="name" name="name" required>
@@ -683,7 +682,9 @@ $(document).ready(function(){
                               
                                                         #{if (settings==1)}
                                                         <div id="relationForma">
-                                                 
+                                                 <br />
+												 <br />
+												 <br />
                                 <h4>Create Relationship between <select id="relType" onchange="showRelationForm()">
                                                 <option>select object</option>
                                                 <option>Entities</option>
