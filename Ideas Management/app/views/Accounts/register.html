@@ -1,4 +1,7 @@
 #{extends 'Home/home.html' /}
+#{set 'title'}
+Ideas Management | Register
+#{/set}
 
 <link type="text/css" href="@{'public/stylesheets/jquery-ui-.custom.css'}" rel="Stylesheet" />
     <script type="text/javascript" src="@{'public/javascripts/jquery-1.5.2.min.js'}"></script>
@@ -8,20 +11,9 @@
 	<!-- <script src="http://cdn.jquerytools.org/1.2.5/full/jquery.tools.min.js"></script> -->
 	 <script src="@{'public/javascripts/jquery.tools.min.js'}"></script>
 
-	<!-- standalone page styling (can be removed) -->
-	<!-- <link rel="stylesheet" type="text/css" href="http://static.flowplayer.org/tools/css/standalone.css"/> -->	
-	<link rel="stylesheet" type="text/css" href="@{'public/stylesheets/standalone.css'}"/>
-
 	<!-- <link rel="stylesheet" type="text/css" href="http://static.flowplayer.org/tools/demos/dateinput/css/skin1.css"/> -->
 	<link rel="stylesheet" type="text/css" href="@{'public/stylesheets/skin1.css'}"/> 
-     
-     
-     
-     <script type="text/javascript">
- var RecaptchaOptions = {
-    theme : 'clean'
- };
- </script>
+
 <div id="pageNoSideBar">
 		<div id="pageNoSideBar-bgtop">
 				<div id="content">
@@ -43,8 +35,12 @@
 			<label for="email">
 				E-mail
 			</label>
+			#{if oldEmail != null}
+			<input type = "text" value = "${oldEmail}" id="email" size=35 class="" name="email" onblur="echeck();" required/>
+			#{/if}
+			#{else}
 			<input type = "text" id="email" size=35 class="" name="email" onblur="echeck();" required/>
-			<span id="validEmail" class="validEmail"></span>
+			#{/else}<span id="validEmail" class="validEmail"></span>
 				<font color="Red">
 					*
 				</font>Required
@@ -52,15 +48,17 @@
 
 		<p>
 			<label for="username">
-				username
+				Username
 			</label>
-			<input type="text" size ="20" class = "" id="username" name="username" required/>
-		<input type="button" name="_available" value="Check Availability" onclick="checkAvailability()" />
+			#{if oldUsername != null}
+			<input type="text" value="${oldUsername}" size =20 class = "" id="username" name=username required/>
+			#{/if}
+			#{else}
+			<input type="text" size =20 class = "" id="username" name=username required/>
+			#{/else}<input type="button" name="_available" value="Check Availability" onclick="checkAvailability()" />
 			<b><label id="isAvailable"></label></b>
-		
-		
 		</p>
-
+		
 		<p>
 			<label for="password">
 				Password
@@ -81,19 +79,36 @@
 			<label for="firstName">
 				First Name
 			</label>
-			<input type="text" size=15 name="firstName" class "" onmouseover="" required/>
-			<span class="crudHelp" >
+			#{if oldFirstName != null}
+			<input type="text" size=15 value="${oldFirstName}" name="firstName" class "" onmouseover="" required/>
+			#{/if}
+			#{else}<input type="text" size=15 name="firstName" class "" onmouseover="" required/>
+			#{/else}<span class="crudHelp" >
 				<font color="Red">
 					*
 				</font>Required
 			</span>
 			</p>
+			
+			<p>
+			<label for="lastName">
+				Last Name
+			</label>
+			#{if oldLastName != null}
+			<input type="text" size=15 value="${oldLastName}" name="lastName" class "" onmouseover=""/>
+			#{/if}
+			#{else}<input type="text" size=15 name="lastName" class "" onmouseover=""/>#{/else}
+			</p>
+			
 			<p>
 			<label for="securityQuestion">
 				Security Question 
 			</label>
-			<input type = "text" id="securityQuestion" size=35 class="" name="securityQuestion" required/>
-				<font color="Red">
+			#{if oldSecurityQuestion != null}
+			<input type="text" size=15 value="${oldSecurityQuestion}" id="securityQuestion" size=35 class="" name="securityQuestion" required/>
+			#{/if}
+			#{else}<input type = "text" id="securityQuestion" size=35 class="" name="securityQuestion" required/>
+			#{/else}<font color="Red">
 					*
 				</font>Required
 		</p>
@@ -102,52 +117,23 @@
 			<label for="answer">
 				Security Answer 
 			</label>
-			<input type = "text" id="answer" size=20 class="" name="answer" required/>
-				<font color="Red">
+			#{if oldAnswer != null}
+			<input type="text" size=15 value="${oldAnswer}" id="answer" size=20 class="" name="answer" required/>
+			#{/if}
+			#{else}<input type = "text" id="answer" size=20 class="" name="answer" required/>
+			#{/else}<font color="Red">
 					*
 				</font>Required
 		</p>
-		
-		
-		<p>
-	    <label for="code">Please type the code below: </label>
-	    <img src="@{Application.captcha(randomID)}" />
-	    <br />
-	    <input type="text" name="code" id="code" size="18" value="" />
-	    <input type="hidden" name="randomID" value="${randomID}" />
-		</p>
-		
-		
-		<script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=6LcK68YSAAAAAOe4bUDwo79ksQDq08Gm2zPAxKaV">
-		</script>
-		  <noscript>
-		     <iframe src="http://www.google.com/recaptcha/api/noscript?k=6LcK68YSAAAAAOe4bUDwo79ksQDq08Gm2zPAxKaV"
-		         height="300" width="500" frameborder="0"></iframe><br>
-		     <textarea name="recaptcha_challenge_field" rows="3" cols="40">
-		     </textarea>
-		     <input type="hidden" name="recaptcha_response_field"
-		         value="manual_challenge">
-		  </noscript>
-		
-		
-		
-		
-		
-			<hr>
-			<br>
-			<p>
-			<label for="lastName">
-				Last Name
-			</label>
-			<input type="text" size=15 name="lastName" class "" onmouseover=""/>
-			</p>
 			
 			<p>
 			<label for="dateofBirth">
 				Date Of Birth
 			</label>
-			<!-- <input type="text" id="dateofBirth" name= "dateofBirth" readonly/> -->
-			<input type="date" name="dateofBirth" value="Click here" min="1911-04-22" max="2010-12-31" />
+			#{if oldDateOfBirth != null}
+			<input type="date" value="${oldDateOfBirth}" name="dateofBirth" min="1911-04-22" max="2010-12-31" />
+			#{/if}
+			#{else}<input type="date" name="dateofBirth" value="Click here" min="1911-04-22" max="2010-12-31" />#{/else}
 			</p>
 
 		<p>
@@ -157,7 +143,7 @@
 			<select name="country" size="1">
 				<option value="Egypt">Egypt</option>
 				<option value="Afghanistan">Afghanistan</option>
-				<option value="Åland Islands">Åland Islands</option>
+				<option value="?land Islands">?land Islands</option>
 				<option value="Albania">Albania</option>
 				<option value="Algeria">Algeria</option>
 				<option value="American Samoa">American Samoa</option>
@@ -214,7 +200,7 @@
 					Democratic Republic</option>
 				<option value="Cook Islands">Cook Islands</option>
 				<option value="Costa Rica">Costa Rica</option>
-				<option value="Côte d'Ivoire (Ivory Coast)">Côte d'Ivoire(Ivory Coast)</option>
+				<option value="C?te d'Ivoire (Ivory Coast)">C?te d'Ivoire(Ivory Coast)</option>
 				<option value="Croatia (Hrvatska)">Croatia (Hrvatska)</option>
 				<option value="Cuba">Cuba</option>
 				<option value="Cyprus">Cyprus</option>
@@ -343,7 +329,7 @@
 				<option value="Portugal">Portugal</option>
 				<option value="Puerto Rico">Puerto Rico</option>
 				<option value="Qatar">Qatar</option>
-				<option value="Réunion">Réunion</option>
+				<option value="R?union">R?union</option>
 				<option value="Romania">Romania</option>
 				<option value="Russian Federation">Russian Federation</option>
 				<option value="Rwanda">Rwanda</option>
@@ -423,9 +409,25 @@
 		
 		<p>
 			<label for="profession">Profession</label>
-			<input type="text" id ="profession" size="20" name="profession">
+			#{if oldProfession != null}
+			<input type="text" value="${oldProfession}" id ="profession" size="20" name="profession">
+			#{/if}
+			#{else}<input type="text" id ="profession" size="20" name="profession">#{/else}
 		</p>
 		
+		<p>
+			Please enter the 2 words you see below.
+			
+			#{ugot.recaptcha theme:"red", tabindex:1/}
+		</p>
+		#{ifError 'recaptcha'}
+		<ul>
+			<li style="color:red">
+			#{error 'recaptcha'/}
+			</li>
+		</ul>
+		#{/ifError}
+			
 			<input type="submit" id="submit" name="submit" value="Submit" />
 		</form>
 </div>
@@ -512,12 +514,70 @@
 			return false
 		}
 			return true;
-	}
+}
     
-    
-    </script>
-	
+    function echeck() {
+        var str = document.getElementById('email');
+        var validEmailMessage =document.getElementById('validEmail');
+        var goodColor = "#66cc66";
+        var badColor = "#ff6666";        
+		var at="@"
+		var dot="."
+		var lat=str.indexOf(at)
+		var lstr=str.length
+		var ldot=str.indexOf(dot)
+		if (str.indexOf(at)==-1){
+		   str.style.backgroundColor = badColor;
+		   validEmailMessage.style.color = badColor;
+			validEmailMessage.innerHTML = "Invalid Email!";
+		   return false
+		}
+
+		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
+		   str.style.backgroundColor = badColor;
+		   validEmailMessage.style.color = badColor;
+		   validEmailMessage.innerHTML = "Invalid Email!";
+		   return false
+		}
+
+		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
+		    str.style.backgroundColor = badColor;
+		    validEmailMessage.style.color = badColor;
+			validEmailMessage.innerHTML = "Invalid Email!";
+		    return false
+		}
+
+		 if (str.indexOf(at,(lat+1))!=-1){
+		    str.style.backgroundColor = badColor;
+		    validEmailMessage.style.color = badColor;
+			validEmailMessage.innerHTML = "Invalid Email!";
+		    return false
+		 }
+
+		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
+		    str.style.backgroundColor = badColor;
+		    validEmailMessage.style.color = badColor;
+			validEmailMessage.innerHTML = "Invalid Email!";
+		    return false
+		 }
+
+		 if (str.indexOf(dot,(lat+2))==-1){
+		    str.style.backgroundColor = badColor;
+		    validEmailMessage.style.color = badColor;
+			validEmailMessage.innerHTML = "Invalid Email!";
+		    return false
+		 }
 		
+		 if (str.indexOf(" ")!=-1){
+		    str.style.backgroundColor = badColor;
+		    validEmailMessage.style.color = badColor;
+			validEmailMessage.innerHTML = "Invalid Email!";
+		    return false
+		 }
+
+ 		 return true				
+	}
+    </script>
 	<script>
 		$(":date").dateinput({
 	format: 'dddd dd, mmmm yyyy',	// the format displayed for the user
@@ -530,7 +590,7 @@
 	yearRange: [-100,1]
 });
 	</script>
-					</div>
+						</div>
 					</div>
 					</div>
 					</div>
