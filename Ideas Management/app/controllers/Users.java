@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import ugot.recaptcha.Recaptcha;
 
 import javax.persistence.Query;
 
@@ -300,6 +301,20 @@ public class Users extends CoolCRUD {
 			User otherUser = User.findById(userId);
 			flag = false;
 			render(user, otherUser, flag);
+		}
+	}
+	
+	public static void viewProfile(long userId, int password) {
+		User user = Security.getConnected();
+		notFoundIfNull(user);
+		boolean flag = true;
+		if (user.id == userId) {
+			User otherUser = Security.getConnected();
+			render(user, otherUser, flag, password);
+		} else {
+			User otherUser = User.findById(userId);
+			flag = false;
+			render(user, otherUser, flag, password);
 		}
 	}
 
@@ -2150,32 +2165,25 @@ public class Users extends CoolCRUD {
 	 * 
 	 */
 
-	public static void changePassword(String pass2) {
+	public static void changePassword(@Recaptcha String recaptcha, String pass2) {
 
 		String message = "";
 
-		if (pass2.length() < 25 || pass2.length() > 3) {
-			User user = Security.getConnected();
-			user.password = Codec.hexMD5(pass2);
-			user.save();
-			viewProfile(user.id);
+		if (validation.hasErrors()) {
+			validation.keep();
+			viewProfile(Security.getConnected().id, 1);
 		} else {
-			message = "Password cannot exceed 25 characters";
-			render(request.controller.replace(".", "/") + "/viewProfile.html",
-					message);
+			if (pass2.length() < 25 || pass2.length() > 3) {
+				User user = Security.getConnected();
+				user.password = Codec.hexMD5(pass2);
+				user.save();
+				viewProfile(user.id);
+			} else {
+				message = "Password cannot exceed 25 characters";
+				render(request.controller.replace(".", "/") + "/viewProfile.html",
+						message);
+			}
 		}
-
-		User user = Security.getConnected();
-		user.password = Codec.hexMD5(pass2);
-		String logDescription = "<a href=\"/Users/viewProfile?userId="
-				+ user.id
-				+ "\">"
-				+ user.username
-				+ "</a>"
-				+ " has changed his password";
-		Log.addUserLog(logDescription, user);
-		user.save();
-		viewProfile(user.id);
 
 	}
 	public static void feedbackMail(String feedbackerEmail,String feedback,String browser,String subject){
