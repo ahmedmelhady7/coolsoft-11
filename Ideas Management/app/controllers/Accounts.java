@@ -5,10 +5,11 @@ import java.util.Date;
 import javax.persistence.PersistenceException;
 
 import com.google.gson.JsonObject;
-
+import ugot.recaptcha.Recaptcha;
 import play.mvc.Controller;
 import models.User;
 import notifiers.Mail;
+
 /**
  * 
  * @author Mostafa Ali
@@ -28,10 +29,19 @@ public class Accounts extends Controller {
 		render();
 	}
 
+	public static void register(String oldEmail, String oldUsername,
+			String oldFirstName, String oldLastName,
+			String oldSecurityQuestion, String oldAnswer, String oldDateOfBirth,
+			String oldCountry, String oldProfession) {
+		render(oldEmail, oldUsername, oldFirstName, oldLastName,
+				oldSecurityQuestion, oldAnswer, oldDateOfBirth, oldCountry,
+				oldProfession);
+	}
+
 	/**
 	 * 
-	 * adds an unregistered to the database and sends a generated activation key after checking that
-	 * this user's info(attributes) are valid
+	 * adds an unregistered to the database and sends a generated activation key
+	 * after checking that this user's info(attributes) are valid
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -39,7 +49,7 @@ public class Accounts extends Controller {
 	 * 
 	 * @param email
 	 *            :String , the user's email
-	 *            
+	 * 
 	 * @param username
 	 *            : String ,the user's username
 	 * 
@@ -53,11 +63,11 @@ public class Accounts extends Controller {
 	 * @param lastName
 	 *            : String ,the user's last name
 	 * 
-	 * @param securityQuestion 
-	 * 				String , security question of the user
+	 * @param securityQuestion
+	 *            String , security question of the user
 	 * 
 	 * @param answer
-	 * 				String , the security answer of the user
+	 *            String , the security answer of the user
 	 * 
 	 * 
 	 * @param communityContributionCounter
@@ -74,9 +84,10 @@ public class Accounts extends Controller {
 	 * 
 	 */
 
-	public static void addUser(String email, String username, String password,
-			String firstName, String lastName, String securityQuestion,
-			String answer, int communityContributionCounter, String dateofBirth,
+	public static void addUser(@Recaptcha String recaptcha, String email,
+			String username, String password, String firstName,
+			String lastName, String securityQuestion, String answer,
+			int communityContributionCounter, String dateofBirth,
 			String country, String profession) {
 		email = email.trim().toLowerCase();
 		username = username.trim().toLowerCase();
@@ -91,10 +102,10 @@ public class Accounts extends Controller {
 		} else if (!(validation.email(email).ok)) {
 			message = "Please enter a valid email address";
 			validUserFlag = true;
-		}else if (username.equals("")) {
+		} else if (username.equals("")) {
 			message = "A User must have a username";
 			validUserFlag = true;
-		}else if (!(User.find("byUsername", username).fetch().isEmpty())) {
+		} else if (!(User.find("byUsername", username).fetch().isEmpty())) {
 			message = "This Username already exists !";
 		} else if (password.equals("")) {
 			message = "A User must have a password";
@@ -126,23 +137,29 @@ public class Accounts extends Controller {
 			render(request.controller.replace(".", "/") + "/register.html",
 					message);
 		}
-		User user = new User(email, username, password, firstName, lastName,
-				securityQuestion, answer, 0, dateofBirth, country, profession);
-		user.state = "w";
-		user.activationKey = Application.randomHash(10);
-		Mail.activation(user, user.activationKey);
-		try
-		{
-			user._save();
+		if (validation.hasErrors()) {
+	        System.out.println(validation.current().toString());
+			validation.keep();
+			register(email, username, firstName, lastName, securityQuestion,
+					answer, dateofBirth, country,
+					profession);
+		} else {
+			User user = new User(email, username, password, firstName, lastName,
+					securityQuestion, answer, 0, dateofBirth, country, profession);
+			user.state = "w";
+			user.activationKey = Application.randomHash(10);
+			Mail.activation(user, user.activationKey);
+			try {
+				user._save();
 
+			} catch (PersistenceException e) {
+
+				render(request.controller.replace(".", "/") + "/register.html",
+						message);
+			}
+			render(email, username);
 		}
-		catch(PersistenceException e)
-		{
-			
-			render(request.controller.replace(".", "/") + "/register.html",
-					message);
-		}
-		render(email, username);
+		
 	}
 
 	/**
@@ -176,8 +193,7 @@ public class Accounts extends Controller {
 	 * @param email
 	 *            String email , the email to check
 	 * 
-	 * @return boolean true : if it exists 
-	 * 					false if it does not
+	 * @return boolean true : if it exists false if it does not
 	 * */
 	public static boolean checkEmail(String email) {
 		User existingUser = User.find("byEmail" + email).first();
@@ -204,11 +220,11 @@ public class Accounts extends Controller {
 		 * "User already exists!" + "\t" + "Please choose another username " );
 		 * }
 		 */
-		//JsonObject json = new JsonObject();
+		// JsonObject json = new JsonObject();
 		User existingUser = User.find("byUsername" + username).first();
 		boolean exists = existingUser != null;
-		//json.addProperty("existingUser", (existingUser != null));
-		//renderJSON(json.toString());
+		// json.addProperty("existingUser", (existingUser != null));
+		// renderJSON(json.toString());
 		renderJSON(exists);
 	}
 
