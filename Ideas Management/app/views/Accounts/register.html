@@ -12,7 +12,6 @@
 	<!-- <link rel="stylesheet" type="text/css" href="http://static.flowplayer.org/tools/css/standalone.css"/> -->	
 	<link rel="stylesheet" type="text/css" href="@{'public/stylesheets/standalone.css'}"/>
 
-
 	<!-- <link rel="stylesheet" type="text/css" href="http://static.flowplayer.org/tools/demos/dateinput/css/skin1.css"/> -->
 	<link rel="stylesheet" type="text/css" href="@{'public/stylesheets/skin1.css'}"/> 
      
@@ -513,69 +512,9 @@
 			return false
 		}
 			return true;
-}
-    
-    function echeck() {
-        var str = document.getElementById('email');
-        var validEmailMessage =document.getElementById('validEmail');
-        var goodColor = "#66cc66";
-        var badColor = "#ff6666";        
-		var at="@"
-		var dot="."
-		var lat=str.indexOf(at)
-		var lstr=str.length
-		var ldot=str.indexOf(dot)
-		if (str.indexOf(at)==-1){
-		   str.style.backgroundColor = badColor;
-		   validEmailMessage.style.color = badColor;
-			validEmailMessage.innerHTML = "Invalid Email!";
-		   return false
-		}
-
-		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
-		   str.style.backgroundColor = badColor;
-		   validEmailMessage.style.color = badColor;
-		   validEmailMessage.innerHTML = "Invalid Email!";
-		   return false
-		}
-
-		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
-		    str.style.backgroundColor = badColor;
-		    validEmailMessage.style.color = badColor;
-			validEmailMessage.innerHTML = "Invalid Email!";
-		    return false
-		}
-
-		 if (str.indexOf(at,(lat+1))!=-1){
-		    str.style.backgroundColor = badColor;
-		    validEmailMessage.style.color = badColor;
-			validEmailMessage.innerHTML = "Invalid Email!";
-		    return false
-		 }
-
-		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
-		    str.style.backgroundColor = badColor;
-		    validEmailMessage.style.color = badColor;
-			validEmailMessage.innerHTML = "Invalid Email!";
-		    return false
-		 }
-
-		 if (str.indexOf(dot,(lat+2))==-1){
-		    str.style.backgroundColor = badColor;
-		    validEmailMessage.style.color = badColor;
-			validEmailMessage.innerHTML = "Invalid Email!";
-		    return false
-		 }
-		
-		 if (str.indexOf(" ")!=-1){
-		    str.style.backgroundColor = badColor;
-		    validEmailMessage.style.color = badColor;
-			validEmailMessage.innerHTML = "Invalid Email!";
-		    return false
-		 }
-
- 		 return true				
 	}
+    
+    
     </script>
 	
 		
@@ -591,7 +530,7 @@
 	yearRange: [-100,1]
 });
 	</script>
-						</div>
+					</div>
 					</div>
 					</div>
 					</div>
