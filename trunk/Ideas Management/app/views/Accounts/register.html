@@ -36,10 +36,10 @@ Ideas Management | Register
 				E-mail
 			</label>
 			#{if oldEmail != null}
-			<input type = "text" value = "${oldEmail}" id="email" size=35 class="" name="email" onblur="echeck();" required/>
+			<input type = "text" value = "${oldEmail}" id="email" size=35 class="" name="email" required/>
 			#{/if}
 			#{else}
-			<input type = "text" id="email" size=35 class="" name="email" onblur="echeck();" required/>
+			<input type = "text" id="email" size=35 class="" name="email" required/>
 			#{/else}<span id="validEmail" class="validEmail"></span>
 				<font color="Red">
 					*
@@ -143,7 +143,7 @@ Ideas Management | Register
 			<select name="country" size="1">
 				<option value="Egypt">Egypt</option>
 				<option value="Afghanistan">Afghanistan</option>
-				<option value="?land Islands">?land Islands</option>
+				<option value="Åland Islands">Åland Islands</option>
 				<option value="Albania">Albania</option>
 				<option value="Algeria">Algeria</option>
 				<option value="American Samoa">American Samoa</option>
@@ -200,8 +200,7 @@ Ideas Management | Register
 					Democratic Republic</option>
 				<option value="Cook Islands">Cook Islands</option>
 				<option value="Costa Rica">Costa Rica</option>
-				<option value="C?te d'Ivoire (Ivory Coast)">C?te d'Ivoire(Ivory Coast)</option>
-				<option value="Croatia (Hrvatska)">Croatia (Hrvatska)</option>
+				<option value="Côte d'Ivoire (Ivory Coast)">Côte d'Ivoire(Ivory Coast)</option>				<option value="Croatia (Hrvatska)">Croatia (Hrvatska)</option>
 				<option value="Cuba">Cuba</option>
 				<option value="Cyprus">Cyprus</option>
 				<option value="Czech Republic">Czech Republic</option>
@@ -329,7 +328,7 @@ Ideas Management | Register
 				<option value="Portugal">Portugal</option>
 				<option value="Puerto Rico">Puerto Rico</option>
 				<option value="Qatar">Qatar</option>
-				<option value="R?union">R?union</option>
+				<option value="Réunion">Réunion</option>
 				<option value="Romania">Romania</option>
 				<option value="Russian Federation">Russian Federation</option>
 				<option value="Rwanda">Rwanda</option>
@@ -516,67 +515,6 @@ Ideas Management | Register
 			return true;
 }
     
-    function echeck() {
-        var str = document.getElementById('email');
-        var validEmailMessage =document.getElementById('validEmail');
-        var goodColor = "#66cc66";
-        var badColor = "#ff6666";        
-		var at="@"
-		var dot="."
-		var lat=str.indexOf(at)
-		var lstr=str.length
-		var ldot=str.indexOf(dot)
-		if (str.indexOf(at)==-1){
-		   str.style.backgroundColor = badColor;
-		   validEmailMessage.style.color = badColor;
-			validEmailMessage.innerHTML = "Invalid Email!";
-		   return false
-		}
-
-		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
-		   str.style.backgroundColor = badColor;
-		   validEmailMessage.style.color = badColor;
-		   validEmailMessage.innerHTML = "Invalid Email!";
-		   return false
-		}
-
-		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
-		    str.style.backgroundColor = badColor;
-		    validEmailMessage.style.color = badColor;
-			validEmailMessage.innerHTML = "Invalid Email!";
-		    return false
-		}
-
-		 if (str.indexOf(at,(lat+1))!=-1){
-		    str.style.backgroundColor = badColor;
-		    validEmailMessage.style.color = badColor;
-			validEmailMessage.innerHTML = "Invalid Email!";
-		    return false
-		 }
-
-		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
-		    str.style.backgroundColor = badColor;
-		    validEmailMessage.style.color = badColor;
-			validEmailMessage.innerHTML = "Invalid Email!";
-		    return false
-		 }
-
-		 if (str.indexOf(dot,(lat+2))==-1){
-		    str.style.backgroundColor = badColor;
-		    validEmailMessage.style.color = badColor;
-			validEmailMessage.innerHTML = "Invalid Email!";
-		    return false
-		 }
-		
-		 if (str.indexOf(" ")!=-1){
-		    str.style.backgroundColor = badColor;
-		    validEmailMessage.style.color = badColor;
-			validEmailMessage.innerHTML = "Invalid Email!";
-		    return false
-		 }
-
- 		 return true				
-	}
     </script>
 	<script>
 		$(":date").dateinput({
