@@ -15,25 +15,25 @@
 		margin-right: 9%;
 		margin-bottom: 4%;
 		margin-left: 0%;
-		border-top-left-radius: 10px;
-		border-top-right-radius: 10px;
-		border-bottom-right-radius: 10px;
-		border-bottom-left-radius: 10px;
+		border-top-left-radius: 2%;
+		border-top-right-radius: 2%;
+		border-bottom-right-radius: 2%;
+		border-bottom-left-radius: 2%;
 		background-color: #bbbbbb;
 		padding-top: 2%;
 		padding-right: 4%;
 		padding-bottom: 0%;
 		padding-left: 4%;
-		border-bottom-width: 2px;
+		border-bottom-width: 1%;
 		border-bottom-style: solid;
 		border-bottom-color: #bbbbbb;
-		border-right-width: 2px;
+		border-right-width: 1%;
 		border-right-style: solid;
 		border-right-color: #bbbbbb;
-		border-left-width: 2px;
+		border-left-width: 1%;
 		border-left-style: solid;
 		border-left-color: #bbbbbb;
-		border-top-width: 2px;
+		border-top-width: 1%;
 		border-top-style: solid;
 		border-top-color: #bbbbbb;
 		word-wrap: break-word;
@@ -67,6 +67,9 @@
         <li>
             #{if !user.isAdmin}<a href="@{Invitations.view()}">Invitations</a>
             #{/if}
+        </li>
+        <li>
+            <a href="@{Games.doodle()}">Doodle</a>
         </li>
         
     </ul>
