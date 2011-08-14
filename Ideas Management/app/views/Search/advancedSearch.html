@@ -1,3 +1,4 @@
+#{extends 'Login/index.html' /}
 <!DOCTYPE html>
 <html>
     <link type="text/css" href=@{'public/stylesheets/jquery-ui-.custom.css'} rel="Stylesheet" />
@@ -13,12 +14,6 @@
                     window.location.reload();
                 }
                 return true;
-            }
-            
-            function reloadMyPage(){
-                if (document.formSearch.q != null) {
-                    document.formSearch.q.value = "Search for articles,books,and more..";
-                }
             }
             
             function clearInput(e){
@@ -397,7 +392,11 @@
             }
         </style>
     </head>
-    <body dir="ltr" onLoad="reloadMyPage(); showNewPanel(5); ">
+	
+<div id= "pageNoSideBar">
+<div id="pageNoSideBar-bgtop">
+
+    <body dir="ltr" showNewPanel(5); ">
         <div style="padding-top: 25px; color: #000000>
             <div class="tabholder" id="tabholder_articles">
                 <span class="activeTab" id="tab5" onMouseOver="hover(this);" onClick="showNewPanel(5);" onMouseOut="setState(5);">Advanced Search&nbsp;</span>
@@ -642,7 +641,7 @@
             <!--Add here the 4th one -->
             <div id="panel6" class="content_articles">
             </div>
-        </div>
+        </div></div></div>
         <script type="text/javascript">
         	/**
         	 * More Options
