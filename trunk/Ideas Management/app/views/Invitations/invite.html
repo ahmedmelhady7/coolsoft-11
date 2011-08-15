@@ -8,11 +8,6 @@
 #{else}
 <a href="@{Topics.show(topic.id)}"><img src="@{'public/images/icons/back.png'}" title="back" width="25" height="12"/> Back to &{topic.title}</a>
 #{/else}
-
-
-
-
-
 <br/>
 <br/>
 <div id="errors" style="display:true">
@@ -41,7 +36,7 @@
 #{else}
 <input type = "hidden" name ="id" value = ${topic.id}>
 #{/else}
-<tr><td>&nbsp;</td><td><button class = "linkButton" type="submit" value="send"><img src="@{'public/images/icons/mail_send.png'}" title="send" width="35" height="25"/></button>
+<tr><td>&nbsp;</td><td><button class = "linkButton" type="submit" value="send"><img src="@{'public/images/icons/mail_send.png'}" title="send" width="35" height="25"/></button></td></tr>
 </table>
 </form>
 </div>
@@ -63,6 +58,7 @@
 <input type = "hidden" name ="check" value = 1>
 </table>
 </form>
+</div>
 
 #{if check==1}
 <div id="appear">
@@ -75,7 +71,7 @@
 <br/>
 <table border="0" bgcolor="#ececec" cellspacing="2">
 #{if userFilter.isEmpty()}
-<tr><td><u><font size ="3" color ="black">No user Found</font></u></td><td>
+<tr><td><u><font size ="3" color ="black">No user Found</font></u></td></tr>
 #{/if}
 </table>
 #{else}
@@ -106,8 +102,9 @@
     </ul>
 </div>
 #{/else}
-#{/if}
 </div>
+#{/if}
+
 
 #{if check==2}
 <script type="text/javascript">
