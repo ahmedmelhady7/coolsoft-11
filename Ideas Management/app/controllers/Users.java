@@ -761,6 +761,7 @@ public class Users extends CoolCRUD {
 			if (searchResultByName.get(i).state == "a") {
 				searchResultByNameActive.add(searchResultByName.get(i));
 			}
+			System.out.println("state : " +searchResultByName.get(i).state);
 			
 		}
 		System.out.println("searchResultByNameActive : "+searchResultByNameActive);
