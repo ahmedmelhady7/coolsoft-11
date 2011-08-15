@@ -519,7 +519,7 @@ public class MainEntitys extends CoolCRUD {
 		//Organization organization = entity.organization;
 		entity.incrmentViewed();
 		entity.save();
-		String name ="";
+		String name ="majic";
 
 		int canCreateEntity = 0;
 		int canCreateSubEntity = 0;
