@@ -418,7 +418,6 @@ public class BannedUsers extends CoolCRUD {
 			topicsNames += entityTopics.get(i).title + ",";
 			topicsIds += entityTopics.get(i).getId() + ",";
 		}
-		System.out.println(topicsNames);
 		json.addProperty("topicsIds", topicsIds);
 		json.addProperty("topicsNames", topicsNames);
 		renderJSON(json.toString());
@@ -907,8 +906,6 @@ public class BannedUsers extends CoolCRUD {
 			long organizationId = org.getId();
 
 			for (int i = 0; i < actionsRestricted.length; i++) {
-				System.out.println("In BannedUsers : Topic deRest."
-						+ actionsRestricted[i]);
 				BannedUser.deRestrictFromTopic(userId, actionsRestricted[i],
 						entityTopicID);
 
@@ -959,8 +956,6 @@ public class BannedUsers extends CoolCRUD {
 			Organization org = entity.organization;
 
 			for (int i = 0; i < actionsRestricted.length; i++) {
-				System.out.println("In bannedUsers: Entity de-Restriction"
-						+ actionsRestricted[i]);
 				BannedUser.deRestrictFromEntityWithCascading(userId,
 						actionsRestricted[i], entityTopicID);
 
@@ -1033,8 +1028,6 @@ public class BannedUsers extends CoolCRUD {
 			for (int j = 0; j < organizers.size(); j++) {
 				long userId = organizers.get(j).getId();
 				for (int i = 0; i < actionsRestricted.length; i++) {
-					System.out.println("In BannedUsers : Topic deRest."
-							+ actionsRestricted[i]);
 					BannedUser.deRestrictFromTopic(userId,
 							actionsRestricted[i], entityTopicID);
 
@@ -1090,8 +1083,6 @@ public class BannedUsers extends CoolCRUD {
 			for (int j = 0; j < organizers.size(); j++) {
 				long userId = organizers.get(j).getId();
 				for (int i = 0; i < actionsRestricted.length; i++) {
-					System.out.println("In bannedUsers: Entity de-Restriction"
-							+ actionsRestricted[i]);
 					BannedUser.deRestrictFromEntityWithCascading(userId,
 							actionsRestricted[i], entityTopicID);
 					User restricted = User.findById(userId);
@@ -1210,7 +1201,6 @@ public class BannedUsers extends CoolCRUD {
 					if (type.equalsIgnoreCase("entity")) {
 						MainEntity entityOne = MainEntity
 								.findById(banned.resourceID);
-						System.out.println("test" + banned.resourceID);
 						MainEntity entityTwo = MainEntity.findById(sorted
 								.get(j).resourceID);
 						if (entityOne.name.compareToIgnoreCase(entityTwo.name) < 0) {
@@ -1221,7 +1211,6 @@ public class BannedUsers extends CoolCRUD {
 					} else {
 
 						Topic topicOne = Topic.findById(banned.resourceID);
-						System.out.println("test" + banned.resourceID);
 						Topic topicTwo = Topic
 								.findById(sorted.get(j).resourceID);
 
@@ -1351,7 +1340,6 @@ public class BannedUsers extends CoolCRUD {
 			json.addProperty("resourceId", myresourceId);
 			String name = maps(myresourceId, type);
 			json.addProperty("namee", name);
-			System.out.println(myresourceId);
 			renderJSON(json.toString());
 		}
 		if (number == 6) {
@@ -1760,7 +1748,6 @@ public class BannedUsers extends CoolCRUD {
 					Notifications.sendNotification(userId, numId, "entity",
 							"You have been unblocked from viewing entity "
 									+ entity.name);
-					System.out.println("HERE");
 					doBlock(userId, numId, 1, 0);
 
 				}

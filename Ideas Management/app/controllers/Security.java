@@ -36,11 +36,6 @@ public class Security extends Secure.Security {
 	}
 
 	public static int setBaseURL() {
-		// System.out.println("baseURL: " + renderArgs.get("baseurl"));
-		// System.out.println("URL: " + request.url);
-		// System.out.println("ACTION: " + request.action);
-		// System.out.println("DOMAIN: " + request.domain);
-		// System.out.println("HOST: " + request.host);
 		int index = request.url.indexOf("admin");
 		String temp = "";
 		if (index != -1) {
@@ -48,18 +43,14 @@ public class Security extends Secure.Security {
 		} else {
 			String temp2 = request.action.substring(0,
 					request.action.indexOf(".")).toLowerCase();
-			// System.out.println("temp2: " + temp2);
+	
 			if (temp2.equalsIgnoreCase("home")) {
 				temp2 = request.url;
 			} else {
 				int temp1 = request.url.toLowerCase().indexOf(temp2);
-				// System.out.println("temp1: " + temp1);
-				// System.out.println("----------------------");
 				temp = request.url.substring(0, temp1);
-				// System.out.println("temp: " + temp);
 			}
 		}
-		// System.out.println("LOOOOL: " + temp);
 		renderArgs.put("baseurl", temp);
 		return 0;
 	}

@@ -511,7 +511,6 @@ public class MainEntitys extends CoolCRUD {
 		MainEntity entity = MainEntity.findById(id);
 		notFoundIfNull(entity);
 		if(Users.isPermitted(user,"view", id,"entity")){
-		//System.out.println(entity.name);
 		Organization org = entity.organization;
 		List<MainEntity> subentities = entity.subentities;
 		List<Topic> topicList = entity.topicList;
@@ -545,7 +544,6 @@ public class MainEntitys extends CoolCRUD {
 		int canRequestRelationship = 0;
 		int canRestrict = 0;
 		boolean entityIsLocked = entity.createRelationship;
-		System.out.println("ENTITY "+entity);
 		List<User> allowed = Users.getEntityOrganizers(entity);
 		if (org.creator.equals(user) || user.isAdmin) {
 			canRestrict = 1;
@@ -811,7 +809,6 @@ public class MainEntitys extends CoolCRUD {
 	 */
 	public static boolean deleteEntityHelper(long entityId) {
 		MainEntity entity = MainEntity.findById(entityId);
-		System.out.println("will now delete entity " + entity.name);
 		List<Organization> allOrganizations = Organization.findAll();
 		List<MainEntity> allEntities = MainEntity.findAll();
 		List<Tag> tags = Tag.findAll();
@@ -820,7 +817,6 @@ public class MainEntitys extends CoolCRUD {
 		int size = allOrganizations.size();
 		for (int i = 0; i < size; i++) {
 			if (allOrganizations.get(i).entitiesList.contains(entity)) {
-				System.out.println("organization "+allOrganizations.get(i).name);
 				allOrganizations.get(i).entitiesList.remove(entity);
 				allOrganizations.get(i).save();
 			}
@@ -828,7 +824,6 @@ public class MainEntitys extends CoolCRUD {
 		size = followers.size();
 		for (int i = 0; i < size; i++) {
 			if (followers.get(i).followingEntities.contains(entity)) {
-				System.out.println("followers " +followers.get(i));
 				followers.get(i).followingEntities.remove(entity);
 				followers.get(i).save();
 			}
@@ -836,7 +831,6 @@ public class MainEntitys extends CoolCRUD {
 		size = tags.size();
 		for (int i = 0; i < size; i++) {
 			if (tags.get(i).entities.contains(entity)) {
-				System.out.println("tags " + tags.get(i).name);
 				tags.get(i).entities.remove(entity);
 				tags.get(i).save();
 			}
@@ -872,21 +866,18 @@ public class MainEntitys extends CoolCRUD {
 		}
 	//	size = topicList.size();
 		for (int j = 0; j <entity.topicList.size(); j++) {
-			System.out.println("topics " + entity.topicList.get(j).title);
 			Topics.deleteTopicInternally("" + entity.topicList.get(j).id);
 			j--;
 		}
 		size = allEntities.size();
 		for (int i = 0; i < size; i++) {
 			if (allEntities.get(i).subentities.contains(entity)) {
-				System.out.println("subentities remove " + allEntities.get(i).name);
 				allEntities.get(i).subentities.remove(entity);
 
 				allEntities.get(i).save();
 			}
 		}
 		for (int i = 0; i <entity.subentities.size(); i++) {
-			System.out.println("subentities delete " + entity.subentities.get(i).name);
 			MainEntitys.deleteEntityHelper(entity.subentities.get(i).id);
 			i--;
 		}

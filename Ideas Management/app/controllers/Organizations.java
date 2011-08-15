@@ -86,10 +86,9 @@ public class Organizations extends CoolCRUD {
 		if (!isDuplicate(name,organization.relationNames)) {
 			isDuplicate = false;
 			OrganizationRelationsNames relationName =new OrganizationRelationsNames(name,organization).save();
-			System.out.println(relationName);
+		
 			organization.relationNames.add(relationName);
 			organization.save();
-			System.out.println(isDuplicate);
 		}
 		return isDuplicate;
 	}
@@ -581,7 +580,7 @@ public class Organizations extends CoolCRUD {
                                                 id, "organization")
                                 )
                         settings = 1;
-                System.out.println(settings);
+               
                 // while (i < org.createdTags.size()) {
                 // tags.add(org.createdTags.get(i));
                 // i++;
@@ -737,8 +736,6 @@ public class Organizations extends CoolCRUD {
 				
 				for(int j=0;j<org.relationNames.size();j++)
 					relationNames.add(org.relationNames.get(j).name);
-              System.out.println("names : " +relationNames);
-              
                         List<Plan> plans = Plans.planList("organization", org.id);
                         List<User> contributionUsers = Users.getEnrolledUsers((Organization)Organization.findById(id));
                         List<User> topUsers = new ArrayList<User>();
@@ -855,7 +852,6 @@ public class Organizations extends CoolCRUD {
 	public static void deleteOrganization(long organizationId) {
 		User user = Security.getConnected();
 		Organization organization = Organization.findById(organizationId);
-	System.out.println(organizationId);
 		notFoundIfNull(organization);
 		if(organization.creator==user || user.isAdmin){
 		List<User> followers = User.findAll();
@@ -872,7 +868,6 @@ public class Organizations extends CoolCRUD {
 			if (followers.get(j).followingOrganizations.contains(organization)) {
 				followers.get(j).followingOrganizations.remove(organization);
 				followers.get(j).save();
-				System.out.println("followers " + j);
 			}
 			j++;
 		}
@@ -881,7 +876,6 @@ public class Organizations extends CoolCRUD {
 		while (j < size) {
 			if (createdTags.get(j).createdInOrganization == organization) {
 				Tags.delete(createdTags.get(j).id);
-				System.out.println("tag "+createdTags.get(j)+"" +j);
 			}
 			j++;
 		}
@@ -890,7 +884,6 @@ public class Organizations extends CoolCRUD {
 			while (j <size ) {
 				relatedTags.get(j).organizations.remove(organization);
 				relatedTags.get(j).save();
-				System.out.println("related tags "+relatedTags.get(j)+"" +j);
 				j++;
 		}
 			relatedTags.clear();
@@ -900,7 +893,6 @@ public class Organizations extends CoolCRUD {
 		while (j <size) {
 			if (bannedUsers.get(j).organization==organization) {
 				BannedUser.delete(bannedUsers.get(j));
-				System.out.println("banned user " +j);
 			}
 			j++;
 		}
@@ -910,7 +902,6 @@ public class Organizations extends CoolCRUD {
 		size=relations.size();
 		while (j <size ) {
 				CreateRelationshipRequests.delete(relations.get(0).id);
-				System.out.println("relation creation request " +j);			
 			j++;
 		}
 		j = 0;
@@ -918,8 +909,6 @@ public class Organizations extends CoolCRUD {
 		while (j < size) {
 			 
 			UserRoleInOrganization.delete(users.get(0));
-			System.out.println("user role " +j);
-			
 			j++;
 		}
 	
@@ -928,18 +917,14 @@ public class Organizations extends CoolCRUD {
 		size=entities.size();
 		
 		while (j < size) {
-			System.out.println("all subentities before " + subEntities + j + size);
+			
 		    subEntities.addAll(entities.get(j).subentities);
-			System.out.println("all subentities after " + subEntities + j + size);
 			j++;
 		}
 		entities.removeAll(subEntities);
 		for(int i=0;i<entities.size();i++){
-			System.out.println(entities.size());
-			System.out.println("all entities " + entities + i +entities.size() );
 				MainEntitys.deleteEntityHelper(entities.get(i).id);
 				i--;
-				//System.out.println("deleted entity "+entities.get(i).name+ ""+ i+entities.size());
 		}
 		
 		
@@ -949,8 +934,6 @@ public class Organizations extends CoolCRUD {
 		while (j < size) {
 	
 				RenameEndRelationshipRequests.delete(renameRequests.get(0).id);
-				System.out.println("rename reltions requests " +j);
-			
 			j++;
 		}
 		organization.creator.createdOrganization.remove(organization);
@@ -976,7 +959,6 @@ public class Organizations extends CoolCRUD {
 		}
 		//
 		for(int i=0;i<	organization.relationNames.size();i++){
-			System.out.println(organization.relationNames);
 			OrganizationRelationsNames relationName = organization.relationNames.get(i);
 			organization.relationNames.remove(relationName);
 			relationName.delete();
@@ -986,31 +968,12 @@ public class Organizations extends CoolCRUD {
 		organization.logs.clear();
 	
 		organization.save();
-		System.out.println("5alas logs");
 		Log.addUserLog(
 				"<a href=\"/Users/viewProfile?userId="
 						+ user.id + "\">" + user.username + "</a>"
 						+ " deleted the organisation " + organization.name, user);
-		System.out.println("hadelete");
-		System.out.println(organization.bannedUsers.isEmpty() + "banned userrrrrr");
-		System.out.println(organization.createdTags.isEmpty() + "created tagsssss");
-		System.out.println(organization.createRelationshipRequest.isEmpty() + "create relationship requestssss");
-		System.out.println((organization.creator.createdOrganization.contains(organization)) + "creator");
-		System.out.println(organization.entitiesList.isEmpty() + "entities list");
-		System.out.println(organization.followers.isEmpty() + "followers");
-		System.out.println(organization.invitation.isEmpty() + "invitation");
-		System.out.println(organization.joinRequests.isEmpty() + "join requests");
-		System.out.println(organization.logs.isEmpty() + "logs");
-		System.out.println(organization.relatedTags.isEmpty() + "related tags");
-		System.out.println(organization.relationNames.isEmpty() + "relation names");
-		System.out.println(organization.renameEndRelationshipRequest.isEmpty() + "rename end relationship request");
-		System.out.println(organization.userRoleInOrg.isEmpty() + "user role in org");
-		System.out.println(organization.userRoleInOrg + "  ");
-		
-		
 		organization.delete();
-		System.out.println("delete");
-		Login.homePage();
+				Login.homePage();
 		}
 		else{
 			BannedUsers.unauthorized();

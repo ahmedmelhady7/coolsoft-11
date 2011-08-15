@@ -467,7 +467,7 @@ public class Ideas extends CoolCRUD {
 		}
 
 		try {
-			System.out.println("show() done, about to render");
+		
 			boolean permittedToTagIdea = user.equals(idea.author)
 					|| Users.isPermitted(user, "tag ideas in my organization",
 							topicId, "topic")
@@ -704,11 +704,9 @@ public class Ideas extends CoolCRUD {
 			}
 			try {
 				if (idea.plan == null) {
-					System.out.println("foo2 el delete");
+					
 					idea.delete();
-					System.out.println("ta7t el delete");
 					topic.save();
-					System.out.println("3ml save lel topic");
 					return true;
 				}
 			} catch (Exception e) {
@@ -723,12 +721,8 @@ public class Ideas extends CoolCRUD {
 			}
 			try {
 				if (idea.plan == null) {
-					System.out.println(commentslist);
-					System.out.println("foo2 el delete");
 					idea.delete();
-					System.out.println("ta7t el delete");
 					topic.save();
-					System.out.println("3ml save lel topic");
 					Notifications.sendNotification(idea.author.id, idea.id,
 							"Idea", message);
 
@@ -750,7 +744,6 @@ public class Ideas extends CoolCRUD {
 	}
 
 	public static void deleteIdea(long ideaId, String justification) {
-		System.out.println("delete idea aho");
 		Idea idea = Idea.findById(ideaId);
 		String ideaTitle = idea.title;
 		Topic ideaTopic = idea.belongsToTopic;
@@ -1018,7 +1011,6 @@ public class Ideas extends CoolCRUD {
 					+ "%";
 		}
 		long idd = selectedIdeas.get(0).getId();
-		System.out.println(selectedIdeasString + " " + idd);
 
 		render(selectedIdeas, topicId, selectedIdeasString, idd, user);
 	}
@@ -1243,22 +1235,17 @@ public class Ideas extends CoolCRUD {
 			idea.save();
 		}
 		int size = idea.commentsList.size();
-		System.out.println("size aho " + size);
 		for (int i = 0; i < size; i++) {
-			System.out.println(idea.commentsList + "*********abl el delete ");
 			// Comments.deleteComment(idea.commentsList.get(i).id);
 			idea.commentsList.get(i).commenter.hisComments.clear();
 			idea.commentsList.get(i).commenter.save();
-			System.out.println(idea.commentsList.get(i).commenter.hisComments);
 			idea.commentsList.clear();
 			idea.save();
 			idea.belongsToTopic.save();
 			idea.belongsToTopic.entity.save();
 			idea.belongsToTopic.entity.organization.save();
 		}
-		System.out.println("b3d el delete **********" + idea.commentsList);
 		idea.save();
-		System.out.println(idea.commentsList);
 		redirect("/Ideas/show?ideaId=" + idea.id);
 	}
 }
