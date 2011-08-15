@@ -733,7 +733,7 @@ public class Users extends CoolCRUD {
 	 * @return List<User>
 	 */
 	public static ArrayList<User> searchUser(String keyword) {
-        System.out.println("name :" +keyword);
+        
 		List<User> searchResultByName = new ArrayList<User>();
 		List<User> searchResultByProfession = new ArrayList<User>();
 		List<User> searchResultByEmail = new ArrayList<User>();
@@ -750,9 +750,7 @@ public class Users extends CoolCRUD {
 					"%" + keyword + "%").<User> fetch();
 			searchResultByEmail = User.find("byEmail", keyword).<User> fetch();
 		}
-		System.out.println("searchResultByName : "+searchResultByName);
-		System.out.println("searchResultByProfession : " +searchResultByProfession);
-		System.out.println("searchResultByEmail : "+	searchResultByEmail);
+		
 
 		int nameSize = searchResultByName.size();
 		int professionSize = searchResultByProfession.size();
@@ -761,30 +759,28 @@ public class Users extends CoolCRUD {
 			if (searchResultByName.get(i).state.equals("a")) {
 				searchResultByNameActive.add(searchResultByName.get(i));
 			}
-			System.out.println("state : " +searchResultByName.get(i).state);
-			
+						
 		}
-		System.out.println("searchResultByNameActive : "+searchResultByNameActive);
+		
 		for (int i = 0; i < professionSize; i++) {
-			if (searchResultByProfession.get(i).state == "a") {
+			if (searchResultByProfession.get(i).state.equals("a")) {
 				searchResultByNameActive.add(searchResultByProfession
 						.get(i));
 				
 			}
 		}
-		System.out.println("searchResultByNameActive : " +searchResultByNameActive);
-
+		
 		for (int i = 0; i < emailSize; i++) {
-			if (searchResultByEmail.get(i).state == "a") {
+			if (searchResultByEmail.get(i).state.equals("a")) {
 				searchResultByEmailActive.add(searchResultByEmail.get(i));
 			}
 		}
-		System.out.println("searchResultByEmailActive : "+searchResultByEmailActive);
+		
 		ArrayList<User> search = new ArrayList<User>();
 		search.addAll(searchResultByEmailActive);
 		search.addAll(searchResultByNameActive);
 		search.addAll(searchResultByProfessionActive);
-       System.out.println("search : " +search);
+       
 		return search;
 
 	}
@@ -1155,11 +1151,11 @@ public class Users extends CoolCRUD {
 	 * @return List <User> Organizers in that entity
 	 */
 	public static List<User> getEntityOrganizers(MainEntity entity) {
-		System.out.println(entity.name);
+		
 		List<User> enrolled = new ArrayList<User>();
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
 		if (entity != null) {
-			//System.out.println("ezay da5alt?!!!");
+			
 			Organization organization = entity.organization;
 
 			long entityId = entity.id;
