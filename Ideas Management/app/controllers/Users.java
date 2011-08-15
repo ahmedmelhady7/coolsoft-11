@@ -733,7 +733,7 @@ public class Users extends CoolCRUD {
 	 * @return List<User>
 	 */
 	public static ArrayList<User> searchUser(String keyword) {
-
+        System.out.println("name :" +keyword);
 		List<User> searchResultByName = new ArrayList<User>();
 		List<User> searchResultByProfession = new ArrayList<User>();
 		List<User> searchResultByEmail = new ArrayList<User>();
@@ -750,6 +750,9 @@ public class Users extends CoolCRUD {
 					"%" + keyword + "%").<User> fetch();
 			searchResultByEmail = User.find("byEmail", keyword).<User> fetch();
 		}
+		System.out.println("searchResultByName : "+searchResultByName);
+		System.out.println("searchResultByProfession : " +searchResultByProfession);
+		System.out.println("searchResultByEmail : "+	searchResultByEmail);
 
 		int nameSize = searchResultByName.size();
 		int professionSize = searchResultByProfession.size();
@@ -758,24 +761,29 @@ public class Users extends CoolCRUD {
 			if (searchResultByName.get(i).state == "a") {
 				searchResultByNameActive.add(searchResultByName.get(i));
 			}
+			
 		}
+		System.out.println("searchResultByNameActive : "+searchResultByNameActive);
 		for (int i = 0; i < professionSize; i++) {
 			if (searchResultByProfession.get(i).state == "a") {
-				searchResultByProfessionActive.add(searchResultByProfession
+				searchResultByNameActive.add(searchResultByProfession
 						.get(i));
+				
 			}
 		}
+		System.out.println("searchResultByNameActive : " +searchResultByNameActive);
 
 		for (int i = 0; i < emailSize; i++) {
 			if (searchResultByEmail.get(i).state == "a") {
 				searchResultByEmailActive.add(searchResultByEmail.get(i));
 			}
 		}
+		System.out.println("searchResultByEmailActive : "+searchResultByEmailActive);
 		ArrayList<User> search = new ArrayList<User>();
 		search.addAll(searchResultByEmailActive);
 		search.addAll(searchResultByNameActive);
 		search.addAll(searchResultByProfessionActive);
-
+       System.out.println("search : " +search);
 		return search;
 
 	}
