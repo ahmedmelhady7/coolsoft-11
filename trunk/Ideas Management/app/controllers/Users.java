@@ -758,7 +758,7 @@ public class Users extends CoolCRUD {
 		int professionSize = searchResultByProfession.size();
 		int emailSize = searchResultByEmail.size();
 		for (int i = 0; i < nameSize; i++) {
-			if (searchResultByName.get(i).state == "a") {
+			if (searchResultByName.get(i).state.equals("a")) {
 				searchResultByNameActive.add(searchResultByName.get(i));
 			}
 			System.out.println("state : " +searchResultByName.get(i).state);
