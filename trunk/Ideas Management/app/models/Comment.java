@@ -105,7 +105,6 @@ public class Comment extends CoolModel {
 				for (int i = 0; i < commentReportersId.length
 						&& reporters != ""; i++) {
 					reporterId2 = Long.parseLong(commentReportersId[i]);
-					System.out.println("reporters" + reporters);
 					if (reporterId2 == reporterId) {
 						return true;
 					}
