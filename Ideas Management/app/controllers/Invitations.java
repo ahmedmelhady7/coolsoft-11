@@ -51,7 +51,7 @@ public class Invitations extends CoolCRUD {
 		List<Integer> invited = new ArrayList<Integer>();
 		User user = Security.getConnected();
 		if (check == 1) {
-			List<User> filter = User.findAll();
+			List<User> filter = Users.searchUser(name);
             System.out.println("filter : " + filter);
             
 			if (validation.hasErrors()) {
