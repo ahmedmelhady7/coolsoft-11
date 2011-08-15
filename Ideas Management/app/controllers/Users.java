@@ -1150,7 +1150,7 @@ public class Users extends CoolCRUD {
 		List<User> enrolled = new ArrayList<User>();
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
 		if (entity != null) {
-			System.out.println("ezay da5alt?!!!");
+			//System.out.println("ezay da5alt?!!!");
 			Organization organization = entity.organization;
 
 			long entityId = entity.id;

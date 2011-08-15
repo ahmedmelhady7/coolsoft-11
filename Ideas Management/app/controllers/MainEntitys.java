@@ -511,7 +511,7 @@ public class MainEntitys extends CoolCRUD {
 		MainEntity entity = MainEntity.findById(id);
 		notFoundIfNull(entity);
 		if(Users.isPermitted(user,"view", id,"entity")){
-		System.out.println(entity.name);
+		//System.out.println(entity.name);
 		Organization org = entity.organization;
 		List<MainEntity> subentities = entity.subentities;
 		List<Topic> topicList = entity.topicList;
