@@ -51,7 +51,6 @@ public class Log extends CoolModel{
         Log log = new Log();
         log.actionDescription = message;
         log.time = new Date().toString();
-        System.out.println(log.time);
         log.save();
 
         List<Class> clazzes = new ArrayList<Class>();

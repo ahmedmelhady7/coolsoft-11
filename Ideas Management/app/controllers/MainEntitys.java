@@ -278,10 +278,8 @@ public class MainEntitys extends CoolCRUD {
 	 */
 	public static void createSubEntity(String name, String description,
 			long parentId, long orgId, boolean createRelationship) {
-		System.out.println("create subentity");
 		boolean canCreate = true;
 		MainEntity parent = MainEntity.findById(parentId);
-		System.out.println("parent " + parent.name);
 		Organization organization = Organization.findById(orgId);
 		User user = Security.getConnected();
 		for (int i = 0; i < parent.subentities.size(); i++) {
@@ -292,7 +290,6 @@ public class MainEntitys extends CoolCRUD {
 			MainEntity entity = new MainEntity(name, description, parent,
 					organization, createRelationship);
 			entity.save();
-			System.out.println("will create now");
 			Log.addUserLog(
 					"<a href=\"/Users/viewProfile?userId="
 							+ user.id

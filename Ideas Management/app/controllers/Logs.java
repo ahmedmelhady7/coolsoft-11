@@ -28,7 +28,7 @@ public class Logs extends CoolCRUD {
 	 *            : long id of the organization
 	 * 
 	 */
-	public static void viewLogs(long organizationId) {
+	public static void viewLogs(long organizationId, int pageNumber) {
 		Organization organization = Organization.findById(organizationId);
 		notFoundIfNull(organization);
 		if(Security.getConnected().isAdmin || Security.getConnected().equals(organization.creator)) {
@@ -37,8 +37,9 @@ public class Logs extends CoolCRUD {
 		List<MainEntity> entities = organization.entitiesList;
 		
 		entities.remove(0);
-		List<Log> toFilter = new ArrayList<Log>();
+		List<Log> logList = new ArrayList<Log>();
 		List<Log> reversed = new ArrayList<Log>();
+		List<Log> toFilter= new ArrayList<Log>(); 
 		
 
 			if (Security.getConnected() == organization.creator
@@ -48,14 +49,32 @@ public class Logs extends CoolCRUD {
 			
 			
 			for(int i = 1; i <= reversed.size(); i++) {
-				toFilter.add(reversed.get(reversed.size() - i));
+				logList.add(reversed.get(reversed.size() - i));
 			}
+			int i = pageNumber * 3;
+			int max = 3;
+			int j = 0;
+			if(pageNumber == 0) {
+				 j = 1;
+			}
+			else 
+			{
+			 j = 2;
+			}
+			while(i < logList.size() && i< max *j  ){
+				toFilter.add(logList.get(i));
+				
+				
+			}
+			
+			
+			
 		int flag = 0;
 		if (Security.getConnected().isAdmin) {
 			flag = 1;
 		}
-
-		render(toFilter, organizationId, user, entities, organization, flag);
+		
+		render(toFilter, organizationId, user, entities, organization, flag, pageNumber);
 		}
 		else {
 			BannedUsers.unauthorized();
@@ -188,10 +207,11 @@ public class Logs extends CoolCRUD {
 	 * @story C1S8
 	 * 
 	 */
-	public static void viewUserLogs() {
+	public static void viewUserLogs(int pageNumber) {
 		if(Security.getConnected().isAdmin) {
 		User user = Security.getConnected();
 		List<Log> reversed = new ArrayList<Log>();
+		List<Log> logList = new ArrayList<Log>();
 		List<Log> toFilter = new ArrayList<Log>();
 
 		if (Security.getConnected().isAdmin)
@@ -199,8 +219,13 @@ public class Logs extends CoolCRUD {
 		List<Organization> organization = Organization.findAll();
 		
 		for(int i = 1; i <= reversed.size(); i++) {
-			toFilter.add(reversed.get(reversed.size() - i));
+			logList.add(reversed.get(reversed.size() - i));
 		}
+
+		for(int i = pageNumber; i < logList.size() && i< 3; i++) {
+			toFilter.add(logList.get(i));
+		}
+		
 		render(toFilter, user, organization); 
 		}
 		else {

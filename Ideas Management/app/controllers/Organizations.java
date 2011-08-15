@@ -590,32 +590,6 @@ public class Organizations extends CoolCRUD {
                         tags.add(org.relatedTags.get(i));
                         i++;
                 }
-                // System.out.println(org.relatedTags.get(0).name);
-                // boolean loop = false;
-                // if (tags.isEmpty()) {
-                // while (i < allTags.size()) {
-                // if (allTags.get(i).createdInOrganization.privacyLevel == 2) {
-                // tags.add(allTags.get(i));
-                // loop = true;
-                // }
-                // i++;
-                // }
-                // }
-                // if (loop == false) {
-                // while (i < allTags.size()) {
-                // if (!tags.contains(allTags.get(i))
-                // && (allTags.get(i).createdInOrganization.privacyLevel == 2)) {
-                // tags.add(allTags.get(i));
-                // }
-                // i++;
-                // }
-                // }
-              /*  int canCreateEntity = 0;
-                if (user.isAdmin
-                                || Users.isPermitted(user, "create entities", id,
-                                                "organization")) {
-                        canCreateEntity = 1;
-                }*/
                 List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
                 for (MainEntity entity : allEntities) {
                         if (Users.isPermitted(user, "view", entity.id, "entity")) {

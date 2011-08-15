@@ -138,7 +138,6 @@ public class Accounts extends Controller {
 					message);
 		}
 		if (validation.hasErrors()) {
-	        System.out.println(validation.current().toString());
 			validation.keep();
 			register(email, username, firstName, lastName, securityQuestion,
 					answer, dateofBirth, country,
