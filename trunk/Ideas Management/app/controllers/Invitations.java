@@ -64,15 +64,17 @@ public class Invitations extends CoolCRUD {
 				MainEntity entity = MainEntity.findById(id);
 				notFoundIfNull(entity);
 				List<User> organizers = Users.getEntityOrganizers(entity);
+				
 				organizers.add(entity.organization.creator);
+				System.out.println("organizers :" + organizers);
 				for (int i = 0; i < filter.size(); i++) {
 					if (!organizers.contains(filter.get(i))
 							|| filter.get(i).isAdmin)
 						userFilter.add(filter.get(i));
-				}
-				//System.out.println("user filter before :" + userFilter);
+			
 
-			} else {
+			}
+			}else {
 				List<User> postsInTopic = Topics.searchByTopic(id);
 				notFoundIfNull(postsInTopic);
 				for (int i = 0; i < filter.size(); i++) {
