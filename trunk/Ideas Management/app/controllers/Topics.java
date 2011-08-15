@@ -857,7 +857,6 @@ public class Topics extends CoolCRUD {
 		}
 		// begin New Hadi
 		// for public topic
-		System.out.println("joined users " + searchByTopic(temporaryTopic.id));
 		boolean userJoinedPublic = false;
 		boolean userJoinedPrivate = false;
 		boolean privateTopic = false;
@@ -868,7 +867,6 @@ public class Topics extends CoolCRUD {
 			userJoinedPublic = true;
 		if (temporaryTopic.privacyLevel == 2) {
 			for (int i = 0; i < user.userRolesInOrganization.size(); i++) {
-				System.out.println(user.userRolesInOrganization.get(i).role);
 				if (user.userRolesInOrganization.get(i).role.equals(new Role(
 						"idea developer", "use")))
 					userJoinedPublic = true;
@@ -2059,21 +2057,12 @@ public class Topics extends CoolCRUD {
 		String message = "your idea " + idea.title + " has been deleted by "
 				+ Security.getConnected().username + " Justification : "
 				+ justification;
-		System.out.println("ssssssssssssss lesa");
 		List<Comment> commentslist = Comment.find("byCommentedIdea", idea)
 				.fetch();
-		System.out.println("aywaaaaaaaaaa");
 		try {
 			for (int i = 0; i < commentslist.size(); i++) {
 				Comments.deleteComment(commentslist.get(i).getId());
-				System.out.println("deleted comment " + i);
 			}
-			System.out.println("3ml delete lel comments");
-			// printing
-			System.out.println(idea.belongsToTopic);
-			System.out.println(idea.commentsList);
-			System.out.println(idea.plan);
-			System.out.println(idea.delete().toString());
 
 			String logDescription = "<a href=\"/Users/viewProfile?userId="
 					+ Security.getConnected().id + "\">"
@@ -2089,7 +2078,6 @@ public class Topics extends CoolCRUD {
 					message);
 
 		} catch (Exception e) {
-			System.out.println(e.getStackTrace());
 			redirect(request.controller + ".view");
 		}
 

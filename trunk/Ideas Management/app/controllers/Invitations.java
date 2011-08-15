@@ -46,14 +46,11 @@ public class Invitations extends CoolCRUD {
 	 * 
 	 */
 	public static void invite(String name, long id, int type, int check) {
-        System.out.println("name : "+name);
 		List<User> userFilter = new ArrayList<User>();
 		List<Integer> invited = new ArrayList<Integer>();
 		User user = Security.getConnected();
 		if (check == 1) {
 			List<User> filter = Users.searchUser(name);
-            System.out.println("filter : " + filter);
-            
 			if (validation.hasErrors()) {
 				flash.error("Please enter name/email first!");
 				invite("", id, type, 0);
@@ -66,7 +63,6 @@ public class Invitations extends CoolCRUD {
 				List<User> organizers = Users.getEntityOrganizers(entity);
 				
 				organizers.add(entity.organization.creator);
-				System.out.println("organizers :" + organizers);
 				for (int i = 0; i < filter.size(); i++) {
 					if (!organizers.contains(filter.get(i))
 							|| filter.get(i).isAdmin)
@@ -95,8 +91,6 @@ public class Invitations extends CoolCRUD {
 			}
 		}
 
-		System.out.println("users : " + userFilter);
-		System.out.println("checks : " + invited);
 		if (type == 0) {
 			if (Users
 					.isPermitted(
