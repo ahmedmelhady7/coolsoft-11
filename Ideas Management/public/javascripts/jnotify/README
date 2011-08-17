@@ -1,0 +1,32 @@
+/*
+* EL7R_NOTIFY_JS v0.1
+* Author: Ali AlNoaimi
+* License: GPL v3
+* www.the-ghost.com
+*/
+
+http://en.the-ghost.com/2011/05/el7rnotify-jquery-plugin.html
+
+include either el7r_notify.jq.js or el7r_notify.jq.min.js (recommended).
+<script type="text/javascript" src="el7r_notify.jq.min.js"></script>
+
+and link the css stylesheet
+<link type="text/css" href="el7r_notify.jq.css" rel="stylesheet" />
+
+then you can use the plugin anywhere, excample: 
+
+<script>
+$(function() {
+	$().el7r_notify({'text':'hellooo','place_h':'left'});
+});
+</script>
+
+possible options:
+'text': 'notification text'
+'place_v': 'place, top|bottom'
+'place_h': 'place, right|left'
+'icon': 'icon url'
+'color': 'background color'
+'skin': 'css class name (darkblue,silver,default) themes are included by default'
+'delay': 'time to delay'
+'ex': 'x button'
