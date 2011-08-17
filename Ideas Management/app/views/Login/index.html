@@ -62,6 +62,11 @@
                 #{/if}
                 #{else}
                 (${user.getNotificationNumber()} New)
+			   #{list items:0..user.getNotificationNumber(), as:'i'} 	
+				<script type="text/javascript">
+					$().el7r_notify({'text':'hello world', 'place_v':'bottom', 'place_h':'left','icon':'', 'skin':'darkblue', 'delay':'4000', 'ex':'true', 'effect':'fade'});
+				
+</script>
                 #{/else}</a>
         </li>
         <li>
@@ -572,9 +577,7 @@
                 <script type="text/javascript">
                 	
 					
-        $(function() {
-     $().el7r_notify({'text':'hello world', 'place_v':'bottom', 'place_h':'left','icon':'', 'skin':'darkblue', 'delay':'4000', 'ex':'true', 'effect':'fade'});
-         });
+     
 
 					var b = true;
 				
