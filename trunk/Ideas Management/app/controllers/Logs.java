@@ -28,7 +28,7 @@ public class Logs extends CoolCRUD {
 	 *            : long id of the organization
 	 * 
 	 */
-	public static void viewLogs(long organizationId, int pageNumber) {
+	public static void viewLogs(long organizationId, int pageNumber, int offset, String position, int max) {
 		Organization organization = Organization.findById(organizationId);
 		notFoundIfNull(organization);
 		if(Security.getConnected().isAdmin || Security.getConnected().equals(organization.creator)) {
@@ -51,30 +51,48 @@ public class Logs extends CoolCRUD {
 			for(int i = 1; i <= reversed.size(); i++) {
 				logList.add(reversed.get(reversed.size() - i));
 			}
-			int i = pageNumber * 3;
-			int max = 3;
-			int j = 0;
-			if(pageNumber == 0) {
-				 j = 1;
-			}
-			else 
-			{
-			 j = 2;
-			}
-			while(i < logList.size() && i< max *j  ){
-				toFilter.add(logList.get(i));
-				
-				
-			}
 			
-			
+			int i = 0;
+			if(position.equals("next") || position.equals("")) {
+				
+				pageNumber ++;
+				max++;
+				offset = offset + 3;
+				
+				i = offset-4;
+				
+				while(i < logList.size() && i< offset){
+					toFilter.add(logList.get(i));
+					i++;
+					
+				}
+				}
+				else {
+					if(position.equals("previous")) {
+						pageNumber --;
+						max--;
+						offset = offset - 3;
+						
+						i = offset-4;
+						
+						while(i < logList.size() && i< offset){
+							toFilter.add(logList.get(i));
+							i++;
+							
+						}
+					}
+				}
+			boolean maxPage = true;
+			if(max-1 == logList.size() /4) {
+				maxPage = false;
+			}
 			
 		int flag = 0;
 		if (Security.getConnected().isAdmin) {
 			flag = 1;
 		}
 		
-		render(toFilter, organizationId, user, entities, organization, flag, pageNumber);
+		render(toFilter, organizationId, user, entities, organization, flag, pageNumber, offset, max, maxPage);
 		}
 		else {
 			BannedUsers.unauthorized();
@@ -101,13 +119,14 @@ public class Logs extends CoolCRUD {
 	 * 
 	 */
 	public static void searchLog(@Required String keyword, long id,
-			long entityId) {
+			long entityId, int pageNumber, int offset, String position) {
 		Organization organization = Organization.findById(id);
 		notFoundIfNull(organization);
 		if(Security.getConnected().isAdmin || Security.getConnected().equals(organization.creator)) {
 		
 		
 		ArrayList<Log> filtered = new ArrayList<Log>();
+		ArrayList<Log> finalLog = new ArrayList<Log>();
 		
 		MainEntity entity = MainEntity.findById(entityId);
 		//notFoundIfNull(entity);
@@ -171,18 +190,17 @@ public class Logs extends CoolCRUD {
 			}
 		}
 		
-	
 		JsonObject json = new JsonObject();
 		String actions = "";
 		String time = "";
-		for (int i = 0; i < filtered.size(); i++) {
-			if (i == filtered.size() - 1) {
-				actions = actions + filtered.get(i).actionDescription + "";
-				time = time + filtered.get(i).time + "";
+		for (int i = 0; i < finalLog.size(); i++) {
+			if (i == finalLog.size() - 1) {
+				actions = actions + finalLog.get(i).actionDescription + "";
+				time = time + finalLog.get(i).time + "";
 			}
 			else {
-			actions = actions + filtered.get(i).actionDescription + "" + "|";
-			time = time + filtered.get(i).time + "|";
+			actions = actions + finalLog.get(i).actionDescription + "" + "|";
+			time = time + finalLog.get(i).time + "|";
 			}
  
 		}
@@ -207,7 +225,7 @@ public class Logs extends CoolCRUD {
 	 * @story C1S8
 	 * 
 	 */
-	public static void viewUserLogs(int pageNumber) {
+	public static void viewUserLogs(int pageNumber, int offset, String position, int max) {
 		if(Security.getConnected().isAdmin) {
 		User user = Security.getConnected();
 		List<Log> reversed = new ArrayList<Log>();
@@ -221,12 +239,46 @@ public class Logs extends CoolCRUD {
 		for(int i = 1; i <= reversed.size(); i++) {
 			logList.add(reversed.get(reversed.size() - i));
 		}
-
-		for(int i = pageNumber; i < logList.size() && i< 3; i++) {
+		
+		int i = 0;
+		if(position.equals("next") || position.equals("")) {
+		
+		pageNumber ++;
+		max++;
+	
+		offset = offset + 3;
+		
+		 i = offset-4;
+		
+		while(i < logList.size() && i< offset){
 			toFilter.add(logList.get(i));
+			i++;
+			
+		}
+		}
+		else {
+			if(position.equals("previous")) {
+				pageNumber --;
+				max--;
+				offset = offset - 3;
+				
+				i = offset-4;
+				
+				while(i < logList.size() && i< offset){
+					toFilter.add(logList.get(i));
+					i++;
+					
+				}
+			}
+		}
+		boolean maxPage = true;
+		if(max-1 == logList.size() /4) {
+			maxPage = false;
 		}
 		
-		render(toFilter, user, organization); 
+		
+		
+		render(toFilter, user, organization, pageNumber, offset, max, maxPage); 
 		}
 		else {
 			BannedUsers.unauthorized();
