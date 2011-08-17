@@ -1,0 +1,18 @@
+#el7r_notify_top_right {
+	position:absolute;
+	right:10px;
+}
+#el7r_notify_top_left {
+	position:absolute;
+	left:10px;
+}
+#el7r_notify_bottom_right {
+	position:absolute;
+	bottom:10px;
+	right:10px;
+}
+#el7r_notify_bottom_left {
+	position:absolute;
+	bottom:10px;
+	left:10px;
+}

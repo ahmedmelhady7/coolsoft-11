@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<!--[if IE]>
+<link href="ie_fix.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+
+<script src="jquery-1.6.1.min.js" type="text/javascript"></script>
+<script src="el7r_notify.jq.js" type="text/javascript"></script>
+<link href="el7r_notify.min.jq.css" rel="stylesheet" type="text/css" />
+
+<script>
+$(function() {
+	$().el7r_notify({'text':'welcome','place_h':'right'});
+	$().el7r_notify({'text':'welcome','place_h':'left','skin':'darkblue','effect':'slide'});
+	$().el7r_notify({'text':'welcome','place_h':'left','place_v':'bottom','skin':'silver','effect':'animate'});
+	$().el7r_notify({'text':'welcome','place_h':'right','place_v':'bottom','skin':'silver','effect':'animate','ex':'true'});
+
+	$("button#test").click(function() {
+		var text = $("input#text").val();
+		var place_v = $("select#place_v").val();
+		var place_h = $("select#place_h").val();
+		var icon = $("input#icon").val();
+		var skin = $("select#skin").val();
+		var delay = $("input#delay").val();
+		var ex = $("select#ex").val();
+		var effect = $("select#effect").val();
+
+		$().el7r_notify({'text':text,'place_v':place_v,'place_h':place_h,'icon':icon,'skin':skin,'delay':delay,'ex':ex,'effect':effect});
+
+	$("#code").html("$().el7r_notify({'text':'"+text+"', 'place_v':'"+place_v+"', 'place_h':'"+place_h+"','icon':'"+icon+"', 'skin':'"+skin+"', 'delay':'"+delay+"', 'ex':'"+ex+"', 'effect':'"+effect+"'});");
+	});
+
+});
+</script>
+
+<center>
+<a href="http://en.the-ghost.com/2011/05/el7rnotify-jquery-plugin.html">original topic</a>
+<h2>EL7R_NOTIFY JQUERY PLUGIN DEMO</h2></center>
+
+<table width="550" align="center" style="background:#DDD">
+<tr><td width="150">text</td><td width="10">:</td><td><input type="text" id="text" value="hello world" /></td></tr>
+<tr><td>delay</td><td>:</td><td><input type="text" id="delay" value="4000" /></td></tr>
+<tr><td>place (vertical)</td><td>:</td><td>
+	<select id="place_v">
+	<option value="top">top</option>
+	<option value="bottom">bottom</option>
+	</select>
+</td></tr>
+<tr><td>place (horizontal)</td><td>:</td><td>
+	<select id="place_h">
+	<option value="right">right</option>
+	<option value="left">left</option>
+	</select>
+</td></tr>
+<tr><td>icon url</td><td>:</td><td><input type="text" id="icon" /></td></tr>
+<tr><td>skin</td><td>:</td><td>
+	<select id="skin">
+	<option value="default">default</option>
+	<option value="silver">silver</option>
+	<option value="darkblue">darkblue</option>
+	</select>
+</tr></tr>
+<tr><td>show x button</td><td>:</td><td>
+	<select id="ex">
+	<option value="true">yes</option>
+	<option value="false">no</option>
+	</select>
+</td></tr>
+<tr><td>effect</td><td>:</td><td>
+	<select id="effect">
+	<option value="animate">animate</option>
+	<option value="fade">fade</option>
+	<option value="slide">slide</option>
+	</select>
+</td></tr>
+<tr><td>code</td><td>:</td><td><code id="code"></code></td></tr>
+<tr><td colspan="2"></td><td><button id="test"><b>test</b></button></td></tr>
+</table>
+
