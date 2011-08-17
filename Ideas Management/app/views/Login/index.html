@@ -258,7 +258,7 @@
                                 #{/if} 
                                 #{if user.isAdmin}<a href="/admin">Admin View</a>
                                 <br>
-                                <a href="@{Logs.viewUserLogs()}">View Logs</a>
+                                <a href="@{Logs.viewUserLogs(-1, 1, "", -1)}">View Logs</a>
                                 <br>
                                 #{/if}
                                 <div style="clear: both;">
