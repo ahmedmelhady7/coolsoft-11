@@ -62,12 +62,14 @@
                 #{/if}
                 #{else}
                 (${user.getNotificationNumber()} New)
-			   #{list items:0..user.getNotificationNumber(), as:'i'} 	
+			   #{list items:0..user.getNotificationNumber()-1, as:'i'} 
+			   	
 				<script type="text/javascript">
-					$().el7r_notify({'text':'hello world', 'place_v':'bottom', 'place_h':'left','icon':'', 'skin':'darkblue', 'delay':'4000', 'ex':'true', 'effect':'fade'});
+					notify(user.getLatest().get(i).description);
+					
 				
 </script>
-	#{/list}
+#{/list}
                 #{/else}</a>
         </li>
         <li>
@@ -600,6 +602,9 @@
 						});
 					});
 					//}
+					function notify(message){
+						$().el7r_notify({'text':b, 'place_v':'bottom', 'place_h':'left','icon':'', 'skin':'darkblue', 'delay':'4000', 'ex':'true', 'effect':'fade'});
+					}
 					function step1() {
 						document.getElementById('searchview').style.display = 'none';
 					}
@@ -621,6 +626,7 @@
 							document.getElementById('advSearch').style.display = 'none';
 						}
 					}
+					
 
 					function tag(id) {
 						$.post('@{Users.unfollowTag()}', {
