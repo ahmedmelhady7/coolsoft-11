@@ -1,5 +1,6 @@
 package controllers;
 
+
 /**
  @author Mostafa Ali
  */
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import ugot.recaptcha.Recaptcha;
 
 import javax.persistence.Query;
 
@@ -301,20 +301,6 @@ public class Users extends CoolCRUD {
 			User otherUser = User.findById(userId);
 			flag = false;
 			render(user, otherUser, flag);
-		}
-	}
-	
-	public static void viewProfile(long userId, int password) {
-		User user = Security.getConnected();
-		notFoundIfNull(user);
-		boolean flag = true;
-		if (user.id == userId) {
-			User otherUser = Security.getConnected();
-			render(user, otherUser, flag, password);
-		} else {
-			User otherUser = User.findById(userId);
-			flag = false;
-			render(user, otherUser, flag, password);
 		}
 	}
 
@@ -733,7 +719,7 @@ public class Users extends CoolCRUD {
 	 * @return List<User>
 	 */
 	public static ArrayList<User> searchUser(String keyword) {
-        
+
 		List<User> searchResultByName = new ArrayList<User>();
 		List<User> searchResultByProfession = new ArrayList<User>();
 		List<User> searchResultByEmail = new ArrayList<User>();
@@ -750,37 +736,32 @@ public class Users extends CoolCRUD {
 					"%" + keyword + "%").<User> fetch();
 			searchResultByEmail = User.find("byEmail", keyword).<User> fetch();
 		}
-		
 
 		int nameSize = searchResultByName.size();
 		int professionSize = searchResultByProfession.size();
 		int emailSize = searchResultByEmail.size();
 		for (int i = 0; i < nameSize; i++) {
-			if (searchResultByName.get(i).state.equals("a")) {
+			if (searchResultByName.get(i).state == "a") {
 				searchResultByNameActive.add(searchResultByName.get(i));
 			}
-						
 		}
-		
 		for (int i = 0; i < professionSize; i++) {
-			if (searchResultByProfession.get(i).state.equals("a")) {
-				searchResultByNameActive.add(searchResultByProfession
+			if (searchResultByProfession.get(i).state == "a") {
+				searchResultByProfessionActive.add(searchResultByProfession
 						.get(i));
-				
 			}
 		}
-		
+
 		for (int i = 0; i < emailSize; i++) {
-			if (searchResultByEmail.get(i).state.equals("a")) {
+			if (searchResultByEmail.get(i).state == "a") {
 				searchResultByEmailActive.add(searchResultByEmail.get(i));
 			}
 		}
-		
 		ArrayList<User> search = new ArrayList<User>();
 		search.addAll(searchResultByEmailActive);
 		search.addAll(searchResultByNameActive);
 		search.addAll(searchResultByProfessionActive);
-       
+
 		return search;
 
 	}
@@ -1151,11 +1132,11 @@ public class Users extends CoolCRUD {
 	 * @return List <User> Organizers in that entity
 	 */
 	public static List<User> getEntityOrganizers(MainEntity entity) {
-		
+		System.out.println(entity.name);
 		List<User> enrolled = new ArrayList<User>();
 		List<UserRoleInOrganization> organizers = new ArrayList<UserRoleInOrganization>();
 		if (entity != null) {
-			
+			System.out.println("ezay da5alt?!!!");
 			Organization organization = entity.organization;
 
 			long entityId = entity.id;
@@ -2170,25 +2151,32 @@ public class Users extends CoolCRUD {
 	 * 
 	 */
 
-	public static void changePassword(@Recaptcha String recaptcha, String pass2) {
+	public static void changePassword(String pass2) {
 
 		String message = "";
 
-		if (validation.hasErrors()) {
-			validation.keep();
-			viewProfile(Security.getConnected().id, 1);
+		if (pass2.length() < 25 || pass2.length() > 3) {
+			User user = Security.getConnected();
+			user.password = Codec.hexMD5(pass2);
+			user.save();
+			viewProfile(user.id);
 		} else {
-			if (pass2.length() < 25 || pass2.length() > 3) {
-				User user = Security.getConnected();
-				user.password = Codec.hexMD5(pass2);
-				user.save();
-				viewProfile(user.id);
-			} else {
-				message = "Password cannot exceed 25 characters";
-				render(request.controller.replace(".", "/") + "/viewProfile.html",
-						message);
-			}
+			message = "Password cannot exceed 25 characters";
+			render(request.controller.replace(".", "/") + "/viewProfile.html",
+					message);
 		}
+
+		User user = Security.getConnected();
+		user.password = Codec.hexMD5(pass2);
+		String logDescription = "<a href=\"/Users/viewProfile?userId="
+				+ user.id
+				+ "\">"
+				+ user.username
+				+ "</a>"
+				+ " has changed his password";
+		Log.addUserLog(logDescription, user);
+		user.save();
+		viewProfile(user.id);
 
 	}
 	public static void feedbackMail(String feedbackerEmail,String feedback,String browser,String subject){
