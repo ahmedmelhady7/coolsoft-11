@@ -1,27 +1,9 @@
 #{extends 'Home/home.html' /}
- 
+
+
 <link type="text/css" href="@{'public/stylesheets/jquery-ui-.custom.css'}" rel="Stylesheet" />
     <script type="text/javascript" src="@{'public/javascripts/jquery-1.5.2.min.js'}"></script>
     <script type="text/javascript" src="@{'public/javascripts/jquery-ui-.custom.min.js'}"></script>
-     
-    <!-- include the Tools -->
-	<!-- <script src="http://cdn.jquerytools.org/1.2.5/full/jquery.tools.min.js"></script> -->
-	 <script src="@{'public/javascripts/jquery.tools.min.js'}"></script>
-
-	<!-- standalone page styling (can be removed) -->
-	<!-- <link rel="stylesheet" type="text/css" href="http://static.flowplayer.org/tools/css/standalone.css"/> -->	
-	<link rel="stylesheet" type="text/css" href="@{'public/stylesheets/standalone.css'}"/>
-
-	<!-- <link rel="stylesheet" type="text/css" href="http://static.flowplayer.org/tools/demos/dateinput/css/skin1.css"/> -->
-	<link rel="stylesheet" type="text/css" href="@{'public/stylesheets/skin1.css'}"/> 
-     
-     
-     
-     <script type="text/javascript">
- var RecaptchaOptions = {
-    theme : 'clean'
- };
- </script>
 <div id="pageNoSideBar">
 		<div id="pageNoSideBar-bgtop">
 				<div id="content">
@@ -54,11 +36,10 @@
 			<label for="username">
 				username
 			</label>
-			<input type="text" size ="20" class = "" id="username" name="username" required/>
-		<input type="button" name="_available" value="Check Availability" onclick="checkAvailability()" />
-			<b><label id="isAvailable"></label></b>
-		
-		
+			<input type="text" size =20 class = "" id="username" name=username required/>
+		<span id="usernameMessage" class="usernameMessage"><font color="Red">
+					*
+				</font>Required</span>
 		</p>
 
 		<p>
@@ -108,31 +89,22 @@
 				</font>Required
 		</p>
 		
-		
-		<p>
-	    <label for="code">Please type the code below: </label>
-	    <img src="@{Application.captcha(randomID)}" />
-	    <br />
-	    <input type="text" name="code" id="code" size="18" value="" />
-	    <input type="hidden" name="randomID" value="${randomID}" />
-		</p>
-		
-		
-		<script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=6LcK68YSAAAAAOe4bUDwo79ksQDq08Gm2zPAxKaV">
-		</script>
-		  <noscript>
-		     <iframe src="http://www.google.com/recaptcha/api/noscript?k=6LcK68YSAAAAAOe4bUDwo79ksQDq08Gm2zPAxKaV"
-		         height="300" width="500" frameborder="0"></iframe><br>
-		     <textarea name="recaptcha_challenge_field" rows="3" cols="40">
-		     </textarea>
-		     <input type="hidden" name="recaptcha_response_field"
-		         value="manual_challenge">
-		  </noscript>
-		
-		
-		
-		
-		
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <!-- all content by Jonathan Feaster (http://www.bitdesigner.com/) -->
+    <script src="@{'public/javascripts/md5.js'}"></script>
+    <script src="@{'public/javascripts/jcap.js'}"></script>    
+    <body>
+        <div style="text-align: left;">
+           
+                <p>
+                    Please enter this field as it helps prevent automated access.
+                </p>
+                <script type="text/javascript">
+                    sjcap();
+                </script>
+                	<p>
 			<hr>
 			<br>
 			<p>
@@ -146,8 +118,7 @@
 			<label for="dateofBirth">
 				Date Of Birth
 			</label>
-			<!-- <input type="text" id="dateofBirth" name= "dateofBirth" readonly/> -->
-			<input type="date" name="dateofBirth" value="Click here" min="1911-04-22" max="2010-12-31" />
+			<input type="text" id="dateofBirth" name= "dateofBirth" readonly/>
 			</p>
 
 		<p>
@@ -456,37 +427,6 @@
       }
     }
     
-    function checkAvailability()
-    {
-    	
-
-		var requestedUsername = document.getElementById('username').value;
-		$.post('@{checkUsername()}',{username:requestedUsername},function (requestedUsername) {
-		if(requestedUsername)
-		{
-			
-			if(!exists)
-			{
-				document.getElementById("isAvailable").innerHTML = "("+requestedUsername+") is Available.";
-				document.getElementById("isAvailable").setAttribute("style","color:green");
-			}
-			else
-			{
-				document.getElementById("isAvailable").innerHTML = "("+requestedUsername+") is Unavailable.";
-				document.getElementById("isAvailable").setAttribute("style","color:red");
-			}
-		}
-		else
-		{
-			document.getElementById("isAvailable").innerHTML = "Please Enter a Valid Name.";
-			document.getElementById("isAvailable").setAttribute("style","color:red");
-		}
-		var div=document.getElementById("er");
-		div.style.display="none";
-
-		},'json')
-
-	}
 
     function checkUsername(){
     	var unregisteredUsername = document.getElementById('username').value;
@@ -495,6 +435,7 @@
         $.getJSON('@{checkUsername()}', { username: unregisteredUsername}, function (x){
         	var goodColor = "#66cc66";
             var badColor = "#ff6666";
+        	//alert("hiiii");
             if(!(x.existingUser))
             	{
             	object_username.style.backgroundColor = goodColor;
@@ -511,26 +452,82 @@
 			
 			return false
 		}
-			return true;
-	}
+			
+			 return jcap();
+}
     
-    
-    </script>
-	
+    function echeck() {
+        var str = document.getElementById('email');
+        var validEmailMessage =document.getElementById('validEmail');
+        var goodColor = "#66cc66";
+        var badColor = "#ff6666";        
+		var at="@"
+		var dot="."
+		var lat=str.indexOf(at)
+		var lstr=str.length
+		var ldot=str.indexOf(dot)
+		if (str.indexOf(at)==-1){
+		   str.style.backgroundColor = badColor;
+		   validEmailMessage.style.color = badColor;
+			validEmailMessage.innerHTML = "Invalid Email!";
+		   return false
+		}
+
+		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
+		   str.style.backgroundColor = badColor;
+		   validEmailMessage.style.color = badColor;
+		   validEmailMessage.innerHTML = "Invalid Email!";
+		   return false
+		}
+
+		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
+		    str.style.backgroundColor = badColor;
+		    validEmailMessage.style.color = badColor;
+			validEmailMessage.innerHTML = "Invalid Email!";
+		    return false
+		}
+
+		 if (str.indexOf(at,(lat+1))!=-1){
+		    str.style.backgroundColor = badColor;
+		    validEmailMessage.style.color = badColor;
+			validEmailMessage.innerHTML = "Invalid Email!";
+		    return false
+		 }
+
+		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
+		    str.style.backgroundColor = badColor;
+		    validEmailMessage.style.color = badColor;
+			validEmailMessage.innerHTML = "Invalid Email!";
+		    return false
+		 }
+
+		 if (str.indexOf(dot,(lat+2))==-1){
+		    str.style.backgroundColor = badColor;
+		    validEmailMessage.style.color = badColor;
+			validEmailMessage.innerHTML = "Invalid Email!";
+		    return false
+		 }
 		
+		 if (str.indexOf(" ")!=-1){
+		    str.style.backgroundColor = badColor;
+		    validEmailMessage.style.color = badColor;
+			validEmailMessage.innerHTML = "Invalid Email!";
+		    return false
+		 }
+
+ 		 return true				
+	}
+    </script>
 	<script>
-		$(":date").dateinput({
-	format: 'dddd dd, mmmm yyyy',	// the format displayed for the user
-	selectors: true,             	// whether month/year dropdowns are shown
-	min: -1000000000,                    // min selectable day (100 days backwards)
-	max: 1,                    	// max selectable day (100 days onwards)
-	offset: [10, 20],            	// tweak the position of the calendar
-	speed: 'fast',               	// calendar reveal speed
-	firstDay: 1,                  	// which day starts a week. 0 = sunday, 1 = monday etc..
-	yearRange: [-100,1]
-});
-	</script>
-					</div>
+    $(function(){
+		$("#dateofBirth").datepicker({ minDate:"-90Y -1M -5D",
+			maxDate:"-12Y -1M -5D",
+			changeYear: true,
+            showButtonPanel: true});
+	});
+	
+	</script>		
+						</div>
 					</div>
 					</div>
 					</div>
