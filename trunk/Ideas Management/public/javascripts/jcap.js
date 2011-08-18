@@ -94,12 +94,12 @@ function jcap(){
 var uword = hex_md5(document.getElementById(jfldid).value);
 
 if (uword==cword[anum-1]) {
-	 alert("Password has been changed successfuly");
+	 
 return true;
 }
 
 else {
-alert("ERROR: Enter the code as it is shown.");
+alert("Please neter the word as it is shown");
 document.getElementById(jfldid).focus();
 return false;
 }
