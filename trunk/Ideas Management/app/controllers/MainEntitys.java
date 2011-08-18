@@ -50,6 +50,8 @@ public class MainEntitys extends CoolCRUD {
 		MainEntity entity = MainEntity.findById(entityId);
 		notFoundIfNull(entity);
 		Organization organization = Organization.findById(organizationId);
+		User user = Security.getConnected();
+		if(organization.creator.equals(user)||user.isAdmin){
 		List<MainEntity> entityList = new ArrayList<MainEntity>();
 		notFoundIfNull(organization);
 
@@ -63,6 +65,10 @@ public class MainEntitys extends CoolCRUD {
 				entityList.remove(entityList.get(i));
 		}
 		render(entity, entityList);
+		}
+		else{
+			BannedUsers.unauthorized();
+		}
 	}
 
 	/**
@@ -122,7 +128,7 @@ public class MainEntitys extends CoolCRUD {
 		MainEntity entity = MainEntity.findById(entityId);
 		notFoundIfNull(entity);
 		User user = Security.getConnected();
-		
+		if(Users.isPermitted(user, "view", entity.id, "entity")){
 		Organization org = Organization.findById(entity.organization.id);
 		List<MainEntity> entities = org.entitiesList;
 		List<Topic> topicList = entity.topicList;
@@ -196,6 +202,10 @@ public class MainEntitys extends CoolCRUD {
 			followEntity(entityId);
 		render(user, org, entities, plans, entitiesICanView, followers, entity,
 				subentities);
+		}
+		else{
+			BannedUsers.unauthorized();
+		}
 	}
 
 	/**
@@ -345,6 +355,7 @@ public class MainEntitys extends CoolCRUD {
 	public static void goToCreateEntity(long orgid) {
 		User user = Security.getConnected();
 		Organization org = Organization.findById(orgid);
+		if(org.creator.equals(user)){
 		List<MainEntity> entities = org.entitiesList;
 		List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
 		for (MainEntity entity : entities) {
@@ -457,6 +468,10 @@ public class MainEntitys extends CoolCRUD {
 				allowed, isMember, settings, creator, alreadyRequested, plans,
 				follower, usernames, join, logFlag, pictureId, topics,
 				entitiesCanBeRelated, entitiesICanView, followers);
+		}
+		else{
+			BannedUsers.unauthorized();
+		}
 	}
 
 	/**
@@ -478,6 +493,7 @@ public class MainEntitys extends CoolCRUD {
 		MainEntity parent = MainEntity.findById(pId);
 		User user = Security.getConnected();
 		Organization org = Organization.findById(parent.organization.id);
+		if(Users.isPermitted(user, "Create a sub-entity for entity he/she manages", org.id, "organization")){
 		List<MainEntity> entities = org.entitiesList;
 		List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
 		for (MainEntity entity : entities) {
@@ -489,6 +505,10 @@ public class MainEntitys extends CoolCRUD {
 		List<User> followers = org.followers;
 		List<Plan> plans = Plans.planList("organization", org.id);
 		render(user, org, entities, plans, entitiesICanView, followers, parent);
+		}
+		else{
+			BannedUsers.unauthorized();
+		}
 	}
 
 	/**
@@ -507,7 +527,7 @@ public class MainEntitys extends CoolCRUD {
 		//String baseurl = (String) routeArgs.get("baseurl");
 		MainEntity entity = MainEntity.findById(id);
 		notFoundIfNull(entity);
-		if(Users.isPermitted(user,"view", id,"entity")){
+		if(Users.isPermitted(user,"view", id,"entity")&&entity.id!=1){
 		Organization org = entity.organization;
 		List<MainEntity> subentities = entity.subentities;
 		List<Topic> topicList = entity.topicList;
@@ -619,8 +639,11 @@ public class MainEntitys extends CoolCRUD {
 	 */
 	public static void editEntityPage(long entityId) {
 		MainEntity targetEntity = MainEntity.findById(entityId);
+		notFoundIfNull(targetEntity);
 		User user = Security.getConnected();
 		Organization org = Organization.findById(targetEntity.organization.id);
+		
+		if(org.creator.equals(user)||user.isAdmin){
 		List<MainEntity> entities = org.entitiesList;
 		List<MainEntity> entitiesICanView = new ArrayList<MainEntity>();
 		for (MainEntity entity : entities) {
@@ -633,7 +656,10 @@ public class MainEntitys extends CoolCRUD {
 		render(user, org, entities, plans, entitiesICanView, followers,
 				targetEntity);
 	}
-
+	else{
+		BannedUsers.unauthorized();
+	}
+}
 	/**
 	 * The method that allows editing any entity
 	 * 
@@ -656,8 +682,10 @@ public class MainEntitys extends CoolCRUD {
 	 */
 	public static void editEntity(long entityId, String name,
 			String description, boolean createRelationship) {
+		
 		User user = Security.getConnected();
 		MainEntity entity = MainEntity.findById(entityId);
+
 		entity.name = name;
 		entity.description = description;
 		entity.createRelationship = createRelationship;
@@ -674,7 +702,9 @@ public class MainEntitys extends CoolCRUD {
 				entity.organization);
 		redirect(request.controller + ".viewEntity", entity.id,
 				"Entity created");
-	}
+		}
+		
+	
 
 	/**
 	 * renders the page for requesting relationship creation between entities.
@@ -698,6 +728,8 @@ public class MainEntitys extends CoolCRUD {
 		Organization organisation = Organization.findById(organisationId);
 		User user = User.findById(userId);
 		MainEntity entity = MainEntity.findById(entityId);
+		if(Users.isPermitted(user, "Request to start a relationship with other items",organisation.id, "organization")){
+
 		List<MainEntity> subentities = entity.subentities;
 		List<Topic> topicList = entity.topicList;
 		int canCreateEntity = 0;
@@ -763,6 +795,10 @@ public class MainEntitys extends CoolCRUD {
 				canRequest, canRequestRelationship, canRestrict,
 				entityIsLocked, plans, canDeleteEntity, followers, check,
 				check1, check2);
+		}
+		else{
+			BannedUsers.unauthorized();
+		}
 	}
 
 	/**
@@ -791,7 +827,12 @@ public class MainEntitys extends CoolCRUD {
 		User user = User.findById(userId);
 		Organization organisation = Organization.findById(organisationId);
 		MainEntity entity = MainEntity.findById(entityId);
+		if(Users.isPermitted(user, "Request to start a relationship with other items",organisation.id, "organization")){
 		render(user, organisation, entity, canRequestRelationship);
+		}
+		else{
+			BannedUsers.unauthorized();
+		}
 	}
 
 	/**
@@ -920,6 +961,7 @@ public class MainEntitys extends CoolCRUD {
 		notFoundIfNull(entity);
 		Organization organization = entity.organization;
 User user = Security.getConnected();
+if(organization.creator.equals(user)||user.isAdmin){
 	List<User>	organizers = Users.getEntityOrganizers(entity);
 	organizers.add(organization.creator);
 	for (int i = 0; i < organizers.size(); i++)
@@ -928,6 +970,10 @@ User user = Security.getConnected();
 						+ " has deleted entity " + entity.name);
 	deleteEntityHelper(entityId);
 	redirect("Organizations.viewProfile", entity.organization.id, "Entity deleted");
+}
+else{
+	BannedUsers.unauthorized();
+}
 		//Organizations.viewProfile(entity.organization.id);
 	}
 	

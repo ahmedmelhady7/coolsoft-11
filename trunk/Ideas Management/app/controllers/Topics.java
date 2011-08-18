@@ -1404,8 +1404,13 @@ public class Topics extends CoolCRUD {
 				+ entity.id + "\">" + entity.name + "</a>";
 		Log.addUserLog(logDescription, temporaryTopic, user, entity,
 				entity.organization);
-		String notification = user.username + " edited the topic "
+		String notification="";
+		if(entity.id!=1)
+		 notification = user.username + " edited the topic "
 				+ temporaryTopic.title + " in entity " + entity.name;
+		else
+			 notification = user.username + " edited the topic "
+				+ temporaryTopic.title + " in organization " + entity.organization.name;
 		List<User> users = Users.getEntityOrganizers(temporaryTopic.entity);
 		if (!users.contains(temporaryTopic.entity.organization.creator))
 			users.add(temporaryTopic.entity.organization.creator);
@@ -1707,13 +1712,23 @@ public class Topics extends CoolCRUD {
 		for (int i = 0; i < users.size(); i++)
 			Notifications.sendNotification(users.get(i).id, temporaryTopic.id,
 					"Topic", message);
+		if(temporaryTopic.entity.id!=1){
 		for (int i = 0; i < temporaryTopic.followers.size(); i++)
 			Notifications.sendNotification(temporaryTopic.followers.get(i)
 					.getId(), entity.getId(), "entity", message);
 		Notifications.sendNotification(temporaryTopic.creator.getId(),
 				entity.getId(), "entity", "Your Topic was deleted because "
 						+ justification);
-
+	}
+		else{
+			System.out.println("default");
+			for (int i = 0; i < temporaryTopic.followers.size(); i++)
+				Notifications.sendNotification(temporaryTopic.followers.get(i)
+						.getId(), temporaryTopic.entity.organization.id, "organization", message);
+			Notifications.sendNotification(temporaryTopic.creator.getId(),
+					temporaryTopic.entity.organization.id, "organization", "Your Topic was deleted because "
+							+ justification);
+		}
 		// added by Mohamed Hisham to delete the topic's relationships whenever
 		// its deleted
 		for (int i = 0; i < temporaryTopic.relationsSource.size(); i++) {
