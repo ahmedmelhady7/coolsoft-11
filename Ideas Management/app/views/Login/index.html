@@ -62,12 +62,13 @@
                 #{/if}
                 #{else}
                 (${user.getNotificationNumber()} New)
-			   #{list items:0..user.getNotificationNumber()-1, as:'i'} 
-			   	
+			   #{list items:user.getMessage(), as:'i'} 	
+			 <input type = "hidden" id="type" name ="userId" value =${i.type}>  
+			 	 <input type = "hidden" id="title" name ="userId" value =${i.title}>  
 				<script type="text/javascript">
-					notify(user.getLatest().get(i).description);
-					
-				
+					var t= document.getElementById("type").value;
+				   var tt= document.getElementById("title").value;
+	$().el7r_notify({'text':'New Notification from '+t+' '+tt, 'place_v':'bottom', 'place_h':'left','icon':'', 'skin':'darkblue', 'delay':'4000', 'ex':'true', 'effect':'fade'});	
 </script>
 #{/list}
                 #{/else}</a>
@@ -602,9 +603,7 @@
 						});
 					});
 					//}
-					function notify(message){
-						$().el7r_notify({'text':b, 'place_v':'bottom', 'place_h':'left','icon':'', 'skin':'darkblue', 'delay':'4000', 'ex':'true', 'effect':'fade'});
-					}
+					
 					function step1() {
 						document.getElementById('searchview').style.display = 'none';
 					}
