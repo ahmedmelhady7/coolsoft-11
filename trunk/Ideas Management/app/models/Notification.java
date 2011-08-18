@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -38,6 +40,8 @@ public class Notification extends CoolModel {
 	// The status of the notification
 	public boolean seen;
 	
+	public Date time;
+	
 	public Notification(long sourceID, String type, String title, User user, String description) {
 		this.sourceID = sourceID;
 		this.type =type;
@@ -46,5 +50,7 @@ public class Notification extends CoolModel {
 		this.description = description;
 		this.seen = false;		
 		this.status = "New";
+		this.time=new Date();
+	   
 	}
 }

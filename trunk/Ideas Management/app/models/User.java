@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.jamonapi.utils.DateMathComparator;
+
 import controllers.Security;
 import controllers.Topics;
 import controllers.Users;
@@ -31,13 +33,13 @@ import play.libs.Codec;
 @Entity
 public class User extends CoolModel {
 	@Required
-	//@Email
+	// @Email
 	@Column(unique = true)
 	/**
 	 * user's email
 	 */
 	public String email;
-	
+
 	/**
 	 * user's username
 	 */
@@ -46,14 +48,14 @@ public class User extends CoolModel {
 	@MaxSize(20)
 	@Column(unique = true)
 	public String username;
-	
+
 	/**
 	 * user's password
 	 */
 	@Required
 	@MinSize(3)
 	public String password;
-	
+
 	/**
 	 * user's first name
 	 */
@@ -84,7 +86,7 @@ public class User extends CoolModel {
 	 */
 	public String confirmPassword;
 	/**
-	 *  user's security question that is needed when forgetting password
+	 * user's security question that is needed when forgetting password
 	 */
 	@Required
 	public String securityQuestion;
@@ -94,7 +96,7 @@ public class User extends CoolModel {
 	@Required
 	public String answer;
 	/**
-	 *  whether a user is an Admin or not
+	 * whether a user is an Admin or not
 	 */
 	public boolean isAdmin;
 	/**
@@ -110,13 +112,13 @@ public class User extends CoolModel {
 	 * user's number of notifications
 	 */
 	public int notificationsNumber;
-     
+
 	/**
-	 *  list of topics craeted by the user
+	 * list of topics craeted by the user
 	 */
 	@OneToMany(mappedBy = "creator")
 	public List<Topic> topicsCreated;
-	
+
 	/**
 	 * id of the user's profile Picture
 	 */
@@ -133,7 +135,7 @@ public class User extends CoolModel {
 	 */
 	@OneToMany(mappedBy = "commenter")
 	public List<Comment> hisComments;
-	
+
 	/**
 	 * list of plans rated by the user
 	 */
@@ -200,13 +202,13 @@ public class User extends CoolModel {
 	@OneToMany(mappedBy = "source")
 	public List<RequestToJoin> requestsToJoin;
 	/**
-	 *  list of invitations sent by the user
+	 * list of invitations sent by the user
 	 */
 	@OneToMany(mappedBy = "sender")
 	public List<Invitation> invitation;
 
 	/**
-	 *  list of volunteer requests sent by the user
+	 * list of volunteer requests sent by the user
 	 */
 	@OneToMany(mappedBy = "sender")
 	public List<VolunteerRequest> volunteerRequests;
@@ -276,7 +278,7 @@ public class User extends CoolModel {
 
 	/**
 	 * 
-	 * adds an unregistered to the database 
+	 * adds an unregistered to the database
 	 * 
 	 * @author Mostafa Ali
 	 * 
@@ -284,7 +286,7 @@ public class User extends CoolModel {
 	 * 
 	 * @param email
 	 *            :String , the user's email
-	 *            
+	 * 
 	 * @param username
 	 *            : String ,the user's username
 	 * 
@@ -298,11 +300,11 @@ public class User extends CoolModel {
 	 * @param lastName
 	 *            : String ,the user's last name
 	 * 
-	 * @param securityQuestion 
-	 * 				String , security question of the user
+	 * @param securityQuestion
+	 *            String , security question of the user
 	 * 
 	 * @param answer
-	 * 				String , the security answer of the user
+	 *            String , the security answer of the user
 	 * 
 	 * 
 	 * @param communityContributionCounter
@@ -319,9 +321,9 @@ public class User extends CoolModel {
 	 * 
 	 */
 	public User(String email, String username, String password,
-			String firstName, String lastName, String securityQuestion, String answer,
-			int communityContributionCounter, String dateofBirth, String country,
-			String profession) {
+			String firstName, String lastName, String securityQuestion,
+			String answer, int communityContributionCounter,
+			String dateofBirth, String country, String profession) {
 		this.email = email;
 		this.username = username;
 		this.password = Codec.hexMD5(password);
@@ -341,7 +343,7 @@ public class User extends CoolModel {
 		this.notificationProfiles = new ArrayList<NotificationProfile>();
 		this.notifications = new ArrayList<Notification>();
 		this.bannedUsers = new ArrayList<BannedUser>();
-		this.state="a";
+		this.state = "a";
 		this.userRolesInOrganization = new ArrayList<UserRoleInOrganization>();
 		this.invitation = new ArrayList<Invitation>();
 		this.createdOrganization = new ArrayList<Organization>();
@@ -356,13 +358,12 @@ public class User extends CoolModel {
 		this.notificationsNumber = notifications.size();
 		this.followingTags = new ArrayList();
 
-
 	}
 
 	/**
 	 * 
-	 * Creates a new invitation and adds it to the list of invitations
-	 *  of organization/entity/topic
+	 * Creates a new invitation and adds it to the list of invitations of
+	 * organization/entity/topic
 	 * 
 	 * @author ${Mai.Magdy}
 	 * 
@@ -391,7 +392,7 @@ public class User extends CoolModel {
 		Invitation invite = new Invitation(email, entity, organization, role,
 				this, topic).save();
 		this.invitation.add(invite);
-		
+
 		organization.invitation.add(invite);
 		if (topic != null)
 			topic.invitations.add(invite);
@@ -698,10 +699,9 @@ public class User extends CoolModel {
 
 		return (ArrayList<Idea>) drafts;
 	}
-	
-	public int topicDraftsCount()
-	{
-	
+
+	public int topicDraftsCount() {
+
 		List<Topic> drafts = new ArrayList<Topic>();
 
 		for (Topic topic : this.topicsCreated)
@@ -712,7 +712,7 @@ public class User extends CoolModel {
 	}
 
 	public int getDraftsCount() {
-		return this.getDrafts().size()+topicDraftsCount();
+		return this.getDrafts().size() + topicDraftsCount();
 	}
 
 	/**
@@ -723,11 +723,10 @@ public class User extends CoolModel {
 	 * @story C1S20
 	 * 
 	 * 
-	 * @return int
-	 * 			the number of notifications that the user has
+	 * @return int the number of notifications that the user has
 	 */
-	
-	public int getNotificationNumber() {		
+
+	public int getNotificationNumber() {
 		int notificationCount = 0;
 		for (int i = 0; i < this.notifications.size(); i++) {
 			if (!this.notifications.get(i).seen) {
@@ -738,18 +737,16 @@ public class User extends CoolModel {
 	}
 
 	/**
-	 * Returns the latest notifications
-	 * i.e. having their status as new
+	 * Returns the latest notifications i.e. having their status as new
 	 * 
 	 * @author Ahmed Maged
 	 * 
 	 * @story C1S20
 	 * 
-	 * @return List<Notification>
-	 * 			       the list of the user's latest notifications
+	 * @return List<Notification> the list of the user's latest notifications
 	 */
-	
-	public List<Notification> getLatest() {		
+
+	public List<Notification> getLatest() {
 		List<Notification> list = new ArrayList<Notification>();
 		int counter = 0;
 		for (int i = 0; i < this.notifications.size(); i++) {
@@ -767,7 +764,28 @@ public class User extends CoolModel {
 		}
 		return reversedList;
 	}
-	
+
+	@SuppressWarnings("deprecation")
+	public List<Notification> getMessage() {
+		List<Notification> reversedList = getLatest();
+		List<Notification> finalList = new ArrayList<Notification>();
+		Date current = new Date();
+		for (int i = 0; i < reversedList.size(); i++) {
+			Date sent = reversedList.get(i).time;
+			if (current.getDay() == sent.getDay()
+					&& current.getHours() == sent.getHours()
+					&& current.getMinutes() == sent.getMinutes()
+					&& current.getMonth() == sent.getMonth()
+					&& current.getYear() == sent.getYear()) {
+				int gap = current.getSeconds() - sent.getSeconds();
+				if (gap <= 2) {
+					finalList.add(reversedList.get(i));
+				}
+			}
+		}
+		return finalList;
+	}
+
 	/**
 	 * returns a list of the recent five logs of the user
 	 * 
@@ -775,10 +793,10 @@ public class User extends CoolModel {
 	 * 
 	 * @story CSS design
 	 * 
-	 * @return List<Log>
-	 * 			the list of the last five logs (actions) done by the user.
+	 * @return List<Log> the list of the last five logs (actions) done by the
+	 *         user.
 	 */
-	
+
 	public List<Log> getRecentActivity() {
 		List<Log> list = new ArrayList<Log>();
 		int counter = 0;
@@ -788,17 +806,16 @@ public class User extends CoolModel {
 			if (counter == 5) {
 				break;
 			}
-		}		
+		}
 		List<Log> reversedList = new ArrayList<Log>();
 		for (int i = list.size() - 1; i >= 0; i--) {
 			reversedList.add(list.get(i));
 		}
-		return reversedList;		
+		return reversedList;
 	}
 
-	
 	/**
-	 * gets the list of documents owned by the user 
+	 * gets the list of documents owned by the user
 	 * 
 	 * @author Ibrahim Al-Kahayat
 	 * 
@@ -808,7 +825,8 @@ public class User extends CoolModel {
 	 * 
 	 */
 	public List<Document> getDocuments() {
-		List<Document> documents = Document.find("byUserOrganizationId", id).fetch();
+		List<Document> documents = Document.find("byUserOrganizationId", id)
+				.fetch();
 		for (int i = 0; i < documents.size(); i++) {
 			if (documents.get(i).isOrganization) {
 				documents.remove(i);
@@ -828,7 +846,8 @@ public class User extends CoolModel {
 		List<Organization> organizations = new ArrayList<Organization>();
 		int i = 0;
 		while (i < this.userRolesInOrganization.size()) {
-			if(!organizations.contains(userRolesInOrganization.get(i).organization))
+			if (!organizations
+					.contains(userRolesInOrganization.get(i).organization))
 				organizations.add(userRolesInOrganization.get(i).organization);
 			i++;
 		}
