@@ -393,6 +393,7 @@ public class Organizations extends CoolCRUD {
 	public static void viewFollowers(long organizationId, String flag) {
 		Organization org = Organization.findById(organizationId);
 		User user = Security.getConnected();
+		if(Users.isPermitted(user, "view", org.id, "organization")){
 		notFoundIfNull(org);
 		List<MainEntity> allEntities = MainEntity.findAll();
 		List<Tag> tags = new ArrayList<Tag>();
@@ -518,6 +519,10 @@ public class Organizations extends CoolCRUD {
 				creator, alreadyRequested, plans, follower, usernames, join,
 				logFlag, pictureId, topics, entitiesCanBeRelated,
 				entitiesICanView, followers, defaultEntity);
+		}
+		else{
+			BannedUsers.unauthorized();
+		}
 	}
 
 	/**
