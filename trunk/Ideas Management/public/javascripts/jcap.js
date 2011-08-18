@@ -99,7 +99,7 @@ return true;
 }
 
 else {
-alert("Please neter the word as it is shown");
+alert("Please enter the word as it is shown");
 document.getElementById(jfldid).focus();
 return false;
 }
