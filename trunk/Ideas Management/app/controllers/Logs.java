@@ -57,9 +57,9 @@ public class Logs extends CoolCRUD {
 				
 				pageNumber ++;
 				max++;
-				offset = offset + 3;
+				offset = offset + 30;
 				
-				i = offset-4;
+				i = offset-31;
 				
 				while(i < logList.size() && i< offset){
 					toFilter.add(logList.get(i));
@@ -71,9 +71,9 @@ public class Logs extends CoolCRUD {
 					if(position.equals("previous")) {
 						pageNumber --;
 						max--;
-						offset = offset - 3;
+						offset = offset - 30;
 						
-						i = offset-4;
+						i = offset-31;
 						
 						while(i < logList.size() && i< offset){
 							toFilter.add(logList.get(i));
@@ -83,7 +83,7 @@ public class Logs extends CoolCRUD {
 					}
 				}
 			boolean maxPage = true;
-			if(max-1 == logList.size() /4) {
+			if(max-1 == logList.size() /30) {
 				maxPage = false;
 			}
 			
@@ -246,9 +246,9 @@ public class Logs extends CoolCRUD {
 		pageNumber ++;
 		max++;
 	
-		offset = offset + 3;
+		offset = offset + 30;
 		
-		 i = offset-4;
+		 i = offset-31;
 		
 		while(i < logList.size() && i< offset){
 			toFilter.add(logList.get(i));
@@ -260,9 +260,9 @@ public class Logs extends CoolCRUD {
 			if(position.equals("previous")) {
 				pageNumber --;
 				max--;
-				offset = offset - 3;
+				offset = offset - 30;
 				
-				i = offset-4;
+				i = offset-31;
 				
 				while(i < logList.size() && i< offset){
 					toFilter.add(logList.get(i));
@@ -272,7 +272,7 @@ public class Logs extends CoolCRUD {
 			}
 		}
 		boolean maxPage = true;
-		if(max-1 == logList.size() /4) {
+		if(max-1 == logList.size() /30) {
 			maxPage = false;
 		}
 		
